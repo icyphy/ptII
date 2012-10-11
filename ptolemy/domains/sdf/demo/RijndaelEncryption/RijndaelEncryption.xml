@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="RijndaelEncryption" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[546, 503]">
     </property>
@@ -40,7 +40,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{20.0, 240.0}">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={6, 25, 761, 610}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={6, 25, 780, 634}, maximized=false}">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
@@ -106,9 +106,9 @@
         <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute">
         </property>
         <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
-            <property name="_location" class="ptolemy.kernel.util.Location" value="80.0, 60.0">
-            </property>
             <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="80.0, 60.0">
             </property>
         </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {30, 138, 921, 600}, maximized = false}">
@@ -373,9 +373,9 @@
         <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[104, 127]">
         </property>
         <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[120.0, 110.0]">
-            </property>
             <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[120.0, 110.0]">
             </property>
         </property>
         <property name="key" class="ptolemy.data.expr.Parameter" value="{0x00ub,0x01ub,0x02ub,0x03ub,0x04ub,0x05ub,0x06ub,0x07ub,0x08ub,0x09ub,0x0aub,0x0bub,0x0cub,0x0dub,0x0eub,0x0fub}">
@@ -438,7 +438,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="{20.0, -100.0}">
             </property>
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1, 51, 996, 674}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={52, 357, 1015, 677}, maximized=false}">
         </property>
         <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
         </property>
@@ -479,9 +479,9 @@
             <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute">
             </property>
             <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
-                <property name="_location" class="ptolemy.kernel.util.Location" value="50.0, 220.0">
-                </property>
                 <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="50.0, 220.0">
                 </property>
             </property>
             <port name="port" class="ptolemy.actor.TypedIOPort">
@@ -861,9 +861,9 @@
             <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute">
             </property>
             <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 110.0]">
-                </property>
                 <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 110.0]">
                 </property>
             </property>
             <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {-1, 83, 1022, 673}, maximized = false}">
@@ -1241,7 +1241,7 @@
                 </property>
                 <port name="output" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
-                    <property name="tokenProductionRate" class="ptolemy.actor.lib.Commutator$WidthDependentParameter" value="4 * blockSize">
+                    <property name="tokenProductionRate" class="ptolemy.actor.lib.Commutator$WidthDependentParameter" value="-4 * blockSize">
                     </property>
                 </port>
             </entity>
@@ -1378,9 +1378,9 @@
             <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute">
             </property>
             <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
-                <property name="_location" class="ptolemy.kernel.util.Location" value="{95.0, 175.0}">
-                </property>
                 <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{95.0, 175.0}">
                 </property>
             </property>
             <property name="AnnotationUpdated" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -1428,9 +1428,9 @@
                 <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute">
                 </property>
                 <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
-                    <property name="_location" class="ptolemy.kernel.util.Location" value="75.0, 110.0">
-                    </property>
                     <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+                    </property>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="75.0, 110.0">
                     </property>
                 </property>
                 <port name="port" class="ptolemy.actor.TypedIOPort">
@@ -1475,9 +1475,9 @@
                 <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute">
                 </property>
                 <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
-                    <property name="_location" class="ptolemy.kernel.util.Location" value="75.0, 90.0">
-                    </property>
                     <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+                    </property>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="75.0, 90.0">
                     </property>
                 </property>
                 <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={270, 154, 661, 457}, maximized=false}">
@@ -1983,7 +1983,7 @@
                 </property>
             </entity>
             <entity name="modal model" class="ptolemy.domains.modal.modal.ModalModel">
-                <property name="_tableauFactory" class="ptolemy.vergil.fsm.modal.ModalTableauFactory">
+                <property name="_tableauFactory" class="ptolemy.vergil.modal.modal.ModalTableauFactory">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[310.0, 260.0]">
                 </property>
@@ -2057,7 +2057,7 @@
                         </property>
                         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                         </property>
-                        <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
+                        <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
                         </property>
                         <property name="_location" class="ptolemy.kernel.util.Location" value="310.0, 225.0">
                         </property>
@@ -2067,7 +2067,7 @@
                         </property>
                         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                         </property>
-                        <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
+                        <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
                         </property>
                         <property name="_location" class="ptolemy.kernel.util.Location" value="180.0, 225.0">
                         </property>
@@ -2125,9 +2125,9 @@
                     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute">
                     </property>
                     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
-                        <property name="_location" class="ptolemy.kernel.util.Location" value="80.0, 50.0">
-                        </property>
                         <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+                        </property>
+                        <property name="_location" class="ptolemy.kernel.util.Location" value="80.0, 50.0">
                         </property>
                     </property>
                     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={174, 171, 849, 457}, maximized=false}">
@@ -2568,9 +2568,9 @@
                     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute">
                     </property>
                     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
-                        <property name="_location" class="ptolemy.kernel.util.Location" value="175.0, 85.0">
-                        </property>
                         <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+                        </property>
+                        <property name="_location" class="ptolemy.kernel.util.Location" value="175.0, 85.0">
                         </property>
                     </property>
                     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={270, 154, 583, 468}, maximized=false}">
@@ -2660,7 +2660,7 @@
         <entity name="RoundSequence" class="ptolemy.domains.modal.modal.ModalModel">
             <property name="directorClass" class="ptolemy.data.expr.StringParameter" value="ptolemy.domains.modal.kernel.MultirateFSMDirector">
             </property>
-            <property name="_tableauFactory" class="ptolemy.vergil.fsm.modal.ModalTableauFactory">
+            <property name="_tableauFactory" class="ptolemy.vergil.modal.modal.ModalTableauFactory">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[405.0, 200.0]">
             </property>
@@ -2720,7 +2720,7 @@
                 </property>
                 <property name="round" class="ptolemy.data.expr.Parameter" value="9">
                 </property>
-                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={437, 365, 726, 469}, maximized=false}">
+                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={816, 450, 744, 635}, maximized=false}">
                 </property>
                 <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
                 </property>
@@ -2750,11 +2750,11 @@
                 <entity name="regular" class="ptolemy.domains.modal.kernel.State">
                     <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="regular">
                     </property>
-                    <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="true">
+                    <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="false">
                     </property>
                     <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                     </property>
-                    <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
+                    <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
                     </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[280.0, 235.0]">
                     </property>
@@ -2764,7 +2764,7 @@
                     </property>
                     <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                     </property>
-                    <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
+                    <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
                     </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="455.0, 225.0">
                     </property>
@@ -2772,9 +2772,11 @@
                 <entity name="init" class="ptolemy.domains.modal.kernel.State">
                     <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="init">
                     </property>
+                    <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="true">
+                    </property>
                     <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                     </property>
-                    <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
+                    <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
                     </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="249.49999999999994, 149.78725609151581">
                     </property>
@@ -2850,11 +2852,11 @@
                 <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute">
                 </property>
                 <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+                    <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+                    </property>
                     <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
                     </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="105.0, 65.0">
-                    </property>
-                    <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
                     </property>
                 </property>
                 <property name="AnnotationUpdated" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -2883,7 +2885,7 @@
                     <property name="_location" class="ptolemy.kernel.util.Location" value="{10.0, 305.0}">
                     </property>
                 </property>
-                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={74, 154, 883, 468}, maximized=false}">
+                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={74, 154, 901, 634}, maximized=false}">
                 </property>
                 <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
                 </property>
@@ -2974,11 +2976,11 @@
                 <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute">
                 </property>
                 <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+                    <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+                    </property>
                     <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
                     </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="100.0, 55.0">
-                    </property>
-                    <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
                     </property>
                 </property>
                 <property name="AnnotationUpdated" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -3007,7 +3009,7 @@
                     <property name="_location" class="ptolemy.kernel.util.Location" value="{20.0, 320.0}">
                     </property>
                 </property>
-                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {-4, -4, 909, 496}, maximized = false}">
+                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 928, 634}, maximized=false}">
                 </property>
                 <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
                 </property>
@@ -3090,11 +3092,11 @@
                 <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute">
                 </property>
                 <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+                    <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+                    </property>
                     <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="16">
                     </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="340.0, 60.0">
-                    </property>
-                    <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
                     </property>
                 </property>
                 <property name="AnnotationUpdated" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -3123,7 +3125,7 @@
                     <property name="_location" class="ptolemy.kernel.util.Location" value="{60.0, 305.0}">
                     </property>
                 </property>
-                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={251, 5, 763, 468}, maximized=false}">
+                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={251, 22, 782, 634}, maximized=false}">
                 </property>
                 <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
                 </property>
@@ -3487,13 +3489,6 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[205.0, 180.0]">
             </property>
         </entity>
-        <entity name="SampleDelay" class="ptolemy.domains.sdf.lib.SampleDelay">
-            <property name="initialOutputs" class="ptolemy.data.expr.Parameter" value="repeat(16,0ub)">
-            </property>
-            <doc>The sdf delay actor, which behaves as an initial token on an arc.</doc>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[525.0, 270.0]">
-            </property>
-        </entity>
         <entity name="Display" class="ptolemy.actor.lib.gui.Display">
             <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={279, 54, 351, 234}, maximized=false}">
             </property>
@@ -3782,6 +3777,20 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[525.0, 210.0]">
             </property>
         </entity>
+        <entity name="SampleDelay" class="ptolemy.domains.sdf.lib.SampleDelay">
+            <property name="initialOutputs" class="ptolemy.data.expr.Parameter" value="repeat(16,0ub)">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="initialOutputs">
+                </property>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="20">
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[435.0, 285.0]">
+            </property>
+            <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+        </entity>
         <relation name="relation2" class="ptolemy.actor.TypedIORelation">
         </relation>
         <relation name="relation6" class="ptolemy.actor.TypedIORelation">
@@ -3791,7 +3800,7 @@
             </vertex>
         </relation>
         <relation name="relation9" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex1" value="355.0, 310.0">
+            <vertex name="vertex1" value="[355.0, 285.0]">
             </vertex>
         </relation>
         <relation name="relation5" class="ptolemy.actor.TypedIORelation">
@@ -3823,8 +3832,6 @@
         <link port="ArrayToSequence.output" relation="relation"/>
         <link port="UpSample.input" relation="relation6"/>
         <link port="UpSample.output" relation="relation10"/>
-        <link port="SampleDelay.input" relation="relation8"/>
-        <link port="SampleDelay.output" relation="relation9"/>
         <link port="Display.input" relation="relation3"/>
         <link port="DownSample.input" relation="relation13"/>
         <link port="DownSample.output" relation="relation5"/>
@@ -3834,6 +3841,8 @@
         <link port="ArrayToSequence3.output" relation="relation7"/>
         <link port="SequenceToArray3.input" relation="relation8"/>
         <link port="SequenceToArray3.output" relation="relation13"/>
+        <link port="SampleDelay.input" relation="relation8"/>
+        <link port="SampleDelay.output" relation="relation9"/>
     </entity>
     <entity name="Display" class="ptolemy.actor.lib.gui.Display">
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={632, 53, 334, 234}, maximized=false}">
@@ -3846,7 +3855,7 @@
         </property>
     </entity>
     <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
-        <property name="init" class="ptolemy.data.expr.Parameter" value="0x0ub">
+        <property name="init" class="ptolemy.actor.parameters.PortParameter" value="0x0ub">
         </property>
         <property name="step" class="ptolemy.actor.parameters.PortParameter" value="0x1ub">
         </property>
