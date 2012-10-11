@@ -2183,6 +2183,10 @@ public class FSMActor extends CompositeEntity implements TypedActor,
      */
     protected boolean _isRefinementOutput(IOPort port, int channel)
             throws IllegalActionException {
+        // Ptera may not have a _currentState.
+        if (_currentState == null) {
+            return false;
+        }
         TypedActor[] refinements = _currentState.getRefinement();
 
         if ((refinements == null) || (refinements.length == 0)) {
