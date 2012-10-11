@@ -27,9 +27,14 @@
  */
 package ptolemy.actor.lib;
 
+import java.util.HashSet;
+import java.util.Set;
+
+import ptolemy.actor.util.ArrayOfTypesFunction;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.Token;
 import ptolemy.data.type.ArrayType;
+import ptolemy.graph.Inequality;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
@@ -127,5 +132,35 @@ public class ArrayToElements extends Transformer {
                 output.send(i, elements[i]);
             }
         }
+    }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
+
+    /** Do not establish the usual default type constraints. Instead, the type
+     *  of the output port is constrained to be no less than the type of the
+     *  elements of the input array (set in the constructor of this class).
+     */
+    @Override
+    protected Set<Inequality> _defaultTypeConstraints() {
+        return null;
+    }
+
+    /** Add a type constraint for backward type inference that forces
+     *  the input to be an array of which the elements have a type
+     *  greater than or equal to the output port.
+     *  If backward type inference is disabled, this method returns
+     *  an empty set.
+     *  @see ArrayOfTypesFunction
+     *  @return A set of inequalities.
+     */
+    @Override
+    protected Set<Inequality> _customTypeConstraints() {
+        Set<Inequality> result = new HashSet<Inequality>();
+        if (isBackwardTypeInferenceEnabled()) {
+            result.add(new Inequality(input.getTypeTerm(),
+                    new ArrayOfTypesFunction(output)));
+        }
+        return result;
     }
 }
