@@ -2,21 +2,21 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="AdaptiveCoding" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={3, 22, 972, 650}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={3, 22, 993, 650}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[759, 540]">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model demonstrates that HDF allows dynamic port rate changes and&#10;correctly schedules the two modal models.&#10;&#10;In this example, the model has two modes of Hamming Codec, a (7, 4) Hamming Code &#10;and a (3, 1) Hamming code. Each set of Codec has different consumption rates and &#10;production rates. The Switch actor produces booleans to control the switching&#10;between the two coding/decoding schemes. Such switching signal might come from &#10;a sensor, a performance detector, or a command issued by a person. &#10;">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 340.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{-15.0, 50.0}">
         </property>
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.9369466679525509">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{379.5, 270.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{394.0390625, 275.3517246170949}">
     </property>
     <property name="probabilityOfChannelError" class="ptolemy.data.expr.Parameter" value="0.1">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -32,19 +32,19 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[440.0, 45.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[140.0, 15.0]">
         </property>
     </property>
     <property name="HDF Director" class="ptolemy.domains.hdf.kernel.HDFDirector">
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="40">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 40.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{45.0, 15.0}">
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="A noisy channel">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[300.0, 90.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[285.0, 255.0]">
         </property>
     </property>
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -52,7 +52,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Ye Zhou">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 505.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-5.0, 455.0]">
         </property>
     </property>
     <entity name="Uncoded Symbols" class="ptolemy.actor.lib.Bernoulli">
@@ -61,7 +61,7 @@
         <property name="trueProbability" class="ptolemy.data.expr.Parameter" value="0.5">
         </property>
         <doc>Create a sequence of bernoulli random variables</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 140.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{55.0, 410.0}">
         </property>
     </entity>
     <entity name="Switch" class="ptolemy.actor.lib.Bernoulli">
@@ -70,15 +70,15 @@
         <property name="trueProbability" class="ptolemy.data.expr.Parameter" value="0.5">
         </property>
         <doc>Create a sequence of bernoulli random variables</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 240.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{90.0, 325.0}">
         </property>
     </entity>
     <entity name="Coder" class="ptolemy.domains.modal.modal.ModalModel">
         <property name="directorClass" class="ptolemy.data.expr.StringParameter" value="ptolemy.domains.hdf.kernel.HDFFSMDirector">
         </property>
-        <property name="_tableauFactory" class="ptolemy.vergil.fsm.modal.ModalTableauFactory">
+        <property name="_tableauFactory" class="ptolemy.vergil.modal.modal.ModalTableauFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[195.0, 150.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{235.0, 315.0}">
         </property>
         <port name="input" class="ptolemy.domains.modal.modal.ModalPort">
             <property name="input"/>
@@ -94,7 +94,7 @@
         <entity name="_Controller" class="ptolemy.domains.modal.modal.ModalController">
             <property name="_library" class="ptolemy.moml.LibraryAttribute">
                 <configure>
-        <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.modal.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory"></property></entity></entity>
+        <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.modal.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory"></property></entity></entity>
       </configure>
             </property>
             <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -134,7 +134,7 @@
                 </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
-                <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
+                <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[145.0, 200.0]">
                 </property>
@@ -144,7 +144,7 @@
                 </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
-                <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
+                <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[390.0, 200.0]">
                 </property>
@@ -180,9 +180,9 @@
         </entity>
         <entity name="state" class="ptolemy.domains.modal.modal.Refinement">
             <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[145.0, 75.0]">
-                </property>
                 <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[145.0, 75.0]">
                 </property>
             </property>
             <port name="input" class="ptolemy.domains.modal.modal.RefinementPort">
@@ -205,6 +205,16 @@
             <entity name="HammingCoder" class="ptolemy.actor.lib.comm.HammingCoder">
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{265, 170}">
                 </property>
+                <port name="input" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                    <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="4">
+                    </property>
+                </port>
+                <port name="output" class="ptolemy.actor.TypedIOPort">
+                    <property name="output"/>
+                    <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="7">
+                    </property>
+                </port>
             </entity>
             <relation name="relation" class="ptolemy.actor.TypedIORelation">
             </relation>
@@ -217,9 +227,9 @@
         </entity>
         <entity name="state2" class="ptolemy.domains.modal.modal.Refinement">
             <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[155.0, 60.0]">
-                </property>
                 <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[155.0, 60.0]">
                 </property>
             </property>
             <port name="input" class="ptolemy.domains.modal.modal.RefinementPort">
@@ -246,6 +256,11 @@
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[225.0, 155.0]">
                 </property>
+                <port name="output" class="ptolemy.actor.TypedIOPort">
+                    <property name="output"/>
+                    <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="3">
+                    </property>
+                </port>
             </entity>
             <relation name="relation" class="ptolemy.actor.TypedIORelation">
             </relation>
@@ -278,9 +293,9 @@
     <entity name="ModalModel2" class="ptolemy.domains.modal.modal.ModalModel">
         <property name="directorClass" class="ptolemy.data.expr.StringParameter" value="ptolemy.domains.hdf.kernel.HDFFSMDirector">
         </property>
-        <property name="_tableauFactory" class="ptolemy.vergil.fsm.modal.ModalTableauFactory">
+        <property name="_tableauFactory" class="ptolemy.vergil.modal.modal.ModalTableauFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[425.0, 230.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{470.0, 250.0}">
         </property>
         <port name="input" class="ptolemy.domains.modal.modal.ModalPort">
             <property name="input"/>
@@ -296,7 +311,7 @@
         <entity name="_Controller" class="ptolemy.domains.modal.modal.ModalController">
             <property name="_library" class="ptolemy.moml.LibraryAttribute">
                 <configure>
-        <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.modal.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory"></property></entity></entity>
+        <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.modal.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory"></property></entity></entity>
       </configure>
             </property>
             <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -336,7 +351,7 @@
                 </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
-                <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
+                <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{155.0, 210.0}">
                 </property>
@@ -346,7 +361,7 @@
                 </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
-                <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
+                <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{400.0, 210.0}">
                 </property>
@@ -382,9 +397,9 @@
         </entity>
         <entity name="state" class="ptolemy.domains.modal.modal.Refinement">
             <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
-                <property name="_location" class="ptolemy.kernel.util.Location" value="{155.0, 85.0}">
-                </property>
                 <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{155.0, 85.0}">
                 </property>
             </property>
             <port name="input" class="ptolemy.domains.modal.modal.RefinementPort">
@@ -407,6 +422,16 @@
             <entity name="HammingDecoder" class="ptolemy.actor.lib.comm.HammingDecoder">
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{285, 185}">
                 </property>
+                <port name="input" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                    <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="7">
+                    </property>
+                </port>
+                <port name="output" class="ptolemy.actor.TypedIOPort">
+                    <property name="output"/>
+                    <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="4">
+                    </property>
+                </port>
             </entity>
             <relation name="relation" class="ptolemy.actor.TypedIORelation">
             </relation>
@@ -419,9 +444,9 @@
         </entity>
         <entity name="state2" class="ptolemy.domains.modal.modal.Refinement">
             <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
-                <property name="_location" class="ptolemy.kernel.util.Location" value="{165.0, 70.0}">
-                </property>
                 <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{165.0, 70.0}">
                 </property>
             </property>
             <port name="input" class="ptolemy.domains.modal.modal.RefinementPort">
@@ -448,6 +473,11 @@
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[235.0, 165.0]">
                 </property>
+                <port name="input" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                    <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="3">
+                    </property>
+                </port>
             </entity>
             <relation name="relation" class="ptolemy.actor.TypedIORelation">
             </relation>
@@ -500,7 +530,7 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[335.0, 150.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{345.0, 240.0}">
         </property>
     </entity>
     <entity name="Bernoulli" class="ptolemy.actor.lib.Bernoulli">
@@ -509,11 +539,11 @@
         <property name="trueProbability" class="ptolemy.data.expr.Parameter" value="probabilityOfChannelError">
         </property>
         <doc>Create a sequence of bernoulli random variables</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[235.0, 85.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{235.0, 235.0}">
         </property>
     </entity>
     <entity name="Count Errors" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[525.0, 295.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{610.0, 260.0}">
         </property>
         <property name="annotation" class="ptolemy.kernel.util.Attribute">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -534,37 +564,41 @@ the error rate.</text></svg></configure>
             </property>
             <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 320.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{-5.0, 80.0}">
             </property>
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 129, 815, 518}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 129, 834, 634}, maximized=false}">
         </property>
-        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 524]">
+        </property>
+        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+        </property>
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{307.0, 341.29296875}">
         </property>
         <port name="data" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{40.0, 120.0}">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{95.0, 190.0}">
             </property>
             <property name="_showName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </port>
         <port name="reference" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 275.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{30.0, 275.0}">
             </property>
             <property name="_showName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </port>
         <port name="errors" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[515.0, 130.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{490.0, 195.0}">
             </property>
             <property name="_showName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </port>
         <port name="rate" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[535.0, 275.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{590.0, 275.0}">
             </property>
             <property name="_showName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
@@ -572,7 +606,7 @@ the error rate.</text></svg></configure>
         <entity name="Accumulator" class="ptolemy.actor.lib.Accumulator">
             <property name="init" class="ptolemy.data.expr.Parameter" value="0">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[330.0, 130.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{395.0, 195.0}">
             </property>
         </entity>
         <entity name="BooleanToAnything" class="ptolemy.actor.lib.conversions.BooleanToAnything">
@@ -580,7 +614,7 @@ the error rate.</text></svg></configure>
             </property>
             <property name="trueValue" class="ptolemy.data.expr.Parameter" value="1">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[240.0, 120.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{255.0, 195.0}">
             </property>
         </entity>
         <entity name="LogicFunction" class="ptolemy.actor.lib.logic.LogicFunction">
@@ -606,41 +640,55 @@ the error rate.</text></svg></configure>
                 <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
                 </property>
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[155.0, 120.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{175.0, 195.0}">
             </property>
         </entity>
         <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
-            <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
-            </property>
-            <property name="init" class="ptolemy.data.expr.Parameter" value="1.0">
+            <property name="init" class="ptolemy.actor.parameters.PortParameter" value="1.0">
             </property>
             <property name="step" class="ptolemy.actor.parameters.PortParameter" value="1.0">
             </property>
+            <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
             <doc>Create a sequence of tokens with increasing value</doc>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[245.0, 285.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{305.0, 285.0}">
             </property>
         </entity>
         <entity name="MultiplyDivide" class="ptolemy.actor.lib.MultiplyDivide">
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[440.0, 275.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{505.0, 275.0}">
             </property>
         </entity>
         <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+            <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Accumulator.input&quot;,x=395.0,y=195.0}, tail={id=&quot;BooleanToAnything.output&quot;,x=255.0,y=195.0}, points={} } }">
+            </property>
         </relation>
         <relation name="relation" class="ptolemy.actor.TypedIORelation">
+            <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;data._location&quot;,x=95.0,y=190.0}, tail={id=&quot;LogicFunction.input&quot;,x=175.0,y=195.0,index=2}, points={} } }">
+            </property>
         </relation>
         <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+            <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;BooleanToAnything.input&quot;,x=255.0,y=195.0}, tail={id=&quot;LogicFunction.output&quot;,x=175.0,y=195.0}, points={} } }">
+            </property>
         </relation>
         <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex1" value="[115.0, 275.0]">
+            <vertex name="vertex1" value="{120.0, 275.0}">
             </vertex>
+            <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;reference._location&quot;,x=30.0,y=275.0}, tail={id=&quot;relation4.vertex1&quot;,x=120.0,y=275.0}, points={} },{ head={id=&quot;Ramp.trigger&quot;,x=305.0,y=285.0}, tail={id=&quot;relation4.vertex1&quot;,x=120.0,y=275.0}, points={} },{ head={id=&quot;LogicFunction.input&quot;,x=175.0,y=195.0,index=2}, tail={id=&quot;relation4.vertex1&quot;,x=120.0,y=275.0}, points={120.0,195.0} } }">
+            </property>
         </relation>
         <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex1" value="[405.0, 130.0]">
+            <vertex name="vertex1" value="{465.0, 195.0}">
             </vertex>
+            <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;MultiplyDivide.multiply&quot;,x=505.0,y=275.0}, tail={id=&quot;relation2.vertex1&quot;,x=465.0,y=195.0}, points={465.0,265.0} },{ head={id=&quot;errors._location&quot;,x=490.0,y=195.0}, tail={id=&quot;relation2.vertex1&quot;,x=465.0,y=195.0}, points={} },{ head={id=&quot;Accumulator.output&quot;,x=395.0,y=195.0}, tail={id=&quot;relation2.vertex1&quot;,x=465.0,y=195.0}, points={} } }">
+            </property>
         </relation>
         <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+            <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Ramp.output&quot;,x=305.0,y=285.0}, tail={id=&quot;MultiplyDivide.divide&quot;,x=505.0,y=275.0}, points={} } }">
+            </property>
         </relation>
         <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+            <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;rate._location&quot;,x=590.0,y=275.0}, tail={id=&quot;MultiplyDivide.output&quot;,x=505.0,y=275.0}, points={} } }">
+            </property>
         </relation>
         <link port="data" relation="relation"/>
         <link port="reference" relation="relation4"/>
@@ -659,7 +707,9 @@ the error rate.</text></svg></configure>
         <link port="MultiplyDivide.divide" relation="relation5"/>
         <link port="MultiplyDivide.output" relation="relation6"/>
     </entity>
-    <entity name="Number of Errors" class="ptolemy.actor.lib.MonitorValue">
+    <entity name="Number of Errors" class="ptolemy.actor.lib.gui.MonitorValue">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="9">
+        </property>
         <doc>Monitor and display values</doc>
         <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="10">
         </property>
@@ -669,10 +719,12 @@ the error rate.</text></svg></configure>
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="displayWidth">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[680.0, 285.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{735.0, 250.0}">
         </property>
     </entity>
-    <entity name="Error Rate" class="ptolemy.actor.lib.MonitorValue">
+    <entity name="Error Rate" class="ptolemy.actor.lib.gui.MonitorValue">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="0.0873786407767">
+        </property>
         <doc>Monitor and display values</doc>
         <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="10">
         </property>
@@ -682,28 +734,44 @@ the error rate.</text></svg></configure>
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="displayWidth">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[680.0, 360.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{735.0, 310.0}">
         </property>
     </entity>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[145.0, 240.0]">
+        <vertex name="vertex1" value="{165.0, 325.0}">
         </vertex>
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Coder.switch&quot;,x=235.0,y=315.0}, tail={id=&quot;relation6.vertex1&quot;,x=165.0,y=325.0}, points={} },{ head={id=&quot;ModalModel2.switch&quot;,x=470.0,y=250.0}, tail={id=&quot;relation6.vertex1&quot;,x=165.0,y=325.0}, points={400.0,260.0,400.0,360.0,165.0,360.0} },{ head={id=&quot;Switch.output&quot;,x=90.0,y=325.0}, tail={id=&quot;relation6.vertex1&quot;,x=165.0,y=325.0}, points={} } }">
+        </property>
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;LogicFunction.input&quot;,x=345.0,y=240.0,index=2}, tail={id=&quot;Bernoulli.output&quot;,x=235.0,y=235.0}, points={} } }">
+        </property>
     </relation>
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Coder.output&quot;,x=235.0,y=315.0}, tail={id=&quot;LogicFunction.input&quot;,x=345.0,y=240.0,index=2}, points={285.0,315.0,285.0,240.0} } }">
+        </property>
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;ModalModel2.input&quot;,x=470.0,y=250.0}, tail={id=&quot;LogicFunction.output&quot;,x=345.0,y=240.0}, points={} } }">
+        </property>
     </relation>
     <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;ModalModel2.output&quot;,x=470.0,y=250.0}, tail={id=&quot;Count Errors.data&quot;,x=610.0,y=260.0}, points={} } }">
+        </property>
     </relation>
     <relation name="relation8" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[105.0, 305.0]">
+        <vertex name="vertex1" value="{150.0, 410.0}">
         </vertex>
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Count Errors.reference&quot;,x=610.0,y=260.0}, tail={id=&quot;relation8.vertex1&quot;,x=150.0,y=410.0}, points={530.0,270.0,530.0,410.0} },{ head={id=&quot;Coder.input&quot;,x=235.0,y=315.0}, tail={id=&quot;relation8.vertex1&quot;,x=150.0,y=410.0}, points={150.0,305.0} },{ head={id=&quot;Uncoded Symbols.output&quot;,x=55.0,y=410.0}, tail={id=&quot;relation8.vertex1&quot;,x=150.0,y=410.0}, points={} } }">
+        </property>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Count Errors.errors&quot;,x=610.0,y=260.0}, tail={id=&quot;Number of Errors.input&quot;,x=735.0,y=250.0}, points={} } }">
+        </property>
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Count Errors.rate&quot;,x=610.0,y=260.0}, tail={id=&quot;Error Rate.input&quot;,x=735.0,y=310.0}, points={680.0,270.0,680.0,310.0} } }">
+        </property>
     </relation>
     <link port="Uncoded Symbols.output" relation="relation8"/>
     <link port="Switch.output" relation="relation6"/>
