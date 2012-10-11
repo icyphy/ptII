@@ -1436,6 +1436,23 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         // In case any further static analysis depends on the initial
         // state, reset to that state here.
         reset();
+        
+        // The actual initial state may depend on immediate transitions
+        // out of the initial state, and those transitions may set
+        // relevant variables, so we have to traverse them here.
+        // NOTE: There is no current state when the FSMActor is in fact a Ptera
+        // controller. (tfeng 05/12/2009)
+        if (_currentState != null) {
+            List transitionList = _currentState.outgoingPort
+                    .linkedRelationList();
+            if (_debugging) {
+                _debug("** Checking immediate transitions.");
+            }
+            _chooseTransitions(transitionList, true);
+            _commitLastChosenTransition();
+            // Need to clear this again.
+            _transitionsPreviouslyChosenInIteration.clear();
+        }
     }
 
     /** Set the value of the shadow variables for input ports of this actor.

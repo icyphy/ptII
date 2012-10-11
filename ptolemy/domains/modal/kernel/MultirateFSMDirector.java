@@ -168,6 +168,8 @@ public class MultirateFSMDirector extends FSMDirector {
         // This has to be after initialize because the initial
         // immediate transitions may affect the rates.
         _setProductionConsumptionRates();
+        
+        invalidateSchedule();
     }
 
     /** Return a new receiver of a type compatible with this director.
@@ -207,12 +209,11 @@ public class MultirateFSMDirector extends FSMDirector {
         
         // Note that the following is done again initialize().
         // But it seems to be necessary to do it here the first time
-        // to cause the schedule to be computed.
-        // FIXME: This doesn't seem right. If it works in initialize,
-        // why isn't that sufficient? In any case, it isn't right.
-        // Following the initial immediate transitions is necessary,
-        // but they have to actually be executed, which this doesn't do.
-        // _setProductionConsumptionRates(true);
+        // to cause the schedule to be computed. I.e, we might get
+        // the scheduler throwing an exception before we even get
+        // to initialize because the current state refinement is
+        // not compatible (e.g., in SDF, balance equations don't solve).
+        _setProductionConsumptionRates();
     }
 
     /** Return a boolean to indicate whether a ModalModel under control
