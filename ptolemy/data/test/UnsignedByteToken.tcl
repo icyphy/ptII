@@ -348,7 +348,7 @@ test UnsignedByteToken-13.8 {Test convert from Token} {
     set result {}
     catch {set result [[java::call ptolemy.data.UnsignedByteToken convert $t] toString]} msg
     list $msg
-} {{ptolemy.kernel.util.IllegalActionException: Conversion is not supported from ptolemy.data.XMLToken 'null' to the type byte because the type of the token is higher or incomparable with the given type.}}
+} {{ptolemy.kernel.util.IllegalActionException: Conversion is not supported from ptolemy.data.XMLToken '' to the type byte because the type of the token is higher or incomparable with the given type.}}
     
 
 
