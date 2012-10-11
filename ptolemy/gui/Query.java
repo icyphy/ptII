@@ -37,6 +37,7 @@ import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.KeyboardFocusManager;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -57,6 +58,7 @@ import java.util.Set;
 import java.util.StringTokenizer;
 import java.util.Vector;
 
+import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -79,11 +81,14 @@ import javax.swing.JSlider;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.JToggleButton;
+import javax.swing.KeyStroke;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingConstants;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.plaf.basic.BasicComboBoxEditor;
+
+import ptolemy.actor.gui.EditParametersDialog;
 
 // Avoid importing any packages from ptolemy.* here so that we
 // can ship Ptplot.
@@ -881,6 +886,38 @@ public class Query extends JPanel {
         QueryScrollPane textPane = new QueryScrollPane(textArea);
         _addPair(name, lbl, textPane, textPane);
         textArea.addFocusListener(new QueryFocusListener(this, name));
+        
+        textArea.setFocusTraversalKeys(
+                KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS, null);
+        textArea.setFocusTraversalKeys(
+                KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS, null);
+        
+        textArea.getInputMap().put(KeyStroke.getKeyStroke("shift ENTER"),
+        "TRANSFER_TEXT");
+        final JTextArea area = textArea;
+        textArea.getActionMap().put("TRANSFER_TEXT", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                area.append("\n");
+                if (area.getRows() < 4) {
+                    area.setRows(area.getRows() + 1);
+                    area.revalidate();
+                    Component parent = area.getParent();
+                    while ((parent != null)
+                            && !(parent instanceof EditParametersDialog)) {
+                        parent = parent.getParent();
+                    }
+                    if (parent instanceof EditParametersDialog) {
+                        EditParametersDialog dialog = (EditParametersDialog) parent;
+                        dialog.doLayout();
+                        dialog.pack();
+                    }
+                }
+            }
+        });
+        
+        
+        
         return textArea;
     }
 

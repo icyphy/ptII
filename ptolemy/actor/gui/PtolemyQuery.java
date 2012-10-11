@@ -405,6 +405,7 @@ public class PtolemyQuery extends Query implements QueryListener,
                                 preferredBackgroundColor(attribute),
                                 preferredForegroundColor(attribute),
                                 heightValue, widthValue);
+                        
                         attachParameter(attribute, name);
                         foundStyle = true;
                         _addSubmitAction(component, attribute.getName(),
@@ -466,36 +467,9 @@ public class PtolemyQuery extends Query implements QueryListener,
                         preferredBackgroundColor(attribute),
                         preferredForegroundColor(attribute), 1,
                         DEFAULT_ENTRY_WIDTH);
-                area.setRows(Math.min(5, area.getLineCount()));
-                area.setFocusTraversalKeys(
-                        KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS, null);
-                area.setFocusTraversalKeys(
-                        KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS, null);
+                area.setRows(Math.min(5, area.getLineCount())); 
 
-                area.getInputMap().put(KeyStroke.getKeyStroke("shift ENTER"),
-                        "TRANSFER_TEXT");
-
-                area.getActionMap().put("TRANSFER_TEXT", new AbstractAction() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        area.append("\n");
-                        if (area.getRows() < 4) {
-                            area.setRows(area.getRows() + 1);
-                            area.revalidate();
-                            Component parent = area.getParent();
-                            while ((parent != null)
-                                    && !(parent instanceof EditParametersDialog)) {
-                                parent = parent.getParent();
-                            }
-                            if (parent instanceof EditParametersDialog) {
-                                EditParametersDialog dialog = (EditParametersDialog) parent;
-                                dialog.doLayout();
-                                dialog.pack();
-                            }
-                        }
-                    }
-                });
-
+                
                 _addSubmitAction(area, attribute.getName(), attribute);
 
                 // The style itself does this, so we don't need to do it again.
