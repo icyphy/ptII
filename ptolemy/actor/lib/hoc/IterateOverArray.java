@@ -48,6 +48,7 @@ import ptolemy.actor.QueueReceiver;
 import ptolemy.actor.Receiver;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.TypedIOPort;
+import ptolemy.actor.util.ArrayElementTypeFunction;
 import ptolemy.actor.util.GLBFunction;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.IntToken;
@@ -484,14 +485,21 @@ public class IterateOverArray extends MirrorComposite {
                         // of destination ports that are ports of this
                         // IterateOverArray actor).
                         // This ensures that backward type inference occurs.
-                        if (isBackwardTypeInferenceEnabled()) {
+                        // NOTE: We used to do this only if backward type
+                        // inference was enabled globally. But the cost of
+                        // doing this locally is small, and there is no
+                        // mechanism for coercing the type of the inside
+                        // actor, so if we want to be able to coerce the
+                        // type without backward type inference being
+                        // enabled globally, then we need to do this here.
+                        // if (isBackwardTypeInferenceEnabled()) {
                             InequalityTerm typeTerm = sourcePort.getTypeTerm();
                             if (typeTerm.isSettable()) {
                                 result.add(new Inequality(
-                                        new GLBArrayElementFunction(sourcePort),
+                                        new ArrayElementTypeFunction(destinationPort),
                                         typeTerm));
                             }
-                        }
+                        // }
                     } catch (IllegalActionException e) {
                         throw new InternalErrorException(e);
                     }
