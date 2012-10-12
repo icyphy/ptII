@@ -883,7 +883,7 @@ public class ArrayType extends StructuredType implements Cloneable,
         }
     }
 
-    /** An InequalityTerm representing an array types whose elements
+    /** An InequalityTerm representing an array type whose elements
      *  have the type of the specified typeable.  The purpose of this class
      *  is to defer to as late as possible actually accessing
      *  the type of the typeable, since it may change dynamically.
@@ -902,11 +902,11 @@ public class ArrayType extends StructuredType implements Cloneable,
         ///////////////////////////////////////////////////////////////
         ////                   public inner methods                ////
 
-        /** Return an array type with element types given by the associated typeable.
-         *  @return An ArrayType.
+        /** Return the associated typeable.
+         *  @return A Typeable.
          */
         public Object getAssociatedObject() {
-            return _getArrayType();
+            return _typeable;
         }
 
         /** Return an array type with element types given by the associated typeable.
