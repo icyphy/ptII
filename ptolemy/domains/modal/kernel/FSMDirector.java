@@ -280,7 +280,6 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
         FSMDirector newObject = (FSMDirector) super.clone(workspace);
         // Protected variables.
         newObject._currentLocalReceiverMap = null;
-        newObject._hadToken = new LinkedList<IOPort>();
         newObject._localReceiverMaps = new HashMap();
 
         // Private variables.
@@ -799,9 +798,6 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
         // NOTE: This only has an effect for FSMReceiver.
         _resetOutputReceivers();
 
-        // clear this runtime list of ports to remember that a token has passed thru
-        _hadToken.clear();
-
         return result && !_stopRequested && !_finishRequested;
     }
 
@@ -1257,10 +1253,11 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
                         // mark this port as we sent a token to
                         // prevent sending a clear afterwards in this
                         // fixed point iteration
-                        _hadToken.add(port);
                         result = true;
                     } else {
-                        if (!_hadToken.contains(port)) {
+                        // Set the port to be absent only if it is not known
+                        // or not connected.
+                        if (port.getWidth() <= i || !port.isKnown(i)) {
                             if (_debugging) {
                                 _debug(getName(),
                                         "sending clear from " + port.getName());
@@ -1380,9 +1377,6 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
 
     /** Version of cached reference to mode controller. */
     private long _controllerVersion = -1;
-
-    /** Ports that had seen a Token to prevent clearing them afterwards. */
-    private LinkedList<IOPort> _hadToken = new LinkedList<IOPort>();
 
     /** Version of the local receiver maps. */
     private long _localReceiverMapsVersion = -1;

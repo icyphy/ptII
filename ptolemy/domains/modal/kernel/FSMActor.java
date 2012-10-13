@@ -622,7 +622,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
                             for (int i = 0; i < refinementPort.getWidth(); i++) {
                                 if (!refinementPort.isKnown(i)) {
                                     if (_debugging) {
-                                        _debug(">> Asserting absent output on "
+                                        _debug("--- Asserting absent output on "
                                                 + refinementPort.getName()
                                                 + ", channel " + i);
                                     }
@@ -633,13 +633,10 @@ public class FSMActor extends CompositeEntity implements TypedActor,
                     }// end if CompositeActor
                 }// end for all refinements
             }// end if has refinement
-            readOutputsFromRefinement();
+            // readOutputsFromRefinement();
         } else {
             // ASSERT: At this point, there are no enabled preemptive transitions.
             // It may be that some preemptive transition guards cannot be evaluated yet.
-            // If some preemptive transition guards could not be evaluated due to unknown
-            // inputs, then check whether it is possible anyway to assert that some
-            // outputs are absent.
             if (!foundUnknown()) {
                 // ASSERT: At this point, there are no enabled preemptive transitions,
                 // and all preemptive transition guards, if any, have evaluated to false.
@@ -1042,6 +1039,8 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         if (_debugging) {
             _debug("************ Initializing FSM.");
         }
+        // Ensure previous input values are not available.
+        _inputTokenMap.clear();
 
         // First invoke initializable methods.
         if (_initializables != null) {
@@ -1398,6 +1397,9 @@ public class FSMActor extends CompositeEntity implements TypedActor,
                 // result = false;
             }
         }
+
+        // Ensure previous input values are not available.
+        _inputTokenMap.clear();
 
         return !_reachedFinalState && !_stopRequested;
     }
@@ -2233,7 +2235,9 @@ public class FSMActor extends CompositeEntity implements TypedActor,
      *  transition and examine all immediate transition emanating
      *  from that state. If none of the transitions makes an assignment
      *  to the output port, then we can safely
-     *  assert that the output is absent.
+     *  assert that the output is absent, with one exception.
+     *  If the output port already has a value, that value was probably
+     *  set by another refinement. Thus, we should leave it alone.
      *  <p>
      *  This method ignores any state refinements, and consequently
      *  its analysis is valid only if all state refinements also assert
@@ -2246,11 +2250,43 @@ public class FSMActor extends CompositeEntity implements TypedActor,
      *  @param visitedStates The set of states already visited, or null
      *   if none have yet been visited.
      *  @return True, if successful.
+     *  @exception IllegalActionException If we cannot determine whether
+     *   the port is known and absent.
      */
     protected boolean _isSafeToClear(IOPort port, int channel, State state,
-            boolean immediateOnly, HashSet<State> visitedStates) {
+            boolean immediateOnly, HashSet<State> visitedStates)
+            throws IllegalActionException {
         if (_debugging) {
             _debug("Calling _isSafeToClear() on port: " + port.getFullName());
+        }
+        
+        // If this FSMActor is inside a refinement, then it's possible
+        // that another refinement wants to set the value of an output port.
+        // We need to allow it to.
+        if (getContainer() instanceof RefinementActor) {
+            // Check to see whether the output port destinations are known.
+            if (port.isKnown(channel)) {
+                // Check to see whether the destinations are present.
+                // Can't use port.hasToken(channel) to determine whether the
+                // know value is absent because this is not an input port.
+                // Have to traverse to the destinations to find out.
+                Receiver[][] receivers = port.getRemoteReceivers();
+
+                if (receivers.length <= channel) {
+                    throw new IllegalActionException(this,
+                            "Channel index is out of range: " + channel);
+                }
+
+                // Presumably, if one destination has a token, then they all
+                // should. This assumes we are inside modal model
+                if (receivers[channel] != null) {
+                    for (int j = 0; j < receivers[channel].length; j++) {
+                        if (!receivers[channel][j].hasToken()) {
+                            return false;
+                        }
+                    }
+                }
+            }
         }
 
         List<Transition> transitionList = state.outgoingPort
@@ -2349,6 +2385,9 @@ public class FSMActor extends CompositeEntity implements TypedActor,
             return;
         }
 
+        // Do not overwrite the port if it already has a token.
+        // This is essential for he imperative behavior of multiple
+        // refinements.
         if (port.isKnown(channel)) {
             if (_supportMultirate) {
                 // FIXME: The following implementation to support multirate is
@@ -2424,8 +2463,17 @@ public class FSMActor extends CompositeEntity implements TypedActor,
                     }
                     _setInputTokenMap(port, channel, token, null);
                 } else {
-                    // There is no data. Just set the _isPresent variables to false.
-                    _setInputTokenMap(port, channel, null, null);
+                    // There is no data. Check to see whether the token
+                    // map has been previously set, and if not,
+                    // set the _isPresent variables to false.
+                    if (_inputTokenMap.get(portName + "_isPresent") == null) {
+                        if (_debugging) {
+                            _debug("---", port.getName(), "(" + channel + ") has ",
+                                    "no tokens at time "
+                                    + getDirector().getModelTime());
+                        }
+                        _setInputTokenMap(port, channel, null, null);
+                    }
                 }
             }
         } else {
@@ -2873,20 +2921,11 @@ public class FSMActor extends CompositeEntity implements TypedActor,
             }
 
             // cmot:
-            // If non-preemptive and immediate transition, fire source
+            // If non-preemptive and immediate transition, fire destination
             // state refinement.
             if (!chosenTransition.isPreemptive()
                     && chosenTransition.isImmediate()) {
-                // If the transition into the current state is a reset transition,
-                // then initialize the current state refinements. Note that this is safe to do
-                // in the fire() method because a transition cannot be unchosen later.
-                if (_lastChosenTransition != null) {
-                    BooleanToken resetToken = (BooleanToken) _lastChosenTransition.reset
-                            .getToken();
-                    if (resetToken.booleanValue()) {
-                        _initializeRefinements(currentState);
-                    }
-                }
+                // Check for initial state with a refinement and an immediate transition.
                 if (((BooleanToken) currentState.isInitialState.getToken())
                         .booleanValue()) {
                     Actor[] stateRefinements = currentState.getRefinement();
@@ -2898,6 +2937,18 @@ public class FSMActor extends CompositeEntity implements TypedActor,
                                         + "because the refinement would have to execute during the initialize phase.");
                     }
                 }
+                // If the transition into the current state is a reset transition,
+                // then initialize the source state refinements. Note that this is safe to do
+                // in the fire() method because a transition cannot be unchosen later.
+                // Note that at this point, _lastChosenTransition is the transiting _into_
+                // the current state, if there is one.
+                if (_lastChosenTransition != null) {
+                    BooleanToken resetToken = (BooleanToken) _lastChosenTransition.reset
+                            .getToken();
+                    if (resetToken.booleanValue()) {
+                        _initializeRefinements(currentState);
+                    }
+                }
                 _fireStateRefinements(currentState);
             }
 
@@ -2907,9 +2958,13 @@ public class FSMActor extends CompositeEntity implements TypedActor,
                 Action action = (Action) actions.next();
                 // Produce output tokens here
                 action.execute();
+                if (_debugging) {
+                    _debug("--- Transition action executed: " + action);
+                }
             }
 
             // Execute the refinements of the transition.
+            // This is kept for backward compatibility.
             Actor[] transitionRefinements = chosenTransition.getRefinement();
             if (transitionRefinements != null) {
                 for (int i = 0; i < transitionRefinements.length; ++i) {
@@ -2951,6 +3006,9 @@ public class FSMActor extends CompositeEntity implements TypedActor,
                     for (int channel = 0; channel < port.getWidth(); channel++) {
                         if (!port.isKnown(channel)) {
                             port.send(channel, null);
+                            if (_debugging) {
+                                _debug("--- Asserting that output " + port.getName() + " is absent.");
+                            }
                         }
                     }
                 }
@@ -3333,6 +3391,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
     private void _setInputTokenMap(Port port, int channel, Token token,
             Token[] tokenArray) throws IllegalActionException {
         String portName = port.getName();
+        
         String portChannelName = portName + "_" + channel;
 
         String name = portName + "_isPresent";
@@ -3380,6 +3439,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
             }
         } else {
             // Remove the identifier.
+            // FIXME: Should we set this to null instead???
             _inputTokenMap.remove(name);
         }
 
@@ -3392,6 +3452,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
             }
         } else {
             // Remove the identifier.
+            // FIXME: Should we set this to null instead???
             _inputTokenMap.remove(name);
         }
 
@@ -3404,6 +3465,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
             }
         } else {
             // Remove the identifier.
+            // FIXME: Should we set this to null instead???
             _inputTokenMap.remove(name);
         }
     }

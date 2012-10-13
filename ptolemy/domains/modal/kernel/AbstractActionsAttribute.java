@@ -353,6 +353,13 @@ public abstract class AbstractActionsAttribute extends Action implements
             _parseTrees.add(node.getExpressionTree());
         }
     }
+    
+    /** Give a descriptive string.
+     *  @return The expression.
+     */
+    public String toString() {
+        return getExpression();
+    }
 
     /** Return the type constraints of this object.
      *  The constraints are a set of inequalities.
