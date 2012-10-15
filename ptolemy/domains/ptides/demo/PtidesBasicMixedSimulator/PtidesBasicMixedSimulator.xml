@@ -111,19 +111,19 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[90.0, 10.0]">
             </property>
         </property>
-        <port name="SensorPort" class="ptolemy.domains.ptides.lib.io.SensorPort">
+        <port name="SensorPort" class="ptolemy.domains.ptides.lib.PtidesPort">
             <property name="input"/>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 115.0]">
             </property>
         </port>
-        <port name="SensorPort2" class="ptolemy.domains.ptides.lib.io.SensorPort">
+        <port name="SensorPort2" class="ptolemy.domains.ptides.lib.PtidesPort">
             <property name="input"/>
             <property name="deviceDelay" class="ptolemy.data.expr.Parameter" value="0.002">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 230.0]">
             </property>
         </port>
-        <port name="ActuatorPort" class="ptolemy.domains.ptides.lib.io.ActuatorPort">
+        <port name="ActuatorPort" class="ptolemy.domains.ptides.lib.PtidesPort">
             <property name="output"/>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[505.0, 125.0]">
             </property>
