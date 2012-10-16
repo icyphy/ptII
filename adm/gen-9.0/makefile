@@ -2432,11 +2432,11 @@ cleanSrc:
 PTSETUP=ptII$(WINDOWS_VERSION)_setup_windows
 # 32 bit IzPack installer
 setup_jar: $(PTSETUP).jar
-$(PTSETUP).jar: $(PTSETUP).xml ../../jar_dist ../../ptiny.exe src/ptII$(VERSION)/bin/vergil ../../ptolemy/matlab/ptmatlab.dll cleanSrc
+$(PTSETUP).jar: $(PTSETUP).xml ../../jar_dist ../../ptiny.exe cleanSrc src/ptII$(VERSION)/bin/vergil ../../ptolemy/matlab/ptmatlab.dll 
 	@echo "#"
 	@echo "# Building $(PTSETUP).jar"
 	@echo "# `date`"
-	ls -l src/ptII$(VERSION)/bin/vergil
+	-ls -l src/ptII$(VERSION)/bin/vergil
 	sh "$(IZPACK_COMPILE)" $<
 	if [ ! -f $@ ];  then \
 		error "$@ does not exist?"; \
@@ -2462,6 +2462,9 @@ $(PTSETUP)_64.jar: $(PTSETUP)_64.xml ../../ptiny.exe src/ptII$(VERSION)/bin/verg
 	fi
 
 src/ptII$(VERSION)/bin/vergil:
+	@echo "#"
+	@echo "# Creating $@"
+	@echo "# `date`"
 	cp $(PTII)/bin/vergil $@
 
 #	c:/cxh/src/izpack/izpack3.9.0/bin/compile $<
@@ -2672,6 +2675,7 @@ IZPACK2APP=$(IZPACKDIR)/utils/wrappers/izpack2app/izpack2app.py
 setup_mac_app: $(PTSETUP_MAC).app
 $(PTSETUP_MAC).app: $(PTSETUP_MAC).jar
 	python $(IZPACK2APP) $^ $@ 
+	find $@ -type f -exec touch {} \; 
 	#cp $(PTII)/bin/macContents/Contents/Resources/ptolemy.icns $(PTSETUP_MAC).app/Contents/Resources/izpack.icns
 
 setup_mac_app_tar: $(PTSETUP_MAC).app.tar.gz
