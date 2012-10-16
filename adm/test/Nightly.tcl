@@ -112,7 +112,7 @@ test nightly-1.3 {jnlp} {
 } {{} 1}
 
 test nightly-1.4 {src.jar} {
-    set matches [nightlyMake jnlp]
+    set matches [nightlyMake src.jar]
     set filename $gendir/ptII$version.src.jar
     puts "nightly-1.4: $filename"
     list $matches [file exists $filename]
