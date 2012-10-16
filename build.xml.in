@@ -708,7 +708,9 @@ For example:
       </classpath>
       <formatter type="${junit.formatter}" usefile="true"/>
       <jvmarg value="-Dptolemy.ptII.dir=${basedir}" />
-      <test  name="adm.test.junit.JUnitTclTest" />
+      <test  name="adm.test.junit.JUnitTclTest" 
+	     todir="${junit.output.dir}"
+	     />
     </junit>
   </target>
 
