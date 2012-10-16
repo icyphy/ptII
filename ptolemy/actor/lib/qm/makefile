@@ -67,8 +67,7 @@ JSRCS = \
 	TTESwitch.java \
 	MonitoredQuantityManager.java \
 	QuantityManagerListener.java \
-	QuantityManagerMonitor.java \
-	Scheduler.java
+	QuantityManagerMonitor.java
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
