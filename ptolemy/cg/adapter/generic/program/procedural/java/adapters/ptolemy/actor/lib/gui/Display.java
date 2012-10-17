@@ -41,51 +41,13 @@ import ptolemy.kernel.util.IllegalActionException;
  * @Pt.ProposedRating Red (rodiers)
  * @Pt.AcceptedRating Red (rodiers)
  */
-public class Display extends NamedProgramCodeGeneratorAdapter {
+public class Display extends
+                         ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib.gui.Display {
     /**
      * Construct a Display adapter.
      * @param actor The associated actor.
      */
     public Display(ptolemy.actor.lib.gui.Display actor) {
         super(actor);
-    }
-
-    /**
-     * Generate fire code.
-     * The method reads in <code>printInt</code>, <code>printArray</code>,
-     * <code>printString</code>, or <code>printDouble</code> from Display.j,
-     * replaces macros with their values and returns the results.
-     * @return The generated code.
-     * @exception IllegalActionException If the code stream encounters an
-     *  error in processing the specified code block(s).
-     */
-    protected String _generateFireCode() throws IllegalActionException {
-        StringBuffer code = new StringBuffer();
-        code.append(super._generateFireCode());
-
-        ptolemy.actor.lib.gui.Display actor = (ptolemy.actor.lib.gui.Display) getComponent();
-
-        String type = getCodeGenerator().codeGenType(actor.input.getType());
-        if (!getCodeGenerator().isPrimitive(type)) {
-            type = "Token";
-        }
-
-        ArrayList args = new ArrayList();
-
-        String title = actor.title.getExpression();
-        if (title.trim().length() > 0) {
-            args.add(title);
-        } else {
-            args.add(NamedProgramCodeGeneratorAdapter.generateSimpleName(actor));
-        }
-
-        args.add(Integer.valueOf(0));
-        for (int i = 0; i < actor.input.getWidth(); i++) {
-            args.set(1, Integer.toString(i));
-            code.append(_templateParser.generateBlockCode(type + "PrintBlock",
-                    args));
-        }
-
-        return code.toString();
     }
 }

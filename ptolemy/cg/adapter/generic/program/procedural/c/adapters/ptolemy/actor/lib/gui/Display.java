@@ -37,39 +37,20 @@ import ptolemy.kernel.util.IllegalActionException;
 /**
  An adapter class for ptolemy.actor.lib.gui.Display.
 
- @author Hokeun Kim and Edward Lee
+ @author Christopher Brooks
  @version $Id$
- @since Ptolemy II 8.0
+ @since Ptolemy II 8.1
  @Pt.ProposedRating Red (eal)
  @Pt.AcceptedRating Red (eal)
  */
-public class Display extends NamedProgramCodeGeneratorAdapter {
+public class Display extends 
+                         ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib.gui.Display {
+
     /**
      *  Construct the Display adapter.
      *  @param actor the associated actor
      */
     public Display(ptolemy.actor.lib.gui.Display actor) {
         super(actor);
-    }
-
-    /**
-     * Generate fire code for the Display actor.
-     * @return The generated code.
-     * @exception IllegalActionException If the code stream encounters an
-     *  error in processing the specified code block(s).
-     */
-    protected String _generateFireCode() throws IllegalActionException {
-        super._generateFireCode();
-
-        ptolemy.actor.lib.gui.Display actor = (ptolemy.actor.lib.gui.Display) getComponent();
-
-        String type = getCodeGenerator().codeGenType(actor.input.getType());
-        if (!getCodeGenerator().isPrimitive(type)) {
-            type = "Token";
-        }
-
-        CodeStream codeStream = _templateParser.getCodeStream();
-        codeStream.appendCodeBlock(type + "FireBlock");
-        return processCode(codeStream.toString());
     }
 }
