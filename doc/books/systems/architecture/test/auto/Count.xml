@@ -20,7 +20,7 @@
     </property>
     <property name="enableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="false">
     </property>
-    <entity name="Count" class="doc.books.systems.architecture.test.auto.Count">
+    <entity name="Count" class="doc.books.systems.architecture.test.Count">
         <property name="initial" class="ptolemy.data.expr.Parameter" value="2">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[210.0, 115.0]">
