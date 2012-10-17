@@ -1,9 +1,9 @@
 # Makefile for Ptolemy Classic style Codegen
 #
-# @Version: $Id$
+# @Version: $Id: makefile 64744 2012-10-01 22:51:43Z cxh $
 # @Author: Christopher Brooks
 #
-# @Copyright (c) 2005-2012 The Regents of the University of California
+# @Copyright (c) 2012 The Regents of the University of California
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -31,12 +31,12 @@
 # 						COPYRIGHTENDKEY
 ##########################################################################
 
-ME =		ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib
+ME =		ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/gui
 
-DIRS =		conversions gui logic string test
+DIRS =	test
 
 # Root of the Java directory
-ROOT =		../../../../../../../../../../..
+ROOT =		../../../../../../../../../../../..
 
 CLASSPATH =	$(ROOT)
 
@@ -45,48 +45,19 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	lib
-PTCLASSJAR =
+PTPACKAGE = 	gui
+PTCLASSJAR =	$(PTPACKAGE).jar
 
-PTCLASSALLJAR = $(PTPACKAGE).jar
+#PTCLASSALLJAR = $(PTPACKAGE).jar
 
 # Include the .class files from these jars in PTCLASSALLJAR
 # If you change this, change DIRS above
-PTCLASSALLJARS = \
-	conversions/conversions.jar \
-	gui/gui.jar \
-	logic/logic.jar \
-	string/string.jar
+#PTCLASSALLJARS =
+
 
 # Keep this list alphabetized.
 JSRCS = \
-	AbsoluteValue.java \
-	Accumulator.java \
-	AddSubtract.java \
-	BooleanMultiplexor.java \
-	BooleanSwitch.java \
-	Const.java \
-	DB.java \
-	Differential.java \
-	Discard.java \
-	DiscreteClock.java \
-	Distributor.java \
-	Expression.java \
-	Maximum.java \
-	MultiplyDivide.java \
-	Publisher.java \
-	Pulse.java \
-	Ramp.java \
-	Remainder.java \
-	Scale.java \
-	Sequence.java \
-	SingleEvent.java \
-	Subscriber.java \
-	Synchronizer.java \
-	TimeDelay.java \
-	Test.java \
-	TrigFunction.java \
-	UnaryMathFunction.java
+	Display.java
 
 OTHER_FILES_TO_BE_JARED = \
 	$(JSRCS:%.java=%.c)
@@ -96,13 +67,12 @@ EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
 # Don't include demo or DIRS here, or else 'make sources' will run 'make demo'
-MISC_FILES =	conversions logic string test
+MISC_FILES = test
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	demo \
-	'Expression$$VariableScope.class'
+	demo
 
 JCLASS = $(JSRCS:%.java=%.class)
 
