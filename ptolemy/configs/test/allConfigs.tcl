@@ -151,6 +151,7 @@ proc _dropTest {toplevel namedObj cloneConfiguration stream printStream isAttrib
 cd ..
 set configs [glob */*configuration*.xml]
 #set configs full/configuration.xml
+#set configs hyvisual/configuration.xml
 cd test
 
 foreach i $configs {
@@ -215,6 +216,9 @@ foreach i $configs {
     set loader [[$parser getClass] getClassLoader]
     
     set URL [$loader getResource ptolemy/configs/$i]
+    if {[java::isnull $URL]} {
+	error "Could not get the  ptolemy/configs/$i resources"
+    }
     set object [$parser {parse java.net.URL java.net.URL} $URL $URL]
     set configuration [java::cast ptolemy.kernel.CompositeEntity $object]
     
