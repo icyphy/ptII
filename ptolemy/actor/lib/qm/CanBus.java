@@ -39,7 +39,6 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.ListIterator;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Set;
 import java.util.TreeMap;
 
@@ -70,6 +69,8 @@ import ptolemy.kernel.util.Workspace;
  *  If two or more nodes attempt to transmit a message on the idle bus, the access conflicts are resolved 
  *  by performing a bitwise arbitration (non destructive) according to the content of the identifier (called here <i>CanId</i>).
  *  Our {@link QuantityManager} simulates such content-based arbitration.
+ *  A node attempting to transmit a message when the bus is busy must try again when the bus will be free (in fact, there is a 
+ *  queue with messages that did not win the bus during arbitration or arrived when the bus is busy).
  *  </p>
  *  <p>
  *  In order to perform such an arbitration, it is needed to add a parameter called <i>CanId</i> to every sending actor.
@@ -95,12 +96,12 @@ import ptolemy.kernel.util.Workspace;
  *  <p>  
  *  Future work: implementing an application layer of the OSI model based on CAN, taking errors into account
  *  by delaying the deliveries of messages, finest management of time by dividing the time continuum in periods of 1/bitRate,
- *  bit stuffing, adding a functionality that takes into account only the last token transmitted (useful for sampler-like actors)...
+ *  bit stuffing...
  *  </p>
  *  
  *  For more information please refer to: <i>CAN bus simulator using a Quantity Manager</i>
  *       
- *  @author D. Marciano, P. Derler
+ *  @author D. Marciano, G. Lasnier, P. Derler
  *  @version $Id$
    @since Ptolemy II 0.2
 
@@ -137,6 +138,13 @@ public class CanBus extends MonitoredQuantityManager {
         bitRate.setExpression("125");
         bitRate.setTypeEquals(BaseType.DOUBLE);
         _bitRate = 125;
+        
+        canFramePolicy = new Parameter(this, "Frame policy");
+        canFramePolicy.setTypeEquals(BaseType.STRING);
+        canFramePolicy.addChoice("\"Send all frames\"");
+        canFramePolicy.addChoice("\"Send only most recent frame\"");
+        canFramePolicy.setExpression("\"Send all frames\"");
+        _mostRecentFrame = false;
 
         _tokenTree = new TreeMap<Integer, LinkedList<Object[]>>();
         _multiCast = new HashMap<Integer, Integer>();
@@ -155,6 +163,12 @@ public class CanBus extends MonitoredQuantityManager {
      *  It is required to be either "Standard frame" or "Extended frame".
      */
     public Parameter canFormatOfFrame;
+    
+    /**
+     * The selected policy for the frame queue behavior. This is a string with 
+     * the default value "Send All Frames".
+     */
+    public Parameter canFramePolicy;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -176,12 +190,20 @@ public class CanBus extends MonitoredQuantityManager {
         } else if (attribute == canFormatOfFrame) {
             String value = ((StringToken) canFormatOfFrame.getToken())
                     .stringValue();
-            if (value == "Standard frame") {
+            if (value.equalsIgnoreCase("Standard frame")) {
                 _frameSize = 108;
-            } else if (value == "Extended frame") {
+            } else if (value.equalsIgnoreCase("Extended frame")) {
                 _frameSize = 128;
             }
 
+        } else if (attribute == canFramePolicy) {
+            String value = ((StringToken) canFramePolicy.getToken())
+                    .stringValue();
+            if (value.equalsIgnoreCase("Send all frames")) {
+                _mostRecentFrame = false;                
+            } else if (value.equalsIgnoreCase("Send only most recent frame")) {
+                _mostRecentFrame = true;             
+            }
         }
         super.attributeChanged(attribute);
     }
@@ -210,6 +232,7 @@ public class CanBus extends MonitoredQuantityManager {
         newObject._startingTime = null;
         newObject._channelUsed = _channelUsed;
         newObject._bitRate = _bitRate;
+        newObject._mostRecentFrame = _mostRecentFrame;
         return newObject;
 
     }
@@ -234,6 +257,28 @@ public class CanBus extends MonitoredQuantityManager {
             }
             _multiCast.put(_channelUsed, receiverSet.size());
         }
+        
+        // "Most recent frame" case, we sort the list of frames of the bus owner
+        // by testing if the frame is visible at the current firing time.
+        if (_mostRecentFrame) {
+        	LinkedList<Object []> listToSort = _tokenTree.get(_channelUsed);
+        	
+        	for (int i = 0; i < listToSort.size(); i++) {
+        		for (int mostRecent = i +1 ; mostRecent < listToSort.size(); mostRecent++) {
+        			
+        			// If a message will be delivered at time t we consider that
+        			// the CanBus will be occupied at time t. So , all messages 
+        			// arriving at time t must be re-emitted => "> 0" condition.
+        		    if (listToSort.get(i)[0] == listToSort.get(mostRecent)[0] 
+        		    	  && (this.getDirector().getModelTime())
+                          	.compareTo(((Time) listToSort.get(mostRecent)[2])
+                          			.add(nextTokenTransmissionTime())) > 0) {        		    	
+        	        	listToSort.remove(i);
+        	        	i--;
+        			}
+        		}
+        	}
+		}
 
         // delivers (if required) the intended token to the intended receiver
         if (_nextTokenFiringTime != null && _nextTokenFiringTime == currentTime) {
@@ -282,7 +327,6 @@ public class CanBus extends MonitoredQuantityManager {
         _nextTokenFiringTime = null;
         _startingTime = null;
         _channelUsed = 0;
-
     }
 
     /** method that compute the identifier ('CanId') of the message that has the highest priority 
@@ -339,7 +383,9 @@ public class CanBus extends MonitoredQuantityManager {
      * @return transmission time for the next token to be sent through the network
      */
     public double nextTokenTransmissionTime() {
-        //return nextTokenSize()/(_bitRate*1000);
+        //  Variable frame size
+    	//  return nextTokenSize()/(_bitRate*1000);
+    	
         return _frameSize / (_bitRate * 1000);
     }
 
@@ -351,16 +397,22 @@ public class CanBus extends MonitoredQuantityManager {
                 .entrySet();
         Iterator<Map.Entry<Integer, LinkedList<Object[]>>> it = es.iterator();
         Map.Entry<Integer, LinkedList<Object[]>> entry;
+
         while (it.hasNext()) {
             entry = it.next();
             if (_debugging) {
-                _debug("Key: " + entry.getKey().toString()); 
-                if (!entry.getValue().isEmpty()) { 
-                    _debug("Receiver: "
-                            + ((Receiver) entry.getValue().getFirst()[0])
-                                    .toString() + " Token: "
-                            + ((Token) entry.getValue().getFirst()[1]).toString());
-                }
+            	_debug("Key: " + entry.getKey().toString()); 
+            
+            	if (!entry.getValue().isEmpty()) { 
+            		for (int i=0; i < entry.getValue().size(); i++) {
+            			_debug("Receiver: " 
+            					+ ((Receiver) entry.getValue().get(i)[0]).toString() 
+            					+ " Token: "
+            					+ ((Token) entry.getValue().get(i)[1]).toString()
+            					+ " Time: "+((Time) entry.getValue().get(i)[2])
+            						.getDoubleValue());
+            		}
+            	}
             }
         }
     }
@@ -383,8 +435,7 @@ public class CanBus extends MonitoredQuantityManager {
      */
     public void sendToken(Receiver source, Receiver receiver, Token token)
             throws IllegalActionException {
-
-        Time currentTime = getDirector().getModelTime();
+        Time currentTime = getDirector().getModelTime();       			
 
         // 'CanId' parameter
         Parameter priority = (Parameter) ((NamedObj) ((IntermediateReceiver) source).source)
@@ -399,21 +450,26 @@ public class CanBus extends MonitoredQuantityManager {
 
         // Storage of the token until it's delivered to the specified receiver at the scheduled time
         if (nextCanId() == -1) {
+            Time visibleAt = this.getDirector().getModelTime(); 
+            
             _channelUsed = id;
+            
             ((LinkedList<Object[]>) _tokenTree.get(id)).add(new Object[] {
-                    receiver, token });
+                    receiver, token, visibleAt });
 
             _nextTokenFiringTime = currentTime.add(nextTokenTransmissionTime());
             _fireAt(_nextTokenFiringTime);
             _startingTime = currentTime;
+            
         } else {
-            ((LinkedList<Object[]>) _tokenTree.get(id)).add(new Object[] {
-                    receiver, token });
-            if (currentTime.equals(_startingTime)) {
-                _channelUsed = nextCanId();
-            }
+        	Time visibleAt = this.getDirector().getModelTime();
+        	
+        	((LinkedList<Object[]>) _tokenTree.get(id)).add(new Object[] {
+    				receiver, token, visibleAt});
+    		if (currentTime.equals(_startingTime)) {
+    			_channelUsed = nextCanId();
+    		}
         }
-
     }
 
     /** Schedule a refiring of the actor.
@@ -473,5 +529,10 @@ public class CanBus extends MonitoredQuantityManager {
      * Value of the bit rate of the bus
      */
     private double _bitRate;
+    
+    /**
+     * Value of the frame sending policy
+     */
+    private boolean _mostRecentFrame;
 
 }
