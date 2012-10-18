@@ -234,7 +234,7 @@ public class PtidesPort extends MirrorPort {
                                 null,
                                 null,
                                 "<svg>\n"
-                                        + "<polygon points=\"0, 0, 0, 16, 16, 16, 16, 12, 20, 8, 16, 4, 16, 0\" "
+                                        + "<polygon points=\"-8, 8, 8, 8, 8, 4, 12, 0, 8, -4, 8, -8, -8, -8\" "
                                         + "style=\"fill:black\"/>\n"
                                         + "</svg>\n");
             } else if (isActuatorPort()) {
@@ -247,7 +247,7 @@ public class PtidesPort extends MirrorPort {
                                 null,
                                 null,
                                 "<svg>\n"
-                                        + "<polygon points=\"0, 0, 0, 4, -4, 8, 0, 12, 0, 16, 16, 16, 16, 0\" "
+                                        + "<polygon points=\"-8, 8, 8, 8, 8, -8, -8, -8, -8, -4, -12, 0, -8, 4\" "
                                         + "style=\"fill:black\"/>\n"
                                         + "</svg>\n");
             } else if (isNetworkReceiverPort()) {
@@ -260,7 +260,7 @@ public class PtidesPort extends MirrorPort {
                                 null,
                                 null,
                                 "<svg>\n"
-                                        + "<polygon points=\"0, 0, 0, 16, 16, 16, 16, 12, 20, 12, 20, 4, 16, 4, 16, 0\" "
+                                        + "<polygon points=\"-8, 8, 8, 8, 8, 4, 12, 4, 12, -4, 8, -4, 8, -8, -8, -8\" "
                                         + "style=\"fill:black\"/>\n"
                                         + "</svg>\n");
             } else if (isNetworkTransmitterPort()) {
@@ -273,7 +273,7 @@ public class PtidesPort extends MirrorPort {
                                 null,
                                 null,
                                 "<svg>\n"
-                                        + "<polygon points=\"0, 0, 0, 4, -4, 4, -4, 12, 0, 12, 0, 16, 16, 16, 16, 0\" "
+                                        + "<polygon points=\"-8, 8, 8, 8, 8, -8, -8, -8, -8, -4, -12, -4, -12, 4, -8, 4\" "
                                         + "style=\"fill:black\"/>\n"
                                         + "</svg>\n");
             }

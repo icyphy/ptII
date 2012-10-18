@@ -199,7 +199,7 @@ public class TypedAtomicActor extends AtomicActor<TypedIOPort> implements
      *  @return The new port.
      *  @exception NameDuplicationException If the actor already has a port
      *   with the specified name.
-     */
+     */ 
     public Port newPort(String name) throws NameDuplicationException {
         try {
             _workspace.getWriteAccess();

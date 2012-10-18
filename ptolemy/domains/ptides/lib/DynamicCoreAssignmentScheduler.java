@@ -37,6 +37,7 @@ import java.util.List;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
+import ptolemy.actor.ResourceScheduler;
 import ptolemy.actor.util.Time;
 import ptolemy.data.ObjectToken;
 import ptolemy.data.Token;
@@ -110,8 +111,8 @@ public class DynamicCoreAssignmentScheduler extends ResourceScheduler {
         // Check if is already executing somewhere.
         for (NamedObj schedulerActor : _actors) {
             ResourceScheduler scheduler = (ResourceScheduler) schedulerActor;
-            if (scheduler._remainingTimes.get(actor) != null
-                    && scheduler._remainingTimes.get(actor).getDoubleValue() > 0.0) {
+            if (scheduler.getRemainingTime(actor) != null
+                    && scheduler.getRemainingTime(actor).getDoubleValue() > 0.0) {
                 // This actor is currently executing on this scheduler.
                 Time time = scheduler.schedule(actor, currentPlatformTime,
                         deadline, executionTime);
@@ -122,7 +123,7 @@ public class DynamicCoreAssignmentScheduler extends ResourceScheduler {
                             ExecutionEventType.STOP);
                 }
                 _remainingTimeOnCore.put(scheduler, time);
-                _lastActorFinished = scheduler._lastActorFinished;
+                _lastActorFinished = scheduler.lastActorFinished();
                 return time;
             }
         }
@@ -144,7 +145,7 @@ public class DynamicCoreAssignmentScheduler extends ResourceScheduler {
                             ExecutionEventType.STOP);
                 }
                 _remainingTimeOnCore.put(scheduler, time);
-                _lastActorFinished = scheduler._lastActorFinished;
+                _lastActorFinished = scheduler.lastActorFinished();
                 return time;
             } else {
                 if (minimumRemainingTime == null

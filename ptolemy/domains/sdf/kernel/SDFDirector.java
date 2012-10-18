@@ -888,6 +888,10 @@ public class SDFDirector extends StaticSchedulingDirector implements
                     "Attempted to transferOutputs on a port that "
                             + "is not an opaque output port.");
         }
+        
+        if (_waitingForResource) {
+            return true;
+        }
 
         int rate = DFUtilities.getTokenProductionRate(port);
         boolean wasTransferred = false;

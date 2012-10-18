@@ -27,20 +27,19 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 
  */
-package ptolemy.domains.ptides.lib;
+package ptolemy.actor;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import ptolemy.actor.Actor;
-import ptolemy.actor.AtomicActor;
-import ptolemy.actor.CompositeActor;
 import ptolemy.actor.util.Time;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.ObjectToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
+import ptolemy.domains.ptides.lib.DynamicCoreAssignmentScheduler;
+import ptolemy.domains.ptides.lib.SchedulePlotterEditorFactory;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.DecoratedAttributesImplementation;
 import ptolemy.kernel.util.DecoratedAttributes;
@@ -235,6 +234,21 @@ public abstract class ResourceScheduler extends MoMLModelAttribute implements
     public Time getTime(double time) throws IllegalActionException {
         return new Time(((CompositeActor) getContainer()).getDirector(), time);
     }
+    
+    /** Return whether last actor that was scheduled finished execution.
+     *  @return True if last actor finished execution.
+     */
+    public boolean lastActorFinished() {
+        return _lastActorFinished;
+    }
+    
+    /** Return remaining time actor needs to finish.
+     *  @param actor The actor.
+     *  @return The time the actor still needs.
+     */
+    public Time getRemainingTime(Actor actor) {
+        return _remainingTimes.get(actor);
+    }
 
     /** Plot a new execution event for an actor (i.e. an actor
      *  started/finished execution, was preempted or resumed).
@@ -305,19 +319,27 @@ public abstract class ResourceScheduler extends MoMLModelAttribute implements
     protected void _getActorsToSchedule(CompositeActor compositeActor)
             throws IllegalActionException {
         for (Object entity : compositeActor.entityList()) {
-            if (entity instanceof CompositeActor) {
-                Double executionTime = ResourceScheduler
-                        ._getDoubleParameterValue((NamedObj) entity,
-                                "executionTime");
-                if (executionTime == null) {
-                    _getActorsToSchedule((CompositeActor) entity);
-                } else {
-                    _readActorParameters((Actor) entity);
-                }
-            } else if (entity instanceof AtomicActor) {
-                _readActorParameters((Actor) entity);
-            }
+            Parameter schedulerAttribute = (Parameter)((NamedObj)entity).getAttribute("scheduler");
+            if (schedulerAttribute != null && schedulerAttribute.getToken() != null &&
+                    schedulerAttribute.getToken() instanceof ObjectToken && 
+                    ((ObjectToken) schedulerAttribute.getToken()).getValue() instanceof ResourceScheduler) {   
+                ResourceScheduler scheduler = (ResourceScheduler) ((ObjectToken) schedulerAttribute.getToken()).getValue();
+                if (scheduler == this
+                        || (scheduler instanceof DynamicCoreAssignmentScheduler && !(entity instanceof ResourceScheduler))) {
+                    Double executionTime = ResourceScheduler
+                            ._getDoubleParameterValue(
+                                    (NamedObj) compositeActor,
+                                    "executionTime");
 
+                    if (executionTime != null) {
+                        _remainingTimes.put(compositeActor, null);
+                    }
+                    _actors.add((NamedObj) entity);
+                    event((NamedObj) compositeActor, 0.0, null);
+                }
+            } else if (entity instanceof CompositeActor) {
+                _getActorsToSchedule((CompositeActor) entity);
+            } 
         }
     }
 

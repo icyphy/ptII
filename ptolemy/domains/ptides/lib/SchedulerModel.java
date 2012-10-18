@@ -35,6 +35,7 @@ import java.util.List;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
+import ptolemy.actor.ResourceScheduler;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.util.Time;
 import ptolemy.data.BooleanToken;
@@ -143,13 +144,15 @@ public class SchedulerModel extends ResourceScheduler {
                         mappedActor);
             }
         }
-        ((CompositeActor) _model).getDirector().setModelTime(
-                currentPlatformTime);
+        
         _fireModel(currentPlatformTime);
-
-        Parameter parameter = (Parameter) ((CompositeActor) _model)
-                .getAttribute("resume" + actor.getName());
-        finished = ((BooleanToken) parameter.getToken()).booleanValue();
+        
+        Parameter parameter = (Parameter)((CompositeActor)_model).getAttribute("resume" + actor.getName());
+        if (parameter == null || parameter.getToken() == null) {
+            throw new IllegalActionException(this, "Tried to schedule actor " + actor + 
+                    " but no parameter " + "resume" + actor.getName() + " was found!");
+        }
+        finished = ((BooleanToken)parameter.getToken()).booleanValue();
         if (finished) {
             time = getTime(0.0);
             parameter.setToken(new BooleanToken(false));
@@ -176,17 +179,21 @@ public class SchedulerModel extends ResourceScheduler {
 
     private void _fireModel(Time currentPlatformTime)
             throws IllegalActionException {
-        Time time = currentPlatformTime;
+        Time time = ((CompositeActor)_model).getDirector().getModelNextIterationTime();
         int index = 1;
-        while (time.equals(currentPlatformTime)) {
-            ((DEDirector) ((CompositeActor) _model).getDirector())
-                    .setIndex(index);
-            ((CompositeActor) _model).prefire();
-            ((CompositeActor) _model).fire();
-            ((CompositeActor) _model).postfire();
-            time = ((CompositeActor) _model).getDirector()
-                    .getModelNextIterationTime();
-            index++;
+        while (time.compareTo(currentPlatformTime) <= 0) {
+            ((CompositeActor)_model).getDirector().setModelTime(time); 
+            ((DEDirector)((CompositeActor)_model).getDirector()).setIndex(index);
+            ((CompositeActor)_model).prefire(); 
+            ((CompositeActor)_model).fire(); 
+            ((CompositeActor)_model).postfire();
+            Time previousTime = time;
+            time = ((CompositeActor)_model).getDirector().getModelNextIterationTime();
+            if (time.equals(previousTime)) {
+                index++;
+            } else {
+                index = 1;
+            }
         }
     }
 

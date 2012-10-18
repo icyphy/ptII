@@ -33,6 +33,7 @@ package ptolemy.domains.ptides.lib;
 import java.util.Stack;
 
 import ptolemy.actor.Actor;
+import ptolemy.actor.ResourceScheduler;
 import ptolemy.actor.util.Time;
 import ptolemy.data.IntToken;
 import ptolemy.data.expr.Parameter;

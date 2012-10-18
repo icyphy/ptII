@@ -31,6 +31,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 package ptolemy.domains.ptides.lib;
 
 import ptolemy.actor.Actor;
+import ptolemy.actor.ResourceScheduler;
 import ptolemy.actor.util.Time;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;

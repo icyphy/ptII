@@ -27,9 +27,12 @@
  */
 package ptolemy.actor;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
 
 import ptolemy.actor.util.BooleanDependency;
@@ -38,6 +41,7 @@ import ptolemy.actor.util.CausalityInterfaceForComposites;
 import ptolemy.actor.util.Dependency;
 import ptolemy.actor.util.Time;
 import ptolemy.data.DoubleToken;
+import ptolemy.data.ObjectToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
@@ -859,6 +863,19 @@ public class Director extends Attribute implements Executable {
                 initialize(actor);
             }
         }
+
+        _resourceSchedulers = new ArrayList();
+        _schedulerForActor = null;
+        for (Object entity : ((CompositeActor) getContainer()).attributeList()) {
+            if (entity instanceof ResourceScheduler) {
+                ResourceScheduler scheduler = (ResourceScheduler) entity;
+                _resourceSchedulers.add(scheduler);
+                Time time = scheduler.initialize();
+                if (time != null) {
+                    fireContainerAt(time);
+                }
+            }
+        }
     }
 
     /** Initialize the given actor.  This method is generally called
@@ -1545,10 +1562,23 @@ public class Director extends Attribute implements Executable {
                 actor.wrapup();
             }
         }
+
+        for (ResourceScheduler scheduler : _resourceSchedulers) {
+            scheduler.wrapup();
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
+
+    /** Return true if the actor finished execution.
+     *  @param actor The actor.
+     *  @return True if the actor finished execution.
+     */
+    protected boolean _actorFinished(Actor actor) {
+        return (_schedulerForActor.get(actor) != null && _schedulerForActor
+                .get(actor).lastScheduledActorFinished());
+    }
 
     /** Return a description of the object.  The level of detail depends
      *  on the argument, which is an or-ing of the static final constants
@@ -1737,8 +1767,114 @@ public class Director extends Attribute implements Executable {
         return result;
     }
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected variables               ////
+    /** Compute the deadline for an actor that requests a firing at time
+     *  <i>timestamp</i>. This base class just returns the maximum value.
+     *  @param actor The actor that requests firing. 
+     *  @param timestamp The time when the actor wants to be fired.
+     *  @return The deadline for the actor.
+     *  @throws IllegalActionException If time objects cannot be created. 
+     */
+    protected double _getDeadline(Actor actor, Time timestamp)
+            throws IllegalActionException {
+        return Double.MAX_VALUE;
+    }
+
+    /** Schedule an actor for execution on a ResourceScheduler. If the actor can
+     *  execute this method returns true. If resources are not available this 
+     *  method returns false. 
+     *  @param actor The actor.
+     *  @param timestamp The time the actor requests to be scheduled.
+     *  @param executionTime The execution Time for this event. 
+     *  @return True if actor was scheduled and can be fired.
+     *  @exception IllegalActionException Thrown if parameters cannot be read, actor cannot be
+     *   scheduled or container cannot be fired at future time.
+     */
+    protected boolean _schedule(Actor actor, Time timestamp, Time executionTime)
+            throws IllegalActionException {
+        ResourceScheduler scheduler = _getScheduler(actor);
+        Time time = null;
+        Boolean finished = true;
+        if (timestamp == null) {
+            timestamp = getModelTime();
+        }
+        if (scheduler != null) {
+            double deadline = _getDeadline(actor, timestamp);
+            time = (scheduler).schedule(actor, getEnvironmentTime(), deadline,
+                    executionTime);
+            finished = _actorFinished(actor);
+            if (time != null && time.getDoubleValue() > 0.0) {
+                fireContainerAt(getEnvironmentTime().add(time));
+
+                CompositeActor actorContainer = (CompositeActor) actor
+                        .getContainer();
+                CompositeActor schedulerContainer = (CompositeActor) scheduler
+                        .getContainer();
+                while (actorContainer != schedulerContainer) {
+                    actorContainer.getDirector().fireContainerAt(
+                            getEnvironmentTime().add(time));
+                    actorContainer = (CompositeActor) actorContainer
+                            .getContainer();
+                }
+
+            }
+        } else if (isEmbedded()) {
+            return ((CompositeActor) (((CompositeActor) getContainer()))
+                    .getContainer()).getDirector()._schedule(actor, timestamp,
+                    executionTime);
+        }
+        return (time == null || finished);
+    }
+
+    /** Find resource scheduler for actor. 
+     *  @param actor The actor to be scheduled.  
+     */
+    protected ResourceScheduler _getScheduler(Actor actor) {
+        if (_schedulerForActor == null) {
+            _schedulerForActor = new HashMap<Actor, ResourceScheduler>();
+        }
+        Object object = _schedulerForActor.get(actor);
+        if (!_schedulerForActor.containsKey(actor)) {
+            if (object == null) {
+                List attributeList = ((NamedObj) actor).attributeList();
+                if (attributeList.size() > 0) {
+                    for (int i = 0; i < attributeList.size(); i++) {
+                        Object attr = attributeList.get(i);
+                        if (attr instanceof Parameter) {
+                            try {
+                                Token paramToken = ((Parameter) attr)
+                                        .getToken();
+                                if (paramToken instanceof ObjectToken) {
+                                    Object paramObject = ((ObjectToken) paramToken)
+                                            .getValue();
+                                    if (paramObject instanceof ResourceScheduler) {
+                                        ResourceScheduler scheduler = (ResourceScheduler) paramObject;
+                                        if (_resourceSchedulers
+                                                .contains(scheduler)) {
+                                            _schedulerForActor.put(actor,
+                                                    scheduler);
+                                            object = scheduler;
+                                            break;
+                                        } // else could have been deleted.
+                                    }
+                                }
+                            } catch (IllegalActionException ex) {
+                                // Do nothing, the resource scheduler might
+                                // have been deleted.
+                            }
+                        }
+                    }
+                    if (!_schedulerForActor.containsKey(actor)) {
+                        _schedulerForActor.put(actor, null);
+                    }
+                }
+            }
+        }
+        if (object != null) {
+            return (ResourceScheduler) object;
+        } else {
+            return null;
+        }
+    }
 
     /** Set of actors that have returned false from  postfire(),
      *  indicating that they do not wish to be iterated again.
@@ -1804,6 +1940,10 @@ public class Director extends Attribute implements Executable {
      *  as if it were at the top level.
      */
     private transient boolean _notEmbeddedForced = false;
+
+    private List<ResourceScheduler> _resourceSchedulers;
+
+    private HashMap<Actor, ResourceScheduler> _schedulerForActor;
 
     /** Start time. */
     private transient Time _startTime;

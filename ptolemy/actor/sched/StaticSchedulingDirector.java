@@ -146,7 +146,17 @@ public class StaticSchedulingDirector extends Director {
         }
         return newObject;
     }
-
+    
+    /** Initialize local variables.
+     *  @exception IllegalActionException Thrown by super class.
+     */
+    public void initialize() throws IllegalActionException {
+        super.initialize(); 
+        _savedSchedule = null;
+        _savedSchedulePosition = -1;
+        _savedIterationCount = 0;
+    }; 
+    
     /** Calculate the current schedule, if necessary, and iterate the
      *  contained actors in the order given by the schedule.
      *  Iterating an actor involves calling the actor's iterate() method,
@@ -168,30 +178,62 @@ public class StaticSchedulingDirector extends Director {
     public void fire() throws IllegalActionException {
         // Don't call "super.fire();" here because if you do then
         // everything happens twice.
-
-        Scheduler scheduler = getScheduler();
-
-        if (scheduler == null) {
-            throw new IllegalActionException("Attempted to fire "
-                    + "system with no scheduler");
+        Iterator firings = null;
+        if (_savedSchedule == null) {
+            Scheduler scheduler = getScheduler();
+    
+            if (scheduler == null) {
+                throw new IllegalActionException("Attempted to fire "
+                        + "system with no scheduler");
+            }
+    
+            // This will throw IllegalActionException if this director
+            // does not have a container.
+            Schedule schedule = scheduler.getSchedule();
+            _savedSchedule = schedule;
+            _savedSchedulePosition = 0;
+            firings = schedule.firingIterator();
+            
+        } else {
+            
+            firings = _savedSchedule.firingIterator();
+            for (int i  = 0; i < _savedSchedulePosition; i++) {
+                firings.next();
+            } 
         }
-
-        // This will throw IllegalActionException if this director
-        // does not have a container.
-        Schedule schedule = scheduler.getSchedule();
-        Iterator firings = schedule.firingIterator();
-
-        while (firings.hasNext() && !_stopRequested) {
-            Firing firing = (Firing) firings.next();
+        
+        Firing firing = null;
+        while ((_savedIterationCount > 0 || firings.hasNext()) && !_stopRequested) {
+            
+            if (firing == null || _savedIterationCount == 0) {
+                firing = (Firing) firings.next();
+            }
             Actor actor = firing.getActor();
+              
+            boolean finished = _schedule(actor, null, null);
+            if (finished) { 
+                _waitingForResource = false;  
+            } else { 
+                _waitingForResource = true;
+                break;
+            } 
+            
             int iterationCount = firing.getIterationCount();
+            if (_savedIterationCount == 0) {
+                _savedIterationCount = firing.getIterationCount();
+            }
 
             if (_debugging) {
                 _debug(new FiringEvent(this, actor, FiringEvent.BEFORE_ITERATE,
                         iterationCount));
             }
 
-            int returnValue = actor.iterate(iterationCount);
+            
+            int returnValue = actor.iterate(1);
+            _savedIterationCount--;
+            if (_savedIterationCount == 0) {
+                _savedSchedulePosition++;
+            }
 
             if (returnValue == STOP_ITERATING) {
                 _postfireReturns = false;
@@ -208,10 +250,13 @@ public class StaticSchedulingDirector extends Director {
             if (_debugging) {
                 _debug(new FiringEvent(this, actor, FiringEvent.AFTER_ITERATE,
                         iterationCount));
-            }
+            } 
+        } 
+        if (_savedSchedule.size() == _savedSchedulePosition) {
+            _savedSchedule = null;
         }
-    }
-
+    } 
+    
     /** Return the scheduler that is responsible for scheduling the
      *  directed actors.  This method is read-synchronized on the
      *  workspace.
@@ -365,6 +410,25 @@ public class StaticSchedulingDirector extends Director {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
+    /** Flag that shows that the firing is waiting for a resource. 
+     *  This means that the current execution schedule was preempted 
+     *  and will resume once the resource is available.
+     */
+    protected boolean _waitingForResource;
+
+    /** Computed schedule that has not been fully executed because this 
+     *  director is waiting for resources. 
+     */
+    private Schedule _savedSchedule;
+    
+    /** Saved position in the fixed schedule. Resume execution from there.
+     */
+    private int _savedSchedulePosition;
+    
+    /** Number of iterations that have been performed already.
+     */
+    private int _savedIterationCount;
+    
     /** The scheduler. */
     private Scheduler _scheduler;
 }

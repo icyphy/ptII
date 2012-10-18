@@ -714,6 +714,7 @@ public class PtidesPlatform extends MirrorComposite {
                                 if (farReceivers.length > 0) {
                                     for (int i = 0; i < farReceivers[channelIndex].length; i++) {
                                         director.addInputEvent(
+                                                associatedPort,
                                                 new PtidesEvent(
                                                         associatedPort,
                                                         channelIndex,
@@ -734,6 +735,7 @@ public class PtidesPlatform extends MirrorComposite {
                                 if (farReceivers.length > 0) {
                                     for (int i = 0; i < farReceivers[channelIndex].length; i++) {
                                         director.addInputEvent(
+                                                associatedPort,
                                                 new PtidesEvent(
                                                         associatedPort,
                                                         channelIndex,
