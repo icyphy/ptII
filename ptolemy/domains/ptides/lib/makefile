@@ -78,7 +78,6 @@ JSRCS = \
 	ExecutionTimeListener.java \
 	ExecutionTimeMonitor.java \
 	PlatformTimeMonitor.java \
-	ResourceScheduler.java \
 	SchedulePlotterEditorFactory.java
 
 OTHER_FILES_TO_BE_JARED = \
@@ -109,7 +108,6 @@ OPTIONAL_FILES = \
 	'NetworkReceiver$$1.class' \
 	'NetworkReceiver$$PortFunction.class' \
 	'PlatformTimeMonitor$$PlatformTimePlotterEditorFactory.class' \
-	'ResourceScheduler$$ExecutionEventType.class' \
 	'ScheduleListener$$ScheduleEventType.class' \
 	'SchedulePlotter$$SchedulePlotterEditorFactory.class'
 

@@ -107,6 +107,7 @@ JSRCS = \
 	QueueReceiver.java \
 	Receiver.java \
 	RelationWidthInference.java \
+	ResourceScheduler.java \
 	StateReceiver.java \
 	StreamExecutionListener.java \
 	SubscriberPort.java \
@@ -153,6 +154,7 @@ OPTIONAL_FILES = \
 	'Manager$$UnpauserThread.class' \
 	'PublisherPort$$1.class' \
 	'PubSubPort$$1.class' \
+	'ResourceScheduler$$ExecutionEventType.class' \
 	'TypedIOPort$$1.class' \
 	'TypedIOPort$$TypeTerm.class'
 
