@@ -187,7 +187,7 @@ public class PtidesPlatform extends MirrorComposite {
      */
     public Port newPort(String name) throws NameDuplicationException {
         try {
-            MirrorPort result = new MirrorPort(this, name);
+            PtidesMirrorPort result = new PtidesMirrorPort(this, name);
 
             return result;
         } catch (IllegalActionException ex) {
