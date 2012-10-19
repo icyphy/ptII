@@ -154,7 +154,7 @@ public class RemoveGraphicalClasses extends MoMLFilterSimple {
         _graphicalClasses.put(
                 "ptolemy.data.properties.gui.PropertyHighlighter", null);
 
-        _graphicalClasses.put("ptolemy.domains.sr.lib.NonStrictDisplay",
+        _graphicalClasses.put("ptolemy.domains.sr.lib.gui.NonStrictDisplay",
                 "ptolemy.actor.lib.Discard");
 
         // Generated applet from moml/demo/modulation.xml
@@ -236,28 +236,36 @@ public class RemoveGraphicalClasses extends MoMLFilterSimple {
         _graphicalClasses.put("ptolemy.vergil.kernel.attributes.TextAttribute",
                 null);
 
+        _graphicalClasses.put(
+                "ptolemy.vergil.basic.export.web.BasicJSPlotter", null);
+        _graphicalClasses.put(
+                "ptolemy.vergil.basic.export.web.DygraphsJSPlotter", null);
         // Classes that import ptolemy.vergil.icon.ValueIcon
         _graphicalClasses.put(
-                "ptolemy.vergil.basic.export.html.DefaultIconLink", null);
+                "ptolemy.vergil.basic.export.web.DefaultIconLink", null);
         _graphicalClasses.put(
-                "ptolemy.vergil.basic.export.html.DefaultIconScript", null);
-        _graphicalClasses.put("ptolemy.vergil.basic.export.html.DefaultTitle",
+                "ptolemy.vergil.basic.export.web.DefaultIconScript", null);
+        _graphicalClasses.put("ptolemy.vergil.basic.export.web.DefaultTitle",
                 null);
+        _graphicalClasses
+                .put("ptolemy.vergil.basic.export.web.HTMLImage", null);
         // HTMLText extends WebContent which imports ValueIcon
         _graphicalClasses
-                .put("ptolemy.vergil.basic.export.html.HTMLText", null);
+                .put("ptolemy.vergil.basic.export.web.HTMLText", null);
         _graphicalClasses
-                .put("ptolemy.vergil.basic.export.html.IconLink", null);
-        _graphicalClasses.put("ptolemy.vergil.basic.export.html.IconScript",
+                .put("ptolemy.vergil.basic.export.web.IconLink", null);
+        _graphicalClasses.put("ptolemy.vergil.basic.export.web.IconScript",
                 null);
         _graphicalClasses.put(
-                "ptolemy.vergil.basic.export.html.LinkToOpenTableaux", null);
+                "ptolemy.vergil.basic.export.web.LinkToOpenTableaux", null);
         _graphicalClasses.put(
-                "ptolemy.vergil.basic.export.html.ParameterDisplayIconScript",
+                "ptolemy.vergil.basic.export.web.ParameterDisplayIconScript",
                 null);
-        _graphicalClasses.put("ptolemy.vergil.basic.export.html.Title", null);
-        _graphicalClasses.put("ptolemy.vergil.basic.export.html.WebContent",
+        _graphicalClasses.put("ptolemy.vergil.basic.export.web.Title", null);
+        _graphicalClasses.put("ptolemy.vergil.basic.export.web.WebContent",
                 null);
+        _graphicalClasses.put("ptolemy.vergil.basic.export.web.WebExportable", null);
+
 
         _graphicalClasses.put("ptolemy.vergil.basic.NodeControllerFactory",
                 null);
