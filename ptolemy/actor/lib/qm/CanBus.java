@@ -99,7 +99,7 @@ import ptolemy.kernel.util.Workspace;
  *  bit stuffing...
  *  </p>
  *  
- *  For more information please refer to: <i>CAN bus simulator using a Quantity Manager</i>
+ *  For more information please refer to: <i>CAN bus simulator using a Quantity Manager</i>.
  *       
  *  @author D. Marciano, G. Lasnier, P. Derler
  *  @version $Id$
@@ -241,7 +241,7 @@ public class CanBus extends MonitoredQuantityManager {
     /** Fire the actor. 
      *  Typically, the fire() method performs the computation associated
      *  with an actor. 
-     *  Here, it delivers (if required) the intended token to the intended receiver(s)  
+     *  Here, it delivers (if required) the intended token to the intended receiver(s).  
      *
      *  @exception IllegalActionException If firing is not permitted.
      */
@@ -330,9 +330,10 @@ public class CanBus extends MonitoredQuantityManager {
         _channelUsed = 0;
     }
 
-    /** method that compute the identifier ('CanId') of the message that has the highest priority 
+    /** Method that computes the identifier ('CanId') of the message that has 
+     * the highest priority. 
      * 
-     * @return the identifier ('CanId') of the message that has the highest priority
+     * @return The identifier ('CanId') of the message that has the highest priority.
      */
     public int nextCanId() {
         Set es = _tokenTree.entrySet();
@@ -349,9 +350,9 @@ public class CanBus extends MonitoredQuantityManager {
         return result;
     }
 
-    /** return the next token to be sent according to the CAN protocol
+    /** Return the next token to be sent according to the CAN protocol.
      *  
-     * @return the next token to be sent according to the CAN protocol
+     * @return The next token to be sent according to the CAN protocol.
      */
     public Token nextToken() {
         return (Token) (_tokenTree.get(nextCanId()).element())[1];
@@ -361,8 +362,8 @@ public class CanBus extends MonitoredQuantityManager {
      *  This method uses the serialization API to compute the size of the token that need to be sent
      *  Actually, this method is never called in the current version of the code
      *  If you want to use a variable size for objects sent through the network, you need to uncomment the line
-     *  dedicated to this functionality in the {@link #nextTokenSize()} method
-     * @return the size of the next token to be sent
+     *  dedicated to this functionality in the {@link #nextTokenSize()} method.
+     * @return The size of the next token to be sent.
      */
     public int nextTokenSize() {
         ByteArrayOutputStream bOut = new ByteArrayOutputStream();
@@ -380,8 +381,8 @@ public class CanBus extends MonitoredQuantityManager {
 
     /** Compute the transmission time of the next token through the network
      *  In the current version of this {@link QuantityManager} the size of a token (message) is fixed
-     *  In order to have a variable token size please uncomment the dedicated line in this method
-     * @return transmission time for the next token to be sent through the network
+     *  In order to have a variable token size please uncomment the dedicated line in this method.
+     * @return Transmission time for the next token to be sent through the network.
      */
     public double nextTokenTransmissionTime() {
         //  Variable frame size
@@ -390,7 +391,7 @@ public class CanBus extends MonitoredQuantityManager {
         return _frameSize / (_bitRate * 1000);
     }
 
-    /** Method that print in a human readable way the content of {@link #_tokenTree}
+    /** Method that print in a human readable way the content of {@link #_tokenTree}.
      * 
      */
     public void printTokenTree() {
@@ -474,7 +475,7 @@ public class CanBus extends MonitoredQuantityManager {
     }
 
     /** Schedule a refiring of the actor.
-     *  @exception IllegalActionException Thrown if the actor cannot be rescheduled
+     *  @exception IllegalActionException Thrown if the actor cannot be rescheduled.
      */
     protected void _scheduleRefire() throws IllegalActionException {
 
@@ -487,9 +488,9 @@ public class CanBus extends MonitoredQuantityManager {
     }
 
     /** Data structure in which all tokens received and valuable information will be stocked
-     * The <i>Integer</i> key corresponds to the <i>CanId</i> parameter (identifier of the message that sets the priority)
-     * Object[0] corresponds to the receiver to which the token is intended to
-     * Object[1] corresponds to the token that needs to be sent
+     * The <i>Integer</i> key corresponds to the <i>CanId</i> parameter (identifier of the message that sets the priority).
+     * Object[0] corresponds to the receiver to which the token is intended to.
+     * Object[1] corresponds to the token that needs to be sent.
      */
     private TreeMap<Integer, LinkedList<Object[]>> _tokenTree;
 
@@ -497,42 +498,42 @@ public class CanBus extends MonitoredQuantityManager {
      *  The <i>Integer</i> key corresponds to the <i>CanId</i>
      *  The <i>Integer</i> value corresponds to the number of receivers connected to the bus (i.e. processed by the
      *  quantity manager) and to the transmitting actor (which correspond to a multicast)
-     *  This information is important, since multicasted messages on the CAN bus are received at the same time
+     *  This information is important, since multicasted messages on the CAN bus are received at the same time.
      */
     private HashMap<Integer, Integer> _multiCast;
 
     /**
-     * Fixed size of a frame 
+     * Fixed size of a frame.
      */
     private int _frameSize;
 
     /**
-     * Size of the next token due to be sent
+     * Size of the next token due to be sent.
      */
     private int _nextTokenSize;
 
     /**
-     * Scheduled date of delivery
+     * Scheduled date of delivery.
      */
     private Time _nextTokenFiringTime;
 
     /**
-     * Variable used in the case of a collision
+     * Variable used in the case of a collision.
      */
     private Time _startingTime;
 
     /**
-     * <i>channelUsed</i> represents the identifier of the message that is being transmitted on the Bus
+     * Represents the identifier of the message that is being transmitted on the Bus.
      */
     private int _channelUsed;
 
     /**
-     * Value of the bit rate of the bus
+     * Value of the bit rate of the bus.
      */
     private double _bitRate;
     
     /**
-     * Value of the frame sending policy
+     * Value of the frame sending policy.
      */
     private boolean _mostRecentFrame;
 
