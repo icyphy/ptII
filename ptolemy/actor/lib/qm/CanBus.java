@@ -127,19 +127,20 @@ public class CanBus extends MonitoredQuantityManager {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
-        canFormatOfFrame = new Parameter(this, "Format of Frame");
+        canFormatOfFrame = new Parameter(this, "canFormatOfFrame");
         canFormatOfFrame.setTypeEquals(BaseType.STRING);
         canFormatOfFrame.addChoice("\"Standard frame\"");
         canFormatOfFrame.addChoice("\"Extended frame\"");
         canFormatOfFrame.setExpression("\"Standard frame\"");
         _frameSize = 108;
 
-        bitRate = new Parameter(this, "bitRate (kbit/s)");
+        bitRate = new Parameter(this, "bitRate");
+        bitRate.setDisplayName("bitRate (kbit/s)");
         bitRate.setExpression("125");
         bitRate.setTypeEquals(BaseType.DOUBLE);
         _bitRate = 125;
         
-        canFramePolicy = new Parameter(this, "Frame policy");
+        canFramePolicy = new Parameter(this, "canFramePolicy");
         canFramePolicy.setTypeEquals(BaseType.STRING);
         canFramePolicy.addChoice("\"Send all frames\"");
         canFramePolicy.addChoice("\"Send only most recent frame\"");
