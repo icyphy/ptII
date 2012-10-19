@@ -44,7 +44,7 @@ import ptolemy.kernel.util.Workspace;
  * This actor comes with a parameter <i>CanId</i> that sets the priority of the output port that it 'covers'.
  * To improve visibility this parameter is made visible using a BoxedValueIcon.
  * 
- * For more information see: <i>CAN bus simulator using Quantity Manager</i>
+ * For more information see: <i>CAN bus simulator using Quantity Manager</i>.
  *       
  *  @author D. Marciano, P. Derler
  *  @version $Id$
@@ -82,7 +82,7 @@ public class CanBusPriority extends Transformer {
    ////                     ports and parameters                  ////
 
    /** 
-    *  Value of the CanId parameter
+    *  Value of the CanId parameter.
     */
    public Parameter value;
    
@@ -119,7 +119,7 @@ public class CanBusPriority extends Transformer {
    }
 
    /** 
-    * Take the input (if there is such one) and put it in the output
+    * Take the input (if there is such one) and put it in the output.
     *  @exception IllegalActionException If there is no director.
     */
    public void fire() throws IllegalActionException {
