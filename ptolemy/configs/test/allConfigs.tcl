@@ -202,7 +202,11 @@ foreach i $configs {
     #$inputFileNamesToSkip add "/x10/x10.xml"
     #$inputFileNamesToSkip add "utilityIDAttribute.xml"
 
-    if {[java::call ptolemy.gui.PtGUIUtilities macOSLookAndFeel]} {
+    set osName [java::call System getProperty {os.name}]
+
+    set osNameStartsWith [string range $osName 0 5]
+
+    if {$osNameStartsWith == "Mac OS"} {
 	puts "Skipping backtrack.xml because Backtracking has problems on the Mac"
 	$inputFileNamesToSkip add "/backtrack.xml"
     }
@@ -211,7 +215,7 @@ foreach i $configs {
 
     # Filter out graphical classes while inside MoMLParser
     # See ptII/util/testsuite/removeGraphicalClasses.tcl
-    #removeGraphicalClasses $parser
+    # removeGraphicalClasses $parser
 
     set loader [[$parser getClass] getClassLoader]
     
