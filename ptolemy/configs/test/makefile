@@ -99,9 +99,9 @@ KERNEL_TESTDEFS = $(ROOT)/util/testsuite/testDefs.tcl
 JAVAFLAGS = -Xmx4000m
 
 
-# These tests do not require a graphics terminal, but do use Jacl and Java
+# The allConfigs.tcl test now requires a graphical terminal
 test_jsimple: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) alljtests.tcl
-	DISPLAY=NotADisplay:0.0	$(JTCLSH) alljtests.tcl
+	$(JTCLSH) alljtests.tcl
 
 
 
