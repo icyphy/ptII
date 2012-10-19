@@ -142,7 +142,9 @@ public class RectangleAttribute extends FilledShapeAttribute {
         double roundingValue = 0.0;
 
         try {
-            roundingValue = ((DoubleToken) rounding.getToken()).doubleValue();
+	    if (rounding != null && rounding.getToken() != null) {
+		roundingValue = ((DoubleToken) rounding.getToken()).doubleValue();
+	    }
         } catch (IllegalActionException ex) {
             // Ignore and use default.
         }
