@@ -866,7 +866,7 @@ public class Director extends Attribute implements Executable {
 
         _resourceSchedulers = new ArrayList();
         _schedulerForActor = null;
-        for (Object entity : ((CompositeActor) getContainer()).attributeList()) {
+        for (Object entity : getContainer().attributeList()) {
             if (entity instanceof ResourceScheduler) {
                 ResourceScheduler scheduler = (ResourceScheduler) entity;
                 _resourceSchedulers.add(scheduler);
