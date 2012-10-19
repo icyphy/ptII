@@ -1563,8 +1563,10 @@ public class Director extends Attribute implements Executable {
             }
         }
 
-        for (ResourceScheduler scheduler : _resourceSchedulers) {
-            scheduler.wrapup();
+        if (_resourceSchedulers != null) {
+            for (ResourceScheduler scheduler : _resourceSchedulers) {
+                scheduler.wrapup();
+            }
         }
     }
 
