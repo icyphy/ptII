@@ -821,7 +821,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
      *  that are enabled, follow the chain of such immediate transitions
      *  and return the state will be transitioned to when those immediate
      *  transitions are taken. Otherwise, return the current state.
-     *  @returns The next state after following immediate transitions from
+     *  @return The next state after following immediate transitions from
      *   the current state.
      *  @throws IllegalActionException If guards cannot be evaluated.
      */

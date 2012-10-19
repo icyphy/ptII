@@ -90,6 +90,10 @@ public class MultiCompositeActor extends TypedCompositeActor {
     /** Mirror a set of container ports in the refinement.
      *  @param refinement The refinement in which to create ports.
      *  @param portsToMirror The ports to mirror in the refinement.
+     *  @exception IllegalActionException If the port cannot be set
+     *  to a multiport or to an output.
+     *  @exception NameDuplicationException If a port cannot be added
+     *  to the the refinement.
      */
     public static void mirrorContainerPortsInRefinement(Refinement refinement,
             Set<Port> portsToMirror) throws IllegalActionException,

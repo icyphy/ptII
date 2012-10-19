@@ -129,7 +129,7 @@ public class AttributeController extends IconController {
     /** Render the value of the _highlightColor parameter.
      *  @param namedObj  The NamedObj that contains the _highlightColor
      *  parameter.
-     *  @param Figure the Diva figure that is rendered.
+     *  @param figure the Diva figure that is rendered.
      */
     public static void renderHighlight(NamedObj namedObj, Figure figure) {
         // New way to specify a highlight color.
