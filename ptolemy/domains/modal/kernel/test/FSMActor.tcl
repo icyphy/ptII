@@ -305,7 +305,7 @@ test FSMActor-7.1 {test exception when multiple transitions enabled} {
     catch {$dir fire} msg
     $dir terminate
     list $msg
-} {{ptolemy.domains.modal.kernel.MultipleEnabledTransitionsException: Nondeterministic FSM error: Multiple enabled transitions found but not all of them are nondeterministic. Transition t0 is deterministic.
+} {{ptolemy.domains.modal.kernel.MultipleEnabledTransitionsException: Nondeterministic FSM error: Multiple enabled transitions found but not all of them are nondeterministic. Transition t0 is deterministic. The following transitions are all enabled: {t0, t1}
   in .<Unnamed Object>.fsm.s0}}
 
 ######################################################################

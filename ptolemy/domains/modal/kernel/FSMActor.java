@@ -426,12 +426,16 @@ public class FSMActor extends CompositeEntity implements TypedActor,
      *  were found in the specified transition list that
      *  referred to input ports that are not currently known.
      *  @param transitionList A list of transitions.
-     *  @param immediateOnly True to consider only immediate transitions.
+     *  @param preemptive True to consider only preemptive transitions,
+     *   false to consider only non-preemptive transitions.
+     *  @param immediateOnly True to consider only immediate transitions,
+     *   false to consider both immediate and non-immediate transitions.
      *  @return A list of enabled transition.
      *  @exception IllegalActionException If the guard expression of any
      *  transition can not be evaluated.
      */
-    public List enabledTransitions(List transitionList, boolean immediateOnly)
+    public List enabledTransitions(
+            List transitionList, boolean preemptive, boolean immediateOnly)
             throws IllegalActionException {
         LinkedList enabledTransitions = new LinkedList();
         LinkedList defaultTransitions = new LinkedList();
@@ -446,6 +450,10 @@ public class FSMActor extends CompositeEntity implements TypedActor,
                 if (!isImmediate) {
                     continue;
                 }
+            }
+            if (preemptive && !transition.isPreemptive()
+                    || !preemptive && transition.isPreemptive()) {
+                continue;
             }
             boolean transitionRefersToUnknownInputs = !_referencedInputPortsByGuardKnown(transition);
             _foundUnknown = _foundUnknown || transitionRefersToUnknownInputs;
@@ -589,13 +597,13 @@ public class FSMActor extends CompositeEntity implements TypedActor,
 
         // Choose transitions from the preemptive transitions,
         // including any immediate transitions that these lead to.
-        List<Transition> preemptiveTransitionList = _currentState
-                .preemptiveTransitionList();
+        List<Transition> transitionList = _currentState.outgoingPort.linkedRelationList();
         // The last argument ensures that we look at all transitions
         // not just those that are marked immediate.
+        // Second to last argument ensures that we look only at preemptive transitions.
         // The following has the side effect of putting the chosen
-        // transitions into the _lastChosenTransition map of the controller.
-        _chooseTransitions(preemptiveTransitionList, false);
+        // transitions into the _lastChosenTransitions map of the controller.
+        _chooseTransitions(transitionList, true, false);
 
         // If there is an enabled preemptive transition, then we know
         // that the current refinements cannot generate outputs, so we
@@ -673,7 +681,11 @@ public class FSMActor extends CompositeEntity implements TypedActor,
                     if (_debugging) {
                         _debug("** Checking error transitions.");
                     }
-                    _chooseTransitions(errorTransitionList, false);
+                    // It makes no sense for error transitions to be preemptive,
+                    // so we look only at non-preemptive error transitions.
+                    // FIXME: Is the error caught that preemptive error transitions
+                    // are not allowed?
+                    _chooseTransitions(errorTransitionList, false, false);
                     if (_lastChosenTransitions.size() > 0) {
                         // An error transition was chosen. We are done.
                         if (inModalModel) {
@@ -690,14 +702,14 @@ public class FSMActor extends CompositeEntity implements TypedActor,
 
                 // Choose transitions from the nonpreemptive transitions,
                 // including any immediate transitions that these lead to.
-                List<Transition> nonpreemptiveTransitionList = _currentState
-                        .nonpreemptiveTransitionList();
                 if (_debugging) {
                     _debug("** Checking nonpreemptive transitions.");
                 }
                 // The last argument ensures that we look at all transitions
                 // not just those that are marked immediate.
-                _chooseTransitions(nonpreemptiveTransitionList, false);
+                // The next to the last ensures that we look only at
+                // non-preemptive transitions.
+                _chooseTransitions(transitionList, false, false);
             }
         }
         // Finally, assert any absent outputs that can be asserted absent.
@@ -817,36 +829,6 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         return getDirector();
     }
 
-    /** If the current state has any immediate transitions out of it
-     *  that are enabled, follow the chain of such immediate transitions
-     *  and return the state will be transitioned to when those immediate
-     *  transitions are taken. Otherwise, return the current state.
-     *  @return The next state after following immediate transitions from
-     *   the current state.
-     *  @throws IllegalActionException If guards cannot be evaluated.
-     */
-    public State getImmediateNextState() throws IllegalActionException {
-        // Check for immediate transitions out of the initial state,
-        // and also for any enabled transition (to request a refiring
-        // at the current time.
-        // NOTE: There is no current state when the FSMActor is in fact a Ptera
-        // controller. (tfeng 05/12/2009)
-        State result = _currentState;
-        if (_currentState != null) {
-            List transitionList = _currentState.outgoingPort
-                    .linkedRelationList();
-            _chooseTransitions(transitionList, true);
-            result = _destinationState();
-            if (result == null) {
-                result = _currentState;
-            }
-        }
-        if (_debugging) {
-            _debug("** Immediate next state is: " + result.getName());
-        }
-        return result;
-    }
-    
     /** Return the initial state of this actor. The initial state is
      *  the unique state with its <i>isInitialState</i> parameter set
      *  to true. An exception is thrown if this actor does not contain
@@ -1063,13 +1045,21 @@ public class FSMActor extends CompositeEntity implements TypedActor,
             List transitionList = _currentState.outgoingPort
                     .linkedRelationList();
             if (_debugging) {
-                _debug("** Checking immediate transitions.");
+                _debug("** Checking immediate preemptive transitions.");
             }
-            _chooseTransitions(transitionList, true);
+            _chooseTransitions(transitionList, true, true);
             if (_lastChosenTransitions.size() > 0) {
                 _transitionTaken = true;
             } else {
-                _transitionTaken = false;
+                if (_debugging) {
+                    _debug("** Checking immediate non-preemptive transitions.");
+                }
+                _chooseTransitions(transitionList, false, true);
+                if (_lastChosenTransitions.size() > 0) {
+                    _transitionTaken = true;
+                } else {
+                    _transitionTaken = false;
+                }
             }
             _commitLastChosenTransition();
             // Need to clear this again.
@@ -1077,16 +1067,21 @@ public class FSMActor extends CompositeEntity implements TypedActor,
 
             // If there is a non-immediate transition enabled in the initial state,
             // then request a refiring at the current time.
-            if (_debugging) {
-                _debug("** Checking all transitions to see whether to request a firing at the current time.");
-            }
             try {
                 // State may have changed. Get new transition list.
                 transitionList = _currentState.outgoingPort.linkedRelationList();
-                List enabledTransitions = enabledTransitions(transitionList, false);
+                // Check both preemptive and non-preemptive transitions.
+                if (_debugging) {
+                    _debug("** Checking preemptive transitions to see whether to request a firing at the current time.");
+                }
+                List enabledTransitions = enabledTransitions(transitionList, true, false);
+                if (_debugging) {
+                    _debug("** Checking non-preemptive transitions to see whether to request a firing at the current time.");
+                }
+                enabledTransitions.addAll(enabledTransitions(transitionList, false, false));
                 if (enabledTransitions.size() > 0) {
                     if (_debugging) {
-                        _debug("FSMActor requesting refiring by at "
+                        _debug("A transition from the initial state is enabled. FSMActor requesting refiring by at "
                                 + getDirector().getModelTime());
                     }
                     getDirector().fireAtCurrentTime(this);
@@ -1448,9 +1443,15 @@ public class FSMActor extends CompositeEntity implements TypedActor,
             List transitionList = _currentState.outgoingPort
                     .linkedRelationList();
             if (_debugging) {
-                _debug("** Checking immediate transitions.");
+                _debug("** Checking immediate preemptive transitions.");
             }
-            _chooseTransitions(transitionList, true);
+            _chooseTransitions(transitionList, true, true);
+            if (_lastChosenTransitions.size() == 0) {
+                if (_debugging) {
+                    _debug("** Checking immediate non-preemptive transitions.");
+                }
+                _chooseTransitions(transitionList, false, true);
+            }
             _commitLastChosenTransition();
             // Need to clear this again.
             _transitionsPreviouslyChosenInIteration.clear();
@@ -1833,14 +1834,18 @@ public class FSMActor extends CompositeEntity implements TypedActor,
      *  As a side effect, the controller's _lastChosenTransitions
      *  protected variable will contain the chosen transitions.
      *  @param transitionList The candidate transitions.
+     *  @param premptive True to consider only preemptive transitions,
+     *   and false to consider only non-preemptive transitions.
      *  @param immediateOnly If true, look only at immediate
-     *   transitions from the current state.
+     *   transitions from the current state. Otherwise, look
+     *   at both immediate and non-immediate transitions.
      *  @exception IllegalActionException If something goes wrong.
      */
-    protected void _chooseTransitions(List<Transition> transitionList,
-            boolean immediateOnly) throws IllegalActionException {
+    protected void _chooseTransitions(
+            List<Transition> transitionList, boolean preemptive, boolean immediateOnly)
+            throws IllegalActionException {
         Transition chosenTransition = _chooseTransition(_currentState,
-                transitionList, immediateOnly);
+                transitionList, preemptive, immediateOnly);
 
         // A self-loop that is immediate is not allowed, because if it is enabled,
         // it implied an infinite number of traversals.
@@ -1854,7 +1859,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         // so we should also choose transitions on the destination state.
         // The following set is used
         // to detect cycles of immediate transitions.
-        //FIXME: cmot, should the visitedStates not be part of the fire function and resetted
+        // NOTE: cmot, should the visitedStates not be part of the fire function and resetted
         // once a normal transition is taken? Maybe a fire method is called twice and that
         // would hide an immediate cycle (because visitedStates is reset for the second call). Both
         // calls and consecutive ones may happen in the same fixed point iteration.
@@ -1875,8 +1880,15 @@ public class FSMActor extends CompositeEntity implements TypedActor,
                 _debug("** Checking for immediate transitions out of the next state: "
                         + nextState.getName());
             }
-            chosenTransition = _chooseTransition(nextState, transitionList,
-                    true);
+            // Try preemptive transitions first, then non-preemptive.
+            chosenTransition = _chooseTransition(
+                    nextState, transitionList, true, true);
+            if (chosenTransition == null) {
+                // Only try non-preemptive transitions if no preemptive transition
+                // is enabled.
+                chosenTransition = _chooseTransition(
+                        nextState, transitionList, false, true);
+            }
         }
     }
 
@@ -2545,7 +2557,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
     /** A map from ports to corresponding input variables. */
     protected Map _inputTokenMap = new HashMap();
 
-    /** The most recently chosen transition. */
+    /** The most recently chosen transition within the fire() method. */
     protected Transition _lastChosenTransition;
 
     /** The last chosen transitions, by state from which these transitions emerge. */
@@ -2834,18 +2846,21 @@ public class FSMActor extends CompositeEntity implements TypedActor,
      *  referred to input ports that are not currently known.
      *  @param currentState The state from which transitions are examined.
      *  @param transitionList A list of transitions.
-     *  @param immediateOnly True to consider only immediate transitions.
+     *  @param preemptive True to consider only preemptive transitions,
+     *   false to consider only non-preemptive transitions.
+     *  @param immediateOnly True to consider only immediate transitions,
+     *   false to consider both immediate and non-immediate transitions.
      *  @return An enabled transition, or null if none is enabled.
      *  @exception IllegalActionException If there is more than one
      *   transition enabled and not all of them are nondeterministic.
      */
     private Transition _chooseTransition(State currentState,
-            List transitionList, boolean immediateOnly)
+            List transitionList, boolean preemptive, boolean immediateOnly)
             throws IllegalActionException {
 
         // Get the transitions enabled from the current state.
         List<Transition> enabledTransitions = enabledTransitions(
-                transitionList, immediateOnly);
+                transitionList, preemptive, immediateOnly);
         int numberOfEnabledTransitions = enabledTransitions.size();
 
         Transition chosenTransition = null;
@@ -2859,13 +2874,26 @@ public class FSMActor extends CompositeEntity implements TypedActor,
             // are nondeterministic.
             for (Transition enabledTransition : enabledTransitions) {
                 if (!enabledTransition.isNondeterministic()) {
+                    // Construct an informative error message.
+                    StringBuffer enabled = new StringBuffer();
+                    for (Transition transition : enabledTransitions) {
+                        if (enabled.length() == 0) {
+                            enabled.append("{");
+                        } else {
+                            enabled.append(", ");
+                        }
+                        enabled.append(transition.getName());
+                    }
+                    enabled.append("}");
                     throw new MultipleEnabledTransitionsException(
                             currentState,
                             "Nondeterministic FSM error: "
                                     + "Multiple enabled transitions found but not all"
                                     + " of them are nondeterministic. Transition "
                                     + enabledTransition.getName()
-                                    + " is deterministic.");
+                                    + " is deterministic. "
+                                    + "The following transitions are all enabled: "
+                                    + enabled);
                 }
             }
             // If one of these transitions has been previously chosen in
@@ -2940,7 +2968,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
                 // If the transition into the current state is a reset transition,
                 // then initialize the source state refinements. Note that this is safe to do
                 // in the fire() method because a transition cannot be unchosen later.
-                // Note that at this point, _lastChosenTransition is the transiting _into_
+                // Note that at this point, _lastChosenTransition is the transition _into_
                 // the current state, if there is one.
                 if (_lastChosenTransition != null) {
                     BooleanToken resetToken = (BooleanToken) _lastChosenTransition.reset
@@ -3016,8 +3044,11 @@ public class FSMActor extends CompositeEntity implements TypedActor,
 
             // Commit to this transition, if it is != null.
             _lastChosenTransitions.put(currentState, chosenTransition);
+            // Set this only if there is a non-null chosen transition, since
+            // we want to remember the last chosen transition even if there
+            // no preemptive immediate transition.
+            _lastChosenTransition = chosenTransition;
         }
-        _lastChosenTransition = chosenTransition;
         return chosenTransition;
     }
 

@@ -455,10 +455,14 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
             FSMActor controller = getController();
             List transitionList = controller.currentState().outgoingPort
                     .linkedRelationList();
-            // FIXME: Does this do the right thing with a chain
-            // of immediate transitions?
+            // First check preemptive transitions, then non-preemptive ones.
             List enabledTransitions = controller.enabledTransitions(
-                    transitionList, false);
+                    transitionList, true, false);
+            if (enabledTransitions.size() > 0) {
+                return getModelTime();
+            }
+            enabledTransitions = controller.enabledTransitions(
+                    transitionList, false, false);
             if (enabledTransitions.size() > 0) {
                 return getModelTime();
             }
@@ -603,15 +607,17 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
 
         // If the exception is an InvariantViolationException
         // exception, check if any transition is enabled.
+        // FIXME: This whole mechanism needs to be checked...
         if (exception instanceof InvariantViolationException) {
             FSMActor controller = getController();
             controller.readOutputsFromRefinement();
 
-            State st = controller.currentState();
+            State currentState = controller.currentState();
             // FIXME: Need to understand how error transitions work
-            // in combination with immediate transitions.
+            // in combination with immediate transitions and model errors.
+            // Note that this only makes sense for non-preemptive transitions.
             List enabledTransitions = controller.enabledTransitions(
-                    st.nonpreemptiveTransitionList(), false);
+                    currentState.outgoingPort.linkedRelationList(), false, false);
 
             if (enabledTransitions.size() == 0) {
                 ModelErrorHandler container = getContainer();
@@ -1343,8 +1349,8 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
         }
     }
 
-    /** Reset the output receivers, which are the inside receivers of the output ports of the
-     *  container.
+    /** Reset the output receivers, which are the inside receivers of 
+     *  the output ports of the container.
      *  @exception IllegalActionException If getting the receivers fails.
      */
     private void _resetOutputReceivers() throws IllegalActionException {
