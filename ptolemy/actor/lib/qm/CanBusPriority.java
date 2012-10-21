@@ -67,7 +67,7 @@ public class CanBusPriority extends Transformer {
            throws NameDuplicationException, IllegalActionException {
        super(container, name);
        
-       value = new Parameter(this, "CanId");
+       value = new Parameter(this, "value");
        value.setExpression("1");
        value.setTypeEquals(BaseType.INT);       
 
