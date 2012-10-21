@@ -161,6 +161,7 @@ test release-3.1 {Run svn status and look for files that should be checked in.  
 ?       ptolemy/actor/lib/jai/test/auto/PtolemyII.jpg} {
 ?       ptolemy/actor/lib/jai/test/auto/PtolemyII.pgm} {
 ?       ptolemy/actor/lib/jai/test/auto/PtolemyII.tif} {
+?       ptolemy/actor/lib/jai/test/auto/file.png} {
 ?       ptolemy/actor/lib/test/cobertura.ser} {
 ?       ptolemy/configs/doc/ClassesIllustrated} {
 ?       ptolemy/matlab/META-INF} {
@@ -168,7 +169,6 @@ test release-3.1 {Run svn status and look for files that should be checked in.  
 ?       ptolemy/vergil/basic/export/html/test/Butterfly.gif} {
 ?       ptserver/test/PtolemyServer.log} {
 ?       reports} {
-M       lbnl/lib/matlab/bcvtb.m} {
 M       lib/diva.jar}}
         if { $result == $result2 } {
 	    puts "Result was:\n$result\nWhich is ok"
