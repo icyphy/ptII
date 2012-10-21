@@ -229,13 +229,13 @@ public class HybridModalDirector extends FSMDirector implements
             // Check whether there is any preemptive transition enabled.
             FSMActor controller = getController();
             State currentState = controller.currentState();
+            List transitionList = currentState.outgoingPort.linkedRelationList();
             List preemptiveEnabledTransitions = controller.enabledTransitions(
-                    currentState.preemptiveTransitionList(), false, false);
+                    transitionList, true, false);
 
             // Check whether there is any non-preemptive transition enabled.
             List nonpreemptiveEnabledTransitions = controller
-                    .enabledTransitions(
-                            currentState.nonpreemptiveTransitionList(), false, false);
+                    .enabledTransitions(transitionList, false, false);
 
             // Check whether there is any event detected for preemptive transitions.
             Transition preemptiveTrWithEvent = _checkEvent(currentState
