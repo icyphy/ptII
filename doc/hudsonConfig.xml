@@ -219,6 +219,20 @@ PTINYOS_MOMLROOT=${WORKSPACE}/vendors/ptinyos/moml</localVarText>
               <keepAll>false</keepAll>
               <wrapperName>htmlpublisher-wrapper.html</wrapperName>
             </htmlpublisher.HtmlPublisherTarget>
+            <htmlpublisher.HtmlPublisherTarget>
+              <reportName>ptII doc</reportName>
+              <reportDir>doc</reportDir>
+              <reportFiles>index.html</reportFiles>
+              <keepAll>false</keepAll>
+              <wrapperName>htmlpublisher-wrapper.html</wrapperName>
+            </htmlpublisher.HtmlPublisherTarget>
+            <htmlpublisher.HtmlPublisherTarget>
+              <reportName>copyright</reportName>
+              <reportDir></reportDir>
+              <reportFiles>copyright.htm</reportFiles>
+              <keepAll>false</keepAll>
+              <wrapperName>htmlpublisher-wrapper.html</wrapperName>
+            </htmlpublisher.HtmlPublisherTarget>
           </reportTargets>
         </originalValue>
         <propertyOverridden>false</propertyOverridden>
