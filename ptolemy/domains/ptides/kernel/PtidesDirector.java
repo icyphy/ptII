@@ -54,6 +54,7 @@ import ptolemy.actor.util.CausalityInterface;
 import ptolemy.actor.util.Dependency;
 import ptolemy.actor.util.SuperdenseDependency;
 import ptolemy.actor.util.Time;
+import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.Token;
@@ -1266,16 +1267,42 @@ public class PtidesDirector extends DEDirector {
                      Object errorHandlerEntity = errorHandlerEntities.get(j);
                      if (errorHandlerEntity instanceof Const && 
                              ((Const)errorHandlerEntity).getName().equals("missed" + port.getName())) {
+                         
                          ((Const)errorHandlerEntity).fire();
-                         errorHandler.fire();
+                         
+                         Time time = errorHandler.getDirector().getModelNextIterationTime();
+                         int index = 1;
+                         while (time.compareTo(getModelTime()) <= 0) {
+                             ((CompositeActor)errorHandler).getDirector().setModelTime(time); 
+                             ((DEDirector)((CompositeActor)errorHandler).getDirector()).setIndex(index);
+                             ((CompositeActor)errorHandler).prefire(); 
+                             ((CompositeActor)errorHandler).fire(); 
+                             ((CompositeActor)errorHandler).postfire();
+                             Time previousTime = time;
+                             time = errorHandler.getDirector().getModelNextIterationTime();
+                             if (time.equals(previousTime)) {
+                                 index++;
+                             } else {
+                                 index = 1;
+                             }
+                         }
+                         
                          List attributes = errorHandler.attributeList();
                          for (int k = 0; k < attributes.size(); k++) {
                              Attribute attribute = (Attribute) attributes.get(k);
                              if (attribute instanceof Parameter) {
                                  if (((Parameter)attribute).getName().equals("drop" + port.getName())) {
-                                     return null;
-                                 } else if (((Parameter)attribute).getName().equals("execute" + port.getName())) {
-                                     return event;
+                                     if (((Parameter)attribute).getToken() != null && 
+                                             ((BooleanToken)((Parameter)attribute).getToken()).booleanValue()) {
+                                         ((Parameter)attribute).setToken("false");
+                                         return null;
+                                     }
+                                 } 
+                                 if (((Parameter)attribute).getName().equals("execute" + port.getName())) {
+                                     if (((Parameter)attribute).getToken() != null && 
+                                             ((BooleanToken)((Parameter)attribute).getToken()).booleanValue()) {
+                                         return event;
+                                     }
                                  }
                              }
                          }
