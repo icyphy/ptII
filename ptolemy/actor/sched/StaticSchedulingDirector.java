@@ -252,7 +252,7 @@ public class StaticSchedulingDirector extends Director {
                         iterationCount));
             } 
         } 
-        if (_savedSchedule.size() == _savedSchedulePosition) {
+        if (_savedSchedule.size() <= _savedSchedulePosition) {
             _savedSchedule = null;
         }
     } 
