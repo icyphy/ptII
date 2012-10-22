@@ -47,7 +47,7 @@
 	what is available.
       </li>
       <li>Expand the "Collaboration" tab and check the box next to
-      "Subversive SVN Team Provider (Incubation)"</li>
+      "Subversive SVN Team Provider"</li>
       
       <li>Then click <code>Next</code>, <code>Next</code> again and click
 	through the license agreement and hit <code>Finish</code>.  
@@ -67,13 +67,22 @@
       <li> In the "Subversion Connector Discovery" window, what version
 	you select depends on what version of svn is installed on your
 	machine.  
-	<br/>To determine which version of Java is being run, start up a Terminal window
+	<br/>To determine which version of Subversion is being run, start up a DOS or Cygwin shell and
+run <code>svn --version</code>.  To start  a DOS Shell:
+	<dl>
+	  <dt>Windows Server 2003 or Windows XP:</dt>
+	  <dd>Click on Start &gt; Run &gt and type <code>cmd</code></dd>
+	  <dt>Windows Vista and 7</dt>
+	  <dd>Click on Start  and type <code>cmd</code></dd>
+	</dl>
 	by going to Application -> Utilities and clicking on the Terminal icon, then type:
 	<pre>
 	  svn --version
 	</pre>
 	<br/>If <code>svn --version</code> returns 1.5, then install SVN Kit 1.2.3
 	<br/>If <code>svn --version</code> returns 1.6, then install SVN Kit 1.3.7
+	<br/>If you do not have the <code>svn</code> command installed, then select the most
+	recent SVN Kit and you <i>should</i> be able to download ptII using the SVN Kit supplied by Eclipse.
 
 	<p>Note: if you install a more recent version of the plugin than the
 	  version of the command line <code>svn</code> tool, then
@@ -84,8 +93,6 @@
 	  <code> svn: This client is too old to work with working copy '.'; please get a newer Subversion
 	    client</code>, then the solution is to
 	  <a href="http://subversion.apache.org/packages.html#in_browser" target="_top">update svn</a>.</p>
-	<p>Note: If you do not have the <code>svn</code> command installed, then
-	  you <i>should</i> be able to download ptII using the SVN Kit supplied by Eclipse.
 
 	<p>Then do "Finish", "Next", "Next", Accept the license and then
 	  "Finish".</p>
