@@ -1829,6 +1829,7 @@ public class Director extends Attribute implements Executable {
 
     /** Find resource scheduler for actor. 
      *  @param actor The actor to be scheduled.  
+     *  @return the resource scheduler.
      */
     protected ResourceScheduler _getScheduler(Actor actor) {
         if (_schedulerForActor == null) {

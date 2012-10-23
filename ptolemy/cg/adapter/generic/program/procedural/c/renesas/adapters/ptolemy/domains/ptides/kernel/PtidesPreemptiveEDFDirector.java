@@ -109,6 +109,10 @@ public class PtidesPreemptiveEDFDirector
         return code.toString();
     }
 
+    /** Generate the interrupt code.
+     *  @exception IllegalActionExceptino If there is a problem
+     *  accessing the model.
+     */
     public void generateInterruptCode() throws IllegalActionException {
         List args = new ArrayList();
         for (int key : _interruptHandlerNames.keySet()) {
@@ -175,6 +179,10 @@ public class PtidesPreemptiveEDFDirector
 
     }
 
+    /** Generate the interrupt vector table.
+     *  @exception IllegalActionExceptino If there is a problem
+     *  accessing the model.
+     */
     public String generateInterruptVectorTableCode()
             throws IllegalActionException {
         _templateParser.getCodeStream().clear();

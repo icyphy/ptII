@@ -131,13 +131,13 @@ public class HTMLImage extends WebContent {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    /** Generate the image file and a <table/> element holding an <img/>
-     *  element and a caption for the image.
-    *
-    *  @param exporter The WebExporter to add content to
-    *  @exception IllegalActionException If something is wrong generating the
-    *  image file or generating the additional web content
-    */
+    /** Generate the image file and a &lt;table&gt; element holding an
+     *  &lt;img/&gt; element and a caption for the image..
+     *
+     *  @param exporter The WebExporter to add content to
+     *  @exception IllegalActionException If something is wrong generating the
+     *  image file or generating the additional web content
+     */
     public void _provideElements(WebExporter exporter)
             throws IllegalActionException {
 

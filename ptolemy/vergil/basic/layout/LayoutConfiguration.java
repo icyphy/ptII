@@ -147,6 +147,7 @@ public class LayoutConfiguration extends Attribute {
     /** Whether to include unconnected nodes such as comments. */
     public Parameter includeDecorations;
 
+    /** Wether bends are minimized.  The default value is true. */
     public Parameter minimizeBends;
 
     //    /** Whether to try to optimize relation vertices or not. */

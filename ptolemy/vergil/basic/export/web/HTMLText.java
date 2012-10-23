@@ -98,7 +98,7 @@ public class HTMLText extends WebContent {
         return true;
     }
 
-    /** Generate a <div/> element holding the text content.
+    /** Generate a &lt;div&gt; element holding the text content.
      *
      *  @param exporter The WebExporter to add content to
      *  @exception IllegalActionException If something is wrong generating the

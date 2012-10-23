@@ -1834,7 +1834,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
      *  As a side effect, the controller's _lastChosenTransitions
      *  protected variable will contain the chosen transitions.
      *  @param transitionList The candidate transitions.
-     *  @param premptive True to consider only preemptive transitions,
+     *  @param preemptive True to consider only preemptive transitions,
      *   and false to consider only non-preemptive transitions.
      *  @param immediateOnly If true, look only at immediate
      *   transitions from the current state. Otherwise, look

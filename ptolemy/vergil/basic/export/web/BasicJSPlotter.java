@@ -437,7 +437,7 @@ public abstract class BasicJSPlotter extends WebContent implements
         _bodyContent.append("\t\t" + content);
     }
 
-    /** Insert a string to the header with auto-indent
+    /** Insert a string to the header with auto-indent.
      *  @param isJavaScript Whether the inserted content is JavaScript code
      *  @param autoIndent Whether the content should be auto-indented
      *  @param content the content to be inserted

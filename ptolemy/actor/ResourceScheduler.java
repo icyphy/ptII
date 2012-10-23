@@ -176,7 +176,7 @@ public abstract class ResourceScheduler extends MoMLModelAttribute implements
     }
 
     /** Initialize local variables.
-     * @returns Next time this scheduler requests a firing.
+     * @return Next time this scheduler requests a firing.
      * @exception IllegalActionException Thrown if list of actors
      *   scheduled by this scheduler cannot be retrieved.
      */
@@ -209,7 +209,7 @@ public abstract class ResourceScheduler extends MoMLModelAttribute implements
      *  activity that is displayed in the plotter.
      *  @param actor The actor to be scheduled.
      *  @param currentPlatformTime The current platform time.
-     *  @param deadline. The deadline of the event.
+     *  @param deadline The deadline of the event.
      *  @param executionTime The execution time of the actor.
      *  @return Relative time when this Scheduler has to be executed
      *    again.

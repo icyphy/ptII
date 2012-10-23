@@ -187,21 +187,22 @@ public class ParameterDisplayIconScript extends DefaultIconScript {
 
     /** Provide default content to the specified web exporter to be
      *  included in a web page for the container of this object for
-     *  objects that do not override onmouseover.
-     *  This class provides an HTML table containing parameter names and values,
-     *  plus a placeholder <div/> tag which the script writes information in
-     *  upon onmouseover().
+     *  objects that do not override onmouseover.  This class provides
+     *  an HTML table containing parameter names and values, plus a
+     *  placeholder &lt;div&gt; tag which the script writes
+     *  information in upon onmouseover().
      *
      *  @param exporter The exporter to which to provide the content.
      *  @exception IllegalActionException If evaluating the value
      *   of this parameter fails.
      */
-    // FIXME:  How to do this, from old comments?
-    //*  If the <i>eventType</i> parameter is "default", then
-    //*  remove all previously defined defaults and use the global
-    //*  defaults.
     protected void _provideElements(WebExporter exporter)
             throws IllegalActionException {
+        // FIXME:  How to do this, from old comments?
+        //*  If the <i>eventType</i> parameter is "default", then
+        //*  remove all previously defined defaults and use the global
+        //*  defaults.
+
         WebElement webElement;
 
         // Add content from IconScript (DefaultIconScript does not override
