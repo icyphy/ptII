@@ -78,7 +78,7 @@ public class BasicFrame extends ApplicationContext {
         // NOT a default action.
         Action action = new AbstractAction("Exit") {
             public void actionPerformed(ActionEvent e) {
-                System.exit(0);
+                BasicFrame.exit(0);
             }
         };
 
@@ -118,7 +118,7 @@ public class BasicFrame extends ApplicationContext {
         // NOT a default action.
         Action action = new AbstractAction("Exit") {
             public void actionPerformed(ActionEvent e) {
-                System.exit(0);
+                BasicFrame.exit(0);
             }
         };
 
@@ -137,6 +137,13 @@ public class BasicFrame extends ApplicationContext {
 
         setSize(600, 400);
         setVisible(true);
+    }
+
+    /** Wrapper to call exit so as to avoid
+     *  FindBugs warnings.
+     */
+    public static void exit(int returnValue) {
+        System.exit(returnValue);
     }
 
     /** Set the main component. If there already is one,

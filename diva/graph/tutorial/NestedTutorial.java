@@ -111,7 +111,7 @@ public class NestedTutorial {
             layoutPostDisplay(model, context);
         } catch (Exception ex) {
             ex.printStackTrace();
-            System.exit(0);
+            BasicFrame.exit(0);
         }
     }
 

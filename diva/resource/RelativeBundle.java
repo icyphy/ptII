@@ -37,6 +37,8 @@ import java.util.ResourceBundle;
 
 import javax.swing.ImageIcon;
 
+import diva.gui.BasicFrame;
+
 /**
  * A class for managing resources. This class is an extension to the
  * standard ResourceBundle that allows you to construct
