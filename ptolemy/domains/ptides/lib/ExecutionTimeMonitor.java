@@ -239,8 +239,8 @@ public class ExecutionTimeMonitor extends TypedAtomicActor implements
                     BooleanToken token = (BooleanToken) parameter.getToken();
                     monitor = token.booleanValue();
                 }
-            } catch (Exception ex) {
-                // do nothing, assume the actor should not be monitored
+            } catch (Throwable throwable) {
+                // Do nothing, assume the actor should not be monitored.
             }
             if (monitor) {
                 _actors.add(containedActor);

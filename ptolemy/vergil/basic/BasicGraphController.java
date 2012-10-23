@@ -535,12 +535,12 @@ public abstract class BasicGraphController extends AbstractGraphController
                 // (Save _configureMenuFactory for use in sub classes)
                 _configureMenuFactory = new MenuActionFactory(_configureAction);
                 _menuFactory.addMenuItemFactory(_configureMenuFactory);
-            } catch (Exception ex) {
+            } catch (Throwable throwable) {
                 // do nothing - will default to ptii right-click menus
                 // System.out.println("Unable to use the alternative right-click menu "
                 // + "handler that was specified in the "
                 // + "configuration; defaulting to ptii handler. "
-                // + "Exception was: " + ex);
+                // + "Exception was: " + throwable);
             }
         }
         // if the above has failed in any way, _menuFactory will still be null,

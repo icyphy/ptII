@@ -338,7 +338,7 @@ public class TransformationEditor extends GTFrame implements ActionListener,
                 String data = (String) transferable
                         .getTransferData(DataFlavor.stringFlavor);
                 clipboard.setContents(new StringSelection(header + data), this);
-            } catch (Exception e) {
+            } catch (Throwable throwable) {
                 // Ignore. Do not add the header.
                 // Avoid a FindBugs warning about ignored exception.
                 return;
