@@ -206,6 +206,7 @@ public class PtidesDirector extends DEDirector {
     /** Add a new event to the input queue. Compute the time when
      *  this input can be consumed and store in queue. The time depends on
      *  the device delay.
+     *  @param sourcePort the source port.
      *  @param event New input event.
      *  @param deviceDelay The device delay.
      *  @exception IllegalActionException If device delay parameter cannot be computed.
@@ -1182,7 +1183,7 @@ public class PtidesDirector extends DEDirector {
             for (Object sinkPort : port.sinkPortList()) {
                 sinkActorEventQueueSize.put(
                         (Actor) ((IOPort) sinkPort).getContainer(),
-                        new Integer(0));
+                        Integer.valueOf(0));
             }
         }
         Object[] eventArray = _eventQueue.toArray();

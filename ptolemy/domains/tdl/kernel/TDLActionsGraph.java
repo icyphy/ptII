@@ -313,7 +313,7 @@ public class TDLActionsGraph {
         ArrayList invocations = _getInvocations(slots, frequency);
         // if task is periodic, it is a let task. otherwise schedule it as a
         // special action
-        Long offset, let = new Long(0), inv = new Long(0);
+        Long offset, let = Long.valueOf(0), inv = Long.valueOf(0);
         boolean periodic = true;
         // frequency must be divide able by amount of invocations without rest
         long newlet = 0;
