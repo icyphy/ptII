@@ -1363,7 +1363,7 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
                 Inequality ineq = new Inequality(current, getTypeTerm());
                 result.add(ineq);
             }
-        } catch (Exception e) {
+        } catch (Throwable throwable) {
             // Ignored: expression cannot be evaluated at this time.
             // do nothing.
         }

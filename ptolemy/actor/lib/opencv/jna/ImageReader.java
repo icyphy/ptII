@@ -96,7 +96,7 @@ public class ImageReader extends Source {
             _image = cvLoadImage(pathNameString, 1);
             if (_image == null) {
                 throw new IllegalActionException(this, "Fail to load image "
-                        + _image.getClass());
+                        + pathNameString);
             }
 
         }

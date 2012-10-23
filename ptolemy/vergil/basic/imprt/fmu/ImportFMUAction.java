@@ -38,6 +38,7 @@ import ptolemy.actor.lib.fmi.FMUImport;
 import ptolemy.gui.ComponentDialog;
 import ptolemy.gui.Query;
 import ptolemy.gui.Top;
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.util.MessageHandler;
 import ptolemy.vergil.basic.AbstractBasicGraphModel;
@@ -112,63 +113,66 @@ public class ImportFMUAction extends AbstractAction {
      */
     private void _importFMU() {
         try {
-            BasicGraphFrame basicGraphFrame = null;
             if (_frame instanceof BasicGraphFrame) {
-                basicGraphFrame = (BasicGraphFrame) _frame;
-            }
-            Query query = new Query();
-            query.setTextWidth(60);
-            // Use this file chooser so that we can read URLs or files.
-            query.addFileChooser("location", "Location (URL)", _lastLocation,
-            /* URI base */null,
-            /* File startingDirectory */basicGraphFrame.getLastDirectory(),
-            /* allowFiles */true,
-            /* allowDirectories */false,
-            /* Color background */
-            PtolemyQuery.preferredBackgroundColor(_frame),
-                    PtolemyQuery.preferredForegroundColor(_frame));
+                throw new InternalErrorException("Frame " + _frame
+                        + " is not a BasicGraphFrame?");
+            } else {
+                BasicGraphFrame basicGraphFrame =  (BasicGraphFrame) _frame;
 
-            ComponentDialog dialog = new ComponentDialog(_frame,
-                    "Instantiate Functional Mock-up Unit (.fmi)", query);
-            if (dialog.buttonPressed().equals("OK")) {
-                _lastLocation = query.getStringValue("location");
+                Query query = new Query();
+                query.setTextWidth(60);
+                // Use this file chooser so that we can read URLs or files.
+                query.addFileChooser("location", "Location (URL)", _lastLocation,
+                        /* URI base */null,
+                        /* File startingDirectory */basicGraphFrame.getLastDirectory(),
+                        /* allowFiles */true,
+                        /* allowDirectories */false,
+                        /* Color background */
+                        PtolemyQuery.preferredBackgroundColor(_frame),
+                        PtolemyQuery.preferredForegroundColor(_frame));
 
-                // Get the associated Ptolemy model.
-                GraphController controller = basicGraphFrame.getJGraph()
+                ComponentDialog dialog = new ComponentDialog(_frame,
+                        "Instantiate Functional Mock-up Unit (.fmi)", query);
+                if (dialog.buttonPressed().equals("OK")) {
+                    _lastLocation = query.getStringValue("location");
+
+                    // Get the associated Ptolemy model.
+                    GraphController controller = basicGraphFrame.getJGraph()
                         .getGraphPane().getGraphController();
-                AbstractBasicGraphModel model = (AbstractBasicGraphModel) controller
+                    AbstractBasicGraphModel model = (AbstractBasicGraphModel) controller
                         .getGraphModel();
-                NamedObj context = model.getPtolemyModel();
+                    NamedObj context = model.getPtolemyModel();
 
-                // Use the center of the screen as a location.
-                Rectangle2D bounds = basicGraphFrame
+                    // Use the center of the screen as a location.
+                    Rectangle2D bounds = basicGraphFrame
                         .getVisibleCanvasRectangle();
-                double x = bounds.getWidth() / 2.0;
-                double y = bounds.getHeight() / 2.0;
+                    double x = bounds.getWidth() / 2.0;
+                    double y = bounds.getHeight() / 2.0;
 
-                // Unzip the fmuFile.  We probably need to do this
-                // because we will need to load the shared library later.
-                String fmuFileName = null;
+                    // Unzip the fmuFile.  We probably need to do this
+                    // because we will need to load the shared library later.
+                    String fmuFileName = null;
 
-                // FIXME: Use URLs, not files so that we can work from JarZip files.
+                    // FIXME: Use URLs, not files so that we can work from JarZip files.
 
-                // Only read the file if the name has changed from the last time we
-                // read the file or if the modification time has changed.
-                //fmuFileName = fmuFile.asFile().getCanonicalPath();
-                fmuFileName = _lastLocation;
-                if (fmuFileName.equals(_fmuFileName)) {
-                    return;
+                    // Only read the file if the name has changed from the last time we
+                    // read the file or if the modification time has changed.
+                    //fmuFileName = fmuFile.asFile().getCanonicalPath();
+                    fmuFileName = _lastLocation;
+                    if (fmuFileName.equals(_fmuFileName)) {
+                        return;
+                    }
+                    _fmuFileName = fmuFileName;
+
+                    long modificationTime = new File(fmuFileName).lastModified();
+                    if (_fmuFileModificationTime == modificationTime) {
+                        return;
+                    }
+
+                    _fmuFileModificationTime = modificationTime;
+
+                    FMUImport.importFMU(this, fmuFileName, context, x, y);
                 }
-                _fmuFileName = fmuFileName;
-
-                long modificationTime = new File(fmuFileName).lastModified();
-                if (_fmuFileModificationTime == modificationTime) {
-                    return;
-                }
-
-                _fmuFileModificationTime = modificationTime;
-
-                FMUImport.importFMU(this, fmuFileName, context, x, y);
             }
         } catch (Exception ex) {
             MessageHandler.error("Import FMU failed", ex);

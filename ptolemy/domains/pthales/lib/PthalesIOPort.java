@@ -53,6 +53,7 @@ import ptolemy.domains.pthales.kernel.PthalesDirector;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Settable;
 
@@ -196,12 +197,16 @@ public class PthalesIOPort {
                 }
             }
 
-            p.setVisibility(Settable.FULL);
-            p.setPersistent(true);
-            if (p.getExpression().equals("")) {
-                p.setExpression(array.toString());
+            if (p == null) {
+                throw new InternalErrorException(port, null,
+                        "Could not create Parameter named \"size\"?");
+            } else {
+                p.setVisibility(Settable.FULL);
+                p.setPersistent(true);
+                if (p.getExpression().equals("")) {
+                    p.setExpression(array.toString());
+                }
             }
-
         } catch (IllegalActionException e) {
             e.printStackTrace();
         }

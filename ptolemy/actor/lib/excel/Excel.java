@@ -221,7 +221,9 @@ public class Excel extends TypedAtomicActor {
 
         try {
             // Close Excel file
-            workbook.close();
+            if (workbook != null) {
+                workbook.close();
+            }
         } catch (IOException e) {
             e.printStackTrace();
         } catch (WriteException e) {

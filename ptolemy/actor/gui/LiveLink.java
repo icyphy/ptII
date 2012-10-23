@@ -34,6 +34,7 @@ import java.util.List;
 import ptolemy.data.expr.FileParameter;
 import ptolemy.kernel.attributes.URIAttribute;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.util.MessageHandler;
@@ -103,8 +104,10 @@ public class LiveLink extends FileParameter implements Editable {
      *  This editor will have no parent window.
      */
     public void createEditor() {
-        createEditor(null, null);
+        throw new InternalErrorException(this, null,
+                "createEditor() should not be called.");
     }
+
 
     /** Create an editor for configuring the specified object.
      *  This editor will have no parent window.

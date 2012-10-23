@@ -330,13 +330,16 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable,
             contents = new LinkedList<StringBuffer>();
             _contents.put(webElement.getParent(), contents);
         }
+        StringBuffer webElementBuffer = new StringBuffer(webElement.getExpression());
+        // Check to see whether contents are already present.
         if (onceOnly) {
-            // Check to see whether contents are already present.
-            if (contents.contains(webElement.getExpression())) {
+            // FIXME: Will List.contains() work if two StringBuffers
+            // are constructed from the same String?
+            if (contents.contains(webElementBuffer)) {
                 return;
             }
         }
-        contents.add(new StringBuffer(webElement.getExpression()));
+        contents.add(new StringBuffer(webElementBuffer));
     }
 
     /** Export an HTML page and associated subpages for the specified
@@ -1193,13 +1196,16 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable,
             contents = new LinkedList<StringBuffer>();
             _contents.put(position, contents);
         }
+        StringBuffer contentsBuffer = new StringBuffer(content);
+        // Check to see whether contents are already present.
         if (onceOnly) {
-            // Check to see whether contents are already present.
-            if (contents.contains(content)) {
+            // FIXME: Will List.contains() work if two StringBuffers
+            // are constructed from the same String?
+            if (contents.contains(contentsBuffer)) {
                 return;
             }
         }
-        contents.add(new StringBuffer(content));
+        contents.add(contentsBuffer);
     }
 
     /** Add to the specified result list the bounds of the icon

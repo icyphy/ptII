@@ -92,5 +92,5 @@ public class DesignPatternIcon extends NameIcon {
     }
 
     /** The cached Swing icon. */
-    protected Icon _iconCache = null;
+    //protected Icon _iconCache = null;
 }

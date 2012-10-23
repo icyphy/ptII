@@ -33,6 +33,7 @@ import java.awt.geom.Rectangle2D;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.swing.Icon;
 import javax.swing.SwingConstants;
 
 import ptolemy.actor.gui.PtolemyPreferences;
@@ -417,7 +418,7 @@ public class EditorIcon extends Attribute {
      *  for use in a library.
      *  @return A new Swing Icon.
      */
-    public javax.swing.Icon createIcon() {
+    public Icon createIcon() {
         // In this class, we cache the rendered icon, since creating icons from
         // figures is expensive.
         if (_iconCache != null) {
@@ -558,7 +559,7 @@ public class EditorIcon extends Attribute {
     protected NamedObj _containerToBe;
 
     /** The cached Swing icon. */
-    protected javax.swing.Icon _iconCache = null;
+    protected Icon _iconCache = null;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
