@@ -69,10 +69,10 @@ import ptolemy.kernel.util.Workspace;
  Note that in Ptides the SuperdenseDependency is used for computing
  offsets and deadlines. The dependency between the input and the output
  of this actor is the <i>minimumDelay</i>. A <i>minimumDelay</i> of
- values > 0.0 allows for more efficient execution of Ptides models. If
+ values greater than 0.0 allows for more efficient execution of Ptides models. If
  this actor is used as a fixed delay actor, i.e. the delay value is not
  changed during the execution, the <i>minimumDelay</i> should be set to
- the actual delay.
+ the actual delay, which is the default.
  <p>
  For directors that implement {@link SuperdenseTimeDirector}, such as
  DE, the output microstep of an event will match the input microstep,
