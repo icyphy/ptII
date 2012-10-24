@@ -356,7 +356,9 @@ public class ModalModel extends TypedCompositeActor implements ChangeListener {
                 }
             }
             for (TypedActor actor : entityList(Refinement.class)) {
-                if (!activeRefinements.contains(actor) && actor != _controller) {
+                // FindBugs: Using pointer equality to compare _controller (a FSMActor)
+                // with actor, which is a Refinement)
+                if (!activeRefinements.contains(actor) /*&& actor != _controller*/) {
                     if (MessageHandler.yesNoQuestion("Unused state refinement in modal model: "
                             + actor.getFullName()
                             + ". Remove it?")) {
