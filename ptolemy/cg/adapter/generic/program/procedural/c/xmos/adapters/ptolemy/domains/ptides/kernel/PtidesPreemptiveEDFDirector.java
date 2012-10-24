@@ -279,7 +279,7 @@ public class PtidesPreemptiveEDFDirector
         int sensorIndex = 0;
         String devicePortId = "";
         String deviceId = "";
-        String actuatorIds = "";
+        StringBuffer actuatorIds = new StringBuffer();
         for (Actor actor : (List<Actor>) ((CompositeActor) _director
                 .getContainer()).deepEntityList()) {
             if (actor instanceof ActuatorSetup) {
@@ -320,21 +320,21 @@ public class PtidesPreemptiveEDFDirector
 
         args.clear();
 
-        String switchstatement = "switch(type) {\n";
+        StringBuffer switchstatement = new StringBuffer("switch(type) {\n");
         for (Actor actuator : actuators.keySet()) {
             String deviceName = CodeGeneratorAdapter
                     .generateName((NamedObj) actuator);
-            switchstatement += "case " + _deviceIds.get(actuator) + ":\n";
-            switchstatement += "    newEvent->fire = " + deviceName + ";\n";
-            switchstatement += "break;\n";
+            switchstatement.append("case " + _deviceIds.get(actuator) + ":\n"
+                    + "    newEvent->fire = " + deviceName + ";\n"
+                    + "break;\n");
             if (actuatorIds.length() > 0) {
-                actuatorIds += ", ";
+                actuatorIds.append(", ");
             }
-            actuatorIds += _deviceIds.get(actuator);
+            actuatorIds.append(_deviceIds.get(actuator));
         }
-        switchstatement += "}";
-        args.add(actuatorIds);
-        args.add(switchstatement);
+        switchstatement.append("}");
+        args.add(actuatorIds.toString());
+        args.add(switchstatement.toString());
 
         _templateParser.getCodeStream().append(
                 _templateParser.getCodeStream().getCodeBlock("ActuationBlock",
@@ -448,52 +448,57 @@ public class PtidesPreemptiveEDFDirector
         List<String> args = new ArrayList<String>();
         _templateParser.getCodeStream().clear();
 
-        String sensorDefinition = "", sensorReadyFlags = "", sensorSwitch = "while (1) {\n    select {\n";
+        StringBuffer sensorDefinition = new StringBuffer();
+        StringBuffer sensorReadyFlags = new StringBuffer();
+        StringBuffer sensorSwitch = new StringBuffer("while (1) {\n    select {\n");
         for (Actor sensor : sensors.keySet()) {
             String deviceName = CodeGeneratorAdapter
                     .generateName((NamedObj) sensor) + "_device";
 
-            sensorDefinition += "on stdcore[1]: in port " + deviceName + " = "
-                    + _devicePortIds.get(sensor) + ";\n";
+            sensorDefinition.append("on stdcore[1]: in port " + deviceName + " = "
+                    + _devicePortIds.get(sensor) + ";\n");
 
-            sensorReadyFlags += "uint8 " + deviceName + "Ready = TRUE;\n";
+            sensorReadyFlags.append("uint8 " + deviceName + "Ready = TRUE;\n");
 
-            sensorSwitch += "case " + deviceName + " when pinseq(" + deviceName
+            sensorSwitch.append("case " + deviceName + " when pinseq(" + deviceName
                     + "Ready) :> void:\n" + "if (" + deviceName + "Ready) {\n"
                     + "getTimestamp(timestamp, platformClockChannel);\n"
                     + CodeGeneratorAdapter.generateName((NamedObj) sensor)
                     + "(schedulerChannel, timestamp);\n" + deviceName
                     + "Ready = FALSE;\n" + "} else {\n" + deviceName
-                    + "Ready = TRUE;\n" + "}\n break; \n";
+                    + "Ready = TRUE;\n" + "}\n break; \n");
         }
-        sensorSwitch += "}\n}\n";
 
-        String actuatorDefinition = "", doActuation = "", initActuatorString = "";
+        sensorSwitch.append("}\n}\n");
+
+        StringBuffer actuatorDefinition = new StringBuffer();
+        StringBuffer doActuation = new StringBuffer();
+        StringBuffer initActuatorString = new StringBuffer();
         for (Actor actuator : actuators.keySet()) {
             String deviceName = CodeGeneratorAdapter
                     .generateName((NamedObj) actuator);
-            actuatorDefinition += "on stdcore[1]: out port " + deviceName
-                    + " = " + _devicePortIds.get(actuator) + ";\n";
+            actuatorDefinition.append("on stdcore[1]: out port " + deviceName
+                    + " = " + _devicePortIds.get(actuator) + ";\n");
 
-            doActuation += "void "
+            doActuation.append("void "
                     + deviceName
                     + "_Actuation() {\n"
                     + "timer time;\n uint32 count;\n"
                     + deviceName
                     + " <: 1;\n time :> count;\ntime when timerafter(count + 5000) :> void;"
-                    + deviceName + " <: 0;\n}\n";
+                    + deviceName + " <: 0;\n}\n");
 
-            initActuatorString += deviceName + " <: 0;\n";
+            initActuatorString.append(deviceName + " <: 0;\n");
         }
 
         String sensorProtoCode = _generateSensorFuncProtoCode();
-        args.add(sensorDefinition);
+        args.add(sensorDefinition.toString());
         args.add(sensorProtoCode);
-        args.add(actuatorDefinition);
-        args.add(sensorReadyFlags);
-        args.add(sensorSwitch);
-        args.add(doActuation);
-        args.add(initActuatorString);
+        args.add(actuatorDefinition.toString());
+        args.add(sensorReadyFlags.toString());
+        args.add(sensorSwitch.toString());
+        args.add(doActuation.toString());
+        args.add(initActuatorString.toString());
 
         _templateParser.getCodeStream().append(
                 _templateParser.getCodeStream().getCodeBlock("XCCodeBlock",
