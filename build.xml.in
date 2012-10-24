@@ -169,7 +169,7 @@
 	  description="Remove all the class files, the ${ptII.reports} directory and any codeDoc directories.">
     <delete quiet="true" verbose="no" includeemptydirs="true">
       <fileset dir="${basedir}" includes="reports/**" defaultexcludes="false"/>
-      <fileset dir="${basedir}" includes="**/codeDoc/**" defaultexcludes="false"/>
+      <fileset dir="${basedir}" includes="**/codeDoc*/**" defaultexcludes="false"/>
     </delete>
   </target>
 

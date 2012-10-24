@@ -637,6 +637,11 @@ FULL_DOCS = \
 
 # 'make clean' removes files listed in $(KRUFT)
 KRUFT = \
+	codeDoc \
+	codeDocBcvtb \
+	codeDocHyVisual \
+	codeDocVisualSense \
+	codeDocViptos \
 	codeDoc.jar \
 	codeDocBcvtb.jar \
 	codeDocHyVisual.jar \
