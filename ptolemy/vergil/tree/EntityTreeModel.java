@@ -29,6 +29,7 @@ package ptolemy.vergil.tree;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -272,9 +273,9 @@ public class EntityTreeModel implements TreeModel {
                         valueForPathChanged(new TreePath(path.toArray()),
                                 locality);
                     } catch (IllegalArgumentException ex) {
-                        new RuntimeException(
+                        throw new RuntimeException(
                                 "Failed to instantiate a TreePath, path was "
-                                        + path.toArray() + " locality was "
+                                + Arrays.toString(path.toArray()) + " locality was "
                                         + locality, ex);
                     }
                 }
