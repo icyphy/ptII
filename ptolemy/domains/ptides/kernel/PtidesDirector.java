@@ -143,7 +143,7 @@ import ptolemy.kernel.util.NamedObj;
  *  for actuation events, and to setup the wake-up time for timed interrupts.
  *  Also, the Ptides operational semantics assumes
  *  a bound in the time synchronization error. This error is captured in the
- *  parameter {@link #assumedPlatformTimeSynchronizationErrorBound}. If
+ *  parameter {@link #clockSynchronizationErrorBound}. If
  *  the actual error exceeds this bound, the safe-to-process analysis could
  *  produce an incorrect result. The demo PtidesNetworkLatencyTest illustrates
  *  this error.</p>
@@ -159,12 +159,12 @@ import ptolemy.kernel.util.NamedObj;
  *  April, 2009.</p>
  *
  *
- * @author Patricia Derler, Edward A. Lee, Slobodan Matic, Mike Zimmer, Jia Zou
-   @version $Id$
-   @since Ptolemy II 0.2
-
-   @Pt.ProposedRating Red (derler)
-   @Pt.AcceptedRating Red (derler)
+ *  @author Patricia Derler, Edward A. Lee, Slobodan Matic, Mike Zimmer, Jia Zou
+ *  @version $Id$
+ *  @since Ptolemy II 8.1
+ *
+ *  @Pt.ProposedRating Red (derler)
+ *  @Pt.AcceptedRating Red (derler)
  */
 public class PtidesDirector extends DEDirector {
 

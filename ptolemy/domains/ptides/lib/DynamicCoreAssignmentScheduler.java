@@ -96,7 +96,7 @@ public class DynamicCoreAssignmentScheduler extends ResourceScheduler {
      *  this scheduler has to perform a reschedule.
      *  @param actor The actor to be scheduled.
      *  @param currentPlatformTime The current platform time.
-     *  @param deadline. The deadline of the event.
+     *  @param deadline The deadline of the event.
      *  @param executionTime The execution time of the actor.
      *  @return Relative time when this Scheduler has to be executed
      *    again.

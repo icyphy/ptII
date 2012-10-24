@@ -256,7 +256,7 @@ public class WebServer extends AbstractInitializableAttribute {
 
     /** A directory where the web server will look for resources
      *  (like image files and the like). This specifies an additional
-     *  resource location after {@link resourceLocation}, but the
+     *  resource location after {@link #resourceLocation}, but the
      *  directory specified here may be used by components implementing
      *  {@link HttpService} as a place to write temporary files
      *  that will be found by the web server.

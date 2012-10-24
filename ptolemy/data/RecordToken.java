@@ -58,7 +58,7 @@ import ptolemy.util.StringUtilities;
 
  <p>Record labels are sanitized so that any non-Java identifier
  characters are replaced with underscores, see
- {@linkptolemy.util.StringUtilities.sanitizeName(String)}</p>
+ {@link ptolemy.util.StringUtilities.sanitizeName(String)}</p>
 
  @author Yuhong Xiong, Steve Neuendorffer, Elaine Cheong, Edward Lee; contributor: J. S. Senecal
  @version $Id$
@@ -89,7 +89,7 @@ public class RecordToken extends AbstractNotConvertibleToken {
      *
      *  <p>Record labels are sanitized so that any non-Java identifier
      *  characters are replaced with underscores, see
-     *  {@linkptolemy.util.StringUtilities.sanitizeName(String)}</p>
+     *  {@link ptolemy.util.StringUtilities.sanitizeName(String)}</p>
      *
      *  @param labels An array of labels.
      *  @param values An array of Tokens.
@@ -107,7 +107,7 @@ public class RecordToken extends AbstractNotConvertibleToken {
      *
      *  <p>Record labels are sanitized so that any non-Java identifier
      *  characters are replaced with underscores, see
-     *  {@linkptolemy.util.StringUtilities.sanitizeName(String)}</p>
+     *  {@link ptolemy.util.StringUtilities.sanitizeName(String)}</p>
      *
      *  @param init A string expression of a record.
      *  @exception IllegalActionException If the string does not
@@ -384,7 +384,7 @@ public class RecordToken extends AbstractNotConvertibleToken {
      *
      *  <p>Record labels are sanitized so that any non-Java identifier
      *  characters are replaced with underscores, see
-     *  {@linkptolemy.util.StringUtilities.sanitizeName(String)}</p>
+     *  {@link ptolemy.util.StringUtilities.sanitizeName(String)}</p>
      *
      *  @return A String beginning with "{" that contains label and value
      *  pairs separated by commas, ending with "}".
