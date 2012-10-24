@@ -1082,7 +1082,7 @@ public class SootUtilities {
             SootClass class2 = ((RefType) type2).getSootClass();
             return derivesFrom(class1, class2);
         } else if (/* type1 instanceof Type && */
-        type2 instanceof RefType) {
+        type2 instanceof ArrayType) {
             Type elementType1 = ((ArrayType) type1).baseType;
 
             // FIXME: FindBugs: Impossible cast from soot.RefType to

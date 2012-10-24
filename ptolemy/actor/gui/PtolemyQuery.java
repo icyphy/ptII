@@ -205,9 +205,9 @@ public class PtolemyQuery extends Query implements QueryListener,
                                 .getCurrentValue();
                         int min = ((IntRangeParameter) attribute).getMinValue();
                         int max = ((IntRangeParameter) attribute).getMaxValue();
-                        String minLabel = ((DoubleRangeParameter) attribute).minLabel
+                        String minLabel = ((IntRangeParameter) attribute).minLabel
                                 .stringValue();
-                        String maxLabel = ((DoubleRangeParameter) attribute).maxLabel
+                        String maxLabel = ((IntRangeParameter) attribute).maxLabel
                                 .stringValue();
 
                         // minLabel and maxLabel can contain the special placeholders $min and
