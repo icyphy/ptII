@@ -338,8 +338,7 @@ public class CanBus extends MonitoredQuantityManager {
     public int nextCanId() {
         Set es = _tokenTree.entrySet();
         Iterator<Map.Entry<Integer, LinkedList<Object[]>>> it = es.iterator();
-        Integer result = new Integer(0); 
-        result = it.next().getKey();
+        Integer result = it.next().getKey();
 
         while (_tokenTree.get(result).isEmpty() && it.hasNext()) {
             result = it.next().getKey();
