@@ -26,6 +26,9 @@
     <include name="lbnl/lbnl.jar" />
     <include name="org/json/json.jar" />
     <include name="org/mlc/mlc.jar" />
+    <include name="org/ptolemy/fmi/fmi.jar" />
+    <include name="org/ptolemy/ptango/ptango.jar" />
+    <include name="org/ptolemy/ptango/demo/demo.jar" />
     <include name="ptolemy/actor/gt/demo/demo.jar" />
     <include name="ptolemy/actor/gt/gt.jar" />
     <include name="ptolemy/actor/gui/jnlp/BCVTBApplication.jar" />
@@ -2798,6 +2801,70 @@
       </fileset>
       <fileset dir="${basedir}">
 	<include name="org/mlc/swing/layout/*.xml"/>
+      </fileset>
+    </jar>
+
+    <!-- org/ptolemy/fmi/fmi.jar -->
+    <jar defaultexcludes="yes"
+	 destfile="${basedir}/org/ptolemy/fmi/fmi.jar"
+	 >
+      <fileset dir="${basedir}">
+	<include name="org/ptolemy/fmi/*.class"/>
+      </fileset>
+      <fileset dir="${basedir}">
+	<include name="org/ptolemy/fmi/type/*.class"/>
+      </fileset>
+      <fileset dir="${basedir}">
+	<include name="org/ptolemy/fmi/driver/*.class"/>
+      </fileset>
+      <fileset dir="${basedir}">
+	<include name="org/ptolemy/fmi/driver/*.htm"/>
+      </fileset>
+    </jar>
+
+    <!-- org/ptolemy/ptango/ptango.jar -->
+    <jar defaultexcludes="yes"
+	 destfile="${basedir}/org/ptolemy/ptango/ptango.jar"
+	 >
+      <fileset dir="${basedir}">
+	<include name="org/ptolemy/ptango/lib/*.class"/>
+      </fileset>
+      <fileset dir="${basedir}">
+	<include name="org/ptolemy/ptango/lib/*.xml"/>
+      </fileset>
+    </jar>
+
+
+    <!-- org/ptolemy/ptango/demo/demo.jar -->
+    <jar defaultexcludes="yes"
+	 destfile="${basedir}/org/ptolemy/ptango/demo/demo.jar"
+	 >
+      <fileset dir="${basedir}">
+	<include name="org/ptolemy/ptango/demo/*/*.xml"/>
+      </fileset>
+      <fileset dir="${basedir}">
+	<include name="org/ptolemy/ptango/demo/*/*.gif"/>
+      </fileset>
+      <fileset dir="${basedir}">
+	<include name="org/ptolemy/ptango/demo/*/*.htm*"/>
+      </fileset>
+      <fileset dir="${basedir}">
+	<include name="org/ptolemy/ptango/demo/*/*.png"/>
+      </fileset>
+      <fileset dir="${basedir}">
+	<include name="org/ptolemy/ptango/demo/*/*.txt"/>
+      </fileset>
+      <fileset dir="${basedir}">
+	<include name="org/ptolemy/ptango/demo/*/data/*.txt"/>
+      </fileset>
+      <fileset dir="${basedir}">
+	<include name="org/ptolemy/ptango/demo/*/pages/*.css"/>
+      </fileset>
+      <fileset dir="${basedir}">
+	<include name="org/ptolemy/ptango/demo/*/pages/*.html"/>
+      </fileset>
+      <fileset dir="${basedir}">
+	<include name="org/ptolemy/ptango/demo/*/pages/*.png"/>
       </fileset>
     </jar>
 
