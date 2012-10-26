@@ -233,8 +233,6 @@ public class Transition extends ComponentRelation {
             workspace().incrVersion();
         } else if (attribute == immediate) {
             _immediate = ((BooleanToken) immediate.getToken()).booleanValue();
-        } else if (attribute == history) {
-            _history = ((BooleanToken) history.getToken()).booleanValue();
         } else if (attribute == nondeterministic) {
             _nondeterministic = ((BooleanToken) nondeterministic.getToken())
                     .booleanValue();
@@ -585,11 +583,16 @@ public class Transition extends ComponentRelation {
      *  and return that value.
      *  If there is no such parameter, then we have to assume the default
      *  behavior that prevailed before 9.1.devel, and set history to true.
+     *  @throws IllegalActionException If the value of the history parameter
+     *   cannot be read.
      */
-    public boolean isHistory() {
-        if (_history) {
-            return true;
+    public boolean isHistory() throws IllegalActionException {
+        // Ensure that the corrections below for older version compatibility
+        // are performed only once.
+        if (_historySet) {
+            return ((BooleanToken)history.getToken()).booleanValue();
         }
+        _historySet = true;
         // History has not been explicitly set true. Should use either new
         // or old default depending on the version of Ptolemy that created the model.
         try {
@@ -1066,10 +1069,9 @@ public class Transition extends ComponentRelation {
     // Version of the cached guard parse tree
     private long _guardParseTreeVersion = -1;
 
-    // Set to true if the transition is a history transition,
-    // which means that destination state refinements should not
-    // be reset.
-    private boolean _history = false;
+    // Flag to ensure that the corrections below for older version compatibility
+    // are performed only once.
+    private boolean _historySet = false;
 
     // Set to true if the transition should be checked
     // as soon as the source state is entered. This may lead

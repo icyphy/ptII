@@ -183,7 +183,13 @@ public class TransitionController extends BasicEdgeController {
             // When first dragging out a transition, the relation
             // may still be null.
             if (transition != null) {
-                if (transition.isHistory()) {
+                boolean isHistory = false;
+                try {
+                    isHistory = transition.isHistory();
+                } catch (IllegalActionException e2) {
+                    // Ignore and render as a non-history transition.
+                }
+                if (isHistory) {
                     Blob blob = new Blob(0, 0, 0, Blob.ARROW_CIRCLE_H, 6.0,
                             Color.green);
                     c.setHeadEnd(blob);
@@ -191,6 +197,7 @@ public class TransitionController extends BasicEdgeController {
                     Arrowhead arrowhead = new Arrowhead();
                     c.setHeadEnd(arrowhead);
                 }
+
                 if (transition.isPreemptive() && !transition.isImmediate()) {
                     Blob blob = new Blob(0, 0, 0, Blob.BLOB_CIRCLE, 4.0,
                             Color.red);
