@@ -27,7 +27,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 
  */
-package ptolemy.domains.ptides.lib;
+package ptolemy.actor;
 
 import java.awt.Frame;
 

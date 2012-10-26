@@ -38,8 +38,6 @@ import ptolemy.data.DoubleToken;
 import ptolemy.data.ObjectToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
-import ptolemy.domains.ptides.lib.DynamicCoreAssignmentScheduler;
-import ptolemy.domains.ptides.lib.SchedulePlotterEditorFactory;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.DecoratedAttributesImplementation;
 import ptolemy.kernel.util.DecoratedAttributes;
@@ -325,7 +323,8 @@ public abstract class ResourceScheduler extends MoMLModelAttribute implements
                     ((ObjectToken) schedulerAttribute.getToken()).getValue() instanceof ResourceScheduler) {   
                 ResourceScheduler scheduler = (ResourceScheduler) ((ObjectToken) schedulerAttribute.getToken()).getValue();
                 if (scheduler == this
-                        || (scheduler instanceof DynamicCoreAssignmentScheduler && !(entity instanceof ResourceScheduler))) {
+                        || (/*scheduler instanceof DynamicCoreAssignmentScheduler &&*/ 
+                                !(entity instanceof ResourceScheduler))) {
                     Double executionTime = ResourceScheduler
                             ._getDoubleParameterValue(
                                     (NamedObj) compositeActor,
@@ -398,9 +397,9 @@ public abstract class ResourceScheduler extends MoMLModelAttribute implements
      */
     private void _readActorParameters(Actor actor)
             throws IllegalActionException {
-        if (actor instanceof DynamicCoreAssignmentScheduler) {
+        /*if (actor instanceof DynamicCoreAssignmentScheduler) {
             return;
-        }
+        }*/
         List attributeList = ((NamedObj) actor).attributeList();
         if (attributeList.size() > 0) {
             for (int i = 0; i < attributeList.size(); i++) {
@@ -413,7 +412,8 @@ public abstract class ResourceScheduler extends MoMLModelAttribute implements
                         if (paramObject instanceof ResourceScheduler) {
                             ResourceScheduler scheduler = (ResourceScheduler) paramObject;
                             if (scheduler == this
-                                    || (scheduler instanceof DynamicCoreAssignmentScheduler && !(actor instanceof ResourceScheduler))) {
+                                    || (/*scheduler instanceof DynamicCoreAssignmentScheduler &&*/ 
+                                    !(actor instanceof ResourceScheduler))) {
                                 Double executionTime = ResourceScheduler
                                         ._getDoubleParameterValue(
                                                 (NamedObj) actor,

@@ -77,8 +77,7 @@ JSRCS = \
 	SlaveClock.java \
 	ExecutionTimeListener.java \
 	ExecutionTimeMonitor.java \
-	PlatformTimeMonitor.java \
-	SchedulePlotterEditorFactory.java
+	PlatformTimeMonitor.java 
 
 OTHER_FILES_TO_BE_JARED = \
 	ptidesentities.xml \
