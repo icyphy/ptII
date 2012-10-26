@@ -74,6 +74,7 @@ import ptolemy.data.type.HasTypeConstraints;
 import ptolemy.data.type.ObjectType;
 import ptolemy.data.type.Type;
 import ptolemy.data.type.Typeable;
+import ptolemy.domains.modal.modal.ModalModel;
 import ptolemy.domains.ptera.kernel.PteraModalModel;
 import ptolemy.graph.Inequality;
 import ptolemy.graph.InequalityTerm;
@@ -1976,15 +1977,13 @@ public class FSMActor extends CompositeEntity implements TypedActor,
             action.execute();
         }
 
-        // If the chosen transition is a reset transition, initialize the destination
+        // If the chosen transition is not a history transition, initialize the destination
         // refinement. Note that initializing the director will normally also have
         // the side effect of setting its time and time to match the enclosing
         // director. This is done before invoking the set actions because (1)
         // the initialization may reverse the set actions or, (2)
         // the set actions may trigger attributeChanged() calls that depend on
         // the current time or index.
-        BooleanToken resetToken = (BooleanToken) currentTransition.reset
-                .getToken();
         // If the currentTransition is the last in the chain of chosen
         // transitions and the transition is a reset transition, then
         // initialize the destination refinement.
@@ -1995,7 +1994,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         if (_lastChosenTransitions.get(nextState) == null) {
             // If this is a reset transition, then we also need to initialize
             // the destination refinement.
-            if (resetToken.booleanValue()) {
+            if (!currentTransition.isHistory()) {
                 _initializeRefinements(nextState);
             }
         }
@@ -2637,9 +2636,8 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         // are FSMs, those refinements have asserted at least one output
         // to be absent.
 
-        Director director = getDirector();
         boolean foundAbsentOutputs = false;
-        if (director instanceof FSMDirector) {
+        if (getContainer() instanceof ModalModel) {
             // Inside a modal model.
             // We now iterate over all output ports of the container
             // of this director, and for each such output port p,
@@ -2971,9 +2969,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
                 // Note that at this point, _lastChosenTransition is the transition _into_
                 // the current state, if there is one.
                 if (_lastChosenTransition != null) {
-                    BooleanToken resetToken = (BooleanToken) _lastChosenTransition.reset
-                            .getToken();
-                    if (resetToken.booleanValue()) {
+                    if (!_lastChosenTransition.isHistory()) {
                         _initializeRefinements(currentState);
                     }
                 }

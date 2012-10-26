@@ -615,8 +615,7 @@ public class Event extends State implements Initializable {
             if (relation.isCanceling()) {
                 director.cancel(nextEvent);
             } else {
-                boolean reset = ((BooleanToken) relation.reset.getToken())
-                        .booleanValue();
+                boolean reset = !relation.isHistory();
                 Token edgeArguments = relation.getArguments(scope);
                 Time time = times.get(relation);
                 TimedEvent timedEvent = new TimedEvent(nextEvent, time,

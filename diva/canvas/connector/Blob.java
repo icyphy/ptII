@@ -65,6 +65,10 @@ public class Blob implements ConnectorEnd {
     /** Specify a star style
      */
     public final static int STAR = BLOB_CIRCLE_DIAMOND + 1;
+    
+    /** Arrow, circle, H style.
+     */
+    public final static int ARROW_CIRCLE_H = STAR + 1;
 
     /** The style.
      */
@@ -106,6 +110,9 @@ public class Blob implements ConnectorEnd {
      * should set this variable to a stroke with appropriate width.
      */
     public Stroke stroke = new BasicStroke(3.0f);
+
+    /** A narrow stroke. */
+    public Stroke narrowStroke = new BasicStroke(1.0f);
 
     /**
      * Create a new circle blob at (0,0).
@@ -171,6 +178,14 @@ public class Blob implements ConnectorEnd {
         case BLOB_DIAMOND:
             p.setLocation(_originX + (3 * _unit), _originY);
             break;
+            
+        case BLOB_CIRCLE_DIAMOND:
+            p.setLocation(_originX + (4 * _unit), _originY);
+            break;
+
+        case ARROW_CIRCLE_H:
+            p.setLocation(_originX + (4 * _unit), _originY);
+            break;
         }
 
         AffineTransform at = new AffineTransform();
@@ -215,6 +230,7 @@ public class Blob implements ConnectorEnd {
             g.setPaint(_fillColor);
             g.fill(_shape);
             g.setPaint(oldPaint);
+            g.setStroke(narrowStroke);
             g.draw(_shape);
         } else {
             g.draw(_shape);
@@ -296,6 +312,49 @@ public class Blob implements ConnectorEnd {
                     _originY + sinPIover8 * insideRadius);
             star.lineTo(_originX, _originY);
             _shape = star;
+            break;
+        case ARROW_CIRCLE_H:
+            double length = _unit * 2.0;
+            double l1 = length * 1.0;
+            double l2 = length * 1.3;
+            double w = length * 0.4;
+            // Fudge factor so arrowhead doesn't overlap circle.
+            double fudge = 1.0f;
+
+            // Arrowhead part.
+            Path2D arrow = new Path2D.Float();
+            arrow.moveTo(_originX + 2 * _unit + fudge, _originY);
+            arrow.lineTo(_originX + l2 + 2 * _unit + fudge, _originY + w);
+            arrow.lineTo(_originX + l1 + 2 * _unit + fudge, _originY);
+            arrow.lineTo(_originX + l2 + 2 * _unit + fudge, _originY - w);
+            arrow.closePath();
+
+            // Circle part.
+            arrow.moveTo(_originX + 2 * _unit, _originY);
+            arrow.curveTo(
+                    _originX + 2 * _unit, _originY - 1.3 * _unit,
+                    _originX, _originY - 1.3 * _unit,
+                    _originX, _originY);
+            /*
+            arrow.lineTo(_originX + 2 * _unit + 1.5 * _unit, _originY - _unit);
+            arrow.lineTo(_originX + 2 * _unit + 3.0 * _unit, _originY);
+            arrow.lineTo(_originX + 2 * _unit + 1.5 * _unit, _originY + _unit);
+            arrow.lineTo(_originX + 2 * _unit, _originY);
+            */
+            arrow.curveTo(
+                    _originX, _originY + 1.3 * _unit,
+                    _originX + 2 * _unit, _originY + 1.3 * _unit,
+                    _originX + 2 * _unit, _originY);
+            
+            // H part.
+            double halfHeight = 0.60 * _unit;
+            arrow.moveTo(_originX + 0.6 * _unit, _originY - halfHeight);
+            arrow.lineTo(_originX + 0.6 * _unit, _originY + halfHeight);
+            arrow.moveTo(_originX + 0.6 * _unit, _originY);
+            arrow.lineTo(_originX + 1.4 * _unit, _originY);
+            arrow.moveTo(_originX + 1.4 * _unit, _originY - halfHeight);
+            arrow.lineTo(_originX + 1.4 * _unit, _originY + halfHeight);
+            _shape = arrow;
             break;
         }
 

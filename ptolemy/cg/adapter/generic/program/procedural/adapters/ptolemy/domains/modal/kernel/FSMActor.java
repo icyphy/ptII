@@ -39,7 +39,6 @@ import ptolemy.actor.TypedIOPort;
 import ptolemy.cg.kernel.generic.ParseTreeCodeGenerator;
 import ptolemy.cg.kernel.generic.program.CodeStream;
 import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
-import ptolemy.data.BooleanToken;
 import ptolemy.data.ObjectToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.ASTPtRootNode;
@@ -486,13 +485,11 @@ public class FSMActor extends NamedProgramCodeGeneratorAdapter {
                 State destinationState = transition.destinationState();
                 _updateCurrentState(codeBuffer, destinationState);
 
-                // generate code for reinitialization if reset is
-                // true.  we assume the value of reset itself cannot
+                // generate code for reinitialization if history is
+                // false.  we assume the value of history itself cannot
                 // be changed dynamically
 
-                BooleanToken resetToken = (BooleanToken) transition.reset
-                        .getToken();
-                if (resetToken.booleanValue()) {
+                if (!transition.isHistory()) {
                     actors = destinationState.getRefinement();
 
                     if (actors != null) {

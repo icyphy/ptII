@@ -239,17 +239,18 @@ test InterfaceAutomaton-8.1 {test generating moml} {
         </property>
         <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
-        <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+        <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
+            <display name="default"/>
         </property>
-        <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+        <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="immediate" class="ptolemy.data.expr.Parameter" value="false">
         </property>
+        <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="history" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
         <property name="errorTransition" class="ptolemy.data.expr.Parameter" value="false">
-        </property>
-        <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
-        </property>
-        <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
         </property>

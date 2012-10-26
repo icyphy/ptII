@@ -48,6 +48,7 @@ import ptolemy.data.type.BaseType;
 import ptolemy.kernel.ComponentRelation;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Port;
+import ptolemy.kernel.attributes.VersionAttribute;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
@@ -132,9 +133,12 @@ import ptolemy.kernel.util.Workspace;
  is chosen, the refinement of its source state is not fired. A non-preemptive
  transition is only chosen after the refinement of its source state is fired.
  <p>
- The <i>reset</i> parameter specifies whether the refinement of the destination
- state is reset when the transition is taken. There is no reset() method in the
- Actor interface, so the initialize() method of the refinement is called.
+ The <i>history</i> parameter specifies whether the refinement of the destination
+ state refinement is initialized when the transition is taken. By default, this
+ is false, which means that the destination refinement is initialized.
+ If you change this to true, then the destination refinement will not be
+ initialized, so when the state is re-entered, the refinement will
+ continue executing where it left off.
  <p>
  The <i>nondeterministic</i> parameter specifies whether this transition is
  nondeterministic. Here nondeterministic means that this transition may not
@@ -229,12 +233,14 @@ public class Transition extends ComponentRelation {
             workspace().incrVersion();
         } else if (attribute == immediate) {
             _immediate = ((BooleanToken) immediate.getToken()).booleanValue();
+        } else if (attribute == history) {
+            _history = ((BooleanToken) history.getToken()).booleanValue();
         } else if (attribute == nondeterministic) {
             _nondeterministic = ((BooleanToken) nondeterministic.getToken())
                     .booleanValue();
         } else if (attribute == errorTransition) {
-            _errorTransition = ((BooleanToken) errorTransition.getToken())
-                    .booleanValue();
+            // _errorTransition = ((BooleanToken) errorTransition.getToken())
+            //        .booleanValue();
             // FIXME: The following needs to be rethought.
             // Discarding user data here. Undo will not work. This is bogus.
             /*
@@ -340,7 +346,7 @@ public class Transition extends ComponentRelation {
 
         return _destinationState;
     }
-
+    
     /** Return the guard expression. The guard expression should evaluate
      *  to a boolean value.
      *  @return The guard expression.
@@ -570,6 +576,108 @@ public class Transition extends ComponentRelation {
         }
     }
 
+    /** Return true if this transition is a history transition.
+     *  If the <i>history</i> parameter has been set to true, then return true.
+     *  Otherwise, check to see whether the model was created by a Ptolemy version
+     *  earlier than 9.1.devel. If it was not, return false, the new default.
+     *  If it was, then look for a parameter named
+     *  "reset", and set the history parameter to the complement of it
+     *  and return that value.
+     *  If there is no such parameter, then we have to assume the default
+     *  behavior that prevailed before 9.1.devel, and set history to true.
+     */
+    public boolean isHistory() {
+        if (_history) {
+            return true;
+        }
+        // History has not been explicitly set true. Should use either new
+        // or old default depending on the version of Ptolemy that created the model.
+        try {
+            VersionAttribute version = (VersionAttribute) toplevel().getAttribute("_createdBy", VersionAttribute.class);
+            if (version == null) {
+                // No version attribute. Return false.
+                return false;
+            }
+            if (_REFERENCE_VERSION == null) {
+                _REFERENCE_VERSION = new VersionAttribute("9.0.devel");
+            }
+            if (version.compareTo(_REFERENCE_VERSION) <= 0) {
+                // Model was created under old defaults. Look for a reset parameter.
+                Parameter reset = (Parameter) getAttribute("reset", Parameter.class);
+                if (reset != null) {
+                    Token resetValue = reset.getToken();
+                    if (resetValue instanceof BooleanToken) {
+                        boolean resetValueBoolean = ((BooleanToken)resetValue).booleanValue();
+                        if (!resetValueBoolean) {
+                            // reset parameter exists and has value false, but if the destination
+                            // state has no refinement, we nonetheless change this to make
+                            // the history parameter false.
+                            State destinationState = destinationState();
+                            if (destinationState != null) {
+                                TypedActor[] refinements = destinationState.getRefinement();
+                                if (refinements == null || refinements.length == 0) {
+                                    // No need to make history true. Stick with the default.
+                                    return false;
+                                }
+                            }
+                            // Set the new parameter to its non-default value.
+                            history.setExpression("true");
+                            // Force this to be exported because this might be getting set
+                            // during construction of the model, in which case, true will be
+                            // assumed to be the default value.
+                            history.setPersistent(true);
+                            return true;
+                        } else {
+                            // No need to set the new parameter, since this is the default.
+                            return false;
+                        }
+                    } else {
+                        // Parameter reset exists, but is not a boolean. Old default is
+                        // that history is true.
+                        history.setExpression("true");
+                        // Force this to be exported because this might be getting set
+                        // during construction of the model, in which case, true will be
+                        // assumed to be the default value.
+                        history.setPersistent(true);
+                        return true;
+                    }
+                } else {
+                    // Parameter reset does not exist. Old default is
+                    // that history is true. But this is only really required
+                    // if the destination state has a refinement.
+                    State destinationState = destinationState();
+                    if (destinationState != null) {
+                        TypedActor[] refinements = destinationState.getRefinement();
+                        if (refinements == null || refinements.length == 0) {
+                            // No need to make history true. Stick with the default.
+                            return false;
+                        }
+                    }
+                    history.setExpression("true");
+                    // Force this to be exported because this might be getting set
+                    // during construction of the model, in which case, true will be
+                    // assumed to be the default value.
+                    history.setPersistent(true);
+                    return true;
+                }
+            } else {
+                // Version is recent. Return default.
+                return false;
+            }
+        } catch (IllegalActionException e) {
+            // Can't access version attribute. Return default.
+            return false;
+        }
+    }
+
+    /** Return true if this transition is immediate. Whether this transition
+     *  is immediate is specified by the <i>immediateTransition</i> parameter.
+     *  @return True if this transition is immediate.
+     */
+    public boolean isImmediate() {
+        return _immediate;
+    }
+
     /** Return true if this transition is nondeterministic. Return false
      *  otherwise.
      *  @return True if this transition is nondeterministic.
@@ -590,15 +698,6 @@ public class Transition extends ComponentRelation {
                     + ": The parameter does not have a valid value, \""
                     + preemptive.getExpression() + "\".");
         }
-    }
-
-    /** Return true if this transition is immediate. Whether this transition
-     *  is immediate is specified by the <i>immediateTransition</i> parameter.
-     *  @return True if this transition is immediate.
-     */
-    public boolean isImmediate() {
-        //TODO: cmot, verify
-        return _immediate;
     }
 
     /** Override the base class to ensure that the proposed container
@@ -729,14 +828,16 @@ public class Transition extends ComponentRelation {
      *  This attribute has a null expression or a null string as
      *  expression when the state is not refined.
      */
-    public StringAttribute refinementName = null;
+    public StringAttribute refinementName;
 
     /** Parameter specifying whether the refinement of the destination
-     *  state is reset when the transition is taken.
+     *  state refinement is initialized when the transition is taken.
+     *  This is a boolean that defaults to false.
      */
-    public Parameter reset = null;
+    public Parameter history;
 
     /** The action commands that set parameters when the transition is taken.
+     *  By default, this is empty.
      */
     public CommitActionsAttribute setActions;
 
@@ -788,7 +889,7 @@ public class Transition extends ComponentRelation {
 
         return;
     }
-
+    
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
@@ -873,34 +974,44 @@ public class Transition extends ComponentRelation {
         exitAngle.setVisibility(Settable.NONE);
         exitAngle.setExpression("PI/5.0");
         exitAngle.setTypeEquals(BaseType.DOUBLE);
+        
         gamma = new Parameter(this, "gamma");
         gamma.setVisibility(Settable.NONE);
         gamma.setExpression("0.0");
         gamma.setTypeEquals(BaseType.DOUBLE);
-        reset = new Parameter(this, "reset");
-        reset.setTypeEquals(BaseType.BOOLEAN);
-        reset.setToken(BooleanToken.FALSE);
-        preemptive = new Parameter(this, "preemptive");
-        preemptive.setTypeEquals(BaseType.BOOLEAN);
-        preemptive.setToken(BooleanToken.FALSE);
-        //TODO: cmot, verify
-        immediate = new Parameter(this, "immediate");
-        immediate.setTypeEquals(BaseType.BOOLEAN);
-        immediate.setToken(BooleanToken.FALSE);
-
-        errorTransition = new Parameter(this, "errorTransition");
-        errorTransition.setTypeEquals(BaseType.BOOLEAN);
-        errorTransition.setToken(BooleanToken.FALSE);
-
+        
         // default attributes.
         defaultTransition = new Parameter(this, "defaultTransition");
         defaultTransition.setTypeEquals(BaseType.BOOLEAN);
         defaultTransition.setToken(BooleanToken.FALSE);
+        // We would like to call this parameter "default" but
+        // can't because this is a Java keyword.
+        defaultTransition.setDisplayName("default");
 
         // Nondeterministic attributes.
         nondeterministic = new Parameter(this, "nondeterministic");
         nondeterministic.setTypeEquals(BaseType.BOOLEAN);
         nondeterministic.setToken(BooleanToken.FALSE);
+
+        immediate = new Parameter(this, "immediate");
+        immediate.setTypeEquals(BaseType.BOOLEAN);
+        immediate.setToken(BooleanToken.FALSE);
+
+        preemptive = new Parameter(this, "preemptive");
+        preemptive.setTypeEquals(BaseType.BOOLEAN);
+        preemptive.setToken(BooleanToken.FALSE);
+
+        // From version 9.0.devel to 9.1.devel, the parameter
+        // reset was replaced by history and the default behavior
+        // was changed so that by default transitions are not
+        // history transitions (are reset transitions).
+        history = new Parameter(this, "history");
+        history.setTypeEquals(BaseType.BOOLEAN);
+        history.setToken(BooleanToken.FALSE);
+        
+        errorTransition = new Parameter(this, "errorTransition");
+        errorTransition.setTypeEquals(BaseType.BOOLEAN);
+        errorTransition.setToken(BooleanToken.FALSE);
 
         // Add refinement name parameter
         refinementName = new StringAttribute(this, "refinementName");
@@ -949,18 +1060,19 @@ public class Transition extends ComponentRelation {
     // Cached destination state of this transition.
     private State _destinationState = null;
 
-    // Set to true if the user wants the transition to be used
-    // to detect errors.
-    private boolean _errorTransition = false;
-
     // The parse tree for the guard expression.
     private ASTPtRootNode _guardParseTree;
 
     // Version of the cached guard parse tree
     private long _guardParseTreeVersion = -1;
 
+    // Set to true if the transition is a history transition,
+    // which means that destination state refinements should not
+    // be reset.
+    private boolean _history = false;
+
     // Set to true if the transition should be checked
-    // as son as the source state is entered. This may lead
+    // as soon as the source state is entered. This may lead
     // to transient states.
     private boolean _immediate = false;
 
@@ -973,6 +1085,9 @@ public class Transition extends ComponentRelation {
 
     // Version of the cached parse tree evaluator
     private long _parseTreeEvaluatorVersion = -1;
+    
+    // Latest version before default history behavior changed.
+    private static VersionAttribute _REFERENCE_VERSION;
 
     // Cached reference to the refinement of this state.
     private TypedActor[] _refinement = null;

@@ -169,7 +169,7 @@ public class TDLTransition extends Transition {
             IllegalActionException {
         outputActions.setVisibility(Settable.NONE);
         setActions.setVisibility(Settable.NONE);
-        reset.setVisibility(Settable.NONE);
+        history.setVisibility(Settable.NONE);
         preemptive.setVisibility(Settable.NONE);
         defaultTransition.setVisibility(Settable.NONE);
         nondeterministic.setVisibility(Settable.NONE);

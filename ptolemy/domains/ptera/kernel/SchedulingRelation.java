@@ -119,8 +119,6 @@ public class SchedulingRelation extends Transition {
         nondeterministic.setVisibility(Settable.NONE);
         refinementName.setVisibility(Settable.NONE);
 
-        reset.setDisplayName("initialize");
-
         delay = new StringAttribute(this, "delay") {
             protected void _exportMoMLContents(Writer output, int depth)
                     throws IOException {
