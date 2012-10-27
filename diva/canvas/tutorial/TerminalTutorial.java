@@ -61,10 +61,10 @@ public class TerminalTutorial {
     private GraphicsPane graphicsPane;
 
     // The controller
-    BasicController controller;
+    //BasicController controller;
 
     // The default interactor
-    Interactor defaultInteractor;
+    //Interactor defaultInteractor;
 
     /** Create a JCanvas and put it into a window
      */
@@ -73,7 +73,7 @@ public class TerminalTutorial {
         graphicsPane = (GraphicsPane) canvas.getCanvasPane();
 
         // Create a controller to do the work.
-        controller = new BasicController(graphicsPane);
+        /*controller = */ new BasicController(graphicsPane);
         //defaultInteractor = controller.getSelectionInteractor();
 
         // Create the window
