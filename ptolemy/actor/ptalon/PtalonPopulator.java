@@ -52,7 +52,7 @@ public class PtalonPopulator extends antlr.TreeParser implements
         return info;
     }
 
-    private String scopeName;
+    //private String scopeName;
 
     public PtalonPopulator() {
         tokenNames = _tokenNames;
