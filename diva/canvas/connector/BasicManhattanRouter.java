@@ -419,22 +419,22 @@ public class BasicManhattanRouter implements ManhattanRouter {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    private final double TOL = .1;
+    private final static double TOL = .1;
 
-    private final double MINDIST = 7;
+    private final static double MINDIST = 7;
 
     /**
      * A quarter Pi. Defined as a constant for performance.
      */
-    private final double PI_QUARTER = Math.PI * 0.25;
+    private final static double PI_QUARTER = Math.PI * 0.25;
 
     /**
      * Half Pi. Defines as a constant for performance.
      */
-    private final double PI_HALF = Math.PI * 0.5;
+    private final static double PI_HALF = Math.PI * 0.5;
 
     /**
      * Three quarters Pi. Defined as a constant for performance.
      */
-    private final double PI_THREE_QUARTERS = Math.PI * 0.75;
+    private final static double PI_THREE_QUARTERS = Math.PI * 0.75;
 }
