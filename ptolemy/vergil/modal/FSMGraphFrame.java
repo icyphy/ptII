@@ -171,9 +171,7 @@ public class FSMGraphFrame extends ExtendedGraphFrame implements ActionListener 
     protected void _addMenus() {
         super._addMenus();
 
-        _graphMenu = new JMenu("Graph");
-        _graphMenu.setMnemonic(KeyEvent.VK_G);
-        _menubar.add(_graphMenu);
+        // _graphMenu is instantiated in BasicGraphFrame.
         _addLayoutMenu(_graphMenu);
 
         // Add any commands to graph menu and toolbar that the controller
@@ -394,9 +392,6 @@ public class FSMGraphFrame extends ExtendedGraphFrame implements ActionListener 
 
     /** Debug menu for this frame. */
     protected JMenu _debugMenu;
-
-    /** The graph menu. */
-    protected JMenu _graphMenu;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
