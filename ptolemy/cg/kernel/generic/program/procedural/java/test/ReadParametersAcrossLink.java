@@ -174,7 +174,9 @@ public class ReadParametersAcrossLink extends TypedAtomicActor {
      *  one field and one method that multiplies the value of the field
      *  by 2.0.
      */
-    private class PopulationGroup {
+    private static class PopulationGroup {
+        // FindBugs indicates that this should be a static class.
+
         public double performCalculation() {
             // This method could be arbitrarily complex and involve multiple
             // parameters.  For the sake of simplicity, we just return

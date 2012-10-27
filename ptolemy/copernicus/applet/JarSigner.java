@@ -605,7 +605,8 @@ public class JarSigner {
     ///////////////////////////////////////////////////////////////////
     ////                         private inner classes             ////
 
-    private class SignatureFile {
+    private static class SignatureFile {
+        // FindBugs indicates that this should be a static class.
 
         private Object sigFile;
 

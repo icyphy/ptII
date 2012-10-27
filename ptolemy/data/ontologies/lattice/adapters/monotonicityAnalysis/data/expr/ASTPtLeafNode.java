@@ -99,7 +99,8 @@ public class ASTPtLeafNode extends LatticeOntologyASTNodeAdapter {
      *  monotonicity of leaf nodes in the abstract
      *  syntax trees of Ptolemy expressions.
      */
-    private class ASTPtLeafNodeFunction extends MonotonicityConceptFunction {
+    private static class ASTPtLeafNodeFunction extends MonotonicityConceptFunction {
+        // FindBugs indicates that this should be a static class.
 
         /** Create a new function for inferring the monotonicity concept
          *  over a leaf node, given the ontologies representing both the

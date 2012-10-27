@@ -473,7 +473,8 @@ public class TimeDelay extends Transformer {
     ////                         inner classes                     ////
 
     /** Data structure to store pending events. */
-    public class PendingEvent {
+    public static class PendingEvent {
+        // FindBugs indicates that this should be a static class.
         /** The time stamp for the pending event. */
         public Time timeStamp;
         /** The token associated with the event. */

@@ -243,7 +243,9 @@ public class MonotonicityCounterexamples {
      *  Thus, these pairs prove as counterexamples to the
      *  monotonicity of f.
      */
-    public class ConceptPair implements Map.Entry<Concept, Concept> {
+    public static class ConceptPair implements Map.Entry<Concept, Concept> {
+        // FindBugs indicates that this should be a static class.
+
         /** Create a counterexample pair given both of the concepts that  make
          *  up the counterexample.
          *

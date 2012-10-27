@@ -2867,8 +2867,8 @@ public class OracleXMLDBConnection implements DBConnection {
     /**
      * Contain the parents list for a model.
      */
-    private class DBModel {
-
+    private static class DBModel {
+        // FindBugs indicates that this should be a static class.
         /**
          * Construct an instance with the given model name.
          */

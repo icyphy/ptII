@@ -97,8 +97,9 @@ public class ASTPtRelationalNode extends LatticeOntologyASTNodeAdapter {
      *  monotonicity of conditional nodes (if nodes) in the abstract
      *  syntax trees of Ptolemy expressions.
      */
-    private class ASTPtRelationalNodeFunction extends
+    private static class ASTPtRelationalNodeFunction extends
             MonotonicityConceptFunction {
+        // FindBugs indicates that this should be a static class.
 
         /** Create a new function for inferring the monotonicity concept
          *  over a relational node, given the operator at the node,

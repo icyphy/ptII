@@ -514,8 +514,8 @@ public class ActorGraphDBFrame extends ActorGraphFrame {
     /**
      * Open model migration frame.
      */
-    //TODO Consider making a static inner class.
-    private class OpenModelMigrationFrameAction extends AbstractAction {
+    private static class OpenModelMigrationFrameAction extends AbstractAction {
+        // FindBugs indicates that this should be a static class.
         /**
          * Create a new action to setup database connection.
          *
@@ -589,8 +589,8 @@ public class ActorGraphDBFrame extends ActorGraphFrame {
     /**
      * Open list of all models in the database.
      */
-    private class AllModelsListAction extends AbstractAction {
-
+    private static class AllModelsListAction extends AbstractAction {
+        // FindBugs indicates that this should be a static class.
         /**
          * Create an instance of AllModelsListAction.
          * @param configuration Configuration to open a model from the list.

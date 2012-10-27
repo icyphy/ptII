@@ -1504,7 +1504,8 @@ public class TableauFrame extends Top {
     ////                         inner classes                     ////
 
     /** A Listener for menu items. */
-    protected class MenuItemListener implements ActionListener {
+    protected static class MenuItemListener implements ActionListener {
+        // FindBugs indicates that this should be a static class.
         /**
          * Constructs a MenuItemListener object.
          *

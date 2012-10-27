@@ -2187,7 +2187,9 @@ public class ModularSDFCodeGenerator extends JavaCodeGenerator {
     //    }
 
     /** Comparator used to sort the actors. */
-    private class ClusterComparator implements Comparator<FiringCluster> {
+    private static class ClusterComparator implements Comparator<FiringCluster> {
+        // FindBugs indicates that this should be a static class.
+
         /** Compare the depths of two actors.
          *  NOTE: This method assumes and does not check that the
          *  depth cache is up to date and contains both specified actors.

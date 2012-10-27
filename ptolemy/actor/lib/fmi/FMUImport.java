@@ -972,7 +972,9 @@ public class FMUImport extends TypedAtomicActor implements
     ////                         inner classes                     ////
 
     /** A data structure representing an output from the FMU. */
-    private class Output {
+    private static class Output {
+        // FindBugs indicates that this should be a static class.
+
         /** The FMI scalar variable for this output. */
         public FMIScalarVariable scalarVariable;
 

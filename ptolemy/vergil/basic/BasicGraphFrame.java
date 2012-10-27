@@ -3239,7 +3239,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                     return (IGuiAction) object;
                 }
             }
-        } catch (Exception exception) {
+        } catch (Throwable throwable) {
             // Fail silently!
         }
         return null;
@@ -3416,7 +3416,9 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
     ////                         inner classes                     ////
 
     /** A Layer Adapter to handle the mousePressed layer event. */
-    protected class MousePressedLayerAdapter extends LayerAdapter {
+    protected static class MousePressedLayerAdapter extends LayerAdapter {
+        // FindBugs indicates that this should be a static class.
+
         /** Invoked when the mouse is pressed on a layer
          * or figure.
          */

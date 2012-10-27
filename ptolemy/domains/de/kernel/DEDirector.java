@@ -2387,7 +2387,8 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
      *  only when all inputs at the current microstep are known. See
      *  $PTII/ptolemy/domains/de/test/auto/DEFixedPointLimitation.xml.
      */
-    private class DECausalityInterface extends CausalityInterfaceForComposites {
+    private static class DECausalityInterface extends CausalityInterfaceForComposites {
+        // FindBugs indicates that this should be a static class.
 
         /** Construct a causality interface for the specified actor.
          *  @param actor The actor for which this is a causality interface.

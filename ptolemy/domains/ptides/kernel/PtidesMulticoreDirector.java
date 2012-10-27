@@ -1298,7 +1298,8 @@ public class PtidesMulticoreDirector extends PtidesBasicDirector {
     /** A group of PtidesEvent being processed with the same tag and
      * destination input port group, along with the start tag of
      * execution and finish time (execution physical time). */
-    protected class ProcessingPtidesEvents {
+    protected static class ProcessingPtidesEvents {
+        // FindBugs indicates that this should be a static class.
 
         /** Construct the group of PtidesEvent being processed with the
          * provided arguments.

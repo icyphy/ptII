@@ -150,7 +150,9 @@ public class DependencyResultsDialog extends SearchResultsDialog {
     ////                         inner classes                     ////
 
     /** Default renderer for results table. */
-    class DependencyResultsNamedObjRenderer extends DefaultTableCellRenderer {
+    private static class DependencyResultsNamedObjRenderer extends DefaultTableCellRenderer {
+        // FindBugs indicates that this should be a static class.
+
         public void setValue(Object value) {
             String fullName = ((NamedObj) value).getFullName();
             String strippedName = fullName.substring(fullName.indexOf(".", 1));

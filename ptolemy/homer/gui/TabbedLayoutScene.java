@@ -69,7 +69,8 @@ public class TabbedLayoutScene extends JPanel implements ActionListener {
 
     /** The tab button that is added to the tab.
      */
-    private class TabButton extends JButton {
+    private static class TabButton extends JButton {
+        // FindBugs indicates that this should be a static class.
 
         /** Create the button that will sit within the tab.
          */
