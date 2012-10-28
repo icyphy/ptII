@@ -2611,11 +2611,11 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                 {
                     // Traverse the Ptolemy model hierarchy, create a list, reverse it,
                     // create an array and then a TreePath.
-                    List<CompositeEntity> compositeList = new LinkedList<CompositeEntity>();
-                    CompositeEntity composite = (CompositeEntity) getModel();
+                    List<NamedObj> compositeList = new LinkedList<NamedObj>();
+                    NamedObj composite = getModel();
                     while (composite != null) {
                         compositeList.add(composite);
-                        composite = (CompositeEntity) composite.getContainer();
+                        composite = composite.getContainer();
                     }
                     java.util.Collections.reverse(compositeList);
                     Object[] composites = compositeList.toArray();
