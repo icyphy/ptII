@@ -2477,14 +2477,16 @@ public class FSMActor extends CompositeEntity implements TypedActor,
                     // There is no data. Check to see whether the token
                     // map has been previously set, and if not,
                     // set the _isPresent variables to false.
-                    if (_inputTokenMap.get(portName + "_isPresent") == null) {
+                    // NOTE: The test will only work if the _inputTokenMap is reset
+                    // between iterations. Ptera does not do this!!!
+                    // if (_inputTokenMap.get(portName + "_isPresent") == null) {
                         if (_debugging) {
                             _debug("---", port.getName(), "(" + channel + ") has ",
                                     "no tokens at time "
                                     + getDirector().getModelTime());
                         }
                         _setInputTokenMap(port, channel, null, null);
-                    }
+                    // }
                 }
             }
         } else {
@@ -2547,6 +2549,9 @@ public class FSMActor extends CompositeEntity implements TypedActor,
 
     /** Current state. */
     protected State _currentState = null;
+    
+    /** State and transition refinements that have returned false in postfire(). */
+    protected Set<Actor> _disabledRefinements = new HashSet<Actor>();
 
     /** List of objects whose (pre)initialize() and wrapup() methods
      *  should be slaved to these.
@@ -3528,16 +3533,14 @@ public class FSMActor extends CompositeEntity implements TypedActor,
     // of the refinement of the state.
     private Map _connectionMaps = null;
 
-    // Version of the connection maps.
+    /** Version of the connection maps. */
     private long _connectionMapsVersion = -1;
 
-    // The map from input ports to boolean flags indicating whether a
-    // channel is connected to an output port of the refinement of the
-    // current state.
+    /** The map from input ports to boolean flags indicating whether a
+     *  channel is connected to an output port of the refinement of the
+     *  current state.
+     */
     private Map _currentConnectionMap = null;
-
-    /** State and transition refinements that have returned false in postfire(). */
-    protected Set<Actor> _disabledRefinements = new HashSet<Actor>();
 
     /** A flag indicating that unknown inputs were referenced in guards
      *  and/or output value expressions (when guards evaluate to true)

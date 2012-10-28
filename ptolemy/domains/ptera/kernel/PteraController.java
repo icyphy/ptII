@@ -349,6 +349,16 @@ public class PteraController extends ModalController {
         super.preinitialize();
     }
 
+    /** Set the value of the shadow variables for input ports of this actor.
+     *  This method skips over ports that connected to outputs of a refinement.
+     *  @exception IllegalActionException If a shadow variable cannot take
+     *   the token read from its corresponding channel (should not occur).
+     */
+    public void readInputs() throws IllegalActionException {
+        _setCurrentConnectionMap();
+        super.readInputs();
+    }
+    
     /** Stop execution by invoking stop() of the director.
      */
     public void stop() {
@@ -438,7 +448,7 @@ public class PteraController extends ModalController {
 
     /** The Ptera director contained by this controller. */
     public PteraDirector director;
-
+    
     /** Return a map from the classes of the entities to be dropped into a state
      *  and the class names of the refinements that can be used to contain those
      *  entities.
