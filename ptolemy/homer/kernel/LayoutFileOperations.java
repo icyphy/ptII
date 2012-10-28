@@ -344,9 +344,9 @@ public final class LayoutFileOperations {
             // Save in file
             out = new BufferedWriter(new FileWriter(layoutFile));
             model.exportMoML(out);
-        } catch (Exception e) {
+        } catch (Throwable throwable) {
             // TODO Auto-generated catch block
-            e.printStackTrace();
+            throwable.printStackTrace();
         } finally {
             // Release models
             mainFrame.getTopLevelActor().workspace().doneReading();

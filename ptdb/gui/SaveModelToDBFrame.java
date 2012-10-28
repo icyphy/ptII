@@ -872,7 +872,7 @@ public class SaveModelToDBFrame extends JFrame implements PTDBBasicFrame {
 
             _modelToSave.requestChange(change);
 
-        } catch (Exception e) {
+        } catch (Throwable throwable) {
         } // Intentionally, we do nothing.
 
     }

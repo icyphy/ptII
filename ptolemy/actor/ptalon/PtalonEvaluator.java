@@ -972,9 +972,9 @@ public class PtalonEvaluator extends AbstractPtalonEvaluator {
                         parameter.setExpression(outputExpression);
                     }
                 }
-            } catch (Exception ex) {
+            } catch (Throwable throwable) {
                 throw new PtalonRuntimeException("Trouble making connections",
-                        ex);
+                        throwable);
             }
         }
 
@@ -1183,9 +1183,10 @@ public class PtalonEvaluator extends AbstractPtalonEvaluator {
                     }
                 }
                 return true;
-            } catch (Exception ex) {
+            } catch (Throwable throwable) {
                 throw new PtalonRuntimeException(
-                        "Unable to check if this actor declaration is ready.");
+                        "Unable to check if this actor declaration is ready.",
+                                                 throwable);
             }
         }
 
@@ -1460,9 +1461,9 @@ public class PtalonEvaluator extends AbstractPtalonEvaluator {
                         }
                     }
                 }
-            } catch (Exception ex) {
+            } catch (Throwable throwable) {
                 throw new PtalonRuntimeException("Trouble making connections",
-                        ex);
+                        throwable);
             }
         }
 
@@ -1607,9 +1608,9 @@ public class PtalonEvaluator extends AbstractPtalonEvaluator {
                                 + " not a port or relation");
                     }
                 }
-            } catch (Exception ex) {
+            } catch (Throwable throwable) {
                 throw new PtalonRuntimeException("Trouble making connections",
-                        ex);
+                        throwable);
             }
         }
 

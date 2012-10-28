@@ -555,7 +555,7 @@ public class DatabaseManager extends TypedAtomicActor {
                             new String(_password));
                     // If updating, use single transaction.
                     _connection.setAutoCommit(false);
-                } catch (Exception ex2) {
+                } catch (Throwable throwable) {
                     // Try the Oracle driver
                     try {
                         DriverManager.registerDriver((java.sql.Driver) Class
@@ -567,7 +567,7 @@ public class DatabaseManager extends TypedAtomicActor {
                                                 _password));
                         // If updating, use single transaction.
                         _connection.setAutoCommit(false);
-                    } catch (Exception ex3) {
+                    } catch (Throwable throwable2) {
                         _password = null;
                         // Note that we throw the original exception.
                         throw new IllegalActionException(this, ex,

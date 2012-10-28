@@ -1313,7 +1313,7 @@ public class ModularCompiledSDFTypedCompositeActor extends
                 classInstance = classLoader.loadClass(className);
                 _profile = (Profile) (classInstance.newInstance());
             }
-        } catch (Exception e) {
+        } catch (Throwable throwable) {
             try {
                 if (_USE_PROFILE) {
                     _setRecompileFlag();

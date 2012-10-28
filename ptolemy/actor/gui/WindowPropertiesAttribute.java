@@ -359,7 +359,7 @@ public class WindowPropertiesAttribute extends Parameter implements
             }
 
             return true;
-        } catch (Exception ex) {
+        } catch (Throwable throwable) {
             return false;
         }
     }

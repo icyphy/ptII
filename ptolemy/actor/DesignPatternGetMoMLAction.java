@@ -248,9 +248,9 @@ public class DesignPatternGetMoMLAction {
             buffer.write("</group>\n");
 
             return buffer.toString();
-        } catch (Exception e) {
+        } catch (Throwable throwable) {
             // This should not occur.
-            throw new InternalErrorException(null, e, "Unable to get the "
+            throw new InternalErrorException(null, throwable, "Unable to get the "
                     + "Moml content for group " + group.getName() + ".");
         }
     }

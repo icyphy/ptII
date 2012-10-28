@@ -600,8 +600,8 @@ public class PtalonActor extends TypedCompositeActor implements Configurable {
             _astCreated = true;
             ptalonCodeLocation.setVisibility(Settable.NOT_EDITABLE);
             _codeManager.assignInternalParameters();
-        } catch (Exception ex) {
-            throw new IllegalActionException(this, ex, "Failed to process "
+        } catch (Throwable throwable) {
+            throw new IllegalActionException(this, throwable, "Failed to process "
                     + "the ptalonCodeLocation \"" + ptalonCodeLocation + "\"");
         }
     }

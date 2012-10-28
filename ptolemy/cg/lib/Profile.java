@@ -168,7 +168,7 @@ abstract public class Profile {
                     classInstance = classLoader.loadClass(className);
                     _profile = (Profile) (classInstance.newInstance());
                 }
-            } catch (Exception e) {
+            } catch (Throwable throwable) {
                 _profile = null;
                 throw new IllegalActionException(
                         "Cannot locate the profile of the actor: " + _name);

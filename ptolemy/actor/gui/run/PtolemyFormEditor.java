@@ -357,9 +357,9 @@ public class PtolemyFormEditor extends JPanel {
                     }
                 }
             }
-        } catch (Exception e) {
+        } catch (Throwable throwable) {
             // FIXME Auto-generated catch block
-            e.printStackTrace();
+            throwable.printStackTrace();
         }
 
         /* FIXME
