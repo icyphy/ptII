@@ -59,7 +59,7 @@ import ptolemy.kernel.util.IllegalActionException;
  *  type is required to be less than or equal to each destination port type.
  *  The combination of these constraints has the effect of setting the type
  *  of the output equal to the GLB of the types of the destination ports.
- *  This resolved type is, in fact, the most general type that satisfies the
+ *  This resolved type is, in fact, the most specific type that satisfies the
  *  constraints of all the downstream ports.
  * @author Edward A. Lee, Marten Lohstroh
  * @version $Id: GLBFunction.java$
@@ -83,8 +83,6 @@ public class GLBFunction extends MonotonicFunction {
      */
     public GLBFunction(TypedIOPort sourcePort) {
         _sourcePort = sourcePort;
-
-        _updateArguments();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -145,12 +143,14 @@ public class GLBFunction extends MonotonicFunction {
      */
     protected void _updateArguments() {
         List<IOPort> destinations = null;
-        if (_sourcePort.getContainer().workspace().getVersion() == _cachedVariablesWorkspaceVersion) {
+        if (_sourcePort.getContainer().workspace().getVersion() 
+                == _previousWorkspaceVersion) {
             return;
         }
-        ArrayList<InequalityTerm> portTypeTermList = new ArrayList<InequalityTerm>();
+        ArrayList<InequalityTerm> portTypeTermList = 
+                new ArrayList<InequalityTerm>();
         _cachedTypes = new HashSet<Type>();
-        // Make sure to support ports that both inputs and outputs.
+        // Make sure to support ports that are both input and output.
         if (_sourcePort.isOutput()) {
             destinations = _sourcePort.sinkPortList();
         }
@@ -173,15 +173,18 @@ public class GLBFunction extends MonotonicFunction {
             }
         }
         _cachedTerms = portTypeTermList.toArray(new InequalityTerm[0]);
-        _cachedVariablesWorkspaceVersion = _sourcePort.getContainer()
-                .workspace().getVersion();
+        _previousWorkspaceVersion = _sourcePort.getContainer().workspace()
+                .getVersion();
     }
 
-    /*   @Override
-        public String getVerboseString() {
-            return _sourcePort.getContainer().getName() + "$" +_sourcePort.getName();
-        }
-    */// FIXME
+    /**
+     * Provide a more descriptive string representation.
+     * @return A description of this term.
+     */
+    @Override
+    public String toString() {
+        return "GreatestLowerBound(destinations)";
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
@@ -193,7 +196,7 @@ public class GLBFunction extends MonotonicFunction {
     protected InequalityTerm[] _cachedTerms;
 
     /** The workspace version number at time of last update of arguments. */
-    protected long _cachedVariablesWorkspaceVersion = -1;
+    protected long _previousWorkspaceVersion = -1;
 
     /** The source port. */
     protected TypedIOPort _sourcePort;
