@@ -589,7 +589,6 @@ public final class Workspace implements Nameable, Serializable {
     /** Increment the version number by one.
      */
     public final synchronized void incrVersion() {
-        notifyObservers();
         _version++;
     }
 
