@@ -705,17 +705,18 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
                 result.add(ineq);
             }
 
-            // Set the constraint for backwards type inference where the
-            // source port type is greater than or equal to the GLB of all
-            // its destination ports.
-            // 1) only setup type constraint if source has no type declared
-            if (srcUndeclared) {
-                // 2) only setup type constraint if bidirectional type
-                // inference is enabled.
-                if (isBackwardTypeInferenceEnabled()) {
-                    result.add(new Inequality(new GLBFunction(source), source
-                            .getTypeTerm()));
-                }
+        }
+
+        // Set the constraint for backwards type inference where the
+        // source port type is greater than or equal to the GLB of all
+        // its destination ports.
+        // 1) only setup type constraint if source has no type declared
+        if (srcUndeclared) {
+            // 2) only setup type constraint if bidirectional type
+            // inference is enabled.
+            if (isBackwardTypeInferenceEnabled()) {
+                result.add(new Inequality(new GLBFunction(source), source
+                        .getTypeTerm()));
             }
         }
 
