@@ -365,22 +365,18 @@ public class FSMActor extends CompositeEntity implements TypedActor,
 
         newObject._currentState = null;
         newObject._disabledRefinements = new HashSet<Actor>();
-        newObject._identifierToPort = new HashMap<String, Port>();
         newObject._inputTokenMap = new HashMap();
         newObject._lastChosenTransitions = new HashMap<State, Transition>();
         newObject._lastChosenTransition = null;
+        newObject._lastTakenTransitions = new LinkedList<Transition>();
         newObject._stateRefinementsToPostfire = new LinkedList<Actor>();
-        newObject._transitionsPreviouslyChosenInIteration = new HashSet<Transition>();
-        newObject._transitionRefinementsToPostfire = new LinkedList<Actor>();
 
         if (_initialState != null) {
             newObject._initialState = (State) newObject.getEntity(_initialState
                     .getName());
         }
 
-        newObject._inputPortsVersion = -1;
         newObject._cachedInputPorts = null;
-        newObject._outputPortsVersion = -1;
         newObject._cachedOutputPorts = null;
         newObject._causalityInterface = null;
         newObject._causalityInterfaces = null;
@@ -389,8 +385,14 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         newObject._connectionMaps = null;
         newObject._connectionMapsVersion = -1;
         newObject._currentConnectionMap = null;
+        newObject._identifierToPort = new HashMap<String, Port>();
+        newObject._identifierToPortVersion = -1;
+        newObject._inputPortsVersion = -1;
+        newObject._outputPortsVersion = -1;
         newObject._receiversVersion = -1;
         newObject._tokenListArrays = null;
+        newObject._transitionsPreviouslyChosenInIteration = new HashSet<Transition>();
+        newObject._transitionRefinementsToPostfire = new LinkedList<Actor>();
 
         return newObject;
     }
@@ -598,7 +600,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
 
         // Choose transitions from the preemptive transitions,
         // including any immediate transitions that these lead to.
-        List<Transition> transitionList = _currentState.outgoingPort.linkedRelationList();
+        List<Transition> transitionList = _currentState.nonErrorNonTerminationTransitionList();
         // The last argument ensures that we look at all transitions
         // not just those that are marked immediate.
         // Second to last argument ensures that we look only at preemptive transitions.
@@ -657,7 +659,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
                         if (_stopRequested
                                 || _disabledRefinements
                                         .contains(stateRefinements[i])) {
-                            break;
+                            continue;
                         }
                         _setTimeForRefinement(stateRefinements[i]);
                         if (stateRefinements[i].prefire()) {
@@ -684,8 +686,9 @@ public class FSMActor extends CompositeEntity implements TypedActor,
                     }
                     // It makes no sense for error transitions to be preemptive,
                     // so we look only at non-preemptive error transitions.
-                    // FIXME: Is the error caught that preemptive error transitions
-                    // are not allowed?
+                    // NOTE: Is the error caught that preemptive error transitions
+                    // are not allowed? Note that visually in vergil, such a transition
+                    // will not appear as an error transition.
                     _chooseTransitions(errorTransitionList, false, false);
                     if (_lastChosenTransitions.size() > 0) {
                         // An error transition was chosen. We are done.
@@ -1025,6 +1028,8 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         // Ensure previous input values are not available.
         _inputTokenMap.clear();
 
+        _transitionTaken = false;
+
         // First invoke initializable methods.
         if (_initializables != null) {
             for (Initializable initializable : _initializables) {
@@ -1346,6 +1351,25 @@ public class FSMActor extends CompositeEntity implements TypedActor,
                 if (_lastChosenTransitions.size() != 0 && refinementDirector != director) {
                     refinementDirector.suspend();
                 }
+            }
+        }
+        
+        // Check for termination transitions.
+        if (refinements != null 
+                && refinements.length > 0 
+                && _disabledRefinements.size() == refinements.length){
+            // All refinements have terminated. If no other
+            // transition is enabled, see whether there is a termination transition.
+            if (_lastChosenTransitions.size() == 0) {
+                // Choose transitions from the termination transitions,
+                // including any immediate transitions that these lead to.
+                List<Transition> transitionList = _currentState.terminationTransitionList();
+                // The last argument ensures that we look at all transitions
+                // not just those that are marked immediate.
+                // Second to last argument ensures that we look only at non-preemptive transitions.
+                // The following has the side effect of putting the chosen
+                // transitions into the _lastChosenTransitions map of the controller.
+                _chooseTransitions(transitionList, false, false);
             }
         }
 
@@ -2003,7 +2027,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         // Before committing the new state, record whether it changed.
         boolean stateChanged = _currentState != currentTransition
                 .destinationState();
-        _currentState = currentTransition.destinationState();
+        _currentState = nextState;
         if (_debugging) {
             _debug(new StateEvent(this, _currentState));
         }

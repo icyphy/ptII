@@ -268,11 +268,12 @@ test FSMActor-6.2 {test typeConstraints} {
     join $l "\n"
 } {(TypeConstant, boolean) <= (variable ..fsm.stateDependentCausality: boolean)
 (TypeConstant, boolean) <= (variable ..fsm.t0.defaultTransition: boolean)
-(TypeConstant, boolean) <= (variable ..fsm.t0.errorTransition: boolean)
+(TypeConstant, boolean) <= (variable ..fsm.t0.error: boolean)
 (TypeConstant, boolean) <= (variable ..fsm.t0.history: boolean)
 (TypeConstant, boolean) <= (variable ..fsm.t0.immediate: boolean)
 (TypeConstant, boolean) <= (variable ..fsm.t0.nondeterministic: boolean)
 (TypeConstant, boolean) <= (variable ..fsm.t0.preemptive: boolean)
+(TypeConstant, boolean) <= (variable ..fsm.t0.termination: boolean)
 (TypeConstant, double) <= (variable ..fsm.t0.exitAngle: double)
 (TypeConstant, double) <= (variable ..fsm.t0.gamma: double)
 (TypeConstant, string) <= (variable ..fsm.t0.annotation: string)

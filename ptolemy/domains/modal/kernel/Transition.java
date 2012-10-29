@@ -155,7 +155,7 @@ import ptolemy.kernel.util.Workspace;
  that this transition is enabled if no other non-default
  transition is enabled and if its guard evaluates to true.
  <p>
- The <i>errorTransition</i> parameter, if given a value true, specifies
+ The <i>error</i> parameter, if given a value true, specifies
  that this transition is enabled if the refinement of the source state of
  the transition throws a model error while executing. The default value is a boolean
  token with value false.
@@ -236,8 +236,8 @@ public class Transition extends ComponentRelation {
         } else if (attribute == nondeterministic) {
             _nondeterministic = ((BooleanToken) nondeterministic.getToken())
                     .booleanValue();
-        } else if (attribute == errorTransition) {
-            // _errorTransition = ((BooleanToken) errorTransition.getToken())
+        } else if (attribute == error) {
+            // _errorTransition = ((BooleanToken) error.getToken())
             //        .booleanValue();
             // FIXME: The following needs to be rethought.
             // Discarding user data here. Undo will not work. This is bogus.
@@ -301,19 +301,20 @@ public class Transition extends ComponentRelation {
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         Transition newObject = (Transition) super.clone(workspace);
+        /*
         newObject.guardExpression = (StringAttribute) newObject
                 .getAttribute("guardExpression");
         newObject.preemptive = (Parameter) newObject.getAttribute("preemptive");
-        //TODO: cmot, verify
         newObject.immediate = (Parameter) newObject.getAttribute("immediate");
-        newObject.refinementName = (StringAttribute) newObject
-                .getAttribute("refinementName");
-        newObject._destinationState = null;
-        newObject._guardParseTree = null;
-        newObject._guardParseTreeVersion = -1;
+        newObject.refinementName = (StringAttribute) newObject.getAttribute("refinementName");
+        */
         newObject._actionListsVersion = -1;
         newObject._choiceActionList = new LinkedList();
         newObject._commitActionList = new LinkedList();
+        newObject._destinationState = null;
+        newObject._guardParseTree = null;
+        newObject._guardParseTreeVersion = -1;
+        // newObject._historySet = false;
         newObject._parseTreeEvaluatorVersion = -1;
         newObject._parseTreeEvaluator = null;
         newObject._refinementVersion = -1;
@@ -499,7 +500,7 @@ public class Transition extends ComponentRelation {
     /** Return true if this transition is a default transition. Return false
      *  otherwise.
      *  @return True if this transition is a default transition.
-     *  @exception IllegalActionException If the defaultTransition parameter
+     *  @exception IllegalActionException If the default parameter
      *   cannot be evaluated.
      */
     public boolean isDefault() throws IllegalActionException {
@@ -559,19 +560,12 @@ public class Transition extends ComponentRelation {
     }
 
     /** Return true if this transition is an error transition. Whether this
-     *  transition an errorTransition is specified by the <i>errorTransition</i> parameter.
-     *  @return True if this transition is an errorTransition.
-     *  @exception IllegalActionException if unable to retrieve a token from the
-     *  error transition
+     *  transition an error transition is specified by the <i>error</i> parameter.
+     *  @return True if this transition is an error transition.
+     *  @exception IllegalActionException If the parameter cannot be evaluated.
      */
-    public boolean isErrorTransition() {
-        try {
-            return ((BooleanToken) errorTransition.getToken()).booleanValue();
-        } catch (IllegalActionException ex) {
-            throw new InternalErrorException(errorTransition.getFullName()
-                    + ": The parameter does not have a valid value, \""
-                    + errorTransition.getExpression() + "\".");
-        }
+    public boolean isErrorTransition() throws IllegalActionException {
+        return ((BooleanToken) error.getToken()).booleanValue();
     }
 
     /** Return true if this transition is a history transition.
@@ -598,8 +592,9 @@ public class Transition extends ComponentRelation {
         try {
             VersionAttribute version = (VersionAttribute) toplevel().getAttribute("_createdBy", VersionAttribute.class);
             if (version == null) {
-                // No version attribute. Return false.
-                return false;
+                // No version attribute. Return whatever the value
+                // of the history parameter is.
+                return ((BooleanToken)history.getToken()).booleanValue();
             }
             if (_REFERENCE_VERSION == null) {
                 _REFERENCE_VERSION = new VersionAttribute("9.0.devel");
@@ -664,12 +659,12 @@ public class Transition extends ComponentRelation {
                     return true;
                 }
             } else {
-                // Version is recent. Return default.
-                return false;
+                // Version is recent. Return the current value of the history parameter.
+                return ((BooleanToken)history.getToken()).booleanValue();
             }
         } catch (IllegalActionException e) {
             // Can't access version attribute. Return default.
-            return false;
+            return ((BooleanToken)history.getToken()).booleanValue();
         }
     }
 
@@ -689,18 +684,22 @@ public class Transition extends ComponentRelation {
         return _nondeterministic;
     }
 
+    /** Return true if this transition is a termination transition. Whether this
+     *  transition an error transition is specified by the <i>termination</i> parameter.
+     *  @return True if this transition is a termination transition.
+     *  @exception IllegalActionException If the parameter cannot be evaluated.
+     */
+    public boolean isTermination() throws IllegalActionException {
+        return ((BooleanToken) termination.getToken()).booleanValue();
+    }
+
     /** Return true if this transition is preemptive. Whether this transition
      *  is preemptive is specified by the <i>preemptive</i> parameter.
      *  @return True if this transition is preemptive.
+     *  @exception IllegalActionException If the parameter cannot be evaluated.
      */
-    public boolean isPreemptive() {
-        try {
-            return ((BooleanToken) preemptive.getToken()).booleanValue();
-        } catch (IllegalActionException ex) {
-            throw new InternalErrorException(preemptive.getFullName()
-                    + ": The parameter does not have a valid value, \""
-                    + preemptive.getExpression() + "\".");
-        }
+    public boolean isPreemptive() throws IllegalActionException {
+        return ((BooleanToken) preemptive.getToken()).booleanValue();
     }
 
     /** Override the base class to ensure that the proposed container
@@ -775,6 +774,15 @@ public class Transition extends ComponentRelation {
      */
     public Parameter defaultTransition = null;
 
+    /** Parameter specifying whether this transition should be treated
+     *  as an error transition.  The default value is a boolean with
+     *  the value false, which indicates that this transition is not
+     *  an error transition.  If the value is true, that this transition
+     *  is enabled if and only if the refinement of the source state of
+     *  the transition throws a model error while executing.
+     */
+    public Parameter error = null;
+
     /** Attribute the exit angle of a visual rendition.
      *  This parameter contains a DoubleToken, initially with value PI/5.
      *  It must lie between -PI and PI.  Otherwise, it will be truncated
@@ -792,6 +800,16 @@ public class Transition extends ComponentRelation {
      */
     public StringAttribute guardExpression = null;
 
+    /** Parameter specifying whether the refinements of the destination
+     *  state are initialized when the transition is taken.
+     *  This is a boolean that defaults to false.
+     */
+    public Parameter history;
+
+    /** Parameter specifying whether this transition is immediate.
+     */
+    public Parameter immediate = null;
+
     /** Parameter specifying whether this transition is nondeterministic.
      *  Here nondeterministic means that this transition may not be the only
      *  enabled transition at a time. The default value is a boolean token
@@ -808,19 +826,6 @@ public class Transition extends ComponentRelation {
      */
     public Parameter preemptive = null;
 
-    /** Parameter specifying whether this transition is immediate.
-     */
-    public Parameter immediate = null;
-
-    /** Parameter specifying whether this transition should be treated
-     *  as an error transition.  The default value is a boolean with
-     *  the value false, which indicates that this transition is not
-     *  an error transition.  If the value is true, that this transition
-     *  is enabled if and only if the refinement of the source state of
-     *  the transition throws a model error while executing.
-     */
-    public Parameter errorTransition = null;
-
     /** Attribute specifying one or more names of refinements. The
      *  refinements must be instances of TypedActor and have the same
      *  container as the FSMActor containing this state, otherwise
@@ -833,16 +838,16 @@ public class Transition extends ComponentRelation {
      */
     public StringAttribute refinementName;
 
-    /** Parameter specifying whether the refinement of the destination
-     *  state refinement is initialized when the transition is taken.
-     *  This is a boolean that defaults to false.
-     */
-    public Parameter history;
-
     /** The action commands that set parameters when the transition is taken.
      *  By default, this is empty.
      */
     public CommitActionsAttribute setActions;
+
+    /** Parameter specifying whether the refinements of the origin
+     *  state must have terminated (postfire has returned false)
+     *  for the transition to be enabled.
+     */
+    public Parameter termination;
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
@@ -1012,9 +1017,13 @@ public class Transition extends ComponentRelation {
         history.setTypeEquals(BaseType.BOOLEAN);
         history.setToken(BooleanToken.FALSE);
         
-        errorTransition = new Parameter(this, "errorTransition");
-        errorTransition.setTypeEquals(BaseType.BOOLEAN);
-        errorTransition.setToken(BooleanToken.FALSE);
+        error = new Parameter(this, "error");
+        error.setTypeEquals(BaseType.BOOLEAN);
+        error.setToken(BooleanToken.FALSE);
+
+        termination = new Parameter(this, "termination");
+        termination.setTypeEquals(BaseType.BOOLEAN);
+        termination.setToken(BooleanToken.FALSE);
 
         // Add refinement name parameter
         refinementName = new StringAttribute(this, "refinementName");

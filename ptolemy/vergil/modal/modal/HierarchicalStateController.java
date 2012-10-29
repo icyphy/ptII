@@ -426,7 +426,7 @@ public class HierarchicalStateController extends StateController {
         Map map = new TreeMap();
         map.put("Default Refinement", "ptolemy.domains.modal.modal.Refinement");
         map.put("State Machine Refinement",
-                "ptolemy.domains.modal.modal.ModalController");
+                "ptolemy.domains.modal.modal.ModalRefinement");
         return map;
     }
 

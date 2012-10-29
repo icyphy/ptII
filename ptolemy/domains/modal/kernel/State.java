@@ -180,6 +180,52 @@ public class State extends ComponentEntity implements ConfigurableEntity,
     }
 
     ///////////////////////////////////////////////////////////////////
+    ////                         ports and parameters              ////
+
+    /** The port linking incoming transitions.
+     */
+    public ComponentPort incomingPort = null;
+
+    /** An indicator of whether this state is a final state.
+     *  This is a boolean that defaults to false. Setting it to true
+     *  will cause the containing FSMActor to return false from its
+     *  postfire() method, which indicates to the director that the
+     *  FSMActor should not be fired again.
+     */
+    public Parameter isFinalState;
+
+    /** An indicator of whether this state is the initial state.
+     *  This is a boolean that defaults to false, unless this state
+     *  is the only one in the container, in which case it defaults
+     *  to true. Setting it to true
+     *  will cause this parameter to become false for whatever
+     *  other state is currently the initial state in the same
+     *  container.
+     */
+    public Parameter isInitialState;
+
+    /** The port linking outgoing transitions.
+     */
+    public ComponentPort outgoingPort = null;
+
+    /** Attribute specifying one or more names of refinements. The
+     *  refinements must be instances of TypedActor and have the same
+     *  container as the FSMActor containing this state, otherwise
+     *  an exception will be thrown when getRefinement() is called.
+     *  Usually, the refinement is a single name. However, if a
+     *  comma-separated list of names is provided, then all the specified
+     *  refinements will be executed.
+     *  This attribute has a null expression or a null string as
+     *  expression when the state is not refined.
+     */
+    public StringAttribute refinementName = null;
+
+    /** A boolean attribute to decide refinements of this state should be
+     *  exported as configurations of this state or not.
+     */
+    public Parameter saveRefinementsInConfigurer;
+
+    ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
     /** React to a change in an attribute. If the changed attribute is
@@ -245,6 +291,7 @@ public class State extends ComponentEntity implements ConfigurableEntity,
         newObject._preemptiveTransitionList = new LinkedList();
         newObject._refinementVersion = -1;
         newObject._transitionListVersion = -1;
+        newObject._nonErrorNonTerminationTransitionList = new LinkedList();
         return newObject;
     }
 
@@ -294,6 +341,20 @@ public class State extends ComponentEntity implements ConfigurableEntity,
             ((DropTargetHandler) container).dropObject(target, dropObjects,
                     moml);
         }
+    }
+
+    /** Return the list of outgoing error transitions from
+     *  this state.
+     *  @return The list of outgoing error transitions from
+     *   this state.
+     *  @throws IllegalActionException If the parameters giving transition
+     *   properties cannot be evaluated.
+     */
+    public List errorTransitionList() throws IllegalActionException {
+        if (_transitionListVersion != workspace().getVersion()) {
+            _updateTransitionLists();
+        }
+        return _errorTransitionList;
     }
 
     /** Return the input source that was specified the last time the configure
@@ -461,15 +522,27 @@ public class State extends ComponentEntity implements ConfigurableEntity,
         }
     }
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         public variables                  ////
+    /** Return the list of outgoing transitions from
+     *  this state that are neither error nor termination transitions.
+     *  @return A list of outgoing transitions from this state.
+     *  @throws IllegalActionException If the parameters giving transition
+     *   properties cannot be evaluated.
+     */
+    public List nonErrorNonTerminationTransitionList() throws IllegalActionException {
+        if (_transitionListVersion != workspace().getVersion()) {
+            _updateTransitionLists();
+        }
+        return _nonErrorNonTerminationTransitionList;
+    }
 
     /** Return the list of non-preemptive outgoing transitions from
      *  this state.
      *  @return The list of non-preemptive outgoing transitions from
      *   this state.
+     *  @throws IllegalActionException If the parameters giving transition
+     *   properties cannot be evaluated.
      */
-    public List nonpreemptiveTransitionList() {
+    public List nonpreemptiveTransitionList() throws IllegalActionException {
         if (_transitionListVersion != workspace().getVersion()) {
             _updateTransitionLists();
         }
@@ -481,72 +554,32 @@ public class State extends ComponentEntity implements ConfigurableEntity,
      *  this state.
      *  @return The list of preemptive outgoing transitions from
      *   this state. This will be an empty list if there aren't any.
+     *  @throws IllegalActionException If the parameters giving transition
+     *   properties cannot be evaluated.
      */
-    public List preemptiveTransitionList() {
+    public List preemptiveTransitionList() throws IllegalActionException {
         if (_transitionListVersion != workspace().getVersion()) {
             _updateTransitionLists();
         }
         return _preemptiveTransitionList;
     }
 
-    /** Return the list of outgoing error transitions from
+    /** Return the list of termination transitions from
      *  this state.
-     *  @return The list of outgoing error transitions from
-     *   this state.
+     *  @return The list of termination transitions from
+     *   this state. This will be an empty list if there aren't any.
+     *  @throws IllegalActionException If the parameters giving transition
+     *   properties cannot be evaluated.
      */
-    public List errorTransitionList() {
+    public List terminationTransitionList() throws IllegalActionException {
         if (_transitionListVersion != workspace().getVersion()) {
             _updateTransitionLists();
         }
-
-        return _errorTransitionList;
+        return _terminationTransitionList;
     }
 
-    /** The port linking incoming transitions.
-     */
-    public ComponentPort incomingPort = null;
-
-    /** An indicator of whether this state is a final state.
-     *  This is a boolean that defaults to false. Setting it to true
-     *  will cause the containing FSMActor to return false from its
-     *  postfire() method, which indicates to the director that the
-     *  FSMActor should not be fired again.
-     */
-    public Parameter isFinalState;
-
-    /** An indicator of whether this state is the initial state.
-     *  This is a boolean that defaults to false, unless this state
-     *  is the only one in the container, in which case it defaults
-     *  to true. Setting it to true
-     *  will cause this parameter to become false for whatever
-     *  other state is currently the initial state in the same
-     *  container.
-     */
-    public Parameter isInitialState;
-
-    /** The port linking outgoing transitions.
-     */
-    public ComponentPort outgoingPort = null;
-
     ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
-
-    /** Attribute specifying one or more names of refinements. The
-     *  refinements must be instances of TypedActor and have the same
-     *  container as the FSMActor containing this state, otherwise
-     *  an exception will be thrown when getRefinement() is called.
-     *  Usually, the refinement is a single name. However, if a
-     *  comma-separated list of names is provided, then all the specified
-     *  refinements will be executed.
-     *  This attribute has a null expression or a null string as
-     *  expression when the state is not refined.
-     */
-    public StringAttribute refinementName = null;
-
-    /** A boolean attribute to decide refinements of this state should be
-     *  exported as configurations of this state or not.
-     */
-    public Parameter saveRefinementsInConfigurer;
+    ////                         protected methods                 ////
 
     /** Write a MoML description of the contents of this object, which
      *  in this class are the attributes plus the ports.  This method is called
@@ -684,13 +717,17 @@ public class State extends ComponentEntity implements ConfigurableEntity,
 
     /** Update the cached transition lists. This method is read-synchronized on
      *  the workspace.
+     *  @throws IllegalActionException If the parameters giving transition
+     *   properties cannot be evaluated.
      */
-    private void _updateTransitionLists() {
+    private void _updateTransitionLists() throws IllegalActionException {
         try {
             workspace().getReadAccess();
             _nonpreemptiveTransitionList.clear();
             _preemptiveTransitionList.clear();
             _errorTransitionList.clear();
+            _terminationTransitionList.clear();
+            _nonErrorNonTerminationTransitionList.clear();
 
             Iterator transitions = outgoingPort.linkedRelationList().iterator();
 
@@ -699,11 +736,26 @@ public class State extends ComponentEntity implements ConfigurableEntity,
 
                 if (transition.isPreemptive()) {
                     _preemptiveTransitionList.add(transition);
-
+                    _nonErrorNonTerminationTransitionList.add(transition);
                 } else if (transition.isErrorTransition()) {
+                    // Note that a transition does not appear on this list unless it is
+                    // NOT a preemptive transition.
                     _errorTransitionList.add(transition);
+                } else if (transition.isTermination()) {
+                    // Note that a transition does not appear on this list unless it is
+                    // NOT a preemptive or error transition.
+                    // Check that there are no output actions on such a transition,
+                    // since it will be too late to produce outputs when this transition
+                    // is taken (in postfire()).
+                    if (!transition.outputActions.getExpression().trim().equals("")) {
+                        throw new IllegalActionException(transition,
+                                "Termination transition cannot have output actions because "
+                                + "such a transition is taken in the postfire phase of execution.");
+                    }
+                    _terminationTransitionList.add(transition);
                 } else {
                     _nonpreemptiveTransitionList.add(transition);
+                    _nonErrorNonTerminationTransitionList.add(transition);
                 }
             }
 
@@ -719,20 +771,27 @@ public class State extends ComponentEntity implements ConfigurableEntity,
     // The Configurer object for this state.
     private Configurer _configurer;
 
+    // Cached list of error transitions from this state
+    private List _errorTransitionList = new LinkedList();
+
+    // Cached list of outgoing transitions from this state that are
+    // neither error nor termination transitions.
+    private List _nonErrorNonTerminationTransitionList = new LinkedList();
+
     // Cached list of non-preemptive outgoing transitions from this state.
     private List _nonpreemptiveTransitionList = new LinkedList();
 
     // Cached list of preemptive outgoing transitions from this state.
     private List _preemptiveTransitionList = new LinkedList();
 
-    // Cached list of error transitions from this state
-    private List _errorTransitionList = new LinkedList();
-
     // Cached reference to the refinement of this state.
     private TypedActor[] _refinement = null;
 
     // Version of the cached reference to the refinement.
     private long _refinementVersion = -1;
+    
+    // Cached list of termination transitions from this state.
+    private List _terminationTransitionList = new LinkedList();    
 
     // Version of cached transition lists.
     private long _transitionListVersion = -1;

@@ -43,6 +43,7 @@ import ptolemy.cg.kernel.generic.program.ProgramCodeGenerator;
 import ptolemy.cg.kernel.generic.program.ProgramCodeGeneratorAdapter;
 import ptolemy.domains.modal.kernel.State;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.util.StringUtilities;
 
@@ -591,7 +592,11 @@ public class ModalController extends NamedProgramCodeGeneratorAdapter {
          *  @return An iterator that refers to the nonpreemptive transitions.
          */
         public Iterator retrieveTransitions(State state) {
-            return state.nonpreemptiveTransitionList().iterator();
+            try {
+                return state.nonpreemptiveTransitionList().iterator();
+            } catch (IllegalActionException e) {
+                throw new InternalErrorException(state, e, "Error evaluating transition parameters.");
+            }
         }
     }
 
@@ -603,7 +608,11 @@ public class ModalController extends NamedProgramCodeGeneratorAdapter {
          *  @return An iterator that refers to the preemptive transitions.
          */
         public Iterator retrieveTransitions(State state) {
-            return state.preemptiveTransitionList().iterator();
+            try {
+                return state.preemptiveTransitionList().iterator();
+            } catch (IllegalActionException e) {
+                throw new InternalErrorException(state, e, "Error evaluating transition parameters.");
+            }
         }
     }
 

@@ -250,7 +250,9 @@ test InterfaceAutomaton-8.1 {test generating moml} {
         </property>
         <property name="history" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="errorTransition" class="ptolemy.data.expr.Parameter" value="false">
+        <property name="error" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="termination" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
         </property>

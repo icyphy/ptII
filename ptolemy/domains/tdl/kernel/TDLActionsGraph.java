@@ -911,7 +911,7 @@ public class TDLActionsGraph {
      * @exception TDLModeSchedulerException
      */
     private void _getTransitions(State mode, Refinement refinement,
-            Time modePeriod) {
+            Time modePeriod) throws IllegalActionException {
         // sort transitions here - TODO: sort attribute, priority
 
         HashMap<Time, List<IOPort>> sensorsAndTransitions = new HashMap();

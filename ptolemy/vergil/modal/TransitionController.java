@@ -191,33 +191,40 @@ public class TransitionController extends BasicEdgeController {
                 }
                 if (isHistory) {
                     Blob blob = new Blob(0, 0, 0, Blob.ARROW_CIRCLE_H, 6.0,
-                            Color.green);
+                            Color.white);
                     c.setHeadEnd(blob);
                 } else {
                     Arrowhead arrowhead = new Arrowhead();
                     c.setHeadEnd(arrowhead);
                 }
 
-                if (transition.isPreemptive() && !transition.isImmediate()) {
-                    Blob blob = new Blob(0, 0, 0, Blob.BLOB_CIRCLE, 4.0,
-                            Color.red);
-                    blob.setFilled(true);
-                    c.setTailEnd(blob);
-                }
-                if (transition.isImmediate() && !transition.isPreemptive()) {
-                    Blob blob = new Blob(0, 0, 0, Blob.BLOB_DIAMOND, 5.0,
-                            Color.red);
-                    blob.setFilled(true);
-                    c.setTailEnd(blob);
-                }
-                if (transition.isImmediate() && transition.isPreemptive()) {
-                    Blob blob = new Blob(0, 0, 0, Blob.BLOB_CIRCLE_DIAMOND,
-                            5.0, Color.red);
-                    blob.setFilled(true);
-                    c.setTailEnd(blob);
-                }
-                if (transition.isErrorTransition()) {
-                    Blob blob = new Blob(0, 0, 0, Blob.STAR, 5.0, Color.red);
+                try {
+                    if (transition.isPreemptive() && !transition.isImmediate()) {
+                        Blob blob = new Blob(0, 0, 0, Blob.BLOB_CIRCLE, 4.0,
+                                Color.red);
+                        blob.setFilled(true);
+                        c.setTailEnd(blob);
+                    } else if (transition.isImmediate() && !transition.isPreemptive()) {
+                        Blob blob = new Blob(0, 0, 0, Blob.BLOB_DIAMOND, 5.0,
+                                Color.red);
+                        blob.setFilled(true);
+                        c.setTailEnd(blob);
+                    } else if (transition.isImmediate() && transition.isPreemptive()) {
+                        Blob blob = new Blob(0, 0, 0, Blob.BLOB_CIRCLE_DIAMOND,
+                                5.0, Color.red);
+                        blob.setFilled(true);
+                        c.setTailEnd(blob);
+                    } else if (transition.isErrorTransition()) {
+                        Blob blob = new Blob(0, 0, 0, Blob.STAR, 5.0, Color.red);
+                        blob.setFilled(true);
+                        c.setTailEnd(blob);
+                    } else if (transition.isTermination()) {
+                        Blob blob = new Blob(0, 0, 0, Blob.TRIANGLE, 5.0, Color.green);
+                        blob.setFilled(true);
+                        c.setTailEnd(blob);
+                    }
+                } catch (IllegalActionException ex) {
+                    Blob blob = new Blob(0, 0, 0, Blob.ERROR, 5.0, Color.red);
                     blob.setFilled(true);
                     c.setTailEnd(blob);
                 }

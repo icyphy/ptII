@@ -70,6 +70,14 @@ public class Blob implements ConnectorEnd {
      */
     public final static int ARROW_CIRCLE_H = STAR + 1;
 
+    /** Triangle style.
+     */
+    public final static int TRIANGLE = ARROW_CIRCLE_H + 1;
+
+    /** Error style.
+     */
+    public final static int ERROR = TRIANGLE + 1;
+
     /** The style.
      */
     private int _style;
@@ -185,6 +193,14 @@ public class Blob implements ConnectorEnd {
 
         case ARROW_CIRCLE_H:
             p.setLocation(_originX + (4 * _unit), _originY);
+            break;
+            
+        case TRIANGLE:
+            p.setLocation(_originX + (2 * _unit), _originY);
+            break;
+            
+        case ERROR:
+            p.setLocation(_originX + (2 * _unit), _originY);
             break;
         }
 
@@ -356,6 +372,29 @@ public class Blob implements ConnectorEnd {
             arrow.lineTo(_originX + 1.4 * _unit, _originY + halfHeight);
             _shape = arrow;
             break;
+            
+        case TRIANGLE:
+            Path2D triangle = new Path2D.Float();
+            triangle.moveTo(_originX, _originY);
+            triangle.lineTo(_originX, _originY + _unit);
+            triangle.lineTo(_originX + 2* _unit, _originY);
+            triangle.lineTo(_originX, _originY - _unit);
+            triangle.closePath();
+            _shape = triangle;
+            break;
+            
+        case ERROR:
+            Path2D error = new Path2D.Float();
+            error.moveTo(_originX, _originY);
+            error.curveTo(_originX, _originY - 1.3 * _unit, _originX + 2
+                    * _unit, _originY - 1.3 * _unit, _originX + 2 * _unit,
+                    _originY);
+            error.curveTo(_originX + 2 * _unit, _originY + 1.3 * _unit,
+                    _originX, _originY + 1.3 * _unit, _originX, _originY);
+            error.moveTo(_originX + 1.6 * _unit, _originY - 0.75 * _unit);
+            error.lineTo(_originX + 0.4 * _unit, _originY + 0.75 * _unit);
+            _shape = error;
+            break; 
         }
 
         _shape = at.createTransformedShape(_shape);
