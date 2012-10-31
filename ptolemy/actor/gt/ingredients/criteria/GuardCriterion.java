@@ -131,7 +131,7 @@ public class GuardCriterion extends Criterion {
             guardVariable.setExpression(guardTester);
             BooleanToken result = (BooleanToken) guardVariable.getToken();
             return result.booleanValue();
-        } catch (Exception e) {
+        } catch (Throwable throwable) {
             return false;
         } finally {
             if (guardVariable != null) {

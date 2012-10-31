@@ -967,7 +967,7 @@ public class ModularCodeGenTypedCompositeActor extends LazyTypedCompositeActor {
                 _profile = (Profile) (classInstance.newInstance());
                 portList();
             }
-        } catch (Exception e) {
+        } catch (Throwable throwable) {
             try {
                 if (_USE_PROFILE) {
                     _setRecompileFlag();

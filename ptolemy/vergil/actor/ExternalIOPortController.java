@@ -287,7 +287,7 @@ public class ExternalIOPortController extends AttributeController {
                 }
                 CanvasUtilities.translateTo(nf, location[0], location[1]);
             }
-        } catch (Exception ex) {
+        } catch (Throwable throwable) {
             // FIXME: Ignore if there is no valid location.  This
             // happens occasionally due to a race condition in the
             // Bouncer demo.  Occasionally, the repaint thread will

@@ -149,7 +149,7 @@ public class CustomizeDocumentationAction extends FigureAction {
                         };
                         target.requestChange(request);
                     }
-                } catch (Exception ee) {
+                } catch (Throwable throwable) {
                     System.out
                             .println("Failed to call doc application specializer "
                                     + "class \""

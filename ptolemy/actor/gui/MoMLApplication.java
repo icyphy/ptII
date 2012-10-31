@@ -109,7 +109,7 @@ public class MoMLApplication extends ConfigurationApplication {
                 UIManager.setLookAndFeel(UIManager
                         .getSystemLookAndFeelClassName());
             }
-        } catch (Exception e) {
+        } catch (Throwable throwable) {
             // Ignore exceptions, which only result in the wrong look and feel.
         }
     }

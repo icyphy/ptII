@@ -340,7 +340,7 @@ public class EditorDropTargetListener implements DropTargetListener {
                                 + result.substring(int2, result.length());
                     }
                     moml.append(result);
-                } catch (Exception w) {
+                } catch (Throwable throwable) {
                     System.out.println("Error creating alternateGetMoml!");
                 }
             } else { // default method for PtolemyII use
