@@ -388,7 +388,8 @@ public class MulticoreExecutionTimeMonitor extends Plotter implements
      * processing events at a given time. This provides a measure of
      * parallelization achieved.
      */
-    protected class ParallelMonitor {
+    protected static class ParallelMonitor {
+        // FindBugs indicates that this should be a static class.
 
         /** Construct the parallel monitor by initializing variables. */
         protected ParallelMonitor() {
