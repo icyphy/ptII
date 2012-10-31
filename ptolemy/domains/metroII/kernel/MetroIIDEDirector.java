@@ -23,7 +23,7 @@ public class MetroIIDEDirector extends DEDirector /*implements M2EventHandler*/ 
 
     public MetroIIDEDirector() throws IllegalActionException, NameDuplicationException {
  		// TODO Auto-generated constructor stub
- 	}
+    }
 
 // 	public MetroIIDEDirector(Workspace workspace) {
 // 		super(workspace);
