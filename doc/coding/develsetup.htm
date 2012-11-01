@@ -120,7 +120,9 @@ packages in different locations.  External packages are usually installed in
 <CODE>ptII/vendors</CODE>, which we do not distribute.
 
 <p>Packages that are large or have restricted copyrights (such as GPL)
-should go into <code>ptII/vendors</code>.
+should go into <code>ptII/vendors</code>. 
+In general, <b>do not</b> add GPL'd code to the repository.
+See <a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIfaq.htm#ptolemy%20II%20copyright#in_browser">What is the copyright and license?</a> in the Ptolemy II FAQ.</p>
 
 <p>Large packages should optionally be placed in a separate repository
 and a directory in <code>$PTII/vendors</code> should be created
@@ -146,7 +148,13 @@ During the build process, users run
 reads in 
 <a href="../../mk/ptII.mk.in"><CODE>$PTII/mk/ptII.mk.in</CODE></a>
 and substitutes in makefile variables and creates
-<a href="../../mk/ptII.mk"><CODE>$PTII/mk/ptII.mk</CODE></a>.
+<a href="../../mk/ptII.mk"><CODE>$PTII/mk/ptII.mk</CODE></a>.</p>
+
+<p>In addition, <a href="../../configure"><CODE>$PTII/configure</CODE></a>
+reads in <a href="../../build.xml.in"><code>$PTII/build.xml.in</code></a>
+and produces <a href="../../build.xml"><code>$PTII/build.xml</code></a>,
+which is used by <a href="ant.htm">ant</a> and the nightly build.</p>
+
 
  <p>The primary method is to look for a directory
 that contains the external package.  Another method
@@ -264,6 +272,28 @@ the <CODE>KVM_DIR</CODE> makefile variable
 	href="https://kepler-project.org/developers/reference/update-ptolemy-third-party-package-dependencies"
 	target="_top">https://kepler-project.org/developers/reference/update-ptolemy-third-party-package-dependencies</a>
 	  
+<li> Update <a href="../../build.xml.in"><code>$PTII/build.xml.in</code></a>,
+rerun <code>./configure</code> and <code>ant</code> until 
+<a href="../../build.xml"><code>$PTII/build.xml</code></a> is correct.</li>
+
+<li> The license file must be included with the jar, see some of the
+<code>$PTII/lib/*-license.htm</code> files for examples.  Determine
+the license and create a <code>*-license.htm</code> file.  Be
+sure to update the <code>makefile</code>.
+
+<li> Ptolemy II uses <code>about:copyright</code> to list copyrights.
+For this system to work, a class in the jar file must be added
+to <code>$PTII/ptolemy/actor/gui/GenerateCopyrights.java</code>.
+For example,
+<pre>
+        _addIfPresent(copyrightsMap, "com.sun.jna.Pointer",
+                "lib/jna-license.htm");
+</pre>
+Add a similar line for your jar file and test that it works by
+viewing the copyrights from within the Vergil help menu.
+</pre>
+
+
 </ol>
 
 <h3>Run-time considerations</h3>
