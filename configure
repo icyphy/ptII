@@ -1603,6 +1603,10 @@ Optional Packages:
                           defaults to \$PTII/lib/jetty-all-8.1.5-v20120716.jar
   --with-servlet=JAR       use servlet.jar from JAR,
                           defaults to \$PTII/lib/javax.servlet-api-3.0.1.jar
+  --with-smack=JAR       use smack.jar from JAR,
+                          defaults to \$PTII/lib/smack.jar
+  --with-smackx=JAR       use smackx.jar from JAR,
+                          defaults to \$PTII/lib/smackx.jar
   --with-javamail=DIRECTORY       use JavaMail interface from DIRECTORY,
                           defaults to \$PTII/vendors/oracle/javamail
   --with-joystick-jar=JARFILE       use JOYSTICK from JARFILE,
@@ -7734,6 +7738,10 @@ PTJETTY_JAR=
 # javax.servlet-api*.jar used by Ptango and ptserver.
 PTSERVLET_JAR=
 
+# smack.jar and smackx.jar used by Ptango, implemens xmpp
+PTSMACK_JAR=
+PTSMACKX_JAR=
+
 # We only need to look for Jetty if $PTANGO_USER_DIR is present
 # We only need to look for Jetty if $PTSERVER_USER_DIR is present
 PTANGO_USER_DIR="$PTII/org/ptolemy/ptango"
@@ -7776,6 +7784,54 @@ fi
 $as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: $PTSERVLET_JAR" >&5
 $as_echo "$PTSERVLET_JAR" >&6; }; fi
         fi
+    fi
+
+    { $as_echo "$as_me:${as_lineno-$LINENO}: checking for Smack, used by ptango" >&5
+$as_echo_n "checking for Smack, used by ptango... " >&6; }
+
+# Check whether --with-jetty was given.
+if test "${with_jetty+set}" = set; then :
+  withval=$with_jetty; PTSMACK_JAR=$withval
+else
+  PTSMACK_JAR=$PTII/lib/smack.jar
+fi
+
+    if test  -f "$PTSMACK_JAR"; then
+	if test "${PTVERBOSE:-none}" = "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
+$as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: $PTSMACKJAR" >&5
+$as_echo "$PTSMACKJAR" >&6; }; fi
+       updateClasspath "$PTSMACK_JAR"
+    else
+        { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Failed to find the Smack jar files necessary to compile ptango.
+    Ptango is the Ptolemy Internet of Things project.
+    For further instructions, see http://chess.eecs.berkeley.edu/ptango." >&5
+$as_echo "$as_me: WARNING: Failed to find the Smack jar files necessary to compile ptango.
+    Ptango is the Ptolemy Internet of Things project.
+    For further instructions, see http://chess.eecs.berkeley.edu/ptango." >&2;}
+    fi
+
+    { $as_echo "$as_me:${as_lineno-$LINENO}: checking for Smackx, used by ptango" >&5
+$as_echo_n "checking for Smackx, used by ptango... " >&6; }
+
+# Check whether --with-jetty was given.
+if test "${with_jetty+set}" = set; then :
+  withval=$with_jetty; PTSMACKX_JAR=$withval
+else
+  PTSMACKX_JAR=$PTII/lib/smackx.jar
+fi
+
+    if test  -f "$PTSMACKX_JAR"; then
+	if test "${PTVERBOSE:-none}" = "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
+$as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: $PTSMACKXJAR" >&5
+$as_echo "$PTSMACKXJAR" >&6; }; fi
+       updateClasspath "$PTSMACKX_JAR"
+    else
+        { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Failed to find the Smackx jar files necessary to compile ptango.
+    Ptango is the Ptolemy Internet of Things project.
+    For further instructions, see http://chess.eecs.berkeley.edu/ptango." >&5
+$as_echo "$as_me: WARNING: Failed to find the Smackx jar files necessary to compile ptango.
+    Ptango is the Ptolemy Internet of Things project.
+    For further instructions, see http://chess.eecs.berkeley.edu/ptango." >&2;}
     fi
 
     if ! test -f "$PTJETTY_JAR"; then
@@ -10613,6 +10669,7 @@ if test -d "$MESCAL_USER_DIR"; then
 fi
 
 
+
 #--------------------------------------------------------------------
 #       Ptango is the Ptolemy Internet of Things project
 #	See http://chess.eecs.berkeley.edu/ptango
@@ -10630,7 +10687,7 @@ else
     # We checked for Jetty above.
     if test  -f "$PTJETTY_JAR"; then
 	# We checked for Servlet above.
-        if test  -f "$PTSERVLET_JAR"; then
+        if test  -f "$PTSERVLET_JAR" -a -f "$PTSMACK_JAR" -a -f "$PTSMACKX_JAR"; then
 	    PTANGO_DIR=ptango
             # PTANGO_PACKAGES is used in ptII/doc/makefile
 	    PTANGO_PACKAGES=`find $PTANGO_USER_DIR -name "*.java" | grep -v /test | awk -F / '{printf("%s", $1); for (i = 2; i < NF; i++) printf(".%s", $i); printf("\n")}' | sort | uniq | awk '{printf("%s ", $0)}'`
@@ -10638,14 +10695,14 @@ else
     fi
 
     if test "$PTANGO_DIR" = ""; then
-        { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Failed to find the Jetty or Servlet jar files necessary to compile ptango.
+        { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Failed to find the Jetty, Servlet, Smack or SmackX jar files necessary to compile ptango.
     Ptango is the Ptolemy Internet of Things project.
     For further instructions, see http://chess.eecs.berkeley.edu/ptango." >&5
-$as_echo "$as_me: WARNING: Failed to find the Jetty or Servlet jar files necessary to compile ptango.
+$as_echo "$as_me: WARNING: Failed to find the Jetty, Servlet, Smack or SmackX jar files necessary to compile ptango.
     Ptango is the Ptolemy Internet of Things project.
     For further instructions, see http://chess.eecs.berkeley.edu/ptango." >&2;}
     else
-        PTANGO_JARS="${CLASSPATHSEPARATOR}${PTJETTY_JAR}${CLASSPATHSEPARATOR}${PTSERVLET_JAR}"
+        PTANGO_JARS="${CLASSPATHSEPARATOR}${PTJETTY_JAR}${CLASSPATHSEPARATOR}${PTSERVLET_JAR}${CLASSPATHSEPARATOR}${PTSMACK_JAR}${CLASSPATHSEPARATOR}${PTSMACKX_JAR}"
     fi
 fi
 
