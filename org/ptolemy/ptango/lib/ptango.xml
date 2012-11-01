@@ -5,15 +5,17 @@
   <configure>
     <?moml
       <group>
-<doc>Ptango actors:  Actors for web services. </doc>
+		<doc>Ptango actors:  Actors for web services. </doc>
 
-<entity name="HttpActor" class="org.ptolemy.ptango.lib.HttpActor">
-</entity>
+		<entity name="HttpActor" class="org.ptolemy.ptango.lib.HttpActor">
+		</entity>
 
-<property name="WebServer" class="org.ptolemy.ptango.lib.WebServer">
-</property>
-
-      </group>
+		<property name="SOXGateway" class="org.ptolemy.ptango.lib.SOXGateway">
+	 	</property>
+	 	
+		<property name="WebServer" class="org.ptolemy.ptango.lib.WebServer">
+		</property>
+      </group> 	
     ?>
   </configure>
 </entity>
