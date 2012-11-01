@@ -262,6 +262,9 @@ public class GenerateCopyrights {
         _addIfPresent(copyrightsMap, "thales.vergil.SingleWindowApplication",
                 "thales/thalesSingleWindow-license.htm");
 
+        _addIfPresent(copyrightsMap, "org.jivesoftware.smack.XMPPConnection",
+                "lib/smack-license.htm");
+        
         // Check for the _applicationCopyrights parameter
         try {
             Parameter applicationCopyrights = (Parameter) configuration
