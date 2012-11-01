@@ -38,7 +38,9 @@ import org.jivesoftware.smack.XMPPException;
 import org.jivesoftware.smackx.pubsub.Item;
 import org.jivesoftware.smackx.pubsub.Node;
 import org.jivesoftware.smackx.pubsub.LeafNode;
+import org.jivesoftware.smackx.pubsub.PayloadItem;
 import org.jivesoftware.smackx.pubsub.PubSubManager;
+import org.jivesoftware.smackx.pubsub.SimplePayload;
 import org.jivesoftware.smackx.pubsub.Subscription;
 import org.jivesoftware.smackx.pubsub.Subscription.State;
 
@@ -349,7 +351,10 @@ public class XMPPGateway extends AbstractInitializableAttribute implements
                 throw new IllegalActionException("Unable to create node with id: " + nodeId + ".");
             }
         }
-        ln.publish(new Item(value));
+
+        SimplePayload payload = new SimplePayload("message","null", "<message>" + value + "</message>");
+        PayloadItem<SimplePayload> item = new PayloadItem<SimplePayload>(null, payload);
+        ln.publish(item);
     }
     
 /*    private Map<Publisher, String> _publishers;

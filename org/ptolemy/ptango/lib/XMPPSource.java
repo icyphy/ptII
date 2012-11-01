@@ -30,6 +30,8 @@ package org.ptolemy.ptango.lib;
 
 import org.jivesoftware.smackx.pubsub.Item;
 import org.jivesoftware.smackx.pubsub.ItemPublishEvent;
+import org.jivesoftware.smackx.pubsub.PayloadItem;
+import org.jivesoftware.smackx.pubsub.SimplePayload;
 
 import ptolemy.actor.lib.Source;
 import ptolemy.data.StringToken;
@@ -94,7 +96,11 @@ public class XMPPSource extends Source implements XMPPSubscriber {
     
     @Override
     public void handlePublishedItems(ItemPublishEvent<Item> items) {
-        _currentValue = items.getItems().toString();
+        // FIXME: unchecked cast
+        PayloadItem<SimplePayload> item = (PayloadItem<SimplePayload>) items.getItems().get(0);
+        SimplePayload payload = item.getPayload();
+        _currentValue = payload.toXML();
+        
         System.out.println("Event!");
         try {
             getDirector().fireAtCurrentTime(this);
