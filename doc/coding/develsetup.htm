@@ -275,11 +275,16 @@ the <CODE>KVM_DIR</CODE> makefile variable
 <li> Update <a href="../../build.xml.in"><code>$PTII/build.xml.in</code></a>,
 rerun <code>./configure</code> and <code>ant</code> until 
 <a href="../../build.xml"><code>$PTII/build.xml</code></a> is correct.</li>
+<br/>In <code>configure.in</code>, lines like
+<pre>
+   updateClasspath "$CALTROP_DIR/ptCal.jar"
+</pre>
+update both the <a href="ant.htm">ant</a> and <a href="../eclipse/index.htm">Eclipse</a> classpaths.</li>
 
 <li> The license file must be included with the jar, see some of the
 <code>$PTII/lib/*-license.htm</code> files for examples.  Determine
 the license and create a <code>*-license.htm</code> file.  Be
-sure to update the <code>makefile</code>.
+sure to update the <code>makefile</code>. 
 
 <li> Ptolemy II uses <code>about:copyright</code> to list copyrights.
 For this system to work, a class in the jar file must be added
