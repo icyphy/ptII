@@ -320,7 +320,7 @@ public abstract class OntologySolverBase extends MoMLModelAttribute {
      *
      * @return The expression parser.
      */
-    public static PtParser getParser() {
+    public PtParser getParser() {
         if (_parser == null) {
             _parser = new PtParser();
         }
@@ -637,7 +637,7 @@ public abstract class OntologySolverBase extends MoMLModelAttribute {
 
     /** Reset the Ptolemy expression parser.
      */
-    private static void _resetParser() {
+    private void _resetParser() {
         // Avoid FindBugs: Write to static field from instance method.
         _parser = null;
     }
@@ -648,6 +648,6 @@ public abstract class OntologySolverBase extends MoMLModelAttribute {
     /**
      * The expression parser.
      */
-    private static PtParser _parser;
+    private PtParser _parser;
 
 }

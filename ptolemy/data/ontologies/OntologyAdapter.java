@@ -494,13 +494,13 @@ public abstract class OntologyAdapter {
             throws IllegalActionException {
         Map map;
         try {
-            ASTPtRootNode parseTree = OntologySolverBase.getParser()
+            ASTPtRootNode parseTree = getSolver().getParser()
                     .generateParseTree(annotation.getExpression());
 
             map = new HashMap();
             map.put(parseTree, parseTree);
         } catch (IllegalActionException ex) {
-            map = OntologySolverBase.getParser().generateAssignmentMap(
+            map = getSolver().getParser().generateAssignmentMap(
                     annotation.getExpression());
 
         }

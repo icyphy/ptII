@@ -249,7 +249,7 @@ public class DerivedDimensionRepresentativeConcept extends
 
             // First see if the name is a reference name that is mapped to a
             // dimension parameter specified in this concept.
-            Attribute dimensionAttribute = getAttribute(dimensionName);
+            Attribute dimensionAttribute = this.getAttribute(dimensionName);
             if (dimensionAttribute instanceof Parameter
                     && ((Parameter) dimensionAttribute).getToken() instanceof ObjectToken) {
                 ObjectToken dimensionConceptToken = (ObjectToken) ((Parameter) dimensionAttribute)
