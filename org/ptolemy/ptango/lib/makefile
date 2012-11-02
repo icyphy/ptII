@@ -54,7 +54,6 @@ JSRCS = \
 	HTMLModelExporter.java \
 	HttpActor.java \
 	HttpService.java \
-	SOXGateway.java \
 	WebServer.java
 
 OTHER_FILES_TO_BE_JARED = \
