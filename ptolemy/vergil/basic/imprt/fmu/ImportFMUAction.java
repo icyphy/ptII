@@ -113,7 +113,17 @@ public class ImportFMUAction extends AbstractAction {
      */
     private void _importFMU() {
         try {
-            if (_frame instanceof BasicGraphFrame) {
+            Class basicGraphFrameClass = null;
+            try {
+                basicGraphFrameClass = Class.forName("ptolemy.vergil.basic.BasicGraphFrame");
+            } catch (Throwable throwable) {
+                throw new InternalErrorException(null, throwable,
+                        "Could not find ptolemy.vergil.basic.BasicGraphFrame?");
+            }
+            if (basicGraphFrameClass == null) {
+                throw new InternalErrorException(null, null,
+                        "Could not find ptolemy.vergil.basic.BasicGraphFrame!");
+            } else if (!basicGraphFrameClass.isInstance(_frame) ) {
                 throw new InternalErrorException("Frame " + _frame
                         + " is not a BasicGraphFrame?");
             } else {
