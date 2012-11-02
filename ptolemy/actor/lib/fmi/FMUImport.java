@@ -718,6 +718,87 @@ public class FMUImport extends TypedAtomicActor implements
     }
 
     ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
+
+    /** Set a Ptolemy II Parameter to the value of a FMI
+     *  ScalarVariable.
+     *  @param parameter The Ptolemy parameter to be set.
+     *  @param scalar The FMI scalar variable that contains the value
+     *  to be set
+     *  @exception IllegalActionException If the scalar is of a type
+     *  that is not handled.
+     */
+    protected void _setParameter(Parameter parameter, FMIScalarVariable scalar) 
+            throws IllegalActionException {
+        // FIXME: What about arrays?
+        if (scalar.type instanceof FMIBooleanType) {
+            parameter.setToken(new BooleanToken(scalar.getBoolean(_fmiComponent)));
+        } else if (scalar.type instanceof FMIIntegerType) {
+            // FIXME: handle Enumerations?
+            parameter.setToken(new IntToken(scalar.getInt(_fmiComponent)));
+        } else if (scalar.type instanceof FMIRealType) {
+            parameter.setToken(new DoubleToken(scalar.getDouble(_fmiComponent)));
+        } else if (scalar.type instanceof FMIStringType) {
+            parameter.setToken(new StringToken(scalar.getString(_fmiComponent)));
+        } else {
+            throw new IllegalActionException("Type "
+                    + scalar.type + " not supported.");
+        }
+    }
+
+    /** Set a FMI scalar variable to the value of a Ptolemy token.
+     *  @param scalar the FMI scalar to be set.
+     *  @param token the Ptolemy token that contains the value to be set.
+     *  @exception IllegalActionException If the scalar is of a type
+     *  that is not handled or if the type of the token does not match
+     *  the type of the scalar.
+     */
+    protected void _setScalarVariable(FMIScalarVariable scalar, Token token)
+            throws IllegalActionException {
+        try {
+            // FIXME: What about arrays?
+            if (scalar.type instanceof FMIBooleanType) {
+                scalar.setBoolean(_fmiComponent,
+                        ((BooleanToken) token).booleanValue());
+            } else if (scalar.type instanceof FMIIntegerType) {
+                // FIXME: handle Enumerations?
+                scalar.setInt(_fmiComponent, ((IntToken) token).intValue());
+            } else if (scalar.type instanceof FMIRealType) {
+                scalar.setDouble(_fmiComponent,
+                        ((DoubleToken) token).doubleValue());
+            } else if (scalar.type instanceof FMIStringType) {
+                scalar.setString(_fmiComponent,
+                        ((StringToken) token).stringValue());
+            } else {
+                throw new IllegalActionException("Type " + scalar.type
+                        + " not supported.");
+            }
+        } catch (ClassCastException ex) {
+            throw new IllegalActionException(this, ex,
+                    "Could not cast a token \"" + token + "\" of type "
+                            + token.getType()
+                            + " to an FMI scalar variable of type "
+                            + scalar.type);
+        }
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                     protected fields                      ////
+
+    /** The FMI component created by the
+     * modelIdentifier_fmiInstantiateSlave() method.
+     */
+    protected Pointer _fmiComponent = null;
+
+    /** The _fmoDoStep() function. */
+    protected Function _fmiDoStep;
+
+    /** A representation of the fmiModelDescription element of a
+     *  Functional Mock-up Unit (FMU) file.
+     */
+    protected FMIModelDescription _fmiModelDescription;
+
+    ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
     /** Given a FMIType object, return a string suitable for setting
@@ -830,42 +911,6 @@ public class FMUImport extends TypedAtomicActor implements
         return _outputs;
     }
 
-    /** Set a FMI scalar variable to the value of a Ptolemy token.
-     *  @param scalar the FMI scalar to be set.
-     *  @param token the Ptolemy token that contains the value to be set.
-     *  @exception IllegalActionException If the scalar is of a type
-     *  that is not handled or if the type of the token does not match
-     *  the type of the scalar.
-     */
-    private void _setScalarVariable(FMIScalarVariable scalar, Token token)
-            throws IllegalActionException {
-        try {
-            // FIXME: What about arrays?
-            if (scalar.type instanceof FMIBooleanType) {
-                scalar.setBoolean(_fmiComponent,
-                        ((BooleanToken) token).booleanValue());
-            } else if (scalar.type instanceof FMIIntegerType) {
-                // FIXME: handle Enumerations?
-                scalar.setInt(_fmiComponent, ((IntToken) token).intValue());
-            } else if (scalar.type instanceof FMIRealType) {
-                scalar.setDouble(_fmiComponent,
-                        ((DoubleToken) token).doubleValue());
-            } else if (scalar.type instanceof FMIStringType) {
-                scalar.setString(_fmiComponent,
-                        ((StringToken) token).stringValue());
-            } else {
-                throw new IllegalActionException("Type " + scalar.type
-                        + " not supported.");
-            }
-        } catch (ClassCastException ex) {
-            throw new IllegalActionException(this, ex,
-                    "Could not cast a token \"" + token + "\" of type "
-                            + token.getType()
-                            + " to an FMI scalar variable of type "
-                            + scalar.type);
-        }
-    }
-
     /** Update the parameters listed in the modelDescription.xml file
      *  contained in the zipped file named by the <i>fmuFile</i>
      *  parameter
@@ -928,13 +973,6 @@ public class FMUImport extends TypedAtomicActor implements
     ///////////////////////////////////////////////////////////////////
     ////                     private fields                        ////
 
-    /** The FMI component created by the
-     * modelIdentifier_fmiInstantiateSlave() method.
-     */
-    private Pointer _fmiComponent = null;
-
-    /** The _fmoDoStep() function. */
-    private Function _fmiDoStep;
 
     /** The name of the fmuFile.
      *  The _fmuFileName field is set the first time we read
@@ -952,11 +990,6 @@ public class FMUImport extends TypedAtomicActor implements
 
     /** The _fmiInstantiateSlave function. */
     private Function _fmiInstantiateSlave;
-
-    /** A representation of the fmiModelDescription element of a
-     *  Functional Mock-up Unit (FMU) file.
-     */
-    private FMIModelDescription _fmiModelDescription;
 
     /** A collection of scalar variables for which there is
      *  a connected output port, and for each such variable,
