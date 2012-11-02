@@ -52,14 +52,14 @@ include $(CONFIG)
 
 # Used to build jar files
 PTPACKAGE = 	ptII
-# If you change the version number, be sure to edit doc/*,
+# If you change the version number, be sure to edit 
+# adm/test/Nightly.tcl, doc/*,
 # ptolemy/configs/*, ptolemy/configs/doc and
 # ptolemy/kernel/attributes/VersionAttribute.java
 # Also, create a new build director:
 #  cd $PTII/adm
 #  svn cp gen-N.M gen-N.O
 # and update the versions in gen-N.O/makefile and the .xml files
-# On the sisyphus.eecs server, update ~bldmastr/adm/makefile.sisyphus
 PTVERSION =	9.0.devel
 PTCLASSJAR =
 
