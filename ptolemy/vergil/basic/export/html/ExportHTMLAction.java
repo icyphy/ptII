@@ -816,7 +816,11 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable,
                         .println("<!--#include virtual=\"/ssi/toppostmenu.htm\" -->");
             } else {
                 // The Ptolemy website headers include the closing </head> and <body tag>
-                printWriter.println("</head><body>");
+                printWriter.println("</head>");
+                // Place </head> and <body> on separate lines so that
+                // tools like the TerraSwarm website can easily find
+                // them.
+                printWriter.println("<body>");
             }
 
             _printHTML(printWriter, "start");
