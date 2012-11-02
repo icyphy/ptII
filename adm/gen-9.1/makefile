@@ -37,7 +37,7 @@ MINOR_VERSION =		devel
 
 VERSION=	$(MAJOR_VERSION).$(MINOR_VERSION)
 # Version string for lame filesystems that don't like more than one .
-WINDOWS_VERSION =	9.1.devel
+WINDOWS_VERSION =	9_1_devel
 
 # Even if you are building tar files from ptdesign, this should probably
 # still say ptolemy
