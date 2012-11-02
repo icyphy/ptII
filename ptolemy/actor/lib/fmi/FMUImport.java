@@ -647,6 +647,21 @@ public class FMUImport extends TypedAtomicActor implements
                     + "_fmiInstantiateSlave");
         }
 
+        if (modelIdentifier == null) {
+            throw new IllegalActionException(this,
+                    "Could not get the modelIdentifier, perhaps the .fmu file \""
+                    + fmuLocation
+                    + "\" did not contain a modelDescription.xml file?");
+        }
+        if (_fmiInstantiateSlave == null) {
+            throw new IllegalActionException(this,
+                    "Could not get the " + modelIdentifier
+                    + "_fmiInstantiateSlave() C function?  Perhaps the .fmu file \""
+                    + fmuLocation
+                    + "\" does not contain a shared library for the current "
+                    + "platform?");
+ 
+        }
         _fmiComponent = (Pointer) _fmiInstantiateSlave.invoke(Pointer.class,
                 new Object[] { modelIdentifier, _fmiModelDescription.guid,
                         fmuLocation, mimeType, timeout, visible, interactive,
