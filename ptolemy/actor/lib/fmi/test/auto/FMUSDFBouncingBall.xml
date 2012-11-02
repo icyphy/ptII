@@ -20,7 +20,7 @@
     </property>
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 239.0}">
     </property>
-    <entity name="BouncingBal" class="ptolemy.actor.lib.fmi.FMUSDFImport">
+    <entity name="BouncingBal" class="ptolemy.actor.lib.fmi.FMUImport">
         <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/actor/lib/fmi/demo/FMUBouncingBall/BouncingBall.fmu">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 245.0]">
