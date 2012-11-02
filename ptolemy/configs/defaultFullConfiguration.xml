@@ -174,7 +174,8 @@
             <input source="ptolemy/actor/designs/designPatterns.xml"/>
             <input source="ptolemy/domains/domains.xml"/>
             <input source="ptolemy/actor/lib/esoteric.xml"/>
-            <input source="ptolemy/actor/lib/fmi/fmi.xml"/>
+	    <!-- Don't add the FMUImport actor here, instead we do File - Import - Import FMU -->
+            <!-- input source="ptolemy/actor/lib/fmi/fmi.xml"/ -->
             <!-- Graph transformation library -->
             <input source="ptolemy/configs/gtActorLibrary.xml"/>
  	    <!-- GR depends on the 3D graphics package of Java being present-->
