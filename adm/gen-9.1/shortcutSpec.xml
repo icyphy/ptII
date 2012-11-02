@@ -3,7 +3,7 @@
 <shortcuts>
   <skipIfNotSupported/>
 
-  <programGroup defaultName="Ptolemy\ptII9.0.devel"
+  <programGroup defaultName="Ptolemy\ptII9.1.devel"
                 location="applications"/>
 
   <shortcut
@@ -16,7 +16,7 @@
     target="$INSTALL_PATH\ptiny.exe"
     commandLine=""
     workingDirectory="$INSTALL_PATH"
-    description="Ptiny 9.0.devel, the subset of Ptolemy II GUI"
+    description="Ptiny 9.1.devel, the subset of Ptolemy II GUI"
     iconFile="$INSTALL_PATH\doc\img\ptiny.ico"
     iconIndex="0"
     initialState="normal">
@@ -36,7 +36,7 @@
      commandLine=""
      iconFile="%SystemRoot%\system32\SHELL32.dll"
      iconIndex="31" 
-     description="This uninstalls Ptolemy II 9.0.devel">
+     description="This uninstalls Ptolemy II 9.1.devel">
      
      <createForPack name="Ptiny" />
    </shortcut>
@@ -51,7 +51,7 @@
     target="$INSTALL_PATH\vergil.exe"
     commandLine=""
     workingDirectory="$INSTALL_PATH"
-    description="Vergil 9.0.devel, the full Ptolemy II GUI"
+    description="Vergil 9.1.devel, the full Ptolemy II GUI"
     iconFile="$INSTALL_PATH\doc\img\vergil.ico"
     iconIndex="0"
     initialState="normal">
@@ -69,7 +69,7 @@
     target="$INSTALL_PATH\hyvisual.exe"
     commandLine=""
     workingDirectory="$INSTALL_PATH"
-    description="HyVisual 9.0.devel, the Hybrid System GUI"
+    description="HyVisual 9.1.devel, the Hybrid System GUI"
     iconFile="$INSTALL_PATH\doc\img\hyvisual.ico"
     iconIndex="0"
     initialState="normal">
@@ -87,7 +87,7 @@
     target="$INSTALL_PATH\visualsense.exe"
     commandLine=""
     workingDirectory="$INSTALL_PATH"
-    description="VisualSense 9.0.devel, the Wireless Design GUI"
+    description="VisualSense 9.1.devel, the Wireless Design GUI"
     iconFile="$INSTALL_PATH\doc\img\visualsense.ico"
     iconIndex="0"
     initialState="normal">
@@ -106,7 +106,7 @@
      commandLine=""
      iconFile="$INSTALL_PATH\doc\img\pdf.ico"
      iconIndex="0"
-     description="This opens Adobe (Acrobat) Reader (if available) to look into or print Volume 1 - Introduction - of the Ptolemy 9.0.devel Design Document (PDF)"
+     description="This opens Adobe (Acrobat) Reader (if available) to look into or print Volume 1 - Introduction - of the Ptolemy 9.1.devel Design Document (PDF)"
      >
      <createForPack name="Docs" />
    </shortcut>
@@ -122,7 +122,7 @@
      commandLine=""
      iconFile="$INSTALL_PATH\doc\img\pdf.ico"
      iconIndex="0"
-     description="This opens Adobe (Acrobat) Reader (if available) to look into or print Volume 2 - Software - of the Ptolemy 9.0.devel Design Document (PDF)"
+     description="This opens Adobe (Acrobat) Reader (if available) to look into or print Volume 2 - Software - of the Ptolemy 9.1.devel Design Document (PDF)"
      >
      <createForPack name="Docs" />
    </shortcut>
@@ -138,7 +138,7 @@
      commandLine=""
      iconFile="$INSTALL_PATH\doc\img\pdf.ico"
      iconIndex="0"
-     description="This opens Adobe (Acrobat) Reader (if available) to look into or print Volume 3 - Domains - of the Ptolemy 9.0.devel Design Document (PDF)"
+     description="This opens Adobe (Acrobat) Reader (if available) to look into or print Volume 3 - Domains - of the Ptolemy 9.1.devel Design Document (PDF)"
      >
      <createForPack name="Docs" />
    </shortcut>
@@ -155,7 +155,7 @@
      commandLine=""
      iconFile="$INSTALL_PATH\doc\img\pdf.ico"
      iconIndex="0"
-     description="This opens Adobe (Acrobat) Reader (if available) to look into or print the HyVisual 9.0.devel (PDF) user documentation"
+     description="This opens Adobe (Acrobat) Reader (if available) to look into or print the HyVisual 9.1.devel (PDF) user documentation"
      >     
      <createForPack name="FullDocs" />
    </shortcut>
@@ -171,7 +171,7 @@
      commandLine=""
      iconFile="$INSTALL_PATH\doc\img\pdf.ico"
      iconIndex="0"
-     description="This opens Adobe (Acrobat) Reader (if available) to look into or print the VisualSense 9.0.devel (PDF) user documentation"
+     description="This opens Adobe (Acrobat) Reader (if available) to look into or print the VisualSense 9.1.devel (PDF) user documentation"
      >	  
      <createForPack name="FullDocs" />
    </shortcut>
