@@ -10,6 +10,9 @@
 	<entity name="FMUImport"
 		class="ptolemy.actor.lib.fmi.FMUImport">
 	</entity>
+	<entity name="FMUSDFImport"
+		class="ptolemy.actor.lib.fmi.FMUSDFImport">
+	</entity>
 
       </group>
     ?>

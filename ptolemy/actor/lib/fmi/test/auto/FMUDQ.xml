@@ -40,7 +40,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[365.0, 285.0]">
         </property>
     </entity>
-    <entity name="dq" class="ptolemy.actor.lib.fmi.FMUImport">
+    <entity name="dq" class="ptolemy.actor.lib.fmi.FMUSDFImport">
         <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/org/ptolemy/fmi/fmu/cs/dq.fmu">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[130.0, 225.0]">

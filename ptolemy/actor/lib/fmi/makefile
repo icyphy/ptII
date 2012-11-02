@@ -50,6 +50,7 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
 JSRCS = \
+	FMUSDFImport.java \
 	FMUImport.java
 
 OTHER_FILES_TO_BE_JARED = \

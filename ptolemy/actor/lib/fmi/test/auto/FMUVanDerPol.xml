@@ -52,7 +52,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[375.0, 330.0]">
         </property>
     </entity>
-    <entity name="vanDerPol" class="ptolemy.actor.lib.fmi.FMUImport">
+    <entity name="vanDerPol" class="ptolemy.actor.lib.fmi.FMUSDFImport">
         <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/org/ptolemy/fmi/fmu/cs/vanDerPol.fmu">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[205.0, 240.0]">
