@@ -289,7 +289,7 @@ public class FMUImport extends TypedAtomicActor implements
             // ports have a token.
             // Even better, we should keep track locally of whether
             // we've produced an output in this iteration.
-            if (port.isKnown(0)) {
+            if (_skipIfNotKnown && port.isKnown(0)) {
                 continue;
             }
 
@@ -377,9 +377,7 @@ public class FMUImport extends TypedAtomicActor implements
             // NOTE: FMI-1.0 uses doubles for time.
             double time = getDirector().getModelTime().getDoubleValue();
 
-            // FIXME: depending on ContinuousDirector here.
-            double stepSize = ((ContinuousDirector) getDirector())
-                    .getCurrentStepSize();
+            double stepSize = _getStepSize();
 
             if (_debugging) {
                 _debug("FMIImport.fire(): about to call " + modelIdentifier
@@ -720,6 +718,20 @@ public class FMUImport extends TypedAtomicActor implements
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
+    /** Return the current step size.
+     *  This base class assumes that the directory is a 
+     *  ContinuousDirector and returns getCurrentStepSize().
+     *  A SDF model would return periodValue()
+     *  @return the current step size.
+     *  @exception IllegalActionException If there is a problem getting
+     *  the currentStepSize.
+     */
+    protected double _getStepSize() throws IllegalActionException {
+        // FIXME: depending on ContinuousDirector here.
+        return ((ContinuousDirector) getDirector())
+            .getCurrentStepSize();
+    }
+
     /** Set a Ptolemy II Parameter to the value of a FMI
      *  ScalarVariable.
      *  @param parameter The Ptolemy parameter to be set.
@@ -797,6 +809,14 @@ public class FMUImport extends TypedAtomicActor implements
      *  Functional Mock-up Unit (FMU) file.
      */
     protected FMIModelDescription _fmiModelDescription;
+
+    /** In fire(), if the output port has already been set, then it is
+     *  skipped. The default value is true, indicating that ports with
+     *  known values are skipped.  An SDF port is likely to be known
+     *  but not have a token in it, so an SDF-specific derived class
+     *  would set this to false.
+     */
+    protected boolean _skipIfNotKnown = true;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////

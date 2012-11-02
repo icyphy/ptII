@@ -66,7 +66,7 @@ import com.sun.jna.Function;
 import com.sun.jna.Pointer;
 
 ///////////////////////////////////////////////////////////////////
-//// FMUImport
+//// FMUSDFImport
 
 /**
  * Invoke a Functional Mock-up Interface (FMI) 1.0 Model Exchange 
@@ -113,162 +113,23 @@ public class FMUSDFImport extends FMUImport {
     public FMUSDFImport(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
+        // In fire(), do not check if the output port has already
+        // been set.
+        _skipIfNotKnown = false;
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                     public methods                        ////
+    ////                         protected methods                 ////
 
-    /** Read data from output ports, set the input ports and invoke
-     * fmiDoStep() of the slave fmu.
-     *   
-     * <p>Note that we get the outputs <b>before</b> invoking
-     * fmiDoStep() of the slave fmu so that we can get the data for
-     * time 0.  This is done so that FMUs can share initialization
-     * data if necessary.  For details, see the Section 3.4, Pseudo
-     * Code Example in the FMI-1.0 Co-simulation Specification at
-     * <a href="http://www.modelisar.com/specifications/FMI_for_CoSimulation_v1.0.pdf">http://www.modelisar.com/specifications/FMI_for_CoSimulation_v1.0.pdf</a>.
-     * For an explanation, see figure 4 of
-     * <br>
-     * Michael Wetter,
-     * "<a href="http://dx.doi.org/10.1080/19401493.2010.518631">Co-simulation of building energy and control systems with the Building Controls Virtual Test Bed</a>,"
-     * Journal of Building Performance Simulation, Volume 4, Issue 3, 2011.
-     *
-     *  @exception IllegalActionException If there is no director.
+    /** Return the current step size.
+     *  This class returns the value of SDFDirector.
+     *  @return the current step size.
+     *  @exception IllegalActionException If there is a problem getting
+     *  the period.
      */
-    public void fire() throws IllegalActionException {
-        // Don't call super.fire(), it invokes Continuous domain code.
-        // super.fire();
-        if (_debugging) {
-            _debug("FMUImport.fire()");
-        }
-
-        String modelIdentifier = _fmiModelDescription.modelIdentifier;
-
-        // Ptolemy parameters are read in initialize() because the fmi
-        // version of the parameters must be written before
-        // fmiInitializeSlave() is called.
-
-        ////////////////
-        // Iterate through the scalarVariables and get all the outputs.
-        // See the method comment for why we do this before calling fmiDoStep()
-        for (FMIScalarVariable scalarVariable : _fmiModelDescription.modelVariables) {
-            if (_debugging) {
-                _debug("FMUImport.fire(): " + scalarVariable.name);
-            }
-            if (scalarVariable.alias != null
-                    && scalarVariable.alias != Alias.noAlias) {
-                // If the scalarVariable has an alias, then skip it.
-                // In bouncingBall.fmu, g has an alias, so it is skipped.
-                continue;
-            }
-
-            if (scalarVariable.variability != FMIScalarVariable.Variability.parameter) {
-                TypedIOPort port = (TypedIOPort) getPort(scalarVariable.name);
-
-                if (port == null || port.getWidth() <= 0) {
-                    // Either it is not a port or not connected.
-                    // Check to see if we should update the parameter.
-                    String sanitizedName = StringUtilities.sanitizeName(scalarVariable.name);
-                    Parameter parameter = (Parameter)getAttribute(sanitizedName, Parameter.class);
-                    if (parameter != null) {
-                        _setParameter(parameter, scalarVariable);
-                    }
-                    continue;
-                }
-
-                Token token = null;
-
-                if (scalarVariable.type instanceof FMIBooleanType) {
-                    boolean result = scalarVariable.getBoolean(_fmiComponent);
-                    token = new BooleanToken(result);
-                } else if (scalarVariable.type instanceof FMIIntegerType) {
-                    // FIXME: handle Enumerations?
-                    int result = scalarVariable.getInt(_fmiComponent);
-                    token = new IntToken(result);
-                } else if (scalarVariable.type instanceof FMIRealType) {
-                    double result = scalarVariable.getDouble(_fmiComponent);
-                    token = new DoubleToken(result);
-                } else if (scalarVariable.type instanceof FMIStringType) {
-                    String result = scalarVariable.getString(_fmiComponent);
-                    token = new StringToken(result);
-                } else {
-                    throw new IllegalActionException("Type "
-                            + scalarVariable.type + " not supported.");
-                }
-
-                if (_debugging) {
-                    _debug("FMUImport.fire(): " + scalarVariable.name + " "
-                            + token + " " + scalarVariable.causality + " "
-                            + Causality.output);
-                }
-                port.send(0, token);
-            }
-        }
-
-        ////////////////
-        // Iterate through the scalarVariables and set all the inputs.
-        for (FMIScalarVariable scalarVariable : _fmiModelDescription.modelVariables) {
-            // FIXME: Page 27 of the FMI-1.0 CS spec says that for
-            // variability==parameter and causality==input, we can
-            // only call fmiSet* between fmiInstantiateSlave() and
-            // fmiInitializeSlave()
-
-            // However, the example on p32 has fmiSetReal called
-            // inside the while() loop?
-
-            if (_debugging) {
-                _debug("FMUImport.fire(): " + scalarVariable.name);
-            }
-            if (scalarVariable.alias != null
-                    && scalarVariable.alias != Alias.noAlias) {
-                // If the scalarVariable has an alias, then skip it.
-                // In bouncingBall.fmu, g has an alias, so it is skipped.
-                continue;
-            }
-
-            if (scalarVariable.variability != FMIScalarVariable.Variability.parameter) {
-                if (scalarVariable.causality != Causality.input) {
-                    continue;
-                }
-                TypedIOPort port = (TypedIOPort) getPort(scalarVariable.name);
-
-                if (port != null && port.hasToken(0)) {
-                    Token token = port.get(0);
-                    _setScalarVariable(scalarVariable, token);
-                }
-            }
-        }
-
-        ////////////////
-        // Call fmiDoStep() with the current data.
-
-        // FIXME: FMI-1.0 uses doubles for time.
-        double time = getDirector().getModelTime().getDoubleValue();
-
+    protected double _getStepSize() throws IllegalActionException {
         // FIXME: depending on SDFDirector here.
-        double stepSize = ((ptolemy.domains.sdf.kernel.SDFDirector) getDirector())
+        return ((ptolemy.domains.sdf.kernel.SDFDirector) getDirector())
                 .periodValue();
-
-        if (_debugging) {
-            _debug("FMIImport.fire(): about to call " + modelIdentifier
-                    + "_fmiDoStep(Component, /* time */ " + time
-                    + ", /* stepSize */" + stepSize + ", 1)");
-
-        }
-
-        int fmiFlag = ((Integer) _fmiDoStep.invokeInt(new Object[] {
-                _fmiComponent, time, stepSize, (byte) 1 })).intValue();
-
-        if (fmiFlag != FMILibrary.FMIStatus.fmiOK) {
-            throw new IllegalActionException(this, "Could not simulate, "
-                    + modelIdentifier + "_fmiDoStep(Component, /* time */ "
-                    + time + ", /* stepSize */" + stepSize + ", 1) returned "
-                    + fmiFlag);
-        }
-
-        if (_debugging) {
-            _debug("FMUImport done calling " + modelIdentifier + "_fmiDoStep()");
-        }
-
     }
 }
