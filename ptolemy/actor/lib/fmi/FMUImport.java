@@ -213,6 +213,8 @@ public class FMUImport extends TypedAtomicActor implements
             _debug("FMUImport.fire()");
         }
 
+        _checkFmi();
+
         String modelIdentifier = _fmiModelDescription.modelIdentifier;
 
         // Ptolemy parameters are read in initialize() because the fmi
@@ -414,6 +416,8 @@ public class FMUImport extends TypedAtomicActor implements
             _debug("FMIImport.initialize() START");
         }
 
+        _checkFmi();
+
         // Loop through the scalar variables and find a scalar
         // variable that has variability == "parameter" and is not an
         // input or output.  We can't do this in attributeChanged()
@@ -612,6 +616,8 @@ public class FMUImport extends TypedAtomicActor implements
             _debug("FMUImport.preinitialize()");
         }
 
+        _checkFmi();
+
         // The modelName may have spaces in it.
         String modelIdentifier = _fmiModelDescription.modelIdentifier;
 
@@ -647,21 +653,6 @@ public class FMUImport extends TypedAtomicActor implements
                     + "_fmiInstantiateSlave");
         }
 
-        if (modelIdentifier == null) {
-            throw new IllegalActionException(this,
-                    "Could not get the modelIdentifier, perhaps the .fmu file \""
-                    + fmuLocation
-                    + "\" did not contain a modelDescription.xml file?");
-        }
-        if (_fmiInstantiateSlave == null) {
-            throw new IllegalActionException(this,
-                    "Could not get the " + modelIdentifier
-                    + "_fmiInstantiateSlave() C function?  Perhaps the .fmu file \""
-                    + fmuLocation
-                    + "\" does not contain a shared library for the current "
-                    + "platform?");
- 
-        }
         _fmiComponent = (Pointer) _fmiInstantiateSlave.invoke(Pointer.class,
                 new Object[] { modelIdentifier, _fmiModelDescription.guid,
                         fmuLocation, mimeType, timeout, visible, interactive,
@@ -710,6 +701,7 @@ public class FMUImport extends TypedAtomicActor implements
      *  terminated or freed.
      */
     public void wrapup() throws IllegalActionException {
+        _checkFmi();
         String modelIdentifier = _fmiModelDescription.modelIdentifier;
         Function fmiTerminateSlave = _fmiModelDescription.nativeLibrary
                 .getFunction(modelIdentifier + "_fmiTerminateSlave");
@@ -865,6 +857,62 @@ public class FMUImport extends TypedAtomicActor implements
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
+    /** If _fmiModelDescription is null, then thrown an exception
+     *  with an informative message.  The .fmu file may be not present,
+     *  unreadable or not have a shared library for the current platform.
+     *  @exception IllegalActionException If the .fmu file is not present,
+     *  unreadable, does not have a shared library for the current platform
+     *  or some other problem.
+     */
+    private void _checkFmi() throws IllegalActionException {
+        if (_fmiModelDescription == null) {
+            throw new IllegalActionException(this,
+                    "Could not get the FMU model description? "
+                    + "Perhaps \"" + fmuFile.asFile() + "\" does not exist or is not readable?");
+        }
+        if (_fmiModelDescription.modelIdentifier == null) {
+            throw new IllegalActionException(this,
+                    "Could not get the modelIdentifier, perhaps the .fmu file \""
+                    + fmuFile.asFile()
+                    + "\" did not contain a modelDescription.xml file?");
+        }
+        String missingFunction = null;
+        if (_fmiDoStep == null) {
+            missingFunction = "_fmiDoStep";
+        }
+        if (_fmiInstantiateSlave == null) {
+            missingFunction = "_fmiInstantiateSlave";
+        }
+        if (missingFunction != null) {
+            String sharedLibrary = "";
+            try {
+                sharedLibrary = "the shared library \""
+                    + FMUFile.fmuSharedLibrary(_fmiModelDescription)
+                    + "\" was probably not found after the .fmu file was unzipped?";
+
+            } catch (IOException ex) {
+                sharedLibrary = "the shared library could not be obtained from the fmu: " + ex;
+            } 
+            List<String> binariesFiles = new LinkedList<String>();
+            // Get the list pathnames that contain the string "binaries"
+            for (File file : _fmiModelDescription.files) {
+                if (file.toString().indexOf("binaries") != -1) {
+                    binariesFiles.add(file.toString() + "\n");
+                }
+            }
+            throw new IllegalActionException(this,
+                    "Could not get the " + _fmiModelDescription.modelIdentifier
+                    + missingFunction + "() C function?  Perhaps the .fmu file \""
+                    + fmuFile.asFile()
+                    + "\" does not contain a shared library for the current "
+                    + "platform?  "
+                    + "When the .fmu file was loaded, "
+                    + sharedLibrary
+                    + "  The .fmu file contained the following files with 'binaries'"
+                    + " in the path:\n" + binariesFiles);
+         }
+    }
+
     /** Given a FMIType object, return a string suitable for setting
      *  the TypeAttribute.
      *  @param type The FMIType object.
@@ -902,6 +950,9 @@ public class FMUImport extends TypedAtomicActor implements
         if (workspace().getVersion() == _outputsVersion) {
             return _outputs;
         }
+
+        _checkFmi();
+        
         // The _outputs variable is out of date. Reconstruct it.
         _outputs = new LinkedList<Output>();
         for (FMIScalarVariable scalarVariable : _fmiModelDescription.modelVariables) {
