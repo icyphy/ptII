@@ -74,6 +74,8 @@
     <pathelement location="${env.HOME}/.ptolemyII/*" />
     <pathelement location="${basedir}" />
     @ANT_CLASSPATH@
+    <!-- Include ptolemy/moml/test so that ptolemy/moml/test/MoMLParserNoPackage.tcl passes -->
+    <pathelement location="ptolemy/moml/test"/>
   </path>
 
   <!-- Ant patternsets. Alphabetize, please -->
