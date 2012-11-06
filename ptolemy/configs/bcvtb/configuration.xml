@@ -15,6 +15,12 @@
             class="ptolemy.data.expr.FileParameter"
             value="$CLASSPATH/ptolemy/configs/doc/docsBcvtb.htm"/>
 
+  <!-- Add support for importing Field Mock-up Units (FMUs). -->
+  <!-- Used in BasicGraphFrame.java -->
+  <property name="_importFMUActionClassName"
+            class="ptolemy.data.expr.StringParameter"
+            value="ptolemy.vergil.basic.imprt.fmu.ImportFMUAction"/>
+
   <property name="_classesToRemove" 
             class="ptolemy.data.expr.Parameter"
             value="{&quot;ptolemy.codegen.kernel.StaticSchedulingCodeGenerator&quot;,&quot;ptolemy.codegen.c.kernel.CCodeGenerator&quot;}">
