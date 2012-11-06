@@ -601,9 +601,26 @@ public class Transition extends ComponentRelation {
             }
             if (version.compareTo(_REFERENCE_VERSION) <= 0) {
                 // Model was created under old defaults. Look for a reset parameter.
-                Parameter reset = (Parameter) getAttribute("reset", Parameter.class);
+                final Parameter reset = (Parameter) getAttribute("reset", Parameter.class);
                 if (reset != null) {
                     Token resetValue = reset.getToken();
+                    // Issue a change request to remove the reset parameter.
+                    // If the model is subsequently saved, then the history
+                    // parameter will take over, and it will be confusing to
+                    // also have a reset parameter that doesn't do anything.
+                    /*
+                     * FIXME: This breaks everything!!! Can't even look inside a modal model.
+                    ChangeRequest request = new ChangeRequest(this, "Remove obsolete reset parameter.") {
+                        protected void _execute() throws Exception {
+                            reset.setContainer(null);
+                        }
+                    };
+                    requestChange(request);
+                    */
+                    // If the value of the reset parameter is false,
+                    // and the destination states have refinements,
+                    // then set the history parameter to true.
+                    // Otherwise, leave the history parameter at its default.
                     if (resetValue instanceof BooleanToken) {
                         boolean resetValueBoolean = ((BooleanToken)resetValue).booleanValue();
                         if (!resetValueBoolean) {

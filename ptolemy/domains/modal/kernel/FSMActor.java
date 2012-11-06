@@ -385,7 +385,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         newObject._connectionMaps = null;
         newObject._connectionMapsVersion = -1;
         newObject._currentConnectionMap = null;
-        newObject._identifierToPort = new HashMap<String, Port>();
+        newObject._identifierToPort = new HashMap<String, IOPort>();
         newObject._identifierToPortVersion = -1;
         newObject._inputPortsVersion = -1;
         newObject._outputPortsVersion = -1;
@@ -588,6 +588,11 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         // chosen again.
         _lastChosenTransitions.clear();
         _lastChosenTransition = null;
+        
+        // Some outputs may have to be forced to be unknown
+        // if they are set on transitions that are not known
+        // to be enabled.
+        _outputsThatMustBeUnknown.clear();
 
         // Keep track during firing of all refinements
         // that are fired so that they can later be postfired.
@@ -2156,7 +2161,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
      *  @return The port that corresponds with the specified identifier.
      *  @exception IllegalActionException If getting the width of the port fails.
      */
-    protected Port _getPortForIdentifier(String identifier)
+    protected IOPort _getPortForIdentifier(String identifier)
             throws IllegalActionException {
         if (workspace().getVersion() != _identifierToPortVersion) {
             _setIdentifierToPort();
@@ -2620,7 +2625,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
      * FSMs, then return false. It is not safe to assert absent outputs
      * because we have no visibility into what those refinements do with
      * the outputs.
-     *
+     * <p>
      * This method first explores any FSM refinements of the current
      * state. If those refinements are all FSMs and they are all able
      * to assert that an output is absent, then explore this FSM
@@ -2628,6 +2633,10 @@ public class FSMActor extends CompositeEntity implements TypedActor,
      * If all the refinements and the specified FSM agree that an
      * output is absent, then this method sets it to absent.
      * Otherwise, it leaves it unknown.
+     * <p>
+     * In addition, if any port is listed in _outputsThatMustBeUnknown,
+     * then that output is forced to be unkown, regardless of its
+     * previous state.
      *
      * @param controller The controller FSM.
      * @return True if after this method is called, any output port is absent.
@@ -2635,6 +2644,15 @@ public class FSMActor extends CompositeEntity implements TypedActor,
      */
     private boolean _assertAbsentOutputs(FSMActor controller)
             throws IllegalActionException {
+        // First, if any output port must be forced to be unknown,
+        // do so here. We have to be careful to not make these same
+        // ports known later.
+        for (IOPort port : controller._outputsThatMustBeUnknown.keySet()) {
+            // Get the channel number.
+            int i = controller._outputsThatMustBeUnknown.get(port).intValue();
+            _forceUnknownOutput(port, i);
+        }
+        
         // First check the refinements.
         TypedActor[] refinements = controller._currentState.getRefinement();
         if (refinements != null) {
@@ -2737,12 +2755,15 @@ public class FSMActor extends CompositeEntity implements TypedActor,
                                     controllerPort, channel,
                                     controller._currentState, false, null);
                             if (channelIsAbsent) {
-                                foundAbsentOutputs = true;
-                                controllerPort.send(channel, null);
-                                if (_debugging) {
-                                    _debug("Asserting absent output: "
-                                            + port.getName() + ", on channel "
-                                            + channel);
+                                Integer channelThatMustBeUnknown = controller._outputsThatMustBeUnknown.get(controllerPort);
+                                if (channelThatMustBeUnknown == null || channelThatMustBeUnknown.intValue() != channel) {
+                                    foundAbsentOutputs = true;
+                                    controllerPort.send(channel, null);
+                                    if (_debugging) {
+                                        _debug("Asserting absent output: "
+                                                + port.getName() + ", on channel "
+                                                + channel);
+                                    }
                                 }
                             }
                         }
@@ -2764,9 +2785,17 @@ public class FSMActor extends CompositeEntity implements TypedActor,
                             _debug("Asserting absent output: " + port.getName()
                                     + ", on channel " + channel);
                         }
-                        // Send absent.
-                        port.send(channel, null);
-                        foundAbsentOutputs = true;
+                        Integer channelThatMustBeUnknown = controller._outputsThatMustBeUnknown.get(port);
+                        if (channelThatMustBeUnknown == null || channelThatMustBeUnknown.intValue() != channel) {
+                            // Send absent.
+                            port.send(channel, null);
+                            foundAbsentOutputs = true;
+                            if (_debugging) {
+                                _debug("Asserting absent output: "
+                                        + port.getName() + ", on channel "
+                                        + channel);
+                            }
+                        }
                     }
                 }
             }
@@ -3096,6 +3125,42 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         }
     }
 
+    /** Force the output of the specified port on the specified channel
+     *  to be unknown. This is done because there is a transition that
+     *  may set the value of this output, possibly overwriting some
+     *  previously set value, but the guard on that transition cannot
+     *  be evaluated because some inputs are unknown. This method
+     *  propagates the forcing of unknown outward through layers
+     *  of ModalModels.
+     *  @param port The port.
+     *  @param channel The channel.
+     *  @throws IllegalActionException If geting remove receivers or
+     *   resetting them fails.
+     */
+    private void _forceUnknownOutput(IOPort port, int channel) throws IllegalActionException {
+        Receiver[][] receivers = port.getRemoteReceivers();
+        if (receivers != null) {
+            if (receivers.length > channel && receivers[channel] != null) {
+                for (int j = 0; j < receivers[channel].length; j++) {
+                    if (receivers[channel][j] instanceof FSMReceiver) {
+                        receivers[channel][j].reset();
+                        // Propagate outwards until there are no more FSMReceivers.
+                        IOPort destinationPort = receivers[channel][j].getContainer();
+                        if (_debugging) {
+                            _debug("--- Setting inside of port "
+                                    + destinationPort.getFullName()
+                                    + " unknown on channel "
+                                    + channel
+                                    + ", because a guard cannot be evaluated due to unknown inputs.");
+                        }
+                        if (destinationPort != null) {
+                            _forceUnknownOutput(destinationPort, channel);
+                        }
+                    }
+                }
+            }
+        }
+    }
     /** Return the environment time.
      *  If this actor is the controller for a modal model,
      *  then return the model time of the modal model's executive director,
@@ -3151,7 +3216,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
             throw new InternalErrorException(this, ex, "Constructor error.");
         }
 
-        _identifierToPort = new HashMap<String, Port>();
+        _identifierToPort = new HashMap<String, IOPort>();
     }
 
     /** Check to see whether the specified transition is enabled.
@@ -3171,12 +3236,44 @@ public class FSMActor extends CompositeEntity implements TypedActor,
             // If the node refers to a port, then it may be that the
             // port is absent.  Check that it matches a port name.
             String name = ex.nodeName();
-            if (_getPortForIdentifier(name) != null) {
+            IOPort portForIdentifier = _getPortForIdentifier(name);
+            if (portForIdentifier != null) {
                 // NOTE: We would like to make sure at this point that the
                 // expression is well formed, but the issue simply that
                 // port has absent, and hence the port name is undefined.
                 // This is pretty tricky. How can we check that the
                 // expression could be evaluated if the input were present?
+                
+                // If the referenced port is now known, and
+                // the transition includes any output actions,
+                // then we need to make sure that those outputs are
+                // unknown in this firing, even if they have been
+                // previously set to known in this firing.
+                // See $PTII/ptolemy/domains/modal/test/auto/SeeminglyNondeterminate2.xml
+                
+                Integer channelForIdentifier = _getChannelForIdentifier(name);
+                if (channelForIdentifier < 0) {
+                    channelForIdentifier = 0;
+                }
+                if (channelForIdentifier != null && !portForIdentifier.isKnown(channelForIdentifier)) {
+                    List<IOPort> portsAssigned = transition.outputActions.getDestinations();
+                    List<Integer> channelsAssigned = transition.outputActions.getChannelNumberList();
+                    int i = 0;
+                    if (portsAssigned != null) {
+                        for (IOPort port : portsAssigned) {
+                            // The channelsAssigned list had better have the same length.
+                            Integer channel = channelsAssigned.get(i);
+                            if (channel == null) {
+                                // Interpret this to mean all channels.
+                                for (int j = 0; j < port.getWidth(); j++) {
+                                    _outputsThatMustBeUnknown.put(port,  Integer.valueOf(j));
+                                }
+                            } else {
+                                _outputsThatMustBeUnknown.put(port,  channel);
+                            }
+                        }
+                    }
+                }
                 return false;
             }
             throw ex;
@@ -3573,11 +3670,11 @@ public class FSMActor extends CompositeEntity implements TypedActor,
      */
     private boolean _foundUnknown = false;
 
-    /** A map that associates each identifier with the unique port that that
+    /** A map that associates each identifier with the unique port that the
      *  identifier describes.  This map is used to detect port names that result
      *  in ambiguous identifier bindings.
      */
-    private HashMap<String, Port> _identifierToPort;
+    private HashMap<String, IOPort> _identifierToPort;
 
     /** Version number for _identifierToPort. */
     private long _identifierToPortVersion = -1;
@@ -3591,6 +3688,12 @@ public class FSMActor extends CompositeEntity implements TypedActor,
     private boolean _newIteration = true;
 
     private transient long _outputPortsVersion = -1;
+    
+    /** Set of outputs that must be made uknown at the end
+     *  of a firing because they are set on transitions that
+     *  are not known to be enabled or disabled.
+     */
+    private Map<IOPort,Integer> _outputsThatMustBeUnknown = new HashMap<IOPort,Integer>();
 
     // True if the current state is a final state.
     private boolean _reachedFinalState;
