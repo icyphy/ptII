@@ -32,6 +32,7 @@ import java.lang.reflect.Constructor;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 import ptolemy.actor.Actor;
@@ -47,6 +48,7 @@ import ptolemy.domains.modal.kernel.FSMActor;
 import ptolemy.domains.modal.kernel.FSMDirector;
 import ptolemy.domains.modal.kernel.RefinementActor;
 import ptolemy.domains.modal.kernel.State;
+import ptolemy.domains.modal.kernel.Transition;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
@@ -349,6 +351,15 @@ public class ModalModel extends TypedCompositeActor implements ChangeListener {
             HashSet<TypedActor> activeRefinements = new HashSet<TypedActor>();
             for (State state : _controller.entityList(State.class)) {
                 TypedActor refinements[] = state.getRefinement();
+                if (refinements != null) {
+                    for (TypedActor refinement : refinements) {
+                        activeRefinements.add(refinement);
+                    }
+                }
+            }
+            List<Transition> transitions = _controller.relationList();
+            for (Transition transition : transitions) {
+                TypedActor refinements[] = transition.getRefinement();
                 if (refinements != null) {
                     for (TypedActor refinement : refinements) {
                         activeRefinements.add(refinement);
