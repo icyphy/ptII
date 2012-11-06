@@ -4,7 +4,7 @@
 <entity name="MultipleRuns" class="ptolemy.domains.modal.modal.ModalModel">
     <property name="_tableauFactory" class="ptolemy.vergil.modal.modal.ModalTableauFactory">
     </property>
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
     </property>
     <entity name="_Controller" class="ptolemy.domains.modal.modal.ModalController">
         <property name="_nonStrictMarker" class="ptolemy.kernel.util.Attribute">
@@ -14,7 +14,7 @@
     <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/annotation.xml"></input><entity name="state" class="ptolemy.domains.modal.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property></entity></entity>
   </configure>
         </property>
-        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[682, 350]">
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[682, 524]">
         </property>
         <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[63, 135]">
         </property>
@@ -50,7 +50,7 @@
         </property>
         <property name="numberOfRuns" class="ptolemy.data.expr.Parameter" value="10">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={272, 219, 895, 461}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-33, 53, 916, 635}, maximized=false}">
         </property>
         <property name="AnnotationUpdated2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
             <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
@@ -85,16 +85,18 @@
         <entity name="mode1" class="ptolemy.domains.modal.kernel.State">
             <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="mode1">
             </property>
-            <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="true">
+            <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="false">
             </property>
             <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
             <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="310.0, 205.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{310.0, 205.0}">
             </property>
         </entity>
         <entity name="init" class="ptolemy.domains.modal.kernel.State">
+            <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
             <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
             <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
@@ -121,9 +123,9 @@
             </property>
             <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.0">
             </property>
-            <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
-            </property>
             <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="history" class="ptolemy.data.expr.Parameter" value="false">
             </property>
             <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
             </property>
@@ -136,8 +138,6 @@
             <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="2.4442215453257017">
             </property>
             <property name="gamma" class="ptolemy.data.expr.Parameter" value="-0.42600081637953063">
-            </property>
-            <property name="reset" class="ptolemy.data.expr.Parameter" value="true">
             </property>
             <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
             </property>
@@ -152,8 +152,6 @@
             <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.8945969272786093">
             </property>
             <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.0">
-            </property>
-            <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
             </property>
             <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
             </property>
@@ -387,9 +385,9 @@
         <entity name="XYPlotter" class="ptolemy.actor.lib.gui.XYPlotter">
             <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="false">
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={482, 414, 500, 344}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={607, 197, 746, 622}, maximized=false}">
             </property>
-            <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
+            <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[746, 578]">
             </property>
             <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="9">
             </property>
