@@ -60,6 +60,8 @@ fi
 
 for file in $otherjars
 do
+    # Remove $(PTII)/ for files like /var/lib/hudson/jobs/ptII/workspace/vendors/oracle/javamail/mail.jar
+    file=`echo $file | sed "s@$PTII/@@"`
     if [ ! -f $basedirectory/$file ]; then
 	echo "$0: WARNING: '$basedirectory/$file' could not be found,"
 	echo "     which means that the sizes in the .jnlp file will be wrong"
@@ -117,6 +119,10 @@ awk '{
 	}
 
 	for(n = 1; n <= njars; n++) {
+            if (index(jars[n], ptII) != 0) {
+               ptIILength=length(ptII)
+               jars[n] = substr(jars[n], ptIILength+2, length(jars[n]) - ptIILength);
+            }
 	    ndirs = split(jars[n], dirs, "/")
 	    # If the jar file is in the lib directory then skip 
 	    # the lib part.
@@ -187,6 +193,7 @@ awk '{
     otherjars="$otherjars" \
     otherjarssizes="$otherjarssizes" \
     otherjarspackages="$otherjarspackages" \
+    ptII="$PTII" \
     $jnlpfile > $tmpfile
 
 #diff $tmpfile $jnlpfile

@@ -242,10 +242,14 @@ BCVTB_JNLP_JARS =	\
 	doc/design/usingVergil/usingVergil.jar \
 	doc/docConfig.jar \
 	lib/diva.jar \
+	lib/jna.jar \
 	lib/kieler.jar \
+	org/ptolemy/fmi/fmi.jar \
 	ptolemy/vergil/basic/layout/layout.jar \
 	ptolemy/ptsupport.jar \
 	ptolemy/vergil/vergil.jar \
+	ptolemy/actor/lib/fmi/fmi.jar \
+	ptolemy/actor/lib/fmi/demo/demo.jar \
 	ptolemy/domains/continuous/continuous.jar \
 	ptolemy/domains/continuous/demo/demo.jar \
 	ptolemy/domains/sdf/sdf.jar \
@@ -451,6 +455,9 @@ FULL_ONLY_JNLP_JARS = \
 	ptolemy/actor/gt/demo/demo.jar \
 	org/json/json.jar \
 	ptolemy/actor/lib/conversions/json/json.jar \
+	org/ptolemy/fmi/fmi.jar \
+	ptolemy/actor/lib/fmi/fmi.jar \
+	ptolemy/actor/lib/fmi/demo/demo.jar \
 	ptolemy/actor/lib/io/comm/comm.jar \
 	ptolemy/actor/lib/io/comm/demo/demo.jar \
 	vendors/misc/rxtx/RXTXcomm.jar \
@@ -465,6 +472,7 @@ FULL_ONLY_JNLP_JARS = \
 	$(PTJAVAMAIL_JARS) \
 	ptolemy/actor/ptalon/gt/gt.jar \
 	ptolemy/actor/ptalon/gt/demo/demo.jar \
+	lib/jna.jar \
 	lib/ptCal.jar \
 	lib/saxon8.jar \
 	lib/saxon8-dom.jar \
@@ -509,7 +517,6 @@ FULL_ONLY_JNLP_JARS = \
 	$(PTERA_JARS) \
 	$(PDFRENDERER_JARS) \
 	ptolemy/vergil/basic/export/exportFull.jar \
-	ptolemy/vergil/fsm/fmv/fmv.jar \
 	ptolemy/vergil/modal/fmv/fmv.jar \
 	ptolemy/vergil/gt/gt.jar \
 	ptolemy/vergil/tdl/tdl.jar \
@@ -1086,12 +1093,12 @@ jnlp_sign1: $(SIGNED_DIR) $(NATIVE_SIGNED_LIB_JARS)
 			mkdir -p $(SIGNED_DIR)/`dirname $$jarfile`; \
 			cp -p $$jarfile `dirname $(SIGNED_DIR)/$$jarfile`; \
 		fi; \
-		echo "# Signing $(SIGNED_DIR)/$$x"; \
+		echo "# Signing $(SIGNED_DIR)/$$jarfile"; \
 		"$(JARSIGNER)" \
 			-keystore "$(KEYSTORE)" \
 			$(STOREPASSWORD) \
 			$(KEYPASSWORD) \
-			$(SIGNED_DIR)/$$x $(KEYALIAS); \
+			$(SIGNED_DIR)/$$jarfile $(KEYALIAS); \
 	done;
 
 sign_jar: 
