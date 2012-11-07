@@ -141,7 +141,13 @@ public class TextEditor extends TableauFrame implements DocumentListener,
      *  @see #setBackground(Color)
      */
     public Color getBackground() {
-        return _scrollPane.getBackground();
+        // Under Java 1.7 on the Mac, the _scrollbar is sometimes null.
+	// See http://bugzilla.ecoinformatics.org/show_bug.cgi?id=5574
+	if (_scrollPane != null) {
+	    return _scrollPane.getBackground();
+	} else {
+	    return null;
+	}
     }
 
     /** React to notification that there was an insert into the document.
