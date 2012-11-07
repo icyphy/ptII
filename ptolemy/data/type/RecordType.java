@@ -87,7 +87,7 @@ public class RecordType extends AssociativeType implements Cloneable {
      *
      *  <p>Record labels are sanitized so that any non-Java identifier
      *  characters are replaced with underscores, see
-     *  {@linkptolemy.util.StringUtilities.sanitizeName(String)}</p>
+     *  {@link ptolemy.util.StringUtilities.sanitizeName(String)}</p>
      *
      *  @param labels An array of String.
      *  @param types An array of Type.

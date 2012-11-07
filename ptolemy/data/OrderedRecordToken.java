@@ -51,7 +51,7 @@ import ptolemy.util.StringUtilities;
 
  <p>Record labels are sanitized so that any non-Java identifier
  characters are replaced with underscores, see
- {@link ptolemy.util.StringUtilities.sanitizeName(String)}</p>
+ {@link ptolemy.util.StringUtilities#sanitizeName(String)}</p>
 
  <p>This implementation maintains the order of the entries as they were added.
 
@@ -77,7 +77,7 @@ public class OrderedRecordToken extends RecordToken {
      *
      *  <p>Record labels are sanitized so that any non-Java identifier
      *  characters are replaced with underscores, see
-     *  {@link ptolemy.util.StringUtilities.sanitizeName(String)}</p>
+     *  {@link ptolemy.util.StringUtilities#sanitizeName(String)}</p>
      *
      *  @param fieldMap A Map that has keys of type String and
      *  values of type Token.
@@ -93,7 +93,7 @@ public class OrderedRecordToken extends RecordToken {
      *
      *  <p>Record labels are sanitized so that any non-Java identifier
      *  characters are replaced with underscores, see
-     *  {@link ptolemy.util.StringUtilities.sanitizeName(String)}</p>
+     *  {@link ptolemy.util.StringUtilities#sanitizeName(String)}</p>
      *
      *  @param init A string expression of a record.
      *  @exception IllegalActionException If the string does not
@@ -111,7 +111,7 @@ public class OrderedRecordToken extends RecordToken {
      *
      *  <p>Record labels are sanitized so that any non-Java identifier
      *  characters are replaced with underscores, see
-     *  {@link ptolemy.util.StringUtilities.sanitizeName(String)}</p>
+     *  {@link ptolemy.util.StringUtilities#sanitizeName(String)}</p>
      *
      *  @param labels An array of labels.
      *  @param values An array of Tokens.
@@ -132,7 +132,7 @@ public class OrderedRecordToken extends RecordToken {
      *
      *  <p>Record labels are sanitized so that any non-Java identifier
      *  characters are replaced with underscores, see
-     *  {@link ptolemy.util.StringUtilities.sanitizeName(String)}</p>
+     *  {@link ptolemy.util.StringUtilities#sanitizeName(String)}</p>
      *
      *  @return A String beginning with "[" that contains label and value
      *  pairs separated by commas, ending with "]".
