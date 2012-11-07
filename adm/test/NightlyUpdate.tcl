@@ -96,33 +96,40 @@ proc nightlyMake {target {pattern {.*\*\*\*.*}}} {
 set startingDirectory [pwd]
 cd $gendir
 
-test nightly-1.1 {clean} {
-    set matches [nightlyMake clean]
-    list $matches [file exists $ptII_full]
-} {{} 0}
+puts "This test (NightlyUpdate.tcl) should be run after NightlyTest.tcl"
 
-test nightly-1.2 {all} {
-    set matches [nightlyMake all]
-    list $matches [file exists $ptII_full]
-} {{} 1}
+test nightly-1.7 {update_andrews} {
+    set matches [nightlyMake update_andrews]
 
-test nightly-1.3 {jnlp} {
-    set matches [nightlyMake jnlp]
-    list $matches [file exists $PTII/vergil.jnlp]
-} {{} 1}
+    # Check that the files are there.
+    set results {}
+    set date [exec date +%Y-%m-%d]
+    set files [list ptII9.1.devel-$date.src.tar.gz  ptII9.1.devel.setup.mac-$date.app.tar.gz  ptII9_1_devel_setup_windows-$date.exe  ptII9_1_devel_setup_windows_64-$date.exe ]
+    foreach file $files {
+    puts $file
+	set url [java::new java.net.URL http://chess.eecs.berkeley.edu/ptexternal/nightly/builds/$file]
+	set connection [$url openConnection]
+	if [catch {set reader [java::new java.io.BufferedReader [java::new java.io.InputStreamReader [$connection getInputStream]]]} errMessage] {
+	    lappend $results "Could not read [$url toString]"
+        jdkStackTrace
+	} else {
+	    set line [$reader readLine]
+	    if {[string length $line] < 5 } {
+		lappend $results  "Could not read [$url toString], the line was less than 5 chars?"
+	    }
+	    set contentLength [$connection getContentLength]
+	    if {$contentLength < 1000000} {
+		lappend $results  "The content length of [$url toString] was $contentLength, which is less than 1 meg?"
+	    }
+        #puts $line                                                                                                                          $reader close
+	}
+    }
+    list $matches $results
+} {{} {}}
 
-test nightly-1.4 {src.jar} {
-    set matches [nightlyMake src.jar]
-    set filename $gendir/ptII$version.src.jar
-    puts "nightly-1.4: $filename"
-    list $matches [file exists $filename]
-} {{} 1}
-
-test nightly-1.5 {setup} {
-    set matches [nightlyMake setup]
-    set filename $gendir/$ptsetup.exe
-    puts "nightly-1.5: $filename"
-    list $matches [file exists $filename]
+test nightly-1.8 {updateDOPCenterImage} {
+    set matches [nightlyMake updateDOPCenterImage]
+    list $matches [file exists $PTII/ptolemy/domains/space/demo/DOPCenter/DOPCenter.png]
 } {{} 1}
 
 set VERBOSE 0

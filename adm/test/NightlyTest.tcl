@@ -96,34 +96,12 @@ proc nightlyMake {target {pattern {.*\*\*\*.*}}} {
 set startingDirectory [pwd]
 cd $gendir
 
-test nightly-1.1 {clean} {
-    set matches [nightlyMake clean]
-    list $matches [file exists $ptII_full]
-} {{} 0}
+puts "This test (NightlyTest.tcl) should be run after Nightly.tcl"
 
-test nightly-1.2 {all} {
-    set matches [nightlyMake all]
-    list $matches [file exists $ptII_full]
-} {{} 1}
-
-test nightly-1.3 {jnlp} {
-    set matches [nightlyMake jnlp]
-    list $matches [file exists $PTII/vergil.jnlp]
-} {{} 1}
-
-test nightly-1.4 {src.jar} {
-    set matches [nightlyMake src.jar]
-    set filename $gendir/ptII$version.src.jar
-    puts "nightly-1.4: $filename"
-    list $matches [file exists $filename]
-} {{} 1}
-
-test nightly-1.5 {setup} {
-    set matches [nightlyMake setup]
-    set filename $gendir/$ptsetup.exe
-    puts "nightly-1.5: $filename"
-    list $matches [file exists $filename]
-} {{} 1}
+test nightly-1.6 {test_setup} {
+    set matches [nightlyMake test_setup {.*\*\*\*.*|^Failed: [1-9].*}]
+    list $matches
+} {{}}
 
 set VERBOSE 0
 cd $startingDirectory
