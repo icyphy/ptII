@@ -846,6 +846,20 @@ public class Director extends Attribute implements Executable {
         localClock.resetLocalTime(getModelStartTime());
         localClock.start();
 
+        _resourceScheduling = false;
+        _resourceSchedulers = new ArrayList();
+        _schedulerForActor = null;
+        for (Object entity : getContainer().attributeList()) {
+            if (entity instanceof ResourceScheduler) {
+                ResourceScheduler scheduler = (ResourceScheduler) entity;
+                _resourceSchedulers.add(scheduler);
+                Time time = scheduler.initialize();
+                if (time != null) {
+                    fireContainerAt(time);
+                }
+            }
+        }
+
         // Initialize the contained actors.
         Nameable container = getContainer();
         if (container instanceof CompositeActor) {
@@ -861,19 +875,6 @@ public class Director extends Attribute implements Executable {
                 }
 
                 initialize(actor);
-            }
-        }
-
-        _resourceSchedulers = new ArrayList();
-        _schedulerForActor = null;
-        for (Object entity : getContainer().attributeList()) {
-            if (entity instanceof ResourceScheduler) {
-                ResourceScheduler scheduler = (ResourceScheduler) entity;
-                _resourceSchedulers.add(scheduler);
-                Time time = scheduler.initialize();
-                if (time != null) {
-                    fireContainerAt(time);
-                }
             }
         }
     }
@@ -901,6 +902,9 @@ public class Director extends Attribute implements Executable {
         }
 
         actor.initialize();
+        if (_getScheduler(actor) != null) {
+            _resourceScheduling = true;
+        }
     }
 
     /** Indicate that resolved types in the model may no longer be valid.
@@ -1804,10 +1808,12 @@ public class Director extends Attribute implements Executable {
             time = (scheduler).schedule(actor, getEnvironmentTime(), deadline,
                     executionTime);
             finished = _actorFinished(actor);
-            if (time != null && time.getDoubleValue() > 0.0) { 
-                
-                CompositeActor container = (CompositeActor) scheduler.getContainer();
-                container.getDirector().fireContainerAt(getEnvironmentTime().add(time));
+            if (time != null && time.getDoubleValue() > 0.0) {
+
+                CompositeActor container = (CompositeActor) scheduler
+                        .getContainer();
+                container.getDirector().fireContainerAt(
+                        getEnvironmentTime().add(time));
 
             }
         } else if (isEmbedded()) {
@@ -1816,9 +1822,9 @@ public class Director extends Attribute implements Executable {
                     executionTime);
         }
         if (!(time == null || finished)) {
-            
+
         }
-            
+
         return (time == null || finished);
     }
 
@@ -1852,7 +1858,18 @@ public class Director extends Attribute implements Executable {
                                                     scheduler);
                                             object = scheduler;
                                             break;
-                                        } // else could have been deleted.
+                                        } else {
+                                            CompositeActor container = (CompositeActor) getContainer();
+                                            while (container.getContainer() != null) {
+                                                container = (CompositeActor) container
+                                                        .getContainer();
+                                                if (container.getDirector()._resourceSchedulers
+                                                        .contains(scheduler)) {
+                                                    object = scheduler;
+                                                    break;
+                                                }
+                                            }
+                                        } // Else could have been deleted.
                                     }
                                 }
                             } catch (IllegalActionException ex) {
@@ -1886,6 +1903,16 @@ public class Director extends Attribute implements Executable {
      *  should be slaved to these.
      */
     protected transient Set<Initializable> _initializables;
+
+    /** True if any of the directed actors specifies a ResourceScheduler
+     *  in the parameters and this ResourceScheduler exists on this or
+     *  a hierarchy level above (i.e. has not been deleted). 
+     */
+    protected boolean _resourceScheduling;
+
+    /** Resource schedulers in the container of this director.
+     */
+    protected List<ResourceScheduler> _resourceSchedulers;
 
     /** Indicator that a stop has been requested by a call to stop(). */
     protected boolean _stopRequested = false;
@@ -1938,8 +1965,6 @@ public class Director extends Attribute implements Executable {
      *  as if it were at the top level.
      */
     private transient boolean _notEmbeddedForced = false;
-
-    private List<ResourceScheduler> _resourceSchedulers;
 
     private HashMap<Actor, ResourceScheduler> _schedulerForActor;
 

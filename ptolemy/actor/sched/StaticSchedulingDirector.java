@@ -152,6 +152,7 @@ public class StaticSchedulingDirector extends Director {
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
+        
         _savedSchedule = null;
         _savedSchedulePosition = -1;
         _savedIterationCount = 0;
@@ -308,7 +309,7 @@ public class StaticSchedulingDirector extends Director {
             return true;
         }
         _prefire = super.prefire();
-        if (_prefire) {
+        if (_resourceScheduling && _prefire) {
 
             Iterator firings = null;
             if (_savedSchedule == null) {

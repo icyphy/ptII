@@ -113,7 +113,8 @@ public abstract class ResourceScheduler extends MoMLModelAttribute implements
      */
     public DecoratedAttributes createDecoratedAttributes(NamedObj target)
             throws IllegalActionException, NameDuplicationException {
-        DecoratedAttributesImplementation decoratedAttributes = new DecoratedAttributesImplementation(
+        DecoratedAttributesImplementation decoratedAttributes = 
+            new DecoratedAttributesImplementation(
                 target, this);
         if (target.getAttribute("scheduler") == null) {
             Parameter schedulerParameter = new Parameter(target, "scheduler");
