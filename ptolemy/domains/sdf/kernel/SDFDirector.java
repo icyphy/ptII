@@ -483,6 +483,15 @@ public class SDFDirector extends StaticSchedulingDirector implements
             throw new InternalErrorException(exception);
         }
     }
+    
+    /** Call super.fire() and reset the _prefire flag. 
+     *  @exception IllegalActionException Thrown by super class.
+     */
+    @Override
+    public void fire() throws IllegalActionException { 
+        _prefire = false;
+        super.fire();
+    }
 
     /** Request a firing of the given actor at the given absolute
      *  time, and return the time at which the specified will be
@@ -599,6 +608,17 @@ public class SDFDirector extends StaticSchedulingDirector implements
      */
     public boolean prefire() throws IllegalActionException {
         // Set current time based on the enclosing model.
+        
+        // If prefire returns true and prefire is called again
+        // without calling fire in between, 
+        // which can happen when resourceScheduling is enabled,
+        // then return true again. Otherwise check prefire
+        // conditions.
+        if (_prefire) {
+            return true;
+        }
+        _prefire = super.prefire();
+        
         if (!super.prefire()) {
             return false;
         }

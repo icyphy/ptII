@@ -177,7 +177,6 @@ public class StaticSchedulingDirector extends Director {
      *   container.
      */
     public void fire() throws IllegalActionException {
-        _prefire = false;
         // Don't call "super.fire();" here because if you do then
         // everything happens twice.
         Iterator firings = null;
@@ -305,9 +304,6 @@ public class StaticSchedulingDirector extends Director {
      */
     public boolean prefire() throws IllegalActionException {
         _postfireReturns = true;
-        if (_prefire) {
-            return true;
-        }
         _prefire = super.prefire();
         if (_resourceScheduling && _prefire) {
 
@@ -430,7 +426,7 @@ public class StaticSchedulingDirector extends Director {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    private boolean _prefire = false;
+    protected boolean _prefire = false;
     
     /** Computed schedule that has not been fully executed because this 
      *  director is waiting for resources. 
