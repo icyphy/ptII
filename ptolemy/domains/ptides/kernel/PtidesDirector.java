@@ -62,6 +62,7 @@ import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.domains.de.kernel.DEDirector;
 import ptolemy.domains.de.kernel.DEEventQueue;
+import ptolemy.domains.ptides.lib.ErrorHandlingAction;
 import ptolemy.domains.ptides.lib.PtidesPort;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
@@ -272,6 +273,7 @@ public class PtidesDirector extends DEDirector {
             for (PtidesEvent event : list) {
                 if (event.ioPort() != null) {
                     _currentLogicalTime = event.timeStamp();
+                    _currentSourceTimestamp = event.sourceTimestamp();
                     _currentLogicalIndex = event.microstep();
                     event.receiver().put(event.token());
                     _currentLogicalTime = null;
@@ -287,6 +289,7 @@ public class PtidesDirector extends DEDirector {
         if (list != null) {
             for (PtidesEvent event : list) {
                 _currentLogicalTime = event.timeStamp();
+                _currentSourceTimestamp = event.sourceTimestamp();
                 _currentLogicalIndex = event.microstep();
                 if (event.ioPort() instanceof PtidesPort) {
                     double deviceDelay = _getDoubleParameterValue(
@@ -303,7 +306,7 @@ public class PtidesDirector extends DEDirector {
                             event.channel(), event.timeStamp(),
                             event.microstep(), event.depth(), event.token(),
                             event.receiver(), localClock.getLocalTime().add(
-                                    deviceDelay));
+                                    deviceDelay), event.sourceTimestamp());
 
                     ptidesOutputPortList.add(newEvent);
 
@@ -323,6 +326,7 @@ public class PtidesDirector extends DEDirector {
                 PtidesEvent event = ptidesOutputPortList.peek();
                 if (event.absoluteDeadline().equals(localClock.getLocalTime())) {
                     _currentLogicalTime = event.timeStamp();
+                    _currentSourceTimestamp = event.sourceTimestamp();
                     _currentLogicalIndex = event.microstep();
                     event.ioPort().send(0, event.token());
                     _currentLogicalTime = null;
@@ -352,8 +356,12 @@ public class PtidesDirector extends DEDirector {
             newIndex = Math.max(getIndex(), index) + 1;
         }
 
+        if (_isInitializing) {
+            _currentSourceTimestamp = time;
+        }
         _pureEvents.put(new PtidesEvent(actor, null, time, newIndex, 0,
-                _zeroTime));
+                _zeroTime, _currentSourceTimestamp));
+        _currentSourceTimestamp = null;
 
         Time environmentTime = super.getEnvironmentTime();
         if (environmentTime.compareTo(time) <= 0) {
@@ -363,6 +371,18 @@ public class PtidesDirector extends DEDirector {
 
         }
         return time;
+    }
+    
+    /** Return the source timestamp of the event that is currently
+     *  being processed. If no event is being processed, 
+     *  (i.e. event is analyzed for safe to process, actor is fired, ...) this 
+     *  method can return null or the timestamp of the previous event. 
+     *  This method should not be called if no event is currently being
+     *  processed.
+     * @return The current source timestamp.
+     */
+    public Time getCurrentSourceTimestamp() {
+        return _currentSourceTimestamp;
     }
 
     /** Return a superdense time index for the current time,
@@ -585,7 +605,7 @@ public class PtidesDirector extends DEDirector {
         // Register this trigger event.
         PtidesEvent newEvent = new PtidesEvent(ioPort,
                 ioPort.getChannelForReceiver(receiver), getModelTime(), 1,
-                depth, token, receiver);
+                depth, token, receiver, _currentSourceTimestamp);
 
         // FIXME: any way of knowing if coming from sensor?
 
@@ -1143,6 +1163,7 @@ public class PtidesDirector extends DEDirector {
     
                 _currentLogicalTime = ptidesEvent.timeStamp();
                 _currentLogicalIndex = ptidesEvent.microstep();
+                _currentSourceTimestamp = ptidesEvent.sourceTimestamp();
                 boolean prefire = ptidesEvent.actor().prefire();
                 _currentLogicalTime = null;
     
@@ -1166,6 +1187,7 @@ public class PtidesDirector extends DEDirector {
                                         ptidesEvent.actor()))) {
                     _currentLogicalTime = ptidesEvent.timeStamp();
                     _currentLogicalIndex = ptidesEvent.microstep();
+                    _currentSourceTimestamp = ptidesEvent.sourceTimestamp();
                     _removeEventsFromQueue(queue, ptidesEvent);
                     return ptidesEvent.actor();
                 }
@@ -1269,41 +1291,89 @@ public class PtidesDirector extends DEDirector {
                      if (errorHandlerEntity instanceof Const && 
                              ((Const)errorHandlerEntity).getName().equals("missed" + port.getName())) {
                          
+                         int index = 1;
+                         ((CompositeActor)errorHandler).getDirector().setModelTime(getModelTime());
+                         ((DEDirector)((CompositeActor)errorHandler).getDirector()).setIndex(index);
                          ((Const)errorHandlerEntity).fire();
                          
+                         
                          Time time = errorHandler.getDirector().getModelNextIterationTime();
-                         int index = 1;
-                         while (time.compareTo(getModelTime()) <= 0) {
-                             ((CompositeActor)errorHandler).getDirector().setModelTime(time); 
-                             ((DEDirector)((CompositeActor)errorHandler).getDirector()).setIndex(index);
-                             ((CompositeActor)errorHandler).prefire(); 
-                             ((CompositeActor)errorHandler).fire(); 
-                             ((CompositeActor)errorHandler).postfire();
-                             Time previousTime = time;
-                             time = errorHandler.getDirector().getModelNextIterationTime();
-                             if (time.equals(previousTime)) {
-                                 index++;
-                             } else {
-                                 index = 1;
-                             }
-                         }
+                         
+                         ((CompositeActor)errorHandler).prefire(); 
+                         ((CompositeActor)errorHandler).fire(); 
+                         ((CompositeActor)errorHandler).postfire();
                          
                          List attributes = errorHandler.attributeList();
                          for (int k = 0; k < attributes.size(); k++) {
                              Attribute attribute = (Attribute) attributes.get(k);
                              if (attribute instanceof Parameter) {
-                                 if (((Parameter)attribute).getName().equals("drop" + port.getName())) {
+                                 if (((Parameter)attribute).getName().equals(ErrorHandlingAction.DropEvent)) {
                                      if (((Parameter)attribute).getToken() != null && 
                                              ((BooleanToken)((Parameter)attribute).getToken()).booleanValue()) {
                                          ((Parameter)attribute).setToken("false");
                                          return null;
                                      }
                                  } 
-                                 if (((Parameter)attribute).getName().equals("execute" + port.getName())) {
+                                 if (((Parameter)attribute).getName().equals(ErrorHandlingAction.ExecuteEvent)) {
                                      if (((Parameter)attribute).getToken() != null && 
                                              ((BooleanToken)((Parameter)attribute).getToken()).booleanValue()) {
                                          return event;
                                      }
+                                 }
+                                 if (((Parameter)attribute).getName().equals(ErrorHandlingAction.FixTimestamp)) {
+                                     if (((Parameter)attribute).getToken() != null && 
+                                             ((BooleanToken)((Parameter)attribute).getToken()).booleanValue()) {
+                                         PtidesEvent newEvent = new PtidesEvent(event.ioPort(), event.channel(), 
+                                                 getModelTime(),
+                                                 event.microstep(), event.depth(), event.token(), event.receiver(), 
+                                                 event.sourceTimestamp());
+                                         return newEvent;
+                                     } 
+                                 }
+                                 if (((Parameter)attribute).getName().equals(ErrorHandlingAction.ClearAllEvents)) {
+                                     if (((Parameter)attribute).getToken() != null && 
+                                             ((BooleanToken)((Parameter)attribute).getToken()).booleanValue()) {
+                                         _eventQueue.clear();
+                                         _outputEventQueue.clear();
+                                         _pureEvents.clear();
+                                         return null;
+                                     }
+                                 }
+                                 if (((Parameter)attribute).getName().equals(ErrorHandlingAction.ClearEarlierEvents)) {
+                                     if (((Parameter)attribute).getToken() != null && 
+                                             ((BooleanToken)((Parameter)attribute).getToken()).booleanValue()) { 
+                                         int idx = 0;
+                                         while (i < _eventQueue.size()) {
+                                             PtidesEvent eventInQueue = ((PtidesListEventQueue) _eventQueue).get(idx); 
+                                             if (eventInQueue.sourceTimestamp().compareTo(event.sourceTimestamp()) < 0) {
+                                                 ((PtidesListEventQueue) _eventQueue).take(i); 
+                                                 continue;
+                                             }
+                                             idx++; 
+                                         }
+                                          
+                                         idx = 0;
+                                         while (i < _pureEvents.size()) {
+                                             PtidesEvent eventInQueue = ((PtidesListEventQueue) _pureEvents).get(idx); 
+                                             if (eventInQueue.sourceTimestamp().compareTo(event.sourceTimestamp()) < 0) {
+                                                 ((PtidesListEventQueue) _pureEvents).take(i); 
+                                                 continue;
+                                             }
+                                             idx++; 
+                                         } 
+                                     }
+                                     for (Time outputTime : _outputEventQueue.keySet()) {
+                                         for (PtidesEvent outputEvent : _outputEventQueue.get(outputTime)) {
+                                             if (outputEvent.sourceTimestamp().compareTo(event.sourceTimestamp()) < 0) { 
+                                                 _outputEventQueue.remove(outputTime);
+                                             }
+                                         }
+                                     }
+                                     return null;
+                                 }
+                                 if (((Parameter)attribute).getName().equals(ErrorHandlingAction.ClearCorruptEvents)) {
+                                     // TODO
+                                     return null;
                                  }
                              }
                          }
@@ -1460,6 +1530,7 @@ public class PtidesDirector extends DEDirector {
     ////                         private variables                 ////
 
     private Time _currentLogicalTime;
+    private Time _currentSourceTimestamp;
     private int _currentLogicalIndex;
 
     /** The execution times of actors.

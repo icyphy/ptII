@@ -1804,19 +1804,10 @@ public class Director extends Attribute implements Executable {
             time = (scheduler).schedule(actor, getEnvironmentTime(), deadline,
                     executionTime);
             finished = _actorFinished(actor);
-            if (time != null && time.getDoubleValue() > 0.0) {
-                fireContainerAt(getEnvironmentTime().add(time));
-
-                CompositeActor actorContainer = (CompositeActor) actor
-                        .getContainer();
-                CompositeActor schedulerContainer = (CompositeActor) scheduler
-                        .getContainer();
-                while (actorContainer != schedulerContainer) {
-                    actorContainer.getDirector().fireContainerAt(
-                            getEnvironmentTime().add(time));
-                    actorContainer = (CompositeActor) actorContainer
-                            .getContainer();
-                }
+            if (time != null && time.getDoubleValue() > 0.0) { 
+                
+                CompositeActor container = (CompositeActor) scheduler.getContainer();
+                container.getDirector().fireContainerAt(getEnvironmentTime().add(time));
 
             }
         } else if (isEmbedded()) {
@@ -1824,6 +1815,10 @@ public class Director extends Attribute implements Executable {
                     .getContainer()).getDirector()._schedule(actor, timestamp,
                     executionTime);
         }
+        if (!(time == null || finished)) {
+            
+        }
+            
         return (time == null || finished);
     }
 

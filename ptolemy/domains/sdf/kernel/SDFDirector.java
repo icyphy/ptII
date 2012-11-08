@@ -599,7 +599,9 @@ public class SDFDirector extends StaticSchedulingDirector implements
      */
     public boolean prefire() throws IllegalActionException {
         // Set current time based on the enclosing model.
-        super.prefire();
+        if (!super.prefire()) {
+            return false;
+        }
 
         double periodValue = periodValue();
         boolean synchronizeValue = ((BooleanToken) synchronizeToRealTime
@@ -887,10 +889,6 @@ public class SDFDirector extends StaticSchedulingDirector implements
             throw new IllegalActionException(this, port,
                     "Attempted to transferOutputs on a port that "
                             + "is not an opaque output port.");
-        }
-        
-        if (_waitingForResource) {
-            return true;
         }
 
         int rate = DFUtilities.getTokenProductionRate(port);

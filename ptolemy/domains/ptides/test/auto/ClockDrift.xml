@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="ClockDrift" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="10">
@@ -274,10 +274,13 @@
             </port>
             <port name="NetworkTransmitterPort" class="ptolemy.domains.ptides.lib.PtidesPort">
                 <property name="output"/>
-		<property name="isNetworkPort" value="true"/>
+                <property name="isNetworkPort" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, 215.0]">
                 </property>
                 <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="Infinity">
+                </property>
+                <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
             </port>
             <relation name="relation" class="ptolemy.actor.TypedIORelation">
@@ -292,7 +295,9 @@
         </property>
     </entity>
     <entity name="Test" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{{microstep = 1, payload = 1, timestamp = 0.0}, {microstep = 1, payload = 1, timestamp = 1.0}, {microstep = 1, payload = 1, timestamp = 2.0}, {microstep = 1, payload = 1, timestamp = 3.0}, {microstep = 1, payload = 1, timestamp = 4.0}, {microstep = 1, payload = 1, timestamp = 5.0}, {microstep = 1, payload = 1, timestamp = 5.9}, {microstep = 1, payload = 1, timestamp = 6.8}, {microstep = 1, payload = 1, timestamp = 7.7}, {microstep = 1, payload = 1, timestamp = 8.6}, {microstep = 1, payload = 1, timestamp = 9.5}}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{{microstep = 1, payload = 1, sourceTimestamp = 0.0, timestamp = 0.0}, {microstep = 1, payload = 1, sourceTimestamp = 1.0, timestamp = 1.0}, {microstep = 1, payload = 1, sourceTimestamp = 2.0, timestamp = 2.0}, {microstep = 1, payload = 1, sourceTimestamp = 3.0, timestamp = 3.0}, {microstep = 1, payload = 1, sourceTimestamp = 4.0, timestamp = 4.0}, {microstep = 1, payload = 1, sourceTimestamp = 5.0, timestamp = 5.0}, {microstep = 1, payload = 1, sourceTimestamp = 5.9, timestamp = 5.9}, {microstep = 1, payload = 1, sourceTimestamp = 6.8, timestamp = 6.8}, {microstep = 1, payload = 1, sourceTimestamp = 7.7, timestamp = 7.7}, {microstep = 1, payload = 1, sourceTimestamp = 8.6, timestamp = 8.6}, {microstep = 1, payload = 1, sourceTimestamp = 9.5, timestamp = 9.5}}">
+        </property>
+        <property name="requireAllCorrectValues" class="ptolemy.actor.parameters.SharedParameter" value="true">
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>

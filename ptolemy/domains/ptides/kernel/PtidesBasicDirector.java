@@ -361,6 +361,7 @@ import ptolemy.moml.MoMLChangeRequest;
  *  @Pt.AcceptedRating Red (jiazou)
  *
  */
+@Deprecated
 public class PtidesBasicDirector extends DEDirector {
 
     /** Construct a PtidesBasicDirector with the specified container and name.
@@ -1349,7 +1350,7 @@ public class PtidesBasicDirector extends DEDirector {
         Time absoluteDeadline = _absoluteDeadlineForPureEvent(actor);
 
         PtidesEvent newEvent = new PtidesEvent(actor, causalPort, time,
-                microstep, depth, absoluteDeadline);
+                microstep, depth, absoluteDeadline, null);
         _eventQueue.put(newEvent);
     }
 
@@ -1392,7 +1393,7 @@ public class PtidesBasicDirector extends DEDirector {
         // Register this trigger event.
         PtidesEvent newEvent = new PtidesEvent(ioPort,
                 ioPort.getChannelForReceiver(receiver), getModelTime(),
-                _microstep, depth, token, receiver);
+                _microstep, depth, token, receiver, null);
         _eventQueue.put(newEvent);
     }
 

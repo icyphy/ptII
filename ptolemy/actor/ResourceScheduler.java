@@ -33,6 +33,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import ptolemy.actor.lib.hoc.ThreadedComposite;
 import ptolemy.actor.util.Time;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.ObjectToken;
@@ -211,7 +212,7 @@ public abstract class ResourceScheduler extends MoMLModelAttribute implements
      *  @param executionTime The execution time of the actor.
      *  @return Relative time when this Scheduler has to be executed
      *    again.
-     *  @exception IllegalActionException Thrown if actor paramaters such
+     *  @exception IllegalActionException Thrown if actor parameters such
      *    as execution time or priority cannot be read.
      */
     public Time schedule(Actor actor, Time currentPlatformTime,
@@ -220,9 +221,11 @@ public abstract class ResourceScheduler extends MoMLModelAttribute implements
                 ExecutionEventType.START);
         event(this, currentPlatformTime.getDoubleValue(),
                 ExecutionEventType.STOP);
-
+        
         return null;
     }
+    
+   
 
     /** Return a new time object using the enclosing director.
      *  @param time Double value of the new time object.

@@ -47,9 +47,9 @@ public class PtidesEventJUnitTest {
      */
     @org.junit.Test
     public void constructorWithNulls() throws Exception {
-        PtidesEvent event = new PtidesEvent(null, null, null, 1, 2, null);
+        PtidesEvent event = new PtidesEvent(null, null, null, 1, 2, null, null);
 
-        String knownGood = "PtidesEvent{time = null, microstep = 1, depth = 2, token = null, absoluteDeadline = null, dest = null.null.0, receiver = null, isPureEvent = true}";
+        String knownGood = "PtidesEvent{time = null, microstep = 1, depth = 2, token = null, absoluteDeadline = null, dest = null.null.0, receiver = null, isPureEvent = true, sourceTimestamp = null}";
         //System.out.println("-->" +  event.toString() + "<--");
         assertArrayEquals(event.toString().getBytes(), knownGood.getBytes());
     }

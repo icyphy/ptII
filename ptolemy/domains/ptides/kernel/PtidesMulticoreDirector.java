@@ -82,6 +82,7 @@ import ptolemy.kernel.util.NamedObj;
  *  @Pt.AcceptedRating Red (mzimmer)
  *
  */
+@Deprecated
 public class PtidesMulticoreDirector extends PtidesBasicDirector {
 
     /** Construct a PtidesMulticoreDirector in the given container with 
@@ -575,7 +576,7 @@ public class PtidesMulticoreDirector extends PtidesBasicDirector {
                 .get(causalPort));
 
         PtidesEvent newEvent = new PtidesEvent(actor, causalPort, time,
-                microstep, depth, absoluteDeadline);
+                microstep, depth, absoluteDeadline, null);
         _eventQueue.put(newEvent);
     }
 

@@ -59,6 +59,7 @@ JSRCS = \
 	ActuationDevice.java \
 	ActuatorSetup.java \
 	DynamicCoreAssignmentScheduler.java \
+	ErrorHandlingAction.java \
 	FPPCore.java \
 	InputDevice.java \
 	MasterClock.java \

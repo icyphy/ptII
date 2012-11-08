@@ -40,6 +40,7 @@ import ptolemy.data.DoubleToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
+import ptolemy.domains.ptides.kernel.PtidesDirector;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
@@ -147,18 +148,18 @@ public class PtidesPort extends MirrorPort {
         }
     }
 
-    /** Return the timestamp for a specific token.
+    /** Return the timestamp and sourceTimestamp for a specific token.
      *  @param t The token.
      *  @return The timestamp.
      */
-    public Time getTimeStampForToken(Token t) {
-        Time time = _transmittedTokens.get(t);
+    public Object[] getTimeStampForToken(Token t) {
+        Object[] times = (Object[])_transmittedTokenTimestamps.get(t);
         _transmittedTokenCnt.put(t, _transmittedTokenCnt.get(t).intValue() - 1);
         if (_transmittedTokenCnt.get(t).intValue() == 0) {
-            _transmittedTokens.remove(t);
+            _transmittedTokenTimestamps.remove(t);
             _transmittedTokenCnt.remove(t);
         }
-        return time;
+        return times;
     }
 
     public boolean isActuatorPort() {
@@ -205,14 +206,15 @@ public class PtidesPort extends MirrorPort {
             throws IllegalActionException, NoRoomException {
         Time timestamp = ((CompositeActor) getContainer()).getDirector()
                 .getModelTime();
-        if (_transmittedTokens == null) {
-            _transmittedTokens = new HashMap();
+        Time sourceTimestamp = ((PtidesDirector)((CompositeActor) getContainer()).getDirector()).getCurrentSourceTimestamp();
+        if (_transmittedTokenTimestamps == null) {
+            _transmittedTokenTimestamps = new HashMap();
             _transmittedTokenCnt = new HashMap();
         }
-        if (_transmittedTokens.get(token) == null) {
+        if (_transmittedTokenTimestamps.get(token) == null) {
             _transmittedTokenCnt.put(token, 0);
         }
-        _transmittedTokens.put(token, timestamp);
+        _transmittedTokenTimestamps.put(token, new Object[]{timestamp, sourceTimestamp});
         _transmittedTokenCnt.put(token, _transmittedTokenCnt.get(token)
                 .intValue() + 1);
         super.send(channelIndex, token);
@@ -288,7 +290,8 @@ public class PtidesPort extends MirrorPort {
 
     private boolean _isNetworkPort;
 
-    private HashMap<Token, Time> _transmittedTokens;
+    private HashMap<Token, Object[]> _transmittedTokenTimestamps;
+    
     private HashMap<Token, Integer> _transmittedTokenCnt;
 
 }

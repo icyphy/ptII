@@ -95,7 +95,7 @@ public class PtidesEvent extends DEEvent {
      *          but its value cannot be obtained, which should be an integer.
      */
     public PtidesEvent(Actor actor, IOPort ioPort, Time timeStamp,
-            int microstep, int depth, Time absoluteDeadline)
+            int microstep, int depth, Time absoluteDeadline, Time sourceTimestamp)
             throws IllegalActionException {
         super(actor, timeStamp, microstep, depth);
         assert absoluteDeadline != null;
@@ -103,6 +103,7 @@ public class PtidesEvent extends DEEvent {
         _channel = 0;
         _isPureEvent = true;
         _absoluteDeadline = absoluteDeadline;
+        _sourceTimestamp = sourceTimestamp;
     }
 
     /** Construct a trigger event with the specified destination IO port,
@@ -123,7 +124,7 @@ public class PtidesEvent extends DEEvent {
      *  but its value cannot be obtained, which should be an integer.
      */
     public PtidesEvent(IOPort ioPort, int channel, Time timeStamp,
-            int microstep, int depth, Token token, Receiver receiver)
+            int microstep, int depth, Token token, Receiver receiver, Time sourceTimestamp)
             throws IllegalActionException {
         super(ioPort, timeStamp, microstep, depth);
         assert (token != null && receiver != null);
@@ -131,6 +132,7 @@ public class PtidesEvent extends DEEvent {
         _token = token;
         _receiver = receiver;
         _isPureEvent = false;
+        _sourceTimestamp = sourceTimestamp;
     }
 
     /** Construct a trigger event with the specified destination IO port,
@@ -153,13 +155,8 @@ public class PtidesEvent extends DEEvent {
      */
     public PtidesEvent(IOPort ioPort, int channel, Time timeStamp,
             int microstep, int depth, Token token, Receiver receiver,
-            Time deadline) throws IllegalActionException {
-        super(ioPort, timeStamp, microstep, depth);
-        assert (token != null && receiver != null);
-        _channel = channel;
-        _token = token;
-        _receiver = receiver;
-        _isPureEvent = false;
+            Time deadline, Time sourceTimestamp) throws IllegalActionException {
+        this(ioPort, channel, timeStamp, microstep, depth, token, receiver, sourceTimestamp);
         _absoluteDeadline = deadline;
     }
 
@@ -251,6 +248,10 @@ public class PtidesEvent extends DEEvent {
         }
         return _receiver;
     }
+    
+    public final Time sourceTimestamp() {
+        return _sourceTimestamp;
+    }
 
     /** Return the token (value) of this event.
      *  @return The token.
@@ -299,7 +300,8 @@ public class PtidesEvent extends DEEvent {
                         + (_receiver.getContainer() != null ? _receiver
                                 .getContainer().getFullName() : "")
                         + ".receiver }") + ", isPureEvent = " + _isPureEvent
-                + "}";
+                + ", sourceTimestamp = "
+                + _sourceTimestamp + "}";
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -321,4 +323,7 @@ public class PtidesEvent extends DEEvent {
 
     /** The token associated with this event. */
     private Token _token;
+    
+    /** The timestamp this or the source for this event was created by a sensor. */
+    private Time _sourceTimestamp;
 }
