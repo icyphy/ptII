@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="NetworkDropExecute" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="20">
@@ -23,7 +23,7 @@
         </property>
         <property name="_tableauFactory" class="ptolemy.actor.gui.LevelSkippingTableauFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[150.0, 125.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{150.0, 125.0}">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
             <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={195, 129, 934, 634}, maximized=false}">
@@ -308,7 +308,7 @@
             <entity name="ErrorHandler" class="ptolemy.actor.TypedCompositeActor">
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{430, 100}">
                 </property>
-                <property name="dropNetworkTransmitterPort" class="ptolemy.data.expr.Parameter" value="false">
+                <property name="dropEvent" class="ptolemy.data.expr.Parameter" value="false">
                     <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                     </property>
                     <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -343,7 +343,7 @@
                 </property>
                 <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{353.65625, 309.181640625}">
                 </property>
-                <property name="executeNetworkTransmitterPort" class="ptolemy.data.expr.Parameter" value="true">
+                <property name="executeEvent" class="ptolemy.data.expr.Parameter" value="true">
                     <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                     </property>
                     <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -380,7 +380,7 @@
                     </property>
                 </entity>
                 <entity name="SetVariable" class="ptolemy.actor.lib.SetVariable">
-                    <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="dropNetworkTransmitterPort">
+                    <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="dropEvent">
                     </property>
                     <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
                     </property>
@@ -390,7 +390,7 @@
                         <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
                         </property>
                     </property>
-                    <property name="_location" class="ptolemy.kernel.util.Location" value="[450.0, 155.0]">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[390.0, 160.0]">
                     </property>
                     <property name="scheduler" class="ptolemy.data.expr.Parameter" value="">
                     </property>
@@ -398,7 +398,7 @@
                     </property>
                 </entity>
                 <entity name="SetVariable2" class="ptolemy.actor.lib.SetVariable">
-                    <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="executeNetworkTransmitterPort">
+                    <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="executeEvent">
                     </property>
                     <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
                     </property>
@@ -408,7 +408,7 @@
                         <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
                         </property>
                     </property>
-                    <property name="_location" class="ptolemy.kernel.util.Location" value="[455.0, 220.0]">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[400.0, 220.0]">
                     </property>
                     <property name="scheduler" class="ptolemy.data.expr.Parameter" value="">
                     </property>
