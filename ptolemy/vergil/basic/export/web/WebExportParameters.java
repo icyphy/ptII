@@ -32,6 +32,7 @@ import ptolemy.actor.gui.ColorAttribute;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.expr.FileParameter;
 import ptolemy.data.expr.Parameter;
+import ptolemy.data.expr.StringParameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
@@ -97,6 +98,12 @@ public class WebExportParameters extends Attribute {
         copyJavaScriptFiles = new Parameter(this, "copyJavaScriptFiles");
         copyJavaScriptFiles.setTypeEquals(BaseType.BOOLEAN);
         copyJavaScriptFiles.setExpression("false");
+        
+        imageFormat = new StringParameter(this, "imageFormat");
+        imageFormat.setExpression("gif");
+        imageFormat.addChoice("gif");
+        imageFormat.addChoice("png");
+        imageFormat.addChoice("jpg");
 
         usePtWebsite = new Parameter(this, "usePtWebsite");
         usePtWebsite.setTypeEquals(BaseType.BOOLEAN);
@@ -129,6 +136,11 @@ public class WebExportParameters extends Attribute {
      *  where the model that contains this attribute is stored.
      */
     public FileParameter directoryToExportTo;
+    
+    /** The image format to use, which can be one of "gif" (the default),
+     *  "png", or "jpg".
+     */
+    public StringParameter imageFormat;
 
     /** If true, hierarchically open all composite actors
      *  in the model before exporting (so that these also
@@ -174,6 +186,8 @@ public class WebExportParameters extends Attribute {
                     .getToken()).booleanValue();
         } else if (attribute == directoryToExportTo) {
             _parameters.directoryToExportTo = directoryToExportTo.asFile();
+        } else if (attribute == imageFormat) {
+            _parameters.imageFormat = imageFormat.stringValue();
         } else if (attribute == openCompositesBeforeExport) {
             _parameters.openCompositesBeforeExport = ((BooleanToken) openCompositesBeforeExport
                     .getToken()).booleanValue();

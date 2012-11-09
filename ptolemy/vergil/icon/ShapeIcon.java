@@ -179,11 +179,13 @@ public class ShapeIcon extends DynamicEditorIcon {
         // list while this method is traversing it.
         Runnable doSet = new Runnable() {
             public void run() {
-                Iterator figures = _liveFigureIterator();
+                synchronized(_figures) {
+                    Iterator figures = _liveFigureIterator();
 
-                while (figures.hasNext()) {
-                    Object figure = figures.next();
-                    ((BasicFigure) figure).setCentered(_centered);
+                    while (figures.hasNext()) {
+                        Object figure = figures.next();
+                        ((BasicFigure) figure).setCentered(_centered);
+                    }
                 }
             }
         };
@@ -211,11 +213,13 @@ public class ShapeIcon extends DynamicEditorIcon {
         // list while this method is traversing it.
         Runnable doSet = new Runnable() {
             public void run() {
-                Iterator figures = _liveFigureIterator();
+                synchronized(_figures) {
+                    Iterator figures = _liveFigureIterator();
 
-                while (figures.hasNext()) {
-                    Object figure = figures.next();
-                    ((BasicFigure) figure).setDashArray(_dashArray);
+                    while (figures.hasNext()) {
+                        Object figure = figures.next();
+                        ((BasicFigure) figure).setDashArray(_dashArray);
+                    }
                 }
             }
         };
@@ -243,11 +247,13 @@ public class ShapeIcon extends DynamicEditorIcon {
         // list while this method is traversing it.
         Runnable doSet = new Runnable() {
             public void run() {
-                Iterator figures = _liveFigureIterator();
+                synchronized(_figures) {
+                    Iterator figures = _liveFigureIterator();
 
-                while (figures.hasNext()) {
-                    Object figure = figures.next();
-                    ((BasicFigure) figure).setFillPaint(_fillColor);
+                    while (figures.hasNext()) {
+                        Object figure = figures.next();
+                        ((BasicFigure) figure).setFillPaint(_fillColor);
+                    }
                 }
             }
         };
@@ -275,11 +281,13 @@ public class ShapeIcon extends DynamicEditorIcon {
         // list while this method is traversing it.
         Runnable doSet = new Runnable() {
             public void run() {
-                Iterator figures = _liveFigureIterator();
+                synchronized(_figures) {
+                    Iterator figures = _liveFigureIterator();
 
-                while (figures.hasNext()) {
-                    Object figure = figures.next();
-                    ((BasicFigure) figure).setStrokePaint(_lineColor);
+                    while (figures.hasNext()) {
+                        Object figure = figures.next();
+                        ((BasicFigure) figure).setStrokePaint(_lineColor);
+                    }
                 }
             }
         };
@@ -307,11 +315,13 @@ public class ShapeIcon extends DynamicEditorIcon {
         // list while this method is traversing it.
         Runnable doSet = new Runnable() {
             public void run() {
-                Iterator figures = _liveFigureIterator();
+                synchronized(_figures) {
+                    Iterator figures = _liveFigureIterator();
 
-                while (figures.hasNext()) {
-                    Object figure = figures.next();
-                    ((BasicFigure) figure).setLineWidth(_lineWidth);
+                    while (figures.hasNext()) {
+                        Object figure = figures.next();
+                        ((BasicFigure) figure).setLineWidth(_lineWidth);
+                    }
                 }
             }
         };
@@ -334,11 +344,13 @@ public class ShapeIcon extends DynamicEditorIcon {
         // list while this method is traversing it.
         Runnable doSet = new Runnable() {
             public void run() {
-                Iterator figures = _liveFigureIterator();
+                synchronized(_figures) {
+                    Iterator figures = _liveFigureIterator();
 
-                while (figures.hasNext()) {
-                    Object figure = figures.next();
-                    ((BasicFigure) figure).setPrototypeShape(_shape);
+                    while (figures.hasNext()) {
+                        Object figure = figures.next();
+                        ((BasicFigure) figure).setPrototypeShape(_shape);
+                    }
                 }
             }
         };

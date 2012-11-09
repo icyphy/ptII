@@ -87,10 +87,10 @@ import diva.canvas.JCanvas;
 import diva.graph.GraphController;
 
 /** An Action that works with BasicGraphFrame to export HTML.
- *  Given a directory, this action creates a GIF image of the
+ *  Given a directory, this action creates an image of the
  *  currently visible portion of the BasicGraphFrame and an
- *  HTML page that displays that GIF image. In addition, it
- *  creates a map of the locations of actors in the GIF image
+ *  HTML page that displays that image. In addition, it
+ *  creates a map of the locations of actors in the image
  *  and actions associated with each of the actors.
  *  The default content of the web page and the actions
  *  associated with the image map are defined by instances
@@ -141,7 +141,7 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable,
     public ExportHTMLAction(BasicGraphFrame basicGraphFrame) {
         super("Export to Web");
         _basicGraphFrame = basicGraphFrame;
-        putValue("tooltip", "Export HTML and GIF files showing this model.");
+        putValue("tooltip", "Export HTML and image files showing this model.");
         // putValue(GUIUtilities.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_G));
     }
 
@@ -610,7 +610,7 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable,
     /** Write an HTML page based on the current view of the model
      *  to the specified destination directory. The file will be
      *  named "index.html," and supporting files, including at
-     *  least a gif image showing the contents currently visible in
+     *  least an image showing the contents currently visible in
      *  the graph frame, will be created. Any instances of
      *  {@link WebExportable} in the configuration are first
      *  cloned into the model, so these provide default behavior,
@@ -650,16 +650,16 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable,
         try {
             _parameters = parameters;
 
-            // First, create the gif file showing whatever the current
+            // First, create the image file showing whatever the current
             // view in this frame shows.
             NamedObj model = _basicGraphFrame.getModel();
             // Use a sanitized model name and avoid problems with special characters in file names.
             _sanitizedModelName = StringUtilities.sanitizeName(model.getName());
-            File gifFile = new File(parameters.directoryToExportTo,
-                    _sanitizedModelName + ".gif");
-            OutputStream out = new FileOutputStream(gifFile);
+            File imageFile = new File(parameters.directoryToExportTo,
+                    _sanitizedModelName + "." + _parameters.imageFormat);
+            OutputStream out = new FileOutputStream(imageFile);
             try {
-                _basicGraphFrame.writeImage(out, "gif",
+                _basicGraphFrame.writeImage(out, _parameters.imageFormat,
                         parameters.backgroundColor);
             } finally {
                 out.close();
@@ -835,7 +835,9 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable,
             }
             // Put the image in.
             printWriter.println("<img src=\"" + _sanitizedModelName
-                    + ".gif\" usemap=\"#iconmap\" "
+                    + "."
+                    + _parameters.imageFormat
+                    + "\" usemap=\"#iconmap\" "
                     // The HTML Validator at http://validator.w3.org/check wants an alt tag
                     + "alt=\"" + _sanitizedModelName + "model\"/>");
             printWriter.println(map);

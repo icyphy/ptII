@@ -78,6 +78,7 @@ public class ExportParameters {
     public ExportParameters(File directoryToExportTo) {
         this.directoryToExportTo = directoryToExportTo;
         backgroundColor = null;
+        imageFormat = "gif";
         openCompositesBeforeExport = false;
         runBeforeExport = false;
         showInBrowser = true;
@@ -95,6 +96,7 @@ public class ExportParameters {
     public ExportParameters(File directoryToExportTo, ExportParameters template) {
         this.directoryToExportTo = directoryToExportTo;
         backgroundColor = template.backgroundColor;
+        imageFormat = template.imageFormat;
         openCompositesBeforeExport = template.openCompositesBeforeExport;
         runBeforeExport = template.runBeforeExport;
         showInBrowser = template.showInBrowser;
@@ -168,6 +170,11 @@ public class ExportParameters {
      *  the resource handler is mapped to http://hostname:port/servicename/files.
      */
     public String HTMLPathForFiles;
+    
+    /** The image format to use, which can be one of "gif" (the default),
+     *  "png", or "jpg".
+     */
+    public String imageFormat;
 
     /** If true, hierarchically open all composite actors
      *  in the model before exporting (so that these also

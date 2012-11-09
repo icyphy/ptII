@@ -150,11 +150,13 @@ public class TextIcon extends DynamicEditorIcon {
 
         Runnable doSet = new Runnable() {
             public void run() {
-                Iterator figures = _liveFigureIterator();
+                synchronized(_figures) {
+                    Iterator figures = _liveFigureIterator();
 
-                while (figures.hasNext()) {
-                    Object figure = figures.next();
-                    ((LabelFigure) figure).setAnchor(anchor);
+                    while (figures.hasNext()) {
+                        Object figure = figures.next();
+                        ((LabelFigure) figure).setAnchor(anchor);
+                    }
                 }
             }
         };
@@ -177,11 +179,13 @@ public class TextIcon extends DynamicEditorIcon {
         // list while this method is traversing it.
         Runnable doSet = new Runnable() {
             public void run() {
-                Iterator figures = _liveFigureIterator();
+                synchronized(_figures) {
+                    Iterator figures = _liveFigureIterator();
 
-                while (figures.hasNext()) {
-                    Object figure = figures.next();
-                    ((LabelFigure) figure).setFont(_font);
+                    while (figures.hasNext()) {
+                        Object figure = figures.next();
+                        ((LabelFigure) figure).setFont(_font);
+                    }
                 }
             }
         };
@@ -213,11 +217,13 @@ public class TextIcon extends DynamicEditorIcon {
         // list while this method is traversing it.
         Runnable doSet = new Runnable() {
             public void run() {
-                Iterator figures = _liveFigureIterator();
+                synchronized(_figures) {
+                    Iterator figures = _liveFigureIterator();
 
-                while (figures.hasNext()) {
-                    Object figure = figures.next();
-                    ((LabelFigure) figure).setString(_text);
+                    while (figures.hasNext()) {
+                        Object figure = figures.next();
+                        ((LabelFigure) figure).setString(_text);
+                    }
                 }
             }
         };
@@ -239,11 +245,13 @@ public class TextIcon extends DynamicEditorIcon {
         // conflict here in adding the figure to the list of live figures.
         Runnable doSet = new Runnable() {
             public void run() {
-                Iterator figures = _liveFigureIterator();
+                synchronized(_figures) {
+                    Iterator figures = _liveFigureIterator();
 
-                while (figures.hasNext()) {
-                    Object figure = figures.next();
-                    ((LabelFigure) figure).setFillPaint(_textColor);
+                    while (figures.hasNext()) {
+                        Object figure = figures.next();
+                        ((LabelFigure) figure).setFillPaint(_textColor);
+                    }
                 }
             }
         };

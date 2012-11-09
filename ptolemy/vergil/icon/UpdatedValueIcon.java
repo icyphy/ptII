@@ -201,11 +201,13 @@ public class UpdatedValueIcon extends AttributeValueIcon {
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
                 String string = _displayString();
-                Iterator figures = _liveFigureIterator();
+                synchronized(_figures) {
+                    Iterator figures = _liveFigureIterator();
 
-                while (figures.hasNext()) {
-                    LabelFigure figure = (LabelFigure) figures.next();
-                    figure.setString(string);
+                    while (figures.hasNext()) {
+                        LabelFigure figure = (LabelFigure) figures.next();
+                        figure.setString(string);
+                    }
                 }
             }
         });

@@ -312,10 +312,12 @@ public class ImageIcon extends DynamicEditorIcon implements ImageObserver {
     private void _updateFigures() {
         // If the figure has been previously rendered, first update
         // the ImageFigure to use the new image.
-        Iterator figures = _liveFigureIterator();
-        while (figures.hasNext()) {
-            Object figure = figures.next();
-            ((ImageFigure) figure).setImage(_scaledImage);
+        synchronized(_figures) {
+            Iterator figures = _liveFigureIterator();
+            while (figures.hasNext()) {
+                Object figure = figures.next();
+                ((ImageFigure) figure).setImage(_scaledImage);
+            }
         }
 
         ChangeRequest request = new ChangeRequest(this, "Dummy change request") {

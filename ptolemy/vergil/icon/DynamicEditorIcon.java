@@ -125,7 +125,9 @@ public class DynamicEditorIcon extends EditorIcon {
      *  @param newFigure A newly manufactured figure.
      */
     protected void _addLiveFigure(Figure newFigure) {
-        _figures.add(new WeakReference(newFigure));
+        synchronized(_figures) {
+            _figures.add(new WeakReference(newFigure));
+        }
 
         _trimLiveFigures();
     }
@@ -201,7 +203,7 @@ public class DynamicEditorIcon extends EditorIcon {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
+    ////                         protected variables                 ////
     // A list of weak references to figures that this has created.
-    private List _figures = new LinkedList();
+    protected List _figures = new LinkedList();
 }

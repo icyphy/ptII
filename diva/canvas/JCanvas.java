@@ -151,6 +151,10 @@ public class JCanvas extends JComponent implements Printable {
         RenderingHints hints = new RenderingHints(null);
         hints.put(RenderingHints.KEY_ANTIALIASING,
                 RenderingHints.VALUE_ANTIALIAS_ON);
+        hints.put(RenderingHints.KEY_RENDERING,
+                RenderingHints.VALUE_RENDER_QUALITY);
+        hints.put(RenderingHints.KEY_COLOR_RENDERING,
+                RenderingHints.VALUE_COLOR_RENDER_QUALITY);
         graphics.addRenderingHints(hints);
 
         // Could possibly export transparent PNG.
