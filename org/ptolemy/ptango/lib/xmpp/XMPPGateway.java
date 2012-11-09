@@ -1,6 +1,6 @@
 /* An attribute for publish-subscribe connectivity through an XMPP server.
 
- Copyright (c) 1997-2012 The Regents of the University of California.
+ Copyright (c) 2012 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -26,7 +26,7 @@
 
  */
 
-package org.ptolemy.ptango.lib;
+package org.ptolemy.ptango.lib.xmpp;
 
 import java.util.Iterator;
 import java.util.Map;

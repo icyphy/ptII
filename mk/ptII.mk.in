@@ -346,6 +346,9 @@ MATLAB_64LIBDIR =	@MATLAB_64LIBDIR@
 # Used in org/ptolemy/makefile.
 PTANGO_DIR = @PTANGO_DIR@
 
+# Jars for Ptango
+PTANGO_JARS = @PTANGO_JARS@
+
 # PTANGO_PACKAGES is used in ptII/doc/makefile
 PTANGO_PACKAGES = @PTANGO_PACKAGES@
 
@@ -832,6 +835,9 @@ PTTINYOS_DIR =	@PTTINYOS_DIR@
 
 # Set to waba and used in $PTII/ptolemy/makefile if the PalmOS WABA was found
 PTWABA_DIR =	@PTWABA_DIR@
+
+# PTXMPP_DIR is set to xmpp if smack.jar and smackx.jar are found.  See org/ptolemy/ptango/makefile
+PTXMPP_DIR =	@PTXMPP_DIR@
 
 # Jar file that contains RXTX Serial Port Interface
 RXTX_JAR =   		@RXTX_JAR@

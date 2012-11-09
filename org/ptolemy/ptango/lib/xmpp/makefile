@@ -1,4 +1,4 @@
-# Makefile for Ptango - Internet of Things - Actors
+# Makefile for Ptango - Internet of Things - 
 #
 # @Authors: Christopher Brooks
 #
@@ -29,13 +29,12 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		org/ptolemy/ptango/lib
+ME =		org/ptolemy/ptango/lib/xmpp
 
-# PTXMPP_DIR is set to xmpp if smack.jar and smackx.jar are found by configure.
-DIRS =		img $(PTXMPP_DIR)
+DIRS =
 
 # Root of the Ptolemy II directory
-ROOT =		../../../..
+ROOT =		../../../../..
 
 CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(PTANGO_JARS)
 
@@ -44,40 +43,34 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Variables and rules used to create source file distributions
-PTPACKAGE = 	lib
-PTCLASSALLJAR = lib.jar
+PTPACKAGE = 	xmpp
+PTCLASSALLJAR = $(PTPACKAGE).jar
 # Include the .class files from these jars in PTCLASSALLJAR
-PTCLASSALLJARS = \
-		img/img.jar
+# PTCLASSALLJARS =
 
 # Java Sources, keep these alphabetical,
 JSRCS = \
-	HTMLModelExporter.java \
-	HttpActor.java \
-	HttpService.java \
-	WebServer.java
+	XMPPGateway.java \
+	XMPPPublisher.java \
+	XMPPSink.java \
+	XMPPSource.java \
+	XMPPSubscriber.java
 
 OTHER_FILES_TO_BE_JARED = \
-	ptango.xml \
-	WebServerIcon.xml
+	xmpp.xml
 
 # Files that are not compiled, such as .tcl and .itcl files.
 EXTRA_SRCS = $(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
 # Non-source files such as README files and subdirectories
-MISC_FILES = img
+MISC_FILES =
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	$(DIRS) \
-	manifest.tmp \
 	$(PTCLASSALLJAR) \
-	$(PTAUXJAR) \
-	'HTMLModelExporter$$1.class' \
-	'HttpActor$$ActorServlet.class' \
-	'WebServer$$1.class' \
-	'WebServer$$RunnableServer.class'
+	$(PTAUXJAR)
 
 KRUFT =
 

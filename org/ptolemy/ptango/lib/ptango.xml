@@ -1,19 +1,21 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
-    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+	  "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="Ptango" class="ptolemy.moml.EntityLibrary">
   <configure>
     <?moml
       <group>
-		<doc>Ptango actors:  Actors for web services. </doc>
+	<doc>Ptango actors:  Actors for web services. </doc>
 
-		<entity name="HttpActor" class="org.ptolemy.ptango.lib.HttpActor">
-		</entity>
+	<entity name="HttpActor" class="org.ptolemy.ptango.lib.HttpActor">
+	</entity>
 
-		<property name="WebServer" class="org.ptolemy.ptango.lib.WebServer">
-		</property>
+	<property name="WebServer" class="org.ptolemy.ptango.lib.WebServer">
+	</property>
+
+	<input source="org/ptolemy/ptango/lib/xmpp/xmpp.xml"/>
       </group> 	
-    ?>
+      ?>
   </configure>
 </entity>
 

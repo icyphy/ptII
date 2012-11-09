@@ -2300,7 +2300,7 @@ PTJETTY_JAR=
 # javax.servlet-api*.jar used by Ptango and ptserver.
 PTSERVLET_JAR=
 
-# smack.jar and smackx.jar used by Ptango, implemens xmpp
+# smack.jar and smackx.jar used by Ptango, implements xmpp
 PTSMACK_JAR=
 PTSMACKX_JAR=
 
@@ -4166,6 +4166,9 @@ fi
 # PTANGO_DIR is set to ptango if ptango is found.
 PTANGO_DIR=
 
+# PTXMPP_DIR is set to xmpp if smack.jar and smackx.jar are found.  See org/ptolemy/ptango/makefile
+PTXMPP_DIR=
+
 # We only enable Ptango if $PTANGO_USER_DIR is present
 PTANGO_USER_DIR="org/ptolemy/ptango"
 if test ! -d "$PTANGO_USER_DIR"; then
@@ -4176,6 +4179,7 @@ else
 	# We checked for Servlet above.
         if test  -f "$PTSERVLET_JAR" -a -f "$PTSMACK_JAR" -a -f "$PTSMACKX_JAR"; then
 	    PTANGO_DIR=ptango
+	    PTXMPP_DIR=xmpp
             # PTANGO_PACKAGES is used in ptII/doc/makefile
 	    PTANGO_PACKAGES=`find $PTANGO_USER_DIR -name "*.java" | grep -v /test | awk -F / '{printf("%s", $1); for (i = 2; i < NF; i++) printf(".%s", $i); printf("\n")}' | sort | uniq | awk '{printf("%s ", $0)}'`
         fi
@@ -5484,6 +5488,9 @@ AC_SUBST(PSDF_DIR)
 # Used in org/ptolemy/makefile.
 AC_SUBST(PTANGO_DIR)
 
+# Jar files for Ptango.
+AC_SUBST(PTANGO_JARS)
+
 # PTANGO_PACKAGES is used in ptII/doc/makefile
 AC_SUBST(PTANGO_PACKAGES)
 
@@ -5957,6 +5964,9 @@ AC_SUBST(PTQUICKTIME_DIR)
 # Set to waba and used in
 # $PTII/ptolemy/apps/makefile if Waba was found
 AC_SUBST(PTWABA_DIR)
+
+# PTXMPP_DIR is set to xmpp if smack.jar and smackx.jar are found.  See org/ptolemy/ptango/makefile
+AC_SUBST(PTXMPP_DIR)
 
 # Location of the local $PTII directory as a file:/// URL
 # This variable is used with the Java Network Launching Protocol files
