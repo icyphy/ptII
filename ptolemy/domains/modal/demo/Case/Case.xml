@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="Case" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
     </property>
     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="100">
@@ -10,7 +10,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{85, 45}">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={11, 22, 863, 513}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={11, 22, 884, 634}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[650, 403]">
     </property>
@@ -101,7 +101,17 @@
         </property>
     </entity>
     <entity name="Case2" class="ptolemy.actor.lib.hoc.Case">
+        <property name="control" class="ptolemy.actor.parameters.PortParameter" value="3">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[175.0, 150.0]">
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={373, 208, 934, 634}, maximized=false}">
+        </property>
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
+        </property>
+        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+        </property>
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{339.5, 239.0}">
         </property>
         <port name="input" class="ptolemy.actor.lib.hoc.MultiCompositePort">
             <property name="input"/>
@@ -111,9 +121,9 @@
         </port>
         <entity name="0" class="ptolemy.actor.lib.hoc.Refinement">
             <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
-                <property name="_location" class="ptolemy.kernel.util.Location" value="{85.0, 65.0}">
-                </property>
                 <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{85.0, 65.0}">
                 </property>
             </property>
             <port name="input" class="ptolemy.actor.lib.hoc.RefinementPort">
@@ -147,19 +157,19 @@
         </entity>
         <entity name="1" class="ptolemy.actor.lib.hoc.Refinement">
             <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
-                <property name="_location" class="ptolemy.kernel.util.Location" value="{85.0, 55.0}">
-                </property>
                 <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{85.0, 55.0}">
                 </property>
             </property>
             <port name="input" class="ptolemy.actor.lib.hoc.RefinementPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="{0.0, 0.0}">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 175.0]">
                 </property>
             </port>
             <port name="output" class="ptolemy.actor.lib.hoc.RefinementPort">
                 <property name="output"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="{0.0, 0.0}">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[430.0, 175.0]">
                 </property>
             </port>
             <entity name="TrigFunction" class="ptolemy.actor.lib.TrigFunction">
@@ -209,9 +219,9 @@
         </entity>
         <entity name="default" class="ptolemy.actor.lib.hoc.Refinement">
             <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
-                <property name="_location" class="ptolemy.kernel.util.Location" value="{75.0, 50.0}">
-                </property>
                 <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{75.0, 50.0}">
                 </property>
             </property>
             <port name="input" class="ptolemy.actor.lib.hoc.RefinementPort">

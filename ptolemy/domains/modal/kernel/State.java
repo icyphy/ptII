@@ -35,6 +35,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.StringTokenizer;
 
+import ptolemy.actor.Actor;
 import ptolemy.actor.DesignPatternGetMoMLAction;
 import ptolemy.actor.TypedActor;
 import ptolemy.actor.TypedCompositeActor;
@@ -43,6 +44,7 @@ import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.SingletonParameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.domains.modal.modal.ModalModel;
+import ptolemy.domains.modal.modal.ModalRefinement;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.ComponentPort;
 import ptolemy.kernel.CompositeEntity;
@@ -536,7 +538,8 @@ public class State extends ComponentEntity implements ConfigurableEntity,
     }
 
     /** Return the list of non-preemptive outgoing transitions from
-     *  this state.
+     *  this state. This list does not include error transitions
+     *  and does include termination transitions.
      *  @return The list of non-preemptive outgoing transitions from
      *   this state.
      *  @throws IllegalActionException If the parameters giving transition
@@ -728,9 +731,18 @@ public class State extends ComponentEntity implements ConfigurableEntity,
             _errorTransitionList.clear();
             _terminationTransitionList.clear();
             _nonErrorNonTerminationTransitionList.clear();
+            
+            // If this state is final, it should not have any outgoing
+            // transitions.
+            if (((BooleanToken)isFinalState.getToken()).booleanValue()) {
+                if (outgoingPort.linkedRelationList().size() > 0) {
+                    throw new IllegalActionException(this,
+                            "Final state cannot have outgoing transitions");
+                }
+            }
 
             Iterator transitions = outgoingPort.linkedRelationList().iterator();
-
+            
             while (transitions.hasNext()) {
                 Transition transition = (Transition) transitions.next();
 
@@ -738,21 +750,41 @@ public class State extends ComponentEntity implements ConfigurableEntity,
                     _preemptiveTransitionList.add(transition);
                     _nonErrorNonTerminationTransitionList.add(transition);
                 } else if (transition.isErrorTransition()) {
+                    // An error transition is required to not be preemptive.
+                    // Check that here.
+                    if (transition.isPreemptive()) {
+                        throw new IllegalActionException(transition,
+                                "An error transition cannot also be preemptive");
+                    }
                     // Note that a transition does not appear on this list unless it is
                     // NOT a preemptive transition.
                     _errorTransitionList.add(transition);
                 } else if (transition.isTermination()) {
+                    // Termination transitions are allowed to have output actions only
+                    // all refinements of this state are state machine refinements.
+                    TypedActor[] refinements = getRefinement();
+                    if (refinements == null || refinements.length == 0) {
+                        throw new IllegalActionException(transition,
+                                "Termination transitions must come from states with refinements");
+                    }
+                    // There are refinements.
+                    // Check that if there are output actions on the termination transition
+                    // then all refinements are FSM refinements. This is because non-FSM
+                    // refinements can only be known to have terminated in postfire, and that
+                    // is too late to produce outputs for some domains (SR and Continuous, at least).
+                    if (!transition.outputActions.getExpression().trim().equals("")) {
+                        for (Actor refinementActor : refinements) {
+                            if (!(refinementActor instanceof ModalRefinement)) {
+                                throw new IllegalActionException(transition,
+                                        "Termination transition cannot have output actions because "
+                                        + "such a transition is taken in the postfire phase of execution.");
+                            }
+                        }
+                    }
                     // Note that a transition does not appear on this list unless it is
                     // NOT a preemptive or error transition.
-                    // Check that there are no output actions on such a transition,
-                    // since it will be too late to produce outputs when this transition
-                    // is taken (in postfire()).
-                    if (!transition.outputActions.getExpression().trim().equals("")) {
-                        throw new IllegalActionException(transition,
-                                "Termination transition cannot have output actions because "
-                                + "such a transition is taken in the postfire phase of execution.");
-                    }
                     _terminationTransitionList.add(transition);
+                    _nonpreemptiveTransitionList.add(transition);
                 } else {
                     _nonpreemptiveTransitionList.add(transition);
                     _nonErrorNonTerminationTransitionList.add(transition);

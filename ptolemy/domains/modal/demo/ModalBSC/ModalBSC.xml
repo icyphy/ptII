@@ -2,9 +2,9 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="ModalBSC" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={23, 22, 491, 569}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={23, 22, 725, 634}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[491, 463]">
     </property>
@@ -112,9 +112,13 @@
     <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/annotation.xml"></input><entity name="state" class="ptolemy.domains.modal.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property></entity></entity>
   </configure>
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={98, 119, 828, 530}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={416, 207, 847, 635}, maximized=false}">
             </property>
-            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[613, 412]">
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[613, 524]">
+            </property>
+            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+            </property>
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{323.5, 258.013671875}">
             </property>
             <port name="input" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
@@ -142,7 +146,7 @@
             <entity name="normal" class="ptolemy.domains.modal.kernel.State">
                 <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="normal">
                 </property>
-                <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="true">
+                <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
@@ -162,11 +166,13 @@
                 </property>
             </entity>
             <entity name="init" class="ptolemy.domains.modal.kernel.State">
+                <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
                 <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="75.0, 125.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 100.0]">
                 </property>
             </entity>
             <relation name="relation" class="ptolemy.domains.modal.kernel.Transition">
@@ -184,9 +190,9 @@
                 </property>
                 <property name="gamma" class="ptolemy.data.expr.Parameter" value="1.616286335075401">
                 </property>
-                <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
                 <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="history" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
                 <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="StateChange">
                 </property>
@@ -202,9 +208,9 @@
                 </property>
                 <property name="gamma" class="ptolemy.data.expr.Parameter" value="-1.5272048655115442">
                 </property>
-                <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
                 <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="history" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
             </relation>
             <relation name="relation3" class="ptolemy.domains.modal.kernel.Transition">
@@ -218,9 +224,9 @@
                 </property>
                 <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.6334811604588172">
                 </property>
-                <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
                 <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="history" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
             </relation>
             <relation name="relation5" class="ptolemy.domains.modal.kernel.Transition">
@@ -236,8 +242,6 @@
                 </property>
                 <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.1049923444522553">
                 </property>
-                <property name="reset" class="ptolemy.data.expr.Parameter" value="true">
-                </property>
                 <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
             </relation>
@@ -252,16 +256,16 @@
         </entity>
         <entity name="normal" class="ptolemy.domains.modal.modal.Refinement">
             <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[105.0, 35.0]">
-                </property>
                 <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[105.0, 35.0]">
                 </property>
             </property>
             <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={69, 383, 815, 518}, maximized=false}">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
             </property>
-            <property name="Pe" class="ptolemy.data.expr.Parameter" value="0.5">
+            <property name="Pe" class="ptolemy.data.expr.Parameter" value="0.0">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -278,7 +282,7 @@
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[275.0, 30.0]">
                 </property>
             </property>
-            <property name="PChange" class="ptolemy.data.expr.Parameter" value="0.2">
+            <property name="PChange" class="ptolemy.data.expr.Parameter" value="0.1">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -409,9 +413,9 @@
         </entity>
         <entity name="StateChange" class="ptolemy.domains.modal.modal.TransitionRefinement">
             <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
-                <property name="_location" class="ptolemy.kernel.util.Location" value="110.0, 40.0">
-                </property>
                 <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="110.0, 40.0">
                 </property>
             </property>
             <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={181, 37, 815, 518}, maximized=false}">
@@ -444,7 +448,7 @@
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{60.0, 265.0}">
                 </property>
             </property>
-            <property name="scale" class="ptolemy.data.expr.Parameter" value="0.2">
+            <property name="scale" class="ptolemy.data.expr.Parameter" value="0.8">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -567,8 +571,8 @@
 <title>Modal Binary Symmetric Channel</title>
 <xLabel>iteration</xLabel>
 <yLabel></yLabel>
-<xRange min="1.7976931348623157E308" max="-1.7976931348623157E308"/>
-<yRange min="1.7976931348623157E308" max="-1.7976931348623157E308"/>
+<xRange min="0.0" max="99.0"/>
+<yRange min="0.0" max="1.0"/>
 <default marks="dots"/>
 </plot>?>
         </configure>

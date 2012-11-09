@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="ABP" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
     </property>
     <property name="forwardLossProbability" class="ptolemy.data.expr.Parameter" value="0.3">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -65,7 +65,7 @@
     </property>
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[129, 365]">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={2, 30, 903, 750}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={2, 30, 924, 750}, maximized=false}">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
@@ -549,8 +549,8 @@
 <title>Events</title>
 <xLabel>Time</xLabel>
 <yLabel>Events</yLabel>
-<xRange min="5.908513416" max="99.3855065825"/>
-<yRange min="0.0" max="10.0"/>
+<xRange min="4.083519618" max="97.23375925330001"/>
+<yRange min="0.0" max="14.0"/>
 <noGrid/>
 <default connected="no" marks="dots" stems="yes"/>
 </plot>?>
@@ -649,9 +649,9 @@
         <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.modal.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory"></property></entity></entity>
       </configure>
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={480, 22, 810, 511}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={424, 207, 831, 635}, maximized=false}">
             </property>
-            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[597, 400]">
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[597, 524]">
             </property>
             <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
             </property>
@@ -759,9 +759,9 @@
                 </property>
                 <property name="gamma" class="ptolemy.data.expr.Parameter" value="-0.054430450591232984">
                 </property>
-                <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
                 <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="history" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
             </relation>
             <relation name="ctrlTr2" class="ptolemy.domains.modal.kernel.Transition">
@@ -770,8 +770,6 @@
                 <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.6283185307179586">
                 </property>
                 <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.7249030540407064">
-                </property>
-                <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
                 <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
@@ -790,7 +788,7 @@
             </property>
             <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{352.6420454545454, 258.9363952020202}">
             </property>
-            <property name="count" class="ptolemy.data.expr.Parameter" value="4">
+            <property name="count" class="ptolemy.data.expr.Parameter" value="5">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -925,9 +923,9 @@
                 </property>
                 <property name="gamma" class="ptolemy.data.expr.Parameter" value="1.478665365529866">
                 </property>
-                <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
                 <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
             </relation>
             <relation name="conTr2" class="ptolemy.domains.modal.kernel.Transition">
@@ -948,8 +946,6 @@
                 <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="2.3613295212464784">
                 </property>
                 <property name="gamma" class="ptolemy.data.expr.Parameter" value="3.3721391865327073">
-                </property>
-                <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
                 <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
@@ -975,8 +971,6 @@
                 </property>
                 <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.03252778541567522">
                 </property>
-                <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
                 <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
             </relation>
@@ -990,8 +984,6 @@
                 <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.4616540396260133">
                 </property>
                 <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.5934635290649971">
-                </property>
-                <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
                 <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
@@ -1011,9 +1003,9 @@
                 </property>
                 <property name="gamma" class="ptolemy.data.expr.Parameter" value="1.613341714370288">
                 </property>
-                <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
                 <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
             </relation>
             <link port="Init.outgoingPort" relation="conTr4"/>
@@ -1028,7 +1020,7 @@
             <link port="Wait.outgoingPort" relation="conTr5"/>
         </entity>
         <entity name="Sending" class="ptolemy.domains.modal.modal.ModalController">
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={90, 344, 1034, 615}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={312, 207, 1055, 635}, maximized=false}">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[821, 504]">
             </property>
@@ -1036,7 +1028,7 @@
             </property>
             <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{322.325284090909, 193.0312499999999}">
             </property>
-            <property name="msg" class="ptolemy.data.expr.Parameter" value="10">
+            <property name="msg" class="ptolemy.data.expr.Parameter" value="14">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -1162,8 +1154,6 @@
                 </property>
                 <property name="gamma" class="ptolemy.data.expr.Parameter" value="-3.459567554118885">
                 </property>
-                <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
                 <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
             </relation>
@@ -1185,8 +1175,6 @@
                 <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="2.4573646235377637">
                 </property>
                 <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.4044141898895534">
-                </property>
-                <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
                 <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
@@ -1213,8 +1201,6 @@
                 <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="2.5103148049922948">
                 </property>
                 <property name="gamma" class="ptolemy.data.expr.Parameter" value="3.5115441141863997">
-                </property>
-                <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
                 <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
@@ -1244,8 +1230,6 @@
                 </property>
                 <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.015518436641275937">
                 </property>
-                <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
                 <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
             </relation>
@@ -1267,8 +1251,6 @@
                 <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="2.5114475521249657">
                 </property>
                 <property name="gamma" class="ptolemy.data.expr.Parameter" value="-0.40004799543661607">
-                </property>
-                <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
                 <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
@@ -1297,8 +1279,6 @@
                 <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.4359872844826037">
                 </property>
                 <property name="gamma" class="ptolemy.data.expr.Parameter" value="3.1305472339024427">
-                </property>
-                <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
                 <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
@@ -1398,6 +1378,10 @@
         </property>
         <property name="lossProbability" class="ptolemy.data.expr.Parameter" value="forwardLossProbability">
         </property>
+        <entity name="Server" class="ptolemy.domains.de.lib.Server">
+            <property name="serviceTime" class="ptolemy.actor.parameters.PortParameter" value="3.7348279766701">
+            </property>
+        </entity>
     </entity>
     <entity name="BackwardChannel" class="Channel">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[415.0, 250.0]">
@@ -1418,6 +1402,10 @@
             <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="WEST">
             </property>
         </port>
+        <entity name="Server" class="ptolemy.domains.de.lib.Server">
+            <property name="serviceTime" class="ptolemy.actor.parameters.PortParameter" value="1.3859245915824">
+            </property>
+        </entity>
     </entity>
     <entity name="Message Generator" class="ptolemy.actor.TypedCompositeActor">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[240.0, 115.0]">
@@ -1473,6 +1461,8 @@
             </property>
         </entity>
         <entity name="VariableDelay" class="ptolemy.domains.de.lib.VariableDelay">
+            <property name="delay" class="ptolemy.actor.parameters.PortParameter" value="3.9865707901435">
+            </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[350.0, 135.0]">
             </property>
         </entity>
@@ -1567,6 +1557,8 @@
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation11" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
         <vertex name="vertex1" value="[185.0, 305.0]">
         </vertex>
     </relation>

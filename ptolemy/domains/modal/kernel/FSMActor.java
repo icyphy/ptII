@@ -75,6 +75,7 @@ import ptolemy.data.type.ObjectType;
 import ptolemy.data.type.Type;
 import ptolemy.data.type.Typeable;
 import ptolemy.domains.modal.modal.ModalModel;
+import ptolemy.domains.modal.modal.ModalRefinement;
 import ptolemy.domains.ptera.kernel.PteraModalModel;
 import ptolemy.graph.Inequality;
 import ptolemy.graph.InequalityTerm;
@@ -606,6 +607,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         // Choose transitions from the preemptive transitions,
         // including any immediate transitions that these lead to.
         List<Transition> transitionList = _currentState.nonErrorNonTerminationTransitionList();
+        
         // The last argument ensures that we look at all transitions
         // not just those that are marked immediate.
         // Second to last argument ensures that we look only at preemptive transitions.
@@ -649,7 +651,6 @@ public class FSMActor extends CompositeEntity implements TypedActor,
                     }// end if CompositeActor
                 }// end for all refinements
             }// end if has refinement
-            // readOutputsFromRefinement();
         } else {
             // ASSERT: At this point, there are no enabled preemptive transitions.
             // It may be that some preemptive transition guards cannot be evaluated yet.
@@ -691,9 +692,6 @@ public class FSMActor extends CompositeEntity implements TypedActor,
                     }
                     // It makes no sense for error transitions to be preemptive,
                     // so we look only at non-preemptive error transitions.
-                    // NOTE: Is the error caught that preemptive error transitions
-                    // are not allowed? Note that visually in vergil, such a transition
-                    // will not appear as an error transition.
                     _chooseTransitions(errorTransitionList, false, false);
                     if (_lastChosenTransitions.size() > 0) {
                         // An error transition was chosen. We are done.
@@ -714,11 +712,60 @@ public class FSMActor extends CompositeEntity implements TypedActor,
                 if (_debugging) {
                     _debug("** Checking nonpreemptive transitions.");
                 }
-                // The last argument ensures that we look at all transitions
-                // not just those that are marked immediate.
-                // The next to the last ensures that we look only at
-                // non-preemptive transitions.
-                _chooseTransitions(transitionList, false, false);
+                // As a special case, if there are termination transitions
+                // and all refinements of the current state are FSM refinements,
+                // then we allow an termination transition to be chosen now if
+                // all refinements have reached a final state. Allowing this now
+                // means that the termination transition can produce outputs before
+                // postfire, which is essential in SR and Continuous domains.
+                List<Transition> terminationTransitions = _currentState.terminationTransitionList();
+                // Assume until proven otherwise that termination transitions should
+                // not be checked.
+                boolean checkTerminationTransitions = false;
+                if (terminationTransitions.size() > 0) {
+                    // There are termination transitions. Check the refinements.
+                    TypedActor[] refinements = _currentState.getRefinement();
+                    if (refinements != null && refinements.length > 0) {
+                        // There are refinements. Assume until proven
+                        // otherwise that termination transitions should be
+                        // checked.
+                        checkTerminationTransitions = true;
+                        for (Actor refinementActor : refinements) {
+                            if (refinementActor instanceof ModalRefinement) {
+                                // We will check the guards of termination transitions only
+                                // if all refinements are transitioning to a final state.
+                                ModalRefinement refinement = (ModalRefinement) refinementActor;
+                                FSMActor refinementController = refinement.getController();
+                                State destinationState = refinementController._destinationState();
+                                if (destinationState == null
+                                        || !((BooleanToken)destinationState.isFinalState.getToken()).booleanValue()) {
+                                    // No chosen transition, or the destination
+                                    // state is not final.
+                                    // Cannot take termination transition.
+                                    checkTerminationTransitions = false;
+                                    break;
+                                }
+                            } else {
+                                checkTerminationTransitions = false;
+                                break;
+                            }
+                        }
+                    }
+                }
+
+                if (checkTerminationTransitions) {
+                    // The last argument ensures that we look at all transitions
+                    // not just those that are marked immediate.
+                    // The next to the last ensures that we look only at
+                    // non-preemptive transitions.
+                    _chooseTransitions(_currentState.nonpreemptiveTransitionList(), false, false);
+                } else {
+                    // The last argument ensures that we look at all transitions
+                    // not just those that are marked immediate.
+                    // The next to the last ensures that we look only at
+                    // non-preemptive transitions.
+                    _chooseTransitions(transitionList, false, false);
+                }
             }
         }
         // Finally, assert any absent outputs that can be asserted absent.

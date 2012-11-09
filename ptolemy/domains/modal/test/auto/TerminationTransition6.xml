@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="TerminationTransition2" class="ptolemy.actor.TypedCompositeActor">
+<entity name="TerminationTransition6" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
     </property>
     <property name="SR Director" class="ptolemy.domains.sr.kernel.SRDirector">
@@ -18,20 +18,10 @@
     </property>
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{340.0, 252.0}">
     </property>
-    <property name="TestExceptionAttribute" class="ptolemy.actor.lib.TestExceptionAttribute">
-        <property name="correctExceptionMessage" class="ptolemy.data.expr.StringParameter" value="Termination transition cannot have output actions because such a transition is taken in the postfire phase of execution.&#10;  in .TerminationTransition2.ModalModel._Controller.relation">
-        </property>
-        <property name="matchPrefixOfLength" class="ptolemy.data.expr.Parameter" value="20">
-        </property>
-        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{325, 55}">
-        </property>
-    </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Check that termination transitions cannot produce output&#10;if the refinements are not all FSM refinements.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Check that termination transitions can produce output&#10;if the refinements are all FSM refinements.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 255.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 225.0]">
         </property>
     </property>
     <entity name="ModalModel" class="ptolemy.domains.modal.modal.ModalModel">
@@ -63,7 +53,7 @@
                 </property>
             </port>
             <entity name="state" class="ptolemy.domains.modal.kernel.State">
-                <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="state, state2">
+                <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="state">
                 </property>
                 <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
@@ -181,34 +171,6 @@
             <link port="out" relation="outRelation"/>
             <link port="_Controller.out" relation="outRelation"/>
         </entity>
-        <entity name="state2" class="ptolemy.domains.modal.modal.Refinement">
-            <property name="SR Director" class="ptolemy.domains.sr.kernel.SRDirector">
-                <property name="_location" class="ptolemy.kernel.util.Location" value="{365, 405}">
-                </property>
-            </property>
-            <port name="out" class="ptolemy.domains.modal.modal.RefinementPort">
-                <property name="output"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[535.0, 525.0]">
-                </property>
-            </port>
-            <entity name="Const" class="ptolemy.actor.lib.Const">
-                <property name="value" class="ptolemy.data.expr.Parameter" value="5">
-                </property>
-                <doc>Create a constant sequence.</doc>
-                <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-                    <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
-                    </property>
-                    <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
-                    </property>
-                </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="{420, 525}">
-                </property>
-            </entity>
-            <relation name="relation" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <link port="out" relation="relation"/>
-            <link port="Const.output" relation="relation"/>
-        </entity>
         <relation name="outRelation" class="ptolemy.actor.TypedIORelation">
             <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
             </property>
@@ -216,10 +178,9 @@
         <link port="out" relation="outRelation"/>
         <link port="_Controller.out" relation="outRelation"/>
         <link port="state.out" relation="outRelation"/>
-        <link port="state2.out" relation="outRelation"/>
     </entity>
     <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1, 2, 3, 3, 3}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1, 4, 3, 3, 3}">
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
