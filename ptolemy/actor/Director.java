@@ -1821,10 +1821,6 @@ public class Director extends Attribute implements Executable {
                     .getContainer()).getDirector()._schedule(actor, timestamp,
                     executionTime);
         }
-        if (!(time == null || finished)) {
-
-        }
-
         return (time == null || finished);
     }
 
