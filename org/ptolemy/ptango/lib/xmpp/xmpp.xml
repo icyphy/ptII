@@ -7,11 +7,8 @@
       <group>
 	<doc>Ptango Extensible Messaging and Presence Protocol (XMPP) actors</doc>
 
-	<entity name="XMPPGateway" class="org.ptolemy.ptango.lib.XMPPGateway"/>
-	<entity name="XMPPPublisher" class="org.ptolemy.ptango.lib.XMPPPublisher"/>
-	<entity name="XMPPSink" class="org.ptolemy.ptango.lib.XMPPSink"/>
-	<entity name="XMPPSource" class="org.ptolemy.ptango.lib.XMPPSource"/>
-	<entity name="XMPPSubscriber" class="org.ptolemy.ptango.lib.XMPPSubscriber"/>
+	<entity name="XMPPSink" class="org.ptolemy.ptango.lib.xmpp.XMPPSink"/>
+	<entity name="XMPPSource" class="org.ptolemy.ptango.lib.xmpp.XMPPSource"/>
 
       </group> 	
       ?>
