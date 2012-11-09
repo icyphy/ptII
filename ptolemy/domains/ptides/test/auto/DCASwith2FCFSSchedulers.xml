@@ -2,10 +2,12 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="DCASwith2FCFSSchedulers" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="3">
+        </property>
+        <property name="enableResourceScheduling" class="ptolemy.actor.parameters.SharedParameter" value="true">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-250.0, 60.0]">
         </property>
@@ -223,6 +225,22 @@
             <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{281.0, 262.0}">
             </property>
             <property name="scheduler" class="ptolemy.data.expr.Parameter" value="FCFSScheduler">
+            </property>
+            <property name="FCFSScheduler" class="ptolemy.domains.ptides.lib.NPFCFSCore">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[175.0, 75.0]">
+                </property>
+            </property>
+            <property name="DynamicCoreAssignmentScheduler" class="ptolemy.domains.ptides.lib.DynamicCoreAssignmentScheduler">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, 380.0]">
+                </property>
+                <property name="core1" class="ptolemy.data.expr.Parameter" value="FCFSScheduler">
+                </property>
+                <property name="core2" class="ptolemy.data.expr.Parameter" value="FCFSScheduler2">
+                </property>
+            </property>
+            <property name="FCFSScheduler2" class="ptolemy.domains.ptides.lib.NPFCFSCore">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{270.0, 75.0}">
+                </property>
             </property>
             <entity name="Spectrum" class="ptolemy.actor.lib.Scale">
                 <property name="factor" class="ptolemy.data.expr.Parameter" value="2">
@@ -462,22 +480,6 @@
                     </property>
                 </port>
             </entity>
-            <property name="FCFSScheduler" class="ptolemy.domains.ptides.lib.NPFCFSCore">
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[175.0, 75.0]">
-                </property>
-            </property>
-            <property name="DynamicCoreAssignmentScheduler" class="ptolemy.domains.ptides.lib.DynamicCoreAssignmentScheduler">
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, 380.0]">
-                </property>
-                <property name="core1" class="ptolemy.data.expr.Parameter" value="FCFSScheduler">
-                </property>
-                <property name="core2" class="ptolemy.data.expr.Parameter" value="FCFSScheduler2">
-                </property>
-            </property>
-            <property name="FCFSScheduler2" class="ptolemy.domains.ptides.lib.NPFCFSCore">
-                <property name="_location" class="ptolemy.kernel.util.Location" value="{270.0, 75.0}">
-                </property>
-            </property>
             <relation name="relation2" class="ptolemy.actor.TypedIORelation">
             </relation>
             <relation name="relation" class="ptolemy.actor.TypedIORelation">

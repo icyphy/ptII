@@ -1,11 +1,13 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="PP_PtidesPreemptUserEDFTwoAddSub" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
+<entity name="EDFTwoAddSub" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="10.0">
+        </property>
+        <property name="enableResourceScheduling" class="ptolemy.actor.parameters.SharedParameter" value="true">
         </property>
         <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
         </property>
@@ -438,6 +440,10 @@
             </property>
             <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{350.0, 262.0}">
             </property>
+            <property name="EDFScheduler" class="ptolemy.domains.ptides.lib.PEDFCore">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{572.0, 105.0}">
+                </property>
+            </property>
             <port name="SensorPort" class="ptolemy.domains.ptides.lib.PtidesPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 160.0]">
@@ -464,7 +470,8 @@
             </port>
             <port name="NetworkTransmitterPort" class="ptolemy.domains.ptides.lib.PtidesPort">
                 <property name="output"/>
-		<property name="isNetworkPort" value="true"/>
+                <property name="isNetworkPort" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[315.0, 465.0]">
                 </property>
                 <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="Infinity">
@@ -474,7 +481,8 @@
             </port>
             <port name="NetworkTransmitterPort2" class="ptolemy.domains.ptides.lib.PtidesPort">
                 <property name="output"/>
-		<property name="isNetworkPort" value="true"/>
+                <property name="isNetworkPort" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[335.0, 105.0]">
                 </property>
                 <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="Infinity">
@@ -484,7 +492,8 @@
             </port>
             <port name="NetworkTransmitterPort3" class="ptolemy.domains.ptides.lib.PtidesPort">
                 <property name="output"/>
-<property name="isNetworkPort" value="true"/>
+                <property name="isNetworkPort" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[558.2864685058594, 210.99999237060547]">
                 </property>
                 <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="Infinity">
@@ -494,7 +503,8 @@
             </port>
             <port name="NetworkTransmitterPort4" class="ptolemy.domains.ptides.lib.PtidesPort">
                 <property name="output"/>
-<property name="isNetworkPort" value="true"/>
+                <property name="isNetworkPort" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[460.0, 395.0]">
                 </property>
                 <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="Infinity">
@@ -637,10 +647,6 @@
                     </property>
                 </port>
             </entity>
-            <property name="EDFScheduler" class="ptolemy.domains.ptides.lib.PEDFCore">
-                <property name="_location" class="ptolemy.kernel.util.Location" value="{572.0, 105.0}">
-                </property>
-            </property>
             <entity name="TimeDelay" class="ptolemy.actor.lib.TimeDelay">
                 <property name="minimumDelay" class="ptolemy.data.expr.Parameter" value="1.0">
                 </property>

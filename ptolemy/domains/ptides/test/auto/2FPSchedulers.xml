@@ -2,10 +2,12 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="2FPSchedulers" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="3">
+        </property>
+        <property name="enableResourceScheduling" class="ptolemy.actor.parameters.SharedParameter" value="true">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-250.0, 60.0]">
         </property>
@@ -224,6 +226,14 @@
             </property>
             <property name="scheduler" class="ptolemy.data.expr.Parameter" value="FCFSScheduler">
             </property>
+            <property name="FPScheduler" class="ptolemy.domains.ptides.lib.FPPCore">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[255.0, 55.0]">
+                </property>
+            </property>
+            <property name="FPScheduler2" class="ptolemy.domains.ptides.lib.FPPCore">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[275.0, 400.0]">
+                </property>
+            </property>
             <entity name="Spectrum" class="ptolemy.actor.lib.Scale">
                 <property name="factor" class="ptolemy.data.expr.Parameter" value="2">
                 </property>
@@ -346,10 +356,6 @@
                 <property name="executionTime" class="ptolemy.data.expr.Parameter">
                 </property>
             </entity>
-            <property name="FPScheduler" class="ptolemy.domains.ptides.lib.FPPCore">
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[255.0, 55.0]">
-                </property>
-            </property>
             <entity name="CurrentTime" class="ptolemy.actor.lib.CurrentTime">
                 <property name="useLocalTime" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
@@ -464,10 +470,6 @@
                     </property>
                 </port>
             </entity>
-            <property name="FPScheduler2" class="ptolemy.domains.ptides.lib.FPPCore">
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[275.0, 400.0]">
-                </property>
-            </property>
             <relation name="relation2" class="ptolemy.actor.TypedIORelation">
             </relation>
             <relation name="relation" class="ptolemy.actor.TypedIORelation">

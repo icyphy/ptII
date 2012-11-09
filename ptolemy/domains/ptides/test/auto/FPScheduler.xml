@@ -2,17 +2,19 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="FPScheduler" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="3">
         </property>
+        <property name="enableResourceScheduling" class="ptolemy.actor.parameters.SharedParameter" value="true">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-250.0, 60.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={132, 36, 625, 321}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={132, 36, 625, 634}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[391, 211]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[391, 524]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
@@ -224,6 +226,10 @@
             </property>
             <property name="scheduler" class="ptolemy.data.expr.Parameter" value="FCFSScheduler">
             </property>
+            <property name="FPScheduler" class="ptolemy.domains.ptides.lib.FPPCore">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[255.0, 55.0]">
+                </property>
+            </property>
             <entity name="Spectrum" class="ptolemy.actor.lib.Scale">
                 <property name="factor" class="ptolemy.data.expr.Parameter" value="2">
                 </property>
@@ -242,6 +248,8 @@
                 <port name="input" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                     <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="Infinity">
+                    </property>
+                    <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="Infinity">
                     </property>
                 </port>
             </entity>
@@ -263,6 +271,8 @@
                 <port name="input" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                     <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="Infinity">
+                    </property>
+                    <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="Infinity">
                     </property>
                 </port>
             </entity>
@@ -296,6 +306,8 @@
                     <property name="input"/>
                     <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="Infinity">
                     </property>
+                    <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="Infinity">
+                    </property>
                 </port>
             </entity>
             <entity name="Ramp2" class="ptolemy.actor.lib.Scale">
@@ -317,6 +329,8 @@
                     <property name="input"/>
                     <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="Infinity">
                     </property>
+                    <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="Infinity">
+                    </property>
                 </port>
             </entity>
             <entity name="DiscreteClock2" class="ptolemy.actor.lib.DiscreteClock">
@@ -330,10 +344,6 @@
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[59.5, 265.0]">
                 </property>
             </entity>
-            <property name="FPScheduler" class="ptolemy.domains.ptides.lib.FPPCore">
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[255.0, 55.0]">
-                </property>
-            </property>
             <entity name="CurrentTime" class="ptolemy.actor.lib.CurrentTime">
                 <property name="useLocalTime" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
@@ -344,6 +354,8 @@
                     <property name="input"/>
                     <property name="multiport"/>
                     <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="Infinity">
+                    </property>
+                    <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="Infinity">
                     </property>
                 </port>
             </entity>
@@ -357,6 +369,8 @@
                     <property name="input"/>
                     <property name="multiport"/>
                     <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="Infinity">
+                    </property>
+                    <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="Infinity">
                     </property>
                 </port>
             </entity>
@@ -372,6 +386,8 @@
                     <property name="multiport"/>
                     <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="Infinity">
                     </property>
+                    <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="Infinity">
+                    </property>
                 </port>
             </entity>
             <entity name="Test2" class="ptolemy.actor.lib.Test">
@@ -383,6 +399,8 @@
                     <property name="input"/>
                     <property name="multiport"/>
                     <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="Infinity">
+                    </property>
+                    <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="Infinity">
                     </property>
                 </port>
             </entity>
@@ -398,6 +416,8 @@
                     <property name="multiport"/>
                     <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="Infinity">
                     </property>
+                    <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="Infinity">
+                    </property>
                 </port>
             </entity>
             <entity name="Test4" class="ptolemy.actor.lib.Test">
@@ -409,6 +429,8 @@
                     <property name="input"/>
                     <property name="multiport"/>
                     <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="Infinity">
+                    </property>
+                    <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="Infinity">
                     </property>
                 </port>
             </entity>

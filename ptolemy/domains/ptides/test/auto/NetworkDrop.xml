@@ -7,6 +7,8 @@
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="20">
         </property>
+        <property name="enableResourceScheduling" class="ptolemy.actor.parameters.SharedParameter" value="true">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 55.0]">
         </property>
     </property>

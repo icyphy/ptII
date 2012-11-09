@@ -7,6 +7,8 @@
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="20">
         </property>
+        <property name="enableResourceScheduling" class="ptolemy.actor.parameters.SharedParameter" value="true">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 55.0]">
         </property>
     </property>
@@ -424,14 +426,6 @@
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[215.0, 275.0]">
                     </property>
                 </entity>
-                <entity name="Display" class="ptolemy.actor.lib.gui.Display">
-                    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={135, 314, 484, 208}, maximized=false}">
-                    </property>
-                    <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[484, 164]">
-                    </property>
-                    <property name="_location" class="ptolemy.kernel.util.Location" value="[604.6676025390625, 315.62469482421875]">
-                    </property>
-                </entity>
                 <entity name="StringConst" class="ptolemy.actor.lib.StringConst">
                     <property name="value" class="ptolemy.data.expr.Parameter" value="dropped">
                     </property>
@@ -478,10 +472,6 @@
                 </relation>
                 <relation name="relation6" class="ptolemy.actor.TypedIORelation">
                 </relation>
-                <relation name="relation7" class="ptolemy.actor.TypedIORelation">
-                </relation>
-                <relation name="relation8" class="ptolemy.actor.TypedIORelation">
-                </relation>
                 <link port="missedNetworkTransmitterPort.output" relation="relation4"/>
                 <link port="SetVariable.input" relation="relation"/>
                 <link port="SetVariable.output" relation="relation5"/>
@@ -493,11 +483,7 @@
                 <link port="Switch.control" relation="relation2"/>
                 <link port="Ramp.output" relation="relation2"/>
                 <link port="Ramp.trigger" relation="relation4"/>
-                <link port="Display.input" relation="relation7"/>
-                <link port="Display.input" relation="relation8"/>
-                <link port="StringConst.output" relation="relation7"/>
                 <link port="StringConst.trigger" relation="relation5"/>
-                <link port="StringConst2.output" relation="relation8"/>
                 <link port="StringConst2.trigger" relation="relation6"/>
             </entity>
             <relation name="relation" class="ptolemy.actor.TypedIORelation">

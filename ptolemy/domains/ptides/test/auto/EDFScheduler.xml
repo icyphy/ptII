@@ -2,10 +2,12 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="EDFScheduler" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="3">
+        </property>
+        <property name="enableResourceScheduling" class="ptolemy.actor.parameters.SharedParameter" value="true">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-260.0, -70.0]">
         </property>
@@ -236,6 +238,10 @@
             </property>
             <property name="scheduler" class="ptolemy.data.expr.Parameter" value="FCFSScheduler">
             </property>
+            <property name="EDFScheduler" class="ptolemy.domains.ptides.lib.PEDFCore">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[225.0, 75.0]">
+                </property>
+            </property>
             <port name="SensorPort" class="ptolemy.domains.ptides.lib.PtidesPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 170.0]">
@@ -310,10 +316,6 @@
                     </property>
                 </port>
             </entity>
-            <property name="EDFScheduler" class="ptolemy.domains.ptides.lib.PEDFCore">
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[225.0, 75.0]">
-                </property>
-            </property>
             <entity name="TimeDelay" class="ptolemy.actor.lib.TimeDelay">
                 <property name="minimumDelay" class="ptolemy.data.expr.Parameter" value="1.0">
                 </property>
