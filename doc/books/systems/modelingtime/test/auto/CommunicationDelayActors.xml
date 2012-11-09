@@ -1,0 +1,397 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="CommunicationDelayActors" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
+    </property>
+    <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="4">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 150.0]">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={173, 83, 934, 634}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{564.5424236918604, 312.3551689680233}">
+    </property>
+    <entity name="RecordAssembler" class="ptolemy.actor.lib.RecordAssembler">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[315.0, 110.0]">
+        </property>
+        <port name="id" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <port name="value" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+    </entity>
+    <entity name="Const" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="2">
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[255.0, 120.0]">
+        </property>
+    </entity>
+    <entity name="RecordAssembler2" class="ptolemy.actor.lib.RecordAssembler">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[325.0, 310.0]">
+        </property>
+        <port name="id" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <port name="value" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+    </entity>
+    <entity name="Const2" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="3">
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[275.0, 320.0]">
+        </property>
+    </entity>
+    <entity name="Merge" class="ptolemy.domains.continuous.lib.ContinuousMerge">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[430.0, 240.0]">
+        </property>
+    </entity>
+    <entity name="Server" class="ptolemy.domains.de.lib.Server">
+        <property name="serviceTime" class="ptolemy.actor.parameters.PortParameter" value="0.01">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[495.0, 240.0]">
+        </property>
+    </entity>
+    <entity name="RecordDisassembler" class="ptolemy.actor.lib.RecordDisassembler">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[545.0, 220.0]">
+        </property>
+        <port name="value" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <port name="id" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+    </entity>
+    <entity name="ComputeMaximum" class="ptolemy.actor.TypedCompositeActor">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[740.0, 265.0]">
+        </property>
+        <property name="Continuous Director" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{110, 55}">
+            </property>
+        </property>
+        <port name="port" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 140.0]">
+            </property>
+        </port>
+        <port name="port2" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 190.0]">
+            </property>
+        </port>
+        <entity name="Maximum" class="ptolemy.actor.lib.Maximum">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{235, 145}">
+            </property>
+        </entity>
+        <entity name="ZeroOrderHold" class="ptolemy.domains.continuous.lib.ZeroOrderHold">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{105, 140}">
+            </property>
+        </entity>
+        <entity name="ZeroOrderHold2" class="ptolemy.domains.continuous.lib.ZeroOrderHold">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[120.0, 190.0]">
+            </property>
+        </entity>
+        <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
+            <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0627905195293, 0.0627905195293, 0.0627905195293, 0.0627905195293, 0.0627905195293, 0.0627905195293, 0.0627905195293, 0.0627905195293, 0.0627905195293, 0.0627905195293, 0.2486898871649, 0.2486898871649, 0.2486898871649, 0.2486898871649, 0.2486898871649, 0.2486898871649, 0.2486898871649, 0.2486898871649, 0.2486898871649, 0.2486898871649, 0.4257792915651, 0.4257792915651, 0.4257792915651, 0.4257792915651, 0.4257792915651, 0.4257792915651, 0.4257792915651, 0.4257792915651, 0.535826794979, 0.535826794979, 0.535826794979, 0.535826794979, 0.535826794979, 0.535826794979, 0.535826794979, 0.535826794979, 0.535826794979, 0.535826794979, 0.6845471059287, 0.6845471059287, 0.6845471059287, 0.6845471059287, 0.6845471059287, 0.6845471059287, 0.6845471059287, 0.6845471059287, 0.6845471059287, 0.6845471059287, 0.8090169943749, 0.8090169943749, 0.8090169943749, 0.8090169943749, 0.8090169943749, 0.8090169943749, 0.8090169943749, 0.8090169943749, 0.8763066800439, 0.8763066800439, 0.8763066800439, 0.8763066800439, 0.8763066800439, 0.8763066800439, 0.8763066800439, 0.8763066800439, 0.8763066800439, 0.8763066800439, 0.9510565162952, 0.9510565162952, 0.9510565162952, 0.9510565162952, 0.9510565162952, 0.9510565162952, 0.9510565162952, 0.9510565162952, 0.9510565162952, 0.9510565162952, 0.9921147013145, 0.9921147013145, 0.9921147013145, 0.9921147013145, 0.9921147013145, 0.9921147013145, 0.9921147013145, 0.9921147013145, 0.9921147013145, 0.9921147013145, 0.9980267284283, 0.9980267284283, 0.9980267284283, 0.9980267284283, 0.9980267284283, 0.9980267284283, 0.9980267284283, 0.9980267284283, 0.9980267284283, 0.9980267284283, 0.9685831611286, 0.9685831611286, 0.9685831611286, 0.9685831611286, 0.9685831611286, 0.9685831611286, 0.9685831611286, 0.9685831611286, 0.9297764858883, 0.9297764858883, 0.9297764858883, 0.9297764858883, 0.9297764858883, 0.9297764858883, 0.9297764858883, 0.9297764858883, 0.9297764858883, 0.9297764858883, 0.844327925502, 0.844327925502, 0.844327925502, 0.844327925502, 0.844327925502, 0.844327925502, 0.844327925502, 0.844327925502, 0.844327925502, 0.844327925502, 0.7289686274214, 0.7289686274214, 0.7289686274214, 0.7289686274214, 0.7289686274214, 0.7289686274214, 0.7289686274214, 0.7289686274214, 0.6374239897487, 0.6374239897487, 0.6374239897487, 0.6374239897487, 0.6374239897487, 0.6374239897487, 0.6374239897487, 0.6374239897487, 0.6374239897487, 0.6374239897487, 0.4817536741017, 0.4817536741017, 0.4817536741017, 0.4817536741017, 0.4817536741017, 0.4817536741017, 0.4817536741017, 0.4817536741017, 0.4817536741017, 0.4817536741017, 0.3090169943749, 0.3090169943749, 0.3090169943749, 0.3090169943749, 0.3090169943749, 0.3090169943749, 0.3090169943749, 0.3090169943749, 0.3090169943749, 0.3090169943749, 0.1253332335643, 0.1253332335643, 0.1253332335643, 0.1253332335643, 0.1253332335643, 0.1253332335643, 0.1253332335643, 0.1253332335643, 0.1253332335643, 0.1253332335643, -0.0627905195293, -0.0627905195293, -0.0627905195293, -0.0627905195293, 0.1253332335643, 0.1253332335643, 0.1253332335643, 0.1253332335643, 0.1253332335643, 0.1253332335643, 0.1253332335643, 0.1253332335643, 0.2486898871649, 0.2486898871649, 0.2486898871649, 0.2486898871649, 0.2486898871649, 0.2486898871649, 0.2486898871649, 0.2486898871649, 0.2486898871649, 0.2486898871649, 0.4257792915651, 0.4257792915651, 0.4257792915651, 0.4257792915651, 0.4257792915651, 0.4257792915651, 0.4257792915651, 0.4257792915651, 0.4257792915651, 0.4257792915651, 0.5877852522925, 0.5877852522925, 0.5877852522925, 0.5877852522925, 0.5877852522925, 0.5877852522925, 0.5877852522925, 0.5877852522925, 0.6845471059287, 0.6845471059287, 0.6845471059287, 0.6845471059287, 0.6845471059287, 0.6845471059287, 0.6845471059287, 0.6845471059287, 0.6845471059287, 0.6845471059287, 0.8090169943749, 0.8090169943749, 0.8090169943749, 0.8090169943749, 0.8090169943749, 0.8090169943749, 0.8090169943749, 0.8090169943749, 0.8090169943749, 0.8090169943749, 0.904827052466, 0.904827052466, 0.904827052466, 0.904827052466, 0.904827052466, 0.904827052466, 0.904827052466, 0.904827052466, 0.9510565162952, 0.9510565162952, 0.9510565162952, 0.9510565162952, 0.9510565162952, 0.9510565162952, 0.9510565162952, 0.9510565162952, 0.9510565162952, 0.9510565162952, 0.9921147013145, 0.9921147013145, 0.9921147013145, 0.9921147013145, 0.9921147013145, 0.9921147013145, 0.9921147013145, 0.9921147013145, 0.9921147013145, 0.9921147013145, 0.9980267284283, 0.9980267284283, 0.9980267284283, 0.9980267284283, 0.9980267284283, 0.9980267284283, 0.9980267284283, 0.9980267284283, 0.9822872507287, 0.9822872507287, 0.9822872507287, 0.9822872507287, 0.9822872507287, 0.9822872507287, 0.9822872507287, 0.9822872507287, 0.9822872507287, 0.9822872507287, 0.9297764858883, 0.9297764858883, 0.9297764858883, 0.9297764858883, 0.9297764858883, 0.9297764858883, 0.9297764858883, 0.9297764858883, 0.9297764858883, 0.9297764858883, 0.844327925502, 0.844327925502, 0.844327925502, 0.844327925502, 0.844327925502, 0.844327925502, 0.844327925502, 0.844327925502, 0.844327925502, 0.844327925502, 0.7289686274214, 0.7289686274214, 0.7289686274214, 0.7289686274214, 0.7289686274214, 0.7289686274214, 0.7289686274214, 0.7289686274214, 0.7289686274214, 0.7289686274214, 0.5877852522925, 0.5877852522925, 0.5877852522925, 0.5877852522925, 0.5877852522925, 0.5877852522925, 0.5877852522925, 0.5877852522925, 0.4817536741017, 0.4817536741017, 0.4817536741017, 0.4817536741017, 0.4817536741017, 0.4817536741017, 0.4817536741017, 0.4817536741017, 0.4817536741017, 0.4817536741017, 0.3090169943749, 0.3090169943749, 0.3090169943749, 0.3090169943749, 0.3090169943749, 0.3090169943749, 0.3090169943749, 0.3090169943749, 0.3090169943749, 0.3090169943749, 0.1253332335643, 0.1253332335643, 0.1253332335643, 0.1253332335643, 0.1253332335643, 0.1253332335643, 0.1253332335643, 0.1253332335643, 3.673940397442059E-16, 3.673940397442059E-16, 3.673940397442059E-16, 3.673940397442059E-16, 3.673940397442059E-16, 3.673940397442059E-16, 0.1253332335643, 0.1253332335643, 0.1253332335643, 0.1253332335643, 0.1253332335643, 0.1253332335643, 0.1253332335643, 0.1253332335643, 0.1253332335643, 0.1253332335643, 0.3090169943749, 0.3090169943749, 0.3090169943749, 0.3090169943749, 0.3090169943749, 0.3090169943749, 0.3090169943749, 0.3090169943749, 0.3090169943749, 0.3090169943749, 0.4817536741017, 0.4817536741017, 0.4817536741017, 0.4817536741017, 0.4817536741017, 0.4817536741017, 0.4817536741017, 0.4817536741017, 0.4817536741017, 0.4817536741017, 0.6374239897487, 0.6374239897487, 0.6374239897487, 0.6374239897487, 0.6374239897487, 0.6374239897487, 0.6374239897487, 0.6374239897487, 0.7289686274214, 0.7289686274214, 0.7289686274214, 0.7289686274214, 0.7289686274214, 0.7289686274214, 0.7289686274214, 0.7289686274214, 0.7289686274214, 0.7289686274214, 0.844327925502, 0.844327925502, 0.844327925502, 0.844327925502, 0.844327925502, 0.844327925502, 0.844327925502, 0.844327925502, 0.844327925502, 0.844327925502, 0.9297764858883, 0.9297764858883, 0.9297764858883, 0.9297764858883, 0.9297764858883, 0.9297764858883, 0.9297764858883, 0.9297764858883, 0.9685831611286, 0.9685831611286, 0.9685831611286, 0.9685831611286, 0.9685831611286, 0.9685831611286, 0.9685831611286, 0.9685831611286, 0.9685831611286, 0.9685831611286, 0.9980267284283, 0.9980267284283, 0.9980267284283, 0.9980267284283, 0.9980267284283, 0.9980267284283, 0.9980267284283, 0.9980267284283, 0.9980267284283, 0.9980267284283, 0.9921147013145, 0.9921147013145, 0.9921147013145, 0.9921147013145, 0.9921147013145, 0.9921147013145, 0.9921147013145, 0.9921147013145, 0.9685831611286, 0.9685831611286, 0.9685831611286, 0.9685831611286, 0.9685831611286, 0.9685831611286, 0.9685831611286, 0.9685831611286, 0.9685831611286, 0.9685831611286, 0.904827052466, 0.904827052466, 0.904827052466, 0.904827052466, 0.904827052466, 0.904827052466, 0.904827052466, 0.904827052466, 0.904827052466, 0.904827052466, 0.8090169943749, 0.8090169943749, 0.8090169943749, 0.8090169943749, 0.8090169943749, 0.8090169943749, 0.8090169943749, 0.8090169943749, 0.7289686274214, 0.7289686274214, 0.7289686274214, 0.7289686274214, 0.7289686274214, 0.7289686274214, 0.7289686274214, 0.7289686274214, 0.7289686274214, 0.7289686274214, 0.5877852522925, 0.5877852522925, 0.5877852522925, 0.5877852522925, 0.5877852522925, 0.5877852522925, 0.5877852522925, 0.5877852522925, 0.5877852522925, 0.5877852522925, 0.4257792915651, 0.4257792915651, 0.4257792915651, 0.4257792915651, 0.4257792915651, 0.4257792915651, 0.4257792915651, 0.4257792915651, 0.4257792915651, 0.4257792915651, 0.2486898871649, 0.2486898871649}">
+            </property>
+            <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[353.25, 136.875]">
+            </property>
+        </entity>
+        <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <link port="port" relation="relation"/>
+        <link port="port2" relation="relation2"/>
+        <link port="Maximum.input" relation="relation4"/>
+        <link port="Maximum.input" relation="relation5"/>
+        <link port="Maximum.maximumValue" relation="relation3"/>
+        <link port="ZeroOrderHold.input" relation="relation"/>
+        <link port="ZeroOrderHold.output" relation="relation4"/>
+        <link port="ZeroOrderHold2.input" relation="relation2"/>
+        <link port="ZeroOrderHold2.output" relation="relation5"/>
+        <link port="NonStrictTest.input" relation="relation3"/>
+    </entity>
+    <entity name="Switch" class="ptolemy.actor.lib.Switch">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[640.0, 260.0]">
+        </property>
+    </entity>
+    <entity name="SineWave1" class="ptolemy.actor.TypedCompositeActor">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{150.0, 140.0}">
+        </property>
+        <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{120, 35}">
+            </property>
+        </property>
+        <port name="port_0" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[260.0, 110.0]">
+            </property>
+        </port>
+        <port name="port" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 155.0]">
+            </property>
+        </port>
+        <entity name="TriggeredSinewave" class="ptolemy.actor.lib.TriggeredSinewave">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, 110.0]">
+            </property>
+        </entity>
+        <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <link port="port_0" relation="relation2"/>
+        <link port="port" relation="relation"/>
+        <link port="TriggeredSinewave.trigger" relation="relation"/>
+        <link port="TriggeredSinewave.output" relation="relation2"/>
+    </entity>
+    <entity name="SineWave2" class="ptolemy.actor.TypedCompositeActor">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[150.0, 340.0]">
+        </property>
+        <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{120, 35}">
+            </property>
+        </property>
+        <port name="port_0" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[260.0, 110.0]">
+            </property>
+        </port>
+        <port name="port" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 155.0]">
+            </property>
+        </port>
+        <entity name="TriggeredSinewave" class="ptolemy.actor.lib.TriggeredSinewave">
+            <property name="phase" class="ptolemy.actor.parameters.PortParameter" value="pi">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, 110.0]">
+            </property>
+        </entity>
+        <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <link port="port_0" relation="relation2"/>
+        <link port="port" relation="relation"/>
+        <link port="TriggeredSinewave.trigger" relation="relation"/>
+        <link port="TriggeredSinewave.output" relation="relation2"/>
+    </entity>
+    <entity name="DiscreteClock" class="ptolemy.actor.lib.DiscreteClock">
+        <property name="period" class="ptolemy.actor.parameters.PortParameter" value="0.01">
+        </property>
+        <doc>Create periodic timed events.</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 235.0]">
+        </property>
+    </entity>
+    <entity name="RecordAssembler3" class="ptolemy.actor.lib.RecordAssembler">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[205.0, 180.0]">
+        </property>
+        <port name="id" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <port name="value" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+    </entity>
+    <entity name="Const3" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[155.0, 190.0]">
+        </property>
+    </entity>
+    <entity name="RecordAssembler4" class="ptolemy.actor.lib.RecordAssembler">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[205.0, 250.0]">
+        </property>
+        <port name="id" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <port name="value" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+    </entity>
+    <entity name="Const4" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[155.0, 260.0]">
+        </property>
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="{245.0, 340.0}">
+        </vertex>
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="{225.0, 140.0}">
+        </vertex>
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation13" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="[100.0, 235.0]">
+        </vertex>
+    </relation>
+    <relation name="relation14" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation15" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="[100.0, 210.0]">
+        </vertex>
+    </relation>
+    <relation name="relation16" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation17" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="[100.0, 280.0]">
+        </vertex>
+    </relation>
+    <relation name="relation10" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation11" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation22" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="[104.921875, 82.078125]">
+        </vertex>
+    </relation>
+    <relation name="relation18" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="[105.0, 380.0]">
+        </vertex>
+    </relation>
+    <relation name="relation19" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="[575.0, 290.0]">
+        </vertex>
+    </relation>
+    <relation name="relation12" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation20" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="RecordAssembler.output" relation="relation5"/>
+    <link port="RecordAssembler.id" relation="relation3"/>
+    <link port="RecordAssembler.value" relation="relation4"/>
+    <link port="Const.output" relation="relation3"/>
+    <link port="Const.trigger" relation="relation4"/>
+    <link port="RecordAssembler2.output" relation="relation6"/>
+    <link port="RecordAssembler2.id" relation="relation"/>
+    <link port="RecordAssembler2.value" relation="relation2"/>
+    <link port="Const2.output" relation="relation"/>
+    <link port="Const2.trigger" relation="relation2"/>
+    <link port="Merge.input" relation="relation5"/>
+    <link port="Merge.input" relation="relation6"/>
+    <link port="Merge.input" relation="relation10"/>
+    <link port="Merge.input" relation="relation11"/>
+    <link port="Merge.output" relation="relation7"/>
+    <link port="Server.input" relation="relation7"/>
+    <link port="Server.output" relation="relation8"/>
+    <link port="RecordDisassembler.input" relation="relation8"/>
+    <link port="RecordDisassembler.value" relation="relation9"/>
+    <link port="RecordDisassembler.id" relation="relation19"/>
+    <link port="ComputeMaximum.port" relation="relation12"/>
+    <link port="ComputeMaximum.port2" relation="relation20"/>
+    <link port="Switch.input" relation="relation9"/>
+    <link port="Switch.output" relation="relation22"/>
+    <link port="Switch.output" relation="relation18"/>
+    <link port="Switch.output" relation="relation12"/>
+    <link port="Switch.output" relation="relation20"/>
+    <link port="Switch.control" relation="relation19"/>
+    <link port="SineWave1.port_0" relation="relation4"/>
+    <link port="SineWave1.port" relation="relation22"/>
+    <link port="SineWave2.port_0" relation="relation2"/>
+    <link port="SineWave2.port" relation="relation18"/>
+    <link port="DiscreteClock.output" relation="relation13"/>
+    <link port="RecordAssembler3.output" relation="relation10"/>
+    <link port="RecordAssembler3.id" relation="relation14"/>
+    <link port="RecordAssembler3.value" relation="relation15"/>
+    <link port="Const3.output" relation="relation14"/>
+    <link port="Const3.trigger" relation="relation15"/>
+    <link port="RecordAssembler4.output" relation="relation11"/>
+    <link port="RecordAssembler4.id" relation="relation16"/>
+    <link port="RecordAssembler4.value" relation="relation17"/>
+    <link port="Const4.output" relation="relation16"/>
+    <link port="Const4.trigger" relation="relation17"/>
+    <link relation1="relation13" relation2="relation15"/>
+    <link relation1="relation13" relation2="relation17"/>
+</entity>

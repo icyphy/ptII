@@ -1,0 +1,68 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="ExecutionTime" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
+    </property>
+    <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="5">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[81.5, 47.5]">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={173, 83, 934, 634}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{366.15625, 271.681640625}">
+    </property>
+    <entity name="DiscreteClock" class="ptolemy.actor.lib.DiscreteClock">
+        <property name="period" class="ptolemy.actor.parameters.PortParameter" value="0.01">
+        </property>
+        <doc>Create periodic timed events.</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 130.0]">
+        </property>
+    </entity>
+    <entity name="Server" class="ptolemy.domains.de.lib.Server">
+        <property name="serviceTime" class="ptolemy.actor.parameters.PortParameter" value="0.05">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[195.0, 130.0]">
+        </property>
+    </entity>
+    <entity name="TriggeredSinewave" class="ptolemy.actor.lib.TriggeredSinewave">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[295.0, 95.0]">
+        </property>
+    </entity>
+    <entity name="Server2" class="ptolemy.domains.de.lib.Server">
+        <property name="serviceTime" class="ptolemy.actor.parameters.PortParameter" value="0.01">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[410.0, 95.0]">
+        </property>
+    </entity>
+    <entity name="Test" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.3090169943749, 0.5877852522925, 0.8090169943749, 0.9510565162952, 1.0, 0.9510565162952, 0.8090169943749, 0.5877852522925, 0.3090169943749, 1.224646799147353E-16, -0.3090169943749, -0.5877852522925, -0.8090169943749, -0.9510565162952, -1.0, -0.9510565162952, -0.8090169943749, -0.5877852522925, -0.3090169943749, -2.449293598294706E-16, 0.3090169943749, 0.5877852522925, 0.8090169943749, 0.9510565162952, 1.0, 0.9510565162952, 0.8090169943749, 0.5877852522925, 0.3090169943749, 3.673940397442059E-16, -0.3090169943749, -0.5877852522925, -0.8090169943749, -0.9510565162952, -1.0, -0.9510565162952, -0.8090169943749, -0.5877852522925, -0.3090169943749, -4.898587196589413E-16, 0.3090169943749, 0.5877852522925, 0.8090169943749, 0.9510565162952, 1.0, 0.9510565162952, 0.8090169943749, 0.5877852522925, 0.3090169943749, 6.123233995736766E-16, -0.3090169943749, -0.5877852522925, -0.8090169943749, -0.9510565162952, -1.0, -0.9510565162952, -0.8090169943749, -0.5877852522925, -0.3090169943749, -7.347880794884119E-16, 0.3090169943749, 0.5877852522925, 0.8090169943749, 0.9510565162952, 1.0, 0.9510565162952, 0.8090169943749, 0.5877852522925, 0.3090169943749, 8.572527594031472E-16, -0.3090169943749, -0.5877852522925, -0.8090169943749, -0.9510565162952, -1.0, -0.9510565162952, -0.8090169943749, -0.5877852522925, -0.3090169943749, -9.797174393178826E-16, 0.3090169943749, 0.5877852522925, 0.8090169943749, 0.9510565162952, 1.0, 0.9510565162952, 0.8090169943749, 0.5877852522925, 0.3090169943749, 1.102182119232618E-15, -0.3090169943749, -0.5877852522925, -0.8090169943749, -0.9510565162952, -1.0, -0.9510565162952, -0.8090169943749, -0.5877852522925, -0.3090169943749}">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[515.0, 95.0]">
+        </property>
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="DiscreteClock.output" relation="relation"/>
+    <link port="Server.input" relation="relation"/>
+    <link port="Server.output" relation="relation2"/>
+    <link port="TriggeredSinewave.trigger" relation="relation2"/>
+    <link port="TriggeredSinewave.output" relation="relation4"/>
+    <link port="Server2.input" relation="relation4"/>
+    <link port="Server2.output" relation="relation3"/>
+    <link port="Test.input" relation="relation3"/>
+</entity>
