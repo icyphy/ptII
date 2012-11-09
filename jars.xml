@@ -46,6 +46,8 @@
     <include name="ptolemy/actor/lib/comm/demo/demo.jar" />
     <include name="ptolemy/actor/lib/conversions/json/json.jar" />
     <include name="ptolemy/actor/lib/database/database.jar" />
+    <include name="ptolemy/actor/lib/fmi/fmi.jar" />
+    <include name="ptolemy/actor/lib/fmi/demo/demo.jar" />
     <include name="ptolemy/actor/lib/hoc/demo/demo.jar" />
     <include name="ptolemy/actor/lib/io/comm/comm.jar" />
     <include name="ptolemy/actor/lib/io/comm/demo/demo.jar" />
@@ -158,6 +160,7 @@
     <include name="ptolemy/ptsupport.jar" />
     <include name="ptolemy/vergil/basic/export/web/web.jar" />
     <include name="ptolemy/vergil/basic/export/exportFull.jar" />
+    <include name="ptolemy/vergil/basic/imprt/fmu/fmuFull.jar" />
     <include name="ptolemy/vergil/basic/layout/layout.jar" />
     <include name="ptolemy/vergil/gt/gt.jar" />
     <include name="ptolemy/vergil/kernel/attributes/demo/demo.jar" />
@@ -676,9 +679,7 @@
       <fileset dir="${basedir}">
 	<include name="ptolemy/vergil/basic/img/*.gif"/>
       </fileset>
-      <fileset dir="${basedir}">
-	<include name="ptolemy/vergil/basic/imprt/*/*.class"/>
-      </fileset>
+      <!-- Don't include imprt/fmu/*.class in vergil.jar so that Ptiny will work w/o FMI and jna.jar -->
       <fileset dir="${basedir}">
 	<include name="ptolemy/vergil/debugger/*.class"/>
       </fileset>
@@ -752,6 +753,15 @@
 	<include name="ptolemy/vergil/basic/export/html/javascript/*.png"/>
       </fileset>
     </jar>
+
+    <!-- ptolemy/vergil/basic/imprt/fmu/fmuFull.jar -->
+    <jar defaultexcludes="yes"
+	 destfile="${basedir}/ptolemy/vergil/basic/imprt/fmu/fmuFull.jar"
+	 >
+      <fileset dir="${basedir}">
+	<include name="ptolemy/vergil/basic/imprt/fmu/*.class"/>
+      </fileset>
+     </jar>
 
     <!-- ptolemy/vergil/basic/layout/layout.jar -->
     <jar defaultexcludes="yes"
@@ -3493,6 +3503,26 @@
       <fileset dir="${basedir}">
 	<include name="ptolemy/actor/lib/conversions/json/*.class"/>
 	<include name="ptolemy/actor/lib/conversions/json/*.xml"/>
+      </fileset>
+    </jar>
+
+    <!-- ptolemy/actor/lib/fmi/demo/demo.jar -->
+    <jar defaultexcludes="yes"
+	 destfile="${basedir}/ptolemy/actor/lib/fmi/demo/demo.jar"
+	 >
+      <fileset dir="${basedir}">
+	<include name="ptolemy/actor/lib/fmi/demo/*/*.xml"/>
+	<include name="ptolemy/actor/lib/fmi/demo/*/*.fmu"/>
+      </fileset>
+    </jar>
+
+    <!-- ptolemy/actor/lib/fmi/fmi.jar -->
+    <jar defaultexcludes="yes"
+	 destfile="${basedir}/ptolemy/actor/lib/fmi/fmi.jar"
+	 >
+      <fileset dir="${basedir}">
+	<include name="ptolemy/actor/lib/fmi/*.class"/>
+	<include name="ptolemy/actor/lib/fmi/*.xml"/>
       </fileset>
     </jar>
 

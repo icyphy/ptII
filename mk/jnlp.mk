@@ -230,6 +230,13 @@ SDF_DEMO_JARS = \
 	ptolemy/moml/demo/demo.jar \
 	ptolemy/vergil/kernel/attributes/demo/demo.jar
 
+PTFMI_JARS = \
+	lib/jna.jar \
+	org/ptolemy/fmi/fmi.jar \
+	ptolemy/actor/lib/fmi/fmi.jar \
+	ptolemy/actor/lib/fmi/demo/demo.jar \
+	ptolemy/vergil/basic/imprt/fmu/fmuFull.jar
+
 BCVTB_MAIN_JAR = \
 	ptolemy/actor/gui/jnlp/BCVTBApplication.jar
 
@@ -238,18 +245,15 @@ BCVTB_MAIN_JAR = \
 BCVTB_JNLP_JARS =	\
 	$(BCVTB_MAIN_JAR) \
 	$(BCVTB_ONLY_JNLP_JARS) \
+	$(PTFMI_JARS) \
 	$(PTLBNL_JARS) \
 	doc/design/usingVergil/usingVergil.jar \
 	doc/docConfig.jar \
 	lib/diva.jar \
-	lib/jna.jar \
 	lib/kieler.jar \
-	org/ptolemy/fmi/fmi.jar \
 	ptolemy/vergil/basic/layout/layout.jar \
 	ptolemy/ptsupport.jar \
 	ptolemy/vergil/vergil.jar \
-	ptolemy/actor/lib/fmi/fmi.jar \
-	ptolemy/actor/lib/fmi/demo/demo.jar \
 	ptolemy/domains/continuous/continuous.jar \
 	ptolemy/domains/continuous/demo/demo.jar \
 	ptolemy/domains/sdf/sdf.jar \
@@ -450,13 +454,12 @@ FULL_ONLY_JNLP_JARS = \
 	contrib/contrib.jar \
 	doc/design/design.jar \
 	doc/img/img.jar \
+	$(PTFMI_JARS) \
 	$(PTJACL_JARS) \
 	ptolemy/actor/gt/gt.jar \
 	ptolemy/actor/gt/demo/demo.jar \
 	org/json/json.jar \
 	ptolemy/actor/lib/conversions/json/json.jar \
-	org/ptolemy/fmi/fmi.jar \
-	ptolemy/actor/lib/fmi/fmi.jar \
 	ptolemy/actor/lib/fmi/demo/demo.jar \
 	ptolemy/actor/lib/io/comm/comm.jar \
 	ptolemy/actor/lib/io/comm/demo/demo.jar \
@@ -472,7 +475,6 @@ FULL_ONLY_JNLP_JARS = \
 	$(PTJAVAMAIL_JARS) \
 	ptolemy/actor/ptalon/gt/gt.jar \
 	ptolemy/actor/ptalon/gt/demo/demo.jar \
-	lib/jna.jar \
 	lib/ptCal.jar \
 	lib/saxon8.jar \
 	lib/saxon8-dom.jar \

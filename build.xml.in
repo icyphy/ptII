@@ -160,7 +160,10 @@
 
   <target name="clean"
 	  description="Remove all the class files.">
-    <echo>Removing .class files.  Use 'ant cleanall' to remove files in reports/ and codeDoc/.</echo>
+    <echo>
+      Removing .class files.  Use 'ant cleanall' to remove files in reports/ and codeDoc/.
+      Use 'ant jars.clean' to remove the jar files created by 'ant jars'.      
+    </echo>
     <delete quiet="true" verbose="no" includeemptydirs="true">
       <fileset dir="${basedir}"
 	       includes="**/*.class" />
