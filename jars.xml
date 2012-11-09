@@ -182,7 +182,8 @@
 
   <target name="jars.clean"
 	  description="Remove all the jar files">
-    <delete verbose="true">
+    <delete quiet="true"
+	    verbose="true">
       <fileset dir="${basedir}">
 	<patternset refid="ptII.jars"/>
       </fileset>	  
