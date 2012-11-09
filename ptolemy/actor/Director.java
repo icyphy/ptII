@@ -35,11 +35,13 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
+import ptolemy.actor.parameters.SharedParameter;
 import ptolemy.actor.util.BooleanDependency;
 import ptolemy.actor.util.CausalityInterface;
 import ptolemy.actor.util.CausalityInterfaceForComposites;
 import ptolemy.actor.util.Dependency;
 import ptolemy.actor.util.Time;
+import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.ObjectToken;
 import ptolemy.data.Token;
@@ -160,6 +162,12 @@ public class Director extends Attribute implements Executable {
 
     /** The clock that keeps track of current time of the model. */
     public LocalClock localClock;
+    
+    /** This boolean parameter is true if resource scheduling for
+     *  the model is enabled. By default this parameter is false for
+     *  performance reasons.
+     */
+    public SharedParameter enableResourceScheduling;
 
     /** The local time of model when this director is initialized.
      *  By default, this is blank, which
@@ -228,6 +236,11 @@ public class Director extends Attribute implements Executable {
             } else {
                 _stopTime = null;
             }
+        } else if (attribute == enableResourceScheduling) {
+            BooleanToken enableResourceSchedulingValue = 
+                (BooleanToken) enableResourceScheduling.getToken();
+            _enableResourceScheduling = 
+                (enableResourceSchedulingValue.booleanValue());
         }
 
         super.attributeChanged(attribute);
@@ -845,17 +858,20 @@ public class Director extends Attribute implements Executable {
 
         localClock.resetLocalTime(getModelStartTime());
         localClock.start();
-
+        
         _resourceScheduling = false;
-        _resourceSchedulers = new ArrayList();
-        _schedulerForActor = null;
-        for (Object entity : getContainer().attributeList()) {
-            if (entity instanceof ResourceScheduler) {
-                ResourceScheduler scheduler = (ResourceScheduler) entity;
-                _resourceSchedulers.add(scheduler);
-                Time time = scheduler.initialize();
-                if (time != null) {
-                    fireContainerAt(time);
+        if (_enableResourceScheduling) {
+            _resourceScheduling = false;
+            _resourceSchedulers = new ArrayList();
+            _schedulerForActor = null;
+            for (Object entity : getContainer().attributeList()) {
+                if (entity instanceof ResourceScheduler) {
+                    ResourceScheduler scheduler = (ResourceScheduler) entity;
+                    _resourceSchedulers.add(scheduler);
+                    Time time = scheduler.initialize();
+                    if (time != null) {
+                        fireContainerAt(time);
+                    }
                 }
             }
         }
@@ -902,8 +918,10 @@ public class Director extends Attribute implements Executable {
         }
 
         actor.initialize();
-        if (_getScheduler(actor) != null) {
-            _resourceScheduling = true;
+        if (_enableResourceScheduling) {
+            if (_getScheduler(actor) != null) {
+                _resourceScheduling = true;
+            }
         }
     }
 
@@ -1891,6 +1909,10 @@ public class Director extends Attribute implements Executable {
      *  indicating that they do not wish to be iterated again.
      */
     protected Set _actorsFinishedExecution;
+    
+    /** Flag indicating whether resourceScheduling is enabled.
+     */
+    protected boolean _enableResourceScheduling = false;
 
     /** Indicator that finish() has been called. */
     protected boolean _finishRequested;
@@ -1952,11 +1974,17 @@ public class Director extends Attribute implements Executable {
 
         stopTime = new Parameter(this, "stopTime");
         stopTime.setTypeEquals(BaseType.DOUBLE);
+        
+        enableResourceScheduling = new SharedParameter(this, "enableResourceScheduling", Director.class, "false");
+        enableResourceScheduling.setTypeEquals(BaseType.BOOLEAN);
+        _enableResourceScheduling = false;
     }
+    
+    
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
+    
     /** Flag indicating that this director has been forced to behave
      *  as if it were at the top level.
      */

@@ -1177,14 +1177,14 @@ public class PtidesDirector extends DEDirector {
                     }
                 }
     
-                if (prefire
-                        && _schedule(
+                if (prefire && (!_enableResourceScheduling ||
+                            (_enableResourceScheduling && _schedule(
                                 ptidesEvent.actor(),
                                 ptidesEvent.timeStamp(),
                                 _getExecutionTime(
                                         queue != _pureEvents
                                                 && ptidesEvent.actor() instanceof TimeDelay,
-                                        ptidesEvent.actor()))) {
+                                        ptidesEvent.actor()))))) {
                     _currentLogicalTime = ptidesEvent.timeStamp();
                     _currentLogicalIndex = ptidesEvent.microstep();
                     _currentSourceTimestamp = ptidesEvent.sourceTimestamp();
