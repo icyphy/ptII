@@ -60,6 +60,11 @@ public class ErrorHandlingAction extends SetVariable {
             if (getContainer() instanceof CompositeActor) {
                 CompositeActor container = (CompositeActor)getContainer();
                 while (!container.getName().equals("ErrorHandler")) {
+                    if (container == container.toplevel()) {
+                        // Running cd $PTII/ptolemy/configs/test; make results in this class being
+                        // cloned and going into an infinite loop unless we fail here.
+                        throw new IllegalActionException(this, "Could not find container named ErrorHandler");
+                    }
                     container = (CompositeActor)getContainer();
                 }
                 if (container.getAttribute(string) == null) {
