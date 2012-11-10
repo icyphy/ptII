@@ -61,7 +61,7 @@ public class XMPPSource extends Source implements XMPPSubscriber {
     public XMPPSource(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
-        nodeId = new StringParameter(this, "NodeId");
+        nodeId = new StringParameter(this, "nodeId");
         output.setTypeEquals(BaseType.STRING);
     }
 
