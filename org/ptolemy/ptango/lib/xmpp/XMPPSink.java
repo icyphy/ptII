@@ -62,7 +62,7 @@ public class XMPPSink extends Sink implements XMPPPublisher {
     public XMPPSink(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
-        nodeId = new StringParameter(this, "NodeId");
+        nodeId = new StringParameter(this, "nodeId");
         input.setTypeEquals(BaseType.STRING);
     }
 
