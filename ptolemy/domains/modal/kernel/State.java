@@ -746,19 +746,21 @@ public class State extends ComponentEntity implements ConfigurableEntity,
             while (transitions.hasNext()) {
                 Transition transition = (Transition) transitions.next();
 
-                if (transition.isPreemptive()) {
-                    _preemptiveTransitionList.add(transition);
-                    _nonErrorNonTerminationTransitionList.add(transition);
-                } else if (transition.isErrorTransition()) {
-                    // An error transition is required to not be preemptive.
-                    // Check that here.
+                if (transition.isErrorTransition()) {
+                    // An error transition is required to not be preemptive
+                    // or termination. Check that here.
                     if (transition.isPreemptive()) {
                         throw new IllegalActionException(transition,
-                                "An error transition cannot also be preemptive");
+                                "An error transition cannot also be preemptive.");
                     }
-                    // Note that a transition does not appear on this list unless it is
-                    // NOT a preemptive transition.
+                    if (transition.isTermination()) {
+                        throw new IllegalActionException(transition,
+                                "An error transition cannot also be a termination transition.");
+                    }
                     _errorTransitionList.add(transition);
+                } else if (transition.isPreemptive()) {
+                    _preemptiveTransitionList.add(transition);
+                    _nonErrorNonTerminationTransitionList.add(transition);
                 } else if (transition.isTermination()) {
                     // Termination transitions are allowed to have output actions only
                     // all refinements of this state are state machine refinements.

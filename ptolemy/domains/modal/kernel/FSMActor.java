@@ -465,14 +465,6 @@ public class FSMActor extends CompositeEntity implements TypedActor,
                 if (_isTransitionEnabled(transition)) {
                     defaultTransitions.add(transition);
                 }
-            } else if (transition.isErrorTransition()) {
-                // FIXME: This seems to ignore guards!
-                // Add a transition the the enabled transition list if
-                // it is an error transition and the model error flag is set.
-                if (_modelError) {
-                    enabledTransitions.add(transition);
-                    _modelError = false;
-                }
             } else {
                 if (_isTransitionEnabled(transition)) {
                     enabledTransitions.add(transition);
@@ -661,50 +653,55 @@ public class FSMActor extends CompositeEntity implements TypedActor,
                 Actor[] stateRefinements = _currentState.getRefinement();
 
                 if (stateRefinements != null) {
-                    for (int i = 0; i < stateRefinements.length; ++i) {
-                        if (_stopRequested
-                                || _disabledRefinements
-                                        .contains(stateRefinements[i])) {
-                            continue;
-                        }
-                        _setTimeForRefinement(stateRefinements[i]);
-                        if (stateRefinements[i].prefire()) {
-                            if (_debugging) {
-                                _debug("Fire state refinement:",
-                                        stateRefinements[i].getName());
+                    try {
+                        for (int i = 0; i < stateRefinements.length; ++i) {
+                            if (_stopRequested
+                                    || _disabledRefinements
+                                    .contains(stateRefinements[i])) {
+                                continue;
                             }
-                            // NOTE: If the state refinement is an FSMActor, then the following
-                            // fire() method doesn't do the right thing. That fire() method does
-                            // much less than this fire() method, and in particular, does not
-                            // invoke refinements! This is fixed by using ModalModel in a
-                            // hierarchical state.
-                            stateRefinements[i].fire();
-                            _stateRefinementsToPostfire
-                                    .add(stateRefinements[i]);
+                            _setTimeForRefinement(stateRefinements[i]);
+                            if (stateRefinements[i].prefire()) {
+                                if (_debugging) {
+                                    _debug("Fire state refinement:",
+                                            stateRefinements[i].getName());
+                                }
+                                // NOTE: If the state refinement is an FSMActor, then the following
+                                // fire() method doesn't do the right thing. That fire() method does
+                                // much less than this fire() method, and in particular, does not
+                                // invoke refinements! This is fixed by using ModalModel in a
+                                // hierarchical state.
+                                stateRefinements[i].fire();
+                                _stateRefinementsToPostfire
+                                .add(stateRefinements[i]);
+                            }
                         }
-                    }
-                }
-                List<Transition> errorTransitionList = _currentState
-                        .errorTransitionList();
-                if (errorTransitionList.size() > 0) {
-                    if (_debugging) {
-                        _debug("** Checking error transitions.");
-                    }
-                    // It makes no sense for error transitions to be preemptive,
-                    // so we look only at non-preemptive error transitions.
-                    _chooseTransitions(errorTransitionList, false, false);
-                    if (_lastChosenTransitions.size() > 0) {
-                        // An error transition was chosen. We are done.
-                        if (inModalModel) {
-                            director.setModelTime(environmentTime);
+                    } catch (Exception ex) {
+                        // Handle exceptions if there are error transitions.
+                        // Note that model errors are handled separately.
+                        List<Transition> errorTransitionList = _currentState.errorTransitionList();
+                        if (errorTransitionList.size() > 0) {
+                            if (_debugging) {
+                                _debug("** Exception occurred executing refinement. Checking error transitions.");
+                            }
+                            // It makes no sense for error transitions to be preemptive,
+                            // so we look only at non-preemptive error transitions.
+                            _chooseTransitions(errorTransitionList, false, false);
+                            if (_lastChosenTransitions.size() > 0) {
+                                // An error transition was chosen. We are done.
+                                // Restore time before returning.
+                                if (inModalModel) {
+                                    director.setModelTime(environmentTime);
+                                }
+                                return;
+                            }
                         }
-                        return;
+                        throw new IllegalActionException(this, ex, "Exception occurred executing refinement.");
                     }
                 }
                 if (inModalModel) {
                     director.setModelTime(environmentTime);
                 }
-
                 readOutputsFromRefinement();
 
                 // Choose transitions from the nonpreemptive transitions,
@@ -733,12 +730,16 @@ public class FSMActor extends CompositeEntity implements TypedActor,
                         for (Actor refinementActor : refinements) {
                             if (refinementActor instanceof ModalRefinement) {
                                 // We will check the guards of termination transitions only
-                                // if all refinements are transitioning to a final state.
+                                // if all refinements are transitioning to a final state
+                                // or are already in a final state.
                                 ModalRefinement refinement = (ModalRefinement) refinementActor;
                                 FSMActor refinementController = refinement.getController();
                                 State destinationState = refinementController._destinationState();
-                                if (destinationState == null
-                                        || !((BooleanToken)destinationState.isFinalState.getToken()).booleanValue()) {
+                                // If the current state is not a final state and we are not transitioning
+                                // to a final state, then no termination transition can be enabled.
+                                if (!(((BooleanToken)refinementController.currentState().isFinalState.getToken()).booleanValue())
+                                        && (destinationState == null
+                                        || !((BooleanToken)destinationState.isFinalState.getToken()).booleanValue())) {
                                     // No chosen transition, or the destination
                                     // state is not final.
                                     // Cannot take termination transition.
@@ -1598,11 +1599,8 @@ public class FSMActor extends CompositeEntity implements TypedActor,
      *  getting the initial state or setting the current connection map.
      */
     public void reset() throws IllegalActionException {
-        
         _reachedFinalState = false;
         _newIteration = true;
-        _modelError = false;
-
         _currentState = getInitialState();
         if (_debugging && _currentState != null) {
             _debug("Resetting to initial state: " + _currentState.getName());
@@ -1653,23 +1651,10 @@ public class FSMActor extends CompositeEntity implements TypedActor,
      */
     public boolean handleModelError(NamedObj context,
             IllegalActionException exception) throws IllegalActionException {
-        if (_debugging) {
-            _debug("handleModelError called for the FSMActor "
-                    + this.getDisplayName());
-        }
-        // check to see if your current state has an errorTransition.
-        // FIXME: Not enough. Also need to evaluate the guards on error transitions.
-        State currentState = currentState();
-        if (currentState != null) {
-            List errorTransitionList = currentState.errorTransitionList();
-
-            if (errorTransitionList.size() > 0) {
-                // if it does have an error transition, then handle the error
-                _modelError = true;
-                return true;
-            }
-        }
-        return false;
+        // To prevent the model error from being passed up the hierarchy,
+        // throw the exception. If there is an error transition, it will
+        // catch it.
+        throw exception;
     }
 
     /** Set the flag indicating whether we are at the start of
@@ -3761,9 +3746,6 @@ public class FSMActor extends CompositeEntity implements TypedActor,
      *  taken, and to true in postfire if any transition is taken.
      */
     private boolean _transitionTaken;
-
-    //A flag indicating whether or not the actor needs to deal with a model error.
-    private boolean _modelError = false;
 
     /** Set of nondeterministic transitions previously chosen
      *  in an iteration. There may be more than one because of

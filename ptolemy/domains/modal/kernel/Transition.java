@@ -157,7 +157,8 @@ import ptolemy.kernel.util.Workspace;
  <p>
  The <i>error</i> parameter, if given a value true, specifies
  that this transition is enabled if the refinement of the source state of
- the transition throws a model error while executing. The default value is a boolean
+ the transition throws a model error or an exception
+ while executing. The default value is a boolean
  token with value false.
 
  @author Xiaojun Liu, Edward A. Lee, Haiyang Zheng, Christian Motika
@@ -236,26 +237,6 @@ public class Transition extends ComponentRelation {
         } else if (attribute == nondeterministic) {
             _nondeterministic = ((BooleanToken) nondeterministic.getToken())
                     .booleanValue();
-        } else if (attribute == error) {
-            // _errorTransition = ((BooleanToken) error.getToken())
-            //        .booleanValue();
-            // FIXME: The following needs to be rethought.
-            // Discarding user data here. Undo will not work. This is bogus.
-            /*
-            if (_errorTransition == true) {
-                guardExpression.setExpression("");
-                annotation.setExpression("");
-                outputActions.setExpression("");
-                setActions.setExpression("");
-
-                reset.setToken(BooleanToken.FALSE);
-                preemptive.setToken(BooleanToken.FALSE);
-                //TODO: cmot, verify
-                immediate.setToken(BooleanToken.FALSE);
-                defaultTransition.setToken(BooleanToken.FALSE);
-                nondeterministic.setToken(BooleanToken.FALSE);
-            }
-            */
         } else if (attribute == guardExpression) {
             // The guard expression can only be evaluated at run
             // time, because the input variables it can reference are created
@@ -533,7 +514,7 @@ public class Transition extends ComponentRelation {
                 || _guardParseTreeVersion != _workspace.getVersion()) {
             String expr = getGuardExpression();
             // If the expression is empty, interpret this as true.
-            if (expr.trim().equals("") && !isErrorTransition()) {
+            if (expr.trim().equals("")) {
                 return true;
             }
             // Parse the guard expression.
@@ -698,7 +679,7 @@ public class Transition extends ComponentRelation {
     }
 
     /** Return true if this transition is a termination transition. Whether this
-     *  transition an error transition is specified by the <i>termination</i> parameter.
+     *  transition a termination transition is specified by the <i>termination</i> parameter.
      *  @return True if this transition is a termination transition.
      *  @exception IllegalActionException If the parameter cannot be evaluated.
      */
@@ -848,6 +829,7 @@ public class Transition extends ComponentRelation {
      *  refinements will be executed.
      *  This attribute has a null expression or a null string as
      *  expression when the state is not refined.
+     *  @deprecated Use immediate transitions.
      */
     public StringAttribute refinementName;
 
@@ -1040,6 +1022,7 @@ public class Transition extends ComponentRelation {
 
         // Add refinement name parameter
         refinementName = new StringAttribute(this, "refinementName");
+        refinementName.setVisibility(Settable.EXPERT);
     }
 
     // Update the cached lists of actions.
