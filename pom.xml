@@ -293,7 +293,7 @@ See $PTII/doc/coding/maven.htm
       <name>Robert Kroeger</name>
     </contributor>
     <contributor>
-      <name>Daniel Lázaro Cuadrado</name>
+      <name>Daniel Lazaro Cuadrado</name>
     </contributor>
     <contributor>
       <name>David Lee</name>
@@ -482,7 +482,7 @@ See $PTII/doc/coding/maven.htm
     <dependency> <!-- $PTII/org/ptango/lib -->
       <groupId>org.eclipse.jetty</groupId>
       <artifactId>jetty-server</artifactId>
-      <version>8.1.5-v20120716</version>
+      <version>8.1.2.v20120308</version>
     </dependency>
     <dependency>
        <groupId>org.python</groupId>
@@ -603,15 +603,15 @@ See $PTII/doc/coding/maven.htm
     </dependency>
 
     <dependency> <!-- $PTII/lib/smack.jar -->
-      <groupId>jivesoftware</groupId>
+      <groupId>smack</groupId>
       <artifactId>smack</artifactId>
-      <version>3.0.4</version>
+      <version>ptII</version>
     </dependency>
 
     <dependency> <!-- $PTII/lib/smackx.jar -->
-      <groupId>org.mobicents.slee.resource.smack</groupId>
+      <groupId>smackx</groupId>
       <artifactId>smackx</artifactId>
-      <version>3.0.4</version>
+      <version>ptII</version>
     </dependency>
 
   </dependencies>
