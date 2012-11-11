@@ -1660,8 +1660,13 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
         }
 
         Rectangle2D viewSize = getVisibleRectangle();
+        Rectangle2D paddedViewSize = new Rectangle2D.Double(
+                viewSize.getX() + _ZOOM_FIT_PADDING,
+                viewSize.getY() + _ZOOM_FIT_PADDING,
+                viewSize.getWidth() - 2*_ZOOM_FIT_PADDING,
+                viewSize.getHeight() - 2*_ZOOM_FIT_PADDING);
         AffineTransform newTransform = CanvasUtilities.computeFitTransform(
-                bounds, viewSize);
+                bounds, paddedViewSize);
         JCanvas canvas = pane.getCanvas();
         canvas.getCanvasPane().setTransform(newTransform);
 
@@ -3411,6 +3416,8 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
 
     /** Action to undo the last MoML change. */
     private Action _undoAction = new UndoAction();
+    
+    private static double _ZOOM_FIT_PADDING = 5.0;
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
