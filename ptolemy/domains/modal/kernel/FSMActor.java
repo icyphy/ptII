@@ -66,6 +66,7 @@ import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.ParseTreeFreeVariableCollector;
 import ptolemy.data.expr.ParserScope;
 import ptolemy.data.expr.PtParser;
+import ptolemy.data.expr.StringParameter;
 import ptolemy.data.expr.UndefinedConstantOrIdentifierException;
 import ptolemy.data.expr.Variable;
 import ptolemy.data.type.ArrayType;
@@ -90,6 +91,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.StreamListener;
@@ -290,6 +292,35 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         super(workspace);
         _init();
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         parameters                        ////
+    
+    /** Parameter containing the cause of an exception thrown
+     *  while executing a refinement if the exception is a
+     *  KernelException that specified a Nameable.
+     *  This parameter may be used in a guard
+     *  expression or output or set action to access the object
+     *  that originated an exception on an error transition.
+     *  This is an object token that defaults to null.
+     */
+    public Parameter errorCause;
+
+    /** Parameter containing the name of the class of exception thrown
+     *  while executing a refinement. This parameter may be used in a guard
+     *  expression or output or set action to access the class of an
+     *  exception on an error transition.
+     *  This is a string that defaults to the empty string.
+     */
+    public StringParameter errorClass;
+
+    /** Parameter containing the message of exception thrown
+     *  while executing a refinement. This parameter may be used in a guard
+     *  expression or output or set action to access the message of an
+     *  exception on an error transition.
+     *  This is a string that defaults to the empty string.
+     */
+    public StringParameter errorMessage;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -676,25 +707,20 @@ public class FSMActor extends CompositeEntity implements TypedActor,
                                 .add(stateRefinements[i]);
                             }
                         }
-                    } catch (Exception ex) {
+                    } catch (Throwable ex) {
                         // Handle exceptions if there are error transitions.
-                        // Note that model errors are handled separately.
-                        List<Transition> errorTransitionList = _currentState.errorTransitionList();
-                        if (errorTransitionList.size() > 0) {
-                            if (_debugging) {
-                                _debug("** Exception occurred executing refinement. Checking error transitions.");
+                        // Note that if it was a model errors, then the transition
+                        // to take has already been identified in handleModelError().
+                        if (_lastChosenTransitions.size() == 0) {
+                            _chooseErrorTransition(ex);
+                        }
+                        if (_lastChosenTransitions.size() > 0) {
+                            // An error transition was chosen. We are done.
+                            // Restore time before returning.
+                            if (inModalModel) {
+                                director.setModelTime(environmentTime);
                             }
-                            // It makes no sense for error transitions to be preemptive,
-                            // so we look only at non-preemptive error transitions.
-                            _chooseTransitions(errorTransitionList, false, false);
-                            if (_lastChosenTransitions.size() > 0) {
-                                // An error transition was chosen. We are done.
-                                // Restore time before returning.
-                                if (inModalModel) {
-                                    director.setModelTime(environmentTime);
-                                }
-                                return;
-                            }
+                            return;
                         }
                         throw new IllegalActionException(this, ex, "Exception occurred executing refinement.");
                     }
@@ -1041,6 +1067,29 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         // FIXME: this could be cached.
         return new PortScope();
     }
+    
+    /** Handle a model error.
+     *  @param context The object in which the error occurred.
+     *  @param exception An exception that represents the error.
+     *  @return True if the error has been handled, or false if the
+     *   error is not handled.
+     *  @exception IllegalActionException If the handler handles the
+     *   error by throwing an exception.
+     */
+    public boolean handleModelError(NamedObj context,
+            IllegalActionException exception) throws IllegalActionException {
+        _chooseErrorTransition(exception);
+        if (_lastChosenTransitions.size() > 0) {
+            // An error transition is enabled.
+            // To prevent the model error from being passed up the hierarchy,
+            // throw the exception. This will be caught in the fire()
+            // method.
+            throw exception;
+        }
+        // There is no error transition enabled.
+        // Pass the model up the hierarchy.
+        return false;
+    }
 
     /** Test whether new input tokens have been received at the input ports.
      *
@@ -1080,6 +1129,9 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         }
         // Ensure previous input values are not available.
         _inputTokenMap.clear();
+        errorMessage.setExpression("");
+        errorClass.setExpression("");
+        errorCause.setToken((Token)null);
 
         _transitionTaken = false;
 
@@ -1473,6 +1525,9 @@ public class FSMActor extends CompositeEntity implements TypedActor,
 
         // Ensure previous input values are not available.
         _inputTokenMap.clear();
+        errorMessage.setExpression("");
+        errorClass.setExpression("");
+        errorCause.setToken((Token)null);
 
         return !_reachedFinalState && !_stopRequested;
     }
@@ -1507,6 +1562,9 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         _tokenListArrays = new Hashtable();
 
         _inputTokenMap.clear();
+        errorMessage.setExpression("");
+        errorClass.setExpression("");
+        errorCause.setToken((Token)null);
 
         // In case any further static analysis depends on the initial
         // state, reset to that state here.
@@ -1639,22 +1697,6 @@ public class FSMActor extends CompositeEntity implements TypedActor,
             _lastChosenTransitions.put(currentState(), transition);
             _lastChosenTransition = transition;
         }
-    }
-
-    /** Handle a model error.
-     *  @param context The object in which the error occurred.
-     *  @param exception An exception that represents the error.
-     *  @return True if the error has been handled, or false if the
-     *   error is not handled.
-     *  @exception IllegalActionException If the handler handles the
-     *   error by throwing an exception.
-     */
-    public boolean handleModelError(NamedObj context,
-            IllegalActionException exception) throws IllegalActionException {
-        // To prevent the model error from being passed up the hierarchy,
-        // throw the exception. If there is an error transition, it will
-        // catch it.
-        throw exception;
     }
 
     /** Set the flag indicating whether we are at the start of
@@ -2913,6 +2955,37 @@ public class FSMActor extends CompositeEntity implements TypedActor,
             workspace().doneReading();
         }
     }
+    
+    /** Choose an error transition to handle the specified exception,
+     *  if there is one. As a side effect, this will set
+     *  _lastChosenTransitions.
+     *  @param ex The exception.
+     *  @throws IllegalActionException If something goes wrong.
+     */
+    private void _chooseErrorTransition(Throwable ex)
+            throws IllegalActionException {
+        if (_currentState != null) {
+            List<Transition> errorTransitionList = _currentState.errorTransitionList();
+            if (errorTransitionList.size() > 0) {
+                if (_debugging) {
+                    _debug("** Exception occurred executing refinement. Checking error transitions.");
+                }
+                // Set variables exposing the exception.
+                errorMessage.setExpression(ex.getMessage());
+                errorClass.setExpression(ex.getClass().getName());
+                if (ex instanceof KernelException) {
+                    Nameable cause = ((KernelException)ex).getNameable1();
+                    if (cause != null) {
+                        errorCause.setToken(new ObjectToken(cause, cause.getClass()));
+                    }
+                }
+
+                // It makes no sense for error transitions to be preemptive,
+                // so we look only at non-preemptive error transitions.
+                _chooseTransitions(errorTransitionList, false, false);
+            }
+        }
+    }
 
     /** Return an enabled transition among the given list of transitions
      *  for which both the guard expression and the output actions can
@@ -3235,6 +3308,13 @@ public class FSMActor extends CompositeEntity implements TypedActor,
                     "stateDependentCausality");
             stateDependentCausality.setTypeEquals(BaseType.BOOLEAN);
             stateDependentCausality.setExpression("false");
+            
+            errorClass = new StringParameter(this, "errorClass");
+            errorClass.setVisibility(Settable.EXPERT);
+            errorMessage = new StringParameter(this, "errorMessage");
+            errorMessage.setVisibility(Settable.EXPERT);
+            errorCause = new Parameter(this, "errorCause");
+            errorCause.setVisibility(Settable.EXPERT);
 
             initialStateName = new StringAttribute(this, "initialStateName");
             initialStateName.setExpression("");

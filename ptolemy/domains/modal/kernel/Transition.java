@@ -159,7 +159,22 @@ import ptolemy.kernel.util.Workspace;
  that this transition is enabled if the refinement of the source state of
  the transition throws a model error or an exception
  while executing. The default value is a boolean
- token with value false.
+ token with value false. When such an exception or model error
+ occurs, two variables are set that may be used in the guard
+ or the output or set actions of this transition:
+ <ul>
+ <li> <i>errorMessage</i>: The error message (a string).
+ <li> <i>errorClass</i>: The class of the exception thrown.
+ </ul>
+ In addition, if the exception is an instance of KernelException
+ or a subclass (such as IllegalActionException), then a third
+ variable is set:
+ <ul>
+ <li> <i>errorCause</i>: The Ptolemy object that caused the exception.
+ </ul>
+ The <i>errorCause</i> is made available as an ObjectToken on which
+ you can invoke methods such as getName() in the guard or output
+ or set actions of this transition.
 
  @author Xiaojun Liu, Edward A. Lee, Haiyang Zheng, Christian Motika
  @version $Id$
