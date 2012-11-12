@@ -1,6 +1,6 @@
 /* An actor that publishes to an XMPP XEP-0060 node upon firing.
 
- Copyright (c) 2012 The Regents of the University of California.
+ Copyright (c) 1997-2012 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -42,7 +42,16 @@ import ptolemy.kernel.util.NameDuplicationException;
 ///////////////////////////////////////////////////////////////////
 //// XMPPSink
 
-/** An actor that publishes to an XMPP XEP-0060 node upon firing.
+/** Publish incoming tokens to an XMPPGateway attribute, if present. 
+ *  The input is allowed to be of arbitrary width and tokens that 
+ *  arrive in parallel are sequentially published during a single firing.
+ *  If no XMPPGateway is present in the model, all tokens are consumed 
+ *  but no further action is taken. The XMPP publish-subscribe mechanism
+ *  works with end-points called nodes. This actor publishes to the node
+ *  identified by the parameter NodeId. If no NodeId is specified, 
+ *  nothing is published and this actor silently consumes all input
+ *  tokens.
+ * 
  *  @see XMPPGateway
  *  @author Marten Lohstroh
  *  @version $Id: XMPPSink.java 64744 2012-10-24 22:51:43Z marten $
@@ -52,31 +61,33 @@ import ptolemy.kernel.util.NameDuplicationException;
  */
 public class XMPPSink extends Sink implements XMPPPublisher {
     
-    /**
-     * 
-     * @param container
-     * @param name
-     * @throws NameDuplicationException
-     * @throws IllegalActionException
+    /** Construct an actor with an input multiport.
+     *  @param container The container.
+     *  @param name The name of this actor.
+     *  @exception IllegalActionException If the entity cannot be contained
+     *   by the proposed container.
+     *  @exception NameDuplicationException If the container already has an
+     *   actor with this name.
      */
     public XMPPSink(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
         nodeId = new StringParameter(this, "nodeId");
-        input.setTypeEquals(BaseType.STRING);
+        input.setTypeEquals(BaseType.STRING); // FIXME: not sure about this
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                     public variables                      ////
     
-    /** */
+    /** The id of the node to publish to, if left undefined 
+     * nothing will be published. */
     public Parameter nodeId;
     
     ///////////////////////////////////////////////////////////////////
     ////                      public methods                       ////
     
     /**
-     * 
+     * Update the node id if its corresponding parameter has changed. 
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
@@ -88,7 +99,7 @@ public class XMPPSink extends Sink implements XMPPPublisher {
 
     
     /**
-     * 
+     * FIXME: Should we use postfire() instead? @see Display
      */
     public void fire() throws IllegalActionException {
         super.fire();
@@ -97,14 +108,14 @@ public class XMPPSink extends Sink implements XMPPPublisher {
 
         for (int i = 0; i < width; i++) {
             String value = _getInputString(i);
-            if (value != null) {
+            if (_gateway != null && value != null) {
                 _gateway.publish(_nodeId, value);        
             }
         }
     }
 
     /**
-     * 
+     * Set the 
      */
     @Override
     public void setGateway(XMPPGateway gateway) {

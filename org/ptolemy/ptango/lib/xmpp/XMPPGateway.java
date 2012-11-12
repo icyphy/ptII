@@ -1,6 +1,6 @@
-/* An attribute for publish-subscribe connectivity through an XMPP server.
+/* An attribute that provides connectivity through an XMPP server.
 
- Copyright (c) 2012 The Regents of the University of California.
+ Copyright (c) 1997-2012 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -29,15 +29,13 @@
 package org.ptolemy.ptango.lib.xmpp;
 
 import java.util.Iterator;
-import java.util.Map;
 
 import org.jivesoftware.smack.Connection;
 import org.jivesoftware.smack.ConnectionConfiguration;
 import org.jivesoftware.smack.XMPPConnection;
 import org.jivesoftware.smack.XMPPException;
-import org.jivesoftware.smackx.pubsub.Item;
-import org.jivesoftware.smackx.pubsub.Node;
 import org.jivesoftware.smackx.pubsub.LeafNode;
+import org.jivesoftware.smackx.pubsub.Node;
 import org.jivesoftware.smackx.pubsub.PayloadItem;
 import org.jivesoftware.smackx.pubsub.PubSubManager;
 import org.jivesoftware.smackx.pubsub.SimplePayload;
@@ -46,7 +44,6 @@ import org.jivesoftware.smackx.pubsub.Subscription.State;
 
 import ptolemy.actor.AbstractInitializableAttribute;
 import ptolemy.actor.Executable;
-import ptolemy.actor.lib.Publisher;
 import ptolemy.data.IntToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.expr.Parameter;
@@ -60,7 +57,7 @@ import ptolemy.kernel.util.NamedObj;
 ///////////////////////////////////////////////////////////////////
 //// XMPPGateway
 
-/** An attribute for publish-subscribe connectivity through an XMPP server.
+/** FIXME: comments
  * 
  *  @see XMPPGateway
  *  @author Marten Lohstroh
@@ -146,8 +143,6 @@ public class XMPPGateway extends AbstractInitializableAttribute implements
         String jid = _userName + '@' + _serverName; //"ptolemy@dhcp-45-24.eecs.berkeley.edu";//127.0.0.1"; //_userName + '@' + _serverName + "/ptolemy";
         //System.out.println(_connection.getHost());
 
-        // FIXME: look for publishers as well
-        
         System.setProperty("smack.debugEnabled", "true");
         XMPPConnection.DEBUG_ENABLED = true;
 
@@ -357,13 +352,6 @@ public class XMPPGateway extends AbstractInitializableAttribute implements
         ln.publish(item);
     }
     
-/*    private Map<Publisher, String> _publishers;
-    
-    public void register(Publisher actor, String nodeId) {
-        _publishers.remove(actor);
-        _publishers.put(actor, nodeId);
-    }
-*/
     public void removeNode(String nodeId) throws IllegalActionException {
         try {
             _manager.deleteNode(nodeId);
