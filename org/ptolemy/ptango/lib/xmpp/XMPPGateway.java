@@ -57,8 +57,8 @@ import ptolemy.kernel.util.NamedObj;
 ///////////////////////////////////////////////////////////////////
 //// XMPPGateway
 
-/** FIXME: comments
- * 
+/** FIXME: class description
+ *  FIXME: add XMPP icon
  *  @see XMPPGateway
  *  @author Marten Lohstroh
  *  @version $Id: XMPPGateway.java 64744 2012-10-24 22:51:43Z marten $
@@ -69,11 +69,11 @@ import ptolemy.kernel.util.NamedObj;
 public class XMPPGateway extends AbstractInitializableAttribute implements
         Executable {
 
-    /** Construct an instance of the attribute.
-     * @param container The container.
-     * @param name The name.
-     * @exception IllegalActionException If the superclass throws it.
-     * @exception NameDuplicationException If the superclass throws it.
+    /** Construct an instance of the XMPPGateway attribute.
+     *  @param container The container.
+     *  @param name The name.
+     *  @exception IllegalActionException If the superclass throws it.
+     *  @exception NameDuplicationException If the superclass throws it.
      */
     public XMPPGateway(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
@@ -87,38 +87,42 @@ public class XMPPGateway extends AbstractInitializableAttribute implements
         port.setExpression("5222");
 
         username = new StringParameter(this, "username");
-        username.setExpression("ptolemy"); // FIXME: set default to guest
+        username.setExpression("ptolemy"); // FIXME: use password file (see database attribute)
 
         password = new StringParameter(this, "password");
-        password.setExpression("tUkM6Prj"); // FIXME: set default to guest
+        password.setExpression("tUkM6Prj");
 
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         parameters                        ////
 
-    /** The port number to connect to. This is a integer that
-     *  defaults to 5222.
-     */
-    public Parameter port;
-
-    /** The server to connect to. This is a string that
-     *  defaults to "localhost".
-     */
-    public Parameter server;
-
-    /** The username to authenticate with. This is a string that
-     *  defaults to "guest".
-     */
-    public Parameter username;
-
-    /** The password to authenticate with. This is a string that
+    /** Password to authenticate with. This is a string that
      *  defaults to "guest".
      */
     public Parameter password;
 
-    /** 
-     * FIXME: reconnect to server upon changes (how to know what is the last change?)
+    /** Port number to connect to. This is a integer that
+     *  defaults to 5222.
+     */
+    public Parameter port;
+
+    /** Server to connect to. This is a string that
+     *  defaults to "localhost".
+     */
+    public Parameter server;
+
+    /** User name to authenticate with. This is a string that
+     *  defaults to "guest".
+     */
+    public Parameter username;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                       public methods                      ////
+
+    /** Update the local variable associated with the changed attribute
+     *  and disconnect from the server. 
+     *  @param attribute The changed attribute.
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
@@ -138,16 +142,35 @@ public class XMPPGateway extends AbstractInitializableAttribute implements
         }
     }
 
+    /** Return immediately. */
+    @Override
+    public void fire() throws IllegalActionException {
+        return;
+    }
+
+    /** Attempt to connect to the server and login. Discover subscribers 
+     *  and establish a subscriptions by registering the actors as listeners. 
+     *  If a subscriber wants to subscribe to a non-existent node, create it.
+     *  Also discover publishers and give them a reference to this attribute.
+     *  This might change in the future, as changes to running models require
+     *  actors to register themselves instead of being discovered.
+     *  @throws IllegalActionException If unable to login, create a node, 
+     *  find a node, or subscribe to a node.
+     * 
+     */
     public void initialize() throws IllegalActionException {
-        // FIXME
-        String jid = _userName + '@' + _serverName; //"ptolemy@dhcp-45-24.eecs.berkeley.edu";//127.0.0.1"; //_userName + '@' + _serverName + "/ptolemy";
+        // FIXME: if the server runs on localhost, it doesn't accept 'localhost', 
+        // but requires 127.0.0.1, look into this
+        String jid = _userName + '@' + _serverName;
+        //"ptolemy@dhcp-45-24.eecs.berkeley.edu";//127.0.0.1"; 
+        //_userName + '@' + _serverName + "/ptolemy";
         //System.out.println(_connection.getHost());
 
         System.setProperty("smack.debugEnabled", "true");
         XMPPConnection.DEBUG_ENABLED = true;
 
         _connectAndLogin();
-        
+
         _manager = new PubSubManager(_connection);
         // discover XMPPSubscribers FIXME: how deep is this search?
         Iterator<?> objects = toplevel().containedObjectsIterator();
@@ -164,7 +187,8 @@ public class XMPPGateway extends AbstractInitializableAttribute implements
                     // FIXME: get rid of duplicate subscriptions here
                 } catch (Exception e) {
                     try {
-                        /* ConfigureForm form = new ConfigureForm(FormType.submit); // FIXME: figure out configuration options
+                        /* ConfigureForm form = new ConfigureForm(FormType.submit); 
+                         // FIXME: figure out configuration options
                          form.setAccessModel(AccessModel.open);
                          form.setDeliverPayloads(false);
                          form.setNotifyRetract(true);
@@ -208,70 +232,147 @@ public class XMPPGateway extends AbstractInitializableAttribute implements
                             "Unable find or create node: " + nodeId + ".");
                 }
             } else if (object instanceof XMPPPublisher) {
-                ((XMPPPublisher)object).setGateway(this);
+                ((XMPPPublisher) object).setGateway(this);
             }
         }
 
     }
 
-    public void wrapup() throws IllegalActionException {
-        _disconnect();
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                      private variables                    ////
-
-    private int _portNumber = 5222;
-
-    private String _userName = "ptolemy";
-
-    private String _password = "tUkM6Prj";
-
-    private String _serverName = "localhost";
-
-    private PubSubManager _manager;
-
-    private Connection _connection;
-
-    @Override
-    public void fire() throws IllegalActionException {
-        return;
-    }
-
+    /** Return false. */
     @Override
     public boolean isFireFunctional() {
         return false;
     }
 
+    /** Return true. */
     @Override
     public boolean isStrict() throws IllegalActionException {
         return true;
     }
 
+    /** Return immediately. */
     @Override
     public int iterate(int count) throws IllegalActionException {
         return Executable.COMPLETED;
     }
 
+    /** Check the connection, reconnect and login if required. */
+    @Override
+    public boolean prefire() throws IllegalActionException {
+        if (_connection == null) {
+            initialize();
+        } else if (!_connection.isConnected() || !_connection.isAuthenticated()) {
+            _connectAndLogin();
+        }
+        return true;
+    }
+
+    /** Return immediately. */
     @Override
     public boolean postfire() throws IllegalActionException {
         return true;
     }
 
-    private void _disconnect() throws IllegalActionException {
+    /** Publish a value to a node. The value is wrapped into a message stanza.
+     *  @param nodeId The node to publish to.
+     *  @param value The value to publish.
+     *  @throws IllegalActionException If publishing failed.
+     */
+    public void publish(String nodeId, String value)
+            throws IllegalActionException {
+
+        Node n;
+        LeafNode ln;
+
+        try {
+            if ((n = _manager.getNode(nodeId)) instanceof LeafNode) {
+                ln = (LeafNode) n;
+            } else {
+                throw new IllegalActionException(
+                        "Unable to publish a node that is not a leaf.");
+            }
+        } catch (XMPPException e) {
+            try {
+                ln = _manager.createNode(nodeId);
+            } catch (XMPPException e1) {
+                throw new IllegalActionException(
+                        "Unable to create node with id: " + nodeId + ".");
+            }
+        }
+
+        SimplePayload payload = new SimplePayload("message", "null",
+                "<message>" + value + "</message>");
+        PayloadItem<SimplePayload> item = new PayloadItem<SimplePayload>(null,
+                payload);
+        ln.publish(item);
+    }
+
+    /** Remove a node from the server configuration. 
+     *  @param nodeId The node to remove.
+     *  @throws IllegalActionException If unable to remove the node.
+     */
+    public void removeNode(String nodeId) throws IllegalActionException {
+        try {
+            _manager.deleteNode(nodeId);
+        } catch (XMPPException e) {
+            throw new IllegalActionException("Unable to remove node with id: "
+                    + nodeId + ".");
+        }
+    }
+
+    /** Return immediately. */
+    @Override
+    public void stop() {
+        return;
+    }
+
+    /** Return immediately. */
+    @Override
+    public void stopFire() {
+        return;
+    }
+
+    /** Return immediately. */
+    @Override
+    public void terminate() {
+        return;
+    }
+
+    /** Disconnect from the server. */
+    @Override
+    public void wrapup() {
+        _disconnect();
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                      private methods                      ////
+
+    /** Disconnect and leave old connection for the garbage collector. 
+     *  Note that once disconnected, a Connection cannot be 
+     *  reused immediately, therefore it is discarded. A new Connection
+     *  object shall be instantiated for reconnecting.
+     *  @see Connection
+     *  @see _connectAndLogin()
+     */
+    private void _disconnect() {
         if (_connection != null) {
             _connection.disconnect();
         }
         _connection = null;
     }
-    
+
+    /** Connect to the server and login using the provided credentials.
+     *  @throws IllegalActionException If connection or authentication 
+     *  process fails.
+     */
     private void _connectAndLogin() throws IllegalActionException {
-        
+
         // already connected
-        if (_connection != null && _connection.isConnected() && _connection.isAuthenticated()) {
+        if (_connection != null && _connection.isConnected()
+                && _connection.isAuthenticated()) {
             return;
         }
-        
+
         // no active connection, establish one
         if (_connection == null) {
             ConnectionConfiguration config = new ConnectionConfiguration(
@@ -301,63 +402,25 @@ public class XMPPGateway extends AbstractInitializableAttribute implements
         }
     }
 
-    @Override
-    public boolean prefire() throws IllegalActionException {
-        if (_connection == null) {
-            initialize();
-        }
-        else if (!_connection.isConnected() || !_connection.isAuthenticated()) {
-            _connectAndLogin();
-        }
-        return true;
-    }
+    ///////////////////////////////////////////////////////////////////
+    ////                      private variables                    ////
 
-    @Override
-    public void stop() {
-        return;
+    /** Maintains the connection to the server. */
+    private Connection _connection;
 
-    }
+    /** Manager responsible for brokering publications and subscriptions. */
+    private PubSubManager _manager;
 
-    @Override
-    public void stopFire() {
-        return;
-    }
+    /** Password on the server to connect to. */
+    private String _password = "tUkM6Prj";
 
-    @Override
-    public void terminate() {
-        return;
-    }
+    /** Port number of the server to connect to. */
+    private int _portNumber = 5222;
 
-    public void publish(String nodeId, String value) throws IllegalActionException {
-        
-        Node n;
-        LeafNode ln;
-        
-        try {
-            if ((n = _manager.getNode(nodeId)) instanceof LeafNode) {
-                ln = (LeafNode) n;
-            } else {
-                throw new IllegalActionException("Unable to publish a node that is not a leaf.");
-            }
-        } catch (XMPPException e) {
-            try {
-                ln = _manager.createNode(nodeId);
-            } catch (XMPPException e1) {
-                throw new IllegalActionException("Unable to create node with id: " + nodeId + ".");
-            }
-        }
+    /** Address of the server to connect to. */
+    private String _serverName = "localhost";
 
-        SimplePayload payload = new SimplePayload("message","null", "<message>" + value + "</message>");
-        PayloadItem<SimplePayload> item = new PayloadItem<SimplePayload>(null, payload);
-        ln.publish(item);
-    }
-    
-    public void removeNode(String nodeId) throws IllegalActionException {
-        try {
-            _manager.deleteNode(nodeId);
-        } catch (XMPPException e) {
-            throw new IllegalActionException("Unable to remove node with id: " + nodeId + ".");
-        }
-    }
+    /** User name on the server to connect to. */
+    private String _userName = "ptolemy";
 
 }
