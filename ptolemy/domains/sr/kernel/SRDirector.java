@@ -368,7 +368,7 @@ public class SRDirector extends FixedPointDirector implements PeriodicDirector {
                     _index = 1;
                 }
                 if (_debugging) {
-                    _debug("DEDirector: Set microstep to " + _index);
+                    _debug("SRDirector: Set microstep to " + _index);
                 }
             } else {
                 // No container. This should not happen.
