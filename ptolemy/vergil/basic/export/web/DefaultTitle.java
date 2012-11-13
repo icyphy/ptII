@@ -149,7 +149,7 @@ public class DefaultTitle extends WebContent implements WebExportable {
         String titleValue = stringValue();
         if (titleValue == null || titleValue.equals("")) {
             // Use the model name as the default title.
-            titleValue = toplevel().getName();
+            titleValue = toplevel().getDisplayName();
         }
 
         // FIXME:  Refactor so we don't need this method
@@ -195,7 +195,7 @@ public class DefaultTitle extends WebContent implements WebExportable {
                 // (onceOnly -> true).
                 webAttribute = WebAttribute.createWebAttribute(object,
                         "titleWebAttribute", "title");
-                webAttribute.setExpression(object.getName());
+                webAttribute.setExpression(object.getDisplayName());
                 exporter.defineAttribute(webAttribute, true);
             }
         }
@@ -218,7 +218,7 @@ public class DefaultTitle extends WebContent implements WebExportable {
                 // (onceOnly -> true).
                 webAttribute = WebAttribute.createWebAttribute(object,
                         "titleWebAttribute", "title");
-                webAttribute.setExpression(object.getName());
+                webAttribute.setExpression(object.getDisplayName());
                 exporter.defineAttribute(webAttribute, true);
             }
         }

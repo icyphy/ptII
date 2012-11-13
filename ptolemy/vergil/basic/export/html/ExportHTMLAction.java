@@ -1296,7 +1296,11 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable,
                         i.bottomRightY = viewSize.getHeight();
                     }
                     // Add the data to the result list.
-                    result.add(i);
+                    // This is inserted at the start, not the end of the
+                    // list so that in the image map, items in front appear
+                    // earlier rather than later. This ensures that items
+                    // in front take precedence.
+                    result.add(0, i);
                 }
             }
         }

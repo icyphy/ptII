@@ -368,6 +368,10 @@ public class Title extends StringParameter implements WebExportable {
     protected void _provideAttributes(WebExporter exporter)
             throws IllegalActionException {
 
+        // FIXME:  Refactor so we don't need this method
+        exporter.setTitle(stringValue(),
+                ((BooleanToken) showTitleInHTML.getToken()).booleanValue());
+
         // Create a WebAttribute for title and add to exporter.
         // Content should only be added once (onceOnly -> true).
         WebAttribute webAttribute = WebAttribute.createWebAttribute(
