@@ -702,18 +702,17 @@ public class FSMActor extends CompositeEntity implements TypedActor,
                                 // much less than this fire() method, and in particular, does not
                                 // invoke refinements! This is fixed by using ModalModel in a
                                 // hierarchical state.
-                                stateRefinements[i].fire();
-                                _stateRefinementsToPostfire
-                                .add(stateRefinements[i]);
+                                if (_modelErrorHandled == null) {
+                                    stateRefinements[i].fire();
+                                    if (_modelErrorHandled == null) {
+                                        _stateRefinementsToPostfire.add(stateRefinements[i]);
+                                    }
+                                }
                             }
                         }
                     } catch (Throwable ex) {
                         // Handle exceptions if there are error transitions.
-                        // Note that if it was a model errors, then the transition
-                        // to take has already been identified in handleModelError().
-                        if (_lastChosenTransitions.size() == 0) {
-                            _chooseErrorTransition(ex);
-                        }
+                        _chooseErrorTransition(ex);
                         if (_lastChosenTransitions.size() > 0) {
                             // An error transition was chosen. We are done.
                             // Restore time before returning.
@@ -723,6 +722,19 @@ public class FSMActor extends CompositeEntity implements TypedActor,
                             return;
                         }
                         throw new IllegalActionException(this, ex, "Exception occurred executing refinement.");
+                    }
+                    if (_modelErrorHandled != null) {
+                        // A model error was thrown.
+                        // Note that if it was a model errors, then the transition
+                        // to take has already been identified in handleModelError().
+                        // However, we need to choose again so that the output actions
+                        // overwrite any outputs produced by the refinement.
+                        _chooseErrorTransition(_modelErrorHandled);
+                        // Restore time before returning.
+                        if (inModalModel) {
+                            director.setModelTime(environmentTime);
+                        }
+                        return;
                     }
                 }
                 if (inModalModel) {
@@ -1082,9 +1094,10 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         if (_lastChosenTransitions.size() > 0) {
             // An error transition is enabled.
             // To prevent the model error from being passed up the hierarchy,
-            // throw the exception. This will be caught in the fire()
-            // method.
-            throw exception;
+            // we have to return true. Set a flag so that the fire() method
+            // knows about this.
+            _modelErrorHandled = exception;
+            return true;
         }
         // There is no error transition enabled.
         // Pass the model up the hierarchy.
@@ -1132,6 +1145,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         errorMessage.setExpression("");
         errorClass.setExpression("");
         errorCause.setToken((Token)null);
+        _modelErrorHandled = null;
 
         _transitionTaken = false;
 
@@ -1528,6 +1542,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         errorMessage.setExpression("");
         errorClass.setExpression("");
         errorCause.setToken((Token)null);
+        _modelErrorHandled = null;
 
         return !_reachedFinalState && !_stopRequested;
     }
@@ -1565,6 +1580,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         errorMessage.setExpression("");
         errorClass.setExpression("");
         errorCause.setToken((Token)null);
+        _modelErrorHandled = null;
 
         // In case any further static analysis depends on the initial
         // state, reset to that state here.
@@ -3793,6 +3809,10 @@ public class FSMActor extends CompositeEntity implements TypedActor,
 
     // Cached lists of input and output ports.
     private transient long _inputPortsVersion = -1;
+    
+    // Flag indicating that a model error occurred
+    // and was handled.
+    private Exception _modelErrorHandled = null;
 
     // A flag indicating whether this is at the beginning
     // of one iteration (firing). Normally it is set to true.
