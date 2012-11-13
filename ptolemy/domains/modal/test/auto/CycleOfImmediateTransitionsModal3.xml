@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="CycleOfImmediateTransitionsModal3" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
     </property>
     <property name="SR Director" class="ptolemy.domains.sr.kernel.SRDirector">
         <property name="statesignals" class="ptolemy.kernel.util.StringAttribute" value="[A_immediate4_1893289564, B_immediate4_1893289564]">
@@ -10,7 +10,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[0.0, -55.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={496, 192, 942, 711}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={496, 192, 963, 711}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[729, 601]">
     </property>
@@ -80,6 +80,8 @@
             </property>
         </port>
         <entity name="_Controller" class="ptolemy.domains.modal.modal.ModalController">
+            <property name="errorCause" class="ptolemy.data.expr.Parameter">
+            </property>
             <port name="A_immediate4_1893289564_i" class="ptolemy.domains.modal.modal.ModalPort">
                 <property name="input"/>
                 <property name="local_input" class="ptolemy.kernel.util.StringAttribute">
@@ -202,6 +204,8 @@
                     </property>
                 </port>
                 <entity name="_Controller" class="ptolemy.domains.modal.modal.ModalController">
+                    <property name="errorCause" class="ptolemy.data.expr.Parameter">
+                    </property>
                     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={552, 345, 815, 509}, maximized=false}">
                     </property>
                     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
@@ -284,15 +288,16 @@
                         </property>
                     </entity>
                     <relation name="_6_372745638_transition_1" class="ptolemy.domains.modal.kernel.Transition">
-                        <property name="reset" class="ptolemy.data.expr.Parameter" value="true">
+                        <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
+                            <display name="default"/>
                         </property>
-                        <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+                        <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
                         </property>
                         <property name="immediate" class="ptolemy.data.expr.Parameter" value="false">
                         </property>
-                        <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
+                        <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                         </property>
-                        <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
+                        <property name="reset" class="ptolemy.data.expr.Parameter" value="true">
                         </property>
                         <property name="elementURIFragment" class="ptolemy.kernel.util.StringAttribute" value="//@states.0/@regions.1/@states.0/@regions.0/@states.3/@outgoingTransitions.0">
                         </property>
@@ -306,15 +311,16 @@
                         </property>
                         <property name="gamma" class="ptolemy.data.expr.Parameter" value="-1.7108969798931097">
                         </property>
-                        <property name="reset" class="ptolemy.data.expr.Parameter" value="true">
+                        <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
+                            <display name="default"/>
                         </property>
-                        <property name="preemptive" class="ptolemy.data.expr.Parameter" value="true">
+                        <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
                         </property>
                         <property name="immediate" class="ptolemy.data.expr.Parameter" value="true">
                         </property>
-                        <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
+                        <property name="preemptive" class="ptolemy.data.expr.Parameter" value="true">
                         </property>
-                        <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
+                        <property name="reset" class="ptolemy.data.expr.Parameter" value="true">
                         </property>
                         <property name="elementURIFragment" class="ptolemy.kernel.util.StringAttribute" value="//@states.0/@regions.1/@states.0/@regions.0/@states.2/@outgoingTransitions.0">
                         </property>
@@ -328,15 +334,16 @@
                         </property>
                         <property name="gamma" class="ptolemy.data.expr.Parameter" value="1.6014965636376663">
                         </property>
-                        <property name="reset" class="ptolemy.data.expr.Parameter" value="true">
+                        <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
+                            <display name="default"/>
                         </property>
-                        <property name="preemptive" class="ptolemy.data.expr.Parameter" value="true">
+                        <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
                         </property>
                         <property name="immediate" class="ptolemy.data.expr.Parameter" value="true">
                         </property>
-                        <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
+                        <property name="preemptive" class="ptolemy.data.expr.Parameter" value="true">
                         </property>
-                        <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
+                        <property name="reset" class="ptolemy.data.expr.Parameter" value="true">
                         </property>
                         <property name="elementURIFragment" class="ptolemy.kernel.util.StringAttribute" value="//@states.0/@regions.1/@states.0/@regions.0/@states.1/@outgoingTransitions.0">
                         </property>
@@ -344,15 +351,14 @@
                         </property>
                     </relation>
                     <relation name="__372745635_transition_1" class="ptolemy.domains.modal.kernel.Transition">
-                        <property name="reset" class="ptolemy.data.expr.Parameter" value="true">
+                        <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
+                            <display name="default"/>
                         </property>
-                        <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+                        <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
                         </property>
                         <property name="immediate" class="ptolemy.data.expr.Parameter" value="false">
                         </property>
-                        <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
-                        </property>
-                        <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
+                        <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                         </property>
                         <property name="elementURIFragment" class="ptolemy.kernel.util.StringAttribute" value="//@states.0/@regions.1/@states.0/@regions.0/@states.0/@outgoingTransitions.0">
                         </property>
@@ -516,6 +522,8 @@
             </property>
         </port>
         <entity name="_Controller" class="ptolemy.domains.modal.modal.ModalController">
+            <property name="errorCause" class="ptolemy.data.expr.Parameter">
+            </property>
             <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={552, 345, 815, 509}, maximized=false}">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
@@ -604,15 +612,16 @@
                 </property>
                 <property name="gamma" class="ptolemy.data.expr.Parameter" value="-1.6316538174518778">
                 </property>
-                <property name="reset" class="ptolemy.data.expr.Parameter" value="true">
+                <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
+                    <display name="default"/>
                 </property>
-                <property name="preemptive" class="ptolemy.data.expr.Parameter" value="true">
+                <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
                 <property name="immediate" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
-                <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
+                <property name="preemptive" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
-                <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
+                <property name="reset" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
                 <property name="elementURIFragment" class="ptolemy.kernel.util.StringAttribute" value="//@states.0/@regions.0/@states.3/@outgoingTransitions.0">
                 </property>
@@ -620,15 +629,16 @@
                 </property>
             </relation>
             <relation name="_6_733279299_transition_1" class="ptolemy.domains.modal.kernel.Transition">
-                <property name="reset" class="ptolemy.data.expr.Parameter" value="true">
+                <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
+                    <display name="default"/>
                 </property>
-                <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+                <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
                 <property name="immediate" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
-                <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
+                <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
-                <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
+                <property name="reset" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
                 <property name="elementURIFragment" class="ptolemy.kernel.util.StringAttribute" value="//@states.0/@regions.0/@states.2/@outgoingTransitions.0">
                 </property>
@@ -642,15 +652,16 @@
                 </property>
                 <property name="gamma" class="ptolemy.data.expr.Parameter" value="1.6123497745894861">
                 </property>
-                <property name="reset" class="ptolemy.data.expr.Parameter" value="true">
+                <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
+                    <display name="default"/>
                 </property>
-                <property name="preemptive" class="ptolemy.data.expr.Parameter" value="true">
+                <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
                 <property name="immediate" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
-                <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
+                <property name="preemptive" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
-                <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
+                <property name="reset" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
                 <property name="elementURIFragment" class="ptolemy.kernel.util.StringAttribute" value="//@states.0/@regions.0/@states.1/@outgoingTransitions.0">
                 </property>
@@ -658,15 +669,14 @@
                 </property>
             </relation>
             <relation name="__733279297_transition_1" class="ptolemy.domains.modal.kernel.Transition">
-                <property name="reset" class="ptolemy.data.expr.Parameter" value="true">
+                <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
+                    <display name="default"/>
                 </property>
-                <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+                <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
                 <property name="immediate" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
-                <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
-                <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
+                <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
                 <property name="elementURIFragment" class="ptolemy.kernel.util.StringAttribute" value="//@states.0/@regions.0/@states.0/@outgoingTransitions.0">
                 </property>
@@ -724,7 +734,7 @@
         </property>
     </entity>
     <entity name="TestExceptionHandler" class="ptolemy.actor.lib.TestExceptionHandler">
-        <property name="correctExceptionMessage" class="ptolemy.data.expr.StringParameter" value="Cycle of immediate transitions found.&#10;  in .CycleOfImmediateTransitionsModal3.immediate4_1893289564_region_2.__1063672062.__1063672062_region_1._Controller._2_372745636 and .CycleOfImmediateTransitionsModal3.immediate4_1893289564_region_2.__1063672062.__1063672062_region_1._Controller">
+        <property name="correctExceptionMessage" class="ptolemy.data.expr.StringParameter" value="Exception occurred executing refinement.&#10;  in .CycleOfImmediateTransitionsModal3.immediate4_1893289564_region_2._Controller&#10;Because:&#10;Cycle of immediate transitions found.&#10;  in .CycleOfImmediateTransitionsModal3.immediate4_1893289564_region_2.__1063672062.__1063672062_region_1._Controller._2_372745636 and .CycleOfImmediateTransitionsModal3.immediate4_1893289564_region_2.__1063672062.__1063672062_region_1._Controller">
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
