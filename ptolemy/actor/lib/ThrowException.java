@@ -28,6 +28,7 @@
 package ptolemy.actor.lib;
 
 import ptolemy.data.BooleanToken;
+import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
@@ -68,6 +69,10 @@ public class ThrowException extends Sink {
 
         message = new StringAttribute(this, "message");
         message.setExpression("Model triggered an exception.");
+        
+        throwInPostfire = new Parameter(this, "throwInPostfire");
+        throwInPostfire.setTypeEquals(BaseType.BOOLEAN);
+        throwInPostfire.setExpression("false");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -78,8 +83,40 @@ public class ThrowException extends Sink {
      */
     public StringAttribute message;
 
+    /** True to throw the model error in the postfire method.
+     *  False to throw in fire. This is a boolean that defaults
+     *  to false.
+     */
+    public Parameter throwInPostfire;
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** Read one token from each input channel that has a token,
+     *  and if any token is true, invoke the model error handler.
+     *  @exception IllegalActionException If thrown by the parent class.
+     *  @return Whatever the base class returns (probably true).
+     */
+    public void fire() throws IllegalActionException {
+        super.fire();
+        if (!((BooleanToken)throwInPostfire.getToken()).booleanValue()) {
+            boolean result = false;
+
+            // NOTE: We need to consume data on all channels that have data.
+            // If we don't then DE will go into an infinite loop.
+            for (int i = 0; i < input.getWidth(); i++) {
+                if (input.hasToken(i)) {
+                    if (((BooleanToken) input.get(i)).booleanValue()) {
+                        result = true;
+                    }
+                }
+            }
+
+            if (result) {
+                throw new IllegalActionException(this, message.getExpression());
+            }
+        }
+    }
 
     /** Read one token from each input channel that has a token,
      *  and if any token is true, throw an exception.
@@ -87,22 +124,23 @@ public class ThrowException extends Sink {
      *  @return Whatever the base class returns (probably true).
      */
     public boolean postfire() throws IllegalActionException {
-        boolean result = false;
+        if (((BooleanToken)throwInPostfire.getToken()).booleanValue()) {
+            boolean result = false;
 
-        // NOTE: We need to consume data on all channels that have data.
-        // If we don't then DE will go into an infinite loop.
-        for (int i = 0; i < input.getWidth(); i++) {
-            if (input.hasToken(i)) {
-                if (((BooleanToken) input.get(i)).booleanValue()) {
-                    result = true;
+            // NOTE: We need to consume data on all channels that have data.
+            // If we don't then DE will go into an infinite loop.
+            for (int i = 0; i < input.getWidth(); i++) {
+                if (input.hasToken(i)) {
+                    if (((BooleanToken) input.get(i)).booleanValue()) {
+                        result = true;
+                    }
                 }
             }
-        }
 
-        if (result) {
-            throw new IllegalActionException(this, message.getExpression());
+            if (result) {
+                throw new IllegalActionException(this, message.getExpression());
+            }
         }
-
         return super.postfire();
     }
 }

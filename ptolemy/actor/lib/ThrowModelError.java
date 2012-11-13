@@ -29,6 +29,7 @@ package ptolemy.actor.lib;
 
 import ptolemy.actor.InvariantViolationException;
 import ptolemy.data.BooleanToken;
+import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
@@ -78,6 +79,10 @@ public class ThrowModelError extends Sink {
 
         message = new StringAttribute(this, "message");
         message.setExpression("A model error.");
+        
+        throwInPostfire = new Parameter(this, "throwInPostfire");
+        throwInPostfire.setTypeEquals(BaseType.BOOLEAN);
+        throwInPostfire.setExpression("false");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -85,6 +90,12 @@ public class ThrowModelError extends Sink {
 
     /** The message reported in the exception. */
     public StringAttribute message;
+    
+    /** True to throw the model error in the postfire method.
+     *  False to throw in fire. This is a boolean that defaults
+     *  to false.
+     */
+    public Parameter throwInPostfire;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -94,29 +105,52 @@ public class ThrowModelError extends Sink {
      *  @exception IllegalActionException If thrown by the parent class.
      *  @return Whatever the base class returns (probably true).
      */
-    public boolean postfire() throws IllegalActionException {
-        boolean result = false;
+    public void fire() throws IllegalActionException {
+        super.fire();
+        if (!((BooleanToken)throwInPostfire.getToken()).booleanValue()) {
+            boolean result = false;
 
-        // NOTE: We need to consume data on all channels that have data.
-        // If we don't then DE will go into an infinite loop.
-        for (int i = 0; i < input.getWidth(); i++) {
-            if (input.hasToken(i)) {
-                if (((BooleanToken) input.get(i)).booleanValue()) {
-                    result = true;
+            // NOTE: We need to consume data on all channels that have data.
+            // If we don't then DE will go into an infinite loop.
+            for (int i = 0; i < input.getWidth(); i++) {
+                if (input.hasToken(i)) {
+                    if (((BooleanToken) input.get(i)).booleanValue()) {
+                        result = true;
+                    }
                 }
             }
-        }
 
-        if (result) {
-            //FIXME: instead of throw an IllegalActionException,
-            // an InvariantViolationException is thrown. Should we
-            // configure the "model error" type?
-            //handleModelError(this,
-            //      new IllegalActionException(this, message.getExpression()));
-            handleModelError(this, new InvariantViolationException(this,
-                    message.getExpression()));
+            if (result) {
+                handleModelError(this, new InvariantViolationException(this,
+                        message.getExpression()));
+            }
         }
+    }
 
+    /** Read one token from each input channel that has a token,
+     *  and if any token is true, invoke the model error handler.
+     *  @exception IllegalActionException If thrown by the parent class.
+     *  @return Whatever the base class returns (probably true).
+     */
+    public boolean postfire() throws IllegalActionException {
+        if (((BooleanToken)throwInPostfire.getToken()).booleanValue()) {
+            boolean result = false;
+
+            // NOTE: We need to consume data on all channels that have data.
+            // If we don't then DE will go into an infinite loop.
+            for (int i = 0; i < input.getWidth(); i++) {
+                if (input.hasToken(i)) {
+                    if (((BooleanToken) input.get(i)).booleanValue()) {
+                        result = true;
+                    }
+                }
+            }
+
+            if (result) {
+                handleModelError(this, new InvariantViolationException(this,
+                        message.getExpression()));
+            }
+        }
         return super.postfire();
     }
 }
