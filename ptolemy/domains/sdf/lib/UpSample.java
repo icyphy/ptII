@@ -166,6 +166,17 @@ public class UpSample extends SDFTransformer {
             }
         }
 
+        if (_debugging) {
+            StringBuffer resultString = new StringBuffer("[");
+            for (Token resultToken : result) {
+                if (resultString.length() != 1) {
+                    resultString.append(", ");
+                }
+                resultString.append(resultToken.toString());
+            }
+            resultString.append("]");
+            _debug("Sending to output: " + resultString);
+        }
         output.send(0, result, factorValue);
     }
 }
