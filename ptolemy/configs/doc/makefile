@@ -152,6 +152,8 @@ models.txt: $(ROOT)/ptolemy/actor/gui/HTMLAbout.class completeDemos.htm
 	"$(JAVA)" "-Dptolemy.ptII.dir=$(PTII)" \
 		-classpath "$(CLASSPATH)$(CLASSPATHSEPARATOR)$(AUXCLASSPATH)" \
 		ptolemy.actor.gui.HTMLAbout 
+	# Include the models in the ExecDemos directory.
+	ls -1 $(PTII)/ptolemy/demo/ExecDemos/Demos/*.xml | sed "s@$(PTII)@\$$CLASSPATH@" >> models.txt
 	LC_ALL=C sort -f models.txt | uniq > /tmp/models.txt
 	mv /tmp/models.txt models.txt
 
