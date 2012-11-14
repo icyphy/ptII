@@ -1177,8 +1177,7 @@ public class PtidesDirector extends DEDirector {
                     }
                 }
     
-                if (prefire && (!_enableResourceScheduling ||
-                            (_enableResourceScheduling && _schedule(
+                if (prefire && (!_resourceScheduling || (_resourceScheduling && _schedule(
                                 ptidesEvent.actor(),
                                 ptidesEvent.timeStamp(),
                                 _getExecutionTime(

@@ -31,7 +31,9 @@ ENHANCEMENTS, OR MODIFICATIONS.
 package ptolemy.domains.ptides.lib;
 
 import ptolemy.actor.CompositeActor;
+import ptolemy.actor.Director;
 import ptolemy.actor.lib.SetVariable;
+import ptolemy.actor.util.Time;
 import ptolemy.data.StringToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
@@ -39,6 +41,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Workspace;
 
 /** Error handling action for timing errors on Ptides Ports.
  * 
@@ -61,7 +64,21 @@ import ptolemy.kernel.util.NameDuplicationException;
  *  @Pt.ProposedRating Red (derler)
  *  @Pt.AcceptedRating Red (derler)
  */
-public class ErrorHandlingAction extends SetVariable {
+public class ErrorHandlingAction extends SetVariable { 
+
+    /** Construct an actor in the specified workspace with an empty
+     *  string as a name. You can then change the name with setName().
+     *  If the workspace argument is null, then use the default workspace.
+     *  The object is added to the workspace directory.
+     *  Increment the version number of the workspace.
+     *  @param workspace The workspace that will list the entity.
+     *  @exception NameDuplicationException Thrown if the name is already used.
+     *  @exception IllegalActionException Thrown if parameters cannot be created.
+     */
+    public ErrorHandlingAction(Workspace workspace) throws IllegalActionException, NameDuplicationException {
+        super(workspace);
+        _init();
+    }
 
     /** Construct an ErrorHandlingAction in the container with 
      *  a specified name.
@@ -74,17 +91,7 @@ public class ErrorHandlingAction extends SetVariable {
         throws NameDuplicationException, IllegalActionException {
         super(container, name);
         
-        action = new Parameter(this, "action");
-        action.setTypeEquals(BaseType.STRING);
-        action.addChoice("\"" + DropEvent + "\"");
-        action.addChoice("\"" + ExecuteEvent + "\"");
-        action.addChoice("\"" + FixTimestamp + "\"");
-        action.addChoice("\"" + ClearAllEvents + "\"");
-        action.addChoice("\"" + ClearEarlierEvents + "\"");
-        action.addChoice("\"" + ClearCorruptEvents + "\"");
-        action.setExpression("\"" + DropEvent + "\"");
-        
-        delayed.setExpression("false");
+        _init();
     }
 
     /** The error handling action. This is a string parameter with
@@ -156,6 +163,37 @@ public class ErrorHandlingAction extends SetVariable {
             } // else it is in the library.
         }
         super.attributeChanged(attribute);
+    }
+    
+    /** clone() is not supported, call clone(Workspace workspace)
+     *  instead.  Usually it is a mistake for an actor to have a
+     *  clone() method and call super.clone(), instead the actor
+     *  should have a clone(Workspace workspace) method and
+     *  call super.clone(workspace).
+     *  @exception CloneNotSupportedException Not thrown here.
+     */
+//    public Object clone(workspace) throws CloneNotSupportedException {
+//        ErrorHandlingAction newObject = (ErrorHandlingAction) super.clone(workspace);
+//        return newObject;
+//    }
+    
+    /** Initialize parameters.
+     * @exception NameDuplicationException If parameter name is already used.
+     * @exception IllegalActionException If parameter cannot be created or type cannot 
+     * be assigned.
+     */
+    private void _init() throws IllegalActionException, NameDuplicationException {
+        action = new Parameter(this, "action");
+        action.setTypeEquals(BaseType.STRING);
+        action.addChoice("\"" + DropEvent + "\"");
+        action.addChoice("\"" + ExecuteEvent + "\"");
+        action.addChoice("\"" + FixTimestamp + "\"");
+        action.addChoice("\"" + ClearAllEvents + "\"");
+        action.addChoice("\"" + ClearEarlierEvents + "\"");
+        action.addChoice("\"" + ClearCorruptEvents + "\"");
+        action.setExpression("\"" + DropEvent + "\"");
+        
+        delayed.setExpression("false");
     }
     
 }

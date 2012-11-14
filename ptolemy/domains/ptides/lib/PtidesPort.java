@@ -117,6 +117,9 @@ public class PtidesPort extends MirrorPort {
     /** Device delay bound parameter that defaults to the double value 0.0. */
     public Parameter deviceDelayBound;
 
+    /** Flag that is true if the port is a network receiver or transmitter. 
+     *  The flag defaults to false. 
+     */
     public Parameter isNetworkPort;
 
     /** Network delay bound parameter that defaults to the double value 0.0. */
@@ -128,10 +131,22 @@ public class PtidesPort extends MirrorPort {
     /** Source platform delay bound parameter that defaults to the double value 0.0. */
     public Parameter sourcePlatformDelayBound;
 
+    /** Return true if actuation should happen at event timestamp and false if
+     *  actuation can happen sooner. 
+     *  @return whether actuation should be done at the event timestamp.
+     */
     public boolean actuateAtEventTimestamp() {
         return _actuateAtEventTimestamp;
     }
 
+    /** React to a change in an attribute.  This method is called by
+     *  a contained attribute when its value changes.  This overrides
+     *  the base class so that if the attribute is an instance of
+     *  TypeAttribute, then it sets the type of the port.
+     *  @param attribute The attribute that changed.
+     *  @exception IllegalActionException If the change is not acceptable
+     *   to this container.
+     */
     @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
@@ -162,6 +177,9 @@ public class PtidesPort extends MirrorPort {
         return times;
     }
 
+    /** 
+     *  @return True if port is an actuator port.
+     */
     public boolean isActuatorPort() {
         return isOutput() && !_isNetworkPort;
     }
