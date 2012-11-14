@@ -852,15 +852,13 @@ public class Director extends Attribute implements Executable {
         _resourceScheduling = false;
         _resourceSchedulers = new ArrayList();
         _schedulerForActor = null;
-        for (Object entity : getContainer().attributeList()) {
-            if (entity instanceof ResourceScheduler) {
-                ResourceScheduler scheduler = (ResourceScheduler) entity;
-                _resourceSchedulers.add(scheduler);
-                Time time = scheduler.initialize();
-                if (time != null) {
-                    fireContainerAt(time);
-                }
-            }
+        for (Object entity : getContainer().attributeList(ResourceScheduler.class)) { 
+            ResourceScheduler scheduler = (ResourceScheduler) entity;
+            _resourceSchedulers.add(scheduler);
+            Time time = scheduler.initialize();
+            if (time != null) {
+                fireContainerAt(time);
+            } 
         }
 
         // Initialize the contained actors.
@@ -1837,46 +1835,40 @@ public class Director extends Attribute implements Executable {
         }
         Object object = _schedulerForActor.get(actor);
         if (!_schedulerForActor.containsKey(actor)) {
-            if (object == null) {
-                List attributeList = ((NamedObj) actor).attributeList();
-                if (attributeList.size() > 0) {
-                    for (int i = 0; i < attributeList.size(); i++) {
-                        Object attr = attributeList.get(i);
-                        if (attr instanceof Parameter) {
-                            try {
-                                Token paramToken = ((Parameter) attr)
-                                        .getToken();
-                                if (paramToken instanceof ObjectToken) {
-                                    Object paramObject = ((ObjectToken) paramToken)
-                                            .getValue();
-                                    if (paramObject instanceof ResourceScheduler) {
-                                        ResourceScheduler scheduler = (ResourceScheduler) paramObject;
-                                        if (_resourceSchedulers
+            if (object == null) { 
+                for (Parameter parameter : ((NamedObj) actor).attributeList(Parameter.class)) {
+                    try {
+                        Token paramToken = ((Parameter) parameter)
+                                .getToken();
+                        if (paramToken instanceof ObjectToken) {
+                            Object paramObject = ((ObjectToken) paramToken)
+                                    .getValue();
+                            if (paramObject instanceof ResourceScheduler) {
+                                ResourceScheduler scheduler = (ResourceScheduler) paramObject;
+                                if (_resourceSchedulers
+                                        .contains(scheduler)) {
+                                    _schedulerForActor.put(actor,
+                                            scheduler);
+                                    object = scheduler;
+                                    break;
+                                } else {
+                                    CompositeActor container = (CompositeActor) getContainer();
+                                    while (container.getContainer() != null) {
+                                        container = (CompositeActor) container
+                                                .getContainer();
+                                        if (container.getDirector()._resourceSchedulers
                                                 .contains(scheduler)) {
-                                            _schedulerForActor.put(actor,
-                                                    scheduler);
                                             object = scheduler;
                                             break;
-                                        } else {
-                                            CompositeActor container = (CompositeActor) getContainer();
-                                            while (container.getContainer() != null) {
-                                                container = (CompositeActor) container
-                                                        .getContainer();
-                                                if (container.getDirector()._resourceSchedulers
-                                                        .contains(scheduler)) {
-                                                    object = scheduler;
-                                                    break;
-                                                }
-                                            }
-                                        } // Else could have been deleted.
+                                        }
                                     }
-                                }
-                            } catch (IllegalActionException ex) {
-                                // Do nothing, the resource scheduler might
-                                // have been deleted.
+                                } // Else could have been deleted.
                             }
                         }
-                    }
+                    } catch (IllegalActionException ex) {
+                        // Do nothing, the resource scheduler might
+                        // have been deleted.
+                    } 
                     if (!_schedulerForActor.containsKey(actor)) {
                         _schedulerForActor.put(actor, null);
                     }
