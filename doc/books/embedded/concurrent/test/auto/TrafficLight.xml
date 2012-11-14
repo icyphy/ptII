@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="TrafficLight" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
     </property>
     <property name="SR Director" class="ptolemy.domains.sr.kernel.SRDirector">
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="10">
@@ -14,9 +14,9 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 40.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={188, 466, 990, 501}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={59, 24, 1011, 634}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[777, 391]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[777, 524]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
@@ -56,6 +56,24 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[240.0, 280.0]">
         </property>
     </property>
+    <property name="TestExceptionAttribute" class="ptolemy.actor.lib.TestExceptionAttribute">
+        <property name="correctExceptionMessage" class="ptolemy.data.expr.StringParameter" value="Unknown inputs remain. Possible causality loop:&#10;sigG&#10;&#10;  in .TrafficLight.CarGenerator and .TrafficLight.CarGenerator.sigG">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 400.0]">
+        </property>
+    </property>
+    <property name="Annotation5" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.0,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Although in theory this feedback loop is well formed,&#10;it is not constructive. The unique fixed point can only&#10;be found by exhaustive search, with Ptolemy II does not do.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, 375.0]">
+        </property>
+    </property>
     <entity name="CarGenerator" class="ptolemy.domains.modal.modal.ModalModel">
         <property name="_tableauFactory" class="ptolemy.vergil.modal.modal.ModalTableauFactory">
         </property>
@@ -72,12 +90,14 @@
             </property>
         </port>
         <entity name="_Controller" class="ptolemy.domains.modal.modal.ModalController">
+            <property name="errorCause" class="ptolemy.data.expr.Parameter">
+            </property>
             <property name="_library" class="ptolemy.moml.LibraryAttribute">
                 <configure>
         <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.modal.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory"></property></entity></entity>
       </configure>
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={313, 194, 813, 511}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={207, 430, 834, 635}, maximized=false}">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
             </property>
@@ -121,27 +141,11 @@
                 </property>
             </entity>
             <entity name="car" class="ptolemy.domains.modal.kernel.State">
+                <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="false">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[308.31500244140625, 72.3518149406567]">
-                </property>
-                <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
-                    <property name="rectangle" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
-                        <property name="_location" class="ptolemy.kernel.util.Location" value="-14.0, 12.0">
-                        </property>
-                        <property name="lineWidth" class="ptolemy.data.expr.Parameter" value="2.0">
-                        </property>
-                        <property name="width" class="ptolemy.data.expr.Parameter" value="32.0">
-                        </property>
-                        <property name="height" class="ptolemy.data.expr.Parameter" value="18.0">
-                        </property>
-                        <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
-                        </property>
-                        <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 1.0, 1.0, 1.0}">
-                        </property>
-                        <property name="rounding" class="ptolemy.data.expr.Parameter" value="20.0">
-                        </property>
-                    </property>
                 </property>
             </entity>
             <relation name="relation" class="ptolemy.domains.modal.kernel.Transition">
@@ -168,6 +172,7 @@
                 <property name="gamma" class="ptolemy.data.expr.Parameter" value="-1.6161065262681849">
                 </property>
                 <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="true">
+                    <display name="default"/>
                 </property>
             </relation>
             <relation name="relation4" class="ptolemy.domains.modal.kernel.Transition">
@@ -190,6 +195,7 @@
                 <property name="gamma" class="ptolemy.data.expr.Parameter" value="1.5380552820948359">
                 </property>
                 <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
+                    <display name="default"/>
                 </property>
                 <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
@@ -219,7 +225,7 @@
     <entity name="TrafficLight" class="ptolemy.domains.modal.modal.ModalModel">
         <property name="_tableauFactory" class="ptolemy.vergil.modal.modal.ModalTableauFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[305.0, 145.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[305.0, 150.0]">
         </property>
         <port name="sigG" class="ptolemy.domains.modal.modal.ModalPort">
             <property name="output"/>
@@ -242,12 +248,14 @@
             </property>
         </port>
         <entity name="_Controller" class="ptolemy.domains.modal.modal.ModalController">
+            <property name="errorCause" class="ptolemy.data.expr.Parameter">
+            </property>
             <property name="_library" class="ptolemy.moml.LibraryAttribute">
                 <configure>
         <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.modal.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory"></property></entity></entity>
       </configure>
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1, 22, 876, 663}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={750, 413, 897, 663}, maximized=false}">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[663, 552]">
             </property>
@@ -336,6 +344,7 @@
                 <property name="gamma" class="ptolemy.data.expr.Parameter" value="-1.9390477763803065">
                 </property>
                 <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="true">
+                    <display name="default"/>
                 </property>
             </relation>
             <relation name="relation3" class="ptolemy.domains.modal.kernel.Transition">
@@ -360,6 +369,7 @@
                 <property name="gamma" class="ptolemy.data.expr.Parameter" value="-1.2709179217002338">
                 </property>
                 <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="true">
+                    <display name="default"/>
                 </property>
             </relation>
             <relation name="relation5" class="ptolemy.domains.modal.kernel.Transition">
@@ -384,6 +394,7 @@
                 <property name="gamma" class="ptolemy.data.expr.Parameter" value="1.6056151079903778">
                 </property>
                 <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="true">
+                    <display name="default"/>
                 </property>
             </relation>
             <link port="red.incomingPort" relation="relation5"/>
