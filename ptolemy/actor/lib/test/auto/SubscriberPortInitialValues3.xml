@@ -1,0 +1,146 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="SubscriberPortInitialValues3" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
+    </property>
+    <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="5">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{90, 40}">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={566, 283, 959, 720}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[725, 610]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{362.5, 305.0}">
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This tests a global SubscriberPort that is &#10;used inside an actor oriented class.&#10;The SubscriberPort is inside an actor&#10;oriented class that is opaque. &#10;&#10;The instance of the actor oriented class&#10;is in an opaque composite named&#10;OpaqueCompositeActor.  Interestingly,&#10;if this composite is transparent, then&#10;the bug does not occur?&#10;&#10;The bug was that the model fail the first &#10;time with &#10;NoRoomException: Queue is at capacity of 2. Cannot put a token.&#10;&#10;However, running the model a second time&#10;would work.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 190.0]">
+        </property>
+    </property>
+    <class name="CompositeClassDefinition" extends="ptolemy.actor.TypedCompositeActor">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[215.0, 55.0]">
+        </property>
+        <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+            <property name="iterations" class="ptolemy.data.expr.Parameter" value="AUTO">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{360, 255}">
+            </property>
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={373, 208, 934, 634}, maximized=false}">
+        </property>
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
+        </property>
+        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+        </property>
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{522.1298828125, 391.796875}">
+        </property>
+        <entity name="CompositeActor" class="ptolemy.actor.TypedCompositeActor">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{265, 175}">
+            </property>
+            <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+                <property name="iterations" class="ptolemy.data.expr.Parameter" value="5">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{356.0, 176.0}">
+                </property>
+            </property>
+            <port name="SubscriberPort" class="ptolemy.actor.SubscriberPort">
+                <property name="input"/>
+                <property name="channel" class="ptolemy.data.expr.StringParameter" value="bar">
+                </property>
+                <property name="global" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="initialTokens" class="ptolemy.actor.PubSubPort$1" value="{0,2}">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{266.0, 311.0}">
+                </property>
+            </port>
+            <entity name="Test" class="ptolemy.actor.lib.Test">
+                <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0, 0, 2, 3, 4}">
+                </property>
+                <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[540.0, 310.0]">
+                </property>
+            </entity>
+            <relation name="relation" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <link port="SubscriberPort" relation="relation"/>
+            <link port="Test.input" relation="relation"/>
+        </entity>
+    </class>
+    <entity name="B" class="ptolemy.actor.TypedCompositeActor">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 130.0]">
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={373, 208, 934, 634}, maximized=false}">
+        </property>
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
+        </property>
+        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+        </property>
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{350.0, 262.0}">
+        </property>
+        <port name="PublisherPort" class="ptolemy.actor.PublisherPort">
+            <property name="output"/>
+            <property name="channel" class="ptolemy.data.expr.StringParameter" value="bar">
+            </property>
+            <property name="initialTokens" class="ptolemy.actor.PubSubPort$1" value="">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[415.0, 185.0]">
+            </property>
+        </port>
+        <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
+            <doc>Create a sequence of tokens with increasing value</doc>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{285, 185}">
+            </property>
+        </entity>
+        <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <link port="PublisherPort" relation="relation"/>
+        <link port="Ramp.output" relation="relation"/>
+    </entity>
+    <entity name="OpaqueCompositeActor" class="ptolemy.actor.TypedCompositeActor">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[210.0, 125.0]">
+        </property>
+        <entity name="InstanceOfCompositeClassDefinition" class="CompositeClassDefinition">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[110.0, 100.0]">
+            </property>
+            <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+                <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[275.0, 175.0]">
+                </property>
+            </property>
+            <entity name="CompositeActor" class="ptolemy.actor.TypedCompositeActor">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[285.0, 265.0]">
+                </property>
+                <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+                    <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+                    </property>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[325.0, 200.0]">
+                    </property>
+                </property>
+                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={373, 208, 934, 634}, maximized=false}">
+                </property>
+                <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
+                </property>
+                <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+                </property>
+                <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{586.0, 399.89453125}">
+                </property>
+                <entity name="Test" class="ptolemy.actor.lib.Test">
+                    <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0, 2, 0, 1, 2}">
+                    </property>
+                    <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+                    </property>
+                </entity>
+            </entity>
+        </entity>
+    </entity>
+</entity>
