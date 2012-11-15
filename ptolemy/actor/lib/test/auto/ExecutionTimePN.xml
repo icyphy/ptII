@@ -1,0 +1,175 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="ExecutionTimePN" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={453, 222, 934, 634}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{340.0, 252.0}">
+    </property>
+    <property name="PN Director" class="ptolemy.domains.pn.kernel.PNDirector">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[110.0, 45.0]">
+        </property>
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This Kahn Process Network (PN) model has three&#10;actor-oriented class instances that each contain &#10;an ExecutionTime actor that runs for 2 seconds.&#10;&#10;This PN model should execute in about 2 seconds&#10;instead of the 6 seconds that a SDF version would&#10;take.&#10;&#10;Note that the Const inside the Trigger composite&#10;has FiringLimit set to 3.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[320.0, 75.0]">
+        </property>
+    </property>
+    <class name="CompositeActor3" extends="ptolemy.actor.TypedCompositeActor">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[255.0, 65.0]">
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={373, 208, 934, 634}, maximized=false}">
+        </property>
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
+        </property>
+        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+        </property>
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{347.0, 427.796875}">
+        </property>
+        <port name="PublisherPort" class="ptolemy.actor.PublisherPort">
+            <property name="output"/>
+            <property name="channel" class="ptolemy.data.expr.StringParameter" value="output2">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[500.0, 365.0]">
+            </property>
+        </port>
+        <port name="SubscriberPort" class="ptolemy.actor.SubscriberPort">
+            <property name="input"/>
+            <property name="channel" class="ptolemy.data.expr.StringParameter" value="trigger2">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{105, 365}">
+            </property>
+        </port>
+        <entity name="ExecutionTime" class="ptolemy.actor.lib.ExecutionTime">
+            <property name="executionTime" class="ptolemy.data.expr.Parameter" value="2000L">
+            </property>
+            <property name="realTime" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[295.0, 360.0]">
+            </property>
+        </entity>
+        <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <link port="PublisherPort" relation="relation"/>
+        <link port="SubscriberPort" relation="relation2"/>
+        <link port="ExecutionTime.output" relation="relation"/>
+        <link port="ExecutionTime.trigger" relation="relation2"/>
+    </class>
+    <entity name="Trigger" class="ptolemy.actor.TypedCompositeActor">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{85.0, 145.0}">
+        </property>
+        <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The FiringCountLimit of the Const actor is set to 3.">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[90.0, 205.0]">
+            </property>
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={373, 208, 934, 634}, maximized=false}">
+        </property>
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
+        </property>
+        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+        </property>
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{397.15625, 374.89453125}">
+        </property>
+        <port name="PublisherPort" class="ptolemy.actor.PublisherPort">
+            <property name="output"/>
+            <property name="channel" class="ptolemy.data.expr.StringParameter" value="trigger">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{265, 150}">
+            </property>
+        </port>
+        <entity name="Const" class="ptolemy.actor.lib.Const">
+            <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="3">
+            </property>
+            <doc>Create a constant sequence.</doc>
+            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+                </property>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[105.0, 150.0]">
+            </property>
+        </entity>
+        <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <link port="PublisherPort" relation="relation"/>
+        <link port="Const.output" relation="relation"/>
+    </entity>
+    <entity name="InstanceOfCompositeActor" class="CompositeActor3">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[150.0, 215.0]">
+        </property>
+        <port name="PublisherPort" class="ptolemy.actor.PublisherPort">
+            <property name="output"/>
+            <property name="channel" class="ptolemy.data.expr.StringParameter" value="output0">
+            </property>
+            <property name="global" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+        </port>
+        <port name="SubscriberPort" class="ptolemy.actor.SubscriberPort">
+            <property name="input"/>
+            <property name="channel" class="ptolemy.data.expr.StringParameter" value="trigger">
+            </property>
+        </port>
+    </entity>
+    <entity name="InstanceOfCompositeActor2" class="CompositeActor3">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[225.0, 285.0]">
+        </property>
+        <port name="PublisherPort" class="ptolemy.actor.PublisherPort">
+            <property name="output"/>
+            <property name="channel" class="ptolemy.data.expr.StringParameter" value="output1">
+            </property>
+        </port>
+        <port name="SubscriberPort" class="ptolemy.actor.SubscriberPort">
+            <property name="input"/>
+            <property name="channel" class="ptolemy.data.expr.StringParameter" value="trigger">
+            </property>
+        </port>
+    </entity>
+    <entity name="InstanceOfCompositeActor3" class="CompositeActor3">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[290.0, 360.0]">
+        </property>
+        <port name="SubscriberPort" class="ptolemy.actor.SubscriberPort">
+            <property name="input"/>
+            <property name="channel" class="ptolemy.data.expr.StringParameter" value="trigger">
+            </property>
+        </port>
+    </entity>
+    <entity name="SubscriptionAggregator" class="ptolemy.actor.lib.SubscriptionAggregator">
+        <property name="channel" class="ptolemy.data.expr.StringParameter" value="output2">
+        </property>
+        <doc>Aggregate sequences generated by matching Publishers.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="channel">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+            <property name="boxColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.8, 0.0, 1.0}">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[355.0, 420.0]">
+        </property>
+    </entity>
+    <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{2000L}">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[530.0, 420.0]">
+        </property>
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="SubscriptionAggregator.output" relation="relation"/>
+    <link port="NonStrictTest.input" relation="relation"/>
+</entity>
