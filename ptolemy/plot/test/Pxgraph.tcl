@@ -92,6 +92,7 @@ proc pxgraphTest { args } {
 
     $plot write $printStream "Usually, the DTD would go here"
     $printStream flush
+    $printStream close
     set results [$stream toString]
     set thread [java::call Thread currentThread ]
     # sleep 0.5 seconds
@@ -100,8 +101,15 @@ proc pxgraphTest { args } {
     # This hack is necessary because of problems with crnl under windows
     regsub -all [java::call System getProperty "line.separator"] \
                 $results "\n" results2
-    regsub -all {<!-- Ptolemy plot, version .* -->} $results2 "<!-- Ptolemy plot, version XXX -->" results3
-    return $results3
+    # In PlotBox, if _title is null, then write() does not emit a  <title></title>
+    # This occurs on hudson as part of the nightly build:
+    # Xvfb :2 -screen 0 1024x768x24 &
+    # export DISPLAY=localhost:2.0
+    # ant test.single -Dtest.name=ptolemy.plot.test.junit.JUnitTclTest -Djunit.formatter=plain
+    regsub -all "<title></title>" \
+                $results2 "" results3
+    regsub -all {<!-- Ptolemy plot, version .* -->} $results3 "<!-- Ptolemy plot, version XXX -->" results4
+    return $results4
 }
 
 ########################################
@@ -115,7 +123,6 @@ test Pxgraph-1.1 {Test set labeling} {
 <!DOCTYPE plot SYSTEM "Usually, the DTD would go here">
 <plot>
 <!-- Ptolemy plot, version XXX -->
-<title></title>
 <dataset name="''">
 <m x="0.0" y="-2.0"/>
 <p x="1.0" y="2.0"/>
