@@ -231,36 +231,35 @@ public class ExportModelJUnitTest {
     private boolean _runDemo(String modelPath) {
         // Pathnames that should be skipped
         String[] skip = {
-                "ptalon/gt/demo/Adder/Adder.xml", // "Channel index 0 is out of range, because width is only 0."
-                "backtrack/demo/PrimeTest/PrimeTest.xml", // FIXME: Channel index 0 out of range.
-                "CRoom.xml", // hangs.
+                "ptalon/gt/demo/Adder/Adder.xml", // gt does not have a run button: "Channel index 0 is out of range, because width is only 0."
+                "CRoom.xml", // FIXME: hangs.
                 "distributed/demo/Sleep/Sleep.xml", // Requires jini.
-                "de/demo/Clock/Clock.xml", // FIXME: "Audio Device Unavailable"
-                "domains/gr", // "Cannot render to more than 32 Canvas3Ds",
-                              // need to close ViewScreen3D by adding a ViewScreen3D Tableau.
-                "ExecDemos.xml", // FIXME: vergil: command not found
-                "GravitationWithCollisionDetection.xml", // "Cannot render to more than 32 Canvas3Ds."
+                "de/demo/Clock/Clock.xml", // "Audio Device Unavailable"
+                //"domains/gr", // "Cannot render to more than 32 Canvas3Ds",
+                //              // need to close ViewScreen3D by adding a ViewScreen3D Tableau.
+                //"GravitationWithCollisionDetection.xml", // "Cannot render to more than 32 Canvas3Ds."
+                //"demo/ExecDemo/Demos/BouncingBall.xml", // "Cannot render to more than 32 Canvas3Ds."
                 "HierarchyFlattening.xml", // gt
                 "iRobotCreateVerification.xml", // Annotation says that it does not simulate.
-                "IterateOverArray.xml", // FIXME: no matching function abs( string )
-                "JMFJAI.xml", "KarplusStrong.xml",
+                "JMFJAI.xml", // Requires a video camera
+                "KarplusStrong.xml", // "Audio Device Unavailable"
                 "MatlabRoom.xml", // Matlab message: Error: Too many inputs passed to SimpleFunctionThunk.
                 "ModelReference.xml", // FIXME: "Cannot call invokeAndWait from the event dispatcher thread"
-                "ModularCGPubSub.xml", // FIXME: Can't link Subscriber with Publisher, channel was "channel
-                "ptolemy/gt/demo/Adder/Adder.xml", // FIXME: Channel index 0 is out of range, because width is only 0.
-                "ptolemy/domains/ptides/demo/Speaker/Speaker.xml", // FIXME: Types resolved to unacceptable types in .Speaker due to the following inequalities:
-                "PrintingPress.xml", // FIXME: "Cannot set local time to -Infinity, which is earlier than the last committed current time 0.0"
-                "PtidesBasicOnePlatform.xml", // FIXME: Type problem
-                "PtidesNetworkLatencyTest.xml", // FIXME: "Cannot set local time to -Infinity, which is earlier than the last committed current time 0.0"
+                "ptolemy/domains/ptides/demo/Speaker/Speaker.xml", // Luminary demo, Annotation says not to run.
+                "PtidesBasicOnePlatform.xml", // Annotation says not to run.
                 "PublisherTest", // gt
-                "RealTimeComposite.xml", // FIXME: "Audio Device Unavailable"
+                "RealTimeComposite.xml", // "Audio Device Unavailable"
                 "RunDemos.xml", // FIXME: cannot call invokeAndWait from the event dispatcher thread
-                "SerialPort.xml",
+                "SerialPort.xml", // Requires serial port.
                 "Signature.xml", // FIXME: Cannot read ptKeystore
                 "SimpleTrafficLightSMVModule.xml", // "PedestrianLightSMV can not run in simulation mode."
-                "SMVLegacyCodeActor", "SoundSpectrum.xml",
-                "SynthesizedVoice.xml", "SystemCommand.xml", // Hangs.
-                "SystemLevelType", "TunnelingBallDevice", "VideoCapture.xml", };
+                "SoundSpectrum.xml", // "Audio Device Unavailable"
+                "SynthesizedVoice.xml", // "Audio Device Unavailable"
+                "SystemCommand.xml", // FIXME: Hangs.
+                "SystemLevelType", // The SystemLevelType demos are not meant to be run.
+                "TunnelingBallDevice", // Annotation says that it cannot be run.
+                "VideoCapture.xml", // Requires a video camera.
+        };
         for (int i = 0; i < skip.length; i++) {
             if (modelPath.indexOf(skip[i]) != -1) {
                 return false;
