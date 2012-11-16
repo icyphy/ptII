@@ -272,7 +272,6 @@ $CLASSPATH/ptolemy/domains/pthales/demo/Illustrative/Illustrative.xml
 $CLASSPATH/ptolemy/domains/ptides/demo/PrintingPress/PrintingPress.xml
 $CLASSPATH/ptolemy/domains/ptides/demo/PtidesBasicDistributedPowerPlant/PtidesBasicDistributedPowerPlant.xml
 $CLASSPATH/ptolemy/domains/ptides/demo/PtidesBasicMixedSimulator/PtidesBasicMixedSimulator.xml
-$CLASSPATH/ptolemy/domains/ptides/demo/PtidesBasicOnePlatform/PtidesBasicOnePlatform.xml
 $CLASSPATH/ptolemy/domains/ptides/demo/PtidesBasicPowerPlant/PtidesBasicPowerPlant.xml
 $CLASSPATH/ptolemy/domains/ptides/demo/PtidesNetworkLatencyTest/PtidesNetworkLatencyTest.xml
 $CLASSPATH/ptolemy/domains/ptides/demo/PtidesSynchrophasor/PtidesSynchrophasor.xml
