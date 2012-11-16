@@ -2,20 +2,18 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="BouncingBall" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[578, 324]">
     </property>
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 100]">
     </property>
     <property name="ContinuousDirector" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
-        <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="true">
-        </property>
-        <property name="timeResolution" class="ptolemy.actor.parameters.SharedParameter" value="1.0E-10">
-        </property>
         <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="30">
+        </property>
+        <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <property name="initStepSize" class="ptolemy.data.expr.Parameter" value="0.001">
         </property>
@@ -24,6 +22,8 @@
         <property name="maxIterations" class="ptolemy.data.expr.Parameter" value="20">
         </property>
         <property name="errorTolerance" class="ptolemy.data.expr.Parameter" value="1.0E-4">
+        </property>
+        <property name="timeResolution" class="ptolemy.actor.parameters.SharedParameter" value="1.0E-10">
         </property>
         <property name="minStepSize" class="ptolemy.data.expr.Parameter" value="1.0E-9">
         </property>
@@ -64,7 +64,7 @@ time.  Open the Ball Model to see how it is implemented.</text></svg></configure
         <property name="_location" class="ptolemy.kernel.util.Location" value="[125.0, 0.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 791, 434}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 812, 634}, maximized=false}">
     </property>
     <property name="annotation2" class="ptolemy.kernel.util.Attribute">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -371,13 +371,13 @@ http://java.sun.com/products/java-media/3D/</text></svg></configure>
             <property name="_library" class="ptolemy.moml.LibraryAttribute">
                 <configure><entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.modal.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property></entity></entity></configure>
             </property>
-            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 350]">
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 524]">
             </property>
             <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[104, 152]">
             </property>
             <property name="initialPosition" class="ptolemy.data.expr.Parameter" value="10.0">
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={313, 219, 813, 461}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={423, 207, 834, 635}, maximized=false}">
             </property>
             <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
             </property>
@@ -386,7 +386,7 @@ http://java.sun.com/products/java-media/3D/</text></svg></configure>
             <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
                 <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The transition from init to free initializes the ball position and velocity.&#10;The self transition on free is triggered when a bump has been detected&#10;(inside the state refinement). The set actions on the transition reverse&#10;the velocity (with some loss due to elasticity). The transition to the&#10;stop state is taken when the position and velocity have gotten small&#10;enough that we decide the ball has stopped. If this transition is&#10;removed, then in theory time cannot progress past a certain point.&#10;In practice, numerical errors domainate and eventually the bump is&#10;not detected. Try it.">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 190.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 215.0]">
                 </property>
             </property>
             <port name="position" class="ptolemy.domains.modal.modal.RefinementPort">
@@ -442,9 +442,9 @@ http://java.sun.com/products/java-media/3D/</text></svg></configure>
                 </property>
                 <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.4216814692820417">
                 </property>
-                <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
                 <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="history" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
             </relation>
             <relation name="relation3" class="ptolemy.domains.modal.kernel.Transition">
@@ -456,9 +456,9 @@ http://java.sun.com/products/java-media/3D/</text></svg></configure>
                 </property>
                 <property name="gamma" class="ptolemy.data.expr.Parameter" value="-0.19714521705895027">
                 </property>
-                <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
                 <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="history" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
             </relation>
             <relation name="relation" class="ptolemy.domains.modal.kernel.Transition">
@@ -467,8 +467,6 @@ http://java.sun.com/products/java-media/3D/</text></svg></configure>
                 <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.4229116296947826">
                 </property>
                 <property name="gamma" class="ptolemy.data.expr.Parameter" value="-0.181061635689873">
-                </property>
-                <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
                 <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
@@ -490,13 +488,11 @@ http://java.sun.com/products/java-media/3D/</text></svg></configure>
             <property name="initialVelocity" class="ptolemy.data.expr.Parameter" value="0.1128098715085">
             </property>
             <property name="Continuous Director" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
-                <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
-                <property name="timeResolution" class="ptolemy.actor.parameters.SharedParameter" value="1.0E-10">
-                </property>
                 <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
                 <property name="stopTime" class="ptolemy.data.expr.Parameter" value="1.797693135E308">
+                </property>
+                <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
                 <property name="initStepSize" class="ptolemy.data.expr.Parameter" value="0.1">
                 </property>
@@ -505,6 +501,8 @@ http://java.sun.com/products/java-media/3D/</text></svg></configure>
                 <property name="maxIterations" class="ptolemy.data.expr.Parameter" value="20">
                 </property>
                 <property name="errorTolerance" class="ptolemy.data.expr.Parameter" value="1.0E-4">
+                </property>
+                <property name="timeResolution" class="ptolemy.actor.parameters.SharedParameter" value="1.0E-10">
                 </property>
                 <property name="minStepSize" class="ptolemy.data.expr.Parameter" value="1.0E-5">
                 </property>
