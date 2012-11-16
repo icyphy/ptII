@@ -28,7 +28,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
  */
 
-package ptolemy.domains.ptides.demo.PtidesBasicTTE;
+package ptolemy.domains.ptides.demo.TTE;
 
 import ptolemy.actor.util.Time;
 import ptolemy.data.DoubleToken;
