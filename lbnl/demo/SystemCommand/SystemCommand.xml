@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="SystemCommand" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
     </property>
     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="(finalTime-modelStartTime)/timeStep+1">
@@ -120,13 +120,13 @@ as arguments of a system command.</text></svg></configure>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 455.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={97, 82, 1130, 630}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={97, 82, 1151, 634}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[917, 520]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[917, 524]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.8421052631579">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{472.575, 276.0000000000003}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{458.5, 262.0}">
     </property>
     <class name="CompositeClassDefinition" extends="ptolemy.actor.TypedCompositeActor">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[125.0, 175.0]">
@@ -150,7 +150,7 @@ as arguments of a system command.</text></svg></configure>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 195.0]">
             </property>
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={188, 104, 996, 421}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={188, 104, 1080, 768}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[846, 658]">
         </property>
@@ -192,6 +192,11 @@ as arguments of a system command.</text></svg></configure>
         <entity name="ExpressionToToken" class="ptolemy.actor.lib.conversions.ExpressionToToken">
             <property name="_location" class="ptolemy.kernel.util.Location" value="[485.0, 375.0]">
             </property>
+            <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+                <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
+                </property>
+            </port>
         </entity>
         <entity name="ThrowModelError" class="ptolemy.actor.lib.ThrowModelError">
             <property name="message" class="ptolemy.kernel.util.StringAttribute" value="The trigger is non-zero, which means that there was an error during the simulation.">
