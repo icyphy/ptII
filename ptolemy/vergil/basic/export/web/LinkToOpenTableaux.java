@@ -329,7 +329,9 @@ public class LinkToOpenTableaux extends DefaultIconLink {
         List<Tableau> tableaux = effigy.entityList(Tableau.class);
         // If there are multiple tableaux open, use only the first one.
         if (tableaux.size() > 0) {
-            String name = destinationObject.getName();
+            // The ddf IfThenElse model has a composite called +1/-1 Gain,
+            // which is not a legal file name, so we sanitize it.
+            String name = StringUtilities.sanitizeName(destinationObject.getName());
             Frame frame = tableaux.get(0).getFrame();
             // If it's a composite actor, export HTML.
             if (frame instanceof HTMLExportable) {
