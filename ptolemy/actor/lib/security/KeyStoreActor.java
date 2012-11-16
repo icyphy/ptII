@@ -531,6 +531,13 @@ public class KeyStoreActor extends TypedAtomicActor {
                 // The next line might throw a NullPointerException
                 // if the fileOrURL does not exist.
                 keyStoreInputStream = fileOrURL.asURL().openStream();
+            } catch (IllegalActionException ex) {
+                // asURL() throws IllegalActionException and sets
+                // the cause to an IOException if the file cannot
+                // be found.
+                if ( !(ex.getCause() instanceof IOException)) {
+                    throw ex;
+                }
             } catch (FileNotFoundException ex) {
                 // Ignore, this means that the file does not exist,
                 // so we are trying to create a new empty keyStore.
