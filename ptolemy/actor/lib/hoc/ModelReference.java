@@ -359,7 +359,6 @@ public class ModelReference extends TypedAtomicActor implements
                 // Create a manager, if appropriate.
                 if (_model instanceof CompositeActor) {
                     _manager = new Manager(_model.workspace(), "Manager");
-                    System.out.println("ModelReference: Creating a manager");
                     ((CompositeActor) _model).setManager(_manager);
 
                     if (_debugging) {
