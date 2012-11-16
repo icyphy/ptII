@@ -342,8 +342,12 @@ PTINYOS_MOMLROOT=${WORKSPACE}/vendors/ptinyos/moml</localVarText>
 
 &lt;p&gt;&lt;a href=&quot;http://sisyphus.eecs.berkeley.edu:8079/hudson/job/ptII/lastCompletedBuild/testReport/&quot;&gt;Test Report&lt;/a&gt;.&lt;/p&gt;
 
+&lt;h2&gt;Failed Tests&lt;/h2&gt;
+${FAILED_TESTS}
 
-${JELLY_SCRIPT}
+&lt;h2&gt;Changes&lt;/h2&gt;
+${CHANGES}
+
 </defaultContent>
         </originalValue>
         <propertyOverridden>false</propertyOverridden>
