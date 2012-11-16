@@ -87,6 +87,11 @@ public abstract class MonotonicityConceptFunction extends ConceptFunction {
      */
     private void _addConceptConstants(Ontology domainOntology)
             throws IllegalActionException {
+        // FIXME: this is so wrong.
+        // The problem is that we are updating the Constants Hashtable
+        // that is shared between runs.  See
+        // OntologySolverBase.cleanConstants() for what we 
+        // need to do to remove the Constants that are added here.
         for (Object entity : domainOntology.allAtomicEntityList()) {
             if (entity instanceof Concept) {
                 Constants.add(((Concept) entity).getName(), new ConceptToken(

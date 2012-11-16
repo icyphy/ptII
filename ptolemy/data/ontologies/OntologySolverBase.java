@@ -39,7 +39,10 @@ import java.util.Set;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.parameters.SharedParameter;
 import ptolemy.data.ObjectToken;
+import ptolemy.data.RecordToken;
+import ptolemy.data.Token;
 import ptolemy.data.expr.ASTPtRootNode;
+import ptolemy.data.expr.Constants;
 import ptolemy.data.expr.Node;
 import ptolemy.data.expr.PtParser;
 import ptolemy.data.expr.Variable;
@@ -145,6 +148,25 @@ public abstract class OntologySolverBase extends MoMLModelAttribute {
     public void clearResolvedConcept(Object object) {
         _resolvedProperties.remove(object);
     }
+
+    /** Traverse the list of constants and remove any ConceptTokens
+     * that may have been added by MonotonicyConceptFunction
+     *  @ see ptolemy.data.ontologies.lattice.adapters.monotonicityAnalysis.MonotonicityConceptFunction
+     */
+    public static void cleanConstants() {
+        RecordToken constants = Constants.constants();
+        //System.out.println("OntologySolverBase: Constants: " + constants);
+        Set<String> labels = constants.labelSet();
+        for (String label : labels) {
+            Token token = constants.get(label);
+            if (token instanceof ConceptToken) {
+                //System.out.println("Found " + token + " Removing " + label);
+                Constants.remove(label);
+            }
+        }
+        //System.out.println("OntologySolverBase: Constants after cleaning: " + Constants.constants());
+    }
+
 
     /** Clone the object into the specified workspace.
      *  @param workspace The workspace for the new object.
@@ -322,6 +344,7 @@ public abstract class OntologySolverBase extends MoMLModelAttribute {
      */
     public PtParser getParser() {
         if (_parser == null) {
+            OntologySolverBase.cleanConstants();
             _parser = new PtParser();
         }
         return _parser;

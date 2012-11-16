@@ -128,6 +128,8 @@ public abstract class OntologySolver extends OntologySolverBase implements
      */
     public void configure(URL base, String source, String text)
             throws Exception {
+        OntologySolverBase.cleanConstants();
+
         super.configure(base, source, text);
 
         if (!(_model instanceof OntologySolverModel)) {

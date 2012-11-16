@@ -65,9 +65,9 @@ public enum SIUnitPrefixes {
      */
     private SIUnitPrefixes(double unitFactor, String prefixName,
             String prefixSymbol) {
-        this._unitFactor = unitFactor;
-        this._prefixName = new String(prefixName);
-        this._prefixSymbol = new String(prefixSymbol);
+        _unitFactor = unitFactor;
+        _prefixName = prefixName;
+        _prefixSymbol = prefixSymbol;
     }
 
     ///////////////////////////////////////////////////////////////////
