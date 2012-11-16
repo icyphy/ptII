@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="ModularCodeGen3" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
     </property>
     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="2">
@@ -12,20 +12,26 @@
     </property>
     <property name="ModularCodeGenerator" class="ptolemy.cg.kernel.generic.program.procedural.java.modular.ModularCodeGenerator">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={161, 0, 817, 612}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={161, 22, 836, 634}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[602, 505]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[602, 524]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.972503617945">
     </property>
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{340.0104166666667, 261.7641369047619}">
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Change r64183:&#10;          Disable backward type inference by default, and set input types&#10;          of Display and NonStrictTest to GENERAL only if backward type&#10;          inference is enabled.&#10;caused this model to stop working because the types changed from double to int.&#10;&#10;The workaround is to specifically set the type to double.&#10;">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 335.0]">
+        </property>
     </property>
     <entity name="A1" class="ptolemy.cg.lib.ModularCodeGenTypedCompositeActor">
         <property name="recompileHierarchy" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="recompileThisLevel" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[255.0, 125.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{255.0, 125.0}">
         </property>
         <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
             <property name="iterations" class="ptolemy.data.expr.Parameter" value="2">
@@ -33,7 +39,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[110.0, 65.0]">
             </property>
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 130, 815, 507}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 130, 834, 634}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
         </property>
@@ -45,10 +51,14 @@
             <property name="input"/>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 130.0]">
             </property>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
+            </property>
         </port>
         <port name="port2" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 175.0]">
+            </property>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
             </property>
         </port>
         <port name="port3" class="ptolemy.actor.TypedIOPort">
@@ -68,6 +78,8 @@
                     </property>
                 </entity>
                 <entity name="B1" class="ptolemy.cg.lib.ModularCodeGenTypedCompositeActor">
+                    <property name="recompileHierarchy" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
                     <property name="recompileThisLevel" class="ptolemy.data.expr.Parameter" value="false">
                     </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[235.0, 145.0]">
@@ -78,9 +90,9 @@
                         <property name="_location" class="ptolemy.kernel.util.Location" value="{95.0, 50.0}">
                         </property>
                     </property>
-                    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 0, 815, 507}, maximized=false}">
+                    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 834, 634}, maximized=false}">
                     </property>
-                    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+                    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 524]">
                     </property>
                     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
                     </property>
@@ -111,6 +123,12 @@
                             <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
                                 <property name="_location" class="ptolemy.kernel.util.Location" value="{330, 150}">
                                 </property>
+                                <port name="plus" class="ptolemy.actor.TypedIOPort">
+                                    <property name="input"/>
+                                    <property name="multiport"/>
+                                    <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
+                                    </property>
+                                </port>
                             </entity>
                             <relation name="relation4" class="ptolemy.actor.TypedIORelation">
                                 <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
@@ -133,6 +151,8 @@
                     </configure>
                 </entity>
                 <entity name="B2" class="ptolemy.cg.lib.ModularCodeGenTypedCompositeActor">
+                    <property name="recompileHierarchy" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
                     <property name="recompileThisLevel" class="ptolemy.data.expr.Parameter" value="false">
                     </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[195.0, 250.0]">
@@ -143,7 +163,7 @@
                         <property name="_location" class="ptolemy.kernel.util.Location" value="{95.0, 50.0}">
                         </property>
                     </property>
-                    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 130, 815, 507}, maximized=false}">
+                    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={226, 496, 834, 634}, maximized=false}">
                     </property>
                     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
                     </property>
@@ -176,6 +196,12 @@
                             <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
                                 <property name="_location" class="ptolemy.kernel.util.Location" value="{330, 150}">
                                 </property>
+                                <port name="plus" class="ptolemy.actor.TypedIOPort">
+                                    <property name="input"/>
+                                    <property name="multiport"/>
+                                    <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
+                                    </property>
+                                </port>
                             </entity>
                             <relation name="relation" class="ptolemy.actor.TypedIORelation">
                             </relation>
@@ -274,7 +300,7 @@
         </configure>
     </entity>
     <entity name="Const" class="ptolemy.actor.lib.Const">
-        <property name="value" class="ptolemy.data.expr.Parameter" value="2">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="2.0">
         </property>
         <doc>Create a constant sequence.</doc>
         <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
@@ -287,6 +313,8 @@
         </property>
     </entity>
     <entity name="A2" class="ptolemy.cg.lib.ModularCodeGenTypedCompositeActor">
+        <property name="recompileHierarchy" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
         <property name="recompileThisLevel" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[255.0, 230.0]">
@@ -332,6 +360,10 @@
                     </property>
                 </entity>
                 <entity name="B1" class="ptolemy.cg.lib.ModularCodeGenTypedCompositeActor">
+                    <property name="recompileHierarchy" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                    <property name="recompileThisLevel" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[235.0, 145.0]">
                     </property>
                     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
@@ -416,6 +448,8 @@
                     </configure>
                 </entity>
                 <entity name="B2" class="ptolemy.cg.lib.ModularCodeGenTypedCompositeActor">
+                    <property name="recompileHierarchy" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
                     <property name="recompileThisLevel" class="ptolemy.data.expr.Parameter" value="false">
                     </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[195.0, 250.0]">
