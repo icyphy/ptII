@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="MatlabRoom" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
     </property>
     <property name="annotation" class="ptolemy.kernel.util.Attribute">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -21,7 +21,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-10.0, 695.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[0.0, 715.0]">
         </property>
     </property>
     <property name="annotation2" class="ptolemy.kernel.util.Attribute">
@@ -110,9 +110,9 @@ This is for illustration purposes only and not needed by the above model.</text>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[200.0, 70.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={404, 120, 1129, 847}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={48, 22, 1150, 866}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[916, 737]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[916, 756]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
@@ -155,6 +155,18 @@ T_{k+1}. The control action is computed in Ptolemy II.</text></svg></configure>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="For this demo to work, the libbcvtb share library&#10;must be present and in the &#10;PATH (Windows),  LD_LIBRARY_PATH (Linux)&#10;or DYLD_LIBRARY_PATH (Mac OS X). &#10;Usually, libbcvtb is found in&#10;ptII/lbnl/lib/util or ptII/lib.&#10;&#10;In addition, BCVTB_HOME must be set to &#10;$PTII/lbnl&#10;&#10;MATLABPATH must be set to&#10;$PTII/lbnl/lib/matlab&#10;&#10;One way to do this is to run:&#10; cd $PTII/lbnl/demo/MatlabRoom&#10; make demo">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 85.0]">
+        </property>
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="11">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+        </property>
+        <property name="bold" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="If you get an error message like:&#10; {Error using loadlibrary (line 419)&#10;  dlopen(/Users/cxh/ptII/lbnl/lib/matlab/libbcvtb_thunk_glnxa64.dylib, 1): image&#10; not found&#10;then try rebuilding the .m files in&#10;$PTII/lbnl/lib/matlab/ with:&#10;  cd $PTII/lbnl/lib/matlab&#10;  make clean&#10;  make&#10;and then rerun this model.&#10;">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[400.0, 600.0]">
         </property>
     </property>
     <entity name="MATLAB" class="lbnl.actor.lib.Simulator">
@@ -220,11 +232,11 @@ T_{k+1}. The control action is computed in Ptolemy II.</text></svg></configure>
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="displayWidth">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[465.0, 585.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[470.0, 575.0]">
         </property>
     </entity>
     <entity name="WallClockTime" class="ptolemy.actor.lib.WallClockTime">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[230.0, 595.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[235.0, 585.0]">
         </property>
     </entity>
     <entity name="SimulationTime" class="ptolemy.actor.lib.gui.MonitorValue">
