@@ -56,6 +56,12 @@ import ptolemy.vergil.basic.export.ExportModel;
  *
  * <p>To run these tests, use:
  * <pre>
+ * cd $PTII
+ * ./configure
+ * ant test.single -Dtest.name=ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTest -Djunit.formatter=plain
+ * </pre>
+ * or
+ * <pre>
  * (cd $PTII/ptolemy/vergil/basic/export/test/junit/; java -Dptolemy.ptII.exportHTML.linkToJNLP=true -Dptolemy.ptII.exportHTML.usePtWebsite=true -classpath ${PTII}:${PTII}/lib/junit-4.8.2.jar:${PTII}/lib/JUnitParams-0.3.0.jar org.junit.runner.JUnitCore ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTest)
  * </pre>
  *
@@ -109,6 +115,17 @@ public class ExportModelJUnitTest {
                 + " -whiteBackground " + modelPath + " $PTII/" + modelDirectory
                 + "/" + modelName);
 
+	if (!openComposites) {
+	    System.out.println("Warning: not opening composites for "
+			       + modelPath 
+			       + ". See ptolemy/vergil/basic/export/test/junit/ExportModelJUnitTest.java");
+	}
+
+	if (!run) {
+	    System.out.println("Warning: not running "
+			       + modelPath 
+			       + ". See ptolemy/vergil/basic/export/test/junit/ExportModelJUnitTest.java");
+	}
         // ExportModel.exportModel() calls System.exit() unless we set this property.
         System.setProperty("ptolemy.ptII.doNotExit", "true");
 
@@ -232,6 +249,7 @@ public class ExportModelJUnitTest {
         // Pathnames that should be skipped
         String[] skip = {
                 "ptalon/gt/demo/Adder/Adder.xml", // gt does not have a run button: "Channel index 0 is out of range, because width is only 0."
+		"gt/demo/BouncingBallX2/BouncingBallX2/index.html", 
                 "CRoom.xml", // FIXME: hangs.
                 "distributed/demo/Sleep/Sleep.xml", // Requires jini.
                 "de/demo/Clock/Clock.xml", // "Audio Device Unavailable"
