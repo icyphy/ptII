@@ -146,7 +146,7 @@ public class ErrorHandlingAction extends SetVariable {
                     if (container == container.toplevel()) {
                         // Running cd $PTII/ptolemy/configs/test; make results in this class being
                         // cloned and going into an infinite loop unless we fail here.
-                        throw new IllegalActionException(this, "Could not find container named ErrorHandler");
+                        throw new IllegalActionException(this, "This component can only be used in containers called ErrorHandler");
                     }
                     container = (CompositeActor)container.getContainer();
                 }

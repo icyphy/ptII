@@ -225,7 +225,7 @@ public class PtidesDirector extends DEDirector {
                     + networkDelayBound) {
                 event = _handleTimingError(
                         sourcePort,
-                        event, 
+                        event,
                         "Event on this network receiver came in too late. "
                                 + "(Physical time: "
                                 + localClock.getLocalTime()
@@ -243,7 +243,7 @@ public class PtidesDirector extends DEDirector {
             if (list == null) {
                 list = new ArrayList<PtidesEvent>();
             }
-            
+
             list.add(event);
             _inputEventQueue.put(inputReady, list);
         }
@@ -372,7 +372,7 @@ public class PtidesDirector extends DEDirector {
         }
         return time;
     }
-    
+
     /** Return the source timestamp of the event that is currently
      *  being processed. If no event is being processed, 
      *  (i.e. event is analyzed for safe to process, actor is fired, ...) this 
@@ -620,11 +620,15 @@ public class PtidesDirector extends DEDirector {
                 }
 
                 if (getModelTime().compareTo(deliveryTime) < 0) {
-                    newEvent = _handleTimingError((PtidesPort) ioPort,
+                    newEvent = _handleTimingError(
+                            (PtidesPort) ioPort,
                             newEvent,
-                            "Missed Deadline at " + ioPort + "!\n " + " At "
+                            "Missed Deadline at "
+                                    + ioPort
+                                    + "!\n "
+                                    + " At "
                                     + getModelTime()
-                                    + " which is bigger than currentTime "
+                                    + " which is smaller than current platform time "
                                     + localClock.getLocalTime());
                 }
             } else if (((PtidesPort) ioPort).isNetworkTransmitterPort()) {
@@ -635,7 +639,7 @@ public class PtidesDirector extends DEDirector {
                             (PtidesPort) ioPort,
                             newEvent,
                             "Token is being sent out onto the network too late."
-                                    + "Current Physical time: "
+                                    + "Current platform time: "
                                     + localClock.getLocalTime()
                                     + " Event timestamp: "
                                     + getModelTime()
@@ -790,7 +794,7 @@ public class PtidesDirector extends DEDirector {
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
-    
+
     /** Calculate the delay offset for each input port.
      * The delay offset is used in the safe-to-process analysis
      * to know when no future events can occur at a sensor or network
@@ -800,17 +804,17 @@ public class PtidesDirector extends DEDirector {
      * for an input port.
      */
     private void _calculateDelayOffsets() throws IllegalActionException {
-    
+
         // Calculate delayOffset to each input port.
         for (TypedIOPort port : _inputPorts) {
-    
+
             // Disallow SensorPort and NetworkReceiverPort.
             if (port instanceof PtidesPort
                     && (((PtidesPort) port).isSensorPort() || ((PtidesPort) port)
                             .isNetworkReceiverPort())) {
                 continue;
             }
-    
+
             // Find minimum delay offset from all sensor or network receiver
             // input ports to the input port group of this port.
             double delayOffset = Double.POSITIVE_INFINITY;
@@ -836,7 +840,7 @@ public class PtidesDirector extends DEDirector {
                             .oPlus(_getSuperdenseDependencyPair(inputPort,
                                     groupPort));
                 }
-    
+
                 // Check if best so far.
                 double thisDelayOffset = minDelay.timeValue()
                         - deviceDelayBound;
@@ -850,7 +854,7 @@ public class PtidesDirector extends DEDirector {
                             - ((DoubleToken) clockSynchronizationErrorBound
                                     .getToken()).doubleValue());
         }
-    
+
         // Calculate delayOffset to each actor
         for (Object entity : ((CompositeActor) getContainer()).entityList()) {
             if (entity instanceof TimeDelay) {
@@ -869,17 +873,17 @@ public class PtidesDirector extends DEDirector {
      * parameter or cannot get device delay bound.
      */
     private void _calculateRelativeDeadlines() throws IllegalActionException {
-    
+
         // Calculate relativeDeadline for each input port.
         for (TypedIOPort port : _inputPorts) {
-    
+
             // Disallow SensorPort and NetworkReceiverPort.
             if (port instanceof PtidesPort
                     && (((PtidesPort) port).isSensorPort() || ((PtidesPort) port)
                             .isNetworkReceiverPort())) {
                 continue;
             }
-    
+
             // Find minimum model time delay path from the input
             // port to any actuator or network transmitter.
             double relativeDeadline = Double.POSITIVE_INFINITY;
@@ -894,7 +898,7 @@ public class PtidesDirector extends DEDirector {
                         "deviceDelayBound");
                 SuperdenseDependency minDelay = _getSuperdenseDependencyPair(
                         port, outputPort);
-    
+
                 // Check if best so far.
                 double thisRelativeDeadline = minDelay.timeValue()
                         - deviceDelayBound;
@@ -904,7 +908,7 @@ public class PtidesDirector extends DEDirector {
             }
             _setRelativeDeadline(port, relativeDeadline);
         }
-    
+
         // Set relative deadlines for pure events.
         // FIXME: may need to be modified to handle pure events which update
         // state.
@@ -929,52 +933,52 @@ public class PtidesDirector extends DEDirector {
      */
     private void _calculateSuperdenseDependenices()
             throws IllegalActionException {
-    
+
         //TODO: Code assumes code generation is at atomic actor level, so if
         // code generation is modified to cluster atomic actors (to reduce
         // execution overhead) this method will need to be modified.
         // Code generation would also need to handle multiports differently.
-    
+
         if (!(getContainer() instanceof TypedCompositeActor)) {
             throw new IllegalActionException(getContainer(), getContainer()
                     .getFullName() + " is not a TypedCompositeActor");
         }
-    
+
         // Initialize HashMaps. These will end up being identical if parameter
         // 'considerTriggerPorts' is false.
         _superdenseDependencyPair = new HashMap<TypedIOPort, Map<TypedIOPort, SuperdenseDependency>>();
-    
+
         // Create a list for all input ports. A List is needed since Set does
         // not make any guarantees on iteration order.
         _inputPorts = new ArrayList<TypedIOPort>();
-    
+
         // Store input port groups for all input ports.
         _inputPortGroups = new HashMap<TypedIOPort, Set<TypedIOPort>>();
-    
+
         // Find all input ports (consider actuator and network transmitter
         // ports as input ports as well) and add connections to other inputs.
         // This will build a weighted directed graph.
-    
+
         // Add sensor, actuator, and network ports.
         for (TypedIOPort port : (List<TypedIOPort>) ((TypedCompositeActor) getContainer())
                 .portList()) {
             if (port instanceof ParameterPort) {
                 continue;
             }
-    
+
             // Only allow ports which are PtidesPorts.
             if (!(port instanceof PtidesPort)) {
                 throw new IllegalActionException(port, port.getFullName()
                         + " is not a PtidesPort");
             }
-    
+
             _addInputPort(port);
-    
+
             // Add path from sensor or network input port to connected 
             // input ports. These connections have a weight of 0.
             if (((PtidesPort) port).isSensorPort()
                     || ((PtidesPort) port).isNetworkReceiverPort()) {
-    
+
                 for (IOPort connectedPort : (List<IOPort>) (port
                         .insideSinkPortList())) {
                     _putSuperdenseDependencyPair(port,
@@ -983,26 +987,26 @@ public class PtidesDirector extends DEDirector {
                 }
             }
         }
-    
+
         // Calculate superdense dependency from each input port of an
         // actor to the input ports of immediate predecessor actors (or
         // actuators or network transmitters) using causality interface
         // of the actor.
         for (Actor actor : (List<Actor>) ((TypedCompositeActor) getContainer())
                 .deepEntityList()) {
-    
+
             CausalityInterface actorCausality = actor.getCausalityInterface();
-    
+
             for (TypedIOPort inputPort : (List<TypedIOPort>) (actor
                     .inputPortList())) {
-    
+
                 // Ignore input if it's not connected to anything.
                 if (!inputPort.isOutsideConnected()) {
                     continue;
                 }
-    
+
                 _addInputPort(inputPort);
-    
+
                 for (TypedIOPort outputPort : (List<TypedIOPort>) (actor
                         .outputPortList())) {
                     // Get superdense dependency between input port and output
@@ -1044,7 +1048,7 @@ public class PtidesDirector extends DEDirector {
                 }
             }
         }
-    
+
         // Floyd-Warshall algorithm. This finds the minimum model time delay
         // between all input ports.
         for (TypedIOPort k : _inputPorts) {
@@ -1063,7 +1067,7 @@ public class PtidesDirector extends DEDirector {
                 }
             }
         }
-    
+
         // Print debug table.
         if (_debugging) {
             StringBuffer buf = new StringBuffer();
@@ -1136,10 +1140,10 @@ public class PtidesDirector extends DEDirector {
         for (Object event : eventArray) {
             if (_isSafeToProcess((PtidesEvent) event)) {
                 PtidesEvent ptidesEvent = ((PtidesEvent) event);
-    
+
                 // Check if actor can be fired by putting token into receiver 
                 // and accling prefire. 
-    
+
                 List<PtidesEvent> sameTagEvents = new ArrayList<PtidesEvent>();
                 int i = 0;
                 while (i < queue.size()) {
@@ -1160,13 +1164,13 @@ public class PtidesDirector extends DEDirector {
                     }
                     i++;
                 }
-    
+
                 _currentLogicalTime = ptidesEvent.timeStamp();
                 _currentLogicalIndex = ptidesEvent.microstep();
                 _currentSourceTimestamp = ptidesEvent.sourceTimestamp();
                 boolean prefire = ptidesEvent.actor().prefire();
                 _currentLogicalTime = null;
-    
+
                 // Remove tokens again.
                 for (PtidesEvent sameTagEvent : sameTagEvents) {
                     if (sameTagEvent.receiver() != null) {
@@ -1176,8 +1180,9 @@ public class PtidesDirector extends DEDirector {
                         }
                     }
                 }
-    
-                if (prefire && (!_resourceScheduling || (_resourceScheduling && _schedule(
+
+                if (prefire
+                        && (!_resourceScheduling || (_resourceScheduling && _schedule(
                                 ptidesEvent.actor(),
                                 ptidesEvent.timeStamp(),
                                 _getExecutionTime(
@@ -1264,7 +1269,6 @@ public class PtidesDirector extends DEDirector {
         }
     }
 
-    
     /** Handle timing error on a PtidesPort. 
      * 
      * FIXME: for now this can only drop the event that caused the error or throw a message. 
@@ -1275,111 +1279,147 @@ public class PtidesDirector extends DEDirector {
      * @return A new PtidesEvent that can be safely processed or null if no event should be processed.
      * @throws IllegalActionException If error handling actor throws this.
      */
-    private PtidesEvent _handleTimingError(PtidesPort port, PtidesEvent event, String message)
-            throws IllegalActionException {
-         List list = ((CompositeActor)getContainer()).entityList();
-         for (int i = 0; i < list.size(); i++) {
-             Object entity = list.get(i);
-             if (entity instanceof CompositeActor && 
-                     ((CompositeActor)entity).getName().equals("ErrorHandler")) {
-                 CompositeActor errorHandler = (CompositeActor) entity;
-                 
-                 List errorHandlerEntities = errorHandler.entityList(); 
-                 for (int j = 0; j < errorHandlerEntities.size(); j++) {
-                     Object errorHandlerEntity = errorHandlerEntities.get(j);
-                     if (errorHandlerEntity instanceof Const && 
-                             ((Const)errorHandlerEntity).getName().equals("missed" + port.getName())) {
-                         
-                         int index = 1;
-                         ((CompositeActor)errorHandler).getDirector().setModelTime(getModelTime());
-                         ((DEDirector)((CompositeActor)errorHandler).getDirector()).setIndex(index);
-                         ((Const)errorHandlerEntity).fire();
-                         
-                         
-                         Time time = errorHandler.getDirector().getModelNextIterationTime();
-                         
-                         ((CompositeActor)errorHandler).prefire(); 
-                         ((CompositeActor)errorHandler).fire(); 
-                         ((CompositeActor)errorHandler).postfire();
-                         
-                         List attributes = errorHandler.attributeList();
-                         for (int k = 0; k < attributes.size(); k++) {
-                             Attribute attribute = (Attribute) attributes.get(k);
-                             if (attribute instanceof Parameter) {
-                                 if (((Parameter)attribute).getName().equals(ErrorHandlingAction.DropEvent)) {
-                                     if (((Parameter)attribute).getToken() != null && 
-                                             ((BooleanToken)((Parameter)attribute).getToken()).booleanValue()) {
-                                         ((Parameter)attribute).setToken("false");
-                                         return null;
-                                     }
-                                 } 
-                                 if (((Parameter)attribute).getName().equals(ErrorHandlingAction.ExecuteEvent)) {
-                                     if (((Parameter)attribute).getToken() != null && 
-                                             ((BooleanToken)((Parameter)attribute).getToken()).booleanValue()) {
-                                         return event;
-                                     }
-                                 }
-                                 if (((Parameter)attribute).getName().equals(ErrorHandlingAction.FixTimestamp)) {
-                                     if (((Parameter)attribute).getToken() != null && 
-                                             ((BooleanToken)((Parameter)attribute).getToken()).booleanValue()) {
-                                         PtidesEvent newEvent = new PtidesEvent(event.ioPort(), event.channel(), 
-                                                 getModelTime(),
-                                                 event.microstep(), event.depth(), event.token(), event.receiver(), 
-                                                 event.sourceTimestamp());
-                                         return newEvent;
-                                     } 
-                                 }
-                                 if (((Parameter)attribute).getName().equals(ErrorHandlingAction.ClearAllEvents)) {
-                                     if (((Parameter)attribute).getToken() != null && 
-                                             ((BooleanToken)((Parameter)attribute).getToken()).booleanValue()) {
-                                         _eventQueue.clear();
-                                         _outputEventQueue.clear();
-                                         _pureEvents.clear();
-                                         return null;
-                                     }
-                                 }
-                                 if (((Parameter)attribute).getName().equals(ErrorHandlingAction.ClearEarlierEvents)) {
-                                     if (((Parameter)attribute).getToken() != null && 
-                                             ((BooleanToken)((Parameter)attribute).getToken()).booleanValue()) { 
-                                         int idx = 0;
-                                         while (i < _eventQueue.size()) {
-                                             PtidesEvent eventInQueue = ((PtidesListEventQueue) _eventQueue).get(idx); 
-                                             if (eventInQueue.sourceTimestamp().compareTo(event.sourceTimestamp()) < 0) {
-                                                 ((PtidesListEventQueue) _eventQueue).take(i); 
-                                                 continue;
-                                             }
-                                             idx++; 
-                                         }
-                                          
-                                         idx = 0;
-                                         while (i < _pureEvents.size()) {
-                                             PtidesEvent eventInQueue = ((PtidesListEventQueue) _pureEvents).get(idx); 
-                                             if (eventInQueue.sourceTimestamp().compareTo(event.sourceTimestamp()) < 0) {
-                                                 ((PtidesListEventQueue) _pureEvents).take(i); 
-                                                 continue;
-                                             }
-                                             idx++; 
-                                         } 
-                                     }
-                                     for (Time outputTime : _outputEventQueue.keySet()) {
-                                         for (PtidesEvent outputEvent : _outputEventQueue.get(outputTime)) {
-                                             if (outputEvent.sourceTimestamp().compareTo(event.sourceTimestamp()) < 0) { 
-                                                 _outputEventQueue.remove(outputTime);
-                                             }
-                                         }
-                                     }
-                                     return null;
-                                 }
-                                 if (((Parameter)attribute).getName().equals(ErrorHandlingAction.ClearCorruptEvents)) {
-                                     // TODO
-                                     return null;
-                                 }
-                             }
-                         }
-                     }
-                 }
-             }
-         }
+    private PtidesEvent _handleTimingError(PtidesPort port, PtidesEvent event,
+            String message) throws IllegalActionException {
+        List list = ((CompositeActor) getContainer()).entityList();
+        for (int i = 0; i < list.size(); i++) {
+            Object entity = list.get(i);
+            if (entity instanceof CompositeActor
+                    && ((CompositeActor) entity).getName().equals(
+                            "ErrorHandler")) {
+                CompositeActor errorHandler = (CompositeActor) entity;
+
+                List errorHandlerEntities = errorHandler.entityList();
+                for (int j = 0; j < errorHandlerEntities.size(); j++) {
+                    Object errorHandlerEntity = errorHandlerEntities.get(j);
+                    if (errorHandlerEntity instanceof Const
+                            && ((Const) errorHandlerEntity).getName().equals(
+                                    "missed" + port.getName())) {
+
+                        int index = 1;
+                        ((CompositeActor) errorHandler).getDirector()
+                                .setModelTime(getModelTime());
+                        ((DEDirector) ((CompositeActor) errorHandler)
+                                .getDirector()).setIndex(index);
+                        ((Const) errorHandlerEntity).fire();
+
+                        Time time = errorHandler.getDirector()
+                                .getModelNextIterationTime();
+
+                        ((CompositeActor) errorHandler).prefire();
+                        ((CompositeActor) errorHandler).fire();
+                        ((CompositeActor) errorHandler).postfire();
+
+                        List attributes = errorHandler.attributeList();
+                        for (int k = 0; k < attributes.size(); k++) {
+                            Attribute attribute = (Attribute) attributes.get(k);
+                            if (attribute instanceof Parameter) {
+                                if (((Parameter) attribute).getName().equals(
+                                        ErrorHandlingAction.DropEvent)) {
+                                    if (((Parameter) attribute).getToken() != null
+                                            && ((BooleanToken) ((Parameter) attribute)
+                                                    .getToken()).booleanValue()) {
+                                        ((Parameter) attribute)
+                                                .setToken("false");
+                                        return null;
+                                    }
+                                }
+                                if (((Parameter) attribute).getName().equals(
+                                        ErrorHandlingAction.ExecuteEvent)) {
+                                    if (((Parameter) attribute).getToken() != null
+                                            && ((BooleanToken) ((Parameter) attribute)
+                                                    .getToken()).booleanValue()) {
+                                        return event;
+                                    }
+                                }
+                                if (((Parameter) attribute).getName().equals(
+                                        ErrorHandlingAction.FixTimestamp)) {
+                                    if (((Parameter) attribute).getToken() != null
+                                            && ((BooleanToken) ((Parameter) attribute)
+                                                    .getToken()).booleanValue()) {
+                                        PtidesEvent newEvent = new PtidesEvent(
+                                                event.ioPort(),
+                                                event.channel(),
+                                                getModelTime(),
+                                                event.microstep(),
+                                                event.depth(), event.token(),
+                                                event.receiver(),
+                                                event.sourceTimestamp());
+                                        return newEvent;
+                                    }
+                                }
+                                if (((Parameter) attribute).getName().equals(
+                                        ErrorHandlingAction.ClearAllEvents)) {
+                                    if (((Parameter) attribute).getToken() != null
+                                            && ((BooleanToken) ((Parameter) attribute)
+                                                    .getToken()).booleanValue()) {
+                                        _eventQueue.clear();
+                                        _outputEventQueue.clear();
+                                        _pureEvents.clear();
+                                        return null;
+                                    }
+                                }
+                                if (((Parameter) attribute).getName().equals(
+                                        ErrorHandlingAction.ClearEarlierEvents)) {
+                                    if (((Parameter) attribute).getToken() != null
+                                            && ((BooleanToken) ((Parameter) attribute)
+                                                    .getToken()).booleanValue()) {
+                                        int idx = 0;
+                                        while (i < _eventQueue.size()) {
+                                            PtidesEvent eventInQueue = ((PtidesListEventQueue) _eventQueue)
+                                                    .get(idx);
+                                            if (eventInQueue
+                                                    .sourceTimestamp()
+                                                    .compareTo(
+                                                            event.sourceTimestamp()) < 0) {
+                                                ((PtidesListEventQueue) _eventQueue)
+                                                        .take(i);
+                                                continue;
+                                            }
+                                            idx++;
+                                        }
+
+                                        idx = 0;
+                                        while (i < _pureEvents.size()) {
+                                            PtidesEvent eventInQueue = ((PtidesListEventQueue) _pureEvents)
+                                                    .get(idx);
+                                            if (eventInQueue
+                                                    .sourceTimestamp()
+                                                    .compareTo(
+                                                            event.sourceTimestamp()) < 0) {
+                                                ((PtidesListEventQueue) _pureEvents)
+                                                        .take(i);
+                                                continue;
+                                            }
+                                            idx++;
+                                        }
+                                    }
+                                    for (Time outputTime : _outputEventQueue
+                                            .keySet()) {
+                                        for (PtidesEvent outputEvent : _outputEventQueue
+                                                .get(outputTime)) {
+                                            if (outputEvent
+                                                    .sourceTimestamp()
+                                                    .compareTo(
+                                                            event.sourceTimestamp()) < 0) {
+                                                _outputEventQueue
+                                                        .remove(outputTime);
+                                            }
+                                        }
+                                    }
+                                    return null;
+                                }
+                                if (((Parameter) attribute).getName().equals(
+                                        ErrorHandlingAction.ClearCorruptEvents)) {
+                                    // TODO
+                                    return null;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
         throw new IllegalActionException(port, message);
     }
 
@@ -1392,7 +1432,7 @@ public class PtidesDirector extends DEDirector {
     private boolean _isSafeToProcess(PtidesEvent event)
             throws IllegalActionException {
         Time eventTimestamp = event.timeStamp();
-    
+
         IOPort port = event.ioPort();
         Double delayOffset;
         if (port != null) {
@@ -1409,7 +1449,7 @@ public class PtidesDirector extends DEDirector {
                     return true;
                 }
             }
-    
+
             // A local source can have a delay offset parameter.
             delayOffset = _getDoubleParameterValue((NamedObj) event.actor(),
                     "delayOffset");
@@ -1421,7 +1461,7 @@ public class PtidesDirector extends DEDirector {
                 eventTimestamp.subtract(delayOffset)) >= 0) {
             return true;
         }
-    
+
         _setNextFireTime(eventTimestamp.subtract(delayOffset));
         return false;
     }
@@ -1473,7 +1513,7 @@ public class PtidesDirector extends DEDirector {
      */
     private void _setDelayOffset(NamedObj namedObj, Double delayOffset)
             throws IllegalActionException {
-    
+
         // FIXME: change method to _setDoubleParameterValue?
         DoubleToken token = new DoubleToken(delayOffset);
         Parameter parameter = (Parameter) namedObj.getAttribute("delayOffset");
@@ -1488,7 +1528,7 @@ public class PtidesDirector extends DEDirector {
         } else {
             parameter.setToken(token);
         }
-    
+
     }
 
     /** Set the next time to fire the director to the provided time if it is earlier than
@@ -1508,8 +1548,8 @@ public class PtidesDirector extends DEDirector {
      * @param relativeDeadline Relative deadline for input port.
      * @exception IllegalActionException If cannot set parameter.
      */
-    private void _setRelativeDeadline(TypedIOPort port,
-            Double relativeDeadline) throws IllegalActionException {
+    private void _setRelativeDeadline(TypedIOPort port, Double relativeDeadline)
+            throws IllegalActionException {
         DoubleToken token = new DoubleToken(relativeDeadline);
         Parameter parameter = (Parameter) port.getAttribute("relativeDeadline");
         if (parameter == null) {
