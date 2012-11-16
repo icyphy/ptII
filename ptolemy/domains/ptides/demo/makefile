@@ -33,7 +33,7 @@ ME =		ptolemy/domains/ptides/demo
 
 DIRS =	PtidesBasicDistributedPowerPlant\
 		PtidesBasicMixedSimulator PtidesBasicMultiPlatformTDMA \
-		PtidesBasicOnePlatform PtidesBasicPowerPlant \
+		PtidesBasicPowerPlant \
 		PtidesBasicTwoPlatformsNetworkSensorEvents \
 		PtidesPreemptEDFOnePlatformThreePathsRealDelay \
 		PtidesBasicTTE \
