@@ -31,22 +31,19 @@
 
 ME =		ptolemy/domains/ptides/demo
 
-DIRS =	PtidesBasicDistributedPowerPlant\
-		PtidesBasicMixedSimulator PtidesBasicMultiPlatformTDMA \
-		PtidesBasicPowerPlant \
-		PtidesBasicTwoPlatformsNetworkSensorEvents \
-		PtidesPreemptEDFOnePlatformThreePathsRealDelay \
-		PtidesBasicTTE \
-		PtidesClockSynchronizationError \
+DIRS =	DistributedPowerPlant \
+		MixedSimulator \
+		MultiPlatformTDMA \
+		PowerManagementUnitSamplingWithoutCurrentLocalTime \
+		PowerPlant \
+		PrintingPress \ 
 		PtidesMulticoreDirector \
 		PtidesNetworkLatencyTest \
-		PtidesPreemptEDFOnePlatformThreePathsRealDelay \
-		PowerManagementUnitSamplingWithoutCurrentLocalTime \
-		PrintingPress \
 		PtidesPorts \
+		PtidesPreemptEDFOnePlatformThreePathsRealDelay \
 		PtidesSynchrophasor \
-		SimplestPossiblePtidesModel \
-		TREX
+		TREX \
+		TTE 
 
 # Root of the Java directory
 ROOT =		../../../..
@@ -62,23 +59,19 @@ PTPACKAGE = 	demo
 
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
-	PtidesBasicDistributedPowerPlant/PtidesBasicDistributedPowerPlant.jar \
-	PtidesBasicMixedSimulator/PtidesBasicMixedSimulator.jar \
-	PtidesBasicMultiPlatformTDMA/PtidesBasicMultiPlatformTDMA.jar \
-	PtidesBasicOnePlatform/PtidesBasicOnePlatform.jar \
-	PtidesBasicPowerPlant/PtidesBasicPowerPlant.jar \
-	PtidesBasicTwoPlatformsNetworkSensorEvents/PtidesBasicTwoPlatformsNetworkSensorEvents.jar \
-	PtidesBasicTTE/PtidesBasicTTE.jar \
-	PtidesClockSynchronizationError/PtidesClockSynchronizationError.jar \
-	PtidesNetworkLatencyTest/PtidesNetworkLatencyTest.jar \
-	PtidesMulticoreDirector/PtidesMulticoreDirector.jar \
-	PtidesPreemptEDFOnePlatformThreePathsRealDelay/PtidesPreemptEDFOnePlatformThreePathsRealDelay.jar \
-	PowerManagementUnitSamplingWithoutCurrentLocalTime/PowerManagementUnitSamplingWithoutCurrentLocalTime.jar \
-	PrintingPress/PrintingPress.jar \
-	TREX/TREX.jar \
-	PtidesPorts/PtidesPorts.jar \
-	PtidesSynchrophasor/PtidesSynchrophasor.jar \
-	SimplestPossiblePtidesModel/SimplestPossiblePtidesModel.jar
+		DistributedPowerPlant/DistributedPowerPlant.jar \
+		MixedSimulator/MixedSimulator.jar \
+		MultiPlatformTDMA/MultiPlatformTDMA.jar \
+		PowerManagementUnitSamplingWithoutCurrentLocalTime/PowerManagementUnitSamplingWithoutCurrentLocalTime.jar \
+		PowerPlant/PowerPlant.jar \
+		PrintingPress/PrintingPress.jar \ 
+		PtidesMulticoreDirector/PtidesMulticoreDirector.jar \
+		PtidesNetworkLatencyTest/PtidesNetworkLatencyTest.jar \
+		PtidesPorts/PtidesPorts.jar \
+		PtidesPreemptEDFOnePlatformThreePathsRealDelay/PtidesPreemptEDFOnePlatformThreePathsRealDelayjar \
+		PtidesSynchrophasor/PtidesSynchrophasor.jar \
+		TREX/TREX.jar \
+		TTE/TTE.jar
 
 PTCLASSALLJAR= $(PTPACKAGE).jar
 
