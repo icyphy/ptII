@@ -117,7 +117,7 @@ public class SDFDirector
             Iterator<?> ports = container.inputPortList().iterator();
             while (ports.hasNext()) {
                 TypedIOPort port = (TypedIOPort) ports.next();
-                int rate = DFUtilities.getTokenInitProduction(port);
+                int rate = DFUtilities.getTokenInitConsumption(port);
                 if (rate > 0) {
 
                     int bufferSize = _ports.getBufferSize(port);

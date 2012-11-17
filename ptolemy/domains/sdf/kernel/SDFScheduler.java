@@ -1587,10 +1587,27 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
                     .hasNext();) {
                 IOPort port = (IOPort) inputPorts.next();
                 int count = ((Integer) externalRates.get(port)).intValue();
+                
+                // The input port may have initial tokens (SubcriberPort supports this).
+                count += DFUtilities.getTokenInitProduction(port);
 
                 if (count > 0) {
                     _simulateExternalInputs(port, count, actorList,
                             readyToScheduleActorList);
+                }
+            }
+            
+            // Simulate a number of tokens initially present on each
+            // external output port. An output port may have initial
+            // tokens on its inside receiver ready to be transported
+            // to the outside upon initialization. E.g., a publisher
+            // port with initial tokens.
+            for (Iterator outputPorts = container.outputPortList().iterator(); outputPorts
+                    .hasNext();) {
+                IOPort port = (IOPort) outputPorts.next();                
+                int count = DFUtilities.getTokenInitProduction(port);
+                if (count > 0) {
+                    _simulateInitialOutputTokens(port, count);
                 }
             }
 
@@ -1832,6 +1849,10 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
                 IOPort connectedPort = receivers[channel][copy].getContainer();
                 ComponentEntity connectedActor = (ComponentEntity) connectedPort
                         .getContainer();
+                
+                // If the connected port has an initial tokens for comsumption,
+                // those need to be added to the count.
+                count += DFUtilities.getTokenInitConsumption(connectedPort);
 
                 receiver._waitingTokens = count;
 
@@ -2084,6 +2105,56 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
                         // to a markedly more serial schedule, as can
                         // be demonstrated by animating the simulations"
                         readyToScheduleActorList.addFirst(itsActor);
+                    }
+                }
+            }
+        }
+    }
+
+    /** Simulate the availability of initial tokens on the inside
+     *  of the given output port.  These initial tokens have no
+     *  effect on the schedule at this level of the hierarchy,
+     *  but they do affect the capacity of the inside receivers
+     *  on such ports.
+     */
+    @SuppressWarnings("unused")
+    private void _simulateInitialOutputTokens(IOPort outputPort, int initialTokens)
+            throws IllegalActionException {
+        Receiver[][] receivers = outputPort.getInsideReceivers();
+
+        if (_debugging && VERBOSE) {
+            _debug("Initializing with " + initialTokens + " tokens on the inside of "
+                    + outputPort.getFullName());
+            _debug(" input channels = " + receivers.length);
+            _debug(" width = " + outputPort.getWidthInside());
+        }
+
+        for (int channel = 0; channel < receivers.length; channel++) {
+            if (receivers[channel] == null) {
+                continue;
+            }
+
+            for (int copy = 0; copy < receivers[channel].length; copy++) {
+                if (!(receivers[channel][copy] instanceof SDFReceiver)) {
+                    // NOTE: This should only occur if it is null.
+                    continue;
+                }
+
+                SDFReceiver receiver = (SDFReceiver) receivers[channel][copy];
+
+                // Increment the number of waiting tokens.
+                receiver._waitingTokens += initialTokens;
+
+                // Update the buffer size, if necessary.
+                boolean enforce = ((BooleanToken) constrainBufferSizes
+                        .getToken()).booleanValue();
+
+                if (enforce) {
+                    int capacity = receiver.getCapacity();
+
+                    if ((capacity == SDFReceiver.INFINITE_CAPACITY)
+                            || (receiver._waitingTokens > capacity)) {
+                        receiver.setCapacity(receiver._waitingTokens);
                     }
                 }
             }

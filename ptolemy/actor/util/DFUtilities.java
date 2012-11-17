@@ -250,7 +250,9 @@ public class DFUtilities {
 
     /** Get the number of tokens that are produced on the given port
      *  during initialization.  If the port is not an
-     *  output port, then return zero.  Otherwise, return the value of
+     *  output port, then the number of tokens is presumably the number
+     *  of initial tokens produced on the inside of the port.
+     *  The number of tokens returned is the value of
      *  the port's <i>tokenInitProduction</i> parameter.   If the parameter
      *  does not exist, then assume the actor is zero-delay and return
      *  a value of zero.
@@ -263,11 +265,7 @@ public class DFUtilities {
      */
     public static int getTokenInitProduction(IOPort port)
             throws IllegalActionException {
-        if (!port.isOutput()) {
-            return 0;
-        } else {
-            return getRateVariableValue(port, "tokenInitProduction", 0);
-        }
+        return getRateVariableValue(port, "tokenInitProduction", 0);
     }
 
     /** Get the number of tokens that are produced on the given port.
