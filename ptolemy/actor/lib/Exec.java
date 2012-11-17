@@ -148,6 +148,10 @@ public class Exec extends LimitedFiringSource {
         error.setTypeEquals(BaseType.STRING);
         new Parameter(error, "_showName", BooleanToken.TRUE);
 
+        ignoreIOExceptionReadErrors = new Parameter(this, "ignoreIOExceptionReadErrors",
+                                         BooleanToken.FALSE);
+        ignoreIOExceptionReadErrors.setTypeEquals(BaseType.BOOLEAN);
+
         input = new TypedIOPort(this, "input", true, false);
         input.setTypeEquals(BaseType.STRING);
         new Parameter(input, "_showName", BooleanToken.TRUE);
@@ -248,6 +252,12 @@ public class Exec extends LimitedFiringSource {
      *  port of type int.
      */
     public TypedIOPort exitCode;
+
+    /** If true, ignore IOException errors from the subprocess.
+     *  The initial default value is false, indicating that
+     *  read errors are not ignored.
+     */
+    public Parameter ignoreIOExceptionReadErrors;
 
     /** Strings to pass to the standard input of the subprocess.
      *  Note that a newline is not appended to the string.  If you
@@ -698,8 +708,29 @@ public class Exec extends LimitedFiringSource {
                     _stringBuffer.append(chars, 0, length);
                 }
             } catch (Throwable throwable) {
-                throw new InternalErrorException(_actor, throwable, getName()
-                        + ": Failed while reading from " + _inputStream);
+                // We set ignoreExceptionReadErrors to true for ExecDemos so that
+                // exporting html does not produce an error when the model exits after 30 seconds.
+                boolean ignoreIOExceptionReadErrorsValue = false;
+
+                try {
+                    ignoreIOExceptionReadErrorsValue = ((BooleanToken) ignoreIOExceptionReadErrors
+                            .getToken()).booleanValue();
+
+                } catch (IllegalActionException ex) {
+                    throw new InternalErrorException(_actor, ex, getName()
+                            + ": Could not get the value of the ignoreIOExceptionReadErrors "
+                            + "parameter while trying to throw " + throwable);
+                }
+                if (ignoreIOExceptionReadErrorsValue && throwable instanceof IOException) {
+                    new Exception("Warning: " + getFullName() + " had an exception, but "
+                            + "ignoreIOExceptionReadErrors was true and the exception was an "
+                            + "IOException, so it is being skipped.", throwable).printStackTrace();
+                } else {
+                    throw new InternalErrorException(_actor, throwable, getName()
+                        + ": Failed while reading from " + _inputStream
+                            + ". To avoid this, try setting the ignoreIOExceptionReadErrors parameter to true."
+                            + throwable.getCause());
+                }
             }
         }
 

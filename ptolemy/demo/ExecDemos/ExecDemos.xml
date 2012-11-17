@@ -75,7 +75,9 @@
         </property>
         <property name="directory" class="ptolemy.data.expr.FileParameter" value="$PTII/ptolemy/demo/ExecDemos">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[240.0, 280.0]">
+        <property name="ignoreIOExceptionReadErrors" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{240.0, 280.0}">
         </property>
     </entity>
     <entity name="Display" class="ptolemy.actor.lib.gui.Display">
