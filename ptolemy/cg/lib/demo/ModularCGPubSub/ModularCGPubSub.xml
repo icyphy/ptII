@@ -14,7 +14,7 @@
         <property name="_renderFirst" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
     </property>
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
     </property>
     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="2">
@@ -24,7 +24,7 @@
     </property>
     <property name="ModularCodeGenerator" class="ptolemy.cg.kernel.generic.program.procedural.java.modular.ModularCodeGenerator">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={77, 22, 1212, 706}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={77, 22, 1233, 706}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[999, 596]">
     </property>
@@ -86,6 +86,10 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{555.0, 45.0}">
         </property>
     </property>
+    <property name="enableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="false">
+    </property>
+    <property name="_defaultInferredWidthTo1" class="ptolemy.data.expr.Parameter" value="true">
+    </property>
     <entity name="A1" class="ptolemy.cg.lib.ModularCodeGenTypedCompositeActor">
         <property name="recompileHierarchy" class="ptolemy.data.expr.Parameter" value="false">
         </property>
@@ -99,7 +103,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 45.0]">
             </property>
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={34, 131, 848, 460}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={34, 131, 869, 634}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[635, 350]">
         </property>
@@ -134,9 +138,9 @@
         <configure>
             <group>
                 <entity name="A2" class="ptolemy.cg.lib.ModularCodeGenTypedCompositeActor">
-                    <property name="recompileHierarchy" class="ptolemy.data.expr.Parameter" value="true">
+                    <property name="recompileHierarchy" class="ptolemy.data.expr.Parameter" value="false">
                     </property>
-                    <property name="recompileThisLevel" class="ptolemy.data.expr.Parameter" value="true">
+                    <property name="recompileThisLevel" class="ptolemy.data.expr.Parameter" value="false">
                     </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[175.0, 155.0]">
                     </property>
@@ -146,7 +150,7 @@
                         <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 40.0]">
                         </property>
                     </property>
-                    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={32, 390, 813, 510}, maximized=false}">
+                    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={32, 390, 834, 634}, maximized=false}">
                     </property>
                     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
                     </property>
@@ -170,7 +174,9 @@
                             <entity name="Publisher" class="ptolemy.actor.lib.Publisher">
                                 <property name="channel" class="ptolemy.data.expr.StringParameter" value="channel">
                                 </property>
-                                <property name="_location" class="ptolemy.kernel.util.Location" value="[248.5, 190.0]">
+                                <property name="global" class="ptolemy.data.expr.Parameter" value="true">
+                                </property>
+                                <property name="_location" class="ptolemy.kernel.util.Location" value="{250.0, 190.0}">
                                 </property>
                             </entity>
                             <entity name="Scale" class="ptolemy.actor.lib.Scale">
@@ -198,6 +204,8 @@
                 </entity>
                 <entity name="Subscriber" class="ptolemy.actor.lib.Subscriber">
                     <property name="channel" class="ptolemy.data.expr.StringParameter" value="channel">
+                    </property>
+                    <property name="global" class="ptolemy.data.expr.Parameter" value="true">
                     </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="{320.0, 160.0}">
                     </property>
