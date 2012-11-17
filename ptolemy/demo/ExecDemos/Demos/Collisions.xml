@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="Collisions" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
     </property>
     <property name="WirelessDirector" class="ptolemy.domains.wireless.kernel.WirelessDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="20.0">
@@ -12,7 +12,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="70.0, 40.0">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={63, 22, 1221, 771}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={63, 22, 1242, 771}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1008, 661]">
     </property>
@@ -309,7 +309,7 @@ previous message is completed.</text></svg></configure>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[305.0, 95.0]">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={3, 85, 1008, 590}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={3, 85, 1029, 634}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[795, 480]">
         </property>
@@ -570,6 +570,10 @@ displays.</text></svg></configure>
                 </property>
             </entity>
             <entity name="TimeDelay" class="ptolemy.actor.lib.TimeDelay">
+                <property name="delay" class="ptolemy.actor.parameters.PortParameter" value="0.5">
+                </property>
+                <property name="minimumDelay" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[195.0, 215.0]">
                 </property>
             </entity>
@@ -606,7 +610,7 @@ displays.</text></svg></configure>
             <link port="TimeDelay.delay" relation="relation7"/>
         </entity>
         <entity name="SquarePulse2" class="ptolemy.actor.TypedCompositeActor">
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[530.0, 160.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[530.0, 155.0]">
             </property>
             <port name="value" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -657,6 +661,8 @@ displays.</text></svg></configure>
                 </property>
             </entity>
             <entity name="VariableDelay" class="ptolemy.domains.de.lib.VariableDelay">
+                <property name="delay" class="ptolemy.actor.parameters.PortParameter" value="0.5">
+                </property>
                 <property name="VariableDelayIcon" class="ptolemy.vergil.icon.EditorIcon">
                     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={179, 214, 815, 516}, maximized=false}">
                     </property>
@@ -774,7 +780,7 @@ displays.</text></svg></configure>
                 <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
                 </property>
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[305.0, 160.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{305.0, 155.0}">
             </property>
             <port name="control" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -1086,7 +1092,7 @@ previous message is completed.</text></svg></configure>
             </property>
         </entity>
         <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
-            <property name="init" class="ptolemy.data.expr.Parameter" value="PI/2.0">
+            <property name="init" class="ptolemy.actor.parameters.PortParameter" value="PI/2.0">
             </property>
             <property name="step" class="ptolemy.actor.parameters.PortParameter" value="2*PI/20.0">
             </property>
@@ -1097,7 +1103,7 @@ previous message is completed.</text></svg></configure>
             </property>
         </entity>
         <entity name="Ramp2" class="ptolemy.actor.lib.Ramp">
-            <property name="init" class="ptolemy.data.expr.Parameter" value="0.0">
+            <property name="init" class="ptolemy.actor.parameters.PortParameter" value="0.0">
             </property>
             <property name="step" class="ptolemy.actor.parameters.PortParameter" value="2*PI/20.0">
             </property>
