@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="Router" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -22,7 +22,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 85.0]">
         </property>
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 479]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 524]">
     </property>
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 100]">
     </property>
@@ -52,7 +52,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[295.0, 205.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={102, 102, 817, 589}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={102, 102, 838, 634}, maximized=false}">
     </property>
     <property name="AnnotationUpdated2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
@@ -147,11 +147,11 @@
         </port>
     </entity>
     <entity name="Sequence Count" class="ptolemy.actor.lib.Ramp">
-        <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
-        </property>
-        <property name="init" class="ptolemy.data.expr.Parameter" value="0">
+        <property name="init" class="ptolemy.actor.parameters.PortParameter" value="0">
         </property>
         <property name="step" class="ptolemy.actor.parameters.PortParameter" value="1">
+        </property>
+        <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
         </property>
         <doc>Create a sequence of tokens with increasing value</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[144.0, 334.0]">
@@ -206,13 +206,13 @@
         </property>
     </entity>
     <entity name="String Sequence" class="ptolemy.actor.lib.Pulse">
-        <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
-        </property>
         <property name="indexes" class="ptolemy.data.expr.Parameter" value="{0, 1, 2, 3}">
         </property>
         <property name="values" class="ptolemy.data.expr.Parameter" value="{&quot;Ptolemy&quot;, &quot;is&quot;, &quot;great&quot;, &quot;&quot;}">
         </property>
         <property name="repeat" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[144.0, 274.0]">
         </property>
@@ -260,6 +260,8 @@
         </property>
     </entity>
     <entity name="ChannelModel" class="ptolemy.actor.lib.TimeDelay">
+        <property name="minimumDelay" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[310.0, 325.0]">
         </property>
     </entity>
