@@ -84,6 +84,7 @@ Command line arguments are:
  -openComposites       Open any composites before exporting the model.
  -run       Run the model before exporting. -web and htm*: plots are also generated.
  -save      Save the model before closing.
+ -timeOut milliseconds   Timeout in milliseconds.
  -web  Common web export args. Short for: -force -copyJavaScriptFiles -open -openComposites htm.
  -whiteBackground      Set the background color to white.
  GIF|gif|HTM*|htm*|PNG|png The file format.

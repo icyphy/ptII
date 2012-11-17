@@ -87,6 +87,8 @@ public class ExportModel {
      *  If the formatName is "GIF", "gif", "PNG" or "png", then a file
      *  with the same basename as the basename of the model is created.
      *
+     *  <p>The time out defaults to 30 seconds.</p>
+     *
      *  @param copyJavaScriptFiles True if the javascript files should be copied.
      *  Used only if <i>formatName</i> starts with "htm" or "HTM".
      *
@@ -115,7 +117,7 @@ public class ExportModel {
      *  @param outputFileOrDirectory If non-null, then the file or directory
      *  in which to generate the file(s).
      *
-     *  @param save True if the model should be saved after being run.  This
+     *  @param save True if the model should be saved after being run. 
      *
      *  @param whiteBackground True if the model background should be set to white.
      *
@@ -127,6 +129,67 @@ public class ExportModel {
             final String modelFileName, final boolean run,
             final boolean openComposites, final boolean openResults,
             final String outputFileOrDirectory, final boolean save,
+            final boolean whiteBackground) throws Exception {
+
+        exportModel(copyJavaScriptFiles,
+                force, formatName,
+                modelFileName, run,
+                openComposites, openResults,
+                outputFileOrDirectory, save,
+                30000,
+                whiteBackground);
+    }
+
+    /** Export an image of a model to a file or directory.
+     *  The image is written to a file or directory with the same name as the model.
+     *  If formatName starts with "HTM" or "htm", then a directory with the
+     *  same name as the basename of the model is created.
+     *  If the formatName is "GIF", "gif", "PNG" or "png", then a file
+     *  with the same basename as the basename of the model is created.
+     *
+     *  @param copyJavaScriptFiles True if the javascript files should be copied.
+     *  Used only if <i>formatName</i> starts with "htm" or "HTM".
+     *
+     *  @param force If true, then remove the image file or htm directory to be created
+     *  in advance before creating the image file or htm directory.  This parameter
+     *  is primarily used to avoid prompting the user with questions about overwriting files
+     *  after this command is invoked.
+     *
+     *  @param formatName The file format of the file to be generated.
+     *  One of "GIF", "gif", "HTM", "htm", "PNG", "png".
+     *
+     *  @param modelFileName A Ptolemy model in MoML format.
+     *  The string may start with $CLASSPATH, $HOME or other formats
+     *  suitable for {@link ptolemy.util.FileUtilities#nameToFile(String, URI)}.
+     *
+     *  @param run True if the model should be run first.  If <i>run</i>
+     *  is true, and if <i>formatName</i> starts with "htm" or "HTM", then
+     *  the output will include images of any plots.
+     *
+     *  @param openComposites True if the CompositeEntities should be
+     *  open.  The <i>openComposites</i> parameter only has an effect
+     *  if <i>formatName</i> starts with "htm" or "HTM".
+     *
+     *  @param openResults open the resulting image file or web page.
+     *
+     *  @param outputFileOrDirectory If non-null, then the file or directory
+     *  in which to generate the file(s).
+     *
+     *  @param save True if the model should be saved after being run. 
+     *
+     *  @param timeOut Time out in milliseconds.  30000 is a good value.
+     *
+     *  @param whiteBackground True if the model background should be set to white.
+     *
+     *  @exception Exception Thrown if there is a problem reading the model
+     *  or exporting the image.
+     */
+    public void exportModel(final boolean copyJavaScriptFiles,
+            final boolean force, final String formatName,
+            final String modelFileName, final boolean run,
+            final boolean openComposites, final boolean openResults,
+            final String outputFileOrDirectory, final boolean save,
+            final long timeOut,
             final boolean whiteBackground) throws Exception {
         // FIXME: Maybe we should pass an ExportParameter here?
 
@@ -250,13 +313,13 @@ public class ExportModel {
                             public void run() {
                                 System.out
                                         .println("ExportHTMLTimer went off after "
-                                                + _timeToDie
+                                                + timeOut
                                                 + " ms., calling manager.stop()");
 
                                 finalManager.stop();
                             }
                         };
-                        _timer.schedule(doTimeToDie, _timeToDie);
+                        _timer.schedule(doTimeToDie, timeOut);
                         try {
                             manager.execute();
                         } finally {
@@ -617,6 +680,7 @@ public class ExportModel {
      *  @param args The arguments for the export image operation.
      *  The arguments should be in the format:
      *  [-help|-h|--help] | [-copyJavaScriptFiles] [-force] [-open] [-openComposites] [-run] [-save]
+     *  [-timeOut ms]
      *  [-web] [-whiteBackground] [GIF|gif|HTM*|htm*|PNG|png] model.xml
      *
      *  @exception args If there is 1 argument, then it names a
@@ -649,6 +713,8 @@ public class ExportModel {
                 + " -run       Run the model before exporting. -web and htm*: plots are also generated."
                 + eol
                 + " -save      Save the model before closing."
+                + eol
+                + " -timeOut milliseconds   Timeout in milliseconds."
                 + eol
                 + " -web  Common web export args. Short for: -force -copyJavaScriptFiles -open -openComposites htm."
                 + eol
@@ -688,6 +754,7 @@ public class ExportModel {
         String outputFileOrDirectory = null;
         boolean run = false;
         boolean save = false;
+        long timeOut = 30000;
         boolean whiteBackground = false;
         boolean web = false;
         String modelFileName = null;
@@ -716,6 +783,14 @@ public class ExportModel {
                     run = true;
                 } else if (args[i].equals("-save")) {
                     save = true;
+                } else if (args[i].equals("-timeOut")) {
+                    try {
+                        timeOut = Long.parseLong(args[i+1]);
+                    } catch (NumberFormatException ex) {
+                        System.err.println(args[i+1] + "cannot be parsed to long value for the time out."
+                                + ex);
+                    }
+                    i++;
                 } else if (args[i].toUpperCase().equals("GIF")
                         || args[i].toUpperCase().startsWith("HTM")
                         || args[i].toUpperCase().equals("PNG")) {
@@ -761,7 +836,7 @@ public class ExportModel {
             // FIXME: Should we use ExportParameter here?
             new ExportModel().exportModel(copyJavaScriptFiles, force,
                     formatName, modelFileName, run, openComposites,
-                    openResults, outputFileOrDirectory, save, whiteBackground);
+                    openResults, outputFileOrDirectory, save, timeOut, whiteBackground);
 
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -798,7 +873,4 @@ public class ExportModel {
 
     /** The Timer used to terminate a run. */
     private static Timer _timer = null;
-
-    /** The number of milliseconds after which a run is terminated. */
-    private final static long _timeToDie = 30000;
 }

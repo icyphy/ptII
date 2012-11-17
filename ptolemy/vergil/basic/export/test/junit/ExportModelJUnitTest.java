@@ -104,6 +104,7 @@ public class ExportModelJUnitTest {
 
         boolean openComposites = _openComposites(modelPath);
         boolean run = _runDemo(modelPath);
+        long timeOut = _timeOut(modelPath);
 
         _count++;
         Date date = new Date();
@@ -112,6 +113,7 @@ public class ExportModelJUnitTest {
                 + "ptolemy.vergil.basic.export.ExportModel -force htm "
                 + (run ? "-run " : " ")
                 + (openComposites ? "-openComposites " : " ")
+                + "-timeOut " + timeOut
                 + " -whiteBackground " + modelPath + " $PTII/" + modelDirectory
                 + "/" + modelName);
 
@@ -135,7 +137,9 @@ public class ExportModelJUnitTest {
             exportModel.exportModel(false /* copyJavaScriptFiles */,
                     true /* force */, "htm", fullModelPath, run,
                     openComposites, false /* open results */, outputDirectory,
-                    false /* save */, true /* whitebackground */);
+                    false /* save */, 
+                    timeOut,
+                    true /* whitebackground */);
             System.out.println(Manager.timeAndMemory(startTime));
         } catch (Throwable throwable) {
             throwable.printStackTrace();
@@ -269,6 +273,23 @@ public class ExportModelJUnitTest {
             }
         }
         return true;
+    }
+
+    /** Return the time out in milliseconds.
+     *  The timeout for most demos is 30 seconds.   
+     *  Some demos run longer.
+     */
+    private long _timeOut(String modelPath) {
+        // Pathnames for demos that get a longer running time
+        String[] longRunningDemos = {
+            "ExecDemos.xml"
+        };
+        for (int i = 0; i < longRunningDemos.length; i++) {
+            if (modelPath.indexOf(longRunningDemos[i]) != -1) {
+                return 10000;
+            }
+        }
+        return 30000;
     }
 
     /** Number of models exported. */
