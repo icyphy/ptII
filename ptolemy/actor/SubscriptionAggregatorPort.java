@@ -98,6 +98,8 @@ public class SubscriptionAggregatorPort extends SubscriberPort {
         operation.addChoice("add");
         operation.addChoice("multiply");
         operation.setExpression("add");
+        
+        setMultiport(true);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -274,6 +276,14 @@ public class SubscriptionAggregatorPort extends SubscriberPort {
         }
         return result;
     }
+    
+    /** Return the inside width of this port, which in this class is
+     *  always 1.
+     *  @return The width of the inside of the port.
+     */
+    public int getWidthInside() {
+        return 1;
+    }
 
     /** Return true if any input channel has a token.
      *  @param channelIndex The channel index. This is required to be 0.
@@ -283,12 +293,14 @@ public class SubscriptionAggregatorPort extends SubscriberPort {
      */
     @Override
     public boolean hasToken(int channelIndex) throws IllegalActionException {
+        /* Allow asking about other channels.
         if (channelIndex != 0) {
             throw new IllegalActionException(
                     this,
                     "Although it is a multiport, you can only read"
                             + " from channel 0 of a SubscriptionAggregatorPort.");
         }
+        */
         for (int i = 0; i < getWidth(); i++) {
             if (super.hasToken(i)) {
                 return true;
@@ -307,12 +319,14 @@ public class SubscriptionAggregatorPort extends SubscriberPort {
     @Override
     public boolean hasToken(int channelIndex, int vectorLength)
             throws IllegalActionException {
+        /* Allow asking about other channels.
         if (channelIndex != 0) {
             throw new IllegalActionException(
                     this,
                     "Although it is a multiport, you can only read"
                             + " from channel 0 of a SubscriptionAggregatorPort.");
         }
+        */
         boolean foundOne = false;
         for (int i = 0; i < getWidth(); i++) {
             if (super.hasToken(i)) {
@@ -342,6 +356,15 @@ public class SubscriptionAggregatorPort extends SubscriberPort {
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
+
+    /** Override the base class to always return 1.
+     *  @param except The relation to exclude.
+     *  @return The sums of the width of the relations linked on the inside,
+     *  except for the specified port.
+     */
+    protected int _getInsideWidth(IORelation except) {
+        return 1;
+    }
 
     /** Update the connection to the publishers, if there are any.
      *  @exception IllegalActionException If creating the link
