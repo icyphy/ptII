@@ -578,6 +578,15 @@ public class Manager extends NamedObj implements Runnable {
         return _iterationCount;
     }
 
+    /** Return the workspace version on the last completion of
+     *  preinitializeAndResolveTypes(). This can be used to optimize
+     *  away actions on repeated runs when the workspace hasn't changed
+     *  between runs.
+     */
+    public long getPreinitializeVersion() {
+        return _preinitializeVersion;
+    }
+    
     /** Return the current state of execution of the manager.
      *  @return The state of execution.
      */
@@ -984,7 +993,7 @@ public class Manager extends NamedObj implements Runnable {
      *  during editing a model to check types, to expand higher-order
      *  components, or to establish connections between Publisher and
      *  Subscriber actors.
-     *  @exception KernelException If thrown wil preinitializing
+     *  @exception KernelException If thrown while preinitializing
      *  and resolving types.
      */
     public void preinitializeIfNecessary() throws KernelException {

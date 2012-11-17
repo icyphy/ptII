@@ -186,6 +186,7 @@ public class Scheduler extends Attribute {
 
             if (!isValid() || (_cachedGetSchedule == null)) {
                 _cachedGetSchedule = _getSchedule();
+                _workspaceVersion = workspace().getVersion();
             }
 
             return _cachedGetSchedule;
@@ -198,6 +199,9 @@ public class Scheduler extends Attribute {
      *  @return true if the current schedule is valid.
      */
     public boolean isValid() {
+        if (_workspaceVersion != workspace().getVersion()) {
+            return false;
+        }
         return _valid;
     }
 
@@ -285,9 +289,10 @@ public class Scheduler extends Attribute {
      */
     public void setValid(boolean valid) {
         _valid = valid;
-
         if (valid == false) {
             _cachedGetSchedule = null;
+        } else {
+            _workspaceVersion = workspace().getVersion();
         }
     }
 
@@ -343,9 +348,12 @@ public class Scheduler extends Attribute {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    // The flag that indicate whether the current schedule is valid.
-    private boolean _valid = false;
-
     // The cached schedule for getSchedule().
     private Schedule _cachedGetSchedule = null;
+
+    // The flag that indicate whether the current schedule is valid.
+    private boolean _valid = false;
+    
+    // Workspace version when the last schedule was constructed.
+    private long _workspaceVersion = -1L;
 }
