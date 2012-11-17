@@ -590,7 +590,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
      */
     public void fire() throws IllegalActionException {
         if (_debugging) {
-            _debug("************ Firing FSM.");
+            _debug("************ Firing FSM. Current state: " + _currentState.getName());
         }
 
         Time environmentTime = _getEnvironmentTime();
