@@ -220,18 +220,8 @@ public class ExportModelJUnitTest {
     private boolean _openModel(String modelPath) {
         // Pathnames that should be skipped
         String[] skip = {
-                //"luminary/adapters/ptolemy/domains/ptides/demo/Speaker/Speaker.xml", // TypeConflict
-                //"luminary/adapters/ptolemy/domains/ptides/demo/Accumulator/Accumulator.xml", // TypeConflict
-                //"ModularCGPubSub.xml", //Can't find the publisher for "channel".
-                //"MonotonicityAnalysis.xml", // Expected '{x = General}' but got '{x = NonMonotonic_{<o...
-                "ddf/demo/IfThenElse/IfThenElse.xml", // FIXME: Failed to generate sub-web-page.
-                "ddf/demo/IfThenElse/IfThenElseFSM.xml", // FIXME: Failed to generate sub-web-page.
-
-                "ScaleWithEmbeddedCFileActor", // Only works on 32-bit
-                "SimplePassPointer", // Only works on 32-bit
-                "MatlabWirelessSoundDetection.xml", // Hangs.
-        //"ModeReference.xml", // "Cannot call invokeAndWait from the event dispatcher thread"
-        //"Signature.xml", // Keystore is not present.
+            "ScaleWithEmbeddedCFileActor", // Only works on 32-bit
+            "SimplePassPointer", // Only works on 32-bit
         };
         for (int i = 0; i < skip.length; i++) {
             if (modelPath.indexOf(skip[i]) != -1) {
@@ -250,7 +240,6 @@ public class ExportModelJUnitTest {
         String[] skip = {
                 "ptalon/gt/demo/Adder/Adder.xml", // gt does not have a run button: "Channel index 0 is out of range, because width is only 0."
 		"gt/demo/BouncingBallX2/BouncingBallX2/index.html", 
-                "CRoom.xml", // FIXME: hangs.
                 "distributed/demo/Sleep/Sleep.xml", // Requires jini.
                 "de/demo/Clock/Clock.xml", // "Audio Device Unavailable"
                 //"domains/gr", // "Cannot render to more than 32 Canvas3Ds",
@@ -262,18 +251,14 @@ public class ExportModelJUnitTest {
                 "JMFJAI.xml", // Requires a video camera
                 "KarplusStrong.xml", // "Audio Device Unavailable"
                 "MatlabRoom.xml", // Matlab message: Error: Too many inputs passed to SimpleFunctionThunk.
-                "ModelReference.xml", // FIXME: "Cannot call invokeAndWait from the event dispatcher thread"
                 "ptolemy/domains/ptides/demo/Speaker/Speaker.xml", // Luminary demo, Annotation says not to run.
                 "PtidesBasicOnePlatform.xml", // Annotation says not to run.
                 "PublisherTest", // gt
                 "RealTimeComposite.xml", // "Audio Device Unavailable"
-                "RunDemos.xml", // FIXME: cannot call invokeAndWait from the event dispatcher thread
                 "SerialPort.xml", // Requires serial port.
-                "Signature.xml", // FIXME: Cannot read ptKeystore
                 "SimpleTrafficLightSMVModule.xml", // "PedestrianLightSMV can not run in simulation mode."
                 "SoundSpectrum.xml", // "Audio Device Unavailable"
                 "SynthesizedVoice.xml", // "Audio Device Unavailable"
-                "SystemCommand.xml", // FIXME: Hangs.
                 "SystemLevelType", // The SystemLevelType demos are not meant to be run.
                 "TunnelingBallDevice", // Annotation says that it cannot be run.
                 "VideoCapture.xml", // Requires a video camera.
