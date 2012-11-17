@@ -35,13 +35,11 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
-import ptolemy.actor.parameters.SharedParameter;
 import ptolemy.actor.util.BooleanDependency;
 import ptolemy.actor.util.CausalityInterface;
 import ptolemy.actor.util.CausalityInterfaceForComposites;
 import ptolemy.actor.util.Dependency;
 import ptolemy.actor.util.Time;
-import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.ObjectToken;
 import ptolemy.data.Token;
@@ -1170,9 +1168,18 @@ public class Director extends Attribute implements Executable {
                 }
                 preinitialize(actor);
             }
+            
+            // Don't need to create receivers if the workspace hasn't changed since the last run.
+            // Note that we have to use the version recorded by the Manager on the last
+            // completion of preinitializeAndResolveTypes() because otherwise, if there
+            // are multiple directors, then the workspace version will always have changed
+            // since the last run, since creatingReceivers itself changes it.
+            Manager manager = ((Actor)container).getManager();
+            if (manager == null || manager.getPreinitializeVersion() != workspace().getVersion()) {
+                // This increments the workspace version.
+                _createReceivers();
+            }
         }
-
-        _createReceivers(); // Undid this change temporarily since the move of createReceivers breaks HDF
 
         if (_debugging) {
             _debug(getFullName(), "Finished preinitialize().");
@@ -1950,8 +1957,6 @@ public class Director extends Attribute implements Executable {
         
     }
     
-    
-
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     
@@ -1959,7 +1964,7 @@ public class Director extends Attribute implements Executable {
      *  as if it were at the top level.
      */
     private transient boolean _notEmbeddedForced = false;
-
+    
     private HashMap<Actor, ResourceScheduler> _schedulerForActor;
 
     /** Start time. */

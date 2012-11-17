@@ -479,6 +479,12 @@ public class CompositeActor extends CompositeEntity implements Actor,
      */
     public void createReceivers() throws IllegalActionException {
 
+        // NOTE: It really doesn't help to track the _receiversVersion
+        // here because if there is more than one composite actor
+        // in the model, then the workspace version will be changed
+        // when createReceivers() is called on the next one, so this
+        // one will think next time that the workspace has changed.
+        // This optimization needs to be done higher in the hierarchy.
         if (workspace().getVersion() != _receiversVersion) {
             List portList = new LinkedList(portList());
             Iterator<?> ports = portList.iterator();
@@ -1752,7 +1758,13 @@ public class CompositeActor extends CompositeEntity implements Actor,
                                 + getFullName());
             }
 
-            createReceivers(); // Undid this change temporarily since the move of createReceivers breaks HDF
+            // The director creates receivers in its preinitialize(),
+            // so it should not be needed to do it here. There was a comment here:
+            // "Undid this change temporarily since the move of createReceivers breaks HDF"
+            // However, this change does not seem to break HDF actually.
+            // However, commenting out this line causes some tests to fail the first
+            // time they are run. I'm mystified. EAL 11/16/12
+            createReceivers();
 
             // Note that this is assured of firing the local director,
             // not the executive director, because this is opaque.
