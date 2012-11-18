@@ -12,19 +12,23 @@
     </property>
     <property name="ModularCodeGenerator" class="ptolemy.cg.kernel.generic.program.procedural.java.modular.ModularCodeGenerator">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={317, 37, 915, 709}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={317, 37, 961, 707}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[681, 599]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[727, 597]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.972503617945">
     </property>
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{380.6272321428574, 310.0930059523814}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This test passes when run from Vergil,&#10;but fails when run from the nightly build.&#10;&#10;The problem probably has to do with lazy expansion&#10;&#10;The error is:&#10;ptolemy.kernel.util.IllegalActionException:&#10;The width of relation .ModularCodeGen4.A2.B2.relation can not be uniquely inferred.&#10;Please make the width inference deterministic by explicitly specifying the width of&#10;this relation. In the user interface, right click on the relation, select Configure&#10;and change the width.  Note that some actors may need to have their  Java code&#10;updated to call setDefaultWidth(1) on the output port.&#10;&#10;The relation is deeply connected to these ports:&#10;ptolemy.actor.TypedIOPort {.ModularCodeGen4.A2.B2.port}&#10;ptolemy.actor.TypedIOPort {.ModularCodeGen4.A2.B2.AddSubtract.plus}">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This test passes when run from Vergil,&#10;but was failing when run from the nightly build.&#10;&#10;The problem probably has to do with lazy expansion&#10;&#10;The error is:&#10;ptolemy.kernel.util.IllegalActionException:&#10;The width of relation .ModularCodeGen4.A2.B2.relation can not be uniquely inferred.&#10;Please make the width inference deterministic by explicitly specifying the width of&#10;this relation. In the user interface, right click on the relation, select Configure&#10;and change the width.  Note that some actors may need to have their  Java code&#10;updated to call setDefaultWidth(1) on the output port.&#10;&#10;The relation is deeply connected to these ports:&#10;ptolemy.actor.TypedIOPort {.ModularCodeGen4.A2.B2.port}&#10;ptolemy.actor.TypedIOPort {.ModularCodeGen4.A2.B2.AddSubtract.plus}&#10;&#10;Note that  _defaultInferredWidthTo1 is set to true and and enableBackwardTypeInference is set to false">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 295.0]">
         </property>
+    </property>
+    <property name="enableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="false">
+    </property>
+    <property name="_defaultInferredWidthTo1" class="ptolemy.data.expr.Parameter" value="true">
     </property>
     <entity name="A1" class="ptolemy.cg.lib.ModularCodeGenTypedCompositeActor">
         <property name="recompileHierarchy" class="ptolemy.data.expr.Parameter" value="false">
