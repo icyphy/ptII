@@ -250,6 +250,7 @@ public class ExportModelJUnitTest {
                 //              // need to close ViewScreen3D by adding a ViewScreen3D Tableau.
                 //"GravitationWithCollisionDetection.xml", // "Cannot render to more than 32 Canvas3Ds."
                 //"demo/ExecDemo/Demos/BouncingBall.xml", // "Cannot render to more than 32 Canvas3Ds."
+                "ExecDemos", // hangs
                 "HierarchyFlattening.xml", // gt
                 "iRobotCreateVerification.xml", // Annotation says that it does not simulate.
                 "JMFJAI.xml", // Requires a video camera
@@ -286,7 +287,7 @@ public class ExportModelJUnitTest {
         };
         for (int i = 0; i < longRunningDemos.length; i++) {
             if (modelPath.indexOf(longRunningDemos[i]) != -1) {
-                return 10000;
+                return 30000 * 2;
             }
         }
         return 30000;
