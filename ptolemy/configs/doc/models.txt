@@ -269,11 +269,12 @@ $CLASSPATH/ptolemy/domains/pthales/demo/AdaptiveBeamForming/AdaptiveBeamForming.
 $CLASSPATH/ptolemy/domains/pthales/demo/FFT/FFT.xml
 $CLASSPATH/ptolemy/domains/pthales/demo/HelloWorld/HelloWorld.xml
 $CLASSPATH/ptolemy/domains/pthales/demo/Illustrative/Illustrative.xml
+$CLASSPATH/ptolemy/domains/ptides/demo/DistributedPowerPlant/DistributedPowerPlant.xml
+$CLASSPATH/ptolemy/domains/ptides/demo/MixedSimulator/MixedSimulator.xml
+$CLASSPATH/ptolemy/domains/ptides/demo/MultiPlatformTDMA/MultiPlatformTDMA.xml
+$CLASSPATH/ptolemy/domains/ptides/demo/PowerManagementUnitSamplingWithoutCurrentLocalTime/PowerManagementUnitSamplingWithoutCurrentLocalTime.xml
+$CLASSPATH/ptolemy/domains/ptides/demo/PowerPlant/PowerPlant.xml
 $CLASSPATH/ptolemy/domains/ptides/demo/PrintingPress/PrintingPress.xml
-$CLASSPATH/ptolemy/domains/ptides/demo/PtidesBasicDistributedPowerPlant/PtidesBasicDistributedPowerPlant.xml
-$CLASSPATH/ptolemy/domains/ptides/demo/PtidesBasicMixedSimulator/PtidesBasicMixedSimulator.xml
-$CLASSPATH/ptolemy/domains/ptides/demo/PtidesBasicPowerPlant/PtidesBasicPowerPlant.xml
-$CLASSPATH/ptolemy/domains/ptides/demo/PtidesNetworkLatencyTest/PtidesNetworkLatencyTest.xml
 $CLASSPATH/ptolemy/domains/ptides/demo/PtidesSynchrophasor/PtidesSynchrophasor.xml
 $CLASSPATH/ptolemy/domains/rendezvous/demo/Barrier/Barrier.xml
 $CLASSPATH/ptolemy/domains/rendezvous/demo/ResourcePool/ResourcePool.xml
