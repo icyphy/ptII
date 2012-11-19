@@ -371,7 +371,7 @@ public class ModelExecutor extends TypedAtomicActor {
                                 // exception if the tokens inside have already
                                 // been transferred.
                                 for (int i = 0; i < port.getWidthInside(); i++) {
-                                    if (port.hasTokenInside(i)) {
+                                    if (port.isKnownInside(i) && port.hasTokenInside(i)) {
                                         port.send(i, port.getInside(i));
                                     }
                                 }
