@@ -164,7 +164,7 @@ T_{k+1}. The control action is computed in Ptolemy II.</text></svg></configure>
         </property>
         <property name="bold" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="If you get an error message like:&#10; {Error using loadlibrary (line 419)&#10;  dlopen(/Users/cxh/ptII/lbnl/lib/matlab/libbcvtb_thunk_glnxa64.dylib, 1): image&#10; not found&#10;then try rebuilding the .m files in&#10;$PTII/lbnl/lib/matlab/ with:&#10;  cd $PTII/lbnl/lib/matlab&#10;  make clean&#10;  make&#10;and then rerun this model.&#10;">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="If you get an error message like:&#10; {Error using loadlibrary (line 419)&#10;  dlopen(/Users/cxh/ptII/lbnl/lib/matlab/libbcvtb_thunk_glnxa64.dylib, 1): image&#10; not found&#10;then try rebuilding the .m files in&#10;$PTII/lbnl/lib/matlab/ with:&#10;  cd $PTII/lbnl/lib/matlab&#10;  make clean&#10;  make&#10;and then rerun this model.&#10;">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[400.0, 600.0]">
         </property>
