@@ -49,8 +49,7 @@ JSRCS =
 OTHER_FILES_TO_BE_JARED = \
 	$(JSRCS) \
 	PrintingPress.xml \
-	PrintingPress_AnimationsOnly.xml \
-	PrintingPress_noAnimations.xml
+	PrintingPress_AnimationsOnly.xml 
 
 EXTRA_SRCS = \
 	$(OTHER_FILES_TO_BE_JARED) \
