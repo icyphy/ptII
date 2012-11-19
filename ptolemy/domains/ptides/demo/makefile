@@ -36,7 +36,7 @@ DIRS =	DistributedPowerPlant \
 		MultiPlatformTDMA \
 		PowerManagementUnitSamplingWithoutCurrentLocalTime \
 		PowerPlant \
-		PrintingPress \ 
+		PrintingPress \
 		PtidesMulticoreDirector \
 		PtidesNetworkLatencyTest \
 		PtidesPorts \
@@ -64,7 +64,7 @@ PTCLASSALLJARS = \
 		MultiPlatformTDMA/MultiPlatformTDMA.jar \
 		PowerManagementUnitSamplingWithoutCurrentLocalTime/PowerManagementUnitSamplingWithoutCurrentLocalTime.jar \
 		PowerPlant/PowerPlant.jar \
-		PrintingPress/PrintingPress.jar \ 
+		PrintingPress/PrintingPress.jar \
 		PtidesMulticoreDirector/PtidesMulticoreDirector.jar \
 		PtidesNetworkLatencyTest/PtidesNetworkLatencyTest.jar \
 		PtidesPorts/PtidesPorts.jar \
