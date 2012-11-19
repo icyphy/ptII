@@ -1,6 +1,6 @@
 # Makefile for Ptolemy II Ptides Demo
 #
-# @Authors: Christopher Hylands (makefile only)
+# @Authors: Jia Zou, based on Christopher Hylands (makefile only)
 #
 # @Version: 
 #
@@ -29,7 +29,7 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/domains/ptides/demo/PtidesPorts
+ME =		ptolemy/domains/ptides/demo/ActuatorPattern
 
 # Root of the Java directory
 ROOT =		../../../../..
@@ -41,15 +41,22 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	PtidesPorts
+PTPACKAGE = 	ActuatorPattern
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
-	PtidesPorts.xml
+	$(JSRCS) \
+	ActuatorPattern.xml \
+	ActuatorPattern1.xml \
+	ActuatorPattern2.xml \
+	ActuatorPatternComplex1.xml \
+	ActuatorPatternComplex2.xml 
 
-EXTRA_SRCS = 	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
+EXTRA_SRCS = \
+	$(OTHER_FILES_TO_BE_JARED) \
+
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
@@ -74,10 +81,10 @@ demo_applet: $(PTCLASSJAR)
 	CLASSPATH=$(CLASSPATH) appletviewer 
 
 demo_ptolemy:
-	"$(PTII)/bin/ptolemy" PtidesPorts.xml
+	"$(PTII)/bin/ptolemy" ActuatorPattern.xml
 
 demo_vergil:
-	"$(PTII)/bin/vergil" PtidesPorts.xml
+	"$(PTII)/bin/vergil" ActuatorPattern.xml
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

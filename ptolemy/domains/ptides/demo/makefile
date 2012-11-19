@@ -31,7 +31,8 @@
 
 ME =		ptolemy/domains/ptides/demo
 
-DIRS =	DistributedPowerPlant \
+DIRS =	ActuatorPattern \
+		DistributedPowerPlant \
 		MixedSimulator \
 		MultiPlatformTDMA \
 		PowerManagementUnitSamplingWithoutCurrentLocalTime \
@@ -39,7 +40,6 @@ DIRS =	DistributedPowerPlant \
 		PrintingPress \
 		PtidesMulticoreDirector \
 		PtidesNetworkLatencyTest \
-		PtidesPorts \
 		PtidesPreemptEDFOnePlatformThreePathsRealDelay \
 		PtidesSynchrophasor \
 		TREX \
@@ -59,6 +59,7 @@ PTPACKAGE = 	demo
 
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
+		ActuatorPattern/ActuatorPattern.jar \
 		DistributedPowerPlant/DistributedPowerPlant.jar \
 		MixedSimulator/MixedSimulator.jar \
 		MultiPlatformTDMA/MultiPlatformTDMA.jar \
