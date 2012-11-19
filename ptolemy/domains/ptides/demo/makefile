@@ -39,11 +39,11 @@ DIRS =	ActuatorPattern \
 		PowerManagementUnitSamplingWithoutCurrentLocalTime \
 		PowerPlant \
 		PrintingPress \
-		PtidesMulticoreDirector \ 
+		PtidesMulticoreDirector \
 		PtidesPreemptEDFOnePlatformThreePathsRealDelay \
 		PtidesSynchrophasor \
 		TREX \
-		TTE 
+		TTE
 
 # Root of the Java directory
 ROOT =		../../../..
