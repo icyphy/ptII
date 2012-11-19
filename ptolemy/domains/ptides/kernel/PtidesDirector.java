@@ -361,7 +361,7 @@ public class PtidesDirector extends DEDirector {
         }
         _pureEvents.put(new PtidesEvent(actor, null, time, newIndex, 0,
                 _zeroTime, _currentSourceTimestamp));
-        _currentSourceTimestamp = null;
+        //_currentSourceTimestamp = null;
 
         Time environmentTime = super.getEnvironmentTime();
         if (environmentTime.compareTo(time) <= 0) {
