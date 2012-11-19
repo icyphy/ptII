@@ -1583,7 +1583,9 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         _modelErrorHandled = null;
 
         // In case any further static analysis depends on the initial
-        // state, reset to that state here.
+        // state, reset to that state here. For example, HDF sets
+        // the production/consumption rates based on the refinement
+        // of the initial state.
         reset();
         
         // The actual initial state may depend on immediate transitions
@@ -1604,7 +1606,13 @@ public class FSMActor extends CompositeEntity implements TypedActor,
                 }
                 _chooseTransitions(transitionList, false, true);
             }
-            _commitLastChosenTransition();
+            // NOTE: Have to be very careful here. This needs
+            // to be an incomplete commit in that it cannot
+            // initialize the destination refinement nor produce
+            // outputs, because we are in preintialize().
+            // The destination refinement hasn't been preinitialized
+            // yet.  See HDF Fibonnaci demo.
+            _commitLastChosenTransition(true);
             // Need to clear this again.
             _transitionsPreviouslyChosenInIteration.clear();
         }
@@ -2061,125 +2069,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
      *   or the last chosen transition does not have a destination state.
      */
     protected void _commitLastChosenTransition() throws IllegalActionException {
-        Transition currentTransition = _lastChosenTransitions
-                .get(_currentState);
-        if (currentTransition == null) {
-            return;
-        }
-
-        // Add this transition to the last taken transitions
-        _lastTakenTransitions.add(currentTransition);
-
-        // Remove the entry from the map of chosen transitions to prevent
-        // a stack overflow from cycling forever around a directed cycle.
-        _lastChosenTransitions.remove(_currentState);
-
-        if (_debugging) {
-            _debug("Commit transition ", currentTransition.getFullName()
-                    + " at time " + getDirector().getModelTime());
-            _debug("  Guard evaluating to true: "
-                    + currentTransition.guardExpression.getExpression());
-        }
-        if (currentTransition.destinationState() == null) {
-            throw new IllegalActionException(this, currentTransition,
-                    "The transition is enabled but does not have a "
-                            + "destination state.");
-        }
-
-        // Next execute the commit actions.
-        // This needs to occur before resetting the destination
-        // refinement because the commit actions may initialize
-        // the destination refinement.
-        Iterator actions = currentTransition.commitActionList().iterator();
-        while (actions.hasNext() && !_stopRequested) {
-            Action action = (Action) actions.next();
-            action.execute();
-        }
-
-        // If the chosen transition is not a history transition, initialize the destination
-        // refinement. Note that initializing the director will normally also have
-        // the side effect of setting its time and time to match the enclosing
-        // director. This is done before invoking the set actions because (1)
-        // the initialization may reverse the set actions or, (2)
-        // the set actions may trigger attributeChanged() calls that depend on
-        // the current time or index.
-        // If the currentTransition is the last in the chain of chosen
-        // transitions and the transition is a reset transition, then
-        // initialize the destination refinement.
-        State nextState = currentTransition.destinationState();
-        // NOTE: This is too late to initialize refinements
-        // of transient states, as those have already executed!!
-        // So we only initialize if this is the last transition.
-        if (_lastChosenTransitions.get(nextState) == null) {
-            // If this is a reset transition, then we also need to initialize
-            // the destination refinement.
-            if (!currentTransition.isHistory()) {
-                _initializeRefinements(nextState);
-            }
-        }
-
-        // Commit to the new state.
-        // Before committing the new state, record whether it changed.
-        boolean stateChanged = _currentState != currentTransition
-                .destinationState();
-        _currentState = nextState;
-        if (_debugging) {
-            _debug(new StateEvent(this, _currentState));
-        }
-
-        // If we have reached a final state, make a record of that fact
-        // for the postfire() method.
-        if (((BooleanToken) _currentState.isFinalState.getToken())
-                .booleanValue()) {
-            _reachedFinalState = true;
-        }
-
-        _setCurrentConnectionMap();
-
-        // If the causality interface is state-dependent and the state
-        // has changed, invalidate the schedule. This is done in a ChangeRequest
-        // because the current iteration (processing all events with the same
-        // time stamp and microstep) has to be allowed to complete. Otherwise,
-        // the analysis for causality loops will be redone before other state
-        // machines have been given a chance to switch states.
-        boolean stateDependent = ((BooleanToken) stateDependentCausality
-                .getToken()).booleanValue();
-        if (stateDependent && stateChanged) {
-            // The third argument indicates that this is not a structural
-            // change, and therefore should not trigger a prompt to save
-            // on closing the model.
-            ChangeRequest request = new ChangeRequest(this,
-                    "Invalidate schedule", false) {
-                protected void _execute() {
-                    // Indicate to the director that the current schedule is invalid.
-                    getDirector().invalidateSchedule();
-                }
-            };
-            // This is also required to prevent a prompt to save on close.
-            request.setPersistent(false);
-            requestChange(request);
-        }
-
-        // Finally, request a refiring at the current time. This ensures that
-        // if the new state is transient, zero time is spent in it.
-        // If the new state has a refinement, it is up to that refinement
-        // to examine the superdense time index if appropriate and not produce
-        // output if it should not produce output. This has implications on
-        // the design of actors like DiscreteClock.
-        getDirector().fireAtCurrentTime(this);
-
-        // If we have not reached a final state, and the state
-        // changed, then recursively call this
-        // same method in case the destination state is transient. If it is,
-        // then there will be another chosen transition emerging from the
-        // new _currentState, and we have to execute set actions on that
-        // transition. If there is no chosen transition from the new
-        // _currentState, then the recursive call will return immediately.
-        if (!_reachedFinalState && stateChanged) {
-            _commitLastChosenTransition();
-        } else {
-            _lastChosenTransitions.clear();
-        }
+        _commitLastChosenTransition(false);
     }
 
     /** Return the chosen destination state. This method follows
@@ -3225,6 +3115,148 @@ public class FSMActor extends CompositeEntity implements TypedActor,
             _lastChosenTransition = chosenTransition;
         }
         return chosenTransition;
+    }
+    
+    /** Execute all set actions contained by the transition chosen
+     *  from the current state. Change current state
+     *  to the destination state of the last of these
+     *  chosen transitions. If the new current state is a transient
+     *  state that has a chosen transition emanating from it, then
+     *  also execute the set actions on that transition.
+     *  Reset the refinement
+     *  of the destination state if the <i>reset</i> parameter of the
+     *  chosen transition is true.
+     *  @param inPreinitialize If true, then only set the current
+     *   state after following immediate transitions. Note that the
+     *   guards on the immediate transitions need to be evaluatable.
+     *  @exception IllegalActionException If any commit action throws it,
+     *   or the last chosen transition does not have a destination state.
+     */
+    private void _commitLastChosenTransition(boolean inPreinitialize) throws IllegalActionException {
+        Transition currentTransition = _lastChosenTransitions
+                .get(_currentState);
+        if (currentTransition == null) {
+            return;
+        }
+
+        // Add this transition to the last taken transitions
+        _lastTakenTransitions.add(currentTransition);
+
+        // Remove the entry from the map of chosen transitions to prevent
+        // a stack overflow from cycling forever around a directed cycle.
+        _lastChosenTransitions.remove(_currentState);
+
+        if (_debugging) {
+            _debug("Commit transition ", currentTransition.getFullName()
+                    + " at time " + getDirector().getModelTime());
+            _debug("  Guard evaluating to true: "
+                    + currentTransition.guardExpression.getExpression());
+        }
+        if (currentTransition.destinationState() == null) {
+            throw new IllegalActionException(this, currentTransition,
+                    "The transition is enabled but does not have a "
+                            + "destination state.");
+        }
+
+        // Next execute the commit actions.
+        // This needs to occur before resetting the destination
+        // refinement because the commit actions may initialize
+        // the destination refinement.
+        Iterator actions = currentTransition.commitActionList().iterator();
+        while (actions.hasNext() && !_stopRequested) {
+            Action action = (Action) actions.next();
+            action.execute();
+        }
+
+        // If the chosen transition is not a history transition, initialize the destination
+        // refinement. Note that initializing the director will normally also have
+        // the side effect of setting its time and time to match the enclosing
+        // director. This is done before invoking the set actions because (1)
+        // the initialization may reverse the set actions or, (2)
+        // the set actions may trigger attributeChanged() calls that depend on
+        // the current time or index.
+        // If the currentTransition is the last in the chain of chosen
+        // transitions and the transition is a reset transition, then
+        // initialize the destination refinement.
+        State nextState = currentTransition.destinationState();
+        // NOTE: This is too late to initialize refinements
+        // of transient states, as those have already executed!!
+        // So we only initialize if this is the last transition.
+        if (_lastChosenTransitions.get(nextState) == null) {
+            // If this is a reset transition, then we also need to initialize
+            // the destination refinement.
+            // Do not do this if we are in preinitialize(), as the refinement
+            // has not been preinitialized yet.
+            if (!currentTransition.isHistory() && !inPreinitialize) {
+                _initializeRefinements(nextState);
+            }
+        }
+
+        // Commit to the new state.
+        // Before committing the new state, record whether it changed.
+        boolean stateChanged = _currentState != currentTransition
+                .destinationState();
+        _currentState = nextState;
+        if (_debugging) {
+            _debug(new StateEvent(this, _currentState));
+        }
+
+        // If we have reached a final state, make a record of that fact
+        // for the postfire() method.
+        if (((BooleanToken) _currentState.isFinalState.getToken())
+                .booleanValue()) {
+            _reachedFinalState = true;
+        }
+
+        _setCurrentConnectionMap();
+
+        // If the causality interface is state-dependent and the state
+        // has changed, invalidate the schedule. This is done in a ChangeRequest
+        // because the current iteration (processing all events with the same
+        // time stamp and microstep) has to be allowed to complete. Otherwise,
+        // the analysis for causality loops will be redone before other state
+        // machines have been given a chance to switch states.
+        boolean stateDependent = ((BooleanToken) stateDependentCausality
+                .getToken()).booleanValue();
+        if (stateDependent && stateChanged) {
+            // The third argument indicates that this is not a structural
+            // change, and therefore should not trigger a prompt to save
+            // on closing the model.
+            ChangeRequest request = new ChangeRequest(this,
+                    "Invalidate schedule", false) {
+                protected void _execute() {
+                    // Indicate to the director that the current schedule is invalid.
+                    getDirector().invalidateSchedule();
+                }
+            };
+            // This is also required to prevent a prompt to save on close.
+            request.setPersistent(false);
+            requestChange(request);
+        }
+
+        // Finally, request a refiring at the current time. This ensures that
+        // if the new state is transient, zero time is spent in it.
+        // If the new state has a refinement, it is up to that refinement
+        // to examine the superdense time index if appropriate and not produce
+        // output if it should not produce output. This has implications on
+        // the design of actors like DiscreteClock.
+        // Do not do this in preinitialize.
+        if (!inPreinitialize) {
+            getDirector().fireAtCurrentTime(this);
+        }
+
+        // If we have not reached a final state, and the state
+        // changed, then recursively call this
+        // same method in case the destination state is transient. If it is,
+        // then there will be another chosen transition emerging from the
+        // new _currentState, and we have to execute set actions on that
+        // transition. If there is no chosen transition from the new
+        // _currentState, then the recursive call will return immediately.
+        if (!_reachedFinalState && stateChanged) {
+            _commitLastChosenTransition(inPreinitialize);
+        } else {
+            _lastChosenTransitions.clear();
+        }
     }
 
     /** Create receivers for each input port.
