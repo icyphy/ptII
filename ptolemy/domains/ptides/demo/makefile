@@ -35,6 +35,7 @@ DIRS =	ActuatorPattern \
 		DistributedPowerPlant \
 		MixedSimulator \
 		MultiPlatformTDMA \
+		MultipleCores \
 		PowerManagementUnitSamplingWithoutCurrentLocalTime \
 		PowerPlant \
 		PrintingPress \
@@ -62,6 +63,7 @@ PTCLASSALLJARS = \
 		DistributedPowerPlant/DistributedPowerPlant.jar \
 		MixedSimulator/MixedSimulator.jar \
 		MultiPlatformTDMA/MultiPlatformTDMA.jar \
+		MultipleCores/MultipleCores.jar \
 		PowerManagementUnitSamplingWithoutCurrentLocalTime/PowerManagementUnitSamplingWithoutCurrentLocalTime.jar \
 		PowerPlant/PowerPlant.jar \
 		PrintingPress/PrintingPress.jar \

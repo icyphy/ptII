@@ -2,9 +2,9 @@
 #
 # @Authors: Christopher Hylands (makefile only)
 #
-# @Version: $Id$
+# @Version: 
 #
-# @Copyright (c) 2011 The Regents of the University of California.
+# @Copyright (c) 2000-2011 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -29,8 +29,7 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/domains/ptides/demo/PtidesMulticoreDirector
-
+ME =		ptolemy/domains/ptides/demo/PtidesBasicMixedSimulator
 
 # Root of the Java directory
 ROOT =		../../../../..
@@ -42,16 +41,13 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	PtidesMulticoreDirector
+PTPACKAGE = 	PtidesBasicMixedSimulator
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
-	PtidesMulticoreDirector.xml \
-	PtidesMulticoreDirectorSafeToProcess.xml \
-	PtidesMulticoreDirectorSafeToProcessPlot.png
-	
+	PtidesBasicMixedSimulator.xml 
 
 EXTRA_SRCS = $(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
@@ -78,10 +74,10 @@ demo_applet: $(PTCLASSJAR)
 	CLASSPATH=$(CLASSPATH) appletviewer 
 
 demo_ptolemy:
-	"$(PTII)/bin/ptolemy" PtidesMulticoreDirector.xml
+	"$(PTII)/bin/ptolemy" PtidesBasicMixedSimulator.xml
 
 demo_vergil:
-	"$(PTII)/bin/vergil" PtidesMulticoreDirector.xml
+	"$(PTII)/bin/vergil" PtidesBasicMixedSimulator.xml
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
