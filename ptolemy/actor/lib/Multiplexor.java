@@ -148,7 +148,7 @@ public class Multiplexor extends Transformer {
 
     /** Initialize to the default, which is to use channel zero. */
     public void initialize() {
-        _selectChannel = null;
+        _selectChannel = new IntToken(0);
     }
 
     /** Return false.
