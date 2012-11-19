@@ -367,9 +367,6 @@ public class PtidesDirector extends DEDirector {
         if (environmentTime.compareTo(time) <= 0) {
             fireContainerAt(time);
         }
-        if (_isInitializing) {
-
-        }
         return time;
     }
 
