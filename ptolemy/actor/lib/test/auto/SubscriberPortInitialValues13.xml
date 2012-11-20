@@ -67,19 +67,21 @@
                 </property>
                 <property name="initialTokens" class="ptolemy.actor.PubSubPort$1" value="{-99}">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[525.0, 295.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{490, 325}">
                 </property>
             </port>
             <entity name="Test" class="ptolemy.actor.lib.Test">
                 <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0, 0, 2, 3, 4}">
                 </property>
-                <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="true">
+                <property name="requireAllCorrectValues" class="ptolemy.actor.parameters.SharedParameter" value="true">
+                </property>
+                <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[790.0, 375.0]">
                 </property>
             </entity>
             <entity name="SampleDelay" class="ptolemy.domains.sdf.lib.SampleDelay">
-                <property name="initialOutputs" class="ptolemy.data.expr.Parameter" value="{-99}">
+                <property name="initialOutputs" class="ptolemy.data.expr.Parameter" value="{-98}">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                     <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="initialOutputs">
@@ -87,7 +89,7 @@
                     <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="20">
                     </property>
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[535.0, 375.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[500.0, 435.0]">
                 </property>
             </entity>
             <entity name="SubscriptionAggregator" class="ptolemy.actor.lib.SubscriptionAggregator">
@@ -102,7 +104,7 @@
                     <property name="boxColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.8, 0.0, 1.0}">
                     </property>
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[390.0, 375.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[355.0, 435.0]">
                 </property>
             </entity>
             <relation name="relation2" class="ptolemy.actor.TypedIORelation">
@@ -119,26 +121,6 @@
             <link port="SubscriptionAggregator.output" relation="relation2"/>
         </entity>
     </class>
-    <entity name="CompositeActor" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[215.0, 130.0]">
-        </property>
-        <entity name="InstanceOfCompositeClassDefinition" class="CompositeClassDefinition">
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{284.0, 57.0}">
-            </property>
-            <entity name="CompositeActor" class="ptolemy.actor.TypedCompositeActor">
-                <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
-                </property>
-                <entity name="Test" class="ptolemy.actor.lib.Test">
-                    <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{}">
-                    </property>
-                    <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="true">
-                    </property>
-                    <property name="_location" class="ptolemy.kernel.util.Location" value="[545.0, 320.0]">
-                    </property>
-                </entity>
-            </entity>
-        </entity>
-    </entity>
     <entity name="B2" class="ptolemy.actor.TypedCompositeActor">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 135.0]">
         </property>
@@ -168,5 +150,21 @@
         </relation>
         <link port="PublisherPort" relation="relation"/>
         <link port="Ramp.output" relation="relation"/>
+    </entity>
+    <entity name="InstanceOfCompositeClassDefinition" class="CompositeClassDefinition">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[280.0, 150.0]">
+        </property>
+        <entity name="CompositeActor" class="ptolemy.actor.TypedCompositeActor">
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
+            </property>
+            <entity name="Test" class="ptolemy.actor.lib.Test">
+                <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{{-99, -98}, {0, 0}, {1, 1}, {2, 2}, {3, 3}}">
+                </property>
+                <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[790.0, 375.0]">
+                </property>
+            </entity>
+        </entity>
     </entity>
 </entity>
