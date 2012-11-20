@@ -61,7 +61,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  *  @Pt.AcceptedRating Red (jiazou)
  *
  */
-
+@Deprecated
 public class PtidesPreemptiveUserEDFDirector extends
         PtidesPreemptiveEDFDirector {
 

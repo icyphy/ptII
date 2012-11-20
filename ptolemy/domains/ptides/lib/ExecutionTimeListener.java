@@ -39,6 +39,7 @@ import ptolemy.actor.Actor;
  *  @Pt.ProposedRating Red (derler)
  *  @Pt.AcceptedRating
  */
+@Deprecated
 public interface ExecutionTimeListener {
 
     /** The event is displayed.

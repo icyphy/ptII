@@ -62,7 +62,6 @@ JSRCS = \
 	ErrorHandlingAction.java \
 	FPPCore.java \
 	InputDevice.java \
-	MasterClock.java \
 	MulticoreExecutionTimeMonitor.java \
 	NetworkReceiver.java \
 	NetworkTransmitter.java \
@@ -70,12 +69,10 @@ JSRCS = \
 	OutputDevice.java \
 	PEDFCore.java \
 	PtidesPort.java \
-	RealisticSlaveClock.java \
 	SensorHandler.java \
 	SchedulerDirector.java \
 	SchedulerModel.java \
 	SimulatedPlatformPhysicalTime.java \
-	SlaveClock.java \
 	ExecutionTimeListener.java \
 	ExecutionTimeMonitor.java \
 	PlatformTimeMonitor.java 

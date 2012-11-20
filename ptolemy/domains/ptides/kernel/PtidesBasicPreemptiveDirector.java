@@ -50,6 +50,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  *  @Pt.AcceptedRating Red (jiazou)
  *
  */
+@Deprecated
 public class PtidesBasicPreemptiveDirector extends PtidesBasicDirector {
 
     /** Construct a director with the specified container and name.

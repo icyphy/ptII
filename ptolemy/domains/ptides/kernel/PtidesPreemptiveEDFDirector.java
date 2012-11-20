@@ -75,6 +75,7 @@ import ptolemy.kernel.util.NamedObj;
  *  @Pt.AcceptedRating Red (jiazou)
  *
  */
+@Deprecated
 public class PtidesPreemptiveEDFDirector extends PtidesBasicDirector {
     /** Construct a director with the specified container and name.
      *  @param container The container

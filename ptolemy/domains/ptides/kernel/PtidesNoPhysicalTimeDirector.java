@@ -59,6 +59,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  *  @Pt.AcceptedRating Red (cxh)
  *
  */
+@Deprecated
 public class PtidesNoPhysicalTimeDirector extends PtidesBasicDirector {
 
     /** Construct a director with the specified container and name.

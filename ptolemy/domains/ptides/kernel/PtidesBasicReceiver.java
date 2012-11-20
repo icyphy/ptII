@@ -59,6 +59,7 @@ import ptolemy.kernel.util.InternalErrorException;
  * @Pt.ProposedRating Yellow (jiazou)
  * @Pt.AcceptedRating Red (jiazou)
  */
+@Deprecated
 public class PtidesBasicReceiver extends DEReceiver {
 
     /**

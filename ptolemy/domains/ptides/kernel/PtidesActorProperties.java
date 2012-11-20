@@ -59,6 +59,7 @@ import ptolemy.kernel.util.NamedObj;
  * @version $Id$
  * @since Ptolemy II 8.0
  */
+@Deprecated
 public class PtidesActorProperties {
 
     /**

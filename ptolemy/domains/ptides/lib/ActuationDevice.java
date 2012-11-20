@@ -43,7 +43,7 @@ package ptolemy.domains.ptides.lib;
  *  @Pt.ProposedRating Red (jiazou)
  *  @Pt.AcceptedRating
  */
-
+@Deprecated
 public interface ActuationDevice {
 
 }

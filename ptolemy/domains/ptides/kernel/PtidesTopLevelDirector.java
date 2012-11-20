@@ -47,7 +47,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  *  @Pt.AcceptedRating Red (cxh)
  *
  */
-
+@Deprecated
 public class PtidesTopLevelDirector extends DEDirector {
     /** Construct a PtidesTopLevelDirector with the specified container and name.
      *  @param container The container

@@ -80,6 +80,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  *  @Pt.ProposedRating Yellow (jiazou)
  *  @Pt.AcceptedRating
  */
+@Deprecated
 public class NetworkReceiver extends InputDevice {
 
     /**

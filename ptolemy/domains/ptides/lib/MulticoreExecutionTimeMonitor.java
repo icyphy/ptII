@@ -66,6 +66,7 @@ import ptolemy.plot.Plot;
  *  @Pt.ProposedRating Red (mzimmer)
  *  @Pt.AcceptedRating
  */
+@Deprecated
 public class MulticoreExecutionTimeMonitor extends Plotter implements
         ExecutionTimeListener {
 

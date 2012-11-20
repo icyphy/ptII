@@ -54,6 +54,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  *  @Pt.ProposedRating Yellow (jiazou)
  *  @Pt.AcceptedRating
  */
+@Deprecated
 public class ActuatorSetup extends OutputDevice {
 
     /** Create a new actor in the specified container with the specified

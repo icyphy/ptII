@@ -55,6 +55,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  *  @Pt.ProposedRating Yellow (jiazou)
  *  @Pt.AcceptedRating
  */
+@Deprecated
 public class SensorHandler extends InputDevice {
 
     /** Create a new actor in the specified container with the specified

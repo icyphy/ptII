@@ -62,6 +62,7 @@ import ptolemy.plot.Plot;
  *  @Pt.ProposedRating Red (derler)
  *  @Pt.AcceptedRating
  */
+@Deprecated
 public class PlatformTimeMonitor extends TypedAtomicActor implements
         ExecutionTimeListener {
 
