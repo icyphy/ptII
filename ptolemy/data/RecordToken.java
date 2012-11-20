@@ -157,13 +157,16 @@ public class RecordToken extends AbstractNotConvertibleToken {
                 throw new IllegalActionException("RecordToken: given "
                         + "map contains either null keys " + "or null values.");
             }
-            if (!(entry.getKey() instanceof String)
-                    || !(entry.getValue() instanceof Token)) {
-                throw new IllegalActionException("RecordToken: given "
-                        + "map contains either non-String keys "
-                        + "or non-Token values.");
+            if (!(entry.getKey() instanceof String)) {
+                throw new IllegalActionException("RecordToken: map contains " +
+                    "non-String key => " + entry.getKey() + " is a " +
+                    entry.getKey().getClass().getName());
             }
-
+            if (!(entry.getValue() instanceof Token)) {
+                throw new IllegalActionException("RecordToken: map contains " +
+                    "non-token value => " + entry.getValue() + " is a " +
+                    entry.getValue().getClass().getName());
+            }
         }
         _fields.putAll(fieldMap);
     }
