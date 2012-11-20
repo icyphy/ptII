@@ -67,9 +67,7 @@ PTCLASSALLJARS = \
 		PowerManagementUnitSamplingWithoutCurrentLocalTime/PowerManagementUnitSamplingWithoutCurrentLocalTime.jar \
 		PowerPlant/PowerPlant.jar \
 		PrintingPress/PrintingPress.jar \
-		PtidesMulticoreDirector/PtidesMulticoreDirector.jar \ 
 		PtidesPorts/PtidesPorts.jar \
-		PtidesPreemptEDFOnePlatformThreePathsRealDelay/PtidesPreemptEDFOnePlatformThreePathsRealDelayjar \
 		PtidesSynchrophasor/PtidesSynchrophasor.jar \
 		TREX/TREX.jar \
 		TTE/TTE.jar
