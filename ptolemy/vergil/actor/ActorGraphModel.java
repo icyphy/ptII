@@ -1547,8 +1547,11 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
                             link.setHead(_getLocation(container
                                     .getRelation(relationNameToAdd)));
                         } else {
-                            link.setTail(_getLocation(container
-                                    .getRelation(relationNameToAdd)));
+                            Object relation = container.getRelation(relationNameToAdd);
+                            if (relation == null) {
+                                throw new NullPointerException("Getting the relation \"" + relationNameToAdd
+                                        + "\" in " + container.getFullName() + " returned null?");
+                            }
                         }
                     }
 
