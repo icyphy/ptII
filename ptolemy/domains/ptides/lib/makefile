@@ -98,6 +98,7 @@ MISC_FILES =	io luminary qm test
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	doc \
+	'ErrorHandlingAction$$ErrorHandlingActionString.class' \
 	'ExecutionTimeListener$$ExecutionEventType.class' \
 	'ExecutionTimeMonitor$$SchedulePlotterEditorFactory.class' \
 	'MulticoreExecutionTimeMonitor$$1.class' \
