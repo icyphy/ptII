@@ -49,7 +49,7 @@
         <link port="DiscreteClock.output" relation="relation"/>
     </entity>
     <entity name="CompositeActor4" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[230.0, 165.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[370.0, 170.0]">
         </property>
         <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
             <property name="_location" class="ptolemy.kernel.util.Location" value="{55, 50}">
@@ -73,8 +73,6 @@
             </property>
             <property name="_showInfo" class="ptolemy.kernel.util.StringAttribute" value="QM: Bus, Bus2">
             </property>
-            <property name="qm2" class="ptolemy.data.expr.Parameter" value="Bus2">
-            </property>
         </port>
         <port name="port2" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -91,7 +89,7 @@
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[310.0, 345.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[450.0, 350.0]">
         </property>
         <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
@@ -110,44 +108,8 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[255.0, 60.0]">
         </property>
     </entity>
-    <entity name="Bus2" class="ptolemy.actor.lib.qm.Bus">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[345.0, 60.0]">
-        </property>
-    </entity>
-    <entity name="CompositeActor" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 235.0]">
-        </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={233, 145, 813, 510}, maximized=false}">
-        </property>
-        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
-        </property>
-        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
-        </property>
-        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
-        </property>
-        <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{60, 55}">
-            </property>
-        </property>
-        <port name="port" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{580.0, 200.0}">
-            </property>
-        </port>
-        <entity name="DiscreteClock" class="ptolemy.actor.lib.DiscreteClock">
-            <property name="values" class="ptolemy.data.expr.Parameter" value="{2}">
-            </property>
-            <doc>Create periodic timed events.</doc>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{285, 175}">
-            </property>
-        </entity>
-        <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        </relation>
-        <link port="port" relation="relation"/>
-        <link port="DiscreteClock.output" relation="relation"/>
-    </entity>
     <entity name="CompositeActor2" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[225.0, 235.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[365.0, 240.0]">
         </property>
         <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
             <property name="_location" class="ptolemy.kernel.util.Location" value="{55, 50}">
@@ -171,8 +133,6 @@
             </property>
             <property name="_showInfo" class="ptolemy.kernel.util.StringAttribute" value="QM: Bus, Bus2">
             </property>
-            <property name="qm2" class="ptolemy.data.expr.Parameter" value="Bus2">
-            </property>
         </port>
         <port name="port2" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -185,7 +145,7 @@
         <link port="port2" relation="relation"/>
     </entity>
     <entity name="QuantityManagerMonitor" class="ptolemy.actor.lib.qm.QuantityManagerMonitor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[390.0, 135.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[510.0, 95.0]">
         </property>
     </entity>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
@@ -203,7 +163,7 @@
             <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
             </property>
         </property>
-        <vertex name="vertex1" value="[180.0, 235.0]">
+        <vertex name="vertex1" value="{180.0, 235.0}">
         </vertex>
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
@@ -215,7 +175,7 @@
     <link port="TimedPlotter.input" relation="relation"/>
     <link port="TimedPlotter.input" relation="relation2"/>
     <link port="TimedPlotter.input" relation="relation3"/>
-    <link port="CompositeActor.port" relation="relation2"/>
     <link port="CompositeActor2.port" relation="relation2"/>
     <link port="CompositeActor2.port2" relation="relation3"/>
+    <link relation1="relation" relation2="relation2"/>
 </entity>
