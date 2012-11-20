@@ -759,6 +759,11 @@ public class State extends ComponentEntity implements ConfigurableEntity,
                     }
                     _errorTransitionList.add(transition);
                 } else if (transition.isPreemptive()) {
+                    // A preemptive transition is not allowed to be a termination transition.
+                    if (transition.isTermination()) {
+                        throw new IllegalActionException(transition,
+                                "A preemptive transition cannot also be a termination transition.");
+                    }
                     _preemptiveTransitionList.add(transition);
                     _nonErrorNonTerminationTransitionList.add(transition);
                 } else if (transition.isTermination()) {
