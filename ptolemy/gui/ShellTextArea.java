@@ -158,18 +158,23 @@ public class ShellTextArea extends JPanel {
      *  string, then only a prompt is shown.
      *  @param initialMessage The initial message.
      */
-    public void initialize(String initialMessage) {
+    public void initialize(final String initialMessage) {
         if (_jTextArea == null) {
             _initialMessage = initialMessage;
         } else {
             _initialMessage = null;
-            clearJTextArea();
+            Runnable doInitialize = new Runnable() {
+                public void run() {
+                    clearJTextArea();
 
-            if ((initialMessage != null) && !initialMessage.equals("")) {
-                appendJTextArea(initialMessage + "\n" + mainPrompt);
-            } else {
-                appendJTextArea(mainPrompt);
-            }
+                    if ((initialMessage != null) && !initialMessage.equals("")) {
+                        appendJTextArea(initialMessage + "\n" + mainPrompt);
+                    } else {
+                        appendJTextArea(mainPrompt);
+                    }
+                }
+            };
+            SwingUtilities.invokeLater(doInitialize);
         }
     }
 
