@@ -43,6 +43,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  *  @Pt.ProposedRating Red (derler)
  *  @Pt.AcceptedRating
  */
+@Deprecated
 public class SensorPort extends PtidesPort {
 
     /** Create a new SensorPort with a given container and a name.

@@ -51,6 +51,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  *  @Pt.ProposedRating Red (derler)
  *  @Pt.AcceptedRating
  */
+@Deprecated
 public class NetworkTransmitterPort extends PtidesPort {
 
     /** Create a new NetworkTransmitterPort with a given container and a name.

@@ -47,6 +47,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  *  @Pt.ProposedRating Red (derler)
  *  @Pt.AcceptedRating
  */
+@Deprecated
 public abstract class PtidesPort extends MirrorPort {
 
     /** Create a new PtidesPort with a given container and a name.

@@ -47,6 +47,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  *  @Pt.ProposedRating Red (derler)
  *  @Pt.AcceptedRating
  */
+@Deprecated
 public class PeriodicSamplingSensorPort extends SensorPort {
 
     public Parameter samplingTime;
