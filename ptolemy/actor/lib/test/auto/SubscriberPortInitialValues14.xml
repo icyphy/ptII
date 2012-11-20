@@ -7,29 +7,29 @@
     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="5">
         </property>
-        <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="true">
+        <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="constrainBufferSizes" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{90, 40}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, 105.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={566, 283, 959, 720}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={413, 202, 966, 634}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[725, 610]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[732, 524]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{362.5, 305.0}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This test illustrates a problem where&#10;&#10;a SubscriptionAggregatorPort with an initial value &#10;inside an actor-oriented class is not the same as &#10;&#10;a SubscriptionAggregator -&gt; SampleDealy &#10;inside an actor-oriented class.&#10;&#10;The problem is that the SubscriptionAggregator&#10;gets a NoRoomException.&#10;&#10;">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This test illustrated a problem where&#10;&#10;a SubscriptionAggregatorPort with an initial value &#10;was not the same as &#10;&#10;a SubscriptionAggregator -&gt; SampleDealy &#10;&#10;The problem was that the SubscriptionAggregator&#10;got a NoRoomException.&#10;&#10;Now, a minor issue is that inside the composite,&#10;the width must be specified for the channel that &#10;has SubscriptionAggregatorPort on it.&#10;&#10;">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 190.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 210.0]">
         </property>
     </property>
     <entity name="B2" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 135.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 165.0]">
         </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={373, 208, 934, 634}, maximized=false}">
         </property>
@@ -59,9 +59,9 @@
         <link port="Ramp.output" relation="relation"/>
     </entity>
     <entity name="CompositeActor" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{315.0, 135.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[300.0, 165.0]">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-12, 314, 934, 634}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={15, 310, 934, 634}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
         </property>
@@ -74,13 +74,13 @@
             </property>
             <property name="constrainBufferSizes" class="ptolemy.data.expr.Parameter" value="false">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[390.0, 235.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[405.0, 295.0]">
             </property>
         </property>
         <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The model does not run if the SubscriptionAggregatorPort is present.&#10;&#10;">
+            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Note that the width must be specified for the channel that &#10;has a SubscriptionAggregatorPort on it.&#10;&#10;">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[315.0, 455.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[400.0, 410.0]">
             </property>
         </property>
         <port name="SubscriptionAggregatorPort" class="ptolemy.actor.SubscriptionAggregatorPort">
@@ -135,6 +135,8 @@
             </property>
         </relation>
         <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
+            </property>
         </relation>
         <link port="SubscriptionAggregatorPort" relation="relation"/>
         <link port="Test.input" relation="relation"/>

@@ -157,6 +157,20 @@
         <entity name="CompositeActor" class="ptolemy.actor.TypedCompositeActor">
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
             </property>
+            <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+                <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Note that the width needs to be set on the channels&#10;with SubscriptionAggregators on them.&#10;&#10;">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{315.0, 455.0}">
+                </property>
+            </property>
+            <port name="SubscriptionAggregatorPort" class="ptolemy.actor.SubscriptionAggregatorPort">
+                <property name="input"/>
+                <property name="multiport"/>
+                <property name="channel" class="ptolemy.data.expr.StringParameter" value="channel.*">
+                </property>
+                <property name="global" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+            </port>
             <entity name="Test" class="ptolemy.actor.lib.Test">
                 <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{{-99, -98}, {0, 0}, {1, 1}, {2, 2}, {3, 3}}">
                 </property>
@@ -165,6 +179,14 @@
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[790.0, 375.0]">
                 </property>
             </entity>
+            <relation name="relation" class="ptolemy.actor.TypedIORelation">
+                <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
+            </relation>
+            <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+                <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
+            </relation>
         </entity>
     </entity>
 </entity>
