@@ -29,7 +29,7 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/domains/ptides/demo/PtidesBasicMixedSimulator
+ME =		ptolemy/domains/ptides/demo/MixedSimulator
 
 # Root of the Java directory
 ROOT =		../../../../..
@@ -41,13 +41,13 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	PtidesBasicMixedSimulator
+PTPACKAGE = 	MixedSimulator
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
-	PtidesBasicMixedSimulator.xml 
+	MixedSimulator.xml 
 
 EXTRA_SRCS = $(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
@@ -74,10 +74,10 @@ demo_applet: $(PTCLASSJAR)
 	CLASSPATH=$(CLASSPATH) appletviewer 
 
 demo_ptolemy:
-	"$(PTII)/bin/ptolemy" PtidesBasicMixedSimulator.xml
+	"$(PTII)/bin/ptolemy" MixedSimulator.xml
 
 demo_vergil:
-	"$(PTII)/bin/vergil" PtidesBasicMixedSimulator.xml
+	"$(PTII)/bin/vergil" MixedSimulator.xml
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

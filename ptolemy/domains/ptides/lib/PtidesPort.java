@@ -225,6 +225,9 @@ public class PtidesPort extends MirrorPort {
         Time timestamp = ((CompositeActor) getContainer()).getDirector()
                 .getModelTime();
         Time sourceTimestamp = ((PtidesDirector)((CompositeActor) getContainer()).getDirector()).getCurrentSourceTimestamp();
+        if (sourceTimestamp == null) {
+            sourceTimestamp = timestamp;
+        }
         if (_transmittedTokenTimestamps == null) {
             _transmittedTokenTimestamps = new HashMap();
             _transmittedTokenCnt = new HashMap();

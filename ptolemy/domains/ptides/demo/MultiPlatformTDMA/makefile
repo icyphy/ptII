@@ -29,7 +29,7 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/domains/ptides/demo/PtidesBasicMultiPlatformTDMA
+ME =		ptolemy/domains/ptides/demo/MultiPlatformTDMA
 
 # Root of the Java directory
 ROOT =		../../../../..
@@ -41,14 +41,14 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	PtidesBasicMultiPlatformTDMA
+PTPACKAGE = 	MultiPlatformTDMA
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
 	$(JSRCS) \
-	PtidesBasicMultiPlatformTDMA.xml 
+	MultiPlatformTDMA.xml 
 
 EXTRA_SRCS = \
 	$(OTHER_FILES_TO_BE_JARED) \
@@ -77,10 +77,10 @@ demo_applet: $(PTCLASSJAR)
 	CLASSPATH=$(CLASSPATH) appletviewer 
 
 demo_ptolemy:
-	"$(PTII)/bin/ptolemy" PtidesBasicMultiPlatformTDMA.xml
+	"$(PTII)/bin/ptolemy" MultiPlatformTDMA.xml
 
 demo_vergil:
-	"$(PTII)/bin/vergil" PtidesBasicMultiPlatformTDMA.xml
+	"$(PTII)/bin/vergil" MultiPlatformTDMA.xml
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

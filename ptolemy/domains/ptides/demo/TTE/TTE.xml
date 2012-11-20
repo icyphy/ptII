@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="PtidesBasicTTE" class="ptolemy.actor.TypedCompositeActor">
+<entity name="TTE" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
@@ -316,13 +316,13 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[295.0, 280.0]">
             </property>
         </entity>
-        <entity name="PreemptableServer" class="ptolemy.domains.ptides.demo.PtidesBasicTTE.PreemptableServer">
+        <entity name="PreemptableServer" class="ptolemy.domains.ptides.demo.TTE.PreemptableServer">
             <property name="serviceTime" class="ptolemy.actor.parameters.PortParameter" value="0.1">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[210.0, 155.0]">
             </property>
         </entity>
-        <entity name="PreemptableServer2" class="ptolemy.domains.ptides.demo.PtidesBasicTTE.PreemptableServer">
+        <entity name="PreemptableServer2" class="ptolemy.domains.ptides.demo.TTE.PreemptableServer">
             <property name="serviceTime" class="ptolemy.actor.parameters.PortParameter" value="Infinity">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[180.0, 375.0]">
@@ -602,19 +602,19 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[385.0, 320.0]">
             </property>
         </entity>
-        <entity name="PreemptableServer2" class="ptolemy.domains.ptides.demo.PtidesBasicTTE.PreemptableServer">
+        <entity name="PreemptableServer2" class="ptolemy.domains.ptides.demo.TTE.PreemptableServer">
             <property name="serviceTime" class="ptolemy.actor.parameters.PortParameter" value="0.1">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[485.0, 180.0]">
             </property>
         </entity>
-        <entity name="PreemptableServer4" class="ptolemy.domains.ptides.demo.PtidesBasicTTE.PreemptableServer">
+        <entity name="PreemptableServer4" class="ptolemy.domains.ptides.demo.TTE.PreemptableServer">
             <property name="serviceTime" class="ptolemy.actor.parameters.PortParameter" value="0.1">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[485.0, 250.0]">
             </property>
         </entity>
-        <entity name="PreemptableServer5" class="ptolemy.domains.ptides.demo.PtidesBasicTTE.PreemptableServer">
+        <entity name="PreemptableServer5" class="ptolemy.domains.ptides.demo.TTE.PreemptableServer">
             <property name="serviceTime" class="ptolemy.actor.parameters.PortParameter" value="0.1">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[495.0, 320.0]">
@@ -972,13 +972,13 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[295.0, 280.0]">
             </property>
         </entity>
-        <entity name="PreemptableServer" class="ptolemy.domains.ptides.demo.PtidesBasicTTE.PreemptableServer">
+        <entity name="PreemptableServer" class="ptolemy.domains.ptides.demo.TTE.PreemptableServer">
             <property name="serviceTime" class="ptolemy.actor.parameters.PortParameter" value="0.1">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[210.0, 155.0]">
             </property>
         </entity>
-        <entity name="PreemptableServer2" class="ptolemy.domains.ptides.demo.PtidesBasicTTE.PreemptableServer">
+        <entity name="PreemptableServer2" class="ptolemy.domains.ptides.demo.TTE.PreemptableServer">
             <property name="serviceTime" class="ptolemy.actor.parameters.PortParameter" value="0.1">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[180.0, 375.0]">
@@ -1331,13 +1331,13 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[295.0, 280.0]">
             </property>
         </entity>
-        <entity name="PreemptableServer" class="ptolemy.domains.ptides.demo.PtidesBasicTTE.PreemptableServer">
+        <entity name="PreemptableServer" class="ptolemy.domains.ptides.demo.TTE.PreemptableServer">
             <property name="serviceTime" class="ptolemy.actor.parameters.PortParameter" value="0.1">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[210.0, 155.0]">
             </property>
         </entity>
-        <entity name="PreemptableServer2" class="ptolemy.domains.ptides.demo.PtidesBasicTTE.PreemptableServer">
+        <entity name="PreemptableServer2" class="ptolemy.domains.ptides.demo.TTE.PreemptableServer">
             <property name="serviceTime" class="ptolemy.actor.parameters.PortParameter" value="0.1">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[180.0, 375.0]">

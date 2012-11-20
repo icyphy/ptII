@@ -29,7 +29,7 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/domains/ptides/demo/PtidesBasicPowerPlant
+ME =		ptolemy/domains/ptides/demo/PowerPlant
 
 # Root of the Java directory
 ROOT =		../../../../..
@@ -41,14 +41,14 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	PtidesBasicPowerPlant
+PTPACKAGE = 	PowerPlant
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
 	$(JSRCS) \
-	PtidesBasicPowerPlant.xml 
+	PowerPlant.xml 
 
 EXTRA_SRCS = \
 	$(OTHER_FILES_TO_BE_JARED) \
@@ -77,10 +77,10 @@ demo_applet: $(PTCLASSJAR)
 	CLASSPATH=$(CLASSPATH) appletviewer 
 
 demo_ptolemy:
-	"$(PTII)/bin/ptolemy" PtidesBasicPowerPlant.xml
+	"$(PTII)/bin/ptolemy" PowerPlant.xml
 
 demo_vergil:
-	"$(PTII)/bin/vergil" PtidesBasicPowerPlant.xml
+	"$(PTII)/bin/vergil" PowerPlant.xml
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

@@ -47,12 +47,11 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
-	$(JSRCS) \
-	TREXNoNetworkV1.xml \
+	$(JSRCS) \ 
 	TREXNoNetworkAllDigital.xml \
 	TREXNetworkV1.xml \
 	TREXPtidesMulticoreDirector.xml \
-	TREX.xml \
+	TREX.xml 
 
 EXTRA_SRCS = \
 	$(OTHER_FILES_TO_BE_JARED) \

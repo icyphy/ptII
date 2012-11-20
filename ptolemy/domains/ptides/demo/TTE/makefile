@@ -29,7 +29,7 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/domains/ptides/demo/PtidesBasicTTE
+ME =		ptolemy/domains/ptides/demo/TTE
 
 # Root of the Java directory
 ROOT =		../../../../..
@@ -41,7 +41,7 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	PtidesBasicTTE
+PTPACKAGE = 	TTE
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
@@ -49,7 +49,7 @@ JSRCS = \
 
 OTHER_FILES_TO_BE_JARED = \
 	$(JSRCS) \
-	PtidesBasicTTE.xml 
+	TTE.xml 
 
 EXTRA_SRCS = \
 	$(OTHER_FILES_TO_BE_JARED) \
@@ -78,10 +78,10 @@ demo_applet: $(PTCLASSJAR)
 	CLASSPATH=$(CLASSPATH) appletviewer 
 
 demo_ptolemy:
-	"$(PTII)/bin/ptolemy" PtidesBasicTTE.xml
+	"$(PTII)/bin/ptolemy" TTE.xml
 
 demo_vergil:
-	"$(PTII)/bin/vergil" PtidesBasicTTE.xml
+	"$(PTII)/bin/vergil" TTE.xml
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
