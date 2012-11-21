@@ -200,6 +200,19 @@ public class SetVariable extends TypedAtomicActor implements ChangeListener,
         MessageHandler.error("Failed to set variable.", exception);
     }
 
+    /** Clone the actor into the specified workspace.
+     *  @param workspace The workspace for the new object.
+     *  @return A new actor.
+     *  @exception CloneNotSupportedException If a derived class contains
+     *   an attribute that cannot be cloned.
+     */
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        SetVariable newObject = (SetVariable) super.clone(workspace);
+        // Derived classes like ptides/lib/ErrorHandlingAction.java need this.
+        newObject._attribute = (Attribute)newObject.getAttribute(newObject.variableName.getName());
+        return newObject;
+    }
+
     /** Read at most one token from the input port and issue a change
      *  request to update variables as indicated by the input.
      *  @exception IllegalActionException If thrown reading the input.
