@@ -261,6 +261,7 @@ public class ExportModelJUnitTest {
                 "PublisherTest", // gt
                 "RealTimeComposite.xml", // "Audio Device Unavailable"
                 "SerialPort.xml", // Requires serial port.
+                "Signature.xml", // Throws an exception in the normal course of operations.
                 "SimpleTrafficLightSMVModule.xml", // "PedestrianLightSMV can not run in simulation mode."
                 "SoundSpectrum.xml", // "Audio Device Unavailable"
                 "SynthesizedVoice.xml", // "Audio Device Unavailable"
