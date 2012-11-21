@@ -33,7 +33,7 @@
     <entity name="A1" class="ptolemy.cg.lib.ModularCodeGenTypedCompositeActor">
         <property name="recompileHierarchy" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="recompileThisLevel" class="ptolemy.data.expr.Parameter" value="false">
+        <property name="recompileThisLevel" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[315.0, 110.0]">
         </property>
@@ -43,9 +43,9 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[110.0, 65.0]">
             </property>
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 130, 813, 510}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 130, 834, 634}, maximized=false}">
         </property>
-        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 524]">
         </property>
         <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
         </property>
@@ -84,7 +84,7 @@
                 <entity name="B1" class="ptolemy.cg.lib.ModularCodeGenTypedCompositeActor">
                     <property name="recompileHierarchy" class="ptolemy.data.expr.Parameter" value="false">
                     </property>
-                    <property name="recompileThisLevel" class="ptolemy.data.expr.Parameter" value="false">
+                    <property name="recompileThisLevel" class="ptolemy.data.expr.Parameter" value="true">
                     </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[235.0, 145.0]">
                     </property>
@@ -94,7 +94,7 @@
                         <property name="_location" class="ptolemy.kernel.util.Location" value="{95.0, 50.0}">
                         </property>
                     </property>
-                    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 813, 510}, maximized=false}">
+                    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 834, 634}, maximized=false}">
                     </property>
                     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
                     </property>
@@ -136,6 +136,8 @@
                                 </vertex>
                             </relation>
                             <relation name="relation" class="ptolemy.actor.TypedIORelation">
+                                <property name="width" class="ptolemy.data.expr.Parameter" value="2">
+                                </property>
                             </relation>
                             <relation name="relation2" class="ptolemy.actor.TypedIORelation">
                             </relation>
@@ -152,7 +154,7 @@
                 <entity name="B2" class="ptolemy.cg.lib.ModularCodeGenTypedCompositeActor">
                     <property name="recompileHierarchy" class="ptolemy.data.expr.Parameter" value="false">
                     </property>
-                    <property name="recompileThisLevel" class="ptolemy.data.expr.Parameter" value="false">
+                    <property name="recompileThisLevel" class="ptolemy.data.expr.Parameter" value="true">
                     </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[195.0, 250.0]">
                     </property>
@@ -162,9 +164,9 @@
                         <property name="_location" class="ptolemy.kernel.util.Location" value="{95.0, 50.0}">
                         </property>
                     </property>
-                    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 130, 813, 510}, maximized=false}">
+                    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 130, 834, 634}, maximized=false}">
                     </property>
-                    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+                    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 524]">
                     </property>
                     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
                     </property>
@@ -198,6 +200,8 @@
                                 </property>
                             </entity>
                             <relation name="relation" class="ptolemy.actor.TypedIORelation">
+                                <property name="width" class="ptolemy.data.expr.Parameter" value="2">
+                                </property>
                             </relation>
                             <relation name="relation2" class="ptolemy.actor.TypedIORelation">
                             </relation>
@@ -309,7 +313,7 @@
     <entity name="A2" class="ptolemy.cg.lib.ModularCodeGenTypedCompositeActor">
         <property name="recompileHierarchy" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="recompileThisLevel" class="ptolemy.data.expr.Parameter" value="false">
+        <property name="recompileThisLevel" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[290.0, 235.0]">
         </property>
@@ -319,7 +323,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="{95.0, 50.0}">
             </property>
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={515, 22, 813, 510}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={515, 22, 834, 634}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
         </property>
@@ -360,7 +364,7 @@
                 <entity name="B1" class="ptolemy.cg.lib.ModularCodeGenTypedCompositeActor">
                     <property name="recompileHierarchy" class="ptolemy.data.expr.Parameter" value="false">
                     </property>
-                    <property name="recompileThisLevel" class="ptolemy.data.expr.Parameter" value="false">
+                    <property name="recompileThisLevel" class="ptolemy.data.expr.Parameter" value="true">
                     </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[235.0, 145.0]">
                     </property>
@@ -370,9 +374,9 @@
                         <property name="_location" class="ptolemy.kernel.util.Location" value="{95.0, 50.0}">
                         </property>
                     </property>
-                    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 813, 510}, maximized=false}">
+                    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 834, 634}, maximized=false}">
                     </property>
-                    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+                    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 524]">
                     </property>
                     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
                     </property>
@@ -426,6 +430,8 @@
                                 </port>
                             </entity>
                             <relation name="relation" class="ptolemy.actor.TypedIORelation">
+                                <property name="width" class="ptolemy.data.expr.Parameter" value="2">
+                                </property>
                             </relation>
                             <relation name="relation4" class="ptolemy.actor.TypedIORelation">
                                 <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
@@ -452,7 +458,7 @@
                 <entity name="B2" class="ptolemy.cg.lib.ModularCodeGenTypedCompositeActor">
                     <property name="recompileHierarchy" class="ptolemy.data.expr.Parameter" value="false">
                     </property>
-                    <property name="recompileThisLevel" class="ptolemy.data.expr.Parameter" value="false">
+                    <property name="recompileThisLevel" class="ptolemy.data.expr.Parameter" value="true">
                     </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[195.0, 250.0]">
                     </property>
@@ -462,9 +468,9 @@
                         <property name="_location" class="ptolemy.kernel.util.Location" value="{95.0, 50.0}">
                         </property>
                     </property>
-                    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 130, 813, 510}, maximized=false}">
+                    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 130, 834, 634}, maximized=false}">
                     </property>
-                    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+                    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 524]">
                     </property>
                     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
                     </property>
@@ -501,6 +507,8 @@
                                 </property>
                             </entity>
                             <relation name="relation" class="ptolemy.actor.TypedIORelation">
+                                <property name="width" class="ptolemy.data.expr.Parameter" value="2">
+                                </property>
                             </relation>
                             <relation name="relation2" class="ptolemy.actor.TypedIORelation">
                             </relation>
