@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="PrintingPress_noAnimations_new" class="ptolemy.actor.TypedCompositeActor">
+<entity name="PrintingPress" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
@@ -14,7 +14,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-400.0, 275.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1318, -368, 1280, 741}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 1280, 741}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1046, 631]">
     </property>
@@ -583,7 +583,7 @@
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[735.0, -115.0]">
                 </property>
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={30, 22, 948, 677}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={30, 22, 969, 677}, maximized=false}">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[735, 567]">
             </property>
@@ -709,24 +709,28 @@
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[1175.0, 400.0]">
                 </property>
             </entity>
-            <entity name="Multiplexor" class="ptolemy.actor.lib.Multiplexor">
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[1520.0, 265.0]">
+            <entity name="Sequence" class="ptolemy.actor.lib.Sequence">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[1395.0, 400.0]">
+                </property>
+            </entity>
+            <entity name="Select" class="ptolemy.actor.lib.Select">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{1441.1635992578863, 215.58595573077724}">
                 </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                     <property name="multiport"/>
-                    <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="{0.0, 0.0}">
+                    <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="0.0">
+                    </property>
+                    <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="1.0E-4">
                     </property>
                 </port>
-                <port name="select" class="ptolemy.actor.TypedIOPort">
+                <port name="control" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
-                    <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="{0.0}">
+                    <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="0.0">
+                    </property>
+                    <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="1.0E-4">
                     </property>
                 </port>
-            </entity>
-            <entity name="Sequence" class="ptolemy.actor.lib.Sequence">
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[1395.0, 400.0]">
-                </property>
             </entity>
             <relation name="relation2" class="ptolemy.actor.TypedIORelation">
                 <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
@@ -752,18 +756,18 @@
             </relation>
             <relation name="relation9" class="ptolemy.actor.TypedIORelation">
             </relation>
-            <relation name="relation10" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="relation11" class="ptolemy.actor.TypedIORelation">
-            </relation>
             <relation name="relation12" class="ptolemy.actor.TypedIORelation">
                 <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
                 </property>
                 <vertex name="vertex1" value="[1430.0, 345.0]">
                 </vertex>
             </relation>
+            <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="relation11" class="ptolemy.actor.TypedIORelation">
+            </relation>
             <link port="theta" relation="relation3"/>
-            <link port="paperRadius" relation="relation11"/>
+            <link port="paperRadius" relation="relation8"/>
             <link port="AddSubtract.plus" relation="relation"/>
             <link port="AddSubtract.minus" relation="relation2"/>
             <link port="AddSubtract.output" relation="relation6"/>
@@ -782,12 +786,12 @@
             <link port="Comparator.output" relation="relation4"/>
             <link port="TrueGate.input" relation="relation4"/>
             <link port="TrueGate.output" relation="relation9"/>
-            <link port="Multiplexor.input" relation="relation12"/>
-            <link port="Multiplexor.input" relation="relation7"/>
-            <link port="Multiplexor.output" relation="relation11"/>
-            <link port="Multiplexor.select" relation="relation10"/>
             <link port="Sequence.enable" relation="relation9"/>
-            <link port="Sequence.output" relation="relation10"/>
+            <link port="Sequence.output" relation="relation11"/>
+            <link port="Select.input" relation="relation12"/>
+            <link port="Select.input" relation="relation7"/>
+            <link port="Select.output" relation="relation8"/>
+            <link port="Select.control" relation="relation11"/>
         </entity>
         <entity name="momentOfInertia" class="ptolemy.actor.TypedCompositeActor">
             <property name="_location" class="ptolemy.kernel.util.Location" value="[965.0, 515.0]">
@@ -2354,8 +2358,8 @@
 <title>Drive Paper Velocity - Feed Surface (paper) Velocity</title>
 <xLabel>Time in seconds</xLabel>
 <yLabel>Velocity m/s</yLabel>
-<xRange min="0.0" max="9.6"/>
-<yRange min="0.0" max="0.5850896283009449"/>
+<xRange min="0.0" max="750.0"/>
+<yRange min="0.0" max="40.44007451563665"/>
 </plot>?>
         </configure>
     </entity>
@@ -3385,7 +3389,7 @@
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[415.0, -110.0]">
                 </property>
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={74, 38, 950, 685}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={74, 38, 969, 677}, maximized=false}">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[735, 567]">
             </property>
@@ -3498,10 +3502,6 @@
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
             </entity>
-            <entity name="Multiplexor" class="ptolemy.actor.lib.Multiplexor">
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[660.0, 235.0]">
-                </property>
-            </entity>
             <entity name="constzero2" class="ptolemy.actor.lib.Const">
                 <property name="value" class="ptolemy.data.expr.Parameter" value="1">
                 </property>
@@ -3560,24 +3560,47 @@
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{1185.0, 410.0}">
                 </property>
             </entity>
-            <entity name="Multiplexor2" class="ptolemy.actor.lib.Multiplexor">
-                <property name="_location" class="ptolemy.kernel.util.Location" value="{1530.0, 275.0}">
+            <entity name="Sequence" class="ptolemy.actor.lib.Sequence">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{1405.0, 410.0}">
+                </property>
+            </entity>
+            <entity name="Select" class="ptolemy.actor.lib.Select">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[655.0, 235.0]">
                 </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                     <property name="multiport"/>
-                    <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="{0.0, 0.0}">
+                    <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="0.0">
+                    </property>
+                    <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="1.0E-4">
                     </property>
                 </port>
-                <port name="select" class="ptolemy.actor.TypedIOPort">
+                <port name="control" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
-                    <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="{0.0}">
+                    <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="0.0">
+                    </property>
+                    <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="1.0E-4">
                     </property>
                 </port>
             </entity>
-            <entity name="Sequence" class="ptolemy.actor.lib.Sequence">
-                <property name="_location" class="ptolemy.kernel.util.Location" value="{1405.0, 410.0}">
+            <entity name="Select2" class="ptolemy.actor.lib.Select">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[1535.0, 265.0]">
                 </property>
+                <port name="input" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                    <property name="multiport"/>
+                    <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="0.0">
+                    </property>
+                    <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="1.0E-4">
+                    </property>
+                </port>
+                <port name="control" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                    <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="0.0">
+                    </property>
+                    <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="1.0E-4">
+                    </property>
+                </port>
             </entity>
             <relation name="relation2" class="ptolemy.actor.TypedIORelation">
                 <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
@@ -3591,21 +3614,15 @@
             </relation>
             <relation name="relation9" class="ptolemy.actor.TypedIORelation">
             </relation>
-            <relation name="relation11" class="ptolemy.actor.TypedIORelation">
-            </relation>
             <relation name="relation12" class="ptolemy.actor.TypedIORelation">
                 <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
                 </property>
                 <vertex name="vertex1" value="[490.0, 225.0]">
                 </vertex>
             </relation>
-            <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-            </relation>
             <relation name="relation4" class="ptolemy.actor.TypedIORelation">
             </relation>
             <relation name="relation7" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="relation10" class="ptolemy.actor.TypedIORelation">
             </relation>
             <relation name="relation13" class="ptolemy.actor.TypedIORelation">
                 <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
@@ -3615,19 +3632,25 @@
             </relation>
             <relation name="relation14" class="ptolemy.actor.TypedIORelation">
             </relation>
-            <relation name="relation15" class="ptolemy.actor.TypedIORelation">
-            </relation>
             <relation name="relation16" class="ptolemy.actor.TypedIORelation">
                 <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
                 </property>
                 <vertex name="vertex1" value="{1440.0, 355.0}">
                 </vertex>
             </relation>
-            <relation name="relation8" class="ptolemy.actor.TypedIORelation">
-            </relation>
             <relation name="relation17" class="ptolemy.actor.TypedIORelation">
             </relation>
-            <link port="paperRadius" relation="relation8"/>
+            <relation name="relation" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="relation10" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="relation11" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <link port="paperRadius" relation="relation11"/>
             <link port="port" relation="relation7"/>
             <link port="port2" relation="relation12"/>
             <link port="AddSubtract.plus" relation="relation9"/>
@@ -3641,15 +3664,11 @@
             <link port="UnaryMathFunction.output" relation="relation9"/>
             <link port="Limiter.input" relation="relation6"/>
             <link port="Limiter.output" relation="relation13"/>
-            <link port="constzero.output" relation="relation11"/>
+            <link port="constzero.output" relation="relation3"/>
             <link port="constzero.trigger" relation="relation12"/>
-            <link port="omega.derivative" relation="relation3"/>
+            <link port="omega.derivative" relation="relation10"/>
             <link port="omega.state" relation="relation4"/>
-            <link port="Multiplexor.input" relation="relation11"/>
-            <link port="Multiplexor.input" relation="relation12"/>
-            <link port="Multiplexor.output" relation="relation3"/>
-            <link port="Multiplexor.select" relation="relation10"/>
-            <link port="constzero2.output" relation="relation10"/>
+            <link port="constzero2.output" relation="relation"/>
             <link port="constzero2.trigger" relation="relation7"/>
             <link port="coreRadius.output" relation="relation16"/>
             <link port="coreRadius.trigger" relation="relation13"/>
@@ -3658,12 +3677,16 @@
             <link port="Comparator.output" relation="relation17"/>
             <link port="TrueGate.input" relation="relation17"/>
             <link port="TrueGate.output" relation="relation14"/>
-            <link port="Multiplexor2.input" relation="relation16"/>
-            <link port="Multiplexor2.input" relation="relation13"/>
-            <link port="Multiplexor2.output" relation="relation8"/>
-            <link port="Multiplexor2.select" relation="relation15"/>
             <link port="Sequence.enable" relation="relation14"/>
-            <link port="Sequence.output" relation="relation15"/>
+            <link port="Sequence.output" relation="relation8"/>
+            <link port="Select.input" relation="relation3"/>
+            <link port="Select.input" relation="relation12"/>
+            <link port="Select.output" relation="relation10"/>
+            <link port="Select.control" relation="relation"/>
+            <link port="Select2.input" relation="relation16"/>
+            <link port="Select2.input" relation="relation13"/>
+            <link port="Select2.output" relation="relation11"/>
+            <link port="Select2.control" relation="relation8"/>
         </entity>
         <entity name="momentOfInertia" class="ptolemy.actor.TypedCompositeActor">
             <property name="_location" class="ptolemy.kernel.util.Location" value="[965.0, 515.0]">
@@ -4096,8 +4119,8 @@
 <title>Paper Radius on Reserve Feed Roller</title>
 <xLabel>Time in seconds</xLabel>
 <yLabel>Paper Radius  (meters)</yLabel>
-<xRange min="0.0" max="9.8"/>
-<yRange min="0.7" max="0.7"/>
+<xRange min="0.0" max="750.0"/>
+<yRange min="0.6381694098569473" max="0.7"/>
 </plot>?>
         </configure>
     </entity>
@@ -4130,8 +4153,8 @@
 <title>Drive Paper Velocity - Reserve Feed Paper Velocity</title>
 <xLabel>Time in seconds</xLabel>
 <yLabel>Velocity m/s</yLabel>
-<xRange min="0.0" max="9.6"/>
-<yRange min="0.0" max="0.5850896283009449"/>
+<xRange min="0.0" max="750.0"/>
+<yRange min="0.0" max="26.027689989007655"/>
 </plot>?>
         </configure>
     </entity>
@@ -4757,8 +4780,19 @@
                         </property>
                     </port>
                 </entity>
-                <entity name="Multiplexor" class="ptolemy.actor.lib.Multiplexor">
-                    <property name="_location" class="ptolemy.kernel.util.Location" value="[330.0, 220.0]">
+                <entity name="BooleanToAnything" class="ptolemy.actor.lib.conversions.BooleanToAnything">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[255.0, 340.0]">
+                    </property>
+                    <port name="input" class="ptolemy.actor.TypedIOPort">
+                        <property name="input"/>
+                        <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="0.0">
+                        </property>
+                        <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="1.0E-4">
+                        </property>
+                    </port>
+                </entity>
+                <entity name="Select" class="ptolemy.actor.lib.Select">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[325.0, 215.0]">
                     </property>
                     <port name="input" class="ptolemy.actor.TypedIOPort">
                         <property name="input"/>
@@ -4768,18 +4802,7 @@
                         <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="1.0E-4">
                         </property>
                     </port>
-                    <port name="select" class="ptolemy.actor.TypedIOPort">
-                        <property name="input"/>
-                        <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="0.0">
-                        </property>
-                        <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="1.0E-4">
-                        </property>
-                    </port>
-                </entity>
-                <entity name="BooleanToAnything" class="ptolemy.actor.lib.conversions.BooleanToAnything">
-                    <property name="_location" class="ptolemy.kernel.util.Location" value="[255.0, 340.0]">
-                    </property>
-                    <port name="input" class="ptolemy.actor.TypedIOPort">
+                    <port name="control" class="ptolemy.actor.TypedIOPort">
                         <property name="input"/>
                         <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="0.0">
                         </property>
@@ -4795,12 +4818,6 @@
                     <vertex name="vertex1" value="[160.0, 170.0]">
                     </vertex>
                 </relation>
-                <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-                </relation>
-                <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-                </relation>
-                <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-                </relation>
                 <relation name="relation6" class="ptolemy.actor.TypedIORelation">
                 </relation>
                 <relation name="relation7" class="ptolemy.actor.TypedIORelation">
@@ -4808,6 +4825,12 @@
                 <relation name="relation8" class="ptolemy.actor.TypedIORelation">
                 </relation>
                 <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+                </relation>
+                <relation name="relation10" class="ptolemy.actor.TypedIORelation">
+                </relation>
+                <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+                </relation>
+                <relation name="relation4" class="ptolemy.actor.TypedIORelation">
                 </relation>
                 <link port="port" relation="relation6"/>
                 <link port="port2" relation="relation7"/>
@@ -4819,16 +4842,16 @@
                 <link port="AddSubtract.output" relation="relation2"/>
                 <link port="TimedDelay.input" relation="relation"/>
                 <link port="TimedDelay.output" relation="relation9"/>
-                <link port="PID.input" relation="relation5"/>
+                <link port="PID.input" relation="relation4"/>
                 <link port="PID.output" relation="relation"/>
-                <link port="Const.output" relation="relation4"/>
+                <link port="Const.output" relation="relation3"/>
                 <link port="Const.trigger" relation="relation2"/>
-                <link port="Multiplexor.input" relation="relation4"/>
-                <link port="Multiplexor.input" relation="relation2"/>
-                <link port="Multiplexor.output" relation="relation5"/>
-                <link port="Multiplexor.select" relation="relation3"/>
                 <link port="BooleanToAnything.input" relation="relation8"/>
-                <link port="BooleanToAnything.output" relation="relation3"/>
+                <link port="BooleanToAnything.output" relation="relation10"/>
+                <link port="Select.input" relation="relation2"/>
+                <link port="Select.input" relation="relation3"/>
+                <link port="Select.output" relation="relation4"/>
+                <link port="Select.control" relation="relation10"/>
             </entity>
         </entity>
         <relation name="relation7" class="ptolemy.actor.TypedIORelation">
@@ -7618,25 +7641,6 @@
                         </property>
                     </port>
                 </entity>
-                <entity name="Multiplexor" class="ptolemy.actor.lib.Multiplexor">
-                    <property name="_location" class="ptolemy.kernel.util.Location" value="{1153.0, 855.0}">
-                    </property>
-                    <port name="input" class="ptolemy.actor.TypedIOPort">
-                        <property name="input"/>
-                        <property name="multiport"/>
-                        <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="0.0">
-                        </property>
-                        <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="0.0">
-                        </property>
-                    </port>
-                    <port name="select" class="ptolemy.actor.TypedIOPort">
-                        <property name="input"/>
-                        <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="0.0">
-                        </property>
-                        <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="0.0">
-                        </property>
-                    </port>
-                </entity>
                 <entity name="Const4" class="ptolemy.actor.lib.Const">
                     <property name="value" class="ptolemy.data.expr.Parameter" value="1">
                     </property>
@@ -7673,6 +7677,25 @@
                     <port name="trigger" class="ptolemy.actor.TypedIOPort">
                         <property name="input"/>
                         <property name="multiport"/>
+                        <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="0.0">
+                        </property>
+                        <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="0.0">
+                        </property>
+                    </port>
+                </entity>
+                <entity name="Select" class="ptolemy.actor.lib.Select">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[1155.0, 795.0]">
+                    </property>
+                    <port name="input" class="ptolemy.actor.TypedIOPort">
+                        <property name="input"/>
+                        <property name="multiport"/>
+                        <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="0.0">
+                        </property>
+                        <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="0.0">
+                        </property>
+                    </port>
+                    <port name="control" class="ptolemy.actor.TypedIOPort">
+                        <property name="input"/>
                         <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="0.0">
                         </property>
                         <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -7769,21 +7792,21 @@
                 </relation>
                 <relation name="relation32" class="ptolemy.actor.TypedIORelation">
                 </relation>
-                <relation name="relation33" class="ptolemy.actor.TypedIORelation">
-                </relation>
-                <relation name="relation34" class="ptolemy.actor.TypedIORelation">
-                </relation>
                 <relation name="relation35" class="ptolemy.actor.TypedIORelation">
                     <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
                     </property>
                     <vertex name="vertex1" value="{993.0, 845.0}">
                     </vertex>
                 </relation>
-                <relation name="relation36" class="ptolemy.actor.TypedIORelation">
-                </relation>
                 <relation name="relation37" class="ptolemy.actor.TypedIORelation">
                 </relation>
                 <relation name="relation38" class="ptolemy.actor.TypedIORelation">
+                </relation>
+                <relation name="relation39" class="ptolemy.actor.TypedIORelation">
+                </relation>
+                <relation name="relation36" class="ptolemy.actor.TypedIORelation">
+                </relation>
+                <relation name="relation33" class="ptolemy.actor.TypedIORelation">
                 </relation>
                 <link port="port" relation="relation26"/>
                 <link port="port2" relation="relation37"/>
@@ -7831,7 +7854,7 @@
                 <link port="Merge2.output" relation="relation13"/>
                 <link port="Merge3.input" relation="relation14"/>
                 <link port="Merge3.input" relation="relation15"/>
-                <link port="Merge3.input" relation="relation33"/>
+                <link port="Merge3.input" relation="relation36"/>
                 <link port="Merge3.output" relation="relation38"/>
                 <link port="AddSubtract3.plus" relation="relation18"/>
                 <link port="AddSubtract3.minus" relation="relation25"/>
@@ -7860,14 +7883,14 @@
                 <link port="LogicalNot2.output" relation="relation21"/>
                 <link port="LogicalNot3.input" relation="relation31"/>
                 <link port="LogicalNot3.output" relation="relation30"/>
-                <link port="Multiplexor.input" relation="relation35"/>
-                <link port="Multiplexor.input" relation="relation34"/>
-                <link port="Multiplexor.output" relation="relation33"/>
-                <link port="Multiplexor.select" relation="relation36"/>
-                <link port="Const4.output" relation="relation36"/>
+                <link port="Const4.output" relation="relation39"/>
                 <link port="Const4.trigger" relation="relation37"/>
-                <link port="Const5.output" relation="relation34"/>
+                <link port="Const5.output" relation="relation33"/>
                 <link port="Const5.trigger" relation="relation35"/>
+                <link port="Select.input" relation="relation35"/>
+                <link port="Select.input" relation="relation33"/>
+                <link port="Select.output" relation="relation36"/>
+                <link port="Select.control" relation="relation39"/>
                 <link relation1="relation12" relation2="relation26"/>
             </entity>
         </entity>
@@ -10175,25 +10198,6 @@
                         </property>
                     </port>
                 </entity>
-                <entity name="Multiplexor" class="ptolemy.actor.lib.Multiplexor">
-                    <property name="_location" class="ptolemy.kernel.util.Location" value="[473.75, 260.0]">
-                    </property>
-                    <port name="input" class="ptolemy.actor.TypedIOPort">
-                        <property name="input"/>
-                        <property name="multiport"/>
-                        <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="0.0">
-                        </property>
-                        <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="1.0E-4">
-                        </property>
-                    </port>
-                    <port name="select" class="ptolemy.actor.TypedIOPort">
-                        <property name="input"/>
-                        <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="0.0">
-                        </property>
-                        <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="1.0E-4">
-                        </property>
-                    </port>
-                </entity>
                 <entity name="Const2" class="ptolemy.actor.lib.Const">
                     <property name="value" class="ptolemy.data.expr.Parameter" value="EnableCut">
                     </property>
@@ -10237,13 +10241,30 @@
                         </property>
                     </port>
                 </entity>
+                <entity name="Select" class="ptolemy.actor.lib.Select">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[470.0, 175.0]">
+                    </property>
+                    <port name="input" class="ptolemy.actor.TypedIOPort">
+                        <property name="input"/>
+                        <property name="multiport"/>
+                        <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="0.0">
+                        </property>
+                        <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="1.0E-4">
+                        </property>
+                    </port>
+                    <port name="control" class="ptolemy.actor.TypedIOPort">
+                        <property name="input"/>
+                        <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="0.0">
+                        </property>
+                        <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="1.0E-4">
+                        </property>
+                    </port>
+                </entity>
                 <relation name="relation" class="ptolemy.actor.TypedIORelation">
                     <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
                     </property>
                     <vertex name="vertex1" value="[61.25, 200.0]">
                     </vertex>
-                </relation>
-                <relation name="relation2" class="ptolemy.actor.TypedIORelation">
                 </relation>
                 <relation name="relation3" class="ptolemy.actor.TypedIORelation">
                     <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
@@ -10261,10 +10282,6 @@
                 </relation>
                 <relation name="relation5" class="ptolemy.actor.TypedIORelation">
                 </relation>
-                <relation name="relation6" class="ptolemy.actor.TypedIORelation">
-                </relation>
-                <relation name="relation7" class="ptolemy.actor.TypedIORelation">
-                </relation>
                 <relation name="relation8" class="ptolemy.actor.TypedIORelation">
                 </relation>
                 <relation name="relation10" class="ptolemy.actor.TypedIORelation">
@@ -10277,6 +10294,12 @@
                 </relation>
                 <relation name="relation9" class="ptolemy.actor.TypedIORelation">
                 </relation>
+                <relation name="relation13" class="ptolemy.actor.TypedIORelation">
+                </relation>
+                <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+                </relation>
+                <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+                </relation>
                 <link port="port" relation="relation10"/>
                 <link port="port2" relation="relation"/>
                 <link port="port3" relation="relation11"/>
@@ -10285,7 +10308,7 @@
                 <link port="port6" relation="relation9"/>
                 <link port="PID.input" relation="relation8"/>
                 <link port="PID.output" relation="relation3"/>
-                <link port="TimedDelay.input" relation="relation6"/>
+                <link port="TimedDelay.input" relation="relation13"/>
                 <link port="TimedDelay.output" relation="relation14"/>
                 <link port="Register.input" relation="relation11"/>
                 <link port="Register.output" relation="relation4"/>
@@ -10299,15 +10322,15 @@
                 <link port="AddSubtract.output" relation="relation8"/>
                 <link port="Const.output" relation="relation2"/>
                 <link port="Const.trigger" relation="relation3"/>
-                <link port="Multiplexor.input" relation="relation3"/>
-                <link port="Multiplexor.input" relation="relation2"/>
-                <link port="Multiplexor.output" relation="relation6"/>
-                <link port="Multiplexor.select" relation="relation7"/>
-                <link port="Const2.output" relation="relation7"/>
+                <link port="Const2.output" relation="relation6"/>
                 <link port="Const2.trigger" relation="relation12"/>
                 <link port="AddSubtract2.plus" relation="relation4"/>
                 <link port="AddSubtract2.minus" relation="relation"/>
                 <link port="AddSubtract2.output" relation="relation9"/>
+                <link port="Select.input" relation="relation3"/>
+                <link port="Select.input" relation="relation2"/>
+                <link port="Select.output" relation="relation13"/>
+                <link port="Select.control" relation="relation6"/>
             </entity>
         </entity>
         <relation name="relation2" class="ptolemy.actor.TypedIORelation">
@@ -10790,7 +10813,7 @@
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 65.0]">
                     </property>
                 </property>
-                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1427, 118, 934, 634}, maximized=false}">
+                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={346, 118, 934, 634}, maximized=false}">
                 </property>
                 <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
                 </property>
@@ -11082,8 +11105,23 @@
                         </property>
                     </port>
                 </entity>
-                <entity name="Multiplexor2" class="ptolemy.actor.lib.Multiplexor">
-                    <property name="_location" class="ptolemy.kernel.util.Location" value="[535.0, 315.0]">
+                <entity name="TimeDelay" class="ptolemy.actor.lib.TimeDelay">
+                    <property name="delay" class="ptolemy.actor.parameters.PortParameter" value="0.0001">
+                    </property>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[615.0, 315.0]">
+                    </property>
+                    <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="1.0E-4">
+                    </property>
+                    <port name="input" class="ptolemy.actor.TypedIOPort">
+                        <property name="input"/>
+                        <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="0.0">
+                        </property>
+                        <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="1.0E-4">
+                        </property>
+                    </port>
+                </entity>
+                <entity name="Select" class="ptolemy.actor.lib.Select">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[525.0, 315.0]">
                     </property>
                     <port name="input" class="ptolemy.actor.TypedIOPort">
                         <property name="input"/>
@@ -11093,22 +11131,7 @@
                         <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="1.0E-4">
                         </property>
                     </port>
-                    <port name="select" class="ptolemy.actor.TypedIOPort">
-                        <property name="input"/>
-                        <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="0.0">
-                        </property>
-                        <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="1.0E-4">
-                        </property>
-                    </port>
-                </entity>
-                <entity name="TimeDelay" class="ptolemy.actor.lib.TimeDelay">
-                    <property name="delay" class="ptolemy.actor.parameters.PortParameter" value="0.0001">
-                    </property>
-                    <property name="_location" class="ptolemy.kernel.util.Location" value="[615.0, 315.0]">
-                    </property>
-                    <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="1.0E-4">
-                    </property>
-                    <port name="input" class="ptolemy.actor.TypedIOPort">
+                    <port name="control" class="ptolemy.actor.TypedIOPort">
                         <property name="input"/>
                         <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="0.0">
                         </property>
@@ -11148,13 +11171,13 @@
                 </relation>
                 <relation name="relation8" class="ptolemy.actor.TypedIORelation">
                 </relation>
+                <relation name="relation12" class="ptolemy.actor.TypedIORelation">
+                </relation>
+                <relation name="relation14" class="ptolemy.actor.TypedIORelation">
+                </relation>
                 <relation name="relation13" class="ptolemy.actor.TypedIORelation">
                 </relation>
                 <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-                </relation>
-                <relation name="relation12" class="ptolemy.actor.TypedIORelation">
-                </relation>
-                <relation name="relation7" class="ptolemy.actor.TypedIORelation">
                 </relation>
                 <link port="port" relation="relation11"/>
                 <link port="port2" relation="relation"/>
@@ -11174,19 +11197,19 @@
                 <link port="AddSubtract.plus" relation="relation6"/>
                 <link port="AddSubtract.minus" relation="relation4"/>
                 <link port="AddSubtract.output" relation="relation5"/>
-                <link port="Const.output" relation="relation13"/>
+                <link port="Const.output" relation="relation14"/>
                 <link port="Const.trigger" relation="relation3"/>
-                <link port="Const2.output" relation="relation2"/>
+                <link port="Const2.output" relation="relation13"/>
                 <link port="Const2.trigger" relation="relation9"/>
                 <link port="AddSubtract2.plus" relation="relation4"/>
                 <link port="AddSubtract2.minus" relation="relation"/>
                 <link port="AddSubtract2.output" relation="relation8"/>
-                <link port="Multiplexor2.input" relation="relation3"/>
-                <link port="Multiplexor2.input" relation="relation13"/>
-                <link port="Multiplexor2.output" relation="relation7"/>
-                <link port="Multiplexor2.select" relation="relation2"/>
-                <link port="TimeDelay.input" relation="relation7"/>
+                <link port="TimeDelay.input" relation="relation2"/>
                 <link port="TimeDelay.output" relation="relation12"/>
+                <link port="Select.input" relation="relation3"/>
+                <link port="Select.input" relation="relation14"/>
+                <link port="Select.output" relation="relation2"/>
+                <link port="Select.control" relation="relation13"/>
             </entity>
         </entity>
         <relation name="relation2" class="ptolemy.actor.TypedIORelation">
@@ -11363,8 +11386,8 @@
 <title>Reserve  Velocity (red), Target Velocity (green) and Tracking Error</title>
 <xLabel>Time in seconds</xLabel>
 <yLabel>Velocity m/s</yLabel>
-<xRange min="0.0" max="9.6"/>
-<yRange min="0.0" max="0.0"/>
+<xRange min="0.0" max="750.0"/>
+<yRange min="-12.974697059035542" max="35.0"/>
 </plot>?>
             </configure>
         </entity>
@@ -11667,8 +11690,8 @@
 <title>Paper Radius on Reserve Feed Roller</title>
 <xLabel>Time in seconds</xLabel>
 <yLabel>Paper Radius  (meters)</yLabel>
-<xRange min="0.0" max="9.8"/>
-<yRange min="0.0" max="10.458212683300927"/>
+<xRange min="0.0" max="750.0"/>
+<yRange min="-0.03453814060350169" max="53.45462313309639"/>
 </plot>?>
         </configure>
     </entity>
@@ -11693,8 +11716,8 @@
 <title>Feed Velocity (red), Target Velocity (green) and Tracking Error</title>
 <xLabel>Time in seconds</xLabel>
 <yLabel>Velocity m/s</yLabel>
-<xRange min="0.0" max="9.8"/>
-<yRange min="-0.6640176674593476" max="0.6640176674593476"/>
+<xRange min="0.0" max="750.0"/>
+<yRange min="-9.95230111771925" max="35.0"/>
 </plot>?>
         </configure>
     </entity>
@@ -11718,8 +11741,8 @@
 <title>Paper Radius on Feed Roller, start (0.15), contact (0.2), cut (0.3)</title>
 <xLabel>Time in seconds</xLabel>
 <yLabel>Paper Radius  (meters)</yLabel>
-<xRange min="1.7976931348623157E308" max="-1.7976931348623157E308"/>
-<yRange min="1.7976931348623157E308" max="-1.7976931348623157E308"/>
+<xRange min="470.0" max="650.0999620653"/>
+<yRange min="0.15" max="0.3"/>
 </plot>?>
         </configure>
     </entity>
@@ -11743,8 +11766,8 @@
 <title>Paper Radius on Feed Roller, start (0.15), contact (0.2), cut (0.3)</title>
 <xLabel>Time in seconds</xLabel>
 <yLabel>Paper Radius  (meters)</yLabel>
-<xRange min="0.0" max="9.8"/>
-<yRange min="0.7" max="0.7"/>
+<xRange min="0.0" max="750.0"/>
+<yRange min="0.07" max="0.7"/>
 </plot>?>
         </configure>
     </entity>
