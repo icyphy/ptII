@@ -243,11 +243,12 @@ public class ExportModelJUnitTest {
         // Pathnames that should be skipped
         String[] skip = {
                 "ptalon/gt/demo/Adder/Adder.xml", // gt does not have a run button: "Channel index 0 is out of range, because width is only 0."
+                // CRoom, MatlabRoom, SystemCommand
+                "lbnl/demo/", // FIXME: hangs, probably because the log window is not closed.
 		"gt/demo/BouncingBallX2/BouncingBallX2/index.html", 
                 "distributed/demo/Sleep/Sleep.xml", // Requires jini.
                 "de/demo/Clock/Clock.xml", // "Audio Device Unavailable"
-                //"domains/gr", // "Cannot render to more than 32 Canvas3Ds",
-                //              // need to close ViewScreen3D by adding a ViewScreen3D Tableau.
+                //"domains/gr", // FIXME: need to close ViewScreen3D by adding a ViewScreen3D Tableau.
                 //"GravitationWithCollisionDetection.xml", // "Cannot render to more than 32 Canvas3Ds."
                 //"demo/ExecDemo/Demos/BouncingBall.xml", // "Cannot render to more than 32 Canvas3Ds."
                 "ExecDemos", // hangs
