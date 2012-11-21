@@ -72,7 +72,6 @@ JSRCS = \
 	SensorHandler.java \
 	SchedulerDirector.java \
 	SchedulerModel.java \
-	SimulatedPlatformPhysicalTime.java \
 	ExecutionTimeListener.java \
 	ExecutionTimeMonitor.java \
 	PlatformTimeMonitor.java 
