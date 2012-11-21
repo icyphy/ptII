@@ -537,10 +537,16 @@ public class Configuration extends CompositeEntity implements
                             // FIXME: what about non-NamedObjs?
                             NamedObj greaterNamedObj = (NamedObj) greaterAssociatedObject;
                             NamedObj lesserNamedObj = (NamedObj) lesserAssociatedObject;
+                            String className = greaterNamedObj.getContainer().getClass().getName();
                             if (greaterNamedObj != null
                                     && lesserNamedObj != null
                                     && (greaterNamedObj.getContainer() != lesserNamedObj
                                             .getContainer())
+                                    // Ptides ErrorHandlingAction manipulates a variable
+                                    // in the the container so it is ok if the container
+                                    // of the output port and the container of the 
+                                    // variable are different.
+                                    && !(className.equals("ptolemy.domains.ptides.lib.ErrorHandlingAction") && lesserNamedObj.getName().equals("dropEvent")) 
                                     // PubSubPort that contains an
                                     // initialTokens that is used to
                                     // set the type.
@@ -556,6 +562,8 @@ public class Configuration extends CompositeEntity implements
                                         + lesserNamedObj.getFullName()
                                         + " has a container:\n"
                                         + lesserNamedObj.getContainer()
+                                        + "\nThe constraint was: "
+                                        + constraint
                                         + "\n"
                                         + "This can occur if the clone(Workspace) "
                                         + "method is not present or does not set "
