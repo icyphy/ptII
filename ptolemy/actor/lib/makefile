@@ -272,6 +272,7 @@ OTHER_FILES_TO_BE_JARED = \
     AccumulatorIcon.xml \
     ArrayAccumulateIcon.xml \
     ArrayAppendIcon.xml \
+    ArrayAverageIcon.xml \
     ArrayExtractIcon.xml \
     ArrayUpdateIcon.xml \
     AverageIcon.xml \
