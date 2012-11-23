@@ -9,9 +9,10 @@
   <entity name="Chop" class="ptolemy.domains.sdf.lib.Chop"/>
   <entity name="Repeat" class="ptolemy.domains.sdf.lib.Repeat"/>
   <entity name="SampleDelay" class="ptolemy.domains.sdf.lib.SampleDelay">
+   <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="20"/>
    <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
       <property name="attributeName" value="initialOutputs"/>
-      <property name="displayWidth" value="20"/>
+      <property name="displayWidth" value="displayWidth"/>
    </property>
   </entity>
   <entity name="Sequencer" class="ptolemy.actor.lib.Sequencer"/>
