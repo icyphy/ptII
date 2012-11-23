@@ -244,8 +244,12 @@ public class ShellTextArea extends JPanel {
             public void run() {
                 setEditable(true);
 
-                String toPrint = result + "\n" + mainPrompt;
-                appendJTextArea(toPrint);
+                StringBuffer toPrint = new StringBuffer(result);
+                if (!result.equals("")) {
+                    toPrint.append("\n");
+                }
+                toPrint.append(mainPrompt);
+                appendJTextArea(toPrint.toString());
             }
         };
 
