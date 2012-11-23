@@ -633,10 +633,10 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         
         // The last argument ensures that we look at all transitions
         // not just those that are marked immediate.
-        // Second to last argument ensures that we look only at preemptive transitions.
+        // Third to last argument ensures that we look only at preemptive transitions.
         // The following has the side effect of putting the chosen
         // transitions into the _lastChosenTransitions map of the controller.
-        _chooseTransitions(transitionList, true, false);
+        _chooseTransitions(transitionList, true, false, false);
 
         // If there is an enabled preemptive transition, then we know
         // that the current refinements cannot generate outputs, so we
@@ -793,17 +793,17 @@ public class FSMActor extends CompositeEntity implements TypedActor,
                 }
 
                 if (checkTerminationTransitions) {
-                    // The last argument ensures that we look at all transitions
+                    // The second to last argument ensures that we look at all transitions
                     // not just those that are marked immediate.
-                    // The next to the last ensures that we look only at
+                    // The third from the last ensures that we look only at
                     // non-preemptive transitions.
-                    _chooseTransitions(_currentState.nonpreemptiveTransitionList(), false, false);
+                    _chooseTransitions(_currentState.nonpreemptiveTransitionList(), false, false, false);
                 } else {
-                    // The last argument ensures that we look at all transitions
+                    // The second to last argument ensures that we look at all transitions
                     // not just those that are marked immediate.
-                    // The next to the last ensures that we look only at
+                    // The third from last ensures that we look only at
                     // non-preemptive transitions.
-                    _chooseTransitions(transitionList, false, false);
+                    _chooseTransitions(transitionList, false, false, false);
                 }
             }
         }
@@ -1172,21 +1172,21 @@ public class FSMActor extends CompositeEntity implements TypedActor,
             if (_debugging) {
                 _debug("** Checking immediate preemptive transitions.");
             }
-            _chooseTransitions(transitionList, true, true);
+            _chooseTransitions(transitionList, true, true, true);
             if (_lastChosenTransitions.size() > 0) {
                 _transitionTaken = true;
             } else {
                 if (_debugging) {
                     _debug("** Checking immediate non-preemptive transitions.");
                 }
-                _chooseTransitions(transitionList, false, true);
+                _chooseTransitions(transitionList, false, true, true);
                 if (_lastChosenTransitions.size() > 0) {
                     _transitionTaken = true;
                 } else {
                     _transitionTaken = false;
                 }
             }
-            _commitLastChosenTransition();
+            _commitLastChosenTransition(false, true);
             // Need to clear this again.
             _transitionsPreviouslyChosenInIteration.clear();
 
@@ -1483,12 +1483,12 @@ public class FSMActor extends CompositeEntity implements TypedActor,
                 // Choose transitions from the termination transitions,
                 // including any immediate transitions that these lead to.
                 List<Transition> transitionList = _currentState.terminationTransitionList();
-                // The last argument ensures that we look at all transitions
+                // The second last argument ensures that we look at all transitions
                 // not just those that are marked immediate.
-                // Second to last argument ensures that we look only at non-preemptive transitions.
+                // Third from last argument ensures that we look only at non-preemptive transitions.
                 // The following has the side effect of putting the chosen
                 // transitions into the _lastChosenTransitions map of the controller.
-                _chooseTransitions(transitionList, false, false);
+                _chooseTransitions(transitionList, false, false, false);
             }
         }
 
@@ -1521,7 +1521,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         _transitionsPreviouslyChosenInIteration.clear();
 
         // Commit transitions on the _lastChosenTransitions map.
-        _commitLastChosenTransition();
+        _commitLastChosenTransition(false, false);
 
         // Postfire any transition refinements that were fired in fire().
         for (Actor transitionRefinement : _transitionRefinementsToPostfire) {
@@ -1599,12 +1599,12 @@ public class FSMActor extends CompositeEntity implements TypedActor,
             if (_debugging) {
                 _debug("** Checking immediate preemptive transitions.");
             }
-            _chooseTransitions(transitionList, true, true);
+            _chooseTransitions(transitionList, true, true, true);
             if (_lastChosenTransitions.size() == 0) {
                 if (_debugging) {
                     _debug("** Checking immediate non-preemptive transitions.");
                 }
-                _chooseTransitions(transitionList, false, true);
+                _chooseTransitions(transitionList, false, true, true);
             }
             // NOTE: Have to be very careful here. This needs
             // to be an incomplete commit in that it cannot
@@ -1612,7 +1612,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
             // outputs, because we are in preintialize().
             // The destination refinement hasn't been preinitialized
             // yet.  See HDF Fibonnaci demo.
-            _commitLastChosenTransition(true);
+            _commitLastChosenTransition(true, true);
             // Need to clear this again.
             _transitionsPreviouslyChosenInIteration.clear();
         }
@@ -1967,13 +1967,21 @@ public class FSMActor extends CompositeEntity implements TypedActor,
      *  @param immediateOnly If true, look only at immediate
      *   transitions from the current state. Otherwise, look
      *   at both immediate and non-immediate transitions.
+     *  @param inInitialize True when this method is called
+     *   from initialize or preinitialize, in which case, firing and initializing
+     *   refinements is not allowed; note that the refinements
+     *   will be initialized by the initialize method, but this
+     *   prevents them from being initialized more than once.
+     *   This could be important if, for example, the refinement
+     *   produces an output during initialize in a domain where
+     *   outputs are consumed, such as SDF.
      *  @exception IllegalActionException If something goes wrong.
      */
     protected void _chooseTransitions(
-            List<Transition> transitionList, boolean preemptive, boolean immediateOnly)
+            List<Transition> transitionList, boolean preemptive, boolean immediateOnly, boolean inInitialize)
             throws IllegalActionException {
         Transition chosenTransition = _chooseTransition(_currentState,
-                transitionList, preemptive, immediateOnly);
+                transitionList, preemptive, immediateOnly, inInitialize);
 
         // A self-loop that is immediate is not allowed, because if it is enabled,
         // it implied an infinite number of traversals.
@@ -2010,12 +2018,12 @@ public class FSMActor extends CompositeEntity implements TypedActor,
             }
             // Try preemptive transitions first, then non-preemptive.
             chosenTransition = _chooseTransition(
-                    nextState, transitionList, true, true);
+                    nextState, transitionList, true, true, inInitialize);
             if (chosenTransition == null) {
                 // Only try non-preemptive transitions if no preemptive transition
                 // is enabled.
                 chosenTransition = _chooseTransition(
-                        nextState, transitionList, false, true);
+                        nextState, transitionList, false, true, inInitialize);
             }
         }
     }
@@ -2054,22 +2062,6 @@ public class FSMActor extends CompositeEntity implements TypedActor,
                 }
             }
         }
-    }
-
-    /** Execute all set actions contained by the transition chosen
-     *  from the current state. Change current state
-     *  to the destination state of the last of these
-     *  chosen transitions. If the new current state is a transient
-     *  state that has a chosen transition emanating from it, then
-     *  also execute the set actions on that transition.
-     *  Reset the refinement
-     *  of the destination state if the <i>reset</i> parameter of the
-     *  chosen transition is true.
-     *  @exception IllegalActionException If any commit action throws it,
-     *   or the last chosen transition does not have a destination state.
-     */
-    protected void _commitLastChosenTransition() throws IllegalActionException {
-        _commitLastChosenTransition(false);
     }
 
     /** Return the chosen destination state. This method follows
@@ -2888,7 +2880,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
 
                 // It makes no sense for error transitions to be preemptive,
                 // so we look only at non-preemptive error transitions.
-                _chooseTransitions(errorTransitionList, false, false);
+                _chooseTransitions(errorTransitionList, false, false, false);
             }
         }
     }
@@ -2917,12 +2909,20 @@ public class FSMActor extends CompositeEntity implements TypedActor,
      *   false to consider only non-preemptive transitions.
      *  @param immediateOnly True to consider only immediate transitions,
      *   false to consider both immediate and non-immediate transitions.
+     *  @param inInitialize True when this method is called
+     *   from initialize or preinitialize, in which case, firing and initializing
+     *   refinements is not allowed; note that the refinements
+     *   will be initialized by the initialize method, but this
+     *   prevents them from being initialized more than once.
+     *   This could be important if, for example, the refinement
+     *   produces an output during initialize in a domain where
+     *   outputs are consumed, such as SDF.
      *  @return An enabled transition, or null if none is enabled.
      *  @exception IllegalActionException If there is more than one
      *   transition enabled and not all of them are nondeterministic.
      */
     private Transition _chooseTransition(State currentState,
-            List transitionList, boolean preemptive, boolean immediateOnly)
+            List transitionList, boolean preemptive, boolean immediateOnly, boolean inInitialize)
             throws IllegalActionException {
 
         // Get the transitions enabled from the current state.
@@ -3020,9 +3020,9 @@ public class FSMActor extends CompositeEntity implements TypedActor,
             // state refinement.
             if (!chosenTransition.isPreemptive()
                     && chosenTransition.isImmediate()) {
-                // Check for initial state with a refinement and an immediate transition.
-                if (((BooleanToken) currentState.isInitialState.getToken())
-                        .booleanValue()) {
+                // Check for initial state with a refinement and an immediate transition,
+                // which is not allowed because we can't fire the refinement in initialize.
+                if (inInitialize) {
                     Actor[] stateRefinements = currentState.getRefinement();
                     if (stateRefinements != null && stateRefinements.length > 0) {
                         throw new IllegalActionException(
@@ -3035,13 +3035,19 @@ public class FSMActor extends CompositeEntity implements TypedActor,
                 // If the transition into the current state is a reset transition,
                 // then initialize the source state refinements. Note that this is safe to do
                 // in the fire() method because a transition cannot be unchosen later.
+                //
+                // FIXME: The above statement is not true in the Continuous domain!!!
+                // The ContinuousDirector may later refine the step size.
+                //
                 // Note that at this point, _lastChosenTransition is the transition _into_
                 // the current state, if there is one.
-                if (_lastChosenTransition != null) {
-                    if (!_lastChosenTransition.isHistory()) {
-                        _initializeRefinements(currentState);
-                    }
+                if (!inInitialize
+                        && _lastChosenTransition != null
+                        && !_lastChosenTransition.isHistory()) {
+                    _initializeRefinements(currentState);
                 }
+                
+                // Fire the state refinements.
                 _fireStateRefinements(currentState);
             }
 
@@ -3129,10 +3135,19 @@ public class FSMActor extends CompositeEntity implements TypedActor,
      *  @param inPreinitialize If true, then only set the current
      *   state after following immediate transitions. Note that the
      *   guards on the immediate transitions need to be evaluatable.
+     *  @param inInitialize True when this method is called
+     *   from initialize or preinitialize, in which case, firing and initializing
+     *   refinements is not allowed; note that the refinements
+     *   will be initialized by the initialize method, but this
+     *   prevents them from being initialized more than once.
+     *   This could be important if, for example, the refinement
+     *   produces an output during initialize in a domain where
+     *   outputs are consumed, such as SDF.
      *  @exception IllegalActionException If any commit action throws it,
      *   or the last chosen transition does not have a destination state.
      */
-    private void _commitLastChosenTransition(boolean inPreinitialize) throws IllegalActionException {
+    private void _commitLastChosenTransition(boolean inPreinitialize, boolean inInitialize)
+            throws IllegalActionException {
         Transition currentTransition = _lastChosenTransitions
                 .get(_currentState);
         if (currentTransition == null) {
@@ -3187,7 +3202,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
             // the destination refinement.
             // Do not do this if we are in preinitialize(), as the refinement
             // has not been preinitialized yet.
-            if (!currentTransition.isHistory() && !inPreinitialize) {
+            if (!currentTransition.isHistory() && !inPreinitialize && !inInitialize) {
                 _initializeRefinements(nextState);
             }
         }
@@ -3253,7 +3268,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         // transition. If there is no chosen transition from the new
         // _currentState, then the recursive call will return immediately.
         if (!_reachedFinalState && stateChanged) {
-            _commitLastChosenTransition(inPreinitialize);
+            _commitLastChosenTransition(inPreinitialize, inInitialize);
         } else {
             _lastChosenTransitions.clear();
         }
