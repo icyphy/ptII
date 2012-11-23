@@ -78,6 +78,7 @@ import ptolemy.graph.CPO;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.math.ComplexMatrixMath;
+import ptolemy.util.MessageHandler;
 import ptolemy.util.StringUtilities;
 
 ///////////////////////////////////////////////////////////////////
@@ -1823,6 +1824,18 @@ public class UtilityFunctions {
     public static BooleanToken within(Token token1, Token token2,
             double distance) throws IllegalActionException {
         return token1.isCloseTo(token2, distance);
+    }
+    
+    /** Query the user for a yes-no answer and return a boolean.
+     *  This function will open a dialog if a GUI is available,
+     *  and otherwise will use standard input and output.
+     */
+    public static BooleanToken yesNoQuestion(StringToken prompt) {
+        if (MessageHandler.yesNoQuestion(prompt.stringValue())) {
+            return BooleanToken.TRUE;
+        } else {
+            return BooleanToken.FALSE;
+        }
     }
 
     /** Return a double zero matrix with the given number of rows and
