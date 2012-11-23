@@ -274,6 +274,7 @@ OTHER_FILES_TO_BE_JARED = \
     ArrayAppendIcon.xml \
     ArrayAverageIcon.xml \
     ArrayExtractIcon.xml \
+    ArrayMaximumIcon.xml \
     ArrayUpdateIcon.xml \
     AverageIcon.xml \
     BernoulliIcon.xml \
