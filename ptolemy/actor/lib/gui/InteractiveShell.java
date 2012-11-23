@@ -57,6 +57,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
+import ptolemy.util.MessageHandler;
 
 ///////////////////////////////////////////////////////////////////
 //// InteractiveShell
@@ -292,50 +293,61 @@ public class InteractiveShell extends TypedAtomicActor implements Placeable,
     public void initialize() throws IllegalActionException {
         super.initialize();
 
-        if (shell == null) {
-            // No container has been specified for the shell.
-            // Place the shell in its own frame.
-            // Need an effigy and a tableau so that menu ops work properly.
-            Effigy containerEffigy = Configuration.findEffigy(toplevel());
+        Runnable doInitialize = new Runnable() {
+            public void run() {
 
-            if (containerEffigy == null) {
-                throw new IllegalActionException(this,
-                        "Cannot find effigy for top level: "
-                                + toplevel().getFullName());
+                if (shell == null) {
+                    // No container has been specified for the shell.
+                    // Place the shell in its own frame.
+                    // Need an effigy and a tableau so that menu ops work properly.
+                    Effigy containerEffigy = Configuration.findEffigy(toplevel());
+
+                    if (containerEffigy == null) {
+                        MessageHandler.error("Cannot find effigy for top level: "
+                                        + toplevel().getFullName());
+                        return;
+                    }
+
+                    try {
+                        ExpressionShellEffigy shellEffigy = new ExpressionShellEffigy(
+                                containerEffigy, containerEffigy.uniqueName("shell"));
+
+                        // The default identifier is "Unnamed", which is no good for
+                        // two reasons: Wrong title bar label, and it causes a save-as
+                        // to destroy the original window.
+                        shellEffigy.identifier.setExpression(getFullName());
+
+                        _tableau = new ShellTableau(shellEffigy, "tableau");
+                        _frame = _tableau.frame;
+                        shell = _tableau.shell;
+                        shell.setInterpreter(InteractiveShell.this);
+
+                        // Prevent editing until the first firing.
+                        shell.setEditable(false);
+                    } catch (Exception ex) {
+                        MessageHandler.error("Error creating effigy and tableau "
+                                + InteractiveShell.this.getFullName(), ex);
+                        return;
+                    }
+
+                    _windowProperties.setProperties(_frame);
+                    _frame.pack();
+                } else {
+                    shell.clearJTextArea();
+                }
+
+                if (_frame != null) {
+                    // show() used to override manual placement by calling pack.
+                    // No more.
+                    _frame.show();
+                    _frame.toFront();
+                }
             }
-
-            try {
-                ExpressionShellEffigy shellEffigy = new ExpressionShellEffigy(
-                        containerEffigy, containerEffigy.uniqueName("shell"));
-
-                // The default identifier is "Unnamed", which is no good for
-                // two reasons: Wrong title bar label, and it causes a save-as
-                // to destroy the original window.
-                shellEffigy.identifier.setExpression(getFullName());
-
-                _tableau = new ShellTableau(shellEffigy, "tableau");
-                _frame = _tableau.frame;
-                shell = _tableau.shell;
-                shell.setInterpreter(this);
-
-                // Prevent editing until the first firing.
-                shell.setEditable(false);
-            } catch (Exception ex) {
-                throw new IllegalActionException(this, null, ex,
-                        "Error creating effigy and tableau");
-            }
-
-            _windowProperties.setProperties(_frame);
-            _frame.pack();
-        } else {
-            shell.clearJTextArea();
-        }
-
-        if (_frame != null) {
-            // show() used to override manual placement by calling pack.
-            // No more.
-            _frame.show();
-            _frame.toFront();
+        };
+        try {
+            SwingUtilities.invokeAndWait(doInitialize);
+        } catch (Exception e) {
+            throw new IllegalActionException(this, e, "Failed to initialize.");
         }
 
         _firstTime = true;
