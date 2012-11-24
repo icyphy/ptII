@@ -345,7 +345,15 @@ public class InteractiveShell extends TypedAtomicActor implements Placeable,
             }
         };
         try {
-            SwingUtilities.invokeAndWait(doInitialize);
+            if (!SwingUtilities.isEventDispatchThread()) { 
+                SwingUtilities.invokeAndWait(doInitialize);
+            } else {
+                // Exporting HTML for
+                // ptolemy/actor/lib/hoc/demo/ThreadedComposite/ConcurrentChat.xml
+                // ends up running this in the Swing event dispatch
+                // thread.
+                doInitialize.run();
+            }
         } catch (Exception e) {
             throw new IllegalActionException(this, e, "Failed to initialize.");
         }
