@@ -7,18 +7,32 @@
 // The model identifier string.
 #define MODEL_IDENTIFIER helloWorld
 
+// cxh: Check to see if FMU_COSIMULATION is defined because this file is used
+// in fmusdk to create both a co-simulation fmu and a model exchange fmu.
+#ifdef FMU_COSIMULATION
+
+// include fmu header files, typedefs and macros
 #include "fmiFunctions.h"
+
+// Data structure for an instance of this FMU. */
+typedef struct {
+     // cxh: Use a pointer to a fmiReal so that we can allocate space for it.
+     // cxh: call this 'r' instead of 'value' so it works with model exchange.
+     fmiReal    *r;
+     fmiCallbackFunctions functions;
+     fmiString instanceName;
+} ModelInstance;
+
+#else // FMU_COSIMULATION
+// cxh: This is used for model exchange, which is built when make is run in fmusdk/
+#include "fmuTemplate.h"
+#endif // FMU_COSIMULATION
 
 // Globally unique ID used to make sure the XML file and the DLL match.
 // The following was generated at http://guid.us
 #define MODEL_GUID "{7b2d6d2e-ac4d-4aa8-93eb-d53357dc58ec}"
 
-// Data structure for an instance of this FMU.
-typedef struct {
-    fmiReal    value;
-    fmiCallbackFunctions functions;
-    fmiString instanceName;
-} ModelInstance;
+
 
 fmiComponent fmiInstantiateSlave(fmiString  instanceName, fmiString  GUID,
     	fmiString  fmuLocation, fmiString  mimeType, fmiReal timeout, fmiBoolean visible,
@@ -44,7 +58,10 @@ fmiComponent fmiInstantiateSlave(fmiString  instanceName, fmiString  GUID,
         return NULL;
     }
     component = (ModelInstance *)functions.allocateMemory(1, sizeof(ModelInstance));
-    component->value = 42;
+    // cxh: One key change here was that we allocate memory for the pointer holding
+    // the value.
+    component->r = functions.allocateMemory(1,    sizeof(fmiReal));
+    component->r[0] = 42.0;
     component->functions = functions;
     component->instanceName = instanceName;
     
@@ -60,7 +77,8 @@ fmiStatus fmiTerminateSlave(fmiComponent c) {
 }
 
 void fmiFreeSlaveInstance(fmiComponent c) {
-    ModelInstance* component;
+    // cxh: I had to cast the c to a ModelInstance here.
+    ModelInstance* component = (ModelInstance *) c;
     component->functions.freeMemory(component);
 }
 
@@ -70,20 +88,22 @@ fmiStatus fmiDoStep(fmiComponent c, fmiReal currentCommunicationPoint,
 }
 
 fmiStatus fmiGetReal(fmiComponent c, const fmiValueReference vr[], size_t nvr, fmiReal value[]) {
-    ModelInstance* component;
+    // cxh: I had to cast the c to a ModelInstance here.
+    ModelInstance* component = (ModelInstance *) c;
     // FIXME:
 	printf("Invoked fmiGetReal.");
 
     if (nvr > 1) {
-		component->functions.logger(component, component->instanceName, fmiError, "error",
-                "fmiGetReal: Illegal value reference %u.", nvr);
+        // cxh: The logger tends to throw segmentation faults, so comment it out
+        // component->functions.logger(component, component->instanceName, fmiError, "error",
+        //        "fmiGetReal: Illegal value reference %u.", nvr);
         return fmiError;
     }
     if (nvr > 0) {
         // FIXME:
-		printf("Assigning value %d.", component->value);
-
-    	value[0] = component->value;
+        //printf("Assigning value %d.", component->r[nvr]);
+        // cxh: FIXME: not sure about how to use nvr here.
+    	value[0] = component->r[0];
     }
     return fmiOK;
 }
