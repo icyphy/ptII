@@ -30,7 +30,11 @@
         </port>
     </entity>
     <entity name="Test" class="ptolemy.actor.lib.Test">
-        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="true">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{42.0}">
+        </property>
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="4.200000000000003E-8">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[235.0, 185.0]">
         </property>
