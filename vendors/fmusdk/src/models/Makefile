@@ -24,7 +24,7 @@ PIC =
 all:
 	./build_fmu me bouncingBall
 	./build_fmu me dq
-	./build_fmu me helloWorld
+	#./build_fmu me helloWorld
 	./build_fmu me inc
 	./build_fmu me values
 	./build_fmu me vanDerPol
