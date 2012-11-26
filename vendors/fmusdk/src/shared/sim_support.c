@@ -201,6 +201,7 @@ static int loadDll(const char* dllPath, FMU *fmu) {
     printf("dllPath = %s\n", dllPath);
     HANDLE h = dlopen(dllPath, RTLD_LAZY);
 #endif
+    //printf("sim_support.c: loadDll: about to try to load %s\n", dllPath);
     if (!h) {
         printf("error: Could not load %s\n", dllPath);
         return 0; // failure
@@ -256,6 +257,10 @@ static int loadDll(const char* dllPath, FMU *fmu) {
     fmu->getInteger              = (fGetInteger)         getAdr(&s, fmu, "fmiGetInteger");
     fmu->getBoolean              = (fGetBoolean)         getAdr(&s, fmu, "fmiGetBoolean");
     fmu->getString               = (fGetString)          getAdr(&s, fmu, "fmiGetString");
+    if (!s) {
+        printf("Warning: One or more of the necessary functions was not present.\n");
+        return 1;
+    }
     return s; 
 }
 
@@ -283,6 +288,7 @@ void loadFMU(const char* fmuFileName) {
     char* xmlPath;
     char* dllPath;
     
+    //printf("sim_support.c: loadFMU: %s\n", fmuFileName);
     // get absolute path to FMU, NULL if not found
     fmuPath = getFmuPath(fmuFileName);
     if (!fmuPath) exit(EXIT_FAILURE);
@@ -303,14 +309,20 @@ void loadFMU(const char* fmuFileName) {
     dllPath = calloc(sizeof(char), strlen(tmpPath) + strlen(DLL_DIR) 
             + strlen( getModelIdentifier(fmu.modelDescription)) +  strlen(DLL_SUFFIX) + 1);
     sprintf(dllPath,"%s%s%s%s", tmpPath, DLL_DIR, getModelIdentifier(fmu.modelDescription), DLL_SUFFIX);
+    //printf("sim_support.c: loadFMU: about to try to load %s\n", dllPath);
     if (!loadDll(dllPath, &fmu)) {
         // try the alternative directory and suffix
         dllPath = calloc(sizeof(char), strlen(tmpPath) + strlen(DLL_DIR2) 
                 + strlen( getModelIdentifier(fmu.modelDescription)) +  strlen(DLL_SUFFIX2) + 1);
         sprintf(dllPath,"%s%s%s%s", tmpPath, DLL_DIR2, getModelIdentifier(fmu.modelDescription), DLL_SUFFIX2);
-        if (!loadDll(dllPath, &fmu)) exit(EXIT_FAILURE); 
+        //printf("sim_support.c: loadFMU: about to try to load %s\n", dllPath);
+        if (!loadDll(dllPath, &fmu)) {
+            //printf("sim_support.c: loadFMU: could not load %s\n", dllPath);
+            exit(EXIT_FAILURE); 
+        }
     }
 
+    //printf("sim_support.c: loadFMU: %s done\n", fmuFileName);
     free(dllPath);
     free(fmuPath);
     free(tmpPath);
