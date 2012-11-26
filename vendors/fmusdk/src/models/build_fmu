@@ -1,0 +1,59 @@
+#!/bin/sh
+# Build a model exchange or co-simulation fmu
+# Usage: build_fmu cs|me directory
+
+if [ $# -ne 2 ]; then
+   echo "Usage: $0 cs|me directory"
+   exit 2
+fi
+
+csOrMe=$1
+directory=$2
+
+# Error checking
+if [ "$csOrMe" != "me" -a "$csOrMe" != "cs" ]; then
+   echo "$0: first argument must be either 'me' or 'cs', not $csOrMe"
+   exit 3
+fi
+
+if [ ! -d $directory ]; then
+   echo "$0: directory $directory does not exist"
+   exit 4
+fi
+
+if [ "$csOrMe" = "cs" ]; then
+   csOrMeInclude="-DFMI_COSIMULATION -I../../co_simulation/include"
+else
+   csOrMeInclude=-I../../model_exchange/include
+fi
+
+case "`uname -s`" in
+     CYGWIN*) arch=win
+     	      sharedLibrarySuffix=dll;;
+     Darwin)  arch=darwin
+     	      sharedLibrarySuffix=dylib;;
+     Linux)   arch=linux
+     	      pic=-fPIC
+     	      sharedLibrarySuffix=so;;
+esac     
+
+# Number of bits, default to 64
+bits=64
+case "`uname -m`" in
+     *64)      bits=64;;
+     *32)      bits=32;;
+     *i[3-6]86) bits=32;;
+esac
+
+# Uncomment the next line to force building 32-bit
+#bits=32
+# See also ../Makefile
+
+if [ $arch = linux -a $bits = 32 ]; then
+    CBITSFLAGS=-m32
+fi
+
+set -x
+(cd $directory; \
+    make dirclean; \
+    make ARCH=${arch}${bits} CBITSFLAGS=${CBITSFLAGS} CSORME=${csOrMe} CSORME_INCLUDE="${csOrMeInclude}" PIC=${pic} SHARED_LIBRARY_SUFFIX=${sharedLibrarySuffix} $directory.fmu)

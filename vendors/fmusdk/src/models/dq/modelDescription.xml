@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<fmiModelDescription
+  fmiVersion="1.0"
+  modelName="dq"
+  modelIdentifier="dq"
+  guid="{8c4e810f-3df3-4a00-8276-176fa3c9f000}"
+  numberOfContinuousStates="1"
+  numberOfEventIndicators="0">
+<ModelVariables>
+  <ScalarVariable name="x" valueReference="0" description="the only state">
+     <Real start="1" fixed="true"/>
+  </ScalarVariable>
+  <ScalarVariable name="der(x)" valueReference="1">
+     <Real/>
+  </ScalarVariable> 
+  <ScalarVariable name="k" valueReference="2" variability="parameter">
+     <Real start="1" fixed="true"/>
+  </ScalarVariable>
+</ModelVariables>
+

@@ -1,0 +1,35 @@
+#!/bin/sh
+# Run a co-simulation or model exchange fmu file
+# Usage: fmusim cs|me model.fmu
+
+if [ $# -ne 6 ]; then
+   cat <<EoF
+Usage: $0 fmi model.fmu tEnd h loggingOn csvSeparator
+  fmi ........... cs for co-simulation or me for model exchange, required
+  model.fmu ..... path to FMU, relative to current dir or absolute, required
+  tEnd .......... end  time of simulation, optional, defaults to 1.0 sec
+  h ............. step size of simulation, optional, defaults to 0.1 sec
+  loggingOn ..... 1 to activate logging,   optional, defaults to 0
+  csvSeparator .. c for comma, s for semicolon, optional, defaults to c
+Try: 
+$0 me fmu/me/bouncingBall.fmu 5 0.1 0 s
+EoF
+  exit 2
+fi
+
+csOrMe=$1
+fmuFile=$2
+
+# Error checking
+if [ "$csOrMe" != "me" -a "$csOrMe" != "cs" ]; then
+   echo "$0: first argument must be either 'me' or 'cs', not $csOrMe"
+   exit 3
+fi
+
+if [ ! -f $fmuFile ]; then
+   echo "$0: file '$fmuFile' does not exist?"
+   exit 4
+fi
+
+set -x
+bin/fmusim_${csOrMe} $2 $3 $4 $5 $6

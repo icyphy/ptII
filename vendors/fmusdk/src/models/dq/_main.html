@@ -1,0 +1,29 @@
+<html>
+<head>
+<title>Documentation for dq.fmu</title>
+<style type="text/css">
+  html { font-family: Verdana, Arial, Helvetica, sans-serif; }
+  h1   { color: #000066; }
+</style>
+</head>
+<body>
+<h1>dq.fmu</h1>
+This FMU implements the equation 
+<ul>
+<li> der(x) = -k * x </li>
+</ul>
+The analytical solution of this system is 
+<ul>
+<li> x(t) = exp(-k*t) </li>
+</ul>
+The above equation is also known as 
+<a href="http://en.wikipedia.org/wiki/Germund_Dahlquist" target="_blank">Dahlquist</a> 
+test equation.
+<br/>
+<img src="plot_x.png">
+<br/>
+The figure shows the solution for x computed with Silver 
+for start values k = 1 and x = 1.
+</body>
+</html>
+

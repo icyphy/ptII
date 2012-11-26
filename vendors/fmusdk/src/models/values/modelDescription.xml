@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<fmiModelDescription
+  fmiVersion="1.0"
+  modelName="values"
+  modelIdentifier="values"
+  guid="{8c4e810f-3df3-4a00-8276-176fa3c9f004}"
+  numberOfContinuousStates="1"
+  numberOfEventIndicators="0">
+<ModelVariables>
+  <ScalarVariable name="x" valueReference="0" description="used as continuous state">
+     <Real start="1" fixed="true"/>
+  </ScalarVariable>
+  <ScalarVariable name="der(x)" valueReference="1" description="time derivative of x">
+     <Real/>
+  </ScalarVariable> 
+  <ScalarVariable name="int_in" valueReference="0" description="integer input" causality = "input">
+     <Integer start="2"/>
+  </ScalarVariable>
+  <ScalarVariable name="int_out" valueReference="1" description="index in string array 'month'" causality = "output">
+     <Integer start="0" fixed="true"/>
+  </ScalarVariable>
+  <ScalarVariable name="bool_in" valueReference="0" description="boolean input" causality = "input">
+     <Boolean start="true"/>
+  </ScalarVariable>
+  <ScalarVariable name="bool_out" valueReference="1" description="boolean output" causality = "output">
+     <Boolean/>
+  </ScalarVariable>
+  <ScalarVariable name="string_in" valueReference="0" description="string input" causality = "input">
+     <String start="QTronic"/>
+  </ScalarVariable>
+  <ScalarVariable name="string_out" valueReference="1" description="the string month[int_out]" causality = "output">
+     <String/>
+  </ScalarVariable>
+</ModelVariables>
