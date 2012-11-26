@@ -30,7 +30,7 @@
     </property>
     <entity name="BouncingBall" class="ptolemy.actor.lib.fmi.FMUImport">
         <display name="BouncingBall&#10;."/>
-        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="/ptII/ptolemy/actor/lib/fmi/demo/FMUBouncingBall/BouncingBall.fmu">
+        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="$PTII/ptolemy/actor/lib/fmi/demo/FMUBouncingBall/BouncingBall.fmu">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 110.0]">
         </property>
