@@ -378,6 +378,12 @@ public class RemoveGraphicalClasses extends MoMLFilterSimple {
                 "ptolemy.actor.lib.Discard");
         _graphicalClasses.put("ptolemy.actor.lib.gui.MatrixViewer",
                 "ptolemy.actor.lib.Discard");
+        
+        //add two kepler display actors
+        _graphicalClasses.put("pl.psnc.kepler.common.actor.MultipleTabDisplay",
+                "ptolemy.actor.lib.Discard");
+        _graphicalClasses.put("util.ImageJActor",
+                "ptolemy.actor.lib.Discard");
     }
 
     /** Read in a MoML file, remove graphical classes and
