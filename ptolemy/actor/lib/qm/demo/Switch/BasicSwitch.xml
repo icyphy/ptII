@@ -2,9 +2,9 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="BasicSwitch" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={313, 60, 892, 637}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={313, 60, 913, 637}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[679, 527]">
     </property>
@@ -31,7 +31,7 @@
     <entity name="A" class="ptolemy.actor.TypedCompositeActor">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[105.0, 165.0]">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={207, 114, 813, 510}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={207, 114, 834, 634}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
         </property>
@@ -116,8 +116,8 @@
 <title>TimedPlotter</title>
 <xLabel></xLabel>
 <yLabel></yLabel>
-<xRange min="0.2" max="9.5"/>
-<yRange min="2.0" max="4.0"/>
+<xRange min="1.7976931348623157E308" max="-1.7976931348623157E308"/>
+<yRange min="1.7976931348623157E308" max="-1.7976931348623157E308"/>
 <default connected="no" stems="yes"/>
 </plot>?>
             </configure>
@@ -229,8 +229,8 @@
 <title>TimedPlotter</title>
 <xLabel></xLabel>
 <yLabel></yLabel>
-<xRange min="0.3" max="9.5"/>
-<yRange min="1.0" max="4.0"/>
+<xRange min="0.3" max="9.35"/>
+<yRange min="1.0" max="3.0"/>
 <default connected="no" stems="yes"/>
 </plot>?>
             </configure>
@@ -289,7 +289,7 @@
         </property>
     </entity>
     <entity name="C" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[105.0, 350.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[105.0, 365.0]">
         </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={233, 145, 813, 510}, maximized=false}">
         </property>
@@ -376,8 +376,8 @@
 <title>TimedPlotter</title>
 <xLabel></xLabel>
 <yLabel></yLabel>
-<xRange min="0.25" max="9.6"/>
-<yRange min="1.0" max="4.0"/>
+<xRange min="1.7976931348623157E308" max="-1.7976931348623157E308"/>
+<yRange min="1.7976931348623157E308" max="-1.7976931348623157E308"/>
 <default connected="no" stems="yes"/>
 </plot>?>
             </configure>
@@ -491,7 +491,7 @@
 <title>TimedPlotter</title>
 <xLabel></xLabel>
 <yLabel></yLabel>
-<xRange min="0.35000000000000003" max="9.6"/>
+<xRange min="0.15" max="9.450000000000001"/>
 <yRange min="1.0" max="3.0"/>
 <default connected="no" stems="yes"/>
 </plot>?>
@@ -521,35 +521,28 @@
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="[45.0, 255.0]">
+        <vertex name="vertex1" value="[40.0, 255.0]">
         </vertex>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[523.4375, 311.875]">
+        <vertex name="vertex1" value="[530.0, 310.0]">
         </vertex>
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="[60.0, 270.0]">
+        <vertex name="vertex1" value="[55.0, 270.0]">
         </vertex>
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[503.4375, 296.875]">
+        <vertex name="vertex1" value="[510.0, 295.0]">
         </vertex>
     </relation>
     <link port="A.source" relation="relation3"/>
-    <link port="A.port2" relation="relation"/>
-    <link port="A.port" relation="relation2"/>
-    <link port="A.port4" relation="relation5"/>
     <link port="B.port" relation="relation"/>
     <link port="B.source" relation="relation5"/>
     <link port="B.port3" relation="relation3"/>
-    <link port="B.port4" relation="relation2"/>
     <link port="C.source" relation="relation"/>
-    <link port="C.port" relation="relation3"/>
-    <link port="C.port2" relation="relation2"/>
-    <link port="C.port3" relation="relation5"/>
     <link port="D.port" relation="relation3"/>
     <link port="D.port3" relation="relation5"/>
     <link port="D.source" relation="relation2"/>
