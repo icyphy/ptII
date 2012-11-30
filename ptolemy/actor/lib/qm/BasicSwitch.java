@@ -215,6 +215,7 @@ public class BasicSwitch extends MonitoredQuantityManager {
             _switchFabricDelay = value;
         } else if (attribute == numberOfPorts) {
             int ports = ((IntToken) numberOfPorts.getToken()).intValue();
+            _numberOfPorts = ports;
             for (int i = 0; i < ports; i++) {
                 _inputTokens.put(i, new TreeSet());
                 _outputTokens.put(i, new TreeSet());
