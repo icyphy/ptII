@@ -105,8 +105,7 @@ public class BasicSwitch extends MonitoredQuantityManager {
 
         _inputTokens = new HashMap();
         _outputTokens = new HashMap();
-        _switchFabricQueue = new TreeSet();
-        _receivers = new Hashtable<Receiver, IntermediateReceiver>();
+        _switchFabricQueue = new TreeSet(); 
         _actorPorts = new HashMap<Actor, Integer>();
         _tokenCount = 0;
 
@@ -229,7 +228,7 @@ public class BasicSwitch extends MonitoredQuantityManager {
      *  yourself if you want it there).
      *  The result is a new actor with the same ports as the original, but
      *  no connections and no container.  A container must be set before
-     *  much can be done with this actor.
+     *  much can be done with this actor. 
      *
      *  @param workspace The workspace for the cloned object.
      *  @exception CloneNotSupportedException If cloned ports cannot have
@@ -239,8 +238,7 @@ public class BasicSwitch extends MonitoredQuantityManager {
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         BasicSwitch newObject = (BasicSwitch) super.clone(workspace);
-        newObject._actorPorts = new HashMap();
-        newObject._receivers = new Hashtable();
+        newObject._actorPorts = new HashMap(); 
         newObject._nextFireTime = null;
         newObject._inputTokens = new HashMap();
         newObject._outputTokens = new HashMap();
@@ -496,10 +494,7 @@ public class BasicSwitch extends MonitoredQuantityManager {
     protected double _switchFabricDelay;
 
     /** Mapping of actors to switch ports. */
-    protected HashMap<Actor, Integer> _actorPorts;
-
-    /** Map target receivers to intermediate receivers. */
-    protected Hashtable<Receiver, IntermediateReceiver> _receivers;
+    protected HashMap<Actor, Integer> _actorPorts; 
 
     /** Next time a token is sent and the next token can be processed. */
     protected Time _nextFireTime;
