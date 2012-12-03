@@ -753,3 +753,62 @@ test Parameter-17.6 {String mode parameters} {
     set t [$p2 getToken]
     [java::cast ptolemy.data.StringToken $t] stringValue
 } {a a a a a a $a}
+
+######################################################################
+#### Renaming tests
+#
+# see http://bugzilla.ecoinformatics.org/show_bug.cgi?id=5723
+#
+test Parameter-18.1 {Renaming a parameter} {
+    set e1 [java::new ptolemy.kernel.Entity]
+    set p1 [java::new ptolemy.data.expr.Parameter $e1 "p1"]
+    set p2 [java::new ptolemy.data.expr.Parameter $e1 "p2"]
+    $p1 setExpression {p2}
+    $p1 validate
+    set change "<property name=\"p2\">
+<rename name=\"p3\"/>
+</property>"
+    $e1 requestChange [java::new ptolemy.moml.MoMLChangeRequest $e1 $e1 $change]
+    $p1 getExpression
+} {p3}
+
+test Parameter-18.2 {Renaming a referenced parameter in quotes} {
+    set e1 [java::new ptolemy.kernel.Entity]
+    set p1 [java::new ptolemy.data.expr.Parameter $e1 "p1"]
+    set p2 [java::new ptolemy.data.expr.Parameter $e1 "p2"]
+    $p1 setExpression {"$p2"}
+    $p1 validate
+    set change "<property name=\"p2\">
+<rename name=\"p3\"/>
+</property>"
+    $e1 requestChange [java::new ptolemy.moml.MoMLChangeRequest $e1 $e1 $change]
+    $p1 getExpression
+} {"$p3"}
+
+test Parameter-18.3 {Renaming a parameter referenced by a parameter in string mode} {
+    set e1 [java::new ptolemy.kernel.Entity]
+    set p1 [java::new ptolemy.data.expr.Parameter $e1 "p1"]
+    set p2 [java::new ptolemy.data.expr.Parameter $e1 "p2"]
+    $p1 setStringMode true
+    $p1 setExpression {$p2}
+    $p1 validate
+    set change "<property name=\"p2\">
+<rename name=\"p3\"/>
+</property>"
+    $e1 requestChange [java::new ptolemy.moml.MoMLChangeRequest $e1 $e1 $change]
+    $p1 getExpression
+} {$p3}
+
+test Parameter-18.4 {Renaming a parameter in quotes referenced by a parameter in string mode} {
+    set e1 [java::new ptolemy.kernel.Entity]
+    set p1 [java::new ptolemy.data.expr.Parameter $e1 "p1"]
+    set p2 [java::new ptolemy.data.expr.Parameter $e1 "p2"]
+    $p1 setStringMode true
+    $p1 setExpression {"$p2"}
+    $p1 validate
+    set change "<property name=\"p2\">
+<rename name=\"p3\"/>
+</property>"
+    $e1 requestChange [java::new ptolemy.moml.MoMLChangeRequest $e1 $e1 $change]
+    $p1 getExpression
+} {"$p3"}
