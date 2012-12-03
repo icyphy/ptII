@@ -26,6 +26,7 @@
  */
 package ptolemy.vergil.basic.export.html;
 
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
@@ -820,7 +821,19 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable,
                 // Place </head> and <body> on separate lines so that
                 // tools like the TerraSwarm website can easily find
                 // them.
-                printWriter.println("<body>");
+                // Match the background color of the canvas, unless an explicit
+                // background color is given.
+                Color background = parameters.backgroundColor;
+                if (parameters.backgroundColor == null) {
+                    JCanvas canvas = _basicGraphFrame.getJGraph().getGraphPane().getCanvas();
+                    background = canvas.getBackground();
+                }
+                String color = "#" 
+                        + String.format("%02x", background.getRed())
+                        + String.format("%02x", background.getGreen())
+                        + String.format("%02x", background.getBlue());
+
+                printWriter.println("<body bgcolor=\"" + color + "\">");
             }
 
             _printHTML(printWriter, "start");
