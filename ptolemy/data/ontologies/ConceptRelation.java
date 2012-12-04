@@ -26,6 +26,7 @@
  */
 package ptolemy.data.ontologies;
 
+import ptolemy.actor.gui.ColorAttribute;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.data.expr.Variable;
@@ -105,6 +106,16 @@ public class ConceptRelation extends ComponentRelation {
      *  variables in scope using the notation $name.
      */
     public StringParameter annotation;
+    
+    /** Color in which to render this transition.
+     *  The default color is black.
+     */
+    public ColorAttribute color;
+
+    /** Indicator that this transition should be rendered as a dashed line.
+     *  This is a boolean that defaults to false.
+     */
+    public Parameter dashed;
 
     /** Attribute the exit angle of a visual rendition.
      *  This parameter contains a DoubleToken, initially with value 0.0.
@@ -194,6 +205,13 @@ public class ConceptRelation extends ComponentRelation {
         Variable textHighlightHint = new Variable(annotation, "_textHeightHint");
         textHighlightHint.setExpression("5");
         textHighlightHint.setPersistent(false);
+
+        color = new ColorAttribute(this, "color");
+        color.setExpression("{0.0, 0.0, 0.0, 1.0}");
+
+        dashed = new Parameter(this, "dashed");
+        dashed.setExpression("false");
+        dashed.setTypeEquals(BaseType.BOOLEAN);
 
         exitAngle = new Parameter(this, "exitAngle");
         exitAngle.setVisibility(Settable.NONE);
