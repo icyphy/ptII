@@ -27,9 +27,12 @@
  */
 package ptolemy.vergil.ontologies;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.Stroke;
 
+import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.ontologies.Concept;
 import ptolemy.data.ontologies.ConceptRelation;
@@ -289,6 +292,20 @@ public class ConceptRelationController extends BasicEdgeController {
                     double gamma = ((DoubleToken) (transition.gamma.getToken()))
                             .doubleValue();
                     c.setGamma(gamma);
+                    
+                    // Set the color.
+                    c.setStrokePaint(transition.color.asColor());
+                    
+                    // Set dashed, if appropriate.
+                    if (((BooleanToken)transition.dashed.getToken()).booleanValue()) {
+                        float[] dashvalues = new float[2];
+                        dashvalues[0] = (float) 2.0;
+                        dashvalues[1] = (float) 2.0;
+                        Stroke dashed = new BasicStroke(1.0f,
+                                BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL,
+                                0, dashvalues, 0);
+                        c.setStroke(dashed);
+                    }
                 } catch (IllegalActionException ex) {
                     // Ignore, accepting the default.
                     // This exception should not occur.
