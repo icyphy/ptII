@@ -58,12 +58,13 @@ import ptolemy.util.StringUtilities;
  </tt>, which requires the types of the input ports to be compatible
  with the corresponding types in the output record.
  </li>
- <li><tt>each input <= the type of the corresponding field inside the
- output record</tt>, which is similar to the usual default constraints,
- however this constraint establishes a dependency between the inputs of
- this actor and the fields inside the output record, instead of just
- between its inputs and outputs.
- </li>
+ <li><tt>each input >= the type of the corresponding field inside the
+ output record</tt>, which together with the first constraint forces
+ the input types to be exactly equal to the types of the corresponding
+ fields in the output record. This constraint is intended to back-
+ propagate type information upstream, not to assure type compatibility.
+ Therefore, this constraint is only set up for input ports that do not
+ already have a type declared.</li>
  </ul>
  Note that the output record is not required to contain a corresponding
  field for every input, as downstream actors might require fewer fields
@@ -178,12 +179,13 @@ public class RecordAssembler extends TypedAtomicActor {
      *  </tt>, which requires the types of the input ports to be compatible
      *  with the corresponding types in the output record.
      *  </li>
-     *  <li><tt>each input <= the type of the corresponding field inside the
-     *  output record</tt>, which is similar to the usual default constraints,
-     *  however this constraint establishes a dependency between the inputs of
-     *  this actor and the fields inside the output record, instead of just
-     *  between its inputs and outputs.
-     *  </li>
+     *  <li><tt>each input >= the type of the corresponding field inside the
+     *  output record</tt>, which together with the first constraint forces
+     *  the input types to be exactly equal to the types of the corresponding
+     *  fields in the output record. This constraint is intended to back-
+     *  propagate type information upstream, not to assure type compatibility.
+     *  Therefore, this constraint is only set up for input ports that do not
+     *  already have a type declared.</li>
      *  </ul>
      *  Note that the output record is not required to contain a corresponding
      *  field for every input, as downstream actors might require fewer fields
@@ -196,11 +198,14 @@ public class RecordAssembler extends TypedAtomicActor {
     protected Set<Inequality> _customTypeConstraints() {
         Set<Inequality> result = new HashSet<Inequality>();
 
-        // constrain the type of every input to be <= the resolved type
-        // of the corresponding field in the output record
+        // constrain the type of every input to be greater than or equal to 
+        // the resolved type of the corresponding field in the output record
         for (TypedIOPort input : inputPortList()) {
-            result.add(new Inequality(new ExtractFieldType(output, input
-                    .getName()), input.getTypeTerm()));
+            // only include ports that have no type declared
+            if (input.getTypeTerm().isSettable()) {
+                result.add(new Inequality(new ExtractFieldType(output, input
+                        .getName()), input.getTypeTerm()));
+            }
         }
 
         // constrain the fields in the output record to be greater than or
