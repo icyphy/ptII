@@ -47,10 +47,10 @@ import ptolemy.kernel.util.IllegalActionException;
  function. If the port type is an <code>AssociateType</code> with a field for
  the specified field name, then the function returns the type of that field.
  If the port type is <code>BaseType.GENERAL</code>, then return <code>
- BaseType.GENERAL</code>.
- If the port type is <code>BaseType.UNKNOWN</code> or it is an
- <code>AssociateType</code> with no corresponding field, then return
- <code>BaseType.UNKNOWN</code>.
+ BaseType.GENERAL</code>, or if the type is <code>BaseType.UNKNOWN</code>,
+ then return <code>BaseType.UNKNOWN</code>.
+ If the port type is <code>AssociateType</code> but it has no 
+ corresponding field, then return <code>BaseType.GENERAL</code>.
  Otherwise, the getValue() method throws an exception, which makes the
  function partial.
  </p>
@@ -77,13 +77,12 @@ public class ExtractFieldType extends MonotonicFunction {
     /** Return the current value of this monotonic function.
      *  Specifically, this is a function of one variable, the type variable
      *  of the given port. If the port type is <code>BaseType.GENERAL</code>,
-     *  then return <code>BaseType.GENERAL</code>. If the input port type is
-     *  <code>BaseType.UNKNOWN</code>, return <code>BaseType.UNKNOWN</code>.
-     *  Otherwise, if the input port type is an <code>AssociateType</code>
-     *  with a field corresponding to the specified name, then return the type
-     *  of that field. If the port type is an <code>AssociateType</code> that
-     *  does not carry a field corresponding to the given name, then return
-     *  <code>BaseType.UNKNOWN</code>. Otherwise, throw an exception.
+     *  then return <code>BaseType.GENERAL</code>, or if the type is 
+     *  <code>BaseType.UNKNOWN</code>, then return 
+     *  <code>BaseType.UNKNOWN</code>. If the port type is 
+     *  <code>AssociateType</code> but it has no corresponding field, 
+     *  then return <code>BaseType.GENERAL</code>.
+     *  Otherwise, throw an exception.
      *  @return A Type.
      *  @exception IllegalActionException If the port type is
      *   not <code>BaseType.UNKNOWN</code> or <code>BaseType.GENERAL</code>
@@ -117,13 +116,13 @@ public class ExtractFieldType extends MonotonicFunction {
 
             // The field is missing from the associative type
             if (fieldType == null) {
-                return BaseType.UNKNOWN;
+                return BaseType.GENERAL; // to ensure monotonicity
             } else {
                 return fieldType;
             }
         } else {
             throw new IllegalActionException(_port,
-                    "Invalid type for given port");
+                    "Invalid type for given port: " + portType);
         }
     }
 
