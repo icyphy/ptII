@@ -134,6 +134,17 @@ public class PtGUIUtilities {
                 return false;
             }
         }
+        // Avoid JVM crashes in Kepler on Mac OS X 10.8 with Java 1.6 when 
+        // trying to use Save dialog's directory drop-down chooser menu by 
+        // not using java.awt.FileDialog.
+        // See http://bugzilla.ecoinformatics.org/show_bug.cgi?id=5725
+        if (System.getProperty("os.name").equals("Mac OS X")
+                && System.getProperty("os.version").startsWith("10.8")
+                && System.getProperty("java.specification.version").equals(
+                        "1.6")) {
+            return false;
+        }
+
         return PtGUIUtilities.macOSLookAndFeel();
     }
 
