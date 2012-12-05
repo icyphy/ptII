@@ -27,11 +27,18 @@
  */
 package ptolemy.actor.lib;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import ptolemy.actor.parameters.PortParameter;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
+import ptolemy.data.type.MonotonicFunction;
+import ptolemy.data.type.Typeable;
+import ptolemy.graph.Inequality;
+import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
@@ -111,6 +118,17 @@ public class ArrayElement extends Transformer {
         return newObject;
     }
 
+    /** Force the type of the input to be an array with fields of a type
+     *  greater than or equal to the type of the output port.
+     */
+    @Override
+    protected Set<Inequality> _customTypeConstraints() {
+        Set<Inequality> result = new HashSet<Inequality>();
+        result.add(new Inequality(new ArrayTypeFunction(output), input
+                .getTypeTerm()));
+        return result;
+    }
+
     /** Consume at most one array from the input port and produce
      *  one of its elements on the output port.  If there is no token
      *  on the input, then no output is produced.
@@ -138,4 +156,55 @@ public class ArrayElement extends Transformer {
             output.send(0, token.getElement(indexValue));
         }
     }
+
+    /** A monotonic function that returns an array type of which the
+     *  fields have the same type as the provided argument. 
+     *  @author Marten Lohstroh
+     */
+    private class ArrayTypeFunction extends MonotonicFunction {
+
+        /** Construct a ArrayElementTypeFunction whose argument is the
+         *  type of the specified object.
+         *  @param typeable A Typeable object.
+         */
+        public ArrayTypeFunction(Typeable typeable) {
+            _typeable = typeable;
+        }
+
+        ///////////////////////////////////////////////////////////////////
+        ////                         public methods                    ////
+
+        /** Return the current value of this monotonic function.
+         *  @return A Type.
+         *  @exception IllegalActionException If the type of the argument
+         *   cannot be determined.
+         */
+        public Object getValue() throws IllegalActionException {
+            return new ArrayType(_typeable.getType());
+        }
+
+        /** Return the type variables for this function, which is
+         *  the type term of the specified typeable, unless it has a constant type,
+         *  in which case return an empty array.
+         *  @return An array of InequalityTerms.
+         */
+        public InequalityTerm[] getVariables() {
+            InequalityTerm term = _typeable.getTypeTerm();
+            if (term.isSettable()) {
+                InequalityTerm[] result = new InequalityTerm[1];
+                result[0] = term;
+                return result;
+            } else {
+                return new InequalityTerm[0];
+            }
+        }
+
+        ///////////////////////////////////////////////////////////////////
+        ////                         private variables                 ////
+
+        /** The argument. */
+        private Typeable _typeable;
+
+    }
+
 }
