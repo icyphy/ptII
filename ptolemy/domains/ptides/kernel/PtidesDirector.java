@@ -189,6 +189,7 @@ public class PtidesDirector extends DEDirector {
                 "clockSynchronizationErrorBound");
         clockSynchronizationErrorBound.setTypeEquals(BaseType.DOUBLE);
         clockSynchronizationErrorBound.setExpression("0.0");
+        _clockSynchronizationErrorBound = 0.0;
 
     }
 
@@ -249,6 +250,21 @@ public class PtidesDirector extends DEDirector {
         }
     }
 
+    /** Update the director parameters when attributes are changed.
+     *  @param attribute The changed parameter.
+     *  @exception IllegalActionException If the parameter set is not valid.
+     *  Not thrown in this class.
+     */
+    public void attributeChanged(Attribute attribute)
+            throws IllegalActionException {
+        if (attribute == clockSynchronizationErrorBound) {
+            _clockSynchronizationErrorBound = ((DoubleToken) clockSynchronizationErrorBound
+                    .getToken()).doubleValue();
+        } else {
+            super.attributeChanged(attribute);
+        }
+    }
+    
     /**
      * Return the default dependency between input and output ports,
      * which for the Ptides domain is a {@link SuperdenseDependency}.
@@ -260,6 +276,9 @@ public class PtidesDirector extends DEDirector {
         return SuperdenseDependency.OTIMES_IDENTITY;
     }
 
+    
+    
+    
     /**
      * Before super.fire() is called, transfer all input events that are ready are
      * transferred. After super.fire() is called, transfer all output events that
@@ -844,6 +863,18 @@ public class PtidesDirector extends DEDirector {
                         - deviceDelayBound;
                 if (thisDelayOffset < delayOffset) {
                     delayOffset = thisDelayOffset;
+                }
+                
+                Double timePrecision = null;
+                try {
+                    timePrecision = PtidesDirector._getDoubleParameterValue(port.getContainer(), "timePrecision");
+                } catch (IllegalActionException e) {
+                    // In this case timePrecision is set to 0.0 in the next lines.
+                }
+                if (timePrecision != null) {
+                    if ((-1 * timePrecision) < delayOffset) {
+                        delayOffset = -1 * timePrecision;
+                    }
                 }
             }
             _setDelayOffset(
@@ -1566,6 +1597,7 @@ public class PtidesDirector extends DEDirector {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
+    private double _clockSynchronizationErrorBound;
     private Time _currentLogicalTime;
     private Time _currentSourceTimestamp;
     private int _currentLogicalIndex;

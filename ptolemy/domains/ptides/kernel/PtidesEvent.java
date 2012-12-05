@@ -28,6 +28,7 @@
 package ptolemy.domains.ptides.kernel;
 
 import ptolemy.actor.Actor;
+import ptolemy.actor.CompositeActor;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.Receiver;
 import ptolemy.actor.util.Time;
@@ -228,6 +229,27 @@ public class PtidesEvent extends DEEvent {
         int objectFieldHash = (isPureEvent() ? absoluteDeadlineHash : (_token
                 .hashCode()) >>> _receiver.hashCode());
         return primitiveFieldHash >>> objectFieldHash;
+    }
+    
+    @Override
+    public boolean hasTheSameTagAs(DEEvent event) { 
+        Actor actor = event.actor();
+        if (actor == null) {
+            actor = (Actor) event.ioPort().getContainer();
+        }
+        Double timePrecision = null;
+        try {
+            timePrecision = PtidesDirector._getDoubleParameterValue((NamedObj) actor, "timePrecision");
+        } catch (IllegalActionException e) {
+            // In this case timePrecision is set to 0.0 in the next lines.
+        }
+        if (timePrecision == null) {
+            timePrecision = 0.0;
+        } 
+        
+        return (_timestamp.subtract(timePrecision).compareTo(event.timeStamp()) <= 0 &&
+                _timestamp.add(timePrecision).compareTo(event.timeStamp()) >= 0 &&
+                (_microstep == event.microstep()));
     }
 
     /** Return true if this event is a pure event.

@@ -205,7 +205,7 @@ public class DEEvent implements Comparable {
      *  @param event The DE event to compare against.
      *  @return True if this event has the same tag as the specified one.
      */
-    public final boolean hasTheSameTagAs(DEEvent event) {
+    public boolean hasTheSameTagAs(DEEvent event) {
         return (_timestamp.equals(event.timeStamp()))
                 && (_microstep == event.microstep());
     }
