@@ -8,7 +8,7 @@
   <body>
     <h1>Eclipse is aware of the Subversion aspects of the project.</h1>
     <br/><i>(Use both the Eclipse Subversion plug-in (Subversive) and the
-    shell <code>svn</code> command).</i>
+      shell <code>svn</code> command).</i>
 
     <br/>This choice is the <b>preferred</b> choice for collaborating with
     the Ptolemy group because it means that your Ptolemy II tree can get
@@ -89,7 +89,7 @@
 	<p>Then do "Finish", "Next", "Next", Accept the license and then
 	  "Finish".</p>
       </li>
-	
+      
       <li>If you get a security warning about unsigned software, click
 	"OK".
       </li>
@@ -136,7 +136,7 @@
 	</pre>
 	Read/writes users may want to check "Save authentication".
 
-	<p>Click <code>Finish</code></p>
+	<p>Click "Finish"</p>
 
 	<p>Read/write users will be prompted for their
 	  source.eecs.berkeley.edu username and password. This
@@ -168,18 +168,44 @@
       Follow the wizard, creating selections as follows:
       <ol>
 	<li> In the "Check Out As" window, keep the default,
-	  <code>Check out as a project with the name specified</code>, then hit <code>Finish</code>.
+	  <code>Check out as a project configured using the New Project Wizard</code>, then hit <code>Finish</code>.
+	  <center>
+	    <p><img src="../../img/eclipseCheckOutAs.png" alt="Eclipse Check Out As Window" width="630" height="497"></p>
+	  </center>
 	</li>
-      </ol>
+	<li> In the "New Project" window, select "Java" &gt; "Java project", Click "Next".
+	  <center>
+	    <p><img src="../../img/eclipseNewProject.png" alt="Eclipse New Project" width="525" height="500"></p>
+	  </center>
+	</li>
+	<li>In the "New Java Project" window:
+	  <br/> In "Project name", enter any project name,  <code>ptII</code>
+	  is a common choice.
+	  <br/>In "Project Layout", check "Use project folder as root for
+	  source and class files".  If "Project Layout" is not selectable, then
+	  that means that there is already a <code>.eclipse.epf</code> file in the
+	  default location.  This is usually not a problem, but to be safe,
+	  exit Eclipse, remove the file and restart Eclipse.
+	  <br/> The issue here is that by default, Eclipse generates .class files in
+	  a <code>bin/</code> directory.  However, the Ptolemy II source repository
+	  has scripts in <code>$PTII/bin/</code>.  If Eclipse places .class files in
+	  <code>bin/</code> then <code>$PTII/bin/makefile</code> will not exist
+	  and <code>$PTII/bin/vergil</code> will not be created when <code>make</code>
+	  is run.
+	  <br/>Below is the "New Java Project" windows:
+	  <center>
+	    <p><img src="../../img/eclipseNewJavaProjectSVN.png" alt="Eclipse New Java Project" width="604" height="680"></p>
+	  </center>
+	</li>
 
-      <p>
-	<li> Wait for the checkout to finish. <i>Go get coffee.</i>
+	<li> Click "Finish".</li>
+
+	<li>Wait for the checkout to finish. <i>Go get coffee.</i>
 	  <br/><b>Note:</b>If you did not disable build automatically, as
 	  suggested above, then Eclipse will build the project and produce
 	  <b>thousands of errors</b>. This is not really a problem.  You will
 	  fix the errors in the next step with the <code>.classpath.default</code> file.
 	</li>
-
 
 	<li><b>If you have read/write access</b> go to <a href="setupSubversion.htm" target="main">Setup the Subversion Configuration to Sane Settings</a> so that if you commit files, they will have the appropriate settings.
 	</li>
@@ -187,6 +213,6 @@
 	<li>All users should go on to <a href="setupClasspath.htm" target="main">Set up the Eclipse ptII project .classpath for Ptolemy II</a>
 	</li>
 
-    </ol>
+      </ol>
   </body>
 </html>
