@@ -141,7 +141,7 @@ test Transition-3.1 {test scope of guard and trigger expressions} {
     $dir preinitialize
     set scope1 [[$fsm getPortScope] identifierSet]
     list [lsort [listToStrings $scope1]]
-} {{_iconDescription dir e2 errorCause errorClass errorMessage finalStateNames fsm initialStateName p0 p0Array p0_0 p0_0Array p0_0_isPresent p0_isPresent p1 p1Array p1_0 p1_0Array p1_0_isPresent p1_1 p1_1Array p1_1_isPresent p1_isPresent r0 r1 s0 s1 stateDependentCausality t0 this}}
+} {{_iconDescription dir e2 errorCause errorClass errorMessage finalStateNames fsm initialStateName p0 p0Array p0_0 p0_0Array p0_0_isPresent p0_isPresent p1 p1Array p1_0 p1_0Array p1_0_isPresent p1_1 p1_1Array p1_1_isPresent p1_isPresent r0 r1 s0 s1 stateDependentCausality t0 this timeout}}
 
 test Transition-3.2 {test setting guard and trigger expression} {
     $t0 setGuardExpression "p0 > 0"

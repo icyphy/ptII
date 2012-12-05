@@ -202,6 +202,8 @@ test InterfaceAutomaton-8.1 {test generating moml} {
     </property>
     <property name="finalStateNames" class="ptolemy.kernel.util.StringAttribute">
     </property>
+    <property name="timeout" class="ptolemy.data.expr.Parameter" value="function(t:double):boolean">
+    </property>
     <property name="c" class="ptolemy.data.expr.Parameter">
     </property>
     <entity name="s0" class="ptolemy.domains.modal.kernel.State">

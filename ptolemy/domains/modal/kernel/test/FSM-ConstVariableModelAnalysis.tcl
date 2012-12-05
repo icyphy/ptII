@@ -101,7 +101,7 @@ test ConstVariableModelAnalysis-2.0 {test fsms.} {
 	[lsort [listToNames [$analysis getNotConstVariables $e0]]] \
 	[lsort [listToNames [$analysis getConstVariables $fsm]]] \
 	[lsort [listToNames [$analysis getNotConstVariables $fsm]]]
-} {init {a step} {errorCause errorClass errorMessage p2 stateDependentCausality} p1}
+} {init {a step} {errorCause errorClass errorMessage p2 stateDependentCausality timeout} p1}
 
 test ConstVariableModelAnalysis-2.1 {test modal model.} {
     set e0 [java::new ptolemy.actor.TypedCompositeActor]
@@ -158,4 +158,4 @@ test ConstVariableModelAnalysis-2.1 {test modal model.} {
 	[lsort [listToNames [$analysis getConstVariables $e1]]] \
 	[lsort [listToNames [$analysis getConstVariables $ramp]]] \
 	[lsort [listToNames [$analysis getConstVariables $fsm]]]
-} {init step {NONE firingCountLimit init step} {errorCause errorClass errorMessage p2 stateDependentCausality}}
+} {init step {NONE firingCountLimit init step} {errorCause errorClass errorMessage p2 stateDependentCausality timeout}}
