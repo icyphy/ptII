@@ -57,6 +57,9 @@ import ptolemy.actor.util.ExplicitChangeContext;
 import ptolemy.actor.util.Time;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.BooleanToken;
+import ptolemy.data.DoubleToken;
+import ptolemy.data.Function;
+import ptolemy.data.FunctionToken;
 import ptolemy.data.ObjectToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.ASTPtAssignmentNode;
@@ -71,6 +74,7 @@ import ptolemy.data.expr.UndefinedConstantOrIdentifierException;
 import ptolemy.data.expr.Variable;
 import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
+import ptolemy.data.type.FunctionType;
 import ptolemy.data.type.HasTypeConstraints;
 import ptolemy.data.type.ObjectType;
 import ptolemy.data.type.Type;
@@ -321,6 +325,12 @@ public class FSMActor extends CompositeEntity implements TypedActor,
      *  This is a string that defaults to the empty string.
      */
     public StringParameter errorMessage;
+    
+    /** Parameter that is a function that evaluates to true when the
+     *  time elapsed in the current state equals the argument to the
+     *  function. This can be used in a guard to trigger a transition.
+     */
+    public Parameter timeout;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -1148,7 +1158,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         _modelErrorHandled = null;
 
         _transitionTaken = false;
-
+        
         // First invoke initializable methods.
         if (_initializables != null) {
             for (Initializable initializable : _initializables) {
@@ -1160,6 +1170,9 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         // we have to call it again because if a reset transition is
         // taken, preinitialize() is not called.
         reset();
+
+        _timeOfNextTimeoutExpiration = null;
+        _timeEnteredCurrentState = getDirector().getModelTime();
 
         // Check for immediate transitions out of the initial state,
         // and also for any enabled transition (to request a refiring
@@ -3216,6 +3229,9 @@ public class FSMActor extends CompositeEntity implements TypedActor,
             _debug(new StateEvent(this, _currentState));
         }
 
+        _timeOfNextTimeoutExpiration = null;
+        _timeEnteredCurrentState = getDirector().getModelTime();
+
         // If we have reached a final state, make a record of that fact
         // for the postfire() method.
         if (((BooleanToken) _currentState.isFinalState.getToken())
@@ -3386,6 +3402,10 @@ public class FSMActor extends CompositeEntity implements TypedActor,
             finalStateNames = new StringAttribute(this, "finalStateNames");
             finalStateNames.setExpression("");
             finalStateNames.setVisibility(Settable.EXPERT);
+            
+            timeout = new Parameter(this, "timeout");
+            timeout.setToken(new TimeoutFunctionToken());
+            timeout.setVisibility(Settable.EXPERT);
         } catch (KernelException ex) {
             // This should never happen.
             throw new InternalErrorException(this, ex, "Constructor error.");
@@ -3883,6 +3903,15 @@ public class FSMActor extends CompositeEntity implements TypedActor,
     // A flag indicating whether this actor supports multirate firing.
     private boolean _supportMultirate = false;
 
+    // Time at which the current state was entered.
+    private Time _timeEnteredCurrentState;
+    
+    // Time of next experation of a timeout.
+    private Time _timeOfNextTimeoutExpiration;
+    
+    // Argument type for the timeout function.
+    private static Type[] _TIMEOUT_FUNCTION_ARGUMENT_TYPE= {BaseType.DOUBLE};
+
     // Hashtable to save an array of tokens for each port.
     // This is used in HDF when multiple tokens are consumed
     // by the FSMActor in one iteration.
@@ -4058,6 +4087,53 @@ public class FSMActor extends CompositeEntity implements TypedActor,
             // -- tfeng (09/26/2008)
             set.addAll(ModelScope.getAllScopedObjectNames(FSMActor.this));
             return set;
+        }
+    }
+        
+    /** The implementation of the timeout function as a function. */
+    private class TimeoutFunction implements Function {
+        public ptolemy.data.Token apply(ptolemy.data.Token[] arguments)
+                throws IllegalActionException {
+            if (!(arguments[0] instanceof DoubleToken)) {
+                // Try to convert to a double.
+                arguments[0] = DoubleToken.convert(arguments[0]);
+            }
+            Time targetTime = _timeEnteredCurrentState.add(((DoubleToken)arguments[0]).doubleValue());
+            Time currentTime = getDirector().getModelTime();
+            
+            if (targetTime.compareTo(currentTime) <= 0) {
+                // Note that current time may have passed the target time if
+                // the director was unable to honor the exact timing request.
+                // Presumably we are going to take a transition in this
+                // firing, so there should be no time for next expiration.
+                _timeOfNextTimeoutExpiration = null;
+                return BooleanToken.TRUE;
+            }
+            
+            // If the time of next expiration doesn't exist or is greater
+            // than this target time, the request a firing.
+            if (_timeOfNextTimeoutExpiration == null
+                    || _timeOfNextTimeoutExpiration.compareTo(targetTime) > 0) {
+                getDirector().fireAt(FSMActor.this, targetTime);
+                _timeOfNextTimeoutExpiration = targetTime;
+            }
+            return BooleanToken.FALSE;
+        }
+        public int getNumberOfArguments() {
+            return 1;
+        }
+        public boolean isCongruent(Function function) {
+            return (function instanceof TimeoutFunction);
+        }
+        public String toString() {
+            return "function(t:double):boolean";
+        }
+    }
+
+    /** The implementation of the timeout function as a token. */
+    private class TimeoutFunctionToken extends FunctionToken {
+        public TimeoutFunctionToken() {
+            super(new TimeoutFunction(), new FunctionType(_TIMEOUT_FUNCTION_ARGUMENT_TYPE, BaseType.BOOLEAN));
         }
     }
 }
