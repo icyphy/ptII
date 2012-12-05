@@ -18,4 +18,5 @@
   <input source="ptolemy/actor/lib/signalprocessing.xml"/>
   <input source="ptolemy/actor/lib/string/string.xml"/>
   <input source="ptolemy/domains/ptinyDomains.xml"/>
+  <input source="ptolemy/actor/lib/openmodelica/simulate.xml"/>
 </group>
