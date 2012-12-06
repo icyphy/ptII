@@ -1,6 +1,15 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<!-- Only basic actors that are generally useful should be
+     added to this file.  This file is included by the
+     ptiny configuration and the actors included here should
+     avoid depending on third party packages and should
+     have only the UCB BSD Copyright.
+     
+     Non-basic actors should be added to 
+     defaultFullConfiguration.xml
+     -->
 <group>
   <input source="ptolemy/actor/lib/sources.xml"/>
   <input source="ptolemy/actor/lib/sinks.xml"/>
@@ -18,5 +27,4 @@
   <input source="ptolemy/actor/lib/signalprocessing.xml"/>
   <input source="ptolemy/actor/lib/string/string.xml"/>
   <input source="ptolemy/domains/ptinyDomains.xml"/>
-  <input source="ptolemy/domains/openmodelica/lib/openmodelica/simulate.xml"/>
 </group>
