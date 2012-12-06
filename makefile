@@ -39,7 +39,7 @@ ME =		.
 # PTMESCAL_DIR is set to mescal by configure in $PTII/mk/ptII.mk
 #   if $PTII/mescal was found
 PTTHALES_DIR = thales
-DIRS = util com diva org ptolemy \
+DIRS = util com diva net org ptolemy \
 	$(PTDB_DIR) $(PTLBNL_DIR) $(PTMESCAL_DIR) $(PTTHALES_DIR) \
 	ptserver contrib bin doc
 
