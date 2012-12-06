@@ -1,7 +1,7 @@
 /*
  * This file is part of Modelica Development Tooling.
  *
- * Copyright (c) 2005, Linköpings universitet, Department of
+ * Copyright (c) 2005, Linkopings universitet, Department of
  * Computer and Information Science, PELAB
  *
  * All rights reserved.
