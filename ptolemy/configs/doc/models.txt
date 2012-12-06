@@ -82,7 +82,6 @@ $CLASSPATH/ptolemy/data/ontologies/demo/MonotonicityAnalysis/MonotonicityAnalysi
 $CLASSPATH/ptolemy/data/type/demo/Objects/Objects.xml
 $CLASSPATH/ptolemy/data/type/demo/Router/Router.xml
 $CLASSPATH/ptolemy/data/unit/demo/StaticUnits/StaticUnits.xml
-$CLASSPATH/ptolemy/demo/Brewery/Brewery.xml
 $CLASSPATH/ptolemy/demo/ExecDemos/Demos/BouncingBall.xml
 $CLASSPATH/ptolemy/demo/ExecDemos/Demos/Collisions.xml
 $CLASSPATH/ptolemy/demo/ExecDemos/Demos/Controllers.xml
@@ -246,6 +245,7 @@ $CLASSPATH/ptolemy/domains/modal/demo/SystemLevelType/ThreadB.xml
 $CLASSPATH/ptolemy/domains/modal/demo/SystemLevelType/ThreadBNotifies.xml
 $CLASSPATH/ptolemy/domains/modal/demo/SystemLevelType/Trigger.xml
 $CLASSPATH/ptolemy/domains/modal/demo/SystemLevelType/UNKNOWN.xml
+$CLASSPATH/ptolemy/domains/openmodelica/demo/OpenModelica/OpenModelica.xml
 $CLASSPATH/ptolemy/domains/petrinet/demo/PetriNetDiningPhilosophers/PetriNetDiningPhilosophers.xml
 $CLASSPATH/ptolemy/domains/petrinet/demo/PetriNetSimple/PetriNetSimple.xml
 $CLASSPATH/ptolemy/domains/pn/demo/BrockAckerman/BrockAckerman.xml
@@ -269,9 +269,11 @@ $CLASSPATH/ptolemy/domains/pthales/demo/AdaptiveBeamForming/AdaptiveBeamForming.
 $CLASSPATH/ptolemy/domains/pthales/demo/FFT/FFT.xml
 $CLASSPATH/ptolemy/domains/pthales/demo/HelloWorld/HelloWorld.xml
 $CLASSPATH/ptolemy/domains/pthales/demo/Illustrative/Illustrative.xml
+$CLASSPATH/ptolemy/domains/ptides/demo/ActuatorPattern/ActuatorPattern.xml
 $CLASSPATH/ptolemy/domains/ptides/demo/DistributedPowerPlant/DistributedPowerPlant.xml
 $CLASSPATH/ptolemy/domains/ptides/demo/MixedSimulator/MixedSimulator.xml
 $CLASSPATH/ptolemy/domains/ptides/demo/MultiPlatformTDMA/MultiPlatformTDMA.xml
+$CLASSPATH/ptolemy/domains/ptides/demo/MultipleCores/MultipleCores.xml
 $CLASSPATH/ptolemy/domains/ptides/demo/PowerManagementUnitSamplingWithoutCurrentLocalTime/PowerManagementUnitSamplingWithoutCurrentLocalTime.xml
 $CLASSPATH/ptolemy/domains/ptides/demo/PowerPlant/PowerPlant.xml
 $CLASSPATH/ptolemy/domains/ptides/demo/PrintingPress/PrintingPress.xml
