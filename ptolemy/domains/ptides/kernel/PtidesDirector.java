@@ -385,7 +385,7 @@ public class PtidesDirector extends DEDirector {
 
         Time environmentTime = super.getEnvironmentTime();
         if (environmentTime.compareTo(time) <= 0) {
-            fireContainerAt(time);
+            fireContainerAt(time, 1);
         }
         return time;
     }
