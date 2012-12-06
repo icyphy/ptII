@@ -288,7 +288,10 @@ public class MetroIISRDirector extends FixedPointDirector implements
                             if (_debugging) {
                                 _debug("Firing " + actor.getFullName());
                             }
-                            _fireActor(actor);
+                            if (1==1) {
+                                throw new RuntimeException("would call _fireActor here, but it is not checked in.");
+                            }
+                            //_fireActor(actor);
                             _actorsFired.add(actor);
 
                             // events.remove(events.size() - 1);
