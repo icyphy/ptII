@@ -1,9 +1,9 @@
-# Makefile for Java Ptolemy Programming Temporally Integrated Distributed Embedded Systems
+# Makefile for the OpenModelica Ptolemy II demo
 #
 # @Version: $Id: makefile 54183 2009-06-05 14:40:43Z bldmastr $
 # @Author: Christopher Brooks (makefile only)
 #
-# @Copyright (c) 2008-2009 The Regents of the University of California.
+# @Copyright (c) 2012 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -45,6 +45,9 @@ PTPACKAGE =   OpenModelica
 PTCLASSJAR =
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
+
+OTHER_FILES_TO_JAR = \
+	OpenModelica.xml
 
 all: jclass
 install: jclass jars

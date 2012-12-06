@@ -1,7 +1,8 @@
-# Makefile for OpenModelica Model of Computation Ptolemy Kernel
+# Makefile for Ptolemy II OpenModelica demos.
 #
-# @Version: $Id$
-# @Author: Christopher Brooks (makefile only)
+# @Authors: Christopher Brooks, based on a file by Thomas M. Parks
+#
+# @Version: $Id: makefile 65132 2012-12-05 16:05:47Z derler $
 #
 # @Copyright (c) 2012 The Regents of the University of California.
 # All rights reserved.
@@ -27,11 +28,12 @@
 #
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
-##########################################################################
 
-ME =		ptolemy/domains/openmodelica/kernel
+ME =		ptolemy/domains/ptides/demo
 
-# Root of the Ptolemy II directory
+DIRS =	OpenModelica \
+
+# Root of the Java directory
 ROOT =		../../../..
 
 CLASSPATH =	$(ROOT)
@@ -41,28 +43,33 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	kernel
-PTCLASSJAR =
+PTPACKAGE = 	demo
 
-PTCLASSALLJAR = $(PTPACKAGE).jar
+# Include the .class files from these jars in PTCLASSALLJAR
+PTCLASSALLJARS = \
+	OpenModelica/OpenModelica.jar
 
-JSRCS = \
-	OpenModelicaDirector.java
+PTCLASSALLJAR= $(PTPACKAGE).jar
 
-OTHER_FILES_TO_BE_JARED =
+EXTRA_SRCS =
 
-EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
+# Sources that may or may not be present, but if they are present, we don't
+# want make checkjunk to barf on them.
+MISC_FILES = $(DIRS)
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	'OpenModelicaDirector$$OpenModelicaScheduler$$LeftRightComparator.class' \
-	'OpenModelicaDirector$$OpenModelicaScheduler.class'
+	doc
 
 JCLASS = $(JSRCS:%.java=%.class)
 
 all: jclass
-install: jclass jars
+	@echo "To run all the demos, run 'make demo'"
+
+install: all jars
+
+demo: subdemo
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

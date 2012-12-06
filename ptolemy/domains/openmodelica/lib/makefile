@@ -1,9 +1,9 @@
-# Makefile for Java Ptolemy Programming Temporally Integrated Distributed Embedded Systems
+# Makefile for OpenModelica library files
 #
 # @Version: $Id: makefile 54183 2009-06-05 14:40:43Z bldmastr $
 # @Author: Christopher Brooks (makefile only)
 #
-# @Copyright (c) 2008-2009 The Regents of the University of California.
+# @Copyright (c) 2012 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -44,10 +44,9 @@ include $(CONFIG)
 
 # Used to build jar files
 PTPACKAGE =   lib
-PTCLASSJAR =
-		
+PTCLASSJAR =	$(PTPACKAGE).jar
 
-PTCLASSALLJAR = $(PTPACKAGE).jar
+#PTCLASSALLJAR = 
 
 # Files or directories that are present, but that 'make checkjunk'
 # should not complain about
