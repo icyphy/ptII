@@ -696,8 +696,18 @@ for the nightly test suite.
   it
 
   <dt> <code>$PTII/bin/ptexecute foo.xml</code>
-  <dd> will run the model.  The model need not be graphical.
-
+  <dd> will run the model.  The model need not be graphical.  ptexecute is a shell
+    script. Under Windows, you must build Ptolemy II with Cygwin and run
+    <code>(cd $PTII/bin; make)</code> to create the ptexecute shell script.
+    An alternative is to create an Eclipse run configuration that invokes
+    ptolemy.actor.gui.MoMLSimpleApplication.  See the Eclipse instructions
+    in <a href="eclipse/index.html">$PTII/doc/eclipse/index.htm</a> for 
+    details about invoking Vergil.  Follow those instructions and use
+    ptolemy.actor.gui.MoMLSimpleApplication as the class name.
+    <br/>If <code>$PTII/bin/makefile</code> does not exist, then
+    Eclipse was probably set up with "Use project folder as root for source and class files".
+    See <a href="eclipse/index.html">$PTII/doc/eclipse/index.htm</a> for 
+    how to setup Eclipse and Ptolemy II.
   <dt> <code>java -classpath $PTII ptolemy.actor.gui.MoMLSimpleApplication foo.xml</code>
   <dd> will run the model without requiring a connection to a display.
   Use this method for running models as part of cron jobs etc.
