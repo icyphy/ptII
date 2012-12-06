@@ -2341,9 +2341,9 @@
         </property>
     </entity>
     <entity name="driveToFeedError" class="ptolemy.actor.lib.gui.TimedPlotter">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={682, 274, 598, 311}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={374, 128, 464, 210}, maximized=false}">
         </property>
-        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[598, 267]">
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[464, 166]">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-35.0, 545.0]">
         </property>
@@ -4106,9 +4106,9 @@
         <link port="MultiplyDivide.output" relation="relation10"/>
     </entity>
     <entity name="reserveFeedPaperRadius" class="ptolemy.actor.lib.gui.TimedPlotter">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={502, 22, 514, 251}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={2, 149, 364, 183}, maximized=false}">
         </property>
-        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[514, 207]">
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[364, 139]">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[550.0, 315.0]">
         </property>
@@ -4136,9 +4136,9 @@
         </property>
     </entity>
     <entity name="driveToReserveError" class="ptolemy.actor.lib.gui.TimedPlotter">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={682, 455, 598, 311}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={379, 331, 470, 188}, maximized=false}">
         </property>
-        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[598, 267]">
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[470, 144]">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[480.0, 645.0]">
         </property>
@@ -7927,7 +7927,7 @@
         </property>
     </entity>
     <entity name="remainingPaperDetector" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{245.0, 475.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[240.0, 470.0]">
         </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={6, 132, 834, 634}, maximized=false}">
         </property>
@@ -11367,9 +11367,9 @@
         </entity>
         <entity name="reserveFeedPaperVelocity" class="ptolemy.actor.lib.gui.TimedPlotter">
             <display name="reserveFeedPaperVelocity, error"/>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={684, 433, 596, 333}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={441, 515, 466, 204}, maximized=false}">
             </property>
-            <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[596, 289]">
+            <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[466, 160]">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{507.9999999999999, 218.0}">
             </property>
@@ -11675,9 +11675,9 @@
         <link port="PtidesPlatform.port2" relation="relation5"/>
     </entity>
     <entity name="reserveFeedPaperRadius2" class="ptolemy.actor.lib.gui.TimedPlotter">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={695, 72, 514, 251}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={853, 355, 397, 203}, maximized=false}">
         </property>
-        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[514, 207]">
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[397, 159]">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-325.0, 895.0]">
         </property>
@@ -11697,9 +11697,9 @@
     </entity>
     <entity name="feedPaperVelocity" class="ptolemy.actor.lib.gui.TimedPlotter">
         <display name="feedPaperVelocity, error"/>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={721, 433, 559, 333}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={4, 523, 435, 203}, maximized=false}">
         </property>
-        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[559, 289]">
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[435, 159]">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[195.0, 740.0]">
         </property>
@@ -11722,9 +11722,9 @@
         </configure>
     </entity>
     <entity name="feedPaperRadius2" class="ptolemy.actor.lib.gui.TimedPlotter">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={766, 22, 514, 251}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={827, 133, 422, 224}, maximized=false}">
         </property>
-        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[514, 207]">
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[422, 180]">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[450.0, 930.0]">
         </property>
@@ -11747,9 +11747,9 @@
         </configure>
     </entity>
     <entity name="feedPaperRadius3" class="ptolemy.actor.lib.gui.TimedPlotter">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={766, 22, 514, 251}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={2, 332, 363, 188}, maximized=false}">
         </property>
-        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[514, 207]">
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[363, 144]">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[260.0, 295.0]">
         </property>
