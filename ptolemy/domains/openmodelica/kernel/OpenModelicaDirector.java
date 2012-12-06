@@ -1,6 +1,6 @@
 /* 
 Below is the copyright agreement for the Ptolemy II system.
-Version: $Id: LeftRightDirector.java 59631 2010-10-21 01:40:07Z cxh $
+Version: $Id$
 
 Copyright (c) 2007-2009 The Regents of the University of California.
 All rights reserved.
@@ -65,9 +65,9 @@ public class OpenModelicaDirector extends StaticSchedulingDirector {
     /** Constructor. A director is an Attribute.
      *  @param container The container for the director.
      *  @param name The name of the director.
-     *  @throws IllegalActionException If the container cannot contain 
+     *  @exception IllegalActionException If the container cannot contain 
      *   this director.
-     *  @throws NameDuplicationException If the container already contains an
+     *  @exception NameDuplicationException If the container already contains an
      *   Attribute with this name.
      */
     public OpenModelicaDirector(CompositeEntity container, String name)
@@ -156,9 +156,9 @@ public class OpenModelicaDirector extends StaticSchedulingDirector {
          *  normally contained by a director.
          *  @param director The director that will use this scheduler.
          *  @param name The name of the scheduler.
-         *  @throws IllegalActionException If the director cannot use
+         *  @exception IllegalActionException If the director cannot use
          *   this scheduler.
-         *  @throws NameDuplicationException If the director already
+         *  @exception NameDuplicationException If the director already
          *   contains an Attribute with this name.
          */
         public OpenModelicaScheduler(OpenModelicaDirector director, String name)

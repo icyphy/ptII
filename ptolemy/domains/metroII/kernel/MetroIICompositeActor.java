@@ -58,18 +58,18 @@ public class MetroIICompositeActor extends TypedCompositeActor implements
                 _workspace.getReadAccess();
 
                 // First invoke piggybacked methods.
-                //	            if (_piggybacks != null) {
-                //	                // Invoke the fire() method of each piggyback.
-                //	                for (Executable piggyback : _piggybacks) {
-                //	                    piggyback.fire();
-                //	                }
-                //	            }
-                //	            if (_derivedPiggybacks != null) {
-                //	                // Invoke the fire() method of each piggyback.
-                //	                for (Executable piggyback : _derivedPiggybacks) {
-                //	                    piggyback.fire();
-                //	                }
-                //	            }
+                //                    if (_piggybacks != null) {
+                //                        // Invoke the fire() method of each piggyback.
+                //                        for (Executable piggyback : _piggybacks) {
+                //                            piggyback.fire();
+                //                        }
+                //                    }
+                //                    if (_derivedPiggybacks != null) {
+                //                        // Invoke the fire() method of each piggyback.
+                //                        for (Executable piggyback : _derivedPiggybacks) {
+                //                            piggyback.fire();
+                //                        }
+                //                    }
 
                 if (!isOpaque()) {
                     throw new IllegalActionException(this,
@@ -110,13 +110,13 @@ public class MetroIICompositeActor extends TypedCompositeActor implements
                 // _director.fire();
                 if (_director instanceof MetroIIEventHandler) {
                     ((MetroIIEventHandler) _director).getfire(resultHandler);
-                    //			          final Iterable<Hashtable> results = ((M2EventHandler) _director).adapter();
-                    //			          for (Hashtable result : results) {
-                    //			              // assertFalse(resultsCheck.contains(result)); // no duplicate results
-                    //			              // assertEquals(SOURCE_WORD.length(), result.length());
-                    //			              
-                    //			              resultHandler.handleResult(result); 
-                    //			          }
+                    //                                  final Iterable<Hashtable> results = ((M2EventHandler) _director).adapter();
+                    //                                  for (Hashtable result : results) {
+                    //                                      // assertFalse(resultsCheck.contains(result)); // no duplicate results
+                    //                                      // assertEquals(SOURCE_WORD.length(), result.length());
+                    //                                      
+                    //                                      resultHandler.handleResult(result); 
+                    //                                  }
                 } else {
                     _director.fire();
                 }
