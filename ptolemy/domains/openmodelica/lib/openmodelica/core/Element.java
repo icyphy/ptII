@@ -42,14 +42,14 @@
 package ptolemy.domains.openmodelica.lib.openmodelica.core;
 
 /**
- * A modelica list element representation. 
- * 
+ * A modelica list element representation.
+ *
  * Just a simple wrapper around String.
  */
 public class Element extends ListElement {
 
     ///////////////////////////////////////////////////////////////////
-    ////                         public methods            ////
+    ////                         public methods                    ////
     public Element(String str) {
         this.str = str;
     }
@@ -59,6 +59,6 @@ public class Element extends ListElement {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private variables               ////
+    ////                         private variables                 ////
     private String str;
 }

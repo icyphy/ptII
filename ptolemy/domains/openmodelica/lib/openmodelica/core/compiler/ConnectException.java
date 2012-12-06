@@ -43,7 +43,7 @@ package ptolemy.domains.openmodelica.lib.openmodelica.core.compiler;
 
 /**
  * Thrown when there is an error while connecting to the compiler.
- * 
+ *
  * @author Andreas Remar
  */
 

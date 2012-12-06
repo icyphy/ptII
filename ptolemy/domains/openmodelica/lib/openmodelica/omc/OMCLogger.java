@@ -1,16 +1,16 @@
 /**
- * 
+ *
  * TODO: ADD DESCRIPTION
  *
  * Copyright (c) 2012-2013,
- * @author Mana Mirzaei [manmi478@student.liu.se],  
+ * @author Mana Mirzaei [manmi478@student.liu.se],
  * Programming Environments Laboratory (PELAB),
  * Department of Computer and getInformation Science (IDA),
  * Linkoping University (LiU).
- * 
+ *
  * All rights reserved.
  *
- * (The new BSD license, see also 
+ * (The new BSD license, see also
  *  http://www.opensource.org/licenses/bsd-license.php)
  *
  * Redistribution and use in source and binary forms, with or without
@@ -25,8 +25,8 @@
  *   the documentation and/or other materials provided with the
  *   distribution.
  *
- * * Neither the name of Authors nor the name of Linkopings University nor 
- *   the names of its contributors may be used to endorse or promote products 
+ * * Neither the name of Authors nor the name of Linkopings University nor
+ *   the names of its contributors may be used to endorse or promote products
  *   derived from this software without specific prior written permission.
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
@@ -52,8 +52,8 @@ import java.util.logging.Logger;
 
 public class OMCLogger {
 
-    /////////////////////////////////////////////////////////////////////////
-    ////                    public variables                            ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public variables                  ////
 
     public String _loggerName = "ptLogger";
     public Logger _ptLogger = Logger.getLogger("ptLogger");
@@ -105,8 +105,8 @@ public class OMCLogger {
         _ptLogger.severe(msg);
     }
 
-    /////////////////////////////////////////////////////////////////////////
-    ////                    private variables                            ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
     FileHandler fileHandler = null;
     String filePath = System.getProperty("java.io.tmpdir");

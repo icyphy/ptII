@@ -10,7 +10,7 @@ public class CompilerResult implements ICompilerResult {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         public methods                   ////
+    ////                         public methods                    ////
 
     public String getError() {
         return error;
@@ -33,7 +33,7 @@ public class CompilerResult implements ICompilerResult {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private variables                ////
+    ////                         private variables                 ////
 
     private String error;
     private String[] result;

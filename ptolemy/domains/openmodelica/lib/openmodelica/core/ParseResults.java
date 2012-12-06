@@ -60,7 +60,7 @@ public class ParseResults {
 
     /**
      * @return a list of all errors encountered while loading and parsing
-     * the file 
+     * the file
      */
     public CompileError[] getCompileErrors() {
         return errors;
@@ -71,7 +71,7 @@ public class ParseResults {
      * passed to it. If the received list is nested an UnexpectedReplyException
      * is thrown
      * @param classNames
-     * @throws UnexpectedReplyException
+     * @exception UnexpectedReplyException
      */
     public void setClassNames(List classNames) throws UnexpectedReplyException {
         int i = 0;

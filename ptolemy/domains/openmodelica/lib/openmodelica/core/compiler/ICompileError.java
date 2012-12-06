@@ -43,13 +43,13 @@ package ptolemy.domains.openmodelica.lib.openmodelica.core.compiler;
 
 /**
  * Provides information on a compile error for some specific file.
- *  
+ *
  * @author Elmir Jagudin
  */
 public interface ICompileError {
-    
+
     /**
-     * @return the line number in the file where this error have occured 
+     * @return the line number in the file where this error have occured
      */
 
     ///////////////////////////////////////////////////////////////////

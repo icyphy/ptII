@@ -1,22 +1,22 @@
 /**
- * 
+ *
  * This file is part of Modelica Development Tooling (MDT).
- * The Modelica Development Tooling (MDT) software is 
+ * The Modelica Development Tooling (MDT) software is
  * distributed under the conditions specified below.
  *
  * Copyright (c) 2005-2006,
- * The MDT Team: 
- * @author Adrian Pop [adrpo@ida.liu.se], 
- * @author Elmir Jagudin, 
- * @author Andreas Remar, 
+ * The MDT Team:
+ * @author Adrian Pop [adrpo@ida.liu.se],
+ * @author Elmir Jagudin,
+ * @author Andreas Remar,
  * @author Mana Mirzaei
  * Programming Environments Laboratory (PELAB),
  * Department of Computer and getInformation Science (IDA),
  * Linkoping University (LiU).
- * 
+ *
  * All rights reserved.
  *
- * (The new BSD license, see also 
+ * (The new BSD license, see also
  *  http://www.opensource.org/licenses/bsd-license.php)
  *
  * Redistribution and use in source and binary forms, with or without
@@ -31,8 +31,8 @@
  *   the documentation and/or other materials provided with the
  *   distribution.
  *
- * * Neither the name of Authors nor the name of Linkopings University nor 
- *   the names of its contributors may be used to endorse or promote products 
+ * * Neither the name of Authors nor the name of Linkopings University nor
+ *   the names of its contributors may be used to endorse or promote products
  *   derived from this software without specific prior written permission.
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
@@ -79,21 +79,21 @@ import org.omg.CORBA.ORB;
  * The OMCProxy is the glue between the OpenModelica Compiler and MDT.
  * It uses the interactive API of OMC to get getInformation about classes
  * and to load classes into OMC.
- * 
+ *
  * @author Adrian Pop
  * @author Andreas Remar
  */
 
 public class OMCProxy implements IModelicaCompiler {
 
-    public OMCProxy() {      
+    public OMCProxy() {
 
     }
 
-    /////////////////////////////////////////////////////////////////////////
-    ////                            public variables                    ////
-    
-    
+    ///////////////////////////////////////////////////////////////////
+    ////                         public variables                  ////
+
+
     public static String[] env = null;
     /** indicates if we've setup the communication with OMC */
     public boolean hasInitialized = false;
@@ -104,13 +104,13 @@ public class OMCProxy implements IModelicaCompiler {
     public static enum osType {
         UNIX, WINDOWS
     }
-    
+
     public static File workDir = null;
-    
-    
-    
-    /////////////////////////////////////////////////////////////////////////
-    ////                            public methods                      ////
+
+
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     class OMCThread extends Thread {
 
@@ -135,7 +135,7 @@ public class OMCProxy implements IModelicaCompiler {
             /*
              * Delete old object reference file. We need to do this because we're
              * checking if the file exists to determine if the server has started
-             * or not (further down). 
+             * or not (further down).
              */
             long lastModified = 0;
             if (f.exists()) {
@@ -264,12 +264,12 @@ public class OMCProxy implements IModelicaCompiler {
         }
     };
 
-   
 
-    /** 
+
+    /**
      * build the model
      *  @param className The name of the main class of the model
-     *  @exception ConnectException If buildModel command couldn't 
+     *  @exception ConnectException If buildModel command couldn't
      *  be sent to the OMC.
      */
 
@@ -280,7 +280,7 @@ public class OMCProxy implements IModelicaCompiler {
 
     /**
      * @return the name of the operating system. If an unknown os is found,
-     * the default is Unix. 
+     * the default is Unix.
      */
     public static osType getOs() {
         String osName = System.getProperty("os.name");
@@ -295,16 +295,16 @@ public class OMCProxy implements IModelicaCompiler {
         }
     }
 
-    
+
     /**
      * Initialize the communication with the OMC
-     * @throws ConnectException if we're unable to start communicating with
+     * @exception ConnectException if we're unable to start communicating with
      * the server
      */
     public synchronized void init() throws ConnectException {
-        /* 
+        /*
          * Get type of operating system, used for finding object
-         * reference and starting OMC if the reference is faulty 
+         * reference and starting OMC if the reference is faulty
          */
         os = getOs();
 
@@ -354,10 +354,10 @@ public class OMCProxy implements IModelicaCompiler {
         return (retval.toLowerCase().contains("error"));
     }
 
-    /**  
+    /**
      *   Load models from the file.
      *  @param fname The file name.
-     *  @exception ConnectException If loadFileInteractiveQualified command couldn't 
+     *  @exception ConnectException If loadFileInteractiveQualified command couldn't
      *  be sent to the OMC.
      */
 
@@ -369,7 +369,7 @@ public class OMCProxy implements IModelicaCompiler {
     /** Send a command to the OMC and gets the result string
      *  @param command The command which should be sent to the OMC.
      *  @return ICompilerResult
-     *  @exception ConnectException If commands couldn't 
+     *  @exception ConnectException If commands couldn't
      *  be sent to the OMC.
      */
 
@@ -422,10 +422,10 @@ public class OMCProxy implements IModelicaCompiler {
         }
     }
 
-    /** 
-     * 
+    /**
+     *
      * Leave and quit OpenModelica environment
-     *  @exception ConnectException If quit command couldn't 
+     *  @exception ConnectException If quit command couldn't
      *  be sent to OMC.
      */
 
@@ -436,7 +436,7 @@ public class OMCProxy implements IModelicaCompiler {
         }
     }
 
-    /////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
     ////                                protected class                  ////
 
     protected class LoadResult {
@@ -450,8 +450,8 @@ public class OMCProxy implements IModelicaCompiler {
 
     }
 
-    /////////////////////////////////////////////////////////////////////////
-    ////                           private methods                      ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
 
     private File findExecutableOnPath(String executableName) {
         String systemPath = System.getenv("PATH");
@@ -475,14 +475,14 @@ public class OMCProxy implements IModelicaCompiler {
      * With the help of voodoo magic determines the path to the
      * omc binary that user (probably) wants to use and the working
      * directory of where that binary (most likely) should be started in
-     * 
+     *
      * This will returns for example 'c:\openmodelica132\omc.exe'
      * or '/usr/local/share/openmodelica/omc' depending on
      * such factors as: OS type, environment variables settings,
      * where the first matching
-     * binary found and the weather outside. 
-     * 
-     * @return full path to the omc binary and the working folder  
+     * binary found and the weather outside.
+     *
+     * @return full path to the omc binary and the working folder
      */
     private File[] getOmcBinaryPaths() throws ConnectException {
         String binaryName = "omc";
@@ -570,7 +570,7 @@ public class OMCProxy implements IModelicaCompiler {
         return new File[] { omcBinary, omcWorkingDirectory };
     }
 
-    
+
     /**
      * @return Returns the path to the OMC CORBA object that is stored on disk.
      */
@@ -647,7 +647,7 @@ public class OMCProxy implements IModelicaCompiler {
     /**
      * Initializes an ORB, converts the stringified OMC object to a real
      * CORBA object, and then narrows that object to an OmcCommunication
-     * object. 
+     * object.
      */
     private synchronized void setupOmcc(String stringifiedObjectReference) {
         /* Can't remember why this is needed. But it is. */
@@ -692,8 +692,8 @@ public class OMCProxy implements IModelicaCompiler {
         }
     }
 
-    /////////////////////////////////////////////////////////////////////////
-    ////                        private variables                       ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
     private String corbaSession = null;
     /** indicates if we've give up to run OMC as it didn't wanted to start! */

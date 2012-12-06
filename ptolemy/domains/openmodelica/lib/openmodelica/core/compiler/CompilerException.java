@@ -44,7 +44,7 @@ package ptolemy.domains.openmodelica.lib.openmodelica.core.compiler;
 /**
  * Supertype of all exceptions that can be encountered while communicating
  * with the modelica compiler.
- *  
+ *
  * @author Andreas Remar
  */
 
@@ -57,12 +57,12 @@ abstract public class CompilerException extends Exception {
      *   causes the exception to be thrown).
      */
     ///////////////////////////////////////////////////////////////////
-    ////                      private variables                   ////
+    ////                         private variables                 ////
 
     private static final long serialVersionUID = -7881546855664735599L;
 
     ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////	
+    ////                         public methods                    ////
 
     /**
      * @see Exception#Exception(java.lang.String)

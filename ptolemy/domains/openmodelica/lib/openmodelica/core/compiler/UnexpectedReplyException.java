@@ -1,4 +1,4 @@
-/* 
+/*
  * This file is part of Modelica Development Tooling.
  *
  * Copyright (c) 2005, Linkopings universitet, Department of

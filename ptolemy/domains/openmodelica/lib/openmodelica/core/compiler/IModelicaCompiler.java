@@ -46,20 +46,20 @@ import ptolemy.domains.openmodelica.lib.openmodelica.core.CompilerResult;
 
 /**
  * The interface to the modelica compiler.
- *  This interface must be implemented by OMCProxy. 
+ *  This interface must be implemented by OMCProxy.
  */
 public interface IModelicaCompiler {
 
     /** build the model
      *  @param className name of the main class of your model
-     *  @exception ConnectException If if buildModel command couldn't 
+     *  @exception ConnectException If if buildModel command couldn't
      *  be sent to the OpenModelica Compiler.
      */
     public CompilerResult buildModel(String filename) throws ConnectException;
 
     /**
      * Initialize the communication with OMC
-     * @throws ConnectException if we're unable to start communicating with
+     * @exception ConnectException if we're unable to start communicating with
      * the server
      */
     public void init() throws ConnectException;
@@ -74,7 +74,7 @@ public interface IModelicaCompiler {
 
     /** Load models from file.
      *  @param String fileName.
-     *  @exception ConnectException, if loadFileInteractiveQualified command couldn't 
+     *  @exception ConnectException, if loadFileInteractiveQualified command couldn't
      *  be sent to the OpenModelica Compiler.
      */
     public CompilerResult loadFile(String filename) throws ConnectException;
@@ -82,14 +82,14 @@ public interface IModelicaCompiler {
     /** Send a command to the compiler and gets the result string
      *  @param command, the command which should be sent to the compiler.
      *  @return ICompilerResult
-     *  @exception ConnectException If command couldn't 
+     *  @exception ConnectException If command couldn't
      *  be sent to the OpenModelica Compiler.
      */
     public CompilerResult sendCommand(String command) throws ConnectException;
-    
-    /** 
+
+    /**
      * Leave and quit OpenModelica environment
-     *  @exception ConnectException If quit command couldn't 
+     *  @exception ConnectException If quit command couldn't
      *  be sent to the OpenModelica Compiler.
      */
 

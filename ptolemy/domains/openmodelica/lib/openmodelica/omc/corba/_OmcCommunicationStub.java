@@ -14,9 +14,9 @@ public class _OmcCommunicationStub extends org.omg.CORBA.portable.ObjectImpl imp
 {
 
   /**
-	 * 
-	 */
-	private static final long serialVersionUID = -2199076960265794510L;
+         *
+         */
+        private static final long serialVersionUID = -2199076960265794510L;
 
 public String sendExpression (String expr)
   {

@@ -1,4 +1,4 @@
-/* An actor that executes a Modelica script. 
+/* An actor that executes a Modelica script.
 
  Copyright (c) 1998-2012 The Regents of the University of California
  All rights reserved.
@@ -53,23 +53,23 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
 /**
- *   An actor that executes a Modelica script. it translates the model and 
- *   simulate that. There is one  actor provided in the Vergil 
- *   libraries Under OpenModelica directory. It is called "simulate" has no 
+ *   An actor that executes a Modelica script. it translates the model and
+ *   simulate that. There is one  actor provided in the Vergil
+ *   libraries Under OpenModelica directory. It is called "simulate" has no
  *   input and output port; to view or edit its Modelica script, look inside the actor.
-    
+
      The simulate actor works for the model which is composed of only one class,
      Adding the functionality of working for the multiple classes
-     which all will be displayed in the className Parameter will be added in the next version. 
-     
+     which all will be displayed in the className Parameter will be added in the next version.
+
      dcmotor.mo should be selected as the fileParameter and dcmotor as the model name.
      loadModel(Modelica) is needed for the simulation and should be set in the preScript parameter.
      The rest of the settings are optional.
      The simulation result is saved as a (mat,csv or plt)file and the log file as the txt file in the temp folder.
-     
+
     @author Mana Mirzaei
     @version $Id$
-    
+
  */
 
 public class OpenModelica extends TypedAtomicActor {
@@ -120,7 +120,7 @@ public class OpenModelica extends TypedAtomicActor {
         simflags.setTypeEquals(BaseType.STRING);
     }
 
-    /////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
     ////                    public ports and parameters                  ////
 
     /** TODO : Add description for Cflags */
@@ -152,8 +152,8 @@ public class OpenModelica extends TypedAtomicActor {
     /** Filter for variables that should store in result file*/
     public StringParameter variableFilter;
 
-    /////////////////////////////////////////////////////////////////////////
-    ////                    public methods                               ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /** Evaluate the expression and send its result to the output.
      *  @exception IllegalActionException If the evaluation of the expression
@@ -229,7 +229,7 @@ public class OpenModelica extends TypedAtomicActor {
         super.preinitialize();
     }
 
-    /** 
+    /**
      *  @exception IllegalActionException Not thrown in this base class.
      */
     @Override
@@ -238,14 +238,14 @@ public class OpenModelica extends TypedAtomicActor {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private methods                    ////
+    ////                         private methods                   ////
 
-    /** First, load the model from the file. Second, build the model. Finally, 
-     *  run the simulation executable result of buildModel() 
+    /** First, load the model from the file. Second, build the model. Finally,
+     *  run the simulation executable result of buildModel()
      *  method in order to generate the simulation result.
-     * @exception ConnectException If commands couldn't 
+     * @exception ConnectException If commands couldn't
      *  be sent to the OMC.
-     * @throws IOException If the executable result of buildModel()
+     * @exception IOException If the executable result of buildModel()
      * couldn't be executed.
      * */
 
@@ -272,7 +272,7 @@ public class OpenModelica extends TypedAtomicActor {
                     + fileNamePar.getExpression() + " successfully.");
 
         /*
-         * preScript expression is set to the loadModel() method which loads the file 
+         * preScript expression is set to the loadModel() method which loads the file
          * corresponding to the class, using the Modelica class.
          */
 

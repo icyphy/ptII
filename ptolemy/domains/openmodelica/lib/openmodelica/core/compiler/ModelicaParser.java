@@ -48,7 +48,7 @@ import ptolemy.domains.openmodelica.lib.openmodelica.core.ListElement;
 /**
  * This class prvides some code to parse simple modelica primitives,
  * for now it can parse lists in modelica syntax.
- * 
+ *
  * @author Andreas Remar
  */
 public class ModelicaParser {
@@ -57,7 +57,7 @@ public class ModelicaParser {
      * @param str the Modelica list to parse
      * @return a Vector containing Vector:s and String:s. The Vector:s contain
      * further Vector:s and String:s. Nesting and stuff.
-     * @throws ModelicaParserException 
+     * @exception ModelicaParserException
      */
     public static List parseList(String str) throws ModelicaParserException {
         List elements = new List();
@@ -185,8 +185,8 @@ public class ModelicaParser {
                 listFound = false;
                 if (element instanceof Element
                         && ((Element) element).toString().equals("")) {
-                    /* An empty string denotes an empty 
-                     * list element, which is an error. 
+                    /* An empty string denotes an empty
+                     * list element, which is an error.
                      */
                     throw new ModelicaParserException("Element is empty");
                 }

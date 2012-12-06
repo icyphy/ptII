@@ -1,7 +1,7 @@
 package ptolemy.domains.openmodelica.lib.openmodelica.core;
 
 /**
- * 
+ *
  * @author Adrian Pop
  *
  */

@@ -44,7 +44,7 @@ package ptolemy.domains.openmodelica.lib.openmodelica.core.compiler;
 /**
  * ModelicaParserException is thrown by ModelicaParser when malformed lists
  * are parsed.
- * 
+ *
  * @author Andreas Remar
  */
 public class ModelicaParserException extends Exception {

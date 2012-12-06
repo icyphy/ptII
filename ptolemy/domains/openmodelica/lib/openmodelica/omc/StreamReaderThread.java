@@ -1,20 +1,20 @@
 /**One line description of the class.
  * This file is part of Modelica Development Tooling (MDT).
- * The Modelica Development Tooling (MDT) software is 
+ * The Modelica Development Tooling (MDT) software is
  * distributed under the conditions specified below.
  *
  * Copyright (c) 2005-2007,
- * The MDT Team: 
- * @author Adrian Pop [adrpo@ida.liu.se], 
- * @author Elmir Jagudin, 
- * @author Andreas Remar, 
+ * The MDT Team:
+ * @author Adrian Pop [adrpo@ida.liu.se],
+ * @author Elmir Jagudin,
+ * @author Andreas Remar,
  * Programming Environments Laboratory (PELAB),
  * Department of Computer and Information Science (IDA),
  * Linkoping University (LiU).
- * 
+ *
  * All rights reserved.
  *
- * (The new BSD license, see also 
+ * (The new BSD license, see also
  *  http://www.opensource.org/licenses/bsd-license.php)
  *
  * Redistribution and use in source and binary forms, with or without
@@ -29,8 +29,8 @@
  *   the documentation and/or other materials provided with the
  *   distribution.
  *
- * * Neither the name of Authors nor the name of Linkopings University nor 
- *   the names of its contributors may be used to endorse or promote products 
+ * * Neither the name of Authors nor the name of Linkopings University nor
+ *   the names of its contributors may be used to endorse or promote products
  *   derived from this software without specific prior written permission.
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS

@@ -47,19 +47,19 @@ import ptolemy.domains.openmodelica.lib.openmodelica.core.compiler.UnexpectedRep
 
 /**
  * Handles parsing of more complex replys from OMC.
- * 
+ *
  * @author Andreas Remar
  */
 public class OMCParser {
 
     /**
-     * Parses the error string that is set by loadFileInteractive() on compile 
+     * Parses the error string that is set by loadFileInteractive() on compile
      * errors. E.g. error string will look like \n delimeted list of
      *      [/path/to/file.mo:20:1-20:5:writable]: error: some error
      *
      * The actual error string is retrived by calling getErrorString() after
      * calling loadFileInteractive()
-     * 
+     *
      * @param errorString the error string in the above format
      * @return
      */
@@ -91,7 +91,7 @@ public class OMCParser {
              * We split on ']'
              */
 
-            /* 
+            /*
              * errorParts[0] is now error location
              * and errorParts[1] is error message
              */
@@ -105,7 +105,7 @@ public class OMCParser {
             String errorLocation = errorParts[0];
             String errorMessage = errorParts[1];
 
-            /* 
+            /*
              * parse error location from
              *    "[/path/to/file.mo:20:12-34:20:writable"
              * or
@@ -115,8 +115,8 @@ public class OMCParser {
             String errorLocationParts[] = errorLocation.split(":");
 
             /*
-             * we expect 5 (on unix) or 6 (on windows) ':' separated parts in a 
-             * proper error location string 
+             * we expect 5 (on unix) or 6 (on windows) ':' separated parts in a
+             * proper error location string
              */
             if (errorLocationParts.length < 5 || errorLocationParts.length > 6) {
                 throw new UnexpectedReplyException("Weird error message from "
@@ -124,7 +124,7 @@ public class OMCParser {
             }
             /*
              * This is the ugliest hack in a long while. Aaaah, nice.
-             * 
+             *
              * How it actually works:
              *   Because : is both a separator in Windows (C:/path/to/file) and
              *   a separator in error messages, where the line and column

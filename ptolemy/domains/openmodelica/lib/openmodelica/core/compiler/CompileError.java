@@ -45,7 +45,7 @@ package ptolemy.domains.openmodelica.lib.openmodelica.core.compiler;
  * Class that implements ICompileError on behalf of OMC proxy plugin.
  */
 public class CompileError implements ICompileError {
-    
+
     public CompileError(int startLineNumber, int startColumnNumber,
             int endLineNumber, int endColumnNumber, String errorDescription) {
         this.startLineNumber = startLineNumber;
@@ -56,7 +56,7 @@ public class CompileError implements ICompileError {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                    public methods                         ////
+    ////                         public methods                    ////
 
     public int getStartLine() {
         return startLineNumber;
@@ -79,7 +79,7 @@ public class CompileError implements ICompileError {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                       private variables                  ////
+    ////                         private variables                 ////
 
     private int startLineNumber;
     private int startColumnNumber;

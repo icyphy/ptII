@@ -112,8 +112,8 @@ public class MetroIIModalModel extends ModalModel implements
                     //                            for (Hashtable result : results) {
                     //                                // assertFalse(resultsCheck.contains(result)); // no duplicate results
                     //                                // assertEquals(SOURCE_WORD.length(), result.length());
-                    //                                
-                    //                                resultHandler.handleResult(result); 
+                    //
+                    //                                resultHandler.handleResult(result);
                     //                            }
                 } else {
                     _director.fire();
