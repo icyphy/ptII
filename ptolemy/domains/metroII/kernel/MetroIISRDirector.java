@@ -144,7 +144,7 @@ public class MetroIISRDirector extends FixedPointDirector implements
      *  is the current time plus the period. Otherwise, this method
      *  delegates to the executive director.
      *  @return The time of the next iteration.
-     * @throws IllegalActionException 
+     * @exception IllegalActionException
      */
     public Time getModelNextIterationTime() throws IllegalActionException {
         if (!_isTopLevel()) {
@@ -295,13 +295,13 @@ public class MetroIISRDirector extends FixedPointDirector implements
                             _actorsFired.add(actor);
 
                             // events.remove(events.size() - 1);
-                            // Event.Builder eb = makeEventBuilder(actor.getFullName()+"_e", Event.Type.END); 
+                            // Event.Builder eb = makeEventBuilder(actor.getFullName()+"_e", Event.Type.END);
                         } else {
                             tmp_events.add(etb);
                         }
-                        //		                else if (etb.getType()==Event.Type.END && etb.getStatus()==Event.Status.PROPOSED) {
-                        //		                    events.remove(events.size()-1); 
-                        //		                }
+                        //                                else if (etb.getType()==Event.Type.END && etb.getStatus()==Event.Status.PROPOSED) {
+                        //                                    events.remove(events.size()-1);
+                        //                                }
                     }
                     events = tmp_events;
                 }

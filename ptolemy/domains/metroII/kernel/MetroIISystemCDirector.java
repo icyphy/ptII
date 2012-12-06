@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package ptolemy.domains.metroII.kernel;
 
@@ -35,8 +35,8 @@ public class MetroIISystemCDirector extends Director implements
     /**
      * @param container
      * @param name
-     * @throws IllegalActionException
-     * @throws NameDuplicationException
+     * @exception IllegalActionException
+     * @exception NameDuplicationException
      */
     public MetroIISystemCDirector(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
@@ -46,8 +46,8 @@ public class MetroIISystemCDirector extends Director implements
 
     /**
      * @param workspace
-     * @throws NameDuplicationException 
-     * @throws IllegalActionException 
+     * @exception NameDuplicationException
+     * @exception IllegalActionException
      */
     public MetroIISystemCDirector(Workspace workspace)
             throws IllegalActionException, NameDuplicationException {

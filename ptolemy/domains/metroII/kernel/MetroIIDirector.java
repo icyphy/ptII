@@ -100,8 +100,8 @@ public class MetroIIDirector extends Director {
         Iterator<?> actors = ((CompositeActor) container).deepEntityList()
                 .iterator();
         LinkedList<MetroIIActorThread> actor_thread_list = new LinkedList<MetroIIActorThread>();
-        // LinkedList<Actor> active_actor_list = new LinkedList<Actor>(); 
-        // LinkedList<Actor> actor_waiting_list = new LinkedList<Actor>(); 
+        // LinkedList<Actor> active_actor_list = new LinkedList<Actor>();
+        // LinkedList<Actor> actor_waiting_list = new LinkedList<Actor>();
 
         while (actors.hasNext()) {
             Actor actor = (Actor) actors.next();
@@ -235,7 +235,7 @@ public class MetroIIDirector extends Director {
     private void readMapping(String finename) {
         System.out.println(finename);
         try {
-            // Open the file that is the first 
+            // Open the file that is the first
             // command line parameter
             FileInputStream fstream = new FileInputStream(finename);
             // Get the object of DataInputStream
