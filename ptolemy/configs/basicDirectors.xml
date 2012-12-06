@@ -10,7 +10,6 @@
           </property>
       </property>
       <property name="DDF Director" class="ptolemy.domains.ddf.kernel.DDFDirector"/>
-	  <property name="OM Director" class="ptolemy.domains.openmodelica.kernel.OpenModelicaDirector"/>
       <property name="HDF Director" class="ptolemy.domains.hdf.kernel.HDFDirector"/>
       <property name="PN Director" class="ptolemy.domains.pn.kernel.PNDirector"/>
       <!--property name="HDFFSM Director" class="ptolemy.domains.hdf.kernel.HDFFSMDirector"/-->

@@ -190,15 +190,16 @@
 	    <!-- jxta is not shipping in 4.0 -->
             <!-- input source="ptolemy/actor/lib/jxta/jxta.xml"-->
 
+	    <input source="ptolemy/actor/lib/openmodelica/openmodelica.xml"/>
             <input source="ptolemy/domains/petrinet/kernel/petrinetentities.xml"/>
 
 	    <!--ptalon not shipped with 6.0 -->
             <!--input source="ptolemy/actor/ptalon/ptalon.xml"/-->
 
-		<!-- ptango - actors for web services -->
-			<input source="org/ptolemy/ptango/lib/ptango.xml"/>
+	    <!-- ptango - actors for web services -->
+	    <input source="org/ptolemy/ptango/lib/ptango.xml"/>
 
-        <!-- Ontologies library -->
+            <!-- Ontologies library -->
             <input source="ptolemy/data/ontologies/ontologyAnalysisLibrary.xml"/>
 	    <!--ptp not shipped with 6.0 -->
             <!--input source="ptolemy/ptp/lib/ptpentities.xml"/-->
