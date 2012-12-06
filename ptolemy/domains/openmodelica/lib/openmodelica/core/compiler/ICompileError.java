@@ -39,7 +39,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package ptolemy.actor.lib.openmodelica.core.compiler;
+package ptolemy.domains.openmodelica.lib.openmodelica.core.compiler;
 
 /**
  * Provides information on a compile error for some specific file.

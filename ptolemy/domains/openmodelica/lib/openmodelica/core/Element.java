@@ -39,7 +39,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package ptolemy.actor.lib.openmodelica.core;
+package ptolemy.domains.openmodelica.lib.openmodelica.core;
 
 /**
  * A modelica list element representation. 

@@ -38,10 +38,10 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package ptolemy.actor.lib.openmodelica.core;
+package ptolemy.domains.openmodelica.lib.openmodelica.core;
 
-import ptolemy.actor.lib.openmodelica.core.compiler.CompileError;
-import ptolemy.actor.lib.openmodelica.core.compiler.UnexpectedReplyException;
+import ptolemy.domains.openmodelica.lib.openmodelica.core.compiler.CompileError;
+import ptolemy.domains.openmodelica.lib.openmodelica.core.compiler.UnexpectedReplyException;
 
 /**
  * This class implements IParseResults on behalf of OMC proxy.

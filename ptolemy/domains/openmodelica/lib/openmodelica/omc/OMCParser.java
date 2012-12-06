@@ -39,11 +39,11 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package ptolemy.actor.lib.openmodelica.omc;
+package ptolemy.domains.openmodelica.lib.openmodelica.omc;
 
 import java.util.StringTokenizer;
-import ptolemy.actor.lib.openmodelica.core.compiler.CompileError;
-import ptolemy.actor.lib.openmodelica.core.compiler.UnexpectedReplyException;
+import ptolemy.domains.openmodelica.lib.openmodelica.core.compiler.CompileError;
+import ptolemy.domains.openmodelica.lib.openmodelica.core.compiler.UnexpectedReplyException;
 
 /**
  * Handles parsing of more complex replys from OMC.

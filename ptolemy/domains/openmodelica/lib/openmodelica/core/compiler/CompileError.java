@@ -39,7 +39,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package ptolemy.actor.lib.openmodelica.core.compiler;
+package ptolemy.domains.openmodelica.lib.openmodelica.core.compiler;
 
 /**
  * Class that implements ICompileError on behalf of OMC proxy plugin.

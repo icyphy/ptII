@@ -46,7 +46,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package ptolemy.actor.lib.openmodelica.omc;
+package ptolemy.domains.openmodelica.lib.openmodelica.omc;
 
 import java.io.InputStream;
 import java.io.InputStreamReader;

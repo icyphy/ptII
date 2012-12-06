@@ -48,7 +48,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package ptolemy.actor.lib.openmodelica.omc;
+package ptolemy.domains.openmodelica.lib.openmodelica.omc;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -64,13 +64,13 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
-import ptolemy.actor.lib.openmodelica.core.CompilerResult;
-import ptolemy.actor.lib.openmodelica.core.ICompilerResult;
-import ptolemy.actor.lib.openmodelica.core.ParseResults;
-import ptolemy.actor.lib.openmodelica.core.compiler.ConnectException;
-import ptolemy.actor.lib.openmodelica.core.compiler.IModelicaCompiler;
-import ptolemy.actor.lib.openmodelica.omc.corba.OmcCommunication;
-import ptolemy.actor.lib.openmodelica.omc.corba.OmcCommunicationHelper;
+import ptolemy.domains.openmodelica.lib.openmodelica.core.CompilerResult;
+import ptolemy.domains.openmodelica.lib.openmodelica.core.ICompilerResult;
+import ptolemy.domains.openmodelica.lib.openmodelica.core.ParseResults;
+import ptolemy.domains.openmodelica.lib.openmodelica.core.compiler.ConnectException;
+import ptolemy.domains.openmodelica.lib.openmodelica.core.compiler.IModelicaCompiler;
+import ptolemy.domains.openmodelica.lib.openmodelica.omc.corba.OmcCommunication;
+import ptolemy.domains.openmodelica.lib.openmodelica.omc.corba.OmcCommunicationHelper;
 import ptolemy.domains.openmodelica.kernel.OpenModelicaDirector;
 
 import org.omg.CORBA.ORB;

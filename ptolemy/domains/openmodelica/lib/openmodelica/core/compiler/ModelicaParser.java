@@ -39,11 +39,11 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package ptolemy.actor.lib.openmodelica.core.compiler;
+package ptolemy.domains.openmodelica.lib.openmodelica.core.compiler;
 
-import ptolemy.actor.lib.openmodelica.core.Element;
-import ptolemy.actor.lib.openmodelica.core.List;
-import ptolemy.actor.lib.openmodelica.core.ListElement;
+import ptolemy.domains.openmodelica.lib.openmodelica.core.Element;
+import ptolemy.domains.openmodelica.lib.openmodelica.core.List;
+import ptolemy.domains.openmodelica.lib.openmodelica.core.ListElement;
 
 /**
  * This class prvides some code to parse simple modelica primitives,

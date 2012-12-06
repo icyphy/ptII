@@ -39,7 +39,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package ptolemy.actor.lib.openmodelica.core.compiler;
+package ptolemy.domains.openmodelica.lib.openmodelica.core.compiler;
 
 /**
  * Supertype of all exceptions that can be encountered while communicating

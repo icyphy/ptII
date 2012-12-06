@@ -28,7 +28,7 @@
  COPYRIGHTENDKEY
 
  */
-package ptolemy.actor.lib.openmodelica;
+package ptolemy.domains.openmodelica.lib.openmodelica;
 
 import java.io.File;
 import java.io.IOException;
@@ -36,9 +36,9 @@ import java.util.Iterator;
 import ptolemy.actor.Director;
 import ptolemy.actor.gui.style.TextStyle;
 import ptolemy.actor.IOPort;
-import ptolemy.actor.lib.openmodelica.core.CompilerResult;
-import ptolemy.actor.lib.openmodelica.core.compiler.ConnectException;
-import ptolemy.actor.lib.openmodelica.omc.OMCProxy;
+import ptolemy.domains.openmodelica.lib.openmodelica.core.CompilerResult;
+import ptolemy.domains.openmodelica.lib.openmodelica.core.compiler.ConnectException;
+import ptolemy.domains.openmodelica.lib.openmodelica.omc.OMCProxy;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.expr.FileParameter;

@@ -1,4 +1,4 @@
-package ptolemy.actor.lib.openmodelica.omc.corba;
+package ptolemy.domains.openmodelica.lib.openmodelica.omc.corba;
 
 
 /**
