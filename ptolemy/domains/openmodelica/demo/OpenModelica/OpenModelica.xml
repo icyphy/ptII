@@ -50,7 +50,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[285.0, 15.0]">
         </property>
     </property>
-    <entity name="Simulate" class="ptolemy.actor.lib.openmodelica.OpenModelica">
+    <entity name="Simulate" class="ptolemy.domains.openmodelica.lib.openmodelica.OpenModelica">
         <property name="preScript (Write OM Command) " class="ptolemy.data.expr.StringParameter" value="loadModel(Modelica)&#10;&#10;">
         </property>
         <property name="fileNamePar" class="ptolemy.data.expr.FileParameter" value="">
