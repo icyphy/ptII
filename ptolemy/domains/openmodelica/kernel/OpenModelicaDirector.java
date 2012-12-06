@@ -30,8 +30,8 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.TreeSet;
 import ptolemy.actor.lib.openmodelica.core.compiler.ConnectException;
-import ptolemy.actor.lib.openmodelica.omc.omcProxy;
-import ptolemy.actor.lib.openmodelica.omc.omcLogger;
+import ptolemy.actor.lib.openmodelica.omc.OMCProxy;
+import ptolemy.actor.lib.openmodelica.omc.OMCLogger;
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.sched.Firing;
@@ -88,8 +88,8 @@ public class OpenModelicaDirector extends StaticSchedulingDirector {
      *  This is an int that defaults to 1.
      */
     public Parameter iterations;
-    public static omcProxy _omcPr;
-    public static omcLogger _ptLogger;
+    public static OMCProxy _omcPr;
+    public static OMCLogger _ptLogger;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                ////
@@ -119,8 +119,8 @@ public class OpenModelicaDirector extends StaticSchedulingDirector {
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
         try {
-            _ptLogger = new omcLogger();
-            _omcPr = new omcProxy();
+            _ptLogger = new OMCLogger();
+            _omcPr = new OMCProxy();
             _omcPr.init();
         } catch (ConnectException e) {
             throw new IllegalActionException("Unable to RESTART the server!");
