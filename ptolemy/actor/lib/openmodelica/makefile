@@ -1,9 +1,9 @@
-# Makefile for Java Ptolemy Programming Temporally Integrated Distributed Embedded Systems
+# Makefile for OpenModelica actors
 #
 # @Version: $Id: makefile 54183 2009-06-05 14:40:43Z bldmastr $
 # @Author: Christopher Brooks (makefile only)
 #
-# @Copyright (c) 2008-2009 The Regents of the University of California.
+# @Copyright (c) 2012 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -53,11 +53,24 @@ PTCLASSALLJARS = \
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
+JSRCS = \
+	OpenModelica.java
+
+OTHER_FILES_TO_BE_JARED = \
+	openmodelica.xml
+
+EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
+
+JCLASS = $(JSRCS:%.java=%.class)
+
 # Files or directories that are present, but that 'make checkjunk'
 # should not complain about
 # Don't include demo or DIRS here, or else 'make sources' will run 'make demo'
 MISC_FILES =  core omc
-	
+
+OPTIONAL_FILES = \
+	'OpenModelica$$1.class'
+
 all: jclass
 install: jclass jars
 

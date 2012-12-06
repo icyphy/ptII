@@ -174,8 +174,9 @@ public class OpenModelica extends TypedAtomicActor {
 
         try {
             simulate();
-        } catch (ConnectException | IOException e) {
-            throw new IllegalActionException("Unable to simulate the model!");
+        } catch (Throwable throwable) {
+            throw new IllegalActionException(this, throwable,
+                    "Unable to simulate the model!");
         }
     }
 

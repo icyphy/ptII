@@ -1,9 +1,9 @@
-# Makefile for Java Ptolemy Programming Temporally Integrated Distributed Embedded Systems
+# Makefile for Ptolemy interface to OpenModelica core classes
 #
 # @Version: $Id: makefile 54183 2009-06-05 14:40:43Z bldmastr $
 # @Author: Christopher Brooks (makefile only)
 #
-# @Copyright (c) 2008-2009 The Regents of the University of California.
+# @Copyright (c) 2012 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -34,10 +34,11 @@ ME =		ptolemy/actor/lib/openmodelica/core
 # Root of the Ptolemy II directory
 ROOT =		../../../../..
 
+CLASSPATH =	$(ROOT)
+
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
-
 
 # Used to build jar files
 PTPACKAGE = 	core
@@ -45,10 +46,26 @@ PTCLASSJAR =
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
+JSRCS = \
+	CompilerResult.java \
+	Element.java \
+	ICompilerResult.java \
+	List.java \
+	ListElement.java \
+	ParseResults.java
+
+EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
+
 # Files or directories that are present, but that 'make checkjunk'
 # should not complain about
 # Don't include demo or DIRS here, or else 'make sources' will run 'make demo'
 MISC_FILES = compiler  
+
+# make checkjunk will not report OPTIONAL_FILES as trash
+# make distclean removes OPTIONAL_FILES
+OPTIONAL_FILES =
+
+JCLASS = $(JSRCS:%.java=%.class)
 
 all: jclass
 install: jclass jars

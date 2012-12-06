@@ -1,9 +1,9 @@
-# Makefile for Java Ptolemy Programming Temporally Integrated Distributed Embedded Systems
+# Makefile for Ptolemy interface to OpenModelica Corba classes 
 #
 # @Version: $Id: makefile 54183 2009-06-05 14:40:43Z bldmastr $
 # @Author: Christopher Brooks (makefile only)
 #
-# @Copyright (c) 2008-2009 The Regents of the University of California.
+# @Copyright (c) 2012 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -34,16 +34,31 @@ ME =		ptolemy/actor/lib/openmodelica/omc/corba
 # Root of the Ptolemy II directory
 ROOT =		../../../../../..
 
+CLASSPATH =	$(ROOT)
+
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
 PTPACKAGE = 	corba
-PTCLASSJAR =
+PTCLASSJAR =	$(PTPACKAGE).jar
 
-PTCLASSALLJAR = $(PTPACKAGE).jar
+#PTCLASSALLJAR = 
 
+JSRCS = \
+	OmcCommunication.java \
+	OmcCommunicationHelper.java \
+	OmcCommunicationHolder.java \
+	OmcCommunicationOperations.java \
+	_OmcCommunicationStub.java \
+
+OTHER_FILES_TO_BE_JARED = \
+	omc_communication.idl
+
+EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
+
+JCLASS = $(JSRCS:%.java=%.class)
 all: jclass
 install: jclass jars
 
