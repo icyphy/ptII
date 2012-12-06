@@ -27,9 +27,13 @@
  */
 package ptolemy.actor.lib;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.Token;
+import ptolemy.graph.Inequality;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -194,4 +198,15 @@ public class AddSubtract extends TypedAtomicActor {
             output.send(0, sum);
         }
     }
+
+    /** Set the plus port to be greater than or equal to the output port.
+     *  @return A set of Inequalities
+     */
+    @Override
+    protected Set<Inequality> _customTypeConstraints() {
+        Set<Inequality> result = new HashSet<Inequality>();
+        result.add(new Inequality(output.getTypeTerm(), plus.getTypeTerm()));
+        return result;
+    }
+   
 }
