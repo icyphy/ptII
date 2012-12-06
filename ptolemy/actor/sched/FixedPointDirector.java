@@ -861,7 +861,7 @@ public class FixedPointDirector extends StaticSchedulingDirector implements
      *  converged if both the number of known receivers
      *  has not changed since the previous invocation of this method.
      */
-    private boolean _hasIterationConverged() {
+    protected boolean _hasIterationConverged() {
         if (_debugging) {
             _debug(this.getFullName()
                     + ":\n Number of receivers known previously is "
@@ -911,7 +911,7 @@ public class FixedPointDirector extends StaticSchedulingDirector implements
      *  Note that this ignores whether the actor has previously returned
      *  false in postfire().
      */
-    private boolean _isReadyToFire(Actor actor) throws IllegalActionException {
+    protected boolean _isReadyToFire(Actor actor) throws IllegalActionException {
         return !_actorsFinishedFiring.contains(actor)
                 && (!actor.isStrict() || _areAllInputsKnown(actor));
     }
@@ -934,7 +934,7 @@ public class FixedPointDirector extends StaticSchedulingDirector implements
      *  unknown status of the specified actor
      *  @param actor The actor.
      */
-    private void _sendAbsentToAllUnknownOutputsOf(Actor actor)
+    protected void _sendAbsentToAllUnknownOutputsOf(Actor actor)
             throws IllegalActionException {
         // An actor, if its firing has finished but some of its
         // outputs are still unknown, clear these outputs.
@@ -975,7 +975,7 @@ public class FixedPointDirector extends StaticSchedulingDirector implements
     private Set _actorsFinishedFiring = new HashSet();
 
     /** Actors that were fired in the most recent invocation of the fire() method. */
-    private Set _actorsFired = new HashSet();
+    protected Set _actorsFired = new HashSet();
 
     /** The set of actors that have all inputs known in the given iteration. */
     private Set _cachedAllInputsKnown = new HashSet();

@@ -1,0 +1,16 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="Directors" class="ptolemy.moml.EntityLibrary">
+  <configure>
+    <?moml
+      <group>
+        <doc>MetroII directors.</doc>
+		<property name="MetroIIDirector" class="ptolemy.domains.metroII.kernel.MetroIIDirector" />
+		<property name="MetroIIFSMDirector" class="ptolemy.domains.metroII.kernel.MetroIIFSMDirector" />
+		<property name="MetroIISRDirector" class="ptolemy.domains.metroII.kernel.MetroIISRDirector" />
+		<property name="MetroIISystemCDirector" class="ptolemy.domains.metroII.kernel.MetroIISystemCDirector" />
+      </group>
+    ?>
+  </configure>
+</entity>
