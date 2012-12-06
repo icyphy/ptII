@@ -123,8 +123,9 @@ public class OpenModelicaDirector extends StaticSchedulingDirector {
             _ptLogger = new OMCLogger();
             _omcPr = new OMCProxy();
             _omcPr.init();
-        } catch (ConnectException e) {
-            throw new IllegalActionException("Unable to RESTART the server!");
+        } catch (ConnectException ex) {
+            throw new IllegalActionException(this, ex,
+                    "Unable to RESTART the server!");
         }
     }
 
@@ -137,9 +138,10 @@ public class OpenModelicaDirector extends StaticSchedulingDirector {
         try {
             _omcPr.quit();
             _omcPr = null;
-        } catch (ConnectException e) {
+        } catch (ConnectException ex) {
             _ptLogger
-                    .getInfo("Ignore this exception for quit(), it is already quited!");
+                .getInfo("Ignore this exception for quit(), it is already quited!: "
+                        + ex);
         }
     }
 

@@ -8,9 +8,9 @@
     </property>
     <property name="size" class="ptolemy.data.expr.Parameter" value="25">
     </property>
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 0, 1382, 744}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 1388, 738}, maximized=false}">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
@@ -53,7 +53,7 @@
     <entity name="Simulate" class="ptolemy.domains.openmodelica.lib.openmodelica.OpenModelica">
         <property name="preScript (Write OM Command) " class="ptolemy.data.expr.StringParameter" value="loadModel(Modelica)&#10;&#10;">
         </property>
-        <property name="fileNamePar" class="ptolemy.data.expr.FileParameter" value="">
+        <property name="fileNamePar" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/domains/openmodelica/demo/OpenModelica/dcmotor.mo">
         </property>
         <property name="modelName" class="ptolemy.data.expr.StringParameter" value="dcmotor">
         </property>
