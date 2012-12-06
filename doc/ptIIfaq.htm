@@ -682,9 +682,24 @@ If you install Ptolemy II using the Windows installer, then
 menu choices should be added to <code>Start</code> -&gt; 
 <code>Programs</code> -&gt; <code>Ptolemy</code>.
 
- <p>
-Ptolemy II models can be run from the command line, this is what we do
-for the nightly test suite.
+<p>Ptolemy II models can be run from the command line, this is what we do
+for the nightly test suite.</p>
+
+<p>$PTII/bin contains shell scripts and dos scripts.  Under Windows,
+you must build Ptolemy II with Cygwin and run
+<code>(cd $PTII/bin; make)</code> to create the ptexecute shell
+script.  An alternative is to create an Eclipse run configuration that
+invokes ptolemy.actor.gui.MoMLSimpleApplication.  See the Eclipse
+instructions
+in <a href="eclipse/index.html">$PTII/doc/eclipse/index.htm</a> for
+details about invoking Vergil.  Follow those instructions and use
+ptolemy.actor.gui.MoMLSimpleApplication as the class name.</p>
+    
+<p>If <code>$PTII/bin/makefile</code> does not exist, then
+Eclipse was probably set up with "Use project folder as root for source and class files".
+See <a href="eclipse/index.html">$PTII/doc/eclipse/index.htm</a> for 
+how to setup Eclipse and Ptolemy II.</p>
+
   <dl>
 
   <dt> <code>$PTII/bin/vergil foo.xml</code>
@@ -696,18 +711,8 @@ for the nightly test suite.
   it
 
   <dt> <code>$PTII/bin/ptexecute foo.xml</code>
-  <dd> will run the model.  The model need not be graphical.  ptexecute is a shell
-    script. Under Windows, you must build Ptolemy II with Cygwin and run
-    <code>(cd $PTII/bin; make)</code> to create the ptexecute shell script.
-    An alternative is to create an Eclipse run configuration that invokes
-    ptolemy.actor.gui.MoMLSimpleApplication.  See the Eclipse instructions
-    in <a href="eclipse/index.html">$PTII/doc/eclipse/index.htm</a> for 
-    details about invoking Vergil.  Follow those instructions and use
-    ptolemy.actor.gui.MoMLSimpleApplication as the class name.
-    <br/>If <code>$PTII/bin/makefile</code> does not exist, then
-    Eclipse was probably set up with "Use project folder as root for source and class files".
-    See <a href="eclipse/index.html">$PTII/doc/eclipse/index.htm</a> for 
-    how to setup Eclipse and Ptolemy II.
+  <dd> will run the model.  The model need not be graphical.</dt>
+
   <dt> <code>java -classpath $PTII ptolemy.actor.gui.MoMLSimpleApplication foo.xml</code>
   <dd> will run the model without requiring a connection to a display.
   Use this method for running models as part of cron jobs etc.
