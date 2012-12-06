@@ -2,20 +2,20 @@ package ptolemy.domains.metroII.kernel;
 
 import java.util.Iterator;
 
-import ptolemy.actor.Director;
-import ptolemy.actor.IOPort;
-import ptolemy.actor.TypedCompositeActor;
-import ptolemy.actor.parameters.ParameterPort;
-import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.Workspace;
 import net.jimblackler.Utils.CollectionAbortedException;
 import net.jimblackler.Utils.Collector;
 import net.jimblackler.Utils.ResultHandler;
 import net.jimblackler.Utils.ThreadedYieldAdapter;
 import net.jimblackler.Utils.YieldAdapterIterable;
+import ptolemy.actor.Director;
+import ptolemy.actor.IOPort;
+import ptolemy.actor.TypedCompositeActor;
+import ptolemy.actor.parameters.ParameterPort;
 import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event;
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Workspace;
 
 public class MetroIICompositeActor extends TypedCompositeActor implements
         MetroIIEventHandler {

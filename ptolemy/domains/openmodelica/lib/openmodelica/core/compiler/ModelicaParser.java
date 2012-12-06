@@ -139,12 +139,14 @@ public class ModelicaParser {
 
                 subString += '"';
             } else if (str.charAt(characterPosition) == '<') {
-                if (!insideString)
+                if (!insideString) {
                     tupleDepth++;
+                }
                 subString += '<';
             } else if (str.charAt(characterPosition) == '>') {
-                if (!insideString)
+                if (!insideString) {
                     tupleDepth--;
+                }
                 subString += '>';
             } else if (str.charAt(characterPosition) == '{'
                     && insideString == false) {

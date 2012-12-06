@@ -7,7 +7,6 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.Iterator;
 import java.util.LinkedList;
 
 import net.jimblackler.Utils.CollectionAbortedException;
@@ -15,15 +14,14 @@ import net.jimblackler.Utils.Collector;
 import net.jimblackler.Utils.ResultHandler;
 import net.jimblackler.Utils.ThreadedYieldAdapter;
 import net.jimblackler.Utils.YieldAdapterIterable;
-
 import ptolemy.actor.Director;
+import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event;
+import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event.Builder;
+import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.EventVector;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
-import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event;
-import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event.Builder;
-import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.EventVector;
 
 /**
  * @author leo
@@ -65,8 +63,8 @@ public class MetroIISystemCDirector extends Director implements
         }
 
         EventVector.Builder evb = EventVector.newBuilder();
-        for (Iterator<Event.Builder> it = events.iterator(); it.hasNext();) {
-            evb.addEvent(it.next().build());
+        for (Builder builder : events) {
+            evb.addEvent(builder.build());
         }
 
         EventVector ev = evb.build();
@@ -82,14 +80,12 @@ public class MetroIISystemCDirector extends Director implements
             e.printStackTrace();
         }
         System.out.println("Pushing events: ");
-        for (Iterator<Event.Builder> it = events.iterator(); it.hasNext();) {
-            Event.Builder etb = it.next();
+        for (Builder etb : events) {
             System.out
                     .println(etb.getName() + " " + etb.getStatus().toString());
         }
         if (_debugging) {
-            for (Iterator<Event.Builder> it = events.iterator(); it.hasNext();) {
-                Event.Builder etb = it.next();
+            for (Builder etb : events) {
                 _debug(etb.getName() + " " + etb.getStatus().toString());
             }
         }
@@ -121,14 +117,12 @@ public class MetroIISystemCDirector extends Director implements
             events.add(e.toBuilder());
         }
         System.out.println("Sync events: ");
-        for (Iterator<Event.Builder> it = events.iterator(); it.hasNext();) {
-            Event.Builder etb = it.next();
+        for (Builder etb : events) {
             System.out
                     .println(etb.getName() + " " + etb.getStatus().toString());
         }
         if (_debugging) {
-            for (Iterator<Event.Builder> it = events.iterator(); it.hasNext();) {
-                Event.Builder etb = it.next();
+            for (Builder etb : events) {
                 _debug(etb.getName() + " " + etb.getStatus().toString());
             }
         }

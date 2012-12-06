@@ -32,22 +32,22 @@ package ptolemy.domains.openmodelica.lib.openmodelica;
 import java.io.File;
 import java.io.IOException;
 import java.util.Iterator;
+
 import ptolemy.actor.Director;
-import ptolemy.actor.gui.style.TextStyle;
 import ptolemy.actor.IOPort;
-import ptolemy.domains.openmodelica.lib.openmodelica.core.CompilerResult;
-import ptolemy.domains.openmodelica.lib.openmodelica.core.compiler.ConnectException;
-import ptolemy.domains.openmodelica.lib.openmodelica.omc.OMCProxy;
 import ptolemy.actor.TypedAtomicActor;
-import ptolemy.actor.TypedIOPort;
+import ptolemy.actor.gui.style.TextStyle;
+import ptolemy.data.DoubleToken;
+import ptolemy.data.IntToken;
 import ptolemy.data.expr.FileParameter;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.data.expr.Variable;
-import ptolemy.data.DoubleToken;
-import ptolemy.data.IntToken;
 import ptolemy.data.type.BaseType;
 import ptolemy.domains.openmodelica.kernel.OpenModelicaDirector;
+import ptolemy.domains.openmodelica.lib.openmodelica.core.CompilerResult;
+import ptolemy.domains.openmodelica.lib.openmodelica.core.compiler.ConnectException;
+import ptolemy.domains.openmodelica.lib.openmodelica.omc.OMCProxy;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -214,7 +214,7 @@ public class OpenModelica extends TypedAtomicActor {
         Iterator inputPorts = inputPortList().iterator();
 
         while (inputPorts.hasNext()) {
-            IOPort port = (IOPort) (inputPorts.next());
+            IOPort port = (IOPort) inputPorts.next();
 
             if (!port.hasToken(0)) {
                 return false;
@@ -267,9 +267,10 @@ public class OpenModelica extends TypedAtomicActor {
 
         _result = OpenModelicaDirector._omcPr.loadFile(fileNamePar
                 .getExpression());
-        if (_result.getError().compareTo("") == 0)
+        if (_result.getError().compareTo("") == 0) {
             OpenModelicaDirector._ptLogger.getInfo("Model is loaded from "
                     + fileNamePar.getExpression() + " successfully.");
+        }
 
         /*
          * preScript expression is set to the loadModel() method which loads the file
@@ -278,38 +279,48 @@ public class OpenModelica extends TypedAtomicActor {
 
         _result = OpenModelicaDirector._omcPr.sendCommand(preScript
                 .getExpression());
-        if (_result.getError().compareTo("") == 0)
+        if (_result.getError().compareTo("") == 0) {
             OpenModelicaDirector._ptLogger
                     .getInfo("Modelica model is loaded successfully.");
+        }
 
         /* optional settings of buildModel() method  */
 
-        if (simStartTime.getExpression().compareTo("") == 0)
+        if (simStartTime.getExpression().compareTo("") == 0) {
             simStartTime.setExpression("0.0");
+        }
 
-        if (simStopTime.getExpression().compareTo("") == 0)
+        if (simStopTime.getExpression().compareTo("") == 0) {
             simStopTime.setExpression("0.1");
+        }
 
-        if (noOfIntervals.getExpression().compareTo("") == 0)
+        if (noOfIntervals.getExpression().compareTo("") == 0) {
             noOfIntervals.setExpression("500");
+        }
 
-        if (tolerance.getExpression().compareTo("") == 0)
+        if (tolerance.getExpression().compareTo("") == 0) {
             tolerance.setExpression("0.0001");
+        }
 
-        if (method.getExpression().compareTo("") == 0)
+        if (method.getExpression().compareTo("") == 0) {
             method.setExpression("dassl");
+        }
 
-        if (outputFormat.getExpression().compareTo("") == 0)
+        if (outputFormat.getExpression().compareTo("") == 0) {
             outputFormat.setExpression("mat");
+        }
 
-        if (variableFilter.getExpression().compareTo("") == 0)
+        if (variableFilter.getExpression().compareTo("") == 0) {
             variableFilter.setExpression(".*");
+        }
 
-        if (cflags.getExpression().compareTo("") == 0)
+        if (cflags.getExpression().compareTo("") == 0) {
             cflags.setExpression("");
+        }
 
-        if (simflags.getExpression().compareTo("") == 0)
+        if (simflags.getExpression().compareTo("") == 0) {
             simflags.setExpression("");
+        }
         if (fileNamePrefix.getExpression().compareTo("") == 0) {
             OpenModelicaDirector._ptLogger
                     .getInfo("Model without fileNamePrefix.");
@@ -347,12 +358,14 @@ public class OpenModelica extends TypedAtomicActor {
 
         _result = OpenModelicaDirector._omcPr.buildModel(str);
         if (fileNamePrefix.getExpression().compareTo("") == 0
-                && _result.getError().compareTo("") == 0)
+                && _result.getError().compareTo("") == 0) {
             OpenModelicaDirector._ptLogger.getInfo(modelName.getExpression()
                     + " Model is built successfully.");
-        if (fileNamePrefix.getExpression().compareTo("") != 0)
+        }
+        if (fileNamePrefix.getExpression().compareTo("") != 0) {
             OpenModelicaDirector._ptLogger.getInfo(fileNamePrefix
                     .getExpression() + " Model is built successfully.");
+        }
 
         String command = null;
         OMCProxy.os = OMCProxy.getOs();
@@ -369,12 +382,13 @@ public class OpenModelica extends TypedAtomicActor {
 
         Runtime.getRuntime().exec(command, OMCProxy.env, OMCProxy.workDir);
 
-        if (fileNamePrefix.getExpression().compareTo("") == 0)
+        if (fileNamePrefix.getExpression().compareTo("") == 0) {
             OpenModelicaDirector._ptLogger.getInfo(modelName.getExpression()
                     + " is executed successfully.");
-        else
+        } else {
             OpenModelicaDirector._ptLogger.getInfo(fileNamePrefix
                     .getExpression() + " is executed successfully.");
+        }
     }
 
     ///////////////////////////////////////////////////////////////////

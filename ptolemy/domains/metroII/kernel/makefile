@@ -36,7 +36,7 @@ DIRS =		test
 # Root of the Java directory
 ROOT =		../../../..
 
-CLASSPATH =	$(ROOT)
+CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(PTPROTOBUF_JAR)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
@@ -47,7 +47,18 @@ PTPACKAGE = 	kernel
 PTCLASSJAR =	$(PTPACKAGE).jar
 
 JSRCS = \
-	MetroIIDEDirector.java
+	ConstraintSolver.java \
+	MappingConstraintSolver.java \
+	MetroIIActorThread.java \
+	MetroIICompositeActor.java \
+	MetroIIDEDirector.java \
+	MetroIIDirector.java \
+	MetroIIEventHandler.java \
+	MetroIIFSMDirector.java \
+	MetroIIModalModel.java \
+	MetroIIPNDirector.java \
+	MetroIISRDirector.java \
+	MetroIISystemCDirector.java
 
 OTHER_FILES_TO_BE_JARED =
 

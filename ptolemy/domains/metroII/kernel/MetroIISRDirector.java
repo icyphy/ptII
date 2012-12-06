@@ -9,7 +9,6 @@ import net.jimblackler.Utils.Collector;
 import net.jimblackler.Utils.ResultHandler;
 import net.jimblackler.Utils.ThreadedYieldAdapter;
 import net.jimblackler.Utils.YieldAdapterIterable;
-
 import ptolemy.actor.Actor;
 import ptolemy.actor.sched.Firing;
 import ptolemy.actor.sched.FixedPointDirector;
@@ -20,13 +19,13 @@ import ptolemy.actor.util.Time;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
+import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event;
+import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event.Builder;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
-import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event;
-
 
 public class MetroIISRDirector extends FixedPointDirector implements
         PeriodicDirector, MetroIIEventHandler {
@@ -279,17 +278,16 @@ public class MetroIISRDirector extends FixedPointDirector implements
                     resultHandler.handleResult(events);
 
                     ArrayList<Event.Builder> tmp_events = new ArrayList<Event.Builder>();
-                    for (Iterator<Event.Builder> it = events.iterator(); it
-                            .hasNext();) {
-                        Event.Builder etb = it.next();
+                    for (Builder etb : events) {
                         if (etb.getType() == Event.Type.BEGIN
                                 && etb.getStatus() == Event.Status.NOTIFIED) {
-                            Actor actor = (Actor) name2actor.get(etb.getName());
+                            Actor actor = name2actor.get(etb.getName());
                             if (_debugging) {
                                 _debug("Firing " + actor.getFullName());
                             }
-                            if (1==1) {
-                                throw new RuntimeException("would call _fireActor here, but it is not checked in.");
+                            if (1 == 1) {
+                                throw new RuntimeException(
+                                        "would call _fireActor here, but it is not checked in.");
                             }
                             //_fireActor(actor);
                             _actorsFired.add(actor);

@@ -42,6 +42,7 @@
 package ptolemy.domains.openmodelica.lib.openmodelica.omc;
 
 import java.util.StringTokenizer;
+
 import ptolemy.domains.openmodelica.lib.openmodelica.core.compiler.CompileError;
 import ptolemy.domains.openmodelica.lib.openmodelica.core.compiler.UnexpectedReplyException;
 

@@ -1,8 +1,8 @@
 package ptolemy.domains.metroII.kernel;
 
+import net.jimblackler.Utils.YieldAdapterIterator;
 import ptolemy.actor.Actor;
 import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event;
-import net.jimblackler.Utils.*;
 
 public class MetroIIActorThread {
     public enum Type {

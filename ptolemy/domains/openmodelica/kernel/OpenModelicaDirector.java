@@ -29,9 +29,7 @@ package ptolemy.domains.openmodelica.kernel;
 import java.util.Comparator;
 import java.util.List;
 import java.util.TreeSet;
-import ptolemy.domains.openmodelica.lib.openmodelica.core.compiler.ConnectException;
-import ptolemy.domains.openmodelica.lib.openmodelica.omc.OMCProxy;
-import ptolemy.domains.openmodelica.lib.openmodelica.omc.OMCLogger;
+
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.sched.Firing;
@@ -41,6 +39,9 @@ import ptolemy.actor.sched.Scheduler;
 import ptolemy.actor.sched.StaticSchedulingDirector;
 import ptolemy.data.IntToken;
 import ptolemy.data.expr.Parameter;
+import ptolemy.domains.openmodelica.lib.openmodelica.core.compiler.ConnectException;
+import ptolemy.domains.openmodelica.lib.openmodelica.omc.OMCLogger;
+import ptolemy.domains.openmodelica.lib.openmodelica.omc.OMCProxy;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.IllegalActionException;
@@ -138,7 +139,7 @@ public class OpenModelicaDirector extends StaticSchedulingDirector {
             _omcPr = null;
         } catch (ConnectException e) {
             _ptLogger
-            .getInfo("Ignore this exception for quit(), it is already quited!");
+                    .getInfo("Ignore this exception for quit(), it is already quited!");
         }
     }
 
@@ -168,12 +169,12 @@ public class OpenModelicaDirector extends StaticSchedulingDirector {
 
         /** Return a left-to-right schedule. */
         protected Schedule _getSchedule() throws IllegalActionException,
-        NotSchedulableException {
+                NotSchedulableException {
             // Get the director.
             NamedObj director = getContainer();
             // Get the container of the director.
-            CompositeActor compositeActor = (CompositeActor) (director
-                    .getContainer());
+            CompositeActor compositeActor = (CompositeActor) director
+                    .getContainer();
             // Get the actors to be fired by the director.
             List<Actor> actors = compositeActor.deepEntityList();
             // Create a sorted list of actors, sorted by

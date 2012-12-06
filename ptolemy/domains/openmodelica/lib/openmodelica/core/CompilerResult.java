@@ -1,6 +1,5 @@
 package ptolemy.domains.openmodelica.lib.openmodelica.core;
 
-import ptolemy.domains.openmodelica.lib.openmodelica.core.ICompilerResult;
 
 public class CompilerResult implements ICompilerResult {
 

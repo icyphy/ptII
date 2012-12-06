@@ -8,15 +8,14 @@ import net.jimblackler.Utils.Collector;
 import net.jimblackler.Utils.ResultHandler;
 import net.jimblackler.Utils.ThreadedYieldAdapter;
 import net.jimblackler.Utils.YieldAdapterIterable;
-
 import ptolemy.actor.Actor;
+import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event;
 import ptolemy.domains.modal.kernel.FSMActor;
 import ptolemy.domains.modal.kernel.FSMDirector;
 import ptolemy.domains.modal.kernel.State;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event;
 
 public class MetroIIFSMDirector extends FSMDirector implements
         MetroIIEventHandler {

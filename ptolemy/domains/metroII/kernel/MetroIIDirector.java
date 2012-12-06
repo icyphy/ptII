@@ -1,7 +1,6 @@
 package ptolemy.domains.metroII.kernel;
 
 import java.io.BufferedReader;
-
 import java.io.DataInputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -10,12 +9,7 @@ import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.LinkedList;
 
-import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.Attribute;
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.Nameable;
-
+import net.jimblackler.Utils.YieldAdapterIterable;
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
@@ -24,9 +18,13 @@ import ptolemy.actor.Initializable;
 import ptolemy.data.StringToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
-
 import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event;
-import net.jimblackler.Utils.YieldAdapterIterable;
+import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event.Builder;
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Nameable;
 
 public class MetroIIDirector extends Director {
 
@@ -144,9 +142,8 @@ public class MetroIIDirector extends Director {
 
                     if (thread.hasNext()) {
                         Iterable<Event.Builder> result = thread.next();
-                        for (Iterator<Event.Builder> it = result.iterator(); it
-                                .hasNext();) {
-                            Event.Builder etb = (Event.Builder) it.next();
+                        for (Builder builder : result) {
+                            Event.Builder etb = builder;
                             String event_name = etb.getName();
 
                             if (!eventname2id.containsKey(event_name)) {
@@ -199,8 +196,8 @@ public class MetroIIDirector extends Director {
 
             for (Event.Builder etb : m2event_list) {
                 String event_name = etb.getName();
-                _mapping_constraint_solver
-                        .presentM2Event((Integer) eventname2id.get(event_name));
+                _mapping_constraint_solver.presentM2Event(eventname2id
+                        .get(event_name));
             }
             // System.out.println(_mapping_constraint_solver);
             System.out.println("Before mapping resolution: ");
@@ -210,8 +207,8 @@ public class MetroIIDirector extends Director {
             }
             for (Event.Builder etb : m2event_list) {
                 String event_name = etb.getName();
-                if (_mapping_constraint_solver
-                        .isSatisfied((Integer) eventname2id.get(event_name))) {
+                if (_mapping_constraint_solver.isSatisfied(eventname2id
+                        .get(event_name))) {
                     etb.setStatus(Event.Status.NOTIFIED);
                 }
             }
@@ -246,7 +243,7 @@ public class MetroIIDirector extends Director {
             while ((strLine = br.readLine()) != null) {
                 // Print the content on the console
                 String[] actor_name_list = strLine.split(",");
-                assert (actor_name_list.length == 2);
+                assert actor_name_list.length == 2;
                 if (!eventname2id.containsKey(actor_name_list[0])) {
                     eventname2id.put(actor_name_list[0], next_avail_id);
                     next_avail_id++;

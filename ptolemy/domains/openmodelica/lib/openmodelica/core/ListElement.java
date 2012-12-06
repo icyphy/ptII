@@ -45,7 +45,6 @@ package ptolemy.domains.openmodelica.lib.openmodelica.core;
  * The abstract type of an element that can be contained in a modelica list. All
  * classes that are placed inside a list must subclass this class.
  */
-abstract public class ListElement
-{
+abstract public class ListElement {
 
 }

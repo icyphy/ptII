@@ -43,7 +43,6 @@ package ptolemy.domains.openmodelica.lib.openmodelica.core.compiler;
 
 import ptolemy.domains.openmodelica.lib.openmodelica.core.CompilerResult;
 
-
 /**
  * The interface to the modelica compiler.
  *  This interface must be implemented by OMCProxy.

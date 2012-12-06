@@ -7,7 +7,6 @@ import net.jimblackler.Utils.Collector;
 import net.jimblackler.Utils.ResultHandler;
 import net.jimblackler.Utils.ThreadedYieldAdapter;
 import net.jimblackler.Utils.YieldAdapterIterable;
-
 import ptolemy.actor.Director;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.parameters.ParameterPort;

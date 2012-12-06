@@ -34,8 +34,8 @@ public class MappingConstraintSolver implements ConstraintSolver {
 
         // System.out.print("present M2Event: "); 
         // System.out.println(id);
-        assert (id < _size);
-        assert (id > 0);
+        assert id < _size;
+        assert id > 0;
         if (id > _size) {
             return;
         }
@@ -55,7 +55,7 @@ public class MappingConstraintSolver implements ConstraintSolver {
         // System.out.println(id);
         // TODO Auto-generated method stub
         // return true; 
-        assert (id > 0);
+        assert id > 0;
         if (id > _size) {
             return true;
         }

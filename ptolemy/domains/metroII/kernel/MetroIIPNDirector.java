@@ -7,13 +7,13 @@ import java.io.IOException;
 import java.util.Enumeration;
 import java.util.Hashtable;
 
+import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event;
+import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.EventVector;
 import ptolemy.domains.pn.kernel.PNDirector;
 import ptolemy.domains.pn.kernel.PNQueueReceiver;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event;
-import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.EventVector;
 
 public class MetroIIPNDirector extends PNDirector {
 
