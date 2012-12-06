@@ -12,7 +12,7 @@
  * @author Mana Mirzaei
  * Programming Environments Laboratory (PELAB),
  * Department of Computer and getInformation Science (IDA),
- * Linköping University (LiU).
+ * Linkoping University (LiU).
  * 
  * All rights reserved.
  *
@@ -31,7 +31,7 @@
  *   the documentation and/or other materials provided with the
  *   distribution.
  *
- * * Neither the name of Authors nor the name of Linköpings University nor 
+ * * Neither the name of Authors nor the name of Linkopings University nor 
  *   the names of its contributors may be used to endorse or promote products 
  *   derived from this software without specific prior written permission.
  *
