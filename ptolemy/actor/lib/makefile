@@ -109,6 +109,7 @@ PTCLASSALLJARS = \
 	javasound/javasound.jar \
 	jopio/jopio.jar \
 	net/net.jar \
+	openmodelica/openmodelica.jar \
 	qm/qm.jar \
 	security/security.jar \
 	vhdl/vhdl.jar \
@@ -373,6 +374,7 @@ OPTIONAL_FILES = \
 	joystick \
 	mail \
 	opencv \
+	openmodelica \
 	reactable \
 	'AbsoluteValue$$1.class' \
 	'AbsoluteValue$$FunctionTerm.class' \

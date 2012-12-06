@@ -168,7 +168,9 @@ public class FMUJUnitTest {
         assertArrayEquals(results.getBytes(), knownGood.getBytes());
     }
 
-    /** Invoke the Model exchange driver on a .fmu file.
+    /** Invoke the Model exchange driver on a .fmu file.  The known
+     *  good output is expected to be in a file whose name ends with
+     *  "_me.csv".
      *  @param testName The name of the test with no file extension.
      *  @exception Exception If there is a problem reading or executing the test
      *  or if the results is not the same as the known good results.
