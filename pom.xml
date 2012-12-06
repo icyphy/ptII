@@ -590,6 +590,12 @@ See $PTII/doc/coding/maven.htm
       <version>ptII</version>
     </dependency>
 
+    <dependency> <!-- $PTII/lib/protobuf.jar -->
+      <groupId>protobuf</groupId>
+      <artifactId>protobuf</artifactId>
+      <version>ptII</version>
+    </dependency>
+
     <dependency> <!-- $PTII/lib/ptjacl.jar -->
       <groupId>jacl</groupId>
       <artifactId>jacl</artifactId>
