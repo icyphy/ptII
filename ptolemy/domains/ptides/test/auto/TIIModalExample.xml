@@ -364,17 +364,17 @@
             </property>
             <port name="SensorPort" class="ptolemy.domains.ptides.lib.PtidesPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 195.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{190.0, 200.0}">
                 </property>
             </port>
             <port name="SensorPort2" class="ptolemy.domains.ptides.lib.PtidesPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, 240.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[115.0, 220.0]">
                 </property>
             </port>
             <port name="ActuatorPort" class="ptolemy.domains.ptides.lib.PtidesPort">
                 <property name="output"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="{420, 190}">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[390.0, 200.0]">
                 </property>
                 <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="Infinity">
                 </property>
@@ -383,7 +383,7 @@
             </port>
             <port name="ActuatorPort2" class="ptolemy.domains.ptides.lib.PtidesPort">
                 <property name="output"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="{410, 240}">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[425.0, 220.0]">
                 </property>
                 <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="Infinity">
                 </property>
@@ -394,6 +394,8 @@
                 <property name="_tableauFactory" class="ptolemy.vergil.modal.modal.ModalTableauFactory">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[290.0, 210.0]">
+                </property>
+                <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
                 <port name="mode" class="ptolemy.domains.modal.modal.ModalPort">
                     <property name="input"/>
@@ -584,6 +586,8 @@
                     </entity>
                     <entity name="TimeDelay" class="ptolemy.actor.lib.TimeDelay">
                         <property name="delay" class="ptolemy.actor.parameters.PortParameter" value="7.0">
+                        </property>
+                        <property name="minimumDelay" class="ptolemy.data.expr.Parameter" value="0.0">
                         </property>
                         <property name="_location" class="ptolemy.kernel.util.Location" value="[230.0, 235.0]">
                         </property>
