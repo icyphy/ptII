@@ -886,7 +886,7 @@ public class PtidesDirector extends DEDirector {
 
         // Calculate delayOffset to each actor
         for (Object entity : ((CompositeActor) getContainer()).entityList()) {
-            if (entity instanceof TimeDelay) {
+            if (entity instanceof TimeDelay && (((TimeDelay)entity).delay.getPort().isOutsideConnected())) {
                 _setDelayOffset((NamedObj) entity,
                         ((DoubleToken) ((TimeDelay) entity).minimumDelay
                                 .getToken()).doubleValue());
@@ -1120,33 +1120,27 @@ public class PtidesDirector extends DEDirector {
         }
     }
 
-    /** Return the execution time of a given actor. If the flag scheduleWithZeroExecutionTime
-     *  is true then return 0.0.
-     * @param scheduleWithZeroExecutionTime If true execution time is 0.0.
+    /** Return the execution time of a given actor. 
      * @param actor The actor.
      * @return The execution Time.
      * @exception IllegalActionException Thrown if time objects cannot be created.
      */
-    private Time _getExecutionTime(boolean scheduleWithZeroExecutionTime,
+    private Time _getExecutionTime(
             Actor actor) throws IllegalActionException {
         Time executionTime = null;
-        if (scheduleWithZeroExecutionTime) {
-            executionTime = new Time(this, 0.0);
-        } else {
-            if (_executionTimes == null) {
-                _executionTimes = new HashMap<Actor, Time>();
+        if (_executionTimes == null) {
+            _executionTimes = new HashMap<Actor, Time>();
+        }
+        executionTime = _executionTimes.get(actor);
+        if (executionTime == null) {
+            Double executionTimeParam = _getDoubleParameterValue(
+                    (NamedObj) actor, "executionTime");
+            if (executionTimeParam == null) {
+                executionTime = new Time(this, 0.0);
+            } else {
+                executionTime = new Time(this, executionTimeParam);
             }
-            executionTime = _executionTimes.get(actor);
-            if (executionTime == null) {
-                Double executionTimeParam = _getDoubleParameterValue(
-                        (NamedObj) actor, "executionTime");
-                if (executionTimeParam == null) {
-                    executionTime = new Time(this, 0.0);
-                } else {
-                    executionTime = new Time(this, executionTimeParam);
-                }
-                _executionTimes.put(actor, executionTime);
-            }
+            _executionTimes.put(actor, executionTime);
         }
         return executionTime;
     }
@@ -1211,13 +1205,14 @@ public class PtidesDirector extends DEDirector {
                 }
 
                 if (prefire
-                        && (!_resourceScheduling || (_resourceScheduling && _schedule(
-                                ptidesEvent.actor(),
-                                ptidesEvent.timeStamp(),
-                                _getExecutionTime(
-                                        queue != _pureEvents
-                                                && ptidesEvent.actor() instanceof TimeDelay,
-                                        ptidesEvent.actor()))))) {
+                        && (!_resourceScheduling || 
+                                (_resourceScheduling && (
+                                        (queue != _pureEvents && ptidesEvent.actor() instanceof TimeDelay) ||
+                                        _schedule(
+                                        ptidesEvent.actor(),
+                                        ptidesEvent.timeStamp(),
+                                        _getExecutionTime(
+                                                ptidesEvent.actor())))))) {
                     _currentLogicalTime = ptidesEvent.timeStamp();
                     _currentLogicalIndex = ptidesEvent.microstep();
                     _currentSourceTimestamp = ptidesEvent.sourceTimestamp();
@@ -1463,10 +1458,19 @@ public class PtidesDirector extends DEDirector {
         Time eventTimestamp = event.timeStamp();
 
         IOPort port = event.ioPort();
-        Double delayOffset;
+        Double delayOffset = null;
         if (port != null) {
-            delayOffset = _getDoubleParameterValue(port, "delayOffset");
+            Actor actor = (Actor) port.getContainer();
+            for (Object ioPort : actor.inputPortList()) {
+                if (ioPort != port) {
+                    Double ioPortDelayOffset = _getDoubleParameterValue((NamedObj) ioPort, "delayOffset");
+                    if (ioPortDelayOffset != null && (delayOffset == null || ioPortDelayOffset < delayOffset)) {
+                        delayOffset = ioPortDelayOffset;
+                    }
+                }
+            } 
         } else {
+            
             // A local source can have a maximum future events parameter.
             Integer maxFutureEvents = _getIntParameterValue(
                     (NamedObj) event.actor(), "maxFutureEvents");
@@ -1481,12 +1485,9 @@ public class PtidesDirector extends DEDirector {
 
             // A local source can have a delay offset parameter.
             delayOffset = _getDoubleParameterValue((NamedObj) event.actor(),
-                    "delayOffset");
-            if (delayOffset == null) {
-                delayOffset = new Double(0.0);
-            }
+                    "delayOffset");   
         }
-        if (localClock.getLocalTime().compareTo(
+        if (delayOffset == null || localClock.getLocalTime().compareTo(
                 eventTimestamp.subtract(delayOffset)) >= 0) {
             return true;
         }
@@ -1549,6 +1550,7 @@ public class PtidesDirector extends DEDirector {
         if (parameter == null) {
             try {
                 parameter = new Parameter(namedObj, "delayOffset", token);
+                parameter.setPersistent(false);
             } catch (NameDuplicationException e) {
                 throw new IllegalActionException(namedObj,
                         "delayOffset parameter already exists at "
