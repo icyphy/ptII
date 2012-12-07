@@ -14,7 +14,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-400.0, 275.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1541, -327, 1280, 741}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 1280, 741}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1046, 631]">
     </property>
@@ -5170,6 +5170,8 @@
                     <doc>Create periodic timed events.</doc>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[210.0, 395.0]">
                     </property>
+                    <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="0.0">
+                    </property>
                 </entity>
                 <entity name="CurrentTime" class="ptolemy.actor.lib.CurrentTime">
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[415.0, 385.0]">
@@ -7126,6 +7128,8 @@
                     </property>
                     <doc>Create periodic timed events.</doc>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="{553.0, 565.0}">
+                    </property>
+                    <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="0.0">
                     </property>
                 </entity>
                 <entity name="CurrentTime" class="ptolemy.actor.lib.CurrentTime">
@@ -9216,6 +9220,8 @@
                     </property>
                     <doc>Create periodic timed events.</doc>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[130.0, 145.0]">
+                    </property>
+                    <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="0.0">
                     </property>
                     <port name="trigger" class="ptolemy.actor.TypedIOPort">
                         <property name="input"/>
@@ -12287,7 +12293,7 @@
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.001364079548251E-8">
         </property>
-        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="true">
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-175.0, 410.0]">
         </property>
@@ -12305,7 +12311,7 @@
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.045821268330091E-8">
         </property>
-        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="true">
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{-248.620846901005, 963.7288886068773}">
         </property>
@@ -12377,7 +12383,7 @@
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.017075605257393E-8">
         </property>
-        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="true">
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[675.0, 590.0]">
         </property>

@@ -290,6 +290,8 @@
                 </property>
                 <property name="executionTime" class="ptolemy.data.expr.Parameter">
                 </property>
+                <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
             </entity>
             <entity name="Spectrum2" class="ptolemy.actor.lib.Scale">
                 <property name="factor" class="ptolemy.data.expr.Parameter" value="2">
@@ -350,6 +352,8 @@
                 <property name="scheduler" class="ptolemy.data.expr.Parameter" value="">
                 </property>
                 <property name="executionTime" class="ptolemy.data.expr.Parameter">
+                </property>
+                <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
             </entity>
             <entity name="CurrentTime" class="ptolemy.actor.lib.CurrentTime">

@@ -7,9 +7,9 @@
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="10">
         </property>
-        <property name="enableResourceScheduling" class="ptolemy.actor.parameters.SharedParameter" value="true">
-        </property>
         <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="enableResourceScheduling" class="ptolemy.actor.parameters.SharedParameter" value="true">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 110.0]">
         </property>
@@ -48,7 +48,7 @@
         </property>
     </entity>
     <entity name="Test4" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1.2, 2.19, 3.2, 4.19, 5.2, 6.19, 7.2, 8.19, 9.2}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1.1, 2.09, 3.1, 4.09, 5.1, 6.09, 7.1, 8.09, 9.1}">
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
@@ -260,7 +260,7 @@
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[-165.0, -35.0]">
                 </property>
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={23, 132, 687, 634}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={23, 199, 687, 634}, maximized=false}">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[453, 524]">
             </property>
@@ -274,12 +274,38 @@
             </property>
             <port name="SensorPort" class="ptolemy.domains.ptides.lib.PtidesPort">
                 <property name="input"/>
+                <property name="deviceDelay" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+                <property name="deviceDelayBound" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+                <property name="isNetworkPort" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="actuateAtEventTimestamp" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="platformDelayBound" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+                <property name="sourcePlatformDelayBound" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+                <property name="networkDelayBound" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[-175.0, 90.0]">
                 </property>
             </port>
             <port name="ActuatorPort" class="ptolemy.domains.ptides.lib.PtidesPort">
                 <property name="output"/>
+                <property name="deviceDelay" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+                <property name="deviceDelayBound" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+                <property name="isNetworkPort" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
                 <property name="actuateAtEventTimestamp" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="platformDelayBound" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+                <property name="sourcePlatformDelayBound" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+                <property name="networkDelayBound" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, 140.0]">
                 </property>
@@ -290,7 +316,19 @@
             </port>
             <port name="ActuatorPort2" class="ptolemy.domains.ptides.lib.PtidesPort">
                 <property name="output"/>
+                <property name="deviceDelay" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+                <property name="deviceDelayBound" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+                <property name="isNetworkPort" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
                 <property name="actuateAtEventTimestamp" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="platformDelayBound" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+                <property name="sourcePlatformDelayBound" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+                <property name="networkDelayBound" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, 45.0]">
                 </property>
@@ -308,8 +346,6 @@
                 </property>
                 <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.1">
                 </property>
-                <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="1.0">
-                </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                     <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -326,8 +362,6 @@
                 <property name="scheduler" class="ptolemy.data.expr.Parameter" value="EDFScheduler">
                 </property>
                 <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.1">
-                </property>
-                <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -371,6 +405,8 @@
     </entity>
     <entity name="Test2" class="ptolemy.actor.lib.Test">
         <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{2.0, 2.99, 4.0, 4.99, 6.0, 6.99, 8.0, 8.99, 10.0}">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[355.0, 245.0]">
         </property>

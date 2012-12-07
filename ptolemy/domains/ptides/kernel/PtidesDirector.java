@@ -1462,12 +1462,12 @@ public class PtidesDirector extends DEDirector {
         if (port != null) {
             Actor actor = (Actor) port.getContainer();
             for (Object ioPort : actor.inputPortList()) {
-                if (ioPort != port) {
+                //if (ioPort != port) {
                     Double ioPortDelayOffset = _getDoubleParameterValue((NamedObj) ioPort, "delayOffset");
                     if (ioPortDelayOffset != null && (delayOffset == null || ioPortDelayOffset < delayOffset)) {
                         delayOffset = ioPortDelayOffset;
                     }
-                }
+                //}
             } 
         } else {
             
@@ -1485,7 +1485,7 @@ public class PtidesDirector extends DEDirector {
 
             // A local source can have a delay offset parameter.
             delayOffset = _getDoubleParameterValue((NamedObj) event.actor(),
-                    "delayOffset");   
+                    "delayOffset");  
         }
         if (delayOffset == null || localClock.getLocalTime().compareTo(
                 eventTimestamp.subtract(delayOffset)) >= 0) {

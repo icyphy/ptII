@@ -216,7 +216,7 @@
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 45.0]">
                 </property>
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-3, 129, 796, 634}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 129, 796, 634}, maximized=false}">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[562, 524]">
             </property>
@@ -286,6 +286,12 @@
                 <doc>Create periodic timed events.</doc>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[59.5, 170.0]">
                 </property>
+                <property name="scheduler" class="ptolemy.data.expr.Parameter" value="">
+                </property>
+                <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+                <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
             </entity>
             <entity name="Spectrum2" class="ptolemy.actor.lib.Scale">
                 <property name="factor" class="ptolemy.data.expr.Parameter" value="2">
@@ -342,6 +348,12 @@
                 </property>
                 <doc>Create periodic timed events.</doc>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[59.5, 265.0]">
+                </property>
+                <property name="scheduler" class="ptolemy.data.expr.Parameter" value="">
+                </property>
+                <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+                <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
             </entity>
             <entity name="CurrentTime" class="ptolemy.actor.lib.CurrentTime">
