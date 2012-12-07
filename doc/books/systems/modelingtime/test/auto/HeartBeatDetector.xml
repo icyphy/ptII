@@ -10,7 +10,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-180.0, -115.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={64, 57, 639, 634}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={168, 126, 639, 634}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[405, 524]">
     </property>
@@ -23,7 +23,7 @@
         </property>
         <property name="_tableauFactory" class="ptolemy.actor.gui.LevelSkippingTableauFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-50.0, -45.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-50.0, -50.0]">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
             <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={195, 129, 934, 634}, maximized=false}">
@@ -325,7 +325,7 @@
                 <display name="Heartbeat Detector"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[260.0, 90.0]">
                 </property>
-                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={184, 132, 605, 189}, maximized=false}">
+                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={184, 132, 605, 634}, maximized=false}">
                 </property>
                 <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[371, 79]">
                 </property>
@@ -334,6 +334,8 @@
                 <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{261.8580334595959, 391.0382536300506}">
                 </property>
                 <property name="heartbeat" class="ptolemy.data.expr.Parameter" value="3">
+                </property>
+                <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
                 <port name="warning" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
@@ -401,12 +403,14 @@
                         </property>
                     </port>
                     <entity name="_Controller" class="ptolemy.domains.modal.modal.ModalController">
+                        <property name="errorCause" class="ptolemy.data.expr.Parameter">
+                        </property>
                         <property name="_library" class="ptolemy.moml.LibraryAttribute">
                             <configure>
         <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.modal.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory"></property></entity></entity>
       </configure>
                         </property>
-                        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={343, 82, 538, 411}, maximized=false}">
+                        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={343, 82, 593, 635}, maximized=false}">
                         </property>
                         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[304, 300]">
                         </property>
@@ -572,12 +576,14 @@
                         </property>
                     </port>
                     <entity name="_Controller" class="ptolemy.domains.modal.modal.ModalController">
+                        <property name="errorCause" class="ptolemy.data.expr.Parameter">
+                        </property>
                         <property name="_library" class="ptolemy.moml.LibraryAttribute">
                             <configure>
         <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.modal.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory"></property></entity></entity>
       </configure>
                         </property>
-                        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={114, 30, 615, 320}, maximized=false}">
+                        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={332, 82, 615, 635}, maximized=false}">
                         </property>
                         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[381, 209]">
                         </property>
@@ -733,6 +739,8 @@
                 </property>
                 <doc>Create periodic timed events.</doc>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 100.0]">
+                </property>
+                <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
             </entity>
             <relation name="relation2" class="ptolemy.actor.TypedIORelation">
