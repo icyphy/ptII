@@ -1146,7 +1146,6 @@ public class TableauFrame extends Top {
             throw new InternalErrorException(
                     "No associated Tableau! Can't save.");
         }
-
         if (PtGUIUtilities.useFileDialog()) {
             return _saveAsHelperFileDialog(extension);
         } else {
@@ -1264,9 +1263,9 @@ public class TableauFrame extends Top {
      */
     private URL _saveAsHelperCommon(File file, File directory) {
         try {
-            if (!_confirmFile(null, file)) {
-                return null;
-            }
+            //if (!_confirmFile(null, file)) {
+            //    return null;
+            //}
 
             URL newURL = file.toURI().toURL();
             String newKey = newURL.toExternalForm();
@@ -1440,7 +1439,16 @@ public class TableauFrame extends Top {
                     // if the user has not given the file an extension, add it
                     file = new File(file.getAbsolutePath() + extension);
                 }
-
+		
+		try {
+		    // FileDialog asks about overwriting a file, FileChooser
+		    // does not.
+		    if (!_confirmFile(null, file)) {
+			return null;
+		    }
+		} catch (Throwable throwable) {
+		    throw new RuntimeException("Failed to confirm saving of " + file, throwable);
+		}
                 return _saveAsHelperCommon(file,
                         fileDialog.getCurrentDirectory());
             }
