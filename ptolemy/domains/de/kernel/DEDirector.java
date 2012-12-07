@@ -1301,7 +1301,7 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
      *  @return True if at least one data token is transferred.
      */
     public boolean transferInputs(IOPort port) throws IllegalActionException {
-        int defaultMicrostep = 1;
+        int defaultMicrostep = _defaultMicrostep;
         int previousMicrostep = _microstep;
         SuperdenseTimeDirector enclosingDirector = _enclosingSuperdenseTimeDirector();
         if (enclosingDirector != null) {
@@ -2279,6 +2279,7 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
      */
     private void _initParameters() {
         _verbose = true;
+        _defaultMicrostep = 1;
         try {
             stopWhenQueueIsEmpty = new Parameter(this, "stopWhenQueueIsEmpty");
             stopWhenQueueIsEmpty.setExpression("true");

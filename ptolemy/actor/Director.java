@@ -426,7 +426,7 @@ public class Director extends Attribute implements Executable {
         // as the default, since this is the default for discrete events.
         // The Continuous domain will specifically request a firing at
         // microstep 0.
-        return fireAt(actor, time, 1);
+        return fireAt(actor, time, _defaultMicrostep);
     }
 
     /** Request a firing of the given actor at the given model
@@ -492,7 +492,7 @@ public class Director extends Attribute implements Executable {
      *   is no director.
      */
     public Time fireContainerAt(Time time) throws IllegalActionException {
-        return fireContainerAt(time, 0);
+        return fireContainerAt(time, _defaultMicrostep);
     }
 
     /** Request a firing of the container of this director at the specified time,
@@ -1893,6 +1893,9 @@ public class Director extends Attribute implements Executable {
      *  indicating that they do not wish to be iterated again.
      */
     protected Set _actorsFinishedExecution;
+    
+    /** The director's default microste. */
+    protected int _defaultMicrostep;
 
     /** Indicator that finish() has been called. */
     protected boolean _finishRequested;
@@ -1954,6 +1957,8 @@ public class Director extends Attribute implements Executable {
 
         stopTime = new Parameter(this, "stopTime");
         stopTime.setTypeEquals(BaseType.DOUBLE);
+        
+        _defaultMicrostep = 0;
         
     }
     
