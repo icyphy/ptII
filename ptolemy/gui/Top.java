@@ -1677,19 +1677,23 @@ public abstract class Top extends JFrame {
 
         _file = new File(_directory, fileDialog.getFile());
 
-        if (_file.exists()) {
-            // Ask for confirmation before overwriting a file.
-            String query = "Overwrite " + _file.getName() + "?";
-
-            // Show a MODAL dialog
-            int selected = JOptionPane.showOptionDialog(this, query,
-                    "Save Changes?", JOptionPane.YES_NO_OPTION,
-                    JOptionPane.QUESTION_MESSAGE, null, null, null);
-
-            if (selected == 1) {
-                return false;
-            }
-        }
+        // If the file exists, then FileDialog will prompt the user
+        // so we don't want to prompt them again.
+        // See "saving xml to existing file asks twice on mac"
+        // http://bugzilla.ecoinformatics.org/show_bug.cgi?id=5760
+//         if (_file.exists()) {
+//             // Ask for confirmation before overwriting a file.
+//             String query = "Overwrite " + _file.getName() + "?";
+//
+//             // Show a MODAL dialog
+//             int selected = JOptionPane.showOptionDialog(this, query,
+//                     "Save Changes?", JOptionPane.YES_NO_OPTION,
+//                     JOptionPane.QUESTION_MESSAGE, null, null, null);
+//
+//             if (selected == 1) {
+//                 return false;
+//             }
+//         }
 
         // Truncate the name so that dialogs under Web Start on the Mac
         // work better.
