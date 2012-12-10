@@ -179,7 +179,7 @@ public class IntermediateReceiver extends AbstractReceiver {
     ////                         protected variables               ////
 
     /** Target receiver that is wrapped by this intermediate receiver.  */
-    protected Receiver _receiver;
+    public Receiver _receiver;
 
     /** The port. */
     protected IOPort _port;

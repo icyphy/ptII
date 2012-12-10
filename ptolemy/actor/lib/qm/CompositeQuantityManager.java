@@ -79,6 +79,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  *  @Pt.ProposedRating Yellow (derler)
  *  @Pt.AcceptedRating Red (derler)
  */
+@Deprecated
 public class CompositeQuantityManager extends TypedCompositeActor implements
         QuantityManager {
 

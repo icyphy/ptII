@@ -52,6 +52,7 @@ OTHER_FILES_TO_BE_JARED = \
 	BasicSwitchIcon.xml \
 	BusIcon.xml \
 	CanBusIcon.xml \
+	CompositeQM.xml \
 	CompositeQuantityManagerIcon.xml \
 	CrossbarSwitchIcon.xml \
 	TTESwitchIcon.xml
@@ -62,6 +63,7 @@ JSRCS = \
 	CanBus.java \
 	CanBusPriority.java \
 	ColoredQuantityManager.java \
+	CompositeQM.java \
 	CompositeQuantityManager.java \
 	CrossbarSwitch.java \
 	TTESwitch.java \

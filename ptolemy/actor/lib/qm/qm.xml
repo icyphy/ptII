@@ -19,6 +19,81 @@
   <entity name="CrossbarSwitch" class="ptolemy.actor.lib.qm.CrossbarSwitch"> 
   </entity>
 
+<entity name="CompositeQM" class="ptolemy.actor.lib.qm.CompositeQM">
+<property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
+    <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 25.0]">
+    </property>
+</property>
+<property name="sendTo_actorName_portName" class="ptolemy.data.expr.Parameter" value="">
+    <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+    </property>
+    <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+        <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+        </property>
+    </property>
+    <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+        <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+    </property>
+    <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+    </property>
+    <property name="_location" class="ptolemy.kernel.util.Location" value="[430.0, 155.0]">
+    </property>
+</property>
+<property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+    <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This is a composite quantity manager.">
+    </property>
+    <property name="_location" class="ptolemy.kernel.util.Location" value="[165.0, 15.0]">
+    </property>
+</property>
+<property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+    <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Output ports of actors are connected to &#10;this quantity manager by constants following &#10;the naming convention demonstrated here.">
+    </property>
+    <property name="_location" class="ptolemy.kernel.util.Location" value="[-5.0, 80.0]">
+    </property>
+</property>
+<property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+    <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Input ports of actors are connected to &#10;this quantity manager by parameters following &#10;the naming convention demonstrated here.">
+    </property>
+    <property name="_location" class="ptolemy.kernel.util.Location" value="[345.0, 75.0]">
+    </property>
+</property>
+<property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+    <property name="text" class="ptolemy.kernel.util.StringAttribute" value="SetVariable actors are used to set the parameters. &#10;The delay parameter of the SetVariable actor &#10;must be false.">
+    </property>
+    <property name="_location" class="ptolemy.kernel.util.Location" value="[340.0, 180.0]">
+    </property>
+</property>
+<entity name="actorName_portName" class="ptolemy.actor.lib.Const">
+    <property name="value" class="ptolemy.data.expr.Parameter" value="0.0">
+    </property>
+    <doc>Create a constant sequence.</doc>
+    <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+        <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+        </property>
+        <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+        </property>
+    </property>
+    <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 165.0]">
+    </property>
+</entity>
+<entity name="SetVariable" class="ptolemy.actor.lib.SetVariable">
+    <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="sendTo_actorName_portName">
+    </property>
+    <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+        <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
+        </property>
+        <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+        </property>
+    </property>
+    <property name="_location" class="ptolemy.kernel.util.Location" value="[520.0, 265.0]">
+    </property>
+</entity>
+</entity>
+
 <entity name="CanBus" class="ptolemy.actor.lib.qm.CanBus">
    <doc>A quantity manager that simulate a CAN bus.</doc>
  </entity>

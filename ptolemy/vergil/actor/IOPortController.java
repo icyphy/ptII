@@ -45,6 +45,7 @@ import ptolemy.actor.PublisherPort;
 import ptolemy.actor.SubscriberPort;
 import ptolemy.actor.gui.ColorAttribute;
 import ptolemy.actor.gui.PtolemyPreferences;
+import ptolemy.actor.lib.qm.CompositeQM;
 import ptolemy.actor.lib.qm.CompositeQuantityManager;
 import ptolemy.actor.lib.qm.MonitoredQuantityManager;
 import ptolemy.actor.parameters.ParameterPort;
@@ -467,6 +468,8 @@ public class IOPortController extends AttributeController {
                                 color = ((MonitoredQuantityManager)object).color;
                             } else if (object instanceof CompositeQuantityManager) {
                                 color = ((CompositeQuantityManager) object).color;
+                            } else if (object instanceof CompositeQM) {
+                                color = ((CompositeQM) object).color;
                             } else if (object instanceof IOPort) {
                                 color = ((CompositeQuantityManager) ((IOPort) object).getContainer()).color;
                             }
