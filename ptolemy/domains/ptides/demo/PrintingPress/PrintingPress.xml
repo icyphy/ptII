@@ -14,7 +14,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-400.0, 275.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 1280, 741}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1487, -117, 1280, 741}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1046, 631]">
     </property>
@@ -5235,6 +5235,8 @@
                     <doc>Create periodic timed events.</doc>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[210.0, 395.0]">
                     </property>
+                    <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="0.0">
+                    </property>
                 </entity>
                 <entity name="CurrentTime" class="ptolemy.actor.lib.CurrentTime">
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[415.0, 385.0]">
@@ -6187,7 +6189,7 @@
                     <property name="period" class="ptolemy.actor.parameters.PortParameter" value="0.5">
                     </property>
                     <doc>Create periodic timed events.</doc>
-                    <property name="_location" class="ptolemy.kernel.util.Location" value="[200.0, 300.0]">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[200.0, 295.0]">
                     </property>
                     <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="0.5">
                     </property>
@@ -7191,6 +7193,8 @@
                     </property>
                     <doc>Create periodic timed events.</doc>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="{553.0, 565.0}">
+                    </property>
+                    <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="0.0">
                     </property>
                 </entity>
                 <entity name="CurrentTime" class="ptolemy.actor.lib.CurrentTime">
@@ -9281,6 +9285,8 @@
                     </property>
                     <doc>Create periodic timed events.</doc>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[130.0, 145.0]">
+                    </property>
+                    <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="0.0">
                     </property>
                     <port name="trigger" class="ptolemy.actor.TypedIOPort">
                         <property name="input"/>
