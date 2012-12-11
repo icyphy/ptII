@@ -3383,7 +3383,7 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
     }
 
     /** Return true if the variable should be skipped.
-     *  @param The variable name.
+     *  @param variableName The variable name.
      *  @return true if the variable should be skipped.
      */
     private boolean _skipVariable(String variableName) {

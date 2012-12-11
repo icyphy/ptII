@@ -49,7 +49,7 @@ import ptolemy.util.StringUtilities;
 * <p>Subclasses should be sure to properly indent the code by
 * either using the code block functionality in methods like
 * _generateBlockCode(String) or by calling
-* {@link ptolemy.codegen.kernel.CodeStream#indent(String)},
+* {@link ptolemy.cg.kernel.generic.program.CodeStream#indent(String)},
 * for example:
 * <pre>
 *     StringBuffer code = new StringBuffer();
