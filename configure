@@ -655,6 +655,7 @@ PTQUICKTIME_DIR
 ANTLR_DIR
 PTPTALON_PACKAGES
 PTPTALON_DIR
+PTPROTOBUF_JAR
 PTPROCESSING_JARS
 PTPOWERMOCK_JARS
 PTPOWERMOCK_DIR
@@ -666,6 +667,8 @@ PTPDFRENDERER_DIR
 PTOPENCV_PACKAGES
 PTOPENCV_INCLUDE_DIR
 PTOPENCV_DIR
+PTMETROII_PACKAGES
+PTMETROII_DIR
 PTMESCAL_DIR
 PTMATLAB_PACKAGES
 PTMATLAB_MEXEXT
@@ -10696,35 +10699,44 @@ fi
 
 # PTMETROII_DIR is set to metroII if the ProtoBuf jar file was found
 # $PTII/ptolemy/domains/makefile uses PTMETROII_DIR
-#PTMETROII_DIR=
+PTMETROII_DIR=
 
 # PTMETROII_PACKAGES is used in doc/makefile
-#PTMETROII_PACKAGES=
+PTMETROII_PACKAGES=
 
 # The location of the protobuf jar file, typically $PTII/lib/protobuf-java-2.4.1.jar
-#PTPROTOBUF_JAR=
+PTPROTOBUF_JAR=
 
 # We only need look for protobuf if $PTII/ptolemy/domains/metro exists.
-#PROTOBUF_USER_DIR="$PTII/ptolemy/domains/metroII"
-#if test ! -d "$PROTOBUF_USER_DIR"; then
-#    PT_MSG_STATUS([$PROTOBUF_USER_DIR is not present, so we need not find ProtoBuf.])
-#else
-#    AC_MSG_CHECKING([for Protocol Buffers (ProtoBuf)])
-#    if test -f "$PTII/lib/protobuf-java-2.4.1.jar"; then
-#        PT_MSG_RESULT($PTII/lib/protobuf-java-2.4.1.jar)
-#	PTPROTOBUF_JAR="$PTII/lib/protobuf-java-2.4.1.jar"
-#	PTMETROII_DIR=metroII
-#	PTMETROII_PACKAGES="ptolemy.domains.metroII.kernel"
-#        updateClasspath "$PTPROTOBUF_JAR"
-#    else
-#        AC_MSG_WARN([Failed to find $PTII/lib/protobuf-java-2.4.1.jar.
-#The Google page at https://code.google.com/p/protobuf fo Protobuf says:
-#  Protocol Buffers are a way of encoding structured data in an efficient
-#  yet extensible format.
-#Protobuf is needed to updatefor the MetroII director.])
-#        updateExcludes "ptolemy/domains/metroII"
-#    fi
-#fi
+PROTOBUF_USER_DIR="$PTII/ptolemy/domains/metroII"
+if test ! -d "$PROTOBUF_USER_DIR"; then
+    if test "${PTVERBOSE:-none}" != "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: $PROTOBUF_USER_DIR is not present, so we need not find ProtoBuf." >&5
+$as_echo "$PROTOBUF_USER_DIR is not present, so we need not find ProtoBuf." >&6; }; fi
+else
+    { $as_echo "$as_me:${as_lineno-$LINENO}: checking for Protocol Buffers (ProtoBuf)" >&5
+$as_echo_n "checking for Protocol Buffers (ProtoBuf)... " >&6; }
+    if test -f "$PTII/lib/protobuf-java-2.4.1.jar"; then
+        if test "${PTVERBOSE:-none}" = "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
+$as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: $PTII/lib/protobuf-java-2.4.1.jar" >&5
+$as_echo "$PTII/lib/protobuf-java-2.4.1.jar" >&6; }; fi
+	PTPROTOBUF_JAR="$PTII/lib/protobuf-java-2.4.1.jar"
+	PTMETROII_DIR=metroII
+	PTMETROII_PACKAGES="ptolemy.domains.metroII.kernel ptolemy.domains.metroII.kernel.util.ProtoBuf"
+        updateClasspath "$PTPROTOBUF_JAR"
+    else
+        { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Failed to find $PTII/lib/protobuf-java-2.4.1.jar.
+    The Google page at https://code.google.com/p/protobuf fo Protobuf says:
+      Protocol Buffers are a way of encoding structured data in an efficient
+      yet extensible format.
+    Protobuf is needed at runtime for the MetroII director." >&5
+$as_echo "$as_me: WARNING: Failed to find $PTII/lib/protobuf-java-2.4.1.jar.
+    The Google page at https://code.google.com/p/protobuf fo Protobuf says:
+      Protocol Buffers are a way of encoding structured data in an efficient
+      yet extensible format.
+    Protobuf is needed at runtime for the MetroII director." >&2;}
+        updateExcludes "ptolemy/domains/metroII"
+    fi
+fi
 
 #--------------------------------------------------------------------
 #       Ptango is the Ptolemy Internet of Things project
@@ -12822,10 +12834,10 @@ ANT_JAVADOC_EXCLUDEPACKAGENAMES=`echo "$ANT_ALWAYS_EXCLUDE $ANT_EXCLUDE"| sed 's
 
 # PTMETROII_DIR is set to metroII if the ProtoBuf jar file was found
 # $PTII/ptolemy/domains/makefile uses PTMETROII_DIR
-#AC_SUBST(PTMETROII_DIR)
+
 
 # PTMETROII_PACKAGES is used in doc/makefile
-#AC_SUBST(PTMETROII_PACKAGES)
+
 
 # Set to opencv and used in
 # $PTII/ptolemy/actor/lib/makefile if OpenCV Open Computer Vision was found
@@ -12868,7 +12880,7 @@ ANT_JAVADOC_EXCLUDEPACKAGENAMES=`echo "$ANT_ALWAYS_EXCLUDE $ANT_EXCLUDE"| sed 's
 
 
 # The location of the protobuf jar file, typically $PTII/lib/protobuf-java-2.4.1.jar
-#AC_SUBST(PTPROTOBUF_JAR)
+
 
 # PTPTALON_DIR is set to ptalon and used in
 # $PTII/ptolemy/actor/makefile if antlr.jar was found.
