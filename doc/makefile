@@ -554,7 +554,6 @@ ALLPACKAGES = \
 	$(PTJUNIT_PACKAGES) \
 	$(PTJUNITTESTS) \
 	$(PTLBNL_PACKAGES) \
-	$(PTMETROII_PACKAGES) \
 	$(PTOPENCV_PACKAGES) \
 	$(PTQUICKTIME_PACKAGES) \
 	$(PTRXTX_PACKAGES) \
@@ -594,6 +593,7 @@ ALLPACKAGES = \
 	ptolemy.domains.giotto.lib \
 	ptolemy.domains.hdf.kernel \
 	ptolemy.domains.metroII.kernel \
+	ptolemy.domains.metroII.kernel.util.ProtoBuf \
 	ptolemy.domains.modal.kernel.fmv \
 	ptolemy.domains.petrinet.kernel \
 	ptolemy.domains.petrinet.lib \
