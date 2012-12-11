@@ -122,6 +122,9 @@ public class GenerateCopyrights {
         _addIfPresent(copyrightsMap, "mescal.domains.mescalPE.kernel.parser",
                 "mescal/configs/doc/cup-copyright.htm");
 
+        _addIfPresent(copyrightsMap, "net.jimblackler.Utils.YieldAdapterIterator",
+                "net/jimblackler/Utils/jimblacklerUtils-license.htm");
+
         _addIfPresent(copyrightsMap, "org.eclipse.jetty.server.Server",
                 "lib/jetty-all-license.htm");
 
