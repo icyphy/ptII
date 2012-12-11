@@ -108,6 +108,8 @@ public class MetroIISRDirector extends FixedPointDirector implements
         try {
             newObject._periodicDirectorHelper = new PeriodicDirectorHelper(
                     newObject);
+	    newObject.name2actor = new Hashtable<String, Actor>();
+	    newObject.events = new ArrayList<Event.Builder>();
         } catch (IllegalActionException e) {
             throw new CloneNotSupportedException("Failed to clone helper: " + e);
         }
@@ -205,6 +207,7 @@ public class MetroIISRDirector extends FixedPointDirector implements
 
     public Event.Builder makeEventBuilder(String name, Event.Type t,
             Event.Status s) {
+	// FIXME: meb should be builder.  We don't use abbreviations.
         Event.Builder meb = Event.newBuilder();
         meb.setName(name);
         meb.setOwner(name);
@@ -213,6 +216,7 @@ public class MetroIISRDirector extends FixedPointDirector implements
         return meb;
     }
 
+    // FIXME: change name2actor to nameToActor.
     public Hashtable<String, Actor> name2actor = new Hashtable<String, Actor>();
     public ArrayList<Event.Builder> events = new ArrayList<Event.Builder>();
 

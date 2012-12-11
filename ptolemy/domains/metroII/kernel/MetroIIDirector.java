@@ -25,6 +25,7 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Nameable;
+import ptolemy.kernel.util.Workspace;
 
 public class MetroIIDirector extends Director {
 
@@ -38,6 +39,9 @@ public class MetroIIDirector extends Director {
         super.addInitializable(initializable);
     }
 
+    // FIXME: we don't use underscores inside names, this should be
+    // mappingFileName.  Protected and Private methods and fields
+    // start with an underscore, public ones do not.
     public Parameter _mapping_file_name;
 
     public void attributeChanged(Attribute attribute)
@@ -55,6 +59,21 @@ public class MetroIIDirector extends Director {
         } else {
             super.attributeChanged(attribute);
         }
+    }
+
+    /** Clone the object into the specified workspace. The new object is
+     *  <i>not</i> added to the directory of that workspace (you must do this
+     *  yourself if you want it there).
+     *  @param workspace The workspace for the cloned object.
+     *  @exception CloneNotSupportedException Not thrown in this base class
+     *  @return The new Attribute.
+     */
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        MetroIIDirector newObject = (MetroIIDirector) super
+                .clone(workspace);
+	newObject._mapping_constraint_solver = new MappingConstraintSolver(100);
+	newObject.eventname2id = new Hashtable<String, Integer>();
+        return newObject;
     }
 
     void _init() {
@@ -82,7 +101,11 @@ public class MetroIIDirector extends Director {
     }
 
     int next_avail_id = 0;
+    // FIXME: change eventname2id to _eventName2ID
     Hashtable<String, Integer> eventname2id = new Hashtable<String, Integer>();
+    // FIXME: we don't use underscores inside names, this should be
+    // mappingFileName.  Protected and Private methods and fields
+    // start with an underscore, public ones do not.
     MappingConstraintSolver _mapping_constraint_solver = new MappingConstraintSolver(
             100);
 

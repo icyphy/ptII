@@ -51,6 +51,7 @@ import ptolemy.domains.openmodelica.lib.openmodelica.omc.OMCProxy;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Workspace;
 
 /**
  *   An actor that executes a Modelica script. it translates the model and
@@ -87,6 +88,7 @@ public class OpenModelica extends TypedAtomicActor {
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
+	// FIXME: why does _iteration have an underscore?
         _iteration = new Variable(this, "iteration", new IntToken(0));
         //output = new TypedIOPort(this, "output", false, true);
         //output.setTypeEquals(BaseType.STRING);
@@ -193,6 +195,28 @@ public class OpenModelica extends TypedAtomicActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+
+    /** Clone the object into the specified workspace. The new object is
+     *  <i>not</i> added to the directory of that workspace (you must do this
+     *  yourself if you want it there).
+     *  @param workspace The workspace for the cloned object.
+     *  @exception CloneNotSupportedException Not thrown in this base class
+     *  @return The new Attribute.
+     */
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        OpenModelica newObject = (OpenModelica) super
+                .clone(workspace);
+	try {
+	    newObject._iteration = (Variable)newObject.getAttribute("iteration");
+	} catch (Throwable throwable) {
+	    throw new CloneNotSupportedException("Could not clone " + getFullName()
+						 + ": " + throwable);
+
+
+	}
+        return newObject;
+    }
 
     /** Evaluate the expression and send its result to the output.
      *  @exception IllegalActionException If the evaluation of the expression

@@ -16,6 +16,7 @@ import ptolemy.domains.modal.kernel.State;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Workspace;
 
 public class MetroIIFSMDirector extends FSMDirector implements
         MetroIIEventHandler {
@@ -44,6 +45,21 @@ public class MetroIIFSMDirector extends FSMDirector implements
 
     public ArrayList<Event.Builder> events = new ArrayList<Event.Builder>();
     public Hashtable<String, Actor> name2actor = new Hashtable<String, Actor>();
+
+    /** Clone the object into the specified workspace. The new object is
+     *  <i>not</i> added to the directory of that workspace (you must do this
+     *  yourself if you want it there).
+     *  @param workspace The workspace for the cloned object.
+     *  @exception CloneNotSupportedException Not thrown in this base class
+     *  @return The new Attribute.
+     */
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        MetroIIFSMDirector newObject = (MetroIIFSMDirector) super
+                .clone(workspace);
+	newObject.events = new ArrayList<Event.Builder>();
+	newObject.name2actor = new Hashtable<String, Actor>();
+        return newObject;
+    }
 
     public Event.Builder makeEventBuilder(String name, Event.Type t,
             Event.Status s) {
