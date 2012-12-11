@@ -754,10 +754,10 @@ PTMESCAL_DIR=	@PTMESCAL_DIR@
 
 # PTMETROII_DIR is set to metroII if the ProtoBuf jar file was found
 # $PTII/ptolemy/domains/makefile uses PTMETROII_DIR
-#PTMETROII_DIR =		@@PTMETROII_DIR@@
+PTMETROII_DIR =		@@PTMETROII_DIR@@
 
 # PTMETROII_PACKAGES is used in doc/makefile
-#PTMETROII_PACKAGES = 	@@PTMETROII_PACKAGES@@
+PTMETROII_PACKAGES = 	@@PTMETROII_PACKAGES@@
 
 # Set to pdf and used in ptolemy/vergil/makefile if
 # PDFRenderer.jar is found.
@@ -789,7 +789,7 @@ PTPOWERMOCK_JARS=	@PTPOWERMOCK_JARS@
 PTPROCESSING_JARS =	@PTPROCESSING_JARS@
 
 # The location of the protobuf jar file, typically $PTII/lib/protobuf-java-2.4.1.jar 
-#PTPROTOBUF_JAR=		@PTPROTOBUF_JAR@
+PTPROTOBUF_JAR=		@PTPROTOBUF_JAR@
 
 # PTPTALON_DIR is set to ptalon and used in
 # $PTII/ptolemy/actor/makefile if antlr.jar was found.
