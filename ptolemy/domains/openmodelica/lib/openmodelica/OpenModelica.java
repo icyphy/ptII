@@ -92,30 +92,46 @@ public class OpenModelica extends TypedAtomicActor {
         //output.setTypeEquals(BaseType.STRING);
         preScript = new StringParameter(this, "preScript (Write OM Command) ");
         new TextStyle(preScript, "preScript");
+
+	// FIXME: remove Par?  
         fileNamePar = new FileParameter(this, "fileNamePar");
         //className = new StringParameter(this, "className");
         //className.setTypeEquals(BaseType.STRING);
+
         modelName = new StringParameter(this, "modelName");
         modelName.setTypeEquals(BaseType.STRING);
+
+	// FIXME: change sim to simulation
         simStartTime = new Parameter(this, "simStartTime", new DoubleToken(0.0));
         simStartTime.setTypeEquals(BaseType.DOUBLE);
         simStopTime = new Parameter(this, "simStopTime", new DoubleToken(0.1));
         simStopTime.setTypeEquals(BaseType.DOUBLE);
+
+	// FIXME: change no to number
         noOfIntervals = new Parameter(this, "noOfIntervals", new IntToken(500));
         noOfIntervals.setTypeEquals(BaseType.INT);
+
         tolerance = new Parameter(this, "tolerance", new DoubleToken(0.0001));
         tolerance.setTypeEquals(BaseType.DOUBLE);
+
         method = new StringParameter(this, "method");
         method.setTypeEquals(BaseType.STRING);
+
         fileNamePrefix = new StringParameter(this, "fileNamePrefix");
         fileNamePrefix.setTypeEquals(BaseType.STRING);
-        outputFormat = new StringParameter(this,
-                "outputFormat (select format : mat , plt , csv , empty)");
-        outputFormat.setTypeEquals(BaseType.STRING);
+
+        outputFormat = new StringParameter(this, "outputFormat");
+        outputFormat.setExpression("empty");
+	outputFormat.addChoice("csv");
+	outputFormat.addChoice("mat");
+	outputFormat.addChoice("plt");
+
         variableFilter = new StringParameter(this, "variableFilter");
         variableFilter.setTypeEquals(BaseType.STRING);
+
         cflags = new StringParameter(this, "cflags");
         cflags.setTypeEquals(BaseType.STRING);
+
         simflags = new StringParameter(this, "simflags");
         simflags.setTypeEquals(BaseType.STRING);
     }
@@ -123,33 +139,47 @@ public class OpenModelica extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                    public ports and parameters                  ////
 
+    // FIXME: What are the default values for all  of these?
     /** TODO : Add description for Cflags */
     public StringParameter cflags;
     //public StringParameter className;
-    /** File which the model should be loaded from */
+
+    /** File which the model should be loaded from .*/
     public FileParameter fileNamePar;
-    /** User preferable name for the result file instead of modelName */
+
+    /** User preferable name for the result file instead of modelName. */
     public StringParameter fileNamePrefix;
-    /** Integration method used for simulation */
+
+    /** Integration method used for simulation. */
     public StringParameter method;
-    /** Name of the model which should be built */
+
+    /** Name of the model which should be built. */
     public StringParameter modelName;
-    /** Number of intervals in the result file */
+
+    /** Number of intervals in the result file. */
     public Parameter noOfIntervals;
+
     //public TypedIOPort output;
-    /** Format for the result file */
+
+    /** Format for the result file. */
     public StringParameter outputFormat;
-    /** Modelica command */
+
+    /** Modelica command. */
     public StringParameter preScript;
-    /** Simulation flags */
+
+    /** Simulation flags. */
     public StringParameter simflags;
-    /** The start time of the simulation */
+
+    /** The start time of the simulation. */
     public Parameter simStartTime;
-    /** The stop time of the simulation */
+
+    /** The stop time of the simulation. */
     public Parameter simStopTime;
-    /** Tolerance used by the integration method */
+
+    /** Tolerance used by the integration method. */
     public Parameter tolerance;
-    /** Filter for variables that should store in result file*/
+
+    /** Filter for variables that should store in result file .*/
     public StringParameter variableFilter;
 
     ///////////////////////////////////////////////////////////////////
@@ -160,7 +190,6 @@ public class OpenModelica extends TypedAtomicActor {
      *   triggers it, or the evaluation yields a null result, or the evaluation
      *   yields an incompatible type, or if there is no director.
      */
-
     @Override
     public void fire() throws IllegalActionException {
         super.fire();
@@ -182,7 +211,6 @@ public class OpenModelica extends TypedAtomicActor {
     /** Initialize the iteration count to 1.
      *  @exception IllegalActionException If the parent class throws it.
      */
-
     @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
@@ -195,7 +223,6 @@ public class OpenModelica extends TypedAtomicActor {
     /** Increment the iteration count.
      *  @exception IllegalActionException If the superclass throws it.
      */
-
     @Override
     public boolean postfire() throws IllegalActionException {
         _iterationCount++;
@@ -263,6 +290,8 @@ public class OpenModelica extends TypedAtomicActor {
         filePath = filePath.replace("\\", "/");
         fileNamePar.setExpression(filePath);
 
+	// FIXME: comments are complete sentences that start with
+	// a capital letter an end with a period
         /*load models from the file parameter */
 
         _result = OpenModelicaDirector._omcPr.loadFile(fileNamePar

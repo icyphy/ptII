@@ -32,7 +32,7 @@
 ME =		ptolemy/actor/lib/openmodelica/omc
 
 # Root of the Ptolemy II directory
-ROOT =		../../../../..
+ROOT =		../../../../../..
 
 CLASSPATH =	$(ROOT)
 
@@ -47,10 +47,10 @@ PTCLASSJAR =	$(PTPACKAGE).jar
 #PTCLASSALLJAR = $(PTPACKAGE).jar
 
 JSRCS = \
-	StreamReaderThread.java \
-	omcLogger.java \
-	omcParser.java \
-	omcProxy.java \
+	OMCLogger.java \
+	OMCParser.java \
+	OMCProxy.java \
+	StreamReaderThread.java
 
 # Files or directories that are present, but that 'make checkjunk'
 # should not complain about
@@ -60,12 +60,12 @@ MISC_FILES =  corba
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	'omcLogger$$1.class' \
-	'omcLogger$$2.class' \
-	'omcProxy$$1.class' \
-	'omcProxy$$LoadResult.class' \
-	'omcProxy$$OMCThread.class' \
-	'omcProxy$$osType.class'
+	'OMCLogger$$1.class' \
+	'OMCLogger$$2.class' \
+	'OMCProxy$$1.class' \
+	'OMCProxy$$LoadResult.class' \
+	'OMCProxy$$OMCThread.class' \
+	'OMCProxy$$osType.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 

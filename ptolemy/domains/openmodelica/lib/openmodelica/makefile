@@ -34,7 +34,7 @@ ME =		ptolemy/actor/lib/openmodelica
 DIRS =		core omc
 
 # Root of Ptolemy II directory
-ROOT =		../../../..
+ROOT =		../../../../..
 
 CLASSPATH =	$(ROOT)
 
@@ -57,7 +57,8 @@ JSRCS = \
 	OpenModelica.java
 
 OTHER_FILES_TO_BE_JARED = \
-	openmodelica.xml
+	openmodelica.xml \
+	simulate.xml
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
