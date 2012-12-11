@@ -1,4 +1,4 @@
-# Makefile for the Metropolis II Ptolemy kernel
+# Makefile for the Metropolis II Ptolemy ProtoBuf
 #
 # @Authors: Christopher Brooks (makefile only)
 #
@@ -29,12 +29,12 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/domains/metroII/kernel
+ME =		ptolemy/domains/metroII/kernel/util/ProtoBuf
 
-DIRS =		util test
+DIRS =
 
 # Root of the Java directory
-ROOT =		../../../..
+ROOT =		../../../../../..
 
 CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(PTPROTOBUF_JAR)
 
@@ -43,28 +43,18 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	kernel
-#PTCLASSJAR =	$(PTPACKAGE).jar
-PTCLASSALLJAR = $(PTPACKAGE).jar
+PTPACKAGE = 	ProtoBuf
+PTCLASSJAR =	$(PTPACKAGE).jar
+#PTCLASSALLJAR = $(PTPACKAGE).jar
+
 # Include the .class files from these jars in PTCLASSALLJAR
-PTCLASSALLJARS = \
-	util/util.jar
+#PTCLASSALLJARS =
 
 JSRCS = \
-	ConstraintSolver.java \
-	MappingConstraintSolver.java \
-	MetroIIActorThread.java \
-	MetroIICompositeActor.java \
-	MetroIIDEDirector.java \
-	MetroIIDirector.java \
-	MetroIIEventHandler.java \
-	MetroIIFSMDirector.java \
-	MetroIIModalModel.java \
-	MetroIIPNDirector.java \
-	MetroIISRDirector.java \
-	MetroIISystemCDirector.java
+	metroIIcomm.java
 
-OTHER_FILES_TO_BE_JARED =
+OTHER_FILES_TO_BE_JARED = \
+	event.proto
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
@@ -75,7 +65,18 @@ MISC_FILES =	$(DIRS) test
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	doc
+	doc \
+	'metroIIcomm$$1.class' \
+	'metroIIcomm$$Event$$Builder.class' \
+	'metroIIcomm$$Event.class' \
+	'metroIIcomm$$EventOrBuilder.class' \
+	'metroIIcomm$$Event$$Status$$1.class' \
+	'metroIIcomm$$Event$$Status.class' \
+	'metroIIcomm$$Event$$Type$$1.class' \
+	'metroIIcomm$$Event$$Type.class' \
+	'metroIIcomm$$EventVector$$Builder.class' \
+	'metroIIcomm$$EventVector.class' \
+	'metroIIcomm$$EventVectorOrBuilder.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 

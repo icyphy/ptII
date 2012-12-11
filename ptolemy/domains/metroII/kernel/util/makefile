@@ -1,4 +1,4 @@
-# Makefile for the Metropolis II Ptolemy kernel
+# Makefile for the Metropolis II Ptolemy kernel utilities
 #
 # @Authors: Christopher Brooks (makefile only)
 #
@@ -29,12 +29,12 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/domains/metroII/kernel
+ME =		ptolemy/domains/metroII/kernel/util
 
-DIRS =		util test
+DIRS =		ProtoBuf
 
 # Root of the Java directory
-ROOT =		../../../..
+ROOT =		../../../../..
 
 CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(PTPROTOBUF_JAR)
 
@@ -43,26 +43,15 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	kernel
+PTPACKAGE = 	util
 #PTCLASSJAR =	$(PTPACKAGE).jar
 PTCLASSALLJAR = $(PTPACKAGE).jar
+
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
-	util/util.jar
+		ProtoBuf/ProtoBuf.jar
 
-JSRCS = \
-	ConstraintSolver.java \
-	MappingConstraintSolver.java \
-	MetroIIActorThread.java \
-	MetroIICompositeActor.java \
-	MetroIIDEDirector.java \
-	MetroIIDirector.java \
-	MetroIIEventHandler.java \
-	MetroIIFSMDirector.java \
-	MetroIIModalModel.java \
-	MetroIIPNDirector.java \
-	MetroIISRDirector.java \
-	MetroIISystemCDirector.java
+JSRCS =
 
 OTHER_FILES_TO_BE_JARED =
 
