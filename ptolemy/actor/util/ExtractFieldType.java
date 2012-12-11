@@ -116,7 +116,7 @@ public class ExtractFieldType extends MonotonicFunction {
 
             // The field is missing from the associative type
             if (fieldType == null) {
-                return BaseType.GENERAL; // to ensure monotonicity
+                return BaseType.UNKNOWN; // NOTE: this actually makes the function non-monotonic
             } else {
                 return fieldType;
             }
