@@ -110,6 +110,9 @@ public class GenerateCopyrights {
         _addIfPresent(copyrightsMap, "diva.gui.ExtensionFileFilter",
                 "diva/gui/ExtensionFileFilter-license.htm");
 
+        _addIfPresent(copyrightsMap, "com.google.protobuf.MessageOrBuilder",
+                "lib/protobuf-license.htm");
+
         _addIfPresent(copyrightsMap, "interfaces.util.ChicUI",
                 "lib/chic-license.htm");
 
