@@ -32,13 +32,20 @@ package ptolemy.actor.lib.qm;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
+import ptolemy.actor.Director;
+import ptolemy.actor.Executable;
 import ptolemy.actor.IOPort;
+import ptolemy.actor.IORelation;
+import ptolemy.actor.Initializable;
 import ptolemy.actor.IntermediateReceiver;
 import ptolemy.actor.QuantityManager;
 import ptolemy.actor.Receiver;
+import ptolemy.actor.RelationWidthInference;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.gui.ColorAttribute;
 import ptolemy.actor.lib.Const;
@@ -48,6 +55,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Workspace;
 
 /** This class implements functionality of a composite quantity manager.
 * 
@@ -66,10 +74,28 @@ import ptolemy.kernel.util.NameDuplicationException;
 *  @Pt.ProposedRating Yellow (derler)
 *  @Pt.AcceptedRating Red (derler)
 */
-public class CompositeQM extends TypedCompositeActor implements
-QuantityManager {
+public class CompositeQM extends TypedCompositeActor implements QuantityManager {
 
-    /** Construct a TypedCompositeActor with a name and a container.
+    /** Construct a CompositeQM in the specified workspace with
+     *  no container and an empty string as a name. You can then change
+     *  the name with setName(). If the workspace argument is null, then
+     *  use the default workspace.  You should set the local director or
+     *  executive director before attempting to send data to the actor
+     *  or to execute it. Add the actor to the workspace directory.
+     *  Increment the version number of the workspace.
+     *  @param workspace The workspace that will list the actor.
+     *  @exception IllegalActionException If the container is incompatible
+     *   with this actor.
+     *  @exception NameDuplicationException If the name coincides with
+     *   an actor already in the container.
+     */
+    public CompositeQM(Workspace workspace) throws IllegalActionException,
+            NameDuplicationException {
+        super(workspace);
+        _initialize();
+    }
+
+    /** Construct a CompositeQM with a name and a container.
      *  The container argument must not be null, or a
      *  NullPointerException will be thrown.  This actor will use the
      *  workspace of the container for synchronization and version counts.
@@ -112,7 +138,18 @@ QuantityManager {
         }
         super.attributeChanged(attribute);
     }
-    
+
+    /** Clone the actor into the specified workspace. 
+     *
+     *  @param workspace The workspace for the cloned object.
+     *  @exception CloneNotSupportedException Not thrown here.
+     *  @return A new CompositeQM.
+     */
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        CompositeQM newObject = (CompositeQM) super.clone(workspace);
+        return newObject;
+    }
+
     /** Create an intermediate receiver that wraps a given receiver.
      *  @param receiver The receiver that is being wrapped.
      *  @return A new intermediate receiver.
@@ -124,21 +161,20 @@ QuantityManager {
                 this, receiver);
         return intermediateReceiver;
     }
-    
+
     /** Nothing to do here. FIXME: should be deleted.
      */
     public Receiver getReceiver(Receiver receiver, IOPort port)
             throws IllegalActionException {
         return null;
     }
-    
+
     /** Override the fire and change the transferring tokens
      * from and to input/output placeholders.
      */
     public void fire() throws IllegalActionException {
         if (_debugging) {
-            _debug("Calling fire() at " + 
-                    getDirector().getModelTime());
+            _debug("Calling fire() at " + getDirector().getModelTime());
         }
 
         try {
@@ -154,38 +190,46 @@ QuantityManager {
             if (_stopRequested) {
                 return;
             }
-            
+
             for (Const mappedConst : _tokens.keySet()) {
                 mappedConst.value.setToken(_tokens.get(mappedConst));
                 mappedConst.fire();
             }
             _tokens.clear();
 
-            getDirector().fire(); 
+            getDirector().fire();
 
             if (_stopRequested) {
                 return;
             }
 
             // No output ports.
-            
+
             List attributes = this.attributeList();
             for (int k = 0; k < attributes.size(); k++) {
                 Attribute attribute = (Attribute) attributes.get(k);
                 if (attribute instanceof Parameter) {
                     String parameterName = ((Parameter) attribute).getName();
-                    if (parameterName.startsWith(
-                            "sendTo_")) {
-                        if (((Parameter) attribute).getToken() != null) { 
-                            String actorName = parameterName.substring(parameterName.indexOf("_") + 1, 
-                                    parameterName.indexOf("_", parameterName.indexOf("_") + 1));
-                            String portName = parameterName.substring(parameterName.indexOf("_", parameterName.indexOf("_") + 1) + 1);
-                            Actor actor = (Actor) ((CompositeActor)getContainer()).getEntity(actorName);
+                    if (parameterName.startsWith("sendTo_")) {
+                        if (((Parameter) attribute).getToken() != null) {
+                            String actorName = parameterName.substring(
+                                    parameterName.indexOf("_") + 1,
+                                    parameterName.indexOf("_",
+                                            parameterName.indexOf("_") + 1));
+                            String portName = parameterName
+                                    .substring(parameterName.indexOf("_",
+                                            parameterName.indexOf("_") + 1) + 1);
+                            Actor actor = (Actor) ((CompositeActor) getContainer())
+                                    .getEntity(actorName);
                             for (Object object : actor.inputPortList()) {
                                 IOPort port = (IOPort) object;
                                 if (port.getName().equals(portName)) {
-                                    ((IntermediateReceiver)port.getReceivers()[0][0])._receiver.put(((Parameter) attribute).getToken());
-                                    ((CompositeActor)actor.getContainer()).getDirector().fireAtCurrentTime(actor);
+                                    ((IntermediateReceiver) port.getReceivers()[0][0])._receiver
+                                            .put(((Parameter) attribute)
+                                                    .getToken());
+                                    ((CompositeActor) actor.getContainer())
+                                            .getDirector().fireAtCurrentTime(
+                                                    actor);
                                 }
                             }
                             ((Parameter) attribute).reset();
@@ -197,7 +241,7 @@ QuantityManager {
             _workspace.doneReading();
         }
     }
-    
+
     /** Reset.
      */
     public void reset() {
@@ -213,7 +257,7 @@ QuantityManager {
      *  @exception IllegalActionException If the refiring request fails.
      */
     public void sendToken(Receiver source, Receiver receiver, Token token)
-            throws IllegalActionException { 
+            throws IllegalActionException {
         if (_mappedConsts == null) {
             _mappedConsts = new HashMap<Receiver, Const>();
         }
@@ -224,45 +268,50 @@ QuantityManager {
                 Object object = entities.get(j);
                 if (object instanceof Const
                         && ((Const) object).getName().equals(
-                                receiver.getContainer().getContainer().getName() + "_" + receiver.getContainer().getName())) {
+                                receiver.getContainer().getContainer()
+                                        .getName()
+                                        + "_"
+                                        + receiver.getContainer().getName())) {
                     mappedConst = (Const) object;
-                    _mappedConsts.put(receiver, mappedConst); 
+                    _mappedConsts.put(receiver, mappedConst);
                     break;
                 }
             }
         }
         if (mappedConst == null) {
-            throw new IllegalActionException(this, "No mapping constant in " + this.getName() 
-                    + " for " + receiver.getContainer().getContainer().getName() + "_" + receiver.getContainer().getName());
+            throw new IllegalActionException(this, "No mapping constant in "
+                    + this.getName() + " for "
+                    + receiver.getContainer().getContainer().getName() + "_"
+                    + receiver.getContainer().getName());
         }
         if (_tokens == null) {
             _tokens = new HashMap<Const, Token>();
         }
         _tokens.put(mappedConst, token);
-        
-        ((CompositeActor)getContainer()).getDirector().fireAtCurrentTime(this);
-        
+
+        ((CompositeActor) getContainer()).getDirector().fireAtCurrentTime(this);
+
         if (_debugging) {
             _debug("At time " + getDirector().getModelTime()
                     + ", initiating send to "
                     + receiver.getContainer().getFullName() + ": " + token);
         }
     }
-    
+
     /** Initialize color and private lists.
      * @exception IllegalActionException If color attribute cannot be initialized.
      * @exception NameDuplicationException If color attribute cannot be initialized.
      */
     private void _initialize() throws IllegalActionException,
-            NameDuplicationException { 
+            NameDuplicationException {
         color = new ColorAttribute(this, "_color");
         color.setExpression("{1.0,0.0,0.0,1.0}");
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
- 
+
     private HashMap<Const, Token> _tokens;
-    
+
     private HashMap<Receiver, Const> _mappedConsts;
 }
