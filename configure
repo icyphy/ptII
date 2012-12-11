@@ -10721,7 +10721,7 @@ $as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: $PTI
 $as_echo "$PTII/lib/protobuf-java-2.4.1.jar" >&6; }; fi
 	PTPROTOBUF_JAR="$PTII/lib/protobuf-java-2.4.1.jar"
 	PTMETROII_DIR=metroII
-	PTMETROII_PACKAGES="ptolemy.domains.metroII.kernel ptolemy.domains.metroII.kernel.util.ProtoBuf"
+	PTMETROII_PACKAGES="net.jimblackler.Utils ptolemy.domains.metroII.kernel ptolemy.domains.metroII.kernel.util.ProtoBuf"
         updateClasspath "$PTPROTOBUF_JAR"
     else
         { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Failed to find $PTII/lib/protobuf-java-2.4.1.jar.
