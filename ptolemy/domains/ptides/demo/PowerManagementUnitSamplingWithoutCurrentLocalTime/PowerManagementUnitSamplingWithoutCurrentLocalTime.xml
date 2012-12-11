@@ -1132,7 +1132,7 @@ easy detection of simultaneous events.</text></svg></configure>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, 65.0]">
                 </property>
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1367, -40, 934, 634}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={346, 22, 934, 634}, maximized=false}">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
             </property>
@@ -1250,6 +1250,8 @@ easy detection of simultaneous events.</text></svg></configure>
                 </property>
                 <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 1.0, 1.0, 1.0}">
                 </property>
+                <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
                 <port name="startup" class="ptolemy.domains.modal.modal.ModalPort">
                     <property name="input"/>
                     <property name="minDelay" class="ptolemy.data.expr.Parameter" value="{0.0}">
@@ -1332,7 +1334,7 @@ state where it remains until a new startUp or resume event occurs.</text></svg><
       <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.modal.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory"></property></entity></entity>
     </configure>
                     </property>
-                    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 125, 815, 517}, maximized=false}">
+                    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={223, 82, 834, 635}, maximized=false}">
                     </property>
                     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
                     </property>
@@ -1441,7 +1443,7 @@ state where it remains until a new startUp or resume event occurs.</text></svg><
                     <link port="running.outgoingPort" relation="relation3"/>
                 </entity>
                 <entity name="running" class="ptolemy.domains.modal.modal.Refinement">
-                    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={120, 118, 815, 517}, maximized=false}">
+                    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={120, 118, 834, 634}, maximized=false}">
                     </property>
                     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
                     </property>
