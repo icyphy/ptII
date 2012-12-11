@@ -90,8 +90,17 @@ public class OpenModelica extends TypedAtomicActor {
         _iteration = new Variable(this, "iteration", new IntToken(0));
         //output = new TypedIOPort(this, "output", false, true);
         //output.setTypeEquals(BaseType.STRING);
-        preScript = new StringParameter(this, "preScript (Write OM Command) ");
-        new TextStyle(preScript, "preScript");
+
+	// The name of the variable in Ptolemy must match the name
+	// of the field or else there will be problems with cloning.
+        preScript = new StringParameter(this, "preScript");
+
+	// Use setDisplayName to change how the name is displayed
+	// in edit parameters.
+	preScript.setDisplayName("preScript (Write OM Command)");
+
+	// FIXME: I'm not sure what this does?  Maybe remove it?
+	new TextStyle(preScript, "preScript");
 
 	// FIXME: remove Par?  
         fileNamePar = new FileParameter(this, "fileNamePar");
@@ -101,13 +110,13 @@ public class OpenModelica extends TypedAtomicActor {
         modelName = new StringParameter(this, "modelName");
         modelName.setTypeEquals(BaseType.STRING);
 
-	// FIXME: change sim to simulation
+	// FIXME: change sim to simulation.
         simStartTime = new Parameter(this, "simStartTime", new DoubleToken(0.0));
         simStartTime.setTypeEquals(BaseType.DOUBLE);
         simStopTime = new Parameter(this, "simStopTime", new DoubleToken(0.1));
         simStopTime.setTypeEquals(BaseType.DOUBLE);
 
-	// FIXME: change no to number
+	// FIXME: change no to number.
         noOfIntervals = new Parameter(this, "noOfIntervals", new IntToken(500));
         noOfIntervals.setTypeEquals(BaseType.INT);
 
