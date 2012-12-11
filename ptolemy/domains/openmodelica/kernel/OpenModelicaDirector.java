@@ -2,7 +2,7 @@
 Below is the copyright agreement for the Ptolemy II system.
 Version: $Id$
 
-Copyright (c) 2007-2009 The Regents of the University of California.
+Copyright (c) 2012 The Regents of the University of California.
 All rights reserved.
 
 Permission is hereby granted, without written agreement and without
@@ -96,6 +96,7 @@ public class OpenModelicaDirector extends StaticSchedulingDirector {
     ////                         public methods                ////
 
     /** Override to initialize the iteration count. */
+
     public void initialize() throws IllegalActionException {
         super.initialize();
         _iterationCount = 0;
