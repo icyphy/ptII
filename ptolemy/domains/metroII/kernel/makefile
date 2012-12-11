@@ -70,12 +70,19 @@ EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES =	$(DIRS) test
+MISC_FILES =	$(DIRS) test3
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	doc
+	doc \
+	'MetroIIActorThread$$State.class' \
+	'MetroIIActorThread$$Type.class' \
+	'MetroIICompositeActor$$1.class' \
+	'MetroIIFSMDirector$$1.class' \
+	'MetroIIModalModel$$1.class' \
+	'MetroIISRDirector$$1.class' \
+	'MetroIISystemCDirector$$1.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 
