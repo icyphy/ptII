@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="PowerPlant" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="41">
@@ -481,7 +481,7 @@
         </property>
         <property name="_tableauFactory" class="ptolemy.actor.gui.LevelSkippingTableauFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[335.0, 235.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{335.0, 235.0}">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
             <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={195, 129, 934, 634}, maximized=false}">
@@ -765,7 +765,7 @@
             <entity name="Plotter" class="ptolemy.actor.lib.gui.TimedPlotter">
                 <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="state, sensor, clock, emergency, warning">
                 </property>
-                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={537, 586, 643, 292}, maximized=false}">
+                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={537, 474, 643, 292}, maximized=false}">
                 </property>
                 <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[643, 248]">
                 </property>
@@ -911,6 +911,8 @@
                         </property>
                     </port>
                     <entity name="_Controller" class="ptolemy.domains.modal.modal.ModalController">
+                        <property name="errorCause" class="ptolemy.data.expr.Parameter">
+                        </property>
                         <property name="_library" class="ptolemy.moml.LibraryAttribute">
                             <configure>
         <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.modal.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory"></property></entity></entity>
@@ -1082,6 +1084,8 @@
                         </property>
                     </port>
                     <entity name="_Controller" class="ptolemy.domains.modal.modal.ModalController">
+                        <property name="errorCause" class="ptolemy.data.expr.Parameter">
+                        </property>
                         <property name="_library" class="ptolemy.moml.LibraryAttribute">
                             <configure>
         <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.modal.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory"></property></entity></entity>
@@ -1335,6 +1339,8 @@
                     <property name="output"/>
                 </port>
                 <entity name="_Controller" class="ptolemy.domains.modal.modal.ModalController">
+                    <property name="errorCause" class="ptolemy.data.expr.Parameter">
+                    </property>
                     <property name="annotation" class="ptolemy.kernel.util.Attribute">
                         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                         </property>
@@ -1498,6 +1504,8 @@ The controller runs at least every tick of the local clock.</text></svg></config
                         </property>
                         <property name="gamma" class="ptolemy.data.expr.Parameter" value="1.4031512040271503">
                         </property>
+                        <property name="history" class="ptolemy.data.expr.Parameter" value="true">
+                        </property>
                     </relation>
                     <relation name="relation3" class="ptolemy.domains.modal.kernel.Transition">
                         <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="abs(error) &lt; errorThreshold&#10;  &amp;&amp; error != 0">
@@ -1509,6 +1517,8 @@ The controller runs at least every tick of the local clock.</text></svg></config
                         <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.791715224522568">
                         </property>
                         <property name="gamma" class="ptolemy.data.expr.Parameter" value="1.1597144503293793">
+                        </property>
+                        <property name="history" class="ptolemy.data.expr.Parameter" value="true">
                         </property>
                     </relation>
                     <relation name="relation4" class="ptolemy.domains.modal.kernel.Transition">
@@ -1538,6 +1548,8 @@ The controller runs at least every tick of the local clock.</text></svg></config
                         </property>
                         <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
                         </property>
+                        <property name="history" class="ptolemy.data.expr.Parameter" value="true">
+                        </property>
                     </relation>
                     <relation name="relation6" class="ptolemy.domains.modal.kernel.Transition">
                         <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="measuredOutput&#10;  &lt; errorThreshold">
@@ -1547,6 +1559,8 @@ The controller runs at least every tick of the local clock.</text></svg></config
                         <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.12527701493332036">
                         </property>
                         <property name="gamma" class="ptolemy.data.expr.Parameter" value="-1.437422076319097">
+                        </property>
+                        <property name="history" class="ptolemy.data.expr.Parameter" value="true">
                         </property>
                     </relation>
                     <link port="Down.incomingPort" relation="relation6"/>
@@ -1995,6 +2009,8 @@ The controller runs at least every tick of the local clock.</text></svg></config
                 </property>
                 <doc>Create periodic timed events.</doc>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 375.0]">
+                </property>
+                <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
             </entity>
             <relation name="relation" class="ptolemy.actor.TypedIORelation">
