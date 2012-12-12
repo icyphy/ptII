@@ -1,4 +1,4 @@
-/*  This parameter, when inserted into a model, casues the ports in the model to display their unconsumed inputs.
+/*  This parameter, when inserted into a model, causes the ports in the model to display their unconsumed inputs.
 
  @Copyright (c) 2007-2012 The Regents of the University of California.
  All rights reserved.
