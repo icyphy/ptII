@@ -31,7 +31,7 @@
 
 ME =		ptolemy/domains/openmodelica/lib
 
-DIRS =		test
+DIRS =		core omc openmodelica test
 
 # Root of Ptolemy II directory
 ROOT =		../../../..
@@ -51,7 +51,7 @@ PTCLASSJAR =	$(PTPACKAGE).jar
 # Files or directories that are present, but that 'make checkjunk'
 # should not complain about
 # Don't include demo or DIRS here, or else 'make sources' will run 'make demo'
-MISC_FILES = test
+MISC_FILES =  core omc openmodelica test
 
 all: jclass
 install: jclass jars
