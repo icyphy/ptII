@@ -39,9 +39,9 @@ import ptolemy.actor.sched.Scheduler;
 import ptolemy.actor.sched.StaticSchedulingDirector;
 import ptolemy.data.IntToken;
 import ptolemy.data.expr.Parameter;
-import ptolemy.domains.openmodelica.lib.openmodelica.core.compiler.ConnectException;
-import ptolemy.domains.openmodelica.lib.openmodelica.omc.OMCLogger;
-import ptolemy.domains.openmodelica.lib.openmodelica.omc.OMCProxy;
+import ptolemy.domains.openmodelica.lib.core.compiler.ConnectException;
+import ptolemy.domains.openmodelica.lib.omc.OMCLogger;
+import ptolemy.domains.openmodelica.lib.omc.OMCProxy;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.IllegalActionException;
@@ -74,7 +74,7 @@ public class OpenModelicaDirector extends StaticSchedulingDirector {
     public OpenModelicaDirector(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        // Set the scheduler.
+        // It sets the scheduler.
         setScheduler(new OpenModelicaScheduler(this, "OpenModelicaScheduler"));
 
         iterations = new Parameter(this, "iterations");
