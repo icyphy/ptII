@@ -50,6 +50,7 @@ import ptolemy.domains.openmodelica.lib.omc.OMCProxy;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Workspace;
 
 /**
  *   An actor that executes a Modelica script. it translates the model and
@@ -86,11 +87,13 @@ public class OpenModelica extends TypedAtomicActor {
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
-        _iteration = new Variable(this, "iteration", new IntToken(0));
+        iteration = new Variable(this, "iteration", new IntToken(0));
 
         //output = new TypedIOPort(this, "output", false, true);
         //output.setTypeEquals(BaseType.STRING);
 
+        // The name of the variable in Ptolemy must match the name
+        // of the field or else there will be problems with cloning.
         preScript = new StringParameter(this, "preScript");
         preScript.setDisplayName("Write OM Command");
 
@@ -198,6 +201,27 @@ public class OpenModelica extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Clone the object into the specified workspace. The new object is
+     *  <i>not</i> added to the directory of that workspace (you must do this
+     *  yourself if you want it there).
+     *  @param workspace The workspace for the cloned object.
+     *  @exception CloneNotSupportedException Not thrown in this base class
+     *  @return The new Attribute.
+     */
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        OpenModelica newObject = (OpenModelica) super
+                .clone(workspace);
+        try {
+            newObject.iteration = (Variable)newObject.getAttribute("iteration");
+        } catch (Throwable throwable) {
+            throw new CloneNotSupportedException("Could not clone " + getFullName()
+                                                 + ": " + throwable);
+
+
+        }
+        return newObject;
+    }
+
     /** Evaluate the expression and send its result to the output.
      *  @exception IllegalActionException If the evaluation of the expression
      *   triggers it, or the evaluation yields a null result, or the evaluation
@@ -228,8 +252,8 @@ public class OpenModelica extends TypedAtomicActor {
     public void initialize() throws IllegalActionException {
         super.initialize();
         //It initializes the private and protected members
-        _iterationCount = 1;
-        _iteration.setToken(new IntToken(_iterationCount));
+        _iterationcount = 1;
+        iteration.setToken(new IntToken(_iterationcount));
 
     }
 
@@ -238,8 +262,8 @@ public class OpenModelica extends TypedAtomicActor {
      */
     @Override
     public boolean postfire() throws IllegalActionException {
-        _iterationCount++;
-        _iteration.setToken(new IntToken(_iterationCount));
+        _iterationcount++;
+        iteration.setToken(new IntToken(_iterationcount));
 
         // This actor never requests termination.
         return true;
@@ -442,9 +466,9 @@ public class OpenModelica extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    private Variable _iteration;
+    private Variable iteration;
 
-    private int _iterationCount = 1;
+    private int _iterationcount = 1;
 
     CompilerResult _result;
 }
