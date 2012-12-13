@@ -137,6 +137,10 @@ public class XMPPGateway extends AbstractInitializableAttribute implements
         } else if (attribute == username) {
             _userName = ((StringToken) username.getToken()).stringValue();
             _disconnect();
+        } else if (attribute == password) { 
+            // NOTE: quick fix, use PasswordParameter instead. 
+            _password = ((StringToken) password.getToken()).stringValue();
+            _disconnect();
         } else {
             super.attributeChanged(attribute);
         }
