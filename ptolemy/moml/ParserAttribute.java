@@ -118,7 +118,17 @@ public class ParserAttribute extends SingletonAttribute {
         NamedObj container = object;
 
         while (container != null) {
-            List attributes = object.attributeList(ParserAttribute.class);
+            // We used to just get the ParserAttribute from the object.
+            // However, this is wrong, we should get it from the 
+            // container.
+            // In r51962 the comment was "Bugfix" and the change was
+            // made.
+            // In r51963, the comment was "
+            // "Revert to previous version because the "bugfix" seems
+            // to break some existing editors (such as GT)."
+            //
+            // List attributes = object.attributeList(ParserAttribute.class);
+            List attributes = container.attributeList(ParserAttribute.class);
 
             if ((attributes != null) && (attributes.size() > 0)) {
                 // Found one.
