@@ -63,7 +63,7 @@ import ptolemy.kernel.util.Workspace;
      which all will be displayed in the className Parameter will be added in the next version.
 
      dcmotor.mo should be selected as the fileParameter and dcmotor as the model name.
-     loadModel(Modelica) is needed for the simulation and should be set in the preScript parameter.
+     loadModel(Modelica) is needed for the simulation and should be set in the ModelicaScript parameter.
      The rest of the settings are optional.
      The simulation result is saved as a (mat,csv or plt)file and the log file as the txt file in the temp folder.
 
@@ -92,10 +92,8 @@ public class OpenModelica extends TypedAtomicActor {
         //output = new TypedIOPort(this, "output", false, true);
         //output.setTypeEquals(BaseType.STRING);
 
-        // The name of the variable in Ptolemy must match the name
-        // of the field or else there will be problems with cloning.
-        preScript = new StringParameter(this, "preScript");
-        preScript.setDisplayName("Write OM Command");
+        ModelicaScript = new StringParameter(this, "ModelicaScript");
+        ModelicaScript.setDisplayName("Write OM Command");
 
         fileName = new FileParameter(this, "fileName");
         fileName.setDisplayName("File name");
@@ -134,10 +132,10 @@ public class OpenModelica extends TypedAtomicActor {
 
         outputFormat = new StringParameter(this, "outputFormat");
         outputFormat.setDisplayName("Output format");
-        outputFormat.setExpression("empty");
+        outputFormat.setExpression("mat");
         outputFormat.addChoice("csv");
-        outputFormat.addChoice("mat");
         outputFormat.addChoice("plt");
+        outputFormat.addChoice("empty");
 
         variableFilter = new StringParameter(this, "variableFilter");
         variableFilter.setTypeEquals(BaseType.STRING);
@@ -154,48 +152,104 @@ public class OpenModelica extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                    public ports and parameters                  ////
 
-    // FIXME: What are the default values for all  of these?
-    /** TODO : Add description for Cflags */
+    /** TODO Add description for cflags ..                                                                                                                          
+     *  If this value is changed during execution, then the new                                                                                                                         
+     *  value will be the output on the next iteration.                                                                                                                                 
+     *  The default value of this parameter is "".                                                                                                                           
+     */
     public StringParameter cflags;
 
     //public StringParameter className;
 
-    /** File which the model should be loaded from .*/
+    /** File which the model should be loaded from .                                                                                                                          
+     *  If this value is changed during execution, then the new                                                                                                                         
+     *  value will be the output on the next iteration.                                                                                                                                 
+     *  TODO Add default value....                                                                                                                           
+     */
+
     public FileParameter fileName;
 
-    /** User preferable name for the result file instead of modelName. */
+    /** User preferable name for the result file instead of modelName.
+     *  If this value is changed during execution, then the new                                                                                                                         
+     *  value will be the output on the next iteration.                                                                                                                                 
+     *  The default value of this parameter is null.                                                                                                                           
+     */
     public StringParameter fileNamePrefix;
 
-    /** Integration method used for simulation. */
+    /** Integration method used for simulation. 
+     *  If this value is changed during execution, then the new                                                                                                                         
+     *  value will be the output on the next iteration.                                                                                                                                 
+     *  The default value of this parameter is the string "dassl".                                                                                                                           
+     */
     public StringParameter method;
 
-    /** Name of the model which should be built. */
+    /** Name of the model which should be built.
+     *  If this value is changed during execution, then the new                                                                                                                         
+     *  value will be the output on the next iteration.                                                                                                                                 
+     *  The default value of this parameter is the string dcmotor.                                                                                                                           
+     */
+
     public StringParameter modelName;
 
-    /** Number of intervals in the result file. */
+    /** Number of intervals in the result file. 
+     *  If this value is changed during execution, then the new                                                                                                                         
+     *  value will be the output on the next iteration.                                                                                                                                 
+     *  The default value of this parameter is the integer 500.                                                                                                                           
+     */
     public Parameter numberOfIntervals;
 
     //public TypedIOPort output;
 
-    /** Format for the result file. */
+    /** Format for the result file.
+     *  If this value is changed during execution, then the new                                                                                                                         
+     *  value will be the output on the next iteration.                                                                                                                                 
+     *  The default value of this parameter is the string "mat".                                                                                                                           
+     */
     public StringParameter outputFormat;
 
-    /** Modelica command. */
-    public StringParameter preScript;
+    /** Modelica command.
+     *  If this value is changed during execution, then the new                                                                                                                         
+     *  value will be the output on the next iteration.                                                                                                                                 
+     *  The default value of this parameter is the string loadModel(Modelica).                                                                                                                           
+     */
 
-    /** Simulation flags. */
+    public StringParameter ModelicaScript;
+
+    /** Simulation flags.
+     *  If this value is changed during execution, then the new                                                                                                                         
+     *  value will be the output on the next iteration.                                                                                                                                 
+     *  The default value of this parameter is the string "".                                                                                                                           
+     */
     public StringParameter simflags;
 
-    /** The start time of the simulation. */
+    /** The start time of the simulation.
+     *  If this value is changed during execution, then the new                                                                                                                         
+     *  value will be the output on the next iteration.                                                                                                                                 
+     *  The default value of this parameter is the double 0.0.                                                                                                                           
+     */
+
     public Parameter simulationStartTime;
 
-    /** The stop time of the simulation. */
+    /** The stop time of the simulation. 
+     *  If this value is changed during execution, then the new                                                                                                                         
+     *  value will be the output on the next iteration.                                                                                                                                 
+     *  The default value of this parameter is the double 0.1.                                                                                                                           
+     */
     public Parameter simulationStopTime;
 
-    /** Tolerance used by the integration method. */
+    /** Tolerance used by the integration method.
+     *  If this value is changed during execution, then the new                                                                                                                         
+     *  value will be the output on the next iteration.                                                                                                                                 
+     *  The default value of this parameter is the double 0.0001.                                                                                                                           
+     */
+
     public Parameter tolerance;
 
-    /** Filter for variables that should store in result file .*/
+    /** Filter for variables that should store in result file.
+     *  If this value is changed during execution, then the new                                                                                                                         
+     *  value will be the output on the next iteration.                                                                                                                                 
+     *  The default value of this parameter is the string ".*".                                                                                                                           
+     */
     public StringParameter variableFilter;
 
     ///////////////////////////////////////////////////////////////////
@@ -209,15 +263,13 @@ public class OpenModelica extends TypedAtomicActor {
      *  @return The new Attribute.
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        OpenModelica newObject = (OpenModelica) super
-                .clone(workspace);
+        OpenModelica newObject = (OpenModelica) super.clone(workspace);
         try {
-            newObject.iteration = (Variable)newObject.getAttribute("iteration");
+            newObject.iteration = (Variable) newObject
+                    .getAttribute("iteration");
         } catch (Throwable throwable) {
-            throw new CloneNotSupportedException("Could not clone " + getFullName()
-                                                 + ": " + throwable);
-
-
+            throw new CloneNotSupportedException("Could not clone "
+                    + getFullName() + ": " + throwable);
         }
         return newObject;
     }
@@ -337,12 +389,14 @@ public class OpenModelica extends TypedAtomicActor {
         }
 
         /*
-         * It sets the preScript expression to the loadModel() method which loads the file
+         * It sets the ModelicaScript expression to the loadModel() method which loads the file
          * corresponding to the class, using the Modelica class.
          */
-
-        _result = OpenModelicaDirector._omcPr.sendCommand(preScript
-                .getExpression());
+        if (ModelicaScript.getExpression().compareTo("") == 0)
+            ModelicaScript.setExpression("loadModel(Modelica)");
+        else
+            _result = OpenModelicaDirector._omcPr.sendCommand(ModelicaScript
+                    .getExpression());
         if (_result.getError().compareTo("") == 0) {
             OpenModelicaDirector._ptLogger
                     .getInfo("Modelica model is loaded successfully.");
