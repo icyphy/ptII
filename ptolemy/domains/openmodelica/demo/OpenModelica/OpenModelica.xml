@@ -60,7 +60,7 @@
         <property name="method" class="ptolemy.data.expr.StringParameter" value="">
             <display name="Method"/>
         </property>
-        <property name="outputFormat" class="ptolemy.data.expr.StringParameter" value="empty">
+        <property name="outputFormat" class="ptolemy.data.expr.StringParameter" value="mat">
             <display name="Output format"/>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-30.0, 185.0]">
