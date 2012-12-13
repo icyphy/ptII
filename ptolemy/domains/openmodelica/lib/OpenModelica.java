@@ -375,17 +375,35 @@ public class OpenModelica extends TypedAtomicActor {
         String[] pathDirs = systemPath.split(File.pathSeparator);
         systemPath = pathDirs[0];
         String filePath = systemPath
-                + "\\ptolemy\\domains\\openmodelica\\lib\\test\\auto\\dcmotor.mo";
+                + "\\ptolemy\\domains\\openmodelica\\demo\\OpenModelica\\dcmotor.mo";
         filePath = filePath.replace("\\", "/");
         fileName.setExpression(filePath);
+
+        /*Check if the file exists*/
+
+        File file = new File(filePath);
+
+        if (file.exists()) {
+            OpenModelicaDirector._ptLogger.getInfo("Using model at '"
+                    + filePath + "'");
+        } else {
+
+            OpenModelicaDirector._ptLogger.getInfo("No model found at: ["
+                    + filePath + "]");
+        }
 
         /*It loads model from the file parameter */
 
         _result = OpenModelicaDirector._omcPr
                 .loadFile(fileName.getExpression());
-        if (_result.getError().compareTo("") == 0) {
+        if (_result.getFirstResult().compareTo("") != 0
+                && _result.getError().compareTo("") == 0) {
             OpenModelicaDirector._ptLogger.getInfo("Model is loaded from "
                     + fileName.getExpression() + " successfully.");
+        }
+        if (_result.getError().compareTo("") != 0) {
+            OpenModelicaDirector._ptLogger
+                    .getInfo("There is an error in loading the model!");
         }
 
         /*
@@ -394,12 +412,17 @@ public class OpenModelica extends TypedAtomicActor {
          */
         if (ModelicaScript.getExpression().compareTo("") == 0)
             ModelicaScript.setExpression("loadModel(Modelica)");
-        else
-            _result = OpenModelicaDirector._omcPr.sendCommand(ModelicaScript
-                    .getExpression());
-        if (_result.getError().compareTo("") == 0) {
+
+        _result = OpenModelicaDirector._omcPr.sendCommand(ModelicaScript
+                .getExpression());
+
+        if (_result.getFirstResult().compareTo("true\n") == 0) {
             OpenModelicaDirector._ptLogger
                     .getInfo("Modelica model is loaded successfully.");
+        }
+        if (_result.getError().compareTo("") != 0) {
+            OpenModelicaDirector._ptLogger
+                    .getInfo("There is an error in loading Modelica model!");
         }
 
         /* Optional settings of buildModel() method set to the default value when they are empty  */
@@ -479,14 +502,14 @@ public class OpenModelica extends TypedAtomicActor {
         }
 
         _result = OpenModelicaDirector._omcPr.buildModel(str);
-        if (fileNamePrefix.getExpression().compareTo("") == 0
+        if (_result.getFirstResult().compareTo("") != 0
                 && _result.getError().compareTo("") == 0) {
             OpenModelicaDirector._ptLogger.getInfo(modelName.getExpression()
                     + " Model is built successfully.");
         }
-        if (fileNamePrefix.getExpression().compareTo("") != 0) {
-            OpenModelicaDirector._ptLogger.getInfo(fileNamePrefix
-                    .getExpression() + " Model is built successfully.");
+        if (_result.getError().compareTo("") != 0) {
+            OpenModelicaDirector._ptLogger
+                    .getInfo("There is an error in building the model.");
         }
 
         String command = null;
