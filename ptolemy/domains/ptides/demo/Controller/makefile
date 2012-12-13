@@ -1,10 +1,10 @@
-# Makefile for Ptolemy II PTIDES demos
+# Makefile for Ptolemy II Ptides Demo
 #
-# @Authors: Christopher Hylands, based on a file by Thomas M. Parks
+# @Authors: Jia Zou, based on Christopher Hylands (makefile only)
 #
-# @Version: $Id$
+# @Version: 
 #
-# @Copyright (c) 2008-2012 The Regents of the University of California.
+# @Copyright (c) 2000-2011 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -29,26 +29,10 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/domains/ptides/demo
-
-DIRS =	ActuatorPattern \
-		Controller \
-		CoSimulation \
-		DistributedPowerPlant \
-		MixedSimulator \
-		MultiPlatformTDMA \
-		MultipleCores \
-		PowerManagementUnitSamplingWithoutCurrentLocalTime \
-		PowerPlant \
-		PrintingPress \
-		PtidesMulticoreDirector \
-		PtidesPreemptEDFOnePlatformThreePathsRealDelay \
-		PtidesSynchrophasor \
-		TREX \
-		TTE
+ME =		ptolemy/domains/ptides/demo/Controller
 
 # Root of the Java directory
-ROOT =		../../../..
+ROOT =		../../../../..
 
 CLASSPATH =	$(ROOT)
 
@@ -57,45 +41,46 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	demo
+PTPACKAGE = 	Controller
+PTCLASSJAR = 	$(PTPACKAGE).jar
 
-# Include the .class files from these jars in PTCLASSALLJAR
-PTCLASSALLJARS = \
-		ActuatorPattern/ActuatorPattern.jar \
-		Controller/Controller.jar \
-		CoSimulation/CoSimulation.jar \
-		DistributedPowerPlant/DistributedPowerPlant.jar \
-		MixedSimulator/MixedSimulator.jar \
-		MultiPlatformTDMA/MultiPlatformTDMA.jar \
-		MultipleCores/MultipleCores.jar \
-		PowerManagementUnitSamplingWithoutCurrentLocalTime/PowerManagementUnitSamplingWithoutCurrentLocalTime.jar \
-		PowerPlant/PowerPlant.jar \
-		PrintingPress/PrintingPress.jar \
-		PtidesSynchrophasor/PtidesSynchrophasor.jar \
-		TREX/TREX.jar \
-		TTE/TTE.jar
+JSRCS =
 
-PTCLASSALLJAR= $(PTPACKAGE).jar
+OTHER_FILES_TO_BE_JARED = \
+	$(JSRCS) \
+	Controller.xml 
 
-EXTRA_SRCS =
+EXTRA_SRCS = \
+	$(OTHER_FILES_TO_BE_JARED) \
+
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES = $(DIRS)
+MISC_FILES =
 
 # make checkjunk will not report OPTIONAL_FILES as trash
-# make distclean removes OPTIONAL_FILES
-OPTIONAL_FILES = \
-	doc
+# make realclean removes OPTIONAL_FILES
+OPTIONAL_FILES =
 
 JCLASS = $(JSRCS:%.java=%.class)
 
-all: jclass
+# Don't include all or install rules here, we want the user
+# to run 'make demos' to run the tests.
+all: jclass $(PTCLASSJAR)
 	@echo "To run all the demos, run 'make demo'"
 
-install: all jars
 
-demo: subdemo
+install: all
+
+demo: demo_applet demo_ptolemy demo_vergil
+demo_applet: $(PTCLASSJAR)
+	CLASSPATH=$(CLASSPATH) appletviewer 
+
+demo_ptolemy:
+	"$(PTII)/bin/ptolemy" Controller.xml
+
+demo_vergil:
+	"$(PTII)/bin/vergil" Controller.xml
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
