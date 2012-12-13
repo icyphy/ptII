@@ -426,7 +426,7 @@ public class Director extends Attribute implements Executable {
         // as the default, since this is the default for discrete events.
         // The Continuous domain will specifically request a firing at
         // microstep 0.
-        return fireAt(actor, time, _defaultMicrostep);
+        return fireAt(actor, time, 1);
     }
 
     /** Request a firing of the given actor at the given model
