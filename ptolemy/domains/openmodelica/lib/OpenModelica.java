@@ -132,7 +132,7 @@ public class OpenModelica extends TypedAtomicActor {
 
         outputFormat = new StringParameter(this, "outputFormat");
         outputFormat.setDisplayName("Output format");
-        outputFormat.setExpression("mat");
+        outputFormat.addChoice("mat");
         outputFormat.addChoice("csv");
         outputFormat.addChoice("plt");
         outputFormat.addChoice("empty");
