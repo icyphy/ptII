@@ -849,7 +849,7 @@ public class PtidesPlatform extends MirrorComposite {
             CompositeActor container = (CompositeActor) getContainer();
 
             Iterator actors = container.entityList().iterator();
-            while (actors.hasNext() && !_stopRequested) {
+            while (actors.hasNext()) {
                 Actor actor = (Actor) actors.next();
 
                 if (!((ComponentEntity) actor).isOpaque()) {
@@ -859,8 +859,7 @@ public class PtidesPlatform extends MirrorComposite {
                 }
                 return ((CompositeActor) actor).getDirector();
             }
-            throw new IllegalActionException(container,
-                    "Inside actor does not contain a PtidesDirector.");
+            return null;
         }
 
     }
