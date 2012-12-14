@@ -18,14 +18,14 @@ public class MappingConstraintSolver implements ConstraintSolver {
     }
 
     public String toString() {
-        String result = "";
+        StringBuffer result = new StringBuffer();
         for (int i = 0; i <= _current_max_id; i++) {
             for (int j = 0; j <= _current_max_id; j++) {
-                result = result + " " + _mapping[i][j];
+                result.append(" " + _mapping[i][j]);
             }
-            result = result + "\n";
+            result.append("\n"); 
         }
-        return result;
+        return result.toString();
     }
 
     @Override
@@ -60,7 +60,7 @@ public class MappingConstraintSolver implements ConstraintSolver {
             return true;
         }
         for (int i = 0; i < _size; i++) {
-            if (_mapping[id][i] > 0 && _mapping[id][i] != 3) {
+            if (_mapping[id][i] > 0 && _mapping[id][i] < 3) {
                 return false;
             }
         }

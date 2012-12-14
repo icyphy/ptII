@@ -107,10 +107,11 @@ public class MetroIIDirector extends Director {
     // mappingFileName.  Protected and Private methods and fields
     // start with an underscore, public ones do not.
     MappingConstraintSolver _mapping_constraint_solver = new MappingConstraintSolver(
-            100);
+            1000);
 
     public void fire() throws IllegalActionException {
 
+        try {
         if (_debugging) {
             _debug("Director: Called fire().");
         }
@@ -121,8 +122,6 @@ public class MetroIIDirector extends Director {
         Iterator<?> actors = ((CompositeActor) container).deepEntityList()
                 .iterator();
         LinkedList<MetroIIActorThread> actor_thread_list = new LinkedList<MetroIIActorThread>();
-        // LinkedList<Actor> active_actor_list = new LinkedList<Actor>();
-        // LinkedList<Actor> actor_waiting_list = new LinkedList<Actor>();
 
         while (actors.hasNext()) {
             Actor actor = (Actor) actors.next();
@@ -138,7 +137,7 @@ public class MetroIIDirector extends Director {
         }
 
         boolean stable = false;
-        while (!stable && !_stopRequested) {
+        while (!_stopRequested) {
             LinkedList<Event.Builder> m2event_list = new LinkedList<Event.Builder>();
             stable = true;
 
@@ -222,10 +221,11 @@ public class MetroIIDirector extends Director {
                 _mapping_constraint_solver.presentM2Event(eventname2id
                         .get(event_name));
             }
-            // System.out.println(_mapping_constraint_solver);
+            System.out.println(_mapping_constraint_solver);
             System.out.println("Before mapping resolution: ");
             for (Event.Builder etb : m2event_list) {
-                System.out.println(etb.getName() + " "
+                System.out.println(eventname2id
+                        .get(etb.getName())+etb.getName() + " "
                         + etb.getStatus().toString());
             }
             for (Event.Builder etb : m2event_list) {
@@ -237,7 +237,8 @@ public class MetroIIDirector extends Director {
             }
             System.out.println("After mapping resolution: ");
             for (Event.Builder etb : m2event_list) {
-                System.out.println(etb.getName() + " "
+                System.out.println(eventname2id
+                        .get(etb.getName())+etb.getName() + " "
                         + etb.getStatus().toString());
             }
             _mapping_constraint_solver.reset();
@@ -249,6 +250,11 @@ public class MetroIIDirector extends Director {
                     actor_thread._thread.dispose();
                 }
             }
+        }
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            System.err.println("Error: " + e.getMessage());
         }
     }
 
@@ -262,26 +268,29 @@ public class MetroIIDirector extends Director {
             DataInputStream in = new DataInputStream(fstream);
             BufferedReader br = new BufferedReader(new InputStreamReader(in));
             String strLine;
-            //Read File Line By Line
-            while ((strLine = br.readLine()) != null) {
-                // Print the content on the console
-                String[] actor_name_list = strLine.split(",");
-                assert actor_name_list.length == 2;
-                if (!eventname2id.containsKey(actor_name_list[0])) {
-                    eventname2id.put(actor_name_list[0], next_avail_id);
-                    next_avail_id++;
+            try {
+                //Read File Line By Line
+                while ((strLine = br.readLine()) != null) {
+                    // Print the content on the console
+                    String[] actor_name_list = strLine.split(",");
+                    assert actor_name_list.length == 2;
+                    if (!eventname2id.containsKey(actor_name_list[0])) {
+                        eventname2id.put(actor_name_list[0], next_avail_id);
+                        next_avail_id++;
+                    }
+                    if (!eventname2id.containsKey(actor_name_list[1])) {
+                        eventname2id.put(actor_name_list[1], next_avail_id);
+                        next_avail_id++;
+                    }
+                    _mapping_constraint_solver.add(
+                            eventname2id.get(actor_name_list[0]),
+                            eventname2id.get(actor_name_list[1]));
+                    System.out.println(strLine);
                 }
-                if (!eventname2id.containsKey(actor_name_list[1])) {
-                    eventname2id.put(actor_name_list[1], next_avail_id);
-                    next_avail_id++;
-                }
-                _mapping_constraint_solver.add(
-                        eventname2id.get(actor_name_list[0]),
-                        eventname2id.get(actor_name_list[1]));
-                System.out.println(strLine);
+            } finally {
+                //Close the input stream
+                in.close();
             }
-            //Close the input stream
-            in.close();
         } catch (IOException e) {//Catch exception if any
             System.err.println("Error: " + e.getMessage());
         }

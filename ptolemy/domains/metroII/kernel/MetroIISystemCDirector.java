@@ -70,8 +70,11 @@ public class MetroIISystemCDirector extends Director implements
         EventVector ev = evb.build();
         try {
             FileOutputStream fos = new FileOutputStream(path + pipe2server);
-            ev.writeTo(fos);
-            fos.close();
+            try {
+                ev.writeTo(fos);
+            } finally {
+                fos.close();
+            }
         } catch (FileNotFoundException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -103,8 +106,11 @@ public class MetroIISystemCDirector extends Director implements
         EventVector ev = null;
         try {
             FileInputStream fis = new FileInputStream(path + pipe2client);
-            ev = EventVector.parseFrom(fis);
-            fis.close();
+            try {
+                ev = EventVector.parseFrom(fis);
+            } finally {
+                fis.close();
+            }
         } catch (FileNotFoundException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();

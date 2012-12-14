@@ -162,6 +162,7 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
                     if (_terminate) {
                         break;
                     }
+                    
                     // Try to read.
                     if (super.hasToken()) {
                         result = super.get();
@@ -404,6 +405,7 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
                     if (_terminate) {
                         break;
                     }
+                    
                     // If we are in the initialization phase, then we may have
                     // to increase the queue capacity before proceeding. This
                     // may be needed to support PublisherPorts that produce
@@ -427,6 +429,7 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
                     if (super.hasRoom()) {
                         super.put(token);
 
+                        
                         // If any thread is blocked on a get(), then it will become
                         // unblocked. Notify the director now so that there isn't a
                         // spurious deadlock detection.
@@ -524,7 +527,7 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
     ////                         private variables                 ////
 
     /** Flag indicating whether finish has been requested. */
-    private boolean _terminate = false;
+    protected boolean _terminate = false;
 
-    private BoundaryDetector _boundaryDetector;
+    protected BoundaryDetector _boundaryDetector;
 }
