@@ -140,6 +140,7 @@ public class OMCProxy implements IModelicaCompiler {
                         .getInfo("Remember the creation time for old OMC object reference file.");
                 lastModified = f.lastModified();
             }
+            
 
             Process proc = null;
             StreamReaderThread outThread = null;
@@ -234,7 +235,7 @@ public class OMCProxy implements IModelicaCompiler {
                     try {
                         fOMCThread.wait(100);
                     } catch (InterruptedException e) {
-                        throw new RuntimeException(e);
+                        /*ignore*/
                     }
                 }
 
@@ -698,6 +699,11 @@ public class OMCProxy implements IModelicaCompiler {
             }
             fOMCThread.start();
             fOMCThreadHasBeenScheduled = true;
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+            }
+            ;
         }
     }
 
