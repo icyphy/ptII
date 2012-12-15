@@ -206,45 +206,8 @@ public class ProcessThread extends PtolemyThread {
 
                 // container is checked for null to detect the
                 // deletion of the actor from the topology.
-                FiringsRecordable firingsRecordable = null;
                 if (((Entity) _actor).getContainer() != null) {
-                    if (_actor instanceof FiringsRecordable) {
-                        firingsRecordable = (FiringsRecordable) _actor;
-                    }
-
-                    if (firingsRecordable != null) {
-                        firingsRecordable
-                                .recordFiring(FiringEvent.BEFORE_PREFIRE);
-                    }
-
-                    if (_actor.prefire()) {
-
-                        if (firingsRecordable != null) {
-                            firingsRecordable
-                                    .recordFiring(FiringEvent.AFTER_PREFIRE);
-                            firingsRecordable
-                                    .recordFiring(FiringEvent.BEFORE_FIRE);
-                        }
-
-                        _actor.fire();
-
-                        if (firingsRecordable != null) {
-                            firingsRecordable
-                                    .recordFiring(FiringEvent.AFTER_FIRE);
-                            firingsRecordable
-                                    .recordFiring(FiringEvent.BEFORE_POSTFIRE);
-                        }
-
-                        iterate = _actor.postfire();
-
-                        if (firingsRecordable != null) {
-                            firingsRecordable
-                                    .recordFiring(FiringEvent.AFTER_POSTFIRE);
-                        }
-                    } else if (firingsRecordable != null) {
-                        firingsRecordable
-                                .recordFiring(FiringEvent.AFTER_PREFIRE);
-                    }
+                    iterate = _iterateActor();
                 }
             }
         } catch (Throwable t) {
@@ -334,6 +297,57 @@ public class ProcessThread extends PtolemyThread {
             _debug("-- Thread wrapup() called.");
         }
         _actor.wrapup();
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods               ////
+
+    /** Iterate the actor associate with this thread.
+     *  @return True if either prefire() returns false
+     *   or postfire returns true.
+     *  @throws IllegalActionException If the actor throws it.
+     */
+    protected boolean _iterateActor()
+            throws IllegalActionException {
+        FiringsRecordable firingsRecordable = null;
+        if (_actor instanceof FiringsRecordable) {
+            firingsRecordable = (FiringsRecordable) _actor;
+        }
+
+        if (firingsRecordable != null) {
+            firingsRecordable
+                    .recordFiring(FiringEvent.BEFORE_PREFIRE);
+        }
+        boolean result = true;
+        if (_actor.prefire()) {
+
+            if (firingsRecordable != null) {
+                firingsRecordable
+                        .recordFiring(FiringEvent.AFTER_PREFIRE);
+                firingsRecordable
+                        .recordFiring(FiringEvent.BEFORE_FIRE);
+            }
+
+            _actor.fire();
+
+            if (firingsRecordable != null) {
+                firingsRecordable
+                        .recordFiring(FiringEvent.AFTER_FIRE);
+                firingsRecordable
+                        .recordFiring(FiringEvent.BEFORE_POSTFIRE);
+            }
+
+            result = _actor.postfire();
+
+            if (firingsRecordable != null) {
+                firingsRecordable
+                        .recordFiring(FiringEvent.AFTER_POSTFIRE);
+            }
+        } else if (firingsRecordable != null) {
+            firingsRecordable
+                    .recordFiring(FiringEvent.AFTER_PREFIRE);
+        }
+        return result;
     }
 
     ///////////////////////////////////////////////////////////////////
