@@ -1,6 +1,6 @@
 # Makefile for the OpenModelica Model of Computation
 #
-# @Version: $Id: makefile 54183 2009-06-05 14:40:43Z bldmastr $
+# @Version: $Id$
 # @Author: Christopher Brooks (makefile only)
 #
 # @Copyright (c) 2012 The Regents of the University of California.

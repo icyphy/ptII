@@ -1,6 +1,6 @@
 # Makefile for Java Ptolemy Programming Temporally Integrated Distributed Embedded Systems
 #
-# @Version: $Id: makefile 54183 2009-06-05 14:40:43Z bldmastr $
+# @Version: $Id$
 # @Author: Christopher Brooks (makefile only)
 #
 # @Copyright (c) 2008-2009 The Regents of the University of California.

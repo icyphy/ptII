@@ -32,7 +32,7 @@
 ME =		ptolemy/actor/lib/openmodelica/omc
 
 # Root of the Ptolemy II directory
-ROOT =		../../../../../..
+ROOT =		../../../../..
 
 CLASSPATH =	$(ROOT)
 

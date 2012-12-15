@@ -1,6 +1,6 @@
 # Makefile for OpenModelica library files
 #
-# @Version: $Id: makefile 54183 2009-06-05 14:40:43Z bldmastr $
+# @Version: $Id$
 # @Author: Christopher Brooks (makefile only)
 #
 # @Copyright (c) 2012 The Regents of the University of California.
@@ -31,7 +31,7 @@
 
 ME =		ptolemy/domains/openmodelica/lib
 
-DIRS =		core omc openmodelica test
+DIRS =		core omc test
 
 # Root of Ptolemy II directory
 ROOT =		../../../..
@@ -44,9 +44,13 @@ include $(CONFIG)
 
 # Used to build jar files
 PTPACKAGE =   lib
-PTCLASSJAR =	$(PTPACKAGE).jar
+#PTCLASSJAR =	$(PTPACKAGE).jar
 
-#PTCLASSALLJAR = 
+PTCLASSALLJAR = $(PTPACKAGE).jar
+
+PTCLASSALLJARS = \
+	core/core.jar \
+	omc/omc.jar
 
 # Files or directories that are present, but that 'make checkjunk'
 # should not complain about
