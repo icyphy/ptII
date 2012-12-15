@@ -105,13 +105,15 @@ public class OpenModelica extends TypedAtomicActor {
         modelName.setTypeEquals(BaseType.STRING);
         modelName.setDisplayName("Model name");
 
-        simulationStartTime = new Parameter(this, "Simulation start time",
+        simulationStartTime = new Parameter(this, "SimulationStartTime",
                 new DoubleToken(0.0));
         simulationStartTime.setTypeEquals(BaseType.DOUBLE);
+        simulatinoStartTime.setDisplayName("Simulation start time");
 
         simulationStopTime = new Parameter(this, "Simulation stop time",
                 new DoubleToken(0.1));
         simulationStopTime.setTypeEquals(BaseType.DOUBLE);
+        simulationStopTime.setDisplayName("Simulation stop time");
 
         numberOfIntervals = new Parameter(this, "numberOfIntervals",
                 new IntToken(500));
@@ -152,103 +154,100 @@ public class OpenModelica extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                    public ports and parameters                  ////
 
-    /** TODO Add description for cflags ..                                                                                                                          
-     *  If this value is changed during execution, then the new                                                                                                                         
-     *  value will be the output on the next iteration.                                                                                                                                 
-     *  The default value of this parameter is "".                                                                                                                           
+    /** TODO Add description for cflags ..  If this value is changed
+     *  during execution, then the new value will be the output on the
+     *  next iteration.  The default value of this parameter is "".
      */
     public StringParameter cflags;
 
     //public StringParameter className;
 
-    /** File which the model should be loaded from .                                                                                                                          
-     *  If this value is changed during execution, then the new                                                                                                                         
-     *  value will be the output on the next iteration.                                                                                                                                 
-     *  TODO Add default value....                                                                                                                           
+    /** File which the model should be loaded from .  If this value is
+     *  changed during execution, then the new value will be the
+     *  output on the next iteration.  TODO Add default value....
      */
 
     public FileParameter fileName;
 
     /** User preferable name for the result file instead of modelName.
-     *  If this value is changed during execution, then the new                                                                                                                         
-     *  value will be the output on the next iteration.                                                                                                                                 
-     *  The default value of this parameter is null.                                                                                                                           
+     *  If this value is changed during execution, then the new value
+     *  will be the output on the next iteration.  The default value
+     *  of this parameter is null.
      */
     public StringParameter fileNamePrefix;
 
-    /** Integration method used for simulation. 
-     *  If this value is changed during execution, then the new                                                                                                                         
-     *  value will be the output on the next iteration.                                                                                                                                 
-     *  The default value of this parameter is the string "dassl".                                                                                                                           
+    /** Integration method used for simulation.  If this value is
+     *  changed during execution, then the new value will be the
+     *  output on the next iteration.  The default value of this
+     *  parameter is the string "dassl".
      */
     public StringParameter method;
 
-    /** Name of the model which should be built.
-     *  If this value is changed during execution, then the new                                                                                                                         
-     *  value will be the output on the next iteration.                                                                                                                                 
-     *  The default value of this parameter is the string dcmotor.                                                                                                                           
+    /** Name of the model which should be built.  If this value is
+     *  changed during execution, then the new value will be the
+     *  output on the next iteration.  The default value of this
+     *  parameter is the string dcmotor.
      */
 
     public StringParameter modelName;
 
-    /** Number of intervals in the result file. 
-     *  If this value is changed during execution, then the new                                                                                                                         
-     *  value will be the output on the next iteration.                                                                                                                                 
-     *  The default value of this parameter is the integer 500.                                                                                                                           
+    /** Number of intervals in the result file.  If this value is
+     *  changed during execution, then the new value will be the
+     *  output on the next iteration.  The default value of this
+     *  parameter is the integer 500.
      */
     public Parameter numberOfIntervals;
 
     //public TypedIOPort output;
 
-    /** Format for the result file.
-     *  If this value is changed during execution, then the new                                                                                                                         
-     *  value will be the output on the next iteration.                                                                                                                                 
-     *  The default value of this parameter is the string "mat".                                                                                                                           
+    /** Format for the result file.  If this value is changed during
+     *  execution, then the new value will be the output on the next
+     *  iteration.  The default value of this parameter is the string
+     *  "mat".
      */
     public StringParameter outputFormat;
 
-    /** Modelica command.
-     *  If this value is changed during execution, then the new                                                                                                                         
-     *  value will be the output on the next iteration.                                                                                                                                 
-     *  The default value of this parameter is the string loadModel(Modelica).                                                                                                                           
+    /** Modelica command.  If this value is changed during execution,
+     *  then the new value will be the output on the next iteration.
+     *  The default value of this parameter is the string
+     *  loadModel(Modelica).
      */
 
     public StringParameter ModelicaScript;
 
-    /** Simulation flags.
-     *  If this value is changed during execution, then the new                                                                                                                         
-     *  value will be the output on the next iteration.                                                                                                                                 
-     *  The default value of this parameter is the string "".                                                                                                                           
+    /** Simulation flags.  If this value is changed during execution,
+     *  then the new value will be the output on the next iteration.
+     *  The default value of this parameter is the string "".
      */
     public StringParameter simflags;
 
-    /** The start time of the simulation.
-     *  If this value is changed during execution, then the new                                                                                                                         
-     *  value will be the output on the next iteration.                                                                                                                                 
-     *  The default value of this parameter is the double 0.0.                                                                                                                           
+    /** The start time of the simulation.  If this value is changed
+     *  during execution, then the new value will be the output on the
+     *  next iteration.  The default value of this parameter is the
+     *  double 0.0.
      */
 
     public Parameter simulationStartTime;
 
-    /** The stop time of the simulation. 
-     *  If this value is changed during execution, then the new                                                                                                                         
-     *  value will be the output on the next iteration.                                                                                                                                 
-     *  The default value of this parameter is the double 0.1.                                                                                                                           
+    /** The stop time of the simulation.  If this value is changed
+     *  during execution, then the new value will be the output on the
+     *  next iteration.  The default value of this parameter is the
+     *  double 0.1.
      */
     public Parameter simulationStopTime;
 
-    /** Tolerance used by the integration method.
-     *  If this value is changed during execution, then the new                                                                                                                         
-     *  value will be the output on the next iteration.                                                                                                                                 
-     *  The default value of this parameter is the double 0.0001.                                                                                                                           
+    /** Tolerance used by the integration method.  If this value is
+     *  changed during execution, then the new value will be the
+     *  output on the next iteration.  The default value of this
+     *  parameter is the double 0.0001.
      */
 
     public Parameter tolerance;
 
-    /** Filter for variables that should store in result file.
-     *  If this value is changed during execution, then the new                                                                                                                         
-     *  value will be the output on the next iteration.                                                                                                                                 
-     *  The default value of this parameter is the string ".*".                                                                                                                           
+    /** Filter for variables that should store in result file.  If
+     *  this value is changed during execution, then the new value
+     *  will be the output on the next iteration.  The default value
+     *  of this parameter is the string ".*".
      */
     public StringParameter variableFilter;
 
@@ -356,9 +355,10 @@ public class OpenModelica extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-    /** First, load the model from the file. Second, build the model. Finally,
-     *  run the simulation executable result of buildModel()
-     *  method in order to generate the simulation result.
+    /** First, load the model from the file. Second, build the
+     *  model. Finally, run the simulation executable result of
+     *  buildModel() method in order to generate the simulation
+     *  result.
      * @exception ConnectException If commands couldn't
      *  be sent to the OMC.
      * @exception IOException If the executable result of buildModel()
@@ -374,6 +374,8 @@ public class OpenModelica extends TypedAtomicActor {
         String systemPath = System.getProperty("java.class.path");
         String[] pathDirs = systemPath.split(File.pathSeparator);
         systemPath = pathDirs[0];
+        // FIXME: Do not  use back slashes in the path, it will not work on 
+        // non-Windows machine.  Use forward slashes, it will work out
         String filePath = systemPath
                 + "\\ptolemy\\domains\\openmodelica\\demo\\OpenModelica\\dcmotor.mo";
         filePath = filePath.replace("\\", "/");
@@ -407,8 +409,9 @@ public class OpenModelica extends TypedAtomicActor {
         }
 
         /*
-         * It sets the ModelicaScript expression to the loadModel() method which loads the file
-         * corresponding to the class, using the Modelica class.
+         * It sets the ModelicaScript expression to the loadModel()
+         * method which loads the file corresponding to the class,
+         * using the Modelica class.
          */
         if (ModelicaScript.getExpression().compareTo("") == 0)
             ModelicaScript.setExpression("loadModel(Modelica)");
