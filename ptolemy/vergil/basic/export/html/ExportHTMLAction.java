@@ -833,7 +833,8 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable,
                         + String.format("%02x", background.getGreen())
                         + String.format("%02x", background.getBlue());
 
-                printWriter.println("<body bgcolor=\"" + color + "\">");
+                printWriter.println("<body>");
+                printWriter.println("<div style=\"background-color:" + color + "\">");
             }
 
             _printHTML(printWriter, "start");
@@ -857,6 +858,7 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable,
             _printHTML(printWriter, "end");
 
             if (!usePtWebsite) {
+                printWriter.println("</div>");
                 printWriter.println("</body>");
                 printWriter.println("</html>");
             } else {
