@@ -365,6 +365,7 @@ public class NonStrictTest extends Sink {
                             + "\nThis error is being ignored because " + "the "
                             + fireCompatProperty + "property was set.");
                 } else {
+                    _initialized = false;
                     throw new IllegalActionException(this, errorMessage);
                 }
             }
@@ -379,6 +380,7 @@ public class NonStrictTest extends Sink {
                         + " tokens.";
                 if (((BooleanToken) requireAllCorrectValues.getToken())
                         .booleanValue()) {
+                    _initialized = false;
                     // FIXME: this produce a dialog for each failed test.
                     throw new IllegalActionException(this, errorMessage);
                 }
