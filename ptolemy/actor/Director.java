@@ -1894,7 +1894,7 @@ public class Director extends Attribute implements Executable {
      */
     protected Set _actorsFinishedExecution;
     
-    /** The director's default microste. */
+    /** The director's default microstep. */
     protected int _defaultMicrostep;
 
     /** Indicator that finish() has been called. */
