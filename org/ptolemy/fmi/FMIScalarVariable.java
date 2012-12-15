@@ -75,9 +75,6 @@ public class FMIScalarVariable {
     public FMIScalarVariable() {
     }
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////
-
     /** Create a ScalarVariable from an XML Element.
      *  @param fmiModelDescription the Model Description for this variable.
      *  @param element The XML Element that contains attributes.
@@ -219,6 +216,9 @@ public class FMIScalarVariable {
             }
         }
     }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /** Return the value of this variable as a boolean.
      *  @param fmiComponent The Functional Mock-up Interface (FMI)
