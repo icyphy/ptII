@@ -194,10 +194,6 @@ public class ProcessDirector extends Director {
      */
     public void fire() throws IllegalActionException {
         // Don't call "Director.super.fire();" here, do the work instead.
-        if (_debugging) {
-            _debug("Called fire().");
-        }
-
         Workspace workspace = workspace();
 
         // In case we have an enclosing process director,
@@ -212,6 +208,10 @@ public class ProcessDirector extends Director {
         int depth = 0;
         try {
             synchronized (this) {
+                if (_debugging) {
+                    _debug("Called fire().");
+                }
+
                 while (!_areThreadsDeadlocked() && !_areAllThreadsStopped()
                         && !_stopRequested) {
                     // Added to get thread to stop reliably on pushing stop button.
@@ -237,6 +237,9 @@ public class ProcessDirector extends Director {
                         }
                         wait();
                     } catch (InterruptedException e) {
+                        if (_debugging) {
+                            _debug("Director thread interrupted.");
+                        }
                         // stop all threads
                         stop();
                         return;
@@ -317,7 +320,7 @@ public class ProcessDirector extends Director {
 
             for (int i = 0; i < receivers.length; i++) {
                 for (int j = 0; j < receivers[i].length; j++) {
-                    ((ProcessReceiver) receivers[i][j]).reset();
+                    receivers[i][j].reset();
                 }
             }
         }
@@ -374,17 +377,15 @@ public class ProcessDirector extends Director {
      *  @exception IllegalActionException If a derived class throws it.
      */
     public boolean postfire() throws IllegalActionException {
-        if (_debugging) {
-            _debug("Called postfire().");
-            _debug("_notDone = " + _notDone);
-            _debug("_stopRequested = " + _stopRequested);
-            _debug("_stopFireRequested = " + _stopFireRequested);
-        }
-
         _notDone = _notDone && !_stopRequested && !_finishRequested;
 
         if (_debugging) {
-            _debug("Returning from postfire(): " + _notDone);
+            synchronized(this) {
+                _debug("Called postfire().");
+                _debug("_stopRequested = " + _stopRequested);
+                _debug("_stopFireRequested = " + _stopFireRequested);
+                _debug("Returning from postfire(): " + _notDone);
+            }
         }
 
         return _notDone;
@@ -776,15 +777,13 @@ public class ProcessDirector extends Director {
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
+    /** A list of threads created but not started. */
+    protected LinkedList _newActorThreadList;
+
     /** A flag for determining whether successive iterations will be
      *  permitted.
      */
     protected boolean _notDone = true;
-
-    /** Indicator that a stopFire has been requested by a call to
-     *  stopFire().
-     */
-    protected boolean _stopFireRequested = false;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
@@ -795,7 +794,6 @@ public class ProcessDirector extends Director {
         CompositeActor container = (CompositeActor) getContainer();
         Iterator actors = container.deepEntityList().iterator();
         Iterator actorPorts;
-        ProcessReceiver nextReceiver;
 
         while (actors.hasNext()) {
             Actor actor = (Actor) actors.next();
@@ -809,8 +807,9 @@ public class ProcessDirector extends Director {
 
                 for (int i = 0; i < receivers.length; i++) {
                     for (int j = 0; j < receivers[i].length; j++) {
-                        nextReceiver = (ProcessReceiver) receivers[i][j];
-                        nextReceiver.requestFinish();
+                        if (receivers[i][j] instanceof ProcessReceiver) {
+                            ((ProcessReceiver) receivers[i][j]).requestFinish();
+                        }
                     }
                 }
             }
@@ -819,9 +818,12 @@ public class ProcessDirector extends Director {
         // FIXME: Should this also set a flag on inside receivers
         // of the ports of the composite actor?
     }
-
+    
     ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
+    ////                         protected variables               ////
+
+    /** The threads created by this director. */
+    private HashSet _activeThreads = new HashSet();
 
     /** The set of threads that are blocked on an IO operation. */
     private HashSet _blockedThreads = new HashSet();
@@ -829,9 +831,8 @@ public class ProcessDirector extends Director {
     /** The set of threads that have been paused in response to stopFire(). */
     private HashSet _pausedThreads = new HashSet();
 
-    /** The threads created by this director. */
-    private HashSet _activeThreads = new HashSet();
-
-    /** A list of threads created but not started. */
-    private LinkedList _newActorThreadList;
+    /** Indicator that a stopFire has been requested by a call to
+     *  stopFire().
+     */
+    private boolean _stopFireRequested = false;
 }
