@@ -31,6 +31,8 @@
 
 ME =		ptolemy/actor/lib/openmodelica/omc
 
+DIRS =		corba
+
 # Root of the Ptolemy II directory
 ROOT =		../../../../..
 
@@ -42,9 +44,12 @@ include $(CONFIG)
 
 # Used to build jar files
 PTPACKAGE = 	omc
-PTCLASSJAR =	$(PTPACKAGE).jar
+#PTCLASSJAR =	$(PTPACKAGE).jar
 
-#PTCLASSALLJAR = $(PTPACKAGE).jar
+PTCLASSALLJAR = $(PTPACKAGE).jar
+
+PTCLASSALLJARS = \
+	corba/corba.jar
 
 JSRCS = \
 	OMCLogger.java \

@@ -31,6 +31,8 @@
 
 ME =		ptolemy/actor/lib/openmodelica/core
 
+DIRS =		compiler
+
 # Root of the Ptolemy II directory
 ROOT =		../../../../..
 
@@ -42,9 +44,12 @@ include $(CONFIG)
 
 # Used to build jar files
 PTPACKAGE = 	core
-PTCLASSJAR =
+# PTCLASSJAR =
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
+
+PTCLASSALLJARS = \
+	compiler/compiler.jar
 
 JSRCS = \
 	CompilerResult.java \

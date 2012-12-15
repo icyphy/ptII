@@ -108,7 +108,7 @@ public class OpenModelica extends TypedAtomicActor {
         simulationStartTime = new Parameter(this, "SimulationStartTime",
                 new DoubleToken(0.0));
         simulationStartTime.setTypeEquals(BaseType.DOUBLE);
-        simulatinoStartTime.setDisplayName("Simulation start time");
+        simulationStartTime.setDisplayName("Simulation start time");
 
         simulationStopTime = new Parameter(this, "Simulation stop time",
                 new DoubleToken(0.1));

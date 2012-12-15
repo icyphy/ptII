@@ -46,8 +46,12 @@ PTCLASSJAR =
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
-OTHER_FILES_TO_JAR = \
-	OpenModelica.xml
+OTHER_FILES_TO_BE_JARED = \
+	OpenModelica.xml \
+	dcmotor.mo
+
+EXTRA_SRCS = \
+	$(OTHER_FILES_TO_BE_JARED)
 
 all: jclass
 install: jclass jars
