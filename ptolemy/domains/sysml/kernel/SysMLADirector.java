@@ -59,7 +59,7 @@ import ptolemy.kernel.util.Workspace;
  subset of the semantics of IBM Rational's Rhapsody SysML tool.
  In this MoC, each actor executes in its own thread (corresponding
  to an "active object" in SysML). Inputs provided to an input
- port (by the thread of another actor) are put into a queue
+ port (by the thread of another actor) are put into a single queue
  belonging to the destination actor. The thread for the
  destination actor retrieves the first input in the queue
  and uses it to set the value of exactly one input port.
@@ -67,12 +67,27 @@ import ptolemy.kernel.util.Workspace;
  fires, possibly producing one or more outputs which are
  directed to their destination actors.
  <p>
- In this model, we assume that an actor iterates within its
+ When multiple actors send tokens to an actor,
+ whether to the same port or to distinct ports,
+ this MoC is nondeterministic. The order in which the
+ tokens are processed will depend on the happenstances
+ of scheduling, since the tokens are put into a single queue
+ in the order in which they arrive.
+ <p>
+ In this MoC, we assume that an actor iterates within its
  thread only if either it has called fireAt() to request a
  future firing (or a re-firing at the current time), or
  it has at least one event in its input queue. Thus, the
  actor's thread will block until one of those conditions
  is satisfied.
+ <p>
+ When all threads are blocked, then if at least one has
+ called fireAt() to request a future firing, then this director
+ will advance model time to the smallest time of such a request,
+ and then again begin executing actors until they all block.
+ <p>
+ When all actors are blocked, and none has called fireAt(),
+ the model terminates.
 
  @author Edward A. Lee
  @version $Id$
