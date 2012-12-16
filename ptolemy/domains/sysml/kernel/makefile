@@ -1,7 +1,7 @@
-# Makefile for PtolemyII SysML Domain
+# Makefile for SysML Model of Computation Ptolemy Kernel
 #
-# @Version: $Id$
-# @Author: Christopher Brooks
+# @Version: $Id: makefile 65148 2012-12-06 01:46:45Z cxh $
+# @Author: Christopher Brooks (makefile only)
 #
 # @Copyright (c) 2012 The Regents of the University of California.
 # All rights reserved.
@@ -27,52 +27,44 @@
 #
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
+##########################################################################
 
-ME =		ptolemy/domains/sysml
+ME =		ptolemy/domains/sysml/kernel
 
-DIRS =		kernel lib demo test doc
+# Root of the Ptolemy II directory
+ROOT =		../../../..
 
-# Root of Ptolemy II directory
-ROOT =		../../..
+CLASSPATH =	$(ROOT)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
-
 # Used to build jar files
-PTPACKAGE = 	sysml
+PTPACKAGE = 	kernel
 PTCLASSJAR =
-
-# Include the .class files from these jars in PTCLASSALLJAR
-PTCLASSALLJARS = \
-		kernel/kernel.jar
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
-# Files or directories that are present, but that 'make checkjunk'
-# should not complain about
-# Don't include demo or DIRS here, or else 'make sources' will run 'make demo'
-MISC_FILES =	kernel test
+JSRCS = \
+	SysMLADirector.java
+
+OTHER_FILES_TO_BE_JARED =
+
+EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
-# Moved doc to OPTIONAL_FILES because doc does not have a makefile
 OPTIONAL_FILES = \
-	demo \
-	doc
+	'SysMLADirector$$1.class' \
+	'SysMLADirector$$Input.class' \
+	'SysMLADirector$$SingleQueueProcessThread.class' \
+	'SysMLADirector$$SysMLAReceiver.class'
+
+JCLASS = $(JSRCS:%.java=%.class)
 
 all: jclass
 install: jclass jars
 
-
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
-
-
-
-
-
-
-
-
