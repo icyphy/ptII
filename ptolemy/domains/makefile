@@ -45,7 +45,8 @@ EXPERIMENTAL_DOMAINS =
 #   ojdbc6.jar was found.
 DOMAINS =	ca ci continuous coroutine csp curriculum \
 	        dde ddf de hdf modal pn sdf dt \
-	        giotto metroII ontologies petrinet rendezvous sysml \
+	        giotto $(PTMETROII_DIR) ontologies openmodelica \
+		petrinet rendezvous sysml \
 		$(PTPSDF_DIR) ptera pthales ptides ptinyos $(PTSPACE_DIR) \
 		sequence sr taskpt tdl tester tm $(PTJAVA3D_DIR) wireless
 
@@ -79,11 +80,13 @@ PTAUXALLJARS = \
 	        dt/dt.jar \
 		giotto/giotto.jar \
 		$(PTGRDOMAIN_JAR) \
+		openmodelica/openmodelica.jar \
 		petrinet/petrinet.jar \
 		ptera/ptera.jar \
 		pthales/pthales.jar \
 		ptides/ptides.jar \
 		$(PTSPACEDOMAIN_JAR) \
+		sysml/sysml.jar \
 		taskpt/taskpt.jar \
 		tm/tm.jar \
 		wireless/wireless.jar
