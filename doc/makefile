@@ -595,11 +595,11 @@ ALLPACKAGES = \
 	ptolemy.domains.hdf.kernel \
 	ptolemy.domains.modal.kernel.fmv \
 	ptolemy.domains.openmodelica.kernel \
-	ptolemy.domains.openmodelica.lib.openmodelica \
-	ptolemy.domains.openmodelica.lib.openmodelica.core \
-	ptolemy.domains.openmodelica.lib.openmodelica.core.compiler \
-	ptolemy.domains.openmodelica.lib.openmodelica.omc \
-	ptolemy.domains.openmodelica.lib.openmodelica.omc.corba \
+	ptolemy.domains.openmodelica.lib \
+	ptolemy.domains.openmodelica.lib.core \
+	ptolemy.domains.openmodelica.lib.core.compiler \
+	ptolemy.domains.openmodelica.lib.omc \
+	ptolemy.domains.openmodelica.lib.omc.corba \
 	ptolemy.domains.petrinet.kernel \
 	ptolemy.domains.petrinet.lib \
 	ptolemy.domains.petrinet.lib.gui \
