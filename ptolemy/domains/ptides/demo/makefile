@@ -41,7 +41,6 @@ DIRS =	ActuatorPattern \
 		PowerManagementUnitSamplingWithoutCurrentLocalTime \
 		PowerPlant \
 		PrintingPress \
-		PtidesMulticoreDirector \
 		PtidesPreemptEDFOnePlatformThreePathsRealDelay \
 		PtidesSynchrophasor \
 		TREX \
