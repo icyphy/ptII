@@ -99,6 +99,8 @@ cd $gendir
 puts "This test (NightlyTest.tcl) should be run after Nightly.tcl"
 
 test nightly-1.6 {test_setup} {
+    puts "To run this test by hand, log in to sisyphus as hudson"
+    puts "and run: cd $gendir; nohup make USER=hudson PTIIHOME=$PTII PTIIADM=$PTII JAR=/usr/bin/jar clean all src.jar test_setup"
     set matches [nightlyMake test_setup {.*\*\*\*.*|^Failed: [1-9].*}]
     list $matches
 } {{}}
