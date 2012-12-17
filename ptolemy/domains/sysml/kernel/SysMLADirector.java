@@ -340,7 +340,7 @@ public class SysMLADirector extends ProcessDirector {
             for (IOPort inputPort : inputPorts) {
                 Receiver[][] receivers = inputPort.getReceivers();
                 for (int i = 0; i < receivers.length; i++) {
-                    for (int j = 0; j < receivers.length; j++) {
+                    for (int j = 0; j < receivers[i].length; j++) {
                         if (receivers[i][j] != null) {
                             receivers[i][j].clear();
                         }
@@ -436,7 +436,7 @@ public class SysMLADirector extends ProcessDirector {
                 Input input = inputQueue.remove(0);
                 Receiver[][] receivers = input.port.getReceivers();
                 for (int i = 0; i < receivers.length; i++) {
-                    for (int j = 0; j < receivers.length; j++) {
+                    for (int j = 0; j < receivers[i].length; j++) {
                         if (receivers[i][j] != null) {
                             ((SysMLAReceiver)receivers[i][j]).reallyPut(input.token);
                             if (SysMLADirector.this._debugging) {
