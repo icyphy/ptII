@@ -52,7 +52,7 @@ OTHER_FILES_TO_BE_JARED = \
 	BasicSwitchIcon.xml \
 	BusIcon.xml \
 	CanBusIcon.xml \
-	CompositeQM.xml \
+	CompositeQMIcon.xml \
 	CompositeQuantityManagerIcon.xml \
 	CrossbarSwitchIcon.xml \
 	TTESwitchIcon.xml
