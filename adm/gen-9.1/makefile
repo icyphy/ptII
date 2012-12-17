@@ -2584,11 +2584,12 @@ clean_setup:
 full_clean_setup: clean_setup
 	rm -rf $(PTSETUP_DEPENDENCIES)
 
-test_setup:  setup test_setup_start test_setup_make_fast_install test_setup_test
+test_setup:  test_setup_start test_setup_make_fast_install test_setup_test
+
+test_setup_start: test_setup_announce setup_jar setup setup_mac_app_tar test_setup_installerTest 
 
 test_setup_test: test_setup_XvfbStart test_setup_make_test test_setup_end
 
-test_setup_start: test_setup_announce setup_jar setup setup_mac_app_tar test_setup_installerTest 
 
 test_setup_announce:
 	@echo "#"
