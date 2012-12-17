@@ -129,6 +129,7 @@ PTII_TOPDIR=	.cshrc \
 		lbnl \
 		makefile \
 		mk \
+		net \
 		org \
 		ptdb \
 		ptKeystore.properties \
@@ -2581,9 +2582,11 @@ clean_setup:
 full_clean_setup: clean_setup
 	rm -rf $(PTSETUP_DEPENDENCIES)
 
-test_setup:  setup test_setup_start test_setup_make test_setup_end
+test_setup:  setup test_setup_start test_setup_make_fast_install test_setup_test
 
-test_setup_start: test_setup_announce setup_jar setup setup_mac_app_tar test_setup_installerTest test_setup_XvfbStart
+test_setup_test: test_setup_XvfbStart test_setup_make_test test_setup_end
+
+test_setup_start: test_setup_announce setup_jar setup setup_mac_app_tar test_setup_installerTest 
 
 test_setup_announce:
 	@echo "#"
@@ -2604,13 +2607,22 @@ test_setup_XvfbStart:
 	-rm -rf /tmp/.X8-lock
 	Xvfb :8 -screen 0 1024x768x24 &
 
-test_setup_make:
+test_setup_make_fast_install:
 	@echo "#"
-	@echo "# Now configuring and running make" 
+	@echo "# Now configuring and running make fast install" 
 	@echo "#"
 	@echo "$@ `date`"
 	@echo "`uptime`"
-	(cd test/installerTest; chmod a+x ./configure; export DISPLAY=localhost:8.0; echo "DISPLAY=$$DISPLAY"; PTII=`pwd` ./configure --enable-verbose; cat mk/ptII.mk; PTII=`pwd` make -k PTII=`pwd` fast install tests)
+	(cd test/installerTest; chmod a+x ./configure; export DISPLAY=localhost:8.0; echo "DISPLAY=$$DISPLAY"; PTII=`pwd` ./configure --enable-verbose; cat mk/ptII.mk; PTII=`pwd` make -k PTII=`pwd` fast install)
+
+test_setup_make_tests:
+	@echo "#"
+	@echo "# Now configuring and running make tests" 
+	@echo "#"
+	@echo "$@ `date`"
+	@echo "`uptime`"
+	(cd test/installerTest; chmod a+x ./configure; export DISPLAY=localhost:8.0; echo "DISPLAY=$$DISPLAY"; PTII=`pwd` ./configure --enable-verbose; cat mk/ptII.mk; PTII=`pwd` make -k PTII=`pwd` tests)
+
 
 test_setup_ant:
 	(cd test/installerTest; chmod a+x ./configure; export DISPLAY=localhost:8.0; echo "DISPLAY=$$DISPLAY"; PTII=`pwd` ./configure; PTII=`pwd` ant build) 
