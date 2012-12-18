@@ -16,24 +16,6 @@
     </property>
     <property name="executionTime2" class="ptolemy.data.expr.Parameter" value="0.02">
     </property>
-    <property name="0:annotation1" class="ptolemy.kernel.util.Attribute">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-35.0, 230.0]">
-        </property>
-        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure>
-           <svg>
-           <text x="20" style="font-size:14; font-family:sanserif; fill:blue" y="20">This model shows two (independent) control loops whose controllers share the same CPU. The control
-loops are chosen such that it is unstable if the control signals are constantly delayed. By choosing
-different priority assignments and TM scheduling policies, different stability of the two loops may 
-appear. For example, a nonpreemptive scheduling can stablize both control loops, but none of the 
-preemptive ones can.
-</text>
-           </svg>
-           </configure>
-        </property>
-        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-        </property>
-    </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={141, 44, 1078, 667}, maximized=false}">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
@@ -44,6 +26,12 @@ preemptive ones can.
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[79.0, 18.0]">
+        </property>
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model shows two (independent) control loops whose controllers share the same CPU. &#10;The control loops are chosen such that it is unstable if the control signals are constantly &#10;delayed. By choosing different priority assignments and scheduling policies, different stability&#10;of the two loops may appear. For example, a nonpreemptive scheduling can stabilize both &#10;control loops, but none of the preemptive ones can. &#10;&#10;The same demo exists in the TM domain with TM scheduling policies.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-20.0, 220.0]">
         </property>
     </property>
     <entity name="PtidesPlatform" class="ptolemy.domains.ptides.kernel.PtidesPlatform">
