@@ -208,10 +208,12 @@ public class EmbeddedCodeActor extends CompiledCompositeActor {
             for (TypedIOPort port : (List<TypedIOPort>) portList()) {
                 TypedIOPort newPort = (TypedIOPort) port.clone(workspace());
                 newPort.setContainer(_embeddedActor);
-                for (int channel = 0; channel < port.getWidth(); channel++) {
+                int width = port.getWidth();
+                for (int channel = 0; channel < width; channel++) {
                     TypedIORelation relation = new TypedIORelation(this,
                             "relation" + i++);
                     relation.setPersistent(false);
+                    relation.setWidth(1);
                     port.link(relation);
                     newPort.link(relation);
                 }
