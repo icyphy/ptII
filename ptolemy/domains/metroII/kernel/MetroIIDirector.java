@@ -1,3 +1,31 @@
+/* Director for Modified MetroII semantics.
+
+ Copyright (c) 1998-2012 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
+
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
+
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
+
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
+
+ */
+
 package ptolemy.domains.metroII.kernel;
 
 import java.io.BufferedReader;
@@ -13,8 +41,6 @@ import net.jimblackler.Utils.YieldAdapterIterable;
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
-import ptolemy.actor.IOPort;
-import ptolemy.actor.Initializable;
 import ptolemy.data.StringToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
@@ -27,6 +53,32 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.Workspace;
 
+///////////////////////////////////////////////////////////////////
+////MetroIIDirector
+
+/** 
+ * A MetroII Director governs the execution of a CompositeActor with 
+ * modified MetroII semantics. The semantic has the two phases: 
+ * 1. model execution
+ * 2. mapping constraint resolution
+ * In model execution phase, MetroIIDirector tries to call prefire(), 
+ * fire(), and postfire() of each actor in the model. If the actor 
+ * is a CompositeActor that has a MetroII compatible director, the 
+ * getfire() is called instead of fire(). In addition to do everything
+ * fire() does, getfire() proposes events in firing. And when proposing
+ * events, the CompositeActor is blocked. 
+ * In mapping constraint resolution phase, the MetroIIDirector collects
+ * all the events and reset the statuses of events based on the 
+ * mapping constraints. In the next iteration, CompositeActor executes 
+ * based on the updated statuses of events.  
+ *  
+ *  Known issues: 
+ *  1. the 'stop execution' may not work. 
+ *  
+ * @author Liangpeng Guo
+ *
+ */
+
 public class MetroIIDirector extends Director {
 
     public MetroIIDirector(CompositeEntity container, String name)
@@ -35,25 +87,24 @@ public class MetroIIDirector extends Director {
         _initializeParameters();
     }
 
-    public void addInitializable(Initializable initializable) {
-        super.addInitializable(initializable);
-    }
+    ///////////////////////////////////////////////////////////////////
+    ////                         parameters                        ////
 
-    // FIXME: we don't use underscores inside names, this should be
-    // mappingFileName.  Protected and Private methods and fields
-    // start with an underscore, public ones do not.
-    public Parameter _mapping_file_name;
+    /** The mapping file name.
+     *  This is a string that contains the absolute path of the mapping file.
+     */
+    private Parameter _mappingFileName;
 
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
-        if (attribute == _mapping_file_name) {
-            StringToken str_token = (StringToken) _mapping_file_name.getToken();
+        if (attribute == _mappingFileName) {
+            StringToken str_token = (StringToken) _mappingFileName.getToken();
 
             if (str_token == null) {
-                _mapping_file_name = null;
+                _mappingFileName = null;
             } else {
                 readMapping(str_token.stringValue());
-                System.out.println(_mapping_constraint_solver);
+                System.out.println(_mappingConstraintSolver);
             }
 
         } else {
@@ -71,15 +122,14 @@ public class MetroIIDirector extends Director {
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         MetroIIDirector newObject = (MetroIIDirector) super
                 .clone(workspace);
-	newObject._mapping_constraint_solver = new MappingConstraintSolver(100);
-	newObject.eventname2id = new Hashtable<String, Integer>();
+	newObject._mappingConstraintSolver = new MappingConstraintSolver(100);
+	newObject._eventName2ID = new Hashtable<String, Integer>();
         return newObject;
     }
 
     void _init() {
-
         try {
-            _mapping_file_name.moveToLast();
+            _mappingFileName.moveToLast();
         } catch (IllegalActionException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -89,8 +139,8 @@ public class MetroIIDirector extends Director {
     private void _initializeParameters() {
         _verbose = true;
         try {
-            _mapping_file_name = new Parameter(this, "mapping");
-            _mapping_file_name.setTypeEquals(BaseType.STRING);
+            _mappingFileName = new Parameter(this, "mapping");
+            _mappingFileName.setTypeEquals(BaseType.STRING);
         } catch (IllegalActionException e1) {
             // TODO Auto-generated catch block
             e1.printStackTrace();
@@ -100,15 +150,22 @@ public class MetroIIDirector extends Director {
         }
     }
 
-    int next_avail_id = 0;
-    // FIXME: change eventname2id to _eventName2ID
-    Hashtable<String, Integer> eventname2id = new Hashtable<String, Integer>();
-    // FIXME: we don't use underscores inside names, this should be
-    // mappingFileName.  Protected and Private methods and fields
-    // start with an underscore, public ones do not.
-    MappingConstraintSolver _mapping_constraint_solver = new MappingConstraintSolver(
-            1000);
+    private int _nextAvailID = 0;
+    private final int _maxEvent = 1000; 
+    private Hashtable<String, Integer> _eventName2ID = new Hashtable<String, Integer>();
+    private MappingConstraintSolver _mappingConstraintSolver = new MappingConstraintSolver(
+            _maxEvent);
 
+    /**    
+    * Tries to call prefire(), fire(), and postfire() of each actor in the model. If the actor 
+    * is a CompositeActor that has a MetroII compatible director, the getfire() is called instead of fire(). 
+    * In addition to do everything fire() does, getfire() proposes events in firing. And when proposing
+    * events, the CompositeActor is blocked. 
+    * Tries to resolve the mapping constraints. The MetroIIDirector collects all the events and reset the 
+    * statuses of events based on the mapping constraints. In the next iteration, CompositeActor executes 
+    * based on the updated statuses of events.  
+    */
+    
     public void fire() throws IllegalActionException {
 
         try {
@@ -118,7 +175,6 @@ public class MetroIIDirector extends Director {
 
         Nameable container = getContainer();
 
-        //if (container instanceof CompositeActor) {
         Iterator<?> actors = ((CompositeActor) container).deepEntityList()
                 .iterator();
         LinkedList<MetroIIActorThread> actor_thread_list = new LinkedList<MetroIIActorThread>();
@@ -141,6 +197,7 @@ public class MetroIIDirector extends Director {
             LinkedList<Event.Builder> m2event_list = new LinkedList<Event.Builder>();
             stable = true;
 
+            // Phase I: base model execution
             for (MetroIIActorThread actor_thread : actor_thread_list) {
                 if (actor_thread._actor.prefire()) {
                     if (actor_thread._type == MetroIIActorThread.Type.Metropolis) {
@@ -168,9 +225,9 @@ public class MetroIIDirector extends Director {
                             Event.Builder etb = builder;
                             String event_name = etb.getName();
 
-                            if (!eventname2id.containsKey(event_name)) {
-                                eventname2id.put(event_name, next_avail_id);
-                                next_avail_id++;
+                            if (!_eventName2ID.containsKey(event_name)) {
+                                _eventName2ID.put(event_name, _nextAvailID);
+                                _nextAvailID++;
                             }
 
                             etb.setStatus(Event.Status.WAITING);
@@ -216,32 +273,34 @@ public class MetroIIDirector extends Director {
                 }
             }
 
+            
+            // Phase II: mapping constraint resolution
             for (Event.Builder etb : m2event_list) {
                 String event_name = etb.getName();
-                _mapping_constraint_solver.presentM2Event(eventname2id
+                _mappingConstraintSolver.presentM2Event(_eventName2ID
                         .get(event_name));
             }
-            System.out.println(_mapping_constraint_solver);
+            System.out.println(_mappingConstraintSolver);
             System.out.println("Before mapping resolution: ");
             for (Event.Builder etb : m2event_list) {
-                System.out.println(eventname2id
+                System.out.println(_eventName2ID
                         .get(etb.getName())+etb.getName() + " "
                         + etb.getStatus().toString());
             }
             for (Event.Builder etb : m2event_list) {
                 String event_name = etb.getName();
-                if (_mapping_constraint_solver.isSatisfied(eventname2id
+                if (_mappingConstraintSolver.isSatisfied(_eventName2ID
                         .get(event_name))) {
                     etb.setStatus(Event.Status.NOTIFIED);
                 }
             }
             System.out.println("After mapping resolution: ");
             for (Event.Builder etb : m2event_list) {
-                System.out.println(eventname2id
+                System.out.println(_eventName2ID
                         .get(etb.getName())+etb.getName() + " "
                         + etb.getStatus().toString());
             }
-            _mapping_constraint_solver.reset();
+            _mappingConstraintSolver.reset();
         }
         if (_stopRequested) {
             for (MetroIIActorThread actor_thread : actor_thread_list) {
@@ -258,91 +317,42 @@ public class MetroIIDirector extends Director {
         }
     }
 
+    
+    /**
+     * Read constraints from the mapping file.
+     * @param finename mapping file
+     */
     private void readMapping(String finename) {
         System.out.println(finename);
         try {
-            // Open the file that is the first
-            // command line parameter
             FileInputStream fstream = new FileInputStream(finename);
-            // Get the object of DataInputStream
             DataInputStream in = new DataInputStream(fstream);
             BufferedReader br = new BufferedReader(new InputStreamReader(in));
             String strLine;
             try {
-                //Read File Line By Line
                 while ((strLine = br.readLine()) != null) {
-                    // Print the content on the console
                     String[] actor_name_list = strLine.split(",");
                     assert actor_name_list.length == 2;
-                    if (!eventname2id.containsKey(actor_name_list[0])) {
-                        eventname2id.put(actor_name_list[0], next_avail_id);
-                        next_avail_id++;
+                    if (!_eventName2ID.containsKey(actor_name_list[0])) {
+                        _eventName2ID.put(actor_name_list[0], _nextAvailID);
+                        _nextAvailID++;
                     }
-                    if (!eventname2id.containsKey(actor_name_list[1])) {
-                        eventname2id.put(actor_name_list[1], next_avail_id);
-                        next_avail_id++;
+                    if (!_eventName2ID.containsKey(actor_name_list[1])) {
+                        _eventName2ID.put(actor_name_list[1], _nextAvailID);
+                        _nextAvailID++;
                     }
-                    _mapping_constraint_solver.add(
-                            eventname2id.get(actor_name_list[0]),
-                            eventname2id.get(actor_name_list[1]));
+                    _mappingConstraintSolver.add(
+                            _eventName2ID.get(actor_name_list[0]),
+                            _eventName2ID.get(actor_name_list[1]));
                     System.out.println(strLine);
                 }
             } finally {
-                //Close the input stream
                 in.close();
             }
-        } catch (IOException e) {//Catch exception if any
+        } catch (IOException e) {
             System.err.println("Error: " + e.getMessage());
         }
     }
 
-    //    public Time fireAt(Actor actor, Time time, int microstep)
-    //            throws IllegalActionException {
-    //        // If this director is enclosed within another model, then we
-    //        // pass the request up the chain. If the enclosing executive director
-    //        // respects fireAt(), this will result in the container of this
-    //        // director being iterated again at the requested time. This is
-    //        // reasonable, for example, in FSM, DE, SR, CT, or any domain that
-    //        // can safely fire actors other than the one that requested the
-    //        // refiring at the specified time.
-    //        if (isEmbedded()) {
-    //            CompositeActor container = (CompositeActor) getContainer();
-    //            return container.getExecutiveDirector().fireAt(container, time,
-    //                    microstep);
-    //        }
-    //        // If we are not embedded, then return a value indicating that the
-    //        // fireAt() request is being ignored. If the caller is OK with that,
-    //        // then no problem.
-    //        // All derived classes of Director for which the fireAt() method is
-    //        // useful, should override this behavior.
-    //        return time;
-    //    }
 
-    public void initialize() throws IllegalActionException {
-        super.initialize();
-    }
-
-    public boolean postfire() throws IllegalActionException {
-        return super.postfire();
-    }
-
-    public boolean prefire() throws IllegalActionException {
-        return super.prefire();
-    }
-
-    public void preinitialize() throws IllegalActionException {
-        super.preinitialize();
-    }
-
-    public boolean transferInputs(IOPort port) throws IllegalActionException {
-        return super.transferInputs(port);
-    }
-
-    public boolean transferOutputs(IOPort port) throws IllegalActionException {
-        return super.transferOutputs(port);
-    }
-
-    public void wrapup() throws IllegalActionException {
-        super.wrapup();
-    }
 }

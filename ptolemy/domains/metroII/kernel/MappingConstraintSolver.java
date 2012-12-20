@@ -60,7 +60,7 @@ public class MappingConstraintSolver implements ConstraintSolver {
             return true;
         }
         for (int i = 0; i < _size; i++) {
-            if (_mapping[id][i] > 0 && _mapping[id][i] < 3) {
+            if (_mapping[id][i] > 0 && _mapping[id][i] != 3) {
                 return false;
             }
         }
