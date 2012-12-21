@@ -35,7 +35,7 @@
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.8">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{463.6610169491526, 1020.7627118644069}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{499.7401129943503, 944.8961864406781}">
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This URL is for the power consumption of Cory Hall from 00:00 May 16 to 00:00 May 17.  &#10;">
@@ -79,14 +79,18 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[47.5, 320.0]">
         </property>
     </property>
-    <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 75.0]">
-        </property>
-    </property>
     <property name="Annotation9" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Non-working implementation using a BooleanSwitch, BooleanSelect.&#10;The BooleanSelect is never ready to fire since one of its inputs will always be missing.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 780.0]">
+        </property>
+    </property>
+    <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{90, 75}">
         </property>
     </property>
     <class name="PteraClass" extends="ptolemy.actor.TypedCompositeActor">
@@ -579,14 +583,6 @@ which is the sensor value.</text></svg></configure>
         <link port="ReadOnlineData.data" relation="dataRelation"/>
         <link port="ReadOnlineData2.data" relation="dataRelation"/>
     </entity>
-    <entity name="Display3" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={535, 168, 342, 262}, maximized=false}">
-        </property>
-        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[326, 203]">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[770.0, 890.0]">
-        </property>
-    </entity>
     <entity name="Display" class="ptolemy.actor.lib.gui.Display">
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={86, 429, 637, 262}, maximized=false}">
         </property>
@@ -595,60 +591,8 @@ which is the sensor value.</text></svg></configure>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[465.0, 275.0]">
         </property>
     </entity>
-    <entity name="LocalDataFileReader" class="ptolemy.actor.lib.io.FileReader">
-        <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="data/CoryHallMay16toMay17.txt">
-        </property>
-        <doc>Read an entire file and output as a string</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{465.0, 930.0}">
-        </property>
-    </entity>
-    <entity name="OnlineDataFileReader" class="ptolemy.actor.lib.io.FileReader">
-        <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="http://new.openbms.org/backend/api/data/uuid/8737f287-14df-5ccd-82df-e66ca7374b63?start=1337140800000&amp;end=1337227200000">
-        </property>
-        <doc>Read an entire file and output as a string</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[464.5, 866.5]">
-        </property>
-    </entity>
-    <entity name="BooleanSwitch" class="ptolemy.actor.lib.BooleanSwitch">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[312.75, 911.5]">
-        </property>
-    </entity>
     <entity name="SingleEvent" class="ptolemy.actor.lib.SingleEvent">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-15.0, 690.0]">
-        </property>
-    </entity>
-    <entity name="Const" class="ptolemy.actor.lib.Const">
-        <property name="value" class="ptolemy.data.expr.Parameter" value="useOnlineData">
-        </property>
-        <doc>Create a constant sequence.</doc>
-        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
-            </property>
-            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
-            </property>
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[222.75, 971.5]">
-        </property>
-    </entity>
-    <entity name="BooleanSelect" class="ptolemy.actor.lib.BooleanSelect">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[645.0, 890.0]">
-        </property>
-    </entity>
-    <entity name="Const2" class="ptolemy.actor.lib.Const">
-        <property name="value" class="ptolemy.data.expr.Parameter" value="useOnlineData">
-        </property>
-        <doc>Create a constant sequence.</doc>
-        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
-            </property>
-            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
-            </property>
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[590.0, 980.0]">
-        </property>
-    </entity>
-    <entity name="SingleEvent2" class="ptolemy.actor.lib.SingleEvent">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-10.0, 875.0]">
         </property>
     </entity>
     <entity name="OnlineDataFileReader2" class="ptolemy.actor.lib.io.FileReader">
@@ -701,6 +645,248 @@ which is the sensor value.</text></svg></configure>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-15.0, 1075.0]">
         </property>
     </entity>
+    <entity name="Const3" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, 885.0]">
+        </property>
+    </entity>
+    <entity name="CompositeActor" class="ptolemy.actor.TypedCompositeActor">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[280.0, 885.0]">
+        </property>
+        <property name="DDF Director" class="ptolemy.domains.ddf.kernel.DDFDirector">
+            <property name="iterations" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{65, 55}">
+            </property>
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={176, 92, 928, 616}, maximized=false}">
+        </property>
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 500]">
+        </property>
+        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+        </property>
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{350.0, 250.0}">
+        </property>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 165.0]">
+            </property>
+        </port>
+        <port name="reading" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[575.0, 150.0]">
+            </property>
+        </port>
+        <entity name="LocalDataFileReader" class="ptolemy.actor.lib.io.FileReader">
+            <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="data/CoryHallMay16toMay17.txt">
+            </property>
+            <doc>Read an entire file and output as a string</doc>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[310.0, 195.0]">
+            </property>
+        </entity>
+        <entity name="OnlineDataFileReader" class="ptolemy.actor.lib.io.FileReader">
+            <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="http://new.openbms.org/backend/api/data/uuid/8737f287-14df-5ccd-82df-e66ca7374b63?start=1337140800000&amp;end=1337227200000">
+            </property>
+            <doc>Read an entire file and output as a string</doc>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[309.5, 131.5]">
+            </property>
+        </entity>
+        <entity name="BooleanSwitch" class="ptolemy.actor.lib.BooleanSwitch">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[155.0, 175.0]">
+            </property>
+        </entity>
+        <entity name="Const" class="ptolemy.actor.lib.Const">
+            <property name="value" class="ptolemy.data.expr.Parameter" value="useOnlineData">
+            </property>
+            <doc>Create a constant sequence.</doc>
+            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+                </property>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 240.0]">
+            </property>
+        </entity>
+        <entity name="DDFBooleanSelect" class="ptolemy.domains.ddf.lib.DDFBooleanSelect">
+            <property name="DDFBooleanSelectIcon" class="ptolemy.vergil.icon.EditorIcon">
+                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {17, -12, 815, 516}, maximized = false}">
+                </property>
+                <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[460.0, 150.0]">
+            </property>
+            <property name="requiredFiringsPerIteration" class="ptolemy.data.expr.Parameter" value="2">
+            </property>
+        </entity>
+        <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+            <vertex name="vertex1" value="[160.0, 240.0]">
+            </vertex>
+        </relation>
+        <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <link port="trigger" relation="relation7"/>
+        <link port="reading" relation="relation6"/>
+        <link port="LocalDataFileReader.output" relation="relation5"/>
+        <link port="LocalDataFileReader.trigger" relation="relation2"/>
+        <link port="OnlineDataFileReader.output" relation="relation3"/>
+        <link port="OnlineDataFileReader.trigger" relation="relation"/>
+        <link port="BooleanSwitch.input" relation="relation7"/>
+        <link port="BooleanSwitch.control" relation="relation4"/>
+        <link port="BooleanSwitch.trueOutput" relation="relation"/>
+        <link port="BooleanSwitch.falseOutput" relation="relation2"/>
+        <link port="Const.output" relation="relation4"/>
+        <link port="DDFBooleanSelect.trueInput" relation="relation3"/>
+        <link port="DDFBooleanSelect.falseInput" relation="relation5"/>
+        <link port="DDFBooleanSelect.control" relation="relation4"/>
+        <link port="DDFBooleanSelect.output" relation="relation6"/>
+    </entity>
+    <entity name="JSONToToken2" class="ptolemy.actor.lib.conversions.json.JSONToToken">
+        <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[415.0, 885.0]">
+        </property>
+        <property name="_expertMode" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="arrayType({Readings = arrayType(arrayType(double)), uuid = string})">
+            </property>
+        </port>
+    </entity>
+    <entity name="ArrayToSequence2" class="ptolemy.domains.sdf.lib.ArrayToSequence">
+        <property name="enforceArrayLength" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[550.0, 885.0]">
+        </property>
+    </entity>
+    <entity name="RecordDisassembler2" class="ptolemy.actor.lib.RecordDisassembler">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[650.0, 865.0]">
+        </property>
+        <port name="Readings" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <port name="uuid" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+    </entity>
+    <entity name="IterateOverArray2" class="ptolemy.actor.lib.hoc.IterateOverArray">
+        <doc>Iterate a contained actor over input arrays</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.CopyCatIcon">
+        </property>
+        <property name="_configurer" class="ptolemy.actor.gui.InsideEntityEditorPaneFactory">
+        </property>
+        <property name="_tableauFactory" class="ptolemy.actor.gui.LevelSkippingTableauFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[825.0, 875.0]">
+        </property>
+        <port name="Readings" class="ptolemy.actor.lib.hoc.IterateOverArray$IteratePort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <entity name="IterateComposite" class="ptolemy.actor.lib.hoc.IterateOverArray$IterateComposite">
+            <property name="annotation" class="ptolemy.kernel.util.Attribute">
+                <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+                </property>
+                <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                    <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">Make sure there is a director here!</text></svg></configure>
+                </property>
+                <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                    <configure>
+                <svg> 
+                    <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
+                </svg>
+              </configure>
+                </property>
+                <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+                </property>
+                <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="-5.0, 5.0">
+                </property>
+            </property>
+            <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 65.0]">
+                </property>
+            </property>
+            <property name="annotation2" class="ptolemy.kernel.util.Attribute">
+                <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+                </property>
+                <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                    <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">Get the second element in the array (index 1) 
+which is the sensor value.</text></svg></configure>
+                </property>
+                <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                    <configure>
+                <svg> 
+                    <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
+                </svg>
+              </configure>
+                </property>
+                <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+                </property>
+                <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[0.0, 125.0]">
+                </property>
+            </property>
+            <port name="Readings" class="ptolemy.actor.lib.hoc.IterateOverArray$IteratePort">
+                <property name="input"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 210.0]">
+                </property>
+            </port>
+            <entity name="Display" class="ptolemy.actor.lib.gui.Display">
+                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={313, 473, 359, 245}, maximized=false}">
+                </property>
+                <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[343, 186]">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[285.0, 220.0]">
+                </property>
+            </entity>
+            <entity name="ArrayElement" class="ptolemy.actor.lib.ArrayElement">
+                <property name="index" class="ptolemy.actor.parameters.PortParameter" value="1">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[150.0, 220.0]">
+                </property>
+            </entity>
+            <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="relation" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <link port="Readings" relation="relation"/>
+            <link port="Display.input" relation="relation2"/>
+            <link port="ArrayElement.input" relation="relation"/>
+            <link port="ArrayElement.output" relation="relation2"/>
+        </entity>
+    </entity>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
@@ -710,22 +896,6 @@ which is the sensor value.</text></svg></configure>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation9" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation10" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation11" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation13" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[167.75, 861.5]">
-        </vertex>
-    </relation>
-    <relation name="relation" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation14" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
@@ -737,13 +907,21 @@ which is the sensor value.</text></svg></configure>
     </relation>
     <relation name="relation16" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation12" class="ptolemy.actor.TypedIORelation">
-    </relation>
     <relation name="relation8" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation17" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation18" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation19" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation9" class="ptolemy.actor.TypedIORelation">
     </relation>
     <link port="JSONToToken.input" relation="relation4"/>
     <link port="JSONToToken.output" relation="relation6"/>
@@ -756,25 +934,8 @@ which is the sensor value.</text></svg></configure>
     <link port="ArrayToSequence.output" relation="relation5"/>
     <link port="IterateOverArray.Readings" relation="relation7"/>
     <link port="PteraModalModel.data" relation="relation8"/>
-    <link port="Display3.input" relation="relation12"/>
     <link port="Display.input" relation="relation8"/>
-    <link port="LocalDataFileReader.output" relation="relation3"/>
-    <link port="LocalDataFileReader.trigger" relation="relation10"/>
-    <link port="OnlineDataFileReader.output" relation="relation2"/>
-    <link port="OnlineDataFileReader.trigger" relation="relation9"/>
-    <link port="BooleanSwitch.input" relation="relation13"/>
-    <link port="BooleanSwitch.control" relation="relation11"/>
-    <link port="BooleanSwitch.trueOutput" relation="relation9"/>
-    <link port="BooleanSwitch.falseOutput" relation="relation10"/>
     <link port="SingleEvent.output" relation="relation14"/>
-    <link port="Const.output" relation="relation11"/>
-    <link port="Const.trigger" relation="relation13"/>
-    <link port="BooleanSelect.trueInput" relation="relation2"/>
-    <link port="BooleanSelect.falseInput" relation="relation3"/>
-    <link port="BooleanSelect.control" relation="relation"/>
-    <link port="BooleanSelect.output" relation="relation12"/>
-    <link port="Const2.output" relation="relation"/>
-    <link port="SingleEvent2.output" relation="relation13"/>
     <link port="OnlineDataFileReader2.output" relation="relation16"/>
     <link port="OnlineDataFileReader2.trigger" relation="relation14"/>
     <link port="LocalDataFileReader2.output" relation="relation15"/>
@@ -784,4 +945,14 @@ which is the sensor value.</text></svg></configure>
     <link port="Expression.local" relation="relation15"/>
     <link port="Display4.input" relation="relation6"/>
     <link port="SingleEvent3.output" relation="relation18"/>
+    <link port="Const3.output" relation="relation19"/>
+    <link port="CompositeActor.trigger" relation="relation19"/>
+    <link port="CompositeActor.reading" relation="relation"/>
+    <link port="JSONToToken2.input" relation="relation"/>
+    <link port="JSONToToken2.output" relation="relation2"/>
+    <link port="ArrayToSequence2.input" relation="relation2"/>
+    <link port="ArrayToSequence2.output" relation="relation3"/>
+    <link port="RecordDisassembler2.input" relation="relation3"/>
+    <link port="RecordDisassembler2.Readings" relation="relation9"/>
+    <link port="IterateOverArray2.Readings" relation="relation9"/>
 </entity>
