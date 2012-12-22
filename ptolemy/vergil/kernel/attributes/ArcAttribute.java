@@ -158,7 +158,7 @@ public class ArcAttribute extends FilledShapeAttribute {
 
         // The cloned icon ends up referring to the clonee's shape.
         // We need to fix that here.
-        newObject._icon.setShape(_newShape());
+        newObject._icon.setShape(newObject._newShape());
         return newObject;
     }
 
@@ -181,8 +181,13 @@ public class ArcAttribute extends FilledShapeAttribute {
         if (_centeredValue) {
             double halfWidth = _widthValue * 0.5;
             double halfHeight = _heightValue * 0.5;
+            // FIXME: There is a very weird bug with the last two
+            // arguments here. If those are replaced with a constant, say 100, 100,
+            // or with halfWidth, halfHeight, then the actual width and height
+            // of the rendered arc becomes nondeterministic!!! It sometimes seem
+            // to match the default width and height (26?).  Bizarre!!!!!!
             Rectangle2D bounds = new Rectangle2D.Double(-halfWidth,
-                    -halfHeight, halfWidth, halfHeight);
+                    -halfHeight, _widthValue, _heightValue);
             return new Arc2D.Double(bounds, _start, _extent, _typeDesignator);
         } else {
             Rectangle2D bounds = new Rectangle2D.Double(0, 0, _widthValue,
