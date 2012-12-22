@@ -355,6 +355,12 @@ public class ShapeIcon extends DynamicEditorIcon {
             }
         };
 
+        // NOTE: Elsewhere, we use SwingUtilities.invokeLater().
+        // Can this create problems with the order of updates being
+        // different, since the following line may execute immediately
+        // if this method is called in Swing event thread, whereas if
+        // we called SwingUtilities.invokeLater(), then the update
+        // would be deferred.
         Top.deferIfNecessary(doSet);
     }
 
