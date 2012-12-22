@@ -128,7 +128,7 @@ public class RectangleAttribute extends FilledShapeAttribute {
 
         // The cloned icon ends up referring to the clonee's shape.
         // We need to fix that here.
-        newObject._icon.setShape(_newShape());
+        newObject._icon.setShape(newObject._newShape());
         return newObject;
     }
 
