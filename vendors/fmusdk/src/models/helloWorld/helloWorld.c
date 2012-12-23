@@ -1,12 +1,18 @@
 /* ---------------------------------------------------------------------------*
  * Minimal Co-simulation FMU. This FMU has one output that produces the constant 42.
+ * To build the FMU file, do this:
  *
- * To run: ./fmusim cs fmu/cs/helloWorld.fmu 5 0.1 0 s
- * or
- * bin/fmusim_cs fmu/cs/helloWorld.fmu 5 0.1 0 s
- * then look in result.csv
+ *  > cd $PTII/vendors/fmusdk/src/models
+ *  > make
+ *
+ * The resulting .fmu file for cosimulation will
+ * be in $PTII/vendors/fmusdk/fmu/cs.
+ *
+ * To run: import the FMU file into Ptolemy and build a model.
  *
  * Note that this file will not work with model exchange.
+ *
+ * Authors: Christopher Brooks and Edward A. Lee
  * ---------------------------------------------------------------------------*/
 #include <stdio.h>
 #include <string.h>
@@ -21,6 +27,7 @@
 typedef struct {
     // cxh: Use a pointer to a fmiReal so that we can allocate space for it.
     // cxh: call this 'r' instead of 'value' so it works with model exchange.
+    // eal: FIXME: But we don't want it to work with model exchange.
     fmiReal    *r;
     fmiCallbackFunctions functions;
     fmiString instanceName;
@@ -34,12 +41,14 @@ fmiComponent fmiInstantiateSlave(fmiString  instanceName, fmiString  GUID,
     	fmiString  fmuLocation, fmiString  mimeType, fmiReal timeout, fmiBoolean visible,
     	fmiBoolean interactive, fmiCallbackFunctions functions, fmiBoolean loggingOn) {
     ModelInstance* component;
-
-    printf("Invoked fmiInstantiateSlave.\n");
+    
     // Perform checks.
-    if (!functions.logger) 
+    // Logger callback is required.
+    if (!functions.logger) {
         return NULL;
-    if (!functions.allocateMemory || !functions.freeMemory){ 
+    }
+    // Functions to allocate and free memory are required.
+    if (!functions.allocateMemory || !functions.freeMemory) { 
         functions.logger(NULL, instanceName, fmiError, "error", 
                 "fmiInstantiateSlave: Missing callback function: freeMemory");
         return NULL;
@@ -62,11 +71,16 @@ fmiComponent fmiInstantiateSlave(fmiString  instanceName, fmiString  GUID,
     component->functions = functions;
     component->instanceName = instanceName;
     
+    functions.logger(component, instanceName, fmiOK, "message",
+                     "Invoked fmiInstantiateSlave for instance %s.", instanceName);
+    
     return component;
 }
 
 fmiStatus fmiInitializeSlave(fmiComponent c, fmiReal tStart, fmiBoolean stopTimeDefined, fmiReal tStop) {
-    printf("Invoked fmiIntializeSlave: start: %g, StopTimeDefined: %d, tStop: %g.\n",
+    ModelInstance* component = (ModelInstance *) c;
+    (component->functions).logger(c, component->instanceName, fmiOK, "message",
+            "Invoked fmiIntializeSlave: start: %g, StopTimeDefined: %d, tStop: %g.",
             tStart, stopTimeDefined, tStop);
     return fmiOK;
 }
@@ -85,8 +99,8 @@ void fmiFreeSlaveInstance(fmiComponent c) {
 
 fmiStatus fmiDoStep(fmiComponent c, fmiReal currentCommunicationPoint, 
     	fmiReal communicationStepSize, fmiBoolean newStep) {
-    printf("Invoked fmiDoStep: %g, %g, newStep: %g\n", currentCommunicationPoint,
-            communicationStepSize, newStep);
+    printf("Invoked fmiDoStep: %g, %g, newStep: %x\n", currentCommunicationPoint,
+            communicationStepSize, (newStep)?"true":"false");
     return fmiOK;
 }
 

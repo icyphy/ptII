@@ -20,6 +20,12 @@ SHARED_LIBRARY_SUFFIX = dylib
 PIC =
 #PIC = -fPIC
 
+# Build individual FMUs.
+# FIXME: The following doesn't work. "make helloWorld" simply says "helloWorld is up to date."
+# Weirdly, "make all" does not seem to think helloWorld is up to date and builds it...
+helloWorld:
+	./build_fmu cs helloWorld
+
 # Build the .fmu files for both co-simulation and model-exchange
 all:
 	./build_fmu me bouncingBall
@@ -34,7 +40,7 @@ all:
 	./build_fmu cs inc
 	./build_fmu cs values
 	./build_fmu cs vanDerPol
-
+    
 # CBITSFLAGS is set to -m32 to build linux32 fmus
 
 %.o: %.c
