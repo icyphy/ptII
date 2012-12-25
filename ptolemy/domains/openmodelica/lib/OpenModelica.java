@@ -154,9 +154,9 @@ public class OpenModelica extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                    public ports and parameters                  ////
 
-    /** TODO Add description for cflags ..  If this value is changed
+    /** Any standard c language flags,  If this value is changed
      *  during execution, then the new value will be the output on the
-     *  next iteration.  The default value of this parameter is "".
+     *  next iteration.  The default value of this parameter is empty.
      */
     public StringParameter cflags;
 
@@ -164,7 +164,7 @@ public class OpenModelica extends TypedAtomicActor {
 
     /** File which the model should be loaded from .  If this value is
      *  changed during execution, then the new value will be the
-     *  output on the next iteration.  TODO Add default value....
+     *  output on the next iteration.  There is no default value, file should be selected.
      */
 
     public FileParameter fileName;
@@ -374,11 +374,23 @@ public class OpenModelica extends TypedAtomicActor {
         String systemPath = System.getProperty("java.class.path");
         String[] pathDirs = systemPath.split(File.pathSeparator);
         systemPath = pathDirs[0];
-        // FIXME: Do not  use back slashes in the path, it will not work on 
-        // non-Windows machine.  Use forward slashes, it will work out
-        String filePath = systemPath
-                + "\\ptolemy\\domains\\openmodelica\\demo\\OpenModelica\\dcmotor.mo";
-        filePath = filePath.replace("\\", "/");
+        
+        String filePath = null;
+        switch (OMCProxy.os) {
+        case WINDOWS:
+            filePath = systemPath
+                    + "\\ptolemy\\domains\\openmodelica\\demo\\OpenModelica\\dcmotor.mo";
+            filePath = filePath.replace("\\", "/");
+            break;
+        case UNIX:
+            filePath = systemPath
+                    + "/ptolemy/domains/openmodelica/demo/OpenModelica/dcmotor.mo";
+            break;
+        case MAC:
+            filePath = systemPath
+                    + "/ptolemy/domains/openmodelica/demo/OpenModelica/dcmotor.mo";
+            break;
+        }
         fileName.setExpression(filePath);
 
         /*Check if the file exists*/
