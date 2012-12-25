@@ -1,4 +1,5 @@
-/* 
+/* An OpenModelica Director by using the content of LeftRightDirector
+  
 Below is the copyright agreement for the Ptolemy II system.
 Version: $Id$
 
@@ -74,7 +75,7 @@ public class OpenModelicaDirector extends StaticSchedulingDirector {
     public OpenModelicaDirector(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        // It sets the scheduler.
+        // Set the scheduler.
         setScheduler(new OpenModelicaScheduler(this, "OpenModelicaScheduler"));
 
         iterations = new Parameter(this, "iterations");
@@ -89,7 +90,9 @@ public class OpenModelicaDirector extends StaticSchedulingDirector {
      *  This is an int that defaults to 1.
      */
     public Parameter iterations;
+    /** Object of the OMCProxy */
     public static OMCProxy _omcPr;
+    /** Object of the OMCLogger */
     public static OMCLogger _ptLogger;
 
     ///////////////////////////////////////////////////////////////////
@@ -114,7 +117,7 @@ public class OpenModelicaDirector extends StaticSchedulingDirector {
     }
 
     /** Initialize the communication with OMC
-     *  @exception IllegalActionException If ---------.
+     *  @exception IllegalActionException TODO ....
      *  @author Mana Mirzaei
      */
 
@@ -126,7 +129,7 @@ public class OpenModelicaDirector extends StaticSchedulingDirector {
             _omcPr.init();
         } catch (ConnectException ex) {
             throw new IllegalActionException(this, ex,
-                    "Unable to RESTART the server!");
+                    "Unable to start the server!");
         }
     }
 
@@ -138,11 +141,14 @@ public class OpenModelicaDirector extends StaticSchedulingDirector {
         super.wrapup();
         try {
             _omcPr.quit();
+            
+            /*Set the created object to null*/
             _omcPr = null;
+            _ptLogger = null;
         } catch (ConnectException ex) {
             _ptLogger
-                .getInfo("Ignore this exception for quit(), it is already quited!: "
-                        + ex);
+                    .getInfo("Ignore this exception for quit(), it is already quited!: "
+                            + ex);
         }
     }
 

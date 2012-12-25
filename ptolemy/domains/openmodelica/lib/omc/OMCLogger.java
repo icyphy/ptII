@@ -1,4 +1,5 @@
-/**
+/** A logger class for creating the log file and displaying the log result.
+ * 
  * Copyright (c) 2012-2013,
  * @author Mana Mirzaei [manmi478@student.liu.se],
  * Programming Environments Laboratory (PELAB),
@@ -56,6 +57,8 @@ public class OMCLogger {
     public Logger _ptLogger = Logger.getLogger("ptLogger");
 
     public OMCLogger() {
+
+        /* Create  the log file */
         OMCProxy.os = OMCProxy.getOs();
         try {
             switch (OMCProxy.os) {
@@ -69,7 +72,8 @@ public class OMCLogger {
                 fileHandler = new FileHandler(filePath + "omcLog.txt");
                 break;
             }
-
+            
+            /* Set formatter of the log to show date and time first*/
             fileHandler.setFormatter(new Formatter() {
                 public String format(LogRecord rec) {
                     StringBuffer buf = new StringBuffer(1000);
@@ -109,5 +113,6 @@ public class OMCLogger {
     ////                         private variables                 ////
 
     FileHandler fileHandler = null;
+    /** Set path of the log to the temp folder */
     String filePath = System.getProperty("java.io.tmpdir");
 }

@@ -1,4 +1,7 @@
 /* An actor that executes a Modelica script.
+ 
+ Below is the copyright agreement for the Ptolemy II system.
+ Version: $Id$
 
  Copyright (c) 1998-2012 The Regents of the University of California
  All rights reserved.
@@ -65,7 +68,9 @@ import ptolemy.kernel.util.Workspace;
      dcmotor.mo should be selected as the fileParameter and dcmotor as the model name.
      loadModel(Modelica) is needed for the simulation and should be set in the ModelicaScript parameter.
      The rest of the settings are optional.
-     The simulation result is saved as a (mat,csv or plt)file and the log file as the txt file in the temp folder.
+     The simulation result is saved as a (mat,csv or plt)file and also there is another alternative 
+     empty which is used when there is no need for users to have the result file. 
+     The log file as the text format is saved in the temp folder.
 
     @author Mana Mirzaei
     @version $Id$
@@ -88,9 +93,6 @@ public class OpenModelica extends TypedAtomicActor {
         super(container, name);
 
         iteration = new Variable(this, "iteration", new IntToken(0));
-
-        //output = new TypedIOPort(this, "output", false, true);
-        //output.setTypeEquals(BaseType.STRING);
 
         ModelicaScript = new StringParameter(this, "ModelicaScript");
         ModelicaScript.setDisplayName("Write OM Command");
@@ -198,8 +200,6 @@ public class OpenModelica extends TypedAtomicActor {
      */
     public Parameter numberOfIntervals;
 
-    //public TypedIOPort output;
-
     /** Format for the result file.  If this value is changed during
      *  execution, then the new value will be the output on the next
      *  iteration.  The default value of this parameter is the string
@@ -289,6 +289,10 @@ public class OpenModelica extends TypedAtomicActor {
         }
 
         try {
+            /*Load the model from the file in the first step. Then, build the
+              model. Finally, run the simulation executable result of
+              buildModel() method in order to generate the simulation
+              result.*/
             simulate();
         } catch (Throwable throwable) {
             throw new IllegalActionException(this, throwable,
@@ -355,7 +359,7 @@ public class OpenModelica extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-    /** First, load the model from the file. Second, build the
+    /** Load the model from the file in the first step. Then, build the
      *  model. Finally, run the simulation executable result of
      *  buildModel() method in order to generate the simulation
      *  result.
@@ -369,12 +373,12 @@ public class OpenModelica extends TypedAtomicActor {
 
         String str = null;
 
-        /*It sets fileName to the path of the testmodel which is called dcmotor.mo*/
+        /*Set fileName to the path of the testmodel(dcmotor.mo)*/
 
         String systemPath = System.getProperty("java.class.path");
         String[] pathDirs = systemPath.split(File.pathSeparator);
         systemPath = pathDirs[0];
-        
+
         String filePath = null;
         switch (OMCProxy.os) {
         case WINDOWS:
@@ -406,10 +410,12 @@ public class OpenModelica extends TypedAtomicActor {
                     + filePath + "]");
         }
 
-        /*It loads model from the file parameter */
+        /*Load the model from the selected file*/
 
         _result = OpenModelicaDirector._omcPr
                 .loadFile(fileName.getExpression());
+
+        /*Check if there is an error in the result of the loadFile command*/
         if (_result.getFirstResult().compareTo("") != 0
                 && _result.getError().compareTo("") == 0) {
             OpenModelicaDirector._ptLogger.getInfo("Model is loaded from "
@@ -421,16 +427,17 @@ public class OpenModelica extends TypedAtomicActor {
         }
 
         /*
-         * It sets the ModelicaScript expression to the loadModel()
-         * method which loads the file corresponding to the class,
-         * using the Modelica class.
+         * Set the ModelicaScript expression to the loadModel
+         * command which loads the file corresponding to the class
          */
+
         if (ModelicaScript.getExpression().compareTo("") == 0)
             ModelicaScript.setExpression("loadModel(Modelica)");
 
         _result = OpenModelicaDirector._omcPr.sendCommand(ModelicaScript
                 .getExpression());
 
+        /*Check if there is an error in the result of the loadModel command*/
         if (_result.getFirstResult().compareTo("true\n") == 0) {
             OpenModelicaDirector._ptLogger
                     .getInfo("Modelica model is loaded successfully.");
@@ -440,7 +447,7 @@ public class OpenModelica extends TypedAtomicActor {
                     .getInfo("There is an error in loading Modelica model!");
         }
 
-        /* Optional settings of buildModel() method set to the default value when they are empty  */
+        /* Set the default value of buildModel expression*/
 
         if (simulationStartTime.getExpression().compareTo("") == 0) {
             simulationStartTime.setExpression("0.0");
@@ -477,9 +484,13 @@ public class OpenModelica extends TypedAtomicActor {
         if (simflags.getExpression().compareTo("") == 0) {
             simflags.setExpression("");
         }
+
+        /* Set the buildModel expression according to the user needs
+         * if user wants the result with the new name or not */
+
         if (fileNamePrefix.getExpression().compareTo("") == 0) {
             OpenModelicaDirector._ptLogger
-                    .getInfo("Model without fileNamePrefix.");
+                    .getInfo("Build the model without fileNamePrefix.");
             str = modelName.getExpression()
                     + ",startTime="
                     + Float.valueOf(simulationStartTime.getExpression())
@@ -497,7 +508,7 @@ public class OpenModelica extends TypedAtomicActor {
                     + "\",simflags=\"" + simflags.getExpression() + "\"";
         } else {
             OpenModelicaDirector._ptLogger
-                    .getInfo("Model with fileNamePrefix.");
+                    .getInfo("Build the model with fileNamePrefix.");
             str = modelName.getExpression()
                     + ",startTime="
                     + Float.valueOf(simulationStartTime.getExpression())
@@ -517,6 +528,9 @@ public class OpenModelica extends TypedAtomicActor {
         }
 
         _result = OpenModelicaDirector._omcPr.buildModel(str);
+
+        /*Check if there is an error in the result of the buildModel command*/
+
         if (_result.getFirstResult().compareTo("") != 0
                 && _result.getError().compareTo("") == 0) {
             OpenModelicaDirector._ptLogger.getInfo(modelName.getExpression()
@@ -544,7 +558,11 @@ public class OpenModelica extends TypedAtomicActor {
             break;
         }
 
+        /* Run the executable result of buildModel command */
+
         Runtime.getRuntime().exec(command, OMCProxy.env, OMCProxy.workDir);
+
+        /* Check if user wants the new name for the result file */
 
         if (fileNamePrefix.getExpression().compareTo("") == 0) {
             OpenModelicaDirector._ptLogger.getInfo(modelName.getExpression()
@@ -559,8 +577,8 @@ public class OpenModelica extends TypedAtomicActor {
     ////                         private variables                 ////
 
     private Variable iteration;
-
+    /** Count of the number of iterations. */
     private int _iterationcount = 1;
-
+    /** Returning result from the omc compiler. */
     CompilerResult _result;
 }
