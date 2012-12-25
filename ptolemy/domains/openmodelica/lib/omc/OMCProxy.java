@@ -140,11 +140,7 @@ public class OMCProxy implements IModelicaCompiler {
                         .getInfo("Remember the creation time for old OMC object reference file.");
                 lastModified = f.lastModified();
             }
-            
-
             Process proc = null;
-            StreamReaderThread outThread = null;
-            StreamReaderThread errThread = null;
             String command[] = { omcBinary.getAbsolutePath(),
                     "+c=" + corbaSession, "+d=interactiveCorba" };
             ArrayList<String> both = new ArrayList<String>(command.length);
@@ -165,7 +161,6 @@ public class OMCProxy implements IModelicaCompiler {
                 bufferCMD.append(cmd[i] + " ");
             }
             String fullCMD = bufferCMD.toString();
-
             OpenModelicaDirector._ptLogger.getInfo("Running command: "
                     + fullCMD);
             OpenModelicaDirector._ptLogger
@@ -199,15 +194,6 @@ public class OMCProxy implements IModelicaCompiler {
                 }
                 proc = Runtime.getRuntime().exec(cmd, env, workingDirectory);
                 workDir = workingDirectory;
-                /*Thread for reading inputStream is created*/
-                outThread = new StreamReaderThread(proc.getInputStream(),
-                        System.out);
-                /*Thread for reading errorStream is created*/
-                errThread = new StreamReaderThread(proc.getErrorStream(),
-                        System.err);
-                /*Both threads start*/
-                outThread.start();
-                errThread.start();
             } catch (IOException e) {
                 OpenModelicaDirector._ptLogger
                         .getInfo("Failed to run command: " + fullCMD);
@@ -219,37 +205,24 @@ public class OMCProxy implements IModelicaCompiler {
             OpenModelicaDirector._ptLogger
                     .getInfo("Waiting for OMC CORBA object reference to appear on disk.");
             /*
-             * It waits until the object exists on disk, but if it takes longer than
-             * 10 seconds, abort.
+             * It waits until the object is created on the disk, but if it takes longer than
+             * 10 second, abort.
              */
             int ticks = 0;
             while (true) {
-                if (f.exists()) {
+                if (f.exists())
                     if (lastModified == 0 || lastModified != 0
-                            && f.lastModified() != lastModified) {
+                            && f.lastModified() != lastModified)
                         break;
-                    }
-                }
 
-                synchronized (this) {
-                    try {
-                        fOMCThread.wait(100);
-                    } catch (InterruptedException e) {
-                        /*ignore*/
-                    }
-                }
-
+                try {Thread.sleep(10000);} catch (InterruptedException e) {}
                 ticks++;
-
-                /* If we have waited for around 5 seconds, abort the wait for OMC */
-                if (ticks > 100) {
+                if (ticks > 10000) {
                     OpenModelicaDirector._ptLogger
                             .getInfo("The OMC Corba object reference file has not been modified in 100 seconds; we give up starting OMC.");
                     couldNotStartOMC = true;
                     hasInitialized = false;
-                    return;
                 }
-
             }
             OpenModelicaDirector._ptLogger
                     .getInfo("OMC object reference found.");
@@ -258,8 +231,6 @@ public class OMCProxy implements IModelicaCompiler {
                 proc.waitFor();
 
                 /* Reading the leftover in the buffer is finished*/
-                outThread.join();
-                errThread.join();
             } catch (InterruptedException e) {
                 OpenModelicaDirector._ptLogger
                         .getSever("OpenModelica compiler interrupted:"
@@ -275,7 +246,7 @@ public class OMCProxy implements IModelicaCompiler {
             couldNotStartOMC = true;
             hasInitialized = false;
         }
-    };
+    }
 
     /**
      *  build the model
@@ -301,7 +272,7 @@ public class OMCProxy implements IModelicaCompiler {
             return osType.WINDOWS;
         } else if (osName.contains("Mac")) {
             return osType.MAC;
-        }else
+        } else
             return osType.UNIX;
     }
 
@@ -693,18 +664,15 @@ public class OMCProxy implements IModelicaCompiler {
     private synchronized void startServer() throws ConnectException {
 
         if (!fOMCThreadHasBeenScheduled) {
-            /* It creates the OMC thread */
+            
             if (fOMCThread == null) {
                 fOMCThread = new OMCThread();
             }
             fOMCThread.start();
             fOMCThreadHasBeenScheduled = true;
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-            }
-            ;
+            try { Thread.sleep(10000); } catch(InterruptedException e) {}
         }
+
     }
 
     ///////////////////////////////////////////////////////////////////
