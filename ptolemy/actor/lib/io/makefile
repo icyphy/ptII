@@ -51,6 +51,7 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 # Keep this list alphabetized.
 JSRCS = \
 	CSVReader.java \
+	CSVWriter.java \
 	DirectoryListing.java \
 	ExpressionReader.java \
 	ExpressionWriter.java \
@@ -60,6 +61,7 @@ JSRCS = \
 	TokenReader.java
 
 OTHER_FILES_TO_BE_JARED = \
+	DirectoryListingIcon.xml \
 	io.xml
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)

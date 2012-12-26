@@ -29,19 +29,28 @@ package ptolemy.actor.lib.io;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.StringTokenizer;
 
 import ptolemy.data.BooleanToken;
 import ptolemy.data.OrderedRecordToken;
 import ptolemy.data.RecordToken;
 import ptolemy.data.StringToken;
+import ptolemy.data.Token;
+import ptolemy.data.expr.ASTPtRootNode;
 import ptolemy.data.expr.FileParameter;
+import ptolemy.data.expr.ModelScope;
 import ptolemy.data.expr.Parameter;
+import ptolemy.data.expr.ParseTreeEvaluator;
+import ptolemy.data.expr.ParserScope;
+import ptolemy.data.expr.PtParser;
 import ptolemy.data.expr.SingletonParameter;
 import ptolemy.data.expr.StringParameter;
+import ptolemy.data.expr.Variable;
 import ptolemy.data.type.BaseType;
-import ptolemy.data.type.RecordType;
 import ptolemy.data.type.Type;
+import ptolemy.graph.Inequality;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
@@ -56,10 +65,27 @@ import ptolemy.kernel.util.Settable;
  This actor reads a file or URL, one line at a time, and outputs each line
  except the first as a record. The first line of the file gives
  the names of the fields of the output records.
- The remaining lines give the values of the fields,
- which all have type String. The output is an ordered
+ The remaining lines give the values of the fields.
+ The output is an ordered
  record token, which means that the order defined in the
  first line is preserved.
+ </p><p>
+ <b>NOTE:</b> By default, this actor imposes no type constraints
+ on its output. To use it in a model, you must either enable
+ backward type inference (a parameter at the top level of the model),
+ or explicitly declare the output type (by selecting Configure-Ports
+ in the context menu). If you use backward type inference, then the
+ constraints are inferred from how you use the output. For example,
+ if you extract a record field of a particular type, then the output
+ will be constrained to be a record that contains that field.
+ If you declare output types specifically, then every line read
+ from the file must conform.
+ For example, if you set the output the type
+ constraint to "[x = int, y = double]" then the output will be an
+ ordered record where the first field is named "x" and has type int,
+ and the second field is named "y" and has type double.
+ If any line in the file violates this typing, then an exception
+ will be thrown.
  </p><p>
  If any line has more values than
  the first line, then the trailing values will be ignored.
@@ -133,6 +159,15 @@ public class CSVReader extends LineReader {
         new SingletonParameter(endOfFile, "_showName")
                 .setToken(BooleanToken.TRUE);
 
+        // Base class declares the output to be of type string, so we
+        // have to first undo that.
+        output.setTypeEquals(BaseType.UNKNOWN);
+        // Do not force the output to be a record because downstream
+        // types may be general, in which case, backward type inference
+        // will want to resolve to general, which is fine. I.e., resolving
+        // to anything above record types is also OK.
+        // output.setTypeAtMost(RecordType.EMPTY_RECORD);
+        
         _attachText("_iconDescription", "<svg>\n"
                 + "<rect x=\"-25\" y=\"-20\" " + "width=\"50\" height=\"40\" "
                 + "style=\"fill:white\"/>\n"
@@ -187,6 +222,8 @@ public class CSVReader extends LineReader {
                 _delimiter = "\t";
             } else if (_delimiter.equals("semicolon")) {
                 _delimiter = ";";
+            } else {
+                _delimiter = separator.stringValue();
             }
         } else {
             super.attributeChanged(attribute);
@@ -213,11 +250,46 @@ public class CSVReader extends LineReader {
                 trigger.get(i);
             }
         }
+        
+        if (_firstFiring) {
+            _openAndReadFirstTwoLines();
+            _firstFiring = false;
+            
+            if (_currentLine == null) {
+                throw new IllegalActionException("File has no data.");
+            }
+            StringTokenizer tokenizer = new StringTokenizer(_currentLine,
+                    _delimiter);
+            ArrayList<String> fieldNames = new ArrayList<String>();
+            while (tokenizer.hasMoreElements()) {
+                String nextName = tokenizer.nextToken();
+                if (((BooleanToken) trimSpaces.getToken()).booleanValue()) {
+                    nextName = nextName.trim();
+                }
+                fieldNames.add(nextName);
+            }
+            _fieldNames = new String[1];
+            _fieldNames = fieldNames.toArray(_fieldNames);
+
+            Type[] fieldTypes = new Type[_fieldNames.length];
+            for (int i = 0; i < _fieldNames.length; i++) {
+                fieldTypes[i] = BaseType.STRING;
+            }
+
+            // Skip the first line, which only has header information.
+            _currentLine = _nextLine;
+            try {
+                _nextLine = _reader.readLine();
+            } catch (IOException ex) {
+                throw new IllegalActionException(this, ex, "initialize() failed");
+            }
+        }
+
         if (_currentLine != null) {
             StringTokenizer tokenizer = new StringTokenizer(_currentLine,
                     _delimiter);
             int i = 0;
-            StringToken[] fieldValues = new StringToken[_fieldNames.length];
+            Token[] fieldValues = new Token[_fieldNames.length];
             while (tokenizer.hasMoreTokens()) {
                 if (i >= _fieldNames.length) {
                     // Ignore additional fields.
@@ -227,7 +299,27 @@ public class CSVReader extends LineReader {
                 if (((BooleanToken) trimSpaces.getToken()).booleanValue()) {
                     nextToken = nextToken.trim();
                 }
-                fieldValues[i] = new StringToken(nextToken);
+                try {
+                    if (_parser == null) {
+                        _parser = new PtParser();
+                    }
+
+                    ASTPtRootNode parseTree = _parser.generateParseTree(nextToken);
+
+                    if (_parseTreeEvaluator == null) {
+                        _parseTreeEvaluator = new ParseTreeEvaluator();
+                    }
+
+                    if (_scope == null) {
+                        _scope = new ExpressionScope();
+                    }
+
+                    fieldValues[i] = _parseTreeEvaluator.evaluateParseTree(parseTree, _scope);
+                } catch (IllegalActionException ex) {
+                    // Chain exceptions to get the actor that threw the exception.
+                    throw new IllegalActionException(this, ex, "Expression invalid.");
+                }
+
                 i++;
             }
             while (i < _fieldNames.length) {
@@ -245,82 +337,103 @@ public class CSVReader extends LineReader {
         }
     }
 
-    /** Read the second line of the file.
-     *  If this is called after prefire() has been called but before
-     *  wrapup() has been called, then first close any
-     *  open file re-open it, and read and discard the first line.
-     *  This occurs if this actor is re-initialized during a run of the model.
-     *  @exception IllegalActionException If the file or URL cannot be
-     *   opened, or if the lines to be skipped and the first line to be
-     *   sent out in the fire() method cannot be read.
+    /** Wrapup execution of this actor.  This method overrides the
+     *  base class to discard the internal parser to save memory.
      */
-    public void initialize() throws IllegalActionException {
-        // Close and re-open the file, and read the first two lines.
-        // They will be in _currentLine and _nextLine, respectively.
-        super.initialize();
-        if (_reader == null) {
-            throw new IllegalActionException(this, "No file to read.");
-        }
-
-        // Skip the first line, which only has header information.
-        _currentLine = _nextLine;
-        try {
-            _nextLine = _reader.readLine();
-        } catch (IOException ex) {
-            throw new IllegalActionException(this, ex, "initialize() failed");
-        }
-    }
-
-    /** Open the file or URL, skip the number of lines specified by the
-     *  <i>numberOfLinesToSkip</i> parameter, and read the first line to
-     *  be sent out in the fire() method.
-     *  This is done in preinitialize() so
-     *  that derived classes can extract information from the file
-     *  that affects information used in type resolution or scheduling.
-     *  @exception IllegalActionException If the file or URL cannot be
-     *   opened, or if the lines to be skipped and the first line to be
-     *   sent out in the fire() method cannot be read.
-     */
-    public void preinitialize() throws IllegalActionException {
-        super.preinitialize();
-
-        // The following call will read the first line and put
-        // its value into the _currentLine variable.
-        // It will also read the next line and put it into the
-        // _nextLine variable. These two lines will be read again
-        // in initialize(), which will close and re-open the file.
-        _openAndReadFirstTwoLines();
-
-        if (_currentLine == null) {
-            throw new IllegalActionException("File has no data.");
-        }
-        StringTokenizer tokenizer = new StringTokenizer(_currentLine,
-                _delimiter);
-        ArrayList<String> fieldNames = new ArrayList<String>();
-        while (tokenizer.hasMoreElements()) {
-            String nextName = tokenizer.nextToken();
-            if (((BooleanToken) trimSpaces.getToken()).booleanValue()) {
-                nextName = nextName.trim();
-            }
-            fieldNames.add(nextName);
-        }
-        _fieldNames = new String[1];
-        _fieldNames = fieldNames.toArray(_fieldNames);
-
-        Type[] fieldTypes = new Type[_fieldNames.length];
-        for (int i = 0; i < _fieldNames.length; i++) {
-            fieldTypes[i] = BaseType.STRING;
-        }
-        RecordType outputType = new RecordType(_fieldNames, fieldTypes);
-        output.setTypeEquals(outputType);
+    public void wrapup() {
+        _parser = null;
     }
 
     ///////////////////////////////////////////////////////////////////
+    ////                       protected methods                   ////
+
+    /** Override the default to eliminate the default type constraints/.
+     *  @return An empty set of type constraints
+     */
+    @Override
+    protected Set<Inequality> _defaultTypeConstraints() {
+        return new HashSet<Inequality>();
+    }
+    
+    ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
 
-    /** The string delimiter. */
+    /** The delimiter. */
     private String _delimiter = ",";
 
     /** Field names for the output record. */
     private String[] _fieldNames;
+    
+    /** The parse tree evaluator to use. */
+    private ParseTreeEvaluator _parseTreeEvaluator = null;
+
+    /** The parser to use. */
+    private PtParser _parser = null;
+    
+    /** The scope for the parser. */
+    private ParserScope _scope = null;
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         inner classes                     ////
+    
+    // FIXME: This is copied from ExpressionToToken. Some way to share?
+    private class ExpressionScope extends ModelScope {
+        /** Look up and return the attribute with the specified name in the
+         *  scope. Return null if such an attribute does not exist.
+         *  @return The attribute with the specified name in the scope.
+         */
+        public Token get(String name) throws IllegalActionException {
+            Variable result = getScopedVariable(null, CSVReader.this,
+                    name);
+
+            if (result != null) {
+                return result.getToken();
+            }
+
+            return null;
+        }
+
+        /** Look up and return the type of the attribute with the
+         *  specified name in the scope. Return null if such an
+         *  attribute does not exist.
+         *  @return The attribute with the specified name in the scope.
+         */
+        public Type getType(String name) throws IllegalActionException {
+            Variable result = getScopedVariable(null, CSVReader.this,
+                    name);
+
+            if (result != null) {
+                return (Type) result.getTypeTerm().getValue();
+            }
+
+            return null;
+        }
+
+        /** Look up and return the type term for the specified name
+         *  in the scope. Return null if the name is not defined in this
+         *  scope, or is a constant type.
+         *  @return The InequalityTerm associated with the given name in
+         *  the scope.
+         *  @exception IllegalActionException If a value in the scope
+         *  exists with the given name, but cannot be evaluated.
+         */
+        public ptolemy.graph.InequalityTerm getTypeTerm(String name)
+                throws IllegalActionException {
+            Variable result = getScopedVariable(null, CSVReader.this,
+                    name);
+
+            if (result != null) {
+                return result.getTypeTerm();
+            }
+
+            return null;
+        }
+
+        /** Return the list of identifiers within the scope.
+         *  @return The list of identifiers within the scope.
+         */
+        public Set identifierSet() {
+            return getAllScopedVariableNames(null, CSVReader.this);
+        }
+    }
 }

@@ -30,9 +30,11 @@ import java.io.BufferedReader;
 
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.lib.LimitedFiringSource;
+import ptolemy.data.BooleanToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.expr.FileParameter;
 import ptolemy.data.expr.Parameter;
+import ptolemy.data.expr.SingletonParameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
@@ -76,6 +78,8 @@ public class FileReader extends LimitedFiringSource {
 
         fileOrURLPort = new TypedIOPort(this, "fileOrURL", true, false);
         fileOrURLPort.setTypeEquals(BaseType.STRING);
+        new SingletonParameter(fileOrURLPort, "_showName")
+                .setToken(BooleanToken.TRUE);
 
         newline = new Parameter(this, "newline");
         newline.setExpression("property(\"line.separator\")");

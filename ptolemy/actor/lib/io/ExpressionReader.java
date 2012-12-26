@@ -52,6 +52,7 @@ import ptolemy.kernel.util.Workspace;
  @author  Edward A. Lee
  @version $Id$
  @since Ptolemy II 2.2
+ @deprecated Use LineReader and ExpressionToToken.
  @Pt.ProposedRating Yellow (eal)
  @Pt.AcceptedRating Red (liuj)
  */

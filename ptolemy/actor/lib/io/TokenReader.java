@@ -58,6 +58,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  @author Edward A. Lee, Marten Lohstroh
  @version $Id$
  @since Ptolemy II 9.0
+ @deprecated Use LineReader followed by ExpressionToToken.
  @Pt.ProposedRating Red (eal)
  @Pt.AcceptedRating Red (reviewmoderator)
  */

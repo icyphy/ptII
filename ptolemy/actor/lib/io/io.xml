@@ -15,6 +15,10 @@
               class="ptolemy.actor.lib.io.CSVReader">
       </entity>
 
+      <entity name="CSVWriter"
+              class="ptolemy.actor.lib.io.CSVWriter">
+      </entity>
+
       <entity name="DatagramReader"
               class="ptolemy.actor.lib.net.DatagramReader">
       </entity>
@@ -27,6 +31,7 @@
               class="ptolemy.actor.lib.io.DirectoryListing">
       </entity>
 
+<!-- depracated
       <entity name="ExpressionReader" class="ptolemy.actor.lib.io.ExpressionReader">
         <doc>Read one expression per line from a text file and output the result of evaluating the expression</doc>
       </entity>
@@ -34,17 +39,18 @@
       <entity name="ExpressionWriter" class="ptolemy.actor.lib.io.ExpressionWriter">
         <doc>Write one token per line to a text file as an expression</doc>
       </entity>
-      
+-->
       <entity name="FileReader" class="ptolemy.actor.lib.io.FileReader">
         <doc>Read an entire file and output as a string</doc>
       </entity>
       
+<!-- depracated
       <entity name="TokenReader" class="ptolemy.actor.lib.io.TokenReader">
         <doc>Reads a string from a file or URL and parses it into tokens</doc>
       </entity>
-      
+-->
       <entity name="FileWriter" class="ptolemy.actor.lib.FileWriter">
-        <doc>Read an entire file and output as a string</doc>
+        <doc>Write an entire file from a string</doc>
       </entity>
 
       <entity name="LineReader" class="ptolemy.actor.lib.io.LineReader">

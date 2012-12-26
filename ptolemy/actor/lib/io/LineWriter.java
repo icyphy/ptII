@@ -35,7 +35,9 @@ import ptolemy.actor.parameters.FilePortParameter;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.Token;
+import ptolemy.data.expr.FileParameter;
 import ptolemy.data.expr.Parameter;
+import ptolemy.data.expr.SingletonParameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
@@ -51,10 +53,11 @@ import ptolemy.util.MessageHandler;
  <p>This actor reads string-valued input tokens and writes them,
  one line at a time, to a specified file.  It does not
  include any enclosing quotation marks in the output.
- If you need the enclosing quotation marks, use ExpressionWriter.</p>
+ If you need the enclosing quotation marks, precede this
+ actor with TokenToExpression.</p>
  <p>
  The file is specified by the <i>fileName</i> attribute
- using any form acceptable to FilePortParameter.</p>
+ using any form acceptable to {@link FileParameter}.</p>
  <p>
  If the <i>append</i> attribute has value <i>true</i>,
  then the file will be appended to. If it has value <i>false</i>,
@@ -66,7 +69,7 @@ import ptolemy.util.MessageHandler;
  without asking.  If <i>true</i> (the default), then if the file
  exists, then this actor will ask for confirmation before overwriting.</p>
 
- @see FilePortParameter
+ @see FileParameter
  @see ExpressionWriter
  @author  Edward A. Lee
  @version $Id$
@@ -87,10 +90,14 @@ public class LineWriter extends Sink {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
-        _setInputConstraints();
+        input.setTypeEquals(BaseType.STRING);
+        new SingletonParameter(input, "_showName")
+                .setToken(BooleanToken.TRUE);
 
         fileName = new FilePortParameter(this, "fileName");
         fileName.setExpression("System.out");
+        new SingletonParameter(fileName.getPort(), "_showName")
+                .setToken(BooleanToken.TRUE);
 
         append = new Parameter(this, "append");
         append.setTypeEquals(BaseType.BOOLEAN);
@@ -194,7 +201,8 @@ public class LineWriter extends Sink {
         return newObject;
     }
 
-    /** Read an input string token and write it to the file.
+    /** Read an input string token from each input
+     *  channel and write it to the file, one line per token.
      *  If there is no input, do nothing.
      *  If the file is not open for writing then open it. If the file
      *  does not exist, then create it.  If the file already exists,
@@ -205,49 +213,49 @@ public class LineWriter extends Sink {
      */
     public boolean postfire() throws IllegalActionException {
         fileName.update();
-        if (input.hasToken(0)) {
-            Token token = input.get(0);
+        for (int i = 0; i < input.getWidth(); i++) {
+            if (input.hasToken(i)) {
+                Token token = input.get(i);
 
-            if (_writer == null) {
-                boolean appendValue = ((BooleanToken) append.getToken())
-                        .booleanValue();
+                if (_writer == null) {
+                    // File has not been opened.
+                    boolean appendValue = ((BooleanToken) append.getToken())
+                            .booleanValue();
 
-                String fileNameValue = fileName.stringValue();
+                    String fileNameValue = fileName.stringValue();
 
-                // If previousFileName is null, we have never opened a file.
-                if (_previousFileName == null) {
-                    _previousFileName = fileNameValue;
-                }
+                    // If previousFileName is null, we have never opened a file.
+                    if (_previousFileName == null) {
+                        _previousFileName = fileNameValue;
+                    }
+                    if (!fileNameValue.equals("System.out")) {
+                        // Only check for append and overwrite if the
+                        // fileName is not "System.out"
+                        // Open the file.
+                        File file = fileName.asFile();
+                        boolean confirmOverwriteValue = ((BooleanToken) confirmOverwrite
+                                .getToken()).booleanValue();
 
-                if (!fileNameValue.equals("System.out")) {
-                    // Only check for append and overwrite if the
-                    // fileName is not "System.out"
-                    // Open the file.
-                    File file = fileName.asFile();
-                    boolean confirmOverwriteValue = ((BooleanToken) confirmOverwrite
-                            .getToken()).booleanValue();
-
-                    // Don't ask for confirmation in append mode, since there
-                    // will be no loss of data.
-                    if (file.exists() && !appendValue && confirmOverwriteValue) {
-                        // Query for overwrite.
-                        // FIXME: This should be called in the event thread!
-                        // There is a chance of deadlock since it is not.
-                        if (!MessageHandler.yesNoQuestion("OK to overwrite "
-                                + file + "?")) {
-                            throw new IllegalActionException(this,
-                                    "Please select another file name.");
+                        // Don't ask for confirmation in append mode, since there
+                        // will be no loss of data.
+                        if (file.exists() && !appendValue && confirmOverwriteValue) {
+                            // Query for overwrite.
+                            // FIXME: This should be called in the event thread!
+                            // There is a chance of deadlock since it is not.
+                            if (!MessageHandler.yesNoQuestion("OK to overwrite "
+                                    + file + "?")) {
+                                throw new IllegalActionException(this,
+                                        "Please select another file name.");
+                            }
                         }
                     }
+
+                    _writer = new PrintWriter(fileName.openForWriting(appendValue),
+                            true);
                 }
-
-                _writer = new PrintWriter(fileName.openForWriting(appendValue),
-                        true);
+                _writeToken(token);
             }
-
-            _writeToken(token);
         }
-
         return super.postfire();
     }
 
@@ -270,16 +278,6 @@ public class LineWriter extends Sink {
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
-
-    /** Set the type constraints and multiport property of the input
-     *  port. This is done here so that derived classes can override it.
-     *  @exception IllegalActionException If making the port a multiport
-     *   is not allowed.
-     */
-    protected void _setInputConstraints() throws IllegalActionException {
-        input.setTypeEquals(BaseType.STRING);
-        input.setMultiport(false);
-    }
 
     /** Write the specified token to the current writer.
      *  This is protected so that derived classes can modify the

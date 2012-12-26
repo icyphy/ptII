@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="ReadStdIn" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
     </property>
     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
@@ -12,16 +12,16 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="75.0, 40.0">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={45, 87, 813, 536}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={45, 87, 834, 634}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 426]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 524]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 213.0}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This example illustrates how to read from Standard Input.&#10;The fireOrURL parameter in LineReader is set to System.in.&#10;&#10;Note that the model does not complete inferring its widths&#10;until after the first input is entered and the Enter key is hit.&#10;&#10;Note also that there is a delay, the user does not see&#10;the first input until the second input is entered.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This example illustrates how to read from Standard Input.&#10;The fireOrURL parameter in LineReader is set to System.in.&#10;&#10;Note that the model does not complete inferring its types&#10;until after the first input is entered and the Enter key is hit.&#10;&#10;Note also that there is a delay, the user does not see&#10;the first input until the second input is entered.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{20.0, 185.0}">
         </property>

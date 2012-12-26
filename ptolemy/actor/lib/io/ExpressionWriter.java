@@ -60,6 +60,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  @see ExpressionReader
  @see ptolemy.data.expr.FileParameter
  @see LineWriter
+ @deprecated Use TokenToExpression followed by LineWriter.
 
  @author Edward A. Lee
  @version $Id$

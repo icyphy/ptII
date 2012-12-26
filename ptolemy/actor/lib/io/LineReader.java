@@ -32,11 +32,13 @@ import java.io.IOException;
 
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.lib.Source;
+import ptolemy.actor.parameters.FilePortParameter;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.expr.FileParameter;
 import ptolemy.data.expr.Parameter;
+import ptolemy.data.expr.SingletonParameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
@@ -67,10 +69,7 @@ import ptolemy.kernel.util.Workspace;
  <p>
  This actor reads ahead in the file so that it can produce an output
  <i>true</i> on <i>endOfFile</i> in the same iteration where it outputs
- the last line.  It reads the first line in preinitialize(), and
- subsequently reads a new line in each invocation of postfire().  The
- line read is produced on the <i>output</i> in the next iteration
- after it is read.</p>
+ the last line.</p>
  <p>
  This actor can skip some lines at the beginning of the file or URL, with
  the number specified by the <i>numberOfLinesToSkip</i> parameter. The
@@ -106,7 +105,10 @@ public class LineReader extends Source {
         endOfFile = new TypedIOPort(this, "endOfFile", false, true);
         endOfFile.setTypeEquals(BaseType.BOOLEAN);
 
-        fileOrURL = new FileParameter(this, "fileOrURL");
+        fileOrURL = new FilePortParameter(this, "fileOrURL");
+        // Parameter to get Vergil to label the fileOrURL port.
+        new SingletonParameter(fileOrURL.getPort(), "_showName")
+                .setToken(BooleanToken.TRUE);
 
         numberOfLinesToSkip = new Parameter(this, "numberOfLinesToSkip");
         numberOfLinesToSkip.setExpression("0");
@@ -133,7 +135,7 @@ public class LineReader extends Source {
      *  any form accepted by FileParameter.
      *  @see FileParameter
      */
-    public FileParameter fileOrURL;
+    public FilePortParameter fileOrURL;
 
     /** The number of lines to skip at the beginning of the file or URL.
      *  This parameter contains an IntToken, initially with value 0.
@@ -215,9 +217,15 @@ public class LineReader extends Source {
      */
     public void fire() throws IllegalActionException {
         super.fire();
-
+        fileOrURL.update();
+        if (_firstFiring) {
+            _openAndReadFirstTwoLines();
+            _firstFiring = false;
+        }
         if (_currentLine != null) {
             output.broadcast(new StringToken(_currentLine));
+        } else {
+            throw new IllegalActionException(this, "File is empty.");
         }
         if (_nextLine == null) {
             endOfFile.broadcast(BooleanToken.TRUE);
@@ -242,7 +250,7 @@ public class LineReader extends Source {
         // it and the reopen it.
         fileOrURL.close();
         _reader = null;
-        _openAndReadFirstTwoLines();
+        _firstFiring = true;
     }
 
     /** Read the next line from the file.
@@ -273,25 +281,13 @@ public class LineReader extends Source {
         return returnValue;
     }
 
-    /** Return false if there is no more data available in the file.
-     *  Otherwise, return whatever the superclass returns.
-     *  @exception IllegalActionException If the superclass throws it.
-     */
-    public boolean prefire() throws IllegalActionException {
-        // If there is no current line, refuse to fire.
-        if (_currentLine == null) {
-            return false;
-        } else {
-            return super.prefire();
-        }
-    }
-
     /** Close the reader if there is one.
      *  @exception IllegalActionException If an IO error occurs.
      */
     public void wrapup() throws IllegalActionException {
         fileOrURL.close();
         _reader = null;
+        _firstFiring = true;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -355,6 +351,12 @@ public class LineReader extends Source {
         }
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                       protected members                   ////
+
+    /** First firing indicator. */
+    protected boolean _firstFiring;
+    
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
 

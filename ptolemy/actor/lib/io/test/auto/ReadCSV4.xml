@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="ReadCSV4" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
     </property>
     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
@@ -18,9 +18,9 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{85.0, 55.0}">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={139, 36, 812, 484}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={139, 36, 833, 634}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[599, 374]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[599, 524]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
@@ -32,8 +32,10 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{175.0, 50.0}">
         </property>
     </property>
+    <property name="enableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="true">
+    </property>
     <entity name="CSVReader" class="ptolemy.actor.lib.io.CSVReader">
-        <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="data/data4.tsv">
+        <property name="fileOrURL" class="ptolemy.actor.parameters.FilePortParameter" value="data/data4.tsv">
         </property>
         <property name="separator" class="ptolemy.data.expr.StringParameter" value="tab">
         </property>
@@ -47,7 +49,7 @@
         </property>
     </entity>
     <entity name="Test" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{[x = &quot;1&quot;, y = &quot;2&quot;, z = &quot;3&quot;], [x = &quot;4&quot;, y = &quot;5&quot;, z = &quot;6&quot;]}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{[x = 1, y = 2, z = 3], [x = 4, y = 5, z = 6]}">
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
