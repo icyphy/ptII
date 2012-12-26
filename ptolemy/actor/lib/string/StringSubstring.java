@@ -81,10 +81,13 @@ public class StringSubstring extends Transformer {
         stop = new PortParameter(this, "stop");
         stop.setExpression("0");
         stop.setTypeEquals(BaseType.INT);
-        (new SingletonParameter(start.getPort(), "_showName"))
+        (new SingletonParameter(stop.getPort(), "_showName"))
                 .setToken(BooleanToken.TRUE);
 
         input.setTypeEquals(BaseType.STRING);
+        (new SingletonParameter(input, "_showName"))
+                .setToken(BooleanToken.TRUE);
+
         output.setTypeEquals(BaseType.STRING);
     }
 

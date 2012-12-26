@@ -59,7 +59,13 @@ JSRCS = \
 	StringSubstring.java
 
 OTHER_FILES_TO_BE_JARED = \
-	string.xml
+	string.xml \
+	StringIndexOfIcon.xml \
+	StringLengthIcon.xml \
+	StringMatchesIcon.xml \
+	StringReplaceIcon.xml \
+	StringSplitIcon.xml \
+	StringSubstringIcon.xml
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 

@@ -32,14 +32,19 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
+import ptolemy.actor.TypedAtomicActor;
+import ptolemy.actor.TypedIOPort;
+import ptolemy.actor.parameters.PortParameter;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.expr.Parameter;
+import ptolemy.data.expr.SingletonParameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Workspace;
 
 ///////////////////////////////////////////////////////////////////
 //// StringReplace
@@ -88,7 +93,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  @Pt.ProposedRating Green (djstone)
  @Pt.AcceptedRating Green (net)
  */
-public class StringReplace extends StringSimpleReplace {
+public class StringReplace extends TypedAtomicActor {
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -100,19 +105,73 @@ public class StringReplace extends StringSimpleReplace {
     public StringReplace(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
+        
+        // Create new parameters and ports.
+        // Set default values of the parameters and type constraints.
+        pattern = new PortParameter(this, "pattern");
+        pattern.setStringMode(true);
+        pattern.setExpression("");
+        (new SingletonParameter(pattern.getPort(), "_showName"))
+                .setToken(BooleanToken.TRUE);
+
+        replacement = new PortParameter(this, "replacement");
+        replacement.setStringMode(true);
+        replacement.setExpression("");
+        (new SingletonParameter(replacement.getPort(), "_showName"))
+                .setToken(BooleanToken.TRUE);
+
+        stringToEdit = new PortParameter(this, "stringToEdit");
+        stringToEdit.setStringMode(true);
+        stringToEdit.setExpression("");
+        (new SingletonParameter(stringToEdit.getPort(), "_showName"))
+                .setToken(BooleanToken.TRUE);
+
+        output = new TypedIOPort(this, "output", false, true);
+        output.setTypeEquals(BaseType.STRING);
 
         replaceAll = new Parameter(this, "replaceAll");
         replaceAll.setExpression("true");
         replaceAll.setTypeEquals(BaseType.BOOLEAN);
+        
+        regularExpression = new Parameter(this, "regularExpression");
+        regularExpression.setExpression("true");
+        regularExpression.setTypeEquals(BaseType.BOOLEAN);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
+    /** The string to edit by replacing substrings that match the
+     *  specified pattern with the specified replacement. This is
+     *  a string that defaults to the empty string.
+     */
+    public PortParameter stringToEdit;
+
+    /** The output port on which the edited string is produced.
+     *  This has type string.
+     */
+    public TypedIOPort output;
+
+    /** The pattern used to pattern match and replace the stringToEdit
+     *  string. It is an empty string by default.
+     */
+    public PortParameter pattern;
+
+    /** The replacement string that replaces any matched instance of the
+     *  pattern. It is an empty string by default.
+     */
+    public PortParameter replacement;
+
     /** When the boolean value is true, replace all instances that match the
      *  pattern, and when false, replace the first instance.
      */
     public Parameter replaceAll;
+    
+    /** If true, interpret the pattern as a regular expression. Otherwise,
+     *  interpret it as the literal string to replace. This is a boolean
+     *  that defaults to true.
+     */
+    public Parameter regularExpression;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -127,22 +186,35 @@ public class StringReplace extends StringSimpleReplace {
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == pattern) {
-            try {
-                String patternValue = ((StringToken) pattern.getToken())
-                        .stringValue();
-                _pattern = Pattern.compile(patternValue);
-            } catch (PatternSyntaxException ex) {
-                String patternValue = ((StringToken) pattern.getToken())
-                        .stringValue();
-                throw new IllegalActionException(this, ex,
-                        "Failed to compile regular expression \""
-                                + patternValue + "\"");
+            _patternValue = ((StringToken) pattern.getToken()).stringValue();
+            // FIXME: What is the following about???
+            if (_patternValue.equals("\\r")) {
+                _patternValue = "\r";
             }
+            _pattern = null;
         } else {
             super.attributeChanged(attribute);
         }
     }
 
+    /** Clone the attribute into the specified workspace.  The resulting
+     *  object has no base directory name nor any reference to any open stream.
+     *  @param workspace The workspace for the new object.
+     *  @return A new attribute.
+     *  @exception CloneNotSupportedException If a derived class contains
+     *   an attribute that cannot be cloned.
+     */
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        StringReplace newObject = (StringReplace)super.clone(workspace);
+        try {
+            newObject.attributeChanged(newObject.pattern);
+        } catch (IllegalActionException e) {
+            // Should not occur.
+            throw new CloneNotSupportedException("Cloning failed");
+        }
+        return newObject;
+    }
+    
     /** Perform pattern matching and substring replacement, and output
      *  the modified string. If no match is found, output the
      *  unmodified stringToEdit string.
@@ -164,23 +236,49 @@ public class StringReplace extends StringSimpleReplace {
                 .stringValue();
         boolean replaceAllTokens = ((BooleanToken) replaceAll.getToken())
                 .booleanValue();
-
-        Matcher match = _pattern.matcher(stringToEditValue);
-        String outputString = "";
-
-        // Unfortunately, the String class throws runtime exceptions
-        // if something goes wrong, so we have to catch them.
-        try {
-            if (replaceAllTokens) {
-                outputString = match.replaceAll(replacementValue);
-            } else {
-                outputString = match.replaceFirst(replacementValue);
+        boolean regularExpressionValue = ((BooleanToken) regularExpression.getToken())
+                .booleanValue();
+        
+        if (regularExpressionValue) {
+            if (_pattern == null) {
+                try {
+                    String patternValue = ((StringToken) pattern.getToken())
+                            .stringValue();
+                    _pattern = Pattern.compile(patternValue);
+                } catch (PatternSyntaxException ex) {
+                    String patternValue = ((StringToken) pattern.getToken())
+                            .stringValue();
+                    throw new IllegalActionException(this, ex,
+                            "Failed to compile regular expression \""
+                                    + patternValue + "\"");
+                }
             }
-        } catch (Exception ex) {
-            throw new IllegalActionException(this, ex, "String replace failed.");
-        }
+            Matcher match = _pattern.matcher(stringToEditValue);
+            String outputString = "";
 
-        output.send(0, new StringToken(outputString));
+            // Unfortunately, the String class throws runtime exceptions
+            // if something goes wrong, so we have to catch them.
+            try {
+                if (replaceAllTokens) {
+                    outputString = match.replaceAll(replacementValue);
+                } else {
+                    outputString = match.replaceFirst(replacementValue);
+                }
+            } catch (Exception ex) {
+                throw new IllegalActionException(this, ex, "String replace failed.");
+            }
+
+            output.send(0, new StringToken(outputString));
+        } else {
+            // No regular expression.
+            String outputString;
+            if (replaceAllTokens) {
+                outputString = stringToEditValue.replaceAll(_patternValue, replacementValue);
+            } else {
+                outputString = stringToEditValue.replace(_patternValue, replacementValue);
+            }
+            output.send(0, new StringToken(outputString));
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -188,4 +286,7 @@ public class StringReplace extends StringSimpleReplace {
 
     // The compiled regular expression.
     private Pattern _pattern;
+    
+    // The replacement string.
+    private String _patternValue;
 }
