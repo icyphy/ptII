@@ -110,7 +110,9 @@
 </entity>
 
 <entity name="ClipPlayer" class="ptolemy.actor.lib.javasound.ClipPlayer"/>
+<!-- Deprecated. Use AudioPlayer
 <entity name="SoundPlayer" class="ptolemy.actor.lib.javasound.SoundPlayer"/>
+-->
       </group>
     ?>
   </configure>

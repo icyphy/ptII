@@ -82,6 +82,7 @@ JSRCS = \
 	XYScope.java
 
 OTHER_FILES_TO_BE_JARED = \
+	ArrowKeySensorIcon.xml \
 	XYPlotter.gif
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
