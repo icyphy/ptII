@@ -473,6 +473,30 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{80.0, 285.0}">
         </property>
     </entity>
+    <entity name="BooleanToAnything" class="ptolemy.actor.lib.conversions.BooleanToAnything">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 360.0]">
+        </property>
+    </entity>
+    <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={604, 723, 498, 224}, maximized=false}">
+        </property>
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[498, 180]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{230, 360}">
+        </property>
+        <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>Red Light</title>
+<xLabel>time</xLabel>
+<yLabel>on-off</yLabel>
+<xRange min="0.0" max="30.0"/>
+<yRange min="0.0" max="1.0"/>
+<default connected="no" marks="dots" stems="yes"/>
+</plot>?>
+        </configure>
+    </entity>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
         <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;NonStrictTest.input&quot;,x=205.0,y=220.0}, tail={id=&quot;CurrentTime.output&quot;,x=100.0,y=220.0}, points={} } }">
         </property>
@@ -489,6 +513,8 @@
         <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;CurrentTime.trigger&quot;,x=100.0,y=220.0}, tail={id=&quot;relation4.vertex1&quot;,x=30.0,y=285.0}, points={30.0,220.0} },{ head={id=&quot;NonStrictTest2.input&quot;,x=80.0,y=285.0}, tail={id=&quot;relation4.vertex1&quot;,x=30.0,y=285.0}, points={} },{ head={id=&quot;CarLight.red&quot;,x=240.0,y=155.0}, tail={id=&quot;relation4.vertex1&quot;,x=30.0,y=285.0}, points={315.0,145.0,315.0,105.0,30.0,105.0} },{ head={id=&quot;relation4.vertex1&quot;,x=30.0,y=285.0}, tail={id=&quot;Pedestrian.go&quot;,x=90.0,y=155.0}, points={30.0,155.0} } }">
         </property>
     </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
     <link port="NonStrictTest.input" relation="relation2"/>
     <link port="CurrentTime.output" relation="relation2"/>
     <link port="CurrentTime.trigger" relation="relation4"/>
@@ -497,4 +523,7 @@
     <link port="CarLight.red" relation="relation4"/>
     <link port="CarLight.pedestrian" relation="relation3"/>
     <link port="NonStrictTest2.input" relation="relation4"/>
+    <link port="BooleanToAnything.input" relation="relation4"/>
+    <link port="BooleanToAnything.output" relation="relation"/>
+    <link port="TimedPlotter.input" relation="relation"/>
 </entity>
