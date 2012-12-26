@@ -50,6 +50,7 @@ import ptolemy.kernel.util.Workspace;
  of the function needs to be less than the output type of this actor.
 
  @author Yang Zhao
+ @deprecated Use ApplyFunction.
  @version $Id$
  @since Ptolemy II 4.0
  @Pt.ProposedRating Red (eal)

@@ -10,10 +10,11 @@
         <doc>The function is applied to its input data.</doc>
       </entity>
 
+<!-- deprecated
       <entity name="ApplyFunctionOverSequence" class="ptolemy.actor.lib.hoc.ApplyFunctionOverSequence">
         <doc>The function is applied to its input data.</doc>
       </entity>
-
+-->
       <entity name="Case" class="ptolemy.actor.lib.hoc.Case"/>
 
       <entity name="IterateOverArray" class="ptolemy.actor.lib.hoc.IterateOverArray">
@@ -45,10 +46,11 @@
         </entity>
       </entity>
       
-
+<!-- deprecated
       <entity name="MobileFunction" class="ptolemy.actor.lib.hoc.MobileFunction">
         <doc>The function it applied to its input data can be dynamically defined.</doc>
       </entity>
+-->
 
       <entity name="MobileModel" class="ptolemy.actor.lib.hoc.MobileModel">
         <doc>The inside model of this composite actor can be dynamically defined.</doc>

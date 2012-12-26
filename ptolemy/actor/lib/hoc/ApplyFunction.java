@@ -31,9 +31,15 @@ import java.util.Iterator;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.parameters.PortParameter;
+import ptolemy.data.BooleanToken;
 import ptolemy.data.FunctionToken;
 import ptolemy.data.Token;
+import ptolemy.data.expr.SingletonParameter;
+import ptolemy.data.type.BaseType;
 import ptolemy.data.type.FunctionType;
+import ptolemy.data.type.MonotonicFunction;
+import ptolemy.data.type.Type;
+import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -73,6 +79,8 @@ public class ApplyFunction extends TypedAtomicActor {
         super(workspace);
         output = new TypedIOPort(this, "output", false, true);
         function = new PortParameter(this, "function");
+        (new SingletonParameter(function, "_showName"))
+                .setToken(BooleanToken.TRUE);
     }
 
     /** Construct a ApplyFunction with a name and a container.
@@ -90,6 +98,8 @@ public class ApplyFunction extends TypedAtomicActor {
         super(container, name);
         output = new TypedIOPort(this, "output", false, true);
         function = new PortParameter(this, "function");
+        
+        output.setTypeAtLeast(new ReturnTypeFunction());
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -162,14 +172,33 @@ public class ApplyFunction extends TypedAtomicActor {
 
         return true;
     }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         inner classes                     ////
 
-    /** Preinitialize the actor.  Set the type of the ports based on
-     *  the type of the function parameter.
+    /** Montonic function of the function parameter that return
+     *  unknown if the function is unknown, the return type of
+     *  the function if the function is known and is a function,
+     *  and throws an exception otherwise.
      */
-    public void preinitialize() throws IllegalActionException {
-        super.preinitialize();
+    private class ReturnTypeFunction extends MonotonicFunction {
 
-        FunctionType type = (FunctionType) function.getType();
-        output.setTypeEquals(type.getReturnType());
+        public Object getValue() throws IllegalActionException {
+            Type functionType = function.getType();
+            if (functionType.equals(BaseType.UNKNOWN)) {
+                return BaseType.UNKNOWN;
+            }
+            if (functionType instanceof FunctionType) {
+                return ((FunctionType)functionType).getReturnType();
+            }
+            throw new IllegalActionException(ApplyFunction.this,
+                    "function is not a function. It is a " + functionType);
+        }
+
+        public InequalityTerm[] getVariables() {
+            InequalityTerm[] result = new InequalityTerm[1];
+            result[0] = function.getTypeTerm();
+            return result;
+        }
     }
 }

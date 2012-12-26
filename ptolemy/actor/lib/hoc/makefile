@@ -74,6 +74,7 @@ JSRCS = \
 	ThreadedComposite.java
 
 OTHER_FILES_TO_BE_JARED = \
+	ApplyFunctionIcon.xml \
 	CaseIcon.xml \
 	MobileFunctionIcon.xml \
 	MobileModelIcon.xml \

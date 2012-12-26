@@ -75,6 +75,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  ignored until the next execution of the model.
 
  @author Steve Neuendorffer (Contributor: Edward A. Lee)
+ @deprecated Use SequenceToArray followed by ApplyFunction.
  @version $Id$
  @since Ptolemy II 4.1
  @Pt.ProposedRating Green (neuendor)
