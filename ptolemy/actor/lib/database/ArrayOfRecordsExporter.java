@@ -68,6 +68,12 @@ public class ArrayOfRecordsExporter extends LineWriter {
     public ArrayOfRecordsExporter(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
+        
+        // Clear type constraint set by base class.
+        input.setTypeEquals(BaseType.UNKNOWN);
+        input.setMultiport(false);
+        // Force the type to contain at least a record.
+        input.setTypeAtMost(new ArrayType(RecordType.EMPTY_RECORD));
 
         records = new Parameter(this, "records");
         // Declare that it must be an array of records.
@@ -102,21 +108,7 @@ public class ArrayOfRecordsExporter extends LineWriter {
     public Parameter records;
 
     ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////
-
-    ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
-
-    /** Set the type constraints and multiport property of the input
-     *  port. This is done here so that derived classes can override it.
-     *  @exception IllegalActionException If making the port a multiport
-     *   is not allowed.
-     */
-    protected void _setInputConstraints() throws IllegalActionException {
-        input.setMultiport(false);
-        // Force the type to contain at least a record.
-        input.setTypeAtMost(new ArrayType(RecordType.EMPTY_RECORD));
-    }
 
     /** Write the specified token to the current writer.
      *  This is protected so that derived classes can modify the
