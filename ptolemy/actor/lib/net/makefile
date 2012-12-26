@@ -50,7 +50,10 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 JSRCS = DatagramReader.java \
         DatagramWriter.java
 
-
+OTHER_FILES_TO_BE_JARED = \
+	DatagramWriterIcon.xml \
+	DatagramReaderIcon.xml
+	
 EXTRA_SRCS =    $(JSRCS)
 
 # Sources that may or may not be present, but if they are present, we don't
