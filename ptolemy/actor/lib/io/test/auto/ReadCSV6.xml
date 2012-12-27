@@ -51,7 +51,7 @@
     <entity name="Test" class="ptolemy.actor.lib.Test">
         <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{[x = 1, y = 2, z = &quot;&quot;], [x = 4, y = 5, z = &quot;6&quot;], [x = &quot;&quot;, y = &quot;&quot;, z = &quot;&quot;], [x = &quot;8&quot;, y = &quot;9&quot;, z = &quot;&quot;]}">
         </property>
-        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="true">
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[240.0, 140.0]">
         </property>
