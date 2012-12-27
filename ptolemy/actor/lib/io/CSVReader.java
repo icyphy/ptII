@@ -299,13 +299,19 @@ public class CSVReader extends LineReader {
                 if (((BooleanToken) trimSpaces.getToken()).booleanValue()) {
                     nextToken = nextToken.trim();
                 }
+                if (_parser == null) {
+                    _parser = new PtParser();
+                }
+
+                ASTPtRootNode parseTree = null;
                 try {
-                    if (_parser == null) {
-                        _parser = new PtParser();
-                    }
-
-                    ASTPtRootNode parseTree = _parser.generateParseTree(nextToken);
-
+                    parseTree = _parser.generateParseTree(nextToken);
+                } catch (Exception ex) {
+                    // If the field cannot be parsed, then interpret
+                    // the field as a string.
+                    fieldValues[i] = new StringToken(nextToken);
+                }
+                if (parseTree != null) {
                     if (_parseTreeEvaluator == null) {
                         _parseTreeEvaluator = new ParseTreeEvaluator();
                     }
@@ -314,10 +320,13 @@ public class CSVReader extends LineReader {
                         _scope = new ExpressionScope();
                     }
 
-                    fieldValues[i] = _parseTreeEvaluator.evaluateParseTree(parseTree, _scope);
-                } catch (IllegalActionException ex) {
-                    // Chain exceptions to get the actor that threw the exception.
-                    throw new IllegalActionException(this, ex, "Expression invalid.");
+                    try {
+                        fieldValues[i] = _parseTreeEvaluator.evaluateParseTree(parseTree, _scope);
+                    } catch (Exception ex) {
+                        // If the field cannot be evaluated, then interpret
+                        // the field as a string.
+                        fieldValues[i] = new StringToken(nextToken);
+                    }
                 }
 
                 i++;
