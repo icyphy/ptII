@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="SendMail" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
     </property>
     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
@@ -46,6 +46,8 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[235.0, 365.0]">
         </property>
     </property>
+    <property name="enableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="true">
+    </property>
     <entity name="SendMail" class="ptolemy.actor.lib.mail.SendMail">
         <property name="to" class="ptolemy.actor.parameters.PortParameter" value="tycho@ptolemy.org">
         </property>
@@ -65,7 +67,7 @@
         </property>
     </entity>
     <entity name="CSVReader" class="ptolemy.actor.lib.io.CSVReader">
-        <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="Contacts.txt">
+        <property name="fileOrURL" class="ptolemy.actor.parameters.FilePortParameter" value="Contacts.txt">
         </property>
         <property name="separator" class="ptolemy.data.expr.StringParameter" value="comma">
         </property>
@@ -76,11 +78,6 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[185.0, 257.5]">
         </property>
         <port name="First_Name" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-        </port>
-        <port name="Last_Name" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
