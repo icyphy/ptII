@@ -20,9 +20,12 @@ SHARED_LIBRARY_SUFFIX = dylib
 PIC =
 #PIC = -fPIC
 
-# Build individual FMUs.
-# FIXME: The following doesn't work. "make helloWorld" simply says "helloWorld is up to date."
-# Weirdly, "make all" does not seem to think helloWorld is up to date and builds it...
+# Build an individual FMUs.
+
+# Note that there is directory named helloWorld, so we add a .PHONY
+# target so that 'make helloWorld' always runs the build_fmu script.  See
+# https://www.gnu.org/software/make/manual/html_node/Phony-Targets.html
+.PHONY : helloWorld
 helloWorld:
 	./build_fmu cs helloWorld
 
