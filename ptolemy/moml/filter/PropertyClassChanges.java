@@ -430,6 +430,39 @@ public class PropertyClassChanges extends MoMLFilterSimple {
                 "ptolemy.actor.lib.io.DirectoryListing",
                 directoryListingClassChanges);
 
+        // LineReader
+        HashMap lineReaderClassChanges = new HashMap();
+
+        // Key = property name, Value = new class name
+        lineReaderClassChanges.put("fileOrURL",
+                "ptolemy.actor.parameters.FilePortParameter");
+
+        _actorsWithPropertyClassChanges.put(
+                "ptolemy.actor.lib.io.LineReader",
+                lineReaderClassChanges);
+
+        // CSVReader
+        HashMap csvReaderClassChanges = new HashMap();
+
+        // Key = property name, Value = new class name
+        csvReaderClassChanges.put("fileOrURL",
+                "ptolemy.actor.parameters.FilePortParameter");
+
+        _actorsWithPropertyClassChanges.put(
+                "ptolemy.actor.lib.io.CSVReader",
+                csvReaderClassChanges);
+
+        // ExpressionReader
+        HashMap expressionReaderClassChanges = new HashMap();
+
+        // Key = property name, Value = new class name
+        expressionReaderClassChanges.put("fileOrURL",
+                "ptolemy.actor.parameters.FilePortParameter");
+
+        _actorsWithPropertyClassChanges.put(
+                "ptolemy.actor.lib.io.ExpressionReader",
+                expressionReaderClassChanges);
+
         // LineWriter
         HashMap lineWriterClassChanges = new HashMap();
 
