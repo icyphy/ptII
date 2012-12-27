@@ -713,11 +713,11 @@ public abstract class GenericCodeGenerator extends Attribute implements
     /** Generate code for a model.
      *  <p>For example:
      *  <pre>
-     *  java -classpath $PTII ptolemy.codegen.kernel.CodeGenerator $PTII/ptolemy/codegen/c/actor/lib/test/auto/Ramp.xml
+     *  java -classpath $PTII ptolemy.cg.kernel.generic.GenericCodeGenerator $PTII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/test/auto/Ramp.xml
      *  </pre>
      *  or
      *  <pre>
-     *  $PTII/bin/ptinvoke ptolemy.codegen.kernel.CodeGenerator $PTII/ptolemy/codegen/c/actor/lib/test/auto/Ramp.xml
+     *  $PTII/bin/ptinvoke ptolemy.cg.kernel.generic.GenericCodeGenerator $PTII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/test/auto/Ramp.xml
      *  </pre>
      *
      *  <p>The HandSimDroid work in $PTII/ptserver uses dependency
