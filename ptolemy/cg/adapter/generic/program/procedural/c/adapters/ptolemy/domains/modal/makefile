@@ -33,7 +33,7 @@
 
 ME =		ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/modal
 
-DIRS =		modal test
+DIRS =		kernel modal test
 
 # Root of the Java directory
 ROOT =		../../../../../../../../../../..

@@ -1,6 +1,6 @@
 # Makefile for Ptolemy Classic style Codegen
 #
-# @Version: $Id$
+# @Version: $Id: makefile 62069 2011-09-23 15:00:59Z cxh $
 # @Author: Christopher Brooks
 #
 # @Copyright (c) 2005-2011 The Regents of the University of California
@@ -31,12 +31,12 @@
 # 						COPYRIGHTENDKEY
 ##########################################################################
 
-ME =		ptolemy/cg/adapter/generic/program/procedural/adapters/ptolemy/domains/modal/kernel
+ME =		ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/modal/kernel
 
-DIRS =		
+DIRS =
 
 # Root of the Java directory
-ROOT =		../../../../../../../../../../..
+ROOT =		../../../../../../../../../../../..
 
 CLASSPATH =	$(ROOT)
 
@@ -45,40 +45,31 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	kernel
-PTCLASSJAR =
+PTPACKAGE = 	modal
+PTCLASSJAR =	$(PTPACKAGE).jar
 
-PTCLASSALLJAR = $(PTPACKAGE).jar
+PTCLASSALLJAR =
 
 # Include the .class files from these jars in PTCLASSALLJAR
 # If you change this, change DIRS above
-PTCLASSALLJARS = 
+PTCLASSALLJARS =
 
 # Keep this list alphabetized.
-JSRCS = \
-	FSMActor.java \
-        FSMDirector.java \
-	FSMReceiver.java
+JSRCS = FSMReceiver.java
 
-OTHER_FILES_TO_BE_JARED = \
-	FSMActor.j \
-	FSMActor.c
+OTHER_FILES_TO_BE_JARED = 
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
 # Don't include demo or DIRS here, or else 'make sources' will run 'make demo'
-MISC_FILES =	
+MISC_FILES =
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	demo \
-	'FSMActor$$1.class' \
-	'FSMActor$$OutgoingRelations.class' \
-	'FSMActor$$PortScope.class' \
-	'FSMActor$$TransitionRetriever.class'
+	demo
 
 JCLASS = $(JSRCS:%.java=%.class)
 

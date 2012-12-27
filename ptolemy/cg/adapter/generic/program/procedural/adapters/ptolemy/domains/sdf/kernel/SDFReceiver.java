@@ -60,7 +60,8 @@ public class SDFReceiver extends Receiver {
             throws IllegalActionException {
         super(receiver);
         // FIXME: not sure if this is totally correct.
-        if (receiver.getContainer().getContainer() instanceof CompositeActor) {
+        if (receiver != null
+                && receiver.getContainer().getContainer() instanceof CompositeActor) {
             _forComposite = true;
         }
     }

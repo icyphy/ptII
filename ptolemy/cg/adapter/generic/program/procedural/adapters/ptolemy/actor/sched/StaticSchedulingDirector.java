@@ -654,11 +654,13 @@ public class StaticSchedulingDirector extends Director {
             Double periodValue = ((DoubleToken) ((Variable) period).getToken())
                     .doubleValue();
             if (periodValue != 0.0) {
-                variableDeclarations.append(_eol
-                        + getCodeGenerator().comment(
-                                "Director has a period attribute,"
-                                        + " so we track current time."));
-                variableDeclarations.append(CURRENTTIME_DECLARATION);
+                if (variableDeclarations.toString().indexOf(StaticSchedulingDirector.CURRENTTIME_DECLARATION) == -1) {
+                    variableDeclarations.append(_eol
+                            + getCodeGenerator().comment(
+                                    "Director has a period attribute,"
+                                    + " so we track current time."));
+                    variableDeclarations.append(CURRENTTIME_DECLARATION);
+                }
             }
         }
 
