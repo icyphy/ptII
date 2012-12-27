@@ -50,6 +50,13 @@ import ptolemy.kernel.util.Locatable;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 
+///////////////////////////////////////////////////////////////////
+//// OpenModelicaDirector
+
+// FIXME: This comment looks to be from the left-to-right director?
+// FIXME: What does this Director do? 
+// FIXME: Briefly describe OpenModelica in a paragraph.  The issue
+// is that a reader might not know.
 /** Fire actors in left-to-right order. This director is a simple
  *  illustration of how to construct schedules for firing. It examines
  *  the location of the actor in a Vergil window, and on each
@@ -60,10 +67,20 @@ import ptolemy.kernel.util.NamedObj;
  *  <p>
  *  Note that this director will fire the actors forever. It may
  *  be difficult to stop the model executing.
+ *  FIXME: Edward is not the author,
  *  @author Edward A. Lee
+ *  FIXME: I added these JavaDoc tags, please add them to all your files
+ *  For version use DollarIdDollar, where Dollar is '$', it will get substituted.
+ *  @version $Id$
+ *  @since Ptolemy II 9.1
+ *  @Pt.ProposedRating Red (cxh)
+ *  @Pt.AcceptedRating Red (cxh)
+ *  
  */
 public class OpenModelicaDirector extends StaticSchedulingDirector {
 
+    // FIXME: Look at other directors and the style guide.  See SDFDirector.
+    // What does this constructor do?
     /** Constructor. A director is an Attribute.
      *  @param container The container for the director.
      *  @param name The name of the director.
@@ -83,28 +100,51 @@ public class OpenModelicaDirector extends StaticSchedulingDirector {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         public parameter and variables                 ////
+    ////                         parameters                        ////
+    // FIXME: Should be "The Parameter", not "Parameter"
     /** Parameter specifying the number of iterations.
      *  If the value is 0 or less, then the model does not stop
      *  executing on its own.
      *  This is an int that defaults to 1.
      */
     public Parameter iterations;
+    // FIXME: Place an empty line between variable declarations.
+    // FIXME: public variables do not start with underscore.
+    // FIXME: Be sure to say what OMC stands for?
+    // FIXME: Do these need to be public?  If they are only set in
+    // in this class, then should they be private and have just get?  
+    // FIXME: Javadoc comments end in a period.  These comments do
+    // not tell me what these variables are used for, please expand
+    // the comments.
+    // FIXME: What is a Pr?  In Ptolemy, we don't use abbeviations.
+    // Maybe change this to _omcProxy, make it private, move it
+    // below and add a getOMCProxy() method?
     /** Object of the OMCProxy */
     public static OMCProxy _omcPr;
+
+    // FIXME: See above.
     /** Object of the OMCLogger */
     public static OMCLogger _ptLogger;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                ////
 
+    // FIXME: The comment is a little unclear.  It looks like
+    // the _iterationCount is set to zero.  See SDFDirector for
+    // wording.  I'm not sure if it is necessary to use the word
+    // "Override".
+    // FIXME: See SDFDirector.#initialize() for suggested
+    // text for the exception tag.
     /** Override to initialize the iteration count. */
-
     public void initialize() throws IllegalActionException {
         super.initialize();
         _iterationCount = 0;
     }
 
+    // FIXME: Add an @return tag that states what this method does
+    // See SDFDirector for suggested text.
+    // FIXME: See SDFDirector#postfire() for suggested
+    // text for the exception tag.
     /** Override to check the number of iterations. */
     public boolean postfire() throws IllegalActionException {
         boolean result = super.postfire();
@@ -116,11 +156,14 @@ public class OpenModelicaDirector extends StaticSchedulingDirector {
         return result;
     }
 
+    // FIXME: Remove the @author tag, it will cause warnings.
+    // FIXME: In JavaDoc, the first sentence ends with a period.
+    // FIXME: See SDFDirector.#preinitialize() for suggested
+    // text for the exception tag.
     /** Initialize the communication with OMC
      *  @exception IllegalActionException TODO ....
      *  @author Mana Mirzaei
      */
-
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
         try {
@@ -133,6 +176,10 @@ public class OpenModelicaDirector extends StaticSchedulingDirector {
         }
     }
 
+    // FIXME: Remove the @author tag, it will cause warnings.
+    // FIXME: In JavaDoc, the first sentence ends with a period.
+    // FIXME: See SDFDirector#wrapup() for suggested
+    // text for the exception tag.
     /** Leave and quit OpenModelica environment
      *  @exception IllegalActionException Not thrown in this base class.
      *  @author Mana Mirzaei
@@ -162,6 +209,8 @@ public class OpenModelicaDirector extends StaticSchedulingDirector {
      */
     public static class OpenModelicaScheduler extends Scheduler {
 
+        // FIXME: Don't write "Constructor", write what this constructor
+        // constructs.
         /** Constructor. A Scheduler is an Attribute,
          *  normally contained by a director.
          *  @param director The director that will use this scheduler.
@@ -176,6 +225,8 @@ public class OpenModelicaDirector extends StaticSchedulingDirector {
             super(director, name);
         }
 
+        // FIXME: Copy and Paste?  Does this really return a left-to-right
+        // schedule?
         /** Return a left-to-right schedule. */
         protected Schedule _getSchedule() throws IllegalActionException,
                 NotSchedulableException {
@@ -200,6 +251,11 @@ public class OpenModelicaDirector extends StaticSchedulingDirector {
             return schedule;
         }
 
+        // FIXME: Hmm, I guess it really does return left-to-right.
+        // You should clearly state why this is done in the constructor
+        // for the entire class.  Also, add Edward A. Lee as a contributor 
+        // in the class wide javadoc:
+        //  @author Mana Mirzaei, Based on LeftToRightDirector by Edward A. Lee
         /** Inner class that implements a specialized comparator
          *  that compares the horizontal positions of the two
          *  arguments, which are assumed to actors.
