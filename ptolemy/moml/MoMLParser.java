@@ -4221,7 +4221,19 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                     // Hence, we have to scroll through the list of entities
                     // lazily, avoiding populating.
                     if (derived.getEntity(entityName) != null) {
-                        throw new IllegalActionException(
+                        // If the derived is within an EntityLibrary,
+                        // then don't throw an exception.  To
+                        // replicate this, create an EntityLibrary
+                        // within the UserLibrary, save and then try
+                        // to edit the UserLibrary.
+                        boolean derivedIsNotWithinEntityLibrary = true;
+                        CompositeEntity derivedContainer = derived;
+                        while (derivedContainer != null 
+                                && (derivedIsNotWithinEntityLibrary = !(derivedContainer instanceof EntityLibrary))) {
+                            derivedContainer = (CompositeEntity)derivedContainer.getContainer();
+                        }
+                        if (derivedIsNotWithinEntityLibrary) {
+                            throw new IllegalActionException(
                                 container,
                                 "Cannot create entity named \""
                                         + entityName
@@ -4232,6 +4244,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                                                 .getFullName()
                                         + "\".  Note that this can happen when actor oriented class "
                                         + "definitions are LazyTypedCompositeActors.");
+                        }
                     }
 
                     // Here's a possible solution to the above
@@ -5702,13 +5715,26 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
 
                             if ((other != null)
                                     && !(other instanceof Singleton)) {
-                                throw new IllegalActionException(
-                                        _current,
-                                        "Cannot create attribute because a subclass or instance "
-                                                + "contains an attribute with the same name: "
-                                                + derived.getAttribute(
-                                                        propertyName)
-                                                        .getFullName());
+                                // If the derived is within an EntityLibrary,
+                                // then don't throw an exception.  To
+                                // replicate this, create an EntityLibrary
+                                // within the UserLibrary, save and then try
+                                // to edit the UserLibrary.
+                                boolean derivedIsNotWithinEntityLibrary = true;
+                                NamedObj derivedContainer = derived;
+                                while (derivedContainer != null 
+                                        && (derivedIsNotWithinEntityLibrary = !(derivedContainer instanceof EntityLibrary))) {
+                                    derivedContainer = derivedContainer.getContainer();
+                                }
+                                if (derivedIsNotWithinEntityLibrary) {
+                                    throw new IllegalActionException(
+                                            _current,
+                                            "Cannot create attribute because a subclass or instance "
+                                            + "contains an attribute with the same name: "
+                                            + derived.getAttribute(
+                                                    propertyName)
+                                            .getFullName());
+                                }
                             }
                         }
 
