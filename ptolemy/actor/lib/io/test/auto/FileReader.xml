@@ -46,7 +46,7 @@
         </property>
     </entity>
     <entity name="FileReader Relative to CWD" class="ptolemy.actor.lib.io.FileReader">
-        <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="$CWD/data/data.txt">
+        <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="$CWD/auto/data/data.txt">
         </property>
         <doc>Read an entire file and output as a string</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{155.0, 225.0}">
