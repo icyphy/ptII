@@ -239,15 +239,28 @@ public class OMCProxy implements IModelicaCompiler {
             } catch (InterruptedException e) {
                 OpenModelicaDirector._ptLogger
                         .getSever("OpenModelica compiler interrupted:"
-                                + e.getMessage() + " with code "
-                                + proc.exitValue());
+                                + e.getMessage()
+                                + (proc == null
+                                        ? " process was null? Perhaps it was not initialized?"
+                                        : " process exited with code " + proc.exitValue())
+                                  );
                 couldNotStartOMC = true;
                 hasInitialized = false;
                 return;
             }
-            OpenModelicaDirector._ptLogger
-                    .getInfo("OpenModelica compiler exited with code: "
-                            + proc.exitValue());
+            if (proc != null) {
+                int exitValue = proc.exitValue();
+                if (OpenModelicaDirector._ptLogger != null) {
+                    OpenModelicaDirector._ptLogger
+                        .getInfo("OpenModelica compiler exited with code: "
+                                + exitValue);
+                } else {
+                    new Exception("OpenModelicaDirector._ptlogger was null? OpenModelica subprocess exited with code " + exitValue).printStackTrace();
+                }
+            } else {
+                OpenModelicaDirector._ptLogger
+                    .getWarning("Warning! OpenModelica compiler process was null?");
+            }
             couldNotStartOMC = true;
             hasInitialized = false;
         }
@@ -537,7 +550,8 @@ public class OMCProxy implements IModelicaCompiler {
                     "Unable to start the OpenModelica Compiler, binary not found");
         }
 
-        /* Set the working directory to temp/OpenModelica */
+        // Set the working directory to temp/OpenModelica.
+        // Under Mac, java.io.tmpdir ends with a /, but getAbsolutePath() removes it.
         omcWorkingDirectory = new File(System.getProperty("java.io.tmpdir"));
         OpenModelicaDirector._ptLogger.getInfo("Using working directory '"
                 + omcWorkingDirectory.getAbsolutePath() + "'");
@@ -579,10 +593,12 @@ public class OMCProxy implements IModelicaCompiler {
             if (macUsername == null) {
                 macUsername = "nobody";
             }
+            // Under Mac, java.io.tmpdir ends with a /.  Try
+            //  echo "puts [java::call System getProperty java.io.tmpdir]; exit" | $PTII/bin/ptjacl
             if (corbaSession == null || corbaSession.equalsIgnoreCase("")) {
-                fileName = temp + "/openmodelica." + macUsername + ".objid";
+                fileName = temp + "openmodelica." + macUsername + ".objid";
             } else {
-                fileName = temp + "/openmodelica." + macUsername + ".objid"
+                fileName = temp + "openmodelica." + macUsername + ".objid"
                         + "." + corbaSession;
             }
             break;
