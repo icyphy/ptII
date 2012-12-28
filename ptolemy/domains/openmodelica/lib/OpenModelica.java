@@ -94,8 +94,8 @@ public class OpenModelica extends TypedAtomicActor {
 
         iteration = new Variable(this, "iteration", new IntToken(0));
 
-        ModelicaScript = new StringParameter(this, "ModelicaScript");
-        ModelicaScript.setDisplayName("Write OM Command");
+        modelicaScript = new StringParameter(this, "modelicaScript");
+        modelicaScript.setDisplayName("Write OM Command");
 
         fileName = new FileParameter(this, "fileName");
         fileName.setDisplayName("File name");
@@ -107,12 +107,12 @@ public class OpenModelica extends TypedAtomicActor {
         modelName.setTypeEquals(BaseType.STRING);
         modelName.setDisplayName("Model name");
 
-        simulationStartTime = new Parameter(this, "SimulationStartTime",
+        simulationStartTime = new Parameter(this, "simulationStartTime",
                 new DoubleToken(0.0));
         simulationStartTime.setTypeEquals(BaseType.DOUBLE);
         simulationStartTime.setDisplayName("Simulation start time");
 
-        simulationStopTime = new Parameter(this, "Simulation stop time",
+        simulationStopTime = new Parameter(this, "simulationStopTime",
                 new DoubleToken(0.1));
         simulationStopTime.setTypeEquals(BaseType.DOUBLE);
         simulationStopTime.setDisplayName("Simulation stop time");
@@ -178,6 +178,8 @@ public class OpenModelica extends TypedAtomicActor {
      */
     public StringParameter fileNamePrefix;
 
+    // FIXME: alphabetize the parameters.
+
     /** Integration method used for simulation.  If this value is
      *  changed during execution, then the new value will be the
      *  output on the next iteration.  The default value of this
@@ -212,8 +214,7 @@ public class OpenModelica extends TypedAtomicActor {
      *  The default value of this parameter is the string
      *  loadModel(Modelica).
      */
-
-    public StringParameter ModelicaScript;
+    public StringParameter modelicaScript;
 
     /** Simulation flags.  If this value is changed during execution,
      *  then the new value will be the output on the next iteration.
@@ -426,15 +427,12 @@ public class OpenModelica extends TypedAtomicActor {
                     .getInfo("There is an error in loading the model!");
         }
 
-        /*
-         * Set the ModelicaScript expression to the loadModel
-         * command which loads the file corresponding to the class
-         */
+         // Set the modelicaScript expression to the loadModel
+         // command which loads the file corresponding to the class.
+        if (modelicaScript.getExpression().compareTo("") == 0)
+            modelicaScript.setExpression("loadModel(Modelica)");
 
-        if (ModelicaScript.getExpression().compareTo("") == 0)
-            ModelicaScript.setExpression("loadModel(Modelica)");
-
-        _result = OpenModelicaDirector._omcPr.sendCommand(ModelicaScript
+        _result = OpenModelicaDirector._omcPr.sendCommand(modelicaScript
                 .getExpression());
 
         /*Check if there is an error in the result of the loadModel command*/

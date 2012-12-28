@@ -54,8 +54,7 @@ PTCLASSALLJARS = \
 JSRCS = \
 	OMCLogger.java \
 	OMCParser.java \
-	OMCProxy.java \
-	StreamReaderThread.java
+	OMCProxy.java
 
 # Files or directories that are present, but that 'make checkjunk'
 # should not complain about
