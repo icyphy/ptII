@@ -26,6 +26,7 @@
       <li><a href="#InstantiateEntity">Instantiate Entity</a></li>
       <li><a href="#SaveActorInLibrary">User Library via Save Actor in Library</a></li>
       <li><a href="#ImportLibrary">Import Library</a></li>
+      <li><a href="#CreatingAnImportLibraryGraphically">Creating an Import Library Graphically</a></li>
       <li><a href="#editing">Editing the configuration files</a></li>
       <li><a href="#AddingANewPalette">Adding a new palette</a>
 	<ul>
@@ -94,7 +95,15 @@
 	the custom actors.
       </dd>
 
-      <dt> <a href="#editing">Edit the configuration files</a>.</dt>
+      <dt><a href="#CreatingAnImportLibraryGraphically">Creating an Import Library Graphically</a></dt>
+      <dd>It is possible to create an library file graphically.
+	<br/><b>Pros:</b> Same as <a href="#ImportLibrary">Import Library</a>.
+	the library file can be created graphically instead of by hand.
+	<br/><b>Cons:</b> Same as <a href="#ImportLibrary">Import Library</a>, 
+	the steps are non-intuitive.
+      </dd>
+
+      <dt> <a href="#editing">Edit the configuration files</a></dt>
       <dd> Ptolemy II reads configuration files from <code>$PTII/ptolemy/configs</code>.
 	A custom configuration can be created in that directory and invoked using a command-line
 	option to <code>$PTII/bin/vergil</code> or <code>ptolemy.vergil.VergilApplication</code>.
@@ -321,7 +330,7 @@
     <p>Composite Actors can also be instantiated in this way.  For example
       <code>ptolemy.actor.lib.Sinewave</code> is an Actor Oriented Class definition
       of a composite actor.</p>
-    <p>The Graph &gt; Instantiate Attribute menu choice is used to instantiate Ptolemy Attributes
+    <p>The Graph -&gt; Instantiate Attribute menu choice is used to instantiate Ptolemy Attributes
       such as parameters or Directors.</p>
 
 
@@ -350,7 +359,7 @@
 	  <li>Instantiate an Entity Library by doing Graph -&gt; Instantiate Entity and then changing the Class name field to <code>ptolemy.moml.EntityLibrary</code> and hitting OK</li>
 	  <li>Optional: Change the name of the newly created EntityLibrary by right clicking on it</li>
 	  <li>Open a new graph editor (File -&gt; New -&gt; Graph Editor) and click on the UserLibrary to see the new Entity Library</li>
-	  <li>Right click on the new Entit Library and select Open for Editing to add actors</li>
+	  <li>Right click on the new Entity Library and select Open for Editing to add actors</li>
 	</ol>
 	
 
@@ -398,6 +407,30 @@
       includes the <code>.class</code> and/or <code>.xml</code> definitions of
       the custom actors.</p>
     
+    <h2><a name="CreatingAnImportLibraryGraphically">Creating an Import Library Graphically</a></h2>
+    <p>It is possible to create an library file graphically instead of by hand as above
+      in <a href="#ImportLibrary">Import Library</a>.</p>
+
+    <ol>
+      <li>Follow the same procedure as above to create an EntityLibrary within the UserLibrary.
+	<ol>
+	  <li>In a Vergil graph editor, right click on UserLibrary and select Open for Editing.</li>
+	  <li>Instantiate an Entity Library by doing Graph -&gt; Instantiate Entity and then changing the Class name field to <code>ptolemy.moml.EntityLibrary</code> and hitting OK.</li>
+	</ol>
+      </li>
+      <li>Right click on the newly created EntityLibrary and select Convert To Class.  A blue border will be added, signifying that EntityLibrary is now an actor-oriented class.</li>
+      <li>Right click on the EntityLibrary Class and select Open Actor.  The contents of the EntityLibrary class will open in a new window.</li>
+      <li>In the EntityLibrary Class window, drag in or instantiate actors.</li>
+      <li>In the EntityLibrary Class window, select File -&gt; Save As.  When the Save Submodel? window pops up, check the "Save Submodel only" box, hit ok and save the file.</li>
+      <li>The saved file may now be import as per the <a href="#ImportLibrary">Import Library</a> procedure above.</li>
+    </ol>
+
+    <p><b>Pros:</b> Same as <a href="#ImportLibrary">Import Library</a>,
+        the library file can be created graphically instead of by hand.</p>
+    <p><b>Cons:</b> Same as <a href="#ImportLibrary">Import Library</a>, 
+	the steps are non-intuitive.</p>
+
+
     <h2><a name="editing">Editing the configuration files</a></h2>
     <p>Ptolemy II reads configuration files from <code>$PTII/ptolemy/configs</code>.
       A custom configuration can be created in that directory and invoked using a command-line
