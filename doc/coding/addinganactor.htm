@@ -26,12 +26,13 @@
       <li><a href="#InstantiateEntity">Instantiate Entity</a></li>
       <li><a href="#SaveActorInLibrary">User Library via Save Actor in Library</a></li>
       <li><a href="#ImportLibrary">Import Library</a></li>
-      <li><a href="#editing">Editing the configuration files</li>
-      <li><a href="#AddingANewPalette">Adding a new palette</a></li>
-      <ul>
-	<li><a href="#AddingAPaletteToTheUserConfiguration">Adding a palette to the user configuration</a></li>
-	<li><a href="#AddingAPaletteToTheDefaultConfiguration">Adding a palette to the default configuration</a></li>
-      </ul>
+      <li><a href="#editing">Editing the configuration files</a></li>
+      <li><a href="#AddingANewPalette">Adding a new palette</a>
+	<ul>
+	  <li><a href="#AddingAPaletteToTheUserConfiguration">Adding a palette to the user configuration</a></li>
+	  <li><a href="#AddingAPaletteToTheDefaultConfiguration">Adding a palette to the default configuration</a></li>
+	</ul>
+      </li>
       <li><a href="#AddingToTheClasspath">Adding to the Java Classpath</a></li>
     </ul>
 
@@ -342,7 +343,17 @@
     <p><b>Cons:</b> The modeler has to import each actor by
       hand.  This can be addressed by using "Import Library"</p>
 
-    <p>The UserLibrary can be opened and organized just like a regular composite actor.</p>
+    <p>The UserLibrary can be opened and organized just like a regular composite actor or a ptolemy.moml.EntityLibrary can be used to provide a tree structure within the User Library.
+	<br/>To add hierarchy to the User Library:</p>
+	<ol>
+	  <li>In a Vergil graph editor, right click on UserLibrary and select Open for Editing</li>
+	  <li>Instantiate an Entity Library by doing Graph -&gt; Instantiate Entity and then changing the Class name field to <code>ptolemy.moml.EntityLibrary</code> and hitting OK</li>
+	  <li>Optional: Change the name of the newly created EntityLibrary by right clicking on it</li>
+	  <li>Open a new graph editor (File -&gt; New -&gt; Graph Editor) and click on the UserLibrary to see the new Entity Library</li>
+	  <li>Right click on the new Entit Library and select Open for Editing to add actors</li>
+	</ol>
+	
+
 
     <h2><a name="ImportLibrary">Import Library</a></h2>
 
@@ -387,7 +398,7 @@
       includes the <code>.class</code> and/or <code>.xml</code> definitions of
       the custom actors.</p>
     
-    <h2><a name="editing">Editing the configuration files</h2>
+    <h2><a name="editing">Editing the configuration files</a></h2>
     <p>Ptolemy II reads configuration files from <code>$PTII/ptolemy/configs</code>.
       A custom configuration can be created in that directory and invoked using a command-line
       option to <code>$PTII/bin/vergil</code> or <code>ptolemy.vergil.VergilApplication</code>.</p>
