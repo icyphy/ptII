@@ -257,6 +257,16 @@ public class OMCProxy implements IModelicaCompiler {
                 } else {
                     new Exception("OpenModelicaDirector._ptlogger was null? OpenModelica subprocess exited with code " + exitValue).printStackTrace();
                 }
+                if (exitValue == 0) {
+                    // FIXME: Formerly, we would set these to true
+                    // and false respectively when returning from this
+                    // method.  However, if the exit value is 0, then
+                    // we have started OMC and we have initialized?
+                    couldNotStartOMC = false;
+                    hasInitialized = true;
+                    return;
+                }
+
             } else {
                 OpenModelicaDirector._ptLogger
                     .getWarning("Warning! OpenModelica compiler process was null?");
@@ -553,8 +563,13 @@ public class OMCProxy implements IModelicaCompiler {
         // Set the working directory to temp/OpenModelica.
         // Under Mac, java.io.tmpdir ends with a /, but getAbsolutePath() removes it.
         omcWorkingDirectory = new File(System.getProperty("java.io.tmpdir"));
-        OpenModelicaDirector._ptLogger.getInfo("Using working directory '"
-                + omcWorkingDirectory.getAbsolutePath() + "'");
+        String workingDirectory = "Using working directory '"
+                + omcWorkingDirectory.getAbsolutePath() + "'";
+
+        OpenModelicaDirector._ptLogger.getInfo(workingDirectory);
+        // Print out the working directory because it is not obvious
+        // on the Mac.
+        System.out.println("OMCProxy: " + workingDirectory);
 
         return new File[] { omcBinary, omcWorkingDirectory };
     }
@@ -698,6 +713,7 @@ public class OMCProxy implements IModelicaCompiler {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
+    // FIXME: private fields should start with underscores.
     private String corbaSession = null;
     /** Indicate if we've give up to run OMC as it didn't wanted to start! */
     private boolean couldNotStartOMC = false;
