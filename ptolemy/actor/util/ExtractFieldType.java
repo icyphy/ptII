@@ -99,13 +99,13 @@ public class ExtractFieldType extends MonotonicFunction {
 
         // If the port type was declared as or did resolve to GENERAL,
         // return GENERAL
-        if (portType == BaseType.GENERAL) {
+        if (portType.equals(BaseType.GENERAL)) {
             return BaseType.GENERAL;
         }
 
         // If the port type was declared as or did resolve to UNKNOWN,
         // return UNKNOWN
-        if (portType == BaseType.UNKNOWN) {
+        if (portType.equals(BaseType.UNKNOWN)) {
             return BaseType.UNKNOWN;
         }
 
@@ -116,7 +116,7 @@ public class ExtractFieldType extends MonotonicFunction {
 
             // The field is missing from the associative type
             if (fieldType == null) {
-                return BaseType.UNKNOWN; // NOTE: this actually makes the function non-monotonic
+                return BaseType.GENERAL; // NOTE: to ensure monotonicity
             } else {
                 return fieldType;
             }
