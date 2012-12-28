@@ -1,6 +1,6 @@
 /* An actor that writes the value of string tokens to a file, one per line.
 
- @Copyright (c) 2002-2010 The Regents of the University of California.
+ @Copyright (c) 2012 The Regents of the University of California.
  All rights reserved.
 
  Permission is hereby granted, without written agreement and without
@@ -40,6 +40,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Workspace;
 
 ///////////////////////////////////////////////////////////////////
 //// CSVWriter
@@ -69,9 +70,9 @@ import ptolemy.kernel.util.NameDuplicationException;
  @see ExpressionWriter
  @author  Edward A. Lee
  @version $Id$
- @since Ptolemy II 2.2
- @Pt.ProposedRating Yellow (eal)
- @Pt.AcceptedRating Red (liuj)
+ @since Ptolemy II 9.1
+ @Pt.ProposedRating Yello (eal)
+ @Pt.AcceptedRating Red (cxh)
  */
 public class CSVWriter extends LineWriter {
     /** Construct an actor with the given container and name.
@@ -147,6 +148,20 @@ public class CSVWriter extends LineWriter {
         } else {
             super.attributeChanged(attribute);
         }
+    }
+
+    /** Clone the actor into the specified workspace. This calls the
+     *  base class and then sets the type constraints on the input.
+     *  @param workspace The workspace for the new object.
+     *  @return A new actor.
+     *  @exception CloneNotSupportedException If a derived class contains
+     *   an attribute that cannot be cloned.
+     */
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        CSVWriter newObject = (CSVWriter) super.clone(workspace);
+        newObject.input.setTypeEquals(BaseType.UNKNOWN);
+        newObject.input.setTypeAtMost(RecordType.EMPTY_RECORD);
+        return newObject;
     }
 
     /** Initialize this actor.  Derived classes override this method

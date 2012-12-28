@@ -31,16 +31,31 @@ import ptolemy.kernel.util.Workspace;
 public class MetroIIPNDirector extends PNDirector implements
         MetroIIEventHandler {
 
-    public List _event_lock; 
+    public List eventLock; 
     
     public MetroIIPNDirector(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         // TODO Auto-generated constructor stub
-        _event_lock = Collections.synchronizedList(new ArrayList<Object>()); 
+        eventLock = Collections.synchronizedList(new ArrayList<Object>()); 
     }
 
     private boolean _firstTimeFire;
+
+    /** Clone the director into the specified workspace.
+     *  @param workspace The workspace for the new object.
+     *  @return A new actor.
+     *  @exception CloneNotSupportedException If a derived class contains
+     *   an attribute that cannot be cloned.
+     */
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        MetroIIPNDirector newObject = (MetroIIPNDirector) super.clone(workspace);
+        newObject.eventLock = Collections.synchronizedList(new ArrayList<Object>()); 
+        newObject.eventNameID = new Hashtable<String, Integer>();
+        newObject.events = Collections.synchronizedList(new ArrayList<Event.Builder>());
+        newObject._proposedThreads = Collections.synchronizedSet(new HashSet());
+        return newObject;
+    }
 
     public void initialize() throws IllegalActionException {
         super.initialize();
@@ -64,14 +79,14 @@ public class MetroIIPNDirector extends PNDirector implements
         return meb;
     }
     
-    Hashtable<String, Integer> _event_name_id = new Hashtable<String, Integer>();
+    Hashtable<String, Integer> eventNameID = new Hashtable<String, Integer>();
 
     public synchronized int eventName2Id(String event_name) {
-        if (!_event_name_id.containsKey(event_name)) {
-            _event_name_id.put(event_name, _event_lock.size());
-            _event_lock.add(new Object());
+        if (!eventNameID.containsKey(event_name)) {
+            eventNameID.put(event_name, eventLock.size());
+            eventLock.add(new Object());
         }
-        return _event_name_id.get(event_name); 
+        return eventNameID.get(event_name); 
     }
     
     public Receiver newReceiver() {
@@ -109,7 +124,8 @@ public class MetroIIPNDirector extends PNDirector implements
                 });
     }
     
-    public Set _proposedThreads = Collections.synchronizedSet(new HashSet());
+    // FIXME: move this decl.
+    protected Set _proposedThreads = Collections.synchronizedSet(new HashSet());
     
     protected final synchronized int _getProposedThreadsCount() {
         return _proposedThreads.size();
@@ -195,7 +211,7 @@ public class MetroIIPNDirector extends PNDirector implements
                         for (Builder etb : tmp_events) {
                             if (etb.getStatus() == Event.Status.NOTIFIED) {
                                 String event_name = etb.getName();
-                                Object lock = _event_lock.get(eventName2Id(event_name));
+                                Object lock = eventLock.get(eventName2Id(event_name));
                                 synchronized (lock) {
                                     lock.notifyAll(); 
                                     System.out.println("notify: "+event_name);

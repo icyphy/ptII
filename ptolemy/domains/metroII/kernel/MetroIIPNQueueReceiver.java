@@ -24,7 +24,7 @@ public class MetroIIPNQueueReceiver extends PNQueueReceiver {
         _director.AddEvent(_director.makeEventBuilder(event_name,
                 Event.Type.BEGIN));
         System.out.println("propose: "+event_name); 
-        Object lock = _director._event_lock.get(_director.eventName2Id(event_name));
+        Object lock = _director._eventLock.get(_director.eventName2Id(event_name));
         synchronized (lock) {
             _director._proposedThreads.add(current_thread);
             lock.wait(); 

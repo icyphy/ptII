@@ -1,6 +1,6 @@
 /* An actor that dynamically applies functions to its input.
 
- Copyright (c) 2004-2010 The Regents of the University of California.
+ Copyright (c) 2004-2012 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -120,6 +120,20 @@ public class ApplyFunction extends TypedAtomicActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** Clone the actor into the specified workspace. This calls the
+     *  base class and then sets the type of the output port of the
+     *  new object.
+     *  @param workspace The workspace for the new object.
+     *  @return A new actor.
+     *  @exception CloneNotSupportedException If a derived class contains
+     *   an attribute that cannot be cloned.
+     */
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        ApplyFunction newObject = (ApplyFunction) super.clone(workspace);
+        newObject.output.setTypeAtLeast(new ReturnTypeFunction());
+        return newObject;
+    }
 
     /** If the function is not specified, then perform identity function;
      *  otherwise, apply the specified function to its input and output
