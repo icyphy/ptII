@@ -1,0 +1,76 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="ReadCSVInSDFinSDF" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={52, 320, 834, 634}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 524]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 262.0}">
+    </property>
+    <property name="enableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="true">
+    </property>
+    <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="AUTO">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{95, 60}">
+        </property>
+    </property>
+    <entity name="CompositeActor" class="ptolemy.actor.TypedCompositeActor">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[185.0, 140.0]">
+        </property>
+        <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+            <property name="iterations" class="ptolemy.data.expr.Parameter" value="10">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{90, 40}">
+            </property>
+        </property>
+        <entity name="Test" class="ptolemy.actor.lib.Test">
+            <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{false, true}">
+            </property>
+            <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
+            </property>
+            <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="295.0, 205.0">
+            </property>
+        </entity>
+        <entity name="Stop" class="ptolemy.actor.lib.Stop">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="295.0, 290.0">
+            </property>
+        </entity>
+        <entity name="CSVReader" class="ptolemy.actor.lib.io.CSVReader">
+            <property name="fileOrURL" class="ptolemy.actor.parameters.FilePortParameter" value="data/data1.csv">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, 130.0]">
+            </property>
+        </entity>
+        <entity name="Test2" class="ptolemy.actor.lib.Test">
+            <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{[x = 1, y = 2, z = 3], [x = 4, y = 5, z = 6]}">
+            </property>
+            <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
+            </property>
+            <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[304.0283203125, 118.3447265625]">
+            </property>
+        </entity>
+        <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+            <vertex name="vertex1" value="230.0, 240.0">
+            </vertex>
+        </relation>
+        <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <link port="Test.input" relation="relation3"/>
+        <link port="Stop.input" relation="relation3"/>
+        <link port="CSVReader.output" relation="relation"/>
+        <link port="CSVReader.endOfFile" relation="relation3"/>
+        <link port="Test2.input" relation="relation"/>
+    </entity>
+</entity>
