@@ -330,7 +330,7 @@ public class LineReader extends Source {
             for (int i = 0; i <= numberOfLines; i++) {
                 _currentLine = _reader.readLine();
 
-                if (_debugging) {
+                if (_debugging && i < numberOfLines) {
                     _debug("Skipping line: " + _currentLine);
                 }
 
