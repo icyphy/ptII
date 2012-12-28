@@ -102,6 +102,12 @@ public class ExpressionReader extends LineReader {
                 trigger.get(i);
             }
         }
+        // Initialize method in superclass closes the file.
+        // We need to reopen it and reread it.
+        if (_firstFiring) {
+            _openAndReadFirstTwoLines();
+            _firstFiring = false;
+        }
 
         if (_currentLine != null) {
             _expressionEvaluator.setExpression(_currentLine);
