@@ -3,7 +3,7 @@
  Below is the copyright agreement for the Ptolemy II system.
  Version: $Id$
 
- Copyright (c) 1998-2012 The Regents of the University of California
+ Copyright (c) 2012 The Regents of the University of California
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -54,6 +54,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
+import ptolemy.util.StringUtilities;
 
 /**
  *   An actor that executes a Modelica script. it translates the model and
@@ -376,9 +377,16 @@ public class OpenModelica extends TypedAtomicActor {
 
         /*Set fileName to the path of the testmodel(dcmotor.mo)*/
 
-        String systemPath = System.getProperty("java.class.path");
-        String[] pathDirs = systemPath.split(File.pathSeparator);
-        systemPath = pathDirs[0];
+        // The java.class.path might not have $PTII first in the list
+        // of classpaths.  For example, $PTII/bin/vergil adds $HOME/.ptolemyII
+        // to the path before $PTII.  So, we get the value of the
+        // ptolemy.ptII.dir property.
+        
+        // String systemPath = System.getProperty("java.class.path");
+        // String[] pathDirs = systemPath.split(File.pathSeparator);
+        // systemPath = pathDirs[0];
+
+        String systemPath = StringUtilities.getProperty("ptolemy.ptII.dir");
 
         String filePath = null;
         switch (OMCProxy.os) {
