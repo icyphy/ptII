@@ -30,8 +30,10 @@ package ptolemy.actor.lib.gui;
 import java.awt.Container;
 import java.io.IOException;
 import java.io.Writer;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 import javax.swing.SwingUtilities;
 
@@ -46,8 +48,13 @@ import ptolemy.actor.gui.Placeable;
 import ptolemy.actor.gui.TableauFrame;
 import ptolemy.actor.gui.WindowPropertiesAttribute;
 import ptolemy.actor.parameters.PortParameter;
+import ptolemy.data.BooleanToken;
 import ptolemy.data.StringToken;
+import ptolemy.data.Token;
+import ptolemy.data.expr.SingletonParameter;
 import ptolemy.data.type.BaseType;
+import ptolemy.data.type.TypeConstant;
+import ptolemy.graph.Inequality;
 import ptolemy.gui.ShellInterpreter;
 import ptolemy.gui.ShellTextArea;
 import ptolemy.kernel.CompositeEntity;
@@ -64,7 +71,7 @@ import ptolemy.util.MessageHandler;
 
 /**
  <p>This actor creates a command shell on the screen, sending commands
- that are typed by the user to its output port, and reporting strings
+ that are typed by the user to its output port, and reporting values
  received at its input by displaying them.  Each time it fires, it
  reads the input, displays it, then displays a command prompt
  (which by default is "&gt;&gt;"), and waits for a command to be
@@ -107,12 +114,18 @@ public class InteractiveShell extends TypedAtomicActor implements Placeable,
         super(container, name);
 
         input = new TypedIOPort(this, "input", true, false);
-        input.setTypeEquals(BaseType.STRING);
+        // Parameter to get Vergil to label the fileOrURL port.
+        new SingletonParameter(input, "_showName")
+                .setToken(BooleanToken.TRUE);
 
         output = new TypedIOPort(this, "output", false, true);
         output.setTypeEquals(BaseType.STRING);
 
         prompt = new PortParameter(this, "prompt");
+        // Parameter to get Vergil to label the fileOrURL port.
+        new SingletonParameter(prompt.getPort(), "_showName")
+                .setToken(BooleanToken.TRUE);
+
 
         // Make command be a StringParameter (no surrounding double quotes).
         prompt.setTypeEquals(BaseType.STRING);
@@ -142,7 +155,12 @@ public class InteractiveShell extends TypedAtomicActor implements Placeable,
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    /** The input port. */
+    /** The input port. By default, this has undeclared type.
+     *  If backward type inference is enabled, then it has type general.
+     *  In either case, it can receive any data type. If it receives
+     *  token of type string, it strips off the surrounding double
+     *  quotes before displaying the value.
+     */
     public TypedIOPort input;
 
     /** The output port. */
@@ -234,7 +252,13 @@ public class InteractiveShell extends TypedAtomicActor implements Placeable,
 
         String value = "";
         if ((input.numberOfSources() > 0) && input.hasToken(0)) {
-            value = ((StringToken) input.get(0)).stringValue();
+            Token inputToken = input.get(0);
+            if (inputToken instanceof StringToken) {
+                // To get the value without surrounding quotation marks.
+                value = ((StringToken) inputToken).stringValue();
+            } else {
+                value = inputToken.toString();
+            }
         }
         if (_firstTime) {
             _firstTime = false;
@@ -513,6 +537,23 @@ public class InteractiveShell extends TypedAtomicActor implements Placeable,
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
+
+    /** Set the input port greater than or equal to
+     *  <code>BaseType.GENERAL</code> in case backward type inference is
+     *  enabled and the input port has no type declared.
+     *
+     *  @return A set of inequalities.
+     */
+    @Override
+    protected Set<Inequality> _customTypeConstraints() {
+        HashSet<Inequality> result = new HashSet<Inequality>();
+        if (isBackwardTypeInferenceEnabled()
+                && input.getTypeTerm().isSettable()) {
+            result.add(new Inequality(new TypeConstant(BaseType.GENERAL), input
+                    .getTypeTerm()));
+        }
+        return result;
+    }
 
     /** Write a MoML description of the contents of this object. This
      *  overrides the base class to make sure that the current frame
