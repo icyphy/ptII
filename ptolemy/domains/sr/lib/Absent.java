@@ -27,6 +27,8 @@
  */
 package ptolemy.domains.sr.lib;
 
+import ptolemy.data.BooleanToken;
+import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -58,6 +60,8 @@ public class Absent extends Undefined {
     public Absent(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
+        
+        new Parameter(trigger, "_hide", BooleanToken.TRUE);
     }
 
     ///////////////////////////////////////////////////////////////////

@@ -30,18 +30,18 @@ package ptolemy.actor.lib.logic;
 import ptolemy.actor.lib.Transformer;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.Token;
+import ptolemy.data.expr.StringParameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.StringAttribute;
 
 // NOTE: If you update the list of functions, then you will want
 // to update the list in actor/lib/logic/logic.xml.
 ///////////////////////////////////////////////////////////////////
-//// LogicFunction
+//// LogicGate
 
 /**
  <p>Produce an output token on each firing with a value that is
@@ -71,13 +71,12 @@ import ptolemy.kernel.util.StringAttribute;
  on each input channel.</p>
 
  @author Paul Whitaker
- @deprecated Use LogicGate instead.
  @version $Id$
  @since Ptolemy II 1.0
  @Pt.ProposedRating Green (pwhitake)
  @Pt.AcceptedRating Green (pwhitake)
  */
-public class LogicFunction extends Transformer {
+public class LogicGate extends Transformer {
     /** Construct an actor with the given container and name.  Set the
      *  logic function to the default ("and").  Set the types of the ports
      *  to boolean.
@@ -88,13 +87,19 @@ public class LogicFunction extends Transformer {
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    public LogicFunction(CompositeEntity container, String name)
+    public LogicGate(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         // Parameters
-        function = new StringAttribute(this, "function");
-        function.setExpression("and");
+        logic = new StringParameter(this, "logic");
+        logic.setExpression("and");
+        logic.addChoice("and");
+        logic.addChoice("or");
+        logic.addChoice("xor");
+        logic.addChoice("nand");
+        logic.addChoice("nor");
+        logic.addChoice("xnor");
         _function = _AND;
         _negate = false;
 
@@ -115,7 +120,7 @@ public class LogicFunction extends Transformer {
     /** The function to compute.  This is a string-valued attribute
      *  that defaults to "and".
      */
-    public StringAttribute function;
+    public StringParameter logic;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -128,8 +133,8 @@ public class LogicFunction extends Transformer {
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
-        if (attribute == function) {
-            String functionName = function.getExpression().trim().toLowerCase();
+        if (attribute == logic) {
+            String functionName = logic.getExpression().trim().toLowerCase();
 
             if (functionName.equals("and")) {
                 _function = _AND;
@@ -221,7 +226,7 @@ public class LogicFunction extends Transformer {
             default:
                 throw new InternalErrorException(
                         "Invalid value for _function private variable. "
-                                + "LogicFunction actor (" + getFullName() + ")"
+                                + "LogicGate actor (" + getFullName() + ")"
                                 + " on function type " + _function);
             }
         }

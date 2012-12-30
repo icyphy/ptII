@@ -27,7 +27,7 @@
  */
 package ptolemy.domains.sr.lib;
 
-import ptolemy.actor.lib.logic.LogicFunction;
+import ptolemy.actor.lib.logic.LogicGate;
 import ptolemy.data.BooleanToken;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
@@ -35,7 +35,7 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 
 ///////////////////////////////////////////////////////////////////
-//// NonStrictLogicFunction
+//// NonStrictLogicGate
 
 /**
  A nonstrict actor that performs a specified logic operation on the input.
@@ -68,13 +68,12 @@ import ptolemy.kernel.util.NameDuplicationException;
  At most one token is consumed on each input channel.
 
  @author Paul Whitaker
- @deprecated Use NonStrictLogicGate
  @version $Id$
  @since Ptolemy II 2.0
  @Pt.ProposedRating Red (pwhitake)
  @Pt.AcceptedRating Red (pwhitake)
  */
-public class NonStrictLogicFunction extends LogicFunction {
+public class NonStrictLogicGate extends LogicGate {
     /** Construct an actor with the given container and name.  Set the
      *  logic function to the default ("and").  Set the types of the ports
      *  to boolean.
@@ -85,7 +84,7 @@ public class NonStrictLogicFunction extends LogicFunction {
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    public NonStrictLogicFunction(CompositeEntity container, String name)
+    public NonStrictLogicGate(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
     }
@@ -169,7 +168,7 @@ public class NonStrictLogicFunction extends LogicFunction {
             switch (_function) {
             case _AND:
 
-                // Cannot assert that the output of AND is true unless
+                // Cannot assert that the output of AND or is true unless
                 // all inputs are known.
                 if (inValue.booleanValue()) {
                     outValue = null;
@@ -197,7 +196,7 @@ public class NonStrictLogicFunction extends LogicFunction {
             default:
                 throw new InternalErrorException(
                         "Invalid value for _function private variable. "
-                                + "LogicFunction actor (" + getFullName() + ")"
+                                + "NonStrictLogicGate actor (" + getFullName() + ")"
                                 + " on function type " + _function);
             }
         }

@@ -62,6 +62,7 @@ JSRCS = \
 	InstantaneousDialogGenerator.java \
 	NonStrictDelay.java \
 	NonStrictLogicFunction.java \
+	NonStrictLogicGate.java \
 	NonStrictThreeBitAdder.java \
 	Pre.java \
 	SingleTokenDistributor.java \
@@ -69,6 +70,7 @@ JSRCS = \
         When.java	
 
 OTHER_FILES_TO_BE_JARED = \
+	AbsentIcon.xml \
 	CombineIcon.xml \
 	CurrentIcon.xml \
 	DefaultIcon.xml \

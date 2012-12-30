@@ -55,26 +55,9 @@
 <entity name="NonStrictDisplay" class="ptolemy.domains.sr.lib.gui.NonStrictDisplay">
 </entity>
 
-<entity name="NonStrictLogicFunction" class="ptolemy.domains.sr.lib.NonStrictLogicFunction">
-    <property name="function">
-        <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
-            <property name="and" value="and"
-	              class="ptolemy.kernel.util.StringAttribute"/>
-            <property name="or" value="or"
-	              class="ptolemy.kernel.util.StringAttribute"/>
-            <property name="xor" value="xor"
-	              class="ptolemy.kernel.util.StringAttribute"/>
-            <property name="nand" value="nand"
-	              class="ptolemy.kernel.util.StringAttribute"/>
-            <property name="nor" value="nor"
-	              class="ptolemy.kernel.util.StringAttribute"/>
-            <property name="xnor" value="xnor"
-	              class="ptolemy.kernel.util.StringAttribute"/>
-        </property>
-     </property>
-    <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
-        <property name="attributeName" value="function"/>
-    </property>
+<entity name="NonStrictLogicGate" class="ptolemy.domains.sr.lib.NonStrictLogicGate">
+	<!-- Icon is the same as LogicGate. -->
+     <input source="ptolemy/actor/lib/logic/LogicGate_Icon.xml"/>
 </entity>
 
 <entity name="NonStrictThreeBitAdder" class="ptolemy.domains.sr.lib.NonStrictThreeBitAdder">

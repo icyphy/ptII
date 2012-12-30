@@ -55,10 +55,13 @@ JSRCS = \
 	IsPresent.java \
 	LogicFunction.java \
 	LogicalNot.java \
+	LogicGate.java \
 	TrueGate.java
 
 OTHER_FILES_TO_BE_JARED = \
-	logic.xml
+	logic.xml \
+	LogicGate_Icon.xml \
+	LogicalNotIcon.xml
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
