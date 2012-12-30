@@ -86,8 +86,11 @@ public class EllipseAttribute extends FilledShapeAttribute {
         EllipseAttribute newObject = (EllipseAttribute) super.clone(workspace);
 
         // The cloned icon ends up referring to the clonee's shape.
-        // We need to fix that here.
-        newObject._icon.setShape(newObject._newShape());
+        // We need to fix that here. Do not use the _newShape() method
+        // of the clone, however, because it may refer to parameters that
+        // have not been created yet. Instead, use this object to generate
+        // the new shape for the clone.
+        newObject._icon.setShape(_newShape());
         return newObject;
     }
 
