@@ -20,14 +20,28 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{95, 60}">
         </property>
     </property>
-    <entity name="CompositeActor" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[185.0, 140.0]">
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The inner RunComposite reads a CSV file in one iteration.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 120.0]">
+        </property>
+    </property>
+    <entity name="RunCompositeActor" class="ptolemy.actor.lib.hoc.RunCompositeActor">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[185.0, 230.0]">
         </property>
         <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
             <property name="iterations" class="ptolemy.data.expr.Parameter" value="10">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{90, 40}">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[105.0, 60.0]">
             </property>
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={373, 208, 934, 634}, maximized=false}">
+        </property>
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
+        </property>
+        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+        </property>
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{392.0, 283.89453125}">
         </property>
         <entity name="Test" class="ptolemy.actor.lib.Test">
             <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{false, true}">
@@ -36,17 +50,17 @@
             </property>
             <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="295.0, 205.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{348.0, 256.6552734375}">
             </property>
         </entity>
         <entity name="Stop" class="ptolemy.actor.lib.Stop">
-            <property name="_location" class="ptolemy.kernel.util.Location" value="295.0, 290.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{348.0, 341.6552734375}">
             </property>
         </entity>
         <entity name="CSVReader" class="ptolemy.actor.lib.io.CSVReader">
             <property name="fileOrURL" class="ptolemy.actor.parameters.FilePortParameter" value="data/data1.csv">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, 130.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{148.0, 181.6552734375}">
             </property>
         </entity>
         <entity name="Test2" class="ptolemy.actor.lib.Test">
@@ -56,21 +70,21 @@
             </property>
             <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[304.0283203125, 118.3447265625]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{357.0283203125, 170.0}">
             </property>
         </entity>
-        <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        <relation name="relation" class="ptolemy.actor.TypedIORelation">
             <property name="width" class="ptolemy.data.expr.Parameter" value="1">
             </property>
-            <vertex name="vertex1" value="230.0, 240.0">
+            <vertex name="vertex1" value="{283.0, 291.6552734375}">
             </vertex>
         </relation>
-        <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <relation name="relation2" class="ptolemy.actor.TypedIORelation">
         </relation>
-        <link port="Test.input" relation="relation3"/>
-        <link port="Stop.input" relation="relation3"/>
-        <link port="CSVReader.output" relation="relation"/>
-        <link port="CSVReader.endOfFile" relation="relation3"/>
-        <link port="Test2.input" relation="relation"/>
+        <link port="Test.input" relation="relation"/>
+        <link port="Stop.input" relation="relation"/>
+        <link port="CSVReader.output" relation="relation2"/>
+        <link port="CSVReader.endOfFile" relation="relation"/>
+        <link port="Test2.input" relation="relation2"/>
     </entity>
 </entity>
