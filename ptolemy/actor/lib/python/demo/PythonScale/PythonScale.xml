@@ -65,19 +65,50 @@ actor.  </text></svg></configure>
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="-10.0, 250.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-10.0, 415.0]">
         </property>
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
     </property>
+    <property name="annotation2" class="ptolemy.kernel.util.Attribute">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure><svg><text x="20" y="20" style="font-size:12; font-family:SansSerif; fill:blue">Double clicking on the PythonActor brings up the
+usual Edit Parameters dialog which displays the
+name of the jython class and the scale parameter.
+
+To edit the script, right click on the PythonActor
+and select "Look Inside".  Note that if you make
+changes to the script, be sure to save the top-level
+model.
+
+Compare this with the PythonScript actor, which
+if you double click on it, then the Python script
+is displayed.</text></svg></configure>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[145.0, 235.0]">
+        </property>
+    </property>
     <entity name="PythonActor" class="ptolemy.actor.lib.python.PythonScript">
         <property name="script" class="ptolemy.kernel.util.StringAttribute" value="class Main :&#10;  &quot;scale&quot;&#10;  def fire(self) :&#10;    if not self.input.hasToken(0) :&#10;      return&#10;    s = self.scale.getToken()&#10;    t = self.input.get(0)&#10;    self.output.broadcast(s.multiply(t))&#10;&#10;">
             <property name="style" class="ptolemy.actor.gui.style.TextStyle">
             </property>
         </property>
-        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorConfigureFactory">
+        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
             </property>
         </property>
