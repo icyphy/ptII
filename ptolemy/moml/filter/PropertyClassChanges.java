@@ -677,12 +677,16 @@ public class PropertyClassChanges extends MoMLFilterSimple {
 
         // PythonActor
         // Change its _tableauFactory to a ptolemy.vergil.toolbox.TextEditorConfigureFactory
-        HashMap PythonActorAttributeClassChanges = new HashMap();
-        PythonActorAttributeClassChanges.put("_tableauFactory",
-                "ptolemy.vergil.toolbox.TextEditorConfigureFactory");
+        // Hmm.  Actually, there are two versions of PythonScript, see python.xml
+        // 'PythonActor' has a _tableauFactory that is a TextEditorTableauFactory
+        // 'PythonScript' has an _editoryFactory that is a TextEditorConfigureFactory.
+        // Both are actor.lib.PythonScript instances.  So, we can't filter here.
+//         HashMap PythonActorAttributeClassChanges = new HashMap();
+//         PythonActorAttributeClassChanges.put("_tableauFactory",
+//                 "ptolemy.vergil.toolbox.TextEditorConfigureFactory");
 
-        _actorsWithPropertyClassChanges.put("ptolemy.actor.lib.python.PythonScript",
-                PythonActorAttributeClassChanges);
+//         _actorsWithPropertyClassChanges.put("ptolemy.actor.lib.python.PythonScript",
+//                 PythonActorAttributeClassChanges);
 
     }
 }
