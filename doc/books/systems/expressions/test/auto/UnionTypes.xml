@@ -52,6 +52,10 @@
         </property>
     </entity>
     <entity name="PoissonClock" class="ptolemy.actor.lib.PoissonClock">
+        <property name="seed" class="ptolemy.actor.parameters.SharedParameter" value="1L">
+        </property>
+        <property name="resetOnEachRun" class="ptolemy.actor.parameters.SharedParameter" value="true">
+        </property>
         <property name="values" class="ptolemy.data.expr.Parameter" value="{true}">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{55.0, 245.0}">
@@ -67,7 +71,7 @@
         </port>
     </entity>
     <entity name="Test" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{{|a = 1|}, {|b = true|}, {|a = 1|}, {|b = true|}, {|a = 1|}, {|a = 1|}, {|a = 1|}, {|b = true|}, {|b = true|}, {|a = 1|}}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{{|a = 1|}, {|b = true|}, {|b = true|}, {|a = 1|}, {|a = 1|}, {|a = 1|}, {|a = 1|}, {|a = 1|}}">
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
@@ -75,7 +79,7 @@
         </property>
     </entity>
     <entity name="Test2" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{true, true, true, true}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{true, true}">
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
