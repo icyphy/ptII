@@ -9,7 +9,7 @@
 <group>
 <property name="DocViewerAttribute" class="ptolemy.kernel.util.SingletonAttribute">
   <property name="DocAttribute" class="ptolemy.vergil.basic.DocAttribute">
-      <property name="description" class="ptolemy.data.expr.StringParameter" value="To edit the documentation that appears&#10;when the user double clicks on this icon,&#10;right click on the _background_ of the model and select&#10;Documentation-&gt;Customize Documentation.&#10;The description you are currently editing&#10;will not appear when the user double clicks on the Documentation icon.">
+      <property name="description" class="ptolemy.kernel.util.StringAttribute" value="To edit the documentation that appears&#10;when the user double clicks on this icon,&#10;right click on the _background_ of the model and select&#10;Documentation-&gt;Customize Documentation.&#10;The description you are currently editing&#10;will not appear when the user double clicks on the Documentation icon.">
       </property>
   </property>
   <property name="viewer" class="ptolemy.vergil.basic.DocViewerFactory"/>
