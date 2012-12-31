@@ -8,7 +8,7 @@
   <doc>Python actors</doc>
 
   <entity name="PythonActor" class="ptolemy.actor.lib.python.PythonScript">
-    <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+    <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorConfigureFactory">
       <property name="attributeName" value="script"/>
     </property>
     <property name="script" class="ptolemy.kernel.util.StringAttribute" value="# This is a simple actor that copies the input to the output.&#10;# You can remove the ports, add new ports, and modify the script.&#10;class Main :&#10;  &quot;Copy the inputs to the output.&quot;&#10;  def fire(self) :&#10;    token = self.input.get(0)&#10;    self.output.broadcast(token)&#10;    return&#10;&#10;">
