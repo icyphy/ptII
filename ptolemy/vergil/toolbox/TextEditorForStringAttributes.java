@@ -74,6 +74,7 @@ public class TextEditorForStringAttributes extends TextEditor {
      *  This has to be called after pack().
      */
     public void adjustFileMenu() {
+        new Exception("TextEditorForStringAttributes.adjustFileMenu()").printStackTrace();
         // Rename Save command.
         _fileMenuItems[3].setText("Apply");
         _fileMenuItems[3].setMnemonic(KeyEvent.VK_A);
@@ -111,7 +112,19 @@ public class TextEditorForStringAttributes extends TextEditor {
                 return false;
             }
         } else {
-            // Window is not modified, so just dispose.
+            // Window is not modified, so just dispose.  This avoids this issue:
+            // 1. $PTII/bin/vergil $PTII/ptolemy/actor/lib/python/demo/PythonScale/PythonScale.xml
+            // 2. Look inside the PythonScript actor, change
+            // self.output.broadcast(s.multiply(t))
+            // to
+            // self.output.broadcast(s.multiply(t).multiply(t))
+            // 3. In the Python editor window, click on Save and then close
+            // 4. In the model window, click on exit.
+            // The user should be prompted for save.
+            // 5. Rerun vergil, note that the change has not been saved.
+            if (_modelModified) {
+                setModified(true);
+            }
             dispose();
         }
 
@@ -134,6 +147,7 @@ public class TextEditorForStringAttributes extends TextEditor {
                 + StringUtilities.escapeForXML(_factory.getText()) + "\"/>";
         context.requestChange(new MoMLChangeRequest(this, context, request));
         setModified(false);
+        _modelModified = true;
         return true;
     }
 
@@ -165,4 +179,9 @@ public class TextEditorForStringAttributes extends TextEditor {
     private final TextEditorFactory _factory;
 
     private StringAttribute _attributeToEdit;
+
+    /** True if this attribute was modified and saved, which caused.
+     *  the containing model to be modified.
+     */
+    private boolean _modelModified = false;
 }
