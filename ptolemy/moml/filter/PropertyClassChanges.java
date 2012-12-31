@@ -188,6 +188,9 @@ public class PropertyClassChanges extends MoMLFilterSimple {
                 String temporaryNewClass = _newClass;
 
                 if (!attributeValue.equals(_newClass)) {
+                    System.out.println("settingModified to true?" + _newClass);
+                    System.out.println("<---filterAttributeValue: " + container + "\t"
+                                       +  attributeName + "\t" + attributeValue);
                     MoMLParser.setModified(true);
                 }
 
@@ -671,6 +674,15 @@ public class PropertyClassChanges extends MoMLFilterSimple {
                 "ptolemy.actor.parameters.PortParameter");
         _actorsWithPropertyClassChanges.put("ptolemy.domains.sdf.lib.Repeat",
                 RepeatAttributeClassChanges);
+
+        // PythonActor
+        // Change its _tableauFactory to a ptolemy.vergil.toolbox.TextEditorConfigureFactory
+        HashMap PythonActorAttributeClassChanges = new HashMap();
+        PythonActorAttributeClassChanges.put("_tableauFactory",
+                "ptolemy.vergil.toolbox.TextEditorConfigureFactory");
+
+        _actorsWithPropertyClassChanges.put("ptolemy.actor.lib.python.PythonScript",
+                PythonActorAttributeClassChanges);
 
     }
 }
