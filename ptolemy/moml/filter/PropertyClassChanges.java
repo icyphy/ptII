@@ -188,9 +188,6 @@ public class PropertyClassChanges extends MoMLFilterSimple {
                 String temporaryNewClass = _newClass;
 
                 if (!attributeValue.equals(_newClass)) {
-                    System.out.println("settingModified to true?" + _newClass);
-                    System.out.println("<---filterAttributeValue: " + container + "\t"
-                                       +  attributeName + "\t" + attributeValue);
                     MoMLParser.setModified(true);
                 }
 
