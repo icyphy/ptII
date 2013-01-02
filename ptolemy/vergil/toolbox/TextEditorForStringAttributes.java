@@ -74,7 +74,6 @@ public class TextEditorForStringAttributes extends TextEditor {
      *  This has to be called after pack().
      */
     public void adjustFileMenu() {
-        new Exception("TextEditorForStringAttributes.adjustFileMenu()").printStackTrace();
         // Rename Save command.
         _fileMenuItems[3].setText("Apply");
         _fileMenuItems[3].setMnemonic(KeyEvent.VK_A);
