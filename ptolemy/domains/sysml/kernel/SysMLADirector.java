@@ -327,11 +327,18 @@ public class SysMLADirector extends ProcessDirector {
 
     /** Data structure for storing inputs in an actor's queue. */
     private class Input {
-        public IOPort port;
-        public int channel;
+        public SysMLAReceiver receiver;
         public Token token;
         public boolean isChangeEvent;
         public String toString() {
+            IOPort port = receiver.getContainer();
+            int channel;
+            try {
+                channel = port.getChannelForReceiver(receiver);
+            } catch (IllegalActionException e) {
+                // This should not happen.
+                return "[invalid receiver]";
+            }
             if (isChangeEvent) {
                 return "[changeEvent for port " + port.getName() + " channel " + channel + "]";
             }
@@ -488,33 +495,32 @@ public class SysMLADirector extends ProcessDirector {
             if (inputQueue.size() > 0) {
                 Input input = inputQueue.remove(0);
                 if (!input.isChangeEvent) {
-                    Receiver[][] receivers = input.port.getReceivers();
-                    if (input.channel < receivers.length) {
-                        for (int j = 0; j < receivers[input.channel].length; j++) {
-                            if (receivers[input.channel][j] != null) {
-                                ((SysMLAReceiver)receivers[input.channel][j]).reallyPut(input.token);
-                                if (SysMLADirector.this._debugging) {
-                                    synchronized (SysMLADirector.this) {
-                                        SysMLADirector.this._debug(
-                                                _actor.getFullName()
-                                                + ": Providing input to port "
-                                                + input.port.getName()
-                                                + " on channel "
-                                                + input.channel
-                                                + " with value: "
-                                                + input.token);
-                                    }
-                                }
-                            }
+                    input.receiver.reallyPut(input.token);
+                    if (SysMLADirector.this._debugging) {
+                        synchronized (SysMLADirector.this) {
+                            IOPort port = input.receiver.getContainer();
+                            int channel = port.getChannelForReceiver(input.receiver);
+                            SysMLADirector.this._debug(
+                                    _actor.getFullName()
+                                    + ": Providing input to port "
+                                    + port.getName()
+                                    + " on channel "
+                                    + channel
+                                    + " with value: "
+                                    + input.token);
                         }
                     }
                 } else {
                     if (SysMLADirector.this._debugging) {
                         synchronized (SysMLADirector.this) {
+                            IOPort port = input.receiver.getContainer();
+                            int channel = port.getChannelForReceiver(input.receiver);
                             SysMLADirector.this._debug(
                                     _actor.getFullName()
                                     + ": Providing change event to port "
-                                    + input.port.getName());
+                                    + port.getName()
+                                    + " on channel "
+                                    + channel);
                         }
                     }
                 }
@@ -587,7 +593,7 @@ public class SysMLADirector extends ProcessDirector {
      *  Second, the receiver value is persistent. A get() does not
      *  clear the receiver.
      */
-    private class SysMLAReceiver extends Mailbox {
+    public class SysMLAReceiver extends Mailbox {
         public SysMLAReceiver() throws IllegalActionException {
             this(null);
         }
@@ -628,14 +634,8 @@ public class SysMLADirector extends ProcessDirector {
             if (thread != null) {
                 List<Input> queue = thread.inputQueue;
                 Input input = new Input();
-                input.port = port;
+                input.receiver = this;
                 input.token = token;
-                try {
-                    input.channel = port.getChannelForReceiver(this);
-                } catch (IllegalActionException e) {
-                    // Should not occur.
-                    throw new InternalErrorException(e);
-                }
                 input.isChangeEvent = isFlowPort;
                 // Notify the director that this queue is not empty.
                 synchronized(SysMLADirector.this) {
