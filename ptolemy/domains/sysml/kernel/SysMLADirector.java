@@ -38,13 +38,17 @@ import ptolemy.actor.Actor;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.Mailbox;
 import ptolemy.actor.NoRoomException;
+import ptolemy.actor.NoTokenException;
 import ptolemy.actor.Receiver;
 import ptolemy.actor.process.ProcessDirector;
 import ptolemy.actor.process.ProcessThread;
 import ptolemy.actor.util.Time;
+import ptolemy.data.BooleanToken;
 import ptolemy.data.Token;
+import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
+import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -132,6 +136,19 @@ public class SysMLADirector extends ProcessDirector {
         newObject._threadDirectory = new ConcurrentHashMap<Actor,SingleQueueProcessThread>();
         return newObject;
     }
+    
+    /** Start a new iteration (at a new time, presumably) and
+     *  wait until a deadlock is detected. Then deal with the deadlock
+     *  by calling the protected method _resolveDeadlock() and return.
+     *  This method is synchronized on the director.
+     *  @exception IllegalActionException If a derived class throws it.
+     */
+    public synchronized void fire() throws IllegalActionException {
+        // Notify all of a new iteration.
+        notifyAll();
+
+        super.fire();
+    }
 
     /** Override the base class to make a local record of the requested
      *  firing.
@@ -175,7 +192,6 @@ public class SysMLADirector extends ProcessDirector {
     public synchronized void initialize() throws IllegalActionException {
         // Recreate the collection of actors.
         _threadDirectory.clear();
-        // FIXME: Should the following also be cleared in postfire()?
         // This will create the threads and start them.
         // It also initializes the _queueDirectory structure.
         super.initialize();
@@ -200,6 +216,29 @@ public class SysMLADirector extends ProcessDirector {
      */
     protected synchronized boolean _areThreadsDeadlocked() {
         return (_getBlockedThreadsCount() >= _getActiveThreadsCount());
+    }
+
+    /** Return true if the specified port is a flow port.
+     *  @param port The port.
+     *  @return True if the port contains a boolean-valued parameter named "flow"
+     *   with value true.
+     */
+    protected boolean _isFlowPort(IOPort port) {
+        boolean isFlowPort = false;
+        Attribute flowPortMarker = port.getAttribute("flow");
+        if (flowPortMarker instanceof Parameter) {
+            try {
+                Token flowPortMarkerValue = ((Parameter)flowPortMarker).getToken();
+                if (flowPortMarkerValue instanceof BooleanToken
+                        && (((BooleanToken)flowPortMarkerValue).booleanValue())) {
+                    isFlowPort = true;
+                }
+            } catch (IllegalActionException e) {
+                // If we get an exception, ignore and assume it's not
+                // a flow port.
+            }
+        }
+        return isFlowPort;
     }
 
     /** Create a new ProcessThread for controlling the actor that
@@ -263,19 +302,16 @@ public class SysMLADirector extends ProcessDirector {
             _debug("Setting model time to " + earliestFireAtTime);
         }
         
-        // FIXME: Mark all threads unblocked now that we are at a new time?
+        // Advance model time.
+        // FIXME: This will only work if this director is at the top level.
+        setModelTime(earliestFireAtTime);
+                
         // Mark all threads unblocked because we will either move to a new time
         // or terminate the execution.
         // _blockedThreads.clear();
         for (SingleQueueProcessThread thread : winningThreads) {
             threadUnblocked(thread, null);
         }
-
-        // Advance model time.
-        // FIXME: This will only work if this director is at the top level.
-        setModelTime(earliestFireAtTime);
-                
-        notifyAll();
         // Allow execution to continue.
         return true;
     }
@@ -292,7 +328,15 @@ public class SysMLADirector extends ProcessDirector {
     /** Data structure for storing inputs in an actor's queue. */
     private class Input {
         public IOPort port;
+        public int channel;
         public Token token;
+        public boolean isChangeEvent;
+        public String toString() {
+            if (isChangeEvent) {
+                return "[changeEvent for port " + port.getName() + " channel " + channel + "]";
+            }
+            return "[" + token + " for port " + port.getName() + " channel " + channel + "]";
+        }
     }
     
     /** A process thread that clears all input receivers, extracts one
@@ -334,10 +378,13 @@ public class SysMLADirector extends ProcessDirector {
                 return false;
             }
             
-            // First, clear all input receivers.
+            // First, clear all input receivers that are not marked as flow ports.
             // Record whether the actor actually has any input receivers.
             List<IOPort> inputPorts = _actor.inputPortList();
             for (IOPort inputPort : inputPorts) {
+                if (_isFlowPort(inputPort)) {
+                    continue;
+                }
                 Receiver[][] receivers = inputPort.getReceivers();
                 for (int i = 0; i < receivers.length; i++) {
                     for (int j = 0; j < receivers[i].length; j++) {
@@ -351,6 +398,10 @@ public class SysMLADirector extends ProcessDirector {
             // Block until either the input queue is non-empty or
             // a firing has been requested.
             synchronized (SysMLADirector.this) {
+                if (SysMLADirector.this._debugging) {
+                    SysMLADirector.this._debug("******* Iterating actor " + _actor.getName() + " at time " + getModelTime());
+                    SysMLADirector.this._debug("input queue: " + inputQueue);
+                }
                 while (inputQueue.size() == 0) {
                     // Input queue is empty.
                     if (_stopRequested) {
@@ -391,13 +442,6 @@ public class SysMLADirector extends ProcessDirector {
                                 SysMLADirector.this.stop();
                             }
                         }
-                        if (SysMLADirector.this._debugging) {
-                            SysMLADirector.this._debug(
-                                    _actor.getFullName()
-                                    + " unblocked at time "
-                                    + getModelTime()
-                                    + ".");
-                        }
                         break; // Break out of while loop blocked on empty queue.
                     } else {
                         // Input queue is empty and no future firing
@@ -423,32 +467,54 @@ public class SysMLADirector extends ProcessDirector {
                             SysMLADirector.this.stop();
                         }
                     }
+                } // while (inputQueue.size() == 0).
+                // Either queue is non-empty, or time has passed.
+                if (SysMLADirector.this._debugging) {
+                    SysMLADirector.this._debug(
+                            _actor.getFullName()
+                            + " unblocked at time "
+                            + getModelTime()
+                            + ".");
                 }
-            }
+                threadUnblocked(this, null);
+            } // synchronized
 
-            // Either queue is non-empty, or time has passed.
-            threadUnblocked(this, null);
 
             // Either the input queue is non-empty, or time has passed
             // to match a requested firing. If the former, then extract
-            // an input from the queue and deposit in the receiver.
+            // an input from the queue and deposit in the receiver, unless
+            // it is an event from a flow port, in which case the value
+            // has already been updated.
             if (inputQueue.size() > 0) {
                 Input input = inputQueue.remove(0);
-                Receiver[][] receivers = input.port.getReceivers();
-                for (int i = 0; i < receivers.length; i++) {
-                    for (int j = 0; j < receivers[i].length; j++) {
-                        if (receivers[i][j] != null) {
-                            ((SysMLAReceiver)receivers[i][j]).reallyPut(input.token);
-                            if (SysMLADirector.this._debugging) {
-                                synchronized (SysMLADirector.this) {
-                                    SysMLADirector.this._debug(
-                                            _actor.getFullName()
-                                            + ": Providing input to port "
-                                            + input.port.getName()
-                                            + " with value: "
-                                            + input.token);
+                if (!input.isChangeEvent) {
+                    Receiver[][] receivers = input.port.getReceivers();
+                    if (input.channel < receivers.length) {
+                        for (int j = 0; j < receivers[input.channel].length; j++) {
+                            if (receivers[input.channel][j] != null) {
+                                ((SysMLAReceiver)receivers[input.channel][j]).reallyPut(input.token);
+                                if (SysMLADirector.this._debugging) {
+                                    synchronized (SysMLADirector.this) {
+                                        SysMLADirector.this._debug(
+                                                _actor.getFullName()
+                                                + ": Providing input to port "
+                                                + input.port.getName()
+                                                + " on channel "
+                                                + input.channel
+                                                + " with value: "
+                                                + input.token);
+                                    }
                                 }
                             }
+                        }
+                    }
+                } else {
+                    if (SysMLADirector.this._debugging) {
+                        synchronized (SysMLADirector.this) {
+                            SysMLADirector.this._debug(
+                                    _actor.getFullName()
+                                    + ": Providing change event to port "
+                                    + input.port.getName());
                         }
                     }
                 }
@@ -514,7 +580,12 @@ public class SysMLADirector extends ProcessDirector {
     /** Variant of a Mailbox that overrides the put() method to
      *  divert the input to the queue associated with the actor
      *  and then provides a method to really put a token into
-     *  a receiver.
+     *  a receiver. If the containing port has a boolean-valued
+     *  attribute named "flow", then the behavior is quite different.
+     *  First, a put updates the value of the receiver immediately
+     *  in addition to putting a "change event" on the event queue.
+     *  Second, the receiver value is persistent. A get() does not
+     *  clear the receiver.
      */
     private class SysMLAReceiver extends Mailbox {
         public SysMLAReceiver() throws IllegalActionException {
@@ -523,12 +594,35 @@ public class SysMLADirector extends ProcessDirector {
         public SysMLAReceiver(IOPort container) throws IllegalActionException {
             super(container);
         }
+        
+        /** Get the contained Token.  If there is none, throw an exception.
+         *  The token is removed.
+         *  @return The token contained by this mailbox.
+         *  @exception NoTokenException If this mailbox is empty.
+         */
+        public Token get() throws NoTokenException {
+            if (_token == null) {
+                throw new NoTokenException(getContainer(),
+                        "Attempt to get data from an empty mailbox.");
+            }
+            IOPort port = getContainer();
+            boolean isFlowPort = _isFlowPort(port);
+            if (isFlowPort) {
+                // Value is persistent. Do not clear.
+                return _token;
+            } else {
+                Token token = _token;
+                _token = null;
+                return token;
+            }
+        }
 
         /** Put a token into the queue for containing actor.
          *  @param token The token to be put into the queue.
          */
         public void put(Token token) {
             IOPort port = getContainer();
+            boolean isFlowPort = _isFlowPort(port);
             Actor actor = (Actor)port.getContainer();
             SingleQueueProcessThread thread = _threadDirectory.get(actor);
             if (thread != null) {
@@ -536,12 +630,31 @@ public class SysMLADirector extends ProcessDirector {
                 Input input = new Input();
                 input.port = port;
                 input.token = token;
+                try {
+                    input.channel = port.getChannelForReceiver(this);
+                } catch (IllegalActionException e) {
+                    // Should not occur.
+                    throw new InternalErrorException(e);
+                }
+                input.isChangeEvent = isFlowPort;
                 // Notify the director that this queue is not empty.
                 synchronized(SysMLADirector.this) {
                     queue.add(input);
+                    if (SysMLADirector.this._debugging) {
+                        SysMLADirector.this._debug("Adding to queue for "
+                                + actor.getName() + " at time " + getModelTime()
+                                + ": " + input);
+                        SysMLADirector.this._debug("input queue: " + queue);
+                    }
                     threadUnblocked(thread, null);
                     SysMLADirector.this.notifyAll();
                 }
+            }
+            if (isFlowPort) {
+                // Do not use super.put() here because it
+                // will throw an exception if there already
+                // is a token.
+                _token = token;
             }
         }
         
