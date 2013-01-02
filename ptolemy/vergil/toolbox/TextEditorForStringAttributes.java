@@ -106,6 +106,13 @@ public class TextEditorForStringAttributes extends TextEditor {
 
         if (isModified()) {
             if (_queryForApply()) {
+                // Avoid opening Python Actor, modifying the script,
+                // clicking the x, being prompted for applying the
+                // change, applying it, then closing the model and
+                // *not* being prompted for save.
+                if (_modelModified) {
+                    setModified(true);
+                }
                 dispose();
             } else {
                 return false;
