@@ -547,6 +547,12 @@ public class Configuration extends CompositeEntity implements
                                     // of the output port and the container of the 
                                     // variable are different.
                                     && !(className.equals("ptolemy.domains.ptides.lib.ErrorHandlingAction") && lesserNamedObj.getName().equals("dropEvent")) 
+                                    // actor.lib.qm.CompositeQM was causing false
+                                    // positives because the contstraints had different
+                                    // containers, but were contained within the Composite.
+                                    && (greaterNamedObj.getContainer().getContainer()
+                                            !=
+                                            lesserNamedObj.getContainer())
                                     // PubSubPort that contains an
                                     // initialTokens that is used to
                                     // set the type.
