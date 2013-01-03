@@ -92,6 +92,9 @@ test_jsimple: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) alljtests.tcl \
 				$(JCLASS_DEPENDENCIES)
 	$(JTCLSH) alljtests.tcl
 
+chktestdir:
+	@$(ROOT)/adm/bin/chktestdir
+
 PTIITXTFILES=adm/bin/ptIItxtfiles
 TXTFILENAMES=/tmp/txtfilenames
 JAVAFILENAMES=/tmp/javafilenames
@@ -100,7 +103,7 @@ $(JAVAFILENAMES): $(ROOT)/$(PTIITXTFILES)
 	@egrep "\.java$$" $(TXTFILENAMES) > $(JAVAFILENAMES)
 
 missingMakefiles: $(JAVAFILENAMES)
-	@(cd $(ROOT); cat $(JAVAFILENAMES) | xargs -n 1 dirname | sort | uniq | awk '{print "ls " $$1 "/makefile"}' > /tmp/missingMakefiles.sh; sh /tmp/missingMakefiles.sh 2>&1 | egrep "cannot access") | awk '{print substr($$4, 1, length($$4) - 1) }' | 2>&1 egrep -v "(Entering directory|Leaving directory|/jsoriginal/|ptolemy/apps|\./vendors|ptolemy/backtrack/test|jni/test/jni)"
+	(cd $(ROOT); cat $(JAVAFILENAMES) | xargs -n 1 dirname | sort | uniq | awk '{print "ls " $$1 "/makefile"}' > /tmp/missingMakefiles.sh; sh /tmp/missingMakefiles.sh 2>&1 | egrep "cannot access") | awk '{print substr($$4, 1, length($$4) - 1) }' | 2>&1 egrep -v "(Entering directory|Leaving directory|/jsoriginal/|ptolemy/apps|\./vendors|ptolemy/backtrack/test|jni/test/jni)"
 
 missingDocPackages: $(JAVAFILENAMES)
 	@cat $(JAVAFILENAMES) | xargs -n 1 dirname | sort | uniq | sed 's@/@.@g' | sed 's/^\.\.//' > /tmp/missingDocPackages.p

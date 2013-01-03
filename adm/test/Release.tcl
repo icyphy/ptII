@@ -180,4 +180,11 @@ M       lib/diva.jar}}
     }
     list $resultMessage
 } {{}}
+
+test release-3.1 {Check for makefiles in directories that have a test/ directory, but the makefile does not list test in the DIRS = line} {
+    exec make --no-print-directory --silent chktestdir
+} {./ptolemy/backtrack/test/../makefile:DIRS =		$(PTBACKTRACK_ECLIPSE_DIR) automatic manual util xmlparser demo
+./ptolemy/cg/kernel/generic/program/procedural/c/type/test/../makefile:DIRS =		parameterizedTemplates polymorphic $(PTCUNIT_DIR)}
+
 cd "$currentDirectory"
+
