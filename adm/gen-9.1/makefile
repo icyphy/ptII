@@ -518,7 +518,6 @@ PTII_SRC_TO_BE_REMOVED = \
 
 BASE_SRC_TO_BE_REMOVED = \
 		doc/usingVergil \
-		lib/hsif \
 		lib/chic.jar \
 		lib/colt.jar \
 		lib/jasminclasses.jar \
@@ -602,9 +601,7 @@ VIPTOS_SRC_TO_BE_REMOVED = \
 		ptolemy/actor/TypedCompositeActorWithCoSimulation.java \
 		ptolemy/actor/ptalon \
 		ptolemy/configs/hyvisual \
-		ptolemy/domains/ptinyDomains.xml \
-		ptolemy/hsif
-
+		ptolemy/domains/ptinyDomains.xml
 
 # Location of the jar binary.  Cygwin /bin/jar is broken.
 JAR=c:/Program\ Files/Java/jdk1.5.0_14/bin/jar
@@ -826,7 +823,7 @@ src_jar/viptos$(VIPTOS_VERSION): $(PTII_SRC_JAR)
 	mv src_jar/viptos$(VIPTOS_VERSION)/doc/img/makefile.tmp \
 		src_jar/viptos$(VIPTOS_VERSION)/doc/img/makefile
 	# Fix up doc/makefile
-	egrep -v "PtolemyIISplash.psd|banner.psd|ptIIbanner2.psd|lib/comm|lib.comm|python|security|ci/kernel|ci/lib|copernicus|csp|dde|ddf|dt.kernel|giotto|gr.kernel|gr.lib|io.comm|javasound|lib.xslt|lib.xslt|pn/kernel|psdf|petrinet|ptolemy.caltrop|ptolemy.domains.ci|ptolemy.domains.pn|ptolemy.hsif|sr.kernel|sr/kernel|sr.lib|sr/lib|thales.actor|thales.vergil|tm.kernel|tm/kernel|tm.lib|tm/lib|wireless" \
+	egrep -v "PtolemyIISplash.psd|banner.psd|ptIIbanner2.psd|lib/comm|lib.comm|python|security|ci/kernel|ci/lib|copernicus|csp|dde|ddf|dt.kernel|giotto|gr.kernel|gr.lib|io.comm|javasound|lib.xslt|lib.xslt|pn/kernel|psdf|petrinet|ptolemy.caltrop|ptolemy.domains.ci|ptolemy.domains.pn|sr.kernel|sr/kernel|sr.lib|sr/lib|thales.actor|thales.vergil|tm.kernel|tm/kernel|tm.lib|tm/lib|wireless" \
 		src_jar/viptos$(VIPTOS_VERSION)/doc/makefile \
 		| sed 's/codeDocHyVisual.jar codeDocViptos.jar codeDocVisualSense.jar//' \
 	        | sed 's@^all:.*$$@all: suball whatsnew.htm whatsnewVergil.htm codeDoc/tree.html@' \
@@ -1411,7 +1408,6 @@ JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/ptolemy/distributed/domains/sdf/kernel \
 	$(REMOTE1PTIIDIST)/ptolemy/actor/ptalon \
 	$(REMOTE1PTIIDIST)/ptolemy/gui \
-	$(REMOTE1PTIIDIST)/ptolemy/hsif \
 	$(REMOTE1PTIIDIST)/ptolemy/verification \
 	$(REMOTE1PTIIDIST)/lbnl \
 	$(REMOTE1PTIIDIST)/lbnl/actor/lib \

@@ -151,8 +151,6 @@
     <include name="ptolemy/domains/wireless/demo/demo.jar" />
     <include name="ptolemy/domains/wireless/doc/doc.jar" />
     <include name="ptolemy/domains/wireless/wireless.jar" />
-    <include name="ptolemy/hsif/demo/demo.jar" />
-    <include name="ptolemy/hsif/hsif.jar" />
     <include name="ptolemy/matlab/demo/demo.jar" />
     <include name="ptolemy/matlab/matlab.jar" />
     <include name="ptolemy/moml/demo/demo.jar" />
@@ -3002,39 +3000,6 @@
 	 >
       <fileset dir="${basedir}">
 	<include name="doc/codeDocHyVisual/**"/>
-      </fileset>
-    </jar>
-
-    <!-- ptolemy/hsif/hsif.jar -->
-    <jar defaultexcludes="yes"
-	 destfile="${basedir}/ptolemy/hsif/hsif.jar"
-	 >
-      <fileset dir="${basedir}">
-	<include name="ptolemy/hsif/*.class"/>
-      </fileset>
-      <fileset dir="${basedir}">
-	<include name="ptolemy/hsif/xsl/*.xsl"/>
-      </fileset>
-    </jar>
-
-    <!-- ptolemy/hsif/demo/demo.jar -->
-    <jar defaultexcludes="yes"
-	 destfile="${basedir}/ptolemy/hsif/demo/demo.jar"
-	 >
-      <fileset dir="${basedir}">
-	<include name="ptolemy/hsif/demo/*.htm"/>
-      </fileset>
-      <fileset dir="${basedir}">
-	<include name="ptolemy/hsif/demo/SwimmingPool/*.dtd"/>
-      </fileset>
-      <fileset dir="${basedir}">
-	<include name="ptolemy/hsif/demo/SwimmingPool/*.xml"/>
-      </fileset>
-      <fileset dir="${basedir}">
-	<include name="ptolemy/hsif/demo/Thermostat/*.dtd"/>
-      </fileset>
-      <fileset dir="${basedir}">
-	<include name="ptolemy/hsif/demo/Thermostat/*.xml"/>
       </fileset>
     </jar>
 

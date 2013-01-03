@@ -378,14 +378,6 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
                 String extension = getExtension(input).toLowerCase();
 
                 if (!extension.equals("xml") && !extension.equals("moml")) {
-                    if (extension.equals("hsif")) {
-                        // FIXME: We could try using reflection to invoke
-                        // the HSIFEffigyFactory here.
-                        System.out.println("Warning: Could not open up '"
-                                + input + "' because it ends with '.hsif'.\n"
-                                + "Try running "
-                                + "$PTII/bin/vergil -hyvisual " + input);
-                    }
                     return null;
                 }
 

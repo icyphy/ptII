@@ -51,7 +51,7 @@
   <!-- named "blank", then the effigy will initially refer to a clone -->
   <!-- of that blank entity. -->
   <entity name="effigyFactory" class="ptolemy.actor.gui.EffigyFactory">
-    <!-- Import HSIF, Graph Editor w/ CT Director, FSM Editor, Modal Model -->
+    <!-- Graph Editor w/ Continuous Director, FSM Editor, Modal Model -->
     <!-- NOTE: we must do this as an input to avoid expanding the actors -->
     <!-- in cases where the Matlab actor does not exist -->
     <input source="ptolemy/configs/hyvisual/hyvisualEffigies.xml"/>

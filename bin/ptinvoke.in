@@ -574,7 +574,7 @@ if [ "$PTPSDF_DIR" = "psdf" ]; then
 fi
 
 #### Saxon is the XSLT and XQuery Processor (http://saxon.sourceforge.net/)
-# At runtime, ptolemy.util.XSLTUtilities, caltrop and hsif use Saxon.
+# At runtime, ptolemy.util.XSLTUtilities, and caltrop use Saxon.
 SAXON_JARS=${CLASSPATHSEPARATOR}${PTII}/lib/saxon8.jar${CLASSPATHSEPARATOR}${PTII}/lib/saxon8-dom.jar
 
 #### tools.jar, which contains sun.security.tools.SignatureFile

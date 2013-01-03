@@ -58,7 +58,7 @@ ME =		ptolemy
 #
 DIRS = util math kernel plot graph moml data actor gui media	\
 	$(PTMATLAB_DIR)	domains	$(PTCOPERNICUS_DIR) verification \
-	vergil hsif $(PTCHIC_DIR) cg component $(PTBACKTRACK_DIR) \
+	vergil $(PTCHIC_DIR) cg component $(PTBACKTRACK_DIR) \
 	configs \
 	$(PTDISTRIBUTED_DIR) $(PTHOMER_DIR) ptp $(PTCALTROP_DIR) \
 	contrib demo
@@ -92,10 +92,6 @@ PTAUXALLJARS = \
 # No need for util/util.jar, plotmlapplet.jar includes those classes
 # util/util.jar
 
-# hsif.jar is not included in ptsupport.jar because it only works
-# with the -hyvisual configuration.
-#		hsif/hsif.jar 
-
 # All the .class files necessary to run a Ptolemy II domain applet
 PTAUXALLJAR =	ptsupport.jar
 
@@ -120,7 +116,7 @@ MISC_FILES = util kernel plot graph moml data actor gui math media	\
 	$(PTHOMER_DIR) \
 	$(PTMATLAB_DIR)	domains vergil configs
 
-OPTIONAL_FILES = apps cal chic cg component demo hsif matlab
+OPTIONAL_FILES = apps cal chic cg component demo matlab
 
 
 all: suball $(EXTRA_SRCS)

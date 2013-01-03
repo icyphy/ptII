@@ -574,7 +574,7 @@ PTJACL_JARS =   $(DIVA_JAR)$(CLASSPATHSEPARATOR)$(JYTHON_DIR)/jython.jar$(CLASSP
 JTCLSH =	CLASSPATH="$(CLASSPATH)$(AUXCLASSPATH)$(CLASSPATHSEPARATOR)$(PTJACL_JAR)" @JTCLSH@
 
 # Saxon is the XSLT and XQuery Processor (http://saxon.sourceforge.net/)
-# At runtime, ptolemy.util.XSLTUtilities, caltrop and hsif uses Saxon.
+# At runtime, ptolemy.util.XSLTUtilities, and caltrop uses Saxon.
 # Use $(PTII) and not $(ROOT) because the ptolemy/config/test/junit tests change directories
 # so relative pathnames will not work.
 SAXON_JAR =	$(PTII)/lib/saxon8.jar$(CLASSPATHSEPARATOR)$(PTII)/lib/saxon8-dom.jar

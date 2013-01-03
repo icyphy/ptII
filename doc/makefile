@@ -438,8 +438,7 @@ HYVISUALPACKAGES = \
 	ptolemy.domains.de.kernel \
 	ptolemy.domains.de.lib \
 	ptolemy.domains.sdf.optimize \
-	ptolemy.domains.sdf.optimize.lib \
-	ptolemy.hsif
+	ptolemy.domains.sdf.optimize.lib
 
 # All the HyVisual generated documentation
 HYVISUAL_DOCS = \

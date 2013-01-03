@@ -162,7 +162,6 @@
 			<exclude name="ptolemy/copernicus/" />
 			<exclude name="ptolemy/demo/" />
 			<exclude name="ptolemy/distributed/" />
-			<exclude name="ptolemy/hsif/" />
 			<exclude name="ptolemy/matlab/" />
 			<exclude name="ptolemy/ptp/" />
 			<exclude name="ptolemy/verification/" />
@@ -350,7 +349,6 @@
 				<exclude name="ptolemy/copernicus/" />
 				<exclude name="ptolemy/demo/" />
 				<exclude name="ptolemy/distributed/" />
-				<exclude name="ptolemy/hsif/" />
 				<exclude name="ptolemy/matlab/" />
 				<exclude name="ptolemy/ptp/" />
 				<exclude name="ptolemy/verification/" />
@@ -469,7 +467,6 @@
 			<exclude name="ptolemy/copernicus/" />
 			<exclude name="ptolemy/demo/" />
 			<exclude name="ptolemy/distributed/" />
-			<exclude name="ptolemy/hsif/" />
 			<exclude name="ptolemy/matlab/" />
 			<exclude name="ptolemy/ptp/" />
 			<exclude name="ptolemy/verification/" />

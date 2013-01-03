@@ -286,8 +286,6 @@ BCVTB_JNLP_JARS =	\
 HYBRID_SYSTEMS_ONLY0_JNLP_JARS = \
 	doc/design/hyvisual.jar \
 	doc/codeDocHyVisual.jar \
-	ptolemy/hsif/hsif.jar \
-	ptolemy/hsif/demo/demo.jar \
 	ptolemy/domains/continuous/continuous.jar \
 	ptolemy/domains/de/de.jar \
 	ptolemy/domains/gr/gr.jar \
@@ -1177,21 +1175,11 @@ $(UNJAR_DIST_DIR):
 			   cp $$x $(UNJAR_DIST_DIR)/lib;; \
 			doc/codeDoc*) \
 			   echo "  Copying to doc"; \
-v			   cp $$x $(UNJAR_DIST_DIR)/doc;; \
+			   cp $$x $(UNJAR_DIST_DIR)/doc;; \
 			ptolemy/actor/gui/jnlp/jnlp.jar) \
 			   echo "  Copying jar to ptolemy/actor/gui/jnlp"; \
 			   mkdir -p $(UNJAR_DIST_DIR)/ptolemy/actor/gui/jnlp; \
 			   cp $$x $(UNJAR_DIST_DIR)/ptolemy/actor/gui/jnlp; \
-			  (cd $(UNJAR_DIST_DIR); "$(JAR)" -xf ../$$x);; \
-			ptolemy/hsif/hsif.jar) \
-			   echo "  Copying jar to ptolemy/hsif"; \
-			   mkdir -p $(UNJAR_DIST_DIR)/ptolemy/hsif; \
-			   cp $$x $(UNJAR_DIST_DIR)/ptolemy/hsif; \
-			  (cd $(UNJAR_DIST_DIR); "$(JAR)" -xf ../$$x);; \
-			ptolemy/hsif/demo/demo.jar) \
-			   echo "  Copying jar to ptolemy/hsif/demo"; \
-			   mkdir -p $(UNJAR_DIST_DIR)/ptolemy/hsif/demo; \
-			   cp $$x $(UNJAR_DIST_DIR)/ptolemy/hsif/demo; \
 			  (cd $(UNJAR_DIST_DIR); "$(JAR)" -xf ../$$x);; \
 			ptolemy/ptsupport.jar) \
 			   echo "  Copying to ptolemy"; \

@@ -278,8 +278,6 @@ CLEAN_SHIPPING_FILES = \
 		ptolemy/domains/wireless/demo/Network \
 		ptolemy/domains/wireless/lib/network \
 		ptolemy/domains/wireless/lib/tinyOS \
-		ptolemy/hsif/Thermostat_moml.xml \
-		ptolemy/hsif/SwimmingPool_moml.xml \
 		ptolemy/matlab/libptmatlab.dylib \
 		ptolemy/matlab/libptmatlab.so \
 		ptolemy/matlab/matlabLinux.jar \

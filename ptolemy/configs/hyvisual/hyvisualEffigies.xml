@@ -1,7 +1,4 @@
 <group>
-    <!-- An effigy factory to open HSIF file. -->
-    <entity name="HSIF Opener" class="ptolemy.hsif.HSIFEffigyFactory">
-    </entity>
     <!-- Use a custom graph editor with a CT director already in it. -->
     <entity name="Graph Editor" class="ptolemy.actor.gui.PtolemyEffigy$Factory">
       <entity name="blank" class="ptolemy.actor.TypedCompositeActor">
