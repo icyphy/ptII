@@ -101,9 +101,13 @@ install: $(PTLIB) jclass jars $(PTPACKAGE).jar $(PTPACKAGE_NATIVE_JAR)
 	@echo "'$(PTPACKAGE).jar' requires gcc, so we install it in \$$PTII/lib"
 	@echo "for hosts that might not have gcc installed and for Web Start."
 	cp $(PTLIB) $(ROOT)/lib
-	if [ "$(PTJNI_SHAREDLIBRARY_SUFFIX)" != "$(PTJNI_SHAREDLIBRARY_SUFFIX2)" -a "$(PTJNI_SHAREDLIBRARY_SUFFIX2)" != "" ]; then \
-	    echo "Copying $(PTJNI_SHAREDLIBRARY_PREFIX)bcvtb.$(PTJNI_SHAREDLIBRARY_SUFFIX2) to $(ROOT)/lib"; \
-	    cp $(PTJNI_SHAREDLIBRARY_PREFIX)bcvtb.$(PTJNI_SHAREDLIBRARY_SUFFIX2) $(ROOT)/lib; \
+	if [ "$(PTJNI_SHAREDLIBRARY_SUFFIX)" != "$(PTJNI_SHAREDLIBRARY_SUFFIX2)" -a "$(PTJNI_SHAREDLIBRARY_SUFFIX2)" != "" ] ; then \
+	    if [ ! -f "$(PTJNI_SHAREDLIBRARY_PREFIX)bcvtb.$(PTJNI_SHAREDLIBRARY_SUFFIX2)" ]; then \
+		echo "Warning $(PTJNI_SHAREDLIBRARY_PREFIX)bcvtb.$(PTJNI_SHAREDLIBRARY_SUFFIX2) does not exist.  This is not a problem if SUFFIX2 = so.*"; \
+	    else \
+	        echo "Copying $(PTJNI_SHAREDLIBRARY_PREFIX)bcvtb.$(PTJNI_SHAREDLIBRARY_SUFFIX2) to $(ROOT)/lib"; \
+	        cp $(PTJNI_SHAREDLIBRARY_PREFIX)bcvtb.$(PTJNI_SHAREDLIBRARY_SUFFIX2) $(ROOT)/lib; \
+            fi; \
         fi
 	#cp $(PTPACKAGE).jar $(PTPACKAGE_NATIVE_JAR) $(ROOT)/lib
 
