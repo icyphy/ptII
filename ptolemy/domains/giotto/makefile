@@ -32,7 +32,8 @@ ME =		ptolemy/domains/giotto
 
 
 # cgc is on a separate line so we can exclude it while building a release.
-DIRS =		kernel lib demo doc cgc test
+DIRS =		kernel lib demo doc test \
+		cgc
 
 # Root of Ptolemy II directory
 ROOT =		../../..
