@@ -90,10 +90,9 @@ public class DatabaseQuery extends Source {
      */
     public StringParameter databaseManager;
 
-    /** An SQL query. This is a string that defaults to
-     *  "trim(room)='545Q' and trim(bldg)='Cory'", indicating that the retrieved
-     *  records should have "Cory" in the bldg column and "545Q"
-     *  in the room column.
+    /** An SQL query. This is a string that defaults to "select * from
+     *  desks", indicating that the all the rows from the desks table
+     *  should be returned.
      */
     public PortParameter query;
 
