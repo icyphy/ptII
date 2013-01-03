@@ -270,6 +270,8 @@ $CLASSPATH/ptolemy/domains/pthales/demo/FFT/FFT.xml
 $CLASSPATH/ptolemy/domains/pthales/demo/HelloWorld/HelloWorld.xml
 $CLASSPATH/ptolemy/domains/pthales/demo/Illustrative/Illustrative.xml
 $CLASSPATH/ptolemy/domains/ptides/demo/ActuatorPattern/ActuatorPattern.xml
+$CLASSPATH/ptolemy/domains/ptides/demo/Controller/Controller.xml
+$CLASSPATH/ptolemy/domains/ptides/demo/CoSimulation/CoSimulation.xml
 $CLASSPATH/ptolemy/domains/ptides/demo/DistributedPowerPlant/DistributedPowerPlant.xml
 $CLASSPATH/ptolemy/domains/ptides/demo/MixedSimulator/MixedSimulator.xml
 $CLASSPATH/ptolemy/domains/ptides/demo/MultiPlatformTDMA/MultiPlatformTDMA.xml

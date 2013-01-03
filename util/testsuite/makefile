@@ -34,7 +34,7 @@ ROOT =		../..
 
 ME =		util/testsuite
 
-DIRS =
+DIRS =		test
 
 CLASSPATH =	$(ROOT)
 

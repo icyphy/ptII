@@ -21,7 +21,7 @@
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
     </property>
     <entity name="visual model reference" class="ptolemy.vergil.actor.lib.VisualModelReference">
-        <property name="modelFileOrURL" class="ptolemy.data.expr.FileParameter" value="$PTII/ptolemy/actor/hoc/test/auto/modelsForModelReference/simpleRamp.xml">
+        <property name="modelFileOrURL" class="ptolemy.data.expr.FileParameter" value="$PTII/ptolemy/actor/lib/hoc/test/auto/modelsForModelReference/simpleRamp.xml">
         </property>
         <property name="executionOnFiring" class="ptolemy.data.expr.StringParameter" value="run in calling thread">
         </property>

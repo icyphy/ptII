@@ -27,6 +27,7 @@ package diva.graph.modular;
 
 import java.util.Iterator;
 import java.util.LinkedList;
+import diva.util.NullIterator;
 
 import diva.graph.AbstractGraphModel;
 

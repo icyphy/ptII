@@ -50,7 +50,7 @@ DOMAINS =	ca ci continuous coroutine csp curriculum \
 		$(PTPSDF_DIR) ptera pthales ptides ptinyos $(PTSPACE_DIR) \
 		sequence sr taskpt tdl tester tm $(PTJAVA3D_DIR) wireless
 
-DIRS =		$(DOMAINS) $(EXPERIMENTAL_DOMAINS)
+DIRS =		$(DOMAINS) $(EXPERIMENTAL_DOMAINS) test
 
 # Root of Ptolemy II directory
 ROOT =		../..

@@ -33,8 +33,7 @@
 
 ME =		ptolemy/cg/adapter/generic/program/procedural/java/adapters/ptolemy/actor/lib/gui
 
-DIRS =
-					#test
+DIRS =		test
 
 # Root of the Java directory
 ROOT =		../../../../../../../../../../../..

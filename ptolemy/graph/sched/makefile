@@ -32,7 +32,7 @@
 
 ME =        ptolemy/graph/sched
 
-#DIRS =
+DIRS =	test
 
 # Root of the Java directory
 ROOT =      ../../..

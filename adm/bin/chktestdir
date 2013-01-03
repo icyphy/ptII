@@ -1,0 +1,11 @@
+#!/bin/sh
+# $Id$
+# Check that each directory that contains a test/ directory has a makefile that has DIRS = .* test
+cd $PTII
+
+testdirs=/tmp/chktestdir.testdirs.$$
+
+find . -type d -name test | egrep -v '(/adm/|/codeDoc/|/vendors/)' > $testdirs
+cat $testdirs | awk '{print $1 "/../makefile"}' | xargs grep 'DIRS =' | egrep -v '[ 	]test' | grep -v PTPOWERMOCK
+
+rm -r $testdirs

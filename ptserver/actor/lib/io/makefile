@@ -31,7 +31,7 @@
 
 ME =		ptserver/actor/lib/io
 
-DIRS =
+DIRS =		test
 
 # Root of Ptolemy II directory
 ROOT =		../../../..

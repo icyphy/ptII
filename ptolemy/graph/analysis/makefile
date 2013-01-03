@@ -32,7 +32,7 @@
 
 ME =        ptolemy/graph/analysis
 
-DIRS = analyzer strategy \
+DIRS = analyzer strategy test
 
 # Root of the Java directory
 ROOT =      ../../..

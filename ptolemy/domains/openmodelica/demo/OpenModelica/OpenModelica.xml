@@ -10,7 +10,7 @@
     </property>
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 1388, 738}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={329, 625, 1388, 738}, maximized=false}">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
@@ -94,25 +94,33 @@
             </property>
         </property>
     </entity>
-    <entity name="DisplayResults" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{235.0, 190.0}">
+    <entity name="RunCompositeActor" class="ptolemy.actor.lib.hoc.RunCompositeActor">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[255.0, 190.0]">
         </property>
-        <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
             <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The CSV Actor requires that Backward Type Inference be enabled.&#10;To see that Backward Type Inference is enabled, right click on the&#10;background and check that the backwardTypeInference property&#10;is set.">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 200.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 180.0]">
             </property>
         </property>
         <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
             <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[97.5, 80.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{115, 130}">
             </property>
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={373, 208, 934, 634}, maximized=false}">
+        </property>
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
+        </property>
+        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+        </property>
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{384.0, 336.43359375}">
         </property>
         <entity name="CSVReader" class="ptolemy.actor.lib.io.CSVReader">
             <property name="fileOrURL" class="ptolemy.actor.parameters.FilePortParameter" value="$TMPDIR/dcmotor_res.csv">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[230.0, 145.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[240.0, 125.0]">
             </property>
         </entity>
         <entity name="Display" class="ptolemy.actor.lib.gui.Display">
@@ -120,7 +128,7 @@
             </property>
             <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[484, 164]">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[350.0, 135.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[360.0, 115.0]">
             </property>
         </entity>
         <relation name="relation" class="ptolemy.actor.TypedIORelation">
