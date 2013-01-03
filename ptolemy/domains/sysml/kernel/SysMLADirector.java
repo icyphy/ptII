@@ -151,6 +151,8 @@ public class SysMLADirector extends ProcessDirector {
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         SysMLADirector newObject = (SysMLADirector) super.clone(workspace);
         newObject._actorData = new ConcurrentHashMap<Actor,ActorData>();
+        newObject._nextTime = Time.POSITIVE_INFINITY;
+        newObject._winningThreads = new LinkedList<SingleQueueProcessThread>();
         return newObject;
     }
     
@@ -164,6 +166,12 @@ public class SysMLADirector extends ProcessDirector {
      */
     public synchronized void fire() throws IllegalActionException {
         if (_activeObjectsValue) {
+            // Mark threads unblocked that were waiting for time to advance, if any.
+            for (SingleQueueProcessThread thread : _winningThreads) {
+                threadUnblocked(thread, null);
+            }
+            _winningThreads.clear();
+
             // Notify all of a new iteration.
             notifyAll();
             // The superclass does all the work.
@@ -197,7 +205,7 @@ public class SysMLADirector extends ProcessDirector {
                                 FiringEvent.BEFORE_ITERATE, iterationCount));
                     }
 
-                    // Get returned time, and find minimum time, so time can advance. Do that in postfire?
+                    // Get returned time, and find minimum time, so time can advance in postfire.
                     Time actorNextTime = _runToCompletion(actor);
                     if (actorNextTime.compareTo(_nextTime) < 0) {
                         _nextTime = actorNextTime;
@@ -248,10 +256,6 @@ public class SysMLADirector extends ProcessDirector {
                     + " requests firing at time "
                     + time);
         }
-        // The following passes the request up the hierarchy.
-        if (isEmbedded()) {
-            return super.fireAt(actor, time, microstep);
-        }
         return time;
     }
 
@@ -267,10 +271,26 @@ public class SysMLADirector extends ProcessDirector {
         _actorData.clear();
         _activeObjectsValue = ((BooleanToken)activeObjects.getToken()).booleanValue();
         _nextTime = Time.POSITIVE_INFINITY;
+        _winningThreads.clear();
+
         // The following calls initialize(Actor), which may
         // create the threads and start them, if using active objects.
         // It also initializes the _queueDirectory structure.
         super.initialize();
+        
+        // If we are not in activeObjects mode, then the above
+        // will have initialized the actors, which may have
+        // called fireAt(). If so, we need to delegate the fireAt()
+        // up the hierarchy.
+        // FIXME: If activeObjects is true, then the actors
+        // will not have been initialized yet. How will the
+        // fireAt() requests get delegated?
+        if (isEmbedded()) {
+            Time nextFiringTime = _earliestNextFiringTime();
+            if (nextFiringTime.compareTo(Time.POSITIVE_INFINITY) < 0) {
+                fireContainerAt(nextFiringTime);
+            }
+        }
     }
 
     /** Initialize the given actor.  This method is generally called
@@ -336,7 +356,6 @@ public class SysMLADirector extends ProcessDirector {
         }
     }
 
-    
     /** Return false if a stop has been requested or if
      *  the model has reached deadlock. Otherwise, if there is a
      *  pending fireAt request, either advance time to that
@@ -349,9 +368,40 @@ public class SysMLADirector extends ProcessDirector {
      */
     public boolean postfire() throws IllegalActionException {
         super.postfire();
+        
+        // Determine the earliest time at which an actor wants to be fired next.
+        Time earliestFireAtTime = _earliestNextFiringTime();
+        if (earliestFireAtTime == Time.POSITIVE_INFINITY) {
+            // Time does not advance.
+            if (_debugging) {
+                _debug("No pending firing request. Stopping execution.");
+            }
+            stop();
+            return false;
+        }
+        if (earliestFireAtTime.compareTo(getModelStopTime()) > 0) {
+            // The next available time is past the stop time.
+            if (_debugging) {
+                _debug("Next firing request is beyond the model stop time of " + getModelStopTime());
+            }
+            stop();
+            return false;
+        }
+        if (_debugging) {
+            _debug("Next earliest fire at request is at time " + earliestFireAtTime);
+        }
+        
+        _nextTime = earliestFireAtTime;
+        
         if (_nextTime.compareTo(Time.POSITIVE_INFINITY) < 0) {
+            if (_nextTime.compareTo(getModelStopTime()) > 0) {
+                return false;
+            }
             if (isEmbedded()) {
                 fireContainerAt(_nextTime);
+                if (_debugging) {
+                    _debug("+++ Requeting refiring at " + _nextTime);
+                }
             } else {
                 setModelTime(_nextTime);
                 if (_debugging) {
@@ -362,7 +412,62 @@ public class SysMLADirector extends ProcessDirector {
         _nextTime = Time.POSITIVE_INFINITY;
         return _notDone;
     }
-            
+
+    /** Override the base class to set time to match environment
+     *  time if this director is embedded.
+     *  @return Whatever the superclass returns.
+     *  @exception IllegalActionException Not thrown in this base class.
+     */
+    public boolean prefire() throws IllegalActionException {
+        if (_debugging) {
+            _debug("Director: Called prefire().");
+        }
+        if (isEmbedded()) {
+            setModelTime(localClock.getLocalTimeForCurrentEnvironmentTime());
+
+            if (_debugging) {
+                _debug("-- Setting current time to " + getModelTime());
+            }
+        }
+        return super.prefire();
+    }
+
+    /** If activeObjects is true, do nothing.
+     *  Input transfers in process domains are handled by
+     *  branches, which transfer inputs in a separate thread.
+     *  Otherwise, transfer at most one token from an input
+     *  port of the container to the ports
+     *  it is connected to on the inside. 
+     *  @param port The port.
+     *  @return True if tokens were transferred.
+     *  @throws IllegalActionException If transfer fails.
+     */
+    public boolean transferInputs(IOPort port) throws IllegalActionException {
+        if (_activeObjectsValue) {
+            return super.transferInputs(port);
+        } else {
+            return _transferInputs(port);
+        }
+    }
+
+    /** If activeObjects is true, do nothing.
+     *  Output transfers in process domains are handled by
+     *  branches, which transfer inputs in a separate thread.
+     *  Otherwise, transfer at most one token from an input
+     *  port of the container to the ports
+     *  it is connected to on the inside. 
+     *  @param port The port.
+     *  @return True if tokens were transferred.
+     *  @throws IllegalActionException If transfer fails.
+     */
+    public boolean transferOutputs(IOPort port) throws IllegalActionException {
+        if (_activeObjectsValue) {
+            return super.transferOutputs(port);
+        } else {
+            return _transferOutputs(port);
+        }
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
@@ -392,6 +497,34 @@ public class SysMLADirector extends ProcessDirector {
                 }
             }
         }
+    }
+
+    /** Return the earliest time that any actor has requested
+     *  a refiring. As a side effect, update the _winningThreads
+     *  set to identify the threads that will be unblocked
+     *  when time is advanced.
+     *  @return The next requested firing time.
+     */
+    protected Time _earliestNextFiringTime() {
+        Time earliestFireAtTime = Time.POSITIVE_INFINITY;
+        _winningThreads.clear();
+        List<Actor> actors = ((CompositeEntity)getContainer()).deepEntityList();
+        for (Actor actor : actors) {
+            ActorData actorData = _actorData.get(actor);
+            if (actorData == null) {
+                // Actor is not active.
+                continue;
+            }
+            if (actorData.fireAtTimes != null
+                    && actorData.fireAtTimes.size() > 0) {
+                Time otherTime = actorData.fireAtTimes.peek();
+                if (earliestFireAtTime.compareTo(otherTime) >= 0) {
+                    earliestFireAtTime = otherTime;
+                    _winningThreads.add(actorData.thread);
+                }
+            }
+        }
+        return earliestFireAtTime;
     }
 
     /** Iterate the specified actor once.
@@ -599,67 +732,13 @@ public class SysMLADirector extends ProcessDirector {
         return new SingleQueueProcessThread(actor, director);
     }
 
-    /** Return false indicating that deadlock has not been resolved
-     *  and that execution will be discontinued. In derived classes,
-     *  override this method to obtain domain specific handling of
-     *  deadlocks. Return false if a real deadlock has occurred and
-     *  the simulation can be ended. Return true if the simulation
-     *  can proceed given additional data and need not be terminated.
-     *  @return False.
-     *  @exception IllegalActionException Not thrown in this base class.
+    /** Return true indicating that deadlock has been resolved
+     *  and that execution should continue. The postfire() method
+     *  will deal with determining whether execution really should continue.
+     *  @return True.
+     *  @exception IllegalActionException Not thrown in this class.
      */
     protected synchronized boolean _resolveDeadlock() throws IllegalActionException {
-        // Determine the earliest time at which an actor wants to be fired next.
-        Time earliestFireAtTime = null;
-        List<SingleQueueProcessThread> winningThreads = new LinkedList<SingleQueueProcessThread>();
-        List<Actor> actors = ((CompositeEntity)getContainer()).deepEntityList();
-        for (Actor actor : actors) {
-            ActorData actorData = _actorData.get(actor);
-            if (actorData == null) {
-                // Actor is not active.
-                continue;
-            }
-            if (actorData.fireAtTimes != null
-                    && actorData.fireAtTimes.size() > 0) {
-                Time otherTime = actorData.fireAtTimes.peek();
-                if (earliestFireAtTime == null || earliestFireAtTime.compareTo(otherTime) > 0) {
-                    earliestFireAtTime = otherTime;
-                    winningThreads.add(actorData.thread);
-                }
-            }
-        }
-        if (earliestFireAtTime == null) {
-            // Time does not advance.
-            if (_debugging) {
-                _debug("No pending firing request. Stopping execution.");
-            }
-            stop();
-            return false;
-        }
-        if (earliestFireAtTime.compareTo(getModelStopTime()) > 0) {
-            // The next available time is past the stop time.
-            if (_debugging) {
-                _debug("Next firing request is beyond the model stop time of " + getModelStopTime());
-            }
-            stop();
-            return false;
-        }
-        if (_debugging) {
-            _debug("Next earliest fire at request is at time " + earliestFireAtTime);
-            _debug("Setting model time to " + earliestFireAtTime);
-        }
-        
-        // Advance model time.
-        // FIXME: This will only work if this director is at the top level.
-        setModelTime(earliestFireAtTime);
-                
-        // Mark all threads unblocked because we will either move to a new time
-        // or terminate the execution.
-        // _blockedThreads.clear();
-        for (SingleQueueProcessThread thread : winningThreads) {
-            threadUnblocked(thread, null);
-        }
-        // Allow execution to continue.
         return true;
     }
     
@@ -676,6 +755,9 @@ public class SysMLADirector extends ProcessDirector {
     
     /** Earliest time of a fireAt request among all actors. */
     private Time _nextTime = Time.POSITIVE_INFINITY;
+    
+    /** Threads waiting for the next advance of time. */
+    private List<SingleQueueProcessThread> _winningThreads = new LinkedList<SingleQueueProcessThread>();
     
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
@@ -996,6 +1078,13 @@ public class SysMLADirector extends ProcessDirector {
                         SysMLADirector.this.notifyAll();
                     }
                 }
+            } else {
+                // If there is no actor data, we could be sending
+                // data to the inside of a port of the composite actor
+                // containing this director. So that transfer outputs
+                // works, we need to really put the data into the
+                // receiver.
+                _token = token;
             }
             if (isFlowPort) {
                 // Do not use super.put() here because it
