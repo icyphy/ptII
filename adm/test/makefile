@@ -52,6 +52,7 @@ JSIMPLE_TESTS = \
 	ant.tcl \
 	license.tcl \
 	Nightly.tcl \
+	NightlyInstall.tcl \
 	NightlyTest.tcl \
 	NightlyUpdate.tcl \
 	Release.tcl

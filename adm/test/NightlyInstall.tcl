@@ -96,14 +96,19 @@ proc nightlyMake {target {pattern {.*\*\*\*.*}}} {
 set startingDirectory [pwd]
 cd $gendir
 
-puts "This test (NightlyTest.tcl) should be run after NightlyInstall.tcl"
+puts "This test (NightlyInstallTest.tcl) should be run after Nightly.tcl"
 
-test NightlyTest-3.0 {test_setup_test: Run the tests using make} {
-    puts "This test will fail if any of the tests in the distribution fail.  This is fairly normal, it is unusual for this test to pass."
+test NightlyInstall-1.0 {test_setup_start: build the installer and unjar the installer} {
     puts "To run this test by hand, log in to sisyphus as hudson"
-    puts "and run: cd $gendir; nohup make USER=hudson PTIIHOME=$PTII PTIIADM=$PTII JAR=/usr/bin/jar test_setup_test"
-    puts "or run:  cd $gendir; nohup make USER=hudson PTIIHOME=$PTII PTIIADM=$PTII JAR=/usr/bin/jar clean all src.jar test_setup"
-    set matches [nightlyMake test_setup_test {.*\*\*\*.*|^Failed: [1-9].*}]
+    puts "and run: cd $gendir; nohup make USER=hudson PTIIHOME=$PTII PTIIADM=$PTII JAR=/usr/bin/jar test_setup_start"
+    set matches [nightlyMake test_setup_start {.*\*\*\*.*|^Failed: [1-9].*}]
+    list $matches
+} {{}}
+
+test NightlyInstall-2.0 {test_setup_make_fast_install: Build using make fast install} {
+    puts "To run this test by hand, log in to sisyphus as hudson"
+    puts "and run: cd $gendir; nohup make USER=hudson PTIIHOME=$PTII PTIIADM=$PTII JAR=/usr/bin/jar test_setup_make_fast_install"
+    set matches [nightlyMake test_setup_make_fast_install {.*\*\*\*.*|^Failed: [1-9].*}]
     list $matches
 } {{}}
 
