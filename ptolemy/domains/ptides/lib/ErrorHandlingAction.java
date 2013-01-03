@@ -31,9 +31,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 package ptolemy.domains.ptides.lib;
 
 import ptolemy.actor.CompositeActor;
-import ptolemy.actor.Director;
 import ptolemy.actor.lib.SetVariable;
-import ptolemy.actor.util.Time;
 import ptolemy.data.StringToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;

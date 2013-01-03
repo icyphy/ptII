@@ -13,7 +13,6 @@ import net.jimblackler.Utils.Collector;
 import net.jimblackler.Utils.ResultHandler;
 import net.jimblackler.Utils.ThreadedYieldAdapter;
 import net.jimblackler.Utils.YieldAdapterIterable;
-
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
 import ptolemy.actor.Receiver;

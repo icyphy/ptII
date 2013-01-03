@@ -28,8 +28,6 @@
 
 package org.ptolemy.ptango.lib.xmpp;
 
-import org.jivesoftware.smackx.pubsub.Item;
-import org.jivesoftware.smackx.pubsub.listener.ItemEventListener;
 
 ///////////////////////////////////////////////////////////////////
 //// XMPPSubscriber

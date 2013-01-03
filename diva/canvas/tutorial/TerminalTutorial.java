@@ -42,7 +42,6 @@ import diva.canvas.connector.Arrowhead;
 import diva.canvas.connector.Blob;
 import diva.canvas.connector.StraightTerminal;
 import diva.canvas.interactor.BoundsGeometry;
-import diva.canvas.interactor.Interactor;
 import diva.canvas.toolbox.BasicController;
 import diva.canvas.toolbox.BasicRectangle;
 import diva.gui.BasicFrame;

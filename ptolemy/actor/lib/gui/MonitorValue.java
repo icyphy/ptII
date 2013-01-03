@@ -30,7 +30,6 @@ package ptolemy.actor.lib.gui;
 import java.util.HashSet;
 import java.util.Set;
 
-import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.injection.ActorModuleInitializer;
 import ptolemy.actor.injection.PortableContainer;
 import ptolemy.actor.injection.PortablePlaceable;

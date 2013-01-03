@@ -35,7 +35,6 @@ import org.jivesoftware.smackx.pubsub.SimplePayload;
 
 import ptolemy.actor.lib.Source;
 import ptolemy.data.StringToken;
-import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;

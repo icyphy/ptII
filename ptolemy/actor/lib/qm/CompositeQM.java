@@ -32,20 +32,13 @@ package ptolemy.actor.lib.qm;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
-import ptolemy.actor.Director;
-import ptolemy.actor.Executable;
 import ptolemy.actor.IOPort;
-import ptolemy.actor.IORelation;
-import ptolemy.actor.Initializable;
 import ptolemy.actor.IntermediateReceiver;
 import ptolemy.actor.QuantityManager;
 import ptolemy.actor.Receiver;
-import ptolemy.actor.RelationWidthInference;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.gui.ColorAttribute;
 import ptolemy.actor.lib.Const;

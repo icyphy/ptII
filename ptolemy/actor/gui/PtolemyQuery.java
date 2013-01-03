@@ -30,7 +30,6 @@ package ptolemy.actor.gui;
 
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.KeyboardFocusManager;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;

@@ -31,7 +31,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 package ptolemy.actor.lib.qm;
 
 import java.util.HashMap;
-import java.util.Hashtable;
 import java.util.TreeSet;
 
 import ptolemy.actor.Actor;

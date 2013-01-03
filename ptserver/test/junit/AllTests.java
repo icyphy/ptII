@@ -40,8 +40,6 @@ import org.junit.runners.Suite;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.util.FileUtilities;
 import ptolemy.util.StreamExec;
-//////////////////////////////////////////////////////////////////////////
-//// AllTests
 
 /**
  * Test suite of the ptserver.
