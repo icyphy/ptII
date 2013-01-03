@@ -28,6 +28,7 @@
 package ptolemy.domains.sysml.kernel;
 
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -35,6 +36,9 @@ import java.util.PriorityQueue;
 import java.util.concurrent.ConcurrentHashMap;
 
 import ptolemy.actor.Actor;
+import ptolemy.actor.CompositeActor;
+import ptolemy.actor.FiringEvent;
+import ptolemy.actor.FiringsRecordable;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.Mailbox;
 import ptolemy.actor.NoRoomException;
@@ -46,12 +50,13 @@ import ptolemy.actor.util.Time;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
+import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.Workspace;
 
 ///////////////////////////////////////////////////////////////////
@@ -120,7 +125,19 @@ public class SysMLADirector extends ProcessDirector {
     public SysMLADirector(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
+        
+        activeObjects = new Parameter(this, "activeObjects");
+        activeObjects.setTypeEquals(BaseType.BOOLEAN);
+        activeObjects.setExpression("false");
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         parameters                        ////
+    
+    /** If true, then every actor executes in its own thread.
+     *  This is a boolean that defaults to false.
+     */
+    public Parameter activeObjects;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -133,21 +150,77 @@ public class SysMLADirector extends ProcessDirector {
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         SysMLADirector newObject = (SysMLADirector) super.clone(workspace);
-        newObject._threadDirectory = new ConcurrentHashMap<Actor,SingleQueueProcessThread>();
+        newObject._actorData = new ConcurrentHashMap<Actor,ActorData>();
         return newObject;
     }
     
-    /** Start a new iteration (at a new time, presumably) and
-     *  wait until a deadlock is detected. Then deal with the deadlock
+    /** Start a new iteration (at a new time, presumably) and either
+     *  run the actors to completion in order of creation or
+     *  wait until a deadlock is detected, depending on activeObjects.
+     *  Then deal with the deadlock
      *  by calling the protected method _resolveDeadlock() and return.
      *  This method is synchronized on the director.
      *  @exception IllegalActionException If a derived class throws it.
      */
     public synchronized void fire() throws IllegalActionException {
-        // Notify all of a new iteration.
-        notifyAll();
+        if (_activeObjectsValue) {
+            // Notify all of a new iteration.
+            notifyAll();
+            // The superclass does all the work.
+            super.fire();
+        } else {
+            if (_debugging) {
+                _debug("Director: Called fire().");
+            }
+            Nameable container = getContainer();
+            if (container instanceof CompositeActor) {
+                List<Actor> actors = ((CompositeActor) container).deepEntityList();
+                int iterationCount = 1;
+                for (Actor actor : actors) {
+                    if (_stopRequested) {
+                        return;
+                    }
+                    ActorData actorData = _actorData.get(actor);
+                    if (actorData == null) {
+                        if (_debugging) {
+                            _debug("******* Actor has terminated: " + actor.getName() + " at time " + getModelTime());
+                        }
+                        continue;
+                    }
+                    if (_stopRequested) {
+                        _debug("******* A stop has been requested. Aborting " + actor.getName() + " at time " + getModelTime());
+                        return;
+                    }
 
-        super.fire();
+                    if (_debugging) {
+                        _debug(new FiringEvent(this, actor,
+                                FiringEvent.BEFORE_ITERATE, iterationCount));
+                    }
+
+                    // Get returned time, and find minimum time, so time can advance. Do that in postfire?
+                    Time actorNextTime = _runToCompletion(actor);
+                    if (actorNextTime.compareTo(_nextTime) < 0) {
+                        _nextTime = actorNextTime;
+                    }
+
+                    if (_debugging) {
+                        _debug(new FiringEvent(this, actor,
+                                FiringEvent.AFTER_ITERATE, iterationCount));
+                    }
+                }
+                // Have made one pass through the actors. If there are non-empty
+                // queues, then we need to make another pass.
+                // FIXME: This is not efficient, but making it efficient can wait.
+                for (Actor actor : actors) {
+                    ActorData actorData = _actorData.get(actor);
+                    if (actorData != null && actorData.inputQueue.size() > 0) {
+                        // At least one actor has input data. Make another pass.
+                        fire();
+                        return;
+                    }
+                }
+            }
+        }
     }
 
     /** Override the base class to make a local record of the requested
@@ -165,11 +238,11 @@ public class SysMLADirector extends ProcessDirector {
      */
     public synchronized Time fireAt(Actor actor, Time time, int microstep)
             throws IllegalActionException {
-        SingleQueueProcessThread thread = _threadDirectory.get(actor);
-        if (thread != null) {
-            // Add the request to the list only if it not already there.
-            thread.fireAtTimes.add(time);
+        ActorData actorData = _actorData.get(actor);
+        if (actorData == null) {
+            throw new IllegalActionException(this, actor, "Nothing known about actor.");
         }
+        actorData.fireAtTimes.add(time);
         if (_debugging) {
             _debug(actor.getFullName()
                     + " requests firing at time "
@@ -190,11 +263,66 @@ public class SysMLADirector extends ProcessDirector {
      *  of the deeply contained actors throws it.
      */
     public synchronized void initialize() throws IllegalActionException {
-        // Recreate the collection of actors.
-        _threadDirectory.clear();
-        // This will create the threads and start them.
+        // Recreate actor data.
+        _actorData.clear();
+        _activeObjectsValue = ((BooleanToken)activeObjects.getToken()).booleanValue();
+        _nextTime = Time.POSITIVE_INFINITY;
+        // The following calls initialize(Actor), which may
+        // create the threads and start them, if using active objects.
         // It also initializes the _queueDirectory structure.
         super.initialize();
+    }
+
+    /** Initialize the given actor.  This method is generally called
+     *  by the initialize() method of the director, and by the manager
+     *  whenever an actor is added to an executing model as a
+     *  mutation.  This method will generally perform domain-specific
+     *  initialization on the specified actor and call its
+     *  initialize() method.  In this base class, only the actor's
+     *  initialize() method of the actor is called and no
+     *  domain-specific initialization is performed.  Typical actions
+     *  a director might perform include starting threads to execute
+     *  the actor or checking to see whether the actor can be managed
+     *  by this director.  For example, a time-based domain (such as
+     *  CT) might reject sequence based actors.
+     *  @param actor The actor that is to be initialized.
+     *  @exception IllegalActionException If the actor is not
+     *  acceptable to the domain.  Not thrown in this base class.
+     */
+    public void initialize(Actor actor) throws IllegalActionException {
+        if (_debugging) {
+            _debug("Initializing actor: " + ((Nameable) actor).getFullName() + ".");
+        }
+        ActorData actorData = new ActorData();
+        _actorData.put(actor, actorData);
+        
+        if (_activeObjectsValue) {
+            // Use synchronized version.
+            actorData.inputQueue = Collections.synchronizedList(new LinkedList<Input>());
+            // NOTE: The following does NOT initialize the actors. They initialize
+            // themselves in the threads that are created by the superclass.
+            super.initialize(actor);
+        } else {
+            // Use unsynchronized version.
+            actorData.inputQueue = new LinkedList<Input>();
+            // Reset the receivers.
+            Iterator ports = actor.inputPortList().iterator();
+
+            while (ports.hasNext()) {
+                IOPort port = (IOPort) ports.next();
+                Receiver[][] receivers = port.getReceivers();
+
+                for (int i = 0; i < receivers.length; i++) {
+                    for (int j = 0; j < receivers[i].length; j++) {
+                        receivers[i][j].reset();
+                    }
+                }
+            }
+            actor.initialize();
+            if (_getScheduler(actor) != null) {
+                _resourceScheduling = true;
+            }
+        }
     }
 
     /** Return a new receiver SysMLAReceiver.
@@ -208,6 +336,33 @@ public class SysMLADirector extends ProcessDirector {
         }
     }
 
+    
+    /** Return false if a stop has been requested or if
+     *  the model has reached deadlock. Otherwise, if there is a
+     *  pending fireAt request, either advance time to that
+     *  requested time (if at the top level) or request a
+     *  firing at that time. If there is no pending fireAt
+     *  request, then return false. Otherwise, return true.
+     *  @return False if the director has detected a deadlock or
+     *   a stop has been requested.
+     *  @exception IllegalActionException If a derived class throws it.
+     */
+    public boolean postfire() throws IllegalActionException {
+        super.postfire();
+        if (_nextTime.compareTo(Time.POSITIVE_INFINITY) < 0) {
+            if (isEmbedded()) {
+                fireContainerAt(_nextTime);
+            } else {
+                setModelTime(_nextTime);
+                if (_debugging) {
+                    _debug("+++ Advancing time to " + _nextTime);
+                }
+            }
+        }
+        _nextTime = Time.POSITIVE_INFINITY;
+        return _notDone;
+    }
+            
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
@@ -216,6 +371,193 @@ public class SysMLADirector extends ProcessDirector {
      */
     protected synchronized boolean _areThreadsDeadlocked() {
         return (_getBlockedThreadsCount() >= _getActiveThreadsCount());
+    }
+
+    /** Clear all the input receivers for the specified actor.
+     *  @param The actor.
+     *  @throws IllegalActionException If the receivers can't be cleared.
+     */
+    protected void _clearReceivers(Actor actor) throws IllegalActionException {
+        List<IOPort> inputPorts = actor.inputPortList();
+        for (IOPort inputPort : inputPorts) {
+            if (_isFlowPort(inputPort)) {
+                continue;
+            }
+            Receiver[][] receivers = inputPort.getReceivers();
+            for (int i = 0; i < receivers.length; i++) {
+                for (int j = 0; j < receivers[i].length; j++) {
+                    if (receivers[i][j] != null) {
+                        receivers[i][j].clear();
+                    }
+                }
+            }
+        }
+    }
+
+    /** Iterate the specified actor once.
+     *  @return True if either prefire() returns false
+     *   or postfire() returns true.
+     *  @throws IllegalActionException If the actor throws it.
+     */
+    protected boolean _iterateActorOnce(Actor actor)
+            throws IllegalActionException {
+        if (_debugging) {
+            _debug("---" + actor.getFullName() + ": Iterating.");
+        }
+
+        FiringsRecordable firingsRecordable = null;
+        if (actor instanceof FiringsRecordable) {
+            firingsRecordable = (FiringsRecordable) actor;
+        }
+
+        if (firingsRecordable != null) {
+            firingsRecordable
+                    .recordFiring(FiringEvent.BEFORE_PREFIRE);
+        }
+        boolean result = true;
+        if (actor.prefire()) {
+
+            if (firingsRecordable != null) {
+                firingsRecordable
+                        .recordFiring(FiringEvent.AFTER_PREFIRE);
+                firingsRecordable
+                        .recordFiring(FiringEvent.BEFORE_FIRE);
+            }
+
+            actor.fire();
+
+            if (firingsRecordable != null) {
+                firingsRecordable
+                        .recordFiring(FiringEvent.AFTER_FIRE);
+                firingsRecordable
+                        .recordFiring(FiringEvent.BEFORE_POSTFIRE);
+            }
+
+            result = actor.postfire();
+
+            if (firingsRecordable != null) {
+                firingsRecordable
+                        .recordFiring(FiringEvent.AFTER_POSTFIRE);
+            }
+        } else if (firingsRecordable != null) {
+            firingsRecordable
+                    .recordFiring(FiringEvent.AFTER_PREFIRE);
+        }
+        if (!result) {
+            // Postfire returned false. Remove the actor from
+            // the active actors.
+            if (_debugging) {
+                _debug(actor.getFullName()
+                        + " postfire() returns false. Terminating actor.");
+            }
+            _actorData.remove(actor);
+        }
+        return result;
+    }
+
+    /** Iterate the specified actor until its input queue
+     *  is empty and any pending fireAt() time requests
+     *  are in the future. NOTE: This method is used
+     *  only if activeObjects = false.
+     *  @return The earliest pending fireAt time in the
+     *   future, or TIME.POSITIVE_INFINITY if there is none.
+     *  @throws IllegalActionException If the actor throws it.
+     */
+    protected Time _runToCompletion(Actor actor)
+            throws IllegalActionException {
+        // First, clear all input receivers that are not marked as flow ports.
+        // Record whether the actor actually has any input receivers.
+        _clearReceivers(actor);
+        
+        ActorData actorData = _actorData.get(actor);
+        
+        if (_debugging) {
+            _debug("******* Iterating actor " + actor.getName() + " at time " + getModelTime());
+            _debug("input queue: " + actorData.inputQueue);
+        }
+        if (actorData.inputQueue.size() == 0) {
+            // Input queue is empty.
+            
+            if (actorData.fireAtTimes.size() == 0) {
+                // Input queue is empty and no future firing
+                // has been requested. Nothing more to do.
+                if (_debugging) {
+                    _debug(actor.getFullName()
+                            + " at time "
+                            + getModelTime()
+                            + " waiting for input.");
+                }
+                return Time.POSITIVE_INFINITY;
+            }
+            
+            // If this actor has requested a future firing,
+            // then continue as long as that time has been reached.
+            while (actorData.fireAtTimes.size() > 0 && !_stopRequested) {
+                // Actor has requested a firing. Get the time for the request.
+                Time targetTime = actorData.fireAtTimes.peek();
+                    
+                // If time has not advanced sufficiently, then we are done.
+                if (getModelTime().compareTo(targetTime) < 0) {
+                    if (_debugging) {
+                        _debug(actor.getFullName()
+                                + " at time "
+                                + getModelTime()
+                                + " waiting for time to advance to "
+                                + targetTime);
+                    }
+                    return targetTime;
+                }
+                // If we get here, queue is empty, but current time
+                // matches the target time, so we iterate anyway.
+                // Remove the time from the pending fireAt times.
+                actorData.fireAtTimes.poll();
+                if (!_iterateActorOnce(actor)) {
+                    return Time.POSITIVE_INFINITY;
+                }
+            }
+            // If we get here, then there are no pending fireAt requests
+            // and the input queue is empty. Nothing more to do.
+            return Time.POSITIVE_INFINITY;
+        }
+        while (actorData.inputQueue.size() != 0 && !_stopRequested) {
+            // Input queue is not empty. Extract
+            // an input from the queue and deposit in the receiver, unless
+            // it is an event from a flow port, in which case the value
+            // has already been updated.
+            Input input = actorData.inputQueue.remove(0);
+            if (!input.isChangeEvent) {
+                input.receiver.reallyPut(input.token);
+                if (_debugging) {
+                    IOPort port = input.receiver.getContainer();
+                    int channel = port.getChannelForReceiver(input.receiver);
+                    _debug(actor.getFullName()
+                            + ": Providing input to port "
+                            + port.getName()
+                            + " on channel "
+                            + channel
+                            + " with value: "
+                            + input.token);
+                }
+            } else if (_debugging) {
+                IOPort port = input.receiver.getContainer();
+                int channel = port.getChannelForReceiver(input.receiver);
+                SysMLADirector.this._debug(actor.getFullName()
+                        + ": Providing change event to port "
+                        + port.getName()
+                        + " on channel "
+                        + channel);
+            }
+            if (!_iterateActorOnce(actor)) {
+                return Time.POSITIVE_INFINITY;
+            }
+        }
+        // If there are now pending fireAt requests, then we
+        // should return the earliest one.
+        if (actorData.fireAtTimes.size() > 0) {
+            return actorData.fireAtTimes.peek();
+        } else {
+            return Time.POSITIVE_INFINITY;
+        }
     }
 
     /** Return true if the specified port is a flow port.
@@ -270,14 +612,19 @@ public class SysMLADirector extends ProcessDirector {
         // Determine the earliest time at which an actor wants to be fired next.
         Time earliestFireAtTime = null;
         List<SingleQueueProcessThread> winningThreads = new LinkedList<SingleQueueProcessThread>();
-        for (Actor otherActor : _threadDirectory.keySet()) {
-            SingleQueueProcessThread otherActorThread = _threadDirectory.get(otherActor);
-            
-            if (otherActorThread.fireAtTimes.size() > 0) {
-                Time otherTime = otherActorThread.fireAtTimes.peek();
+        List<Actor> actors = ((CompositeEntity)getContainer()).deepEntityList();
+        for (Actor actor : actors) {
+            ActorData actorData = _actorData.get(actor);
+            if (actorData == null) {
+                // Actor is not active.
+                continue;
+            }
+            if (actorData.fireAtTimes != null
+                    && actorData.fireAtTimes.size() > 0) {
+                Time otherTime = actorData.fireAtTimes.peek();
                 if (earliestFireAtTime == null || earliestFireAtTime.compareTo(otherTime) > 0) {
                     earliestFireAtTime = otherTime;
-                    winningThreads.add(otherActorThread);
+                    winningThreads.add(actorData.thread);
                 }
             }
         }
@@ -318,13 +665,33 @@ public class SysMLADirector extends ProcessDirector {
     
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-        
-    /** Directory of queues by actor. */
-    private Map<Actor,SingleQueueProcessThread> _threadDirectory = new ConcurrentHashMap<Actor,SingleQueueProcessThread>();
+    
+    /** Cache of the value of the activeObjects parameter as of
+     *  invocation of initialize().
+     */
+    private boolean _activeObjectsValue = false;
+    
+    /** Directory of data associated with each actor. */
+    private Map<Actor,ActorData> _actorData = new ConcurrentHashMap<Actor,ActorData>();
+    
+    /** Earliest time of a fireAt request among all actors. */
+    private Time _nextTime = Time.POSITIVE_INFINITY;
     
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
 
+    /** Data structure for data associated with an actor. */
+    private class ActorData {
+        /** Fire at times by actor. */
+        public PriorityQueue<Time> fireAtTimes = new PriorityQueue<Time>();
+
+        /** Input queues indexed by actor. */
+        public List<Input> inputQueue = null;
+            
+        /** Directory of queues by actor. Used only if activeObjects is true. */
+        public SingleQueueProcessThread thread = null;
+    }
+    
     /** Data structure for storing inputs in an actor's queue. */
     private class Input {
         public SysMLAReceiver receiver;
@@ -353,72 +720,49 @@ public class SysMLADirector extends ProcessDirector {
     private class SingleQueueProcessThread extends ProcessThread {
         public SingleQueueProcessThread(Actor actor, ProcessDirector director) {
             super(actor, director);
-            inputQueue = Collections.synchronizedList(new LinkedList<Input>());
-            // NOTE: This is not thread safe.
-            fireAtTimes = new PriorityQueue<Time>();
-            _threadDirectory.put(actor, this);
+            // This constructor is called by initializeActor(), which ensures
+            // that the following does not yield null.
+            _myActorData = _actorData.get(actor);
+            _myActorData.thread = this;
         }
-        public List<Input> inputQueue;
-        // Seems like the following ought to be a set to avoid duplicate
-        // calls to fireAt() causing multiple firings. But this doesn't work.
-        // Nondeterministically causes premature termination of the model!
-        public PriorityQueue<Time> fireAtTimes;
         
         /** Initialize the actor, iterate it through the execution cycle
          *  until it terminates. At the end of the termination, calls wrapup
          *  on the actor.
          */
         public void run() {
-            inputQueue.clear();
             super.run();
         }
         
+        /** Iterate the actor associated with this thread. This method is used
+         *  only if activeObjects is true.
+         *  @return True if either prefire() returns false
+         *   or postfire() returns true.
+         *  @throws IllegalActionException If the actor throws it.
+         */
         protected boolean _iterateActor()
                 throws IllegalActionException {
-            // Check whether the actor has been deleted.
-            // FIXME: this is not really sufficient as the actor
-            // could be in a transparent composite actor that has
-            // been deleted.
-            if (((Entity) _actor).getContainer() == null) {
-                // Remove the actor from the active actors.
-                _threadDirectory.remove(_actor);
-                return false;
-            }
-            
             // First, clear all input receivers that are not marked as flow ports.
             // Record whether the actor actually has any input receivers.
-            List<IOPort> inputPorts = _actor.inputPortList();
-            for (IOPort inputPort : inputPorts) {
-                if (_isFlowPort(inputPort)) {
-                    continue;
-                }
-                Receiver[][] receivers = inputPort.getReceivers();
-                for (int i = 0; i < receivers.length; i++) {
-                    for (int j = 0; j < receivers[i].length; j++) {
-                        if (receivers[i][j] != null) {
-                            receivers[i][j].clear();
-                        }
-                    }
-                }
-            }
+            _clearReceivers(_actor);
             boolean deleteTimeAfterIterating = false;
             // Block until either the input queue is non-empty or
             // a firing has been requested.
             synchronized (SysMLADirector.this) {
                 if (SysMLADirector.this._debugging) {
                     SysMLADirector.this._debug("******* Iterating actor " + _actor.getName() + " at time " + getModelTime());
-                    SysMLADirector.this._debug("input queue: " + inputQueue);
+                    SysMLADirector.this._debug("input queue: " + _myActorData.inputQueue);
                 }
-                while (inputQueue.size() == 0) {
+                while (_myActorData.inputQueue.size() == 0) {
                     // Input queue is empty.
                     if (_stopRequested) {
                         return false;
                     }
                     // If this actor has requested a future firing,
                     // then block until that time is reached.
-                    if (fireAtTimes.size() > 0) {
+                    if (_myActorData.fireAtTimes.size() > 0) {
                         // Actor has requested a firing. Get the time for the request.
-                        Time targetTime = fireAtTimes.peek();
+                        Time targetTime = _myActorData.fireAtTimes.peek();
                         // Indicate to delete the time from the queue upon unblocking.
                         deleteTimeAfterIterating = true;
                         
@@ -492,8 +836,8 @@ public class SysMLADirector extends ProcessDirector {
             // an input from the queue and deposit in the receiver, unless
             // it is an event from a flow port, in which case the value
             // has already been updated.
-            if (inputQueue.size() > 0) {
-                Input input = inputQueue.remove(0);
+            if (_myActorData.inputQueue.size() > 0) {
+                Input input = _myActorData.inputQueue.remove(0);
                 if (!input.isChangeEvent) {
                     input.receiver.reallyPut(input.token);
                     if (SysMLADirector.this._debugging) {
@@ -546,7 +890,7 @@ public class SysMLADirector extends ProcessDirector {
                     // After iterating the actor, if in fact the input queue
                     // was empty and this firing was caused by time advancing to
                     // match the requested time.
-                    fireAtTimes.poll();
+                    _myActorData.fireAtTimes.poll();
                 }
 
                 if (result == false) {
@@ -559,7 +903,7 @@ public class SysMLADirector extends ProcessDirector {
                                     + " postfire() returns false. Ending thread.");
                         }
                         removeThread(this);
-                        _threadDirectory.remove(_actor);
+                        _actorData.remove(_actor);
                         SysMLADirector.this.notifyAll();
                     }
                 }
@@ -568,7 +912,7 @@ public class SysMLADirector extends ProcessDirector {
                 // Actor threw an exception.
                 synchronized(SysMLADirector.this) {
                     removeThread(this);
-                    _threadDirectory.remove(_actor);
+                    _actorData.remove(_actor);
                     SysMLADirector.this.stop();
                     SysMLADirector.this.notifyAll();
                 }
@@ -581,6 +925,8 @@ public class SysMLADirector extends ProcessDirector {
                 return false;
             }
         }
+        /** The actor data for this thread's actor. */
+        private ActorData _myActorData;
     }
     
     /** Variant of a Mailbox that overrides the put() method to
@@ -630,24 +976,25 @@ public class SysMLADirector extends ProcessDirector {
             IOPort port = getContainer();
             boolean isFlowPort = _isFlowPort(port);
             Actor actor = (Actor)port.getContainer();
-            SingleQueueProcessThread thread = _threadDirectory.get(actor);
-            if (thread != null) {
-                List<Input> queue = thread.inputQueue;
+            ActorData actorData = _actorData.get(actor);
+            if (actorData != null) {
                 Input input = new Input();
                 input.receiver = this;
                 input.token = token;
                 input.isChangeEvent = isFlowPort;
                 // Notify the director that this queue is not empty.
                 synchronized(SysMLADirector.this) {
-                    queue.add(input);
+                    actorData.inputQueue.add(input);
                     if (SysMLADirector.this._debugging) {
                         SysMLADirector.this._debug("Adding to queue for "
                                 + actor.getName() + " at time " + getModelTime()
                                 + ": " + input);
-                        SysMLADirector.this._debug("input queue: " + queue);
+                        SysMLADirector.this._debug("input queue: " + actorData.inputQueue);
                     }
-                    threadUnblocked(thread, null);
-                    SysMLADirector.this.notifyAll();
+                    if (_activeObjectsValue) {
+                        threadUnblocked(actorData.thread, null);
+                        SysMLADirector.this.notifyAll();
+                    }
                 }
             }
             if (isFlowPort) {
