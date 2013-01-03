@@ -33,7 +33,7 @@ ME =            ptolemy/actor/lib/io
 
 # $PTII/configure looks for the Java Communications API and sets PTJSPACES_DIR
 # in $PTII/mk/ptII.mk if was found.  Otherwise, PTCOMM_DIR is empty.
-DIRS =		$(PTCOMM_DIR)
+DIRS =		$(PTCOMM_DIR) test
 
 # Root of the Java directory
 ROOT =          ../../../..
