@@ -266,7 +266,8 @@ test FSMActor-6.2 {test typeConstraints} {
     set constraints [$fsm typeConstraints]
     set l [lsort [listToStrings $constraints]]
     join $l "\n"
-} {(TypeConstant, boolean) <= (variable ..fsm.stateDependentCausality: boolean)
+} {(TypeConstant, (function(a0:double) boolean)) <= (variable ..fsm.timeout: (function(a0:double) boolean))
+(TypeConstant, boolean) <= (variable ..fsm.stateDependentCausality: boolean)
 (TypeConstant, boolean) <= (variable ..fsm.t0.defaultTransition: boolean)
 (TypeConstant, boolean) <= (variable ..fsm.t0.error: boolean)
 (TypeConstant, boolean) <= (variable ..fsm.t0.history: boolean)
