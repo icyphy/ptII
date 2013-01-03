@@ -29,6 +29,8 @@
             <property name="output"/>
         </port>
         <entity name="_Controller" class="ptolemy.domains.modal.modal.ModalController">
+            <property name="errorCause" class="ptolemy.data.expr.Parameter">
+            </property>
             <property name="_library" class="ptolemy.moml.LibraryAttribute">
                 <configure>
       <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.modal.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory"></property></entity></entity>
@@ -75,20 +77,18 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[200.0, 125.0]">
         </property>
     </entity>
-    <entity name="Test" class="ptolemy.actor.lib.Test">
+    <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
         <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1.0, 2.0, 3.0, 4.0}">
         </property>
-        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[345.0, 125.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[335.0, 125.0]">
         </property>
     </entity>
-    <relation name="relation" class="ptolemy.actor.TypedIORelation">
-    </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
     </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
     <link port="ModalModel.out" relation="relation2"/>
-    <link port="CurrentTime.output" relation="relation"/>
+    <link port="CurrentTime.output" relation="relation3"/>
     <link port="CurrentTime.trigger" relation="relation2"/>
-    <link port="Test.input" relation="relation"/>
+    <link port="NonStrictTest.input" relation="relation3"/>
 </entity>
