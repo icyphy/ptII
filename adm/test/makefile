@@ -93,7 +93,7 @@ test_jsimple: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) alljtests.tcl \
 	$(JTCLSH) alljtests.tcl
 
 chktestdir:
-	@$(ROOT)/adm/bin/chktestdir
+	@$(ROOT)/adm/bin/chktestdir | sort
 
 PTIITXTFILES=adm/bin/ptIItxtfiles
 TXTFILENAMES=/tmp/txtfilenames

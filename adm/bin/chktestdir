@@ -5,7 +5,7 @@ cd $PTII
 
 testdirs=/tmp/chktestdir.testdirs.$$
 
-find . -type d -name test | egrep -v '(/adm/|/codeDoc/|/vendors/)' > $testdirs
+find . -type d -name test | egrep -v '(/adm/|/codeDoc/|/reports/|/vendors/)' | sort > $testdirs
 cat $testdirs | awk '{print $1 "/../makefile"}' | xargs grep 'DIRS =' | egrep -v '[ 	]test' | grep -v PTPOWERMOCK
 
 rm -r $testdirs
