@@ -632,8 +632,9 @@ public class ProcessDirector extends Director {
      *  branches, which transfer inputs in a separate thread.
      *  @param port The port.
      *  @return False, to indicate that no tokens were transferred.
+     *  @throws IllegalActionException Not thrown in this base class.
      */
-    public boolean transferInputs(IOPort port) {
+    public boolean transferInputs(IOPort port) throws IllegalActionException {
         return false;
     }
 
@@ -641,8 +642,9 @@ public class ProcessDirector extends Director {
      *  branches, which transfer inputs in a separate thread.
      *  @param port The port.
      *  @return False, to indicate that no tokens were transferred.
+     *  @throws IllegalActionException Not thrown in this base class.
      */
-    public boolean transferOutputs(IOPort port) {
+    public boolean transferOutputs(IOPort port) throws IllegalActionException {
         return false;
     }
 
