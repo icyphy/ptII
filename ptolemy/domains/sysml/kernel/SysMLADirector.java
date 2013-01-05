@@ -40,10 +40,12 @@ import ptolemy.actor.CompositeActor;
 import ptolemy.actor.FiringEvent;
 import ptolemy.actor.FiringsRecordable;
 import ptolemy.actor.IOPort;
+import ptolemy.actor.Initializable;
 import ptolemy.actor.Mailbox;
 import ptolemy.actor.NoRoomException;
 import ptolemy.actor.NoTokenException;
 import ptolemy.actor.Receiver;
+import ptolemy.actor.ResourceScheduler;
 import ptolemy.actor.process.ProcessDirector;
 import ptolemy.actor.process.ProcessThread;
 import ptolemy.actor.util.Time;
@@ -272,20 +274,80 @@ public class SysMLADirector extends ProcessDirector {
         _activeObjectsValue = ((BooleanToken)activeObjects.getToken()).booleanValue();
         _nextTime = Time.POSITIVE_INFINITY;
         _winningThreads.clear();
+        
+        // Put the container of this director into the directory
+        // so that we can send data to the inside of its output
+        // ports, if it has any.
+        Actor container = (Actor)getContainer();
+        ActorData actorData = new ActorData();
+        _actorData.put(container, actorData);
+        if (_activeObjectsValue) {
+            // Use synchronized version.
+            actorData.inputQueue = Collections.synchronizedList(new LinkedList<Input>());
+        } else {
+            // Use unsynchronized version.
+            actorData.inputQueue = new LinkedList<Input>();
+            // Reset the receivers on the inside of output ports.
+            List<IOPort> ports = container.outputPortList();
+            for (IOPort port : ports) {
+                Receiver[][] receivers = port.getInsideReceivers();
+                for (int i = 0; i < receivers.length; i++) {
+                    for (int j = 0; j < receivers[i].length; j++) {
+                        receivers[i][j].reset();
+                    }
+                }
+            }
+        }
+        
+        // Initialize the count of actors that are initialized.
+        // This counts the container of this director, hence we
+        // initialize to 1.
+        _actorsInitialized = 1;
 
         // The following calls initialize(Actor), which may
         // create the threads and start them, if using active objects.
         // It also initializes the _queueDirectory structure.
         super.initialize();
         
+        if (_activeObjectsValue) {
+            // Start threads for actors created since the last invocation
+            // of the prefire() or initialize() method. I'm not sure why
+            // the base class postpones starting threads until prefire(),
+            // but if we change the base class to start threads, then some
+            // tests in PN fail.
+            Iterator threads = _newActorThreadList.iterator();
+
+            while (threads.hasNext()) {
+                ProcessThread procThread = (ProcessThread) threads.next();
+                procThread.start();
+            }
+
+            _newActorThreadList.clear();
+        }
+        
         // If we are not in activeObjects mode, then the above
         // will have initialized the actors, which may have
         // called fireAt(). If so, we need to delegate the fireAt()
         // up the hierarchy.
-        // FIXME: If activeObjects is true, then the actors
-        // will not have been initialized yet. How will the
-        // fireAt() requests get delegated?
         if (isEmbedded()) {
+            // Now we need to wait until all the threads have at least past
+            // their initialize() method because the initialize() method may
+            // call fireAt(), and we need to translate those calls into a
+            // fireContainerAt() call, in case this director is embedded.
+            synchronized(this) {
+                while (_actorsInitialized < _actorData.size() && !_stopRequested) {
+                    try {
+                        wait();
+                    } catch (InterruptedException e) {
+                        throw new IllegalActionException(this,
+                                "Interrupted while waiting for actors to initialize.");
+                    }
+                }
+            }
+
+            // If any actor called fireAt() during initialization, then
+            // find the earliest requested firing time and convey a fireAt()
+            // call to the container.
             Time nextFiringTime = _earliestNextFiringTime();
             if (nextFiringTime.compareTo(Time.POSITIVE_INFINITY) < 0) {
                 fireContainerAt(nextFiringTime);
@@ -321,6 +383,7 @@ public class SysMLADirector extends ProcessDirector {
             actorData.inputQueue = Collections.synchronizedList(new LinkedList<Input>());
             // NOTE: The following does NOT initialize the actors. They initialize
             // themselves in the threads that are created by the superclass.
+            // The following line will start those threads.
             super.initialize(actor);
         } else {
             // Use unsynchronized version.
@@ -432,10 +495,37 @@ public class SysMLADirector extends ProcessDirector {
         return super.prefire();
     }
 
-    /** If activeObjects is true, do nothing.
-     *  Input transfers in process domains are handled by
-     *  branches, which transfer inputs in a separate thread.
-     *  Otherwise, transfer at most one token from an input
+    /** Request that the director cease execution altogether.
+     *  This causes a call to stop() on all actors contained by
+     *  the container of this director (if activeObject is false)
+     *  or on all actors with active threads (if activeObject is
+     *  true), and sets a flag
+     *  so that the next call to postfire() returns false.
+     */
+    public void stop() {
+        if (_activeObjectsValue) {
+            super.stop();
+        } else {
+            // Set _stopRequested first before looping through actors below
+            // so isStopRequested() more useful while we are still looping
+            // below.  Kepler's EML2000DataSource needed this.
+            _stopRequested = true;
+
+            Nameable container = getContainer();
+
+            if (container instanceof CompositeActor) {
+                Iterator<?> actors = ((CompositeActor) container).deepEntityList()
+                        .iterator();
+
+                while (actors.hasNext()) {
+                    Actor actor = (Actor) actors.next();
+                    actor.stop();
+                }
+            }
+        }
+    }
+
+    /** Transfer at most one token from an input
      *  port of the container to the ports
      *  it is connected to on the inside. 
      *  @param port The port.
@@ -443,28 +533,63 @@ public class SysMLADirector extends ProcessDirector {
      *  @throws IllegalActionException If transfer fails.
      */
     public boolean transferInputs(IOPort port) throws IllegalActionException {
-        if (_activeObjectsValue) {
-            return super.transferInputs(port);
-        } else {
-            return _transferInputs(port);
-        }
+        return _transferInputs(port);
     }
 
-    /** If activeObjects is true, do nothing.
-     *  Output transfers in process domains are handled by
-     *  branches, which transfer inputs in a separate thread.
-     *  Otherwise, transfer at most one token from an input
-     *  port of the container to the ports
-     *  it is connected to on the inside. 
+    /** For all inputs in the input queue of the container of this
+     *  actor, put the input token into the inside of the corresponding
+     *  output port and then transfer outputs from that port.
      *  @param port The port.
      *  @return True if tokens were transferred.
      *  @throws IllegalActionException If transfer fails.
      */
-    public boolean transferOutputs(IOPort port) throws IllegalActionException {
+    public void transferOutputs() throws IllegalActionException {
+        ActorData actorData = _actorData.get(getContainer());
+        while (!actorData.inputQueue.isEmpty()) {
+            Input input = actorData.inputQueue.remove(0);
+            input.receiver.reallyPut(input.token);
+            _transferOutputs(input.receiver.getContainer());
+        }
+    }
+
+    /** If <i>activeObjects</i> is true, then delegate to the superclass;
+     *  otherwise, invoke the wrapup() method of all the actors contained in the
+     *  director's container.
+     *  @exception IllegalActionException If the wrapup() method of
+     *   one of the associated actors throws it.
+     */
+    public void wrapup() throws IllegalActionException {
         if (_activeObjectsValue) {
-            return super.transferOutputs(port);
+            super.wrapup();
         } else {
-            return _transferOutputs(port);
+            if (_debugging) {
+                _debug("SysMLADirector: Called wrapup().");
+            }
+
+            // First invoke initializable methods.
+            if (_initializables != null) {
+                for (Initializable initializable : _initializables) {
+                    initializable.wrapup();
+                }
+            }
+
+            Nameable container = getContainer();
+
+            if (container instanceof CompositeActor) {
+                Iterator<?> actors = ((CompositeActor) container).deepEntityList()
+                        .iterator();
+
+                while (actors.hasNext()) {
+                    Actor actor = (Actor) actors.next();
+                    actor.wrapup();
+                }
+            }
+
+            if (_resourceSchedulers != null) {
+                for (ResourceScheduler scheduler : _resourceSchedulers) {
+                    scheduler.wrapup();
+                }
+            }
         }
     }
 
@@ -750,6 +875,9 @@ public class SysMLADirector extends ProcessDirector {
      */
     private boolean _activeObjectsValue = false;
     
+    /** Count of actors whose threads have completed their initialize method. */
+    private int _actorsInitialized;
+    
     /** Directory of data associated with each actor. */
     private Map<Actor,ActorData> _actorData = new ConcurrentHashMap<Actor,ActorData>();
     
@@ -808,14 +936,16 @@ public class SysMLADirector extends ProcessDirector {
             _myActorData.thread = this;
         }
         
-        /** Initialize the actor, iterate it through the execution cycle
-         *  until it terminates. At the end of the termination, calls wrapup
-         *  on the actor.
+        /** Notify that the actor has been initialized. This base class
+         *  does nothing.
          */
-        public void run() {
-            super.run();
+        protected void _actorInitialized() {
+            synchronized (SysMLADirector.this) {
+                _actorsInitialized++;
+                SysMLADirector.this.notifyAll();
+            }
         }
-        
+
         /** Iterate the actor associated with this thread. This method is used
          *  only if activeObjects is true.
          *  @return True if either prefire() returns false
@@ -1079,11 +1209,9 @@ public class SysMLADirector extends ProcessDirector {
                     }
                 }
             } else {
-                // If there is no actor data, we could be sending
-                // data to the inside of a port of the composite actor
-                // containing this director. So that transfer outputs
-                // works, we need to really put the data into the
-                // receiver.
+                // If there is no actor data, really put the data into the
+                // receiver. This should not occur, and it's probably an
+                // error, but it's better than just losing the data.
                 _token = token;
             }
             if (isFlowPort) {
