@@ -454,12 +454,7 @@ public class CompositeActor extends CompositeEntity implements Actor,
             }
 
             // Use the local director to transfer outputs.
-            Iterator<?> outports = outputPortList().iterator();
-
-            while (outports.hasNext() && !_stopRequested) {
-                IOPort p = (IOPort) outports.next();
-                _director.transferOutputs(p);
-            }
+            _director.transferOutputs();
         } finally {
             _workspace.doneReading();
         }

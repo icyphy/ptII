@@ -1522,6 +1522,24 @@ public class Director extends Attribute implements Executable {
         return _transferInputs(port);
     }
 
+    /** Transfer data from all output ports of the container to the
+     *  ports they are connected to on the outside. This base class
+     *  iterates over the ports in their natural order and delegates to
+     *  {@link #transferOutputs(IOPort)} to actually do the transfer.
+     *  Override this method if you need to change the order in which
+     *  the transfers occur.
+     *  @exception IllegalActionException Not thrown in this base class.
+     */
+    public void transferOutputs() throws IllegalActionException {
+        NamedObj container = getContainer();
+        if (container instanceof Actor) {
+            List<IOPort> outports = ((Actor)container).outputPortList();
+            for (IOPort port : outports) {
+                transferOutputs(port);
+            }
+        }
+    }
+
     /** Transfer data from an output port of the container to the
      *  ports it is connected to on the outside.  The implementation
      *  in this base class transfers at most
