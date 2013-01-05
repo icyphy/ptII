@@ -28,7 +28,11 @@
 
 package org.ptolemy.ptango.lib.xmpp;
 
+import java.io.BufferedReader;
+import java.io.IOException;
 import java.util.Iterator;
+
+import javax.swing.JFrame;
 
 import org.jivesoftware.smack.Connection;
 import org.jivesoftware.smack.ConnectionConfiguration;
@@ -44,11 +48,18 @@ import org.jivesoftware.smackx.pubsub.Subscription.State;
 
 import ptolemy.actor.AbstractInitializableAttribute;
 import ptolemy.actor.Executable;
+import ptolemy.actor.gui.Configuration;
+import ptolemy.actor.gui.Effigy;
+import ptolemy.actor.gui.Tableau;
+import ptolemy.data.BooleanToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.StringToken;
+import ptolemy.data.expr.FileParameter;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.data.type.BaseType;
+import ptolemy.gui.ComponentDialog;
+import ptolemy.gui.Query;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -57,10 +68,15 @@ import ptolemy.kernel.util.NamedObj;
 ///////////////////////////////////////////////////////////////////
 //// XMPPGateway
 
-/** FIXME: class description
+/** 
+ *  This attribute manages the connection between the Ptolemy model 
+ *  with an XMPP server, using <a href="http://www.igniterealtime.org/projects/smack/">Smack</a>
+ *  library.
+ * 
+ *  FIXME: complete class description
  *  FIXME: add XMPP icon
  *  @see XMPPGateway
- *  @author Marten Lohstroh
+ *  @author Marten Lohstroh and Ben Zhang
  *  @version $Id: XMPPGateway.java 64744 2012-10-24 22:51:43Z marten $
  *  @since Ptolemy II 9.0
  *  @Pt.ProposedRating Red (marten)
@@ -68,7 +84,6 @@ import ptolemy.kernel.util.NamedObj;
  */
 public class XMPPGateway extends AbstractInitializableAttribute implements
         Executable {
-
     /** Construct an instance of the XMPPGateway attribute.
      *  @param container The container.
      *  @param name The name.
@@ -86,21 +101,30 @@ public class XMPPGateway extends AbstractInitializableAttribute implements
         port.setTypeEquals(BaseType.INT);
         port.setExpression("5222");
 
-        username = new StringParameter(this, "username");
-        username.setExpression("ptolemy"); // FIXME: use password file (see database attribute)
+        userName = new StringParameter(this, "userName");
+        userName.setExpression("ptolemy"); 
+        
+        passwordFile = new FileParameter(this, "passwordFile");
+        passwordFile.setExpression("");
 
-        password = new StringParameter(this, "password");
-        password.setExpression("tUkM6Prj");
-
+        // Set the Debug Flag.
+        debugEnable = new Parameter(this, "debugEnable", BooleanToken.FALSE);
+        debugEnable.setTypeEquals(BaseType.BOOLEAN);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         parameters                        ////
-
-    /** Password to authenticate with. This is a string that
-     *  defaults to "guest".
+ 
+    /** The file that contains the password.  If this parameter is
+     *  non-empty, then it is assumed to refer to a file that contains
+     *  the password.  If this parameter is empty, or names a file
+     *  that cannot be read, then a dialog is displayed for the user
+     *  to enter the password.  It is up to the user to properly
+     *  protect the file from unauthorized readers by using the file
+     *  system permissions.  The default value is the empty string,
+     *  meaning that the dialog will be displayed.
      */
-    public Parameter password;
+    public FileParameter passwordFile;
 
     /** Port number to connect to. This is a integer that
      *  defaults to 5222.
@@ -115,8 +139,14 @@ public class XMPPGateway extends AbstractInitializableAttribute implements
     /** User name to authenticate with. This is a string that
      *  defaults to "guest".
      */
-    public Parameter username;
+    public Parameter userName;
 
+    /** The flag indicates whether or not to enable the smack library debug 
+     *  If this is true, the raw XML stream will be shown for debug use.
+     *  defaults to BooleanToken false
+     */
+    public Parameter debugEnable;
+    
     ///////////////////////////////////////////////////////////////////
     ////                       public methods                      ////
 
@@ -134,12 +164,8 @@ public class XMPPGateway extends AbstractInitializableAttribute implements
         } else if (attribute == server) {
             _serverName = ((StringToken) server.getToken()).stringValue();
             _disconnect();
-        } else if (attribute == username) {
-            _userName = ((StringToken) username.getToken()).stringValue();
-            _disconnect();
-        } else if (attribute == password) { 
-            // NOTE: quick fix, use PasswordParameter instead. 
-            _password = ((StringToken) password.getToken()).stringValue();
+        } else if (attribute == userName) {
+            _userName = ((StringToken) userName.getToken()).stringValue();
             _disconnect();
         } else {
             super.attributeChanged(attribute);
@@ -166,12 +192,12 @@ public class XMPPGateway extends AbstractInitializableAttribute implements
         // FIXME: if the server runs on localhost, it doesn't accept 'localhost', 
         // but requires 127.0.0.1, look into this
         String jid = _userName + '@' + _serverName;
-        //"ptolemy@dhcp-45-24.eecs.berkeley.edu";//127.0.0.1"; 
-        //_userName + '@' + _serverName + "/ptolemy";
-        //System.out.println(_connection.getHost());
 
-        System.setProperty("smack.debugEnabled", "true");
-        XMPPConnection.DEBUG_ENABLED = true;
+        boolean debugEnableValue = ((BooleanToken) debugEnable.getToken())
+                .booleanValue();
+        
+        System.setProperty("smack.debugEnabled", String.valueOf(debugEnableValue));
+        XMPPConnection.DEBUG_ENABLED = debugEnableValue;
 
         _connectAndLogin();
 
@@ -399,7 +425,62 @@ public class XMPPGateway extends AbstractInitializableAttribute implements
         try {
             // login to the server
             if (!_connection.isAuthenticated()) {
-                _connection.login(_userName, _password, "ptolemy");
+                if (_password == null) {
+                    if(passwordFile.stringValue().length() > 0) {
+                        // Read the password from a file
+                        BufferedReader reader = null;
+                        try {
+                            reader = passwordFile.openForReading();
+                            String line = reader.readLine();
+                            if (line != null) {
+                                _password = line.toCharArray();
+                                line = "";
+                            } else {
+                                throw new NullPointerException(
+                                        "Failed to read a line from " + passwordFile);
+                            }
+                        } catch (Exception ex) {
+                            System.out.println(getFullName() + ": Failed to read "
+                                    + passwordFile.stringValue() + ex);
+                        } finally {
+                            if (reader != null) {
+                                try {
+                                    reader.close();
+                                } catch (IOException ex) {
+                                    throw new IllegalActionException(this, ex,
+                                            "Failed to close "
+                                                    + passwordFile.stringValue());
+                                }
+                            }
+                        }
+                    } // if(passwordFile.stringValue().length() > 0)
+                    if (_password == null) {
+                        // Open a dialog to get the password.
+                        Effigy effigy = Configuration.findEffigy(toplevel());
+                        JFrame frame = null;
+                        if (effigy != null) {
+                            Tableau tableau = effigy.showTableaux();
+                            if (tableau != null) {
+                                frame = tableau.getFrame();
+                            }
+                        }
+                        
+                        // Next construct a query for user name and password.
+                        Query query = new Query();
+                        query.setTextWidth(60);
+                        query.addPassword("password", "Password", "");
+                        ComponentDialog dialog = new ComponentDialog(frame,
+                                "Open Connection", query);
+
+                        if (dialog.buttonPressed().equals("OK")) {
+                            // The password is not stored as a parameter.
+                            _password = query.getCharArrayValue("password");
+                        } else {
+                            return;
+                        }
+                    }
+                }
+                _connection.login(_userName, String.valueOf(_password), "ptolemy");
             }
         } catch (Exception e) {
             throw new IllegalActionException("Unable to login to XMPP server.");
@@ -415,8 +496,8 @@ public class XMPPGateway extends AbstractInitializableAttribute implements
     /** Manager responsible for brokering publications and subscriptions. */
     private PubSubManager _manager;
 
-    /** Password on the server to connect to. */
-    private String _password = "tUkM6Prj";
+    /** The password last entered. */
+    private char[] _password;
 
     /** Port number of the server to connect to. */
     private int _portNumber = 5222;
