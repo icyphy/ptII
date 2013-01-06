@@ -1,0 +1,60 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="FMUStepCounter" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
+    </property>
+    <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="5">
+        </property>
+        <property name="period" class="ptolemy.data.expr.Parameter" value="1.0">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 55.0]">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={5, 22, 934, 634}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{340.0, 252.0}">
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The source code for this FMU is in&#10;$PTII/vendors/fmusdk/src/models/stepCounter.&#10;To build the FMU file, do this:&#10;&#10;&gt; cd $PTII/vendors/fmusdk/src/models&#10;&gt; make&#10;&#10;The resulting .fmu file for cosimulation will&#10;be in $PTII/vendors/fmusdk/fmu/cs.&#10;That file is copied into this directory to make&#10;this demo independent of the $PTII/vendors&#10;directory. This FMU actor refers to the local&#10;copy of the .fmu file.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="[-175.0, 85.0]">
+            <property name="relativeTo" class="ptolemy.kernel.util.StringAttribute" value="stepCounter">
+            </property>
+            <property name="relativeToElementName" class="ptolemy.kernel.util.StringAttribute" value="entity">
+            </property>
+        </property>
+    </property>
+    <entity name="Test" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, 0.0, 0.0, 0.0, 0.0}">
+        </property>
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="4.200000000000003E-8">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[295.0, 60.0]">
+        </property>
+    </entity>
+    <entity name="stepCounter" class="ptolemy.actor.lib.fmi.FMUImport">
+        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="/ptII/ptolemy/actor/lib/fmi/test/auto/stepCounter.fmu">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[185.0, 60.0]">
+        </property>
+        <property name="p" class="ptolemy.data.expr.Parameter" value="1.0">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
+            </property>
+        </port>
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="Test.input" relation="relation"/>
+    <link port="stepCounter.output" relation="relation"/>
+</entity>

@@ -50,8 +50,11 @@ import org.ptolemy.fmi.type.FMIType;
 
 import ptolemy.actor.Director;
 import ptolemy.actor.IOPort;
+import ptolemy.actor.SuperdenseTimeDirector;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
+import ptolemy.actor.sched.FixedPointDirector;
+import ptolemy.actor.util.Time;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
@@ -216,12 +219,114 @@ public class FMUImport extends TypedAtomicActor implements
         _checkFmi();
 
         String modelIdentifier = _fmiModelDescription.modelIdentifier;
+        
+        ////////////////
+        // If time has advanced since the last call to fire(), invoke
+        // fmiDoStep() with the current data before updating the inputs
+        // of the FMU. The current value of the inputs will be the
+        // values set on the last call to fire().
+        Director director = getDirector();
+        Time currentTime = director.getModelTime();
+        int currentMicrostep = 1;
+        if (director instanceof SuperdenseTimeDirector) {
+            currentMicrostep = ((SuperdenseTimeDirector)director).getIndex();
+        }
+        int timeAdvance = currentTime.compareTo(_lastFireTime);
+        if (timeAdvance > 0 || (timeAdvance == 0 && currentMicrostep > _lastFireMicrostep)) {
+            // Time has advanced since the last invocation of fire or initialize.
+            // Call fmiDoStep(), but be sure to pass it the _lastFireTime,
+            // not the current time. It needs to update from that last firing
+            // time to the current time.
+            // NOTE: FMI-1.0 and 2.0 use doubles for time.
+            double time = _lastFireTime.getDoubleValue();
+            double stepSize = currentTime.subtract(_lastFireTime).getDoubleValue();
+
+            if (_debugging) {
+                _debug("FMIImport.fire(): about to call " + modelIdentifier
+                        + "_fmiDoStep(Component, /* time */ " + time
+                        + ", /* stepSize */" + stepSize + ", /* newStep */ 1)");
+
+            }
+
+            // In FMI 1.0, the last argument to fmiDoStep being non-zero
+            // indicates that this is a new step, not a repeat of a previous step.
+            // FIXME: The mechanism in FMI 2.0 is different, where the last argument to
+            // fmiDoStep is noSetFMUStatePriorToCurrentPoint, which is true when the caller
+            // is willing to commit to the step size. I.e., it promises no backtracking.
+            int fmiFlag = ((Integer) _fmiDoStep.invokeInt(new Object[] {
+                    _fmiComponent, time, stepSize, (byte) 1 })).intValue();
+
+            if (fmiFlag != FMILibrary.FMIStatus.fmiOK) {
+                // FIXME: Step size is rejected. Handle this.
+                throw new IllegalActionException(this, "Could not simulate, "
+                        + modelIdentifier + "_fmiDoStep(Component, /* time */ "
+                        + time + ", /* stepSize */" + stepSize
+                        + ", /* newStep */ 1) returned " + fmiFlag);
+            }
+
+            if (_debugging) {
+                _debug("FMUImport done calling " + modelIdentifier
+                        + "_fmiDoStep()");
+            }
+        } else if (timeAdvance < 0 || (timeAdvance == 0 && currentMicrostep < _lastFireMicrostep)) {
+            // Time has moved backwards since the last invocation of fire or initialize.
+            // Here we have to repeat fmiDoStep().
+            // In FMI 1.0, we signal the FMU with the last argument that this is NOT a new step.
+            // The FMU is expected to restore its state to the one prior to the last step,
+            // which presumably includes restoring its inputs to those values.
+            // However, that mechanism is fundamentally flawed because the last committed
+            // time is not necessarily the time passed into the previous step!
+            // In particular, with, say, an RK4-5 solver, we might take two steps
+            // into an integration interval before rejecting the step size!
+            // Below, we do the best we can, but the behavior will not be right
+            // when using an RK4-5 solver, for example.
+            
+            // FIXME: The mechanism in FMI 2.0 is different, where the last argument to
+            // fmiDoStep is noSetFMUStatePriorToCurrentPoint, which is true when the caller
+            // is willing to commit to the step size. I.e., it promises no backtracking.
+            // Also, FMI 2.0 supports restoring state.
+            double time = _lastCommitTime.getDoubleValue();
+            double stepSize = currentTime.subtract(_lastCommitTime).getDoubleValue();
+
+            if (_debugging) {
+                _debug("FMIImport.fire(): about to call " + modelIdentifier
+                        + "_fmiDoStep(Component, /* time */ " + time
+                        + ", /* stepSize */" + stepSize + ", /* newStep */ 0)");
+
+            }
+
+            int fmiFlag = ((Integer) _fmiDoStep.invokeInt(new Object[] {
+                    _fmiComponent, time, stepSize, (byte) 0 })).intValue();
+
+            if (fmiFlag != FMILibrary.FMIStatus.fmiOK) {
+                // FIXME: Step size is rejected. Handle this.
+                throw new IllegalActionException(this, "Could not simulate, "
+                        + modelIdentifier + "_fmiDoStep(Component, /* time */ "
+                        + time + ", /* stepSize */" + stepSize
+                        + ", 1) returned " + fmiFlag);
+            }
+
+            if (_debugging) {
+                _debug("FMUImport done calling " + modelIdentifier
+                        + "_fmiDoStep()");
+            }
+            /* FIXME: Do all FMUs support this sort of backtracking?
+            throw new IllegalActionException(this,
+                    "Redoing step with a smaller step size, but this is not supported by FMU "
+                    + modelIdentifier 
+                    + " at time " + time 
+                    + ", microstep " + currentMicrostep 
+                    + ", with new stepSize " + stepSize
+                    + ". Last firing was at time " + _lastFireTime
+                    + ", microstep " + _lastFireMicrostep);
+            */
+        }
+        _lastFireTime = currentTime;
+        _lastFireMicrostep = currentMicrostep;
 
         // Ptolemy parameters are read in initialize() because the fmi
         // version of the parameters must be written before
         // fmiInitializeSlave() is called.
-
-        boolean foundUnknownInputOrOutput = false;
 
         ////////////////
         // Iterate through the scalarVariables and set all the inputs
@@ -264,9 +369,6 @@ public class FMUImport extends TypedAtomicActor implements
                                     + " has value 'absent', but FMI does not "
                                     + "support a notion of absent inputs.");
                         }
-                    } else {
-                        // Port value is not known.
-                        foundUnknownInputOrOutput = true;
                     }
                 } else {
                     throw new IllegalActionException(this,
@@ -279,7 +381,6 @@ public class FMUImport extends TypedAtomicActor implements
 
         ////////////////
         // Iterate through the outputs.
-        // See the method comment for why we do this before calling fmiDoStep()
         for (Output output : _getOutputs()) {
 
             TypedIOPort port = output.port;
@@ -317,7 +418,6 @@ public class FMUImport extends TypedAtomicActor implements
                                     + inputPort.getName()
                                     + ", but the input is not yet known.");
                         }
-                        foundUnknownInputOrOutput = true;
                         foundUnknownInputOnWhichOutputDepends = true;
                         break;
                     }
@@ -330,7 +430,6 @@ public class FMUImport extends TypedAtomicActor implements
                 for (TypedIOPort inputPort : inputPorts) {
                     if (inputPort.getWidth() < 0 || !inputPort.isKnown(0)) {
                         // Input port value is not known.
-                        foundUnknownInputOrOutput = true;
                         foundUnknownInputOnWhichOutputDepends = true;
                         break;
                     }
@@ -365,43 +464,6 @@ public class FMUImport extends TypedAtomicActor implements
                             + " sends value " + token);
                 }
                 port.send(0, token);
-            }
-        }
-
-        ////////////////
-        // Call fmiDoStep() with the current data.
-        // But only call it once all inputs are known and all outputs
-        // for the current time step have been produced.
-        // FIXME: Some FMUs may not allow fmuDoStep to be called
-        // again if it has previously succeeded.
-        // Check the Capabilities part of the XML file.
-        // Some FMUs may not be compatible with some directors.
-        if (!foundUnknownInputOrOutput) {
-            // NOTE: FMI-1.0 uses doubles for time.
-            double time = getDirector().getModelTime().getDoubleValue();
-
-            double stepSize = _getStepSize();
-
-            if (_debugging) {
-                _debug("FMIImport.fire(): about to call " + modelIdentifier
-                        + "_fmiDoStep(Component, /* time */ " + time
-                        + ", /* stepSize */" + stepSize + ", 1)");
-
-            }
-
-            int fmiFlag = ((Integer) _fmiDoStep.invokeInt(new Object[] {
-                    _fmiComponent, time, stepSize, (byte) 1 })).intValue();
-
-            if (fmiFlag != FMILibrary.FMIStatus.fmiOK) {
-                throw new IllegalActionException(this, "Could not simulate, "
-                        + modelIdentifier + "_fmiDoStep(Component, /* time */ "
-                        + time + ", /* stepSize */" + stepSize
-                        + ", 1) returned " + fmiFlag);
-            }
-
-            if (_debugging) {
-                _debug("FMUImport done calling " + modelIdentifier
-                        + "_fmiDoStep()");
             }
         }
     }
@@ -448,17 +510,31 @@ public class FMUImport extends TypedAtomicActor implements
                 .getFunction(modelIdentifier + "_fmiInitializeSlave");
 
         // FIXME: FMI-1.0 uses doubles for times.
-        double startTime = getDirector().getModelStartTime().getDoubleValue();
-        double stopTime = getDirector().getModelStopTime().getDoubleValue();
+        Director director = getDirector();
+        Time startTime = director.getModelStartTime();
+        Time stopTime = director.getModelStopTime();
         int fmiFlag = ((Integer) function.invoke(Integer.class, new Object[] {
-                _fmiComponent, startTime, (byte) 1, stopTime })).intValue();
+                _fmiComponent, startTime.getDoubleValue(), (byte) 1,
+                stopTime.getDoubleValue() })).intValue();
         if (fmiFlag > FMILibrary.FMIStatus.fmiWarning) {
             throw new IllegalActionException(this, "Could not simulate, "
                     + modelIdentifier
                     + "_fmiInitializeSlave(Component, /* startTime */ "
-                    + startTime + ", 1, /* stopTime */" + stopTime
+                    + startTime.getDoubleValue()
+                    + ", 1, /* stopTime */" + stopTime.getDoubleValue()
                     + ") returned " + fmiFlag);
         }
+        _lastCommitTime = startTime;
+        _lastFireTime = startTime;
+        if (director instanceof SuperdenseTimeDirector) {
+            _lastCommitMicrostep = ((SuperdenseTimeDirector)director).getIndex();
+            _lastFireMicrostep = ((SuperdenseTimeDirector)director).getIndex();
+        } else {
+            // Director must be discrete, so we assume microstep == 1.
+            _lastCommitMicrostep = 1;
+            _lastFireMicrostep = 1;
+        }
+        
         if (_debugging) {
             _debug("FMIImport.initialize() END");
         }
@@ -605,6 +681,21 @@ public class FMUImport extends TypedAtomicActor implements
     public boolean isStepSizeAccurate() {
         // FIXME: Do something smarter depending on what fmiDoStep() returns;
         return true;
+    }
+
+    /** Override the base class to record the current time as the last
+     *  commit time.
+     *  @return True if execution can continue into the next iteration.
+     *  @exception IllegalActionException Not thrown in this base class.
+     */
+    public boolean postfire() throws IllegalActionException {
+        Director director = getDirector();
+        _lastCommitTime = director.getModelTime();
+        _lastCommitMicrostep = 1;
+        if (director instanceof SuperdenseTimeDirector) {
+            _lastCommitMicrostep = ((SuperdenseTimeDirector)director).getIndex();
+        }
+        return super.postfire();
     }
 
     /** Instantiate the slave FMU component.
@@ -818,6 +909,11 @@ public class FMUImport extends TypedAtomicActor implements
     }
 
     /** Return true if outputs are skipped if known.
+     *  A true value means that only a single output token will be produced
+     *  in each iteration of this actor. A false value means that a sequence
+     *  of output tokens may be produced.  Generally, for domains that
+     *  implement fixed-point semantics, such as Continuous and SR,
+     *  the return value should be true. Otherwise it should be false.
      *  If the director is a ContinuousDirector, then return true.
      *  If the director is SDFDirector, then return false.
      *  @return the true if outputs that have been set are skipped.
@@ -826,15 +922,10 @@ public class FMUImport extends TypedAtomicActor implements
      */
     protected boolean _skipIfKnown() throws IllegalActionException {
         Director director = getDirector();
-        if (director instanceof ContinuousDirector) {
+        if (director instanceof FixedPointDirector) {
             return true;
-        } else if (director instanceof SDFDirector) {
-            return false;
         } else {
-            throw new IllegalActionException(this,
-                    "Don't know how to determine whether outputs should be skipped for "
-                    + director.getClass().getName()
-                    + ". Only ContinuousDirector and SDFDirector are acceptable here.");
+            return false;
         }
     }
 
@@ -1105,6 +1196,18 @@ public class FMUImport extends TypedAtomicActor implements
 
     /** The _fmiInstantiateSlave function. */
     private Function _fmiInstantiateSlave;
+    
+    /** The time at which the last commit occurred (initialize or postfire). */
+    private Time _lastCommitTime;
+
+    /** The microstep at which the last commit occurred (initialize or postfire). */
+    private int _lastCommitMicrostep;
+
+    /** The time at which the last fire occurred. */
+    private Time _lastFireTime;
+
+    /** The microstep at which the last fire occurred. */
+    private int _lastFireMicrostep;
 
     /** A collection of scalar variables for which there is
      *  a connected output port, and for each such variable,
