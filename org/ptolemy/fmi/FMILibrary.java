@@ -99,7 +99,7 @@ public interface FMILibrary extends Library {
          */
         public static final int fmiPendingStatus = 1;
 
-        /** If fmiDoStep() returnd fmiDiscard, then calling
+        /** If fmiDoStep() returns fmiDiscard, then calling
          *  fmiGetRealStatus(..., fmiLastSuccessfulTime,...)
          *  will return the time the last communication step
          *  was successfully computed.
