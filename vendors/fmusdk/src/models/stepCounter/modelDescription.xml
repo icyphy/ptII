@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!-- GUID generated at http://guid.us -->
+<fmiModelDescription
+  fmiVersion="1.0"
+  modelName="stepCounter"
+  modelIdentifier="stepCounter"
+  guid="{c157b371-f7d4-4133-8c29-8e78a9468674}">
+<ModelVariables>
+  <ScalarVariable
+     name="output"
+     valueReference="0"
+     description="current count"
+     causality="output">
+     <Real/>
+  </ScalarVariable>
+  <ScalarVariable
+      name="p"
+      valueReference="1"
+      description="period at which increment occurs"
+      variability="parameter">
+    <Real start="1.0" fixed="true"/>
+  </ScalarVariable>
+</ModelVariables>
+

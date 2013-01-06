@@ -1,5 +1,9 @@
 /* ---------------------------------------------------------------------------*
- * Minimal Co-simulation FMU. This FMU has one output that produces the constant 42.
+ * Test Co-simulation FMU. This FMU has one output that produces a piecewise
+ * constant signal that starts at value 0.0 and increments by 1.0 every p
+ * time units, where p is a parameter. It forces the orchestrator to
+ * execute twice at the time of each step increment.
+ *
  * To build the FMU file, do this:
  *
  *  > cd $PTII/vendors/fmusdk/src/models
@@ -18,7 +22,7 @@
 #include <string.h>
 
 // The model identifier string.
-#define MODEL_IDENTIFIER helloWorld
+#define MODEL_IDENTIFIER stepCounter
 
 // include fmu header files, typedefs and macros
 #include "fmiFunctions.h"
@@ -35,7 +39,7 @@ typedef struct {
 
 // Globally unique ID used to make sure the XML file and the DLL match.
 // The following was generated at http://guid.us
-#define MODEL_GUID "{7b2d6d2e-ac4d-4aa8-93eb-d53357dc58ec}"
+#define MODEL_GUID "{c157b371-f7d4-4133-8c29-8e78a9468674}"
 
 fmiComponent fmiInstantiateSlave(fmiString  instanceName, fmiString  GUID,
     	fmiString  fmuLocation, fmiString  mimeType, fmiReal timeout, fmiBoolean visible,
@@ -67,8 +71,9 @@ fmiComponent fmiInstantiateSlave(fmiString  instanceName, fmiString  GUID,
     component = (ModelInstance *)functions.allocateMemory(1, sizeof(ModelInstance));
     // cxh: One key change here was that we allocate memory for the pointer holding
     // the value.
-    component->r = functions.allocateMemory(1,    sizeof(fmiReal));
-    component->r[0] = 42.0;
+    component->r = functions.allocateMemory(2,    sizeof(fmiReal));
+    component->r[0] = 0.0;
+    component->r[1] = 1.0;
     component->functions = functions;
     component->instanceName = instanceName;
     
@@ -91,9 +96,7 @@ fmiStatus fmiTerminateSlave(fmiComponent c) {
 }
 
 void fmiFreeSlaveInstance(fmiComponent c) {
-    // cxh: I had to cast the c to a ModelInstance here.
     ModelInstance* component = (ModelInstance *) c;
-
     printf("Invoked fmiFreeSlaveInstance.\n");
     component->functions.freeMemory(component);
 }
@@ -106,23 +109,36 @@ fmiStatus fmiDoStep(fmiComponent c, fmiReal currentCommunicationPoint,
 }
 
 fmiStatus fmiGetReal(fmiComponent c, const fmiValueReference vr[], size_t nvr, fmiReal value[]) {
-    // cxh: I had to cast the c to a ModelInstance here.
+    int i, valueReference;
     ModelInstance* component = (ModelInstance *) c;
     printf("Invoked fmiGetReal: %d ", (int)nvr);
 
-    if (nvr > 1) {
+    if (nvr > 2) {
         component->functions.logger(component, component->instanceName, fmiError, "error",
                 "fmiGetReal: Value reference out of range: %u.", nvr);
         return fmiError;
     }
-    if (nvr > 0) {
-        printf("Retrieving output value %g.\n", component->r[0]);
-    	value[0] = component->r[0];
+    for (i = 0; i < nvr; i++) {
+        valueReference = vr[i];
+        printf("Retrieving real value with index %d and value %g.\n", valueReference, component->r[valueReference]);
+    	value[i] = component->r[valueReference];
     }
     return fmiOK;
 }
 
 fmiStatus fmiSetReal(fmiComponent c, const fmiValueReference vr[], size_t nvr, const fmiReal value[]){
+    int i, valueReference;
+    ModelInstance* component = (ModelInstance *) c;
     printf("Invoked fmiSetReal: %d ", (int)nvr);
+    if (nvr > 2) {
+        component->functions.logger(component, component->instanceName, fmiError, "error",
+                                    "fmiGetReal: Value reference out of range: %u.", nvr);
+        return fmiError;
+    }
+    for (i = 0; i < nvr; i++) {
+        valueReference = vr[i];
+        printf("Setting real value with index %d and value %g.\n", valueReference, value[i]);
+    	component->r[valueReference] = value[i];
+    }
     return fmiOK;
 }
