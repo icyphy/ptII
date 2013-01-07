@@ -442,8 +442,9 @@ public class XMPPGateway extends AbstractInitializableAttribute implements
                                         "Failed to read a line from " + passwordFile);
                             }
                         } catch (Exception ex) {
-                            System.out.println(getFullName() + ": Failed to read "
-                                    + passwordFile.stringValue() + ex);
+                            throw new IllegalActionException(this, ex,
+                                    "Failed to read "
+                                    + passwordFile.stringValue());
                         } finally {
                             if (reader != null) {
                                 try {
