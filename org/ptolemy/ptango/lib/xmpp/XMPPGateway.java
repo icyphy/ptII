@@ -175,6 +175,8 @@ public class XMPPGateway extends AbstractInitializableAttribute implements
     /** Return immediately. */
     @Override
     public void fire() throws IllegalActionException {
+        // FIXME: It would be good to document *why* fire() does nothing.
+        // Also, look at AtomicActor.fire() and consider adding the debugging.
         return;
     }
 
@@ -226,8 +228,8 @@ public class XMPPGateway extends AbstractInitializableAttribute implements
                          form.setPublishModel(PublishModel.open); */
                         node = _manager.createNode(nodeId);
 
-                    } catch (XMPPException e1) {
-                        throw new IllegalActionException(
+                    } catch (XMPPException ex) {
+                        throw new IllegalActionException(this, ex,
                                 "Unable find or create node: " + nodeId + ".");
                     }
                 }
@@ -252,13 +254,12 @@ public class XMPPGateway extends AbstractInitializableAttribute implements
                             subscription = node.subscribe(jid); // FIXME: subscription fails here
                         }
                         // FIXME: check subscription.state here too
-                    } catch (XMPPException e) {
-                        throw new IllegalActionException(
-                                "Unable subscribe to node: " + nodeId + " ("
-                                        + e.getMessage() + ").");
+                    } catch (XMPPException ex) {
+                        throw new IllegalActionException(this, ex,
+                                "Unable subscribe to node: " + nodeId + ".");
                     }
                 } else {
-                    throw new IllegalActionException(
+                    throw new IllegalActionException(this,
                             "Unable find or create node: " + nodeId + ".");
                 }
             } else if (object instanceof XMPPPublisher) {
@@ -318,14 +319,14 @@ public class XMPPGateway extends AbstractInitializableAttribute implements
             if ((n = _manager.getNode(nodeId)) instanceof LeafNode) {
                 ln = (LeafNode) n;
             } else {
-                throw new IllegalActionException(
+                throw new IllegalActionException(this,
                         "Unable to publish a node that is not a leaf.");
             }
         } catch (XMPPException e) {
             try {
                 ln = _manager.createNode(nodeId);
             } catch (XMPPException e1) {
-                throw new IllegalActionException(
+                throw new IllegalActionException(this,
                         "Unable to create node with id: " + nodeId + ".");
             }
         }
@@ -345,7 +346,8 @@ public class XMPPGateway extends AbstractInitializableAttribute implements
         try {
             _manager.deleteNode(nodeId);
         } catch (XMPPException e) {
-            throw new IllegalActionException("Unable to remove node with id: "
+            throw new IllegalActionException(this,
+                    "Unable to remove node with id: "
                     + nodeId + ".");
         }
     }
@@ -417,8 +419,8 @@ public class XMPPGateway extends AbstractInitializableAttribute implements
             if (!_connection.isConnected()) {
                 _connection.connect();
             }
-        } catch (Exception e) {
-            throw new IllegalActionException(
+        } catch (Exception ex) {
+            throw new IllegalActionException(this, ex,
                     "Unable to connect to XMPP server.");
         }
 
@@ -436,7 +438,7 @@ public class XMPPGateway extends AbstractInitializableAttribute implements
                                 _password = line.toCharArray();
                                 line = "";
                             } else {
-                                throw new NullPointerException(
+                                throw new IllegalActionException(this,
                                         "Failed to read a line from " + passwordFile);
                             }
                         } catch (Exception ex) {
@@ -482,8 +484,9 @@ public class XMPPGateway extends AbstractInitializableAttribute implements
                 }
                 _connection.login(_userName, String.valueOf(_password), "ptolemy");
             }
-        } catch (Exception e) {
-            throw new IllegalActionException("Unable to login to XMPP server.");
+        } catch (Exception ex) {
+            throw new IllegalActionException(this, ex,
+                    "Unable to login to XMPP server.");
         }
     }
 
