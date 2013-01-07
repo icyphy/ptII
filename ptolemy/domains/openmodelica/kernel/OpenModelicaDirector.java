@@ -35,10 +35,11 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
 /** 
-  This director executes OpenModelica actor in its own threads. 
-   Creating and starting the threads are at the same time with starting the OpenModelica Compiler(OMC)
-   which occurred in the preinitialize() method.   
-   This threads finish in the wrapup() method, at the same time with quiting the OMC.  
+   This director executes OpenModelica actor in its own threads.
+   Creating and starting the threads are at the same time with
+   starting the OpenModelica Compiler(OMC) which occurred in the
+   preinitialize() method.  This threads finish in the wrapup()
+   method, at the same time with quiting the OMC.
 
    @author Mana Mirzaei, Based on ContinuousDirector by Edward A. Lee
    @version $Id$
@@ -68,20 +69,23 @@ public class OpenModelicaDirector extends ContinuousDirector {
     ////                         public methods                ////
 
     /** Get the private object of OMCLogger. 
-     *  OMC stands for OpenModelica Compiler.*/
+     *  OMC stands for OpenModelica Compiler.
+     */
     public static OMCLogger getOMCLogger() {
         return _omcLogger;
     }
 
     /** Get the private object of OMCProxy. 
-     *  OMC stands for OpenModelica Compiler.*/
+     *  OMC stands for OpenModelica Compiler.
+     *  @return the proxy object to the OpenModelica compiler.
+     */
     public static OMCProxy getOMCProxy() {
         return _omcProxy;
     }
 
-    /** Invoke the preinitialize() of the super class. 
-     *  Preinitialize the OpenModelica actor and the OpenModelica Compiler(OMC) 
-     *  is initialized in this method as well.
+    /** Invoke the preinitialize() of the super class.  Preinitialize
+     *  the OpenModelica actor and initialize the OpenModelica
+     *  Compiler(OMC).
      *  @exception IllegalActionException If the preinitialize() of
      *  one of the associated actors throws it.
      */
@@ -92,8 +96,8 @@ public class OpenModelicaDirector extends ContinuousDirector {
             _omcProxy = new OMCProxy();
             _omcProxy.init();
         } catch (ConnectException ex) {
-            ex = new ConnectException("Unable to start the server!");
-            ex.printStackTrace();
+            throw new IllegalActionException(this, ex,
+                    "Unable to start the OpenModelica server!");
         }
     }
 
@@ -120,9 +124,15 @@ public class OpenModelicaDirector extends ContinuousDirector {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variable                  ////
-    //This object is used for saving OpenModelica Compiler(OMC) log file in the temporary folder.
+    
+    /** The OpenModelica Compiler(OMC) log file in the temporary
+     * folder.
+     */
     private static OMCLogger _omcLogger;
 
-    //This object is used for initializing and stopping OpenModelica Compiler(OMC) server. 
+    /** Used for initializing and stopping OpenModelica
+     * Compiler(OMC) server.
+     */
     private static OMCProxy _omcProxy;
 }
+
