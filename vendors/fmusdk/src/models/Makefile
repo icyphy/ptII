@@ -41,9 +41,10 @@ all:
 	./build_fmu cs dq
 	./build_fmu cs helloWorld
 	./build_fmu cs inc
+	./build_fmu cs stepCounter
 	./build_fmu cs values
 	./build_fmu cs vanDerPol
-    
+
 # CBITSFLAGS is set to -m32 to build linux32 fmus
 
 %.o: %.c
