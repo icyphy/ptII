@@ -1,7 +1,6 @@
-/** A logger class for creating the log file and displaying the log result.
+/* This class saves the log result in the log file in the temporary folder.
  * 
  * Copyright (c) 2012-2013,
- * @author Mana Mirzaei [manmi478@student.liu.se],
  * Programming Environments Laboratory (PELAB),
  * Department of Computer and getInformation Science (IDA),
  * Linkoping University (LiU).
@@ -42,39 +41,64 @@
 
 package ptolemy.domains.openmodelica.lib.omc;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.logging.FileHandler;
 import java.util.logging.Formatter;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 
+/**
+   This class saves the log result in the log file in the temporary folder.
+   
+   @author Mana Mirzaei
+   @version $Id$
+   @since Ptolemy II 9.1
+   @Pt.ProposedRating Red (cxh)
+   @Pt.AcceptedRating Red (cxh)
+ */
 public class OMCLogger {
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         public variables                  ////
-
-    public String _loggerName = "ptLogger";
-    public Logger _ptLogger = Logger.getLogger("ptLogger");
-
+    /** Construct an OpenModelica Compiler(OMC) logger.
+     *  This constructor has no parameter.
+     *  It creates the log file in the temporary folder and sets the format
+     *  of the log to show date and time first.
+     */
     public OMCLogger() {
 
-        /* Create  the log file */
-        OMCProxy.os = OMCProxy.getOs();
+        boolean b;
+        String filePath = null;
+        String username = System.getenv("USER");
+        String temp = System.getProperty("java.io.tmpdir");
+
+        if (username != null)
+            filePath = temp + "\\" + username + "\\" + "OpenModelica" + "\\";
+        else
+            filePath = temp + "\\" + "nobody" + "\\" + "OpenModelica" + "\\";
+
+        File f = new File(filePath);
+
+        //Creating user directory in the temporary folder.
+        if (!f.exists())
+            b = new File(filePath).mkdirs();
+
+        // Create  the log file 
         try {
-            switch (OMCProxy.os) {
+            switch (OMCProxy.getOs()) {
             case UNIX:
-                fileHandler = new FileHandler(filePath + "/omcLog.txt");
+                _fileHandler = new FileHandler(filePath + "/omcLog.txt");
                 break;
             case MAC:
-                fileHandler = new FileHandler(filePath + "/omcLog.txt");
+                _fileHandler = new FileHandler(filePath + "/omcLog.txt");
                 break;
             case WINDOWS:
-                fileHandler = new FileHandler(filePath + "omcLog.txt");
+                _fileHandler = new FileHandler(filePath + "omcLog.txt");
+                break;
+            default:
                 break;
             }
-            
-            /* Set formatter of the log to show date and time first*/
-            fileHandler.setFormatter(new Formatter() {
+
+            // Set format of the log to show date and time first
+            _fileHandler.setFormatter(new Formatter() {
                 public String format(LogRecord rec) {
                     StringBuffer buf = new StringBuffer(1000);
                     buf.append(new java.util.Date());
@@ -86,33 +110,54 @@ public class OMCLogger {
                     return buf.toString();
                 }
             });
-            _ptLogger.addHandler(fileHandler);
+            
+            omcLogger.addHandler(_fileHandler);
+            
         } catch (SecurityException e) {
-            _ptLogger.severe("Security error related to the file handler!");
+            omcLogger.severe("Security error related to the file handler!");
         } catch (IOException e) {
-            _ptLogger.severe("Unable to create file handler!");
+            omcLogger.severe("Unable to create file handler!");
         }
     }
 
-    public void getInfo(String msg) {
+    ///////////////////////////////////////////////////////////////////
+    ////                         public variables                 ////
 
-        _ptLogger.info(msg);
+    /** Logger name of OpenModelica Compiler(OMC).*/
+    public String loggerName = "omcLogger";
+    
+    /** Create the OpenModelica Compiler(OMC) logger. */
+    public Logger omcLogger = Logger.getLogger("omcLogger");
+
+    ///////////////////////////////////////////////////////////////////
+    ////                          public methods                  ////
+
+    /**
+     * Get the Info LogLevel and info message will be written in the log file. 
+     * @param infoMessage The info message. 
+     */
+    public void getInfo(String infoMessage) {
+        omcLogger.info(infoMessage);
     }
 
-    public void getWarning(String msg) {
-
-        _ptLogger.warning(msg);
+    /**
+     * Get the Warning LogLevel and warning message will be written in the log file.
+     * @param warningMessage The warning message.
+     */
+    public void getWarning(String warningMessage) {
+        omcLogger.warning(warningMessage);
     }
 
-    public void getSever(String msg) {
-
-        _ptLogger.severe(msg);
+    /**
+     * Get the Sever LogLevel and sever message will be written in the log file.
+     * @param severMessage The sever message.
+     */
+    public void getSever(String severMessage) {
+        omcLogger.severe(severMessage);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
-    FileHandler fileHandler = null;
-    /** Set path of the log to the temp folder */
-    String filePath = System.getProperty("java.io.tmpdir");
+    // The handler for writing to OpenModelica Compiler(OMC) log file.
+    private FileHandler _fileHandler = null;
 }
