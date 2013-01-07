@@ -11,7 +11,7 @@
      valueReference="0"
      description="current count"
      causality="output">
-     <Real/>
+    <Real/>
   </ScalarVariable>
   <ScalarVariable
       name="p"
@@ -20,5 +20,19 @@
       variability="parameter">
     <Real start="1.0" fixed="true"/>
   </ScalarVariable>
+  <ScalarVariable
+      name="lastSuccessfulTime"
+      valueReference="2"
+      description="last successful time for a discarded step"
+      causality="internal">
+    <Real/>
+  </ScalarVariable>
+  <ScalarVariable
+      name="atTransitionPoint"
+      valueReference="3"
+      description="indicator that we have already output the initial value at a transition point"
+      causality="internal">
+    <Real/>  <!-- FIXME: We really want this to be Boolean. -->
+    </ScalarVariable>
 </ModelVariables>
 

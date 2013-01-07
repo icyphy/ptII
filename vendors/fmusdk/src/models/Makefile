@@ -29,6 +29,10 @@ PIC =
 helloWorld:
 	./build_fmu cs helloWorld
 
+.PHONY : stepCounter
+stepCounter:
+	./build_fmu cs stepCounter
+
 # Build the .fmu files for both co-simulation and model-exchange
 all:
 	./build_fmu me bouncingBall

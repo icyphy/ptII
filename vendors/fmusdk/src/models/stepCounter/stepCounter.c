@@ -2,7 +2,10 @@
  * Test Co-simulation FMU. This FMU has one output that produces a piecewise
  * constant signal that starts at value 0.0 and increments by 1.0 every p
  * time units, where p is a parameter. It forces the orchestrator to
- * execute twice at the time of each step increment.
+ * execute twice at the time of each step increment by discarding an fmiDoStep()
+ * that steps over the transition time and then suggesting a step size that
+ * hits the transition time, and then discarding any step size greater than 0
+ * for the next iteration, so that it fires twice at the transition time.
  *
  * To build the FMU file, do this:
  *
@@ -71,9 +74,11 @@ fmiComponent fmiInstantiateSlave(fmiString  instanceName, fmiString  GUID,
     component = (ModelInstance *)functions.allocateMemory(1, sizeof(ModelInstance));
     // cxh: One key change here was that we allocate memory for the pointer holding
     // the value.
-    component->r = functions.allocateMemory(2,    sizeof(fmiReal));
+    component->r = functions.allocateMemory(4, sizeof(fmiReal));
     component->r[0] = 0.0;
     component->r[1] = 1.0;
+    component->r[2] = -1.0;   // Last successful firing time.
+    component->r[3] = 0.0;    // Flag counting firings at breakpoints.
     component->functions = functions;
     component->instanceName = instanceName;
     
@@ -88,6 +93,8 @@ fmiStatus fmiInitializeSlave(fmiComponent c, fmiReal tStart, fmiBoolean stopTime
     (component->functions).logger(c, component->instanceName, fmiOK, "message",
             "Invoked fmiIntializeSlave: start: %g, StopTimeDefined: %d, tStop: %g.",
             tStart, stopTimeDefined, tStop);
+    component->r[2] = 0.0;
+    component->r[3] = 0.0;
     return fmiOK;
 }
 
@@ -105,6 +112,42 @@ fmiStatus fmiDoStep(fmiComponent c, fmiReal currentCommunicationPoint,
     	fmiReal communicationStepSize, fmiBoolean newStep) {
     printf("Invoked fmiDoStep: %g, %g, newStep: %s\n", currentCommunicationPoint,
             communicationStepSize, (newStep)?"true":"false");
+    ModelInstance* component = (ModelInstance *) c;
+    // If current time is greater than period * (value + 1), then it is
+    // time for another increment.
+    // FIXME: We need a parameter for the precision here, because otherwise
+    // we are going to be insisting on hitting the time of the increment
+    // exactly!
+    double endOfStepTime = currentCommunicationPoint + communicationStepSize;
+    double targetTime = component->r[1] * (component->r[0] + 1);
+    double precision = 0.0001; // FIXME: Hardwired parameter.
+    if (endOfStepTime >= targetTime - precision) {
+        // It is time for an increment.
+        // Is it too late for the increment?
+        if (endOfStepTime > targetTime + precision) {
+            // Indicate that the last successful time
+            // at the target time.
+            component->r[2] = targetTime;
+            printf("Discarding step. endOfStepTime = %g, targetTime = %g, component->r[3] = %g\n", endOfStepTime, targetTime, component->r[3]);
+            return fmiDiscard;
+        }
+        // We are at the target time. Are we
+        // ready for the increment yet? Have to have already
+        // completed one firing at this time.
+        if (component->r[3] > 0.0) {
+            // Not the first firing. Go ahead an increment.
+            component->r[0]++;
+            // Reset the indicator that the increment is needed.
+            component->r[3] = 0.0;
+        } else {
+            // This will complete the first firing at the target time.
+            // We don't want to increment yet, but we set an indicator
+            // that we have had a firing at this time.
+            component->r[3] = 1.0;
+        }
+    }
+    component->r[2] = endOfStepTime;
+    printf("fmiDoStep succeeded.\n");
     return fmiOK;
 }
 
@@ -124,6 +167,16 @@ fmiStatus fmiGetReal(fmiComponent c, const fmiValueReference vr[], size_t nvr, f
     	value[i] = component->r[valueReference];
     }
     return fmiOK;
+}
+
+fmiStatus fmiGetRealStatus(fmiComponent c, const fmiStatusKind s, fmiReal* value) {
+    ModelInstance* component = (ModelInstance *) c;
+    if (s == fmiLastSuccessfulTime) {
+        *value = component->r[2];
+        return fmiOK;
+    }
+    // Since this FMU does not return fmiPending, there shouldn't be other queries of status.
+    return fmiDiscard;
 }
 
 fmiStatus fmiSetReal(fmiComponent c, const fmiValueReference vr[], size_t nvr, const fmiReal value[]){
