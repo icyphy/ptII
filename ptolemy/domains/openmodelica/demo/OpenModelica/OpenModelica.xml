@@ -59,7 +59,7 @@
 	<property name="Annotation2"
 		class="ptolemy.vergil.kernel.attributes.TextAttribute">
 		<property name="text" class="ptolemy.kernel.util.StringAttribute"
-			value="The simulate actor only works for the model which is composed of one class. 			&#10;Adding the functionality of working for the ones with multiple classes,&#10;which all will be displayed in the className Parameter will be added in the next version.&#10;fileParameter is set to the path of dcmotor.mo and modelName should be set to the dcmotor.&#10;The rest of the settings are optional.&#10;The simulation result is saved as a (mat,csv or plt) file and the log file as the txt file in the temp folder.">
+			value="The OpenModelica actor only works for the model which is composed of one class.&#10;File Name is set to the path of dcmotor.mo and Model Name is set to dcmotor.&#10;The rest of the settings are optional.">
 		</property>
 		<property name="_location" class="ptolemy.kernel.util.Location"
 			value="[285.0, 15.0]">
