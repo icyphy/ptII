@@ -4,8 +4,8 @@
 
 fmus=`find $PTII/org/ptolemy/fmi/fmu -name "*.fmu"`
 
-arch=win32
-fmuSdkDirectory=$HOME/src/fmusdk/fmu
+arch=linux64
+fmuSdkDirectory=$PTII/vendors/fmusdk/fmu
 
 for fmu in $fmus
 do
