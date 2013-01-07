@@ -31,7 +31,7 @@
 
 ME =		ptolemy/domains/openmodelica/lib
 
-DIRS =		core omc test
+DIRS =		compiler omc test
 
 # Root of Ptolemy II directory
 ROOT =		../../../..
@@ -49,7 +49,7 @@ PTPACKAGE =   lib
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
 PTCLASSALLJARS = \
-	core/core.jar \
+	compiler/compiler.jar \
 	omc/omc.jar
 
 JSRCS = \
@@ -63,7 +63,7 @@ EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 # Files or directories that are present, but that 'make checkjunk'
 # should not complain about
 # Don't include demo or DIRS here, or else 'make sources' will run 'make demo'
-MISC_FILES =  core omc test
+MISC_FILES =  compiler omc test
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
