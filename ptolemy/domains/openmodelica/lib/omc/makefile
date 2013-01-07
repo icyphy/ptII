@@ -29,7 +29,7 @@
 # 						COPYRIGHTENDKEY
 ##########################################################################
 
-ME =		ptolemy/actor/lib/openmodelica/omc
+ME =		ptolemy/domains/openmodelica/lib/omc
 
 DIRS =		corba
 
@@ -53,7 +53,6 @@ PTCLASSALLJARS = \
 
 JSRCS = \
 	OMCLogger.java \
-	OMCParser.java \
 	OMCProxy.java
 
 # Files or directories that are present, but that 'make checkjunk'
