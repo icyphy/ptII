@@ -50,7 +50,7 @@ import java.util.logging.Logger;
 
 /**
    This class saves the log result in the log file in the temporary folder.
-   
+
    @author Mana Mirzaei
    @version $Id$
    @since Ptolemy II 9.1
@@ -70,15 +70,36 @@ public class OMCLogger {
         String username = System.getenv("USER");
         String temp = System.getProperty("java.io.tmpdir");
 
-        if (username != null)
-            filePath = temp + "\\" + username + "\\" + "OpenModelica" + "\\";
-        else
-            filePath = temp + "\\" + "nobody" + "\\" + "OpenModelica" + "\\";
+        switch (OMCProxy.getOs()) {
+        case UNIX:
+            if (username == null)
+                filePath = temp + "/" + username + "/" + "OpenModelica" + "/";
+            else
+                filePath = temp + "\\" + "nobody" + "\\" + "OpenModelica"
+                        + "\\";
+            break;
+        case WINDOWS:
+            if (username != null)
+                filePath = temp + "\\" + username + "\\" + "OpenModelica"
+                        + "\\";
+            else
+                filePath = temp + "\\" + "nobody" + "\\" + "OpenModelica"
+                        + "\\";
+            break;
+        case MAC:
+            if (username == null)
+                filePath = temp + "/" + username + "/" + "OpenModelica" + "/";
+            else
+                filePath = temp + "\\" + "nobody" + "\\" + "OpenModelica"
+                        + "\\";
+            break;
+        }
 
         File f = new File(filePath);
 
-        //Creating user directory in the temporary folder.
+        //Check if the user directory exists
         if (!f.exists())
+            //Create user directory in the temporary folder.
             b = new File(filePath).mkdirs();
 
         // Create  the log file 
@@ -110,9 +131,9 @@ public class OMCLogger {
                     return buf.toString();
                 }
             });
-            
+
             omcLogger.addHandler(_fileHandler);
-            
+
         } catch (SecurityException e) {
             omcLogger.severe("Security error related to the file handler!");
         } catch (IOException e) {
@@ -125,7 +146,7 @@ public class OMCLogger {
 
     /** Logger name of OpenModelica Compiler(OMC).*/
     public String loggerName = "omcLogger";
-    
+
     /** Create the OpenModelica Compiler(OMC) logger. */
     public Logger omcLogger = Logger.getLogger("omcLogger");
 
