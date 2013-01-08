@@ -221,6 +221,8 @@ public class SysMLADirector extends ProcessDirector {
                 // Have made one pass through the actors. If there are non-empty
                 // queues, then we need to make another pass.
                 // FIXME: This is not efficient, but making it efficient can wait.
+                // FIXME: If one of these actors rejects the time step,
+                // then it may not be possible to backtrack all the actors.
                 for (Actor actor : actors) {
                     ActorData actorData = _actorData.get(actor);
                     if (actorData != null && actorData.inputQueue.size() > 0) {
@@ -353,6 +355,8 @@ public class SysMLADirector extends ProcessDirector {
                 fireContainerAt(nextFiringTime);
             }
         }
+        
+        _lastCommitTime = getModelTime();
     }
 
     /** Initialize the given actor.  This method is generally called
@@ -436,11 +440,20 @@ public class SysMLADirector extends ProcessDirector {
         Time earliestFireAtTime = _earliestNextFiringTime();
         if (earliestFireAtTime == Time.POSITIVE_INFINITY) {
             // Time does not advance.
-            if (_debugging) {
-                _debug("No pending firing request. Stopping execution.");
+            // Advance directly to the stop time, if it is finite.
+            earliestFireAtTime = getModelStopTime();
+            if (earliestFireAtTime == Time.POSITIVE_INFINITY) {
+                // If the stop time is also infinity, then stop execution.
+                // FIXME: If there are actors with unpredictable events,
+                // such as FMUs, then this might not be what we want to do.
+                // For now, we require a finite stop time so that the model
+                // will attempt a finite step size.
+                if (_debugging) {
+                    _debug("No pending events and stop time is not given. Stopping execution.");
+                }
+                stop();
+                return false;
             }
-            stop();
-            return false;
         }
         if (earliestFireAtTime.compareTo(getModelStopTime()) > 0) {
             // The next available time is past the stop time.
@@ -737,15 +750,34 @@ public class SysMLADirector extends ProcessDirector {
             // Input queue is empty.
             
             if (actorData.fireAtTimes.size() == 0) {
-                // Input queue is empty and no future firing
-                // has been requested. Nothing more to do.
-                if (_debugging) {
-                    _debug(actor.getFullName()
-                            + " at time "
-                            + getModelTime()
-                            + " waiting for input.");
+                // NOTE: Tried out a semantics where every actors fires at least
+                // once at every time step. Does Rhapsody do this?
+                // But this doesn't really work. This actor may produce
+                // an output at the current time, creating an event downstream
+                // to be processed. Run-to-completion semantics will never
+                // terminate, and we get stuck.
+                /*
+                if (!_iterateActorOnce(actor)) {
+                    // Postfire returned false.
+                    return Time.POSITIVE_INFINITY;
                 }
-                return Time.POSITIVE_INFINITY;
+                // If the input queue is still empty and there are still no
+                // pending fireAt() requests, then we are done.
+                if (actorData.inputQueue.size() == 0
+                        && actorData.fireAtTimes.size() == 0) {
+                */
+                    // Input queue is empty and no future firing
+                    // has been requested. Nothing more to do.
+                    if (_debugging) {
+                        _debug(actor.getFullName()
+                                + " at time "
+                                + getModelTime()
+                                + " waiting for input.");
+                    }
+                    return Time.POSITIVE_INFINITY;
+                /*
+                }
+                */
             }
             
             // If this actor has requested a future firing,
@@ -770,6 +802,7 @@ public class SysMLADirector extends ProcessDirector {
                 // Remove the time from the pending fireAt times.
                 actorData.fireAtTimes.poll();
                 if (!_iterateActorOnce(actor)) {
+                    // Postfire returned false.
                     return Time.POSITIVE_INFINITY;
                 }
             }
@@ -880,6 +913,9 @@ public class SysMLADirector extends ProcessDirector {
     
     /** Directory of data associated with each actor. */
     private Map<Actor,ActorData> _actorData = new ConcurrentHashMap<Actor,ActorData>();
+    
+    /** Last time at which either initialize() or postfire() was invoked. */
+    private Time _lastCommitTime;
     
     /** Earliest time of a fireAt request among all actors. */
     private Time _nextTime = Time.POSITIVE_INFINITY;

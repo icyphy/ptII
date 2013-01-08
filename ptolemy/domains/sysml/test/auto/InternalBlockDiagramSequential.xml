@@ -37,7 +37,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="In Lev's model, block C&#10;references events A1 and A2.&#10;In PtII, events are bound to&#10;ports, and a block cannot&#10;reference the ports of another&#10;actor. It references its own ports.&#10;I've emulated the events of Lev's&#10;models by sending string-valued&#10;tokens.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[280.0, -20.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[275.0, -60.0]">
         </property>
     </property>
     <property name="SysMLADirector" class="ptolemy.domains.sysml.kernel.SysMLADirector">
@@ -256,7 +256,7 @@
       <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.modal.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory"></property></entity></entity>
     </configure>
             </property>
-            <property name="powerV" class="ptolemy.data.expr.Parameter" value="100">
+            <property name="powerV" class="ptolemy.data.expr.Parameter" value="90">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -471,7 +471,7 @@
       <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.modal.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory"></property></entity></entity>
     </configure>
             </property>
-            <property name="powerV" class="ptolemy.data.expr.Parameter" value="90">
+            <property name="powerV" class="ptolemy.data.expr.Parameter" value="80">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -692,27 +692,55 @@
         <link port="_Controller.pC2" relation="pC2Relation"/>
         <link port="_Controller.log" relation="logRelation"/>
     </entity>
-    <entity name="Test" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;new powerV: 0&quot;, &quot;Entered stateA1.&quot;, &quot;Entered stateA2&quot;, &quot;powerV set to: 10&quot;, &quot;new powerV: 20&quot;, &quot;Entered stateA1.&quot;, &quot;Entered stateA2&quot;, &quot;powerV set to: 30&quot;, &quot;new powerV: 40&quot;, &quot;Entered stateA1.&quot;, &quot;Entered stateA2&quot;, &quot;powerV set to: 50&quot;, &quot;new powerV: 60&quot;, &quot;Entered stateA1.&quot;, &quot;Entered stateA2&quot;, &quot;powerV set to: 70&quot;, &quot;new powerV: 80&quot;, &quot;Entered stateA1.&quot;, &quot;Entered stateA2&quot;, &quot;powerV set to: 90&quot;}">
-        </property>
-        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{440.0, 155.0}">
-        </property>
-    </entity>
     <entity name="CurrentTime" class="ptolemy.actor.lib.CurrentTime">
         <doc>Output the current time.</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{440, 230}">
         </property>
     </entity>
-    <entity name="Test2" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{100.0, 200.0, 200.0, 200.0, 300.0, 400.0, 400.0, 400.0, 500.0, 600.0, 600.0, 600.0, 700.0, 800.0, 800.0, 800.0, 900.0, 1000.0, 1000.0, 1000.0}">
+    <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;new powerV: 0&quot;, &quot;Entered stateA1.&quot;, &quot;Entered stateA2&quot;, &quot;powerV set to: 10&quot;, &quot;new powerV: 20&quot;, &quot;Entered stateA1.&quot;, &quot;Entered stateA2&quot;, &quot;powerV set to: 30&quot;, &quot;new powerV: 40&quot;, &quot;Entered stateA1.&quot;, &quot;Entered stateA2&quot;, &quot;powerV set to: 50&quot;, &quot;new powerV: 60&quot;, &quot;Entered stateA1.&quot;, &quot;Entered stateA2&quot;, &quot;powerV set to: 70&quot;}">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[485.0, 155.0]">
+        </property>
+    </entity>
+    <entity name="Display" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1024, 226, 484, 208}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{470, 90}">
+        </property>
+    </entity>
+    <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1133, 683, 500, 344}, maximized=false}">
+        </property>
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{390, 290}">
+        </property>
+        <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>TimedPlotter</title>
+<xLabel></xLabel>
+<yLabel></yLabel>
+<xRange min="100.0" max="800.0"/>
+<yRange min="0.0" max="70.0"/>
+<default marks="dots" stems="yes"/>
+</plot>?>
+        </configure>
+    </entity>
+    <entity name="NonStrictTest2" class="ptolemy.actor.lib.NonStrictTest">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{100.0, 200.0, 200.0, 200.0, 300.0, 400.0, 400.0, 400.0, 500.0, 600.0, 600.0, 600.0, 700.0, 800.0, 800.0, 800.0}">
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-7">
         </property>
-        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{545.0, 230.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[535.0, 230.0]">
         </property>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
@@ -721,29 +749,33 @@
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-        <property name="flow" class="ptolemy.data.expr.Parameter" value="true">
-        </property>
-    </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
         <vertex name="vertex1" value="{385.0, 155.0}">
         </vertex>
     </relation>
-    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="[300.0, 290.0]">
+        </vertex>
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
     </relation>
     <link port="ModalModel A.pA2" relation="relation"/>
     <link port="ModalModel A.pA1" relation="relation2"/>
     <link port="ModalModel B.pB" relation="relation3"/>
-    <link port="ModalModel B.powerVflow" relation="relation4"/>
+    <link port="ModalModel B.powerVflow" relation="relation7"/>
     <link port="ModalModel C.pC1" relation="relation"/>
     <link port="ModalModel C.pC1" relation="relation2"/>
-    <link port="ModalModel C.powerVflow" relation="relation4"/>
+    <link port="ModalModel C.powerVflow" relation="relation7"/>
     <link port="ModalModel C.pC2" relation="relation3"/>
     <link port="ModalModel C.log" relation="relation6"/>
-    <link port="Test.input" relation="relation6"/>
-    <link port="CurrentTime.output" relation="relation5"/>
+    <link port="CurrentTime.output" relation="relation4"/>
     <link port="CurrentTime.trigger" relation="relation6"/>
-    <link port="Test2.input" relation="relation5"/>
+    <link port="NonStrictTest.input" relation="relation6"/>
+    <link port="Display.input" relation="relation6"/>
+    <link port="TimedPlotter.input" relation="relation7"/>
+    <link port="NonStrictTest2.input" relation="relation4"/>
 </entity>
