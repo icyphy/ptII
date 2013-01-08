@@ -31,7 +31,7 @@
 
 ME =		ptolemy/actor/lib/qm/demo
 
-DIRS =		Bus CompositeQM Switch TTE
+DIRS =		AFDX Bus CompositeQM Switch TTE
 
 # Root of the Ptolemy II directory
 ROOT =		../../../../..
@@ -48,6 +48,7 @@ PTCLASSJAR =
 
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
+	qm/AFDX.jar \
 	qm/Bus.jar \
 	qm/TTE.jar \
 	qm/Switch.jar \

@@ -49,6 +49,8 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 
 OTHER_FILES_TO_BE_JARED = \
 	qm.xml \
+	AFDXESsIcon.xml \
+	AFDXSwitchIcon.xml \
 	BasicSwitchIcon.xml \
 	BusIcon.xml \
 	CanBusIcon.xml \
@@ -58,6 +60,10 @@ OTHER_FILES_TO_BE_JARED = \
 	TTESwitchIcon.xml
 
 JSRCS = \
+    AFDXESs.java \
+    AFDXSwitch.java \
+    AFDXVlCfg.java \
+    AFDXVlink.java \
 	BasicSwitch.java \
 	Bus.java \
 	CanBus.java \

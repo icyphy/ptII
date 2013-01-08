@@ -1,0 +1,62 @@
+making tests in ptolemy/actor/lib/qm/test
+CLASSPATH="../../../../..:/Users/patriciad/Documents/workspace/ptII/lib/jython.jar:/Users/patriciad/Documents/workspace/ptII/lib/ptjacl.jar" "/System/Library/Frameworks/JavaVM.framework/Versions/A/Commands/java" -Xmx1000M  "-Dptolemy.ptII.dir="  tcl.lang.Shell ../../../../../util/testsuite/auto.tcl
+------------------ testing $PTII/ptolemy/actor/lib/qm/test/auto/CanBus.xml
+auto.tcl: Setting watchdog for 200 seconds at Wed Dec 19 11:41:58 PST 2012
+47 ms. Memory: 83008K Free: 74463K (90%)
+util.testsuite.WatchDog.cancel(): canceling Wed Dec 19 11:41:59 PST 2012
+auto.tcl: Setting watchdog for 200 seconds at Wed Dec 19 11:41:59 PST 2012
+32 ms. Memory: 83008K Free: 72770K (88%)
+util.testsuite.WatchDog.cancel(): canceling Wed Dec 19 11:41:59 PST 2012
+------------------ testing $PTII/ptolemy/actor/lib/qm/test/auto/CanBusVariousCollisions.xml
+auto.tcl: Setting watchdog for 200 seconds at Wed Dec 19 11:41:59 PST 2012
+37 ms. Memory: 83008K Free: 72113K (87%)
+util.testsuite.WatchDog.cancel(): canceling Wed Dec 19 11:42:00 PST 2012
+auto.tcl: Setting watchdog for 200 seconds at Wed Dec 19 11:42:00 PST 2012
+19 ms. Memory: 83008K Free: 70504K (85%)
+util.testsuite.WatchDog.cancel(): canceling Wed Dec 19 11:42:00 PST 2012
+------------------ testing $PTII/ptolemy/actor/lib/qm/test/auto/CompositeQM.xml
+auto.tcl: Setting watchdog for 200 seconds at Wed Dec 19 11:42:00 PST 2012
+306 ms. Memory: 83008K Free: 80180K (97%)
+util.testsuite.WatchDog.cancel(): canceling Wed Dec 19 11:42:00 PST 2012
+auto.tcl: Setting watchdog for 200 seconds at Wed Dec 19 11:42:00 PST 2012
+70 ms. Memory: 83008K Free: 77153K (93%)
+util.testsuite.WatchDog.cancel(): canceling Wed Dec 19 11:42:00 PST 2012
+------------------ testing $PTII/ptolemy/actor/lib/qm/test/auto/QuantityManager1Bus.xml
+auto.tcl: Setting watchdog for 200 seconds at Wed Dec 19 11:42:01 PST 2012
+52 ms. Memory: 83008K Free: 72192K (87%)
+util.testsuite.WatchDog.cancel(): canceling Wed Dec 19 11:42:01 PST 2012
+auto.tcl: Setting watchdog for 200 seconds at Wed Dec 19 11:42:01 PST 2012
+44 ms. Memory: 83008K Free: 70630K (85%)
+util.testsuite.WatchDog.cancel(): canceling Wed Dec 19 11:42:01 PST 2012
+------------------ testing $PTII/ptolemy/actor/lib/qm/test/auto/QuantityManager1BusServiceTimeBiggerThanTokenSendPeriod.xml
+auto.tcl: Setting watchdog for 200 seconds at Wed Dec 19 11:42:01 PST 2012
+59 ms. Memory: 83008K Free: 72705K (88%)
+util.testsuite.WatchDog.cancel(): canceling Wed Dec 19 11:42:01 PST 2012
+auto.tcl: Setting watchdog for 200 seconds at Wed Dec 19 11:42:01 PST 2012
+31 ms. Memory: 83008K Free: 70856K (85%)
+util.testsuite.WatchDog.cancel(): canceling Wed Dec 19 11:42:01 PST 2012
+------------------ testing $PTII/ptolemy/actor/lib/qm/test/auto/QuantityManager2Busses.xml
+auto.tcl: Setting watchdog for 200 seconds at Wed Dec 19 11:42:01 PST 2012
+61 ms. Memory: 83008K Free: 71762K (86%)
+util.testsuite.WatchDog.cancel(): canceling Wed Dec 19 11:42:02 PST 2012
+auto.tcl: Setting watchdog for 200 seconds at Wed Dec 19 11:42:02 PST 2012
+27 ms. Memory: 83008K Free: 69962K (84%)
+util.testsuite.WatchDog.cancel(): canceling Wed Dec 19 11:42:02 PST 2012
+------------------ testing $PTII/ptolemy/actor/lib/qm/test/auto/QuantityManager2BussesOrderReversed.xml
+auto.tcl: Setting watchdog for 200 seconds at Wed Dec 19 11:42:02 PST 2012
+49 ms. Memory: 83008K Free: 71693K (86%)
+util.testsuite.WatchDog.cancel(): canceling Wed Dec 19 11:42:02 PST 2012
+auto.tcl: Setting watchdog for 200 seconds at Wed Dec 19 11:42:02 PST 2012
+30 ms. Memory: 83008K Free: 69965K (84%)
+util.testsuite.WatchDog.cancel(): canceling Wed Dec 19 11:42:02 PST 2012
+------------------ testing $PTII/ptolemy/actor/lib/qm/test/auto/QuantityManager3Busses.xml
+auto.tcl: Setting watchdog for 200 seconds at Wed Dec 19 11:42:02 PST 2012
+115 ms. Memory: 83008K Free: 71367K (86%)
+util.testsuite.WatchDog.cancel(): canceling Wed Dec 19 11:42:02 PST 2012
+auto.tcl: Setting watchdog for 200 seconds at Wed Dec 19 11:42:02 PST 2012
+53 ms. Memory: 83008K Free: 69645K (84%)
+util.testsuite.WatchDog.cancel(): canceling Wed Dec 19 11:42:02 PST 2012
+12/19/12 11:42:02
+Failed: 0  Total Tests: 16  ((Passed: 16, Newly Passed: 0)  Known Failed: 0) /Users/patriciad/Documents/workspace/ptII/ptolemy/actor/lib/qm/test
+CLASSPATH="../../../../..:/Users/patriciad/Documents/workspace/ptII/lib/jython.jar:/Users/patriciad/Documents/workspace/ptII/lib/ptjacl.jar" "/System/Library/Frameworks/JavaVM.framework/Versions/A/Commands/java" -Xmx1000M  "-Dptolemy.ptII.dir="  tcl.lang.Shell alljtests.tcl
+dummy.tcl

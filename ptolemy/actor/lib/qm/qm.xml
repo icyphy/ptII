@@ -106,6 +106,21 @@
    </property>
  </entity>
 
+<entity name="AFDX_ESs" class="ptolemy.actor.lib.qm.AFDXESs">
+   <doc>A quantity manager that manages all AFDX End-Systems.</doc>
+</entity>
+  
+<entity name="AFDX_SW" class="ptolemy.actor.lib.qm.AFDXSwitch"> 
+</entity>
+ 
+<entity name="AFDX_VL" class="ptolemy.actor.lib.qm.AFDXVlCfg">
+   <doc>An actor (used with the AFDX quantity manager) that configure an AFDX end-system for a given module.</doc>
+   <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+     <property name="attributeName" value="AFDXcfg"/>
+     <property name="displayWidth" value="60"/>
+   </property>
+ </entity>
+
       </group>
     ?>
   </configure>
