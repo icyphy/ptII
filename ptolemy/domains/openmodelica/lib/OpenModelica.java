@@ -251,7 +251,9 @@ public class OpenModelica extends TypedAtomicActor {
         }
 
         try {
-
+            if (_debugging) {
+                _debug("OpenModelica Actor Called fire().");
+            }
             //  Load the model from the file in the first step. 
             //  Build the model. 
             //  Run the simulation executable result of buildModel() method in order to generate the simulation result.
@@ -343,7 +345,7 @@ public class OpenModelica extends TypedAtomicActor {
         }
 
         /* Set the default value of buildModel parameters */
-        
+
         if (simulationStartTime.getExpression().compareTo("") == 0) {
             simulationStartTime.setExpression("0.0");
         }
@@ -461,11 +463,20 @@ public class OpenModelica extends TypedAtomicActor {
         if (fileNamePrefix.getExpression().compareTo("") == 0) {
             OpenModelicaDirector.getOMCLogger().getInfo(
                     modelName.getExpression() + " is executed successfully.");
+            if (_debugging) {
+                _debug("Simulation of " + modelName + " is done.\n"
+                        + "The result file is located in " + OMCProxy.workDir);
+            }
         } else {
             OpenModelicaDirector.getOMCLogger().getInfo(
                     fileNamePrefix.getExpression()
                             + " is executed successfully.");
+            if (_debugging) {
+                _debug("Simulation of " + fileNamePrefix + " is done.\n"
+                        + "The result file is located in " + OMCProxy.workDir);
+            }
         }
+
     }
 
     ///////////////////////////////////////////////////////////////////
