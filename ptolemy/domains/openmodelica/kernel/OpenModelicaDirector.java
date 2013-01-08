@@ -95,6 +95,9 @@ public class OpenModelicaDirector extends ContinuousDirector {
             _omcLogger = new OMCLogger();
             _omcProxy = new OMCProxy();
             _omcProxy.init();
+            if (_debugging) {
+                _debug("OpenModelica server is intialized.");
+            }
         } catch (ConnectException ex) {
             throw new IllegalActionException(this, ex,
                     "Unable to start the OpenModelica server!");
@@ -111,6 +114,9 @@ public class OpenModelicaDirector extends ContinuousDirector {
         super.wrapup();
         try {
             _omcProxy.quit();
+            if (_debugging) {
+                _debug("OpenModelica server quits.");
+            }
             _omcProxy = null;
             _omcLogger = null;
         } catch (ConnectException ex) {
@@ -124,7 +130,7 @@ public class OpenModelicaDirector extends ContinuousDirector {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variable                  ////
-    
+
     /** The OpenModelica Compiler(OMC) log file in the temporary
      * folder.
      */
@@ -135,4 +141,3 @@ public class OpenModelicaDirector extends ContinuousDirector {
      */
     private static OMCProxy _omcProxy;
 }
-
