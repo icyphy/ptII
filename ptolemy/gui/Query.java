@@ -2017,10 +2017,10 @@ public class Query extends JPanel {
             //_defaultColor = defaultColor;
             _entryBox = new JTextField(defaultColor, _owner.getTextWidth());
 
-            JButton button = new JButton("Choose");
-            button.addActionListener(this);
+            _button = new JButton("Choose");
+            _button.addActionListener(this);
             add(_entryBox);
-            add(button);
+            add(_button);
 
             // Add the listener last so that there is no notification
             // of the first value.
@@ -2082,6 +2082,17 @@ public class Query extends JPanel {
             _entryBox.setText(name);
         }
 
+        /** Specify whether the entry is editable or not.
+         *  @param enabled False to disable changing the value.
+         */
+        @Override
+        public void setEnabled(boolean enabled) {
+            _entryBox.setEditable(enabled);
+            _button.setEnabled(enabled);
+        }
+
+        private JButton _button;
+        
         private JTextField _entryBox;
 
         private String _name;
@@ -2149,10 +2160,10 @@ public class Query extends JPanel {
             _entryBox.setBackground(background);
             _entryBox.setForeground(foreground);
 
-            JButton button = new JButton("Browse ");
-            button.addActionListener(this);
+            _button = new JButton("Browse ");
+            _button.addActionListener(this);
             add(_entryBox);
-            add(button);
+            add(_button);
 
             // Add the listener last so that there is no notification
             // of the first value.
@@ -2193,6 +2204,15 @@ public class Query extends JPanel {
          */
         public String getSelectedFileName() {
             return _entryBox.getText();
+        }
+        
+        /** Specify whether the entry is editable or not.
+         *  @param enabled False to disable changing the value.
+         */
+        @Override
+        public void setEnabled(boolean enabled) {
+            _entryBox.setEditable(enabled);
+            _button.setEnabled(enabled);
         }
 
         /** Set selected file name.
@@ -2455,6 +2475,8 @@ public class Query extends JPanel {
         private Query _owner;
 
         private URI _base;
+        
+        private JButton _button;
 
         private JTextField _entryBox;
 
