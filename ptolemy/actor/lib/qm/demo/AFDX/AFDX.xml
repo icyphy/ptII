@@ -1,0 +1,616 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="AFDXsc3-gl-multicastJC2" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
+    </property>
+    <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="0.21">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{110.0, 5.0}">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={71, 29, 1008, 634}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[774, 524]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0362903225806452">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{418.73975559338515, 214.99999999999997}">
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Topology&#10;&#10;N1 \&#10;        SW1 - SW2 - SW3 - N2&#10;N4 /                           \ N3&#10;                     ">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[350.0, 0.0]">
+        </property>
+    </property>
+    <property name="T" class="ptolemy.data.expr.Parameter" value="0.15">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 45.0]">
+        </property>
+    </property>
+    <property name="T2" class="ptolemy.data.expr.Parameter" value="0.2">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 65.0]">
+        </property>
+    </property>
+    <property name="qm" class="ptolemy.data.expr.Parameter" value="AFDX_ESs">
+    </property>
+    <property name="qm2" class="ptolemy.data.expr.Parameter" value="AFDX_SW1">
+    </property>
+    <property name="tB" class="ptolemy.data.expr.Parameter" value="0.030">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 90.0]">
+        </property>
+    </property>
+    <property name="bVL2" class="ptolemy.data.expr.Parameter" value="32">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[400.0, 85.0]">
+        </property>
+    </property>
+    <entity name="N1" class="ptolemy.actor.TypedCompositeActor">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[96.5, 170.5]">
+        </property>
+        <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 325.0]">
+            </property>
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={502, 270, 934, 634}, maximized=false}">
+        </property>
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
+        </property>
+        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+        </property>
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{346.15625, 383.53125}">
+        </property>
+        <port name="port" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[255.0, 165.0]">
+            </property>
+        </port>
+        <port name="port2" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[245.0, 255.0]">
+            </property>
+        </port>
+        <entity name="DiscreteClock" class="ptolemy.actor.lib.DiscreteClock">
+            <property name="period" class="ptolemy.actor.parameters.PortParameter" value="T">
+            </property>
+            <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0.0,tB}">
+            </property>
+            <property name="values" class="ptolemy.data.expr.Parameter" value="{1,1.5}">
+            </property>
+            <doc>Create periodic timed events.</doc>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 165.0]">
+            </property>
+        </entity>
+        <entity name="DiscreteClock2" class="ptolemy.actor.lib.DiscreteClock">
+            <property name="period" class="ptolemy.actor.parameters.PortParameter" value="T2">
+            </property>
+            <property name="values" class="ptolemy.data.expr.Parameter" value="{2}">
+            </property>
+            <doc>Create periodic timed events.</doc>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 255.0]">
+            </property>
+        </entity>
+        <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <link port="port" relation="relation"/>
+        <link port="port2" relation="relation2"/>
+        <link port="DiscreteClock.output" relation="relation"/>
+        <link port="DiscreteClock2.output" relation="relation2"/>
+    </entity>
+    <entity name="N2" class="ptolemy.actor.TypedCompositeActor">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[355.0, 130.0]">
+        </property>
+        <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 165.0]">
+            </property>
+        </property>
+        <port name="port2" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[205.0, 250.0]">
+            </property>
+        </port>
+        <port name="port" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 250.0]">
+            </property>
+            <property name="qm" class="ptolemy.data.expr.Parameter" value="AFDX_ESs">
+            </property>
+            <property name="_showInfo" class="ptolemy.kernel.util.StringAttribute" value="QM: AFDX_ESs, AFDX_SW1, AFDX_SW2, AFDX_SW3">
+            </property>
+            <property name="qm2" class="ptolemy.data.expr.Parameter" value="AFDX_SW1">
+            </property>
+            <property name="qm3" class="ptolemy.data.expr.Parameter" value="AFDX_SW2">
+            </property>
+            <property name="qm4" class="ptolemy.data.expr.Parameter" value="AFDX_SW3">
+            </property>
+        </port>
+        <entity name="Scale" class="ptolemy.actor.lib.Scale">
+            <property name="factor" class="ptolemy.data.expr.Parameter" value="1.2">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[120.0, 250.0]">
+            </property>
+        </entity>
+        <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <link port="port2" relation="relation2"/>
+        <link port="port" relation="relation"/>
+        <link port="Scale.input" relation="relation"/>
+        <link port="Scale.output" relation="relation2"/>
+    </entity>
+    <entity name="N4" class="ptolemy.actor.TypedCompositeActor">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[285.0, 305.0]">
+        </property>
+        <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 185.0]">
+            </property>
+        </property>
+        <port name="port" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{10.0, 250.0}">
+            </property>
+            <property name="qm" class="ptolemy.data.expr.Parameter" value="AFDX_ESs">
+            </property>
+            <property name="_showInfo" class="ptolemy.kernel.util.StringAttribute" value="QM: AFDX_ESs, AFDX_SW1">
+            </property>
+            <property name="qm2" class="ptolemy.data.expr.Parameter" value="AFDX_SW1">
+            </property>
+        </port>
+        <port name="port2" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{10.0, 290.0}">
+            </property>
+            <property name="qm" class="ptolemy.data.expr.Parameter" value="AFDX_ESs">
+            </property>
+            <property name="_showInfo" class="ptolemy.kernel.util.StringAttribute" value="QM: AFDX_ESs, AFDX_SW3, AFDX_SW2, AFDX_SW1">
+            </property>
+            <property name="qm2" class="ptolemy.data.expr.Parameter" value="AFDX_SW3">
+            </property>
+            <property name="qm3" class="ptolemy.data.expr.Parameter" value="AFDX_SW2">
+            </property>
+            <property name="qm4" class="ptolemy.data.expr.Parameter" value="AFDX_SW1">
+            </property>
+        </port>
+        <port name="port3" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[230.0, 260.0]">
+            </property>
+        </port>
+        <port name="port4" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[230.0, 300.0]">
+            </property>
+        </port>
+        <entity name="Scale" class="ptolemy.actor.lib.Scale">
+            <property name="factor" class="ptolemy.data.expr.Parameter" value="2.5">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{105.0, 245.0}">
+            </property>
+        </entity>
+        <entity name="Scale2" class="ptolemy.actor.lib.Scale">
+            <property name="factor" class="ptolemy.data.expr.Parameter" value="3">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[110.0, 305.0]">
+            </property>
+        </entity>
+        <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <link port="port" relation="relation"/>
+        <link port="port2" relation="relation4"/>
+        <link port="port3" relation="relation3"/>
+        <link port="port4" relation="relation2"/>
+        <link port="Scale.input" relation="relation"/>
+        <link port="Scale.output" relation="relation3"/>
+        <link port="Scale2.input" relation="relation4"/>
+        <link port="Scale2.output" relation="relation2"/>
+    </entity>
+    <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
+        <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="N2,N4.1,N4.2,N3">
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1263, 649, 341, 153}, maximized=false}">
+        </property>
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[341, 109]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[690.0, 230.0]">
+        </property>
+        <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>TimedPlotter</title>
+<xLabel></xLabel>
+<yLabel></yLabel>
+<xRange min="1.46E-4" max="0.20014600000000002"/>
+<yRange min="1.2" max="5.3999999999999995"/>
+<default connected="no" marks="various"/>
+</plot>?>
+        </configure>
+    </entity>
+    <entity name="TimedPlotter2" class="ptolemy.actor.lib.gui.TimedPlotter">
+        <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="v12,v11">
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1052, 30, 357, 153}, maximized=false}">
+        </property>
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[357, 109]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[255.0, 55.0]">
+        </property>
+        <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>TimedPlotter</title>
+<xLabel></xLabel>
+<yLabel></yLabel>
+<xRange min="0.0" max="0.2"/>
+<yRange min="1.0" max="2.0"/>
+<default connected="no" marks="various"/>
+</plot>?>
+        </configure>
+    </entity>
+    <entity name="QuantityManagerMonitor" class="ptolemy.actor.lib.qm.QuantityManagerMonitor">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[230.0, -10.0]">
+        </property>
+    </entity>
+    <entity name="AFDX_ESs" class="ptolemy.actor.lib.qm.AFDXESs">
+        <doc>A quantity manager that simulate an AFDX network.</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[600.0, 10.0]">
+        </property>
+    </entity>
+    <entity name="AFDX_SW1" class="ptolemy.actor.lib.qm.AFDXSwitch">
+        <property name="numberOfPorts" class="ptolemy.data.expr.Parameter" value="3">
+            <display name="Number of ports"/>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[530.0, 80.0]">
+        </property>
+        <property name="0" class="ptolemy.data.expr.Parameter" value="AFDX_ESs">
+        </property>
+        <property name="1" class="ptolemy.data.expr.Parameter" value="N4">
+        </property>
+        <property name="2" class="ptolemy.data.expr.Parameter" value="AFDX_SW2">
+        </property>
+    </entity>
+    <entity name="AFDX_SW2" class="ptolemy.actor.lib.qm.AFDXSwitch">
+        <property name="numberOfPorts" class="ptolemy.data.expr.Parameter" value="2">
+            <display name="Number of ports"/>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[620.0, 80.0]">
+        </property>
+        <property name="0" class="ptolemy.data.expr.Parameter" value="AFDX_SW1">
+        </property>
+        <property name="1" class="ptolemy.data.expr.Parameter" value="AFDX_SW3">
+        </property>
+    </entity>
+    <entity name="AFDX_SW3" class="ptolemy.actor.lib.qm.AFDXSwitch">
+        <property name="numberOfPorts" class="ptolemy.data.expr.Parameter" value="4">
+            <display name="Number of ports"/>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[720.0, 80.0]">
+        </property>
+        <property name="0" class="ptolemy.data.expr.Parameter" value="AFDX_ESs">
+        </property>
+        <property name="1" class="ptolemy.data.expr.Parameter" value="AFDX_SW2">
+        </property>
+        <property name="2" class="ptolemy.data.expr.Parameter" value="N2">
+        </property>
+        <property name="3" class="ptolemy.data.expr.Parameter" value="N3">
+        </property>
+    </entity>
+    <entity name="AFDX_VL" class="ptolemy.actor.lib.qm.AFDXVlCfg">
+        <display name="VL11"/>
+        <property name="vlink" class="ptolemy.data.expr.Parameter" value="&quot;VL11&quot;">
+        </property>
+        <property name="bag" class="ptolemy.data.expr.Parameter" value="32">
+            <display name="bag (ms)"/>
+        </property>
+        <property name="trameSize" class="ptolemy.data.expr.Parameter" value="600">
+            <display name="trameSize (bytes)"/>
+        </property>
+        <property name="networkPath" class="ptolemy.data.expr.Parameter" value="&quot;test&quot;">
+        </property>
+        <property name="schedulerMux" class="ptolemy.data.expr.Parameter" value="&quot;M1&quot;">
+        </property>
+        <doc>An actor (used with the AFDX quantity manager) that configure an AFDX end-system for a given module.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="AFDXcfg">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[165.0, 155.0]">
+        </property>
+    </entity>
+    <entity name="AFDX_VL2" class="ptolemy.actor.lib.qm.AFDXVlCfg">
+        <display name="VL12"/>
+        <property name="vlink" class="ptolemy.data.expr.Parameter" value="&quot;VL12&quot;">
+        </property>
+        <property name="bag" class="ptolemy.data.expr.Parameter" value="16">
+            <display name="bag (ms)"/>
+        </property>
+        <property name="trameSize" class="ptolemy.data.expr.Parameter" value="300">
+            <display name="trameSize (bytes)"/>
+        </property>
+        <property name="networkPath" class="ptolemy.data.expr.Parameter" value="&quot;test&quot;">
+        </property>
+        <property name="schedulerMux" class="ptolemy.data.expr.Parameter" value="&quot;M1&quot;">
+        </property>
+        <doc>An actor (used with the AFDX quantity manager) that configure an AFDX end-system for a given module.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="AFDXcfg">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[165.0, 185.0]">
+        </property>
+    </entity>
+    <entity name="AFDX_VL3" class="ptolemy.actor.lib.qm.AFDXVlCfg">
+        <display name="VL2"/>
+        <property name="vlink" class="ptolemy.data.expr.Parameter" value="&quot;VL2&quot;">
+        </property>
+        <property name="bag" class="ptolemy.data.expr.Parameter" value="bVL2">
+            <display name="bag (ms)"/>
+        </property>
+        <property name="trameSize" class="ptolemy.data.expr.Parameter" value="1000">
+            <display name="trameSize (bytes)"/>
+        </property>
+        <property name="networkPath" class="ptolemy.data.expr.Parameter" value="&quot;test&quot;">
+        </property>
+        <property name="schedulerMux" class="ptolemy.data.expr.Parameter" value="&quot;M2&quot;">
+        </property>
+        <doc>An actor (used with the AFDX quantity manager) that configure an AFDX end-system for a given module.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="AFDXcfg">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[420.0, 130.0]">
+        </property>
+    </entity>
+    <entity name="D2" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={344, 691, 288, 202}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[484, 164]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[685.0, 310.0]">
+        </property>
+    </entity>
+    <entity name="D42" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={699, 690, 357, 198}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[484, 164]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[500.0, 440.0]">
+        </property>
+    </entity>
+    <entity name="D41" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={55, 692, 283, 201}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[484, 164]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[605.0, 385.0]">
+        </property>
+    </entity>
+    <entity name="CurrentTime" class="ptolemy.actor.lib.CurrentTime">
+        <doc>Output the current time.</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[610.0, 310.0]">
+        </property>
+    </entity>
+    <entity name="CurrentTime2" class="ptolemy.actor.lib.CurrentTime">
+        <doc>Output the current time.</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[520.0, 385.0]">
+        </property>
+    </entity>
+    <entity name="CurrentTime3" class="ptolemy.actor.lib.CurrentTime">
+        <doc>Output the current time.</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[425.0, 440.0]">
+        </property>
+    </entity>
+    <entity name="N3" class="ptolemy.actor.TypedCompositeActor">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[360.0, 205.0]">
+        </property>
+        <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 165.0]">
+            </property>
+        </property>
+        <port name="port2" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[205.0, 250.0]">
+            </property>
+        </port>
+        <port name="port" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 250.0]">
+            </property>
+            <property name="qm" class="ptolemy.data.expr.Parameter" value="AFDX_ESs">
+            </property>
+            <property name="_showInfo" class="ptolemy.kernel.util.StringAttribute" value="QM: AFDX_ESs, AFDX_SW1, AFDX_SW2, AFDX_SW3">
+            </property>
+            <property name="qm2" class="ptolemy.data.expr.Parameter" value="AFDX_SW1">
+            </property>
+            <property name="qm3" class="ptolemy.data.expr.Parameter" value="AFDX_SW2">
+            </property>
+            <property name="qm4" class="ptolemy.data.expr.Parameter" value="AFDX_SW3">
+            </property>
+        </port>
+        <entity name="Scale" class="ptolemy.actor.lib.Scale">
+            <property name="factor" class="ptolemy.data.expr.Parameter" value="2.4">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[120.0, 250.0]">
+            </property>
+        </entity>
+        <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <link port="port2" relation="relation2"/>
+        <link port="port" relation="relation"/>
+        <link port="Scale.input" relation="relation"/>
+        <link port="Scale.output" relation="relation2"/>
+    </entity>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="[220.0, 160.0]">
+        </vertex>
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="[201.5, 175.5]">
+        </vertex>
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="[455.0, 130.0]">
+        </vertex>
+    </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="[455.0, 240.0]">
+        </vertex>
+    </relation>
+    <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation10" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation11" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="[455.0, 295.0]">
+        </vertex>
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="[355.0, 315.0]">
+        </vertex>
+    </relation>
+    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation12" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation14" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="N1.port" relation="relation9"/>
+    <link port="N1.port2" relation="relation10"/>
+    <link port="N2.port2" relation="relation11"/>
+    <link port="N2.port" relation="relation2"/>
+    <link port="N4.port" relation="relation3"/>
+    <link port="N4.port2" relation="relation"/>
+    <link port="N4.port3" relation="relation5"/>
+    <link port="N4.port4" relation="relation6"/>
+    <link port="TimedPlotter.input" relation="relation4"/>
+    <link port="TimedPlotter.input" relation="relation5"/>
+    <link port="TimedPlotter.input" relation="relation6"/>
+    <link port="TimedPlotter.input" relation="relation8"/>
+    <link port="TimedPlotter2.input" relation="relation3"/>
+    <link port="TimedPlotter2.input" relation="relation2"/>
+    <link port="AFDX_VL.input" relation="relation9"/>
+    <link port="AFDX_VL.output" relation="relation2"/>
+    <link port="AFDX_VL2.input" relation="relation10"/>
+    <link port="AFDX_VL2.output" relation="relation3"/>
+    <link port="AFDX_VL3.input" relation="relation11"/>
+    <link port="AFDX_VL3.output" relation="relation4"/>
+    <link port="D2.input" relation="relation7"/>
+    <link port="D42.input" relation="relation14"/>
+    <link port="D41.input" relation="relation12"/>
+    <link port="CurrentTime.output" relation="relation7"/>
+    <link port="CurrentTime.trigger" relation="relation"/>
+    <link port="CurrentTime2.output" relation="relation12"/>
+    <link port="CurrentTime2.trigger" relation="relation5"/>
+    <link port="CurrentTime3.output" relation="relation14"/>
+    <link port="CurrentTime3.trigger" relation="relation6"/>
+    <link port="N3.port2" relation="relation8"/>
+    <link port="N3.port" relation="relation2"/>
+    <link relation1="relation4" relation2="relation"/>
+</entity>
