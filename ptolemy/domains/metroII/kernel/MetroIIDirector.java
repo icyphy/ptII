@@ -1,6 +1,6 @@
 /* Director for Modified MetroII semantics.
 
- Copyright (c) 1998-2012 The Regents of the University of California.
+ Copyright (c) 2012 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -54,33 +54,55 @@ import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.Workspace;
 
 ///////////////////////////////////////////////////////////////////
-////MetroIIDirector
+//// MetroIIDirector
 
 /** 
- * A MetroII Director governs the execution of a CompositeActor with 
- * modified MetroII semantics. The semantic has the two phases: 
- * 1. model execution
- * 2. mapping constraint resolution
- * In model execution phase, MetroIIDirector tries to call prefire(), 
+ * <p> A MetroII Director governs the execution of a CompositeActor with 
+ * modified MetroII semantics. The semantic has the two phases: </p> 
+ * <ol>
+ * <li> model execution </li>
+ * <li> mapping constraint resolution </li>
+ * </ol>
+ * <p> In model execution phase, MetroIIDirector tries to call prefire(), 
  * fire(), and postfire() of each actor in the model. If the actor 
  * is a CompositeActor that has a MetroII compatible director, the 
  * getfire() is called instead of fire(). In addition to do everything
  * fire() does, getfire() proposes events in firing. And when proposing
- * events, the CompositeActor is blocked. 
- * In mapping constraint resolution phase, the MetroIIDirector collects
+ * events, the CompositeActor is blocked. </p>
+ *  
+ * <p> In mapping constraint resolution phase, the MetroIIDirector collects
  * all the events and reset the statuses of events based on the 
  * mapping constraints. In the next iteration, CompositeActor executes 
- * based on the updated statuses of events.  
+ * based on the updated statuses of events. </p>  
  *  
- *  Known issues: 
- *  1. the 'stop execution' may not work. 
+ * <p> Known issues:
+ * <ol> 
+ * <li> the 'stop execution' may not work properly. </li>
+ * </ol> 
+ * </p>
  *  
  * @author Liangpeng Guo
+ * @version $ld$
+ * @since Ptolemy II 9.1
+ * @Pt.ProposeRating Red (glp)
+ * @Pt.AcceptedRating Red (glp)
  *
  */
 
 public class MetroIIDirector extends Director {
-
+    /** Construct a director in the given container with the given name.
+     *  The container argument must not be null, or a
+     *  NullPointerException will be thrown.
+     *  If the name argument is null, then the name is set to the
+     *  empty string. Increment the version number of the workspace.
+     *
+     *  @param container Container of the director.
+     *  @param name Name of this director.
+     *  @exception IllegalActionException If the director is not compatible
+     *   with the specified container.  May be thrown in a derived class.
+     *  @exception NameDuplicationException If the container is not a
+     *   CompositeActor and the name collides with an entity in the container.
+     */
     public MetroIIDirector(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
@@ -90,21 +112,35 @@ public class MetroIIDirector extends Director {
     ///////////////////////////////////////////////////////////////////
     ////                         parameters                        ////
 
-    /** The mapping file name.
-     *  This is a string that contains the absolute path of the mapping file.
+    /** A mapping constraint is a pair of events that are rendezvous.  
+     *  Mapping file is a text file that specifies such constraints. 
+     *  In mapping file, each line is a mapping constraint, which 
+     *  contains two event names separated by a space.
+     *  
+     *  _mappingFileName is a string that contains the absolute path of the mapping file.
+     *  
+     *  The default value of _mappingFileName is null, which means no 
+     *  mapping constraint is specified. 
      */
     private Parameter _mappingFileName;
 
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == _mappingFileName) {
-            StringToken str_token = (StringToken) _mappingFileName.getToken();
+            StringToken mappingFileNameToken = (StringToken) _mappingFileName
+                    .getToken();
 
-            if (str_token == null) {
+            if (mappingFileNameToken == null) {
                 _mappingFileName = null;
             } else {
-                readMapping(str_token.stringValue());
-                System.out.println(_mappingConstraintSolver);
+                try {
+                    readMapping(mappingFileNameToken.stringValue());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                if (_debugging) {
+                    _debug(_mappingConstraintSolver.toString());
+                }
             }
 
         } else {
@@ -120,10 +156,9 @@ public class MetroIIDirector extends Director {
      *  @return The new Attribute.
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        MetroIIDirector newObject = (MetroIIDirector) super
-                .clone(workspace);
-	newObject._mappingConstraintSolver = new MappingConstraintSolver(100);
-	newObject._eventName2ID = new Hashtable<String, Integer>();
+        MetroIIDirector newObject = (MetroIIDirector) super.clone(workspace);
+        newObject._mappingConstraintSolver = new MappingConstraintSolver(100);
+        newObject._eventName2ID = new Hashtable<String, Integer>();
         return newObject;
     }
 
@@ -151,208 +186,202 @@ public class MetroIIDirector extends Director {
     }
 
     private int _nextAvailID = 0;
-    private final int _maxEvent = 1000; 
+    private final int _maxEvent = 1000;
     private Hashtable<String, Integer> _eventName2ID = new Hashtable<String, Integer>();
     private MappingConstraintSolver _mappingConstraintSolver = new MappingConstraintSolver(
             _maxEvent);
 
     /**    
-    * Tries to call prefire(), fire(), and postfire() of each actor in the model. If the actor 
-    * is a CompositeActor that has a MetroII compatible director, the getfire() is called instead of fire(). 
-    * In addition to do everything fire() does, getfire() proposes events in firing. And when proposing
-    * events, the CompositeActor is blocked. 
-    * Tries to resolve the mapping constraints. The MetroIIDirector collects all the events and reset the 
-    * statuses of events based on the mapping constraints. In the next iteration, CompositeActor executes 
-    * based on the updated statuses of events.  
+    * Call prefire(), fire(), and postfire() of each actor in the model. If the 
+    * actor is a CompositeActor that contains a MetroII compatible director, the 
+    * getfire() is called instead of fire(). getfire() is supposed to do everything
+    * fire() does and proposes events in firing. When events are proposed, the 
+    * CompositeActor is blocked, waiting for the resolution of mapping constraints
+    * The MetroIIDirector collects all the events and reset the statuses of events 
+    * based on the mapping constraints. In the next iteration, CompositeActor 
+    * executes based on the updated statuses of events.  
     */
-    
     public void fire() throws IllegalActionException {
 
         try {
-        if (_debugging) {
-            _debug("Director: Called fire().");
-        }
-
-        Nameable container = getContainer();
-
-        Iterator<?> actors = ((CompositeActor) container).deepEntityList()
-                .iterator();
-        LinkedList<MetroIIActorThread> actor_thread_list = new LinkedList<MetroIIActorThread>();
-
-        while (actors.hasNext()) {
-            Actor actor = (Actor) actors.next();
-            if (actor instanceof MetroIIEventHandler) {
-                actor_thread_list.add(new MetroIIActorThread(actor,
-                        MetroIIActorThread.Type.Metropolis,
-                        MetroIIActorThread.State.WAITING, null));
-            } else {
-                actor_thread_list.add(new MetroIIActorThread(actor,
-                        MetroIIActorThread.Type.Ptolemy,
-                        MetroIIActorThread.State.WAITING, null));
+            if (_debugging) {
+                _debug("Director: Called fire().");
             }
-        }
 
-        boolean stable = false;
-        while (!_stopRequested) {
-            LinkedList<Event.Builder> m2event_list = new LinkedList<Event.Builder>();
-            stable = true;
+            Nameable container = getContainer();
 
-            // Phase I: base model execution
-            for (MetroIIActorThread actor_thread : actor_thread_list) {
-                if (actor_thread._actor.prefire()) {
-                    if (actor_thread._type == MetroIIActorThread.Type.Metropolis) {
-                        if (actor_thread._state == MetroIIActorThread.State.WAITING) {
-                            final YieldAdapterIterable<Iterable<Event.Builder>> results = ((MetroIIEventHandler) actor_thread._actor)
-                                    .adapter();
-                            actor_thread._thread = results.iterator();
-                            actor_thread._state = MetroIIActorThread.State.ACTIVE;
-                        }
-                    } else if (actor_thread._type == MetroIIActorThread.Type.Ptolemy) {
-                        actor_thread._state = MetroIIActorThread.State.ACTIVE;
-                    }
+            Iterator<?> actors = ((CompositeActor) container).deepEntityList()
+                    .iterator();
+            LinkedList<MetroIIActorThread> actor_thread_list = new LinkedList<MetroIIActorThread>();
+
+            while (actors.hasNext()) {
+                Actor actor = (Actor) actors.next();
+                if (actor instanceof MetroIIEventHandler) {
+                    actor_thread_list.add(new MetroIIActorThread(actor,
+                            MetroIIActorThread.Type.Metropolis,
+                            MetroIIActorThread.State.WAITING, null));
+                } else {
+                    actor_thread_list.add(new MetroIIActorThread(actor,
+                            MetroIIActorThread.Type.Ptolemy,
+                            MetroIIActorThread.State.WAITING, null));
                 }
             }
 
-            for (MetroIIActorThread actor_thread : actor_thread_list) {
-                if (actor_thread._type == MetroIIActorThread.Type.Metropolis
-                        && actor_thread._state == MetroIIActorThread.State.ACTIVE) {
-                    Actor actor = actor_thread._actor;
-                    Iterator<Iterable<Event.Builder>> thread = actor_thread._thread;
+            boolean stable = false;
+            while (!_stopRequested) {
+                LinkedList<Event.Builder> m2event_list = new LinkedList<Event.Builder>();
+                stable = true;
 
-                    if (thread.hasNext()) {
-                        Iterable<Event.Builder> result = thread.next();
-                        for (Builder builder : result) {
-                            Event.Builder etb = builder;
-                            String event_name = etb.getName();
+                // Phase I: base model execution
+                for (MetroIIActorThread actor_thread : actor_thread_list) {
+                    if (actor_thread._actor.prefire()) {
+                        if (actor_thread._type == MetroIIActorThread.Type.Metropolis) {
+                            if (actor_thread._state == MetroIIActorThread.State.WAITING) {
+                                final YieldAdapterIterable<Iterable<Event.Builder>> results = ((MetroIIEventHandler) actor_thread._actor)
+                                        .adapter();
+                                actor_thread._thread = results.iterator();
+                                actor_thread._state = MetroIIActorThread.State.ACTIVE;
+                            }
+                        } else if (actor_thread._type == MetroIIActorThread.Type.Ptolemy) {
+                            actor_thread._state = MetroIIActorThread.State.ACTIVE;
+                        }
+                    }
+                }
 
-                            if (!_eventName2ID.containsKey(event_name)) {
-                                _eventName2ID.put(event_name, _nextAvailID);
-                                _nextAvailID++;
+                for (MetroIIActorThread actor_thread : actor_thread_list) {
+                    if (actor_thread._type == MetroIIActorThread.Type.Metropolis
+                            && actor_thread._state == MetroIIActorThread.State.ACTIVE) {
+                        Actor actor = actor_thread._actor;
+                        Iterator<Iterable<Event.Builder>> thread = actor_thread._thread;
+
+                        if (thread.hasNext()) {
+                            Iterable<Event.Builder> result = thread.next();
+                            for (Builder builder : result) {
+                                Event.Builder etb = builder;
+                                String event_name = etb.getName();
+
+                                if (!_eventName2ID.containsKey(event_name)) {
+                                    _eventName2ID.put(event_name, _nextAvailID);
+                                    _nextAvailID++;
+                                }
+
+                                etb.setStatus(Event.Status.WAITING);
+
+                                m2event_list.add(etb);
+                                stable = false;
                             }
 
-                            etb.setStatus(Event.Status.WAITING);
+                        } else {
+                            boolean pfire = actor.postfire();
+                            actor_thread._state = MetroIIActorThread.State.WAITING;
+                            if (!pfire) {
+                                if (_debugging) {
+                                    _debug("Actor requests halt: "
+                                            + ((Nameable) actor).getFullName());
+                                }
+                            }
+                            if (_stopRequested) {
+                                if (_debugging) {
+                                    _debug("Actor requests halt: "
+                                            + ((Nameable) actor).getFullName());
+                                }
 
-                            m2event_list.add(etb);
-                            stable = false;
+                            }
                         }
+                    }
+                }
 
-                    } else {
-                        boolean pfire = actor.postfire();
+                for (MetroIIActorThread actor_thread : actor_thread_list) {
+                    if (actor_thread._type == MetroIIActorThread.Type.Ptolemy
+                            && actor_thread._state == MetroIIActorThread.State.ACTIVE) {
+                        actor_thread._actor.fire();
+                        boolean pfire = actor_thread._actor.postfire();
                         actor_thread._state = MetroIIActorThread.State.WAITING;
+
                         if (!pfire) {
                             if (_debugging) {
                                 _debug("Actor requests halt: "
-                                        + ((Nameable) actor).getFullName());
+                                        + ((Nameable) actor_thread._actor)
+                                                .getFullName());
                             }
-                        }
-                        if (_stopRequested) {
-                            if (_debugging) {
-                                _debug("Actor requests halt: "
-                                        + ((Nameable) actor).getFullName());
-                            }
-
                         }
                     }
                 }
+
+                // Phase II: mapping constraint resolution
+                for (Event.Builder etb : m2event_list) {
+                    String event_name = etb.getName();
+                    _mappingConstraintSolver.presentM2Event(_eventName2ID
+                            .get(event_name));
+                }
+                if (_debugging) {
+                    _debug(_mappingConstraintSolver.toString());
+                    _debug("Before mapping resolution: ");
+                    for (Event.Builder etb : m2event_list) {
+                        _debug(_eventName2ID.get(etb.getName()) + etb.getName()
+                                + " " + etb.getStatus().toString());
+                    }
+                }
+                for (Event.Builder etb : m2event_list) {
+                    String event_name = etb.getName();
+                    if (_mappingConstraintSolver.isSatisfied(_eventName2ID
+                            .get(event_name))) {
+                        etb.setStatus(Event.Status.NOTIFIED);
+                    }
+                }
+                if (_debugging) {
+                    _debug("After mapping resolution: ");
+                    for (Event.Builder etb : m2event_list) {
+                        _debug(_eventName2ID.get(etb.getName()) + etb.getName()
+                                + " " + etb.getStatus().toString());
+                    }
+                }
+                _mappingConstraintSolver.reset();
             }
-
-            for (MetroIIActorThread actor_thread : actor_thread_list) {
-                if (actor_thread._type == MetroIIActorThread.Type.Ptolemy
-                        && actor_thread._state == MetroIIActorThread.State.ACTIVE) {
-                    actor_thread._actor.fire();
-                    boolean pfire = actor_thread._actor.postfire();
-                    actor_thread._state = MetroIIActorThread.State.WAITING;
-
-                    if (!pfire) {
-                        if (_debugging) {
-                            _debug("Actor requests halt: "
-                                    + ((Nameable) actor_thread._actor)
-                                            .getFullName());
-                        }
+            if (_stopRequested) {
+                for (MetroIIActorThread actor_thread : actor_thread_list) {
+                    if (actor_thread._type == MetroIIActorThread.Type.Metropolis
+                            && actor_thread._state == MetroIIActorThread.State.ACTIVE) {
+                        actor_thread._thread.dispose();
                     }
                 }
             }
-
-            
-            // Phase II: mapping constraint resolution
-            for (Event.Builder etb : m2event_list) {
-                String event_name = etb.getName();
-                _mappingConstraintSolver.presentM2Event(_eventName2ID
-                        .get(event_name));
-            }
-            System.out.println(_mappingConstraintSolver);
-            System.out.println("Before mapping resolution: ");
-            for (Event.Builder etb : m2event_list) {
-                System.out.println(_eventName2ID
-                        .get(etb.getName())+etb.getName() + " "
-                        + etb.getStatus().toString());
-            }
-            for (Event.Builder etb : m2event_list) {
-                String event_name = etb.getName();
-                if (_mappingConstraintSolver.isSatisfied(_eventName2ID
-                        .get(event_name))) {
-                    etb.setStatus(Event.Status.NOTIFIED);
-                }
-            }
-            System.out.println("After mapping resolution: ");
-            for (Event.Builder etb : m2event_list) {
-                System.out.println(_eventName2ID
-                        .get(etb.getName())+etb.getName() + " "
-                        + etb.getStatus().toString());
-            }
-            _mappingConstraintSolver.reset();
-        }
-        if (_stopRequested) {
-            for (MetroIIActorThread actor_thread : actor_thread_list) {
-                if (actor_thread._type == MetroIIActorThread.Type.Metropolis
-                        && actor_thread._state == MetroIIActorThread.State.ACTIVE) {
-                    actor_thread._thread.dispose();
-                }
-            }
-        }
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
             System.err.println("Error: " + e.getMessage());
         }
     }
 
-    
     /**
      * Read constraints from the mapping file.
      * @param finename mapping file
      */
-    private void readMapping(String finename) {
-        System.out.println(finename);
+    private void readMapping(String finename) throws IOException {
+        // System.out.println(finename);
+        FileInputStream fstream = new FileInputStream(finename);
+        DataInputStream in = new DataInputStream(fstream);
+        BufferedReader br = new BufferedReader(new InputStreamReader(in));
+        String strLine;
         try {
-            FileInputStream fstream = new FileInputStream(finename);
-            DataInputStream in = new DataInputStream(fstream);
-            BufferedReader br = new BufferedReader(new InputStreamReader(in));
-            String strLine;
-            try {
-                while ((strLine = br.readLine()) != null) {
-                    String[] actor_name_list = strLine.split(",");
-                    assert actor_name_list.length == 2;
-                    if (!_eventName2ID.containsKey(actor_name_list[0])) {
-                        _eventName2ID.put(actor_name_list[0], _nextAvailID);
-                        _nextAvailID++;
-                    }
-                    if (!_eventName2ID.containsKey(actor_name_list[1])) {
-                        _eventName2ID.put(actor_name_list[1], _nextAvailID);
-                        _nextAvailID++;
-                    }
-                    _mappingConstraintSolver.add(
-                            _eventName2ID.get(actor_name_list[0]),
-                            _eventName2ID.get(actor_name_list[1]));
-                    System.out.println(strLine);
+            while ((strLine = br.readLine()) != null) {
+                String[] actor_name_list = strLine.split(",");
+                assert actor_name_list.length == 2;
+                if (!_eventName2ID.containsKey(actor_name_list[0])) {
+                    _eventName2ID.put(actor_name_list[0], _nextAvailID);
+                    _nextAvailID++;
                 }
-            } finally {
-                in.close();
+                if (!_eventName2ID.containsKey(actor_name_list[1])) {
+                    _eventName2ID.put(actor_name_list[1], _nextAvailID);
+                    _nextAvailID++;
+                }
+                _mappingConstraintSolver.add(
+                        _eventName2ID.get(actor_name_list[0]),
+                        _eventName2ID.get(actor_name_list[1]));
+                System.out.println(strLine);
             }
-        } catch (IOException e) {
-            System.err.println("Error: " + e.getMessage());
+        } finally {
+            in.close();
         }
     }
-
 
 }
