@@ -37,6 +37,8 @@
     <entity name="inc" class="ptolemy.actor.lib.fmi.FMUImport">
         <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/org/ptolemy/fmi/fmu/cs/inc.fmu">
         </property>
+        <property name="suppressWarnings" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{35.0, 175.0}">
         </property>
         <port name="counter" class="ptolemy.actor.TypedIOPort">

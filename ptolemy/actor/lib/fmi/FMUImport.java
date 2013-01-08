@@ -63,7 +63,9 @@ import ptolemy.data.StringToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.FileParameter;
 import ptolemy.data.expr.Parameter;
+import ptolemy.data.type.BaseType;
 import ptolemy.domains.continuous.kernel.ContinuousDirector;
+import ptolemy.domains.continuous.kernel.ContinuousStatefulComponent;
 import ptolemy.domains.continuous.kernel.ContinuousStepSizeController;
 import ptolemy.domains.sdf.kernel.SDFDirector;
 import ptolemy.kernel.CompositeEntity;
@@ -71,7 +73,9 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.Settable;
 import ptolemy.moml.MoMLChangeRequest;
+import ptolemy.util.CancelException;
 import ptolemy.util.MessageHandler;
 import ptolemy.util.StringUtilities;
 
@@ -104,6 +108,33 @@ import com.sun.jna.Pointer;
  * <p>FMI documentation may be found at
  * <a href="http://www.modelisar.com/fmi.html">http://www.modelisar.com/fmi.html</a>.
  * </p>
+ * <p>
+ * Under the Continuous director, this actor invokes fmiDoStep() at the
+ * beginning of the fire() method whenever time has advanced since the
+ * last invocation of the fire() method. If at this point the FMU
+ * discards the step, then the fire method will nonetheless produce
+ * outputs, but they may not be valid for the current time.
+ * This should not matter because the Continuous director will call
+ * {@link #isStepSizeAccurate()}, which will return false, and it will
+ * revert to the last committed and proceed with a smaller step size.
+ * Under the Continuous director, when time is advanced, this actor
+ * will be fired several times. The first firing will be at the
+ * beginning of the time interval, which matches the last commit time of
+ * the last postfire() invocation. The remaining firings will be at
+ * times greater than the last commit time. These firings are all
+ * speculative, in that any actor may reject the step size when they
+ * occur. In the event that a step is rejected, the Continuous director
+ * will call {@link #rollBackToCommittedState()}. If the FMU supports
+ * it, then this method will use fmiSetFMUstate() to restore the state
+ * to the state of the FMU at the time of the last postfire() (or
+ * initialize(), if postfire() has not yet been invoked).
+ * </p><p>
+ * <b>If the FMU does not support rolling back (indicated by the
+ * canGetAndSetFMUstate element in the XML file), then this actor
+ * assumes that the FMU is stateless and hence can be rolled back
+ * without any particular action.</b>  This may not be a good
+ * assumption, so it issues a warning.
+ * </p>
  *
  * @author Christopher Brooks, Michael Wetter, Edward A. Lee,
  * @version $Id$
@@ -111,7 +142,7 @@ import com.sun.jna.Pointer;
  * @Pt.AcceptedRating Red (cxh)
  */
 public class FMUImport extends TypedAtomicActor implements
-        ContinuousStepSizeController {
+        ContinuousStepSizeController, ContinuousStatefulComponent {
     // FIXME: For FMI Co-simulation, we want to extend TypedAtomicActor.
     // For model exchange, we want to extend TypedCompositeActor.
 
@@ -129,6 +160,12 @@ public class FMUImport extends TypedAtomicActor implements
 
         fmuFile = new FileParameter(this, "fmuFile");
         fmuFile.setExpression("fmuImport.fmu");
+        // The value of this parameter cannot be edited once the FMU has been imported.
+        fmuFile.setVisibility(Settable.NOT_EDITABLE);
+        
+        suppressWarnings = new Parameter(this, "suppressWarnings");
+        suppressWarnings.setTypeEquals(BaseType.BOOLEAN);
+        suppressWarnings.setExpression("false");
     }
 
     /** The Functional Mock-up Unit (FMU) file.  The FMU file is a zip
@@ -138,6 +175,14 @@ public class FMUImport extends TypedAtomicActor implements
      *  default value is "fmuImport.fmu".
      */
     public FileParameter fmuFile;
+    
+    /** If true, suppress warnings about the FMU not being able to roll
+     *  back. It is reasonable to set this to true if you know that the
+     *  FMU can be executed at an earlier time than it was previously
+     *  executed. This is safe, for example, if the FMU is stateless.
+     *  This is a boolean that defaults to false.
+     */
+    public Parameter suppressWarnings;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -318,7 +363,8 @@ public class FMUImport extends TypedAtomicActor implements
                 throw new IllegalActionException(this, "Could not simulate, "
                         + modelIdentifier + "_fmiDoStep(Component, /* time */ "
                         + time + ", /* stepSize */" + stepSize
-                        + ", /* newStep */ 1) returned " + fmiFlag);
+                        + ", /* newStep */ 1) returned "
+                        + _fmiStatusDescription(fmiFlag));
             }
 
             if (_debugging) {
@@ -366,7 +412,8 @@ public class FMUImport extends TypedAtomicActor implements
                 throw new IllegalActionException(this, "Could not simulate, "
                         + modelIdentifier + "_fmiDoStep(Component, /* time */ "
                         + time + ", /* stepSize */" + stepSize
-                        + ", 1) returned " + fmiFlag);
+                        + ", 1) returned "
+                        + _fmiStatusDescription(fmiFlag));
             }
 
             if (_debugging) {
@@ -587,7 +634,8 @@ public class FMUImport extends TypedAtomicActor implements
                     + "_fmiInitializeSlave(Component, /* startTime */ "
                     + startTime.getDoubleValue()
                     + ", 1, /* stopTime */" + stopTime.getDoubleValue()
-                    + ") returned " + fmiFlag);
+                    + ") returned "
+                    + _fmiStatusDescription(fmiFlag));
         }
         _lastCommitTime = startTime;
         _lastFireTime = startTime;
@@ -860,11 +908,41 @@ public class FMUImport extends TypedAtomicActor implements
         return Double.MAX_VALUE;
     }
 
-    /** Implementations of this method should return
-     *  the suggested next step size. If the current integration
-     *  step is accurate, each actor will be asked for its suggestion
-     *  for the next step size. If the actor that implements this interface
-     *  does not care what the next step size is, it should
+    /** Roll back to committed state, if the FMU has asserted
+     *  canGetAndSetFMUstate in the XML file and has provided the methods
+     *  to set and restore state. Otherwise, issue a warning.
+     *  @exception IllegalActionException If the rollback attempts to go
+     *   back further than the last committed time.
+     */
+    public void rollBackToCommittedState() throws IllegalActionException {
+        if (!((BooleanToken)suppressWarnings.getToken()).booleanValue()) {
+            try {
+                boolean response = MessageHandler.yesNoCancelQuestion(
+                        "FMU does not support rolling back to a previous state in time, "
+                                + "but it is being asked to roll back from time "
+                                + _lastFireTime
+                                + " to time "
+                                + _lastCommitTime,
+                                "Proceed",
+                                "Proceed and do not warn me again",
+                        "Cancel");
+                if (!response) {
+                    // User has asked to not be warned again.
+                    // NOTE: This does not mark the model modified, so
+                    // the user does not save, then the warning will reappear next time.
+                    suppressWarnings.setToken(BooleanToken.TRUE);
+                }
+            } catch (CancelException e) {
+                // User cancelled, so we throw an exception to stop the execution.
+                throw new IllegalActionException(this, e, "Execution cancelled.");
+            }
+        }
+    }
+
+    /** Return the suggested next step size. This method returns 0.0 if
+     *  the previous invocation of fmiDoStep() was discarded, in order to
+     *  force a zero-time integration step after an event is detected by
+     *  the FMU. Otherwise, return Double.MAC_VALUE.
      *  return java.lang.Double.MAX_VALUE.
      *  @return The suggested next step size.
      *  @exception IllegalActionException If an actor suggests an illegal step size.
@@ -897,7 +975,8 @@ public class FMUImport extends TypedAtomicActor implements
                 .invokeInt(new Object[] { _fmiComponent })).intValue();
         if (fmiFlag > FMILibrary.FMIStatus.fmiWarning) {
             throw new IllegalActionException(this,
-                    "Could not terminate slave: " + fmiFlag);
+                    "Could not terminate slave: "
+                    + _fmiStatusDescription(fmiFlag));
         }
 
         Function fmiFreeSlaveInstance = _fmiModelDescription.nativeLibrary
@@ -906,7 +985,8 @@ public class FMUImport extends TypedAtomicActor implements
                 .invokeInt(new Object[] { _fmiComponent })).intValue();
         if (fmiFlag > FMILibrary.FMIStatus.fmiWarning) {
             if (_debugging) {
-                _debug("Could not free slave instance: " + fmiFlag);
+                _debug("Could not free slave instance: "
+                        + _fmiStatusDescription(fmiFlag));
             }
         }
     }
@@ -941,6 +1021,28 @@ public class FMUImport extends TypedAtomicActor implements
                     + director.getClass().getName() + ".");
         }
         return stepSize;
+    }
+    
+    /** Return a string describing the specified fmiStatus.
+     *  @param fmiStatus The status returned by an FMI procedure.
+     */
+    protected static String _fmiStatusDescription(int fmiStatus) {
+        // FIXME: FMI 2.0 has apparently lost fmiWarning and fmiFatal.
+        // What is the new encoding? Need the header file.
+        switch (fmiStatus) {
+        case 0:
+            return "fmiOK";
+        case 1:
+            return "fmiWarning";
+        case 2:
+            return "fmiDiscard";
+        case 3:
+            return "fmiError";
+        case 4:
+            return "fmiFatal";
+        default:
+            return "fmiPending";
+        }
     }
 
     /** Set a Ptolemy II Parameter to the value of a FMI

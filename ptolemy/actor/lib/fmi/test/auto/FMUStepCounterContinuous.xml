@@ -28,6 +28,12 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 45.0]">
         </property>
     </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The stepCounter FMU controls&#10;step sizes by returning&#10;fmiDiscard when the step&#10;traverses the transition time&#10;for the count. It then insists&#10;on a zero step size in order&#10;to get an abrupt transition.&#10;">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[435.0, 25.0]">
+        </property>
+    </property>
     <entity name="Test" class="ptolemy.actor.lib.Test">
         <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 3.0}">
         </property>
@@ -40,6 +46,8 @@
     </entity>
     <entity name="stepCounter" class="ptolemy.actor.lib.fmi.FMUImport">
         <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="$PTII/ptolemy/actor/lib/fmi/test/auto/stepCounter.fmu">
+        </property>
+        <property name="suppressWarnings" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[185.0, 60.0]">
         </property>
