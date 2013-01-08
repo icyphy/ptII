@@ -334,21 +334,25 @@ public class UndeferredGraphicalMessageHandler extends MessageHandler {
         }
     }
 
-    /** Ask the user a yes/no/cancel question, and return true if the answer
-     *  is yes.
-     *
-     *  @param question The yes/no/cancel question.
-     *  @return True if the answer is yes.
-     *  @exception ptolemy.util.CancelException If the user clicks on
-     *  the "Cancel" button.
+    /** Ask the user a question with three possible answers;
+     *  return true if the answer is the first one and false if
+     *  the answer is the second one; throw an exception if the
+     *  user selects the third one.
+     *  @param question The question.
+     *  @param trueOption The option for which to return true.
+     *  @param falseOption The option for which to return false.
+     *  @param exceptionOption The option for which to throw an exception.
+     *  @return True if the answer is the first option, false if it is the second.
+     *  @exception ptolemy.util.CancelException If the user selects the third option.
      */
-    protected boolean _yesNoCancelQuestion(String question)
-            throws CancelException {
+    protected boolean _yesNoCancelQuestion(
+            String question, String trueOption, String falseOption, String exceptionOption)
+            throws ptolemy.util.CancelException {
         Object[] message = new Object[1];
         message[0] = _messageComponent(StringUtilities.ellipsis(question,
                 StringUtilities.ELLIPSIS_LENGTH_LONG));
 
-        Object[] options = { "Yes", "No", "Cancel" };
+        Object[] options = { trueOption, falseOption, exceptionOption };
 
         // Show the MODAL dialog
         int selected = JOptionPane.showOptionDialog(getContext(), message,

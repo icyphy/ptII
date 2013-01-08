@@ -116,20 +116,28 @@ public class SimpleMessageHandler extends MessageHandler {
         return false;
     }
 
-    /** Ask the user a yes/no/cancel question, and return true if the
-     *  answer is yes.  If the user chooses "cancel", then throw an
-     *  exception.  In this base class, this prints the question on
-     *  the standard output and looks for the reply on the standard
-     *  input.
-     *  @param question The yes/no/cancel question to be asked.
-     *  @return True if the answer is yes.
-     *  @exception ptolemy.util.CancelException If the user chooses
-     *  "cancel".
+    /** Ask the user a question with three possible answers;
+     *  return true if the answer is the first one and false if
+     *  the answer is the second one; throw an exception if the
+     *  user selects the third one.
+     *  @param question The question.
+     *  @param trueOption The option for which to return true.
+     *  @param falseOption The option for which to return false.
+     *  @param exceptionOption The option for which to throw an exception.
+     *  @return Always return false.
+     *  @exception ptolemy.util.CancelException If the user selects the third option.
      */
-    protected boolean _yesNoCancelQuestion(String question)
+    protected boolean _yesNoCancelQuestion(
+            String question, String trueOption, String falseOption, String exceptionOption)
             throws ptolemy.util.CancelException {
-        System.out.print(question);
-        System.out.print(" (yes or no or cancel) ");
+        System.out.print(question
+                + " ("
+                + trueOption
+                + " or "
+                + falseOption
+                + " or "
+                + exceptionOption
+                + ") ");
         return false;
     }
 }

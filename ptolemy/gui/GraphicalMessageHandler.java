@@ -277,21 +277,26 @@ public class GraphicalMessageHandler extends UndeferredGraphicalMessageHandler {
         }
     }
 
-    /** Ask the user a yes/no/cancel question, and return true if the answer
-     *  is yes.
-     *
-     *  @param question The yes/no/cancel question.
-     *  @return True if the answer is yes.
-     *  @exception ptolemy.util.CancelException If the user clicks on
-     *  the "Cancel" button.
+    /** Ask the user a question with three possible answers;
+     *  return true if the answer is the first one and false if
+     *  the answer is the second one; throw an exception if the
+     *  user selects the third one.
+     *  @param question The question.
+     *  @param trueOption The option for which to return true.
+     *  @param falseOption The option for which to return false.
+     *  @param exceptionOption The option for which to throw an exception.
+     *  @return True if the answer is the first option, false if it is the second.
+     *  @exception ptolemy.util.CancelException If the user selects the third option.
      */
-    protected boolean _yesNoCancelQuestion(final String question)
-            throws CancelException {
+    protected boolean _yesNoCancelQuestion(
+            final String question, final String trueOption,
+            final String falseOption, final String exceptionOption)
+            throws ptolemy.util.CancelException {
         // In swing, updates to showing graphics must be done in the
         // event thread.  If we are in the event thread, then proceed.
         // Otherwise, invoke and wait.
         if (EventQueue.isDispatchThread()) {
-            return super._yesNoCancelQuestion(question);
+            return super._yesNoCancelQuestion(question, trueOption, falseOption, exceptionOption);
         } else {
             // Place to store results from doYesNoCancel thread.
             // results[0] is the return value ("Yes" or "No").
@@ -304,7 +309,7 @@ public class GraphicalMessageHandler extends UndeferredGraphicalMessageHandler {
                     message[0] = StringUtilities.ellipsis(question,
                             StringUtilities.ELLIPSIS_LENGTH_LONG);
 
-                    Object[] options = { "Yes", "No", "Cancel" };
+                    Object[] options = { trueOption, falseOption, exceptionOption };
 
                     // Show the MODAL dialog
                     int selected = JOptionPane.showOptionDialog(getContext(),

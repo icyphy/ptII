@@ -197,7 +197,25 @@ public class MessageHandler {
      */
     public static boolean yesNoCancelQuestion(String question)
             throws ptolemy.util.CancelException {
-        return _handler._yesNoCancelQuestion(question);
+        return yesNoCancelQuestion(question, "Yes", "No", "Cancel");
+    }
+
+    /** Ask the user a question with three possible answers;
+     *  return true if the answer is the first one and false if
+     *  the answer is the second one; throw an exception if the
+     *  user selects the third one.
+     *
+     *  @param question The question.
+     *  @param trueOption The option for which to return true.
+     *  @param falseOption The option for which to return false.
+     *  @param exceptionOption The option for which to throw an exception.
+     *  @return True if the answer is the first option, false if it is the second.
+     *  @exception ptolemy.util.CancelException If the user selects the third option.
+     */
+    public static boolean yesNoCancelQuestion(
+            String question, String trueOption, String falseOption, String exceptionOption)
+            throws ptolemy.util.CancelException {
+        return _handler._yesNoCancelQuestion(question, trueOption, falseOption, exceptionOption);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -289,20 +307,28 @@ public class MessageHandler {
         return false;
     }
 
-    /** Ask the user a yes/no/cancel question, and return true if the
-     *  answer is yes.  If the user chooses "cancel", then throw an
-     *  exception.  In this base class, this prints the question on
-     *  the standard output and looks for the reply on the standard
-     *  input.
-     *  @param question The yes/no/cancel question to be asked.
-     *  @return True if the answer is yes.
-     *  @exception ptolemy.util.CancelException If the user chooses
-     *  "cancel".
+    /** Ask the user a question with three possible answers;
+     *  return true if the answer is the first one and false if
+     *  the answer is the second one; throw an exception if the
+     *  user selects the third one.
+     *  @param question The question.
+     *  @param trueOption The option for which to return true.
+     *  @param falseOption The option for which to return false.
+     *  @param exceptionOption The option for which to throw an exception.
+     *  @return True if the answer is the first option, false if it is the second.
+     *  @exception ptolemy.util.CancelException If the user selects the third option.
      */
-    protected boolean _yesNoCancelQuestion(String question)
+    protected boolean _yesNoCancelQuestion(
+            String question, String trueOption, String falseOption, String exceptionOption)
             throws ptolemy.util.CancelException {
-        System.out.print(question);
-        System.out.print(" (yes or no or cancel) ");
+        System.out.print(question
+                + " ("
+                + trueOption
+                + " or "
+                + falseOption
+                + " or "
+                + exceptionOption
+                + ") ");
 
         BufferedReader stdIn = new BufferedReader(new InputStreamReader(
                 System.in));
@@ -313,9 +339,9 @@ public class MessageHandler {
             if (reply == null) {
                 return false;
             } else {
-                if (reply.trim().toLowerCase().equals("yes")) {
+                if (reply.trim().toLowerCase().equals(trueOption.toLowerCase())) {
                     return true;
-                } else if (reply.trim().toLowerCase().equals("cancel")) {
+                } else if (reply.trim().toLowerCase().equals(exceptionOption.toLowerCase())) {
                     throw new ptolemy.util.CancelException("Cancelled: "
                             + question);
                 }
