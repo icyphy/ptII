@@ -73,7 +73,7 @@ import ptolemy.domains.openmodelica.lib.omc.corba.OmcCommunicationHelper;
 /**    
   The OMCProxy is the glue between the OpenModelica Compiler(OMC) and Modelica Development Tooling (MDT).
   It uses the interactive API of OMC to get Information of classes and load them into OMC.
- 
+  <p>
   @author Mana Mirzaei, Based on OMCProxy by Adrian Pop, Elmir Jagudin, Andreas Remar
   @version $Id$
   @since Ptolemy II 9.1
@@ -128,20 +128,6 @@ public class OMCProxy implements IModelicaCompiler {
 
             File omcBinary = tmp[0];
             final File workingDirectory = tmp[1];
-
-            //TODO remove
-            //File f = new File(getPathToObject());
-            // Old object reference file is deleted. 
-            // Check if the file exists in order to determine 
-            // whether the server has started or not.
-            /* long lastModified = 0;
-             if (f.exists()) {
-                 OpenModelicaDirector
-                         .getOMCLogger()
-                         .getInfo(
-                                 "Remember the creation time for old OMC object reference file.");
-                 lastModified = f.lastModified();
-             }*/
             Process proc = null;
             String command[] = { omcBinary.getAbsolutePath(),
                     "+c=" + _corbaSession, "+d=interactiveCorba" };
@@ -197,14 +183,10 @@ public class OMCProxy implements IModelicaCompiler {
                     environmentalVariables = lst
                             .toArray(new String[lst.size()]);
                 }
-                // proc = Runtime.getRuntime().exec(cmd, environmentalVariables,
-                //        workingDirectory);
-
+                //FIXME
                 proc = Runtime.getRuntime().exec(
                         cmd,
-                        environmentalVariables,
-                        new File(System.getProperty("java.io.tmpdir")
-                                + "nobody" + "\\" + "OpenModelica" + "\\"));
+                        environmentalVariables,workingDirectory);
 
                 //Copy the content of workingDirectory for having public access
                 workDir = workingDirectory;
@@ -224,36 +206,6 @@ public class OMCProxy implements IModelicaCompiler {
                     .getOMCLogger()
                     .getInfo(
                             "Waiting for OMC CORBA object reference to appear on disk.");
-
-            //TODO remove
-            // Wait until the object is created on the disk, but if it takes longer than
-            // 1 second, abort.  
-            /*int ticks = 0;
-            while (true) {
-                if (f.exists())
-                    if (lastModified == 0 || lastModified != 0
-                            && f.lastModified() != lastModified)
-                        break;
-                synchronized (_fOMCThread) {
-                    try {
-                        _fOMCThread.wait(1000);
-                    } catch (InterruptedException e) {
-
-                    }
-                }
-                ticks++;
-                if (ticks > 100) {
-                    OpenModelicaDirector
-                            .getOMCLogger()
-                            .getInfo(
-                                    "The OMC Corba object reference file has not been modified in 0.1 seconds; we give up starting OMC.");
-                    _couldNotStartOMC = true;
-                    hasInitialized = false;
-                }
-            }
-            synchronized (_fOMCThread) {
-                _fOMCThread.notify();
-            }*/
 
             OpenModelicaDirector.getOMCLogger().getInfo(
                     "OMC object reference found.");
@@ -278,7 +230,6 @@ public class OMCProxy implements IModelicaCompiler {
                                                 + proc.exitValue()));
                 e.printStackTrace();
 
-                _couldNotStartOMC = true;
                 hasInitialized = false;
                 return;
             }
@@ -294,7 +245,7 @@ public class OMCProxy implements IModelicaCompiler {
                                     + proc.exitValue()).printStackTrace();
                 }
             }
-
+            
             hasInitialized = false;
         }
 
@@ -573,13 +524,14 @@ public class OMCProxy implements IModelicaCompiler {
             throw new ConnectException(
                     "Unable to start the OpenModelica Compiler, binary not found");
         }
-
-        if (System.getenv("USER") != null)
+        //FIXME
+        /* if (System.getenv("USER") != null)
             omcWorkingDirectory = new File(System.getProperty("java.io.tmpdir")
                     + System.getenv("USER") + "\\" + "OpenModelica" + "\\");
         else
             omcWorkingDirectory = new File(System.getProperty("java.io.tmpdir")
-                    + "nobody" + "\\" + "OpenModelica" + "\\");
+                    + "nobody" + "\\" + "OpenModelica" + "\\");*/
+        omcWorkingDirectory = new File(System.getProperty("java.io.tmpdir"));
 
         String workingDirectory = "Using working directory '"
                 + omcWorkingDirectory.getAbsolutePath() + "'";
@@ -598,7 +550,8 @@ public class OMCProxy implements IModelicaCompiler {
         String fileName = null;
         String username = System.getenv("USER");
         String temp = System.getProperty("java.io.tmpdir");
-
+        //FIXME
+        /*
         switch (_os) {
         case UNIX:
             if (username == null)
@@ -638,7 +591,41 @@ public class OMCProxy implements IModelicaCompiler {
                         + _corbaSession;
             }
             break;
+        }*/
+        switch (OMCProxy.getOs()) {
+        case UNIX:
+            //String username = System.getenv("USER");
+            if (username == null) {
+                username = "nobody";
+            }
+            if (_corbaSession == null || _corbaSession.equalsIgnoreCase("")) {
+                fileName = temp + "/openmodelica." + username + ".objid";
+            } else {
+                fileName = temp + "/openmodelica." + username + ".objid" + "."
+                        + _corbaSession;
+            }
+            break;
+        case WINDOWS:
+            if (_corbaSession == null || _corbaSession.equalsIgnoreCase("")) {
+                fileName = temp + "openmodelica.objid";
+            } else {
+                fileName = temp + "openmodelica.objid" + "." + _corbaSession;
+            }
+            break;
+        case MAC:
+            String macUsername = System.getenv("USER");
+            if (macUsername == null) {
+                macUsername = "nobody";
+            }
+            if (_corbaSession == null || _corbaSession.equalsIgnoreCase("")) {
+                fileName = temp + "/openmodelica." + macUsername + ".objid";
+            } else {
+                fileName = temp + "/openmodelica." + macUsername + ".objid"
+                        + "." + _corbaSession;
+            }
+            break;
         }
+
         OpenModelicaDirector.getOMCLogger().getInfo(
                 "Will look for OMC object reference in '" + fileName + "'.");
 

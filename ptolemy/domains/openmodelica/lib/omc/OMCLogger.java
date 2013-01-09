@@ -64,8 +64,9 @@ public class OMCLogger {
      *  of the log to show date and time first.
      */
     public OMCLogger() {
-
-        boolean b;
+        String filePath = System.getProperty("java.io.tmpdir");
+        //FIXME
+        /*boolean b;
         String filePath = null;
         String username = System.getenv("USER");
         String temp = System.getProperty("java.io.tmpdir");
@@ -101,7 +102,7 @@ public class OMCLogger {
         if (!f.exists())
             //Create user directory in the temporary folder.
             b = new File(filePath).mkdirs();
-
+        */
         // Create  the log file 
         try {
             switch (OMCProxy.getOs()) {
