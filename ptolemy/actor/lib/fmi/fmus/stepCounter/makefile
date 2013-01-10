@@ -70,10 +70,19 @@ OPTIONAL_FILES = \
 
 JCLASS = $(JSRCS:%.java=%.class)
 
-all: jclass
+FMU_SRCS = \
+	src/documentation/* \
+	src/modelDescription.xml \
+	src/model.png \
+	src/sources/* \
+
+all: jclass stepCounter.fmu
+
+
+install: jclass stepCounter.fmu jars
+
+stepCounter.fmu: $(FMU_SRCS)
 	(cd src/sources; $(MAKE))
 
-install: jclass jars
-	
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
