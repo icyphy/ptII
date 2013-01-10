@@ -155,11 +155,7 @@ public class IntermediateReceiver extends AbstractReceiver {
      *  the constructor.
      */
     public void put(Token token) throws NoRoomException, IllegalActionException {
-        if (_port != null) {
-            quantityManager.sendToken(this, _receiver, token, _port);
-        } else {
-            quantityManager.sendToken(this, _receiver, token);
-        }
+         quantityManager.sendToken(this, _receiver, token);
     }
 
     /** Set the container of the internal receiver.

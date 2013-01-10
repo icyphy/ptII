@@ -86,5 +86,6 @@ public interface QuantityManager {
      */
     public void sendToken(Receiver source, Receiver receiver, Token token)
             throws IllegalActionException;
+    
 
 }
