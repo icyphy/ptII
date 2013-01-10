@@ -28,8 +28,7 @@
 package ptolemy.actor.parameters;
 
 import ptolemy.actor.Initializable;
-import ptolemy.actor.TypedActor;
-import ptolemy.actor.lib.hoc.MirrorComposite;
+import ptolemy.actor.TypedActor;  
 import ptolemy.data.StringToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.AbstractInitializableParameter;
@@ -143,10 +142,7 @@ public class PortParameter extends AbstractInitializableParameter implements
         super(container, name);
         // If we get to here, we know the container is a ComponentEntity,
         // so the cast is safe.
-        if (container instanceof MirrorComposite.MirrorCompositeContents
-                || container instanceof MirrorComposite) {
-            _port = new ParameterMirrorPort((ComponentEntity) container, name);
-        } else if (container instanceof TypedActor) {
+        if (container instanceof TypedActor) {
             _port = new ParameterPort((ComponentEntity) container, name);
         }
     }

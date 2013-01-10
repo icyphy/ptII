@@ -54,6 +54,7 @@ JSRCS = \
 	FilePortParameter.java \
 	IntRangeParameter.java \
 	LocationParameter.java \
+	MirrorParameterPort.java \
 	ParameterMirrorPort.java \
 	ParameterPort.java \
 	ParameterSet.java \

@@ -46,6 +46,7 @@ import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.lib.hoc.MirrorComposite;
 import ptolemy.actor.lib.hoc.MirrorPort;
+import ptolemy.actor.parameters.MirrorPortParameter;
 import ptolemy.actor.parameters.ParameterMirrorPort;
 import ptolemy.actor.parameters.PortParameter;
 import ptolemy.actor.util.Time;
@@ -536,7 +537,7 @@ public class PtidesPlatform extends MirrorComposite {
         public Port newParameterPort(String name)
                 throws NameDuplicationException {
             try {
-                PortParameter parameter = new PortParameter(this, name);
+                PortParameter parameter = new MirrorPortParameter(this, name);
                 return parameter.getPort();
             } catch (IllegalActionException ex) {
                 // This exception should not occur, so we throw a runtime

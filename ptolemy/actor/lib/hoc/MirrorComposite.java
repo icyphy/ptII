@@ -35,6 +35,7 @@ import java.util.List;
 
 import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedCompositeActor;
+import ptolemy.actor.parameters.MirrorPortParameter;
 import ptolemy.actor.parameters.ParameterMirrorPort;
 import ptolemy.actor.parameters.ParameterPort;
 import ptolemy.actor.parameters.PortParameter;
@@ -197,7 +198,7 @@ public class MirrorComposite extends TypedCompositeActor implements
      */
     public Port newParameterPort(String name) throws NameDuplicationException {
         try {
-            PortParameter parameter = new PortParameter(this, name);
+            PortParameter parameter = new MirrorPortParameter(this, name);
             return parameter.getPort();
         } catch (IllegalActionException ex) {
             // This exception should not occur, so we throw a runtime
