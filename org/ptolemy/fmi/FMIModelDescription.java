@@ -62,6 +62,13 @@ public class FMIModelDescription {
 
     // The files field is not in the xml, but as we pass around this object,
     // add a field here for easier access.
+    
+    /** For FMI 2.0 and greater, the XML file may specify that the FMU
+     *  supports getting and setting its state. This defaults to false
+     *  if not present in the XML file. 
+     */
+    public boolean canGetAndSetFMUstate = false;
+    
     /** The list of files that were extracted from the .fmu file. */
     public List<File> files;
 

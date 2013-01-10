@@ -225,6 +225,10 @@ public class FMUFile {
             fmiModelDescription.numberOfEventIndicators = Integer.valueOf(
                     root.getAttribute("numberOfEventIndicators")).intValue();
         }
+        if (root.hasAttribute("canGetAndSetFMUstate")) {
+            fmiModelDescription.canGetAndSetFMUstate = Boolean.parseBoolean(
+                    root.getAttribute("canGetAndSetFMUstate"));
+        }
 
         // TypeDefinitions
         // NodeList is not a list, it only has getLength() and item(). #fail.
