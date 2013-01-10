@@ -1,10 +1,10 @@
-# Makefile for Ptolemy II I/O actors
+# Makefile for Java Ptolemy II IO demonstrations
 #
-# @Authors: Christopher Hylands, based on a file by Thomas M. Parks
+# @Authors: Christopher Brooks, based on a file by Thomas M. Parks
 #
-# @Version: $Id$
+# @Version: $Id: makefile 57040 2010-01-27 20:52:32Z cxh $
 #
-# @Copyright (c) 2001-2012 The Regents of the University of California.
+# @Copyright (c) 2013 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -26,66 +26,64 @@
 # CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 # ENHANCEMENTS, OR MODIFICATIONS.
 #
-#                                               PT_COPYRIGHT_VERSION_2
-#                                               COPYRIGHTENDKEY
+# 						PT_COPYRIGHT_VERSION_2
+# 						COPYRIGHTENDKEY
 
-ME =            ptolemy/actor/lib/io
+ME =		ptolemy/actor/lib/io/demo
 
-# $PTII/configure looks for the Java Communications API and sets PTJSPACES_DIR
-# in $PTII/mk/ptII.mk if was found.  Otherwise, PTCOMM_DIR is empty.
-DIRS =		$(PTCOMM_DIR) demo test
+DIRS =		AppendToFile CopyFile \
+		CopyOfCopyFile ExpressionWriter \
+		FilePortParameter ReadExpressionsCommandLine \
+		ReadStdIn StandardInput
 
-# Root of the Java directory
-ROOT =          ../../../..
+# Root of the Ptolemy II directory
+ROOT =		../../../../..
 
 CLASSPATH =	$(ROOT)
 
 # Get configuration info
-CONFIG =        $(ROOT)/mk/ptII.mk
+CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE =     io
-PTCLASSJAR = 	$(PTPACKAGE).jar
+PTPACKAGE = 	demo
+#PTCLASSJAR =
+
+# Include the .class files from these jars in PTCLASSALLJAR
+PTCLASSALLJARS = \
+	AppendToFile/AppendToFile.jar \
+	CopyFile/CopyFile.jar \
+	CopyOfCopyFile/CopyOfCopyFile.jar \
+	ExpressionWriter/ExpressionWriter.jar \
+	FilePortParameter/FilePortParameter.jar \
+	ReadExpressionsCommandLine/ReadExpressionsCommandLine.jar \
+	ReadStdIn/ReadStdIn.jar \
+	StandardInput/StandardInput.jar
+
+PTCLASSALLJAR = $(PTPACKAGE).jar
 
 # Keep this list alphabetized.
-JSRCS = \
-	CSVReader.java \
-	CSVWriter.java \
-	DirectoryListing.java \
-	ExpressionReader.java \
-	ExpressionWriter.java \
-	LineReader.java \
-	LineWriter.java \
-	FileReader.java \
-	TokenReader.java
+JSRCS =
 
-OTHER_FILES_TO_BE_JARED = \
-	DirectoryListingIcon.xml \
-	io.xml
-
-EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
+EXTRA_SRCS =	$(JSRCS)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-# Don't include demo or DIRS here, or else 'make sources' will run 'make demo'
-MISC_FILES = test
+MISC_FILES =	$(DIRS)
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	demo \
-        doc \
-	comm \
-	'CSVReader$$1.class' \
-	'CSVReader$$ExpressionScope.class' \
-	'TokenReader$$1.class' \
-	'TokenReader$$GLBFunction.class'
+	doc
 
 JCLASS = $(JSRCS:%.java=%.class)
 
 all: jclass
+	@echo "To run the demos, run 'make demo'"
+
 install: jclass jars
+
+demo: subdemo
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

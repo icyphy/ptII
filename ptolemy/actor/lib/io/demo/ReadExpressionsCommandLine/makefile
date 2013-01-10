@@ -1,10 +1,10 @@
-# Makefile for Ptolemy II I/O actors
+# Makefile for Ptolemy II IO demo
 #
-# @Authors: Christopher Hylands, based on a file by Thomas M. Parks
+# @Authors: Christopher Brooks (makefile only)
 #
-# @Version: $Id$
+# @Version: $Id: makefile 44783 2006-12-19 17:41:17Z cxh $
 #
-# @Copyright (c) 2001-2012 The Regents of the University of California.
+# @Copyright (c) 2013 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -26,66 +26,67 @@
 # CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 # ENHANCEMENTS, OR MODIFICATIONS.
 #
-#                                               PT_COPYRIGHT_VERSION_2
-#                                               COPYRIGHTENDKEY
+# 						PT_COPYRIGHT_VERSION_2
+# 						COPYRIGHTENDKEY
 
-ME =            ptolemy/actor/lib/io
-
-# $PTII/configure looks for the Java Communications API and sets PTJSPACES_DIR
-# in $PTII/mk/ptII.mk if was found.  Otherwise, PTCOMM_DIR is empty.
-DIRS =		$(PTCOMM_DIR) demo test
+ME =		ptolemy/actor/lib/io/demo/ReadExpressionsCommandLine/
 
 # Root of the Java directory
-ROOT =          ../../../..
+ROOT =		../../../../../..
 
 CLASSPATH =	$(ROOT)
 
 # Get configuration info
-CONFIG =        $(ROOT)/mk/ptII.mk
+CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE =     io
+PTPACKAGE = 	ReadExpressionsCommandLine
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
-# Keep this list alphabetized.
-JSRCS = \
-	CSVReader.java \
-	CSVWriter.java \
-	DirectoryListing.java \
-	ExpressionReader.java \
-	ExpressionWriter.java \
-	LineReader.java \
-	LineWriter.java \
-	FileReader.java \
-	TokenReader.java
+JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
-	DirectoryListingIcon.xml \
-	io.xml
+	ReadExpressionsCommandLine.xml
 
-EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
+EXTRA_SRCS = \
+	$(JSRCS) \
+	$(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-# Don't include demo or DIRS here, or else 'make sources' will run 'make demo'
-MISC_FILES = test
+MISC_FILES = $(DIRS)
 
 # make checkjunk will not report OPTIONAL_FILES as trash
-# make distclean removes OPTIONAL_FILES
+# make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	demo \
-        doc \
-	comm \
-	'CSVReader$$1.class' \
-	'CSVReader$$ExpressionScope.class' \
-	'TokenReader$$1.class' \
-	'TokenReader$$GLBFunction.class'
+	doc
 
 JCLASS = $(JSRCS:%.java=%.class)
 
+# Make clean removes $(KRUFT)
+KRUFT =
+
+# Don't include all or install rules here, we want the user
+# to run 'make demos' to run the tests.
 all: jclass
-install: jclass jars
+	@echo "To run all the demos, run 'make demo'"
+
+install: all $(PTCLASSJAR)
+
+demo: demo_ptolemy demo_vergil
+
+#demo_applet:
+#	CLASSPATH="$(CLASSPATH)" appletviewer ReadExpressionsCommandLine.htm
+
+#demo_applet_vergil:
+#	CLASSPATH="$(CLASSPATH)" appletviewer ReadExpressionsCommandLineVergil.htm
+
+demo_ptolemy:
+	"$(PTII)/bin/ptolemy" ReadExpressionsCommandLine.xml
+
+demo_vergil:
+	"$(PTII)/bin/vergil" ReadExpressionsCommandLine.xml
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
