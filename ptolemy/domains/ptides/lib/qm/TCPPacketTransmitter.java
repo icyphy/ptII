@@ -42,8 +42,8 @@ import ptolemy.data.IntToken;
 import ptolemy.data.RecordToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
-import ptolemy.data.type.BaseType;
-import ptolemy.domains.ptides.kernel.PtidesBasicDirector;
+import ptolemy.data.type.BaseType; 
+import ptolemy.domains.ptides.kernel.PtidesDirector;
 import ptolemy.domains.ptides.lib.OutputDevice;
 import ptolemy.graph.Inequality;
 import ptolemy.kernel.CompositeEntity;
@@ -196,12 +196,12 @@ public class TCPPacketTransmitter extends OutputDevice {
         super.fire();
         Director director = getDirector();
 
-        if (director == null || !(director instanceof PtidesBasicDirector)) {
+        if (director == null || !(director instanceof PtidesDirector)) {
             throw new IllegalActionException(this, "Director expected to"
                     + "be a Ptides director, but it's not.");
         }
 
-        PtidesBasicDirector ptidesDirector = (PtidesBasicDirector) director;
+        PtidesDirector ptidesDirector = (PtidesDirector) director;
 
         // add input tokens into the incompletePacket as long as packet length < MAX_SIZE
         if (input.hasToken(0)) {

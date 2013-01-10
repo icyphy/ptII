@@ -77,7 +77,7 @@ public class PtidesPreemptiveEDFDirector
      *  ptolemy.domains.ptides.kernel.PtidesBasicDirector
      */
     public PtidesPreemptiveEDFDirector(
-            ptolemy.domains.ptides.kernel.PtidesPreemptiveEDFDirector ptidesPreemptiveEDFDirector) {
+            ptolemy.domains.ptides.kernel.PtidesDirector ptidesPreemptiveEDFDirector) {
         super(ptidesPreemptiveEDFDirector);
     }
 
@@ -103,7 +103,7 @@ public class PtidesPreemptiveEDFDirector
         // have Ptides receivers). But in this case no shared code needs to be
         // generated.
         if (((CompositeActor) getComponent().getContainer())
-                .getExecutiveDirector() instanceof ptolemy.domains.ptides.kernel.PtidesBasicDirector) {
+                .getExecutiveDirector() instanceof ptolemy.domains.ptides.kernel.PtidesDirector) {
             return list;
         }
 
@@ -235,7 +235,7 @@ public class PtidesPreemptiveEDFDirector
         // have Ptides receivers). But in this case no shared code needs to be
         // generated.
         if (((CompositeActor) getComponent().getContainer())
-                .getExecutiveDirector() instanceof ptolemy.domains.ptides.kernel.PtidesBasicDirector) {
+                .getExecutiveDirector() instanceof ptolemy.domains.ptides.kernel.PtidesDirector) {
             return code.toString();
         }
 
@@ -265,7 +265,7 @@ public class PtidesPreemptiveEDFDirector
         // have Ptides receivers). But in this case no shared code needs to be
         // generated.
         if (((CompositeActor) getComponent().getContainer())
-                .getExecutiveDirector() instanceof ptolemy.domains.ptides.kernel.PtidesBasicDirector) {
+                .getExecutiveDirector() instanceof ptolemy.domains.ptides.kernel.PtidesDirector) {
             return code.toString();
         }
 
@@ -309,7 +309,7 @@ public class PtidesPreemptiveEDFDirector
         // have Ptides receivers). But in this case no shared code needs to be
         // generated.
         if (((CompositeActor) getComponent().getContainer())
-                .getExecutiveDirector() instanceof ptolemy.domains.ptides.kernel.PtidesBasicDirector) {
+                .getExecutiveDirector() instanceof ptolemy.domains.ptides.kernel.PtidesDirector) {
             return sharedCode;
         }
 
@@ -388,7 +388,7 @@ public class PtidesPreemptiveEDFDirector
         // have Ptides receivers). But in this case no shared code needs to be
         // generated.
         if (((CompositeActor) getComponent().getContainer())
-                .getExecutiveDirector() instanceof ptolemy.domains.ptides.kernel.PtidesBasicDirector) {
+                .getExecutiveDirector() instanceof ptolemy.domains.ptides.kernel.PtidesDirector) {
             return code.toString();
         }
 

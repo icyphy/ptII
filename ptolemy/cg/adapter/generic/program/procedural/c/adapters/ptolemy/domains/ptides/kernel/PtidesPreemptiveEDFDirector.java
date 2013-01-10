@@ -46,10 +46,6 @@ import ptolemy.cg.kernel.generic.program.ProgramCodeGeneratorAdapter;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.Type;
 import ptolemy.domains.modal.modal.ModalController;
-import ptolemy.domains.ptides.lib.ActuationDevice;
-import ptolemy.domains.ptides.lib.ActuatorSetup;
-import ptolemy.domains.ptides.lib.OutputDevice;
-import ptolemy.domains.ptides.lib.SensorHandler;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
 
@@ -75,7 +71,7 @@ public class PtidesPreemptiveEDFDirector extends Director {
      *  ptolemy.domains.ptides.kernel.PtidesBasicDirector
      */
     public PtidesPreemptiveEDFDirector(
-            ptolemy.domains.ptides.kernel.PtidesPreemptiveEDFDirector ptidesPreemptiveEDFDirector) {
+            ptolemy.domains.ptides.kernel.PtidesDirector ptidesPreemptiveEDFDirector) {
         super(ptidesPreemptiveEDFDirector);
     }
 
@@ -108,7 +104,7 @@ public class PtidesPreemptiveEDFDirector extends Director {
         // have Ptides receivers). But in this case no shared code needs to be
         // generated.
         if (!(((CompositeActor) getComponent().getContainer())
-                .getExecutiveDirector() instanceof ptolemy.domains.ptides.kernel.PtidesBasicDirector)) {
+                .getExecutiveDirector() instanceof ptolemy.domains.ptides.kernel.PtidesDirector)) {
             code.append(_templateParser.getCodeStream().getCodeBlock(
                     "initPIBlock"));
         }
@@ -157,7 +153,7 @@ public class PtidesPreemptiveEDFDirector extends Director {
         // because ports inside of the EmbeddedCodeActor needs to have pointers
         // to event heads declared, which is done in the previous method.
         if (((CompositeActor) getComponent().getContainer())
-                .getExecutiveDirector() instanceof ptolemy.domains.ptides.kernel.PtidesBasicDirector) {
+                .getExecutiveDirector() instanceof ptolemy.domains.ptides.kernel.PtidesDirector) {
             return code.toString();
         }
 
@@ -294,7 +290,7 @@ public class PtidesPreemptiveEDFDirector extends Director {
         // have Ptides receivers). But in this case no shared code needs to be
         // generated.
         if (((CompositeActor) getComponent().getContainer())
-                .getExecutiveDirector() instanceof ptolemy.domains.ptides.kernel.PtidesBasicDirector) {
+                .getExecutiveDirector() instanceof ptolemy.domains.ptides.kernel.PtidesDirector) {
             return sharedCode;
         }
 
@@ -372,11 +368,11 @@ public class PtidesPreemptiveEDFDirector extends Director {
 
         for (Actor actor : (List<Actor>) ((CompositeActor) _director
                 .getContainer()).deepEntityList()) {
-            if (actor instanceof OutputDevice) {
-                code.append("void Actuation_"
-                        + CodeGeneratorAdapter.generateName((NamedObj) actor)
-                        + "(void);" + _eol);
-            }
+//            if (actor instanceof OutputDevice) {
+//                code.append("void Actuation_"
+//                        + CodeGeneratorAdapter.generateName((NamedObj) actor)
+//                        + "(void);" + _eol);
+//            }
         }
 
         return code.toString();
@@ -508,15 +504,15 @@ public class PtidesPreemptiveEDFDirector extends Director {
         for (Actor actor : (List<Actor>) ((CompositeActor) _director
                 .getContainer()).deepEntityList()) {
             // FIXME: should I be using Interrupt/ActuationDevice or just Input/OutputDevice?
-            if (actor instanceof ActuatorSetup) {
-                actuators.put(actor, Integer.valueOf(actuatorIndex));
-                actuatorIndex++;
-            }
-
-            if (actor instanceof SensorHandler) {
-                sensors.put(actor, Integer.valueOf(sensorIndex));
-                sensorIndex++;
-            }
+//            if (actor instanceof ActuatorSetup) {
+//                actuators.put(actor, Integer.valueOf(actuatorIndex));
+//                actuatorIndex++;
+//            }
+//
+//            if (actor instanceof SensorHandler) {
+//                sensors.put(actor, Integer.valueOf(sensorIndex));
+//                sensorIndex++;
+//            }
         }
     }
 
@@ -538,23 +534,23 @@ public class PtidesPreemptiveEDFDirector extends Director {
             NamedProgramCodeGeneratorAdapter adapter = (NamedProgramCodeGeneratorAdapter) getCodeGenerator()
                     .getAdapter(actor);
 
-            if (actor instanceof ActuationDevice) {
-                code.append("void Actuation_"
-                        + CodeGeneratorAdapter.generateName((NamedObj) actor)
-                        + "() {" + _eol);
-                code.append(((ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.ptides.lib.OutputDevice) adapter)
-                        .generateActuatorActuationFuncCode());
-                code.append("}" + _eol);
-            }
-
-            if (actor instanceof SensorHandler) {
-                code.append("void Sensing_"
-                        + CodeGeneratorAdapter.generateName((NamedObj) actor)
-                        + "() {" + _eol);
-                code.append(((ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.ptides.lib.InputDevice) adapter)
-                        .generateSensorSensingFuncCode());
-                code.append("}" + _eol);
-            }
+//            if (actor instanceof ActuationDevice) {
+//                code.append("void Actuation_"
+//                        + CodeGeneratorAdapter.generateName((NamedObj) actor)
+//                        + "() {" + _eol);
+//                code.append(((ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.ptides.lib.OutputDevice) adapter)
+//                        .generateActuatorActuationFuncCode());
+//                code.append("}" + _eol);
+//            }
+//
+//            if (actor instanceof SensorHandler) {
+//                code.append("void Sensing_"
+//                        + CodeGeneratorAdapter.generateName((NamedObj) actor)
+//                        + "() {" + _eol);
+//                code.append(((ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.ptides.lib.InputDevice) adapter)
+//                        .generateSensorSensingFuncCode());
+//                code.append("}" + _eol);
+//            }
             code.append("void "
                     + CodeGeneratorAdapter.generateName((NamedObj) actor)
                     + "() " + "{" + _eol);

@@ -56,7 +56,7 @@ public class PtidesTopLevelDirector extends Director
      *  ptolemy.domains.ptides.kernel.PtidesTopLevelDirector
      */
     public PtidesTopLevelDirector(
-            ptolemy.domains.ptides.kernel.PtidesTopLevelDirector ptidesTopLevelDirector) {
+            ptolemy.domains.ptides.kernel.PtidesDirector ptidesTopLevelDirector) {
         super(ptidesTopLevelDirector);
     }
 

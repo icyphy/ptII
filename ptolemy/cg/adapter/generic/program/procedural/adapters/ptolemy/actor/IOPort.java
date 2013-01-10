@@ -120,7 +120,7 @@ public class IOPort extends NamedProgramCodeGeneratorAdapter implements
                     // FIXME: I have no idea why generateGetCode of the receiver class is not called
                     // (for the CaseDirector??). So this is a hack that keeps PtidyOS working...
                     if (port.getContainer() != null
-                            && ((Actor) port.getContainer()).getDirector() instanceof ptolemy.domains.ptides.kernel.PtidesBasicDirector) {
+                            && ((Actor) port.getContainer()).getDirector() instanceof ptolemy.domains.ptides.kernel.PtidesDirector) {
                         return receivers[channelIndex][0]
                                 .generateGetCode(offset);
                     }

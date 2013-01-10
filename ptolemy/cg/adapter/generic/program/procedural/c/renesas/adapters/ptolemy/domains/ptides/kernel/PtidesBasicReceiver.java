@@ -40,6 +40,7 @@ import ptolemy.kernel.util.IllegalActionException;
  *  @Pt.ProposedRating Red (jiazou)
  *  @Pt.AcceptedRating Red (jiazou)
  */
+@Deprecated
 public class PtidesBasicReceiver
         extends
         ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.ptides.kernel.PtidesBasicReceiver {
@@ -50,7 +51,7 @@ public class PtidesBasicReceiver
      *  @exception IllegalActionException If throw by the superclass.
      */
     public PtidesBasicReceiver(
-            ptolemy.domains.ptides.kernel.PtidesBasicReceiver receiver)
+            ptolemy.domains.ptides.kernel.PtidesReceiver receiver)
             throws IllegalActionException {
         super(receiver);
     }

@@ -43,9 +43,6 @@ import ptolemy.cg.kernel.generic.program.CodeStream;
 import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
 import ptolemy.data.StringToken;
 import ptolemy.data.expr.Parameter;
-import ptolemy.domains.ptides.lib.ActuationDevice;
-import ptolemy.domains.ptides.lib.ActuatorSetup;
-import ptolemy.domains.ptides.lib.SensorHandler;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
 
@@ -68,12 +65,12 @@ public class PtidesPreemptiveEDFDirector
         ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.ptides.kernel.PtidesPreemptiveEDFDirector {
 
     /** Construct the code generator adapter associated with the given
-     *  PtidesBasicDirector.
+     *  PtidesDirector.
      *  @param ptidesPreemptiveEDFDirector The associated director
-     *  ptolemy.domains.ptides.kernel.PtidesBasicDirector
+     *  ptolemy.domains.ptides.kernel.PtidesDirector
      */
     public PtidesPreemptiveEDFDirector(
-            ptolemy.domains.ptides.kernel.PtidesPreemptiveEDFDirector ptidesPreemptiveEDFDirector) {
+            ptolemy.domains.ptides.kernel.PtidesDirector ptidesPreemptiveEDFDirector) {
         super(ptidesPreemptiveEDFDirector);
     }
 
@@ -148,7 +145,7 @@ public class PtidesPreemptiveEDFDirector
         // have Ptides receivers). But in this case no shared code needs to be
         // generated.
         if (((CompositeActor) getComponent().getContainer())
-                .getExecutiveDirector() instanceof ptolemy.domains.ptides.kernel.PtidesBasicDirector) {
+                .getExecutiveDirector() instanceof ptolemy.domains.ptides.kernel.PtidesDirector) {
             return code.toString();
         }
 
@@ -183,7 +180,7 @@ public class PtidesPreemptiveEDFDirector
         // because ports inside of the EmbeddedCodeActor needs to have pointers
         // to event heads declared, which is done in the previous method.
         if (((CompositeActor) getComponent().getContainer())
-                .getExecutiveDirector() instanceof ptolemy.domains.ptides.kernel.PtidesBasicDirector) {
+                .getExecutiveDirector() instanceof ptolemy.domains.ptides.kernel.PtidesDirector) {
             return code.toString();
         }
 
@@ -199,7 +196,7 @@ public class PtidesPreemptiveEDFDirector
         // have Ptides receivers). But in this case no shared code needs to be
         // generated.
         if (((CompositeActor) getComponent().getContainer())
-                .getExecutiveDirector() instanceof ptolemy.domains.ptides.kernel.PtidesBasicDirector) {
+                .getExecutiveDirector() instanceof ptolemy.domains.ptides.kernel.PtidesDirector) {
             return code.toString();
         }
 
@@ -248,7 +245,7 @@ public class PtidesPreemptiveEDFDirector
         // have Ptides receivers). But in this case no shared code needs to be
         // generated.
         if (((CompositeActor) getComponent().getContainer())
-                .getExecutiveDirector() instanceof ptolemy.domains.ptides.kernel.PtidesBasicDirector) {
+                .getExecutiveDirector() instanceof ptolemy.domains.ptides.kernel.PtidesDirector) {
             return sharedCode;
         }
 
@@ -280,36 +277,36 @@ public class PtidesPreemptiveEDFDirector
         String devicePortId = "";
         String deviceId = "";
         StringBuffer actuatorIds = new StringBuffer();
-        for (Actor actor : (List<Actor>) ((CompositeActor) _director
-                .getContainer()).deepEntityList()) {
-            if (actor instanceof ActuatorSetup) {
-                actuators.put(actor, Integer.valueOf(actuatorIndex));
-                actuatorIndex++;
-
-                devicePortId = ((StringToken) ((Parameter) ((ActuatorSetup) actor)
-                        .getAttribute("devicePortId")).getToken())
-                        .stringValue();
-                _devicePortIds.put(actor, devicePortId);
-
-                deviceId = ((StringToken) ((Parameter) ((ActuatorSetup) actor)
-                        .getAttribute("deviceId")).getToken()).stringValue();
-                _deviceIds.put(actor, deviceId);
-            }
-
-            if (actor instanceof SensorHandler) {
-                sensors.put(actor, Integer.valueOf(sensorIndex));
-                sensorIndex++;
-
-                devicePortId = ((StringToken) ((Parameter) ((SensorHandler) actor)
-                        .getAttribute("devicePortId")).getToken())
-                        .stringValue();
-                _devicePortIds.put(actor, devicePortId);
-
-                deviceId = ((StringToken) ((Parameter) ((SensorHandler) actor)
-                        .getAttribute("deviceId")).getToken()).stringValue();
-                _deviceIds.put(actor, deviceId);
-            }
-        }
+//        for (Actor actor : (List<Actor>) ((CompositeActor) _director
+//                .getContainer()).deepEntityList()) {
+//            if (actor instanceof ActuatorSetup) {
+//                actuators.put(actor, Integer.valueOf(actuatorIndex));
+//                actuatorIndex++;
+//
+//                devicePortId = ((StringToken) ((Parameter) ((ActuatorSetup) actor)
+//                        .getAttribute("devicePortId")).getToken())
+//                        .stringValue();
+//                _devicePortIds.put(actor, devicePortId);
+//
+//                deviceId = ((StringToken) ((Parameter) ((ActuatorSetup) actor)
+//                        .getAttribute("deviceId")).getToken()).stringValue();
+//                _deviceIds.put(actor, deviceId);
+//            }
+//
+//            if (actor instanceof SensorHandler) {
+//                sensors.put(actor, Integer.valueOf(sensorIndex));
+//                sensorIndex++;
+//
+//                devicePortId = ((StringToken) ((Parameter) ((SensorHandler) actor)
+//                        .getAttribute("devicePortId")).getToken())
+//                        .stringValue();
+//                _devicePortIds.put(actor, devicePortId);
+//
+//                deviceId = ((StringToken) ((Parameter) ((SensorHandler) actor)
+//                        .getAttribute("deviceId")).getToken()).stringValue();
+//                _deviceIds.put(actor, deviceId);
+//            }
+//        }
 
         //        for (int i = 0; i < maxNumSensorInputs - sensors.size(); i++) {
         //            args.add("");
@@ -366,14 +363,14 @@ public class PtidesPreemptiveEDFDirector
             NamedProgramCodeGeneratorAdapter adapter = (NamedProgramCodeGeneratorAdapter) getCodeGenerator()
                     .getAdapter(actor);
 
-            if (actor instanceof ActuationDevice) {
-                code.append("void Actuation_"
-                        + CodeGeneratorAdapter.generateName((NamedObj) actor)
-                        + "() {" + _eol);
-                code.append(((ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.ptides.lib.OutputDevice) adapter)
-                        .generateActuatorActuationFuncCode());
-                code.append("}" + _eol);
-            }
+//            if (actor instanceof ActuationDevice) {
+//                code.append("void Actuation_"
+//                        + CodeGeneratorAdapter.generateName((NamedObj) actor)
+//                        + "() {" + _eol);
+//                code.append(((ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.ptides.lib.OutputDevice) adapter)
+//                        .generateActuatorActuationFuncCode());
+//                code.append("}" + _eol);
+//            }
 
             String fireFunctionParameters = adapter.getFireFunctionParameters();
             code.append("void "
@@ -403,7 +400,7 @@ public class PtidesPreemptiveEDFDirector
         // have Ptides receivers). But in this case no shared code needs to be
         // generated.
         if (((CompositeActor) getComponent().getContainer())
-                .getExecutiveDirector() instanceof ptolemy.domains.ptides.kernel.PtidesBasicDirector) {
+                .getExecutiveDirector() instanceof ptolemy.domains.ptides.kernel.PtidesDirector) {
             return code.toString();
         }
 
@@ -430,12 +427,12 @@ public class PtidesPreemptiveEDFDirector
 
         for (Actor actor : (List<Actor>) ((CompositeActor) _director
                 .getContainer()).deepEntityList()) {
-            if (actor instanceof SensorHandler) {
-                code.append("void "
-                        + CodeGeneratorAdapter.generateName((NamedObj) actor)
-                        + "(streaming chanend schedulerChannel, const Time &timestamp);"
-                        + _eol);
-            }
+//            if (actor instanceof SensorHandler) {
+//                code.append("void "
+//                        + CodeGeneratorAdapter.generateName((NamedObj) actor)
+//                        + "(streaming chanend schedulerChannel, const Time &timestamp);"
+//                        + _eol);
+//            }
         }
 
         return code.toString();

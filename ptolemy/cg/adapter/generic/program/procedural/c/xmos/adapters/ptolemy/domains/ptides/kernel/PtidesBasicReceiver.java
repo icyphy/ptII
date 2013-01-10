@@ -63,7 +63,7 @@ public class PtidesBasicReceiver
      *  @exception IllegalActionException If throw by the superclass.
      */
     public PtidesBasicReceiver(
-            ptolemy.domains.ptides.kernel.PtidesBasicReceiver receiver)
+            ptolemy.domains.ptides.kernel.PtidesReceiver receiver)
             throws IllegalActionException {
         super(receiver);
     }

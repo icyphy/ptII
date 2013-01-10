@@ -41,7 +41,8 @@ import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.RecordToken;
 import ptolemy.data.type.BaseType;
-import ptolemy.domains.ptides.kernel.PtidesBasicDirector;
+import ptolemy.domains.ptides.kernel.PtidesDirector;
+import ptolemy.domains.ptides.kernel.PtidesDirector;
 import ptolemy.domains.ptides.lib.InputDevice;
 import ptolemy.graph.Inequality;
 import ptolemy.kernel.CompositeEntity;
@@ -97,12 +98,12 @@ public class TCPPacketReceiver extends InputDevice {
         super.fire();
         Director director = getDirector();
 
-        if (director == null || !(director instanceof PtidesBasicDirector)) {
+        if (director == null || !(director instanceof PtidesDirector)) {
             throw new IllegalActionException(this, "Director expected to"
                     + "be a Ptides director, but it's not.");
         }
 
-        PtidesBasicDirector ptidesDirector = (PtidesBasicDirector) director;
+        PtidesDirector ptidesDirector = (PtidesDirector) director;
 
         // consume input
         if (input.hasToken(0)) {
@@ -144,10 +145,11 @@ public class TCPPacketReceiver extends InputDevice {
                         .get(microstep))).intValue();
 
                 if (output != null) {
-                    ptidesDirector.setTag(tokenTimestamp, tokenMicrostep);
+                    // FIXME setTag not supported in Ptides director
+                    //ptidesDirector.setTag(tokenTimestamp, tokenMicrostep);
                     output.send(0, singleEventRecord.get(payload));
                 }
-                ptidesDirector.setTag(lastModelTime, lastMicrostep);
+                //ptidesDirector.setTag(lastModelTime, lastMicrostep);
             }
         }
         //ptidesDirector.setTag(lastModelTime, lastMicrostep);
