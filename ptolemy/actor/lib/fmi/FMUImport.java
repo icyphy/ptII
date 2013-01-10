@@ -63,6 +63,7 @@ import ptolemy.data.StringToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.FileParameter;
 import ptolemy.data.expr.Parameter;
+import ptolemy.data.expr.StringParameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.domains.continuous.kernel.ContinuousDirector;
 import ptolemy.domains.continuous.kernel.ContinuousStatefulComponent;
@@ -163,10 +164,20 @@ public class FMUImport extends TypedAtomicActor implements
         // The value of this parameter cannot be edited once the FMU has been imported.
         fmuFile.setVisibility(Settable.NOT_EDITABLE);
         
+        fmiVersion = new StringParameter(this, "fmiVersion");
+        fmiVersion.setExpression("1.0");
+        fmiVersion.setVisibility(Settable.NOT_EDITABLE);
+        
         suppressWarnings = new Parameter(this, "suppressWarnings");
         suppressWarnings.setTypeEquals(BaseType.BOOLEAN);
         suppressWarnings.setExpression("false");
     }
+    
+    /** The FMI version of the FMU. This is a string that defaults to "1.0"
+     *  if the FMU file does not specify a version, and otherwise is the
+     *  version specified in the file.
+     */
+    public StringParameter fmiVersion;
 
     /** The Functional Mock-up Unit (FMU) file.  The FMU file is a zip
      *  file that contains a file named "modelDescription.xml" and any
@@ -307,6 +318,10 @@ public class FMUImport extends TypedAtomicActor implements
 
             }
             
+            if (time >= 2.9) {
+                Math.sin(3.14159);
+            }
+
             _refinedStepSize = -1.0;
             
             // In FMI 1.0, the last argument to fmiDoStep being non-zero
@@ -344,7 +359,7 @@ public class FMUImport extends TypedAtomicActor implements
                     if (fmiFlag == FMILibrary.FMIStatus.fmiOK) {
                         // Sanity check the time to make sure it makes sense.
                         double lastSuccessfulTime = valueBuffer.get(0);
-                        if (lastSuccessfulTime >= time) {
+                        if (lastSuccessfulTime >= _lastCommitTime.getDoubleValue()) {
                             // We want lastSuccessfulTime - lastCommitTime, which
                             // is not necessarily equal to time. In particular,
                             // if using an RK solver, we may be rejecting a doStep
@@ -873,7 +888,7 @@ public class FMUImport extends TypedAtomicActor implements
         }
 
         _fmiComponent = (Pointer) _fmiInstantiateSlave.invoke(Pointer.class,
-                new Object[] { modelIdentifier, _fmiModelDescription.guid,
+                new Object[] { getFullName(), _fmiModelDescription.guid,
                         fmuLocation, mimeType, timeout, visible, interactive,
                         callbacks, loggingOn });
 
@@ -899,11 +914,18 @@ public class FMUImport extends TypedAtomicActor implements
         // half, if the director is a ContinuousDirector.
         // Otherwise, make no suggestion.
         if (_refinedStepSize >= 0.0) {
+            if (_debugging) {
+                _debug("===> Suggesting a refined step size of " + _refinedStepSize);
+            }
             return _refinedStepSize;
         }
         Director director = getDirector();
         if (director instanceof ContinuousDirector) {
-            return ((ContinuousDirector) director).getCurrentStepSize()*0.5;
+            double half = ((ContinuousDirector) director).getCurrentStepSize()*0.5;
+            if (_debugging) {
+                _debug("===> Suggesting a refined step size of half the current step size, or " + half);
+            }
+            return half;
         }
         return Double.MAX_VALUE;
     }
@@ -915,6 +937,17 @@ public class FMUImport extends TypedAtomicActor implements
      *   back further than the last committed time.
      */
     public void rollBackToCommittedState() throws IllegalActionException {
+        // Restore the state to state set in initialize() or postfire()
+        // using fmiSetFMUState.
+        // FIXME: During initialize, the FMUstate argument should be the
+        // address of a null-valued pointer. During wrapup, the memory
+        // should be freed and the FMUstate pointer set to null. If it
+        // is already null, the call should be ignored.
+        /*
+fmiStatus fmiGetFMUstate (fmiComponent c, fmiFMUstate* FMUstate);
+fmiStatus fmiSetFMUstate (fmiComponent c, fmiFMUstate FMUstate);
+fmiStatus fmiFreeFMUstate(fmiComponent c, fmiFMUstate* FMUstate);
+         */
         if (!((BooleanToken)suppressWarnings.getToken()).booleanValue()) {
             try {
                 boolean response = MessageHandler.yesNoCancelQuestion(
@@ -1358,6 +1391,10 @@ public class FMUImport extends TypedAtomicActor implements
             // FIXME: ignore errors loading shared libraries.
             // This should be made a parameter.
             _fmiModelDescription = FMUFile.parseFMUFile(fmuFileName, true);
+            
+            if (_fmiModelDescription.fmiVersion != null) {
+                fmiVersion.setExpression(_fmiModelDescription.fmiVersion);
+            }
 
             if (_fmiModelDescription.nativeLibrary != null) {
                 _fmiDoStep = _fmiModelDescription.nativeLibrary
@@ -1375,6 +1412,14 @@ public class FMUImport extends TypedAtomicActor implements
                     // The FMU has not provided the function.
                     _fmiGetRealStatus = null;
                 }
+            }
+            if (_fmiModelDescription.canGetAndSetFMUstate) {
+                // FIXME: Retrieve the following 2.0 functions:
+                /*
+fmiStatus fmiGetFMUstate (fmiComponent c, fmiFMUstate* FMUstate);
+fmiStatus fmiSetFMUstate (fmiComponent c, fmiFMUstate FMUstate);
+fmiStatus fmiFreeFMUstate(fmiComponent c, fmiFMUstate* FMUstate);
+                 */
             }
 
         } catch (IOException ex) {
