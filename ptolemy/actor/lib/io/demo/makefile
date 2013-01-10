@@ -32,7 +32,7 @@
 ME =		ptolemy/actor/lib/io/demo
 
 DIRS =		AppendToFile CopyFile \
-		CopyOfCopyFile ExpressionWriter \
+		CopyOfCopyFile \
 		FilePortParameter ReadExpressionsCommandLine \
 		ReadStdIn StandardInput
 
