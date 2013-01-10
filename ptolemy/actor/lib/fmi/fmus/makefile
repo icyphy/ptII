@@ -1,10 +1,10 @@
-# Makefile for Functional Mock-up Interface actors
+# Makefile for Java Ptolemy II Functional Mock-up Interface (FMI) FMU files
 #
-# @Authors: Christopher Brooks, based on a file by Thomas M. Parks
+# @Author: Christopher Brooks (makefile only)
 #
-# @Version: $Id$
+# @Version: $Id: makefile 64744 2012-10-01 22:51:43Z cxh $
 #
-# @Copyright (c) 2011-2013 The Regents of the University of California.
+# @Copyright (c) 2013 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -29,54 +29,47 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-# This directory contains polymorphic actors.
+ME =		ptolemy/actor/lib/fmi/fmus
 
-ME =		ptolemy/actor/lib/fmi
+DIRS =		stepCounter
 
-DIRS = 		fmus demo test
+# Root of the Ptolemy II directory
+ROOT =		../../../../..
 
-# Root of the Java directory
-ROOT =		../../../..
-
-CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(JNA_JAR)
+CLASSPATH =	$(ROOT)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	fmi
-PTCLASSJAR = 	$(PTPACKAGE).jar
+PTPACKAGE = 	fmus
+# PTCLASSJAR =
+
+# Include the .class files from these jars in PTCLASSALLJAR
+PTCLASSALLJARS = \
+	stepCounter/stepCounter.jar
+
+PTCLASSALLJAR = $(PTPACKAGE).jar
 
 # Keep this list alphabetized.
-JSRCS = \
-	FMUImport.java
+JSRCS =
 
-OTHER_FILES_TO_BE_JARED = \
-	fmi.xml
-
-EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
-
+EXTRA_SRCS =	$(JSRCS)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-# Don't set MISC_FILES to $(DIRS) or else 'make sources' will try to invoke the demos.
-MISC_FILES = test
+MISC_FILES =	$(DIRS)
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	demo \
-	doc \
-	'FMUImport$$1.class' \
-	'FMUImport$$Output.class'
+	doc
 
 JCLASS = $(JSRCS:%.java=%.class)
 
-
-all: jclass
-install: jclass jars
-
+all: suball 
+install: subinstall jars
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
