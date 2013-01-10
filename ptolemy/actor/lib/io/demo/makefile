@@ -54,7 +54,6 @@ PTCLASSALLJARS = \
 	AppendToFile/AppendToFile.jar \
 	CopyFile/CopyFile.jar \
 	CopyOfCopyFile/CopyOfCopyFile.jar \
-	ExpressionWriter/ExpressionWriter.jar \
 	FilePortParameter/FilePortParameter.jar \
 	ReadExpressionsCommandLine/ReadExpressionsCommandLine.jar \
 	ReadStdIn/ReadStdIn.jar \
