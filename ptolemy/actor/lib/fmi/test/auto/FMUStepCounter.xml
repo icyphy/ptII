@@ -16,19 +16,9 @@
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[882, 532]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.1932435321787471">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{340.0, 252.0}">
-    </property>
-    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The source code for this FMU is in&#10;$PTII/ptolemy/actor/lib/fmi/fmus/stepCounter/src/sources&#10;To build the FMU file, do this:&#10;&#10;&gt; cd $PTII/ptolemy/actor/lib/fmi/fmus/&#10;&gt; make&#10;&#10;The resulting .fmu file will&#10;be in $PTII/ptolemy/actor/lib/fmi/fmus/stepCounter/stepCounter.fmu&#10;which is referenced by these instances of the FMU.">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="[-75.0, 200.0]">
-            <property name="relativeTo" class="ptolemy.kernel.util.StringAttribute">
-            </property>
-            <property name="relativeToElementName" class="ptolemy.kernel.util.StringAttribute">
-            </property>
-        </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{348.30859375, 223.1651376146789}">
     </property>
     <property name="TestExceptionAttribute" class="ptolemy.actor.lib.TestExceptionAttribute">
         <property name="correctExceptionMessage" class="ptolemy.data.expr.StringParameter" value="FMU discarded a step, rejecting the director's step size. But the director has not handled it. Hence, this director is incompatible with this FMU.&#10;  in .FMUStepCounter.stepCounter and .FMUStepCounter.SDF Director">
@@ -46,6 +36,20 @@
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This test is expected to throw an exception.&#10;The stepCounter FMU discards a step at time&#10;1.0, because it is trying to realize a superdense&#10;time discontinuity. The SDF director cannot handle&#10;this, so this FMU cannot be used with SDF.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[365.0, 110.0]">
+        </property>
+    </property>
+    <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The source code for this FMU is in&#10;$PTII/vendors/fmusdk/src/models/stepCounter&#10;To build the FMU file, do this:&#10;&#10;&gt; cd $PTII/vendors/fmusdk/src/models&#10;&gt; make stepCounter&#10;&#10;The resulting .fmu file will&#10;be in $PTII/vendors/fmusdk/fmu/cs&#10;which then needs to be copied to the test directory&#10;where this model is stored.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="[-15.0, 160.0]">
+        </property>
+    </property>
+    <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.8,0.0,0.2,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="FMI 1.0 version">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 75.0]">
         </property>
     </property>
     <entity name="Test" class="ptolemy.actor.lib.Test">
@@ -79,7 +83,7 @@
         </configure>
     </entity>
     <entity name="stepCounter2" class="ptolemy.actor.lib.fmi.FMUImport">
-        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="/ptII/ptolemy/actor/lib/fmi/fmus/stepCounter/stepCounter.fmu">
+        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="stepCounter.fmu">
         </property>
         <property name="suppressWarnings" class="ptolemy.data.expr.Parameter" value="true">
         </property>

@@ -4,13 +4,13 @@
 <entity name="FMUStepCounterContinuous" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={5, 22, 1195, 801}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={5, 22, 1166, 709}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[961, 691]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[932, 599]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.4118963054905451">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{340.0, 252.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{320.42919921875, 225.47925440194547}">
     </property>
     <property name="Continuous Director" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="3.0">
@@ -24,10 +24,18 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[435.0, 25.0]">
         </property>
     </property>
-    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The source code for this FMU is in&#10;$PTII/ptolemy/actor/lib/fmi/fmus/stepCounter/src/sources&#10;To build the FMU file, do this:&#10;&#10;&gt; cd $PTII/ptolemy/actor/lib/fmi/fmus/&#10;&gt; make&#10;&#10;The resulting .fmu file will&#10;be in $PTII/ptolemy/actor/lib/fmi/fmus/stepCounter/stepCounter.fmu&#10;which is referenced by these instances of the FMU.">
+    <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The source code for this FMU is in&#10;$PTII/vendors/fmusdk/src/models/stepCounter&#10;To build the FMU file, do this:&#10;&#10;&gt; cd $PTII/vendors/fmusdk/src/models&#10;&gt; make stepCounter&#10;&#10;The resulting .fmu file will&#10;be in $PTII/vendors/fmusdk/fmu/cs&#10;which then needs to be copied to the test directory&#10;where this model is stored.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="[15.0, 235.0]">
+        <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="[-10.0, 155.0]">
+        </property>
+    </property>
+    <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.8,0.0,0.2,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="FMI 1.0 version">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 70.0]">
         </property>
     </property>
     <entity name="Test" class="ptolemy.actor.lib.Test">
@@ -61,7 +69,7 @@
         </configure>
     </entity>
     <entity name="stepCounter2" class="ptolemy.actor.lib.fmi.FMUImport">
-        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="/ptII/ptolemy/actor/lib/fmi/fmus/stepCounter/stepCounter.fmu">
+        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="stepCounter.fmu">
         </property>
         <property name="suppressWarnings" class="ptolemy.data.expr.Parameter" value="true">
         </property>

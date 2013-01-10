@@ -210,10 +210,18 @@ public class FMUImport extends TypedAtomicActor implements
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == fmuFile) {
+            // This should not occur because the file is not editable.
             try {
                 _updateParameters();
             } catch (NameDuplicationException e) {
                 throw new IllegalActionException(this, e, "Name duplication");
+            }
+        } else if (attribute == fmiVersion) {
+            try {
+                _fmiVersion = Double.parseDouble(fmiVersion.stringValue());
+            } catch (NumberFormatException ex) {
+                throw new IllegalActionException(this,
+                        "Invalid fmiVersion. Required to be of the form n.m, where n and m are natural numbers.");
             }
         }
         super.attributeChanged(attribute);
@@ -250,35 +258,20 @@ public class FMUImport extends TypedAtomicActor implements
         }
     }
 
-    /** Read data from output ports, set the input ports and invoke
-     * fmiDoStep() of the slave fmu.
-     *
-     * <p>Note that we get the outputs <b>before</b> invoking
-     * fmiDoStep() of the slave fmu so that we can get the data for
-     * time 0.  This is done so that FMUs can share initialization
-     * data if necessary.  For details, see the Section 3.4, Pseudo
-     * Code Example in the FMI-1.0 Co-simulation Specification at
-     * <a href="http://www.modelisar.com/specifications/FMI_for_CoSimulation_v1.0.pdf">http://www.modelisar.com/specifications/FMI_for_CoSimulation_v1.0.pdf</a>.
-     * For an explanation, see figure 4 of
-     * <br>
-     * Michael Wetter,
-     * "<a href="http://dx.doi.org/10.1080/19401493.2010.518631">Co-simulation of building energy and control systems with the Building Controls Virtual Test Bed</a>,"
-     * Journal of Building Performance Simulation, Volume 4, Issue 3, 2011.
-     *
-     *  @exception IllegalActionException If there is no director.
+    /** Invoke fmiDoStep() of the slave FMU, if necessary to catch
+     *  up to current time, and then set the (known) inputs of the
+     *  FMU and retrieve and send out any outputs for which all
+     *  inputs on which the output depends are known.
+     *  @exception IllegalActionException If FMU indicates a failure.
      */
     public void fire() throws IllegalActionException {
         super.fire();
         if (_debugging) {
             _debug("FMUImport.fire()");
         }
-
-        _checkFmi();
-
-        String modelIdentifier = _fmiModelDescription.modelIdentifier;
         
         ////////////////
-        // If time has advanced since the last call to fire(), invoke
+        // If time has changed since the last call to fire(), invoke
         // fmiDoStep() with the current data before updating the inputs
         // of the FMU. The current value of the inputs will be the
         // values set on the last call to fire().
@@ -288,170 +281,11 @@ public class FMUImport extends TypedAtomicActor implements
         if (director instanceof SuperdenseTimeDirector) {
             currentMicrostep = ((SuperdenseTimeDirector)director).getIndex();
         }
-        int timeAdvance = currentTime.compareTo(_lastFireTime);
-        if (timeAdvance > 0 || (timeAdvance == 0 && currentMicrostep > _lastFireMicrostep)) {
-            // Time has advanced since the last invocation of fire or initialize.
-            // Call fmiDoStep(), but be sure to pass it the _lastFireTime,
-            // not the current time. It needs to update from that last firing
-            // time to the current time.
-            // NOTE: FMI-1.0 and 2.0 use doubles for time.
-            double time = _lastFireTime.getDoubleValue();
-            // Subtlety here: The step size computed below may not match the current
-            // step size of the enclosing continuous director. In particular, at
-            // the start of the next integration interval, this FMU is being asked
-            // for its output at the _start_ of the interval. That time matches
-            // the _end_ of the previous interval. Thus, it will appear here
-            // that the step size is 0.0, but it is actually not.
-            // As a consequence, an FMU that wants to produce an output
-            // at a microstep other than 0 needs to actually insist on _three_
-            // (or more) firings at that time. One to produce the output at the end
-            // of the previous interval, one to produce the discrete value at
-            // microstep 1, and one to produce the output at the _start_ of
-            // of the next interval. Ugh. This makes it really hard to write
-            // FMUs that control step sizes.
-            double stepSize = currentTime.subtract(_lastFireTime).getDoubleValue();
-
-            if (_debugging) {
-                _debug("FMIImport.fire(): about to call " + modelIdentifier
-                        + "_fmiDoStep(Component, /* time */ " + time
-                        + ", /* stepSize */" + stepSize + ", /* newStep */ 1)");
-
-            }
-            
-            if (time >= 2.9) {
-                Math.sin(3.14159);
-            }
-
-            _refinedStepSize = -1.0;
-            
-            // In FMI 1.0, the last argument to fmiDoStep being non-zero
-            // indicates that this is a new step, not a repeat of a previous step.
-            // FIXME: The mechanism in FMI 2.0 is different, where the last argument to
-            // fmiDoStep is noSetFMUStatePriorToCurrentPoint, which is true to indicate
-            // that there will be no backtracking past the time argument of this
-            // doStep(). This argument should be true in the first invocation of
-            // fire() in every iteration, and false in every subsequent iteration
-            // of fire(). This promises that fmiSetFMUState() will not be called
-            // for times earlier than time, allowing the FMU to discard snapshots
-            // of the state. Of course, this will not work for FMUs that do not
-            // support fmiSetFMUState(), as indicated by the canGetAndSetFMUstate
-            // flag in the XML file.
-            int fmiFlag = ((Integer) _fmiDoStep.invokeInt(new Object[] {
-                    _fmiComponent, time, stepSize, (byte) 1 })).intValue();
-
-            if (fmiFlag == FMILibrary.FMIStatus.fmiDiscard) {
-                // Step size is rejected. Handle this.
-                _stepSizeRejected = true;
-                
-                if (_debugging) {
-                    _debug("Rejected step size of " + stepSize + " at time " + time);
-                }
-
-                if (_fmiGetRealStatus != null) {
-                    // The FMU has provided a function to query for
-                    // a suggested step size.
-                    // This function returns fmiDiscard if not supported.
-                    DoubleBuffer valueBuffer = DoubleBuffer.allocate(1);
-                    fmiFlag = ((Integer) _fmiGetRealStatus.invokeInt(new Object[] {
-                            _fmiComponent,
-                            FMILibrary.FMIStatusKind.fmiLastSuccessfulTime,
-                            valueBuffer})).intValue();
-                    if (fmiFlag == FMILibrary.FMIStatus.fmiOK) {
-                        // Sanity check the time to make sure it makes sense.
-                        double lastSuccessfulTime = valueBuffer.get(0);
-                        if (lastSuccessfulTime >= _lastCommitTime.getDoubleValue()) {
-                            // We want lastSuccessfulTime - lastCommitTime, which
-                            // is not necessarily equal to time. In particular,
-                            // if using an RK solver, we may be rejecting a doStep
-                            // beyond the first iteration, and the step size right
-                            // now is actually a substep.
-                            _refinedStepSize = lastSuccessfulTime - _lastCommitTime.getDoubleValue();
-                        }
-                    }
-                }
-                // NOTE: Even though doStep() has been rejected,
-                // we nonetheless continue to set inputs and outputs.
-                // Is this the right thing to do? It seems like we should
-                // at least be producing outputs.
-            } else if (fmiFlag != FMILibrary.FMIStatus.fmiOK) {
-                // FIXME: Handle fmiPending and fmiWarning.
-                throw new IllegalActionException(this, "Could not simulate, "
-                        + modelIdentifier + "_fmiDoStep(Component, /* time */ "
-                        + time + ", /* stepSize */" + stepSize
-                        + ", /* newStep */ 1) returned "
-                        + _fmiStatusDescription(fmiFlag));
-            }
-
-            if (_debugging) {
-                _debug("FMUImport done calling " + modelIdentifier
-                        + "_fmiDoStep()");
-            }
-        } else if (timeAdvance < 0 || (timeAdvance == 0 && currentMicrostep < _lastFireMicrostep)) {
-            // Time has moved backwards since the last invocation of fire or initialize.
-            // Here we have to repeat fmiDoStep().
-            // In FMI 1.0, we signal the FMU with the last argument that this is NOT a new step.
-            // The FMU is expected to restore its state to the one prior to the last step,
-            // which presumably includes restoring its inputs to those values.
-            // However, that mechanism is fundamentally flawed because the last committed
-            // time is not necessarily the time passed into the previous step!
-            // In particular, with, say, an RK4-5 solver, we might take two steps
-            // into an integration interval before rejecting the step size!
-            // Below, we do the best we can, but the behavior will not be right
-            // when using an RK4-5 solver, for example.
-            
-            // FIXME: The mechanism in FMI 2.0 is different, where the last argument to
-            // fmiDoStep is noSetFMUStatePriorToCurrentPoint, which is true when the caller
-            // is willing to commit to the step size. I.e., it promises no backtracking.
-            // However, this is not adequate. How can the caller commit to the step size?
-            
-            // FIXME: FMI 2.0 supports restoring state. Hence, this FMUImport actor
-            // should implement ContinuousStatefulController, in which case it will
-            // get a call to rollBackToCommittedState(), which it should respond to
-            // by rolling back to the last postfire time. But I think not all FMUs
-            // support this rollback.
-            double time = _lastCommitTime.getDoubleValue();
-            double stepSize = currentTime.subtract(_lastCommitTime).getDoubleValue();
-
-            if (_debugging) {
-                _debug("FMIImport.fire(): about to call " + modelIdentifier
-                        + "_fmiDoStep(Component, /* time */ " + time
-                        + ", /* stepSize */" + stepSize + ", /* newStep */ 0)");
-
-            }
-
-            int fmiFlag = ((Integer) _fmiDoStep.invokeInt(new Object[] {
-                    _fmiComponent, time, stepSize, (byte) 0 })).intValue();
-
-            if (fmiFlag != FMILibrary.FMIStatus.fmiOK) {
-                // FIXME: Step size is rejected. Handle this.
-                throw new IllegalActionException(this, "Could not simulate, "
-                        + modelIdentifier + "_fmiDoStep(Component, /* time */ "
-                        + time + ", /* stepSize */" + stepSize
-                        + ", 1) returned "
-                        + _fmiStatusDescription(fmiFlag));
-            }
-
-            if (_debugging) {
-                _debug("FMUImport done calling " + modelIdentifier
-                        + "_fmiDoStep()");
-            }
-            /* FIXME: Not all FMUs support this sort of backtracking.
-            throw new IllegalActionException(this,
-                    "Redoing step with a smaller step size, but this is not supported by FMU "
-                    + modelIdentifier 
-                    + " at time " + time 
-                    + ", microstep " + currentMicrostep 
-                    + ", with new stepSize " + stepSize
-                    + ". Last firing was at time " + _lastFireTime
-                    + ", microstep " + _lastFireMicrostep);
-            */
+        double refinedStepSize = _advanceToTime(currentTime, currentMicrostep);
+        if (refinedStepSize >= 0.0) {
+            _stepSizeRejected = true;
+            _refinedStepSize = refinedStepSize;
         }
-        _lastFireTime = currentTime;
-        _lastFireMicrostep = currentMicrostep;
-
-        // Ptolemy parameters are read in initialize() because the fmi
-        // version of the parameters must be written before
-        // fmiInitializeSlave() is called.
 
         ////////////////
         // Iterate through the scalarVariables and set all the inputs
@@ -1027,6 +861,160 @@ fmiStatus fmiFreeFMUstate(fmiComponent c, fmiFMUstate* FMUstate);
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
+    /** Advance from the last firing time or last commit time to the specified time and
+     *  microstep by calling fmiDoStep(), if necessary. Such an advance
+     *  is necessary if the newTime is not equal to the last firing time,
+     *  or if it is equal and the newMicrostep is greater than the last firing microstep.
+     *  If the step size is rejected, then return a new suggested step size, which
+     *  is either half the specified step size, or, if the FMU supports, the last
+     *  successful time reported by the FMU. As a side effect, if the time advance
+     *  is successful, then the _lastFireTime and _lastFireMicrostep are updated
+     *  to match the arguments, indicating that the FMU has advanced to that time.
+     *  @param newTime The time to advance to.
+     *  @param newMicrostep The microstep to advance to.
+     *  @return A revised suggested step size, or -1.0 if the step size was accepted
+     *   by the FMU.
+     *  @throws IllegalActionException If fmiDoStep() returns anything other than
+     *   fmiDiscard or fmiOK.
+     */
+    protected double _advanceToTime(Time newTime, int newMicrostep) throws IllegalActionException {
+        String modelIdentifier = _fmiModelDescription.modelIdentifier;
+        
+        // By default, the FMU does not suggest a refined step size,
+        // something we indicate with a -1.0.
+        double result = -1.0;
+
+        int timeAdvance = newTime.compareTo(_lastFireTime);
+        if (timeAdvance != 0 || (timeAdvance == 0 && newMicrostep > _lastFireMicrostep)) {
+            // Time or microstep has advanced or time has declined
+            // since the last invocation of fire() or initialize().
+            // Even if only the microstep has advanced, we should still call
+            // fmiDoStep() because the FMU may require it for zero-step-size iterations
+            // (the standard is not clear about this).
+            // 
+            // When calling fmiDoStep(), the time argument is the _start_
+            // of the integration interval, which is not the current time, in general.
+            // We are calling fmiDoStep() to advance to current time, which is therefore
+            // the _end_ of the integration interval.
+            // 
+            // NOTE: FMI-1.0 and 2.0 use doubles for time.
+            double time = _lastFireTime.getDoubleValue();
+            
+            // Compute the step size.
+            // Subtlety here: The step size computed below may not match the current
+            // step size of the enclosing continuous director. In particular, at
+            // the start of the next integration interval, this FMU is being asked
+            // for its output at the _start_ of the interval. That time matches
+            // the _end_ of the previous interval. Thus, it will appear here
+            // that the step size is 0.0, but it is actually not.
+            // As a consequence, an FMU that wants to produce an output
+            // at a microstep other than 0 needs to actually insist on _three_
+            // (or more) firings at that time. One to produce the output at the end
+            // of the previous interval, one to produce the discrete value at
+            // microstep 1, and one to produce the output at the _start_ of
+            // of the next interval. Ugh. This makes it really hard to write
+            // FMUs that control step sizes.
+            double stepSize = newTime.subtract(_lastFireTime).getDoubleValue();
+
+            // The last argument to fmiDoStep is either newStep (for FMI 1.0),
+            // which is true if we are not redoing a step, or
+            // noSetFMUStatePriorToCurrentPoint (for FMI 2.0), which s true
+            // if the start of the interval given to fmiDoStep conincides with
+            // the last commit time (the time at which initialize() or postfire()
+            // was last invoked).
+            byte lastArg = 1;
+
+            // If we have moved backwards in time, then we are redoing an integration
+            // step since the last postfire() or initialize(). Therefore, the start
+            // of the integration interval is the last commit time, not the last fire
+            // time.
+            if (timeAdvance < 0) {
+                // Correct the above values to indicate that we are redoing a step.
+                time = _lastCommitTime.getDoubleValue();
+                stepSize = newTime.subtract(_lastCommitTime).getDoubleValue();
+                lastArg = 0;
+            }
+            
+            if (_fmiVersion >= 2.0) {
+                // Here, we are assuming that a zero-step-size iteration
+                // never gets backtracked, which is true in Ptolemy II directors.
+                // Were this not true, we would also need to compare the microstep.
+                // We also assume that the microstep never declines without
+                // time also declining.
+                if (!_lastCommitTime.equals(_lastFireTime)) {
+                    lastArg = 0;
+                }
+            }
+
+            if (_debugging) {
+                String lastArgDescription = ", /* newStep */";
+                if (_fmiVersion >= 2.0) {
+                    lastArgDescription = ", /* noSetFMUStatePriorToCurrentPoint */";
+                }
+                _debug("FMIImport.fire(): about to call " + modelIdentifier
+                        + "_fmiDoStep(Component, /* time */ " + time
+                        + ", /* stepSize */" + stepSize + lastArgDescription + lastArg + ")");
+            }
+            
+            // Invoke fmiDoStep.
+            int fmiFlag = ((Integer) _fmiDoStep.invokeInt(new Object[] {
+                    _fmiComponent, time, stepSize, lastArg })).intValue();
+            
+            // If the FMU discarded the step, handle this.
+            if (fmiFlag == FMILibrary.FMIStatus.fmiDiscard) {                
+                if (_debugging) {
+                    _debug("Rejected step size of " + stepSize + " at time " + time);
+                }
+                // By default, if the FMU does not provide better information,
+                // we suggest a refined step size of half the current step size.
+                result = stepSize * 0.5;
+
+                if (_fmiGetRealStatus != null) {
+                    // The FMU has provided a function to query for
+                    // a suggested step size.
+                    // This function returns fmiDiscard if not supported.
+                    DoubleBuffer valueBuffer = DoubleBuffer.allocate(1);
+                    fmiFlag = ((Integer) _fmiGetRealStatus.invokeInt(new Object[] {
+                            _fmiComponent,
+                            FMILibrary.FMIStatusKind.fmiLastSuccessfulTime,
+                            valueBuffer})).intValue();
+                    if (fmiFlag == FMILibrary.FMIStatus.fmiOK) {
+                        // Sanity check the time to make sure it makes sense.
+                        double lastSuccessfulTime = valueBuffer.get(0);
+                        if (lastSuccessfulTime >= _lastCommitTime.getDoubleValue()) {
+                            // We want lastSuccessfulTime - lastCommitTime, which
+                            // is not necessarily equal to time. In particular,
+                            // if using an RK solver, we may be rejecting a doStep
+                            // beyond the first iteration, and the step size right
+                            // now is actually a substep.
+                            result = lastSuccessfulTime - _lastCommitTime.getDoubleValue();
+                        }
+                    }
+                }
+                // NOTE: Even though doStep() has been rejected,
+                // we nonetheless continue to set inputs and outputs.
+                // Is this the right thing to do? It seems like we should
+                // at least be producing outputs.
+            } else if (fmiFlag != FMILibrary.FMIStatus.fmiOK) {
+                // FIXME: Handle fmiPending and fmiWarning.
+                throw new IllegalActionException(this, "Could not simulate, "
+                        + modelIdentifier + "_fmiDoStep(Component, /* time */ "
+                        + time + ", /* stepSize */" + stepSize
+                        + ", /* newStep */ 1) returned "
+                        + _fmiStatusDescription(fmiFlag));
+            } else {
+                // Time advance succeeded.
+                _lastFireTime = newTime;
+                _lastFireMicrostep = newMicrostep;
+            }
+            if (_debugging) {
+                _debug("FMUImport done calling " + modelIdentifier
+                        + "_fmiDoStep()");
+            }
+        }
+        return result;
+    }
+    
     /** Return the current step size.
      *  If the director is a ContinuousDirector, then the value
      *  returned by currentStepSize() is returned.
@@ -1434,7 +1422,11 @@ fmiStatus fmiFreeFMUstate(fmiComponent c, fmiFMUstate* FMUstate);
 
     ///////////////////////////////////////////////////////////////////
     ////                     private fields                        ////
-
+    
+    /** The version of FMI that the FMU declares it is compabible with,
+     *  converted to a double for easy comparison.
+     */
+    private double _fmiVersion;
 
     /** The name of the fmuFile.
      *  The _fmuFileName field is set the first time we read
