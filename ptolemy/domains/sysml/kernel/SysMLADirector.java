@@ -109,14 +109,6 @@ import ptolemy.kernel.util.Workspace;
 public class SysMLADirector extends ProcessDirector {
 
     /** Construct a director in the given container with the given name.
-     *  If the container argument must not be null, or a
-     *  NullPointerException will be thrown.
-     *  If the name argument is null, then the name is set to the
-     *  empty string. Increment the version number of the workspace.
-     *
-     *  Create a director parameter "initialQueueCapacity" with the default
-     *  value 1. This sets the initial capacities of the queues in all
-     *  the receivers created in the PN domain.
      *  @param container Container of the director.
      *  @param name Name of this director.
      *  @exception IllegalActionException If the director is not compatible
@@ -289,6 +281,7 @@ public class SysMLADirector extends ProcessDirector {
         } else {
             // Use unsynchronized version.
             actorData.inputQueue = new LinkedList<Input>();
+            
             // Reset the receivers on the inside of output ports.
             List<IOPort> ports = container.outputPortList();
             for (IOPort port : ports) {
@@ -391,6 +384,7 @@ public class SysMLADirector extends ProcessDirector {
             super.initialize(actor);
         } else {
             // Use unsynchronized version.
+            // FIXME: Should use one queue shared among all actors.
             actorData.inputQueue = new LinkedList<Input>();
             // Reset the receivers.
             Iterator ports = actor.inputPortList().iterator();
@@ -561,6 +555,9 @@ public class SysMLADirector extends ProcessDirector {
         while (!actorData.inputQueue.isEmpty()) {
             Input input = actorData.inputQueue.remove(0);
             input.receiver.reallyPut(input.token);
+            // FIXME: This should probably be done when
+            // the event is dequeued from the single global queue,
+            // in sequential mode.
             _transferOutputs(input.receiver.getContainer());
         }
     }
