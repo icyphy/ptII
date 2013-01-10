@@ -32,7 +32,6 @@ package ptolemy.actor;
 
 import java.util.List;
 
-import ptolemy.actor.lib.qm.CompositeQuantityManager;
 import ptolemy.data.Token;
 import ptolemy.kernel.util.IllegalActionException;
 
@@ -157,8 +156,7 @@ public class IntermediateReceiver extends AbstractReceiver {
      */
     public void put(Token token) throws NoRoomException, IllegalActionException {
         if (_port != null) {
-            ((CompositeQuantityManager) quantityManager).sendToken(this,
-                    _receiver, token, _port);
+            quantityManager.sendToken(this, _receiver, token, _port);
         } else {
             quantityManager.sendToken(this, _receiver, token);
         }
