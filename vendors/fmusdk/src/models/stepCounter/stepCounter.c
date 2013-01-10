@@ -7,6 +7,10 @@
  * hits the transition time, and then discarding any step size greater than 0
  * for the next iteration, so that it fires twice at the transition time.
  *
+ * This FMU is designed to work without rollback, which is not supported in
+ * FMI 1.0. It is quite tricky to make this work without rollback because
+ * the FMU has state, namely the state of its count.
+ *
  * To build the FMU file, do this:
  *
  *  > cd $PTII/vendors/fmusdk/src/models
@@ -72,8 +76,7 @@ fmiComponent fmiInstantiateSlave(fmiString  instanceName, fmiString  GUID,
         return NULL;
     }
     component = (ModelInstance *)functions.allocateMemory(1, sizeof(ModelInstance));
-    // cxh: One key change here was that we allocate memory for the pointer holding
-    // the value.
+    // Allocate memory for the pointer holding the values.
     component->r = functions.allocateMemory(4, sizeof(fmiReal));
     component->r[0] = 0.0;
     component->r[1] = 1.0;
@@ -104,15 +107,29 @@ fmiStatus fmiTerminateSlave(fmiComponent c) {
 
 void fmiFreeSlaveInstance(fmiComponent c) {
     ModelInstance* component = (ModelInstance *) c;
-    printf("Invoked fmiFreeSlaveInstance.\n");
     component->functions.freeMemory(component);
 }
 
 fmiStatus fmiDoStep(fmiComponent c, fmiReal currentCommunicationPoint, 
     	fmiReal communicationStepSize, fmiBoolean newStep) {
-    printf("Invoked fmiDoStep: %g, %g, newStep: %s\n", currentCommunicationPoint,
-            communicationStepSize, (newStep)?"true":"false");
     ModelInstance* component = (ModelInstance *) c;
+    printf("%s: Invoked fmiDoStep: %g, %g, newStep: %s\n", component->instanceName,
+           currentCommunicationPoint,
+           communicationStepSize,
+           (newStep)?"true":"false");
+    fflush(stdout);
+    // The following is extremely tricky.
+    // Since this FMU is designed to work without rollback,
+    // if a step is being restarted, then we have to reset the
+    // indicator that we have reached the time of the next incrment.
+    // The following test does that, but it relies on the orchestrator
+    // to correctly call this method with newStep == false each time
+    // there is a rollback in time, and only when there is a rollback
+    // in time. Seems not very robust. Supporting rollback explicitly
+    // is probably much more robust.
+    if (!newStep) {
+        component->r[3] = 0.0;
+    }
     // If current time is greater than period * (value + 1), then it is
     // time for another increment.
     // FIXME: We need a parameter for the precision here, because otherwise
@@ -128,7 +145,9 @@ fmiStatus fmiDoStep(fmiComponent c, fmiReal currentCommunicationPoint,
             // Indicate that the last successful time
             // at the target time.
             component->r[2] = targetTime;
-            printf("Discarding step. endOfStepTime = %g, targetTime = %g, component->r[3] = %g\n", endOfStepTime, targetTime, component->r[3]);
+            printf("%s: Discarding step. endOfStepTime = %g, targetTime = %g, component->r[3] = %g\n",
+                   component->instanceName, endOfStepTime, targetTime, component->r[3]);
+            fflush(stdout);
             return fmiDiscard;
         }
         // We are at the target time. Are we
@@ -137,24 +156,31 @@ fmiStatus fmiDoStep(fmiComponent c, fmiReal currentCommunicationPoint,
         if (component->r[3] > 0.0) {
             // Not the first firing. Go ahead an increment.
             component->r[0]++;
+            printf("%s: Incrementing count to %g\n", component->instanceName, component->r[0]);
+            fflush(stdout);
             // Reset the indicator that the increment is needed.
             component->r[3] = 0.0;
         } else {
             // This will complete the first firing at the target time.
             // We don't want to increment yet, but we set an indicator
             // that we have had a firing at this time.
+            printf("%s: At time for count to increment, but leaving at %g\n",
+                   component->instanceName, component->r[0]);
+            fflush(stdout);
             component->r[3] = 1.0;
         }
     }
     component->r[2] = endOfStepTime;
-    printf("fmiDoStep succeeded.\n");
+    printf("%s: fmiDoStep succeeded.\n", component->instanceName);
+    fflush(stdout);
     return fmiOK;
 }
 
 fmiStatus fmiGetReal(fmiComponent c, const fmiValueReference vr[], size_t nvr, fmiReal value[]) {
     int i, valueReference;
     ModelInstance* component = (ModelInstance *) c;
-    printf("Invoked fmiGetReal: %d ", (int)nvr);
+    printf("%s: Invoked fmiGetReal: %d\n", component->instanceName, (int)nvr);
+    fflush(stdout);
 
     if (nvr > 2) {
         component->functions.logger(component, component->instanceName, fmiError, "error",
@@ -163,7 +189,9 @@ fmiStatus fmiGetReal(fmiComponent c, const fmiValueReference vr[], size_t nvr, f
     }
     for (i = 0; i < nvr; i++) {
         valueReference = vr[i];
-        printf("Retrieving real value with index %d and value %g.\n", valueReference, component->r[valueReference]);
+        printf("%s: Retrieving real value with index %d and value %g.\n", component->instanceName,
+               valueReference, component->r[valueReference]);
+        fflush(stdout);
     	value[i] = component->r[valueReference];
     }
     return fmiOK;
@@ -182,7 +210,8 @@ fmiStatus fmiGetRealStatus(fmiComponent c, const fmiStatusKind s, fmiReal* value
 fmiStatus fmiSetReal(fmiComponent c, const fmiValueReference vr[], size_t nvr, const fmiReal value[]){
     int i, valueReference;
     ModelInstance* component = (ModelInstance *) c;
-    printf("Invoked fmiSetReal: %d ", (int)nvr);
+    printf("%s: Invoked fmiSetReal: %d ", component->instanceName, (int)nvr);
+    fflush(stdout);
     if (nvr > 2) {
         component->functions.logger(component, component->instanceName, fmiError, "error",
                                     "fmiGetReal: Value reference out of range: %u.", nvr);
@@ -190,7 +219,9 @@ fmiStatus fmiSetReal(fmiComponent c, const fmiValueReference vr[], size_t nvr, c
     }
     for (i = 0; i < nvr; i++) {
         valueReference = vr[i];
-        printf("Setting real value with index %d and value %g.\n", valueReference, value[i]);
+        printf("%s: Setting real value with index %d and value %g.\n", component->instanceName,
+               valueReference, value[i]);
+        fflush(stdout);
     	component->r[valueReference] = value[i];
     }
     return fmiOK;
