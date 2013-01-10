@@ -35,6 +35,13 @@ $CLASSPATH/ptolemy/actor/lib/hoc/demo/ThreadedComposite/MulticoreExecution.xml
 $CLASSPATH/ptolemy/actor/lib/hoc/demo/ThreadedComposite/ParallelExecution.xml
 $CLASSPATH/ptolemy/actor/lib/hoc/demo/ThreadedComposite/SpontaneousSources.xml
 $CLASSPATH/ptolemy/actor/lib/io/comm/demo/SerialPort/SerialPort.xml
+$CLASSPATH/ptolemy/actor/lib/io/demo/AppendToFile/AppendToFile.xml
+$CLASSPATH/ptolemy/actor/lib/io/demo/CopyFile/CopyFile.xml
+$CLASSPATH/ptolemy/actor/lib/io/demo/CopyOfCopyFile/CopyOfCopyFile.xml
+$CLASSPATH/ptolemy/actor/lib/io/demo/FilePortParameter/FilePortParameter.xml
+$CLASSPATH/ptolemy/actor/lib/io/demo/ReadExpressionsCommandLine/ReadExpressionsCommandLine.xml
+$CLASSPATH/ptolemy/actor/lib/io/demo/ReadStdIn/ReadStdIn.xml
+$CLASSPATH/ptolemy/actor/lib/io/demo/StandardInput/StandardInput.xml
 $CLASSPATH/ptolemy/actor/lib/jai/demo/AdaptiveMedian/AdaptiveMedian.xml
 $CLASSPATH/ptolemy/actor/lib/jai/demo/ImageReconstruction/ImageReconstruction.xml
 $CLASSPATH/ptolemy/actor/lib/jai/demo/VQSequenceDisplay/VQSequenceDisplay.xml
