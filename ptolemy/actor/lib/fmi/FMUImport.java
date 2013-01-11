@@ -267,7 +267,7 @@ public class FMUImport extends TypedAtomicActor implements
     public void fire() throws IllegalActionException {
         super.fire();
         if (_debugging) {
-            _debug("FMUImport.fire()");
+            _debugToStdOut("FMUImport.fire()");
         }
         
         ////////////////
@@ -317,7 +317,7 @@ public class FMUImport extends TypedAtomicActor implements
                             Token token = port.get(0);
                             _setScalarVariable(scalarVariable, token);
                             if (_debugging) {
-                                _debug("FMUImport.fire(): set input variable "
+                                _debugToStdOut("FMUImport.fire(): set input variable "
                                         + scalarVariable.name + " to " + token);
                             }
                         } else {
@@ -370,7 +370,7 @@ public class FMUImport extends TypedAtomicActor implements
                         // Skip this output port. It depends on
                         // unknown inputs.
                         if (_debugging) {
-                            _debug("FMUImport.fire(): "
+                            _debugToStdOut("FMUImport.fire(): "
                                     + "FMU declares that output port "
                                     + port.getName()
                                     + " depends directly on input port "
@@ -419,7 +419,7 @@ public class FMUImport extends TypedAtomicActor implements
                 }
 
                 if (_debugging) {
-                    _debug("FMUImport.fire(): Output " + scalarVariable.name
+                    _debugToStdOut("FMUImport.fire(): Output " + scalarVariable.name
                             + " sends value " + token
                             + " at time " + currentTime
                             + " and microstep " + currentMicrostep);
@@ -437,7 +437,7 @@ public class FMUImport extends TypedAtomicActor implements
     public void initialize() throws IllegalActionException {
         super.initialize();
         if (_debugging) {
-            _debug("FMIImport.initialize() START");
+            _debugToStdOut("FMIImport.initialize() START");
         }
 
         _checkFmi();
@@ -465,7 +465,7 @@ public class FMUImport extends TypedAtomicActor implements
         String modelIdentifier = _fmiModelDescription.modelIdentifier;
 
         if (_debugging) {
-            _debug("FMUCoSimulation: about to call " + modelIdentifier
+            _debugToStdOut("FMUCoSimulation: about to call " + modelIdentifier
                     + "_fmiInitializeSlave");
         }
         Function function = _fmiModelDescription.nativeLibrary
@@ -475,9 +475,25 @@ public class FMUImport extends TypedAtomicActor implements
         Director director = getDirector();
         Time startTime = director.getModelStartTime();
         Time stopTime = director.getModelStopTime();
-        int fmiFlag = ((Integer) function.invoke(Integer.class, new Object[] {
+            
+        int fmiFlag;
+        if (_fmiVersion < 2.0) {
+            fmiFlag  = ((Integer) function.invoke(Integer.class, new Object[] {
                 _fmiComponent, startTime.getDoubleValue(), (byte) 1,
                 stopTime.getDoubleValue() })).intValue();
+        } else {
+            fmiFlag  = ((Integer) function.invoke(Integer.class, new Object[] {
+                _fmiComponent, 
+                0.0, // relativeTolerance. FIXME: What to do with this?  The 2.0beta4 spec says:
+                // "Argument “relativeTolerance” suggests a relative
+                // (local) tolerance in case the slave utilizes a
+                // numerical integrator with variable step size and
+                // error estimation.
+                startTime.getDoubleValue(),
+                (byte) 1, // fmiBoolean stopTimeDefined
+                stopTime.getDoubleValue() })).intValue();
+        }
+
         if (fmiFlag > FMILibrary.FMIStatus.fmiWarning) {
             throw new IllegalActionException(this, "Could not simulate, "
                     + modelIdentifier
@@ -501,7 +517,7 @@ public class FMUImport extends TypedAtomicActor implements
         _firstFire = true;
         
         if (_debugging) {
-            _debug("FMIImport.initialize() END");
+            _debugToStdOut("FMIImport.initialize() END");
         }
     }
 
@@ -684,7 +700,7 @@ public class FMUImport extends TypedAtomicActor implements
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
         if (_debugging) {
-            _debug("FMUImport.preinitialize()");
+            _debugToStdOut("FMUImport.preinitialize()");
         }
 
         _checkFmi();
@@ -720,14 +736,28 @@ public class FMUImport extends TypedAtomicActor implements
         byte loggingOn = _debugging ? (byte) 1 : (byte) 0;
         loggingOn = 1;
         if (_debugging) {
-            _debug("FMUCoSimulation: about to call " + modelIdentifier
+            _debugToStdOut("FMUCoSimulation: about to call " + modelIdentifier
                     + "_fmiInstantiateSlave");
         }
 
-        _fmiComponent = (Pointer) _fmiInstantiateSlave.invoke(Pointer.class,
-                new Object[] { getFullName(), _fmiModelDescription.guid,
-                        fmuLocation, mimeType, timeout, visible, interactive,
-                        callbacks, loggingOn });
+        if (_fmiVersion < 2.0) {
+            _fmiComponent = (Pointer) _fmiInstantiateSlave.invoke(Pointer.class,
+                    new Object[] { getFullName(), _fmiModelDescription.guid,
+                                   fmuLocation, mimeType, timeout, visible, interactive,
+                                   callbacks, loggingOn });
+        } else {
+            System.out.println("FMUImport: FIXME: in FMI 2.0, the callbacks argument of fmiInstantiateSlave is now a 'const fmiCallbackFunctions *functions' instead of 'fmiCallbackFunctions functions'");
+
+            _fmiComponent = (Pointer) _fmiInstantiateSlave.invoke(Pointer.class,
+                    new Object[] { getFullName(), _fmiModelDescription.guid,
+                                   fmuLocation,
+                                   callbacks, // FIXME: this is now a pointer?
+                                   visible, loggingOn });
+        }
+        if (_debugging) {
+            _debugToStdOut("FMUImport: successfully calledl " + modelIdentifier
+                    + "_fmiInstantiateSlave");
+        }
 
         if (_fmiComponent.equals(Pointer.NULL)) {
             throw new RuntimeException(
@@ -752,7 +782,7 @@ public class FMUImport extends TypedAtomicActor implements
         // Otherwise, make no suggestion.
         if (_refinedStepSize >= 0.0) {
             if (_debugging) {
-                _debug("===> Suggesting a refined step size of " + _refinedStepSize);
+                _debugToStdOut("===> Suggesting a refined step size of " + _refinedStepSize);
             }
             return _refinedStepSize;
         }
@@ -760,7 +790,7 @@ public class FMUImport extends TypedAtomicActor implements
         if (director instanceof ContinuousDirector) {
             double half = ((ContinuousDirector) director).getCurrentStepSize()*0.5;
             if (_debugging) {
-                _debug("===> Suggesting a refined step size of half the current step size, or " + half);
+                _debugToStdOut("===> Suggesting a refined step size of half the current step size, or " + half);
             }
             return half;
         }
@@ -859,7 +889,7 @@ fmiStatus fmiFreeFMUstate(fmiComponent c, fmiFMUstate* FMUstate);
                 .invokeInt(new Object[] { _fmiComponent })).intValue();
         if (fmiFlag > FMILibrary.FMIStatus.fmiWarning) {
             if (_debugging) {
-                _debug("Could not free slave instance: "
+                _debugToStdOut("Could not free slave instance: "
                         + _fmiStatusDescription(fmiFlag));
             }
         }
@@ -1002,7 +1032,7 @@ of the limitations of newStep.
                 if (_fmiVersion >= 2.0) {
                     lastArgDescription = ", /* noSetFMUStatePriorToCurrentPoint */";
                 }
-                _debug("FMIImport.fire(): about to call " + modelIdentifier
+                _debugToStdOut("FMIImport.fire(): about to call " + modelIdentifier
                         + "_fmiDoStep(Component, /* time */ " + time
                         + ", /* stepSize */" + stepSize + lastArgDescription + lastArg + ")");
             }
@@ -1014,7 +1044,7 @@ of the limitations of newStep.
             // If the FMU discarded the step, handle this.
             if (fmiFlag == FMILibrary.FMIStatus.fmiDiscard) {                
                 if (_debugging) {
-                    _debug("Rejected step size of " + stepSize + " at time " + time);
+                    _debugToStdOut("Rejected step size of " + stepSize + " at time " + time);
                 }
                 // By default, if the FMU does not provide better information,
                 // we suggest a refined step size of half the current step size.
@@ -1059,13 +1089,26 @@ of the limitations of newStep.
                 _lastFireMicrostep = newMicrostep;
             }
             if (_debugging) {
-                _debug("FMUImport done calling " + modelIdentifier
+                _debugToStdOut("FMUImport done calling " + modelIdentifier
                         + "_fmiDoStep()");
             }
         }
         return result;
     }
     
+    /** Print the debug message to stdout and flush stdout.
+     *  This is useful for tracking down segfault problems.
+     *  To use this, right click on the FMUImport actor
+     *  and select "Listen to Actor". The logging messages
+     *  will appear on stdout and in the listener window.
+     *  @param message The message to be displayed.
+     */
+    protected void _debugToStdOut(String message) {
+        System.out.println(message);
+        System.out.flush();
+        _debug(message);
+    }
+
     /** Return the current step size.
      *  If the director is a ContinuousDirector, then the value
      *  returned by currentStepSize() is returned.
@@ -1421,7 +1464,7 @@ of the limitations of newStep.
             NameDuplicationException {
 
         if (_debugging) {
-            _debug("FMUImport.updateParameters() START");
+            _debugToStdOut("FMUImport.updateParameters() START");
         }
         // Unzip the fmuFile. We probably need to do this
         // because we will need to load the shared library later.
@@ -1487,7 +1530,7 @@ of the limitations of newStep.
                             + "\".");
         }
         if (_debugging) {
-            _debug("FMUImport.updateParameters() END");
+            _debugToStdOut("FMUImport.updateParameters() END");
         }
     }
 
