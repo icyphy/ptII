@@ -94,6 +94,7 @@ JSRCS = \
 	InvariantViolationException.java \
 	IntermediateReceiver.java \
 	LazyTypedCompositeActor.java \
+	Librariable.java \
 	LocalClock.java \
 	Mailbox.java \
 	Manager.java \

@@ -66,7 +66,6 @@ JSRCS = \
 	DecoratedAttributesImplementation.java \
 	Entity.java \
 	InstantiableNamedObj.java \
-	Librariable.java \
 	Port.java \
 	Relation.java
 

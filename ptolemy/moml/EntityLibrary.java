@@ -34,9 +34,9 @@ import java.net.URL;
 import java.util.Iterator;
 import java.util.List;
 
+import ptolemy.actor.Librariable;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.Librariable;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
