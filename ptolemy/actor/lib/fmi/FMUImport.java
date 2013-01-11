@@ -427,6 +427,7 @@ public class FMUImport extends TypedAtomicActor implements
                 port.send(0, token);
             }
         }
+        _firstFire = false;
     }
 
     /** Initialize the slave FMU.
@@ -497,6 +498,7 @@ public class FMUImport extends TypedAtomicActor implements
         _stepSizeRejected = false;
         _refinedStepSize = -1.0;
         _suggestZeroStepSize = false;
+        _firstFire = true;
         
         if (_debugging) {
             _debug("FMIImport.initialize() END");
@@ -672,6 +674,7 @@ public class FMUImport extends TypedAtomicActor implements
                     + " Hence, this director is incompatible with this FMU.");
         }
         _refinedStepSize = -1.0;
+        _firstFire = true;
         return super.postfire();
     }
 
@@ -771,37 +774,41 @@ public class FMUImport extends TypedAtomicActor implements
      *   back further than the last committed time.
      */
     public void rollBackToCommittedState() throws IllegalActionException {
-        // Restore the state to state set in initialize() or postfire()
-        // using fmiSetFMUState.
-        // FIXME: During initialize, the FMUstate argument should be the
-        // address of a null-valued pointer. During wrapup, the memory
-        // should be freed and the FMUstate pointer set to null. If it
-        // is already null, the call should be ignored.
+        if (_fmiModelDescription.canGetAndSetFMUstate) {
+            // Restore the state to state set in initialize() or postfire()
+            // using fmiSetFMUState. The FMU supports this if the XML file
+            // asserts that canGetAndSetFMUstate is true.
+            // FIXME: During initialize, the FMUstate argument should be the
+            // address of a null-valued pointer. During wrapup, the memory
+            // should be freed and the FMUstate pointer set to null. If it
+            // is already null, the call should be ignored.
         /*
 fmiStatus fmiGetFMUstate (fmiComponent c, fmiFMUstate* FMUstate);
 fmiStatus fmiSetFMUstate (fmiComponent c, fmiFMUstate FMUstate);
 fmiStatus fmiFreeFMUstate(fmiComponent c, fmiFMUstate* FMUstate);
          */
-        if (!((BooleanToken)suppressWarnings.getToken()).booleanValue()) {
-            try {
-                boolean response = MessageHandler.yesNoCancelQuestion(
-                        "FMU does not support rolling back to a previous state in time, "
-                                + "but it is being asked to roll back from time "
-                                + _lastFireTime
-                                + " to time "
-                                + _lastCommitTime,
-                                "Proceed",
-                                "Proceed and do not warn me again",
-                        "Cancel");
-                if (!response) {
-                    // User has asked to not be warned again.
-                    // NOTE: This does not mark the model modified, so
-                    // the user does not save, then the warning will reappear next time.
-                    suppressWarnings.setToken(BooleanToken.TRUE);
+        } else {
+            if (!((BooleanToken)suppressWarnings.getToken()).booleanValue()) {
+                try {
+                    boolean response = MessageHandler.yesNoCancelQuestion(
+                            "FMU does not support rolling back to a previous state in time, "
+                                    + "but it is being asked to roll back from time "
+                                    + _lastFireTime
+                                    + " to time "
+                                    + _lastCommitTime,
+                                    "Proceed",
+                                    "Proceed and do not warn me again",
+                            "Cancel");
+                    if (!response) {
+                        // User has asked to not be warned again.
+                        // NOTE: This does not mark the model modified, so
+                        // the user does not save, then the warning will reappear next time.
+                        suppressWarnings.setToken(BooleanToken.TRUE);
+                    }
+                } catch (CancelException e) {
+                    // User cancelled, so we throw an exception to stop the execution.
+                    throw new IllegalActionException(this, e, "Execution cancelled.");
                 }
-            } catch (CancelException e) {
-                // User cancelled, so we throw an exception to stop the execution.
-                throw new IllegalActionException(this, e, "Execution cancelled.");
             }
         }
     }
@@ -919,9 +926,56 @@ fmiStatus fmiFreeFMUstate(fmiComponent c, fmiFMUstate* FMUstate);
             // The last argument to fmiDoStep is either newStep (for FMI 1.0),
             // which is true if we are not redoing a step, or
             // noSetFMUStatePriorToCurrentPoint (for FMI 2.0), which s true
-            // if the start of the interval given to fmiDoStep conincides with
+            // if the start of the interval given to fmiDoStep coincides with
             // the last commit time (the time at which initialize() or postfire()
             // was last invoked).
+            
+            // For FMI 1.0, there is not really a good solution. There are two
+            // flawed possibilities, described below.  We implement the first
+            // flawed possibility.
+/*
+Suppose an RK 2-3 solver chooses a step size
+of, say, 1.0 seconds at communication point (current time)
+0.0. It will want to obtain outputs from the FMU at times
+0.0, 0.5, 0.75, and 1.0.  Since there are three time intervals
+here, there need to be three calls to fmiDoStep().  E.g.,
+
+  fmiDoStep(component, 0.0, 0.5, true);  // newStep == true
+  fmiDoStep(component, 0.5, 0.25, true);  // newStep == true
+  fmiDoStep(component, 0.75, 0.25, true);  // newStep == true
+
+The last two calls have to specify newStep == true because
+otherwise the slave will interpret this as restarting the
+previous computation, which has an earlier communication point.
+Moreover, when we get fired at time 0.5, the provided inputs
+correspond to those at time 0.5. So we can provide those inputs
+to the FMU and proceed.
+
+But now, if the last fmiDoStep is rejected, then _all three_
+have to be redone. The slave, however, will not have a
+record of its state at time 0.0 unless it is recording
+the state at _all_ communication points, which is clearly
+not a good solution.
+
+So the above sequence won't work.  There is an alternative.
+The orchestrator could do this:
+
+  fmiDoStep(component, 0.0, 0.5, true);  // newStep == true
+  fmiDoStep(component, 0.0, 0.75, false);  // newStep == false
+  fmiDoStep(component, 0.0, 1.0, false);  // newStep == false
+
+The slave has to redo time intervals even if the step size
+is ultimately accepted. This would also require that at times
+0.5 and 0.75, we do not provide the new inputs to the FMU.
+It would need to run with the inputs from time 0.0.
+Also, this will be less accurate,
+because with the first execution sequence, input values are
+provided for times 0.5 and 0.75, but for the second, they
+are not.
+
+Appendix B of the 1.0 standard has an extensive discussion
+of the limitations of newStep.
+ */
             byte lastArg = 1;
 
             // If we have moved backwards in time, then we are redoing an integration
@@ -936,12 +990,9 @@ fmiStatus fmiFreeFMUstate(fmiComponent c, fmiFMUstate* FMUstate);
             }
             
             if (_fmiVersion >= 2.0) {
-                // Here, we are assuming that a zero-step-size iteration
-                // never gets backtracked, which is true in Ptolemy II directors.
-                // Were this not true, we would also need to compare the microstep.
-                // We also assume that the microstep never declines without
-                // time also declining.
-                if (!_lastCommitTime.equals(_lastFireTime)) {
+                if (_firstFire) {
+                    lastArg = 1;
+                } else {
                     lastArg = 0;
                 }
             }
@@ -1159,7 +1210,13 @@ fmiStatus fmiFreeFMUstate(fmiComponent c, fmiFMUstate* FMUstate);
 
     /** The fmiDoStep() function. */
     protected Function _fmiDoStep;
-
+    
+    /** Function to free memory allocated to store the state of the FMU. */
+    protected Function _fmiFreeFMUstate;
+    
+    /** Function to retrieve the current state of the FMU. */
+    protected Function _fmiGetFMUstate;
+    
     /** The fmiGetRealStatus() function. */
     protected Function _fmiGetRealStatus;
 
@@ -1167,6 +1224,16 @@ fmiStatus fmiFreeFMUstate(fmiComponent c, fmiFMUstate* FMUstate);
      *  Functional Mock-up Unit (FMU) file.
      */
     protected FMIModelDescription _fmiModelDescription;
+
+    /** Function to restore the current state of the FMU to a
+     *  previously retrieved version
+     */
+    protected Function _fmiSetFMUstate;
+
+    /** The version of FMI that the FMU declares it is compabible with,
+     *  converted to a double for easy comparison.
+     */
+    protected double _fmiVersion;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
@@ -1402,14 +1469,18 @@ fmiStatus fmiFreeFMUstate(fmiComponent c, fmiFMUstate* FMUstate);
                 }
             }
             if (_fmiModelDescription.canGetAndSetFMUstate) {
-                // FIXME: Retrieve the following 2.0 functions:
-                /*
-fmiStatus fmiGetFMUstate (fmiComponent c, fmiFMUstate* FMUstate);
-fmiStatus fmiSetFMUstate (fmiComponent c, fmiFMUstate FMUstate);
-fmiStatus fmiFreeFMUstate(fmiComponent c, fmiFMUstate* FMUstate);
-                 */
+                // Retrieve the following FMI 2.0 functions for
+                // getting and setting state.
+                _fmiFreeFMUstate = _fmiModelDescription.nativeLibrary
+                        .getFunction(_fmiModelDescription.modelIdentifier
+                                + "_fmiFreeFMUstate");
+                _fmiGetFMUstate = _fmiModelDescription.nativeLibrary
+                        .getFunction(_fmiModelDescription.modelIdentifier
+                                + "_fmiGetFMUstate");
+                _fmiSetFMUstate = _fmiModelDescription.nativeLibrary
+                        .getFunction(_fmiModelDescription.modelIdentifier
+                                + "_fmiSetFMUstate");
             }
-
         } catch (IOException ex) {
             throw new IllegalActionException(this, ex,
                     "Failed to unzip, read in or process \"" + fmuFileName
@@ -1423,11 +1494,11 @@ fmiStatus fmiFreeFMUstate(fmiComponent c, fmiFMUstate* FMUstate);
     ///////////////////////////////////////////////////////////////////
     ////                     private fields                        ////
     
-    /** The version of FMI that the FMU declares it is compabible with,
-     *  converted to a double for easy comparison.
+    /** Flag identifying the first invocation of fire() after each
+     *  invocation of initialize() or postfire().
      */
-    private double _fmiVersion;
-
+    private boolean _firstFire;
+    
     /** The name of the fmuFile.
      *  The _fmuFileName field is set the first time we read
      *  the file named by the <i>fmuFile</i> parameter.  The

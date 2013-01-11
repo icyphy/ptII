@@ -1,5 +1,7 @@
 /* ---------------------------------------------------------------------------*
- * Test Co-simulation FMU. This FMU has one output that produces a piecewise
+ * Test Co-simulation FMU conformant with FMI 2.0 beta 4.
+ *
+ * This FMU has one output that produces a piecewise
  * constant signal that starts at value 0.0 and increments by 1.0 every p
  * time units, where p is a parameter. It forces the orchestrator to
  * execute twice at the time of each step increment by discarding an fmiDoStep()
@@ -7,17 +9,18 @@
  * hits the transition time, and then discarding any step size greater than 0
  * for the next iteration, so that it fires twice at the transition time.
  *
- * This FMU is designed to work without rollback, which is not supported in
- * FMI 1.0. It is quite tricky to make this work without rollback because
- * the FMU has state, namely the state of its count.
+ * This FMU tests the following features of FMI:
+ *  - functions that get and set state, and canGetAndSetFMUstate attribute.
+ *
+ * This FMU is designed to work with rollback.
  *
  * To build the FMU file, do this:
  *
- *  > cd $PTII/vendors/fmusdk/src/models
+ *  > cd $PTII/actor/lib/fmi/fmus
  *  > make
  *
- * The resulting .fmu file for cosimulation will
- * be in $PTII/vendors/fmusdk/fmu/cs.
+ * The resulting .fmu file will be
+ * be in $PTII/actor/lib/fmi/fmus/stepCounter/stepCounter.fmu
  *
  * To run: import the FMU file into Ptolemy and build a model.
  *
@@ -46,7 +49,7 @@ typedef struct {
 
 // Globally unique ID used to make sure the XML file and the DLL match.
 // The following was generated at http://guid.us
-#define MODEL_GUID "{c157b371-f7d4-4133-8c29-8e78a9468674}"
+#define MODEL_GUID "{136ff03f-fb93-4a90-bb88-8dbf92948dde}"
 
 fmiComponent fmiInstantiateSlave(fmiString  instanceName, fmiString  GUID,
     	fmiString  fmuLocation, fmiString  mimeType, fmiReal timeout, fmiBoolean visible,
@@ -173,6 +176,18 @@ fmiStatus fmiDoStep(fmiComponent c, fmiReal currentCommunicationPoint,
     component->r[2] = endOfStepTime;
     printf("%s: fmiDoStep succeeded.\n", component->instanceName);
     fflush(stdout);
+    return fmiOK;
+}
+
+/** If the FMUstate argument is null, then allocate memory (using
+ *  the allocateMemory() callback) and store the current state of
+ *  this FMU in it. If the FMUstate argument is not null, then
+ *  store the state of this FMU in the data structure pointed to.
+ */
+fmiStatus fmiGetFMUstate (fmiComponent c, fmiFMUstate* FMUstate) {
+    if (FMUstate == NULL) {
+        // FIXME: Need to fill this in.
+    }
     return fmiOK;
 }
 
