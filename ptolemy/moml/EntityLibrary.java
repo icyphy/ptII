@@ -36,6 +36,7 @@ import java.util.List;
 
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.Librariable;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
@@ -146,7 +147,7 @@ import ptolemy.util.MessageHandler;
  */
 
 // FIXME: Have to do ports and relations.  Only done attributes and entities.
-public class EntityLibrary extends CompositeEntity implements LazyComposite {
+public class EntityLibrary extends CompositeEntity implements LazyComposite, Librariable {
     /** Construct a library in the default workspace with no
      *  container and an empty string as its name. Add the library to the
      *  workspace directory.

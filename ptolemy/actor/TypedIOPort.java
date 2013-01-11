@@ -47,13 +47,13 @@ import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.ComponentRelation;
 import ptolemy.kernel.Entity;
+import ptolemy.kernel.Librariable;
 import ptolemy.kernel.Relation;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
-import ptolemy.moml.EntityLibrary;
 
 ///////////////////////////////////////////////////////////////////
 //// TypedIOPort
@@ -733,7 +733,7 @@ public class TypedIOPort extends IOPort implements Typeable {
     protected void _checkContainer(Entity container)
             throws IllegalActionException {
         if (!(container instanceof TypedActor)
-                && !(container instanceof EntityLibrary) && (container != null)) {
+                && !(container instanceof Librariable) && (container != null)) {
             throw new IllegalActionException(container, this,
                     "TypedIOPort can only be contained by objects "
                             + "implementing the TypedActor interface.");
