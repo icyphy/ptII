@@ -34,6 +34,10 @@
 // The model identifier string.
 #define MODEL_IDENTIFIER stepCounter
 
+// Used by FMI 2.0.  See FMIFuctions.h
+#define FMIAPI_FUNCTION_PREFIX stepCounter_
+#define FMIAPI
+
 // include fmu header files, typedefs and macros
 #include "fmiFunctions.h"
 
@@ -43,7 +47,7 @@ typedef struct {
     // cxh: call this 'r' instead of 'value' so it works with model exchange.
     // eal: FIXME: But we don't want it to work with model exchange.
     fmiReal    *r;
-    fmiCallbackFunctions functions;
+    const fmiCallbackFunctions *functions;
     fmiString instanceName;
 } ModelInstance;
 
@@ -51,36 +55,46 @@ typedef struct {
 // The following was generated at http://guid.us
 #define MODEL_GUID "{136ff03f-fb93-4a90-bb88-8dbf92948dde}"
 
-fmiComponent fmiInstantiateSlave(fmiString  instanceName, fmiString  GUID,
-    	fmiString  fmuLocation, fmiString  mimeType, fmiReal timeout, fmiBoolean visible,
-    	fmiBoolean interactive, fmiCallbackFunctions functions, fmiBoolean loggingOn) {
+// FMI 1.0 (RIP)
+//fmiComponent fmiInstantiateSlave(fmiString  instanceName, fmiString  GUID,
+//    	fmiString  fmuLocation, 
+//        fmiString  mimeType, fmiReal timeout,  // mimeType and timeout are not present in 2.0.
+//        fmiBoolean visible, // In 2.0, visible is a different argument.
+//    	fmiBoolean interactive, // interactive is not present in 2.0.
+//        fmiCallbackFunctions functions, // functions is a const * in 2.0.
+//        fmiBoolean loggingOn) {
+
+// FMI 2.0
+fmiComponent fmiInstantiateSlave(fmiString instanceName, fmiString GUID, 
+        fmiString fmuLocation,
+        const fmiCallbackFunctions *functions, fmiBoolean visible, fmiBoolean loggingOn)  {
     ModelInstance* component;
     
     // Perform checks.
     // FIXME: Boilerplate below is shared among all test FMUs. Consolidate to one file.
     // Logger callback is required.
-    if (!functions.logger) {
+    if (!functions->logger) {
         return NULL;
     }
     // Functions to allocate and free memory are required.
-    if (!functions.allocateMemory || !functions.freeMemory) { 
-        functions.logger(NULL, instanceName, fmiError, "error", 
+    if (!functions->allocateMemory || !functions->freeMemory) { 
+        functions->logger(NULL, instanceName, fmiError, "error", 
                 "fmiInstantiateSlave: Missing callback function: freeMemory");
         return NULL;
     }
     if (!instanceName || strlen(instanceName)==0) { 
-        functions.logger(NULL, instanceName, fmiError, "error", 
+        functions->logger(NULL, instanceName, fmiError, "error", 
                 "fmiInstantiateSlave: Missing instance name.");
         return NULL;
     }
     if (strcmp(GUID, MODEL_GUID)) {
-        functions.logger(NULL, instanceName, fmiError, "error", 
+        functions->logger(NULL, instanceName, fmiError, "error", 
                 "fmiInstantiateSlave: Wrong GUID %s. Expected %s.", GUID, MODEL_GUID);
         return NULL;
     }
-    component = (ModelInstance *)functions.allocateMemory(1, sizeof(ModelInstance));
+    component = (ModelInstance *)functions->allocateMemory(1, sizeof(ModelInstance));
     // Allocate memory for the pointer holding the values.
-    component->r = functions.allocateMemory(4, sizeof(fmiReal));
+    component->r = functions->allocateMemory(4, sizeof(fmiReal));
     component->r[0] = 0.0;
     component->r[1] = 1.0;
     component->r[2] = -1.0;   // Last successful firing time.
@@ -88,15 +102,26 @@ fmiComponent fmiInstantiateSlave(fmiString  instanceName, fmiString  GUID,
     component->functions = functions;
     component->instanceName = instanceName;
     
-    functions.logger(component, instanceName, fmiOK, "message",
+    functions->logger(component, instanceName, fmiOK, "message",
                      "Invoked fmiInstantiateSlave for instance %s.", instanceName);
     
     return component;
 }
 
-fmiStatus fmiInitializeSlave(fmiComponent c, fmiReal tStart, fmiBoolean stopTimeDefined, fmiReal tStop) {
+// FMI 1.0
+// fmiStatus fmiInitializeSlave(fmiComponent c, fmiReal tStart, fmiBoolean stopTimeDefined, fmiReal tStop) {
+fmiStatus fmiInitializeSlave(fmiComponent c,
+        fmiReal relativeTolerance,
+                // relativeTolerance. FIXME: What to do with this?  The 2.0beta4 spec says:
+                // "Argument “relativeTolerance” suggests a relative
+                // (local) tolerance in case the slave utilizes a
+                // numerical integrator with variable step size and
+                // error estimation.
+        fmiReal tStart,
+        fmiBoolean stopTimeDefined,
+        fmiReal tStop) {
     ModelInstance* component = (ModelInstance *) c;
-    (component->functions).logger(c, component->instanceName, fmiOK, "message",
+    component->functions->logger(c, component->instanceName, fmiOK, "message",
             "Invoked fmiIntializeSlave: start: %g, StopTimeDefined: %d, tStop: %g.",
             tStart, stopTimeDefined, tStop);
     component->r[2] = 0.0;
@@ -110,7 +135,7 @@ fmiStatus fmiTerminateSlave(fmiComponent c) {
 
 void fmiFreeSlaveInstance(fmiComponent c) {
     ModelInstance* component = (ModelInstance *) c;
-    component->functions.freeMemory(component);
+    component->functions->freeMemory(component);
 }
 
 fmiStatus fmiDoStep(fmiComponent c, fmiReal currentCommunicationPoint, 
@@ -198,7 +223,7 @@ fmiStatus fmiGetReal(fmiComponent c, const fmiValueReference vr[], size_t nvr, f
     fflush(stdout);
 
     if (nvr > 2) {
-        component->functions.logger(component, component->instanceName, fmiError, "error",
+        component->functions->logger(component, component->instanceName, fmiError, "error",
                 "fmiGetReal: Value reference out of range: %u.", nvr);
         return fmiError;
     }
@@ -228,7 +253,7 @@ fmiStatus fmiSetReal(fmiComponent c, const fmiValueReference vr[], size_t nvr, c
     printf("%s: Invoked fmiSetReal: %d ", component->instanceName, (int)nvr);
     fflush(stdout);
     if (nvr > 2) {
-        component->functions.logger(component, component->instanceName, fmiError, "error",
+        component->functions->logger(component, component->instanceName, fmiError, "error",
                                     "fmiGetReal: Value reference out of range: %u.", nvr);
         return fmiError;
     }
