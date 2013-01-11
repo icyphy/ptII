@@ -54,4 +54,16 @@ package ptolemy.kernel.util;
 
  */
 public interface LazyComposite extends Configurable {
+    /** Populate the actor by reading the file specified by the
+     *  <i>source</i> parameter.  Note that the exception thrown here is
+     *  a runtime exception, inappropriately.  This is because execution of
+     *  this method is deferred to the last possible moment, and it is often
+     *  evaluated in a context where a compile-time exception cannot be
+     *  thrown.  Thus, extra care should be exercised to provide valid
+     *  MoML specifications.
+     *  @exception InvalidStateException If the source cannot be read, or if
+     *   an exception is thrown parsing its MoML data.
+     */
+    public void populate() throws InvalidStateException;
+
 }

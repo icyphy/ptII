@@ -49,6 +49,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.LazyComposite;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NamedObj;
@@ -1150,9 +1151,12 @@ public class Director extends Attribute implements Executable {
             // Populate any LazyTypedComposites.
             // Needed by $PTII/ptolemy/cg/lib/test/auto/ModularCodeGen4.xml
             Iterator entities = ((CompositeActor) toplevel()).entityList(
-                    LazyTypedCompositeActor.class).iterator();
+                    LazyComposite.class).iterator();
             while (entities.hasNext()) {
-                LazyTypedCompositeActor lazyComposite = (LazyTypedCompositeActor) entities
+                // LazyTypedCompositeActor implements ptolemy.kernel.util.LazyComposite,
+                // which has a populate() method.  We refer to the interface so
+                // as to avoid a dependency between Director and LazyTypedCompositeActor.
+                LazyComposite lazyComposite = (LazyComposite) entities
                         .next();
                 lazyComposite.populate();
             }
