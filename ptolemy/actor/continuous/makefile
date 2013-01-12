@@ -31,7 +31,7 @@
 
 ME =		ptolemy/actor/continuous
 
-DIRS = 		test
+DIRS =
 
 # Root of the Ptolemy II directory
 ROOT =		../../..
