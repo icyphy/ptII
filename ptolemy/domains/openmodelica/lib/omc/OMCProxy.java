@@ -117,7 +117,7 @@ public class OMCProxy implements IModelicaCompiler {
         public void run() {
             File tmp[] = null;
             try {
-                tmp = getOmcBinaryPaths();
+                tmp = _getOmcBinaryPaths();
             } catch (ConnectException e) {
                 e = new ConnectException("Unable to get the omc binary path!");
                 e.printStackTrace();
@@ -184,11 +184,10 @@ public class OMCProxy implements IModelicaCompiler {
                             .toArray(new String[lst.size()]);
                 }
                 //FIXME
-                proc = Runtime.getRuntime().exec(
-                        cmd,
-                        environmentalVariables,workingDirectory);
+                proc = Runtime.getRuntime().exec(cmd, environmentalVariables,
+                        workingDirectory);
 
-                //Copy the content of workingDirectory for having public access
+                //Copy the content of workingDirectory for having public access.
                 workDir = workingDirectory;
             } catch (IOException e) {
                 OpenModelicaDirector.getOMCLogger().getInfo(
@@ -245,7 +244,7 @@ public class OMCProxy implements IModelicaCompiler {
                                     + proc.exitValue()).printStackTrace();
                 }
             }
-            
+
             hasInitialized = false;
         }
 
@@ -288,30 +287,30 @@ public class OMCProxy implements IModelicaCompiler {
 
         _os = getOs();
 
-        // Set _corbaSession to the time format to keep it unique
+        // Set time as _corbaSession.
         String strDate = "";
         Date date = new Date();
         SimpleDateFormat timeFormat = new SimpleDateFormat("HHmmss");
         strDate = timeFormat.format(date);
         _corbaSession = strDate;
 
-        // Check if an OMC server is already running 
-        File f = new File(getPathToObject());
+        // Check if an OMC server is already started. 
+        File f = new File(_getPathToObject());
         String stringifiedObjectReference = null;
         if (!f.exists()) {
-            
-            // If a server isn't running, start it.
+
+            // If a server is not already started, start it.
             OpenModelicaDirector.getOMCLogger().getInfo(
                     "No OMC object reference found, starting server.");
-            startServer();
+            _startServer();
         } else {
             OpenModelicaDirector
                     .getOMCLogger()
                     .getInfo(
                             "Old OMC CORBA object reference present, assuming OMC is running.");
         }
-        stringifiedObjectReference = readObjectFromFile();
-        setupOmcc(stringifiedObjectReference);
+        stringifiedObjectReference = _readObjectFromFile();
+        _setupOmcc(stringifiedObjectReference);
         hasInitialized = true;
     }
 
@@ -325,7 +324,8 @@ public class OMCProxy implements IModelicaCompiler {
             return false;
         }
 
-        // See if there are parse errors, an empty list {} also denotes error
+        // See if there are parse errors.
+        // An empty list {} also denotes error.
         return retval.toLowerCase().contains("error");
     }
 
@@ -351,7 +351,6 @@ public class OMCProxy implements IModelicaCompiler {
         String error = null;
         String[] retval = { "" };
 
-        // If we couldn't start OpenModelica Compiler(OMC).
         if (_couldNotStartOMC) {
             return CompilerResult.makeResult(retval, error);
         }
@@ -369,8 +368,9 @@ public class OMCProxy implements IModelicaCompiler {
 
         try {
 
-            // Fetch the error string from OpenModelica Compiler(OMC). This should be called after an "Error"
-            // is received or whenever the queue of errors should be emptied.
+            // Fetch the error string from OpenModelica Compiler(OMC). 
+            // This should be called after an "Error"
+            // is received or whenever the queue of errors are emptied.
 
             retval[0] = omcc.sendExpression(command);
 
@@ -378,7 +378,7 @@ public class OMCProxy implements IModelicaCompiler {
                 error = omcc.sendExpression("getErrorString()");
             }
 
-            // Make sure the error string is not empty
+            // Make sure the error string is not empty.
             if (error != null && error.length() > 2) {
                 error = error.trim();
                 error = error.substring(1, error.length() - 1);
@@ -391,7 +391,7 @@ public class OMCProxy implements IModelicaCompiler {
         } catch (org.omg.CORBA.COMM_FAILURE x) {
             _numberOfErrors++;
 
-            // Lose connection to OMC
+            // Lose connection to OMC(OpenModelica Compiler).
             throw new ConnectException(
                     "Couldn't send command to the OpenModelica Compiler. Tried sending: "
                             + command);
@@ -412,13 +412,14 @@ public class OMCProxy implements IModelicaCompiler {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-    // Find the OpenModelica Compiler(OMC) executable file by using path variables.
-    // @parameter executableName The name of the executable file
-    // @return File The omc executable file
-    private File findExecutableOnPath(String executableName) {
+    /** Find the OpenModelica Compiler(OMC) executable file by using path variables.
+     @parameter executableName The name of the executable file
+     @return File The omc executable file
+     */
+    private File _findExecutableOnPath(String executableName) {
         String systemPath = System.getenv("PATH");
 
-        // Try with small letters
+        // Try path with small letters.
         if (systemPath == null) {
             systemPath = System.getenv("path");
         }
@@ -435,17 +436,18 @@ public class OMCProxy implements IModelicaCompiler {
         return fullyQualifiedExecutable;
     }
 
-    // Determine the path to the
-    // omc binary that user (probably) wants to use and the working
-    // directory of where that binary (most likely) should be started in.
-    // This will returns for example 'c:\openmodelica132\omc.exe'
-    // or '/usr/local/share/openmodelica/omc' depending on
-    // such factors as: OS type, environmental Variables settings,
-    // where the first matching binary found.
-    // @return full path to the omc binary and the working folder.
-    // @exception ConnectException If OPENMODELICAHOME is not set 
-    // and we could not find binary file in the path.
-    private File[] getOmcBinaryPaths() throws ConnectException {
+    /** Determine the path to the
+     omc binary that user (probably) wants to use and the working
+     directory of where that binary (most likely) should be started in.
+     This will returns for example 'c:\openmodelica132\omc.exe'
+     or '/usr/local/share/openmodelica/omc' depending on
+     such factors as: OS type, environmental Variables settings,
+     where the first matching binary found.
+     @return full path to the omc binary and the working folder.
+     @exception ConnectException If OPENMODELICAHOME is not set 
+     and we could not find binary file in the path.
+     */
+    private File[] _getOmcBinaryPaths() throws ConnectException {
         String binaryName = "omc";
 
         if (_os == osType.WINDOWS) {
@@ -456,23 +458,23 @@ public class OMCProxy implements IModelicaCompiler {
         File omcWorkingDirectory = null;
         File openModelicaHomeDirectory = null;
 
-        // User specified that standard path to omc should be used,
-        // try to determine the omc path via the OPENMODELICAHOME and
-        // by checking in it's various subdirectory for the omc binary file. 
+        // User specified that standard path to OMC(OpenModelica Compiler) should be used.
+        // Try to determine OMC(OpenModelica Compiler) path via the OPENMODELICAHOME and
+        // by checking in it's various subdirectory for OMC(OpenModelica Compiler) binary file. 
         OpenModelicaDirector
                 .getOMCLogger()
                 .getInfo(
                         "Using OPENMODELICAHOME environmental variable to find omc-binary");
 
-        // Standard path to omc (or omc.exe) binary is encoded in OPENMODELICAHOME
-        // variable. If we do not find it just search the path!
+        // Standard path to OMC(OpenModelica Compiler) binary is encoded in OPENMODELICAHOME
+        // variable. 
         String openModelicaHome = System.getenv("OPENMODELICAHOME");
         if (openModelicaHome == null) {
             OpenModelicaDirector
                     .getOMCLogger()
                     .getInfo(
                             "OPENMODELICAHOME environmental variable is NULL, trying the PATH variable");
-            File omc = findExecutableOnPath(binaryName);
+            File omc = _findExecutableOnPath(binaryName);
             if (omc != null) {
                 OpenModelicaDirector.getOMCLogger().getInfo(
                         "Found omc executable in the path here: "
@@ -490,8 +492,8 @@ public class OMCProxy implements IModelicaCompiler {
 
         openModelicaHomeDirectory = new File(openModelicaHome);
 
-        // The subdirectories where omc binary may be located 
-        // adrpo 2012-06-12 It does not support the old ways! "/omc" and "Compiler/omc"
+        // The subdirectories where OMC(OpenModelica Compiler) binary is located. 
+        // adrpo 2012-06-12 It does not support the old ways! "/omc" and "Compiler/omc".
         String[] subdirs = { "bin" };
 
         for (String subdir : subdirs) {
@@ -544,8 +546,8 @@ public class OMCProxy implements IModelicaCompiler {
         return new File[] { omcBinary, omcWorkingDirectory };
     }
 
-    // Return the path to the OMC CORBA object that is stored on a disk.
-    private String getPathToObject() {
+    /** Return the path to the OMC CORBA object that is stored on a disk.*/
+    private String _getPathToObject() {
 
         String fileName = null;
         String username = System.getenv("USER");
@@ -592,9 +594,11 @@ public class OMCProxy implements IModelicaCompiler {
             }
             break;
         }*/
+
         switch (OMCProxy.getOs()) {
+
+        // Add _corbaSession to the end of OMC CORBA object reference name to make it unique.
         case UNIX:
-            //String username = System.getenv("USER");
             if (username == null) {
                 username = "nobody";
             }
@@ -632,11 +636,12 @@ public class OMCProxy implements IModelicaCompiler {
         return fileName;
     }
 
-    // Read the OMC CORBA object reference from a file on a disk.
-    // @return The object reference as a String.
-    private String readObjectFromFile() {
+    /** Read the OMC CORBA object reference from a file on a disk.
+        @return The object reference as a String.
+     */
+    private String _readObjectFromFile() {
 
-        String path = getPathToObject();
+        String path = _getPathToObject();
         File f = new File(path);
         String stringifiedObjectReference = null;
 
@@ -672,14 +677,15 @@ public class OMCProxy implements IModelicaCompiler {
         return stringifiedObjectReference;
     }
 
-    // Initialize an ORB, convert the stringified OpenModelica Compiler(OMC) object to a real
-    // CORBA object and then narrow that object to an OmcCommunication object.     
-    private synchronized void setupOmcc(String stringifiedObjectReference) {
+    /** Initialize an ORB, convert the stringified OpenModelica Compiler(OMC) object to a real
+     CORBA object and then narrow that object to an OmcCommunication object.
+     */
+    private synchronized void _setupOmcc(String stringifiedObjectReference) {
 
         String args[] = { null };
 
         // Set the CORBA read timeout to a larger value as we send huge amounts of data
-        // from OMC to MDT.
+        // from OMC(OpenModelica Compiler) to MDT(Modelica Development Tooling).
         System.setProperty("com.sun.CORBA.transport.ORBTCPReadTimeouts",
                 "1:60000:300:1");
 
@@ -694,10 +700,11 @@ public class OMCProxy implements IModelicaCompiler {
         omcc = OmcCommunicationHelper.narrow(obj);
     }
 
-    // Start the OpenModelica Compiler(OMC) server by starting OMCThread.
-    // @exception ConnectException If OPENMODELICAHOME is not set 
-    // and we could not find binary file in the path.
-    private synchronized void startServer() throws ConnectException {
+    /** Start the OpenModelica Compiler(OMC) server by starting OMCThread.
+     @exception ConnectException If OPENMODELICAHOME is not set 
+     and we could not find binary file in the path.
+     */
+    private synchronized void _startServer() throws ConnectException {
 
         if (!_fOMCThreadHasBeenScheduled) {
 
@@ -721,23 +728,24 @@ public class OMCProxy implements IModelicaCompiler {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
+    // Initialize _corbaSession.
     private String _corbaSession = null;
 
-    // Indicate if we've given up to run OpenModelica Compiler(OMC) as it was unable to start. 
+    // Indicate if we give up on running OpenModelica Compiler(OMC) as it is unable to start. 
     private boolean _couldNotStartOMC = false;
 
-    // This object is used for starting OpenModelica Compiler(OMC) thread. 
+    // This object is used for starting OpenModelica Compiler(OMC)'s thread. 
     private OMCThread _fOMCThread = null;
 
     // Flag which indicates whether the server should start or not. 
     private boolean _fOMCThreadHasBeenScheduled = false;
 
-    // Number of errors
+    // Initialize the number of errors.
     private int _numberOfErrors = 0;
 
-    // What Operating System(OS) we're running on.
+    // The Operating System(OS) we are running on.
     private osType _os;
 
-    // Maximum number of compiler errors to show. 
+    // Maximum number of compiler errors to display. 
     private int _showMaxErrors = 10;
 }

@@ -103,7 +103,7 @@ public class OMCLogger {
             //Create user directory in the temporary folder.
             b = new File(filePath).mkdirs();
         */
-        // Create  the log file 
+        // Create  the log file. 
         try {
             switch (OMCProxy.getOs()) {
             case UNIX:
@@ -119,7 +119,7 @@ public class OMCLogger {
                 break;
             }
 
-            // Set format of the log to show date and time first
+            // Set format of the log to show date and time first.
             _fileHandler.setFormatter(new Formatter() {
                 public String format(LogRecord rec) {
                     StringBuffer buf = new StringBuffer(1000);
