@@ -58,6 +58,7 @@ import ptolemy.actor.continuous.ContinuousStatefulComponent;
 import ptolemy.actor.continuous.ContinuousStatefulDirector;
 import ptolemy.actor.continuous.ContinuousStepSizeController;
 import ptolemy.actor.sched.FixedPointDirector;
+import ptolemy.actor.util.PeriodicDirector;
 import ptolemy.actor.util.Time;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
@@ -68,8 +69,6 @@ import ptolemy.data.expr.FileParameter;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.data.type.BaseType;
-import ptolemy.domains.continuous.kernel.ContinuousDirector;
-import ptolemy.domains.sdf.kernel.SDFDirector;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
@@ -1127,9 +1126,8 @@ of the limitations of newStep.
             stepSize = ((ContinuousStatefulDirector) getDirector())
                 .getCurrentStepSize();
 
-        } else if (director instanceof SDFDirector) {
-            // FIXME: depending on SDFDirector here.
-            stepSize = ((SDFDirector) getDirector())
+        } else if (director instanceof PeriodicDirector) {
+            stepSize = ((PeriodicDirector) getDirector())
                 .periodValue();
         } else {
             throw new IllegalActionException(this,
