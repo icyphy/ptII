@@ -1,7 +1,7 @@
 /* An actor that executes a Modelica script.
- 
+
  Below is the copyright agreement for the Ptolemy II system.
- 
+
  Copyright (c) 2012 The Regents of the University of California
  All rights reserved.
  Permission is hereby granted, without written agreement and without
@@ -48,11 +48,13 @@ import ptolemy.domains.openmodelica.kernel.OpenModelicaDirector;
 import ptolemy.domains.openmodelica.lib.compiler.CompilerResult;
 import ptolemy.domains.openmodelica.lib.compiler.ConnectException;
 import ptolemy.domains.openmodelica.lib.omc.OMCProxy;
+import ptolemy.domains.openmodelica.lib.omc.OMCProxy.osType;
 
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
+import ptolemy.plot.compat.PxgraphApplication;
 import ptolemy.util.StringUtilities;
 
 /**
@@ -63,17 +65,6 @@ import ptolemy.util.StringUtilities;
     inside the actor.
 
     <p>The OpenModelica actor works for the model which is composed of only one class.</p>
-
-    // FIXME: I'm not sure what you are saying here.  Are you describing
-    // the default values?
-
-    <p> <i>dcmotor.mo</i> should be selected as the fileParameter and
-    <i>dcmotor</i> as the model name.  <i>loadModel(Modelica)</i> is
-    needed for the simulation and should be set in the ModelicaScript
-    parameter.  The rest of the settings are optional.  The simulation
-    result is saved as a <i>mat</i>,<i>csv</i> or <i>plt</i> file and
-    also there is another alternative <i>empty</i> which is used when
-    there is no need for users to have the result file.</p>
 
    @author Mana Mirzaei
    @version $Id$
@@ -93,9 +84,6 @@ public class OpenModelica extends TypedAtomicActor {
     public OpenModelica(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
-
-        // FIXME: is this used?
-        _iteration = new Variable(this, "iteration", new IntToken(0));
 
         modelicaScript = new StringParameter(this, "modelicaScript");
         modelicaScript.setDisplayName("Write OpenModelica Command");
@@ -129,6 +117,7 @@ public class OpenModelica extends TypedAtomicActor {
         method = new StringParameter(this, "method");
         method.setTypeEquals(BaseType.STRING);
         method.setDisplayName("Method");
+        method.setExpression("dassl");
 
         fileNamePrefix = new StringParameter(this, "fileNamePrefix");
         fileNamePrefix.setTypeEquals(BaseType.STRING);
@@ -136,6 +125,7 @@ public class OpenModelica extends TypedAtomicActor {
 
         outputFormat = new StringParameter(this, "outputFormat");
         outputFormat.setDisplayName("Output format");
+        outputFormat.setExpression("mat");
         outputFormat.addChoice("mat");
         outputFormat.addChoice("csv");
         outputFormat.addChoice("plt");
@@ -144,6 +134,7 @@ public class OpenModelica extends TypedAtomicActor {
         variableFilter = new StringParameter(this, "variableFilter");
         variableFilter.setTypeEquals(BaseType.STRING);
         variableFilter.setDisplayName("Variable filter");
+        variableFilter.setExpression(".*");
 
         cflags = new StringParameter(this, "cflags");
         cflags.setTypeEquals(BaseType.STRING);
@@ -194,7 +185,7 @@ public class OpenModelica extends TypedAtomicActor {
     /** Format for the result file.  
      *  The default value of this parameter is the string "mat".
      */
-    public StringParameter outputFormat;
+    public static StringParameter outputFormat;
 
     /** Simulation flags.  
      *  The default value of this parameter is the string "".
@@ -261,10 +252,14 @@ public class OpenModelica extends TypedAtomicActor {
             if (_debugging) {
                 _debug("OpenModelica Actor Called fire().");
             }
-            //  Load the model from the file in the first step. 
+
+            //  Load the model from the file. 
             //  Build the model. 
-            //  Run the simulation executable result of buildModel() method in order to generate the simulation result.
-            simulate();
+            //  Run the executable result file of buildModel("command") to generate the simulation result file.
+            _simulate();
+
+            // Plot the plt file by calling PxgraphApplication.main(dcmotor_res.plt)
+            _plot();
         } catch (Throwable throwable) {
             throwable = new IllegalActionException(
                     "Unable to simulate the model!");
@@ -274,49 +269,93 @@ public class OpenModelica extends TypedAtomicActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-    // FIXME: it is best to use javadoc comments for private methods
-    // so that the documentation can be found from within Eclipse.
 
-    // Load the model from the file in the first step. Then, build the
-    //  model. Finally, run the simulation executable result of
-    //  buildModel() in order to generate the simulation result.
-    // @exception ConnectException If commands couldn't
-    //  be sent to the OMC.
-    // @exception IOException If the executable result of buildModel()
-    // couldn't be executed.
+    /**Fetch the file output format.
+     * Default output format is mat.
+     * @return _fileType The output format of the file. 
+     */
+    private static _fileType _getOutputFormat() {
 
-    // FIXME: Rename to _simulate().  Protected and private methods and fields
-    // start with an underscore.
-    private void simulate() throws ConnectException, IOException {
+        String fileFormat = outputFormat.getExpression();
+        if (fileFormat.contains("plt")) {
+            return _fileType.plt;
+        } else if (fileFormat.contains("csv")) {
+            return _fileType.csv;
+        } else if (fileFormat.contains("mat")) {
+            return _fileType.mat;
+        } else
+            return _fileType.mat;
+    }
 
-        // FIXME: We don't use short names like 'str'.  What is the meaning
-        // of the contents of this string?  Is it a message?  Then maybe
-        // use the variable name "message".  It looks like commands that are
-        // passed to OMC, so maybe "commands" would be a good variable name.
-        String str = null;
+    /**Plot the plt file by calling PxgraphApplication.main(dcmotor_res.plt).*/
+    private void _plot() {
 
-        // Set fileName to the path of the testmodel(dcmotor.mo)
+        // Fetch the format of simulation result file.
+        _outputFormat = _getOutputFormat();
+
+        // Array for saving the file path.  
+        String[] _pltPath = new String[1];
+
+        switch (_outputFormat) {
+        case plt:
+
+            // Save file path in the string array for invoking main() of PxgraphApplication.
+            if (OMCProxy.getOs() == osType.WINDOWS) {
+                if (fileNamePrefix.getExpression().compareTo("") == 0)
+                    _pltPath[0] = _temp + modelName.getExpression()
+                            + "_res.plt";
+                else
+                    _pltPath[0] = _temp + fileNamePrefix.getExpression()
+                            + "_res.plt";
+            }
+            if (OMCProxy.getOs() == osType.UNIX) {
+                if (fileNamePrefix.getExpression().compareTo("") == 0)
+                    _pltPath[0] = _temp + "/" + modelName.getExpression()
+                            + "_res.plt";
+                else
+                    _pltPath[0] = _temp + "/" + fileNamePrefix.getExpression()
+                            + "_res.plt";
+            }
+            if (OMCProxy.getOs() == osType.MAC) {
+                if (fileNamePrefix.getExpression().compareTo("") == 0)
+                    _pltPath[0] = _temp + "/" + modelName.getExpression()
+                            + "_res.plt";
+                else
+                    _pltPath[0] = _temp + "/" + fileNamePrefix.getExpression()
+                            + "_res.plt";
+            }
+            PxgraphApplication.main(_pltPath);
+            break;
+
+        //TODO
+        /*  case csv:
+             break;
+            case mat:
+             break;*/
+        }
+    }
+
+    /**Load the model from the file in the first step. Then, build the
+       model. Finally, run the simulation executable result of
+       buildModel() in order to generate the simulation result.
+       @exception ConnectException If commands couldn't
+       be sent to the OMC.
+       @exception IOException If the executable result of buildModel()
+       couldn't be executed.
+     */
+    private void _simulate() throws ConnectException, IOException {
+
+        // commands which are sent to the buildModel("command").
+        String commands = null;
+
+        // Set file parameter to the path of the testmodel(dcmotor.mo).
         String systemPath = StringUtilities.getProperty("ptolemy.ptII.dir");
 
         String filePath = null;
-        // FIXME: it probably is not necessary to use backslashes here, Java
-        // handles forward slashes fine under Windows.
-        // Also this code sets the filePath to the same thing for all platforms.
-        switch (OMCProxy.getOs()) {
-        case WINDOWS:
-            filePath = systemPath
-                    + "\\ptolemy\\domains\\openmodelica\\demo\\OpenModelica\\dcmotor.mo";
-            filePath = filePath.replace("\\", "/");
-            break;
-        case UNIX:
-            filePath = systemPath
-                    + "/ptolemy/domains/openmodelica/demo/OpenModelica/dcmotor.mo";
-            break;
-        case MAC:
-            filePath = systemPath
-                    + "/ptolemy/domains/openmodelica/demo/OpenModelica/dcmotor.mo";
-            break;
-        }
+
+        filePath = systemPath
+                + "/ptolemy/domains/openmodelica/demo/OpenModelica/dcmotor.mo";
+
         fileName.setExpression(filePath);
 
         File file = new File(filePath);
@@ -330,13 +369,11 @@ public class OpenModelica extends TypedAtomicActor {
                     "No model found at: [" + filePath + "]");
         }
 
-        // FIXME: comments should be complete sentences and end in a period.
-
-        // Load the model from the selected file
+        // Load the model from the file parameter.
         _result = OpenModelicaDirector.getOMCProxy().loadFile(
                 fileName.getExpression());
 
-        // Check if there an error exists in the result of the loadFile command
+        // Check if an error exists in the result of loadFile("command").
         if (_result.getFirstResult().compareTo("") != 0
                 && _result.getError().compareTo("") == 0) {
             OpenModelicaDirector.getOMCLogger().getInfo(
@@ -346,16 +383,18 @@ public class OpenModelica extends TypedAtomicActor {
         if (_result.getError().compareTo("") != 0) {
             OpenModelicaDirector.getOMCLogger().getInfo(
                     "There is an error in loading the model!");
+            throw new ConnectException(
+                    "There is an error in loading the model!");
         }
 
-        // The loadModel command loads the file corresponding to the class.
+        // The loadModel("command") loads the file corresponding to the class.
         if (modelicaScript.getExpression().compareTo("") == 0)
             modelicaScript.setExpression("loadModel(Modelica)");
 
         _result = OpenModelicaDirector.getOMCProxy().sendCommand(
                 modelicaScript.getExpression());
 
-        // Check if there is an error in the result of the loadModel command
+        // Check if an error exists in the result of the loadModel("command").
         if (_result.getFirstResult().compareTo("true\n") == 0) {
             OpenModelicaDirector.getOMCLogger().getInfo(
                     "Modelica model is loaded successfully.");
@@ -363,57 +402,13 @@ public class OpenModelica extends TypedAtomicActor {
         if (_result.getError().compareTo("") != 0) {
             OpenModelicaDirector.getOMCLogger().getInfo(
                     "There is an error in loading Modelica model!");
+            throw new ConnectException(
+                    "There is an error in loading Modelica model!");
         }
 
-        // FIXME: use // style comments inside method bodies.
-        /* Set the default value of buildModel parameters */
-
-        // FIXME: This is a little unusual.  If the parameters are empty,
-        // you are setting defaults.  Should the defaults be set in the
-        // constructor?
-        if (simulationStartTime.getExpression().compareTo("") == 0) {
-            simulationStartTime.setExpression("0.0");
-        }
-
-        if (simulationStopTime.getExpression().compareTo("") == 0) {
-            simulationStopTime.setExpression("0.1");
-        }
-
-        if (numberOfIntervals.getExpression().compareTo("") == 0) {
-            numberOfIntervals.setExpression("500");
-        }
-
-        if (tolerance.getExpression().compareTo("") == 0) {
-            tolerance.setExpression("0.0001");
-        }
-
-        if (method.getExpression().compareTo("") == 0) {
-            method.setExpression("dassl");
-        }
-
-        if (outputFormat.getExpression().compareTo("") == 0) {
-            outputFormat.setExpression("mat");
-        }
-
-        if (variableFilter.getExpression().compareTo("") == 0) {
-            variableFilter.setExpression(".*");
-        }
-
-        // FIXME: these two if statements have no effect?
-        if (cflags.getExpression().compareTo("") == 0) {
-            cflags.setExpression("");
-        }
-
-        if (simflags.getExpression().compareTo("") == 0) {
-            simflags.setExpression("");
-        }
-
-        // Set the buildModel expression according to the user needs
-        // if user wants the result with the new name 
+        // Set command of buildModel() with Model Name as the name of executable result file.
         if (fileNamePrefix.getExpression().compareTo("") == 0) {
-            OpenModelicaDirector.getOMCLogger().getInfo(
-                    "Build the model without fileNamePrefix.");
-            str = modelName.getExpression()
+            commands = modelName.getExpression()
                     + ",startTime="
                     + Float.valueOf(simulationStartTime.getExpression())
                             .floatValue()
@@ -428,10 +423,11 @@ public class OpenModelica extends TypedAtomicActor {
                     + "\",variableFilter=\"" + variableFilter.getExpression()
                     + "\",cflags=\"" + cflags.getExpression()
                     + "\",simflags=\"" + simflags.getExpression() + "\"";
-        } else {
-            OpenModelicaDirector.getOMCLogger().getInfo(
-                    "Build the model with fileNamePrefix.");
-            str = modelName.getExpression()
+        }
+
+        // Set command of buildModel() with File Name Prefix as the name of executable result file.
+        else {
+            commands = modelName.getExpression()
                     + ",startTime="
                     + Float.valueOf(simulationStartTime.getExpression())
                             .floatValue()
@@ -449,9 +445,9 @@ public class OpenModelica extends TypedAtomicActor {
                     + "\",simflags=\"" + simflags.getExpression() + "\"";
         }
 
-        _result = OpenModelicaDirector.getOMCProxy().buildModel(str);
+        _result = OpenModelicaDirector.getOMCProxy().buildModel(commands);
 
-        // Check if there is an error in the result of buildModel()
+        // Check if an error exists in the result of buildModel("command").
         if (_result.getFirstResult().compareTo("") != 0
                 && _result.getError().compareTo("") == 0) {
             OpenModelicaDirector.getOMCLogger()
@@ -460,9 +456,9 @@ public class OpenModelica extends TypedAtomicActor {
                                     + " Model is built successfully.");
         }
         if (_result.getError().compareTo("") != 0) {
-            // FIXME: shouldn't this throw an exception in Ptolemy?
-            // If not, then document why not.
             OpenModelicaDirector.getOMCLogger().getInfo(
+                    "There is an error in building the model.");
+            throw new ConnectException(
                     "There is an error in building the model.");
         }
 
@@ -470,9 +466,11 @@ public class OpenModelica extends TypedAtomicActor {
 
         switch (OMCProxy.getOs()) {
         case WINDOWS:
-            // FIXME: you probably don't need the backslash here, but
+            //FIXME: you probably don't need the backslash here, but
             // you do need the FIXME.
-            command = OMCProxy.workDir.getPath() + "\\"
+            // I remove the backslash. By "but
+            // you do need the FIXME.". you mean I should correct something else?
+            command = OMCProxy.workDir.getPath() + "/"
                     + modelName.getExpression() + ".exe";
             break;
         case UNIX:
@@ -485,40 +483,52 @@ public class OpenModelica extends TypedAtomicActor {
             break;
         }
 
-        // Run the executable result of buildModel() 
+        // Run the executable result file of buildModel("command"). 
         Runtime.getRuntime().exec(command, OMCProxy.environmentalVariables,
                 OMCProxy.workDir);
 
-        // Check if user wants the new name for the result file 
+        // When users do not select File Name Prefix as the name of executable result file
+        // and Model Name is set as the name of executable result file.
         if (fileNamePrefix.getExpression().compareTo("") == 0) {
             OpenModelicaDirector.getOMCLogger().getInfo(
                     modelName.getExpression() + " is executed successfully.");
+            //FIXME  I don't know why it is false, I cannot see this message when I listen to actor.
             if (_debugging) {
                 _debug("Simulation of " + modelName + " is done.\n"
                         + "The result file is located in " + OMCProxy.workDir);
             }
-        } else {
+        }
+
+        // When users select File Name Prefix as the name of executable result file.
+        else {
             OpenModelicaDirector.getOMCLogger().getInfo(
                     fileNamePrefix.getExpression()
                             + " is executed successfully.");
+            //FIXME  I don't know why it is false, I cannot see this message when I listen to actor.          
             if (_debugging) {
                 _debug("Simulation of " + fileNamePrefix + " is done.\n"
                         + "The result file is located in " + OMCProxy.workDir);
             }
         }
-
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
+    // Different output formats of the simulation executable result file.
+    private static enum _fileType {
+        csv, mat, plt
+    }
 
     // FIXME: is this used?  If not, then remove it.  If it is, document it.
+    // It is used in clone(). But I don't know What I should write here.
     private Variable _iteration;
 
-    // FIXME: I would say "The return result from invoking..."
+    // The output format of the simulation executable result file.
+    private _fileType _outputFormat;
 
-    /** Returning result of invoking sendExpression("command") to
-     *  OpenModelica Compiler(OMC).
-     */
+    // The path to the temp directory which is used for addressing the location of executable result file of simulation.
+    private static String _temp = System.getProperty("java.io.tmpdir");
+
+    // The return result from invoking sendExpression("command") to OpenModelica Compiler(OMC).
     private CompilerResult _result;
 }
