@@ -196,6 +196,7 @@ COREPACKAGES = \
 	ptolemy.kernel.undo \
 	ptolemy.kernel.util \
 	ptolemy.actor \
+	ptolemy.actor.continuous \
 	ptolemy.actor.gui.style \
 	ptolemy.actor.injection \
 	ptolemy.actor.lib.hoc \
@@ -596,6 +597,7 @@ ALLPACKAGES = \
 	ptolemy.domains.modal.kernel.fmv \
 	ptolemy.domains.openmodelica.kernel \
 	ptolemy.domains.openmodelica.lib \
+	ptolemy.domains.openmodelica.lib.compiler \
 	ptolemy.domains.openmodelica.lib.core \
 	ptolemy.domains.openmodelica.lib.core.compiler \
 	ptolemy.domains.openmodelica.lib.omc \
