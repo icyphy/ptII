@@ -156,6 +156,8 @@ test release-3.1 {Run svn status and look for files that should be checked in.  
 !       ptolemy/vergil/basic/layout/kieler/test/layoutPerformance2.xml} {
 ?       .maven} {
 ?       cobertura.ser} {
+?       ptolemy/actor/lib/fmi/fmus/stepCounter/src/binaries} {
+?       ptolemy/actor/lib/fmi/fmus/stepCounter/stepCounter.fmu} {
 ?       ptolemy/actor/lib/jai/test/auto/PtolemyII.bmp} {
 ?       ptolemy/actor/lib/jai/test/auto/PtolemyII.jpg} {
 ?       ptolemy/actor/lib/jai/test/auto/PtolemyII.pgm} {
