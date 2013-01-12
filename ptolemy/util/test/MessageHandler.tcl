@@ -178,7 +178,7 @@ test MessageHandler-8.1 {yesNoCancelQuestion(String), answer is yes} {
     } results
     java::call System setIn $stdin
     list $answer $results
-} {1 {Is this test working? (yes or no or cancel) }}
+} {1 {Is this test working? (Yes or No or Cancel) }}
 
 ######################################################################
 ####
@@ -194,7 +194,7 @@ test MessageHandler-8.2 {yesNoCancelQuestion(String), answer is no} {
     } results
     java::call System setIn $stdin
     list $answer $results
-} {0 {Is this test working? (yes or no or cancel) }}
+} {0 {Is this test working? (Yes or No or Cancel) }}
 
 ######################################################################
 ####
@@ -210,4 +210,4 @@ test MessageHandler-8.3 {yesNoCancelQuestion(String), answer is cancel} {
     } results
     java::call System setIn $stdin
     list $answer $results
-} {{ptolemy.util.CancelException: Cancelled: Is this test working?} {Is this test working? (yes or no or cancel) }}
+} {{ptolemy.util.CancelException: Cancelled: Is this test working?} {Is this test working? (Yes or No or Cancel) }}
