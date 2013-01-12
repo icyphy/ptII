@@ -15,14 +15,14 @@ public class MetroIIActorThread {
 
     public MetroIIActorThread(Actor actor, Type type, State state,
             YieldAdapterIterator<Iterable<Event.Builder>> thread) {
-        _actor = actor;
-        _type = type;
-        _state = state;
-        _thread = thread;
+        this.actor = actor;
+        this.type = type;
+        this.state = state;
+        this.thread = thread;
     }
 
-    public Actor _actor;
-    public Type _type;
-    public State _state;
-    public YieldAdapterIterator<Iterable<Event.Builder>> _thread;
+    public Actor actor;
+    public Type type;
+    public State state;
+    public YieldAdapterIterator<Iterable<Event.Builder>> thread;
 }
