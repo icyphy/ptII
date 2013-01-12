@@ -61,19 +61,13 @@ JSRCS = \
 	ErrorHandlingAction.java \
 	FPPCore.java \
 	InputDevice.java \
-	MulticoreExecutionTimeMonitor.java \
-	NetworkReceiver.java \
-	NetworkTransmitter.java \
 	NPFCFSCore.java \
 	OutputDevice.java \
 	PEDFCore.java \
 	PtidesPort.java \
 	SensorHandler.java \
 	SchedulerDirector.java \
-	SchedulerModel.java \
-	ExecutionTimeListener.java \
-	ExecutionTimeMonitor.java \
-	PlatformTimeMonitor.java 
+	SchedulerModel.java
 
 OTHER_FILES_TO_BE_JARED = \
 	ptidesentities.xml \
