@@ -48,19 +48,11 @@ PTPACKAGE = 	kernel
 PTCLASSJAR =	$(PTPACKAGE).jar
 
 JSRCS = \
-	PtidesBasicDirector.java \
-	PtidesBasicPreemptiveDirector.java \
-	PtidesBasicReceiver.java \
 	PtidesDirector.java \
 	PtidesEvent.java \
 	PtidesListEventQueue.java \
-	PtidesMulticoreDirector.java \
-	PtidesNoPhysicalTimeDirector.java \
 	PtidesPlatform.java \
-	PtidesPreemptiveEDFDirector.java \
-	PtidesPreemptiveUserEDFDirector.java \
 	PtidesReceiver.java \
-	PtidesTopLevelDirector.java \
 	Tag.java
 
 OTHER_FILES_TO_BE_JARED = \
