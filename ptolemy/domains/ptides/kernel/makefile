@@ -48,7 +48,6 @@ PTPACKAGE = 	kernel
 PTCLASSJAR =	$(PTPACKAGE).jar
 
 JSRCS = \
-	PtidesActorProperties.java \
 	PtidesBasicDirector.java \
 	PtidesBasicPreemptiveDirector.java \
 	PtidesBasicReceiver.java \
