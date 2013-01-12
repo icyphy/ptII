@@ -28,8 +28,11 @@
 #include <stdio.h>
 #include <string.h>
 
-// The model identifier string.
+// The model identifier string (used with FMI 1.0)
 #define MODEL_IDENTIFIER stepCounter
+
+// The model identifier string (used with FMI 2.0)
+#define FMIAPI_FUNCTION_PREFIX stepCounter
 
 // include fmu header files, typedefs and macros
 #include "fmiFunctions.h"
