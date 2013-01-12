@@ -68,7 +68,7 @@ JSRCS = \
 	CanBus.java \
 	CanBusPriority.java \
 	ColoredQuantityManager.java \
-	CompositeQM.java \ 
+	CompositeQM.java \
 	CrossbarSwitch.java \
 	TTESwitch.java \
 	MonitoredQuantityManager.java \
