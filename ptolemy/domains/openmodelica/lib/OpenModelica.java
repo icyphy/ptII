@@ -56,18 +56,24 @@ import ptolemy.kernel.util.Workspace;
 import ptolemy.util.StringUtilities;
 
 /**
-    An actor that executes a Modelica script. it translates and simulates the model.
-    There is one  actor provided in the Vergil, <i>MoreLibraries</i> Under <i>OpenModelica</i>. 
-    It is called <i>OpenModelica</i>; 
-    To view or edit its Modelica script, look inside the actor.
+    An actor that executes a Modelica script. it translates and
+    simulates the model.  There is one actor provided in the Vergil,
+    <i>MoreLibraries</i> Under <i>OpenModelica</i>.  It is called
+    <i>OpenModelica</i>; To view or edit its Modelica script, look
+    inside the actor.
 
-     The OpenModelica actor works for the model which is composed of only one class.
+    <p>The OpenModelica actor works for the model which is composed of only one class.</p>
 
-     <i>dcmotor.mo</i> should be selected as the fileParameter and <i>dcmotor</i> as the model name.
-     <i>loadModel(Modelica)</i> is needed for the simulation and should be set in the ModelicaScript parameter.
-     The rest of the settings are optional.
-     The simulation result is saved as a <i>mat</i>,<i>csv</i> or <i>plt</i> file and also there is another alternative 
-     <i>empty</i> which is used when there is no need for users to have the result file. 
+    // FIXME: I'm not sure what you are saying here.  Are you describing
+    // the default values?
+
+    <p> <i>dcmotor.mo</i> should be selected as the fileParameter and
+    <i>dcmotor</i> as the model name.  <i>loadModel(Modelica)</i> is
+    needed for the simulation and should be set in the ModelicaScript
+    parameter.  The rest of the settings are optional.  The simulation
+    result is saved as a <i>mat</i>,<i>csv</i> or <i>plt</i> file and
+    also there is another alternative <i>empty</i> which is used when
+    there is no need for users to have the result file.</p>
 
    @author Mana Mirzaei
    @version $Id$
@@ -88,6 +94,7 @@ public class OpenModelica extends TypedAtomicActor {
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
+        // FIXME: is this used?
         _iteration = new Variable(this, "iteration", new IntToken(0));
 
         modelicaScript = new StringParameter(this, "modelicaScript");
@@ -267,6 +274,9 @@ public class OpenModelica extends TypedAtomicActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
+    // FIXME: it is best to use javadoc comments for private methods
+    // so that the documentation can be found from within Eclipse.
+
     // Load the model from the file in the first step. Then, build the
     //  model. Finally, run the simulation executable result of
     //  buildModel() in order to generate the simulation result.
@@ -274,15 +284,24 @@ public class OpenModelica extends TypedAtomicActor {
     //  be sent to the OMC.
     // @exception IOException If the executable result of buildModel()
     // couldn't be executed.
+
+    // FIXME: Rename to _simulate().  Protected and private methods and fields
+    // start with an underscore.
     private void simulate() throws ConnectException, IOException {
 
+        // FIXME: We don't use short names like 'str'.  What is the meaning
+        // of the contents of this string?  Is it a message?  Then maybe
+        // use the variable name "message".  It looks like commands that are
+        // passed to OMC, so maybe "commands" would be a good variable name.
         String str = null;
 
         // Set fileName to the path of the testmodel(dcmotor.mo)
-
         String systemPath = StringUtilities.getProperty("ptolemy.ptII.dir");
 
         String filePath = null;
+        // FIXME: it probably is not necessary to use backslashes here, Java
+        // handles forward slashes fine under Windows.
+        // Also this code sets the filePath to the same thing for all platforms.
         switch (OMCProxy.getOs()) {
         case WINDOWS:
             filePath = systemPath
@@ -311,6 +330,8 @@ public class OpenModelica extends TypedAtomicActor {
                     "No model found at: [" + filePath + "]");
         }
 
+        // FIXME: comments should be complete sentences and end in a period.
+
         // Load the model from the selected file
         _result = OpenModelicaDirector.getOMCProxy().loadFile(
                 fileName.getExpression());
@@ -327,7 +348,7 @@ public class OpenModelica extends TypedAtomicActor {
                     "There is an error in loading the model!");
         }
 
-        // loadModel command loads the file corresponding to the class.
+        // The loadModel command loads the file corresponding to the class.
         if (modelicaScript.getExpression().compareTo("") == 0)
             modelicaScript.setExpression("loadModel(Modelica)");
 
@@ -344,8 +365,12 @@ public class OpenModelica extends TypedAtomicActor {
                     "There is an error in loading Modelica model!");
         }
 
+        // FIXME: use // style comments inside method bodies.
         /* Set the default value of buildModel parameters */
 
+        // FIXME: This is a little unusual.  If the parameters are empty,
+        // you are setting defaults.  Should the defaults be set in the
+        // constructor?
         if (simulationStartTime.getExpression().compareTo("") == 0) {
             simulationStartTime.setExpression("0.0");
         }
@@ -374,6 +399,7 @@ public class OpenModelica extends TypedAtomicActor {
             variableFilter.setExpression(".*");
         }
 
+        // FIXME: these two if statements have no effect?
         if (cflags.getExpression().compareTo("") == 0) {
             cflags.setExpression("");
         }
@@ -434,6 +460,8 @@ public class OpenModelica extends TypedAtomicActor {
                                     + " Model is built successfully.");
         }
         if (_result.getError().compareTo("") != 0) {
+            // FIXME: shouldn't this throw an exception in Ptolemy?
+            // If not, then document why not.
             OpenModelicaDirector.getOMCLogger().getInfo(
                     "There is an error in building the model.");
         }
@@ -442,6 +470,8 @@ public class OpenModelica extends TypedAtomicActor {
 
         switch (OMCProxy.getOs()) {
         case WINDOWS:
+            // FIXME: you probably don't need the backslash here, but
+            // you do need the FIXME.
             command = OMCProxy.workDir.getPath() + "\\"
                     + modelName.getExpression() + ".exe";
             break;
@@ -481,9 +511,14 @@ public class OpenModelica extends TypedAtomicActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
+
+    // FIXME: is this used?  If not, then remove it.  If it is, document it.
     private Variable _iteration;
 
-    // Returning result of invoking sendExpression("command") to OpenModelica Compiler(OMC).
-    private CompilerResult _result;
+    // FIXME: I would say "The return result from invoking..."
 
+    /** Returning result of invoking sendExpression("command") to
+     *  OpenModelica Compiler(OMC).
+     */
+    private CompilerResult _result;
 }
