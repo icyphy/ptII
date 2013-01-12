@@ -34,6 +34,8 @@ import ptolemy.actor.IOPort;
 import ptolemy.actor.NoTokenException;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
+import ptolemy.actor.continuous.ContinuousStatefulComponent;
+import ptolemy.actor.continuous.ContinuousStepSizeController;
 import ptolemy.actor.parameters.ParameterPort;
 import ptolemy.actor.parameters.PortParameter;
 import ptolemy.actor.util.BooleanDependency;

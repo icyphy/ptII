@@ -38,7 +38,7 @@ ME =		ptolemy/actor
 # If $(PTPTALON_DIR) is empty, then configure failed and compilation
 # will fail.
 #
-DIRS = 		util sched process gui injection lib corba parameters gt designs test \
+DIRS = 		util sched process continuous gui injection lib corba parameters gt designs test \
 		$(PTPTALON_DIR)
 
 # Root of the Ptolemy II directory
@@ -56,6 +56,7 @@ PTCLASSJAR =
 
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
+	continuous/continuous.jar \
 	designs/designs.jar \
 	gui/gui.jar \
 	injection/injection.jar \

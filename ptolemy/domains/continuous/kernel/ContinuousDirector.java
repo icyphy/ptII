@@ -36,6 +36,9 @@ import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.QuasiTransparentDirector;
+import ptolemy.actor.continuous.ContinuousStatefulComponent;
+import ptolemy.actor.continuous.ContinuousStatefulDirector;
+import ptolemy.actor.continuous.ContinuousStepSizeController;
 import ptolemy.actor.sched.FixedPointDirector;
 import ptolemy.actor.util.GeneralComparator;
 import ptolemy.actor.util.SuperdenseTime;
@@ -207,7 +210,7 @@ import ptolemy.kernel.util.Workspace;
  @Pt.AcceptedRating Red (hyzheng)
  */
 public class ContinuousDirector extends FixedPointDirector implements
-        ContinuousStatefulComponent, ContinuousStepSizeController {
+        ContinuousStatefulDirector, ContinuousStepSizeController {
 
     /** Construct a director in the given container with the given name.
      *  The container argument must not be null, or a NullPointerException

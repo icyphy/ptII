@@ -54,6 +54,9 @@ import ptolemy.actor.IOPort;
 import ptolemy.actor.SuperdenseTimeDirector;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
+import ptolemy.actor.continuous.ContinuousStatefulComponent;
+import ptolemy.actor.continuous.ContinuousStatefulDirector;
+import ptolemy.actor.continuous.ContinuousStepSizeController;
 import ptolemy.actor.sched.FixedPointDirector;
 import ptolemy.actor.util.Time;
 import ptolemy.data.BooleanToken;
@@ -66,8 +69,6 @@ import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.domains.continuous.kernel.ContinuousDirector;
-import ptolemy.domains.continuous.kernel.ContinuousStatefulComponent;
-import ptolemy.domains.continuous.kernel.ContinuousStepSizeController;
 import ptolemy.domains.sdf.kernel.SDFDirector;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
@@ -787,8 +788,8 @@ public class FMUImport extends TypedAtomicActor implements
             return _refinedStepSize;
         }
         Director director = getDirector();
-        if (director instanceof ContinuousDirector) {
-            double half = ((ContinuousDirector) director).getCurrentStepSize()*0.5;
+        if (director instanceof ContinuousStatefulDirector) {
+            double half = ((ContinuousStatefulDirector) director).getCurrentStepSize()*0.5;
             if (_debugging) {
                 _debugToStdOut("===> Suggesting a refined step size of half the current step size, or " + half);
             }
@@ -1110,8 +1111,8 @@ of the limitations of newStep.
     }
 
     /** Return the current step size.
-     *  If the director is a ContinuousDirector, then the value
-     *  returned by currentStepSize() is returned.
+     *  If the director implements ContinuousStatefulDirector,
+     *  then the value returned by currentStepSize() is returned.
      *  If the director is SDFDirector, then the value
      *  returned by periodValue() is returned.
      *  @return the current step size.
@@ -1121,9 +1122,9 @@ of the limitations of newStep.
     protected double _getStepSize() throws IllegalActionException {
         double stepSize = 0.0;
         Director director = getDirector();
-        if (director instanceof ContinuousDirector) {
+        if (director instanceof ContinuousStatefulDirector) {
             // FIXME: depending on ContinuousDirector here.
-            stepSize = ((ContinuousDirector) getDirector())
+            stepSize = ((ContinuousStatefulDirector) getDirector())
                 .getCurrentStepSize();
 
         } else if (director instanceof SDFDirector) {

@@ -1,6 +1,6 @@
-/* An interface for actors that have tentative and committed state.
+/* An interface for directors that have tentative and committed state.
 
- Copyright (c) 1998-2012 The Regents of the University of California.
+ Copyright (c) 2013 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -25,27 +25,24 @@
  COPYRIGHTENDKEY
 
  */
-package ptolemy.domains.continuous.kernel;
-
-import ptolemy.kernel.util.IllegalActionException;
+package ptolemy.actor.continuous;
 
 //////////////////////////////////////////////////////////////////////////
-////
+//// ContinuousStatefulDirector
 
 /**
- Interface for actors and directors
- that have tentative state that can be rolled back.
- @author  Haiyang Zheng and Edward A. Lee
- @version $Id$
- @since Ptolemy II 6.0
+ Interface for directors
+ that have a getCurrentStepSize() method and have state that can be
+ rolled back.
+ @author  Christopher Brooks
+ @version $Id: ContinuousStatefulComponent.java 64744 2012-10-01 22:51:43Z cxh $
+ @since Ptolemy II 9.1
  @Pt.ProposedRating Green (hyzheng)
  @Pt.AcceptedRating Green (eal)
  */
-public interface ContinuousStatefulComponent {
-
-    /** Roll back to committed state.
-     *  @exception IllegalActionException If the rollback attempts to go
-     *   back further than the last committed time.
+public interface ContinuousStatefulDirector extends ContinuousStatefulComponent {
+    /** Return the current integration step size.
+     *  @return The current integration step size.
      */
-    public void rollBackToCommittedState() throws IllegalActionException;
+    public double getCurrentStepSize();
 }

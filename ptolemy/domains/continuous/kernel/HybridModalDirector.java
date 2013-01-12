@@ -34,6 +34,8 @@ import java.util.Map;
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
+import ptolemy.actor.continuous.ContinuousStatefulComponent;
+import ptolemy.actor.continuous.ContinuousStepSizeController;
 import ptolemy.data.expr.ParseTreeEvaluator;
 import ptolemy.domains.modal.kernel.FSMActor;
 import ptolemy.domains.modal.kernel.FSMDirector;

@@ -25,7 +25,7 @@
  COPYRIGHTENDKEY
 
  */
-package ptolemy.domains.continuous.kernel;
+package ptolemy.actor.continuous;
 
 import ptolemy.kernel.util.IllegalActionException;
 
@@ -72,7 +72,7 @@ import ptolemy.kernel.util.IllegalActionException;
  coincide with one of these steps.
 
  @author  Jie Liu, Haiyang Zheng, Edward A. Lee
- @version $Id$
+ @version $Id: ContinuousStepSizeController.java 57040 2010-01-27 20:52:32Z cxh $
  @since Ptolemy II 0.2
  @Pt.ProposedRating Green (hyzheng)
  @Pt.AcceptedRating Green (eal)
@@ -81,6 +81,7 @@ public interface ContinuousStepSizeController {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+   
 
     /** Implementations of this method should return
      *  true if the current integration step size
