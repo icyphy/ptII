@@ -32,7 +32,7 @@
 
 ME =		ptolemy/domains/ptides/lib
 
-DIRS =		io luminary qm test 
+DIRS =		luminary qm test 
 
 # Root of the Java directory
 ROOT =		../../../..
@@ -49,7 +49,6 @@ PTCLASSJAR =
 
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
-	io/io.jar \
 	luminary/luminary.jar \
 	qm/qm.jar
 
@@ -88,7 +87,7 @@ EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES =	io luminary qm test
+MISC_FILES =	luminary qm test
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
