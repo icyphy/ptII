@@ -7,6 +7,13 @@ $CLASSPATH/ptolemy/actor/lib/hoc/demo/ApplyFFT/ApplyFFT.xml
 $CLASSPATH/ptolemy/actor/lib/hoc/demo/Case/Case.xml
 $CLASSPATH/ptolemy/actor/lib/hoc/demo/DFTSubSet/DFTSubSet.xml
 $CLASSPATH/ptolemy/actor/lib/hoc/demo/ModelReference/ModelReference.xml
+$CLASSPATH/ptolemy/actor/lib/io/demo/AppendToFile/AppendToFile.xml
+$CLASSPATH/ptolemy/actor/lib/io/demo/CopyFile/CopyFile.xml
+$CLASSPATH/ptolemy/actor/lib/io/demo/CopyOfCopyFile/CopyOfCopyFile.xml
+$CLASSPATH/ptolemy/actor/lib/io/demo/FilePortParameter/FilePortParameter.xml
+$CLASSPATH/ptolemy/actor/lib/io/demo/ReadExpressionsCommandLine/ReadExpressionsCommandLine.xml
+$CLASSPATH/ptolemy/actor/lib/io/demo/ReadStdIn/ReadStdIn.xml
+$CLASSPATH/ptolemy/actor/lib/io/demo/StandardInput/StandardInput.xml
 $CLASSPATH/ptolemy/actor/lib/javasound/demo/KarplusStrong/KarplusStrong.xml
 $CLASSPATH/ptolemy/actor/parameters/demo/SliderParameter/SliderParameter.xml
 $CLASSPATH/ptolemy/data/type/demo/Objects/Objects.xml
