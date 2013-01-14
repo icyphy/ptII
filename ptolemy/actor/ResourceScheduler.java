@@ -58,7 +58,7 @@ import ptolemy.moml.MoMLModelAttribute;
    @Pt.AcceptedRating Red (derler)
  */
 public abstract class ResourceScheduler extends MoMLModelAttribute implements
-        Decorator {
+        ResourceSchedulerInterface, Decorator {
 
     /** Create a new actor in the specified container with the specified
      *  name.  The name must be unique within the container or an exception
@@ -174,7 +174,9 @@ public abstract class ResourceScheduler extends MoMLModelAttribute implements
         return _lastActorFinished;
     }
 
-    /** Initialize local variables.
+    /** Initialize local variables and if this resource
+     *  scheduler wants to be fired at a future time, return
+     *  this time.
      * @return Next time this scheduler requests a firing.
      * @exception IllegalActionException Thrown if list of actors
      *   scheduled by this scheduler cannot be retrieved.

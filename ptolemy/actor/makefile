@@ -109,6 +109,7 @@ JSRCS = \
 	Receiver.java \
 	RelationWidthInference.java \
 	ResourceScheduler.java \
+	ResourceSchedulerInterface.java \
 	SchedulePlotterEditorFactory.java \
 	StateReceiver.java \
 	StreamExecutionListener.java \
