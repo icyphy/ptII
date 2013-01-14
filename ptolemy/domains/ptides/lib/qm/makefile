@@ -52,7 +52,7 @@ OTHER_FILES_TO_BE_JARED =
 JSRCS = \
 	VariableDelaySwitch.java \
 	TCPPacketReceiver.java \
-	TCPPacketTransmitter.java 
+	TCPPacketTransmitter.java
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
