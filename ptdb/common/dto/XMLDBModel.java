@@ -180,10 +180,8 @@ public class XMLDBModel implements Comparable {
         }
     }
 
-    /** Return the hash code for the XMLToken object. If two
-     *  XMLToken objects contains the same timestamp and index,
-     *  then they have the same hashcode.
-     *  @return The hash code for this XMLToken object.
+    /** Return the hash code for the XMLDBModel object.
+     *  @return The hash code for this XMLDBModel object.
      */
     public int hashCode() {
         // See http://www.technofundo.com/tech/java/equalhash.html
