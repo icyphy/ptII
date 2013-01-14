@@ -32,7 +32,7 @@
 
 ME =		ptolemy/domains/ptides/lib
 
-DIRS =		luminary qm test 
+DIRS =		luminary qm test
 
 # Root of the Java directory
 ROOT =		../../../..
