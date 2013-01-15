@@ -31,7 +31,7 @@
 
 ME =		ptolemy/demo
 
-DIRS = 		Brewery ExecDemos FuelSystem PowerPlant test
+DIRS = 		Brewery ExecDemos FuelSystem test
 
 # Root of Ptolemy II directory
 ROOT =		../..
@@ -49,8 +49,7 @@ PTCLASSJAR =
 PTAUXALLJARS = \
 	Brewery/Brewery.jar \
 	ExecDemos/ExecDemos.jar \
-	FuelSystem/FuelSystem.jar \
-	PowerPlant/PowerPlant.jar
+	FuelSystem/FuelSystem.jar
 
 PTAUXALLJAR = $(PTPACKAGE).jar
 
