@@ -33,7 +33,7 @@
 
 ME =		ptolemy/cg/adapter/generic/program/procedural/c/luminary/adapters/ptolemy/domains/ptides/demo
 
-DIRS =		Accumulator Speaker TunnelingBallDevice TimeTriggeredTunnelingBallDevice
+DIRS =		
 
 # Root of the Java directory
 ROOT =		../../../../../../../../../../../../..
@@ -53,10 +53,6 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 # Include the .class files from these jars in PTCLASSALLJAR
 # If you change this, change DIRS above
 PTCLASSALLJARS = \
-	Accumulator/Accumulator.jar \
-	Speaker/Speaker.jar \
-	TimeTriggeredTunnelingBallDevice/TimeTriggeredTunnelingBallDevice.jar \
-	TunnelingBallDevice/TunnelingBallDevice.jar
 
 # Keep this list alphabetized.
 JSRCS = 

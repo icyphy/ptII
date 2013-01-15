@@ -33,7 +33,7 @@
 
 ME =		ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/ptides/demo
 
-DIRS =		OnePlatform Speaker
+DIRS =	    
 
 # Root of the Java directory
 ROOT =		../../../../../../../../../../../..
@@ -52,8 +52,7 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 
 # Include the .class files from these jars in PTCLASSALLJAR
 # If you change this, change DIRS above
-PTCLASSALLJARS = \
-	OnePlatform/OnePlatform.jar
+PTCLASSALLJARS = 
 
 # Keep this list alphabetized.
 JSRCS = 
