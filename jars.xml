@@ -271,6 +271,9 @@
 	<include name="ptolemy/actor/designs/*.xml"/>
       </fileset>
       <fileset dir="${basedir}">
+	<include name="ptolemy/actor/continuous/*.class"/>
+      </fileset>
+      <fileset dir="${basedir}">
 	<include name="ptolemy/actor/gui/*.class"/>
       </fileset>
       <fileset dir="${basedir}">
