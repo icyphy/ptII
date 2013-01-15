@@ -34,6 +34,7 @@ import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.Settable;
 
 
 
@@ -65,7 +66,7 @@ public class MirrorPortParameter extends PortParameter {
      */
     public MirrorPortParameter(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
-        super(container, name);
+        super(container, name, false);
         _port = new ParameterMirrorPort((ComponentEntity) container, name);
     }
 

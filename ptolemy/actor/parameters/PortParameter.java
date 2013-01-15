@@ -146,6 +146,30 @@ public class PortParameter extends AbstractInitializableParameter implements
             _port = new ParameterPort((ComponentEntity) container, name);
         }
     }
+    
+    /** Construct a parameter with the given name contained by the specified
+     *  entity. The container argument must not be null, or a
+     *  NullPointerException will be thrown.  This parameter will create
+     *  an associated port in the same container.
+     *  @param container The container.
+     *  @param name The name of the parameter.
+     *  @param initializeParameterPort True if the parameterPort should
+     *   be initialized here. Some derived classes might want to initialize
+     *   the port themselves (e.g. MirrorPortParameter).
+     *  @exception IllegalActionException If the parameter is not of an
+     *   acceptable class for the container.
+     *  @exception NameDuplicationException If the name coincides with
+     *   a parameter already in the container.
+     */
+    public PortParameter(NamedObj container, String name, boolean initializeParameterPort)
+            throws IllegalActionException, NameDuplicationException {
+        super(container, name);
+        // If we get to here, we know the container is a ComponentEntity,
+        // so the cast is safe.
+        if (initializeParameterPort && container instanceof TypedActor) {
+            _port = new ParameterPort((ComponentEntity) container, name);
+        }
+    }
 
     /** Construct a Parameter with the given container, name, and Token.
      *  The token defines the initial persistent and current values.

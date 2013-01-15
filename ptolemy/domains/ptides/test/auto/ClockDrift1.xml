@@ -211,7 +211,7 @@
                 </property>
             </property>
         </property>
-        <property name="clockRate" class="ptolemy.actor.parameters.PortParameter">
+        <property name="clockRate" class="ptolemy.actor.parameters.MirrorPortParameter">
         </property>
         <port name="clockRate" class="ptolemy.actor.parameters.ParameterMirrorPort">
             <property name="input"/>
@@ -236,7 +236,7 @@
             </property>
             <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{350.0, 262.0}">
             </property>
-            <property name="clockRate" class="ptolemy.actor.parameters.PortParameter" value="0.9">
+            <property name="clockRate" class="ptolemy.actor.parameters.MirrorPortParameter" value="0.9">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
