@@ -1045,8 +1045,8 @@ OTHERMAKE = /usr/ccs/bin/make
 
 # Remote location of Ptolemy II tree for testing
 # Host to run on
-REMOTE1HOST = andrews
-REMOTE1HOME = /vol/andrews/andrews2/ptII
+REMOTE1HOST = moog
+REMOTE1HOME = /vol/moog/moog2/ptII
 REMOTE1PTIIDIST = $(REMOTE1HOME)/ptII$(VERSION)
 
 # Log file to save the results in
@@ -1101,14 +1101,14 @@ hudson:
 	PTIIHOME=/var/lib/hudson/jobs/ptII/workspace \
 	PTIIADM=/var/lib/hudson/jobs/ptII/workspace/adm \
 	JAR=/usr/bin/jar \
-	clean all jnlp src.jar setup test_setup update_andrews updateDOPCenterImage
+	clean all jnlp src.jar setup test_setup update_moog updateDOPCenterImage
 
 hudson_notest: 
 	$(MAKE) -k USER=hudson \
 	PTIIHOME=/var/lib/hudson/jobs/ptII/workspace \
 	PTIIADM=/var/lib/hudson/jobs/ptII/workspace/adm \
 	JAR=/usr/bin/jar \
-	clean all jnlp src.jar setup update_andrews
+	clean all jnlp src.jar setup update_moog
 
 hudson_start: 
 	$(MAKE) -k USER=hudson \
@@ -1129,7 +1129,7 @@ hudson_dist:
 	PTIIHOME=/var/lib/hudson/jobs/ptII/workspace \
 	PTIIADM=/var/lib/hudson/jobs/ptII/workspace/adm \
 	JAR=/usr/bin/jar \
-	clean all jnlp src.jar setup update_andrews updateDOPCenterImage
+	clean all jnlp src.jar setup update_moog updateDOPCenterImage
 
 # caltrop requires -source 1.4, ptalon -source 1.5
 # Move remote1doc to after rebuild so that the Actor Index tool is built.
@@ -1868,7 +1868,7 @@ remote2distjdk1.4test: #$(REMOTE2PTJACL_JAR)
 # Build on a remote host by doing a svn checkout
 
 # Host to run on
-REMOTE3HOST = andrews
+REMOTE3HOST = moog
 
 # Directory to build in
 REMOTE3HOME = /vol/$(REMOTE3HOST)/$(REMOTE3HOST)1/ptII
@@ -2240,7 +2240,7 @@ remote5shallowtest:
 # test case coverage from the /test/auto/*.xml tests
 
 # Host to run on
-REMOTE6HOST = andrews
+REMOTE6HOST = moog
 
 # Directory to build in
 REMOTE6HOME = /vol/$(REMOTE6HOST)/$(REMOTE6HOST)2/ptII
@@ -2736,12 +2736,12 @@ updateJNLPs: $(JNLPS_TAR)
 	ssh bennett "cd $(PTII_FTP)/ptII$(VERSION); /usr/local/bin/tar -xf ../$(JNLPS_TAR)"
 
 ###################################################################
-# Update andrews
+# Update moog
 BLDMASTR_HOME = /home/bldmastr
 HUDSON_PTII = /var/lib/hudson/jobs/ptII/workspace
-# Location of the nightly directory on andrews
-ANDREWS_HUDSON_HOME3 = /export/home3/hudson
-ANDREWS_HOME_PTII = /home/hudson/ptII
+# Location of the nightly directory on moog
+MOOG_HUDSON_HOME3 = /home2/hudson
+MOOG_HOME_PTII = /home/hudson/ptII
 PTEXTERNAL_NIGHTLY=/home/www/cvswww/chess.eecs.berkeley.edu/ptexternal/nightly
 
 # The major version number, ptII/adm/gen-$(PTII_MAJOR_VERSION) should exist
@@ -2753,46 +2753,46 @@ PTII_WINDOWS_VERSION=$(WINDOWS_VERSION)
 PTII_VERSION=$(PTII_MAJOR_VERSION).devel
 
 PTEXTERNAL_NIGHTLY=/home/www/cvswww/chess.eecs.berkeley.edu/ptexternal/nightly
-update_andrews:
+update_moog:
 	# Create ChangeLog.txt. We do each year separately.
 	rm -rf $(HUDSON_PTII)/adm/dists
 	-cd $(BLDMASTR_HOME)/adm/ChangeLogs; ./ptChangeLogs 
 	mkdir $(HUDSON_PTII)/adm/dists
-	scp -Bprq $(BLDMASTR_HOME)/adm/ChangeLogs/ChangeLog andrews:$(PTEXTERNAL_NIGHTLY)/ChangeLog.txt
+	scp -Bprq $(BLDMASTR_HOME)/adm/ChangeLogs/ChangeLog moog:$(PTEXTERNAL_NIGHTLY)/ChangeLog.txt
 	#
 	# The doc directories are on a separate partition
-	ssh andrews rm -rf $(ANDREWS_HOME_PTII)	
-	ssh andrews ln -s $(ANDREWS_HUDSON_HOME3)/ptII $(ANDREWS_HOME_PTII)
+	ssh moog rm -rf $(MOOG_HOME_PTII)	
+	ssh moog ln -s $(MOOG_HUDSON_HOME3)/ptII $(MOOG_HOME_PTII)
 	#
 	# Link to codeDoc*
-	ssh andrews rm -rf $(PTEXTERNAL_NIGHTLY)/doc/codeDoc 
-	ssh andrews rm -rf $(PTEXTERNAL_NIGHTLY)/doc/codeDocHyVisual 
-	ssh andrews rm -rf $(PTEXTERNAL_NIGHTLY)/doc/codeDocViptos
-	ssh andrews rm -rf $(PTEXTERNAL_NIGHTLY)/doc/codeDocVisualSense
-	ssh andrews ln -s $(ANDREWS_HOME_PTII)/doc/codeDoc $(PTEXTERNAL_NIGHTLY)/doc
-	ssh andrews ln -s $(ANDREWS_HOME_PTII)/doc/codeDocHyVisual $(PTEXTERNAL_NIGHTLY)/doc
-	ssh andrews ln -s $(ANDREWS_HOME_PTII)/doc/codeDocVisualSense $(PTEXTERNAL_NIGHTLY)/doc
-	ssh andrews ln -s $(ANDREWS_HOME_PTII)/doc/codeDocViptos $(PTEXTERNAL_NIGHTLY)/doc
+	ssh moog rm -rf $(PTEXTERNAL_NIGHTLY)/doc/codeDoc 
+	ssh moog rm -rf $(PTEXTERNAL_NIGHTLY)/doc/codeDocHyVisual 
+	ssh moog rm -rf $(PTEXTERNAL_NIGHTLY)/doc/codeDocViptos
+	ssh moog rm -rf $(PTEXTERNAL_NIGHTLY)/doc/codeDocVisualSense
+	ssh moog ln -s $(MOOG_HOME_PTII)/doc/codeDoc $(PTEXTERNAL_NIGHTLY)/doc
+	ssh moog ln -s $(MOOG_HOME_PTII)/doc/codeDocHyVisual $(PTEXTERNAL_NIGHTLY)/doc
+	ssh moog ln -s $(MOOG_HOME_PTII)/doc/codeDocVisualSense $(PTEXTERNAL_NIGHTLY)/doc
+	ssh moog ln -s $(MOOG_HOME_PTII)/doc/codeDocViptos $(PTEXTERNAL_NIGHTLY)/doc
 	#
 	# Copy over doc/coding/eclipse.htm and doc/eclipse/
-	ssh andrews mkdir -p $(PTEXTERNAL_NIGHTLY)/doc/coding
-	scp -Bprq $(HUDSON_PTII)/doc/coding/addinganactor.htm andrews:$(PTEXTERNAL_NIGHTLY)/doc/coding/addinganactor.htm
-	scp -Bprq $(HUDSON_PTII)/doc/coding/ant.htm andrews:$(PTEXTERNAL_NIGHTLY)/doc/coding/ant.htm
-	scp -Bprq $(HUDSON_PTII)/doc/coding/performance.htm andrews:$(PTEXTERNAL_NIGHTLY)/doc/coding/performance.htm
-	scp -Bprq $(HUDSON_PTII)/doc/coding/svn-config-auto-props.txt andrews:$(PTEXTERNAL_NIGHTLY)/doc/coding/svn-config-auto-props.txt
-	scp -Bprq $(HUDSON_PTII)/doc/coding/eclipse.htm andrews:$(PTEXTERNAL_NIGHTLY)/doc/coding/eclipse.htm
-	scp -Bprq $(HUDSON_PTII)/doc/coding/eclipseSimple.htm andrews:$(PTEXTERNAL_NIGHTLY)/doc/coding/eclipse.htm
-	(cd $(HUDSON_PTII)/doc/; tar -cf - eclipse footer.htm ) | ssh andrews "cd $(PTEXTERNAL_NIGHTLY)/doc; tar -xf -"
+	ssh moog mkdir -p $(PTEXTERNAL_NIGHTLY)/doc/coding
+	scp -Bprq $(HUDSON_PTII)/doc/coding/addinganactor.htm moog:$(PTEXTERNAL_NIGHTLY)/doc/coding/addinganactor.htm
+	scp -Bprq $(HUDSON_PTII)/doc/coding/ant.htm moog:$(PTEXTERNAL_NIGHTLY)/doc/coding/ant.htm
+	scp -Bprq $(HUDSON_PTII)/doc/coding/performance.htm moog:$(PTEXTERNAL_NIGHTLY)/doc/coding/performance.htm
+	scp -Bprq $(HUDSON_PTII)/doc/coding/svn-config-auto-props.txt moog:$(PTEXTERNAL_NIGHTLY)/doc/coding/svn-config-auto-props.txt
+	scp -Bprq $(HUDSON_PTII)/doc/coding/eclipse.htm moog:$(PTEXTERNAL_NIGHTLY)/doc/coding/eclipse.htm
+	scp -Bprq $(HUDSON_PTII)/doc/coding/eclipseSimple.htm moog:$(PTEXTERNAL_NIGHTLY)/doc/coding/eclipse.htm
+	(cd $(HUDSON_PTII)/doc/; tar -cf - eclipse footer.htm ) | ssh moog "cd $(PTEXTERNAL_NIGHTLY)/doc; tar -xf -"
 	#
 	# Copy images in eclipse.htm
-	-ssh andrews mkdir -p $(PTEXTERNAL_NIGHTLY)/doc/img
-	scp -Bprq $(HUDSON_PTII)/doc/img/{eclipseWorkspaceLauncher.png,eclipsePreferencesGeneralWorkspace.png,eclipseNewProject.png,eclipseNewJavaProject.png,eclipseNewJavaProject2.png,eclipsePreferencesGeneralWorkspaceWindows.png,eclipseWorkspaceLauncherWindows.png} andrews:$(PTEXTERNAL_NIGHTLY)/doc/img
+	-ssh moog mkdir -p $(PTEXTERNAL_NIGHTLY)/doc/img
+	scp -Bprq $(HUDSON_PTII)/doc/img/{eclipseWorkspaceLauncher.png,eclipsePreferencesGeneralWorkspace.png,eclipseNewProject.png,eclipseNewJavaProject.png,eclipseNewJavaProject2.png,eclipsePreferencesGeneralWorkspaceWindows.png,eclipseWorkspaceLauncherWindows.png} moog:$(PTEXTERNAL_NIGHTLY)/doc/img
 	# Update the doc/eclipse directory to work with the CHESS site
-	ssh andrews "cd $(PTEXTERNAL_NIGHTLY)/doc/eclipse; ./fixEclipseInstructions"
-	# Copy the ptII tree over to andrews.
+	ssh moog "cd $(PTEXTERNAL_NIGHTLY)/doc/eclipse; ./fixEclipseInstructions"
+	# Copy the ptII tree over to moog.
 	# We need to at least copy over the build log
-	##@echo "Removing $(ANDREWS_HUDSON_HOME3)/ptII on andrews";
-	##ssh andrews rm -rf $(ANDREWS_HUDSON_HOME3)/ptII;
+	##@echo "Removing $(MOOG_HUDSON_HOME3)/ptII on moog";
+	##ssh moog rm -rf $(MOOG_HUDSON_HOME3)/ptII;
 	@echo "Cleaning up in $(BLDMASTER_HOME)/vendors/misc/dbxml-2.5.16";
 	rm -rf $(HUDSON_PTII)/vendors/misc/dbxml-2.5.16/build*
 	rm -rf $(HUDSON_PTII)/vendors/misc/dbxml-2.5.16/db-*
@@ -2821,36 +2821,36 @@ update_andrews:
 	@echo "Cleaning up in $(HUDSON_HOME)";
 	rm -rf $(HUDSON_PTII)/ptolemy/vergil/basic/layout/kieler/test/layoutPerformance.xml
 	rm -rf $(HUDSON_PTII)/ptolemy/vergil/basic/layout/kieler/test/layoutPerformance2.xml
-	@echo "`date`: Updating $(ANDREWS_HUDSON_HOME3)/ptII on andrews";
-	ssh andrews rm -rf $(ANDREWS_HUDSON_HOME3)/tmp;
-	ssh andrews mkdir -p $(ANDREWS_HUDSON_HOME3)/tmp;
+	@echo "`date`: Updating $(MOOG_HUDSON_HOME3)/ptII on moog";
+	ssh moog rm -rf $(MOOG_HUDSON_HOME3)/tmp;
+	ssh moog mkdir -p $(MOOG_HUDSON_HOME3)/tmp;
 	echo "`date`: This will about 3 minutes . . ."
 	# 1. Copy over the contents of \$PTII
-	#-scp -Bprq $(HUDSON_PTII) andrews:$(ANDREWS_HUDSON_HOME3)/tmp;
-	-(cd $(HUDSON_PTII)/..; tar --exclude-from=$(GENDIR)/andrews.ex -cf - workspace) | ssh andrews "cd $(ANDREWS_HUDSON_HOME3)/tmp; /usr/sfw/bin/gtar -xf -"
+	#-scp -Bprq $(HUDSON_PTII) moog:$(MOOG_HUDSON_HOME3)/tmp;
+	-(cd $(HUDSON_PTII)/..; tar --exclude-from=$(GENDIR)/moog.ex -cf - workspace) | ssh moog "cd $(MOOG_HUDSON_HOME3)/tmp; tar -xf -"
 	# 2. Move the previous ptII to ptII.old so that the links always work
-	-ssh andrews mv $(ANDREWS_HUDSON_HOME3)/ptII $(ANDREWS_HUDSON_HOME3)/ptII.old;
-	ssh andrews mv $(ANDREWS_HUDSON_HOME3)/tmp/workspace $(ANDREWS_HUDSON_HOME3)/ptII;
-	@echo "`date`: Removing $(ANDREWS_HUDSON_HOME3)/ptII.old on andrews";
-	ssh andrews rm -rf $(ANDREWS_HUDSON_HOME3)/ptII.old;
-	@echo "`date`: Done removing $(ANDREWS_HUDSON_HOME3)/ptII.old on andrews";
+	-ssh moog mv $(MOOG_HUDSON_HOME3)/ptII $(MOOG_HUDSON_HOME3)/ptII.old;
+	ssh moog mv $(MOOG_HUDSON_HOME3)/tmp/workspace $(MOOG_HUDSON_HOME3)/ptII;
+	@echo "`date`: Removing $(MOOG_HUDSON_HOME3)/ptII.old on moog";
+	ssh moog rm -rf $(MOOG_HUDSON_HOME3)/ptII.old;
+	@echo "`date`: Done removing $(MOOG_HUDSON_HOME3)/ptII.old on moog";
 	#
 	@echo "Create links to tar files"
 	@echo "Make directories"
-	-ssh andrews mkdir $(ANDREWS_HUDSON_HOME3)/builds
-	-ssh andrews mkdir $(PTEXTERNAL_NIGHTLY)/builds
+	-ssh moog mkdir $(MOOG_HUDSON_HOME3)/builds
+	-ssh moog mkdir $(PTEXTERNAL_NIGHTLY)/builds
 	#
 	@echo "Remove old tar files and logs"
-	ssh andrews "find $(ANDREWS_HUDSON_HOME3)/builds -mtime +10 -ls -exec rm {} \;"
-	ssh andrews rm -f \
-	   $(ANDREWS_HUDSON_HOME3)/builds/ptII$(PTII_VERSION)-`date +%Y-%m-%d`.tar.gz \
-	   $(ANDREWS_HUDSON_HOME3)/builds/ptII$(PTII_VERSION)-`date +%Y-%m-%d`.src.tar.gz \
-	   $(ANDREWS_HUDSON_HOME3)/builds/ptII$(PTII_WINDOWS_VERSION)_setup_windows-`date +%Y-%m-%d`.exe \
-	   $(ANDREWS_HUDSON_HOME3)/builds/ptII$(PTII_WINDOWS_VERSION)_setup_windows_64-`date +%Y-%m-%d`.exe \
-	   $(ANDREWS_HUDSON_HOME3)/builds/ptII$(PTII_VERSION).setup.mac-`date +%Y-%m-%d`.app.tar.gz \
-	   $(ANDREWS_HUDSON_HOME3)/builds/ptIInightly_mail-`date +%Y-%m-%d`.txt \
-	   $(ANDREWS_HUDSON_HOME3)/builds/ptIInightly-`date +%Y-%m-%d`.htm \
-	   $(ANDREWS_HUDSON_HOME3)/builds/ptIInightly-`date +%Y-%m-%d`.txt \
+	ssh moog "find $(MOOG_HUDSON_HOME3)/builds -mtime +10 -ls -exec rm {} \;"
+	ssh moog rm -f \
+	   $(MOOG_HUDSON_HOME3)/builds/ptII$(PTII_VERSION)-`date +%Y-%m-%d`.tar.gz \
+	   $(MOOG_HUDSON_HOME3)/builds/ptII$(PTII_VERSION)-`date +%Y-%m-%d`.src.tar.gz \
+	   $(MOOG_HUDSON_HOME3)/builds/ptII$(PTII_WINDOWS_VERSION)_setup_windows-`date +%Y-%m-%d`.exe \
+	   $(MOOG_HUDSON_HOME3)/builds/ptII$(PTII_WINDOWS_VERSION)_setup_windows_64-`date +%Y-%m-%d`.exe \
+	   $(MOOG_HUDSON_HOME3)/builds/ptII$(PTII_VERSION).setup.mac-`date +%Y-%m-%d`.app.tar.gz \
+	   $(MOOG_HUDSON_HOME3)/builds/ptIInightly_mail-`date +%Y-%m-%d`.txt \
+	   $(MOOG_HUDSON_HOME3)/builds/ptIInightly-`date +%Y-%m-%d`.htm \
+	   $(MOOG_HUDSON_HOME3)/builds/ptIInightly-`date +%Y-%m-%d`.txt \
 	   $(PTEXTERNAL_NIGHTLY)/builds/ptII$(PTII_VERSION)-`date +%Y-%m-%d`.tar.gz \
 	   $(PTEXTERNAL_NIGHTLY)/builds/ptII$(PTII_VERSION)-`date +%Y-%m-%d`.src.tar.gz \
 	   $(PTEXTERNAL_NIGHTLY)/builds/ptII$(PTII_WINDOWS_VERSION)_setup_windows-`date +%Y-%m-%d`.exe \
@@ -2859,11 +2859,11 @@ update_andrews:
 	   $(PTEXTERNAL_NIGHTLY)/builds/ptIInightly_mail-`date +%Y-%m-%d`.txt \
 	   $(PTEXTERNAL_NIGHTLY)/builds/ptIInightly-`date +%Y-%m-%d`.htm \
 	   $(PTEXTERNAL_NIGHTLY)/builds/ptIInightly-`date +%Y-%m-%d`.txt \
-	   $(ANDREWS_HUDSON_HOME3)/builds/ptII-latest.tar.gz \
-	   $(ANDREWS_HUDSON_HOME3)/builds/ptII-latest.src.tar.gz \
-	   $(ANDREWS_HUDSON_HOME3)/builds/ptII-latest_setup_windows.exe \
-	   $(ANDREWS_HUDSON_HOME3)/builds/ptII-latest_setup_windows_64.exe \
-	   $(ANDREWS_HUDSON_HOME3)/builds/ptII-latest.setup.mac.app.tar.gz \
+	   $(MOOG_HUDSON_HOME3)/builds/ptII-latest.tar.gz \
+	   $(MOOG_HUDSON_HOME3)/builds/ptII-latest.src.tar.gz \
+	   $(MOOG_HUDSON_HOME3)/builds/ptII-latest_setup_windows.exe \
+	   $(MOOG_HUDSON_HOME3)/builds/ptII-latest_setup_windows_64.exe \
+	   $(MOOG_HUDSON_HOME3)/builds/ptII-latest.setup.mac.app.tar.gz \
 	   $(PTEXTERNAL_NIGHTLY)/builds/ptII-latest.tar.gz \
 	   $(PTEXTERNAL_NIGHTLY)/builds/ptII-latest.src.tar.gz \
 	   $(PTEXTERNAL_NIGHTLY)/builds/ptII-latest_setup_windows.exe \
@@ -2874,47 +2874,47 @@ update_andrews:
 	   $(PTEXTERNAL_NIGHTLY)/builds/ptIInightly-latest.txt
 	#
 	@echo "Remove contents of build directory"
-	ssh andrews rm -rf $(PTEXTERNAL_NIGHTLY)/builds
-	ssh andrews mkdir $(PTEXTERNAL_NIGHTLY)/builds
+	ssh moog rm -rf $(PTEXTERNAL_NIGHTLY)/builds
+	ssh moog mkdir $(PTEXTERNAL_NIGHTLY)/builds
 	@echo "Create links to tar files and logs"
-	-ssh andrews ln $(ANDREWS_HUDSON_HOME3)/ptII/adm/gen-$(PTII_MAJOR_VERSION)/ptII$(PTII_VERSION).tar.gz \
-		$(ANDREWS_HUDSON_HOME3)/builds/ptII$(PTII_VERSION)-`date +%Y-%m-%d`.tar.gz
-	-ssh andrews ln $(ANDREWS_HUDSON_HOME3)/ptII/adm/gen-$(PTII_MAJOR_VERSION)/ptII$(PTII_VERSION).src.tar.gz \
-		$(ANDREWS_HUDSON_HOME3)/builds/ptII$(PTII_VERSION)-`date +%Y-%m-%d`.src.tar.gz
-	-ssh andrews ln $(ANDREWS_HUDSON_HOME3)/ptII/adm/gen-$(PTII_MAJOR_VERSION)/ptII$(PTII_WINDOWS_VERSION)_setup_windows.exe \
-		$(ANDREWS_HUDSON_HOME3)/builds/ptII$(PTII_WINDOWS_VERSION)_setup_windows-`date +%Y-%m-%d`.exe
-	-ssh andrews ln $(ANDREWS_HUDSON_HOME3)/ptII/adm/gen-$(PTII_MAJOR_VERSION)/ptII$(PTII_WINDOWS_VERSION)_setup_windows_64.exe \
-		$(ANDREWS_HUDSON_HOME3)/builds/ptII$(PTII_WINDOWS_VERSION)_setup_windows_64-`date +%Y-%m-%d`.exe
-	-ssh andrews ln $(ANDREWS_HUDSON_HOME3)/ptII/adm/gen-$(PTII_MAJOR_VERSION)/ptII$(PTII_VERSION).setup.mac.app.tar.gz \
-		$(ANDREWS_HUDSON_HOME3)/builds/ptII$(PTII_VERSION).setup.mac-`date +%Y-%m-%d`.app.tar.gz
-	-ssh andrews ln $(ANDREWS_HUDSON_HOME3)/ptII/adm/logs/ptIInightly_mail.txt \
-		$(ANDREWS_HUDSON_HOME3)/builds/ptIInightly_mail-`date +%Y-%m-%d`.txt
-	-ssh andrews ln $(ANDREWS_HUDSON_HOME3)/ptII/adm/logs/ptIInightly.htm \
-		$(ANDREWS_HUDSON_HOME3)/builds/ptIInightly-`date +%Y-%m-%d`.htm
-	-ssh andrews ln $(ANDREWS_HUDSON_HOME3)/ptII/adm/logs/ptIInightly.txt \
-		$(ANDREWS_HUDSON_HOME3)/builds/ptIInightly-`date +%Y-%m-%d`.txt
+	-ssh moog ln $(MOOG_HUDSON_HOME3)/ptII/adm/gen-$(PTII_MAJOR_VERSION)/ptII$(PTII_VERSION).tar.gz \
+		$(MOOG_HUDSON_HOME3)/builds/ptII$(PTII_VERSION)-`date +%Y-%m-%d`.tar.gz
+	-ssh moog ln $(MOOG_HUDSON_HOME3)/ptII/adm/gen-$(PTII_MAJOR_VERSION)/ptII$(PTII_VERSION).src.tar.gz \
+		$(MOOG_HUDSON_HOME3)/builds/ptII$(PTII_VERSION)-`date +%Y-%m-%d`.src.tar.gz
+	-ssh moog ln $(MOOG_HUDSON_HOME3)/ptII/adm/gen-$(PTII_MAJOR_VERSION)/ptII$(PTII_WINDOWS_VERSION)_setup_windows.exe \
+		$(MOOG_HUDSON_HOME3)/builds/ptII$(PTII_WINDOWS_VERSION)_setup_windows-`date +%Y-%m-%d`.exe
+	-ssh moog ln $(MOOG_HUDSON_HOME3)/ptII/adm/gen-$(PTII_MAJOR_VERSION)/ptII$(PTII_WINDOWS_VERSION)_setup_windows_64.exe \
+		$(MOOG_HUDSON_HOME3)/builds/ptII$(PTII_WINDOWS_VERSION)_setup_windows_64-`date +%Y-%m-%d`.exe
+	-ssh moog ln $(MOOG_HUDSON_HOME3)/ptII/adm/gen-$(PTII_MAJOR_VERSION)/ptII$(PTII_VERSION).setup.mac.app.tar.gz \
+		$(MOOG_HUDSON_HOME3)/builds/ptII$(PTII_VERSION).setup.mac-`date +%Y-%m-%d`.app.tar.gz
+	-ssh moog ln $(MOOG_HUDSON_HOME3)/ptII/adm/logs/ptIInightly_mail.txt \
+		$(MOOG_HUDSON_HOME3)/builds/ptIInightly_mail-`date +%Y-%m-%d`.txt
+	-ssh moog ln $(MOOG_HUDSON_HOME3)/ptII/adm/logs/ptIInightly.htm \
+		$(MOOG_HUDSON_HOME3)/builds/ptIInightly-`date +%Y-%m-%d`.htm
+	-ssh moog ln $(MOOG_HUDSON_HOME3)/ptII/adm/logs/ptIInightly.txt \
+		$(MOOG_HUDSON_HOME3)/builds/ptIInightly-`date +%Y-%m-%d`.txt
 	#
 	@echo "Create links for tars and logs"
-	-ssh andrews ln -s $(ANDREWS_HUDSON_HOME3)/builds/ptII$(PTII_VERSION)-`date +%Y-%m-%d`.tar.gz \
+	-ssh moog ln -s $(MOOG_HUDSON_HOME3)/builds/ptII$(PTII_VERSION)-`date +%Y-%m-%d`.tar.gz \
 		$(PTEXTERNAL_NIGHTLY)/builds
-	-ssh andrews ln -s $(ANDREWS_HUDSON_HOME3)/builds/ptII$(PTII_VERSION)-`date +%Y-%m-%d`.src.tar.gz \
+	-ssh moog ln -s $(MOOG_HUDSON_HOME3)/builds/ptII$(PTII_VERSION)-`date +%Y-%m-%d`.src.tar.gz \
 		$(PTEXTERNAL_NIGHTLY)/builds
-	-ssh andrews ln -s $(ANDREWS_HUDSON_HOME3)/builds/ptII$(PTII_WINDOWS_VERSION)_setup_windows-`date +%Y-%m-%d`.exe \
+	-ssh moog ln -s $(MOOG_HUDSON_HOME3)/builds/ptII$(PTII_WINDOWS_VERSION)_setup_windows-`date +%Y-%m-%d`.exe \
 		$(PTEXTERNAL_NIGHTLY)/builds
-	-ssh andrews ln -s $(ANDREWS_HUDSON_HOME3)/builds/ptII$(PTII_WINDOWS_VERSION)_setup_windows_64-`date +%Y-%m-%d`.exe \
+	-ssh moog ln -s $(MOOG_HUDSON_HOME3)/builds/ptII$(PTII_WINDOWS_VERSION)_setup_windows_64-`date +%Y-%m-%d`.exe \
 		$(PTEXTERNAL_NIGHTLY)/builds
-	-ssh andrews ln -s $(ANDREWS_HUDSON_HOME3)/builds/ptII$(PTII_VERSION).setup.mac-`date +%Y-%m-%d`.app.tar.gz \
+	-ssh moog ln -s $(MOOG_HUDSON_HOME3)/builds/ptII$(PTII_VERSION).setup.mac-`date +%Y-%m-%d`.app.tar.gz \
 		$(PTEXTERNAL_NIGHTLY)/builds
 	# 
 	@echo "Create links for latest tars and logs"
-	-ssh andrews ln -s $(PTEXTERNAL_NIGHTLY)/builds/ptII$(PTII_VERSION)-`date +%Y-%m-%d`.tar.gz \
+	-ssh moog ln -s $(PTEXTERNAL_NIGHTLY)/builds/ptII$(PTII_VERSION)-`date +%Y-%m-%d`.tar.gz \
 		$(PTEXTERNAL_NIGHTLY)/builds/ptII-latest.tar.gz
-	-ssh andrews ln -s $(PTEXTERNAL_NIGHTLY)/builds/ptII$(PTII_VERSION)-`date +%Y-%m-%d`.src.tar.gz \
+	-ssh moog ln -s $(PTEXTERNAL_NIGHTLY)/builds/ptII$(PTII_VERSION)-`date +%Y-%m-%d`.src.tar.gz \
 		$(PTEXTERNAL_NIGHTLY)/builds/ptII-latest.src.tar.gz
-	-ssh andrews ln -s $(PTEXTERNAL_NIGHTLY)/builds/ptII$(PTII_WINDOWS_VERSION)_setup_windows-`date +%Y-%m-%d`.exe \
+	-ssh moog ln -s $(PTEXTERNAL_NIGHTLY)/builds/ptII$(PTII_WINDOWS_VERSION)_setup_windows-`date +%Y-%m-%d`.exe \
 		$(PTEXTERNAL_NIGHTLY)/builds/ptII-latest_setup_windows.exe
-	-ssh andrews ln -s $(PTEXTERNAL_NIGHTLY)/builds/ptII$(PTII_WINDOWS_VERSION)_setup_windows_64-`date +%Y-%m-%d`.exe \
+	-ssh moog ln -s $(PTEXTERNAL_NIGHTLY)/builds/ptII$(PTII_WINDOWS_VERSION)_setup_windows_64-`date +%Y-%m-%d`.exe \
 		$(PTEXTERNAL_NIGHTLY)/builds/ptII-latest_setup_windows_64.exe
-	-ssh andrews ln -s $(PTEXTERNAL_NIGHTLY)/builds/ptII$(PTII_VERSION).setup.mac-`date +%Y-%m-%d`.app.tar.gz \
+	-ssh moog ln -s $(PTEXTERNAL_NIGHTLY)/builds/ptII$(PTII_VERSION).setup.mac-`date +%Y-%m-%d`.app.tar.gz \
 	   $(PTEXTERNAL_NIGHTLY)/builds/ptII-latest.setup.mac.app.tar.gz
 
