@@ -35,8 +35,8 @@ import ptolemy.actor.IOPort;
 import ptolemy.actor.IORelation;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.TypedIOPort;
-import ptolemy.actor.gui.ColorAttribute;
 import ptolemy.kernel.ComponentEntity;
+import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.MoMLChangeRequest;
@@ -854,8 +854,10 @@ public class Solution {
     private String _momlAnnotate(NamedObj entity, String color,
             String expression) {
         String colorProperty = null;
-        ColorAttribute currentColor = (ColorAttribute) (entity
-                .getAttribute("_color"));
+        // We don't use ptolemy.actor.gui.ColorAttribute here
+        // because we don't want to add a dependency between
+        // moml.unit and actor.gui
+        Attribute currentColor = entity.getAttribute("_color");
 
         if ((currentColor != null) && (color == null)) {
             colorProperty = "<deleteProperty _name=_color/>";
