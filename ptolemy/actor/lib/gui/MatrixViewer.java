@@ -34,6 +34,7 @@ import java.awt.Dimension;
 import java.util.LinkedList;
 import java.util.List;
 
+import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
 import ptolemy.actor.TypedIOPort;
@@ -322,6 +323,29 @@ public class MatrixViewer extends AbstractPlaceableActor {
         // See http://bugzilla.ecoinformatics.org/show_bug.cgi?id=4302
         if (_tableau != null) {
             _tableau.setTitle(name);
+        }
+    }
+
+    /** Specify the associated frame and set its properties (size, etc.)
+     *  to match those stored in the _windowProperties attribute. In this
+     *  class, if the frame is null, close the tableau and set it to null.
+     *  Once closed, the matrix window will not reopen unless _tableau is
+     *  null.
+     *  @param frame The associated frame.
+     */
+    @Override
+    public void setFrame(JFrame frame) {
+        
+        super.setFrame(frame);
+        
+        if(frame == null && _tableau != null) {
+            try {
+                _tableau.setContainer(null);
+            } catch (KernelException ex) {
+                throw new InternalErrorException(ex);
+            }
+            _tableau = null;
+            _effigy = null;
         }
     }
 
