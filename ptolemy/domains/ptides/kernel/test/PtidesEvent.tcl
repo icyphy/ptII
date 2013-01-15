@@ -130,7 +130,7 @@ test PtidesEvent-3.1 {compareTo} {
 		   {ptolemy.actor.util.Time ptolemy.actor.Director double} \
 		   $director3_1 11.0]
     set token3_1 [java::new ptolemy.data.IntToken]
-    set receiver3_1 [java::new ptolemy.domains.ptides.kernel.PtidesBasicReceiver]
+    set receiver3_1 [java::new ptolemy.domains.ptides.kernel.PtidesReceiver]
     set event3_1 [java::new \
 		      {ptolemy.domains.ptides.kernel.PtidesEvent ptolemy.actor.IOPort int ptolemy.actor.util.Time int int ptolemy.data.Token ptolemy.actor.Receiver ptolemy.actor.util.Time} \
 		  $port3_1 0 $time3_1 12 13 $token3_1 $receiver3_1 $null]
