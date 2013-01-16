@@ -56,8 +56,8 @@ public class MetroIIFSMDirector extends FSMDirector implements
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         MetroIIFSMDirector newObject = (MetroIIFSMDirector) super
                 .clone(workspace);
-	newObject.events = new ArrayList<Event.Builder>();
-	newObject.name2actor = new Hashtable<String, Actor>();
+        newObject.events = new ArrayList<Event.Builder>();
+        newObject.name2actor = new Hashtable<String, Actor>();
         return newObject;
     }
 

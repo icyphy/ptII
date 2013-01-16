@@ -25,18 +25,18 @@ public class MetroIIDEDirector extends DEDirector /*implements M2EventHandler*/{
     //         }
 
     //         public Event.Builder makeEventBuilder(String name, Event.Type t) {
-    //         Event.Builder meb = Event.newBuilder(); 
-    //         meb.setName(name); 
-    //         meb.setOwner(name); 
-    //         meb.setStatus(Event.Status.PROPOSED); 
-    //         meb.setType(t); 
+    //         Event.Builder meb = Event.newBuilder();
+    //         meb.setName(name);
+    //         meb.setOwner(name);
+    //         meb.setStatus(Event.Status.PROPOSED);
+    //         meb.setType(t);
     //         return meb;
     //     }
 
-    //         public ArrayList<Event.Builder> events = new ArrayList<Event.Builder>();   
+    //         public ArrayList<Event.Builder> events = new ArrayList<Event.Builder>();
 
     //         protected int _fire(ResultHandler<Iterable<Event.Builder> > resultHandler) throws CollectionAbortedException {
-    //                 try {        
+    //                 try {
     //                         // Find the next actor to be fired.
     //                         Actor actorToFire = _getNextActorToFire();
 
@@ -144,10 +144,10 @@ public class MetroIIDEDirector extends DEDirector /*implements M2EventHandler*/{
     //                                         _debug(new FiringEvent(this, actorToFire,
     //                                                         FiringEvent.BEFORE_FIRE));
 
-    //                             Event.Builder eb = makeEventBuilder(actorToFire.getFullName(), Event.Type.BEGIN); 
+    //                             Event.Builder eb = makeEventBuilder(actorToFire.getFullName(), Event.Type.BEGIN);
     //                             events.add(eb);
     //                             resultHandler.handleResult(events);
-    //                             events.remove(events.size()-1); 
+    //                             events.remove(events.size()-1);
 
     //                             if (actorToFire instanceof M2EventHandler) {
     //                                     ((M2EventHandler) actorToFire).getfire(resultHandler);
@@ -190,10 +190,10 @@ public class MetroIIDEDirector extends DEDirector /*implements M2EventHandler*/{
     //                                                 break;
     //                                         }
 
-    //                             Event.Builder eb = makeEventBuilder(actorToFire.getFullName(), Event.Type.BEGIN); 
+    //                             Event.Builder eb = makeEventBuilder(actorToFire.getFullName(), Event.Type.BEGIN);
     //                             events.add(eb);
     //                             resultHandler.handleResult(events);
-    //                             events.remove(events.size()-1); 
+    //                             events.remove(events.size()-1);
 
     //                             if (actorToFire instanceof M2EventHandler) {
     //                                     ((M2EventHandler) actorToFire).getfire(resultHandler);
@@ -258,7 +258,7 @@ public class MetroIIDEDirector extends DEDirector /*implements M2EventHandler*/{
     //                 return 0;
     //         }
 
-    //     public void getfire(ResultHandler<Iterable<Event.Builder> > resultHandler) throws CollectionAbortedException { 
+    //     public void getfire(ResultHandler<Iterable<Event.Builder> > resultHandler) throws CollectionAbortedException {
     //                 try {
     //                         if (_debugging) {
     //                                 _debug("========= DE director fires at " + getModelTime()

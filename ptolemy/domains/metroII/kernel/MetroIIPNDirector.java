@@ -30,13 +30,13 @@ import ptolemy.kernel.util.Workspace;
 public class MetroIIPNDirector extends PNDirector implements
         MetroIIEventHandler {
 
-    public List eventLock; 
-    
+    public List eventLock;
+
     public MetroIIPNDirector(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         // TODO Auto-generated constructor stub
-        eventLock = Collections.synchronizedList(new ArrayList<Object>()); 
+        eventLock = Collections.synchronizedList(new ArrayList<Object>());
     }
 
     private boolean _firstTimeFire;
@@ -48,10 +48,13 @@ public class MetroIIPNDirector extends PNDirector implements
      *   an attribute that cannot be cloned.
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        MetroIIPNDirector newObject = (MetroIIPNDirector) super.clone(workspace);
-        newObject.eventLock = Collections.synchronizedList(new ArrayList<Object>()); 
+        MetroIIPNDirector newObject = (MetroIIPNDirector) super
+                .clone(workspace);
+        newObject.eventLock = Collections
+                .synchronizedList(new ArrayList<Object>());
         newObject.eventNameID = new Hashtable<String, Integer>();
-        newObject.events = Collections.synchronizedList(new ArrayList<Event.Builder>());
+        newObject.events = Collections
+                .synchronizedList(new ArrayList<Event.Builder>());
         newObject._proposedThreads = Collections.synchronizedSet(new HashSet());
         return newObject;
     }
@@ -63,7 +66,7 @@ public class MetroIIPNDirector extends PNDirector implements
 
     public boolean prefire() throws IllegalActionException {
         if (_firstTimeFire) {
-            _firstTimeFire = false; 
+            _firstTimeFire = false;
             return super.prefire();
         }
         return true;
@@ -77,7 +80,7 @@ public class MetroIIPNDirector extends PNDirector implements
         meb.setType(t);
         return meb;
     }
-    
+
     Hashtable<String, Integer> eventNameID = new Hashtable<String, Integer>();
 
     public synchronized int eventName2Id(String event_name) {
@@ -85,9 +88,9 @@ public class MetroIIPNDirector extends PNDirector implements
             eventNameID.put(event_name, eventLock.size());
             eventLock.add(new Object());
         }
-        return eventNameID.get(event_name); 
+        return eventNameID.get(event_name);
     }
-    
+
     public Receiver newReceiver() {
         MetroIIPNQueueReceiver receiver = new MetroIIPNQueueReceiver();
         _receivers.add(new WeakReference(receiver));
@@ -105,7 +108,8 @@ public class MetroIIPNDirector extends PNDirector implements
         return receiver;
     }
 
-    public List events = Collections.synchronizedList(new ArrayList<Event.Builder>());
+    public List events = Collections
+            .synchronizedList(new ArrayList<Event.Builder>());
 
     public synchronized void AddEvent(Event.Builder e) {
         events.add(e);
@@ -122,14 +126,13 @@ public class MetroIIPNDirector extends PNDirector implements
                     }
                 });
     }
-    
+
     // FIXME: move this decl.
     protected Set _proposedThreads = Collections.synchronizedSet(new HashSet());
-    
+
     protected final synchronized int _getProposedThreadsCount() {
         return _proposedThreads.size();
     }
-
 
     @Override
     public void getfire(ResultHandler<Iterable<Builder>> resultHandler)
@@ -181,44 +184,55 @@ public class MetroIIPNDirector extends PNDirector implements
                         System.out.println(_getProposedThreadsCount());
                         System.out.println(_getStoppedThreadsCount());
                         System.out.println(_getBlockedThreadsCount());
-                        //System.out.println("Priority: "+getPriority() getPriority()); 
-                        System.out.println("Before MetroIIPNDirector wait()"); 
-                        
-                        while (!_areThreadsDeadlocked() && !_areAllThreadsStopped() && _getActiveThreadsCount() != _getProposedThreadsCount() + _getStoppedThreadsCount() + _getBlockedThreadsCount()) {
-                            wait(1); 
+                        //System.out.println("Priority: "+getPriority() getPriority());
+                        System.out.println("Before MetroIIPNDirector wait()");
+
+                        while (!_areThreadsDeadlocked()
+                                && !_areAllThreadsStopped()
+                                && _getActiveThreadsCount() != _getProposedThreadsCount()
+                                        + _getStoppedThreadsCount()
+                                        + _getBlockedThreadsCount()) {
+                            wait(1);
                         }
-                        System.out.println("After MetroIIPNDirector wait()"); 
+                        System.out.println("After MetroIIPNDirector wait()");
 
                         System.out.println(_getActiveThreadsCount());
                         System.out.println(_getProposedThreadsCount());
                         System.out.println(_getStoppedThreadsCount());
                         System.out.println(_getBlockedThreadsCount());
-                        
-                        if (_getProposedThreadsCount() + _getStoppedThreadsCount() + _getBlockedThreadsCount() == 0) {
-                            continue; 
+
+                        if (_getProposedThreadsCount()
+                                + _getStoppedThreadsCount()
+                                + _getBlockedThreadsCount() == 0) {
+                            continue;
                         }
-                        
-                        while (!_areThreadsDeadlocked() && !_areAllThreadsStopped() && _getActiveThreadsCount() != _getProposedThreadsCount() + _getStoppedThreadsCount() + _getBlockedThreadsCount()) {
-                            wait(1); 
+
+                        while (!_areThreadsDeadlocked()
+                                && !_areAllThreadsStopped()
+                                && _getActiveThreadsCount() != _getProposedThreadsCount()
+                                        + _getStoppedThreadsCount()
+                                        + _getBlockedThreadsCount()) {
+                            wait(1);
                         }
-                        
-                        System.out.println("events: "+events.size());
-                        ArrayList<Event.Builder> tmp_events = new ArrayList<Event.Builder>(events);
-                        System.out.println("tmp_events: "+tmp_events.size());
+
+                        System.out.println("events: " + events.size());
+                        ArrayList<Event.Builder> tmp_events = new ArrayList<Event.Builder>(
+                                events);
+                        System.out.println("tmp_events: " + tmp_events.size());
                         events.clear();
                         resultHandler.handleResult(tmp_events);
                         for (Builder etb : tmp_events) {
                             if (etb.getStatus() == Event.Status.NOTIFIED) {
                                 String event_name = etb.getName();
-                                Object lock = eventLock.get(eventName2Id(event_name));
+                                Object lock = eventLock
+                                        .get(eventName2Id(event_name));
                                 synchronized (lock) {
-                                    lock.notifyAll(); 
-                                    System.out.println("notify: "+event_name);
+                                    lock.notifyAll();
+                                    System.out.println("notify: " + event_name);
                                 }
-                                
-                            }
-                            else {
-                                events.add(etb); 
+
+                            } else {
+                                events.add(etb);
                             }
                         }
 

@@ -20,30 +20,31 @@ public class MetroIIPNQueueReceiver extends PNQueueReceiver {
     public void proposeM2Event(String suffix) throws InterruptedException {
         // Actor actor = (Actor) getContainer().getContainer();
         Thread current_thread = Thread.currentThread();
-        String event_name = current_thread.getName()+suffix; 
+        String event_name = current_thread.getName() + suffix;
         _director.AddEvent(_director.makeEventBuilder(event_name,
                 Event.Type.BEGIN));
-        System.out.println("propose: "+event_name); 
-        Object lock = _director.eventLock.get(_director.eventName2Id(event_name));
+        System.out.println("propose: " + event_name);
+        Object lock = _director.eventLock.get(_director
+                .eventName2Id(event_name));
         synchronized (lock) {
             _director._proposedThreads.add(current_thread);
-            lock.wait(); 
+            lock.wait();
         }
         _director._proposedThreads.remove(current_thread);
     }
 
     public Token get() {
-        Token t = super.get(); 
+        Token t = super.get();
         try {
             proposeM2Event(".get.end");
         } catch (InterruptedException e) {
             // TODO Auto-generated catch block
             _terminate = true;
             e.printStackTrace();
-        } 
-        return t; 
+        }
+        return t;
     }
-    
+
     public void put(Token token) {
         try {
             proposeM2Event(".put.begin");
@@ -52,9 +53,9 @@ public class MetroIIPNQueueReceiver extends PNQueueReceiver {
             _terminate = true;
             e.printStackTrace();
         }
-        super.put(token); 
+        super.put(token);
     }
-    
+
     public void setContainer(IOPort port) throws IllegalActionException {
         super.setContainer(port);
         if (port == null) {

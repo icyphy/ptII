@@ -35,9 +35,9 @@ import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event;
 ///////////////////////////////////////////////////////////////////
 //// MetroIIActorThread
 
-/** <p> MetroIIActorThread is the data structure to maintain the actor 
- * and thread pair for MetroIIDirector.  
- * 
+/** <p> MetroIIActorThread is the data structure to maintain the actor
+ * and thread pair for MetroIIDirector.
+ *
  * @author glp
  * @version $ld$
  * @since Ptolemy II 9.1
@@ -52,14 +52,14 @@ public class MetroIIActorThread {
         Ptolemy, Metropolis
     }
 
-    /** Status of thread 
+    /** Status of thread
      */
     public enum State {
         ACTIVE, READY, WAITING
     }
 
     /** Construct a Actor-Thread pair.
-     * 
+     *
      * @param actor The actor
      * @param type The type of actor
      * @param state The initial thread state
@@ -73,21 +73,21 @@ public class MetroIIActorThread {
         this.thread = thread;
     }
 
-    /** Actor which is being fired 
-     * 
+    /** Actor which is being fired
+     *
      */
     public Actor actor;
-    
+
     /**
      * Type of the actor
      */
     public Type type;
-    
+
     /**
      * State of the thread
      */
     public State state;
-    
+
     /**
      * Thread that is firing the actor
      */

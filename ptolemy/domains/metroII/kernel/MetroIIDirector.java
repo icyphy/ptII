@@ -56,53 +56,53 @@ import ptolemy.kernel.util.Workspace;
 ///////////////////////////////////////////////////////////////////
 //// MetroIIDirector
 
-/** 
- * <p> A MetroII Director governs the execution of a CompositeActor with 
+/**
+ * <p> A MetroII Director governs the execution of a CompositeActor with
  * simplified MetroII semantics. </p>
- * 
- * <p> The CompositeActor could contain two types 
+ *
+ * <p> The CompositeActor could contain two types
  * of actors: Ptolemy actors and Metropolis actors. Ptolemy actors are the
- * usual actors in Ptolemy, such as Const, Ramp, Display, etc. Metropolis 
- * actor is either a customized Ptolemy actor (e.g. MetroIIModalModel) or a 
- * MetroIICompositeActor that contains a MetroII compatible director, (e.g. 
- * MetroIISRDirector, MetroIIPNDirector). A MetroIICompositeActor can still 
- * contain any Ptolemy actors. The Metropolis actors are supposed to have 
- * the identical behaviors as the corresponding Ptolemy actor (e.g. 
- * MetroIIModalModel should react the same way as ModalModel does). The 
- * difference is the behaviors of Metropolis actor are associated with MetroII 
- * events. A MetroII event is in one of the three statuses: PROPOSED, WAITING, 
- * NOTIFIED. The reaction of a Metropolis actor is not executed until the 
- * associated event is notified. The executions of Metropolis actors are 
+ * usual actors in Ptolemy, such as Const, Ramp, Display, etc. Metropolis
+ * actor is either a customized Ptolemy actor (e.g. MetroIIModalModel) or a
+ * MetroIICompositeActor that contains a MetroII compatible director, (e.g.
+ * MetroIISRDirector, MetroIIPNDirector). A MetroIICompositeActor can still
+ * contain any Ptolemy actors. The Metropolis actors are supposed to have
+ * the identical behaviors as the corresponding Ptolemy actor (e.g.
+ * MetroIIModalModel should react the same way as ModalModel does). The
+ * difference is the behaviors of Metropolis actor are associated with MetroII
+ * events. A MetroII event is in one of the three statuses: PROPOSED, WAITING,
+ * NOTIFIED. The reaction of a Metropolis actor is not executed until the
+ * associated event is notified. The executions of Metropolis actors are
  * governed by the MetroIIDirector via updating the statuses of events. </p>
- * 
+ *
  * <p> The semantic has the two phases:
  * <ol>
  * <li> Phase 1: Model Execution </li>
  * <li> Phase 2: Constraint Resolution</li>
  * </ol>
- * In phase 1, the MetroIIDirector calls prefire(), fire(), and postfire() 
- * of each Ptolemy actor in the model and calls prefire(), getfire() and 
- * postfire() of each Metropolis actor in the model. The getfire() function 
- * can be seen as the same as fire() except for some event proposing code 
- * inserted in the middle. The execution of getfire() is in a separate thread. 
- * When the thread proceeds to the event proposing code, the thread will send 
- * a message (a list of events with PROPOSED) to the director on the 
- * upper level and then suspend. The thread will not proceed until the status of 
+ * In phase 1, the MetroIIDirector calls prefire(), fire(), and postfire()
+ * of each Ptolemy actor in the model and calls prefire(), getfire() and
+ * postfire() of each Metropolis actor in the model. The getfire() function
+ * can be seen as the same as fire() except for some event proposing code
+ * inserted in the middle. The execution of getfire() is in a separate thread.
+ * When the thread proceeds to the event proposing code, the thread will send
+ * a message (a list of events with PROPOSED) to the director on the
+ * upper level and then suspend. The thread will not proceed until the status of
  * at least one event in the list is changed to NOTIFIED. </p>
- * 
- * <p> In phase 2, the MetroIIDirector collects all the events and updates the 
- * event status based on the mapping constraints. A mapping constraint is a 
- * rendezvous constraint that requires all the specified events are in the status 
- * of PROPOSED or NOTIFIED. If an event satisfies all the constraints, the status 
- * will be updated to NOTIFIED, otherwise the status is updated to WAITING. In the 
- * next iteration, the Metropolis Actors are executed based on the event statuses. </p>  
- *  
+ *
+ * <p> In phase 2, the MetroIIDirector collects all the events and updates the
+ * event status based on the mapping constraints. A mapping constraint is a
+ * rendezvous constraint that requires all the specified events are in the status
+ * of PROPOSED or NOTIFIED. If an event satisfies all the constraints, the status
+ * will be updated to NOTIFIED, otherwise the status is updated to WAITING. In the
+ * next iteration, the Metropolis Actors are executed based on the event statuses. </p>
+ *
  * <p> Known issues:
- * <ol> 
+ * <ol>
  * <li> the 'stop execution' may not work properly. </li>
- * </ol> 
+ * </ol>
  * </p>
- *  
+ *
  * @author Liangpeng Guo
  * @version $ld$
  * @since Ptolemy II 9.1
@@ -134,20 +134,20 @@ public class MetroIIDirector extends Director {
     ///////////////////////////////////////////////////////////////////
     ////                         parameters                        ////
 
-    /** A mapping constraint is a pair of events that are rendezvous.  
-     *  Mapping file is a text file that specifies such constraints. 
-     *  In mapping file, each line is a mapping constraint, which 
+    /** A mapping constraint is a pair of events that are rendezvous.
+     *  Mapping file is a text file that specifies such constraints.
+     *  In mapping file, each line is a mapping constraint, which
      *  contains two event names separated by a space.
-     *  
+     *
      *  _mappingFileName is a string that contains the absolute path of the mapping file.
-     *  
-     *  The default value of _mappingFileName is null, which means no 
-     *  mapping constraint is specified. 
+     *
+     *  The default value of _mappingFileName is null, which means no
+     *  mapping constraint is specified.
      */
     public Parameter mappingFileName;
 
     ///////////////////////////////////////////////////////////////////
-    ////                   public methods                          ////
+    ////                         public methods                    ////
 
     /** React to a change in an attribute. If the changed attribute
      *  matches a parameter of the director, then the corresponding
@@ -181,15 +181,15 @@ public class MetroIIDirector extends Director {
         }
     }
 
-    /**    
-    * Call the prefire(), fire(), and postfire() methods of each actor in the model. If the 
-    * actor is a CompositeActor that contains a MetroII compatible director, the 
+    /**
+    * Call the prefire(), fire(), and postfire() methods of each actor in the model. If the
+    * actor is a CompositeActor that contains a MetroII compatible director, the
     * getfire() method is called instead of fire(). getfire() does everything
-    * fire() does and proposes events in firing. When events are proposed, the 
+    * fire() does and proposes events in firing. When events are proposed, the
     * CompositeActor is blocked, waiting for the resolution of mapping constraints
-    * The MetroIIDirector collects all the events and resets the statuses of events 
-    * based on the mapping constraints. In the next iteration, CompositeActor 
-    * executes based on the updated statuses of events.  
+    * The MetroIIDirector collects all the events and resets the statuses of events
+    * based on the mapping constraints. In the next iteration, CompositeActor
+    * executes based on the updated statuses of events.
     */
     public void fire() throws IllegalActionException {
         super.fire();
@@ -222,7 +222,7 @@ public class MetroIIDirector extends Director {
                         if (actorThread.state == MetroIIActorThread.State.WAITING) {
                             // The getfire() of each Metropolis actor is invoked by a separate thread.
                             // Each thread is encapsulated by a YieldAdapterIterable, which is used to iterate
-                            // the events proposed by the thread. 
+                            // the events proposed by the thread.
                             final YieldAdapterIterable<Iterable<Event.Builder>> results = ((MetroIIEventHandler) actorThread.actor)
                                     .adapter();
                             actorThread.thread = results.iterator();
@@ -241,11 +241,11 @@ public class MetroIIDirector extends Director {
                     Actor actor = actorThread.actor;
                     Iterator<Iterable<Event.Builder>> thread = actorThread.thread;
 
-                    // Every time hasNext() is called, the thread runs until the next event 
-                    // is proposed. If any event is proposed, hasNext() returns true. 
-                    // The proposed event is returned by next().  
+                    // Every time hasNext() is called, the thread runs until the next event
+                    // is proposed. If any event is proposed, hasNext() returns true.
+                    // The proposed event is returned by next().
                     // If the getfire() terminates without proposing event, hasNext()
-                    // returns false. 
+                    // returns false.
                     if (thread.hasNext()) {
                         Iterable<Event.Builder> result = thread.next();
                         for (Builder builder : result) {
@@ -297,12 +297,12 @@ public class MetroIIDirector extends Director {
             }
 
             // Phase II: constraint resolution
-            
-            // The constraints are resolved in three steps. 
-            // STEP 1: reset the constraint solver. 
+
+            // The constraints are resolved in three steps.
+            // STEP 1: reset the constraint solver.
             _mappingConstraintSolver.reset();
 
-            // Step 2: present all the proposed events to the event solver. 
+            // Step 2: present all the proposed events to the event solver.
             for (Event.Builder eventBuilder : metroIIEventList) {
                 String eventName = eventBuilder.getName();
                 _mappingConstraintSolver.presentMetroIIEvent(_eventName2ID
@@ -318,8 +318,8 @@ public class MetroIIDirector extends Director {
                             + eventBuilder.getStatus().toString());
                 }
             }
-            
-            // Step 3: update the statuses of all events. 
+
+            // Step 3: update the statuses of all events.
             for (Event.Builder eventBuilder : metroIIEventList) {
                 String eventName = eventBuilder.getName();
                 if (_mappingConstraintSolver.isSatisfied(_eventName2ID
@@ -363,13 +363,14 @@ public class MetroIIDirector extends Director {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                    private methods                        ////
+    ////                         private methods                   ////
 
     /** Initialize parameters. This is called by the constructor.
      *  @exception IllegalActionException
      *  @exception NameDuplicationException
      */
-    private void _initializeParameters() throws IllegalActionException, NameDuplicationException {
+    private void _initializeParameters() throws IllegalActionException,
+            NameDuplicationException {
         mappingFileName = new Parameter(this, "mapping");
         mappingFileName.setTypeEquals(BaseType.STRING);
     }
@@ -377,23 +378,23 @@ public class MetroIIDirector extends Director {
     ///////////////////////////////////////////////////////////////////
     ////                    private fields                         ////
 
-    /** The next available event ID. If an new event is proposed, the 
+    /** The next available event ID. If an new event is proposed, the
      *  _nextAvailableID is assigned to the new event and _nextAvailableID
-     *  is increased by one. 
+     *  is increased by one.
      */
     private int _nextAvailableID = 0;
-    
+
     /** The maximum number of events.
      */
     private final int _maxEvent = 1000;
-    
-    /** The dictionary of event name and ID pair. 
-     * 
+
+    /** The dictionary of event name and ID pair.
+     *
      */
     private Hashtable<String, Integer> _eventName2ID = new Hashtable<String, Integer>();
 
-    /** The constraint solver 
-     * 
+    /** The constraint solver
+     *
      */
     private MappingConstraintSolver _mappingConstraintSolver = new MappingConstraintSolver(
             _maxEvent);
