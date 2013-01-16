@@ -260,7 +260,6 @@ public class OpenModelica extends TypedAtomicActor {
         } catch (Throwable throwable) {
             throwable = new IllegalActionException(
                     "Unable to simulate the model!");
-            //TODO(NO3) ASK CHX 1)ADD TO KERNEL.UTIL.2)PRINTSTACKTRACE(NEEDED).3)(_DEBUG)
             throwable.printStackTrace();
         }
     }
