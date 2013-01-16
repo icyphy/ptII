@@ -41,7 +41,6 @@
 
 package ptolemy.domains.openmodelica.lib.omc;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.logging.FileHandler;
 import java.util.logging.Formatter;
@@ -64,82 +63,39 @@ public class OMCLogger {
      *  of the log to show date and time first.
      */
     public OMCLogger() {
-        String filePath = System.getProperty("java.io.tmpdir");
-        //FIXME
-        /*boolean b;
-        String filePath = null;
+
+        String logPath = null;
         String username = System.getenv("USER");
         String temp = System.getProperty("java.io.tmpdir");
 
-        switch (OMCProxy.getOs()) {
-        case UNIX:
-            if (username == null)
-                filePath = temp + "/" + username + "/" + "OpenModelica" + "/";
-            else
-                filePath = temp + "\\" + "nobody" + "\\" + "OpenModelica"
-                        + "\\";
-            break;
-        case WINDOWS:
-            if (username != null)
-                filePath = temp + "\\" + username + "\\" + "OpenModelica"
-                        + "\\";
-            else
-                filePath = temp + "\\" + "nobody" + "\\" + "OpenModelica"
-                        + "\\";
-            break;
-        case MAC:
-            if (username == null)
-                filePath = temp + "/" + username + "/" + "OpenModelica" + "/";
-            else
-                filePath = temp + "\\" + "nobody" + "\\" + "OpenModelica"
-                        + "\\";
-            break;
-        }
+        if (username == null)
+            logPath = temp + "/nobody/OpenModelica/";
+        else
+            logPath = temp + "/" + username + "/OpenModelica/";
 
-        File f = new File(filePath);
-
-        //Check if the user directory exists
-        if (!f.exists())
-            //Create user directory in the temporary folder.
-            b = new File(filePath).mkdirs();
-        */
         // Create  the log file. 
         try {
-            switch (OMCProxy.getOs()) {
-            case UNIX:
-                _fileHandler = new FileHandler(filePath + "/omcLog.txt");
-                break;
-            case MAC:
-                _fileHandler = new FileHandler(filePath + "/omcLog.txt");
-                break;
-            case WINDOWS:
-                _fileHandler = new FileHandler(filePath + "omcLog.txt");
-                break;
-            default:
-                break;
-            }
-
-            // Set format of the log to show date and time first.
-            _fileHandler.setFormatter(new Formatter() {
-                public String format(LogRecord rec) {
-                    StringBuffer buf = new StringBuffer(1000);
-                    buf.append(new java.util.Date());
-                    buf.append(' ');
-                    buf.append(rec.getLevel());
-                    buf.append(' ');
-                    buf.append(formatMessage(rec));
-                    buf.append('\n');
-                    return buf.toString();
-                }
-            });
-
-            omcLogger.addHandler(_fileHandler);
-
+            _fileHandler = new FileHandler(logPath + "omcLog.txt");
         } catch (SecurityException e) {
             omcLogger.severe("Security error related to the file handler!");
         } catch (IOException e) {
             omcLogger.severe("Unable to create file handler!");
         }
+        // Set format of the log to show date and time first.
+        _fileHandler.setFormatter(new Formatter() {
+            public String format(LogRecord rec) {
+                StringBuffer buf = new StringBuffer(1000);
+                buf.append(new java.util.Date());
+                buf.append(' ');
+                buf.append(rec.getLevel());
+                buf.append(' ');
+                buf.append(formatMessage(rec));
+                buf.append('\n');
+                return buf.toString();
+            }
+        });
+
+        omcLogger.addHandler(_fileHandler);
     }
 
     ///////////////////////////////////////////////////////////////////
