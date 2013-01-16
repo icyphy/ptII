@@ -26,6 +26,8 @@ ENHANCEMENTS, OR MODIFICATIONS.
  */
 package ptolemy.domains.openmodelica.kernel;
 
+import java.io.File;
+
 import ptolemy.domains.continuous.kernel.ContinuousDirector;
 import ptolemy.domains.openmodelica.lib.compiler.ConnectException;
 import ptolemy.domains.openmodelica.lib.omc.OMCLogger;
@@ -92,9 +94,29 @@ public class OpenModelicaDirector extends ContinuousDirector {
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
         try {
+
             _omcLogger = new OMCLogger();
             _omcProxy = new OMCProxy();
-            _omcProxy.init();
+
+            //FIXME I'm not sure if it is the right place for creating user folder
+            //Christopher please let me know your idea about the right place 
+            String omcResultFilePath = null;
+            String temp = System.getProperty("java.io.tmpdir");
+            String username = System.getenv("USER");
+
+            if (username == null)
+                omcResultFilePath = temp + "/nobody/OpenModelica/";
+            else
+                omcResultFilePath = temp + "/" + username + "/OpenModelica/";
+
+            File userFile = new File(omcResultFilePath);
+
+            //Check if the user directory exists
+            if (!userFile.exists())
+                //Create user directory in the temporary folder.
+                new File(omcResultFilePath).mkdirs();
+
+            _omcProxy.initServer();
             if (_debugging) {
                 _debug("OpenModelica server is intialized.");
             }
