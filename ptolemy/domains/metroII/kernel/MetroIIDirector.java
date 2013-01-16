@@ -110,13 +110,12 @@ import ptolemy.kernel.util.Workspace;
  * </p>
  *
  * @author Liangpeng Guo
- * @version $ld$
+ * @version $Id$
  * @since Ptolemy II 9.1
  * @Pt.ProposeRating Red (glp)
  * @Pt.AcceptedRating Red (glp)
  *
  */
-
 public class MetroIIDirector extends Director {
     /** Construct a director in the given container with the given
      *  name.  The container argument must not be null, or a
