@@ -13,7 +13,7 @@
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 221.0}">
     </property>
     <property name="MetroIIDirector" class="ptolemy.domains.metroII.kernel.MetroIIDirector">
-        <property name="mapping" class="ptolemy.data.expr.Parameter" value="&quot;./ptolemy/domains/metroII/kernel/test/auto/fsm2fsmMapping.txt&quot;">
+        <property name="mapping" class="ptolemy.data.expr.FileParameter" value="$PTII/ptolemy/domains/metroII/kernel/test/auto/fsm2fsmMapping.txt">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 40.0]">
         </property>

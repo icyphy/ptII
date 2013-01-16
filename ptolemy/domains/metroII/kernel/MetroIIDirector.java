@@ -42,7 +42,7 @@ import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
 import ptolemy.data.StringToken;
-import ptolemy.data.expr.Parameter;
+import ptolemy.data.expr.FileParameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event;
 import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event.Builder;
@@ -144,7 +144,7 @@ public class MetroIIDirector extends Director {
      *  The default value of _mappingFileName is null, which means no
      *  mapping constraint is specified.
      */
-    public Parameter mappingFileName;
+    public FileParameter mappingFileName;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -160,19 +160,21 @@ public class MetroIIDirector extends Director {
         if (attribute == mappingFileName) {
             StringToken mappingFileNameToken = (StringToken) mappingFileName
                     .getToken();
-
-            if (mappingFileNameToken == null) {
+            if (mappingFileNameToken == null
+                    || mappingFileNameToken.equals("")) {
                 mappingFileName = null;
             } else {
                 String filename = mappingFileNameToken.stringValue();
-                try {
-                    readMapping(filename);
-                } catch (IOException ex) {
-                    throw new IllegalActionException(this, ex,
-                            "Failed to open mapping file \"" + filename + "\".");
-                }
-                if (_debugging) {
-                    _debug(_mappingConstraintSolver.toString());
+                if (!filename.equals("")) {
+                    try {
+                        readMapping(filename);
+                    } catch (IOException ex) {
+                        throw new IllegalActionException(this, ex,
+                                "Failed to open mapping file \"" + filename + "\".");
+                    }
+                    if (_debugging) {
+                        _debug(_mappingConstraintSolver.toString());
+                    }
                 }
             }
 
@@ -371,8 +373,7 @@ public class MetroIIDirector extends Director {
      */
     private void _initializeParameters() throws IllegalActionException,
             NameDuplicationException {
-        mappingFileName = new Parameter(this, "mapping");
-        mappingFileName.setTypeEquals(BaseType.STRING);
+        mappingFileName = new FileParameter(this, "mappingFileName");
     }
 
     ///////////////////////////////////////////////////////////////////
