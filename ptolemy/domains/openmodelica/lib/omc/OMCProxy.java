@@ -183,7 +183,6 @@ public class OMCProxy implements IModelicaCompiler {
                     environmentalVariables = lst
                             .toArray(new String[lst.size()]);
                 }
-                //FIXME
                 proc = Runtime.getRuntime().exec(cmd, environmentalVariables,
                         workingDirectory);
 
@@ -283,7 +282,7 @@ public class OMCProxy implements IModelicaCompiler {
      * @exception ConnectException If we're unable to start communicating with
      * the server.
      */
-    public synchronized void init() throws ConnectException {
+    public synchronized void initServer() throws ConnectException {
 
         _os = getOs();
 
@@ -363,7 +362,7 @@ public class OMCProxy implements IModelicaCompiler {
         command = command.trim();
 
         if (hasInitialized == false) {
-            init();
+            initServer();
         }
 
         try {
@@ -514,7 +513,6 @@ public class OMCProxy implements IModelicaCompiler {
 
                 OpenModelicaDirector.getOMCLogger().getInfo(
                         "No omc binary at: [" + path + "]");
-
             }
         }
 
@@ -526,14 +524,14 @@ public class OMCProxy implements IModelicaCompiler {
             throw new ConnectException(
                     "Unable to start the OpenModelica Compiler, binary not found");
         }
-        //FIXME
-        /* if (System.getenv("USER") != null)
+
+        // The result files of simulation are saved in the user directory in temp.
+        if (System.getenv("USER") == null)
             omcWorkingDirectory = new File(System.getProperty("java.io.tmpdir")
-                    + System.getenv("USER") + "\\" + "OpenModelica" + "\\");
+                    + "/nobody/OpenModelica/");
         else
             omcWorkingDirectory = new File(System.getProperty("java.io.tmpdir")
-                    + "nobody" + "\\" + "OpenModelica" + "\\");*/
-        omcWorkingDirectory = new File(System.getProperty("java.io.tmpdir"));
+                    + "/" + System.getenv("USER") + "/OpenModelica/");
 
         String workingDirectory = "Using working directory '"
                 + omcWorkingDirectory.getAbsolutePath() + "'";
@@ -552,48 +550,6 @@ public class OMCProxy implements IModelicaCompiler {
         String fileName = null;
         String username = System.getenv("USER");
         String temp = System.getProperty("java.io.tmpdir");
-        //FIXME
-        /*
-        switch (_os) {
-        case UNIX:
-            if (username == null)
-                username = "nobody";
-
-            if (_corbaSession == null || _corbaSession.equalsIgnoreCase("")) {
-                fileName = temp + "/" + username + "/" + "OpenModelica"
-                        + "/openmodelica." + username + ".objid";
-            } else {
-                fileName = temp + "/" + username + "/" + "OpenModelica"
-                        + "/openmodelica." + username + ".objid" + "."
-                        + _corbaSession;
-            }
-            break;
-        case WINDOWS:
-            if (username == null)
-                username = "nobody";
-
-            if (_corbaSession == null || _corbaSession.equalsIgnoreCase("")) {
-                fileName = temp + username + "\\" + "OpenModelica" + "\\"
-                        + "openmodelica.objid";
-            } else {
-                fileName = temp + username + "\\" + "OpenModelica" + "\\"
-                        + "openmodelica.objid" + "." + _corbaSession;
-            }
-            break;
-        case MAC:
-            if (username == null)
-                username = "nobody";
-
-            if (_corbaSession == null || _corbaSession.equalsIgnoreCase("")) {
-                fileName = temp + "/" + username + "/" + "OpenModelica" + "/"
-                        + "openmodelica." + username + ".objid";
-            } else {
-                fileName = temp + "/" + username + "/" + "OpenModelica" + "/"
-                        + "openmodelica." + username + ".objid" + "."
-                        + _corbaSession;
-            }
-            break;
-        }*/
 
         switch (OMCProxy.getOs()) {
 

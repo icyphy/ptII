@@ -66,7 +66,7 @@ public interface IModelicaCompiler {
      * @exception ConnectException If we're unable to start communicating with
      * the server.
      */
-    public void init() throws ConnectException;
+    public void initServer() throws ConnectException;
 
     /** Check if there is an error in the return value of sendCommand("command") method and
      *  fetch the error-information of current run.
