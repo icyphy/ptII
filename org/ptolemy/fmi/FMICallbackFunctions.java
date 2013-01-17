@@ -132,6 +132,63 @@ public class FMICallbackFunctions extends Structure {
      *  <p>For details about how Callbacks work in JNA, see
      *  <a href="http://twall.github.com/jna/3.4.0/javadoc/overview-summary.html#callbacks">http://twall.github.com/jna/3.4.0/javadoc/overview-summary.html#callbacks</a>.</p>
      */
+    public static class ByReference extends FMICallbackFunctions implements
+            Structure.ByReference {
+        /**  Access the structure by reference.
+         *
+         *  <p>See
+         *  <a href="http://twall.github.com/jna/3.4.0/javadoc/overview-summary.html#structures">http://twall.github.com/jna/3.4.0/javadoc/overview-summary.html#structures</a>:
+         *  "To pass a structure by value, first define the structure,
+         *  then define an empty class from that which implements
+         *  Structure.ByValue. Use the ByValue class as the argument
+         *  or return type."
+         * @param logger The method called to log a status message
+         * (C type: fmiCallbackLogger).
+         * @param allocateMemory The method called to allocate cleared memory
+         * (C type: fmiCallbackAllocateMemory
+         * @param freeMemory The method called to free allocated memory
+         * (C type: fmiCallbackFreeMemory)
+         * @param stepFinished The method called when the step is finished.
+         * (C type: FmiStepFinished)
+         */
+        public ByReference(FMICallbackLogger logger,
+                FMICallbackAllocateMemory allocateMemory,
+                FMICallbackFreeMemory freeMemory, FMIStepFinished stepFinished) {
+            super(logger, allocateMemory, freeMemory, stepFinished);
+        }
+    };
+
+    /**
+     *  A class that contains references to the callback functions.
+     *
+     *  <p>This class is used to register callbacks and pass the callbacks
+     *  to the fmiInstantiateSlave() or fmiInstantiateModel() method.
+     *  For example FMUCoSimulation.java contains the following code:</p>
+     *
+     *  <pre>
+     *   FMICallbackFunctions.ByValue callbacks = new FMICallbackFunctions.ByValue(
+     *           new FMULibrary.FMULogger(), new FMULibrary.FMUAllocateMemory(),
+     *           new FMULibrary.FMUFreeMemory(),
+     *           new FMULibrary.FMUStepFinished());
+     *
+     *   Function instantiateSlave = getFunction("_fmiInstantiateSlave");
+     *
+     *   Pointer fmiComponent = (Pointer) instantiateSlave.invoke(Pointer.class,
+     *            new Object[] { _modelIdentifier, fmiModelDescription.guid,
+     *                    fmuLocation, mimeType, timeout, visible, interactive,
+     *                   callbacks, loggingOn });
+     *  </pre>
+     *
+     *  <p>The Structure.ByValue interface is a marker interface that indicates
+     *  that the <b>value</b> value of a Structure is to be used by function
+     *  invocations instead of the address of the Structure.  This is necessary
+     *  because the default is that Structure arguments and return values
+     *  are usually accessed by reference.  For details, see
+     * <a href="http://twall.github.com/jna/3.4.0/javadoc/com/sun/jna/Structure.ByValue.html">http://twall.github.com/jna/3.4.0/javadoc/com/sun/jna/Structure.ByValue.html</a>.</p>
+     *
+     *  <p>For details about how Callbacks work in JNA, see
+     *  <a href="http://twall.github.com/jna/3.4.0/javadoc/overview-summary.html#callbacks">http://twall.github.com/jna/3.4.0/javadoc/overview-summary.html#callbacks</a>.</p>
+     */
     public static class ByValue extends FMICallbackFunctions implements
             Structure.ByValue {
         /**  Access the structure by reference.
