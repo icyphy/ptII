@@ -265,6 +265,43 @@ public class FMUImport extends TypedAtomicActor implements
      *  @exception IllegalActionException If FMU indicates a failure.
      */
     public void fire() throws IllegalActionException {
+        
+        /* Martin Arnold <martin.arnold@mathematik.uni-halle.de> explains rollback as follows:
+
+        FMI v2.0 beta 4 supports this re-set mechanism by the fmiGetFMUState()/fmiSetFMUState()
+        functions that are designed to be called by the co-simulation master (this might be
+        the “orchestrator” in your terminology). Slaves indicate by the corresponding
+        capability flag canGetAndSetFMUstate if they do support this functionality or not.
+
+        Slaves that DO NOT support fmiGetFMUState()/fmiSetFMUState() should never be called
+        with non-monotone sequences of communication points since there is no FMI-compatible
+        way to re-set them to a previous state. This is obviously a strong restriction from
+        the classical ODE/DAE time integration viewpoint since step rejections are quite normal
+        in this field. On the other hand, most co-simulation slaves in industrial application
+        are today not designed “to go back in time”, i.e., to be re-set to some previous state. 
+        These two facts motivate the definition of a capability flag canGetAndSetFMUstate.
+
+        Slaves that DO support fmiGetFMUState()/fmiSetFMUState() may in principle be called 
+        with non-monotone sequences of communication points if the co-simulation master takes 
+        care of getting and re-setting the slave FMU state in a reasonable way. I.e., the slave 
+        FMU is not expected to save and to re-set its state autonomously but only via the calls 
+        of fmiGetFMUState()/fmiSetFMUState() by the co-simulation master. This strategy is 
+        obviously independent of the number of slave FMUs in a co-simulation environment 
+        and supports nested co-simulation environments as well.
+
+        Slave FMUs that support fmiGetFMUState()/fmiSetFMUState() may generate a large amount
+        of simulation data that would be written to file during simulation in a classical
+        off-line simulation. In co-simulation with non-monotone sequences of communication
+        points these data can not be written to file as long as there is a “risk” that the
+        slave FMU is re-set to a very early state in time history (e.g., to the initial FMU
+        state). Parameter noSetFMUStatePriorToCurrentPoint was added to fmiDoStep() to provide
+        the information that the slave FMU will never be re-set to an FMU state prior to the
+        current communication point (this information correponds to an “accepted time step”
+        in a classical ODE/DAE integrator). Typically, this information could be used to
+        flush some result buffers and write simulation data to file etc. Alternatively,
+        the slave FMU may simply ignore this parameter.
+         */
+         
         super.fire();
         if (_debugging) {
             _debugToStdOut("FMUImport.fire()");
@@ -727,10 +764,7 @@ public class FMUImport extends TypedAtomicActor implements
         // Run the simulator without user interaction.
         byte interactive = 0;
         // Callbacks
-        FMICallbackFunctions.ByValue callbacks = new FMICallbackFunctions.ByValue(
-                new FMULibrary.FMULogger(), new FMULibrary.FMUAllocateMemory(),
-                new FMULibrary.FMUFreeMemory(),
-                new FMULibrary.FMUStepFinished());
+        FMICallbackFunctions callbacks;
 
         // FIXME: We should send logging messages to the debug listener.
         byte loggingOn = _debugging ? (byte) 1 : (byte) 0;
@@ -741,6 +775,10 @@ public class FMUImport extends TypedAtomicActor implements
         }
 
         if (_fmiVersion < 2.0) {
+            callbacks = new FMICallbackFunctions.ByValue(
+                    new FMULibrary.FMULogger(), new FMULibrary.FMUAllocateMemory(),
+                    new FMULibrary.FMUFreeMemory(),
+                    new FMULibrary.FMUStepFinished());
             _fmiComponent = (Pointer) _fmiInstantiateSlave.invoke(Pointer.class,
                     new Object[] { getFullName(), _fmiModelDescription.guid,
                                    fmuLocation, mimeType, timeout, visible, interactive,
@@ -748,10 +786,16 @@ public class FMUImport extends TypedAtomicActor implements
         } else {
             System.out.println("FMUImport: FIXME: in FMI 2.0, the callbacks argument of fmiInstantiateSlave is now a 'const fmiCallbackFunctions *functions' instead of 'fmiCallbackFunctions functions'");
 
+            // In FMI 2.0, this is a pointer to the structure.
+            callbacks = new FMICallbackFunctions.ByReference(
+                    new FMULibrary.FMULogger(), new FMULibrary.FMUAllocateMemory(),
+                    new FMULibrary.FMUFreeMemory(),
+                    new FMULibrary.FMUStepFinished());
+
             _fmiComponent = (Pointer) _fmiInstantiateSlave.invoke(Pointer.class,
                     new Object[] { getFullName(), _fmiModelDescription.guid,
                                    fmuLocation,
-                                   callbacks, // FIXME: this is now a pointer?
+                                   callbacks,
                                    visible, loggingOn });
         }
         if (_debugging) {
