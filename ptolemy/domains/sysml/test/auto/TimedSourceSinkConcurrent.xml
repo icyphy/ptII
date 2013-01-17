@@ -1,22 +1,20 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="TimedSourceSink" class="ptolemy.actor.TypedCompositeActor">
+<entity name="TimedSourceSinkConcurrent" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={373, 208, 934, 634}, maximized=false}">
+    <property name="SysMLConcurrentDirector" class="ptolemy.domains.sysml.kernel.SysMLConcurrentDirector">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 65.0]">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={177, 300, 934, 634}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{340.0, 252.0}">
-    </property>
-    <property name="SysMLSequentialDirector" class="ptolemy.domains.sysml.kernel.SysMLSequentialDirector">
-        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[90.0, 65.0]">
-        </property>
     </property>
     <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
         <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1, 1, 1, 1, 1, 1}">
@@ -34,10 +32,6 @@
         </property>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="{560.0, 285.0}">
-        </vertex>
     </relation>
     <link port="NonStrictTest.input" relation="relation"/>
     <link port="DiscreteClock.output" relation="relation"/>

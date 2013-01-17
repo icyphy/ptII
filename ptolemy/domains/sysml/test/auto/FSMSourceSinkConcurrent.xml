@@ -1,8 +1,14 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="FSMSourceSink" class="ptolemy.actor.TypedCompositeActor">
+<entity name="FSMSourceSinkConcurrent" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
+    </property>
+    <property name="SysMLConcurrentDirector" class="ptolemy.domains.sysml.kernel.SysMLConcurrentDirector">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="5.0">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 65.0]">
+        </property>
     </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={373, 272, 934, 634}, maximized=false}">
     </property>
@@ -11,12 +17,6 @@
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{340.0, 252.0}">
-    </property>
-    <property name="SysMLSequentialDirector" class="ptolemy.domains.sysml.kernel.SysMLSequentialDirector">
-        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="5.0">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 55.0]">
-        </property>
     </property>
     <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
         <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1.0, 2.0, 3.0, 4.0, 5.0}">

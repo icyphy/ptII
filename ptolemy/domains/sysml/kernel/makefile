@@ -47,7 +47,9 @@ PTCLASSJAR =
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
 JSRCS = \
-	SysMLADirector.java
+	SysMLADirector.java \
+	SysMLConcurrentDirector.java \
+	SysMLSequentialDirector.java
 
 OTHER_FILES_TO_BE_JARED =
 

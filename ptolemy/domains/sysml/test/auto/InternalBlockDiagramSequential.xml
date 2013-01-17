@@ -40,18 +40,16 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[275.0, -60.0]">
         </property>
     </property>
-    <property name="SysMLADirector" class="ptolemy.domains.sysml.kernel.SysMLADirector">
-        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="1000">
-        </property>
-        <property name="activeObjects" class="ptolemy.data.expr.Parameter" value="false">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{75.0, -10.0}">
-        </property>
-    </property>
     <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Sequential Version">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[130.0, -20.0]">
+        </property>
+    </property>
+    <property name="SysMLSequentialDirector" class="ptolemy.domains.sysml.kernel.SysMLSequentialDirector">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="1000">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, -10.0]">
         </property>
     </property>
     <entity name="ModalModel A" class="ptolemy.domains.modal.modal.ModalModel">
@@ -256,7 +254,7 @@
       <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.modal.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory"></property></entity></entity>
     </configure>
             </property>
-            <property name="powerV" class="ptolemy.data.expr.Parameter" value="90">
+            <property name="powerV" class="ptolemy.data.expr.Parameter" value="100">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -471,7 +469,7 @@
       <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.modal.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory"></property></entity></entity>
     </configure>
             </property>
-            <property name="powerV" class="ptolemy.data.expr.Parameter" value="80">
+            <property name="powerV" class="ptolemy.data.expr.Parameter" value="90">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -698,7 +696,7 @@
         </property>
     </entity>
     <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;new powerV: 0&quot;, &quot;Entered stateA1.&quot;, &quot;Entered stateA2&quot;, &quot;powerV set to: 10&quot;, &quot;new powerV: 20&quot;, &quot;Entered stateA1.&quot;, &quot;Entered stateA2&quot;, &quot;powerV set to: 30&quot;, &quot;new powerV: 40&quot;, &quot;Entered stateA1.&quot;, &quot;Entered stateA2&quot;, &quot;powerV set to: 50&quot;, &quot;new powerV: 60&quot;, &quot;Entered stateA1.&quot;, &quot;Entered stateA2&quot;, &quot;powerV set to: 70&quot;}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;new powerV: 0&quot;, &quot;new powerV: 10&quot;, &quot;Entered stateA1.&quot;, &quot;Entered stateA2&quot;, &quot;powerV set to: 20&quot;, &quot;new powerV: 30&quot;, &quot;Entered stateA1.&quot;, &quot;Entered stateA2&quot;, &quot;powerV set to: 40&quot;, &quot;new powerV: 50&quot;, &quot;Entered stateA1.&quot;, &quot;Entered stateA2&quot;, &quot;powerV set to: 60&quot;, &quot;new powerV: 70&quot;, &quot;Entered stateA1.&quot;, &quot;Entered stateA2&quot;, &quot;powerV set to: 80&quot;}">
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="true">
         </property>
@@ -727,14 +725,14 @@
 <title>TimedPlotter</title>
 <xLabel></xLabel>
 <yLabel></yLabel>
-<xRange min="100.0" max="800.0"/>
-<yRange min="0.0" max="70.0"/>
+<xRange min="100.0" max="900.0"/>
+<yRange min="0.0" max="80.0"/>
 <default marks="dots" stems="yes"/>
 </plot>?>
         </configure>
     </entity>
     <entity name="NonStrictTest2" class="ptolemy.actor.lib.NonStrictTest">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{100.0, 200.0, 200.0, 200.0, 300.0, 400.0, 400.0, 400.0, 500.0, 600.0, 600.0, 600.0, 700.0, 800.0, 800.0, 800.0}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{100.0, 200.0, 200.0, 200.0, 300.0, 400.0, 400.0, 400.0, 500.0, 600.0, 600.0, 600.0, 700.0, 800.0, 800.0, 800.0, 900.0}">
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-7">
         </property>

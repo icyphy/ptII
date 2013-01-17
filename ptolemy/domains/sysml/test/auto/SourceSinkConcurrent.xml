@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="SourceSink" class="ptolemy.actor.TypedCompositeActor">
+<entity name="SourceSinkConcurrent" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
     </property>
     <property name="SysMLConcurrentDirector" class="ptolemy.domains.sysml.kernel.SysMLConcurrentDirector">
@@ -24,6 +24,8 @@
         </property>
     </entity>
     <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{}">
+        </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="true">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{230.0, 145.0}">
