@@ -258,9 +258,7 @@ public class OpenModelica extends TypedAtomicActor {
             // Plot the plt file by calling PxgraphApplication.main(dcmotor_res.plt)
             _plot();
         } catch (Throwable throwable) {
-            throwable = new IllegalActionException(
-                    "Unable to simulate the model!");
-            throwable.printStackTrace();
+            throw new IllegalActionException(this,throwable,"Unable to simulate the model!");
         }
     }
 
@@ -298,7 +296,7 @@ public class OpenModelica extends TypedAtomicActor {
         switch (_outputFormat) {
         case plt:
 
-            //Send cd() command to the OpenModelica Compiler(OMC) and fetches working directory of OMC as a result.
+            //Send cd() command to the OpenModelica Compiler(OMC) and fetch working directory of OMC as a result.
             CompilerResult omcInvokingResult = OpenModelicaDirector
                     .getOMCProxy().sendCommand("cd()");
             _openModelicaWorkingDirectory = omcInvokingResult.getFirstResult();
@@ -478,7 +476,6 @@ public class OpenModelica extends TypedAtomicActor {
                 OpenModelicaDirector.getOMCLogger().getInfo(
                         modelName.getExpression()
                                 + " is executed successfully.");
-                //FIXME  I don't know why it is false, I cannot see this message when I listen to actor.
                 if (_debugging) {
                     if (System.getenv("USER") == null)
                         _debug("Simulation of " + fileNamePrefix

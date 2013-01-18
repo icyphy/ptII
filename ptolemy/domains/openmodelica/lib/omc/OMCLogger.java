@@ -47,6 +47,8 @@ import java.util.logging.Formatter;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 
+import ptolemy.kernel.util.IllegalActionException;
+
 /**
    This class saves the log result in the log file in the temporary folder.
 
@@ -61,8 +63,9 @@ public class OMCLogger {
      *  This constructor has no parameter.
      *  It creates the log file in the temporary folder and sets the format
      *  of the log to show date and time first.
+     * @throws IllegalActionException 
      */
-    public OMCLogger() {
+    public OMCLogger() throws IllegalActionException {
 
         String logPath = null;
         String username = System.getenv("USER");
@@ -78,8 +81,11 @@ public class OMCLogger {
             _fileHandler = new FileHandler(logPath + "omcLog.txt");
         } catch (SecurityException e) {
             omcLogger.severe("Security error related to the file handler!");
+            throw new IllegalActionException(
+                    "Security error related to the file handler!");
         } catch (IOException e) {
             omcLogger.severe("Unable to create file handler!");
+            throw new IllegalActionException("Unable to create file handler!");
         }
         // Set format of the log to show date and time first.
         _fileHandler.setFormatter(new Formatter() {
@@ -94,7 +100,6 @@ public class OMCLogger {
                 return buf.toString();
             }
         });
-
         omcLogger.addHandler(_fileHandler);
     }
 

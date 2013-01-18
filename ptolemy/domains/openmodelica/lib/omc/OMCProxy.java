@@ -119,8 +119,7 @@ public class OMCProxy implements IModelicaCompiler {
             try {
                 tmp = _getOmcBinaryPaths();
             } catch (ConnectException e) {
-                e = new ConnectException("Unable to get the omc binary path!");
-                e.printStackTrace();
+                OpenModelicaDirector.getOMCLogger().getSever("Unable to get the omc binary path! Server quit.");
                 _couldNotStartOMC = true;
                 hasInitialized = false;
                 return;
@@ -192,7 +191,7 @@ public class OMCProxy implements IModelicaCompiler {
                 OpenModelicaDirector.getOMCLogger().getInfo(
                         "Failed to run command: " + fullCMD);
                 e = new IOException("Failed to run command: " + fullCMD);
-                e.printStackTrace();
+            
 
                 _couldNotStartOMC = true;
                 hasInitialized = false;
@@ -225,10 +224,7 @@ public class OMCProxy implements IModelicaCompiler {
                                 + e.getMessage()
                                 + (proc == null ? " process was null, Perhaps it was not initialized."
                                         : " process exited with code "
-                                                + proc.exitValue()));
-                e.printStackTrace();
-
-                hasInitialized = false;
+                                                + proc.exitValue()));                hasInitialized = false;
                 return;
             }
 
@@ -240,7 +236,7 @@ public class OMCProxy implements IModelicaCompiler {
                 } else {
                     new Exception(
                             "OpenModelicaDirector.getOMCLogger was null! OpenModelica subprocess exited with code "
-                                    + proc.exitValue()).printStackTrace();
+                                    + proc.exitValue());
                 }
             }
 
@@ -281,6 +277,7 @@ public class OMCProxy implements IModelicaCompiler {
     /**Initialize the communication with the OpenModelica compiler(OMC).
      * @exception ConnectException If we're unable to start communicating with
      * the server.
+     * @throws InterruptedException 
      */
     public synchronized void initServer() throws ConnectException {
 
@@ -390,11 +387,11 @@ public class OMCProxy implements IModelicaCompiler {
         } catch (org.omg.CORBA.COMM_FAILURE x) {
             _numberOfErrors++;
 
-            // Lose connection to OMC(OpenModelica Compiler).
+            // Lose connection to OMC(OpenModelica Compiler) server.
             throw new ConnectException(
                     "Couldn't send command to the OpenModelica Compiler. Tried sending: "
                             + command);
-            //FIXME how to add this to stacktrace
+            
         }
     }
 
@@ -611,12 +608,11 @@ public class OMCProxy implements IModelicaCompiler {
             e = new FileNotFoundException(
                     "The OpenModelica Compiler CORBA object path '" + path
                             + "' does not exist!");
-            e.printStackTrace();
         } catch (IOException e) {
             e = new IOException(
                     "Unable to read OpenModelica Compiler CORBA object from '"
                             + path + "'");
-            e.printStackTrace();
+          
         } finally {
             try {
                 if (br != null) {
@@ -626,7 +622,7 @@ public class OMCProxy implements IModelicaCompiler {
                 e = new IOException(
                         "Very weird error indeed, IOException when closing BufferedReader for file '"
                                 + path + "'.");
-                e.printStackTrace();
+          
             }
         }
 
@@ -674,6 +670,7 @@ public class OMCProxy implements IModelicaCompiler {
                 try {
                     _fOMCThread.wait(10000);
                 } catch (InterruptedException e) {
+                    
                 }
             }
         }

@@ -116,10 +116,11 @@ public class OpenModelicaDirector extends ContinuousDirector {
                 //Create user directory in the temporary folder.
                 new File(omcResultFilePath).mkdirs();
 
-            _omcProxy.initServer();
             if (_debugging) {
                 _debug("OpenModelica server is intialized.");
             }
+            _omcProxy.initServer();
+            
         } catch (ConnectException ex) {
             throw new IllegalActionException(this, ex,
                     "Unable to start the OpenModelica server!");
@@ -137,16 +138,15 @@ public class OpenModelicaDirector extends ContinuousDirector {
         try {
             _omcProxy.quit();
             if (_debugging) {
-                _debug("OpenModelica server quits.");
+                _debug("OpenModelica server quited.");
             }
             _omcProxy = null;
             _omcLogger = null;
         } catch (ConnectException ex) {
             _omcLogger
-                    .getInfo("Ignore this exception for quit(), it is already quited!");
-            ex = new ConnectException(
-                    "Ignore this exception for quit(), it is already quited!");
-            ex.printStackTrace();
+                    .getInfo("OpenModelica Server quited!");
+            throw new IllegalActionException(
+                    "OpenModelica Server quited!");
         }
     }
 
