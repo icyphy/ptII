@@ -50,7 +50,6 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
 
 ///////////////////////////////////////////////////////////////////
@@ -73,14 +72,29 @@ import ptolemy.kernel.util.Workspace;
  at future times. The director continues
  doing this until there are no more events to be
  processed at the current time.
- At that point, it allows time to advance, and selects
- the first event off the event queue with the next earliest
- time.
+ At that point, it allows time to advance, and first all
+ actors that whose timeouts match the time advance, in the
+ same order in which they asserted those timeouts (in previous
+ firings). Those firings may again place events in the event queue,
+ so this director will again fire actors until the event queue
+ is empty.
  <p>
- This director is based on the DE director, with some key
+ Ports that are marked as flow ports (which contain an attribute
+ named "flow" with value "true") are treated specially.
+ First, the value on such ports is persistent. It does not
+ disappear after being read, unlike the events that arrive
+ on standard ports. Second, when a new value is sent to a flow
+ port, the new value is made immediately available to the
+ destination actor, and a "change event" is placed on the event
+ queue. The change event ensures that the actor is notified of
+ the changed value, but the actor may actually notice the change
+ value before it processes the change event, if there are already
+ other events in the queue destined for that actor.
+ <p>
+ This director is related to the DE director, with some key
  differences. First, it handles only one event from the
  event queue at a time. Second, the dependencies between
- actors is ignored. Third, it supports "flow ports,"
+ actors are ignored. Third, it supports "flow ports,"
  which have persistent value, and "change events," which
  indicate to an actor that the value on a flow port has
  changed.
