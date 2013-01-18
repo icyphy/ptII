@@ -167,17 +167,19 @@ public class MetroIIDirector extends Director {
         if (attribute == mappingFileName) {
             StringToken mappingFileNameToken = (StringToken) mappingFileName
                     .getToken();
-            if (mappingFileNameToken == null
-                    || mappingFileNameToken.equals("")) {
+            if (mappingFileNameToken == null || mappingFileNameToken.equals("")) {
                 mappingFileName = null;
             } else {
-                String filename = mappingFileNameToken.stringValue();
+
+                String filename = mappingFileName.asFile().getAbsolutePath();
                 if (!filename.equals("")) {
                     try {
+                        System.out.println(filename); 
                         readMapping(filename);
                     } catch (IOException ex) {
                         throw new IllegalActionException(this, ex,
-                                "Failed to open mapping file \"" + filename + "\".");
+                                "Failed to open mapping file \"" + filename
+                                        + "\".");
                     }
                     if (_debugging) {
                         _debug(_mappingConstraintSolver.toString());
@@ -208,18 +210,14 @@ public class MetroIIDirector extends Director {
 
         Iterator<?> actors = ((CompositeActor) container).deepEntityList()
                 .iterator();
-        LinkedList<MetroIIActorThread> actorThreadList = new LinkedList<MetroIIActorThread>();
+        LinkedList<MetroIIActorInterface> actorThreadList = new LinkedList<MetroIIActorInterface>();
 
         while (actors.hasNext()) {
             Actor actor = (Actor) actors.next();
             if (actor instanceof MetroIIEventHandler) {
-                actorThreadList.add(new MetroIIActorThread(actor,
-                        MetroIIActorThread.Type.Metropolis,
-                        MetroIIActorThread.State.WAITING, null));
+                actorThreadList.add(new MetroIIActorWrapper(actor));
             } else {
-                actorThreadList.add(new MetroIIActorThread(actor,
-                        MetroIIActorThread.Type.Ptolemy,
-                        MetroIIActorThread.State.WAITING, null));
+                actorThreadList.add(new PtolemyActorWrapper(actor));
             }
         }
 
@@ -227,99 +225,23 @@ public class MetroIIDirector extends Director {
             LinkedList<Event.Builder> metroIIEventList = new LinkedList<Event.Builder>();
 
             // Phase I: base model execution
-            for (MetroIIActorThread actorThread : actorThreadList) {
-                if (actorThread.actor.prefire()) {
-                    if (actorThread.type == MetroIIActorThread.Type.Metropolis) {
-                        if (actorThread.state == MetroIIActorThread.State.WAITING) {
-                            // The getfire() of each Metropolis actor
-                            // is invoked by a separate thread.  Each
-                            // thread is encapsulated by a
-                            // YieldAdapterIterable, which is used to
-                            // iterate the events proposed by the
-                            // thread.
-                            final YieldAdapterIterable<Iterable<Event.Builder>> results = ((MetroIIEventHandler) actorThread.actor)
-                                    .adapter();
-                            actorThread.thread = results.iterator();
-                            actorThread.state = MetroIIActorThread.State.ACTIVE;
-                        }
-                    } else if (actorThread.type == MetroIIActorThread.Type.Ptolemy) {
-                        actorThread.state = MetroIIActorThread.State.ACTIVE;
-                    }
-                }
-            }
-
-            // The thread of getfire() can be seen as a list of events.
-            for (MetroIIActorThread actorThread : actorThreadList) {
-                if (actorThread.type == MetroIIActorThread.Type.Metropolis
-                        && actorThread.state == MetroIIActorThread.State.ACTIVE) {
-                    Actor actor = actorThread.actor;
-                    Iterator<Iterable<Event.Builder>> thread = actorThread.thread;
-
-                    // Every time hasNext() is called, the thread runs
-                    // until the next event is proposed. If any event
-                    // is proposed, hasNext() returns true.  The
-                    // proposed event is returned by next().  If the
-                    // getfire() terminates without proposing event,
-                    // hasNext() returns false.
-                    if (thread.hasNext()) {
-                        Iterable<Event.Builder> result = thread.next();
-                        for (Builder builder : result) {
-                            Event.Builder eventBuilder = builder;
-                            String event_name = eventBuilder.getName();
-
-                            if (!_eventName2ID.containsKey(event_name)) {
-                                _eventName2ID.put(event_name, _nextAvailableID);
-                                _nextAvailableID++;
-                            }
-
-                            eventBuilder.setStatus(Event.Status.WAITING);
-
-                            metroIIEventList.add(eventBuilder);
-                        }
-                    } else {
-                        actorThread.state = MetroIIActorThread.State.WAITING;
-                        if (!actor.postfire()) {
-                            if (_debugging) {
-                                _debug("Actor requests halt: "
-                                        + ((Nameable) actor).getFullName());
-                            }
-                        }
-                        if (_stopRequested) {
-                            if (_debugging) {
-                                _debug("Actor requests halt: "
-                                        + ((Nameable) actor).getFullName());
-                            }
-                        }
-                    }
-                }
-            }
-
-            // Call the fire() function of each Ptolemy actor
-            for (MetroIIActorThread actorThread : actorThreadList) {
-                if (actorThread.type == MetroIIActorThread.Type.Ptolemy
-                        && actorThread.state == MetroIIActorThread.State.ACTIVE) {
-                    actorThread.actor.fire();
-                    actorThread.state = MetroIIActorThread.State.WAITING;
-
-                    if (!actorThread.actor.postfire()) {
-                        if (_debugging) {
-                            _debug("Actor requests halt: "
-                                    + ((Nameable) actorThread.actor)
-                                            .getFullName());
-                        }
-                    }
-                }
+            for (MetroIIActorInterface actor : actorThreadList) {
+                actor.resume(metroIIEventList);
             }
 
             // Phase II: constraint resolution
 
-            // The constraints are resolved in three steps.
-            // STEP 1: reset the constraint solver.
+            // The constraints are resolved in three steps. 
+            // STEP 1: reset the constraint solver. 
             _mappingConstraintSolver.reset();
 
             // Step 2: present all the proposed events to the event solver.
             for (Event.Builder eventBuilder : metroIIEventList) {
                 String eventName = eventBuilder.getName();
+                if (!_eventName2ID.containsKey(eventName)) {
+                    _eventName2ID.put(eventName, _nextAvailableID);
+                    _nextAvailableID++;
+                }
                 _mappingConstraintSolver.presentMetroIIEvent(_eventName2ID
                         .get(eventName));
             }
@@ -334,7 +256,7 @@ public class MetroIIDirector extends Director {
                 }
             }
 
-            // Step 3: update the statuses of all events.
+            // Step 3: update the statuses of all events. 
             for (Event.Builder eventBuilder : metroIIEventList) {
                 String eventName = eventBuilder.getName();
                 if (_mappingConstraintSolver.isSatisfied(_eventName2ID
@@ -353,11 +275,8 @@ public class MetroIIDirector extends Director {
         }
 
         if (_stopRequested) {
-            for (MetroIIActorThread actorThread : actorThreadList) {
-                if (actorThread.type == MetroIIActorThread.Type.Metropolis
-                        && actorThread.state == MetroIIActorThread.State.ACTIVE) {
-                    actorThread.thread.dispose();
-                }
+            for (MetroIIActorInterface actor : actorThreadList) {
+                actor.close();
             }
         }
     }
@@ -403,8 +322,8 @@ public class MetroIIDirector extends Director {
      */
     private final int _maxEvent = 1000;
 
-    /** The dictionary of event name and ID pair.
-     *
+    /** The dictionary of event name and ID pair. 
+     * 
      */
     private Hashtable<String, Integer> _eventName2ID = new Hashtable<String, Integer>();
 
