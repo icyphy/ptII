@@ -3,8 +3,14 @@
 <fmiModelDescription
   fmiVersion="2.0"
   modelName="stepCounter"
-  modelIdentifier="stepCounter"
-  guid="{136ff03f-fb93-4a90-bb88-8dbf92948dde}">
+  guid="{136ff03f-fb93-4a90-bb88-8dbf92948dde}"
+  description="Periodic counter with period p">
+    
+  <CoSimulation
+    modelIdentifier="stepCounter"
+    canHandleVariableCommunicationStepSize="true"
+    canHandleEvents="true"/>
+    
 <!-- FIXME: This is mostly still an FMI 1.0 file -->
 <ModelVariables>
   <ScalarVariable
@@ -36,12 +42,4 @@
     <Real/>  <!-- FIXME: We really want this to be Boolean. -->
     </ScalarVariable>
 </ModelVariables>
-
-<Implementation>
-  <CoSimulation_StandAlone>
-    <Capabilities
-      canHandleVariableCommunicationStepSize="true"
-      canHandleEvents="true"/>
-  </CoSimulation_StandAlone>
-</Implementation>
 </fmiModelDescription>

@@ -577,10 +577,11 @@ public class FMUImport extends TypedAtomicActor implements
         // handle
         // changes to the ports.
 
-        // FIXME: ignore errors loading shared libraries.
+        // FIXME: If the last argument is true,
+        // ignore errors loading shared libraries.
         // This should be made a parameter.
         FMIModelDescription fmiModelDescription = FMUFile.parseFMUFile(
-                fmuFileName, true);
+                fmuFileName, false);
 
         // FIXME: Use URLs, not files so that we can work from JarZip files.
 
