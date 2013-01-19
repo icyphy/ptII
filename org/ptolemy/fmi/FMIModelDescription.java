@@ -28,6 +28,7 @@
 package org.ptolemy.fmi;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -57,11 +58,9 @@ import com.sun.jna.NativeLibrary;
  * @Pt.AcceptedRating Red (cxh)
  */
 public class FMIModelDescription {
-    // This file intentionally has no getters and setters so that we
-    // can easily access the elements in a very lightweight manner.
-
-    // The files field is not in the xml, but as we pass around this object,
-    // add a field here for easier access.
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         public fields                     ////
     
     /** For FMI 2.0 and greater, the XML file may specify that the FMU
      *  supports getting and setting its state. This defaults to false
@@ -99,11 +98,6 @@ public class FMIModelDescription {
     /** The list of ScalarVariable elements. */
     public List<FMIScalarVariable> modelVariables = new LinkedList<FMIScalarVariable>();
 
-    /** The NativeLibrary associated with the platform-dependent
-     * shared library in the .fmu file.
-     */
-    public NativeLibrary nativeLibrary;
-
     /** Number of continuous states. */
     public int numberOfContinuousStates;
 
@@ -118,6 +112,50 @@ public class FMIModelDescription {
     /** The capabilities for co-simulation.
      */
     public FMICoSimulationCapabilities capabilities;
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+
+    /** Get the native library of C functions for the current platform.
+     *  @return The library of functions for the current platform.
+     *  @throws IOException If the FMU file does not contain binaries
+     *   for the current platform.
+     */
+    public NativeLibrary getNativeLibrary() throws IOException {
+        if (_nativeLibrary != null) {
+            return _nativeLibrary;
+        }
+        // The following should not be done until at least the modelIdentifier
+        // has been set in fmiModelDescription.
+        if (modelIdentifier == null || modelIdentifier.trim().equals("")) {
+            // FIXME: Don't use runtime exception.
+            throw new RuntimeException("No modelIdentifier is given");
+        }
+
+        // Get the name of the shared library file for the current platform.
+        String sharedLibrary = FMUFile.fmuSharedLibrary(this);
+        
+        // Load the shared library
+        try {
+            _nativeLibrary = NativeLibrary.getInstance(sharedLibrary);
+        } catch (Throwable throwable) {
+            List<String> binariesFiles = new LinkedList<String>();
+            for (File file : files) {
+                if (file.toString().indexOf("binaries") != -1) {
+                    binariesFiles.add(file.toString() + "\n");
+                }
+            }
+            String message = "Current platform not supported by this FMU. "
+                    + "Attempted to load \"" + sharedLibrary
+                    + "\" shared library, "
+                    + "The fmu file contains the "
+                    + "following files with 'binaries' in the path:\n"
+                    + binariesFiles;
+            System.out.println(message + "\n Original error:\n " + throwable);
+            throw new IOException(message, throwable);
+        }
+        return _nativeLibrary;
+    }
 
     /** Return the value of the FMI modelName element.
      *  @return The model name.
@@ -125,4 +163,12 @@ public class FMIModelDescription {
     public String toString() {
         return modelName;
     }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         private fields                    ////
+
+    /** The NativeLibrary associated with the platform-dependent
+     * shared library in the .fmu file.
+     */
+    private NativeLibrary _nativeLibrary;
 }

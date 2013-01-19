@@ -47,8 +47,6 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import com.sun.jna.NativeLibrary;
-
 ///////////////////////////////////////////////////////////////////
 //// FMUFile
 
@@ -130,6 +128,11 @@ public class FMUFile {
     }
 
     /** Read in a .fmu file and parse the modelDescription.xml file.
+     *  Note that this does not load the shared library.
+     *  That is loaded upon the first attempt to use the procedures in it.
+     *  This is important because we want to be able to view
+     *  a model that references an FMU even if the FMU does not
+     *  support the current platform.
      *  @param fmuFileName the .fmu file
      *  @return An object that represents the structure of the
      *  modelDescriptionFile.xml file.
@@ -139,25 +142,6 @@ public class FMUFile {
      */
     public static FMIModelDescription parseFMUFile(String fmuFileName)
             throws IOException {
-        return FMUFile.parseFMUFile(fmuFileName, false);
-    }
-
-    /** Read in a .fmu file and parse the modelDescription.xml file,
-     *  optionally ignore problems loading the shared library.
-     *  @param fmuFileName the .fmu file
-     *  @param ignoreSharedLibraryErrors True if errors that occur
-     *  during the loading of the shared library should be ignored.
-     *  This is useful for loading FMUs that do not have shared
-     *  libraries for the current platform.
-     *  @return An object that represents the structure of the
-     *  modelDescriptionFile.xml file.
-     *  @exception IOException If the file cannot be unzipped or the
-     *  modelDescription.xml file contained by the fmuFileName zip
-     *  file cannot be parsed.
-     */
-    public static FMIModelDescription parseFMUFile(String fmuFileName,
-            boolean ignoreSharedLibraryErrors) throws IOException {
-
         // Unzip the file.
         List<File> files = null;
         try {
@@ -302,39 +286,7 @@ public class FMUFile {
         if (!foundCoSimulation) {
             System.out.println("Warning: FMU does not support CoSimulation.");
         }
-        
-        // The following should not be done until at least the modelIdentifier
-        // has been set in fmiModelDescription.
-
-        // Finally, load the shared libraries.
-        String sharedLibrary = FMUFile.fmuSharedLibrary(fmiModelDescription);
-        // Load the shared library
-        try {
-            fmiModelDescription.nativeLibrary = NativeLibrary
-                    .getInstance(sharedLibrary);
-        } catch (Throwable throwable) {
-            List<String> binariesFiles = new LinkedList<String>();
-            for (File file : fmiModelDescription.files) {
-                if (file.toString().indexOf("binaries") != -1) {
-                    binariesFiles.add(file.toString() + "\n");
-                }
-            }
-            String message = "Failed to load the \"" + sharedLibrary
-                    + "\" shared library, which was created "
-                    + "by unzipping \"" + fmuFileName
-                    + "\". Usually, this is because the .fmu file does "
-                    + "not contain a shared library for the current "
-                    + "architecture.  The fmu file contained the "
-                    + "following files with 'binaries' in the path:\n"
-                    + binariesFiles;
-            System.out.println(message + "\n Original error:\n " + throwable);
-            if (!ignoreSharedLibraryErrors) {
-                // Note that Variable.propagate() will handle this error and
-                // hide it.
-                throw new IOException(message, throwable);
-            }
-        }
-        
+                
         // ModelVariables.
         // This has to be done after the native libraries have been loaded.
         // NodeList is not a list, it only has getLength() and item(). #fail.

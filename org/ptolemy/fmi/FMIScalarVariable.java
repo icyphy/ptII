@@ -27,6 +27,7 @@
  */
 package org.ptolemy.fmi;
 
+import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.DoubleBuffer;
 import java.nio.IntBuffer;
@@ -44,6 +45,7 @@ import org.w3c.dom.NodeList;
 
 import com.sun.jna.Function;
 import com.sun.jna.Memory;
+import com.sun.jna.NativeLibrary;
 import com.sun.jna.Pointer;
 import com.sun.jna.ptr.PointerByReference;
 
@@ -157,19 +159,19 @@ public class FMIScalarVariable {
             Node child = element.getChildNodes().item(i);
             if (child instanceof Element) {
                 Element childElement = (Element) child;
-                String typeName = childElement.getNodeName();
-                if (typeName.equals("Boolean")) {
+                _typeName = childElement.getNodeName();
+                if (_typeName.equals("Boolean")) {
                     type = new FMIBooleanType(name, description, childElement);
-                } else if (typeName.equals("Enumeration")) {
+                } else if (_typeName.equals("Enumeration")) {
                     type = new FMIIntegerType(name, description, childElement);
-                    typeName = "Integer";
-                } else if (typeName.equals("Integer")) {
+                    _typeName = "Integer";
+                } else if (_typeName.equals("Integer")) {
                     type = new FMIIntegerType(name, description, childElement);
-                } else if (typeName.equals("Real")) {
+                } else if (_typeName.equals("Real")) {
                     type = new FMIRealType(name, description, childElement);
-                } else if (typeName.equals("String")) {
+                } else if (_typeName.equals("String")) {
                     type = new FMIStringType(name, description, childElement);
-                } else if (typeName.equals("DirectDependency")) {
+                } else if (_typeName.equals("DirectDependency")) {
                     // Iterate over the children of this element to find the
                     // names of the dependents.
                     // FIXME: In FMI 2.0, DirectDependency will be replaced by
@@ -191,27 +193,12 @@ public class FMIScalarVariable {
                         }
                     }
                 } else {
-                    if (!_errorElements.contains(typeName)) {
-                        _errorElements.add(typeName);
+                    if (!_errorElements.contains(_typeName)) {
+                        _errorElements.add(_typeName);
                         System.out.println(element + ": Child element \""
-                                + typeName + "\" not implemented yet.");
+                                + _typeName + "\" not implemented yet.");
                     }
-                    typeName = "skip";
-                }
-                // fmiModelDescription.nativeLibrary will be null if
-                // we tried to load the fmu and there is no shared library
-                // for our current platform.  The FMUFile.parseFMUFile()
-                // method controls whether we ignore this.
-                if (fmiModelDescription.nativeLibrary != null
-                        && !typeName.equals("skip")) {
-                    // The fmi .c function used to get the value of this
-                    // variable
-                    fmiGetFunction = fmiModelDescription.nativeLibrary
-                            .getFunction(fmiModelDescription.modelIdentifier
-                                    + "_fmiGet" + typeName);
-                    fmiSetFunction = fmiModelDescription.nativeLibrary
-                            .getFunction(fmiModelDescription.modelIdentifier
-                                    + "_fmiSet" + typeName);
+                    _typeName = "skip";
                 }
             }
         }
@@ -253,6 +240,7 @@ public class FMIScalarVariable {
             _getValue(fmiComponent, valueBuffer, FMIRealType.class);
             result = valueBuffer.get(0);
         } else {
+            // FIXME: Why a runtime exception?
             throw new RuntimeException("Type " + type + " not supported.");
         }
         return result;
@@ -418,24 +406,8 @@ public class FMIScalarVariable {
     /** The input ports on which an output has a direct dependence. */
     public Set<String> directDependency;
 
-    /** The FMI .c function that gets the value of this variable.
-     *  The name of the function depends on the value of the
-     *  fmiModelDescription.modelIdentifer field and the
-     *  type name.  A typical value for the Bouncing Ball
-     *  example might be "bouncingBall_fmiGetDouble".
-     */
-    public Function fmiGetFunction;
-
     /** The Model Description for this variable. */
     public FMIModelDescription fmiModelDescription;
-
-    /** The FMI .c function that sets the value of this variable.
-     *  The name of the function depends on the value of the
-     *  fmiModelDescription.modelIdentifer field and the
-     *  type name.  A typical value for the Bouncing Ball
-     *  example might be "bouncingBall_fmiSetDouble".
-     */
-    public Function fmiSetFunction;
 
     /** The value of the name xml attribute. */
     public String name;
@@ -494,7 +466,21 @@ public class FMIScalarVariable {
      */
     private void _getValue(Pointer fmiComponent, Object valueBuffer,
             Class typeClass) {
-        _getOrSetValue(fmiComponent, valueBuffer, typeClass, fmiGetFunction);
+        if (_fmiGetFunction == null) {
+            // Function has not been loaded yet.
+            NativeLibrary nativeLibrary;
+            try {
+                nativeLibrary = fmiModelDescription.getNativeLibrary();
+            } catch (IOException e) {
+                // FIXME: Don't use runtime exception.
+                throw new RuntimeException("Platform not supported.", e);
+            }
+            _fmiGetFunction = nativeLibrary.getFunction(
+                    fmiModelDescription.modelIdentifier + "_fmiGet" + _typeName);
+            _fmiSetFunction = nativeLibrary.getFunction(
+                    fmiModelDescription.modelIdentifier + "_fmiSet" + _typeName);
+        }
+        _getOrSetValue(fmiComponent, valueBuffer, typeClass, _fmiGetFunction);
     }
 
     /** Set the value of this variable.
@@ -507,7 +493,19 @@ public class FMIScalarVariable {
      */
     private void _setValue(Pointer fmiComponent, Object valueBuffer,
             Class typeClass) {
-        _getOrSetValue(fmiComponent, valueBuffer, typeClass, fmiSetFunction);
+        if (_fmiSetFunction == null) {
+            // Function has not been loaded yet.
+            NativeLibrary nativeLibrary;
+            try {
+                nativeLibrary = fmiModelDescription.getNativeLibrary();
+            } catch (IOException e) {
+                // FIXME: Don't use runtime exception.
+                throw new RuntimeException("Platform not supported.", e);
+            }
+            _fmiSetFunction = nativeLibrary.getFunction(
+                    fmiModelDescription.modelIdentifier + "_fmiSet" + _typeName);
+        }
+        _getOrSetValue(fmiComponent, valueBuffer, typeClass, _fmiSetFunction);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -517,4 +515,23 @@ public class FMIScalarVariable {
      *  This is used for error messages.
      */
     private static Set<String> _errorElements = new HashSet<String>();
+    
+    /** The FMI .c function that gets the value of this variable.
+     *  The name of the function depends on the value of the
+     *  fmiModelDescription.modelIdentifer field and the
+     *  type name.  A typical value for the Bouncing Ball
+     *  example might be "bouncingBall_fmiGetDouble".
+     */
+    private Function _fmiGetFunction;
+
+    /** The FMI .c function that sets the value of this variable.
+     *  The name of the function depends on the value of the
+     *  fmiModelDescription.modelIdentifer field and the
+     *  type name.  A typical value for the Bouncing Ball
+     *  example might be "bouncingBall_fmiSetDouble".
+     */
+    private Function _fmiSetFunction;
+    
+    /** The name of the type of this variable. */
+    private String _typeName;
 }
