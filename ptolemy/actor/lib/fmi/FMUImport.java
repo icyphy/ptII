@@ -784,10 +784,10 @@ public class FMUImport extends TypedAtomicActor implements
                                    fmuLocation, mimeType, timeout, visible, interactive,
                                    callbacks, loggingOn });
         } else {
-            System.out.println("FMUImport: FIXME: in FMI 2.0, the callbacks argument of fmiInstantiateSlave is now a 'const fmiCallbackFunctions *functions' instead of 'fmiCallbackFunctions functions'");
-
-            // In FMI 2.0, this is a pointer to the structure.
-            callbacks = new FMICallbackFunctions.ByReference(
+            // In FMI 2.0, this is a pointer to the structure, which is by
+            // default how a subclass of Structure is handled, so there is no
+            // need for the inner class ByValue, as above.
+            callbacks = new FMICallbackFunctions(
                     new FMULibrary.FMULogger(), new FMULibrary.FMUAllocateMemory(),
                     new FMULibrary.FMUFreeMemory(),
                     new FMULibrary.FMUStepFinished());
@@ -1535,6 +1535,12 @@ of the limitations of newStep.
             
             if (_fmiModelDescription.fmiVersion != null) {
                 fmiVersion.setExpression(_fmiModelDescription.fmiVersion);
+                // Mysteriously, nondeterministically, the above doesn't always
+                // result in attributeChanged() being called after this setExprssion
+                // occurs. Sometimes it gets called before, weirdly. Why?
+                // Anyway, force it here, because if we have the wrong version,
+                // we will get seg faults.
+                attributeChanged(fmiVersion);
             }
 
             if (_fmiModelDescription.nativeLibrary != null) {
