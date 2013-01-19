@@ -81,6 +81,7 @@ import ptolemy.util.MessageHandler;
 import ptolemy.util.StringUtilities;
 
 import com.sun.jna.Function;
+import com.sun.jna.NativeLibrary;
 import com.sun.jna.Pointer;
 
 ///////////////////////////////////////////////////////////////////
@@ -477,8 +478,6 @@ public class FMUImport extends TypedAtomicActor implements
             _debugToStdOut("FMIImport.initialize() START");
         }
 
-        _checkFmi();
-
         // Loop through the scalar variables and find a scalar
         // variable that has variability == "parameter" and is not an
         // input or output.  We can't do this in attributeChanged()
@@ -505,8 +504,7 @@ public class FMUImport extends TypedAtomicActor implements
             _debugToStdOut("FMUCoSimulation: about to call " + modelIdentifier
                     + "_fmiInitializeSlave");
         }
-        Function function = _fmiModelDescription.nativeLibrary
-                .getFunction(modelIdentifier + "_fmiInitializeSlave");
+        Function function = _nativeLibrary.getFunction(modelIdentifier + "_fmiInitializeSlave");
 
         // FIXME: FMI-1.0 uses doubles for times.
         Director director = getDirector();
@@ -577,11 +575,12 @@ public class FMUImport extends TypedAtomicActor implements
         // handle
         // changes to the ports.
 
-        // FIXME: If the last argument is true,
-        // ignore errors loading shared libraries.
-        // This should be made a parameter.
-        FMIModelDescription fmiModelDescription = FMUFile.parseFMUFile(
-                fmuFileName, false);
+        // Calling parseFMUFile does not load the shared library.
+        // Those are loaded upon the first attempt to use them.
+        // This is important because we want to be able to view
+        // a model that references an FMU even if the FMU does not
+        // support the current platform.
+        FMIModelDescription fmiModelDescription = FMUFile.parseFMUFile(fmuFileName);
 
         // FIXME: Use URLs, not files so that we can work from JarZip files.
 
@@ -739,6 +738,36 @@ public class FMUImport extends TypedAtomicActor implements
         super.preinitialize();
         if (_debugging) {
             _debugToStdOut("FMUImport.preinitialize()");
+        }
+
+        try {
+            _nativeLibrary = _fmiModelDescription.getNativeLibrary();
+        } catch (IOException e1) {
+            throw new IllegalActionException(this, "Current platform not supported by this FMU");
+        }
+        if (_nativeLibrary != null) {
+            _fmiDoStep = _nativeLibrary.getFunction(
+                    _fmiModelDescription.modelIdentifier + "_fmiDoStep");
+            _fmiInstantiateSlave = _nativeLibrary.getFunction(
+                    _fmiModelDescription.modelIdentifier + "_fmiInstantiateSlave");
+            // Optional function.
+            try {
+                _fmiGetRealStatus = _nativeLibrary.getFunction(
+                        _fmiModelDescription.modelIdentifier + "_fmiGetRealStatus");
+            } catch (UnsatisfiedLinkError ex) {
+                // The FMU has not provided the function.
+                _fmiGetRealStatus = null;
+            }
+        }
+        if (_fmiModelDescription.canGetAndSetFMUstate) {
+            // Retrieve the following FMI 2.0 functions for
+            // getting and setting state.
+            _fmiFreeFMUstate = _nativeLibrary.getFunction(
+                    _fmiModelDescription.modelIdentifier + "_fmiFreeFMUstate");
+            _fmiGetFMUstate = _nativeLibrary.getFunction(
+                    _fmiModelDescription.modelIdentifier + "_fmiGetFMUstate");
+            _fmiSetFMUstate = _nativeLibrary.getFunction(
+                    _fmiModelDescription.modelIdentifier + "_fmiSetFMUstate");
         }
 
         _checkFmi();
@@ -918,7 +947,7 @@ fmiStatus fmiFreeFMUstate(fmiComponent c, fmiFMUstate* FMUstate);
     public void wrapup() throws IllegalActionException {
         _checkFmi();
         String modelIdentifier = _fmiModelDescription.modelIdentifier;
-        Function fmiTerminateSlave = _fmiModelDescription.nativeLibrary
+        Function fmiTerminateSlave = _nativeLibrary
                 .getFunction(modelIdentifier + "_fmiTerminateSlave");
         int fmiFlag = ((Integer) fmiTerminateSlave
                 .invokeInt(new Object[] { _fmiComponent })).intValue();
@@ -928,7 +957,7 @@ fmiStatus fmiFreeFMUstate(fmiComponent c, fmiFMUstate* FMUstate);
                     + _fmiStatusDescription(fmiFlag));
         }
 
-        Function fmiFreeSlaveInstance = _fmiModelDescription.nativeLibrary
+        Function fmiFreeSlaveInstance = _nativeLibrary
                 .getFunction(modelIdentifier + "_fmiFreeSlaveInstance");
         fmiFlag = ((Integer) fmiFreeSlaveInstance
                 .invokeInt(new Object[] { _fmiComponent })).intValue();
@@ -1418,8 +1447,6 @@ of the limitations of newStep.
         if (workspace().getVersion() == _outputsVersion) {
             return _outputs;
         }
-
-        _checkFmi();
         
         // The _outputs variable is out of date. Reconstruct it.
         _outputs = new LinkedList<Output>();
@@ -1529,10 +1556,12 @@ of the limitations of newStep.
             }
             _fmuFileModificationTime = modificationTime;
 
-            // Calling parseFMUFile also loads the share library.
-            // FIXME: ignore errors loading shared libraries.
-            // This should be made a parameter.
-            _fmiModelDescription = FMUFile.parseFMUFile(fmuFileName, true);
+            // Calling parseFMUFile does not load the shared library.
+            // Those are loaded upon the first attempt to use them.
+            // This is important because we want to be able to view
+            // a model that references an FMU even if the FMU does not
+            // support the current platform.
+            _fmiModelDescription = FMUFile.parseFMUFile(fmuFileName);
             
             if (_fmiModelDescription.fmiVersion != null) {
                 fmiVersion.setExpression(_fmiModelDescription.fmiVersion);
@@ -1542,37 +1571,6 @@ of the limitations of newStep.
                 // Anyway, force it here, because if we have the wrong version,
                 // we will get seg faults.
                 attributeChanged(fmiVersion);
-            }
-
-            if (_fmiModelDescription.nativeLibrary != null) {
-                _fmiDoStep = _fmiModelDescription.nativeLibrary
-                        .getFunction(_fmiModelDescription.modelIdentifier
-                                + "_fmiDoStep");
-                _fmiInstantiateSlave = _fmiModelDescription.nativeLibrary
-                        .getFunction(_fmiModelDescription.modelIdentifier
-                                + "_fmiInstantiateSlave");
-                // Optional function.
-                try {
-                    _fmiGetRealStatus = _fmiModelDescription.nativeLibrary
-                            .getFunction(_fmiModelDescription.modelIdentifier
-                                    + "_fmiGetRealStatus");
-                } catch (UnsatisfiedLinkError ex) {
-                    // The FMU has not provided the function.
-                    _fmiGetRealStatus = null;
-                }
-            }
-            if (_fmiModelDescription.canGetAndSetFMUstate) {
-                // Retrieve the following FMI 2.0 functions for
-                // getting and setting state.
-                _fmiFreeFMUstate = _fmiModelDescription.nativeLibrary
-                        .getFunction(_fmiModelDescription.modelIdentifier
-                                + "_fmiFreeFMUstate");
-                _fmiGetFMUstate = _fmiModelDescription.nativeLibrary
-                        .getFunction(_fmiModelDescription.modelIdentifier
-                                + "_fmiGetFMUstate");
-                _fmiSetFMUstate = _fmiModelDescription.nativeLibrary
-                        .getFunction(_fmiModelDescription.modelIdentifier
-                                + "_fmiSetFMUstate");
             }
         } catch (IOException ex) {
             throw new IllegalActionException(this, ex,
@@ -1617,6 +1615,9 @@ of the limitations of newStep.
 
     /** The microstep at which the last fire occurred. */
     private int _lastFireMicrostep;
+    
+    /** The library of native binaries for the FMU C functions. */
+    private NativeLibrary _nativeLibrary;
 
     /** A collection of scalar variables for which there is
      *  a connected output port, and for each such variable,
