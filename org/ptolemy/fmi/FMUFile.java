@@ -254,6 +254,59 @@ public class FMUFile {
 
         // FIXME: handle Vendor annotations
 
+        boolean foundCoSimulation = false;
+        if (fmiModelDescription.fmiVersion.equals("1.0")) {
+            // Implementation description in FMI 1.0
+            // NodeList is not a list, it only has getLength() and item(). #fail.
+            NodeList implementation = document
+                    .getElementsByTagName("CoSimulation_StandAlone");
+            if (implementation.getLength() > 1) {
+                System.out.println("Warning: FMU has more than one element " +
+                        "CoSimulation_StandAlone");
+            }
+            for (int i = 0; i < implementation.getLength(); i++) {
+                foundCoSimulation = true;
+                Element element = (Element) implementation.item(i);
+                NodeList capabilities = element
+                        .getElementsByTagName("Capabilities");
+                for (int j = 0; j < capabilities.getLength(); j++) {
+                    Element capabilitiesElement = (Element) capabilities.item(j);
+                    fmiModelDescription.capabilities = new FMICoSimulationCapabilities(
+                            capabilitiesElement);
+                }
+            }
+            // FIXME: handle CoSimulation_Tool
+        } else {
+            // Implementation description in FMI 2.0.
+            NodeList implementation = document
+                    .getElementsByTagName("CoSimulation");
+            if (implementation.getLength() > 1) {
+                System.out.println("Warning: FMU modelDescription provides more than one CoSimulation element");
+            } else {
+                foundCoSimulation = true;
+                Element cosimulation = (Element) implementation.item(0);
+                fmiModelDescription.capabilities = new FMICoSimulationCapabilities(cosimulation);
+                
+                // In FMI 2.0, the modelIdentifier is given in the CoSimulation element,
+                // not in the root element (presumably so that CoSimulation and ModelExcchange
+                // can use non-conflicting names and hence divergent C implementations.
+                if (cosimulation.hasAttribute("modelIdentifier")) {
+                    fmiModelDescription.modelIdentifier = cosimulation
+                            .getAttribute("modelIdentifier");
+                } else {
+                    System.out.println("Warning: FMU CoSimulation element is missing a modelIdentifier.");
+                }
+            }
+        }
+
+        if (!foundCoSimulation) {
+            System.out.println("Warning: FMU does not support CoSimulation.");
+        }
+        
+        // The following should not be done until at least the modelIdentifier
+        // has been set in fmiModelDescription.
+
+        // Finally, load the shared libraries.
         String sharedLibrary = FMUFile.fmuSharedLibrary(fmiModelDescription);
         // Load the shared library
         try {
@@ -281,8 +334,9 @@ public class FMUFile {
                 throw new IOException(message, throwable);
             }
         }
-
-        // ModelVariables
+        
+        // ModelVariables.
+        // This has to be done after the native libraries have been loaded.
         // NodeList is not a list, it only has getLength() and item(). #fail.
         NodeList scalarVariables = document
                 .getElementsByTagName("ScalarVariable");
@@ -292,27 +346,6 @@ public class FMUFile {
             fmiModelDescription.modelVariables.add(new FMIScalarVariable(
                     fmiModelDescription, element));
         }
-
-        // Implementation
-        // NodeList is not a list, it only has getLength() and item(). #fail.
-        NodeList implementation = document
-                .getElementsByTagName("CoSimulation_StandAlone");
-        if (implementation.getLength() > 1) {
-            System.out.println("Warning, CoSimulation_StandAlone can "
-                    + "only have one element, a Capability");
-        }
-        for (int i = 0; i < implementation.getLength(); i++) {
-            Element element = (Element) implementation.item(i);
-            NodeList capabilities = element
-                    .getElementsByTagName("Capabilities");
-            for (int j = 0; j < capabilities.getLength(); j++) {
-                Element capabilitiesElement = (Element) capabilities.item(j);
-                fmiModelDescription.capabilities = new FMICoSimulationCapabilities(
-                        capabilitiesElement);
-            }
-        }
-
-        // FIXME: handle CoSimulation_Tool
 
         return fmiModelDescription;
     }

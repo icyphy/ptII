@@ -115,10 +115,7 @@ public class FMIModelDescription {
      */
     public Map<String, String> typeDefinitions = new HashMap<String, String>();
 
-    /** An Implementation element may have either
-     *  a CoSimulation_StandAlone element or
-     *  a CoSimulationTool element.  These
-     *  elements have a capabilities element.
+    /** The capabilities for co-simulation.
      */
     public FMICoSimulationCapabilities capabilities;
 

@@ -38,8 +38,8 @@ import org.w3c.dom.Element;
 /**
  * An object that represents the the capabilities of a FMI co-simulation
  * slave.
- *
- * <p>A Functional Mock-up Unit file is a .fmu file in zip format that
+ * <p>
+ * A Functional Mock-up Unit file is a .fmu file in zip format that
  * contains a .xml file named "modelDescription.xml".  The xml file
  * may optionally contain a "Implementation" element that will contain
  * either a "CoSimulation_Standalone" element or a "CoSimulation_Tool"
