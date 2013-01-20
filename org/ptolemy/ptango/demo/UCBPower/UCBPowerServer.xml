@@ -4,7 +4,7 @@
 <entity name="UCBPowerServer" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={29, 101, 751, 616}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={29, 101, 751, 617}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[523, 500]">
     </property>
@@ -103,7 +103,7 @@
     <entity name="HttpActor" class="org.ptolemy.ptango.lib.HttpActor">
         <property name="path" class="ptolemy.data.expr.StringParameter" value="/UCBPower/*">
         </property>
-        <property name="timeout" class="ptolemy.data.expr.Parameter" value="10000L">
+        <property name="timeout" class="ptolemy.data.expr.Parameter" value="20000L">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{125.0, 265.0}">
         </property>
@@ -166,6 +166,16 @@
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
         </port>
+        <port name="dateStartPicker" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <port name="dateEndPicker" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
     </entity>
     <entity name="HTMLModelExporter" class="org.ptolemy.ptango.lib.HTMLModelExporter">
         <property name="modelFileOrURL" class="ptolemy.actor.parameters.FilePortParameter" value="UCBPowerForServer.xml">
@@ -180,7 +190,7 @@
         </property>
         <property name="copyJavaScriptFiles" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[470.5, 390.625]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[475.0, 390.0]">
         </property>
         <property name="dateStart" class="ptolemy.data.expr.Parameter" value="">
         </property>
@@ -225,6 +235,24 @@
             <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="SOUTH">
             </property>
         </port>
+        <port name="startDay" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="SOUTH">
+            </property>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="string">
+            </property>
+        </port>
+        <port name="endDay" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="SOUTH">
+            </property>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="string">
+            </property>
+        </port>
     </entity>
     <entity name="MicrostepDelay2" class="ptolemy.actor.lib.MicrostepDelay">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[65.5, 532.5]">
@@ -258,8 +286,6 @@
     </relation>
     <relation name="relation16" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation" class="ptolemy.actor.TypedIORelation">
-    </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
@@ -272,6 +298,12 @@
     </relation>
     <relation name="relation9" class="ptolemy.actor.TypedIORelation">
     </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation10" class="ptolemy.actor.TypedIORelation">
+    </relation>
     <link port="HttpActor.response" relation="relation4"/>
     <link port="HttpActor.response" relation="relation16"/>
     <link port="HttpActor.getRequestURI" relation="relation3"/>
@@ -282,11 +314,15 @@
     <link port="RecordDisassembler.dateStart" relation="relation2"/>
     <link port="RecordDisassembler.dateEnd" relation="relation5"/>
     <link port="RecordDisassembler.useOnlineData" relation="relation9"/>
+    <link port="RecordDisassembler.dateStartPicker" relation="relation6"/>
+    <link port="RecordDisassembler.dateEndPicker" relation="relation10"/>
     <link port="HTMLModelExporter.webPage" relation="relation"/>
     <link port="HTMLModelExporter.trigger" relation="relation11"/>
     <link port="HTMLModelExporter.dateStart" relation="relation2"/>
     <link port="HTMLModelExporter.dateEnd" relation="relation5"/>
     <link port="HTMLModelExporter.useOnlineData" relation="relation7"/>
+    <link port="HTMLModelExporter.startDay" relation="relation6"/>
+    <link port="HTMLModelExporter.endDay" relation="relation10"/>
     <link port="MicrostepDelay2.input" relation="relation"/>
     <link port="MicrostepDelay2.output" relation="relation16"/>
     <link port="ExpressionToToken.input" relation="relation9"/>

@@ -1,279 +1,25 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US" lang="en-US">
+<!DOCTYPE html>
+<html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"/>
+<!-- Use HTML5 tags.  Use charset utf-8 to support extended character set -->
+<meta charset="utf-8"/>
 <title>UCBPowerForServer</title>
+
+<!--  Can omit "type" attribute for stylesheets and scripts in HTML5 -->
+<!--  Styling for datepicker.  See http://jqueryui.com/datepicker/   -->
+<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.0/themes/base/jquery-ui.css" />
+
+<!--  Styling for fancybox pop-up graphs.  See http://fancybox.net/ -->
 <link rel="stylesheet" type="text/css" href="http://ptolemy.org/javascript/jquery.fancybox-1.3.4.css" media="screen"/>
-<style media="screen" type="text/css">
-#ui-datepicker-div, .ui-datepicker-div, .ui-datepicker-inline {
-	/*resets*/margin: 0; padding: 0; border: 0; outline: 0; line-height: 0.8; text-decoration: none; font-size: 100%; list-style: none;
-	font-family: Trebuchet MS, Arial, sans-serif;
-	background-color: #3e3d3d;
-	font-size: 1em;
-	border: 1px solid #777777;
-	width: 15.9em;
-	padding: 2.3em .3em .3em .3em;
-	position: relative;
-}
-#ui-datepicker-div,
-.ui-datepicker-div {
-	z-index: 9999; /*must have*/
-	display: none;
-	background: #3e3d3d;
-}
-.ui-datepicker-inline {
-	float: left;
-	display: block;	
-}
-.ui-datepicker-control {
-	display: none;
-}
-.ui-datepicker-current {
-	display: none;
-}
-.ui-datepicker-next, .ui-datepicker-prev {
-	position: absolute;
-	left: .5em;
-	top: .5em;
-	background: #444444 url(images/444444_40x100_textures_02_glass_25.png) 0 50% repeat-x;
-}
-.ui-datepicker-next {
-	left: 14.6em;
-}
-.ui-datepicker-next:hover, .ui-datepicker-prev:hover {
-	background: #333333 url(images/333333_40x100_textures_02_glass_25.png) 0 50% repeat-x;
-}
-.ui-datepicker-next a,
-.ui-datepicker-next label,
-.ui-datepicker-prev label,
-.ui-datepicker-prev a {
-	text-indent: -999999px;
-	width: 1.3em;
-	height: 1.4em;
-	display: block;
-	font-size: 1em;
-	background: url(images/eeeeee_7x7_arrow_left.gif) 50% 50% no-repeat;
-	border: 1px solid #777777;
-	cursor: pointer;
-}
-.ui-datepicker-next label,
-.ui-datepicker-next a {
-	background: url(images/eeeeee_7x7_arrow_right.gif) 50% 50% no-repeat;
-}
-.ui-datepicker-prev a:hover {
-	background: url(images/ffd40f_7x7_arrow_left.gif) 50% 50% no-repeat;
-}
-.ui-datepicker-next a:hover {
-	background: url(images/ffd40f_7x7_arrow_right.gif) 50% 50% no-repeat;
-}
-.ui-datepicker-prev a:active {
-	background: url(images/ffffff_7x7_arrow_left.gif) 50% 50% no-repeat;
-}
-.ui-datepicker-next a:active {
-	background: url(images/ffffff_7x7_arrow_right.gif) 50% 50% no-repeat;
-}
-.ui-datepicker-header select {
-	border: 1px solid #777777;
-	color: #cfcfcf;
-	background: #444444;
-	font-size: 1em;
-	line-height: 1.4em;
-	position: absolute;
-	top: .5em;
-	margin: 0 !important;
-	
-}
-.ui-datepicker-header select.ui-datepicker-new-month {
-width: 7em;
-left: 2.2em;
-}
-.ui-datepicker-header select.ui-datepicker-new-year {
-width: 5em;
-left: 9.4em;
-}
-table.ui-datepicker {
-	width: 15.5em;
-	text-align: right;
-}
-table.ui-datepicker td.ui-datepicker-unselectable
-{
-	padding: .1em .3em .1em 0;
-	border: 1px solid transparent;
-}
-table.ui-datepicker td a {
-	padding: .1em .3em .1em 0;
-	display: block;
-	color: #cfcfcf;
-	background: #444444 url(images/444444_40x100_textures_02_glass_25.png) 0 50% repeat-x;
-	cursor: pointer;
-	border: 1px solid #3e3d3d;
-}
-table.ui-datepicker td a:hover {
-	border: 1px solid #444444;
-	color: #ffffff;
-	background: #333333 url(images/333333_40x100_textures_02_glass_25.png) 0 50% repeat-x;
-}
-table.ui-datepicker td a:active {
-	border: 1px solid #841515;
-	color: #ffffff;
-	background: #841515 url(images/841515_40x100_textures_02_glass_35.png) 0 50% repeat-x;
-}
-table.ui-datepicker .ui-datepicker-title-row td {
-	padding: .3em 0;
-	text-align: center;
-	font-size: .9em;
-	color: #cfcfcf;
-	text-transform: uppercase;
-	/*border-bottom: 1px solid #777777;*/
-}
 
-table.ui-datepicker .ui-datepicker-title-row td a {
-	color: #cfcfcf;
-}
+<!--  Source for datepicker.  See http://jqueryui.com/datepicker/ -->
+<script src="http://code.jquery.com/jquery-1.4.3.min.js"></script>
+<script src="http://code.jquery.com/ui/1.10.0/jquery-ui.js"></script>
 
-table.ui-datepicker td.ui-datepicker-current-day a,
-table.ui-datepicker td.selected a
-{
-	color: black;
-	background: #999999 url(images/999999_40x100_textures_02_glass_25.png) 0 50% repeat-x;
-}
+<!--  Source for fancybox pop-up graphs.  See http://fancybox.net/ -->
+<script src="http://ptolemy.org/javascript/jquery.fancybox-1.3.4.pack.js"></script>
+<script src="http://ptolemy.org/javascript/pt-1.0.0.js"></script>
 
-table.ui-datepicker td.ui-datepicker-today a
-{
-	color: black;
-	background: #a21111 url(images/a21111_40x100_textures_02_glass_35.png) 0 50% repeat-x;
-}
-
-/*
-Generic ThemeRoller Classes
->> Make your jQuery Components ThemeRoller-Compatible!
-*/
-
-/*component global class*/
-.ui-component {
-	/*resets*/margin: 0; padding: 0; border: 0; outline: 0; line-height: 1.3; text-decoration: none; font-size: 100%; list-style: none;
-	font-family: Trebuchet MS, Arial, sans-serif;
-	font-size: 1.1em;
-}
-/*component content styles*/
-.ui-component-content {
-	border: 1px solid #777777;
-	background: #3e3d3d;
-	color: #cfcfcf;
-}
-.ui-component-content a {
-	color: #cfcfcf;
-	text-decoration: underline;
-}
-/*component states*/
-.ui-default-state {
-	border: 1px solid #777777;
-	background: #444444 url(images/444444_40x100_textures_02_glass_25.png) 0 50% repeat-x;
-	font-weight: bold;
-	color: #cfcfcf !important;
-}
-.ui-default-state a {
-	color: #cfcfcf;
-}
-.ui-default-state:hover, .ui-hover-state {
-	border: 1px solid #444444;
-	background: #333333 url(images/333333_40x100_textures_02_glass_25.png) 0 50% repeat-x;
-	font-weight: bold;
-	color: #ffffff !important;
-}
-.ui-hover-state a {
-	color: #ffffff;
-}
-.ui-default-state:active, .ui-active-state {
-	border: 1px solid #841515;
-	background: #841515 url(images/841515_40x100_textures_02_glass_35.png) 0 50% repeat-x;
-	font-weight: bold;
-	color: #ffffff !important;
-	outline: none;
-}
-.ui-active-state a {
-	color: #ffffff;
-	outline: none;
-}
-/*icons*/
-.ui-arrow-right-default {background: url(images/eeeeee_7x7_arrow_right.gif) no-repeat 50% 50%;}
-.ui-arrow-right-default:hover, .ui-arrow-right-hover {background: url(images/ffd40f_7x7_arrow_right.gif) no-repeat 50% 50%;}
-.ui-arrow-right-default:active, .ui-arrow-right-active {background: url(images/ffffff_7x7_arrow_right.gif) no-repeat 50% 50%;}
-.ui-arrow-left-default {background: url(images/eeeeee_7x7_arrow_left.gif) no-repeat 50% 50%;}
-.ui-arrow-left-default:hover, .ui-arrow-left-hover {background: url(images/ffd40f_7x7_arrow_left.gif) no-repeat 50% 50%;}
-.ui-arrow-left-default:active, .ui-arrow-left-active {background: url(images/ffffff_7x7_arrow_left.gif) no-repeat 50% 50%;}
-.ui-arrow-down-default {background: url(images/eeeeee_7x7_arrow_down.gif) no-repeat 50% 50%;}
-.ui-arrow-down-default:hover, .ui-arrow-down-hover {background: url(images/ffd40f_7x7_arrow_down.gif) no-repeat 50% 50%;}
-.ui-arrow-down-default:active, .ui-arrow-down-active {background: url(images/ffffff_7x7_arrow_down.gif) no-repeat 50% 50%;}
-.ui-arrow-up-default {background: url(images/eeeeee_7x7_arrow_up.gif) no-repeat 50% 50%;}
-.ui-arrow-up-default:hover, .ui-arrow-up-hover {background: url(images/ffd40f_7x7_arrow_up.gif) no-repeat 50% 50%;}
-.ui-arrow-up-default:active, .ui-arrow-up-active {background: url(images/ffffff_7x7_arrow_up.gif) no-repeat 50% 50%;}
-.ui-close-default {background: url(images/eeeeee_11x11_icon_close.gif) no-repeat 50% 50%;}
-.ui-close-default:hover, .ui-close-hover {background: url(images/ffd40f_11x11_icon_close.gif) no-repeat 50% 50%;}
-.ui-close-default:active, .ui-close-active {background: url(images/ffffff_11x11_icon_close.gif) no-repeat 50% 50%;}
-.ui-folder-closed-default {background: url(images/eeeeee_11x11_icon_folder_closed.gif) no-repeat 50% 50%;}
-.ui-folder-closed-default:hover, .ui-folder-closed-hover {background: url(images/ffd40f_11x11_icon_folder_closed.gif) no-repeat 50% 50%;}
-.ui-folder-closed-default:active, .ui-folder-closed-active {background: url(images/ffffff_11x11_icon_folder_closed.gif) no-repeat 50% 50%;}
-.ui-folder-open-default {background: url(images/eeeeee_11x11_icon_folder_open.gif) no-repeat 50% 50%;}
-.ui-folder-open-default:hover, .ui-folder-open-hover {background: url(images/ffd40f_11x11_icon_folder_open.gif) no-repeat 50% 50%;}
-.ui-folder-open-default:active, .ui-folder-open-active {background: url(images/ffffff_11x11_icon_folder_open.gif) no-repeat 50% 50%;}
-.ui-doc-default {background: url(images/eeeeee_11x11_icon_doc.gif) no-repeat 50% 50%;}
-.ui-doc-default:hover, .ui-doc-hover {background: url(images/ffd40f_11x11_icon_doc.gif) no-repeat 50% 50%;}
-.ui-doc-default:active, .ui-doc-active {background: url(images/ffffff_11x11_icon_doc.gif) no-repeat 50% 50%;}
-.ui-arrows-leftright-default {background: url(images/eeeeee_11x11_icon_arrows_leftright.gif) no-repeat 50% 50%;}
-.ui-arrows-leftright-default:hover, .ui-arrows-leftright-hover {background: url(images/ffd40f_11x11_icon_arrows_leftright.gif) no-repeat 50% 50%;}
-.ui-arrows-leftright-default:active, .ui-arrows-leftright-active {background: url(images/ffffff_11x11_icon_arrows_leftright.gif) no-repeat 50% 50%;}
-.ui-arrows-updown-default {background: url(images/eeeeee_11x11_icon_arrows_updown.gif) no-repeat 50% 50%;}
-.ui-arrows-updown-default:hover, .ui-arrows-updown-hover {background: url(images/ffd40f_11x11_icon_arrows_updown.gif) no-repeat 50% 50%;}
-.ui-arrows-updown-default:active, .ui-arrows-updown-active {background: url(images/ffffff_11x11_icon_arrows_updown.gif) no-repeat 50% 50%;}
-.ui-minus-default {background: url(images/eeeeee_11x11_icon_minus.gif) no-repeat 50% 50%;}
-.ui-minus-default:hover, .ui-minus-hover {background: url(images/ffd40f_11x11_icon_minus.gif) no-repeat 50% 50%;}
-.ui-minus-default:active, .ui-minus-active {background: url(images/ffffff_11x11_icon_minus.gif) no-repeat 50% 50%;}
-.ui-plus-default {background: url(images/eeeeee_11x11_icon_plus.gif) no-repeat 50% 50%;}
-.ui-plus-default:hover, .ui-plus-hover {background: url(images/ffd40f_11x11_icon_plus.gif) no-repeat 50% 50%;}
-.ui-plus-default:active, .ui-plus-active {background: url(images/ffffff_11x11_icon_plus.gif) no-repeat 50% 50%;}
-/*hidden elements*/
-.ui-hidden {
-	display: none;/* for accessible hiding: position: absolute; left: -99999999px*/
-}
-.ui-accessible-hidden {
-	 position: absolute; left: -99999999px;
-}
-/*reset styles*/
-.ui-reset {
-	/*resets*/margin: 0; padding: 0; border: 0; outline: 0; line-height: 1.3; text-decoration: none; font-size: 100%; list-style: none;
-}
-/*clearfix class*/
-.ui-clearfix:after {
-    content: "."; 
-    display: block; 
-    height: 0; 
-    clear: both; 
-    visibility: hidden;
-}
-.ui-clearfix {display: inline-block;}
-/* Hides from IE-mac \*/
-* html .ui-clearfix {height: 1%;}
-.ui-clearfix {display: block;}
-/* End hide from IE-mac */
-
-/* Note: for resizable styles, use the styles listed above in the dialog section */
-
-.showWhenSelected
-{	
-	visibility: hidden;
-}
-</style>
-
-
-<script type="text/javascript" src="http://ptolemy.org/javascript/jquery-1.4.3.min.js"></script>
-<script type="text/javascript" src="http://ptolemy.org/javascript/jquery.fancybox-1.3.4.pack.js"></script>
-<script type="text/javascript" src="http://ptolemy.org/javascript/pt-1.0.0.js"></script>
-
-<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.2.6/jquery.min.js"></script>  	
-<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.5.3/jquery-ui.min.js"></script>
-
-	
 
 <script type="text/javascript">
 function writeText(text) {
@@ -281,7 +27,7 @@ function writeText(text) {
 };
 
 // Validate fields.  
-// Called after submitBtn onclick(), but before form is sumbitted
+// Called after submitBtn onclick(), but before form is submitted
 function validateForm() {
 	var startMSec = jQuery("#startMSec").val();
 	var endMSec = jQuery("#endMSec").val();
@@ -297,55 +43,74 @@ function validateForm() {
 };
 
 jQuery(document).ready((function() {
-   // Use jQuery instead of $ to make sure it works with the ptolemy webpage actor
+   // Use jQuery instead of dollar sign to make sure it works with the ptolemy webpage actor
    // if this code is used as arguments for actor's parameters
-   jQuery("#readTime").hide("fast");
-   //Execute if the online option was selected
-   jQuery("input[@name=useOnlineData]").click(function(){
-          var option = jQuery("input[@name=useOnlineData]:checked").val();
-          if (option.trim() =="true")
-                jQuery("#readTime").show();	
-         else jQuery("#readTime").hide("fast");
-   });
    
    // Create date pickers.  The date pickers should not allow future dates
    jQuery("#dateStartPicker").datepicker({ maxDate: "+0d" });
    jQuery("#dateEndPicker").datepicker({ maxDate: "+0d" });
+   
+   // Default to offline data.  Hide the date picker
+   jQuery("#offlineOption").attr("checked", true);
+   jQuery("#readTime").hide();
+   
+   // Show the date picker if the online option is selected
+   jQuery("#onlineOption").click(function(){
+   		  if (jQuery("#onlineOption").is(":checked")) {
+   		  	jQuery("#readTime").show();	
+   		  } else {
+   		    // Not sure if it is possible to click on the online option, but somehow
+   		    // have the offline radio button still "checked".  Test just in case.  
+   		  	jQuery("#readTime").hide();
+   		  }
+   });
+   
+   // Hide the date picker if the offline option is selected
+   jQuery("#offlineOption").click(function(){
+   		  if (jQuery("#offlineOption").is(":checked")) {
+   		  	jQuery("#readTime").hide();	
+   		  } else {
+   		    // Not sure if it is possible to click on the online option, but somehow
+   		    // have the offline radio button still "checked".  Test just in case.  
+   		  	jQuery("#readTime").show();
+   		  }
+   });
+
 
    //Execute when Submit button is clicked.
    jQuery("#submitBtn").click(function()
    {
 		var startDate =new Date(jQuery("#dateStartPicker").val());
 		var endDate =new Date(jQuery("#dateEndPicker").val());
-		var timeStartMsec, timeEndMsec;		
-		var useOnlineData = jQuery("input[@name=useOnlineData]:checked").val().trim();
+		var timeStartMsec, timeEndMsec;	
+		var useOnlineData = jQuery("#onlineOption").is(":checked");			
 		
 		//transform the start time in milliseconds
-		var ampm =jQuery("#am_pm_start").val(jQuery(this).find(":selected").val());
-		var hours = jQuery("#hourMenuStart").val(jQuery(this).find(":selected").val());
+		var ampm =jQuery("#am_pm_start :selected").val();
+		var hours = jQuery("#hourMenuStart :selected").val();
 		
 		if (ampm==1)
 			hours = parseInt(hours)+12;
 		timeStartMsec =hours*3600*1000;
 	
-		var minutes = jQuery("#minuteMenuStart").val(jQuery(this).find(":selected").val());
+		var minutes = jQuery("#minuteMenuStart :selected").val();
 			timeStartMsec =timeStartMsec + minutes*60*1000;
 	
-		var seconds =jQuery("#secondMenuStart").val(jQuery(this).find(":selected").val());
+		var seconds =jQuery("#secondMenuStart :selected").val();
 		timeStartMsec =timeStartMsec+seconds*1000;
 		
 		//transform the end time in milliseconds
-		ampm =jQuery("#am_pm_end").val(jQuery(this).find(":selected").val());
-		hours = jQuery("#hourMenuEnd").val(jQuery(this).find(":selected").val());
+		ampm =jQuery("#am_pm_end :selected").val();
+		hours = jQuery("#hourMenuEnd :selected").val();
 		
 		if (ampm==1)
 			hours = parseInt(hours)+12;
 		timeEndMsec =hours*3600*1000;
 	
-		minutes = jQuery("#minuteMenuEnd").val(jQuery(this).find(":selected").val());
+		minutes = jQuery("#minuteMenuEnd :selected").val();
 			timeEndMsec =timeEndMsec + minutes*60*1000;
 	
-		seconds =jQuery("#secondMenuEnd").val(jQuery(this).find(":selected").val());
+		seconds =jQuery("#secondMenuEnd :selected").val();
 		timeEndMsec =timeEndMsec+seconds*1000;
 	
 		var startMSec=startDate.getTime()+timeStartMsec;
@@ -365,17 +130,19 @@ jQuery(document).ready((function() {
 <h1>
 UCBPowerForServer
 </h1>
-<form action="UCBPower" action="UCBPower" method="post" 
+<form action="UCBPower" method="post" 
 	onsubmit="return validateForm()">
 <div id="onlineOffline">
-<input type="radio" name="useOnlineData" checked="checked" value=false id="offlineOption"/> Offline data
-<input type="radio" name="useOnlineData" value=true id="onlineOption" /> Online data <br />
+
+<!--  Buttons in a radio button group share the same name, but have different ids -->
+<input type="radio" name="useOnlineData" id="offlineOption"  value=false /> Offline data
+<input type="radio" name="useOnlineData" id="onlineOption" value=true  /> Online data <br />
 </div>
 <div class="readTime" id="readTime"> <p>Please select a: <br /></p>
-<table width="400">
+<table>
 <tr>
- <td width="100"> start date: </td>
- <td> <input type="text" id="dateStartPicker" /> </td> 
+ <td> start date: </td>
+ <td> <input type="text" name= "dateStartPicker" id="dateStartPicker" /> </td> 
  <td> start time: </td>
  <td>
  <select name="hourMenuStart" id="hourMenuStart">
@@ -528,7 +295,7 @@ UCBPowerForServer
 </tr>
 <tr>
 <td> end date: </td>
-<td> <input type="text" id="dateEndPicker"> </td> <td> end time: </td>
+<td> <input type="text" name="dateEndPicker" id="dateEndPicker"> </td> <td> end time: </td>
 <td>
 <select name="hourMenuEnd" id="hourMenuEnd">
 <option value=1>01</option>

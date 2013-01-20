@@ -725,15 +725,16 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable,
 
             // Generate a header that will pass the HTML validator at
             // http://validator.w3.org/
+            // Use HTML5 tags.  Use charset utf-8 to support extended characters
             // We use println so as to get the correct eol character for
             // the local platform.
             printWriter
-                    .println("<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">");
+                    .println("<!DOCTYPE html>");
             printWriter
-                    .println("<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"en-US\" lang=\"en-US\">");
+                    .println("<html>");
             printWriter.println("<head>");
             printWriter
-                    .println("<meta http-equiv=\"Content-Type\" content=\"text/html; charset=iso-8859-1\"/>");
+                    .println("<meta charset=utf-8>");
 
             // Define the path to the SSI files on the ptolemy site.
             String ssiRoot = "http://ptolemy.org/";
@@ -761,8 +762,9 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable,
                 }
             }
 
+            // In HTML5, can omit "type" attributes for scripts and stylesheets
             printWriter
-                    .println("<link rel=\"stylesheet\" type=\"text/css\" href=\""
+                    .println("<link rel=\"stylesheet\"  href=\""
                             + jsLibrary
                             + "javascript/"
                             + FILENAMES[2]
@@ -780,22 +782,20 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable,
             // Title needed for the HTML validator.
             printWriter.println("<title>" + _title + "</title>");
 
+            // In HTML5, can omit "type" attributes for scripts and stylesheets
             // NOTE: Due to a bug somewhere (browser, Javascript, etc.), can't end this with />. Have to use </script>.
             printWriter
-                    .println("<script type=\"text/javascript\" src=\""
-                            + jsLibrary + "javascript/" + FILENAMES[0]
-                            + "\"></script>");
+                    .println("<script src=\"" + jsLibrary + "javascript/" 
+                            + FILENAMES[0] + "\"></script>");
             printWriter
-                    .println("<script type=\"text/javascript\" src=\""
-                            + jsLibrary + "javascript/" + FILENAMES[1]
-                            + "\"></script>");
+                    .println("<script src=\"" + jsLibrary + "javascript/" 
+                            + FILENAMES[1] + "\"></script>");
 
             // FILENAMES[2] is a stylesheet <link, so it goes in the head, see above.
 
             printWriter
-                    .println("<script type=\"text/javascript\" src=\""
-                            + jsLibrary + "javascript/" + FILENAMES[3]
-                            + "\"></script>");
+                    .println("<script src=\"" + jsLibrary + "javascript/" 
+                            + FILENAMES[3] + "\"></script>");
             // Could alternatively use a CDS (Content Delivery Service) for the JavaScript library for jquery.
             // index.println("<script type=\"text/javascript\" src=\"http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js\"></script>");
 
@@ -989,7 +989,8 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable,
             throws IllegalActionException, IOException, PrinterException {
         StringBuffer result = new StringBuffer();
         // The HTML Validator at http://validator.w3.org/check wants an id tag.
-        result.append("<map name=\"iconmap\" id=\"iconmapid\">\n");
+        // For HTML5, the name and id must match
+        result.append("<map name=\"iconmap\" id=\"iconmap\">\n");
 
         // Iterate over the icons.
         List<IconVisibleLocation> iconLocations = _getIconVisibleLocations();
@@ -999,6 +1000,8 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable,
             String title = "Actor"; // Default in case there is no title key.
             HashMap<String, String> areaAttributes = _areaAttributes
                     .get(location.object);
+            // If areaAttributes is null, omit the entry, since an HTML area 
+            // element is required to have an href attribute
             if (areaAttributes != null) {
                 for (Map.Entry<String, String> entry : areaAttributes
                         .entrySet()) {
@@ -1016,14 +1019,15 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable,
                         attributeString.append("\" ");
                     }
                 }
+                
+                // Write the name of the actor followed by the table.
+                result.append("<area shape=\"rect\" coords=\""
+                        + (int) location.topLeftX + "," + (int) location.topLeftY
+                        + "," + (int) location.bottomRightX + ","
+                        + (int) location.bottomRightY + "\"\n" + attributeString
+                        + "alt=\"" + title + "\"/>\n");
             }
 
-            // Write the name of the actor followed by the table.
-            result.append("<area shape=\"rect\" coords=\""
-                    + (int) location.topLeftX + "," + (int) location.topLeftY
-                    + "," + (int) location.bottomRightX + ","
-                    + (int) location.bottomRightY + "\"\n" + attributeString
-                    + "alt=\"" + title + "\"/>\n");
         }
         result.append("</map>\n");
         return result.toString();
