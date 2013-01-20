@@ -197,8 +197,8 @@ public class DygraphsJSPlotter extends BasicJSPlotter {
 
     /** Other JavaScript libraries that are required. */
     private static String[] _otherLibs = {
-            "<script type=\"text/javascript\" src=\"http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js\"></script>\n",
-            "<script type=\"text/javascript\" src=\"http://kelvin-mirex-svn.googlecode.com/svn-history/r49/trunk/misc/vis-demo/js/dygraph-combined.js\"></script>\n" };
+            "<script src=\"http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js\"></script>\n",
+            "<script src=\"http://dygraphs.com/dygraph-combined.js\"</script>\n" };
 
     /** HTML code specifying the layout of the HTML page. */
     private static String[] _bodyContent = {
@@ -208,9 +208,9 @@ public class DygraphsJSPlotter extends BasicJSPlotter {
             "</div><hr>",
             "<h2>Instructions:</h2>",
             "<p><ol>",
-            "\t<li><b style=\"color:blue\">Hide/show</b> a data trace or event trace by <b style=\"color:blue\">clicking </b> the corresponding checkbox.</li>",
-            "\t<li>Get <b style=\"color:blue\">all events</b> that happened at a particular point on the X axis by <b style=\"color:blue\">single click</b> on a data point on the upper chart</li>",
-            "\t<li><b style=\"color:blue\">Zoom-in/out</b> to/from an interval by <b style=\"color:blue\">dragging</b> on the lower chart.</li>",
+            "\t<li><b style=\"color:blue;\">Hide/show</b> a data trace or event trace by <b style=\"color:blue;\">clicking </b> the corresponding checkbox.</li>",
+            "\t<li>Get <b style=\"color:blue;\">all events</b> that happened at a particular point on the X axis by <b style=\"color:blue;\">single click</b> on a data point on the upper chart</li>",
+            "\t<li><b style=\"color:blue;\">Zoom-in/out</b> to/from an interval by <b style=\"color:blue;\">dragging</b> on the lower chart.</li>",
             "</ol></p>" };
 
     /** JavaScript code to plot the figure using the Dygraphs library. */

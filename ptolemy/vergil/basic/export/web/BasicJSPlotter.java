@@ -410,7 +410,7 @@ public abstract class BasicJSPlotter extends WebContent implements
      *  @return The string containing the head content
      */
     public String getHeaderContent() {
-        _headerContent.append("\t\t<script type=\"text/javascript\">\n");
+        _headerContent.append("\t\t<script>\n");
         _headerContent.append(_scriptContent.toString());
         _headerContent.append("\t\t</script>\n");
         return _headerContent.toString();
@@ -422,7 +422,7 @@ public abstract class BasicJSPlotter extends WebContent implements
     public String getHTMLPageContent() {
         StringBuffer pageContent = new StringBuffer();
         pageContent
-                .append("<!DOCTYPE HTML>\n<html>\n\t<head>\n\t\t<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\">\n");
+                .append("<!DOCTYPE HTML>\n<html>\n\t<head>\n\t\t<meta charset=utf-8\">\n");
         pageContent.append(getHeaderContent());
         pageContent.append("\t</head>\n\n\t<body>\n");
         pageContent.append(getBodyContent());

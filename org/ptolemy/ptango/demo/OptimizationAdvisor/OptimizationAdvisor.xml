@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="OptimizationAdvisor" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
     </property>
     <property name="WebServer" class="org.ptolemy.ptango.lib.WebServer">
         <property name="applicationPath" class="ptolemy.data.expr.StringParameter" value="/">
@@ -20,7 +20,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, 30.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 0, 1292, 776}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 0, 1292, 777}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1064, 660]">
     </property>
@@ -364,7 +364,7 @@ Michael Wetter (LBNL)</text></svg></configure>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 200.0]">
             </property>
         </property>
-        <property name="LTime" class="ptolemy.actor.parameters.PortParameter" value="-1">
+        <property name="LTime" class="ptolemy.actor.parameters.PortParameter" value="0">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -389,7 +389,7 @@ Michael Wetter (LBNL)</text></svg></configure>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 240.0]">
             </property>
         </property>
-        <property name="RTime" class="ptolemy.actor.parameters.PortParameter" value="-1">
+        <property name="RTime" class="ptolemy.actor.parameters.PortParameter" value="0">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -414,7 +414,7 @@ Michael Wetter (LBNL)</text></svg></configure>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 280.0]">
             </property>
         </property>
-        <property name="cost" class="ptolemy.data.expr.Parameter" value="82.5900000000024">
+        <property name="cost" class="ptolemy.data.expr.Parameter" value="82.5600000000024">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -1187,6 +1187,8 @@ Thus, the cost is multiplied by 15 to get monthly cost.</text></svg></configure>
                     </property>
                 </port>
                 <entity name="_Controller" class="ptolemy.domains.modal.modal.ModalController">
+                    <property name="errorCause" class="ptolemy.data.expr.Parameter">
+                    </property>
                     <property name="_library" class="ptolemy.moml.LibraryAttribute">
                         <configure>
         <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.modal.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory"></property></entity></entity>
@@ -1310,6 +1312,8 @@ Thus, the cost is multiplied by 15 to get monthly cost.</text></svg></configure>
                         </property>
                         <property name="gamma" class="ptolemy.data.expr.Parameter" value="2.154651577188477">
                         </property>
+                        <property name="history" class="ptolemy.data.expr.Parameter" value="true">
+                        </property>
                     </relation>
                     <relation name="relation" class="ptolemy.domains.modal.kernel.Transition">
                         <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="y &lt; 2.0 &amp;&amp; y &gt; 0">
@@ -1321,6 +1325,8 @@ Thus, the cost is multiplied by 15 to get monthly cost.</text></svg></configure>
                         <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.05698612752647324">
                         </property>
                         <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.0012063250001037758">
+                        </property>
+                        <property name="history" class="ptolemy.data.expr.Parameter" value="true">
                         </property>
                     </relation>
                     <relation name="relation2" class="ptolemy.domains.modal.kernel.Transition">
@@ -1334,6 +1340,8 @@ Thus, the cost is multiplied by 15 to get monthly cost.</text></svg></configure>
                         </property>
                         <property name="gamma" class="ptolemy.data.expr.Parameter" value="-3.1403469234710353">
                         </property>
+                        <property name="history" class="ptolemy.data.expr.Parameter" value="true">
+                        </property>
                     </relation>
                     <relation name="relation5" class="ptolemy.domains.modal.kernel.Transition">
                         <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="y == 0">
@@ -1346,6 +1354,8 @@ Thus, the cost is multiplied by 15 to get monthly cost.</text></svg></configure>
                         </property>
                         <property name="gamma" class="ptolemy.data.expr.Parameter" value="-2.2318788953650355">
                         </property>
+                        <property name="history" class="ptolemy.data.expr.Parameter" value="true">
+                        </property>
                     </relation>
                     <relation name="relation6" class="ptolemy.domains.modal.kernel.Transition">
                         <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="y &lt; 2.0 &amp;&amp; y &gt; 0">
@@ -1357,6 +1367,8 @@ Thus, the cost is multiplied by 15 to get monthly cost.</text></svg></configure>
                         <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.16596444986539832">
                         </property>
                         <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.9107246030054635">
+                        </property>
+                        <property name="history" class="ptolemy.data.expr.Parameter" value="true">
                         </property>
                     </relation>
                     <link port="HEAT.incomingPort" relation="relation4"/>
@@ -1433,7 +1445,7 @@ Thus, the cost is multiplied by 15 to get monthly cost.</text></svg></configure>
                 <link port="controlImplementation.info" relation="infoRelation"/>
             </entity>
             <entity name="SequencePlotter" class="ptolemy.actor.lib.gui.SequencePlotter">
-                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={684, 423, 516, 377}, maximized=false}">
+                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={684, 390, 516, 378}, maximized=false}">
                 </property>
                 <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 318]">
                 </property>
@@ -2824,7 +2836,7 @@ Thus, the cost is multiplied by 15 to get monthly cost.</text></svg></configure>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[140.0, 15.0]">
             </property>
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 54, 1287, 711}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 54, 1287, 712}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1059, 595]">
         </property>
@@ -2877,7 +2889,7 @@ Thus, the cost is multiplied by 15 to get monthly cost.</text></svg></configure>
             <property name="input"/>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[17.75, 217.5]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 220.0]">
             </property>
         </port>
         <port name="responsePage" class="ptolemy.actor.TypedIOPort">
@@ -2969,7 +2981,7 @@ Thus, the cost is multiplied by 15 to get monthly cost.</text></svg></configure>
             </property>
         </entity>
         <entity name="Expression3" class="ptolemy.actor.lib.Expression">
-            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="&quot;&lt;script type=\&quot;text/javascript\&quot;&gt;var oldData = &quot; + in + &quot;; &lt;/script&gt;&quot;">
+            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="&quot;&lt;script&gt;var oldData = &quot; + in + &quot;; &lt;/script&gt;&quot;">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                 <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
@@ -2988,7 +3000,7 @@ Thus, the cost is multiplied by 15 to get monthly cost.</text></svg></configure>
             </port>
         </entity>
         <entity name="Expression5" class="ptolemy.actor.lib.Expression">
-            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="&quot;Current TDay = &lt;b&gt;&quot; + params.TDay + &quot;&lt;/b&gt;, TNight = &lt;b&gt;&quot; + params.TNight&#10; + &quot;&lt;/b&gt;, Leaving = &lt;b&gt;&quot; + params.LTime + &quot;&lt;/b&gt;, Return = &lt;b&gt;&quot; + params.RTime &#10; + &quot;&lt;/b&gt;, Monthly Cost = &lt;b&gt;&lt;font color=\&quot;red\&quot;&gt;&quot; + cost &#10; + &quot;&lt;/font&gt;&lt;/b&gt;&lt;br&gt;Previous TDay = &lt;b&gt;&quot; + previous.TDay + &quot;&lt;/b&gt;, TNight = &lt;b&gt;&quot; + previous.TNight&#10; + &quot;&lt;/b&gt;, Leaving = &lt;b&gt;&quot; + previous.LTime + &quot;&lt;/b&gt;, Return = &lt;b&gt;&quot; + previous.RTime&#10; + &quot;&lt;/b&gt;, Monthly Cost = &lt;b&gt;&lt;font color=\&quot;red\&quot;&gt;&quot; + previousCost + &quot;&lt;/font&gt;&lt;/b&gt;&quot;">
+            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="&quot;Current TDay = &lt;b&gt;&quot; + params.TDay + &quot;&lt;/b&gt;, TNight = &lt;b&gt;&quot; + params.TNight&#10; + &quot;&lt;/b&gt;, Leaving = &lt;b&gt;&quot; + params.LTime + &quot;&lt;/b&gt;, Return = &lt;b&gt;&quot; + params.RTime &#10; + &quot;&lt;/b&gt;, Monthly Cost = &lt;b style=\&quot;color:red\&quot;&gt;&quot; + cost &#10; + &quot;&lt;/font&gt;&lt;/b&gt;&lt;br&gt;Previous TDay = &lt;b&gt;&quot; + previous.TDay + &quot;&lt;/b&gt;, TNight = &lt;b&gt;&quot; + previous.TNight&#10; + &quot;&lt;/b&gt;, Leaving = &lt;b&gt;&quot; + previous.LTime + &quot;&lt;/b&gt;, Return = &lt;b&gt;&quot; + previous.RTime&#10; + &quot;&lt;/b&gt;, Monthly Cost = &lt;b style=\&quot;color:red\&quot;&gt;&quot; + previousCost + &quot;&lt;/font&gt;&lt;/b&gt;&quot;">
                 <property name="style" class="ptolemy.actor.gui.style.TextStyle">
                     <property name="height" class="ptolemy.data.expr.Parameter" value="10">
                     </property>
@@ -3032,7 +3044,7 @@ Thus, the cost is multiplied by 15 to get monthly cost.</text></svg></configure>
             </port>
         </entity>
         <entity name="Expression6" class="ptolemy.actor.lib.Expression">
-            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="&quot;&lt;script type=\&quot;text/javascript\&quot;&gt;var oldEvents = &quot; + in + &quot;; &lt;/script&gt;&quot;">
+            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="&quot;&lt;script&gt;var oldEvents = &quot; + in + &quot;; &lt;/script&gt;&quot;">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                 <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
@@ -3042,7 +3054,7 @@ Thus, the cost is multiplied by 15 to get monthly cost.</text></svg></configure>
                 <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
                 </property>
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[292.75, 217.5]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[295.0, 220.0]">
             </property>
             <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
@@ -3051,7 +3063,7 @@ Thus, the cost is multiplied by 15 to get monthly cost.</text></svg></configure>
             </port>
         </entity>
         <entity name="Expression4" class="ptolemy.actor.lib.Expression">
-            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="&quot;&lt;script type=\&quot;text/javascript\&quot;&gt;var newData = &quot; + in + &quot;; &lt;/script&gt;&quot;">
+            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="&quot;&lt;script&gt;var newData = &quot; + in + &quot;; &lt;/script&gt;&quot;">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                 <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
@@ -3070,7 +3082,7 @@ Thus, the cost is multiplied by 15 to get monthly cost.</text></svg></configure>
             </port>
         </entity>
         <entity name="Expression" class="ptolemy.actor.lib.Expression">
-            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="&quot;&lt;script type=\&quot;text/javascript\&quot;&gt;var newEvents = &quot; + in + &quot;; &lt;/script&gt;&quot;">
+            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="&quot;&lt;script&gt;var newEvents = &quot; + in + &quot;; &lt;/script&gt;&quot;">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                 <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
@@ -3089,7 +3101,7 @@ Thus, the cost is multiplied by 15 to get monthly cost.</text></svg></configure>
             </port>
         </entity>
         <entity name="Expression2" class="ptolemy.actor.lib.Expression">
-            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="&quot;&lt;script type=\&quot;text/javascript\&quot;&gt;var params = {TDay:\&quot;&quot; &#10;+ in.TDay + &quot;\&quot;, TNight:\&quot;&quot; + in.TNight + &quot;\&quot;, LTime:\&quot;&quot;&#10;+ in.LTime + &quot;\&quot;, RTime:\&quot;&quot; + in.RTime + &quot;\&quot;}; &lt;/script&gt;&quot;&#10;">
+            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="&quot;&lt;script&gt;var params = {TDay:\&quot;&quot; &#10;+ in.TDay + &quot;\&quot;, TNight:\&quot;&quot; + in.TNight + &quot;\&quot;, LTime:\&quot;&quot;&#10;+ in.LTime + &quot;\&quot;, RTime:\&quot;&quot; + in.RTime + &quot;\&quot;}; &lt;/script&gt;&quot;&#10;">
                 <property name="style" class="ptolemy.actor.gui.style.TextStyle">
                     <property name="height" class="ptolemy.data.expr.Parameter" value="10">
                     </property>
@@ -3105,7 +3117,7 @@ Thus, the cost is multiplied by 15 to get monthly cost.</text></svg></configure>
                 <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
                 </property>
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[310.0, 440.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{310.0, 440.0}">
             </property>
             <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>

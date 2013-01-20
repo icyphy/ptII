@@ -233,12 +233,23 @@ public class HTMLPageAssembler extends TypedAtomicActor {
             // send the result to the output, and save to the file if required
 
             StringWriter stringWriter = new StringWriter();
+            // Manually add the DOCTYPE tag.  HTMLEditorKit removes this.
+            stringWriter.write("<!DOCTYPE html>");
+            // FIXME:  HTMLEditorKit appears to be replacing tags with color 
+            // styling, such as <b style="color:blue">, with <font> tags
+            // The <font> tag is not supported in HTML5 
+            // Is HTMLEditorKit the best here?  Is there another editor that
+            // is up to date with HTML5?
             _htmlKit.write(stringWriter, _htmlDoc, 0, _htmlDoc.getLength());
 
             /*
              *  HTML script is commented out originally. Thus, we need to remove
              *  the comment marks.
              */
+            // FIXME:  Which script was commented out?  Why?
+            // This code uncomments ALL comments, meaning that any comments in 
+            // the source HTML file will be uncommented and will be visible 
+            // as text on the response page
             String content = stringWriter.toString();
             content = content.replaceAll("<!--", "").replaceAll("-->", "");
 
