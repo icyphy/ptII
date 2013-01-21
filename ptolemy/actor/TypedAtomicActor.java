@@ -341,6 +341,10 @@ public class TypedAtomicActor extends AtomicActor<TypedIOPort> implements
                 if (inPortConstraints.isEmpty() && outPortConstraints.isEmpty()) {
                     result.add(new Inequality(input.getTypeTerm(), output
                             .getTypeTerm()));
+                    if(isBackwardTypeInferenceEnabled()) {
+                        result.add(new Inequality(output
+                                .getTypeTerm(), input.getTypeTerm()));
+                    }
                 }
             }
         }
