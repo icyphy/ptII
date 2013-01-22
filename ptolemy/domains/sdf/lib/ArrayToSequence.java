@@ -216,20 +216,22 @@ public class ArrayToSequence extends SDFTransformer {
             boolean enforceLength = false;
             int length = 1;
             try {
-                enforceLength = ((BooleanToken) enforceArrayLength.getToken())
-                        .booleanValue();
-                length = ((IntToken) arrayLength.getToken()).intValue();
+                // constrain the input to be an array of a type greater
+                // than or equal to the type of the output (for backward
+                // type inference)
+                if (((BooleanToken) enforceArrayLength.getToken())
+                        .booleanValue()) {
+                    result.add(new Inequality(new ArrayOfTypesFunction(output,
+                            ((IntToken) arrayLength.getToken()).intValue()),
+                            input.getTypeTerm()));
+                } else {
+                    result.add(new Inequality(new ArrayOfTypesFunction(output),
+                            input.getTypeTerm()));
+                }
+
             } catch (IllegalActionException e) {
                 // this should not happen
                 e.printStackTrace();
-            }
-            // constrain the input to be an array of a type greater
-            // than or equal to the type of the output (for backward
-            // type inference)
-            if (enforceLength) {
-                result.add(new Inequality(new ArrayOfTypesFunction(output, length), input.getTypeTerm()));
-            } else {
-                result.add(new Inequality(new ArrayOfTypesFunction(output), input.getTypeTerm()));
             }
         }
 
