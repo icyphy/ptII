@@ -229,6 +229,10 @@ public class RecordDisassembler extends TypedAtomicActor {
                 outputPortList(), RecordType.class), input.getTypeTerm()));
 
         for (TypedIOPort output : outputPortList()) {
+            // ignore unconnected ports
+            if (output.numberOfSinks() < 1) {
+                continue;
+            }
             String outputName = StringUtilities.sanitizeName(output.getName());
             labels.add(outputName);
             types.add(BaseType.GENERAL);

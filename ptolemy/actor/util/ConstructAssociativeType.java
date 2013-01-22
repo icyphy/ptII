@@ -29,6 +29,7 @@
 package ptolemy.actor.util;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import ptolemy.actor.TypedIOPort;
@@ -60,7 +61,19 @@ public class ConstructAssociativeType extends MonotonicFunction {
      */
     public ConstructAssociativeType(List<TypedIOPort> ports,
             Class<? extends AssociativeType> type) {
-        _ports = ports;
+        
+        _ports = new LinkedList<TypedIOPort>();
+        
+        for (TypedIOPort port : ports) {
+            // only consider ports that are connected
+            if (port.isOutput() && port.numberOfSinks() > 0) {
+                _ports.add(port);
+            }
+            else if (port.isInput() && port.numberOfSources() > 0) {
+                _ports.add(port);
+            }
+        }
+        
         _type = type;
     }
 

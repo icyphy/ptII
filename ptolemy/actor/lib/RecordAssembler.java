@@ -29,6 +29,8 @@ package ptolemy.actor.lib;
 
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Set;
 
 import ptolemy.actor.IOPort;
@@ -49,9 +51,10 @@ import ptolemy.util.StringUtilities;
 //// RecordAssembler
 
 /**
- On each firing, read one token from each input port and assemble them
- into a RecordToken. The labels for the RecordToken much match the names
- of the input ports. This is achieved using two type constraints:
+ On each firing, read one token from each connected input port and assemble 
+ them into a RecordToken. Disconnected input ports are ignored. The labels for 
+ the RecordToken much match the names of the input ports. This is achieved 
+ using two type constraints:
 
  <ul>
  <li><tt>output >= {x = typeOf(inputPortX), y = typeOf(inputPortY), ..}
@@ -131,7 +134,8 @@ public class RecordAssembler extends TypedAtomicActor {
      */
     public void fire() throws IllegalActionException {
         super.fire();
-        Object[] portArray = inputPortList().toArray();
+        
+        Object[] portArray = _inputs.toArray();
         int size = portArray.length;
 
         // construct the RecordToken and to output
@@ -149,22 +153,33 @@ public class RecordAssembler extends TypedAtomicActor {
         output.send(0, result);
     }
 
-    /** Return true if all input ports have tokens, false if some input
-     *  ports do not have a token.
-     *  @return True if all input ports have tokens.
+    
+    /** Generate a list of all connected input ports. 
+     */
+    @Override
+    public void preinitialize() throws IllegalActionException {
+        super.preinitialize();
+        _inputs = new LinkedList<TypedIOPort>();
+        for (TypedIOPort port : inputPortList()) {
+            if (port.numberOfSources() > 0) {
+                _inputs.add(port);
+            }
+        }
+    }
+
+    /** Return true if all connected input ports have tokens, false if some 
+     *  connected input ports do not have a token.
+     *  @return True if all connected input ports have tokens.
      *  @exception IllegalActionException If the hasToken() call to the
      *   input port throws it.
      *  @see ptolemy.actor.IOPort#hasToken(int)
      */
     public boolean prefire() throws IllegalActionException {
-        Iterator<?> ports = inputPortList().iterator();
-
-        while (ports.hasNext()) {
-            IOPort port = (IOPort) ports.next();
-
-            if (!port.hasToken(0)) {
+        
+         for(TypedIOPort port : _inputs){
+             if (!port.hasToken(0)) {
                 return false;
-            }
+             }
         }
 
         return true;
@@ -200,7 +215,7 @@ public class RecordAssembler extends TypedAtomicActor {
 
         // constrain the type of every input to be greater than or equal to 
         // the resolved type of the corresponding field in the output record
-        for (TypedIOPort input : inputPortList()) {
+        for (TypedIOPort input : _inputs) {
             // only include ports that have no type declared
             if (input.getTypeTerm().isSettable()) {
                 result.add(new Inequality(new ExtractFieldType(output, input
@@ -211,7 +226,7 @@ public class RecordAssembler extends TypedAtomicActor {
         // constrain the fields in the output record to be greater than or
         // equal to the declared or resolved types of the input ports:
         // output >= {x = typeOf(outputPortX), y = typeOf(outputPortY), ..}
-        result.add(new Inequality(new ConstructAssociativeType(inputPortList(),
+        result.add(new Inequality(new ConstructAssociativeType(_inputs,
                 RecordType.class), output.getTypeTerm()));
 
         return result;
@@ -224,5 +239,12 @@ public class RecordAssembler extends TypedAtomicActor {
     protected Set<Inequality> _defaultTypeConstraints() {
         return null;
     }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                      private variables                    ////
+ 
+    /** The connected input ports */
+    public List<TypedIOPort> _inputs;
+
 
 }
