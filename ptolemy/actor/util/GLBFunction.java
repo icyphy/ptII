@@ -100,6 +100,9 @@ public class GLBFunction extends MonotonicFunction {
         types.addAll(_cachedTypes);
         for (int i = 0; i < _cachedTerms.length; i++) {
             Type type = (Type) _cachedTerms[i].getValue();
+            // if (type != BaseType.UNKNOWN) 
+            // enabling this will make the function non-monotonic which may
+            // cause type resolution to diverge
             types.add(type);
         }
         // If there are no destination outputs at all, then set
