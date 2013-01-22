@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="UCBPower" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
     </property>
     <property name="LocalPreferences" class="ptolemy.actor.gui.PtolemyPreferences">
         <property name="backgroundColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,1.0,1.0,1.0}">
@@ -11,7 +11,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[585.0, 1010.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={108, 22, 1278, 832}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-9, 19, 1289, 868}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1044, 722]">
     </property>
@@ -96,6 +96,8 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{115, 1010}">
         </property>
     </property>
+    <property name="enableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="true">
+    </property>
     <class name="SingleReaderClass" extends="ptolemy.actor.TypedCompositeActor">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[465.0, 1035.0]">
         </property>
@@ -118,7 +120,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[210.0, -15.0]">
             </property>
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={31, 254, 1152, 634}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-9, 126, 1163, 670}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[918, 524]">
         </property>
@@ -304,7 +306,7 @@
                 </property>
             </entity>
             <entity name="ConfigurationSwitch" class="ptolemy.actor.lib.ConfigurationSwitch">
-                <property name="selector" class="ptolemy.data.expr.Parameter" value="useOnlineData">
+                <property name="selector" class="ptolemy.actor.parameters.PortParameter" value="useOnlineData">
                     <property name="style" class="ptolemy.actor.gui.style.TextStyle">
                         <property name="height" class="ptolemy.data.expr.Parameter" value="10">
                         </property>
@@ -349,11 +351,6 @@
             </property>
             <property name="_expertMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-                <property name="_type" class="ptolemy.actor.TypeAttribute" value="arrayType({Readings = arrayType(arrayType(double)), uuid = string})">
-                </property>
-            </port>
         </entity>
         <entity name="ArrayToSequence" class="ptolemy.domains.sdf.lib.ArrayToSequence">
             <property name="enforceArrayLength" class="ptolemy.data.expr.Parameter" value="false">
@@ -481,7 +478,7 @@ icon color.</text></svg></configure>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 310.0]">
                     </property>
                 </property>
-                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={211, 353, 1252, 656}, maximized=false}">
+                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-9, 104, 1263, 692}, maximized=false}">
                 </property>
                 <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1018, 546]">
                 </property>
@@ -594,6 +591,8 @@ icon color.</text></svg></configure>
                         <property name="input"/>
                         <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                         </property>
+                        <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
+                        </property>
                     </port>
                 </entity>
                 <entity name="SetVariable" class="ptolemy.actor.lib.SetVariable">
@@ -700,6 +699,8 @@ icon color.</text></svg></configure>
     <entity name="InstanceOfCompositeActor2" class="SingleReaderClass">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[425.0, 375.0]">
         </property>
+        <property name="iconColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.2214225397226, 0.7785774602774, 0.0, 0.6}">
+        </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={31, 254, 1152, 634}, maximized=false}">
         </property>
         <property name="size" class="ptolemy.data.expr.Parameter" value="100">
@@ -721,12 +722,10 @@ icon color.</text></svg></configure>
         <entity name="IterateOverArray" class="ptolemy.actor.lib.hoc.IterateOverArray">
             <entity name="IterateComposite" class="ptolemy.actor.lib.hoc.IterateOverArray$IterateComposite">
                 <entity name="SequencePlotter" class="ptolemy.actor.lib.gui.SequencePlotter">
-                    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={11, 272, 502, 247}, maximized=false}">
+                    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={2, 264, 522, 280}, maximized=false}">
                     </property>
                     <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[502, 203]">
                     </property>
-                    <configure>
-                    </configure>
                     <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
@@ -744,6 +743,8 @@ icon color.</text></svg></configure>
     </entity>
     <entity name="InstanceOfCompositeActor" class="SingleReaderClass">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[520.0, 260.0]">
+        </property>
+        <property name="iconColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 1.0, 0.0, 0.6}">
         </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={59, 300, 1152, 634}, maximized=false}">
         </property>
@@ -766,12 +767,10 @@ icon color.</text></svg></configure>
         <entity name="IterateOverArray" class="ptolemy.actor.lib.hoc.IterateOverArray">
             <entity name="IterateComposite" class="ptolemy.actor.lib.hoc.IterateOverArray$IterateComposite">
                 <entity name="SequencePlotter" class="ptolemy.actor.lib.gui.SequencePlotter">
-                    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={4, 22, 510, 249}, maximized=false}">
+                    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-5, 19, 530, 282}, maximized=false}">
                     </property>
                     <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[510, 205]">
                     </property>
-                    <configure>
-                    </configure>
                     <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
@@ -779,8 +778,8 @@ icon color.</text></svg></configure>
 <title>Donner Lab</title>
 <xLabel>sample</xLabel>
 <yLabel>kw</yLabel>
-<xRange min="0.0" max="94.0"/>
-<yRange min="520.0" max="691.0"/>
+<xRange min="0.0" max="91.0"/>
+<yRange min="111.0" max="180.0"/>
 </plot>?>
                     </configure>
                 </entity>
@@ -789,6 +788,8 @@ icon color.</text></svg></configure>
     </entity>
     <entity name="InstanceOfCompositeActor4" class="SingleReaderClass">
         <property name="_location" class="ptolemy.kernel.util.Location" value="{975.0, 425.0}">
+        </property>
+        <property name="iconColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.108972657287, 0.891027342713, 0.0, 0.6}">
         </property>
         <property name="size" class="ptolemy.data.expr.Parameter" value="100">
         </property>
@@ -809,12 +810,10 @@ icon color.</text></svg></configure>
         <entity name="IterateOverArray" class="ptolemy.actor.lib.hoc.IterateOverArray">
             <entity name="IterateComposite" class="ptolemy.actor.lib.hoc.IterateOverArray$IterateComposite">
                 <entity name="SequencePlotter" class="ptolemy.actor.lib.gui.SequencePlotter">
-                    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={867, 22, 523, 248}, maximized=false}">
+                    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={492, 19, 543, 281}, maximized=false}">
                     </property>
                     <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[523, 204]">
                     </property>
-                    <configure>
-                    </configure>
                     <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
@@ -822,8 +821,8 @@ icon color.</text></svg></configure>
 <title>Birge Hall</title>
 <xLabel>sample</xLabel>
 <yLabel>kw</yLabel>
-<xRange min="0.0" max="94.0"/>
-<yRange min="520.0" max="691.0"/>
+<xRange min="0.0" max="91.0"/>
+<yRange min="318.3" max="400.4"/>
 </plot>?>
                     </configure>
                 </entity>
