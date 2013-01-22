@@ -227,11 +227,9 @@ public class ArrayToSequence extends SDFTransformer {
             // than or equal to the type of the output (for backward
             // type inference)
             if (enforceLength) {
-                result.add(new Inequality(input.getTypeTerm(),
-                        new ArrayOfTypesFunction(output, length)));
+                result.add(new Inequality(new ArrayOfTypesFunction(output, length), input.getTypeTerm()));
             } else {
-                result.add(new Inequality(input.getTypeTerm(),
-                        new ArrayOfTypesFunction(output)));
+                result.add(new Inequality(new ArrayOfTypesFunction(output), input.getTypeTerm()));
             }
         }
 
