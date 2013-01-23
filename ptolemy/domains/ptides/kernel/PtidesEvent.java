@@ -246,9 +246,11 @@ public class PtidesEvent extends DEEvent {
             timePrecision = 0.0;
         } 
         
-        return (_timestamp.subtract(timePrecision).compareTo(event.timeStamp()) <= 0 &&
-                _timestamp.add(timePrecision).compareTo(event.timeStamp()) >= 0 &&
-                (_microstep == event.microstep()));
+        return ((_timestamp.compareTo(event.timeStamp()) == 0 && _microstep == event.microstep()) ||
+                _timestamp.compareTo(event.timeStamp()) <= 0 ||
+                (_timestamp.subtract(timePrecision).compareTo(event.timeStamp()) <= 0 &&        
+                _timestamp.add(timePrecision).compareTo(event.timeStamp()) >= 0)
+                );
     }
 
     /** Return true if this event is a pure event.
