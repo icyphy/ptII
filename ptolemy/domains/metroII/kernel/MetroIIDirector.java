@@ -30,6 +30,7 @@ package ptolemy.domains.metroII.kernel;
 
 import java.io.BufferedReader;
 import java.io.DataInputStream;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -171,18 +172,21 @@ public class MetroIIDirector extends Director {
                 mappingFileName = null;
             } else {
 
-                String filename = mappingFileName.asFile().getAbsolutePath();
-                if (!filename.equals("")) {
-                    try {
-                        System.out.println(filename); 
-                        readMapping(filename);
-                    } catch (IOException ex) {
-                        throw new IllegalActionException(this, ex,
-                                "Failed to open mapping file \"" + filename
-                                        + "\".");
-                    }
-                    if (_debugging) {
-                        _debug(_mappingConstraintSolver.toString());
+                File file = mappingFileName.asFile();
+                if (file != null) {
+                    String filename = file.getAbsolutePath();
+                    if (!filename.equals("")) {
+                        try {
+                            System.out.println(filename); 
+                            readMapping(filename);
+                        } catch (IOException ex) {
+                            throw new IllegalActionException(this, ex,
+                                    "Failed to open mapping file \"" + filename
+                                    + "\".");
+                        }
+                        if (_debugging) {
+                            _debug(_mappingConstraintSolver.toString());
+                        }
                     }
                 }
             }
