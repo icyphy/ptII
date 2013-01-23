@@ -234,8 +234,9 @@ public class RecordAssembler extends TypedAtomicActor {
         for (TypedIOPort input : _inputs) {
             // only include ports that have no type declared
             if (input.getTypeTerm().isSettable()) {
-                result.add(new Inequality(new ExtractFieldType(output, input
-                        .getName()), input.getTypeTerm()));
+                result.add(new Inequality(new ExtractFieldType(output,
+                        StringUtilities.sanitizeName(input
+                        .getName())), input.getTypeTerm()));
             }
         }
 

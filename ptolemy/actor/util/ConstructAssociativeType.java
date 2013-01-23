@@ -38,6 +38,7 @@ import ptolemy.data.type.MonotonicFunction;
 import ptolemy.data.type.Type;
 import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.util.StringUtilities;
 
 /** A function that, given a list of ports, returns a <code>StructuredType</code>
  *  of which the fields names and field types correspond with the given ports.
@@ -95,7 +96,7 @@ public class ConstructAssociativeType extends MonotonicFunction {
         int i = 0;
         for (TypedIOPort port : _ports) {
             InequalityTerm portTypeTerm = port.getTypeTerm();
-            labels[i] = port.getName();
+            labels[i] = StringUtilities.sanitizeName(port.getName());
             if (portTypeTerm.isSettable()) {
                 types[i] = (Type) portTypeTerm.getValue();
             } else {
