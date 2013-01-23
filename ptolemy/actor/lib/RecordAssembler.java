@@ -28,7 +28,6 @@
 package ptolemy.actor.lib;
 
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
@@ -45,6 +44,7 @@ import ptolemy.graph.Inequality;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Workspace;
 import ptolemy.util.StringUtilities;
 
 ///////////////////////////////////////////////////////////////////
@@ -113,7 +113,9 @@ public class RecordAssembler extends TypedAtomicActor {
         super(container, name);
 
         output = new TypedIOPort(this, "output", false, true);
-
+        
+        _inputs = new LinkedList<TypedIOPort>();
+        
         _attachText("_iconDescription", "<svg>\n"
                 + "<rect x=\"0\" y=\"0\" width=\"6\" "
                 + "height=\"40\" style=\"fill:red\"/>\n" + "</svg>\n");
@@ -128,6 +130,20 @@ public class RecordAssembler extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Clone the actor into the specified workspace.
+     *  @param workspace The workspace for the new object.
+     *  @return A new actor.
+     *  @exception CloneNotSupportedException If a derived class contains
+     *   an attribute that cannot be cloned.
+     */
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        RecordAssembler newObject = (RecordAssembler) super.clone(workspace);
+
+        newObject._inputs = new LinkedList<TypedIOPort>();
+
+        return newObject;
+    }
+    
     /** Read one token from each input port, assemble them into a RecordToken,
      *  and send the RecordToken to the output.
      *  @exception IllegalActionException If there is no director.
@@ -158,13 +174,13 @@ public class RecordAssembler extends TypedAtomicActor {
      */
     @Override
     public void preinitialize() throws IllegalActionException {
-        super.preinitialize();
         _inputs = new LinkedList<TypedIOPort>();
         for (TypedIOPort port : inputPortList()) {
             if (port.numberOfSources() > 0) {
                 _inputs.add(port);
             }
         }
+        super.preinitialize();
     }
 
     /** Return true if all connected input ports have tokens, false if some 
