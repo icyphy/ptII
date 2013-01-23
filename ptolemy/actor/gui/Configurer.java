@@ -37,6 +37,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
+import javax.swing.BoxLayout;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
@@ -89,8 +90,8 @@ public class Configurer extends JPanel implements CloseListener {
      *  @param object The object to configure.
      */
     public Configurer(final NamedObj object) {
-        //setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-        setLayout(new BorderLayout());
+        setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+        //setLayout(new BorderLayout());
         _object = object;
 
         // Record the original values so a restore can happen later.
@@ -129,7 +130,7 @@ public class Configurer extends JPanel implements CloseListener {
             // and likely lead to deadlock.  Hence, instead, we use
             // the static method of EditorPaneFactory.
             Component pane = EditorPaneFactory.createEditorPane(object);
-            add(pane, BorderLayout.CENTER);
+            add(pane);//, BorderLayout.CENTER);
 
             // Inherit the background color from the container.
             pane.setBackground(null);
