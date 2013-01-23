@@ -148,27 +148,21 @@ public class RecordToken extends AbstractNotConvertibleToken {
      *  keys or values, or if it contains non-String keys or non-Token
      *  values.
      */
-    public RecordToken(Map fieldMap) throws IllegalActionException {
+    public RecordToken(Map<String, Token> fieldMap) throws IllegalActionException {
         _initializeStorage();
-        Iterator fields = fieldMap.entrySet().iterator();
-        while (fields.hasNext()) {
-            Map.Entry entry = (Map.Entry) fields.next();
-            if (entry.getKey() == null || entry.getValue() == null) {
+        
+        // iterate through map and put values under sanitized key in local map 
+        for (Map.Entry<String, Token> entry : fieldMap.entrySet()) {
+            String key = entry.getKey();
+            Token val = entry.getValue();
+            
+            if (key == null || val == null) {
                 throw new IllegalActionException("RecordToken: given "
                         + "map contains either null keys " + "or null values.");
             }
-            if (!(entry.getKey() instanceof String)) {
-                throw new IllegalActionException("RecordToken: map contains " +
-                    "non-String key => " + entry.getKey() + " is a " +
-                    entry.getKey().getClass().getName());
-            }
-            if (!(entry.getValue() instanceof Token)) {
-                throw new IllegalActionException("RecordToken: map contains " +
-                    "non-token value => " + entry.getValue() + " is a " +
-                    entry.getValue().getClass().getName());
-            }
+            
+            _fields.put(StringUtilities.sanitizeName(key), val);
         }
-        _fields.putAll(fieldMap);
     }
 
     ///////////////////////////////////////////////////////////////////
