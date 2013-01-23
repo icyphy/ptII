@@ -1,6 +1,6 @@
 /* An actor that assembles multiple inputs to a RecordToken.
 
- Copyright (c) 1998-2012 The Regents of the University of California.
+ Copyright (c) 1998-2013 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -168,7 +168,6 @@ public class RecordAssembler extends TypedAtomicActor {
 
         output.send(0, result);
     }
-
     
     /** Generate a list of all connected input ports. 
      */
@@ -260,8 +259,6 @@ public class RecordAssembler extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                      private variables                    ////
  
-    /** The connected input ports */
-    public List<TypedIOPort> _inputs;
-
-
+    /** The connected input ports. */
+    private List<TypedIOPort> _inputs;
 }
