@@ -27,10 +27,14 @@
  */
 package ptolemy.domains.sdf.lib;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import ptolemy.data.ArrayToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.ArrayType;
+import ptolemy.graph.Inequality;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
@@ -176,6 +180,20 @@ public class SampleDelay extends SDFTransformer {
         _outputsArray = (ArrayToken) contents;
 
         getDirector().invalidateResolvedTypes();
+    }
+
+    /** Sets up backward type constraint that sets output <= input 
+     *  if backward type inference is enabled.
+     *  @return A set of Inequalities.
+     */
+    @Override
+    protected Set<Inequality> _customTypeConstraints() {
+        Set<Inequality> result = new HashSet<Inequality>();
+        if (isBackwardTypeInferenceEnabled()) {
+            result.add(new Inequality(output
+                    .getTypeTerm(), input.getTypeTerm()));
+        }
+        return result;
     }
 
     ///////////////////////////////////////////////////////////////////
