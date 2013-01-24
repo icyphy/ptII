@@ -124,8 +124,10 @@ public class ArrayElement extends Transformer {
     @Override
     protected Set<Inequality> _customTypeConstraints() {
         Set<Inequality> result = new HashSet<Inequality>();
-        result.add(new Inequality(new ArrayTypeFunction(output), input
-                .getTypeTerm()));
+        if (isBackwardTypeInferenceEnabled()) {
+            result.add(new Inequality(new ArrayTypeFunction(output), input
+                    .getTypeTerm()));
+        }
         return result;
     }
 
