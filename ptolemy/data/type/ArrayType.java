@@ -572,12 +572,14 @@ public class ArrayType extends StructuredType implements Cloneable,
             if (retval == ptolemy.graph.CPO.HIGHER) {
                 retval = ptolemy.graph.CPO.INCOMPARABLE;
             } else if (retval == ptolemy.graph.CPO.SAME) {
+             // same element type but arrayArgType has no length [a, n] <= [a]
                 retval = ptolemy.graph.CPO.LOWER;
             }
         } else if (arrayArgType.hasKnownLength()) {
             if (retval == ptolemy.graph.CPO.LOWER) {
                 retval = ptolemy.graph.CPO.INCOMPARABLE;
             } else if (retval == ptolemy.graph.CPO.SAME) {
+                // same element type but this type has no length [a] >= [a, n]
                 retval = ptolemy.graph.CPO.HIGHER;
             }
         }
