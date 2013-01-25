@@ -203,8 +203,13 @@ public class RecordType extends AssociativeType implements Cloneable {
 
         // The converted token has the same set of labels as the argument
         // token, in order to ensure that conversion is lossless.
-        //Object[] labelArray = recordToken.labelSet().toArray();
-        Object[] labelArray = labelSet().toArray(); 
+        Object[] labelArray = recordToken.labelSet().toArray();
+        // The following line would discard undeclared fields, perhaps we 
+        // should not remove them but put them separate. The fields would
+        // then remain accessible, but not only using some method that allows
+        // unsafe access to elements that are not part of the type description.
+        // This would make the type consistent with the record instance.
+        //Object[] labelArray = labelSet().toArray();
         
         // Arrays that will be used to create the new token.
         String[] labelStringArray = new String[labelArray.length];
