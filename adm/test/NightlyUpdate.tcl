@@ -99,7 +99,7 @@ cd $gendir
 puts "This test (NightlyUpdate.tcl) should be run after NightlyTest.tcl"
 
 test nightly-1.7 {update_andrews} {
-    set matches [nightlyMake update_andrews]
+    set matches [nightlyMake update_moog]
 
     # Check that the files are there.
     set results {}
