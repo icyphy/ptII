@@ -127,6 +127,16 @@ public class OpenModelicaDirector extends ContinuousDirector {
         }
     }
 
+    /** Always return false, meaning that this director fires 
+     *  once.   
+     *  @return True to continue execution, and false otherwise.
+     *  @exception IllegalActionException Not thrown in this base class.
+        */
+    public boolean postfire() throws IllegalActionException {
+        System.err.println("OpenModelicaDirector: postfire() always returns false!!");
+        return false;
+    }
+
     /** Invoke the wrapup() of the super class. 
      *  Leave and quit OpenModelica environment.
      *  OMCProxy and OMCLogger objects are reset.

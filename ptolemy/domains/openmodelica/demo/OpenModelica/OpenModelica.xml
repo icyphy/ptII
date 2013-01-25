@@ -92,6 +92,8 @@
         </property>
     </entity>
     <entity name="RunCompositeActor" class="ptolemy.actor.lib.hoc.RunCompositeActor">
+        <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[255.0, 190.0]">
         </property>
         <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
