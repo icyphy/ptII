@@ -2,7 +2,7 @@
 
  Below is the copyright agreement for the Ptolemy II system.
 
- Copyright (c) 2012 The Regents of the University of California
+ Copyright (c) 2012-2013 The Regents of the University of California
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -46,6 +46,7 @@ import ptolemy.data.type.BaseType;
 import ptolemy.domains.openmodelica.kernel.OpenModelicaDirector;
 import ptolemy.domains.openmodelica.lib.compiler.CompilerResult;
 import ptolemy.domains.openmodelica.lib.compiler.ConnectException;
+import ptolemy.domains.openmodelica.lib.omc.OMCLogger;
 import ptolemy.domains.openmodelica.lib.omc.OMCProxy;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
@@ -258,7 +259,7 @@ public class OpenModelica extends TypedAtomicActor {
             // Plot the plt file by calling PxgraphApplication.main(dcmotor_res.plt)
             _plot();
         } catch (Throwable throwable) {
-            throw new IllegalActionException(this,throwable,"Unable to simulate the model!");
+            throw new IllegalActionException(this, throwable, "Unable to simulate the model!");
         }
     }
 
@@ -332,9 +333,10 @@ public class OpenModelica extends TypedAtomicActor {
        @exception IOException If the executable result of buildModel()
        couldn't be executed.
      */
-    private void _simulate() throws ConnectException, IOException {
+    private void _simulate() throws ConnectException, IOException, IllegalActionException {
+        OMCLogger logger = OpenModelicaDirector.getOMCLogger();
 
-        // commands which are sent to the buildModel("command").
+        // Commands which are sent to the buildModel("command").
         String commands = null;
 
         // Set file parameter to the path of the testmodel(dcmotor.mo).
@@ -347,9 +349,14 @@ public class OpenModelica extends TypedAtomicActor {
                 + fileName.getExpression();
 
         File file = new File(testFilePath);
-
         if (file.exists()) {
-            OpenModelicaDirector.getOMCLogger().getInfo(
+            if (logger == null) {
+                throw new IllegalActionException(this,
+                        "The OpenModelica actor only works within "
+                        + "a OpenModelicaDirector because "
+                        + "the actor requires a OMCLogger.");
+            }
+            logger.getInfo(
                     "Using model at '" + testFilePath + "'");
 
             // Load the model from the file parameter.
@@ -358,12 +365,12 @@ public class OpenModelica extends TypedAtomicActor {
             // Check if an error exists in the result of loadFile("command").
             if (_result.getFirstResult().compareTo("") != 0
                     && _result.getError().compareTo("") == 0)
-                OpenModelicaDirector.getOMCLogger().getInfo(
+                logger.getInfo(
                         "Model is loaded from " + fileName.getExpression()
                                 + " successfully.");
 
             if (_result.getError().compareTo("") != 0) {
-                OpenModelicaDirector.getOMCLogger().getInfo(
+                logger.getInfo(
                         "There is an error in loading the model!");
                 throw new ConnectException(
                         "There is an error in loading the model!");
@@ -378,11 +385,11 @@ public class OpenModelica extends TypedAtomicActor {
 
             // Check if an error exists in the result of the loadModel("command").
             if (_result.getFirstResult().compareTo("true\n") == 0) {
-                OpenModelicaDirector.getOMCLogger().getInfo(
+                logger.getInfo(
                         "Modelica model is loaded successfully.");
             }
             if (_result.getError().compareTo("") != 0) {
-                OpenModelicaDirector.getOMCLogger().getInfo(
+                logger.getInfo(
                         "There is an error in loading Modelica model!");
                 throw new ConnectException(
                         "There is an error in loading Modelica model!");
@@ -434,12 +441,12 @@ public class OpenModelica extends TypedAtomicActor {
             // Check if an error exists in the result of buildModel("command").
             if (_result.getFirstResult().compareTo("") != 0
                     && _result.getError().compareTo("") == 0) {
-                OpenModelicaDirector.getOMCLogger().getInfo(
+                logger.getInfo(
                         modelName.getExpression()
                                 + " Model is built successfully.");
             }
             if (_result.getError().compareTo("") != 0) {
-                OpenModelicaDirector.getOMCLogger().getInfo(
+                logger.getInfo(
                         "There is an error in building the model.");
                 throw new ConnectException(
                         "There is an error in building the model.");
@@ -473,7 +480,7 @@ public class OpenModelica extends TypedAtomicActor {
             // When users do not select File Name Prefix as the name of executable result file
             // and Model Name is set as the name of executable result file.
             if (fileNamePrefix.getExpression().compareTo("") == 0) {
-                OpenModelicaDirector.getOMCLogger().getInfo(
+                logger.getInfo(
                         modelName.getExpression()
                                 + " is executed successfully.");
                 if (_debugging) {
@@ -493,7 +500,7 @@ public class OpenModelica extends TypedAtomicActor {
 
             // When users select File Name Prefix as the name of executable result file.
             else {
-                OpenModelicaDirector.getOMCLogger().getInfo(
+                logger.getInfo(
                         fileNamePrefix.getExpression()
                                 + " is executed successfully.");
                 //FIXME  I don't know why it is false, I cannot see this message when I listen to actor.          
@@ -512,7 +519,7 @@ public class OpenModelica extends TypedAtomicActor {
                 }
             }
         } else {
-            OpenModelicaDirector.getOMCLogger().getInfo(
+            logger.getInfo(
                     "No file found at: [" + testFilePath
                             + "]. Select the file for simulation!");
             throw new ConnectException("No file found at: [" + testFilePath
