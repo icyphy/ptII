@@ -41,6 +41,7 @@
 
 package ptolemy.domains.openmodelica.lib.omc;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.logging.FileHandler;
 import java.util.logging.Formatter;
@@ -71,21 +72,48 @@ public class OMCLogger {
         String username = System.getenv("USER");
         String temp = System.getProperty("java.io.tmpdir");
 
-        if (username == null)
+        if (username == null) {
             logPath = temp + "/nobody/OpenModelica/";
-        else
+        } else {
             logPath = temp + "/" + username + "/OpenModelica/";
+        }
+        
+        // Create the directory.
+        File logPathFile = new File(logPath);
+        if (logPathFile.exists()) {
+            if (!logPathFile.isDirectory()) {
+                String message =  "\"" + logPath
+                    + "\" is a file, not a directory?"
+                    + "Please delete it.";
+                omcLogger.severe(message);
+                throw new IllegalActionException(message);
+            }
+        } else {
+            if (!logPathFile.mkdirs()) {
+                String message =  "Could not make the \""
+                    + logPath + "\" directory?";
+                omcLogger.severe(message);
+                throw new IllegalActionException(message);
+            }
+        }
 
         // Create  the log file. 
+        String logFileName = logPath + "omcLog.txt";
+
         try {
-            _fileHandler = new FileHandler(logPath + "omcLog.txt");
-        } catch (SecurityException e) {
-            omcLogger.severe("Security error related to the file handler!");
-            throw new IllegalActionException(
-                    "Security error related to the file handler!");
-        } catch (IOException e) {
-            omcLogger.severe("Unable to create file handler!");
-            throw new IllegalActionException("Unable to create file handler!");
+            _fileHandler = new FileHandler(logFileName);
+        } catch (SecurityException ex) {
+            String message =  "Security error related to the file handler,"
+                + " failed to create a FileHandler for \""
+                + logFileName + "\"!";
+            omcLogger.severe(message);
+            throw new IllegalActionException(null, ex, message);
+        } catch (IOException ex) {
+            String message = "Unable to create file handler!"
+                + " failed to create a FileHandler for \""
+                + logFileName + "\".";
+            omcLogger.severe(message);
+            throw new IllegalActionException(null, ex, message);
         }
         // Set format of the log to show date and time first.
         _fileHandler.setFormatter(new Formatter() {
