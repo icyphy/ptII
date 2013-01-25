@@ -53,7 +53,8 @@ PTCLASSALLJARS = \
 JSRCS = \
 	ConstraintSolver.java \
 	MappingConstraintSolver.java \
-	MetroIIActorThread.java \
+	MetroIIActorInterface.java \
+	MetroIIActorWrapper.java \
 	MetroIICompositeActor.java \
 	MetroIIDEDirector.java \
 	MetroIIDirector.java \
@@ -61,8 +62,10 @@ JSRCS = \
 	MetroIIFSMDirector.java \
 	MetroIIModalModel.java \
 	MetroIIPNDirector.java \
+	MetroIIPNQueueReceiver.java \
 	MetroIISRDirector.java \
-	MetroIISystemCDirector.java
+	MetroIISystemCDirector.java \
+	PtolemyActorWrapper.java
 
 OTHER_FILES_TO_BE_JARED =
 
