@@ -70,21 +70,6 @@ public class OpenModelicaDirector extends ContinuousDirector {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                ////
 
-    /** Get the private object of OMCLogger. 
-     *  OMC stands for OpenModelica Compiler.
-     */
-    public static OMCLogger getOMCLogger() {
-        return _omcLogger;
-    }
-
-    /** Get the private object of OMCProxy. 
-     *  OMC stands for OpenModelica Compiler.
-     *  @return the proxy object to the OpenModelica compiler.
-     */
-    public static OMCProxy getOMCProxy() {
-        return _omcProxy;
-    }
-
     /** Invoke the preinitialize() of the super class.  Preinitialize
      *  the OpenModelica actor and initialize the OpenModelica
      *  Compiler(OMC).
@@ -94,15 +79,10 @@ public class OpenModelicaDirector extends ContinuousDirector {
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
         try {
-
-            _omcLogger = new OMCLogger();
-            _omcProxy = new OMCProxy();
-
-            //FIXME I'm not sure if it is the right place for creating user folder
-            //Christopher please let me know your idea about the right place 
+            
             String omcResultFilePath = null;
             String temp = System.getProperty("java.io.tmpdir");
-            String username = System.getenv("USER");
+            String username = System.getenv("USERNAME");
 
             if (username == null)
                 omcResultFilePath = temp + "/nobody/OpenModelica/";
@@ -120,7 +100,7 @@ public class OpenModelicaDirector extends ContinuousDirector {
                 _debug("OpenModelica server is intialized.");
             }
             _omcProxy.initServer();
-            
+
         } catch (ConnectException ex) {
             throw new IllegalActionException(this, ex,
                     "Unable to start the OpenModelica server!");
@@ -133,7 +113,8 @@ public class OpenModelicaDirector extends ContinuousDirector {
      *  @exception IllegalActionException Not thrown in this base class.
         */
     public boolean postfire() throws IllegalActionException {
-        System.err.println("OpenModelicaDirector: postfire() always returns false!!");
+        System.err
+                .println("OpenModelicaDirector: postfire() always returns false!!");
         return false;
     }
 
@@ -153,23 +134,18 @@ public class OpenModelicaDirector extends ContinuousDirector {
             _omcProxy = null;
             _omcLogger = null;
         } catch (ConnectException ex) {
-            _omcLogger
-                    .getInfo("OpenModelica Server quited!");
-            throw new IllegalActionException(
-                    "OpenModelica Server quited!");
+            String loggerInfo = "OpenModelica Server quited!";
+            _omcLogger.getInfo(loggerInfo);
+            throw new IllegalActionException(loggerInfo);
         }
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variable                  ////
 
-    /** The OpenModelica Compiler(OMC) log file in the temporary
-     * folder.
-     */
-    private static OMCLogger _omcLogger;
+    // An instance of OMCLogger in order to provide a unique source of OMCLogger instance.
+    private OMCLogger _omcLogger = OMCLogger.getInstance();
 
-    /** Used for initializing and stopping OpenModelica
-     * Compiler(OMC) server.
-     */
-    private static OMCProxy _omcProxy;
+    // An instance of OMCProxy in order to provide a unique source of OMCProxy instance.
+    private OMCProxy _omcProxy = OMCProxy.getInstance();
 }

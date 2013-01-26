@@ -33,9 +33,9 @@ package ptolemy.domains.openmodelica.lib;
 
 import java.io.File;
 import java.io.IOException;
-
 import ptolemy.actor.Director;
 import ptolemy.actor.TypedAtomicActor;
+import ptolemy.actor.TypedIOPort;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.expr.FileParameter;
@@ -43,7 +43,6 @@ import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.data.expr.Variable;
 import ptolemy.data.type.BaseType;
-import ptolemy.domains.openmodelica.kernel.OpenModelicaDirector;
 import ptolemy.domains.openmodelica.lib.compiler.CompilerResult;
 import ptolemy.domains.openmodelica.lib.compiler.ConnectException;
 import ptolemy.domains.openmodelica.lib.omc.OMCLogger;
@@ -82,6 +81,8 @@ public class OpenModelica extends TypedAtomicActor {
     public OpenModelica(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
+
+        output = new TypedIOPort(this, "input", false, true);
 
         modelicaScript = new StringParameter(this, "modelicaScript");
         modelicaScript.setDisplayName("Write OpenModelica Command");
@@ -180,6 +181,10 @@ public class OpenModelica extends TypedAtomicActor {
      */
     public Parameter numberOfIntervals;
 
+    /** The input port for TODO
+     */
+    public TypedIOPort output;
+
     /** Format for the result file.  
      *  The default value of this parameter is the string "mat".
      */
@@ -259,7 +264,8 @@ public class OpenModelica extends TypedAtomicActor {
             // Plot the plt file by calling PxgraphApplication.main(dcmotor_res.plt)
             _plot();
         } catch (Throwable throwable) {
-            throw new IllegalActionException(this, throwable, "Unable to simulate the model!");
+            throw new IllegalActionException(this, throwable,
+                    "Unable to simulate the model!");
         }
     }
 
@@ -298,8 +304,7 @@ public class OpenModelica extends TypedAtomicActor {
         case plt:
 
             //Send cd() command to the OpenModelica Compiler(OMC) and fetch working directory of OMC as a result.
-            CompilerResult omcInvokingResult = OpenModelicaDirector
-                    .getOMCProxy().sendCommand("cd()");
+            CompilerResult omcInvokingResult = _omcProxy.sendCommand("cd()");
             _openModelicaWorkingDirectory = omcInvokingResult.getFirstResult();
             _openModelicaWorkingDirectory = _openModelicaWorkingDirectory
                     .replace('"', ' ').trim();
@@ -315,11 +320,12 @@ public class OpenModelica extends TypedAtomicActor {
 
             PxgraphApplication.main(_pltPath);
             break;
-        //TODO
+
         /*  case csv:
-             break;
-            case mat:
-             break;*/
+              break;
+          case mat:
+              break;*/
+
         default:
             break;
         }
@@ -333,8 +339,8 @@ public class OpenModelica extends TypedAtomicActor {
        @exception IOException If the executable result of buildModel()
        couldn't be executed.
      */
-    private void _simulate() throws ConnectException, IOException, IllegalActionException {
-        OMCLogger logger = OpenModelicaDirector.getOMCLogger();
+    private void _simulate() throws ConnectException, IOException,
+            IllegalActionException {
 
         // Commands which are sent to the buildModel("command").
         String commands = null;
@@ -350,49 +356,47 @@ public class OpenModelica extends TypedAtomicActor {
 
         File file = new File(testFilePath);
         if (file.exists()) {
-            if (logger == null) {
+            if (_omcLogger == null) {
                 throw new IllegalActionException(this,
                         "The OpenModelica actor only works within "
-                        + "a OpenModelicaDirector because "
-                        + "the actor requires a OMCLogger.");
+                                + "a OpenModelicaDirector because "
+                                + "the actor requires a OMCLogger.");
             }
-            logger.getInfo(
-                    "Using model at '" + testFilePath + "'");
+            String loggerInfo = "Using model at '" + testFilePath + "'";
+            _omcLogger.getInfo(loggerInfo);
 
             // Load the model from the file parameter.
-            _result = OpenModelicaDirector.getOMCProxy().loadFile(testFilePath);
+            _result = _omcProxy.loadFile(testFilePath);
 
             // Check if an error exists in the result of loadFile("command").
             if (_result.getFirstResult().compareTo("") != 0
-                    && _result.getError().compareTo("") == 0)
-                logger.getInfo(
-                        "Model is loaded from " + fileName.getExpression()
-                                + " successfully.");
+                    && _result.getError().compareTo("") == 0) {
+                loggerInfo = "Model is loaded from " + fileName.getExpression()
+                        + " successfully.";
+                _omcLogger.getInfo(loggerInfo);
+            }
 
             if (_result.getError().compareTo("") != 0) {
-                logger.getInfo(
-                        "There is an error in loading the model!");
-                throw new ConnectException(
-                        "There is an error in loading the model!");
+                loggerInfo = "There is an error in loading the model!";
+                _omcLogger.getInfo(loggerInfo);
+                throw new ConnectException(loggerInfo);
             }
 
             // The loadModel("command") loads the file corresponding to the class.
             if (modelicaScript.getExpression().compareTo("") == 0)
                 modelicaScript.setExpression("loadModel(Modelica)");
 
-            _result = OpenModelicaDirector.getOMCProxy().sendCommand(
-                    modelicaScript.getExpression());
+            _result = _omcProxy.sendCommand(modelicaScript.getExpression());
 
             // Check if an error exists in the result of the loadModel("command").
             if (_result.getFirstResult().compareTo("true\n") == 0) {
-                logger.getInfo(
-                        "Modelica model is loaded successfully.");
+                loggerInfo = "Modelica model is loaded successfully.";
+                _omcLogger.getInfo(loggerInfo);
             }
             if (_result.getError().compareTo("") != 0) {
-                logger.getInfo(
-                        "There is an error in loading Modelica model!");
-                throw new ConnectException(
-                        "There is an error in loading Modelica model!");
+                loggerInfo = "There is an error in loading Modelica model!";
+                _omcLogger.getInfo(loggerInfo);
+                throw new ConnectException(loggerInfo);
             }
 
             // Set command of buildModel() with Model Name as the name of executable result file.
@@ -436,20 +440,19 @@ public class OpenModelica extends TypedAtomicActor {
                         + simflags.getExpression() + "\"";
             }
 
-            _result = OpenModelicaDirector.getOMCProxy().buildModel(commands);
+            _result = _omcProxy.buildModel(commands);
 
             // Check if an error exists in the result of buildModel("command").
             if (_result.getFirstResult().compareTo("") != 0
                     && _result.getError().compareTo("") == 0) {
-                logger.getInfo(
-                        modelName.getExpression()
-                                + " Model is built successfully.");
+                loggerInfo = modelName.getExpression()
+                        + " Model is built successfully.";
+                _omcLogger.getInfo(loggerInfo);
             }
             if (_result.getError().compareTo("") != 0) {
-                logger.getInfo(
-                        "There is an error in building the model.");
-                throw new ConnectException(
-                        "There is an error in building the model.");
+                loggerInfo = "There is an error in building the model.";
+                _omcLogger.getInfo(loggerInfo);
+                throw new ConnectException(loggerInfo);
             }
 
             String command = null;
@@ -480,11 +483,11 @@ public class OpenModelica extends TypedAtomicActor {
             // When users do not select File Name Prefix as the name of executable result file
             // and Model Name is set as the name of executable result file.
             if (fileNamePrefix.getExpression().compareTo("") == 0) {
-                logger.getInfo(
-                        modelName.getExpression()
-                                + " is executed successfully.");
+                loggerInfo = modelName.getExpression()
+                        + " is executed successfully.";
+                _omcLogger.getInfo(loggerInfo);
                 if (_debugging) {
-                    if (System.getenv("USER") == null)
+                    if (System.getenv("USERNAME") == null)
                         _debug("Simulation of " + fileNamePrefix
                                 + " is done.\n"
                                 + "The result file is located in "
@@ -494,18 +497,17 @@ public class OpenModelica extends TypedAtomicActor {
                                 + " is done.\n"
                                 + "The result file is located in "
                                 + OMCProxy.workDir + "/"
-                                + System.getenv("USER") + "/OpenModelica/");
+                                + System.getenv("USERNAME") + "/OpenModelica/");
                 }
             }
 
             // When users select File Name Prefix as the name of executable result file.
             else {
-                logger.getInfo(
-                        fileNamePrefix.getExpression()
-                                + " is executed successfully.");
-                //FIXME  I don't know why it is false, I cannot see this message when I listen to actor.          
+                loggerInfo = fileNamePrefix.getExpression()
+                        + " is executed successfully.";
+                _omcLogger.getInfo(loggerInfo);
                 if (_debugging) {
-                    if (System.getenv("USER") == null)
+                    if (System.getenv("USERNAME") == null)
                         _debug("Simulation of " + fileNamePrefix
                                 + " is done.\n"
                                 + "The result file is located in "
@@ -515,13 +517,13 @@ public class OpenModelica extends TypedAtomicActor {
                                 + " is done.\n"
                                 + "The result file is located in "
                                 + OMCProxy.workDir + "/"
-                                + System.getenv("USER") + "/OpenModelica/");
+                                + System.getenv("USERNAME") + "/OpenModelica/");
                 }
             }
         } else {
-            logger.getInfo(
-                    "No file found at: [" + testFilePath
-                            + "]. Select the file for simulation!");
+            String loggerInfo = "No file found at: [" + testFilePath
+                    + "]. Select the file for simulation!";
+            _omcLogger.getInfo(loggerInfo);
             throw new ConnectException("No file found at: [" + testFilePath
                     + "]. Select the file for simulation!");
         }
@@ -537,6 +539,12 @@ public class OpenModelica extends TypedAtomicActor {
     // FIXME: is this used?  If not, then remove it.  If it is, document it.
     // It is used in clone(). But I don't know What I should write here.
     private Variable _iteration;
+
+    // An instance of OMCLogger in order to provide a unique source of OMCLogger instance.
+    private OMCLogger _omcLogger = OMCLogger.getInstance();
+
+    // An instance of OMCProxy in order to provide a unique source of OMCProxy instance.
+    private OMCProxy _omcProxy = OMCProxy.getInstance();
 
     // The return result from invoking sendExpression("cd()") to OpenModelica Compiler(OMC).
     // The return result is the working directory of OMC.

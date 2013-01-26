@@ -51,7 +51,7 @@ import java.util.logging.Logger;
 import ptolemy.kernel.util.IllegalActionException;
 
 /**
-   This class saves the log result in the log file in the temporary folder.
+   <p>This class saves the log result in the log file in the temporary folder.</p>
 
    @author Mana Mirzaei
    @version $Id$
@@ -64,12 +64,13 @@ public class OMCLogger {
      *  This constructor has no parameter.
      *  It creates the log file in the temporary folder and sets the format
      *  of the log to show date and time first.
+     *  This private Constructor prevents other class from instantiating.
      * @throws IllegalActionException 
      */
-    public OMCLogger() throws IllegalActionException {
+    private OMCLogger() throws IllegalActionException {
 
         String logPath = null;
-        String username = System.getenv("USER");
+        String username = System.getenv("USERNAME");
         String temp = System.getProperty("java.io.tmpdir");
 
         if (username == null) {
@@ -77,21 +78,21 @@ public class OMCLogger {
         } else {
             logPath = temp + "/" + username + "/OpenModelica/";
         }
-        
+
         // Create the directory.
         File logPathFile = new File(logPath);
         if (logPathFile.exists()) {
             if (!logPathFile.isDirectory()) {
-                String message =  "\"" + logPath
-                    + "\" is a file, not a directory?"
-                    + "Please delete it.";
+                String message = "\"" + logPath
+                        + "\" is a file, not a directory?"
+                        + "Please delete it.";
                 omcLogger.severe(message);
                 throw new IllegalActionException(message);
             }
         } else {
             if (!logPathFile.mkdirs()) {
-                String message =  "Could not make the \""
-                    + logPath + "\" directory?";
+                String message = "Could not make the \"" + logPath
+                        + "\" directory?";
                 omcLogger.severe(message);
                 throw new IllegalActionException(message);
             }
@@ -103,15 +104,15 @@ public class OMCLogger {
         try {
             _fileHandler = new FileHandler(logFileName);
         } catch (SecurityException ex) {
-            String message =  "Security error related to the file handler,"
-                + " failed to create a FileHandler for \""
-                + logFileName + "\"!";
+            String message = "Security error related to the file handler,"
+                    + " failed to create a FileHandler for \"" + logFileName
+                    + "\"!";
             omcLogger.severe(message);
             throw new IllegalActionException(null, ex, message);
         } catch (IOException ex) {
             String message = "Unable to create file handler!"
-                + " failed to create a FileHandler for \""
-                + logFileName + "\".";
+                    + " failed to create a FileHandler for \"" + logFileName
+                    + "\".";
             omcLogger.severe(message);
             throw new IllegalActionException(null, ex, message);
         }
@@ -167,8 +168,29 @@ public class OMCLogger {
         omcLogger.severe(severMessage);
     }
 
+    /**
+     * Create an instance of OMCLogger in order to provide a global point of access to this instance.
+     * It provides a unique source of OMCLogger instance.
+     */
+    public static OMCLogger getInstance() {
+
+        if (_omcLoggerInstance == null) {
+            try {
+                _omcLoggerInstance = new OMCLogger();
+            } catch (IllegalActionException e) {
+               String message = "Unable to get instance of OMCLogger.";
+               _omcLoggerInstance.getSever(message);
+               //FIXME Add exception
+            }
+        }
+        return _omcLoggerInstance;
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     // The handler for writing to OpenModelica Compiler(OMC) log file.
     private FileHandler _fileHandler = null;
+
+    // An instance of OMCLogger in order to provide a unique source of OMCLogger instance.
+    private static OMCLogger _omcLoggerInstance = null;
 }
