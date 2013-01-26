@@ -179,11 +179,13 @@ public class RecordDisassembler extends TypedAtomicActor {
                             if (port != null) {
                                 port.send(0, value);
                             } else {
-                                throw new IllegalActionException(
-                                        this,
-                                        "Could not find port for label \""
+                                if (!_printedWarning) {
+                                    _printedWarning = true;
+                                    System.err.println(getFullName() 
+                                           + ": Could not find port for label \""
                                                 + label
                                                 + "\"  This can occur if the Record field name has spaces or other non Java identifier characters in it");
+                                }
                             }
                         }
                     }
@@ -262,4 +264,7 @@ public class RecordDisassembler extends TypedAtomicActor {
     protected Set<Inequality> _defaultTypeConstraints() {
         return null;
     }
+
+    /** Print a warning once about name problems. */
+    private boolean _printedWarning = false;
 }
