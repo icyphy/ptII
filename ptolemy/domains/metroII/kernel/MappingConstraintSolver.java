@@ -28,6 +28,16 @@
 
 package ptolemy.domains.metroII.kernel;
 
+import java.io.BufferedReader;
+import java.io.DataInputStream;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.Hashtable;
+import java.util.LinkedList;
+
+import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event;
+
 ///////////////////////////////////////////////////////////////////
 //// MappingConstraintSolver
 
@@ -89,6 +99,51 @@ public class MappingConstraintSolver implements ConstraintSolver {
             result.append("\n");
         }
         return result.toString();
+    }
+
+    public void resolve(LinkedList<Event.Builder> metroIIEventList) {
+        // The constraints are resolved in three steps. 
+        // STEP 1: reset the constraint solver. 
+        reset();
+
+        // Step 2: present all the proposed events to the event solver.
+        for (Event.Builder eventBuilder : metroIIEventList) {
+            String eventName = eventBuilder.getName();
+            if (!_eventName2ID.containsKey(eventName)) {
+                _eventName2ID.put(eventName, _nextAvailableID);
+                _nextAvailableID++;
+            }
+            presentMetroIIEvent(_eventName2ID
+                    .get(eventName));
+        }
+
+//        if (_debugging) {
+//            _debug(toString());
+//            _debug("Before mapping resolution: ");
+//            for (Event.Builder eventBuilder : metroIIEventList) {
+//                _debug(_eventName2ID.get(eventBuilder.getName())
+//                        + eventBuilder.getName() + " "
+//                        + eventBuilder.getStatus().toString());
+//            }
+//        }
+
+        // Step 3: update the statuses of all events. 
+        for (Event.Builder eventBuilder : metroIIEventList) {
+            String eventName = eventBuilder.getName();
+            if (isSatisfied(_eventName2ID.get(eventName))) {
+                eventBuilder.setStatus(Event.Status.NOTIFIED);
+            }
+        }
+        
+//      if (_debugging) {
+//      _debug("After mapping resolution: ");
+//      for (Event.Builder eventBuilder : metroIIEventList) {
+//          _debug(_eventName2ID.get(eventBuilder.getName())
+//                  + eventBuilder.getName() + " "
+//                  + eventBuilder.getStatus().toString());
+//      }
+//  }
+        
     }
 
     /** Mark each event on the adjacency matrix of mapping
@@ -160,6 +215,31 @@ public class MappingConstraintSolver implements ConstraintSolver {
         }
     }
 
+    public void readMapping(String filename) throws IOException {
+        FileInputStream stream = new FileInputStream(filename);
+        DataInputStream in = new DataInputStream(stream);
+        BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+        String line;
+        try {
+            while ((line = reader.readLine()) != null) {
+                String[] actorNames = line.split(",");
+                assert actorNames.length == 2;
+                if (!_eventName2ID.containsKey(actorNames[0])) {
+                    _eventName2ID.put(actorNames[0], _nextAvailableID);
+                    _nextAvailableID++;
+                }
+                if (!_eventName2ID.containsKey(actorNames[1])) {
+                    _eventName2ID.put(actorNames[1], _nextAvailableID);
+                    _nextAvailableID++;
+                }
+                add(_eventName2ID.get(actorNames[0]),
+                        _eventName2ID.get(actorNames[1]));
+            }
+        } finally {
+            reader.close();
+        }
+    }
+    
     ///////////////////////////////////////////////////////////////////
     ////                    private fields                         ////
 
@@ -173,4 +253,16 @@ public class MappingConstraintSolver implements ConstraintSolver {
 
     /** The largest event ID.  */
     private int _currentMAXID;
+    
+    /** The next available event ID. If an new event is proposed, the
+     *  _nextAvailableID is assigned to the new event and
+     *  _nextAvailableID is increased by one.
+     */
+    private int _nextAvailableID = 0;
+
+
+    /** The dictionary of event name and ID pair. 
+     * 
+     */
+    private Hashtable<String, Integer> _eventName2ID = new Hashtable<String, Integer>();
 }

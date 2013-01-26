@@ -5,7 +5,7 @@ import ptolemy.actor.Actor;
 import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event.Builder;
 import ptolemy.kernel.util.IllegalActionException;
 
-public class PtolemyActorWrapper implements MetroIIActorInterface {
+public class MetroIIActorIterationWrapper implements MetroIIActorInterface {
 
     /** Construct a Actor-Thread pair.
      * 
@@ -14,7 +14,7 @@ public class PtolemyActorWrapper implements MetroIIActorInterface {
      * @param state The initial thread state
      * @param thread The thread
      */
-    public PtolemyActorWrapper(Actor actor) {
+    public MetroIIActorIterationWrapper(Actor actor) {
         this.actor = actor;
     }
     
@@ -27,7 +27,7 @@ public class PtolemyActorWrapper implements MetroIIActorInterface {
     public Actor actor;
 
     @Override
-    public void resume(LinkedList<Builder> metroIIEventList)
+    public void startOrResume(LinkedList<Builder> metroIIEventList)
             throws IllegalActionException {
         if (actor.prefire()) {
             actor.fire();

@@ -1,4 +1,4 @@
-/* Director for Modified MetroII semantics.
+/* Director for simplified MetroII semantic.
 
  Copyright (c) 2012-2013 The Regents of the University of California.
  All rights reserved.
@@ -28,25 +28,17 @@
 
 package ptolemy.domains.metroII.kernel;
 
-import java.io.BufferedReader;
-import java.io.DataInputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.LinkedList;
 
-import net.jimblackler.Utils.YieldAdapterIterable;
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
 import ptolemy.data.StringToken;
 import ptolemy.data.expr.FileParameter;
-import ptolemy.data.type.BaseType;
 import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event;
-import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event.Builder;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
@@ -135,6 +127,7 @@ public class MetroIIDirector extends Director {
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
         _initializeParameters();
+        initialize();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -178,7 +171,7 @@ public class MetroIIDirector extends Director {
                     if (!filename.equals("")) {
                         try {
                             System.out.println(filename); 
-                            readMapping(filename);
+                            _mappingConstraintSolver.readMapping(filename);
                         } catch (IOException ex) {
                             throw new IllegalActionException(this, ex,
                                     "Failed to open mapping file \"" + filename
@@ -196,6 +189,22 @@ public class MetroIIDirector extends Director {
         }
     }
 
+    public void initialize() {
+        Nameable container = getContainer();
+
+        Iterator<?> actors = ((CompositeActor) container).deepEntityList()
+                .iterator();
+
+        while (actors.hasNext()) {
+            Actor actor = (Actor) actors.next();
+            if (actor instanceof MetroIIEventHandler) {
+                _actorList.add(new MetroIIActorGeneralWrapper(actor));
+            } else {
+                _actorList.add(new MetroIIActorIterationWrapper(actor));
+            }
+        }
+    }
+    
     /**
     * Call the prefire(), fire(), and postfire() methods of each actor
     * in the model. If the actor is a CompositeActor that contains a
@@ -210,76 +219,23 @@ public class MetroIIDirector extends Director {
     */
     public void fire() throws IllegalActionException {
         super.fire();
-        Nameable container = getContainer();
-
-        Iterator<?> actors = ((CompositeActor) container).deepEntityList()
-                .iterator();
-        LinkedList<MetroIIActorInterface> actorThreadList = new LinkedList<MetroIIActorInterface>();
-
-        while (actors.hasNext()) {
-            Actor actor = (Actor) actors.next();
-            if (actor instanceof MetroIIEventHandler) {
-                actorThreadList.add(new MetroIIActorWrapper(actor));
-            } else {
-                actorThreadList.add(new PtolemyActorWrapper(actor));
-            }
-        }
 
         while (!_stopRequested) {
-            LinkedList<Event.Builder> metroIIEventList = new LinkedList<Event.Builder>();
-
+            LinkedList<Event.Builder> globalMetroIIEventList = new LinkedList<Event.Builder>();
+          
             // Phase I: base model execution
-            for (MetroIIActorInterface actor : actorThreadList) {
-                actor.resume(metroIIEventList);
+            for (MetroIIActorInterface actor : _actorList) {
+                LinkedList<Event.Builder> metroIIEventList = new LinkedList<Event.Builder>();
+                actor.startOrResume(metroIIEventList);
+                globalMetroIIEventList.addAll(metroIIEventList);
             }
 
             // Phase II: constraint resolution
-
-            // The constraints are resolved in three steps. 
-            // STEP 1: reset the constraint solver. 
-            _mappingConstraintSolver.reset();
-
-            // Step 2: present all the proposed events to the event solver.
-            for (Event.Builder eventBuilder : metroIIEventList) {
-                String eventName = eventBuilder.getName();
-                if (!_eventName2ID.containsKey(eventName)) {
-                    _eventName2ID.put(eventName, _nextAvailableID);
-                    _nextAvailableID++;
-                }
-                _mappingConstraintSolver.presentMetroIIEvent(_eventName2ID
-                        .get(eventName));
-            }
-
-            if (_debugging) {
-                _debug(_mappingConstraintSolver.toString());
-                _debug("Before mapping resolution: ");
-                for (Event.Builder eventBuilder : metroIIEventList) {
-                    _debug(_eventName2ID.get(eventBuilder.getName())
-                            + eventBuilder.getName() + " "
-                            + eventBuilder.getStatus().toString());
-                }
-            }
-
-            // Step 3: update the statuses of all events. 
-            for (Event.Builder eventBuilder : metroIIEventList) {
-                String eventName = eventBuilder.getName();
-                if (_mappingConstraintSolver.isSatisfied(_eventName2ID
-                        .get(eventName))) {
-                    eventBuilder.setStatus(Event.Status.NOTIFIED);
-                }
-            }
-            if (_debugging) {
-                _debug("After mapping resolution: ");
-                for (Event.Builder eventBuilder : metroIIEventList) {
-                    _debug(_eventName2ID.get(eventBuilder.getName())
-                            + eventBuilder.getName() + " "
-                            + eventBuilder.getStatus().toString());
-                }
-            }
+            _mappingConstraintSolver.resolve(globalMetroIIEventList);
         }
 
         if (_stopRequested) {
-            for (MetroIIActorInterface actor : actorThreadList) {
+            for (MetroIIActorInterface actor : _actorList) {
                 actor.close();
             }
         }
@@ -297,7 +253,6 @@ public class MetroIIDirector extends Director {
         MetroIIDirector newObject = (MetroIIDirector) super.clone(workspace);
         newObject._mappingConstraintSolver = new MappingConstraintSolver(
                 _maxEvent);
-        newObject._eventName2ID = new Hashtable<String, Integer>();
         return newObject;
     }
 
@@ -316,20 +271,9 @@ public class MetroIIDirector extends Director {
     ///////////////////////////////////////////////////////////////////
     ////                    private fields                         ////
 
-    /** The next available event ID. If an new event is proposed, the
-     *  _nextAvailableID is assigned to the new event and
-     *  _nextAvailableID is increased by one.
-     */
-    private int _nextAvailableID = 0;
-
     /** The maximum number of events.
      */
     private final int _maxEvent = 1000;
-
-    /** The dictionary of event name and ID pair. 
-     * 
-     */
-    private Hashtable<String, Integer> _eventName2ID = new Hashtable<String, Integer>();
 
     /** The constraint solver
      *
@@ -337,33 +281,9 @@ public class MetroIIDirector extends Director {
     private MappingConstraintSolver _mappingConstraintSolver = new MappingConstraintSolver(
             _maxEvent);
 
+    private LinkedList<MetroIIActorInterface> _actorList = new LinkedList<MetroIIActorInterface>();
     /**
      * Read constraints from the mapping file.
      * @param filename mapping file
      */
-    private void readMapping(String filename) throws IOException {
-        FileInputStream stream = new FileInputStream(filename);
-        DataInputStream in = new DataInputStream(stream);
-        BufferedReader reader = new BufferedReader(new InputStreamReader(in));
-        String line;
-        try {
-            while ((line = reader.readLine()) != null) {
-                String[] actorNames = line.split(",");
-                assert actorNames.length == 2;
-                if (!_eventName2ID.containsKey(actorNames[0])) {
-                    _eventName2ID.put(actorNames[0], _nextAvailableID);
-                    _nextAvailableID++;
-                }
-                if (!_eventName2ID.containsKey(actorNames[1])) {
-                    _eventName2ID.put(actorNames[1], _nextAvailableID);
-                    _nextAvailableID++;
-                }
-                _mappingConstraintSolver.add(_eventName2ID.get(actorNames[0]),
-                        _eventName2ID.get(actorNames[1]));
-            }
-        } finally {
-            reader.close();
-        }
-    }
-
 }

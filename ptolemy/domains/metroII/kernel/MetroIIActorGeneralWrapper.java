@@ -28,7 +28,6 @@
 
 package ptolemy.domains.metroII.kernel;
 
-import java.util.Iterator;
 import java.util.LinkedList;
 
 import net.jimblackler.Utils.YieldAdapterIterable;
@@ -51,7 +50,7 @@ import ptolemy.kernel.util.IllegalActionException;
  * @Pt.AcceptedRating Red (glp)
  *
  */
-public class MetroIIActorWrapper implements MetroIIActorInterface {
+public class MetroIIActorGeneralWrapper implements MetroIIActorInterface {
 
     /** Status of thread 
      */
@@ -66,14 +65,14 @@ public class MetroIIActorWrapper implements MetroIIActorInterface {
      * @param state The initial thread state
      * @param thread The thread
      */
-    public MetroIIActorWrapper(Actor actor) {
+    public MetroIIActorGeneralWrapper(Actor actor) {
         this.actor = actor;
         this.state = State.WAITING;
         this.eventIterator = null;
     }
 
     public void close() {
-        if (state == MetroIIActorWrapper.State.ACTIVE) {
+        if (state == MetroIIActorGeneralWrapper.State.ACTIVE) {
             eventIterator.dispose();
         }
     }
@@ -94,9 +93,9 @@ public class MetroIIActorWrapper implements MetroIIActorInterface {
     public YieldAdapterIterator<Iterable<Event.Builder>> eventIterator;
 
     @Override
-    public void resume(LinkedList<Builder> metroIIEventList)
+    public void startOrResume(LinkedList<Builder> metroIIEventList)
             throws IllegalActionException {
-        if (state == MetroIIActorWrapper.State.WAITING) {
+        if (state == MetroIIActorGeneralWrapper.State.WAITING) {
             if (actor.prefire()) {
                 // The getfire() of each Metropolis actor is invoked by a separate thread.
                 // Each thread is encapsulated by a YieldAdapterIterable, which is used to iterate
@@ -104,9 +103,9 @@ public class MetroIIActorWrapper implements MetroIIActorInterface {
                 final YieldAdapterIterable<Iterable<Event.Builder>> results = ((MetroIIEventHandler) actor)
                         .adapter();
                 eventIterator = results.iterator();
-                state = MetroIIActorWrapper.State.ACTIVE;
+                state = MetroIIActorGeneralWrapper.State.ACTIVE;
             }
-        } else if (state == MetroIIActorWrapper.State.ACTIVE) {
+        } else if (state == MetroIIActorGeneralWrapper.State.ACTIVE) {
 
             // Every time hasNext() is called, the thread runs until the next event 
             // is proposed. If any event is proposed, hasNext() returns true. 
@@ -121,7 +120,7 @@ public class MetroIIActorWrapper implements MetroIIActorInterface {
                     metroIIEventList.add(eventBuilder);
                 }
             } else {
-                state = MetroIIActorWrapper.State.WAITING;
+                state = MetroIIActorGeneralWrapper.State.WAITING;
                 if (!actor.postfire()) {
                     // FIXME: handle the request that the actor wants to halt
 
