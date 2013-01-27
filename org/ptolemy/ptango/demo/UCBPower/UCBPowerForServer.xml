@@ -11,9 +11,9 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[615.0, 1140.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 0, 1132, 728}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 0, 1165, 728}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[904, 611]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[937, 613]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.7192637598284489">
     </property>
@@ -105,7 +105,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[180.0, 1135.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[180.0, 1110.0]">
         </property>
     </property>
     <property name="uuid_cory" class="ptolemy.data.expr.Parameter" value="&quot;8737f287-14df-5ccd-82df-e66ca7374b63&quot;">
@@ -124,7 +124,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[180.0, 1160.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[180.0, 1135.0]">
         </property>
     </property>
     <property name="dateStart" class="ptolemy.actor.parameters.PortParameter" value="&quot;NaN&quot;">
@@ -149,7 +149,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[205.0, 1265.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[210.0, 1235.0]">
         </property>
     </property>
     <property name="dateEnd" class="ptolemy.actor.parameters.PortParameter" value="&quot;NaN&quot;">
@@ -174,7 +174,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[205.0, 1290.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[210.0, 1260.0]">
         </property>
     </property>
     <property name="displayOption" class="ptolemy.actor.parameters.PortParameter" value="&quot;1&quot;">
@@ -199,26 +199,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[205.0, 1315.0]">
-        </property>
-    </property>
-    <property name="useOnlineData" class="ptolemy.data.expr.Parameter" value="false">
-        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-        </property>
-        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
-            </property>
-        </property>
-        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure>
-      <svg>
-        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
-      </svg>
-    </configure>
-        </property>
-        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[185.0, 1075.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[210.0, 1430.0]">
         </property>
     </property>
     <property name="uuid_birge" class="ptolemy.data.expr.Parameter" value="&quot;8737f287-14df-5ccd-82df-e66ca7374b63&quot;">
@@ -237,19 +218,13 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[180.0, 1185.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[180.0, 1160.0]">
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Default start and end dates for the query, in standard Unix milliseonds.&#10;These default dates correspond to May 16, 2012 and May 17, 2012.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Start and end dates for the query, in standard Unix milliseonds&#10;The offline dates correspond to May 16, 2012 and May 17, 2012&#10;&#10;&#10;Start and end days for the date range annotation at the top of the map&#10;&#10;&#10;&#10;True to use online data; false to use data file in Ptolemy repository&#10;&#10;&#10;In the future, want to add capability to show data in different formats&#10;(e.g. graph, text).  We can use a parameter as input to a Switch so that&#10;the model only fires one of the sink actors.  The value of this parameter&#10;will be input from the web page.  Currently, the web page does not &#10;offer a way to set this (creating an input element is easy, but it &#10;requires some work to generate the correct response page).">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[395.0, 1250.0]">
-        </property>
-    </property>
-    <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="In the future, want to add capability to show data in different formats&#10;(e.g. graph, text).  We can use a parameter as input to a Switch so that&#10;the model only fires one of the sink actors.  The value of this parameter&#10;will be input from the web page.  Currently, the web page does not &#10;offer a way to set this (creating an input element is easy, but it &#10;requires some work to generate the correct response page).">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[395.0, 1300.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[395.0, 1220.0]">
         </property>
     </property>
     <property name="enableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="false">
@@ -257,7 +232,7 @@
     <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="DefaultIconAttribute specifying web content &#10;(here, date pickers, date form, and pop-up box libraries)&#10;to show as part of the generated web page.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 965.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 960.0]">
         </property>
     </property>
     <property name="Annotation5" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -294,7 +269,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[210.0, 1360.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[210.0, 1300.0]">
         </property>
     </property>
     <property name="endDay" class="ptolemy.actor.parameters.PortParameter" value="&quot;&quot;">
@@ -319,7 +294,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[210.0, 1390.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[210.0, 1320.0]">
         </property>
     </property>
     <property name="dateRangeAnnotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -330,36 +305,71 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[970.0, 60.0]">
         </property>
     </property>
+    <property name="useOnlineData" class="ptolemy.actor.parameters.PortParameter" value="false">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+	<polyline points="-15,-15, -3,-5, -16,5" style="stroke:black"></polyline>
+	<polygon points="-22,-1, -22,4, -10,-5, -22,-14, -22,-9, -30,-9, -30, -1" style="fill:lightGray"></polygon>
+      </svg>
+    </configure>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:black" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[210.0, 1370.0]">
+        </property>
+    </property>
+    <property name="Annotation7" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="ID numbers of the building data feeds on the sMAP website">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 1060.0]">
+        </property>
+    </property>
+    <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Set the date range at the top of the map">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[765.0, 1565.0]">
+        </property>
+    </property>
     <port name="dateStart" class="ptolemy.actor.parameters.ParameterPort">
         <property name="input"/>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{185.0, 1260.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{190.0, 1230.0}">
         </property>
     </port>
     <port name="dateEnd" class="ptolemy.actor.parameters.ParameterPort">
         <property name="input"/>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{185.0, 1285.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{190.0, 1255.0}">
         </property>
     </port>
     <port name="displayOption" class="ptolemy.actor.parameters.ParameterPort">
         <property name="input"/>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{185.0, 1310.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{190.0, 1425.0}">
         </property>
     </port>
     <port name="startDay" class="ptolemy.actor.parameters.ParameterPort">
         <property name="input"/>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{190.0, 1355.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{190.0, 1295.0}">
         </property>
     </port>
     <port name="endDay" class="ptolemy.actor.parameters.ParameterPort">
         <property name="input"/>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{190.0, 1385.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{190.0, 1315.0}">
         </property>
     </port>
-    <port name="online" class="ptolemy.actor.TypedIOPort">
+    <port name="useOnlineData" class="ptolemy.actor.parameters.ParameterPort">
         <property name="input"/>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[190.0, 1500.0]">
-        </property>
-        <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{190.0, 1365.0}">
         </property>
     </port>
     <class name="SingleReaderClass" extends="ptolemy.actor.TypedCompositeActor">
@@ -1405,28 +1415,6 @@ icon color.</text></svg></configure>
         </entity>
     </entity>
     <entity name="SetVariable" class="ptolemy.actor.lib.SetVariable">
-        <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="useOnlineData">
-        </property>
-        <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
-        </property>
-        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
-            </property>
-            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
-            </property>
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{375.0, 1500.0}">
-        </property>
-    </entity>
-    <entity name="Display" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
-        </property>
-        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[580.0, 1500.0]">
-        </property>
-    </entity>
-    <entity name="SetVariable2" class="ptolemy.actor.lib.SetVariable">
         <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="dateRangeAnnotation.text">
         </property>
         <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
@@ -1437,7 +1425,7 @@ icon color.</text></svg></configure>
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[650.0, 1455.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{655.0, 1575.0}">
         </property>
     </entity>
     <entity name="Expression" class="ptolemy.actor.lib.Expression">
@@ -1451,19 +1439,11 @@ icon color.</text></svg></configure>
             <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[340.0, 1455.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[345.0, 1575.0]">
         </property>
     </entity>
-    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-    </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <link port="online" relation="relation3"/>
-    <link port="SetVariable.input" relation="relation3"/>
-    <link port="SetVariable.output" relation="relation2"/>
-    <link port="Display.input" relation="relation2"/>
-    <link port="SetVariable2.input" relation="relation"/>
+    <link port="SetVariable.input" relation="relation"/>
     <link port="Expression.output" relation="relation"/>
 </entity>
