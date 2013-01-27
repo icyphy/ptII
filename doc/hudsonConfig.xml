@@ -11,24 +11,35 @@
       </external-property>
     </entry>
     <entry>
+      <string>hudson-plugins-dry-DryPublisher</string>
+      <external-property>
+        <propertyOverridden>false</propertyOverridden>
+        <modified>true</modified>
+      </external-property>
+    </entry>
+    <entry>
       <string>hudson-plugins-cobertura-CoberturaPublisher</string>
       <external-property>
         <originalValue class="hudson.plugins.cobertura.CoberturaPublisher">
           <coberturaReportFile>reports/coveragereport/coverage.xml</coberturaReportFile>
           <onlyStable>false</onlyStable>
+          <failUnhealthy>false</failUnhealthy>
+          <failUnstable>false</failUnstable>
+          <autoUpdateHealth>false</autoUpdateHealth>
+          <autoUpdateStability>false</autoUpdateStability>
           <healthyTarget>
             <targets class="enum-map" enum-type="hudson.plugins.cobertura.targets.CoverageMetric">
               <entry>
                 <hudson.plugins.cobertura.targets.CoverageMetric>CONDITIONAL</hudson.plugins.cobertura.targets.CoverageMetric>
-                <int>70</int>
+                <int>7000000</int>
               </entry>
               <entry>
                 <hudson.plugins.cobertura.targets.CoverageMetric>LINE</hudson.plugins.cobertura.targets.CoverageMetric>
-                <int>80</int>
+                <int>8000000</int>
               </entry>
               <entry>
                 <hudson.plugins.cobertura.targets.CoverageMetric>METHOD</hudson.plugins.cobertura.targets.CoverageMetric>
-                <int>80</int>
+                <int>8000000</int>
               </entry>
             </targets>
           </healthyTarget>
@@ -112,7 +123,7 @@
       <string>hudson-plugins-pmd-PmdPublisher</string>
       <external-property>
         <propertyOverridden>false</propertyOverridden>
-        <modified>false</modified>
+        <modified>true</modified>
       </external-property>
     </entry>
     <entry>
@@ -234,6 +245,13 @@ PTINYOS_MOMLROOT=${WORKSPACE}/vendors/ptinyos/moml</localVarText>
       </external-property>
     </entry>
     <entry>
+      <string>be-certipost-hudson-plugin-SCPRepositoryPublisher</string>
+      <external-property>
+        <propertyOverridden>false</propertyOverridden>
+        <modified>false</modified>
+      </external-property>
+    </entry>
+    <entry>
       <string>hudson-plugins-analysis-collector-AnalysisPublisher</string>
       <external-property>
         <propertyOverridden>false</propertyOverridden>
@@ -257,6 +275,13 @@ PTINYOS_MOMLROOT=${WORKSPACE}/vendors/ptinyos/moml</localVarText>
         <originalValue class="hudson.util.CopyOnWriteList"/>
         <propertyOverridden>false</propertyOverridden>
       </copy-write-list-property>
+    </entry>
+    <entry>
+      <string>hudson-plugins-warnings-WarningsPublisher</string>
+      <external-property>
+        <propertyOverridden>false</propertyOverridden>
+        <modified>true</modified>
+      </external-property>
     </entry>
     <entry>
       <string>customWorkspace</string>
