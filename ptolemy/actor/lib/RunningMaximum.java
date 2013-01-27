@@ -88,34 +88,32 @@ public class RunningMaximum extends Transformer {
         return newObject;
     }
 
-    /** Only set up a forward constraint, do not allow backward
-     *  propagation from output to input.
-     *  @return A set of inequality constraints.
+    /** Eliminate default constraints.
+     *  @return null
      */
     @Override
     protected Set<Inequality> _defaultTypeConstraints() {
-        Set<Inequality> result = new HashSet<Inequality>();
-        result.add(new Inequality(input.getTypeTerm(), output.getTypeTerm()));
-        return result;
+        return null;
     }
 
-    /** Set input <= Scalar. If backward type inference is enabled
-     *  and input has no declared type, also set input >= Scalar.
+    /** Set input <= output, input <= Scalar. If backward type inference is
+     *  enabled and input has no declared type, also set input >= Scalar.
      *  @return A set of inequality constraints.
      */
     @Override
     protected Set<Inequality> _customTypeConstraints() {
         Set<Inequality> result = new HashSet<Inequality>();
+        /* input <= output */
+        result.add(new Inequality(input.getTypeTerm(), output.getTypeTerm()));
+        /* input <= Scalar. */
+        result.add(new Inequality(input.getTypeTerm(), new TypeConstant(
+                BaseType.SCALAR)));
         /* input >= Scalar if backward type inference is enabled */
         if (isBackwardTypeInferenceEnabled()
                 && input.getTypeTerm().isSettable()) {
             result.add(new Inequality(new TypeConstant(BaseType.SCALAR), 
                     input.getTypeTerm()));
         }
-        /* input <= Scalar. */
-        result.add(new Inequality(input.getTypeTerm(), new TypeConstant(
-                BaseType.SCALAR)));
-
         return result;
     }
 
