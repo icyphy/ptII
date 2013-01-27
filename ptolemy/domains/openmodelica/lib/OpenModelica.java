@@ -230,6 +230,8 @@ public class OpenModelica extends TypedAtomicActor {
         try {
             newObject._iteration = (Variable) newObject
                     .getAttribute("iteration");
+            newObject._omcLogger = OMCLogger.getInstance();
+            newObject._omcProxy = OMCProxy.getInstance();
         } catch (Throwable throwable) {
             throw new CloneNotSupportedException("Could not clone "
                     + getFullName() + ": " + throwable);
