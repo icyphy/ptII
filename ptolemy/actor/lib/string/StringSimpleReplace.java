@@ -51,7 +51,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  the first instance that matches.  If there is no match, then the
  output is the string provided by <i>stringToEdit</i>, unchanged.
  The <i>pattern</i> is <b>not</b> a regular expression, to use
- a regular expression, see {@link ptolemy.actor.lib.io.StringReplace}.
+ a regular expression, see {@link ptolemy.actor.lib.string.StringReplace}.
  <p>
  The <i>replacement</i> string, as usual with string-valued parameters
  in Ptolemy II, can include references to parameter values in scope.

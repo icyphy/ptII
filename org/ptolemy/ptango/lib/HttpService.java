@@ -44,7 +44,7 @@ import javax.servlet.http.HttpServlet;
  *  Note that "HttpService" is also the name of an OSGi interface.  If OSGi is
  *  incorporated in Ptolemy in the future, we might want to rename this
  *  interface. See
- *  {@link http://www.osgi.org/javadoc/r4v42/org/osgi/service/http/HttpService.html}.
+ *  <a href="http://www.osgi.org/javadoc/r4v42/org/osgi/service/http/HttpService.html">/home/hudson/jobs/kepler/workspace/ptolemy/src/com/microstar/xml/demo/XmlApp.java</a>.
  *
  *  @see WebServer
  *  @author Elizabeth Latronico and Edward A. Lee
@@ -52,7 +52,7 @@ import javax.servlet.http.HttpServlet;
  *  @since Ptolemy II 9.0
  *  @Pt.ProposedRating Red (ltrnc)
  *  @Pt.AcceptedRating Red (ltrnc)
- *  @see org.ptolemy.ptango.WebServer
+ *  @see org.ptolemy.ptango.lib.WebServer
  */
 
 public interface HttpService {

@@ -103,7 +103,6 @@ public class ThrowModelError extends Sink {
     /** Read one token from each input channel that has a token,
      *  and if any token is true, invoke the model error handler.
      *  @exception IllegalActionException If thrown by the parent class.
-     *  @return Whatever the base class returns (probably true).
      */
     public void fire() throws IllegalActionException {
         super.fire();

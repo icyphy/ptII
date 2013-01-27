@@ -165,7 +165,7 @@ public class XmlApp implements XmlHandler {
     /**
      * Start a parse in application mode.
      * <p>Output will go to STDOUT.
-     * @see #displayText
+     * @see #displayText(String)
      * @see com.microstar.xml.XmlParser#run
      */
     void doParse(String url) throws java.lang.Exception {

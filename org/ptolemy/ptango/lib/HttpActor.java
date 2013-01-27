@@ -101,7 +101,7 @@ import ptolemy.kernel.util.Workspace;
  *  @since Ptolemy II 9.0
  *  @Pt.ProposedRating Red (ltrnc)
  *  @Pt.AcceptedRating Red (ltrnc)
- *  @see org.ptolemy.ptango.WebServer
+ *  @see org.ptolemy.ptango.lib.WebServer
  */
 public class HttpActor extends TypedAtomicActor implements HttpService {
 

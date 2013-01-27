@@ -201,8 +201,7 @@ public class HTMLModelExporter extends VisualModelReference {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** React to a change in an attribute.  This method updates the
-     *  local data structure provided by {@link #getExportParameters()}.
+    /** React to a change in an attribute.
      *  @param attribute The attribute that changed.
      *  @exception IllegalActionException If the change is not acceptable
      *   to this container (not thrown in this base class).

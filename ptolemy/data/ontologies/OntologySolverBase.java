@@ -151,7 +151,7 @@ public abstract class OntologySolverBase extends MoMLModelAttribute {
 
     /** Traverse the list of constants and remove any ConceptTokens
      * that may have been added by MonotonicyConceptFunction
-     *  @ see ptolemy.data.ontologies.lattice.adapters.monotonicityAnalysis.MonotonicityConceptFunction
+     *  @see ptolemy.data.ontologies.lattice.adapters.monotonicityAnalysis.MonotonicityConceptFunction
      */
     public static void cleanConstants() {
         RecordToken constants = Constants.constants();

@@ -347,9 +347,9 @@ public class WebServer extends AbstractInitializableAttribute {
      *
      *  References:
      *  <ul>
-     *  <li> {@link http://wiki.eclipse.org/Jetty/Tutorial/Embedding_Jetty}
-     *  <li> {@link http://ptrthomas.wordpress.com/2009/01/24/how-to-start-and-stop-jetty-revisited/}
-     *  <li> {@link http://draconianoverlord.com/2009/01/10/war-less-dev-with-jetty.html}
+     *  <li> <a href="http://wiki.eclipse.org/Jetty/Tutorial/Embedding_Jetty">http://wiki.eclipse.org/Jetty/Tutorial/Embedding_Jetty</a></li>
+     *  <li> <a href="http://wiki.eclipse.org/Jetty/Tutorial/Embedding_Jetty">http://wiki.eclipse.org/Jetty/Tutorial/Embedding_Jetty</a></li>
+     *  <li> <a href="http://draconianoverlord.com/2009/01/10/war-less-dev-with-jetty.html">http://draconianoverlord.com/2009/01/10/war-less-dev-with-jetty.html</a></li>
      *  </ul>
      *  @exception IllegalActionException Not thrown in this base class.
      */
