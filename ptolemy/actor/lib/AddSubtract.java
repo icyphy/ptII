@@ -205,7 +205,7 @@ public class AddSubtract extends TypedAtomicActor {
     @Override
     protected Set<Inequality> _customTypeConstraints() {
         Set<Inequality> result = new HashSet<Inequality>();
-        result.add(new Inequality(output.getTypeTerm(), plus.getTypeTerm()));
+        //result.add(new Inequality(output.getTypeTerm(), plus.getTypeTerm()));
         return result;
     }
    

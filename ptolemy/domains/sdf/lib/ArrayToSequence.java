@@ -213,8 +213,6 @@ public class ArrayToSequence extends SDFTransformer {
         Set<Inequality> result = new HashSet<Inequality>();
 
         if (isBackwardTypeInferenceEnabled()) {
-            boolean enforceLength = false;
-            int length = 1;
             try {
                 // constrain the input to be an array of a type greater
                 // than or equal to the type of the output (for backward
@@ -234,7 +232,6 @@ public class ArrayToSequence extends SDFTransformer {
                 e.printStackTrace();
             }
         }
-
         return result;
     }
 

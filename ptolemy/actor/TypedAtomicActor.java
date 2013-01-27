@@ -293,10 +293,9 @@ public class TypedAtomicActor extends AtomicActor<TypedIOPort> implements
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    /**
-     * Collect all type constraints from contained Typeables (ports,
-     * variables, and parameters).
-     * @return A set of type constraints
+    /** Collect all type constraints from contained Typeables (ports,
+     *  variables, and parameters).
+     *  @return A set of type constraints
      */
     protected Set<Inequality> _containedTypeConstraints() {
         Set<Inequality> result = new HashSet<Inequality>();
@@ -313,13 +312,17 @@ public class TypedAtomicActor extends AtomicActor<TypedIOPort> implements
         return result;
     }
 
-    /**
-     * Return the default type constraints which require undeclared inputs to be
-     * of type greater than or equal to the type of every output port.
+    /** Return the default type constraints. These constraints involve only 
+     *  undeclared ports and require outputs to be greater than or equal to
+     *  inputs. 
+     * 
+     *  In addition, if backward type inference is enabled, then also 
+     *  establish constraint that require inputs to be greater than or equal 
+     *  to outputs. With backward type inference, the types of undeclared 
+     *  inputs and outputs are unified.  
      *
-     *
-     * Override this method to eliminate the default type constraints, or to
-     * specify different ones.
+     *  Override this method to eliminate the default type constraints, or to
+     *  specify different ones.
      *
      * @return A set of type constraints
      */
@@ -351,10 +354,9 @@ public class TypedAtomicActor extends AtomicActor<TypedIOPort> implements
         return result;
     }
 
-    /**
-     * Empty stub to be used for setting up custom type constraints for
-     * subclasses of this actor.
-     * @return null
+    /** Empty stub to be used for setting up custom type constraints for
+     *  subclasses of this actor.
+     *  @return null
      */
     protected Set<Inequality> _customTypeConstraints() {
         return null;
@@ -366,8 +368,8 @@ public class TypedAtomicActor extends AtomicActor<TypedIOPort> implements
      *  provided because many actors need it.
      *  @param time The requested time.
      *  @exception IllegalActionException If the director does not
-     *   agree to fire the actor at the specified time, or if there
-     *   is no director.
+     *  agree to fire the actor at the specified time, or if there
+     *  is no director.
      */
     protected void _fireAt(Time time) throws IllegalActionException {
         Director director = getDirector();
