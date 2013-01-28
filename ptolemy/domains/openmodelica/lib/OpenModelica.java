@@ -41,7 +41,6 @@ import ptolemy.data.IntToken;
 import ptolemy.data.expr.FileParameter;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
-import ptolemy.data.expr.Variable;
 import ptolemy.data.type.BaseType;
 import ptolemy.domains.openmodelica.lib.compiler.CompilerResult;
 import ptolemy.domains.openmodelica.lib.compiler.ConnectException;
@@ -228,8 +227,6 @@ public class OpenModelica extends TypedAtomicActor {
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         OpenModelica newObject = (OpenModelica) super.clone(workspace);
         try {
-            newObject._iteration = (Variable) newObject
-                    .getAttribute("iteration");
             newObject._omcLogger = OMCLogger.getInstance();
             newObject._omcProxy = OMCProxy.getInstance();
         } catch (Throwable throwable) {
@@ -537,10 +534,6 @@ public class OpenModelica extends TypedAtomicActor {
     private static enum _fileType {
         csv, mat, plt
     }
-
-    // FIXME: is this used?  If not, then remove it.  If it is, document it.
-    // It is used in clone(). But I don't know What I should write here.
-    private Variable _iteration;
 
     // An instance of OMCLogger in order to provide a unique source of OMCLogger instance.
     private OMCLogger _omcLogger = OMCLogger.getInstance();
