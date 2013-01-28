@@ -35,6 +35,7 @@ import ptolemy.domains.openmodelica.lib.omc.OMCProxy;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Workspace;
 
 /** 
    This director executes OpenModelica actor in its own threads.
@@ -70,6 +71,26 @@ public class OpenModelicaDirector extends ContinuousDirector {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                ////
 
+    /** Clone the object into the specified workspace. The new object is
+     *  <i>not</i> added to the directory of that workspace (you must do this
+     *  yourself if you want it there).
+     *  @param workspace The workspace for the cloned object.
+     *  @exception CloneNotSupportedException Not thrown in this base class
+     *  @return The new Attribute.
+     */
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        OpenModelicaDirector newObject = (OpenModelicaDirector) super.clone(workspace);
+        try {
+            newObject._omcLogger = OMCLogger.getInstance();
+            newObject._omcProxy = OMCProxy.getInstance();
+        } catch (Throwable throwable) {
+            throw new CloneNotSupportedException("Could not clone "
+                    + getFullName() + ": " + throwable);
+        }
+        return newObject;
+    }
+    
+    
     /** Invoke the preinitialize() of the super class.  Preinitialize
      *  the OpenModelica actor and initialize the OpenModelica
      *  Compiler(OMC).
