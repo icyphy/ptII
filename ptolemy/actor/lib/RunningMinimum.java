@@ -28,8 +28,13 @@ of execution.
  */
 package ptolemy.actor.lib;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import ptolemy.data.ScalarToken;
 import ptolemy.data.type.BaseType;
+import ptolemy.data.type.TypeConstant;
+import ptolemy.graph.Inequality;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -63,11 +68,11 @@ public class RunningMinimum extends Transformer {
     public RunningMinimum(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
-
-        input.setTypeAtMost(BaseType.SCALAR);
-        output.setTypeAtLeast(input);
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+    
     /** Clone this actor into the specified workspace. The new actor is
      *  <i>not</i> added to the directory of that workspace (you must do this
      *  yourself if you want it there).
@@ -83,8 +88,6 @@ public class RunningMinimum extends Transformer {
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         RunningMinimum newObject = (RunningMinimum) super.clone(workspace);
-        newObject.input.setTypeAtMost(BaseType.SCALAR);
-        newObject.output.setTypeAtLeast(newObject.input);
         return newObject;
     }
 
@@ -143,6 +146,41 @@ public class RunningMinimum extends Transformer {
         return super.prefire() && input.hasToken(0);
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                      protected methods                    ////    
+    
+    /** Eliminate default constraints.
+     *  @return null
+     */
+    @Override
+    protected Set<Inequality> _defaultTypeConstraints() {
+        return null;
+    }
+
+    /** Set input <= output, input <= Scalar. If backward type inference is
+     *  enabled and input has no declared type, also set input >= Scalar.
+     *  @return A set of inequality constraints.
+     */
+    @Override
+    protected Set<Inequality> _customTypeConstraints() {
+        Set<Inequality> result = new HashSet<Inequality>();
+        /* input <= output */
+        result.add(new Inequality(input.getTypeTerm(), output.getTypeTerm()));
+        /* input <= Scalar. */
+        result.add(new Inequality(input.getTypeTerm(), new TypeConstant(
+                BaseType.SCALAR)));
+        /* input >= Scalar if backward type inference is enabled */
+        if (isBackwardTypeInferenceEnabled()
+                && input.getTypeTerm().isSettable()) {
+            result.add(new Inequality(new TypeConstant(BaseType.SCALAR), 
+                    input.getTypeTerm()));
+        }
+        return result;
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                       private variables                   ////
+    
     // The minimum value observed so far.
     private ScalarToken _minimum;
 

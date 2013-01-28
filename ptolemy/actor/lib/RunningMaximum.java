@@ -70,6 +70,9 @@ public class RunningMaximum extends Transformer {
         super(container, name);
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+    
     /** Clone this actor into the specified workspace. The new actor is
      *  <i>not</i> added to the directory of that workspace (you must do this
      *  yourself if you want it there).
@@ -86,35 +89,6 @@ public class RunningMaximum extends Transformer {
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         RunningMaximum newObject = (RunningMaximum) super.clone(workspace);
         return newObject;
-    }
-
-    /** Eliminate default constraints.
-     *  @return null
-     */
-    @Override
-    protected Set<Inequality> _defaultTypeConstraints() {
-        return null;
-    }
-
-    /** Set input <= output, input <= Scalar. If backward type inference is
-     *  enabled and input has no declared type, also set input >= Scalar.
-     *  @return A set of inequality constraints.
-     */
-    @Override
-    protected Set<Inequality> _customTypeConstraints() {
-        Set<Inequality> result = new HashSet<Inequality>();
-        /* input <= output */
-        result.add(new Inequality(input.getTypeTerm(), output.getTypeTerm()));
-        /* input <= Scalar. */
-        result.add(new Inequality(input.getTypeTerm(), new TypeConstant(
-                BaseType.SCALAR)));
-        /* input >= Scalar if backward type inference is enabled */
-        if (isBackwardTypeInferenceEnabled()
-                && input.getTypeTerm().isSettable()) {
-            result.add(new Inequality(new TypeConstant(BaseType.SCALAR), 
-                    input.getTypeTerm()));
-        }
-        return result;
     }
 
     /** Consume a token at the input port, and produce the greater of that value
@@ -172,6 +146,41 @@ public class RunningMaximum extends Transformer {
         return super.prefire() && input.hasToken(0);
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                      protected methods                    ////    
+    
+    /** Eliminate default constraints.
+     *  @return null
+     */
+    @Override
+    protected Set<Inequality> _defaultTypeConstraints() {
+        return null;
+    }
+
+    /** Set input <= output, input <= Scalar. If backward type inference is
+     *  enabled and input has no declared type, also set input >= Scalar.
+     *  @return A set of inequality constraints.
+     */
+    @Override
+    protected Set<Inequality> _customTypeConstraints() {
+        Set<Inequality> result = new HashSet<Inequality>();
+        /* input <= output */
+        result.add(new Inequality(input.getTypeTerm(), output.getTypeTerm()));
+        /* input <= Scalar. */
+        result.add(new Inequality(input.getTypeTerm(), new TypeConstant(
+                BaseType.SCALAR)));
+        /* input >= Scalar if backward type inference is enabled */
+        if (isBackwardTypeInferenceEnabled()
+                && input.getTypeTerm().isSettable()) {
+            result.add(new Inequality(new TypeConstant(BaseType.SCALAR), 
+                    input.getTypeTerm()));
+        }
+        return result;
+    }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                       private variables                   ////
+    
     // The maximum value observed so far.
     private ScalarToken _maximum;
 
