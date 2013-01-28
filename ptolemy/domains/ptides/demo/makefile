@@ -35,6 +35,8 @@ DIRS =	ActuatorPattern \
 		Controller \
 		CoSimulation \
 		DistributedPowerPlant \
+		ErrorHandling \
+		LocalSource \
 		MixedSimulator \
 		MultiPlatformTDMA \
 		MultipleCores \
@@ -63,6 +65,8 @@ PTCLASSALLJARS = \
 		Controller/Controller.jar \
 		CoSimulation/CoSimulation.jar \
 		DistributedPowerPlant/DistributedPowerPlant.jar \
+		ErrorHandling/ErrorHandling.jar \
+		LocalSource/LocalSource.jar \
 		MixedSimulator/MixedSimulator.jar \
 		MultiPlatformTDMA/MultiPlatformTDMA.jar \
 		MultipleCores/MultipleCores.jar \
