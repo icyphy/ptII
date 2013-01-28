@@ -79,7 +79,8 @@ public class OpenModelicaDirector extends ContinuousDirector {
      *  @return The new Attribute.
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        OpenModelicaDirector newObject = (OpenModelicaDirector) super.clone(workspace);
+        OpenModelicaDirector newObject = (OpenModelicaDirector) super
+                .clone(workspace);
         try {
             newObject._omcLogger = OMCLogger.getInstance();
             newObject._omcProxy = OMCProxy.getInstance();
@@ -89,8 +90,7 @@ public class OpenModelicaDirector extends ContinuousDirector {
         }
         return newObject;
     }
-    
-    
+
     /** Invoke the preinitialize() of the super class.  Preinitialize
      *  the OpenModelica actor and initialize the OpenModelica
      *  Compiler(OMC).
@@ -100,7 +100,7 @@ public class OpenModelicaDirector extends ContinuousDirector {
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
         try {
-            
+
             String omcResultFilePath = null;
             String temp = System.getProperty("java.io.tmpdir");
             String username = System.getenv("USERNAME");
@@ -120,6 +120,11 @@ public class OpenModelicaDirector extends ContinuousDirector {
             if (_debugging) {
                 _debug("OpenModelica server is intialized.");
             }
+            
+            // Create a unique instance of OMCLogger and OMCProxy.
+            _omcLogger = OMCLogger.getInstance();
+            _omcProxy = OMCProxy.getInstance();
+            
             _omcProxy.initServer();
 
         } catch (ConnectException ex) {
@@ -141,7 +146,6 @@ public class OpenModelicaDirector extends ContinuousDirector {
 
     /** Invoke the wrapup() of the super class. 
      *  Leave and quit OpenModelica environment.
-     *  OMCProxy and OMCLogger objects are reset.
      *  @exception IllegalActionException If the wrapup() of
      *  OpenModelica actor throws it.
      */
@@ -152,8 +156,6 @@ public class OpenModelicaDirector extends ContinuousDirector {
             if (_debugging) {
                 _debug("OpenModelica server quited.");
             }
-            _omcProxy = null;
-            _omcLogger = null;
         } catch (ConnectException ex) {
             String loggerInfo = "OpenModelica Server quited!";
             _omcLogger.getInfo(loggerInfo);
@@ -163,10 +165,9 @@ public class OpenModelicaDirector extends ContinuousDirector {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variable                  ////
+    // OMCLogger object for accessing a unique source of instance.
+    private OMCLogger _omcLogger;
 
-    // An instance of OMCLogger in order to provide a unique source of OMCLogger instance.
-    private OMCLogger _omcLogger = OMCLogger.getInstance();
-
-    // An instance of OMCProxy in order to provide a unique source of OMCProxy instance.
-    private OMCProxy _omcProxy = OMCProxy.getInstance();
+    // OMCProxy object for accessing a unique source of instance.
+    private OMCProxy _omcProxy;
 }

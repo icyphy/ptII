@@ -254,6 +254,10 @@ public class OpenModelica extends TypedAtomicActor {
             if (_debugging) {
                 _debug("OpenModelica Actor Called fire().");
             }
+            
+            //  Create a unique instance of OMCLogger and OMCProxy.
+            _omcProxy = OMCProxy.getInstance();
+            _omcLogger = OMCLogger.getInstance();
 
             //  Load the model from the file. 
             //  Build the model. 
@@ -535,11 +539,11 @@ public class OpenModelica extends TypedAtomicActor {
         csv, mat, plt
     }
 
-    // An instance of OMCLogger in order to provide a unique source of OMCLogger instance.
-    private OMCLogger _omcLogger = OMCLogger.getInstance();
+    // OMCLogger object for accessing a unique source of instance.
+    private OMCLogger _omcLogger;
 
-    // An instance of OMCProxy in order to provide a unique source of OMCProxy instance.
-    private OMCProxy _omcProxy = OMCProxy.getInstance();
+    // OMCProxy Object for accessing a unique source of instance.
+    private OMCProxy _omcProxy;
 
     // The return result from invoking sendExpression("cd()") to OpenModelica Compiler(OMC).
     // The return result is the working directory of OMC.
