@@ -189,7 +189,24 @@ public class MetroIIDirector extends Director {
         }
     }
 
-    public void initialize() {
+    /** Initialize the model controlled by this director. Call the 
+     *  initialize() of super class and then wrap each actor that 
+     *  is controlled by this director.
+     *
+     *  This method should typically be invoked once per execution, after the
+     *  preinitialization phase, but before any iteration. It may be
+     *  invoked in the middle of an execution, if reinitialization is
+     *  desired. 
+     *
+     *  This method is <i>not</i> synchronized on the workspace,
+     *  so the caller should be.
+     *
+     *  @exception IllegalActionException If the initialize() method of
+     *   one of the associated actors throws it.
+     */
+    public void initialize() throws IllegalActionException {
+        super.initialize(); 
+        
         Nameable container = getContainer();
 
         Iterator<?> actors = ((CompositeActor) container).deepEntityList()
