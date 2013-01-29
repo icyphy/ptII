@@ -69,38 +69,10 @@ public class OMCLogger {
      */
     private OMCLogger() throws IllegalActionException {
 
-        String logPath = null;
-        String username = System.getenv("USERNAME");
-        String temp = System.getProperty("java.io.tmpdir");
-
-        if (username == null) {
-            logPath = temp + "/nobody/OpenModelica/";
-        } else {
-            logPath = temp + "/" + username + "/OpenModelica/";
-        }
-
-        // Create the directory.
-        File logPathFile = new File(logPath);
-        if (logPathFile.exists()) {
-            if (!logPathFile.isDirectory()) {
-                String message = "\"" + logPath
-                        + "\" is a file, not a directory?"
-                        + "Please delete it.";
-                omcLogger.severe(message);
-                throw new IllegalActionException(message);
-            }
-        } else {
-            if (!logPathFile.mkdirs()) {
-                String message = "Could not make the \"" + logPath
-                        + "\" directory?";
-                omcLogger.severe(message);
-                throw new IllegalActionException(message);
-            }
-        }
-
-        // Create  the log file. 
+        // The path of the directory which contains the result files. 
+        String logPath = createDirectoryForResult();
+ 
         String logFileName = logPath + "omcLog.txt";
-
         try {
             _fileHandler = new FileHandler(logFileName);
         } catch (SecurityException ex) {
@@ -144,33 +116,63 @@ public class OMCLogger {
     ///////////////////////////////////////////////////////////////////
     ////                          public methods                  ////
 
-    /**
-     * Get the Info LogLevel and info message will be written in the log file. 
-     * @param infoMessage The info message. 
+    /** Create the directory for saving the simulation result files
+     *  and also the log file.
+     *  @return logPath The path of the directory which contains the result files.
+     */
+    public String createDirectoryForResult() {
+
+        String logPath = null;
+        String username = System.getenv("USERNAME");
+        String temp = System.getProperty("java.io.tmpdir");
+
+        if (username == null) {
+            logPath = temp + "/nobody/OpenModelica/";
+        } else {
+            logPath = temp + "/" + username + "/OpenModelica/";
+        }
+
+        File logPathFile = new File(logPath);
+        if (logPathFile.exists()) {
+            if (!logPathFile.isDirectory()) {
+                String message = "\"" + logPath
+                        + "\" is a file, not a directory?"
+                        + "Please delete it.";
+                omcLogger.severe(message);
+            }
+        } else {
+            if (!logPathFile.mkdirs()) {
+                String message = "Could not make the \"" + logPath
+                        + "\" directory?";
+                omcLogger.severe(message);
+            }
+        }
+        return logPath;
+    }
+
+    /** Get the Info LogLevel and info message will be written in the log file. 
+     *  @param infoMessage The info message. 
      */
     public void getInfo(String infoMessage) {
         omcLogger.info(infoMessage);
     }
 
-    /**
-     * Get the Warning LogLevel and warning message will be written in the log file.
-     * @param warningMessage The warning message.
+    /** Get the Warning LogLevel and warning message will be written in the log file.
+     *  @param warningMessage The warning message.
      */
     public void getWarning(String warningMessage) {
         omcLogger.warning(warningMessage);
     }
 
-    /**
-     * Get the Sever LogLevel and sever message will be written in the log file.
-     * @param severMessage The sever message.
+    /** Get the Sever LogLevel and sever message will be written in the log file.
+     *  @param severMessage The sever message.
      */
     public void getSever(String severMessage) {
         omcLogger.severe(severMessage);
     }
 
-    /**
-     * Create an instance of OMCLogger in order to provide a global point of access to this instance.
-     * It provides a unique source of OMCLogger instance.
+    /** Create an instance of OMCLogger object in order to provide a global point of access to the instance.
+     *  It provides a unique source of OMCLogger instance.
      */
     public static OMCLogger getInstance() {
 
@@ -178,9 +180,9 @@ public class OMCLogger {
             try {
                 _omcLoggerInstance = new OMCLogger();
             } catch (IllegalActionException e) {
-               String message = "Unable to get instance of OMCLogger.";
-               _omcLoggerInstance.getSever(message);
-               //FIXME Add exception
+                String message = "Unable to get instance of OMCLogger.";
+                _omcLoggerInstance.getSever(message);
+                //FIXME Add exception
             }
         }
         return _omcLoggerInstance;
@@ -191,6 +193,6 @@ public class OMCLogger {
     // The handler for writing to OpenModelica Compiler(OMC) log file.
     private FileHandler _fileHandler = null;
 
-    // An instance of OMCLogger in order to provide a unique source of OMCLogger instance.
+    // OMCLogger Object for accessing a unique source of instance.
     private static OMCLogger _omcLoggerInstance = null;
 }
