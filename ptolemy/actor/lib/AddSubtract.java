@@ -33,6 +33,8 @@ import java.util.Set;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.Token;
+import ptolemy.data.type.BaseType;
+import ptolemy.data.type.TypeConstant;
 import ptolemy.graph.Inequality;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
@@ -199,13 +201,20 @@ public class AddSubtract extends TypedAtomicActor {
         }
     }
 
-    /** Set the plus port to be greater than or equal to the output port.
-     *  @return A set of Inequalities
+    /** Set the input port greater than or equal to
+     *  <code>BaseType.GENERAL</code> in case backward type inference is
+     *  enabled and the input port has no type declared.
+     *
+     *  @return A set of inequalities.
      */
     @Override
     protected Set<Inequality> _customTypeConstraints() {
-        Set<Inequality> result = new HashSet<Inequality>();
-        result.add(new Inequality(output.getTypeTerm(), plus.getTypeTerm()));
+        HashSet<Inequality> result = new HashSet<Inequality>();
+        if (isBackwardTypeInferenceEnabled()
+                && plus.getTypeTerm().isSettable()) {
+            result.add(new Inequality(new TypeConstant(BaseType.GENERAL), plus
+                    .getTypeTerm()));
+        }
         return result;
     }
    
