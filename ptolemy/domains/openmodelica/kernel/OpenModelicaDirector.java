@@ -26,8 +26,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
  */
 package ptolemy.domains.openmodelica.kernel;
 
-import java.io.File;
-
+import ptolemy.actor.util.Time;
 import ptolemy.domains.continuous.kernel.ContinuousDirector;
 import ptolemy.domains.openmodelica.lib.compiler.ConnectException;
 import ptolemy.domains.openmodelica.lib.omc.OMCLogger;
@@ -101,31 +100,15 @@ public class OpenModelicaDirector extends ContinuousDirector {
         super.preinitialize();
         try {
 
-            String omcResultFilePath = null;
-            String temp = System.getProperty("java.io.tmpdir");
-            String username = System.getenv("USERNAME");
+            // Create a unique instance of OMCLogger and OMCProxy.
+            _omcLogger = OMCLogger.getInstance();
+            _omcProxy = OMCProxy.getInstance();
 
-            if (username == null)
-                omcResultFilePath = temp + "/nobody/OpenModelica/";
-            else
-                omcResultFilePath = temp + "/" + username + "/OpenModelica/";
-
-            File userFile = new File(omcResultFilePath);
-
-            //Check if the user directory exists
-            if (!userFile.exists())
-                //Create user directory in the temporary folder.
-                new File(omcResultFilePath).mkdirs();
+            _omcProxy.initServer();
 
             if (_debugging) {
                 _debug("OpenModelica server is intialized.");
             }
-            
-            // Create a unique instance of OMCLogger and OMCProxy.
-            _omcLogger = OMCLogger.getInstance();
-            _omcProxy = OMCProxy.getInstance();
-            
-            _omcProxy.initServer();
 
         } catch (ConnectException ex) {
             throw new IllegalActionException(this, ex,
@@ -133,15 +116,20 @@ public class OpenModelicaDirector extends ContinuousDirector {
         }
     }
 
-    /** Always return false, meaning that this director fires 
-     *  once.   
-     *  @return True to continue execution, and false otherwise.
+    /** Return false if a stop has been requested or
+     *  if the system has finished executing.
+     *  @return Check if the director has detected a stop has been requested return false.
      *  @exception IllegalActionException Not thrown in this base class.
-        */
+     */
     public boolean postfire() throws IllegalActionException {
-        System.err
-                .println("OpenModelicaDirector: postfire() always returns false!!");
-        return false;
+        Time stopTime = getModelStopTime();
+        // If the stop time is infinity, then stop execution.
+        if (stopTime == Time.POSITIVE_INFINITY) {
+            stop();
+            return false;
+        } else {
+            return true;
+        }
     }
 
     /** Invoke the wrapup() of the super class. 
