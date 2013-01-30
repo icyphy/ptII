@@ -262,9 +262,10 @@ public class OpenModelica extends TypedAtomicActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-    /**Plot the plt file by calling PxgraphApplication.main(dcmotor_res.plt).
-     * @throws ConnectException  If commands couldn't
-       be sent to the OMC.*/
+    /** Plot the plt file by calling PxgraphApplication.main(dcmotor_res.plt).
+     *  @throws ConnectException  If commands couldn't
+     *  be sent to the OMC.
+     */
     private void _plotPltFile(String fileNamePrefix) throws ConnectException {
         
         // Array for saving the file path.  

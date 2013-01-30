@@ -105,7 +105,7 @@ public class OMCProxy implements IOMCProxy {
         UNIX, WINDOWS, MAC
     }
 
-    /**The copy of workingDirectory for having public access.*/
+    /** The copy of workingDirectory for having public access.*/
     public static File workDir = null;
 
     /** 
@@ -243,19 +243,18 @@ public class OMCProxy implements IOMCProxy {
     ////                         public methods                   ////
 
     /**  Build the Modelica model.
-     *  @param className Main class of the model
-     *  @return CompilerResult The result of sendExpression("command") method.
-     *  @exception ConnectException If buildModel command couldn't
-     *  be sent to the OMC.
+     *   @param className Main class of the model
+     *   @return CompilerResult The result of sendExpression("command") method.
+     *   @exception ConnectException If buildModel command couldn't
+     *   be sent to the OMC.
      */
     public CompilerResult buildModel(String className) throws ConnectException {
         CompilerResult result = sendCommand("buildModel(" + className + ")");
         return result;
     }
 
-    /**
-     * Create an instance of OMCProxy object in order to provide a global point of access to the instance.
-     * It provides a unique source of OMCProxy instance.
+    /** Create an instance of OMCProxy object in order to provide a global point of access to the instance.
+     *  It provides a unique source of OMCProxy instance.
      */
     public static OMCProxy getInstance() {
         if (_omcProxyInstance == null) {
@@ -265,7 +264,7 @@ public class OMCProxy implements IOMCProxy {
     }
 
     /** Fetch the type of Operating System(OS).
-     * @return osType The name of the operating system(OS). 
+     *  @return osType The name of the operating system(OS). 
      */
     public static osType getOs() {
         String osName = System.getProperty("os.name");
@@ -279,10 +278,10 @@ public class OMCProxy implements IOMCProxy {
             return osType.UNIX;
     }
 
-    /**Initialize the communication with the OpenModelica compiler(OMC) server.
-     * @exception ConnectException If we're unable to start communicating with
-     * the server.
-     * @throws InterruptedException 
+    /** Initialize the communication with the OpenModelica compiler(OMC) server.
+     *  @exception ConnectException If we're unable to start communicating with
+     *  the server.
+     *  @throws InterruptedException 
      */
     public synchronized void initServer() throws ConnectException {
 
@@ -397,27 +396,27 @@ public class OMCProxy implements IOMCProxy {
         }
     }
 
-    /**Load the model from the file in the first step. Then, build the
-     * model. Finally, run the simulation executable result of
-     * buildModel() in order to generate the simulation result.
-     * @param fileName File which the model should be loaded from.
-     * @param modelicaScript Modelica command.
-     * @param modelName Name of the model which should be built.
-     * @param fileNamePrefix User preferable name for the result file.
-     * @param startTime The start time of simulation.
-     * @param stopTime The stop time of simulation.
-     * @param numberOfIntervals Number of intervals in the result file.
-     * @param tolerance Tolerance used by the integration method.
-     * @param method Integration method used for simulation.
-     * @param outputFormat Format of the result file.
-     * @param variableFilter Filter for variables that should be stored in the result file.
-     * @param cflags Any standard C language flags.
-     * @param simflags Simulation flags.
-     * @throws ConnectException If commands couldn't
-        be sent to the OMC.
-     * @throws IOException If the executable result of buildModel()
-        couldn't be executed.
-     * @throws IllegalActionException 
+    /** Load the model from the file in the first step. Then, build the
+     *  model. Finally, run the simulation executable result of
+     *  buildModel() in order to generate the simulation result.
+     *  @param fileName File which the model should be loaded from.
+     *  @param modelicaScript Modelica command.
+     *  @param modelName Name of the model which should be built.
+     *  @param fileNamePrefix User preferable name for the result file.
+     *  @param startTime The start time of simulation.
+     *  @param stopTime The stop time of simulation.
+     *  @param numberOfIntervals Number of intervals in the result file.
+     *  @param tolerance Tolerance used by the integration method.
+     *  @param method Integration method used for simulation.
+     *  @param outputFormat Format of the result file.
+     *  @param variableFilter Filter for variables that should be stored in the result file.
+     *  @param cflags Any standard C language flags.
+     *  @param simflags Simulation flags.
+     *  @throws ConnectException If commands couldn't
+     *   be sent to the OMC.
+     *  @throws IOException If the executable result of buildModel()
+     *   couldn't be executed.
+     *  @throws IllegalActionException 
      */
     public void simulateModel(String fileName, String modelicaScript,
             String modelName, String fileNamePrefix, String startTime,
@@ -582,8 +581,8 @@ public class OMCProxy implements IOMCProxy {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
     /** Find the OpenModelica Compiler(OMC) executable file by using path variables.
-     @parameter executableName The name of the executable file
-     @return File The omc executable file
+     *  @parameter executableName The name of the executable file
+     *  @return File The omc executable file
      */
     private File _findExecutableOnPath(String executableName) {
         String systemPath = System.getenv("PATH");
@@ -606,15 +605,15 @@ public class OMCProxy implements IOMCProxy {
     }
 
     /** Determine the path to the
-     omc binary that user (probably) wants to use and the working
-     directory of where that binary (most likely) should be started in.
-     This will returns for example 'c:\openmodelica132\omc.exe'
-     or '/usr/local/share/openmodelica/omc' depending on
-     such factors as: OS type, environmental Variables settings,
-     where the first matching binary found.
-     @return full path to the omc binary and the working folder.
-     @exception ConnectException If OPENMODELICAHOME is not set 
-     and we could not find binary file in the path.
+     *  omc binary that user (probably) wants to use and the working
+     *  directory of where that binary (most likely) should be started in.
+     *  This will returns for example 'c:\openmodelica132\omc.exe'
+     *  or '/usr/local/share/openmodelica/omc' depending on
+     *  such factors as: OS type, environmental Variables settings,
+     *  where the first matching binary found.
+     *  @return full path to the omc binary and the working folder.
+     *  @exception ConnectException If OPENMODELICAHOME is not set 
+     *  and we could not find binary file in the path.
      */
     private File[] _getOmcBinaryPaths() throws ConnectException {
         String binaryName = "omc";
@@ -756,7 +755,7 @@ public class OMCProxy implements IOMCProxy {
     }
 
     /** Read the OMC CORBA object reference from a file on a disk.
-        @return The object reference as a String.
+     *  @return The object reference as a String.
      */
     private String _readObjectFromFile() {
 
@@ -796,7 +795,7 @@ public class OMCProxy implements IOMCProxy {
     }
 
     /** Initialize an ORB, convert the stringified OpenModelica Compiler(OMC) object to a real
-     CORBA object and then narrow that object to an OmcCommunication object.
+     *  CORBA object and then narrow that object to an OmcCommunication object.
      */
     private synchronized void _setupOmcc(String stringifiedObjectReference) {
 
@@ -819,8 +818,8 @@ public class OMCProxy implements IOMCProxy {
     }
 
     /** Start the OpenModelica Compiler(OMC) server by starting OMCThread.
-     @exception ConnectException If OPENMODELICAHOME is not set 
-     and we could not find binary file in the path.
+     *  @exception ConnectException If OPENMODELICAHOME is not set 
+     *  and we could not find binary file in the path.
      */
     private synchronized void _startServer() throws ConnectException {
 

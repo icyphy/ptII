@@ -60,16 +60,16 @@ import ptolemy.kernel.util.IllegalActionException;
 public interface IOMCProxy {
 
     /**  Build the Modelica model.
-     *  @param className Main class of the model
-     *  @return CompilerResult The result of sendExpression("command") method.
-     *  @exception ConnectException If buildModel command couldn't
-     *  be sent to the OMC.
+     *   @param className Main class of the model
+     *   @return CompilerResult The result of sendExpression("command") method.
+     *   @exception ConnectException If buildModel command couldn't
+     *   be sent to the OMC.
      */
     public CompilerResult buildModel(String filename) throws ConnectException;
 
-    /**Initialize the communication with the OpenModelica compiler(OMC).
-     * @exception ConnectException If we're unable to start communicating with
-     * the server.
+    /** Initialize the communication with the OpenModelica compiler(OMC).
+     *  @exception ConnectException If we're unable to start communicating with
+     *  the server.
      */
     public void initServer() throws ConnectException;
 
@@ -101,27 +101,27 @@ public interface IOMCProxy {
      */
     public CompilerResult sendCommand(String command) throws ConnectException;
 
-    /**Load the model from the file in the first step. Then, build the
-     * model. Finally, run the simulation executable result of
-     * buildModel() in order to generate the simulation result.
-     * @param fileName File which the model should be loaded from.
-     * @param modelicaScript Modelica command.
-     * @param modelName Name of the model which should be built.
-     * @param fileNamePrefix User preferable name for the result file.
-     * @param startTime The start time of simulation.
-     * @param stopTime The stop time of simulation.
-     * @param numberOfIntervals Number of intervals in the result file.
-     * @param tolerance Tolerance used by the integration method.
-     * @param method Integration method used for simulation.
-     * @param outputFormat Format of the result file.
-     * @param variableFilter Filter for variables that should be stored in the result file.
-     * @param cflags Any standard C language flags.
-     * @param simflags Simulation flags.
-     * @throws ConnectException If commands couldn't
-        be sent to the OMC.
-     * @throws IOException If the executable result of buildModel()
-        couldn't be executed.
-     * @throws IllegalActionException 
+    /** Load the model from the file in the first step. Then, build the
+     *  model. Finally, run the simulation executable result of
+     *  buildModel() in order to generate the simulation result.
+     *  @param fileName File which the model should be loaded from.
+     *  @param modelicaScript Modelica command.
+     *  @param modelName Name of the model which should be built.
+     *  @param fileNamePrefix User preferable name for the result file.
+     *  @param startTime The start time of simulation.
+     *  @param stopTime The stop time of simulation.
+     *  @param numberOfIntervals Number of intervals in the result file.
+     *  @param tolerance Tolerance used by the integration method.
+     *  @param method Integration method used for simulation.
+     *  @param outputFormat Format of the result file.
+     *  @param variableFilter Filter for variables that should be stored in the result file.
+     *  @param cflags Any standard C language flags.
+     *  @param simflags Simulation flags.
+     *  @throws ConnectException If commands couldn't
+     *   be sent to the OMC.
+     *  @throws IOException If the executable result of buildModel()
+     *   couldn't be executed.
+     *  @throws IllegalActionException 
      */
     public void simulateModel(String fileName, String modelicaScript,
             String modelName, String fileNamePrefix, String startTime,
