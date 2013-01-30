@@ -1,8 +1,9 @@
 /* Super type of all exceptions.
- * This file is part of Modelica Development Tooling(MDT).
  * 
- * Copyright (c) 2005, Linkopings universitet, Department of
- * Computer and Information Science, PELAB
+ * Copyright (c) 2012-2013,
+ * Programming Environment Laboratory (PELAB),
+ * Department of Computer and getInformation Science (IDA),
+ * Linkoping University (LiU).
  *
  * All rights reserved.
  *

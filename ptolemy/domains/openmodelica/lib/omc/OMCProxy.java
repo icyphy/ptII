@@ -1,9 +1,5 @@
 /* OMCProxy is the glue between OpenModelica Compiler(OMC) and Ptolemy II.
  *
- * This file is part of Modelica Development Tooling.
- * The Modelica Development Tooling (MDT) software is
- * distributed under the conditions specified below.
- *
  * Copyright (c) 2012-2013,
  * Programming Environment Laboratory (PELAB),
  * Department of Computer and getInformation Science (IDA),

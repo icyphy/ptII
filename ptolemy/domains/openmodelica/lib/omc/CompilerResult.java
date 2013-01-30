@@ -1,8 +1,9 @@
-/* Fetch the results and errors of calling sendExpression("command") to OpenModelica Compiler(OMC).
- * This file is part of Modelica Development Tooling(MDT).
+/* Fetch the results and errors of calling sendExpression() to OpenModelica Compiler(OMC) server.
  * 
- * Copyright (c) 2005, Linkopings universitet, Department of
- * Computer and Information Science, PELAB
+ * Copyright (c) 2012-2013,
+ * Programming Environment Laboratory (PELAB),
+ * Department of Computer and getInformation Science (IDA),
+ * Linkoping University (LiU).
  *
  * All rights reserved.
  *

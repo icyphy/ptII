@@ -1,8 +1,9 @@
 /* The interface to the modelica compiler.
- * This file is part of Modelica Development Tooling(MDT).
  *
- * Copyright (c) 2005, Linkopings universitet, Department of
- * Computer and Information Science, PELAB
+ * Copyright (c) 2012-2013,
+ * Programming Environment Laboratory (PELAB),
+ * Department of Computer and getInformation Science (IDA),
+ * Linkoping University (LiU).
  *
  * All rights reserved.
  *
@@ -92,7 +93,7 @@ public interface IOMCProxy {
      *  be sent to OMC.
      */
     public void quit() throws ConnectException;
-    
+
     /** Send a command to the OpenModelica Compiler(OMC) and fetches the string result.
      *  @param command The command which should be sent to the OMC.
      *  @return CompilerResult The result of sendExpression("command").
@@ -121,7 +122,7 @@ public interface IOMCProxy {
      * @throws IOException If the executable result of buildModel()
         couldn't be executed.
      * @throws IllegalActionException 
-     */    
+     */
     public void simulateModel(String fileName, String modelicaScript,
             String modelName, String fileNamePrefix, String startTime,
             String stopTime, int numberOfIntervals, String tolerance,
