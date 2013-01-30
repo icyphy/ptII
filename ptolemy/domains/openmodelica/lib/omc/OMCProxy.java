@@ -1,4 +1,4 @@
-/* OMCProxy is the glue between OpenModelica Compiler(OMC) and Modelica Development Tooling (MDT).
+/* OMCProxy is the glue between OpenModelica Compiler(OMC) and Ptolemy II.
  *
  * This file is part of Modelica Development Tooling.
  * The Modelica Development Tooling (MDT) software is
@@ -70,8 +70,9 @@ import ptolemy.domains.openmodelica.lib.omc.corba.OmcCommunication;
 import ptolemy.domains.openmodelica.lib.omc.corba.OmcCommunicationHelper;
 
 /**    
-  <p>The OMCProxy is the glue between the OpenModelica Compiler(OMC) and Modelica Development Tooling (MDT).
-  It uses the interactive API of OMC to get Information of classes and load them into OMC.</p>
+  <p> OMCProxy is the glue between the OpenModelica Compiler(OMC) server and Ptolemy II.
+      The OMCProxy object acts as a stand-in for the OMC server object 
+      that calls the server by sending a command to the OMC server and fetches the result.</p>
   
   @author Mana Mirzaei, Based on OMCProxy by Adrian Pop, Elmir Jagudin, Andreas Remar
   @version $Id$
@@ -83,7 +84,7 @@ public class OMCProxy implements IModelicaCompiler {
     /** Construct an OpenModelica Compiler(OMC) proxy.
      *  This constructor has no parameter. 
      *  This private Constructor prevents other class from instantiating. 
-     */   
+     */
     private OMCProxy() {
         // Create a unique instance of OMCLogger.
         _omcLogger = OMCLogger.getInstance();
@@ -119,7 +120,7 @@ public class OMCProxy implements IModelicaCompiler {
          */
         public OMCThread() {
             super("OpenModelica Interactive Compiler Thread");
-            
+
         }
 
         public void run() {
@@ -133,7 +134,7 @@ public class OMCProxy implements IModelicaCompiler {
                 hasInitialized = false;
                 return;
             }
-            
+
             File omcBinary = tmp[0];
             final File workingDirectory = tmp[1];
             Process proc = null;
@@ -280,7 +281,7 @@ public class OMCProxy implements IModelicaCompiler {
             return osType.UNIX;
     }
 
-    /**Initialize the communication with the OpenModelica compiler(OMC).
+    /**Initialize the communication with the OpenModelica compiler(OMC) server.
      * @exception ConnectException If we're unable to start communicating with
      * the server.
      * @throws InterruptedException 
@@ -340,7 +341,7 @@ public class OMCProxy implements IModelicaCompiler {
         return result;
     }
 
-    /** Send a command to the OpenModelica Compiler(OMC) and fetches the string result.
+    /** Send a command to the OpenModelica Compiler(OMC) server and fetches the string result.
      *  @param command The command which should be sent to the OMC.
      *  @return CompilerResult The result of sendExpression("command").
      *  @exception ConnectException If commands couldn't be sent to the OMC.
@@ -410,7 +411,7 @@ public class OMCProxy implements IModelicaCompiler {
             _omcProxyInstance = null;
             _omcLogger = null;
         }
-        
+
     }
 
     ///////////////////////////////////////////////////////////////////
