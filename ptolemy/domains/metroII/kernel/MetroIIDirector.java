@@ -50,52 +50,60 @@ import ptolemy.kernel.util.Workspace;
 //// MetroIIDirector
 
 /**
- * <p> A MetroII Director governs the execution of a CompositeActor with
+ * <p> A MetroII Director governs the execution of actors with
  * simplified MetroII semantics. </p>
  *
- * <p> The CompositeActor could contain two types of actors: Ptolemy
- * actors and Metropolis actors. Ptolemy actors are the usual actors
- * in Ptolemy, such as Const, Ramp, Display, etc. Metropolis actor is
- * either a customized Ptolemy actor (e.g. MetroIIModalModel) or a
- * MetroIICompositeActor that contains a MetroII compatible director,
- * (e.g.  MetroIISRDirector, MetroIIPNDirector). A
- * MetroIICompositeActor can still contain any Ptolemy actors. The
- * Metropolis actors are supposed to have the identical behaviors as
- * the corresponding Ptolemy actor (e.g.  MetroIIModalModel should
- * react the same way as ModalModel does). The difference is the
- * behaviors of Metropolis actor are associated with MetroII events. A
- * MetroII event is in one of the three statuses: PROPOSED, WAITING,
- * NOTIFIED. The reaction of a Metropolis actor is not executed until
- * the associated event is notified. The executions of Metropolis
- * actors are governed by the MetroIIDirector via updating the
- * statuses of events. </p>
- *
- * <p> The semantic has the two phases:</p>
+ * <p>
+ * MetroIIActorInterface has to be implemented for each actor 
+ * governed by MetroIIDirector. Each actor can be seen as a process
+ * that could pause with MetroII events returned. The MetroII 
+ * events can then be modified by MetroIIDirector. When the process 
+ * is resumed, the continued execution may depend on the updated MetroII 
+ * events. 
+ * </p>
+ * <p>
+ * Each iteration has two phases. In Phase 1, MetroIIDirector 
+ * calls each actor (no particular order should be presumed. See 
+ * Note 1 and 2). Each actor runs until it wants to propose MetroII 
+ * events: the actor saves the state and returns with MetroII events. 
+ * In Phase 2, MetroIIDirector calls the MappingConstraintSolver, 
+ * which updates the MetroII events based on the mapping constraints.  
+ * </p>
+ * <p>
+ * Note 1: the MetroIIDirector is mainly used for mapping SEPARATED 
+ * models (e.g. functional model and architectural model in PBD). 
+ * It's highly recommended that the actors (models) are not 
+ * connected by any form of wire/signal.  
+ * </p>
+ * <p>
+ * Note 2: In MetroII (complete version), the order of actors being 
+ * called is determined by the SystemC scheduler.  
+ * </p>
+ * 
+ * <p> A simple way to implement MetroIIActorInterface is to have 
+ * each actor wrapped by one of the following wrappers:
  * <ol>
- * <li> Phase 1: Model Execution </li>
- * <li> Phase 2: Constraint Resolution</li>
- * </ol>
- *
- * <p>In phase 1, the MetroIIDirector calls prefire(), fire(), and
- * postfire() of each Ptolemy actor in the model and calls prefire(),
- * getfire() and postfire() of each Metropolis actor in the model. The
- * getfire() function can be seen as the same as fire() except for
- * some event proposing code inserted in the middle. The execution of
- * getfire() is in a separate thread.  When the thread proceeds to the
- * event proposing code, the thread will send a message (a list of
- * events with PROPOSED) to the director on the upper level and then
- * suspend. The thread will not proceed until the status of at least
- * one event in the list is changed to NOTIFIED. </p>
- *
- * <p> In phase 2, the MetroIIDirector collects all the events and
- * updates the event status based on the mapping constraints. A
- * mapping constraint is a rendezvous constraint that requires all the
+ * <li> MetroIIActorIterationWrapper </li>
+ * <li> MetroIIActorGeneralWrapper </li>
+ * <ol>
+ * MetroIIActorIterationWrapper is used for wrapping a Ptolemy actor 
+ * that implements prefire(), fire(), and postfire(). 
+ * MetroIIActorGeneralWrapper is used for wrapping a MetroII 
+ * compatible actor. A MetroII compatible actor is a MetroIIModalModel 
+ * or a MetroIICompositeActor that contains a MetroII compatible director
+ * (e.g. MetroIISRDirector, MetroIIPNDirector). 
+ * </p>
+ * 
+ * <p> 
+ * MappingConstraintSolver updates the MetroII event status based 
+ * on the given mapping constraints. A MetroII event is in one of the 
+ * three statuses: PROPOSED, WAITING, NOTIFIED. A mapping constraint 
+ * is a rendezvous constraint that requires all the
  * specified events are in the status of PROPOSED or NOTIFIED. If an
  * event satisfies all the constraints, the status will be updated to
- * NOTIFIED, otherwise the status is updated to WAITING. In the next
- * iteration, the Metropolis Actors are executed based on the event
- * statuses. </p>
- *
+ * NOTIFIED, otherwise the status is updated to WAITING.
+ * </p>
+ * 
  * <p> Known issues:
  * <ol>
  * <li> the 'stop execution' may not work properly. </li>
@@ -170,12 +178,12 @@ public class MetroIIDirector extends Director {
                     String filename = file.getAbsolutePath();
                     if (!filename.equals("")) {
                         try {
-                            System.out.println(filename); 
+                            System.out.println(filename);
                             _mappingConstraintSolver.readMapping(filename);
                         } catch (IOException ex) {
                             throw new IllegalActionException(this, ex,
                                     "Failed to open mapping file \"" + filename
-                                    + "\".");
+                                            + "\".");
                         }
                         if (_debugging) {
                             _debug(_mappingConstraintSolver.toString());
@@ -205,8 +213,8 @@ public class MetroIIDirector extends Director {
      *   one of the associated actors throws it.
      */
     public void initialize() throws IllegalActionException {
-        super.initialize(); 
-        
+        super.initialize();
+
         Nameable container = getContainer();
 
         Iterator<?> actors = ((CompositeActor) container).deepEntityList()
@@ -217,37 +225,33 @@ public class MetroIIDirector extends Director {
             if (actor instanceof MetroIIEventHandler) {
                 _actorList.add(new MetroIIActorGeneralWrapper(actor));
             } else {
-                _actorList.add(new MetroIIActorIterationWrapper(actor));
+                _actorList.add(new MetroIIActorBasicWrapper(actor));
             }
         }
     }
-    
+
     /**
-    * Call the prefire(), fire(), and postfire() methods of each actor
-    * in the model. If the actor is a CompositeActor that contains a
-    * MetroII compatible director, the getfire() method is called
-    * instead of fire(). getfire() does everything fire() does and
-    * proposes events in firing. When events are proposed, the
-    * CompositeActor is blocked, waiting for the resolution of mapping
-    * constraints The MetroIIDirector collects all the events and
-    * resets the statuses of events based on the mapping
-    * constraints. In the next iteration, CompositeActor executes
-    * based on the updated statuses of events.
+    * Each iteration has two phases. In Phase 1, MetroIIDirector 
+    * calls each actor (no particular order should be presumed. See 
+    * Note 1 and 2). Each actor runs until it wants to propose MetroII 
+    * events: the actor saves the state and returns with MetroII events. 
+    * In Phase 2, MetroIIDirector calls the MappingConstraintSolver, 
+    * which updates the MetroII events based on the mapping constraints.  
     */
     public void fire() throws IllegalActionException {
         super.fire();
 
         while (!_stopRequested) {
             LinkedList<Event.Builder> globalMetroIIEventList = new LinkedList<Event.Builder>();
-          
-            // Phase I: base model execution
+
+            // Phase 1: base model execution
             for (MetroIIActorInterface actor : _actorList) {
                 LinkedList<Event.Builder> metroIIEventList = new LinkedList<Event.Builder>();
                 actor.startOrResume(metroIIEventList);
                 globalMetroIIEventList.addAll(metroIIEventList);
             }
 
-            // Phase II: constraint resolution
+            // Phase 2: constraint resolution
             _mappingConstraintSolver.resolve(globalMetroIIEventList);
         }
 
