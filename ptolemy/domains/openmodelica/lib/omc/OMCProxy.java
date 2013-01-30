@@ -63,11 +63,12 @@ import java.util.Set;
 
 import org.omg.CORBA.ORB;
 
-import ptolemy.domains.openmodelica.lib.compiler.CompilerResult;
-import ptolemy.domains.openmodelica.lib.compiler.ConnectException;
-import ptolemy.domains.openmodelica.lib.compiler.IModelicaCompiler;
+import ptolemy.domains.openmodelica.lib.exception.ConnectException;
+import ptolemy.domains.openmodelica.lib.omc.CompilerResult;
 import ptolemy.domains.openmodelica.lib.omc.corba.OmcCommunication;
 import ptolemy.domains.openmodelica.lib.omc.corba.OmcCommunicationHelper;
+import ptolemy.domains.openmodelica.lib.omc.IOMCProxy;
+
 
 /**    
   <p> OMCProxy is the glue between the OpenModelica Compiler(OMC) server and Ptolemy II.
@@ -80,7 +81,7 @@ import ptolemy.domains.openmodelica.lib.omc.corba.OmcCommunicationHelper;
   @Pt.ProposedRating Red (cxh)
   @Pt.AcceptedRating Red (cxh)
  */
-public class OMCProxy implements IModelicaCompiler {
+public class OMCProxy implements IOMCProxy {
     /** Construct an OpenModelica Compiler(OMC) proxy.
      *  This constructor has no parameter. 
      *  This private Constructor prevents other class from instantiating. 

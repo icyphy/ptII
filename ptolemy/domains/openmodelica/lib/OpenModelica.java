@@ -33,17 +33,16 @@ package ptolemy.domains.openmodelica.lib;
 
 import java.io.File;
 import java.io.IOException;
-import ptolemy.actor.Director;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.DoubleToken;
-import ptolemy.data.IntToken;
 import ptolemy.data.expr.FileParameter;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
+import ptolemy.data.IntToken;
 import ptolemy.data.type.BaseType;
-import ptolemy.domains.openmodelica.lib.compiler.CompilerResult;
-import ptolemy.domains.openmodelica.lib.compiler.ConnectException;
+import ptolemy.domains.openmodelica.lib.exception.ConnectException;
+import ptolemy.domains.openmodelica.lib.omc.CompilerResult;
 import ptolemy.domains.openmodelica.lib.omc.OMCLogger;
 import ptolemy.domains.openmodelica.lib.omc.OMCProxy;
 import ptolemy.kernel.CompositeEntity;
@@ -244,17 +243,17 @@ public class OpenModelica extends TypedAtomicActor {
     public void fire() throws IllegalActionException {
         super.fire();
 
-        Director director = getDirector();
+        /*Director director = getDirector();
 
         if (director == null) {
             throw new IllegalActionException(this, "No director!");
-        }
+        }*/
 
         try {
             if (_debugging) {
                 _debug("OpenModelica Actor Called fire().");
             }
-            
+
             //  Create a unique instance of OMCLogger and OMCProxy.
             _omcProxy = OMCProxy.getInstance();
             _omcLogger = OMCLogger.getInstance();

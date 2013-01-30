@@ -28,7 +28,7 @@ package ptolemy.domains.openmodelica.kernel;
 
 import ptolemy.actor.util.Time;
 import ptolemy.domains.continuous.kernel.ContinuousDirector;
-import ptolemy.domains.openmodelica.lib.compiler.ConnectException;
+import ptolemy.domains.openmodelica.lib.exception.ConnectException;
 import ptolemy.domains.openmodelica.lib.omc.OMCLogger;
 import ptolemy.domains.openmodelica.lib.omc.OMCProxy;
 import ptolemy.kernel.CompositeEntity;
