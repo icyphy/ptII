@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="ModularCG" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
     </property>
     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="2">
@@ -12,7 +12,7 @@
     </property>
     <property name="ModularCodeGenerator" class="ptolemy.cg.kernel.generic.program.procedural.java.modular.ModularCodeGenerator">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={160, 40, 870, 634}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={160, 40, 863, 657}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[636, 524]">
     </property>
@@ -52,7 +52,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, 15.0]">
         </property>
     </property>
-    <property name="enableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="true">
+    <property name="enableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="false">
     </property>
     <entity name="A1" class="ptolemy.cg.lib.ModularCodeGenTypedCompositeActor">
         <property name="recompileHierarchy" class="ptolemy.data.expr.Parameter" value="false">
@@ -106,6 +106,8 @@
                     </property>
                 </entity>
                 <entity name="B1" class="ptolemy.cg.lib.ModularCodeGenTypedCompositeActor">
+                    <property name="recompileHierarchy" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
                     <property name="recompileThisLevel" class="ptolemy.data.expr.Parameter" value="false">
                     </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[235.0, 145.0]">
@@ -171,6 +173,8 @@
                     </configure>
                 </entity>
                 <entity name="B2" class="ptolemy.cg.lib.ModularCodeGenTypedCompositeActor">
+                    <property name="recompileHierarchy" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
                     <property name="recompileThisLevel" class="ptolemy.data.expr.Parameter" value="false">
                     </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[195.0, 250.0]">
@@ -333,6 +337,8 @@
         </property>
     </entity>
     <entity name="A2" class="ptolemy.cg.lib.ModularCodeGenTypedCompositeActor">
+        <property name="recompileHierarchy" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
         <property name="recompileThisLevel" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[135.0, 175.0]">
@@ -382,6 +388,10 @@
                     </property>
                 </entity>
                 <entity name="B1" class="ptolemy.cg.lib.ModularCodeGenTypedCompositeActor">
+                    <property name="recompileHierarchy" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                    <property name="recompileThisLevel" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[235.0, 145.0]">
                     </property>
                     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
@@ -466,6 +476,8 @@
                     </configure>
                 </entity>
                 <entity name="B2" class="ptolemy.cg.lib.ModularCodeGenTypedCompositeActor">
+                    <property name="recompileHierarchy" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
                     <property name="recompileThisLevel" class="ptolemy.data.expr.Parameter" value="false">
                     </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[195.0, 250.0]">
@@ -607,7 +619,7 @@
         </configure>
     </entity>
     <entity name="Display2" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={148, 448, 326, 230}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={148, 448, 328, 248}, maximized=false}">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[326, 186]">
         </property>
