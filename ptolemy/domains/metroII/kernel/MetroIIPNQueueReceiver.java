@@ -21,7 +21,7 @@ public class MetroIIPNQueueReceiver extends PNQueueReceiver {
         // Actor actor = (Actor) getContainer().getContainer();
         Thread current_thread = Thread.currentThread();
         String event_name = current_thread.getName() + suffix;
-        _director.AddEvent(_director.makeEventBuilder(event_name,
+        _director.AddEvent(makeEventBuilder(event_name,
                 Event.Type.BEGIN));
         System.out.println("propose: " + event_name);
         Object lock = _director.eventLock.get(_director
@@ -84,6 +84,15 @@ public class MetroIIPNQueueReceiver extends PNQueueReceiver {
 
             _director = (MetroIIPNDirector) director;
         }
+    }
+    
+    private Event.Builder makeEventBuilder(String name, Event.Type t) {
+        Event.Builder meb = Event.newBuilder();
+        meb.setName(name);
+        meb.setOwner(name);
+        meb.setStatus(Event.Status.PROPOSED);
+        meb.setType(t);
+        return meb;
     }
 
 }

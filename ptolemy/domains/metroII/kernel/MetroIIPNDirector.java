@@ -58,16 +58,12 @@ import ptolemy.kernel.util.Workspace;
 public class MetroIIPNDirector extends PNDirector implements
         MetroIIEventHandler {
 
-    public List eventLock;
-
     public MetroIIPNDirector(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         // TODO Auto-generated constructor stub
         eventLock = Collections.synchronizedList(new ArrayList<Object>());
     }
-
-    private boolean _firstTimeFire;
 
     /** Clone the director into the specified workspace.
      *  @param workspace The workspace for the new object.
@@ -98,25 +94,6 @@ public class MetroIIPNDirector extends PNDirector implements
             return super.prefire();
         }
         return true;
-    }
-
-    public Event.Builder makeEventBuilder(String name, Event.Type t) {
-        Event.Builder meb = Event.newBuilder();
-        meb.setName(name);
-        meb.setOwner(name);
-        meb.setStatus(Event.Status.PROPOSED);
-        meb.setType(t);
-        return meb;
-    }
-
-    Hashtable<String, Integer> eventNameID = new Hashtable<String, Integer>();
-
-    public synchronized int eventName2Id(String event_name) {
-        if (!eventNameID.containsKey(event_name)) {
-            eventNameID.put(event_name, eventLock.size());
-            eventLock.add(new Object());
-        }
-        return eventNameID.get(event_name);
     }
 
     public Receiver newReceiver() {
@@ -153,13 +130,6 @@ public class MetroIIPNDirector extends PNDirector implements
                         getfire(resultHandler);
                     }
                 });
-    }
-
-    // FIXME: move this decl.
-    protected Set _proposedThreads = Collections.synchronizedSet(new HashSet());
-
-    protected final synchronized int _getProposedThreadsCount() {
-        return _proposedThreads.size();
     }
 
     @Override
@@ -309,4 +279,45 @@ public class MetroIIPNDirector extends PNDirector implements
             }
         }
     }
+
+    
+    
+    public synchronized int eventName2Id(String event_name) {
+        if (!eventNameID.containsKey(event_name)) {
+            eventNameID.put(event_name, eventLock.size());
+            eventLock.add(new Object());
+        }
+        return eventNameID.get(event_name);
+    }
+
+    public List eventLock;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                  protected fields                         ////
+
+    protected Set _proposedThreads = Collections.synchronizedSet(new HashSet());
+
+    protected final synchronized int _getProposedThreadsCount() {
+        return _proposedThreads.size();
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                  private methods                          ////
+
+    private Event.Builder makeEventBuilder(String name, Event.Type t) {
+        Event.Builder meb = Event.newBuilder();
+        meb.setName(name);
+        meb.setOwner(name);
+        meb.setStatus(Event.Status.PROPOSED);
+        meb.setType(t);
+        return meb;
+    }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                   private fields                          ////
+
+    private Hashtable<String, Integer> eventNameID = new Hashtable<String, Integer>();
+
+    private boolean _firstTimeFire;
+    
 }

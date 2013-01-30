@@ -36,14 +36,18 @@ import java.util.LinkedList;
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
+import ptolemy.data.IntToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.expr.FileParameter;
+import ptolemy.data.expr.Parameter;
+import ptolemy.data.type.BaseType;
 import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Nameable;
+import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
 
 ///////////////////////////////////////////////////////////////////
@@ -154,6 +158,14 @@ public class MetroIIDirector extends Director {
      */
     public FileParameter mappingFileName;
 
+    /** A Parameter representing the number of times that postfire may be
+     *  called before it returns false.  If the value is less than or
+     *  equal to zero, then the execution will never return false in postfire,
+     *  and thus the execution can continue forever. 
+     *
+     */
+    public Parameter iterations;
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -228,6 +240,8 @@ public class MetroIIDirector extends Director {
                 _actorList.add(new MetroIIActorBasicWrapper(actor));
             }
         }
+        
+        _iterationCount = 0;
     }
 
     /**
@@ -239,9 +253,8 @@ public class MetroIIDirector extends Director {
     * which updates the MetroII events based on the mapping constraints.  
     */
     public void fire() throws IllegalActionException {
-        super.fire();
 
-        while (!_stopRequested) {
+        if (!_stopRequested) {
             LinkedList<Event.Builder> globalMetroIIEventList = new LinkedList<Event.Builder>();
 
             // Phase 1: base model execution
@@ -253,6 +266,12 @@ public class MetroIIDirector extends Director {
 
             // Phase 2: constraint resolution
             _mappingConstraintSolver.resolve(globalMetroIIEventList);
+
+            for (Event.Builder mtb : globalMetroIIEventList) {
+                System.out.println(mtb.getName());
+                System.out.println(mtb.getStatus());
+            }
+            System.out.println("==========");
         }
 
         if (_stopRequested) {
@@ -277,6 +296,16 @@ public class MetroIIDirector extends Director {
         return newObject;
     }
 
+    public boolean postfire() throws IllegalActionException {
+        _iterationCount++;
+        int iterationsValue = ((IntToken) (iterations.getToken())).intValue();
+        if ((iterationsValue > 0) && (_iterationCount >= iterationsValue)) {
+            _iterationCount = 0;
+            return false;
+        }
+        return true;
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
@@ -287,10 +316,15 @@ public class MetroIIDirector extends Director {
     private void _initializeParameters() throws IllegalActionException,
             NameDuplicationException {
         mappingFileName = new FileParameter(this, "mappingFileName");
+        iterations = new Parameter(this, "iterations");
+        iterations.setTypeEquals(BaseType.INT);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                    private fields                         ////
+
+    /** The iteration count. */
+    protected int _iterationCount = 0;
 
     /** The maximum number of events.
      */
@@ -303,8 +337,4 @@ public class MetroIIDirector extends Director {
             _maxEvent);
 
     private LinkedList<MetroIIActorInterface> _actorList = new LinkedList<MetroIIActorInterface>();
-    /**
-     * Read constraints from the mapping file.
-     * @param filename mapping file
-     */
 }

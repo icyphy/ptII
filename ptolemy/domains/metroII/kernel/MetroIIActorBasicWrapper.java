@@ -50,7 +50,6 @@ public class MetroIIActorBasicWrapper implements MetroIIActorInterface {
                 if (actor.postfire()) {
                     state = State.POSTFIRE_END_PREFIRE_BEGIN;
                     currentStateEvent = createMetroIIEvent("PREFIRE_BEGIN");
-                    metroIIEventList.add(currentStateEvent);
                 }
                 else {
                     // FIXME: handle the request that the actor wants to halt

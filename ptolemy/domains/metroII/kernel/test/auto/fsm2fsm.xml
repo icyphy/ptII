@@ -4,7 +4,7 @@
 <entity name="fsm2fsm" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={196, 184, 1306, 686}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={197, 212, 1306, 686}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1092, 595]">
     </property>
@@ -23,11 +23,13 @@
     <property name="MetroIIDirector" class="ptolemy.domains.metroII.kernel.MetroIIDirector">
         <property name="mappingFileName" class="ptolemy.data.expr.FileParameter" value="fsm2fsmMapping.txt">
         </property>
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 40.0]">
         </property>
     </property>
     <entity name="Display" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1121, 496, 326, 209}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1122, 524, 326, 209}, maximized=false}">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[326, 186]">
         </property>
