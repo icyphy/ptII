@@ -68,7 +68,8 @@ import ptolemy.domains.openmodelica.lib.omc.CompilerResult;
 import ptolemy.domains.openmodelica.lib.omc.corba.OmcCommunication;
 import ptolemy.domains.openmodelica.lib.omc.corba.OmcCommunicationHelper;
 import ptolemy.domains.openmodelica.lib.omc.IOMCProxy;
-
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.util.StringUtilities;
 
 /**    
   <p> OMCProxy is the glue between the OpenModelica Compiler(OMC) server and Ptolemy II.
@@ -400,6 +401,173 @@ public class OMCProxy implements IOMCProxy {
         }
     }
 
+    /**Load the model from the file in the first step. Then, build the
+     * model. Finally, run the simulation executable result of
+     * buildModel() in order to generate the simulation result.
+     * @param fileName File which the model should be loaded from.
+     * @param modelicaScript Modelica command.
+     * @param modelName Name of the model which should be built.
+     * @param fileNamePrefix User preferable name for the result file.
+     * @param startTime The start time of simulation.
+     * @param stopTime The stop time of simulation.
+     * @param numberOfIntervals Number of intervals in the result file.
+     * @param tolerance Tolerance used by the integration method.
+     * @param method Integration method used for simulation.
+     * @param outputFormat Format of the result file.
+     * @param variableFilter Filter for variables that should be stored in the result file.
+     * @param cflags Any standard C language flags.
+     * @param simflags Simulation flags.
+     * @throws ConnectException If commands couldn't
+        be sent to the OMC.
+     * @throws IOException If the executable result of buildModel()
+        couldn't be executed.
+     * @throws IllegalActionException 
+     */
+    public void simulateModel(String fileName, String modelicaScript,
+            String modelName, String fileNamePrefix, String startTime,
+            String stopTime, int numberOfIntervals, String tolerance,
+            String method, String outputFormat, String variableFilter,
+            String cflags, String simflags) throws ConnectException,
+            IOException, IllegalActionException {
+
+        // Commands which are sent to the buildModel("command").
+        String commands = null;
+
+        // Set file parameter to the path of the testmodel(dcmotor.mo).
+        String systemPath = StringUtilities.getProperty("ptolemy.ptII.dir");
+
+        String testFilePath = null;
+
+        testFilePath = systemPath
+                + "/ptolemy/domains/openmodelica/demo/OpenModelica/" + fileName;
+
+        File file = new File(testFilePath);
+        if (file.exists()) {
+            if (_omcLogger == null) {
+                throw new IllegalActionException(
+                        "The OpenModelica actor only works within "
+                                + "a OpenModelicaDirector because "
+                                + "the actor requires a OMCLogger.");
+            }
+            String loggerInfo = "Using model at '" + testFilePath + "'";
+            _omcLogger.getInfo(loggerInfo);
+
+            // Load the model from the file parameter.
+            _result = loadFile(testFilePath);
+
+            // Check if an error exists in the result of loadFile("command").
+            if (_result.getFirstResult().compareTo("") != 0
+                    && _result.getError().compareTo("") == 0) {
+                loggerInfo = "Model is loaded from " + modelicaScript
+                        + " successfully.";
+                _omcLogger.getInfo(loggerInfo);
+            }
+
+            if (_result.getError().compareTo("") != 0) {
+                loggerInfo = "There is an error in loading the model!";
+                _omcLogger.getInfo(loggerInfo);
+                throw new ConnectException(loggerInfo);
+            }
+
+            // The loadModel("command") loads the file corresponding to the class.
+            _result = sendCommand(modelicaScript);
+
+            // Check if an error exists in the result of the loadModel("command").
+            if (_result.getFirstResult().compareTo("true\n") == 0) {
+                loggerInfo = "Modelica model is loaded successfully.";
+                _omcLogger.getInfo(loggerInfo);
+            }
+            if (_result.getError().compareTo("") != 0) {
+                loggerInfo = "There is an error in loading Modelica model!";
+                _omcLogger.getInfo(loggerInfo);
+                throw new ConnectException(loggerInfo);
+            }
+
+            // Set command of buildModel() with Model Name as the name of executable result file.
+            if (fileNamePrefix.compareTo("") == 0) {
+                commands = modelName + ",startTime="
+                        + Float.valueOf(startTime).floatValue() + ",stopTime="
+                        + Float.valueOf(stopTime).floatValue()
+                        + ",numberOfIntervals=" + numberOfIntervals
+                        + ",tolerance=" + Float.valueOf(tolerance).floatValue()
+                        + ",method=\"" + method + "\",outputFormat=\""
+                        + outputFormat + "\",variableFilter=\""
+                        + variableFilter + "\",cflags=\"" + cflags
+                        + "\",simflags=\"" + simflags + "\"";
+            }
+
+            // Set command of buildModel() with File Name Prefix as the name of executable result file.
+            else {
+                commands = modelName + ",startTime="
+                        + Float.valueOf(startTime).floatValue() + ",stopTime="
+                        + Float.valueOf(stopTime).floatValue()
+                        + ",numberOfIntervals=" + numberOfIntervals
+                        + ",tolerance=" + Float.valueOf(tolerance).floatValue()
+                        + ",method=\"" + method + "\",fileNamePrefix=\""
+                        + fileNamePrefix + "\",outputFormat=\"" + outputFormat
+                        + "\",variableFilter=\"" + variableFilter
+                        + "\",cflags=\"" + cflags + "\",simflags=\"" + simflags
+                        + "\"";
+            }
+
+            _result = buildModel(commands);
+
+            // Check if an error exists in the result of buildModel("command").
+            if (_result.getFirstResult().compareTo("") != 0
+                    && _result.getError().compareTo("") == 0) {
+                loggerInfo = modelName + " Model is built successfully.";
+                _omcLogger.getInfo(loggerInfo);
+            }
+            if (_result.getError().compareTo("") != 0) {
+                loggerInfo = "There is an error in building the model.";
+                _omcLogger.getInfo(loggerInfo);
+                throw new ConnectException(loggerInfo);
+            }
+
+            String command = null;
+
+            switch (OMCProxy.getOs()) {
+            case WINDOWS:
+                //FIXME: you probably don't need the backslash here, but
+                // you do need the FIXME.
+                // I remove the backslash. By "but
+                // you do need the FIXME.". you mean I should correct something else?
+                command = OMCProxy.workDir.getPath() + "/" + modelName + ".exe";
+                break;
+            case UNIX:
+                command = OMCProxy.workDir.getPath() + "/" + modelName;
+                break;
+            case MAC:
+                command = OMCProxy.workDir.getPath() + "/" + modelName;
+                break;
+            }
+
+            // Run the executable result file of buildModel("command"). 
+            Runtime.getRuntime().exec(command, OMCProxy.environmentalVariables,
+                    OMCProxy.workDir);
+
+            // When users do not select File Name Prefix as the name of executable result file
+            // and Model Name is set as the name of executable result file.
+            if (fileNamePrefix.compareTo("") == 0) {
+                loggerInfo = "Simulation of " + modelName
+                        + " is done successfuly.";
+                _omcLogger.getInfo(loggerInfo);
+            }
+            // When users select File Name Prefix as the name of executable result file.
+            else {
+                loggerInfo = "Simulation of " + fileNamePrefix
+                        + " is done successfuly.";
+                _omcLogger.getInfo(loggerInfo);
+            }
+        } else {
+            String loggerInfo = "No file found at: [" + testFilePath
+                    + "]. Select the file for simulation!";
+            _omcLogger.getInfo(loggerInfo);
+            throw new ConnectException("No file found at: [" + testFilePath
+                    + "]. Select the file for simulation!");
+        }
+    }
+
     /** Leave and quit OpenModelica environment.
      *  Deallocate OMCProxy and OMCLogger objects.
      *  @exception ConnectException If quit command couldn't
@@ -707,6 +875,10 @@ public class OMCProxy implements IOMCProxy {
     // The Operating System(OS) we are running on.
     private osType _os;
 
+    // The return result from invoking sendExpression("command") to OpenModelica Compiler(OMC).
+    private CompilerResult _result;
+
     // Maximum number of compiler errors to display. 
     private int _showMaxErrors = 10;
+
 }

@@ -41,8 +41,11 @@
 
 package ptolemy.domains.openmodelica.lib.omc;
 
+import java.io.IOException;
+
 import ptolemy.domains.openmodelica.lib.exception.ConnectException;
 import ptolemy.domains.openmodelica.lib.omc.CompilerResult;
+import ptolemy.kernel.util.IllegalActionException;
 
 /**
    The interface to the modelica compiler that should be implemented by OMCProxy.
@@ -84,6 +87,12 @@ public interface IOMCProxy {
      */
     public CompilerResult loadFile(String filename) throws ConnectException;
 
+    /** Leave and quit OpenModelica environment.
+     *  @exception ConnectException If quit command couldn't
+     *  be sent to OMC.
+     */
+    public void quit() throws ConnectException;
+    
     /** Send a command to the OpenModelica Compiler(OMC) and fetches the string result.
      *  @param command The command which should be sent to the OMC.
      *  @return CompilerResult The result of sendExpression("command").
@@ -91,10 +100,32 @@ public interface IOMCProxy {
      */
     public CompilerResult sendCommand(String command) throws ConnectException;
 
-    /** Leave and quit OpenModelica environment.
-     *  @exception ConnectException If quit command couldn't
-     *  be sent to OMC.
-     */
-    public void quit() throws ConnectException;
-
+    /**Load the model from the file in the first step. Then, build the
+     * model. Finally, run the simulation executable result of
+     * buildModel() in order to generate the simulation result.
+     * @param fileName File which the model should be loaded from.
+     * @param modelicaScript Modelica command.
+     * @param modelName Name of the model which should be built.
+     * @param fileNamePrefix User preferable name for the result file.
+     * @param startTime The start time of simulation.
+     * @param stopTime The stop time of simulation.
+     * @param numberOfIntervals Number of intervals in the result file.
+     * @param tolerance Tolerance used by the integration method.
+     * @param method Integration method used for simulation.
+     * @param outputFormat Format of the result file.
+     * @param variableFilter Filter for variables that should be stored in the result file.
+     * @param cflags Any standard C language flags.
+     * @param simflags Simulation flags.
+     * @throws ConnectException If commands couldn't
+        be sent to the OMC.
+     * @throws IOException If the executable result of buildModel()
+        couldn't be executed.
+     * @throws IllegalActionException 
+     */    
+    public void simulateModel(String fileName, String modelicaScript,
+            String modelName, String fileNamePrefix, String startTime,
+            String stopTime, int numberOfIntervals, String tolerance,
+            String method, String outputFormat, String variableFilter,
+            String cflags, String simflags) throws ConnectException,
+            IOException, IllegalActionException;
 }
