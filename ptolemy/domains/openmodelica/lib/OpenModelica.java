@@ -40,6 +40,7 @@ import ptolemy.data.IntToken;
 import ptolemy.data.type.BaseType;
 import ptolemy.domains.openmodelica.lib.exception.ConnectException;
 import ptolemy.domains.openmodelica.lib.omc.CompilerResult;
+import ptolemy.domains.openmodelica.lib.omc.OMCCommand;
 import ptolemy.domains.openmodelica.lib.omc.OMCProxy;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
@@ -216,6 +217,7 @@ public class OpenModelica extends TypedAtomicActor {
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         OpenModelica newObject = (OpenModelica) super.clone(workspace);
         try {
+            newObject._omcCommand = OMCCommand.getInstance();
             newObject._omcProxy = OMCProxy.getInstance();
         } catch (Throwable throwable) {
             throw new CloneNotSupportedException("Could not clone "
@@ -237,10 +239,10 @@ public class OpenModelica extends TypedAtomicActor {
                 _debug("OpenModelica Actor Called fire().");
             }
 
-            //  Create a unique instance of OMCLogger and OMCProxy.
+            //  Create a unique instance of OMCProxy.
             _omcProxy = OMCProxy.getInstance();
 
-            //  Simulate the modelica model with the selected parameters.
+            //  Simulate the Modelica model with the selected parameters.
             _omcProxy.simulateModel(fileName.getExpression(),
                     modelicaScript.getExpression(), modelName.getExpression(),
                     fileNamePrefix.getExpression(),
@@ -267,35 +269,39 @@ public class OpenModelica extends TypedAtomicActor {
      *  be sent to the OMC.
      */
     private void _plotPltFile(String fileNamePrefix) throws ConnectException {
-        
+
         // Array for saving the file path.  
         String[] _pltPath = new String[1];
 
-            //Send cd() command to the OpenModelica Compiler(OMC) and fetch working directory of OMC as a result.
-            CompilerResult omcInvokingResult = _omcProxy.sendCommand("cd()");
-            _openModelicaWorkingDirectory = omcInvokingResult.getFirstResult();
-            _openModelicaWorkingDirectory = _openModelicaWorkingDirectory
-                    .replace('"', ' ').trim();
+        // Create a unique instance of OMCCommand.
+        _omcCommand = OMCCommand.getInstance();
 
-            // Save file path in the string array for invoking main() of PxgraphApplication.
+        //Send cd() command to the (OpenModelica Compiler)OMC and fetch working directory of OMC as a result.
+        CompilerResult omcInvokingResult = _omcCommand.sendCommand("cd()");
+        _openModelicaWorkingDirectory = omcInvokingResult.getFirstResult();
+        _openModelicaWorkingDirectory = _openModelicaWorkingDirectory.replace(
+                '"', ' ').trim();
 
-            if (fileNamePrefix.compareTo("") == 0)
-                _pltPath[0] = _openModelicaWorkingDirectory + "/"
-                        + modelName.getExpression() + "_res.plt";
-            else
-                _pltPath[0] = _openModelicaWorkingDirectory + "/"
-                        + fileNamePrefix + "_res.plt";
+        // Save file path in the string array for invoking main() of PxgraphApplication.
+        if (fileNamePrefix.compareTo("") == 0)
+            _pltPath[0] = _openModelicaWorkingDirectory + "/"
+                    + modelName.getExpression() + "_res.plt";
+        else
+            _pltPath[0] = _openModelicaWorkingDirectory + "/" + fileNamePrefix
+                    + "_res.plt";
 
-            PxgraphApplication.main(_pltPath);
+        PxgraphApplication.main(_pltPath);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
+    // OMCCommand Object for accessing a unique source of instance.
+    private OMCCommand _omcCommand;
+
     // OMCProxy Object for accessing a unique source of instance.
     private OMCProxy _omcProxy;
 
-    // The return result from invoking sendExpression("cd()") to OpenModelica Compiler(OMC).
+    // The return result from invoking sendExpression("cd()") to (OpenModelica Compiler)OMC.
     // The return result is the working directory of OMC.
     private String _openModelicaWorkingDirectory = null;
-
 }

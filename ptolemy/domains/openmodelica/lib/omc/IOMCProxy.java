@@ -45,11 +45,10 @@ package ptolemy.domains.openmodelica.lib.omc;
 import java.io.IOException;
 
 import ptolemy.domains.openmodelica.lib.exception.ConnectException;
-import ptolemy.domains.openmodelica.lib.omc.CompilerResult;
 import ptolemy.kernel.util.IllegalActionException;
 
 /**
-   The interface to the modelica compiler that should be implemented by OMCProxy.
+   The interface to the Modelica compiler that should be implemented by OMCProxy.
    
    @author Mana Mirzaei 
    @version $Id$
@@ -58,16 +57,8 @@ import ptolemy.kernel.util.IllegalActionException;
    @Pt.AcceptedRating Red (cxh)
  */
 public interface IOMCProxy {
-
-    /**  Build the Modelica model.
-     *   @param className Main class of the model
-     *   @return CompilerResult The result of sendExpression("command") method.
-     *   @exception ConnectException If buildModel command couldn't
-     *   be sent to the OMC.
-     */
-    public CompilerResult buildModel(String filename) throws ConnectException;
-
-    /** Initialize the communication with the OpenModelica compiler(OMC).
+    
+    /** Initialize the communication with the (OpenModelica compiler)OMC.
      *  @exception ConnectException If we're unable to start communicating with
      *  the server.
      */
@@ -75,31 +66,10 @@ public interface IOMCProxy {
 
     /** Check if there is an error in the return value of sendCommand("command") method and
      *  fetch the error-information of current run.
-     *  @param retval The string returned by the OpenModelica Compiler(OMC).
+     *  @param retval The string returned by the (OpenModelica Compiler)OMC.
      *  @return Checks If the string is actually an error.
      */
     public boolean isError(String retval);
-
-    /** Load Modelica models from the file.
-     *  @param fname The file name.
-     *  @return CompilerResult The result of sendExpression("command") method.
-     *  @exception ConnectException If loadFileInteractiveQualified command couldn't
-     *  be sent to the OMC.
-     */
-    public CompilerResult loadFile(String filename) throws ConnectException;
-
-    /** Leave and quit OpenModelica environment.
-     *  @exception ConnectException If quit command couldn't
-     *  be sent to OMC.
-     */
-    public void quit() throws ConnectException;
-
-    /** Send a command to the OpenModelica Compiler(OMC) and fetches the string result.
-     *  @param command The command which should be sent to the OMC.
-     *  @return CompilerResult The result of sendExpression("command").
-     *  @exception ConnectException If commands couldn't be sent to the OMC.
-     */
-    public CompilerResult sendCommand(String command) throws ConnectException;
 
     /** Load the model from the file in the first step. Then, build the
      *  model. Finally, run the simulation executable result of
@@ -118,7 +88,7 @@ public interface IOMCProxy {
      *  @param cflags Any standard C language flags.
      *  @param simflags Simulation flags.
      *  @throws ConnectException If commands couldn't
-     *   be sent to the OMC.
+     *   be sent to the (OpenModelica Compiler)OMC.
      *  @throws IOException If the executable result of buildModel()
      *   couldn't be executed.
      *  @throws IllegalActionException 
