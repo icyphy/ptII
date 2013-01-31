@@ -100,7 +100,6 @@ public class MetroIIPNDirector extends PNDirector implements
     public MetroIIPNDirector(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        eventLock = Collections.synchronizedList(new ArrayList<Object>());
     }
 
     /** Clone the director into the specified workspace.
@@ -112,10 +111,10 @@ public class MetroIIPNDirector extends PNDirector implements
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         MetroIIPNDirector newObject = (MetroIIPNDirector) super
                 .clone(workspace);
-        newObject.eventLock = Collections
+        newObject._eventLock = Collections
                 .synchronizedList(new ArrayList<Object>());
-        newObject.eventNameID = new Hashtable<String, Integer>();
-        newObject.proposedMetroIIEventList = Collections
+        newObject._eventNameID = new Hashtable<String, Integer>();
+        newObject._proposedMetroIIEventList = Collections
                 .synchronizedList(new ArrayList<Event.Builder>());
         newObject._metroIIEventBlockedThreads = Collections
                 .synchronizedSet(new HashSet());
@@ -148,7 +147,7 @@ public class MetroIIPNDirector extends PNDirector implements
      * @param e
      */
     public synchronized void addProposedMetroIIEvent(Event.Builder e) {
-        proposedMetroIIEventList.add(e);
+        _proposedMetroIIEventList.add(e);
     }
 
     /**
@@ -166,6 +165,16 @@ public class MetroIIPNDirector extends PNDirector implements
                 });
     }
 
+    /**
+     * Implement fire() with MetroII event handling. 
+     * In each iteration, getfire() waits until all other threads are blocked 
+     * and yield returns MetroII events. When getfire() continues, notify the 
+     * threads blocked on MetroII events based on the event status. A thread 
+     * blocked on MetroII event is not notified until the blocking MetroII 
+     * event is NOTIFIED. 
+     * 
+     * The rest of the function is copied from fire() of ProcessDirector
+     */
     @Override
     public void getfire(ResultHandler<Iterable<Builder>> resultHandler)
             throws CollectionAbortedException {
@@ -212,6 +221,10 @@ public class MetroIIPNDirector extends PNDirector implements
                             depth = workspace.releaseReadPermission();
                         }
 
+                        //////////////////////////////////////////////////////////////
+                        /**
+                         * Begin MetroII event handling
+                         */
                         System.out.println(_getActiveThreadsCount());
                         System.out
                                 .println(_getMetroIIEventBlockedThreadsCount());
@@ -225,26 +238,31 @@ public class MetroIIPNDirector extends PNDirector implements
                             wait(1);
                         }
 
-                        System.out.println("events: " + proposedMetroIIEventList.size());
+                        System.out.println("events: "
+                                + _proposedMetroIIEventList.size());
                         ArrayList<Event.Builder> tmp_events = new ArrayList<Event.Builder>(
-                                proposedMetroIIEventList);
+                                _proposedMetroIIEventList);
                         System.out.println("tmp_events: " + tmp_events.size());
-                        proposedMetroIIEventList.clear();
+                        _proposedMetroIIEventList.clear();
                         resultHandler.handleResult(tmp_events);
                         for (Builder etb : tmp_events) {
                             if (etb.getStatus() == Event.Status.NOTIFIED) {
                                 String event_name = etb.getName();
-                                Object lock = eventLock
-                                        .get(eventName2Id(event_name));
+                                Object lock = _eventLock
+                                        .get(_eventName2Id(event_name));
                                 synchronized (lock) {
                                     lock.notifyAll();
                                     System.out.println("notify: " + event_name);
                                 }
 
                             } else {
-                                proposedMetroIIEventList.add(etb);
+                                _proposedMetroIIEventList.add(etb);
                             }
                         }
+                        /**
+                         * End MetroII event handling
+                         */
+                        /////////////////////////////////////////////////////////////
 
                     } catch (InterruptedException e) {
                         // stop all threads
@@ -292,30 +310,30 @@ public class MetroIIPNDirector extends PNDirector implements
         }
     }
 
-    public synchronized int eventName2Id(String event_name) {
-        if (!eventNameID.containsKey(event_name)) {
-            eventNameID.put(event_name, eventLock.size());
-            eventLock.add(new Object());
-        }
-        return eventNameID.get(event_name);
-    }
-
-    public void proposeMetroIIEvent(String suffix) throws InterruptedException {
+    /**
+     * Create a MetroII event with the name: thread.getName()+suffix
+     * Add the MetroII event into the director's event list. 
+     * Block the thread calling proposeMetroIIEvent().
+     * 
+     * @param suffix The suffix of MetroII event name
+     * @throws InterruptedException
+     */
+    public void proposeMetroIIEvent(String suffix)
+            throws InterruptedException {
         // Actor actor = (Actor) getContainer().getContainer();
         Thread current_thread = Thread.currentThread();
         String event_name = current_thread.getName() + suffix;
-        addProposedMetroIIEvent(makeEventBuilder(event_name, Event.Type.BEGIN));
-        
+        addProposedMetroIIEvent(_makeEventBuilder(event_name, Event.Type.BEGIN));
+
         // System.out.println("propose: " + event_name);
-        
-        Object lock = eventLock.get(eventName2Id(event_name));
+
+        Object lock = _eventLock.get(_eventName2Id(event_name));
         synchronized (lock) {
             _metroIIEventBlockedThreads.add(current_thread);
             lock.wait();
         }
         _metroIIEventBlockedThreads.remove(current_thread);
     }
-
 
     ///////////////////////////////////////////////////////////////////
     ////                  protected methods                        ////
@@ -332,15 +350,20 @@ public class MetroIIPNDirector extends PNDirector implements
     ///////////////////////////////////////////////////////////////////
     ////                  protected fields                         ////
 
+    /** The set of threads that are blocked on an MetroII event. */
     protected Set _metroIIEventBlockedThreads = Collections
             .synchronizedSet(new HashSet());
 
     ///////////////////////////////////////////////////////////////////
     ////                  private methods                          ////
-    
-    private List eventLock;
 
-    private Event.Builder makeEventBuilder(String name, Event.Type t) {
+    /**
+     * Create a MetroII event with the given name and type. 
+     * @param name Name of the MetroII event
+     * @param t Type of the MetroII event
+     * @return newly created MetroII event
+     */
+    private Event.Builder _makeEventBuilder(String name, Event.Type t) {
         Event.Builder meb = Event.newBuilder();
         meb.setName(name);
         meb.setOwner(name);
@@ -349,13 +372,39 @@ public class MetroIIPNDirector extends PNDirector implements
         return meb;
     }
 
+    /**
+     * Look up the ID of given MetroII event in the dictionary _eventNameID. 
+     * If not found, add the MetroII event into _eventNameID with a new ID. 
+     *  
+     * @param event_name The name of the event being looked up 
+     * @return The ID of the event
+     */
+    private synchronized int _eventName2Id(String event_name) {
+        if (!_eventNameID.containsKey(event_name)) {
+            _eventNameID.put(event_name, _eventLock.size());
+            _eventLock.add(new Object());
+        }
+        return _eventNameID.get(event_name);
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                   private fields                          ////
 
-    private Hashtable<String, Integer> eventNameID = new Hashtable<String, Integer>();
+    /**
+     * A dictionary mapping event names to IDs
+     */
+    private Hashtable<String, Integer> _eventNameID = new Hashtable<String, Integer>();
 
-    private List proposedMetroIIEventList = Collections
+    /**
+     * The list of MetroII events being proposed by threads. 
+     */
+    private List _proposedMetroIIEventList = Collections
             .synchronizedList(new ArrayList<Event.Builder>());
+
+    /**
+     * The list of locks for each thread. 
+     */
+    private List _eventLock = Collections
+            .synchronizedList(new ArrayList<Object>());;
 
 }
