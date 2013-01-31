@@ -287,7 +287,7 @@ PTINYOS_MOMLROOT=${WORKSPACE}/vendors/ptinyos/moml</localVarText>
       <string>hudson-plugins-emailext-ExtendedEmailPublisher</string>
       <external-property>
         <originalValue class="hudson.plugins.emailext.ExtendedEmailPublisher">
-          <recipientList>ptexternal-devel@chess.eecs.berkeley.edu, cxh@eecs.berkeley.edu</recipientList>
+          <recipientList>ealtech@bennett.eecs.berkeley.edu, cxbrooks@gmail.com, cxh@embedded.eecs.berkeley.edu</recipientList>
           <configuredTriggers>
             <hudson.plugins.emailext.plugins.trigger.UnstableTrigger>
               <email>
