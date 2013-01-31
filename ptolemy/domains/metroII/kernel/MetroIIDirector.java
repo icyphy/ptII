@@ -47,7 +47,6 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Nameable;
-import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
 
 ///////////////////////////////////////////////////////////////////
@@ -301,6 +300,9 @@ public class MetroIIDirector extends Director {
         int iterationsValue = ((IntToken) (iterations.getToken())).intValue();
         if ((iterationsValue > 0) && (_iterationCount >= iterationsValue)) {
             _iterationCount = 0;
+            for (MetroIIActorInterface actor : _actorList) {
+                actor.close();
+            }
             return false;
         }
         return true;
@@ -318,6 +320,7 @@ public class MetroIIDirector extends Director {
         mappingFileName = new FileParameter(this, "mappingFileName");
         iterations = new Parameter(this, "iterations");
         iterations.setTypeEquals(BaseType.INT);
+        iterations.setExpression("-1"); 
     }
 
     ///////////////////////////////////////////////////////////////////

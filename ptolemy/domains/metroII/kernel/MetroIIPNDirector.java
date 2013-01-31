@@ -55,13 +55,51 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
+///////////////////////////////////////////////////////////////////
+//// MetroIIPNDirector
+
+/**
+ * <p> MetroIIPNDirector extends PNDirector and implements the 
+ * MetroIIEventHandler interface. In addition to being blocked on 
+ * read or write, the actors governed by MetroIIPNDirector may 
+ * be blocked by MetroII events: 'Get.End' or 'Put.Begin'. 'Get.End' 
+ * is PROPOSED after a token is successfully obtained from the 
+ * receiver. And the actor is blocked until 'Get.End' is NOTIFIED.
+ * 'Put.Begin' is PROPOSED before trying to put a token into the 
+ * receiver. Similarly, the actor is blocked until 'Put.Begin' is 
+ * NOTIFIED. </p>
+ * 
+ * 
+ * 
+ * 
+ * @author Liangpeng Guo
+ * @version $Id$
+ * @since Ptolemy II 9.1
+ * @Pt.ProposeRating Red (glp)
+ * @Pt.AcceptedRating Red (glp)
+ *
+ */
+
 public class MetroIIPNDirector extends PNDirector implements
         MetroIIEventHandler {
 
+    /** Construct a director in the given container with the given name.
+     *  If the container argument must not be null, or a
+     *  NullPointerException will be thrown.
+     *  If the name argument is null, then the name is set to the
+     *  empty string. Increment the version number of the workspace.
+     *
+     *  Initialize an eventLock vector.
+     *  @param container Container of the director.
+     *  @param name Name of this director.
+     *  @exception IllegalActionException If the director is not compatible
+     *   with the specified container.  Thrown in derived classes.
+     *  @exception NameDuplicationException If the container not a
+     *   CompositeActor and the name collides with an entity in the container.
+     */
     public MetroIIPNDirector(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        // TODO Auto-generated constructor stub
         eventLock = Collections.synchronizedList(new ArrayList<Object>());
     }
 
@@ -77,25 +115,17 @@ public class MetroIIPNDirector extends PNDirector implements
         newObject.eventLock = Collections
                 .synchronizedList(new ArrayList<Object>());
         newObject.eventNameID = new Hashtable<String, Integer>();
-        newObject.events = Collections
+        newObject.proposedMetroIIEventList = Collections
                 .synchronizedList(new ArrayList<Event.Builder>());
-        newObject._proposedThreads = Collections.synchronizedSet(new HashSet());
+        newObject._metroIIEventBlockedThreads = Collections
+                .synchronizedSet(new HashSet());
         return newObject;
     }
 
-    public void initialize() throws IllegalActionException {
-        super.initialize();
-        _firstTimeFire = true;
-    }
-
-    public boolean prefire() throws IllegalActionException {
-        if (_firstTimeFire) {
-            _firstTimeFire = false;
-            return super.prefire();
-        }
-        return true;
-    }
-
+    /**
+     * The same as super class except replacing the PNQueueReceiver 
+     * by MetroIIPNQueueReceiver. 
+     */
     public Receiver newReceiver() {
         MetroIIPNQueueReceiver receiver = new MetroIIPNQueueReceiver();
         _receivers.add(new WeakReference(receiver));
@@ -113,13 +143,17 @@ public class MetroIIPNDirector extends PNDirector implements
         return receiver;
     }
 
-    public List events = Collections
-            .synchronizedList(new ArrayList<Event.Builder>());
-
-    public synchronized void AddEvent(Event.Builder e) {
-        events.add(e);
+    /**
+     * Add a proposed MetroII event into the director's event list. 
+     * @param e
+     */
+    public synchronized void addProposedMetroIIEvent(Event.Builder e) {
+        proposedMetroIIEventList.add(e);
     }
 
+    /**
+     * Implement YieldAdapter interface. 
+     */
     @Override
     public YieldAdapterIterable<Iterable<Builder>> adapter() {
         return new ThreadedYieldAdapter<Iterable<Event.Builder>>()
@@ -179,45 +213,23 @@ public class MetroIIPNDirector extends PNDirector implements
                         }
 
                         System.out.println(_getActiveThreadsCount());
-                        System.out.println(_getProposedThreadsCount());
-                        System.out.println(_getStoppedThreadsCount());
-                        System.out.println(_getBlockedThreadsCount());
-                        //System.out.println("Priority: "+getPriority() getPriority());
-                        System.out.println("Before MetroIIPNDirector wait()");
-
-                        while (!_areThreadsDeadlocked()
-                                && !_areAllThreadsStopped()
-                                && _getActiveThreadsCount() != _getProposedThreadsCount()
-                                        + _getStoppedThreadsCount()
-                                        + _getBlockedThreadsCount()) {
-                            wait(1);
-                        }
-                        System.out.println("After MetroIIPNDirector wait()");
-
-                        System.out.println(_getActiveThreadsCount());
-                        System.out.println(_getProposedThreadsCount());
+                        System.out
+                                .println(_getMetroIIEventBlockedThreadsCount());
                         System.out.println(_getStoppedThreadsCount());
                         System.out.println(_getBlockedThreadsCount());
 
-                        if (_getProposedThreadsCount()
-                                + _getStoppedThreadsCount()
-                                + _getBlockedThreadsCount() == 0) {
-                            continue;
-                        }
-
                         while (!_areThreadsDeadlocked()
                                 && !_areAllThreadsStopped()
-                                && _getActiveThreadsCount() != _getProposedThreadsCount()
-                                        + _getStoppedThreadsCount()
+                                && _getActiveThreadsCount() != _getMetroIIEventBlockedThreadsCount()
                                         + _getBlockedThreadsCount()) {
                             wait(1);
                         }
 
-                        System.out.println("events: " + events.size());
+                        System.out.println("events: " + proposedMetroIIEventList.size());
                         ArrayList<Event.Builder> tmp_events = new ArrayList<Event.Builder>(
-                                events);
+                                proposedMetroIIEventList);
                         System.out.println("tmp_events: " + tmp_events.size());
-                        events.clear();
+                        proposedMetroIIEventList.clear();
                         resultHandler.handleResult(tmp_events);
                         for (Builder etb : tmp_events) {
                             if (etb.getStatus() == Event.Status.NOTIFIED) {
@@ -230,7 +242,7 @@ public class MetroIIPNDirector extends PNDirector implements
                                 }
 
                             } else {
-                                events.add(etb);
+                                proposedMetroIIEventList.add(etb);
                             }
                         }
 
@@ -280,8 +292,6 @@ public class MetroIIPNDirector extends PNDirector implements
         }
     }
 
-    
-    
     public synchronized int eventName2Id(String event_name) {
         if (!eventNameID.containsKey(event_name)) {
             eventNameID.put(event_name, eventLock.size());
@@ -290,19 +300,45 @@ public class MetroIIPNDirector extends PNDirector implements
         return eventNameID.get(event_name);
     }
 
-    public List eventLock;
+    public void proposeMetroIIEvent(String suffix) throws InterruptedException {
+        // Actor actor = (Actor) getContainer().getContainer();
+        Thread current_thread = Thread.currentThread();
+        String event_name = current_thread.getName() + suffix;
+        addProposedMetroIIEvent(makeEventBuilder(event_name, Event.Type.BEGIN));
+        
+        // System.out.println("propose: " + event_name);
+        
+        Object lock = eventLock.get(eventName2Id(event_name));
+        synchronized (lock) {
+            _metroIIEventBlockedThreads.add(current_thread);
+            lock.wait();
+        }
+        _metroIIEventBlockedThreads.remove(current_thread);
+    }
+
+
+    ///////////////////////////////////////////////////////////////////
+    ////                  protected methods                        ////
+
+    /** Return the number of threads that are currently blocked on 
+     *  a MetroII event. 
+     *  @return Return the number of threads that are currently blocked 
+     *  on a MetroII event.
+     */
+    protected final synchronized int _getMetroIIEventBlockedThreadsCount() {
+        return _metroIIEventBlockedThreads.size();
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                  protected fields                         ////
 
-    protected Set _proposedThreads = Collections.synchronizedSet(new HashSet());
-
-    protected final synchronized int _getProposedThreadsCount() {
-        return _proposedThreads.size();
-    }
+    protected Set _metroIIEventBlockedThreads = Collections
+            .synchronizedSet(new HashSet());
 
     ///////////////////////////////////////////////////////////////////
     ////                  private methods                          ////
+    
+    private List eventLock;
 
     private Event.Builder makeEventBuilder(String name, Event.Type t) {
         Event.Builder meb = Event.newBuilder();
@@ -312,12 +348,14 @@ public class MetroIIPNDirector extends PNDirector implements
         meb.setType(t);
         return meb;
     }
-    
+
+
     ///////////////////////////////////////////////////////////////////
     ////                   private fields                          ////
 
     private Hashtable<String, Integer> eventNameID = new Hashtable<String, Integer>();
 
-    private boolean _firstTimeFire;
-    
+    private List proposedMetroIIEventList = Collections
+            .synchronizedList(new ArrayList<Event.Builder>());
+
 }

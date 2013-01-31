@@ -3,6 +3,7 @@ package ptolemy.domains.metroII.kernel;
 import ptolemy.actor.Actor;
 import ptolemy.actor.Director;
 import ptolemy.actor.IOPort;
+import ptolemy.actor.process.TerminateProcessException;
 import ptolemy.data.Token;
 import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event;
 import ptolemy.domains.pn.kernel.PNQueueReceiver;
@@ -17,42 +18,29 @@ public class MetroIIPNQueueReceiver extends PNQueueReceiver {
         return _director;
     }
 
-    public void proposeM2Event(String suffix) throws InterruptedException {
-        // Actor actor = (Actor) getContainer().getContainer();
-        Thread current_thread = Thread.currentThread();
-        String event_name = current_thread.getName() + suffix;
-        _director.AddEvent(makeEventBuilder(event_name,
-                Event.Type.BEGIN));
-        System.out.println("propose: " + event_name);
-        Object lock = _director.eventLock.get(_director
-                .eventName2Id(event_name));
-        synchronized (lock) {
-            _director._proposedThreads.add(current_thread);
-            lock.wait();
-        }
-        _director._proposedThreads.remove(current_thread);
-    }
-
     public Token get() {
         Token t = super.get();
         try {
-            proposeM2Event(".get.end");
+            _director.proposeMetroIIEvent(".get.end");
         } catch (InterruptedException e) {
-            // TODO Auto-generated catch block
             _terminate = true;
-            e.printStackTrace();
+        }
+        if (_terminate) {
+            throw new TerminateProcessException("Interrupted when proposing MetroII events.");
         }
         return t;
     }
 
     public void put(Token token) {
         try {
-            proposeM2Event(".put.begin");
+            _director.proposeMetroIIEvent(".put.begin");
         } catch (InterruptedException e) {
-            // TODO Auto-generated catch block
             _terminate = true;
-            e.printStackTrace();
         }
+        if (_terminate) {
+            throw new TerminateProcessException("Interrupted when proposing MetroII events.");
+        }
+
         super.put(token);
     }
 
@@ -84,15 +72,6 @@ public class MetroIIPNQueueReceiver extends PNQueueReceiver {
 
             _director = (MetroIIPNDirector) director;
         }
-    }
-    
-    private Event.Builder makeEventBuilder(String name, Event.Type t) {
-        Event.Builder meb = Event.newBuilder();
-        meb.setName(name);
-        meb.setOwner(name);
-        meb.setStatus(Event.Status.PROPOSED);
-        meb.setType(t);
-        return meb;
     }
 
 }

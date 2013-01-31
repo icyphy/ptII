@@ -148,6 +148,7 @@ public class MetroIIActorGeneralWrapper extends MetroIIActorBasicWrapper {
     @Override
     public void close() {
         if (state == State.FIRING) {
+            actor.stop();
             eventIterator.dispose();
         }
     }
