@@ -24,9 +24,8 @@
  PT_COPYRIGHT_VERSION_2
  COPYRIGHTENDKEY
  */
-package ptolemy.actor.lib;
+package ptolemy.actor.gui;
 
-import java.awt.BorderLayout;
 import java.io.ByteArrayOutputStream;
 import java.io.FileDescriptor;
 import java.io.FileOutputStream;
@@ -36,13 +35,13 @@ import javax.swing.BoxLayout;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import javax.swing.text.DefaultCaret;
 
 import ptolemy.actor.gui.Effigy;
 import ptolemy.actor.gui.PtolemyEffigy;
-import ptolemy.actor.gui.PtolemyFrame;
 import ptolemy.actor.gui.Tableau;
 import ptolemy.actor.gui.TableauFactory;
-import ptolemy.kernel.CompositeEntity;
+import ptolemy.actor.gui.TextEditor;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
@@ -76,9 +75,7 @@ public class Console extends Tableau {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
-        NamedObj model = container.getModel();
-
-        ConsoleFrame frame = new ConsoleFrame((CompositeEntity) model, this);
+        ConsoleFrame frame = new ConsoleFrame(this);
         setFrame(frame);
     }
 
@@ -87,7 +84,7 @@ public class Console extends Tableau {
 
     /** The frame that is created by an instance of Console.
      */
-    public class ConsoleFrame extends PtolemyFrame {
+    public class ConsoleFrame extends TextEditor {
         /** Construct a frame to display Console.
          *  After constructing this, it is necessary
          *  to call setVisible(true) to make the frame appear.
@@ -99,9 +96,9 @@ public class Console extends Tableau {
          *   configuration attribute.
          *  @exception NameDuplicationException If a name collision occurs.
          */
-        public ConsoleFrame(final CompositeEntity model, Tableau tableau)
+        public ConsoleFrame(Tableau tableau)
                 throws IllegalActionException, NameDuplicationException {
-            super(model, tableau);
+            super(tableau.getTitle());
 
             JPanel component = new JPanel();
             component.setLayout(new BoxLayout(component, BoxLayout.Y_AXIS));
@@ -109,18 +106,18 @@ public class Console extends Tableau {
             // updateMemoryStatistics(memoryArea);
             
             // Display total memory and free memory.
-            final JTextArea memoryArea = new JTextArea("", 20, 80);
+            final JTextArea textArea = new JTextArea("", 20, 80);
 
-            ByteArrayOutputStream baos = new MyByteArrayOutputStream(memoryArea, tableau);
+            ByteArrayOutputStream baos = new MyByteArrayOutputStream(textArea, tableau);
             System.setOut(new PrintStream(baos));
             
-            memoryArea.setText("Standard output is redirected to here."); 
-            memoryArea.setEditable(false);
+            textArea.setText("Standard output is redirected to here."); 
+            textArea.setEditable(false);
 
-            JScrollPane scrollPane = new JScrollPane(memoryArea);
+            ((DefaultCaret) textArea.getCaret()).setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE); 
+            JScrollPane scrollPane = new JScrollPane(textArea);
             
-            component.add(scrollPane);
-            getContentPane().add(component, BorderLayout.CENTER);
+            add(scrollPane); 
         }
         
         /**
