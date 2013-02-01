@@ -1072,21 +1072,13 @@ This method requires that you have PDF printer drivers installed on
 
 </dd>
 <dt> <a name="img"><b>4.8 How do I create an image (GIF or PNG) of a model?</b></a></dt>
-<dd> In the Ptolemy II development tree after Ptolemy II 8.0.1,
-ptolemy/vergil/basic/ExportImage.java will create an image:
 
- <p> To save a gif:</p>
- <pre>
- java -classpath $PTII ptolemy.vergil.basic.export.image.ExportImage model.xml
- </pre>
- <p>or, to save a png:</p>
- <pre>
- java -classpath $PTII ptolemy.vergil.basic.export.image.ExportImage png model.xml
- </pre>
- <p>or, to run the model and then save a png:</p>
- <pre>
- java -classpath $PTII ptolemy.vergil.basic.export.image.ExportImage -run png model.xml
- </pre>
+<dd> In the Ptolemy II development tree after Ptolemy II 8.0.1, the
+File -&gt; Export menu can export models in various formats.
+<br/>It is also possible to export from the command line.
+
+<br/>The ptolemy/vergil/basic/ExportModel.java file will create an image, see
+<a href="http://sisyphus.eecs.berkeley.edu:8079/hudson/job/ptII/javadoc/ptolemy/vergil/basic/export/ExportModel.html" target="_top"><code>http://sisyphus.eecs.berkeley.edu:8079/hudson/job/ptII/javadoc/ptolemy/vergil/basic/export/ExportModel.html</code></a> for documentation.
 
 </dd>
 
