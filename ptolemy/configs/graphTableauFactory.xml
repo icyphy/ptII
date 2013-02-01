@@ -17,8 +17,10 @@
             class="ptolemy.copernicus.gui.GeneratorTableau$Factory"/-->
   <!-- FIXME: does this belong in the View menu? -->
   <property name="JVM Properties"
-            class="ptolemy.actor.gui.JVMTableau$Factory"/>
-  <!-- FIXME: Tcl Shell does not belong in the View menu, nor in basic.
+            class="ptolemy.actor.gui.JVMTableau$Factory"/><property
+  	name="Console" class="ptolemy.actor.lib.Console$Factory">
+</property>
+	<!-- FIXME: Tcl Shell does not belong in the View menu, nor in basic.
     Commented out so that Web Start works
     -->
   <!--property name="Tcl Shell"

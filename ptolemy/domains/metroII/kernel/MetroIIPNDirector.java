@@ -69,6 +69,11 @@ import ptolemy.kernel.util.Workspace;
  * receiver. Similarly, the actor is blocked until 'Put.Begin' is 
  * NOTIFIED. </p>
  * 
+ * Known issue: threads created by Yieldadapter correctly stop but 
+ * the ones created by ProcessDirector do not. It seems stop() is 
+ * called for each thread in ProcessDirector.stop() but no effect 
+ * can be observed. Don't know why.  
+ * BTW, stop() is a deprecated function in java. 
  * 
  * 
  * 
@@ -238,25 +243,30 @@ public class MetroIIPNDirector extends PNDirector implements
                             wait(1);
                         }
 
-                        System.out.println("events: "
-                                + _proposedMetroIIEventList.size());
-                        ArrayList<Event.Builder> tmp_events = new ArrayList<Event.Builder>(
-                                _proposedMetroIIEventList);
-                        System.out.println("tmp_events: " + tmp_events.size());
-                        _proposedMetroIIEventList.clear();
-                        resultHandler.handleResult(tmp_events);
-                        for (Builder etb : tmp_events) {
-                            if (etb.getStatus() == Event.Status.NOTIFIED) {
-                                String event_name = etb.getName();
-                                Object lock = _eventLock
-                                        .get(_eventName2Id(event_name));
-                                synchronized (lock) {
-                                    lock.notifyAll();
-                                    System.out.println("notify: " + event_name);
-                                }
+                        if (!_areThreadsDeadlocked()
+                                && !_areAllThreadsStopped()) {
+                            System.out.println("events: "
+                                    + _proposedMetroIIEventList.size());
+                            ArrayList<Event.Builder> tmp_events = new ArrayList<Event.Builder>(
+                                    _proposedMetroIIEventList);
+                            System.out.println("tmp_events: "
+                                    + tmp_events.size());
+                            _proposedMetroIIEventList.clear();
+                            resultHandler.handleResult(tmp_events);
+                            for (Builder etb : tmp_events) {
+                                if (etb.getStatus() == Event.Status.NOTIFIED) {
+                                    String event_name = etb.getName();
+                                    Object lock = _eventLock
+                                            .get(_eventName2Id(event_name));
+                                    synchronized (lock) {
+                                        lock.notifyAll();
+                                        System.out.println("notify: "
+                                                + event_name);
+                                    }
 
-                            } else {
-                                _proposedMetroIIEventList.add(etb);
+                                } else {
+                                    _proposedMetroIIEventList.add(etb);
+                                }
                             }
                         }
                         /**
@@ -318,8 +328,7 @@ public class MetroIIPNDirector extends PNDirector implements
      * @param suffix The suffix of MetroII event name
      * @throws InterruptedException
      */
-    public void proposeMetroIIEvent(String suffix)
-            throws InterruptedException {
+    public void proposeMetroIIEvent(String suffix) throws InterruptedException {
         // Actor actor = (Actor) getContainer().getContainer();
         Thread current_thread = Thread.currentThread();
         String event_name = current_thread.getName() + suffix;
