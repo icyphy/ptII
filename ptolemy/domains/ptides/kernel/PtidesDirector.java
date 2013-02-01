@@ -1459,6 +1459,19 @@ public class PtidesDirector extends DEDirector {
 
         IOPort port = event.ioPort();
         Double delayOffset = null;
+        
+     // A local source can have a maximum future events parameter.
+        Integer maxFutureEvents = _getIntParameterValue(
+                (NamedObj) event.actor(), "maxFutureEvents");
+        if (maxFutureEvents != null) {
+            int futureEvents = _getNumberOfFutureEventsFrom(event.actor());
+            if (futureEvents > maxFutureEvents) {
+                return false;
+            } else {
+                return true;
+            }
+        }
+        
         if (port != null) {
             Actor actor = (Actor) port.getContainer();
             for (Object ioPort : actor.inputPortList()) {
@@ -1469,20 +1482,7 @@ public class PtidesDirector extends DEDirector {
                     }
                 //}
             } 
-        } else {
-            
-            // A local source can have a maximum future events parameter.
-            Integer maxFutureEvents = _getIntParameterValue(
-                    (NamedObj) event.actor(), "maxFutureEvents");
-            if (maxFutureEvents != null) {
-                int futureEvents = _getNumberOfFutureEventsFrom(event.actor());
-                if (futureEvents > maxFutureEvents) {
-                    return false;
-                } else {
-                    return true;
-                }
-            }
-
+        } else { 
             // A local source can have a delay offset parameter.
             delayOffset = _getDoubleParameterValue((NamedObj) event.actor(),
                     "delayOffset");  
