@@ -79,12 +79,6 @@ public interface IOMCCommand {
      */
     public CompilerResult loadModelicaModel(String modelicaScript) throws ConnectException;
     
-    /** Leave and quit OpenModelica environment.
-     *  @exception ConnectException If quit command couldn't
-     *  be sent to OMC.
-     */
-    public void quitServer() throws ConnectException;
-
     /** Send a command to the OpenModelica Compiler(OMC) and fetch the string result.
      *  @param command The command which should be sent to the OMC.
      *  @return CompilerResult The result of sendExpression("command").

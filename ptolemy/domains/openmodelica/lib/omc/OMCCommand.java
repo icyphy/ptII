@@ -47,8 +47,8 @@ import ptolemy.domains.openmodelica.lib.exception.ConnectException;
 /**    
     <p> It invokes OpenModelica Compiler(OMC) by sending command to the 
     OMC server with different purposes such as building Modelica model by 
-    sending buildModel(), loading Modelica model by sending loadModel(Modelica),
-    loading file by sending loadFile() and quitting the server by sending quit().
+    sending buildModel(), loading Modelica model by sending loadModel(Modelica) and 
+    loading file by sending loadFile().
     It fetches the string result of invocation as well. </p>
 
     @author Mana Mirzaei
@@ -77,7 +77,7 @@ public class OMCCommand implements IOMCCommand {
      *  It provides a unique source of OMCCommand instance.
      */
     public static OMCCommand getInstance() {
-        
+
         if (_omcCommandInstance == null) {
             _omcCommandInstance = new OMCCommand();
         }
@@ -108,23 +108,6 @@ public class OMCCommand implements IOMCCommand {
         return result;
     }
 
-    /** Leave and quit OpenModelica environment.
-     *  Deallocate OMCProxy and OMCLogger objects.
-     *  @exception ConnectException If quit command couldn't
-     *  be sent to OMC.
-     */
-    public void quitServer() throws ConnectException {
-        
-        // Create a unique instance of OMCProxy.
-        _omcProxy = OMCProxy.getInstance();
-        
-        if (_omcProxy.hasInitialized = true) {
-            sendCommand("quit()");
-            _omcProxy = null;
-            _omcLogger = null;
-        }
-    }
-
     /** Send a command to the OpenModelica Compiler(OMC) server and fetches the string result.
      *  @param command The command which should be sent to the OMC.
      *  @return CompilerResult The result of sendExpression("command").
@@ -145,13 +128,12 @@ public class OMCCommand implements IOMCCommand {
 
         // Trim the start and end spaces.
         modelicaCommand = modelicaCommand.trim();
-        
+
         // Create a unique instance of OMCProxy.
         _omcProxy = OMCProxy.getInstance();
-        
-        if (_omcProxy.hasInitialized == false) 
+
+        if (_omcProxy.hasInitialized == false)
             _omcProxy.initServer();
-        
 
         try {
 
@@ -194,9 +176,6 @@ public class OMCCommand implements IOMCCommand {
 
     // Initialization of the number of errors.
     private int _numberOfErrors = 0;
-
-    // OMCLogger Object for accessing a unique source of instance.
-    private OMCLogger _omcLogger;
 
     // OMCProxy Object for accessing a unique source of instance.
     private OMCProxy _omcProxy;

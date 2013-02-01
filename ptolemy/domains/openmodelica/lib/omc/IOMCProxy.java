@@ -71,6 +71,12 @@ public interface IOMCProxy {
      */
     public boolean isError(String retval);
 
+    /** Leave and quit OpenModelica environment.
+     *  @exception ConnectException If quit command couldn't
+     *  be sent to OMC.
+     */
+    public void quitServer() throws ConnectException;   
+    
     /** Load the model from the file in the first step. Then, build the
      *  model. Finally, run the simulation executable result of
      *  buildModel() in order to generate the simulation result.

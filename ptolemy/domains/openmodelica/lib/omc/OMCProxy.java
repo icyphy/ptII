@@ -314,7 +314,20 @@ public class OMCProxy implements IOMCProxy{
         return retval.toLowerCase().contains("error");
     }
 
-       
+    /** Leave and quit OpenModelica environment.
+     *  Deallocate OMCProxy and OMCLogger objects.
+     *  @exception ConnectException If quit command couldn't
+     *  be sent to OMC.
+     */
+    public void quitServer() throws ConnectException {
+        
+        if (hasInitialized = true) {
+            _omcCommand.sendCommand("quit()");
+            _omcProxyInstance = null;
+            _omcLogger = null;
+        }
+    }
+     
     /** Load the model from the file in the first step. Then, build the
      *  model. Finally, run the simulation executable result of
      *  buildModel() in order to generate the simulation result.
@@ -385,9 +398,6 @@ public class OMCProxy implements IOMCProxy{
                 _omcLogger.getInfo(loggerInfo);
                 throw new ConnectException(loggerInfo);
             }
-         
-            // Create a unique instance of OMCCommand.
-            _omcCommand = OMCCommand.getInstance();
             
             // Load Modelica model by sending loadModel(Modelica) to the OMC server.
             _result = _omcCommand.loadModelicaModel(modelicaScript);
@@ -429,9 +439,6 @@ public class OMCProxy implements IOMCProxy{
                         + "\",cflags=\"" + cflags + "\",simflags=\"" + simflags
                         + "\"";
             }
-            
-             // Create a unique instance of OMCCommand.
-            _omcCommand = OMCCommand.getInstance();
             
             // Build the Modelica model by sending buildModel() to the OMC server.
             _result = _omcCommand.buildModel(commands);

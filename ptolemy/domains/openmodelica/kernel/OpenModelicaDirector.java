@@ -81,7 +81,6 @@ public class OpenModelicaDirector extends ContinuousDirector {
         OpenModelicaDirector newObject = (OpenModelicaDirector) super
                 .clone(workspace);
         try {
-            newObject._omcCommand = OMCCommand.getInstance();
             newObject._omcLogger = OMCLogger.getInstance();
             newObject._omcProxy = OMCProxy.getInstance();
         } catch (Throwable throwable) {
@@ -123,9 +122,9 @@ public class OpenModelicaDirector extends ContinuousDirector {
      *  @exception IllegalActionException Not thrown in this base class.
      */
     public boolean postfire() throws IllegalActionException {
-        
+
         Time stopTime = getModelStopTime();
-        
+
         // If the stop time is infinity, then stop execution.
         if (stopTime == Time.POSITIVE_INFINITY) {
             stop();
@@ -143,12 +142,9 @@ public class OpenModelicaDirector extends ContinuousDirector {
     public void wrapup() throws IllegalActionException {
         super.wrapup();
         try {
-            
-            // Create a unique instance of OMCCommand.
-            _omcCommand = OMCCommand.getInstance();   
-            
-            _omcCommand.quitServer();
-        
+
+            _omcProxy.quitServer();
+
             if (_debugging) {
                 _debug("OpenModelica server quited.");
             }
@@ -161,9 +157,6 @@ public class OpenModelicaDirector extends ContinuousDirector {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variable                  ////
-    // OMCCommand Object for accessing a unique source of instance.
-    private OMCCommand _omcCommand;
-    
     // OMCLogger object for accessing a unique source of instance.
     private OMCLogger _omcLogger;
 
