@@ -82,18 +82,19 @@ This FAQ can be found at:
 <li> <a href="#ptolemy II faq: extending"><b>5. Extending Ptolemy II</b></a>
 	<menu>
 	<li> <a href="#Adding actors"><b>5.1 How do I add an actor?</b></a>
-	<li> <a href="#AddingAConfiguration"><b>5.2 How do I add a configuration?</b></a>
+	<li> <a href="#AddingDirectors"><b>5.2 How do I add a director?</b></a>
+	<li> <a href="#AddingAConfiguration"><b>5.3 How do I add a configuration?</b></a>
 
-	<li> <a href="#AddAType"><b>5.3 How do I add a type?</b></a>
-	<li> <a href="#PolymorphicActors"><b>5.4 What makes an actor domain polymorphic?</b></a>
+	<li> <a href="#AddAType"><b>5.4 How do I add a type?</b></a>
+	<li> <a href="#PolymorphicActors"><b>5.5 What makes an actor domain polymorphic?</b></a>
 
-	<li> <a href="#Interfacing to C/C++"><b>5.5 How do I interface to C/C++</b></a>
+	<li> <a href="#Interfacing to C/C++"><b>5.6 How do I interface to C/C++</b></a>
 
-	<li> <a href="#Customizing the GUI"><b>5.6 How do I customize the GUI?</b></a>
-	<li> <a href="#MoML"><b>5.7 What file format are the models stored in?</b></a>
-	<li> <a href="#Scripting"><b>5.8 Is there a scripting interface to Ptolemy II?</b></a>
-	<li> <a href="#CodeGen"><b>5.9 What about Code Generation?</b></a>
-	<li> <a href="#Contributions"><b>5.10 Does the Ptolemy project take software contributions?</b></a>
+	<li> <a href="#Customizing the GUI"><b>5.7 How do I customize the GUI?</b></a>
+	<li> <a href="#MoML"><b>5.8 What file format are the models stored in?</b></a>
+	<li> <a href="#Scripting"><b>5.9 Is there a scripting interface to Ptolemy II?</b></a>
+	<li> <a href="#CodeGen"><b>5.10 What about Code Generation?</b></a>
+	<li> <a href="#Contributions"><b>5.11 Does the Ptolemy project take software contributions?</b></a>
 	</menu>
 
 </menu>
@@ -1146,10 +1147,14 @@ There are at least three unit systems in Ptolemy II.
 
 <dd> See the <code>Add Actor</code> link in
 <code>$PTII/doc/coding/addinganactor.htm</code>, which is available as 
-<a href="http://chess.eecs.berkeley.edu/ptexternal/nightly/doc/coding/addinganactor.htm" target="_top"><code>http://chess.eecs.berkeley.edu/ptexternal/nightly/doc/coding/addinganactor.htm</code></a>
+<a href="http://chess.eecs.berkeley.edu/ptexternal/nightly/doc/coding/addinganactor.htm" target="_top"><code>http://chess.eecs.berkeley.edu/ptexternal/nightly/doc/coding/addinganactor.htm</code></a></dd>
 
+<dt><a name="AddingDirectors"><b>5.2 How do I add a director?</b></a></dt>
+<dd> See the <code>Tutorial</code> link in
+<code>$PTII/doc/index.htm</code>, which is available as
+<a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/ptII/doc/" target="_top"><code>http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/ptII/doc/</code></a></dd>
 
-<dt> <a name="AddingAConfiguration"><b>5.2 How do I add a configuration?</b></a>
+<dt> <a name="AddingAConfiguration"><b>5.3 How do I add a configuration?</b></a>
 <dd> When the <code>$PTII/bin/vergil</code> command is invoked, it reads
 the Ptolemy II onfiguration from
 <code>$PTII/ptolemy/configs/full/configuration.xml</code>.  Other configurations
@@ -1187,7 +1192,7 @@ See the other configurations for ways to build smaller configurations.
  <p>See also <a href="#invoking Ptolemy II?"><b>4.1 How do I invoke Ptolemy II?</b>
 
 
-<dt> <a name="AddAType"><b>5.3 How do I add a type?</b></a>
+<dt> <a name="AddAType"><b>5.4 How do I add a type?</b></a>
 <dd> The Ptolemy Type system is covered in a chapter in "Volume 2:
 Ptolemy II Software Architecture," which can be found via
 <a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/designdoc.htm" target="_top"><code>http://ptolemy.eecs.berkeley.edu/ptolemyII/designdoc.htm</code></a>
@@ -1204,7 +1209,7 @@ system will check types for you.  For examples, see
 <code>$PTII/ptolemy/actor/lib/Security/KeyToken.java</code>.
 
 	
-<dt> <a name="PolymorphicActors"><b>5.4 What makes an actor domain polymorphic?</b></a>
+<dt> <a name="PolymorphicActors"><b>5.5 What makes an actor domain polymorphic?</b></a>
 <dd>
 As for making actors domain polymorphic, the general rule we follow is:
 
@@ -1232,7 +1237,7 @@ select configure).
 in postfire(). This rule only matters in CT because CT may 
 have to backtrack time
 
-<dt> <a name="Interfacing to C/C++"><b>5.5 How do I interface to C/C++</b></a>
+<dt> <a name="Interfacing to C/C++"><b>5.6 How do I interface to C/C++</b></a>
 <dd>
 Ptolemy II is written in Java, and Java has the Java Native Interface
 (JNI), see
@@ -1257,7 +1262,7 @@ that JNI in truly platform independent manner so that the same
 code will work on multiple platforms.
 
 
-<dt> <a name="Customizing the GUI"><b>5.6 How do I customize the GUI?</b></a>
+<dt> <a name="Customizing the GUI"><b>5.7 How do I customize the GUI?</b></a>
 <dd> 
 Ptolemy II uses Diva to display block diagram editors.
  <br>Information about Diva can be found at
@@ -1288,7 +1293,7 @@ adds this feature with this line:
   <a href="http://ptolemy.berkeley.edu/ptolemyII/ptIIlatest/ptII/doc/codeDoc/ptolemy/actor/gui/properties/package-summary.html" target="_top">ptolemy.actor.gui.properties</a>.</p>
   
 
-<dt> <a name="MoML"><b>5.7 What file format are the models stored in?</b></a>
+<dt> <a name="MoML"><b>5.8 What file format are the models stored in?</b></a>
 <dd> Ptolemy II stores models in an XML format called MoML.
 The <a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/designdoc.htm" target="_top">design doc</a> covers MoML in detail.
  <p>The beauty of using a human readable (though verbose) file
@@ -1322,7 +1327,7 @@ transform models.
   <p>In addition, MoML is registered as a MIME type, see
 <a href="http://www.iana.org/assignments/media-types/model/vnd.moml+xml"><code>http://www.iana.org/assignments/media-types/model/vnd.moml+xml</code></a></p>
 
-<dt> <a name="Scripting"><b>5.8 Is there a scripting interface to Ptolemy II ?</b></a>
+<dt> <a name="Scripting"><b>5.9 Is there a scripting interface to Ptolemy II ?</b></a>
 
 <dd> The PythonScript actor includes and interface to
 <a href="http://www.jython.org/#in_browser" target="_top">Jython</a>,
@@ -1346,7 +1351,7 @@ and avoiding the usual edit/compile/run loop.
 
 
 
-<dt> <a name="CodeGen"><b>5.9 What about Code Generation?</b></a>
+<dt> <a name="CodeGen"><b>5.10 What about Code Generation?</b></a>
 
 <dd> Certain versions of Ptolemy II before Ptolemy 8.0 included the Copernicus
   code generator, which is described below.  Portions of the Copernicus code generator
@@ -1510,7 +1515,7 @@ Technologies for Future Embedded and Ubiquitous Systems
     We do not know what (if any) plans they have for releasing
     this capability.
 
-<dt> <a name="Contributions"><b>5.10 Does the Ptolemy project take software contributions?</b></a>
+<dt> <a name="Contributions"><b>5.11 Does the Ptolemy project take software contributions?</b></a>
 <dd> Yes, the Ptolemy project has a long history of folding in software
 contributions from off site developers.
 
