@@ -837,6 +837,14 @@ public class PtidesPlatform extends MirrorComposite {
 
             return result;
         }
+        
+        /** Override the schedule method because it does not make sense
+         *  to schedule Ptides platforms.
+         */
+        protected boolean _schedule(Actor actor, Time timestamp,
+                Time executionTime) throws IllegalActionException { 
+            return true;
+        }
 
         //////////////////////////////////////////////////////////////
         ////                   private methods                    ////
