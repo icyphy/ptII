@@ -179,6 +179,7 @@ public class SysMLSequentialDirector extends Director implements SuperdenseTimeD
                         _debug(request.actor.getFullName()
                                 + " has requested a firing at the current time and microstep.");
                     }
+                    
                     _iterateActorOnce(request.actor);
                     
                     if (_fireAtRequests.size() > 0) {
@@ -438,6 +439,8 @@ public class SysMLSequentialDirector extends Director implements SuperdenseTimeD
                     setIndex(0);
                     return true;
                 }
+            } else {
+                return true;
             }
         }
         if (earliestFireAtRequest.time.compareTo(getModelStopTime()) > 0) {
@@ -593,7 +596,7 @@ public class SysMLSequentialDirector extends Director implements SuperdenseTimeD
             firingsRecordable.recordFiring(FiringEvent.BEFORE_PREFIRE);
         }
         boolean result = true;
-        if (actor.prefire()) {
+        if (actor.prefire() && _schedule(actor, getModelTime(), null)) {
 
             if (firingsRecordable != null) {
                 firingsRecordable.recordFiring(FiringEvent.AFTER_PREFIRE);
