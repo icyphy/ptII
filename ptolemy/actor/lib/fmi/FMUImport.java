@@ -54,6 +54,7 @@ import ptolemy.actor.IOPort;
 import ptolemy.actor.SuperdenseTimeDirector;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
+import ptolemy.actor.continuous.Advanceable;
 import ptolemy.actor.continuous.ContinuousStatefulComponent;
 import ptolemy.actor.continuous.ContinuousStatefulDirector;
 import ptolemy.actor.continuous.ContinuousStepSizeController;
@@ -144,7 +145,7 @@ import com.sun.jna.Pointer;
  * @Pt.AcceptedRating Red (cxh)
  */
 public class FMUImport extends TypedAtomicActor implements
-        ContinuousStepSizeController, ContinuousStatefulComponent {
+        Advanceable, ContinuousStepSizeController, ContinuousStatefulComponent {
     // FIXME: For FMI Co-simulation, we want to extend TypedAtomicActor.
     // For model exchange, we want to extend TypedCompositeActor.
 
@@ -198,6 +199,20 @@ public class FMUImport extends TypedAtomicActor implements
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** Advance to the specified time.
+     *  @return True if advancement to the specified time succeeds.
+     *  @throws IllegalActionException If an error occurs advancing time.
+     */
+    public boolean advance(Time time, int microstep) throws IllegalActionException {
+        double refinedStepSize = _advanceToTime(time, microstep);
+        if (refinedStepSize >= 0.0) {
+            _stepSizeRejected = true;
+            _refinedStepSize = refinedStepSize;
+            return false;
+        }
+        return true;
+    }
 
     /** If the specified attribute is <i>fmuFile</i>, then unzip
      *  the file and load in the .xml file, creating and deleting parameters
@@ -715,6 +730,9 @@ public class FMUImport extends TypedAtomicActor implements
     public boolean postfire() throws IllegalActionException {
         Director director = getDirector();
         _lastCommitTime = director.getModelTime();
+        if (_debugging) {
+            _debug("Committing to time " + _lastCommitTime);
+        }
         if (_stepSizeRejected) {
             // The director is unaware that this FMU
             // has discarded a step. The discarded step
@@ -845,17 +863,13 @@ public class FMUImport extends TypedAtomicActor implements
         }
     }
 
-    /** Implementations of this method should return
-     *  the suggested refined step size for restarting the current integration.
-     *  If any actor returns false when isStepSizeAccurate() is called,
-     *  then this method will be called on all actors that implement this
-     *  interface. The minimum of their returned value will be the new step size.
-     *  If the actor does not need a smaller step size, then
-     *  this method should return the current step size.
+    /** Return suggested refined step size, if the FMU has provided one.
      *  @return The suggested refined step size.
      *  @exception IllegalActionException If the step size cannot be further refined.
      */
     public double refinedStepSize() throws IllegalActionException {
+        // Assume director has handled the failed step.
+        _stepSizeRejected = false;
         // If a refined step size has been suggested by the FMU,
         // report that. Otherwise, divide the current step size in
         // half, if the director is a ContinuousDirector.
@@ -983,7 +997,7 @@ fmiStatus fmiFreeFMUstate(fmiComponent c, fmiFMUstate* FMUstate);
      *  is necessary if the newTime is not equal to the last firing time,
      *  or if it is equal and the newMicrostep is greater than the last firing microstep.
      *  If the step size is rejected, then return a new suggested step size, which
-     *  is either half the specified step size, or, if the FMU supports, the last
+     *  is either half the specified step size, or, if the FMU supports it, the last
      *  successful time reported by the FMU. As a side effect, if the time advance
      *  is successful, then the _lastFireTime and _lastFireMicrostep are updated
      *  to match the arguments, indicating that the FMU has advanced to that time.
@@ -1032,6 +1046,14 @@ fmiStatus fmiFreeFMUstate(fmiComponent c, fmiFMUstate* FMUstate);
             // of the next interval. Ugh. This makes it really hard to write
             // FMUs that control step sizes.
             double stepSize = newTime.subtract(_lastFireTime).getDoubleValue();
+            
+            if (_refinedStepSize >= 0.0 && stepSize > _refinedStepSize) {
+                throw new IllegalActionException(this,
+                        "Previously rejected time advance and suggested a step size of "
+                        + _refinedStepSize
+                        + ", but am being offered a step size of "
+                        + stepSize);
+            }
 
             // The last argument to fmiDoStep is either newStep (for FMI 1.0),
             // which is true if we are not redoing a step, or
@@ -1094,6 +1116,7 @@ of the limitations of newStep.
             // time.
             if (timeAdvance < 0) {
                 // Correct the above values to indicate that we are redoing a step.
+                // FIXME: roll back?
                 time = _lastCommitTime.getDoubleValue();
                 stepSize = newTime.subtract(_lastCommitTime).getDoubleValue();
                 lastArg = 0;
@@ -1118,6 +1141,11 @@ of the limitations of newStep.
             }
             
             // Invoke fmiDoStep.
+            // NOTE: As of FMI 2.0, there is a proposal on the table for "Exact event
+            // handling" that will add two additional arguments to fmiDoStep,
+            // fmiBoolean *upcomingTimeEvent, fmiReal *nextEventTime.  The first
+            // of these will inform this actor that it should call fireAt(), and the
+            // second will provide the time of the fireAt().
             int fmiFlag = ((Integer) _fmiDoStep.invokeInt(new Object[] {
                     _fmiComponent, time, stepSize, lastArg })).intValue();
             
@@ -1149,6 +1177,15 @@ of the limitations of newStep.
                             // beyond the first iteration, and the step size right
                             // now is actually a substep.
                             result = lastSuccessfulTime - _lastCommitTime.getDoubleValue();
+                            if (result >= stepSize) {
+                                throw new IllegalActionException(this, "FMU Rejected step size of "
+                                        + stepSize
+                                        + " at time "
+                                        + time
+                                        + ", but returns a last sucessful time of "
+                                        + lastSuccessfulTime
+                                        + ", which means it should not have rejected the step size.");
+                            }
                         }
                     }
                 }

@@ -42,6 +42,7 @@ import ptolemy.actor.NoRoomException;
 import ptolemy.actor.NoTokenException;
 import ptolemy.actor.Receiver;
 import ptolemy.actor.SuperdenseTimeDirector;
+import ptolemy.actor.continuous.Advanceable;
 import ptolemy.actor.util.Time;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.Token;
@@ -163,6 +164,17 @@ public class SysMLSequentialDirector extends Director implements SuperdenseTimeD
             return;
         }
         
+        // Iterate all the advanceables.
+        // FIXME: Is this really the right thing to do?
+        // Should probably filter outputs. Those marked with "continuous"
+        // variability should be sent to the output unconditionally, and
+        // the corresponding ports should be marked as flow ports.
+        // Those marked "discrete" should be sent to the output conditionally.
+        // But what condition?
+        for (Advanceable advanceable : _getAdvanceables()) {
+            _iterateActorOnce((Actor)advanceable);
+        }
+        
         // If time and microstep match the next firing time, then
         // fire all the actors that have been waiting for this time.
         // The firing order here is the order in which the firing requests were made.
@@ -179,7 +191,6 @@ public class SysMLSequentialDirector extends Director implements SuperdenseTimeD
                         _debug(request.actor.getFullName()
                                 + " has requested a firing at the current time and microstep.");
                     }
-                    
                     _iterateActorOnce(request.actor);
                     
                     if (_fireAtRequests.size() > 0) {
@@ -306,7 +317,11 @@ public class SysMLSequentialDirector extends Director implements SuperdenseTimeD
      */
     public synchronized void initialize() throws IllegalActionException {
         _isInitializing = true;
-
+        _advanceablesVersion = -1;
+        // FIXME: Do we want to start at microstep 0 or 1?
+        // I'm assuming 0 in case some internal model is Continuous.
+        _microstep = 0;
+        
         // Initialize queues.
         if (_inputQueue == null) {
             _inputQueue = new LinkedList<Input>();
@@ -418,7 +433,6 @@ public class SysMLSequentialDirector extends Director implements SuperdenseTimeD
         RefireRequest earliestFireAtRequest = _earliestNextFiringRequest();
         if (earliestFireAtRequest == null) {
             // There is no pending fireAt request.
-            // Time does not advance.
             // Advance directly to the stop time, if it is finite, unless we
             // are embedded.
             if (!isEmbedded()) {
@@ -435,8 +449,10 @@ public class SysMLSequentialDirector extends Director implements SuperdenseTimeD
                     stop();
                     return false;
                 } else {
-                    setModelTime(stopTime);
-                    setIndex(0);
+                    // Attempt to advance to the stop time.
+                    SuperdenseTime advance = _advanceAdvanceables(stopTime, 0);
+                    setModelTime(advance.time);
+                    setIndex(advance.microstep);
                     return true;
                 }
             } else {
@@ -465,13 +481,14 @@ public class SysMLSequentialDirector extends Director implements SuperdenseTimeD
                     _debug("+++ Requesting refiring at " + earliestFireAtRequest.time);
                 }
             } else {
-                setModelTime(earliestFireAtRequest.time);
-                setIndex(earliestFireAtRequest.microstep);
+                SuperdenseTime advance = _advanceAdvanceables(earliestFireAtRequest.time, earliestFireAtRequest.microstep);
+                setModelTime(advance.time);
+                setIndex(advance.microstep);
                 if (_debugging) {
                     _debug("+++ Advancing time to " 
-                            + earliestFireAtRequest.time
+                            + advance.time
                             + " and microstep "
-                            + _microstep);
+                            + advance.microstep);
                 }
             }
         } else if (!isEmbedded()) {
@@ -492,7 +509,7 @@ public class SysMLSequentialDirector extends Director implements SuperdenseTimeD
      */
     public boolean prefire() throws IllegalActionException {
         if (_debugging) {
-            _debug("Director: Called prefire().");
+            _debug("Director: Called prefire() at time " + getModelTime());
         }
         if (isEmbedded()) {
             setModelTime(localClock.getLocalTimeForCurrentEnvironmentTime());
@@ -517,8 +534,71 @@ public class SysMLSequentialDirector extends Director implements SuperdenseTimeD
         _microstep = index;
     }
 
+    /** Set a new value to the current time of the model.
+     *  @exception IllegalActionException If the new time is less than
+     *   the current time returned by getCurrentTime().
+     *  @param newTime The new current simulation time.
+     *  @see #getModelTime()
+     */
+    public void setModelTime(Time newTime) throws IllegalActionException {
+        // FIXME: Needed only for debugging.
+        super.setModelTime(newTime);
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
+    
+    /** Advance time of all actors that implement Advanceable to the
+     *  specified time and microstep. If they all succeed, then return
+     *  the specified time and microstep. Otherwise, return the
+     *  time and microstep that is the minimum of the superdense times
+     *  to which they succeeded.
+     *  @param time The time to advance to.
+     *  @param microstep The microstep to advance to.
+     *  @exception IllegalActionException If an actor refuses to advance time,
+     *   or if the proposed time is in the past.
+     */
+    protected SuperdenseTime _advanceAdvanceables(Time time, int microstep)
+            throws IllegalActionException {
+        Time currentTime = getModelTime();
+        for (Advanceable advanceable : _getAdvanceables()) {
+            int timeCompareToCurrentTime = time.compareTo(currentTime);
+            if (timeCompareToCurrentTime < 0 ||
+                    (timeCompareToCurrentTime == 0 && microstep < _microstep)) {
+                throw new IllegalActionException(this, "Proposed time advance is not an advance. Current time is "
+                        + currentTime
+                        + ", and proposed time is "
+                        + time);
+            }
+            if (!advanceable.advance(time, microstep)) {
+                // Step size has been rejected.
+                double suggestedStepSize = advanceable.refinedStepSize();
+                if (suggestedStepSize > 0) {
+                    // This will presumably only decrease time.
+                    // That will be checked at the start of the next iteration.
+                    time = currentTime.add(suggestedStepSize);
+                    microstep = 1;
+                } else if (suggestedStepSize == 0) {
+                    // Let the microstep advance.
+                    microstep = microstep + 1;
+                    time = currentTime;
+                }
+            }
+        }
+        // Perform one last check for a valid result.
+        int timeCompareToCurrentTime = time.compareTo(currentTime);
+        if (timeCompareToCurrentTime < 0 ||
+                (timeCompareToCurrentTime == 0 && microstep < _microstep)) {
+            throw new IllegalActionException(this, "Proposed time advance is not an advance. Current time is "
+                    + currentTime
+                    + ", and proposed time is "
+                    + time);
+        }
+        SuperdenseTime result = new SuperdenseTime();
+        result.time = time;
+        result.microstep = microstep;
+        return result;
+    }
 
     /** Clear all the input receivers for the specified actor.
      *  @param The actor.
@@ -541,6 +621,8 @@ public class SysMLSequentialDirector extends Director implements SuperdenseTimeD
         }
     }
     
+    // FIXME: need a clone method with at least _advanceablesVersion = -1;
+    
     /** Return the earliest pending fire request.
      *  @return The earliest pending fire request, or null if there
      *   are no pending fireAt requests.
@@ -551,6 +633,24 @@ public class SysMLSequentialDirector extends Director implements SuperdenseTimeD
             return request;
         }
         return null;
+    }
+    
+    /** Return a list of actors under the control of this director that implement
+     *  the {@link Advanceable} interface.
+     */
+    protected List<Advanceable> _getAdvanceables() {
+        if (workspace().getVersion() != _advanceablesVersion) {
+            _advanceablesVersion = workspace().getVersion();
+            CompositeEntity container = (CompositeEntity)getContainer();
+            _advanceables = new LinkedList<Advanceable>();
+            List<Actor> actors = container.deepEntityList();
+            for (Actor actor : actors) {
+                if (actor instanceof Advanceable) {
+                    _advanceables.add((Advanceable)actor);
+                }
+            }
+        }
+        return _advanceables;
     }
 
     /** Return true if the specified port is a flow port.
@@ -643,6 +743,12 @@ public class SysMLSequentialDirector extends Director implements SuperdenseTimeD
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     
+    /** List of actors implementing {@link Advanceable}. */
+    private List<Advanceable> _advanceables;
+    
+    /** Workspace version of the list of Advanceables. */
+    private long _advanceablesVersion = -1;
+    
     /** Fire at times. */
     private PriorityQueue<RefireRequest> _fireAtRequests = null;
 
@@ -696,6 +802,12 @@ public class SysMLSequentialDirector extends Director implements SuperdenseTimeD
         public int hashCode() {
             return time.hashCode();
         }
+    }
+    
+    /** Data structure for storing a superdense time. */
+    public class SuperdenseTime {
+        public Time time;
+        public int microstep;
     }
 
     /** Variant of a Mailbox that overrides the put() method to

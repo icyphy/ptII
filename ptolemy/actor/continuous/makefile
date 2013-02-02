@@ -49,6 +49,7 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
 JSRCS = \
+	Advanceable.java \
 	ContinuousStatefulComponent.java \
 	ContinuousStatefulDirector.java \
 	ContinuousStepSizeController.java
