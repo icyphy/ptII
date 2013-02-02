@@ -520,7 +520,7 @@ public class FMUImport extends TypedAtomicActor implements
             fmiFlag  = ((Integer) function.invoke(Integer.class, new Object[] {
                 _fmiComponent, 
                 0.0, // relativeTolerance. FIXME: What to do with this?  The 2.0beta4 spec says:
-                // "Argument “relativeTolerance” suggests a relative
+                // "Argument "relativeTolerance" suggests a relative
                 // (local) tolerance in case the slave utilizes a
                 // numerical integrator with variable step size and
                 // error estimation.
