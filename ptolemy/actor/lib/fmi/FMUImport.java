@@ -743,7 +743,13 @@ public class FMUImport extends TypedAtomicActor implements
         try {
             _nativeLibrary = _fmiModelDescription.getNativeLibrary();
         } catch (IOException e1) {
-            throw new IllegalActionException(this, "Current platform not supported by this FMU");
+            // Be sure to throw the cause here because if the 
+            // shared library refers to other libraries that are
+            // not found, then the exception should reflect the 
+            // fact that the library was found but the 
+            // load failed.  Under Windows, we may get
+            // "The specified module could not be found."
+            throw new IllegalActionException(this, e1, "Current platform not supported by this FMU");
         }
         if (_nativeLibrary != null) {
             _fmiDoStep = _nativeLibrary.getFunction(
