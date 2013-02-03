@@ -149,7 +149,6 @@ public class Console extends Tableau {
                 super.write(b); 
                 textArea.setText(this.toString()); 
                 tab.show();
-                
             }
             @Override
             public void write(byte[] b, int off, int len)  {

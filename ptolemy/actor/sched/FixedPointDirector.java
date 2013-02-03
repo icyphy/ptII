@@ -760,41 +760,6 @@ public class FixedPointDirector extends StaticSchedulingDirector implements
         }
     }
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected variables               ////
-
-    /** The current index of the model. */
-    protected int _index;
-
-    /** List of all receivers this director has created. */
-    protected List _receivers = new LinkedList();
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
-
-    /** Return true if all the inputs of the specified actor are known.
-     */
-    private boolean _areAllInputsKnown(Actor actor)
-            throws IllegalActionException {
-
-        if (_cachedAllInputsKnown.contains(actor)) {
-            return true;
-        }
-
-        Iterator inputPorts = actor.inputPortList().iterator();
-
-        while (inputPorts.hasNext()) {
-            IOPort inputPort = (IOPort) inputPorts.next();
-
-            if (!inputPort.isKnown()) {
-                return false;
-            }
-        }
-
-        _cachedAllInputsKnown.add(actor);
-        return true;
-    }
-
     /** Fire an actor. Call its prefire() method, and
      *  if that returns true, call its fire() method.
      *  @exception IllegalActionException If the prefire() method
@@ -802,7 +767,7 @@ public class FixedPointDirector extends StaticSchedulingDirector implements
      *   iteration, or if the prefire() or fire() method of the actor
      *   throws it.
      */
-    private void _fireActor(Actor actor) throws IllegalActionException {
+    protected void _fireActor(Actor actor) throws IllegalActionException {
         // Prefire the actor.
         boolean prefireReturns = actor.prefire();
         if (_debugging) {
@@ -855,6 +820,46 @@ public class FixedPointDirector extends StaticSchedulingDirector implements
                 _sendAbsentToAllUnknownOutputsOf(actor);
             }
         }
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected variables               ////
+
+    /** The current index of the model. */
+    protected int _index;
+
+    /** List of all receivers this director has created. */
+    protected List _receivers = new LinkedList();
+
+    /** The set of actors that have been fired in this iteration with
+     *  all inputs known.
+     */
+    protected Set _actorsFinishedFiring = new HashSet();
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
+    /** Return true if all the inputs of the specified actor are known.
+     */
+    private boolean _areAllInputsKnown(Actor actor)
+            throws IllegalActionException {
+
+        if (_cachedAllInputsKnown.contains(actor)) {
+            return true;
+        }
+
+        Iterator inputPorts = actor.inputPortList().iterator();
+
+        while (inputPorts.hasNext()) {
+            IOPort inputPort = (IOPort) inputPorts.next();
+
+            if (!inputPort.isKnown()) {
+                return false;
+            }
+        }
+
+        _cachedAllInputsKnown.add(actor);
+        return true;
     }
 
     /** Return true if this iteration has converged.  The iteration has
@@ -969,10 +974,6 @@ public class FixedPointDirector extends StaticSchedulingDirector implements
      */
     private Set _actorsAllowedToFire = new HashSet();
 
-    /** The set of actors that have been fired in this iteration with
-     *  all inputs known.
-     */
-    private Set _actorsFinishedFiring = new HashSet();
 
     /** Actors that were fired in the most recent invocation of the fire() method. */
     protected Set _actorsFired = new HashSet();

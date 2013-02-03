@@ -113,6 +113,7 @@ public class MappingConstraintSolver implements ConstraintSolver {
                 _eventName2ID.put(eventName, _nextAvailableID);
                 _nextAvailableID++;
             }
+            eventBuilder.setStatus(Event.Status.WAITING);
             presentMetroIIEvent(_eventName2ID
                     .get(eventName));
         }

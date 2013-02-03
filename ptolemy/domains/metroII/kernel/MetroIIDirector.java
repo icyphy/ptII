@@ -239,7 +239,7 @@ public class MetroIIDirector extends Director {
                 _actorList.add(new MetroIIActorBasicWrapper(actor));
             }
         }
-        
+
         _iterationCount = 0;
     }
 
@@ -256,21 +256,27 @@ public class MetroIIDirector extends Director {
         if (!_stopRequested) {
             LinkedList<Event.Builder> globalMetroIIEventList = new LinkedList<Event.Builder>();
 
+            System.out.println("============================== Iteration "
+                    + Integer.toString(_iterationCount)
+                    + " ==============================");
             // Phase 1: base model execution
+            System.out.println("Phase 1:");
             for (MetroIIActorInterface actor : _actorList) {
                 LinkedList<Event.Builder> metroIIEventList = new LinkedList<Event.Builder>();
                 actor.startOrResume(metroIIEventList);
                 globalMetroIIEventList.addAll(metroIIEventList);
             }
-
-            // Phase 2: constraint resolution
-            _mappingConstraintSolver.resolve(globalMetroIIEventList);
-
             for (Event.Builder mtb : globalMetroIIEventList) {
-                System.out.println(mtb.getName());
-                System.out.println(mtb.getStatus());
+                System.out
+                        .format("%-50s %-10s\n", mtb.getName(), mtb.getStatus());
             }
-            System.out.println("==========");
+            // Phase 2: constraint resolution
+            System.out.println("Phase 2:");
+            _mappingConstraintSolver.resolve(globalMetroIIEventList);
+            for (Event.Builder mtb : globalMetroIIEventList) {
+                System.out
+                        .format("%-50s %-10s\n", mtb.getName(), mtb.getStatus());
+            }
         }
 
         if (_stopRequested) {
@@ -320,7 +326,7 @@ public class MetroIIDirector extends Director {
         mappingFileName = new FileParameter(this, "mappingFileName");
         iterations = new Parameter(this, "iterations");
         iterations.setTypeEquals(BaseType.INT);
-        iterations.setExpression("-1"); 
+        iterations.setExpression("-1");
     }
 
     ///////////////////////////////////////////////////////////////////
