@@ -58,43 +58,55 @@ import ptolemy.kernel.util.Workspace;
  *
  * <p>
  * MetroIIActorInterface has to be implemented for each actor 
- * governed by MetroIIDirector. Each actor can be seen as a process
- * that could pause with MetroII events returned. The MetroII 
- * events can then be modified by MetroIIDirector. When the process 
- * is resumed, the continued execution may depend on the updated MetroII 
+ * governed by MetroIIDirector. Each actor can be seen as a process.
+ * The process could pause with MetroII events returned, which is 
+ * also referred to as proposing MetroII events. The MetroII 
+ * events are then modified by MetroIIDirector. When the process 
+ * is resumed, the continued execution depends on the updated MetroII 
  * events. 
  * </p>
+ * 
  * <p>
  * Each iteration has two phases. In Phase 1, MetroIIDirector 
  * calls each actor (no particular order should be presumed. See 
- * Note 1 and 2). Each actor runs until it wants to propose MetroII 
- * events: the actor saves the state and returns with MetroII events. 
+ * Note 1). Each actor runs until it wants to propose MetroII 
+ * events: the actor saves the state and returns MetroII events. 
  * In Phase 2, MetroIIDirector calls the MappingConstraintSolver, 
- * which updates the MetroII events based on the mapping constraints.  
+ * which updates the MetroII events based on the mapping constraints.
+ * Constraint solver.   
  * </p>
  * <p>
- * Note 1: the MetroIIDirector is mainly used for mapping SEPARATED 
- * models (e.g. functional model and architectural model in PBD). 
- * It's highly recommended that the actors (models) are not 
- * connected by any form of wire/signal.  
- * </p>
- * <p>
- * Note 2: In MetroII (complete version), the order of actors being 
+ * Note 1: In MetroII (complete version), the order of actors being 
  * called is determined by the SystemC scheduler.  
  * </p>
  * 
  * <p> A simple way to implement MetroIIActorInterface is to have 
  * each actor wrapped by one of the following wrappers:
  * <ol>
- * <li> MetroIIActorIterationWrapper </li>
+ * <li> MetroIIActorBasicWrapper </li>
  * <li> MetroIIActorGeneralWrapper </li>
  * <ol>
- * MetroIIActorIterationWrapper is used for wrapping a Ptolemy actor 
- * that implements prefire(), fire(), and postfire(). 
- * MetroIIActorGeneralWrapper is used for wrapping a MetroII 
- * compatible actor. A MetroII compatible actor is a MetroIIModalModel 
- * or a MetroIICompositeActor that contains a MetroII compatible director
- * (e.g. MetroIISRDirector, MetroIIPNDirector). 
+ * MetroIIActorBasicWrapper is used for wrapping a Ptolemy actor 
+ * that implements prefire(), fire(), and postfire(). Wrapped by 
+ * MetroIIActorBasicWrapper, the actor will be blocked at three 
+ * occasions: 
+ * <ol>
+ * <li> Before prefire() </li> 
+ * <li> After prefire() and before fire() </li>
+ * <li> After fire() and before postfire() </li>
+ * </ol>  
+ * A MetroII event will be proposed (return to MetroIIDirector) at 
+ * each occasion. The actor is blocked until the event is notified.
+ * </p>
+ * <p>
+ * MetroIIActorGeneralWrapper is used for wrapping a Ptolemy actor 
+ * which implements MetroIIEventHandler, i.e. an actor that 
+ * implements prefire(), getfire(), and postfire() (e.g. MetroIICompositeActor 
+ * that contains MetroIIPNDirector). In addition to proposing events
+ * before prefire(), after prefire() and before fire(), after fire() 
+ * and before postfire(), as MetroIIActorBasicWrapper does, 
+ * MetroIIActorGeneralWrapper allows events to be proposed during 
+ * getfire().  
  * </p>
  * 
  * <p> 
@@ -102,8 +114,8 @@ import ptolemy.kernel.util.Workspace;
  * on the given mapping constraints. A MetroII event is in one of the 
  * three statuses: PROPOSED, WAITING, NOTIFIED. A mapping constraint 
  * is a rendezvous constraint that requires all the
- * specified events are in the status of PROPOSED or NOTIFIED. If an
- * event satisfies all the constraints, the status will be updated to
+ * specified events are in presence when resolving. If an event 
+ * satisfies all the constraints, the status will be updated to
  * NOTIFIED, otherwise the status is updated to WAITING.
  * </p>
  * 
@@ -246,7 +258,7 @@ public class MetroIIDirector extends Director {
     /**
     * Each iteration has two phases. In Phase 1, MetroIIDirector 
     * calls each actor (no particular order should be presumed. See 
-    * Note 1 and 2). Each actor runs until it wants to propose MetroII 
+    * Note 1). Each actor runs until it wants to propose MetroII 
     * events: the actor saves the state and returns with MetroII events. 
     * In Phase 2, MetroIIDirector calls the MappingConstraintSolver, 
     * which updates the MetroII events based on the mapping constraints.  
@@ -301,6 +313,13 @@ public class MetroIIDirector extends Director {
         return newObject;
     }
 
+    /**
+     * The postfire() counts the number of iterations and returns false when 
+     * the number of iteration exceeds the parameter iterations. 
+     * 
+     * postfire() will always return true if the parameter iterations is less 
+     * or equal to 0. 
+     */
     public boolean postfire() throws IllegalActionException {
         _iterationCount++;
         int iterationsValue = ((IntToken) (iterations.getToken())).intValue();
@@ -344,6 +363,8 @@ public class MetroIIDirector extends Director {
      */
     private MappingConstraintSolver _mappingConstraintSolver = new MappingConstraintSolver(
             _maxEvent);
-
+    /**
+     * The list of actors governed by MetroIIDirector
+     */
     private LinkedList<MetroIIActorInterface> _actorList = new LinkedList<MetroIIActorInterface>();
 }

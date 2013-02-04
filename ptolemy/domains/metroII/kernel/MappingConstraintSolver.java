@@ -47,7 +47,7 @@ import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event;
  *  rendezvous constraint. Each mapping constraint is a event pair,
  *  which requires the events are scheduled at the same time. More
  *  precisely, the mapping constraint is satisfied when both events
- *  are either PROPOSED or WAITING. An event status is updated to
+ *  are in presence. An event status is updated to
  *  NOTIFIED when it satisfies all the constraints. Otherwise the
  *  event status is updated to WAITING. </p>
  *
@@ -108,7 +108,7 @@ public class MappingConstraintSolver implements ConstraintSolver {
      * rendezvous constraint. Each mapping constraint is a event pair,
      * which requires the events are scheduled at the same time. More
      * precisely, the mapping constraint is satisfied when both events
-     * are either PROPOSED or WAITING. An event status is updated to
+     * are in presence. An event status is updated to
      * NOTIFIED when it satisfies all the constraints. Otherwise the
      * event status is updated to WAITING. 
      */
