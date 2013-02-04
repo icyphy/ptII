@@ -109,7 +109,7 @@ import ptolemy.kernel.util.Workspace;
  * 
  * <p> Known issues:
  * <ol>
- * <li> the 'stop execution' may not work properly. </li>
+ * <li> the execution may not stop properly. </li>
  * </ol>
  * </p>
  *
@@ -266,9 +266,9 @@ public class MetroIIDirector extends Director {
                 actor.startOrResume(metroIIEventList);
                 globalMetroIIEventList.addAll(metroIIEventList);
             }
-            for (Event.Builder mtb : globalMetroIIEventList) {
+            for (Event.Builder builder : globalMetroIIEventList) {
                 System.out
-                        .format("%-50s %-10s\n", mtb.getName(), mtb.getStatus());
+                        .format("%-50s %-10s\n", builder.getName(), builder.getStatus());
             }
             // Phase 2: constraint resolution
             System.out.println("Phase 2:");

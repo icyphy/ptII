@@ -34,7 +34,6 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Hashtable;
-import java.util.LinkedList;
 
 import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event;
 
@@ -62,7 +61,9 @@ import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event;
  *  returns true if the event satisfies all the mapping
  *  constraints. </li>
  *  </ol>
- * @author glp
+ *  </p>
+ *  
+ * @author Liangpeng Guo
  * @version $Id$
  * @since Ptolemy II 9.1
  * @Pt.ProposeRating Red (glp)
@@ -101,7 +102,18 @@ public class MappingConstraintSolver implements ConstraintSolver {
         return result.toString();
     }
 
-    public void resolve(LinkedList<Event.Builder> metroIIEventList) {
+    /**
+     * Resolve the MetroII event list, updating the event status based 
+     * on the mapping constraints. The mapping constraint is a type of
+     * rendezvous constraint. Each mapping constraint is a event pair,
+     * which requires the events are scheduled at the same time. More
+     * precisely, the mapping constraint is satisfied when both events
+     * are either PROPOSED or WAITING. An event status is updated to
+     * NOTIFIED when it satisfies all the constraints. Otherwise the
+     * event status is updated to WAITING. 
+     */
+    @Override
+    public void resolve(Iterable<Event.Builder> metroIIEventList) {
         // The constraints are resolved in three steps. 
         // STEP 1: reset the constraint solver. 
         reset();
@@ -114,19 +126,8 @@ public class MappingConstraintSolver implements ConstraintSolver {
                 _nextAvailableID++;
             }
             eventBuilder.setStatus(Event.Status.WAITING);
-            presentMetroIIEvent(_eventName2ID
-                    .get(eventName));
+            presentMetroIIEvent(_eventName2ID.get(eventName));
         }
-
-//        if (_debugging) {
-//            _debug(toString());
-//            _debug("Before mapping resolution: ");
-//            for (Event.Builder eventBuilder : metroIIEventList) {
-//                _debug(_eventName2ID.get(eventBuilder.getName())
-//                        + eventBuilder.getName() + " "
-//                        + eventBuilder.getStatus().toString());
-//            }
-//        }
 
         // Step 3: update the statuses of all events. 
         for (Event.Builder eventBuilder : metroIIEventList) {
@@ -135,16 +136,7 @@ public class MappingConstraintSolver implements ConstraintSolver {
                 eventBuilder.setStatus(Event.Status.NOTIFIED);
             }
         }
-        
-//      if (_debugging) {
-//      _debug("After mapping resolution: ");
-//      for (Event.Builder eventBuilder : metroIIEventList) {
-//          _debug(_eventName2ID.get(eventBuilder.getName())
-//                  + eventBuilder.getName() + " "
-//                  + eventBuilder.getStatus().toString());
-//      }
-//  }
-        
+
     }
 
     /** Mark each event on the adjacency matrix of mapping
@@ -152,7 +144,6 @@ public class MappingConstraintSolver implements ConstraintSolver {
      *
      * @param id Event ID that is PROPOSED or WAITING
      */
-    @Override
     public void presentMetroIIEvent(int id) {
         // System.out.print("present M2Event: ");
         // System.out.println(id);
@@ -172,7 +163,6 @@ public class MappingConstraintSolver implements ConstraintSolver {
      *
      * @param id Event ID
      */
-    @Override
     public boolean isSatisfied(int id) {
         // System.out.print("check M2Event: ");
         // System.out.println(id);
@@ -216,6 +206,11 @@ public class MappingConstraintSolver implements ConstraintSolver {
         }
     }
 
+    /**
+     * Read mapping constraints from a file
+     * @param filename Filename of the mapping constraint file. 
+     * @throws IOException
+     */
     public void readMapping(String filename) throws IOException {
         FileInputStream stream = new FileInputStream(filename);
         DataInputStream in = new DataInputStream(stream);
@@ -240,7 +235,7 @@ public class MappingConstraintSolver implements ConstraintSolver {
             reader.close();
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                    private fields                         ////
 
@@ -254,13 +249,12 @@ public class MappingConstraintSolver implements ConstraintSolver {
 
     /** The largest event ID.  */
     private int _currentMAXID;
-    
+
     /** The next available event ID. If an new event is proposed, the
      *  _nextAvailableID is assigned to the new event and
      *  _nextAvailableID is increased by one.
      */
     private int _nextAvailableID = 0;
-
 
     /** The dictionary of event name and ID pair. 
      * 

@@ -48,6 +48,9 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
+///////////////////////////////////////////////////////////////////
+//// MetroIISRDirector
+
 public class MetroIISRDirector extends SRDirector implements
         MetroIIEventHandler {
 

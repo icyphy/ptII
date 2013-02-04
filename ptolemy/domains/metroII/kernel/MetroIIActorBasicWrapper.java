@@ -1,3 +1,31 @@
+/* Basic wrapper for Ptolemy actor to work with MetroIIDirector.
+
+ Copyright (c) 2012-2013 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
+
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
+
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
+
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
+
+ */
+
 package ptolemy.domains.metroII.kernel;
 
 import java.util.LinkedList;
@@ -6,9 +34,35 @@ import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event;
 import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event.Builder;
 import ptolemy.kernel.util.IllegalActionException;
 
+/** <p> MetroIIActorBasicWrapper is used for wrapping a Ptolemy actor
+ * to work with MetroIIDirector. It provides a basic implementation of 
+ * MetroIIActorInterface: prefire(), fire() and postfire() are wrapped 
+ * in startOrResume(). The execution of startOrResume() can be seen as 
+ * follows: 
+ * 
+ * <ol>
+ * <li> 1. Propose MetroII event POSTFIRE_END_PREFIRE_BEGIN </li>
+ * <li> 2. Check if POSTFIRE_END_PREFIRE_BEGIN is Notified. If not, go to 1 </li>
+ * <li> 3. prefire() </li>
+ * <li> 4. Propose MetroII event PREFIRE_END_FIRE_BEGIN </li>
+ * <li> 5. Check if PREFIRE_END_FIRE_BEGIN is Notified. If not, go to 4 </li>
+ * <li> 6. fire() </li>
+ * <li> 7. Propose MetroII event FIRE_END_POSTFIRE_BEGIN </li>
+ * <li> 8. Check if FIRE_END_POSTFIRE_BEGIN is Notified. If not, go to 4 </li>
+ * <li> 9. postfire() </li>
+ * </ol>
+ * 
+ * @author Liangpeng Guo
+ * @version $ld$
+ * @since Ptolemy II 9.1
+ * @Pt.ProposeRating Red (glp)
+ * @Pt.AcceptedRating Red (glp)
+ *
+ */
+
 public class MetroIIActorBasicWrapper implements MetroIIActorInterface {
 
-    /** Construct a Actor-Thread pair.
+    /** Construct a basic wrapper.
      * 
      * @param actor The actor
      * @param type The type of actor
@@ -21,9 +75,31 @@ public class MetroIIActorBasicWrapper implements MetroIIActorInterface {
         currentStateEvent = createMetroIIEvent("PREFIRE_BEGIN");
     }
 
+    /**
+     * Dispose the current execution. 
+     */
     public void close() {
+        this.state = State.POSTFIRE_END_PREFIRE_BEGIN;
+        currentStateEvent = createMetroIIEvent("PREFIRE_BEGIN");
     }
 
+    /**
+    * Implement the MetroIIActorInterface. prefire(), fire() and postfire() are wrapped 
+    * in startOrResume(). The execution of startOrResume() can be seen as 
+    * follows: 
+    * 
+    * <ol>
+    * <li> 1. Propose MetroII event POSTFIRE_END_PREFIRE_BEGIN </li>
+    * <li> 2. Check if POSTFIRE_END_PREFIRE_BEGIN is Notified. If not, go to 1 </li>
+    * <li> 3. prefire() </li>
+    * <li> 4. Propose MetroII event PREFIRE_END_FIRE_BEGIN </li>
+    * <li> 5. Check if PREFIRE_END_FIRE_BEGIN is Notified. If not, go to 4 </li>
+    * <li> 6. fire() </li>
+    * <li> 7. Propose MetroII event FIRE_END_POSTFIRE_BEGIN </li>
+    * <li> 8. Check if FIRE_END_POSTFIRE_BEGIN is Notified. If not, go to 4 </li>
+    * <li> 9. postfire() </li>
+    * </ol>
+     */
     @Override
     public void startOrResume(LinkedList<Builder> metroIIEventList)
             throws IllegalActionException {
@@ -50,8 +126,7 @@ public class MetroIIActorBasicWrapper implements MetroIIActorInterface {
                 if (actor.postfire()) {
                     state = State.POSTFIRE_END_PREFIRE_BEGIN;
                     currentStateEvent = createMetroIIEvent("PREFIRE_BEGIN");
-                }
-                else {
+                } else {
                     // FIXME: handle the request that the actor wants to halt
                     //                if (_debugging) {
                     //                    _debug("Actor requests halt: "
@@ -66,16 +141,16 @@ public class MetroIIActorBasicWrapper implements MetroIIActorInterface {
     ///////////////////////////////////////////////////////////////////
     ////                    protected fields                       ////
 
-    /** Create MetroII event
+    /** Create a MetroII event
      * 
      */
     protected Builder createMetroIIEvent(String name) {
-        Event.Builder meb = Event.newBuilder();
-        meb.setName(actor.getFullName() + "." + name);
-        meb.setOwner(actor.getFullName());
-        meb.setStatus(Event.Status.PROPOSED);
-        meb.setType(Event.Type.GENERIC);
-        return meb;
+        Event.Builder builder = Event.newBuilder();
+        builder.setName(actor.getFullName() + "." + name);
+        builder.setOwner(actor.getFullName());
+        builder.setStatus(Event.Status.PROPOSED);
+        builder.setType(Event.Type.GENERIC);
+        return builder;
     }
 
     /** Current state event
@@ -87,7 +162,7 @@ public class MetroIIActorBasicWrapper implements MetroIIActorInterface {
      * 
      */
     protected State state;
-    
+
     /** Actor state 
      */
     protected enum State {
