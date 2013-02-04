@@ -20,7 +20,7 @@
     </property>
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{350.0, 262.0}">
     </property>
-    <property name="enableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="true">
+    <property name="enableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="false">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Execution time &gt; &#10;model time delay">
@@ -556,7 +556,7 @@
                 <property name="executionTime" class="ptolemy.data.expr.Parameter" value="null">
                 </property>
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={35, 132, 934, 634}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-44, 286, 934, 634}, maximized=false}">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
             </property>
@@ -650,7 +650,7 @@
                 </property>
                 <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
-                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={230, 132, 920, 552}, maximized=false}">
+                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={426, 229, 934, 634}, maximized=false}">
                 </property>
                 <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
                 </property>
