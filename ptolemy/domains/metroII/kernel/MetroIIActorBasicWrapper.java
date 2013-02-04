@@ -53,7 +53,7 @@ import ptolemy.kernel.util.IllegalActionException;
  * </ol>
  * 
  * @author Liangpeng Guo
- * @version $ld$
+ * @version $Id$
  * @since Ptolemy II 9.1
  * @Pt.ProposeRating Red (glp)
  * @Pt.AcceptedRating Red (glp)

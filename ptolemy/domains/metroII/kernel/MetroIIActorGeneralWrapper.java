@@ -44,7 +44,7 @@ import ptolemy.kernel.util.IllegalActionException;
  * compatible actor with MetroIIActorInterface. </p> 
  * 
  * @author Liangpeng Guo
- * @version $ld$
+ * @version $Id$
  * @since Ptolemy II 9.1
  * @Pt.ProposeRating Red (glp)
  * @Pt.AcceptedRating Red (glp)
