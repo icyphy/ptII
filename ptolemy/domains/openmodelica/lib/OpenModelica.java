@@ -33,10 +33,10 @@ package ptolemy.domains.openmodelica.lib;
 
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.data.DoubleToken;
+import ptolemy.data.IntToken;
 import ptolemy.data.expr.FileParameter;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
-import ptolemy.data.IntToken;
 import ptolemy.data.type.BaseType;
 import ptolemy.domains.openmodelica.lib.exception.ConnectException;
 import ptolemy.domains.openmodelica.lib.omc.CompilerResult;
@@ -283,12 +283,13 @@ public class OpenModelica extends TypedAtomicActor {
                 '"', ' ').trim();
 
         // Save file path in the string array for invoking main() of PxgraphApplication.
-        if (fileNamePrefix.compareTo("") == 0)
+        if (fileNamePrefix.compareTo("") == 0) {
             _pltPath[0] = _openModelicaWorkingDirectory + "/"
                     + modelName.getExpression() + "_res.plt";
-        else
+        } else {
             _pltPath[0] = _openModelicaWorkingDirectory + "/" + fileNamePrefix
                     + "_res.plt";
+        }
 
         PxgraphApplication.main(_pltPath);
     }

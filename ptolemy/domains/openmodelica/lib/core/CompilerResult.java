@@ -1,6 +1,5 @@
 package ptolemy.domains.openmodelica.lib.core;
 
-
 public class CompilerResult implements ICompilerResult {
 
     public CompilerResult(String[] result, String error) {

@@ -57,7 +57,7 @@ import ptolemy.kernel.util.IllegalActionException;
    @Pt.AcceptedRating Red (cxh)
  */
 public interface IOMCProxy {
-    
+
     /** Initialize the communication with the (OpenModelica compiler)OMC.
      *  @exception ConnectException If we're unable to start communicating with
      *  the server.
@@ -75,8 +75,8 @@ public interface IOMCProxy {
      *  @exception ConnectException If quit command couldn't
      *  be sent to OMC.
      */
-    public void quitServer() throws ConnectException;   
-    
+    public void quitServer() throws ConnectException;
+
     /** Load the model from the file in the first step. Then, build the
      *  model. Finally, run the simulation executable result of
      *  buildModel() in order to generate the simulation result.

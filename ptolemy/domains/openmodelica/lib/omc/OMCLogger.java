@@ -71,7 +71,7 @@ public class OMCLogger {
 
         // The path of the directory which contains the result files. 
         String logPath = createDirectoryForResult();
- 
+
         String logFileName = logPath + "omcLog.txt";
         try {
             _fileHandler = new FileHandler(logFileName);

@@ -132,8 +132,9 @@ public class OMCCommand implements IOMCCommand {
         // Create a unique instance of OMCProxy.
         _omcProxy = OMCProxy.getInstance();
 
-        if (_omcProxy.hasInitialized == false)
+        if (_omcProxy.hasInitialized == false) {
             _omcProxy.initServer();
+        }
 
         try {
 

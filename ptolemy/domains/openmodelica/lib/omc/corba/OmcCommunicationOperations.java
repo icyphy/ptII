@@ -7,10 +7,9 @@ package ptolemy.domains.openmodelica.lib.omc.corba;
 * Thursday, October 27, 2005 10:11:20 AM CEST
 */
 
-
 // As simple as can be omc communication, sending and recieving of strings.
-public interface OmcCommunicationOperations
-{
-  String sendExpression (String expr);
-  String sendClass (String model);
+public interface OmcCommunicationOperations {
+    String sendExpression(String expr);
+
+    String sendClass(String model);
 } // interface OmcCommunicationOperations

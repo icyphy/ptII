@@ -54,7 +54,7 @@ public interface ICompileError {
     /**
      * @return the line number in the file where this error have occurred
      */
-    
+
     public int getEndLine();
 
     public int getEndColumn();

@@ -77,8 +77,9 @@ public interface IOMCCommand {
      *  @exception ConnectException If the command couldn't
      *  be sent to the OMC.
      */
-    public CompilerResult loadModelicaModel(String modelicaScript) throws ConnectException;
-    
+    public CompilerResult loadModelicaModel(String modelicaScript)
+            throws ConnectException;
+
     /** Send a command to the OpenModelica Compiler(OMC) and fetch the string result.
      *  @param command The command which should be sent to the OMC.
      *  @return CompilerResult The result of sendExpression("command").
