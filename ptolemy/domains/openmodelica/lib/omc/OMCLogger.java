@@ -49,6 +49,7 @@ import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.util.StringUtilities;
 
 /**
    <p>This class saves the log result in the log file in the temporary folder.</p>
@@ -123,10 +124,14 @@ public class OMCLogger {
     public String createDirectoryForResult() {
 
         String logPath = null;
-        String username = System.getenv("USERNAME");
+
+        // Don't call getenv and USERNAME is not set on all platforms
+        //String username = System.getenv("USERNAME");
+        String username = StringUtilities.getProperty("user.name");
         String temp = System.getProperty("java.io.tmpdir");
 
         if (username == null) {
+            System.err.println("Could not get java.io.tmpdir property?  Using 'nobody'.");
             logPath = temp + "/nobody/OpenModelica/";
         } else {
             logPath = temp + "/" + username + "/OpenModelica/";

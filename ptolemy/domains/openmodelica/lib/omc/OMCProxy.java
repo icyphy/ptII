@@ -293,8 +293,14 @@ public class OMCProxy implements IOMCProxy {
             String loggerInfo = "Old OMC CORBA object reference present, assuming OMC is running.";
             _omcLogger.getInfo(loggerInfo);
         }
-        stringifiedObjectReference = _readObjectFromFile();
-        _setupOmcc(stringifiedObjectReference);
+        try {
+            stringifiedObjectReference = _readObjectFromFile();
+            _setupOmcc(stringifiedObjectReference);
+        } catch (Throwable throwable) {
+            throw new RuntimeException("Failed to set up Omcc " + stringifiedObjectReference,
+                    throwable);
+        }
+                                         
         hasInitialized = true;
     }
 
@@ -605,13 +611,18 @@ public class OMCProxy implements IOMCProxy {
             throw new ConnectException(loggerInfo);
         }
 
+        // Don't call getenv and USERNAME is not set on all platforms
+        //String username = System.getenv("USERNAME");
+        String username = StringUtilities.getProperty("user.name");
+
         // The result files of simulation are saved in the user directory in temp.
-        if (System.getenv("USERNAME") == null) {
+        if (username == null) {
+            System.err.println("Could not get java.io.tmpdir property?  Using 'nobody'.");
             omcWorkingDirectory = new File(System.getProperty("java.io.tmpdir")
                     + "/nobody/OpenModelica/");
         } else {
             omcWorkingDirectory = new File(System.getProperty("java.io.tmpdir")
-                    + "/" + System.getenv("USERNAME") + "/OpenModelica/");
+                    + "/" + username + "/OpenModelica/");
         }
 
         String workingDirectory = "Using working directory '"
@@ -632,7 +643,9 @@ public class OMCProxy implements IOMCProxy {
     private String _getPathToObject() {
 
         String fileName = null;
-        String username = System.getenv("USERNAME");
+        // Don't call getenv and USERNAME is not set on all platforms
+        //String username = System.getenv("USERNAME");
+        String username = StringUtilities.getProperty("user.name");
         String temp = System.getProperty("java.io.tmpdir");
 
         switch (OMCProxy.getOs()) {
@@ -640,6 +653,7 @@ public class OMCProxy implements IOMCProxy {
         // Add _corbaSession to the end of (OpenModelica Compiler)OMC CORBA object reference name to make it unique.
         case UNIX:
             if (username == null) {
+                System.err.println("Could not get java.io.tmpdir property?  Using 'nobody'.");
                 username = "nobody";
             }
             if (_corbaSession == null || _corbaSession.equalsIgnoreCase("")) {
@@ -657,8 +671,10 @@ public class OMCProxy implements IOMCProxy {
             }
             break;
         case MAC:
-            String macUsername = System.getenv("USERNAME");
+            //String macUsername = System.getenv("USERNAME");
+            String macUsername = username;
             if (macUsername == null) {
+                System.err.println("Could not get java.io.tmpdir property?  Using 'nobody'.");
                 macUsername = "nobody";
             }
             if (_corbaSession == null || _corbaSession.equalsIgnoreCase("")) {
@@ -679,7 +695,7 @@ public class OMCProxy implements IOMCProxy {
     /** Read the (OpenModelica Compiler)OMC CORBA object reference from a file on a disk.
      *  @return The object reference as a String.
      */
-    private String _readObjectFromFile() {
+    private String _readObjectFromFile() throws IOException {
 
         String path = _getPathToObject();
         File f = new File(path);
@@ -692,11 +708,11 @@ public class OMCProxy implements IOMCProxy {
             br = new BufferedReader(fr);
             stringifiedObjectReference = br.readLine();
         } catch (FileNotFoundException e) {
-            e = new FileNotFoundException(
+            throw new FileNotFoundException(
                     "The OpenModelica Compiler CORBA object path '" + path
                             + "' does not exist!");
         } catch (IOException e) {
-            e = new IOException(
+            throw new IOException(
                     "Unable to read OpenModelica Compiler CORBA object from '"
                             + path + "'");
 
@@ -706,8 +722,7 @@ public class OMCProxy implements IOMCProxy {
                     br.close();
                 }
             } catch (IOException e) {
-                e = new IOException(
-                        "Very weird error indeed, IOException when closing BufferedReader for file '"
+                throw new IOException("Very weird error indeed, IOException when closing BufferedReader for file '"
                                 + path + "'.");
 
             }
@@ -716,8 +731,9 @@ public class OMCProxy implements IOMCProxy {
         return stringifiedObjectReference;
     }
 
-    /** Initialize an ORB, convert the stringified OpenModelica Compiler(OMC) object to a real
-     *  CORBA object and then narrow that object to an OmcCommunication object.
+    /** Initialize an ORB, convert the stringified OpenModelica
+     *  Compiler(OMC) object to a real CORBA object and then narrow
+     *  that object to an OmcCommunication object.
      */
     private synchronized void _setupOmcc(String stringifiedObjectReference) {
 
@@ -731,12 +747,17 @@ public class OMCProxy implements IOMCProxy {
         ORB orb;
         orb = ORB.init(args, null);
 
-        // Convert string to CORBA object. 
-        org.omg.CORBA.Object obj = orb
+        try {
+            // Convert string to CORBA object. 
+            org.omg.CORBA.Object obj = orb
                 .string_to_object(stringifiedObjectReference);
 
-        // Convert object to OmcCommunication object. 
-        omcc = OmcCommunicationHelper.narrow(obj);
+            // Convert object to OmcCommunication object. 
+            omcc = OmcCommunicationHelper.narrow(obj);
+        } catch (Throwable throwable) {
+            throw new RuntimeException("Failed to convert string \""
+                    + stringifiedObjectReference + "\" to an object.", throwable);
+        }
     }
 
     /** Start the (OpenModelica Compiler)OMC server by starting OMCThread.
