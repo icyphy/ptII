@@ -25,7 +25,8 @@ public class MetroIIPNQueueReceiver extends PNQueueReceiver {
             _terminate = true;
         }
         if (_terminate) {
-            throw new TerminateProcessException("Interrupted when proposing MetroII events.");
+            throw new TerminateProcessException(
+                    "Interrupted when proposing MetroII events.");
         }
         return t;
     }
@@ -37,7 +38,8 @@ public class MetroIIPNQueueReceiver extends PNQueueReceiver {
             _terminate = true;
         }
         if (_terminate) {
-            throw new TerminateProcessException("Interrupted when proposing MetroII events.");
+            throw new TerminateProcessException(
+                    "Interrupted when proposing MetroII events.");
         }
 
         super.put(token);

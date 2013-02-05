@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import net.jimblackler.Utils.CollectionAbortedException;
 import net.jimblackler.Utils.ResultHandler;
 import net.jimblackler.Utils.YieldAdapterIterable;
-
 import ptolemy.actor.Actor;
 import ptolemy.domains.de.kernel.DEDirector;
 import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event;
@@ -261,7 +260,7 @@ public class MetroIIDEDirector extends DEDirector implements
             while (true) {
                 int result;
                 result = _fire(resultHandler);
-                assert (result <= 1 && result >= -1);
+                assert result <= 1 && result >= -1;
                 if (result == 1) {
                     continue;
                 } else if (result == -1) {

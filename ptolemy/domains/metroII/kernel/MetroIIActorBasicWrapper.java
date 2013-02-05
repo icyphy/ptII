@@ -29,6 +29,7 @@
 package ptolemy.domains.metroII.kernel;
 
 import java.util.LinkedList;
+
 import ptolemy.actor.Actor;
 import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event;
 import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event.Builder;
@@ -104,7 +105,7 @@ public class MetroIIActorBasicWrapper implements MetroIIActorInterface {
     public void startOrResume(LinkedList<Builder> metroIIEventList)
             throws IllegalActionException {
         if (state == State.POSTFIRE_END_PREFIRE_BEGIN) {
-            assert (currentStateEvent.getName().contains("PREFIRE_BEGIN"));
+            assert currentStateEvent.getName().contains("PREFIRE_BEGIN");
             if (currentStateEvent.getStatus() == Event.Status.NOTIFIED) {
                 if (actor.prefire()) {
                     state = State.PREFIRE_END_FIRE_BEGIN;
@@ -113,7 +114,7 @@ public class MetroIIActorBasicWrapper implements MetroIIActorInterface {
             }
             metroIIEventList.add(currentStateEvent);
         } else if (state == State.PREFIRE_END_FIRE_BEGIN) {
-            assert (currentStateEvent.getName().contains("FIRE_BEGIN"));
+            assert currentStateEvent.getName().contains("FIRE_BEGIN");
             if (currentStateEvent.getStatus() == Event.Status.NOTIFIED) {
                 actor.fire();
                 state = State.FIRE_END_POSTFIRE_BEGIN;
@@ -121,7 +122,7 @@ public class MetroIIActorBasicWrapper implements MetroIIActorInterface {
             }
             metroIIEventList.add(currentStateEvent);
         } else if (state == State.FIRE_END_POSTFIRE_BEGIN) {
-            assert (currentStateEvent.getName().contains("POSTFIRE_BEGIN"));
+            assert currentStateEvent.getName().contains("POSTFIRE_BEGIN");
             if (currentStateEvent.getStatus() == Event.Status.NOTIFIED) {
                 if (actor.postfire()) {
                     state = State.POSTFIRE_END_PREFIRE_BEGIN;

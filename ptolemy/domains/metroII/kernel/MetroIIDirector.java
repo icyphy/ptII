@@ -279,15 +279,15 @@ public class MetroIIDirector extends Director {
                 globalMetroIIEventList.addAll(metroIIEventList);
             }
             for (Event.Builder builder : globalMetroIIEventList) {
-                System.out
-                        .format("%-50s %-10s\n", builder.getName(), builder.getStatus());
+                System.out.format("%-50s %-10s\n", builder.getName(),
+                        builder.getStatus());
             }
             // Phase 2: constraint resolution
             System.out.println("Phase 2:");
             _mappingConstraintSolver.resolve(globalMetroIIEventList);
             for (Event.Builder mtb : globalMetroIIEventList) {
-                System.out
-                        .format("%-50s %-10s\n", mtb.getName(), mtb.getStatus());
+                System.out.format("%-50s %-10s\n", mtb.getName(),
+                        mtb.getStatus());
             }
         }
 
@@ -322,8 +322,8 @@ public class MetroIIDirector extends Director {
      */
     public boolean postfire() throws IllegalActionException {
         _iterationCount++;
-        int iterationsValue = ((IntToken) (iterations.getToken())).intValue();
-        if ((iterationsValue > 0) && (_iterationCount >= iterationsValue)) {
+        int iterationsValue = ((IntToken) iterations.getToken()).intValue();
+        if (iterationsValue > 0 && _iterationCount >= iterationsValue) {
             _iterationCount = 0;
             for (MetroIIActorInterface actor : _actorList) {
                 actor.close();

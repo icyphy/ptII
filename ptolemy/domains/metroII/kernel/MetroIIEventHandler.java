@@ -55,9 +55,8 @@ import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event;
  * @Pt.AcceptedRating Red (glp)
  */
 
-
 public interface MetroIIEventHandler {
-    
+
     /**
      * Return the iterator for the caller function of getfire(). 
      * 

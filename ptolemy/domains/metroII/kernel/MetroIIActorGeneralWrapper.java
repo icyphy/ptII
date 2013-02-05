@@ -59,7 +59,7 @@ public class MetroIIActorGeneralWrapper extends MetroIIActorBasicWrapper {
      * @param thread The thread
      */
     public MetroIIActorGeneralWrapper(Actor actor) {
-        super(actor); 
+        super(actor);
         this.eventIterator = null;
     }
 
@@ -83,7 +83,7 @@ public class MetroIIActorGeneralWrapper extends MetroIIActorBasicWrapper {
          * Start executing the wrapped actor in the thread. 
          */
         if (state == State.POSTFIRE_END_PREFIRE_BEGIN) {
-            assert (currentStateEvent.getName().contains("PREFIRE_BEGIN"));
+            assert currentStateEvent.getName().contains("PREFIRE_BEGIN");
             if (currentStateEvent.getStatus() == Event.Status.NOTIFIED) {
                 if (actor.prefire()) {
                     state = State.PREFIRE_END_FIRE_BEGIN;
@@ -92,7 +92,7 @@ public class MetroIIActorGeneralWrapper extends MetroIIActorBasicWrapper {
             }
             metroIIEventList.add(currentStateEvent);
         } else if (state == State.PREFIRE_END_FIRE_BEGIN) {
-            assert (currentStateEvent.getName().contains("FIRE_BEGIN"));
+            assert currentStateEvent.getName().contains("FIRE_BEGIN");
             if (currentStateEvent.getStatus() == Event.Status.NOTIFIED) {
                 /* The getfire() of each Metropolis actor is invoked by a separate thread.
                  * Each thread is encapsulated by a YieldAdapterIterable, which is used to iterate
@@ -129,7 +129,7 @@ public class MetroIIActorGeneralWrapper extends MetroIIActorBasicWrapper {
                 metroIIEventList.add(currentStateEvent);
             }
         } else if (state == State.FIRE_END_POSTFIRE_BEGIN) {
-            assert (currentStateEvent.getName().contains("POSTFIRE_BEGIN"));
+            assert currentStateEvent.getName().contains("POSTFIRE_BEGIN");
             if (currentStateEvent.getStatus() == Event.Status.NOTIFIED) {
                 if (actor.postfire()) {
                     state = State.POSTFIRE_END_PREFIRE_BEGIN;

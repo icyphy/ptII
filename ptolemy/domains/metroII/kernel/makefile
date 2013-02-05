@@ -53,8 +53,9 @@ PTCLASSALLJARS = \
 JSRCS = \
 	ConstraintSolver.java \
 	MappingConstraintSolver.java \
+	MetroIIActorBasicWrapper.java \
+	MetroIIActorGeneralWrapper.java \
 	MetroIIActorInterface.java \
-	MetroIIActorWrapper.java \
 	MetroIICompositeActor.java \
 	MetroIIDEDirector.java \
 	MetroIIDirector.java \
@@ -64,8 +65,7 @@ JSRCS = \
 	MetroIIPNDirector.java \
 	MetroIIPNQueueReceiver.java \
 	MetroIISRDirector.java \
-	MetroIISystemCDirector.java \
-	PtolemyActorWrapper.java
+	MetroIISystemCDirector.java
 
 OTHER_FILES_TO_BE_JARED =
 
@@ -79,6 +79,8 @@ MISC_FILES =	$(DIRS) test
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	doc \
+	'MetroIIActorBasicWrapper$$State.class' \
+	'MetroIIPNDirector$$1.class' \
 	'MetroIIActorThread$$State.class' \
 	'MetroIIActorThread$$Type.class' \
 	'MetroIICompositeActor$$1.class' \

@@ -62,9 +62,10 @@ public class MetroIISRDirector extends SRDirector implements
      *  @exception NameDuplicationException If the container already contains
      *   an entity with the specified name.
      */
-    public MetroIISRDirector() throws IllegalActionException, NameDuplicationException {
+    public MetroIISRDirector() throws IllegalActionException,
+            NameDuplicationException {
         super();
-        _init(); 
+        _init();
     }
 
     /** Construct a director in the given workspace with an empty name.
@@ -76,10 +77,10 @@ public class MetroIISRDirector extends SRDirector implements
      *  @exception NameDuplicationException If the container already contains
      *   an entity with the specified name.
      */
-    public MetroIISRDirector(Workspace workspace) throws IllegalActionException,
-            NameDuplicationException {
+    public MetroIISRDirector(Workspace workspace)
+            throws IllegalActionException, NameDuplicationException {
         super(workspace);
-        _init(); 
+        _init();
     }
 
     /** Construct a director in the given container with the given name.
@@ -97,12 +98,11 @@ public class MetroIISRDirector extends SRDirector implements
     public MetroIISRDirector(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        _init(); 
+        _init();
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-
 
     /**
      * YieldAdapter interface 
@@ -230,7 +230,7 @@ public class MetroIISRDirector extends SRDirector implements
      * Lookup table for actor by name
      */
     private Hashtable<String, Actor> _nameToActor = new Hashtable<String, Actor>();
-    
+
     /**
      * Current MetroII event list
      */

@@ -54,5 +54,5 @@ public interface ConstraintSolver {
      * @param metroIIEventList MetroII event list
      */
     public void resolve(Iterable<Event.Builder> metroIIEventList);
-    
+
 }
