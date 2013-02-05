@@ -240,15 +240,18 @@ public class MetroIIDirector extends Director {
 
         Nameable container = getContainer();
 
-        Iterator<?> actors = ((CompositeActor) container).deepEntityList()
+        // In the actor library, the container might be an moml.EntityLibrary.
+        if (container instanceof CompositeActor) {
+            Iterator<?> actors = ((CompositeActor) container).deepEntityList()
                 .iterator();
 
-        while (actors.hasNext()) {
-            Actor actor = (Actor) actors.next();
-            if (actor instanceof MetroIIEventHandler) {
-                _actorList.add(new MetroIIActorGeneralWrapper(actor));
-            } else {
-                _actorList.add(new MetroIIActorBasicWrapper(actor));
+            while (actors.hasNext()) {
+                Actor actor = (Actor) actors.next();
+                if (actor instanceof MetroIIEventHandler) {
+                    _actorList.add(new MetroIIActorGeneralWrapper(actor));
+                } else {
+                    _actorList.add(new MetroIIActorBasicWrapper(actor));
+                }
             }
         }
 
