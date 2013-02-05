@@ -1,6 +1,6 @@
-/* A tableau for displaying Console
+/* A tableau for displaying Console messages.
 
- Copyright (c) 2001-2011 The Regents of the University of California.
+ Copyright (c) 2013 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -50,13 +50,13 @@ import ptolemy.kernel.util.NamedObj;
 //// Console
 
 /**
- * A tableau that displays Console. The standard output is redirected 
+ * A tableau that displays Console messgaes.. The standard output is redirected 
  * to here.
  *
  * @author Liangpeng Guo
  * @version $Id$
  * @since Ptolemy II 9.1
- * @Pt.ProposeRating Red (glp)
+ * @Pt.ProposedRating Red (glp)
  * @Pt.AcceptedRating Red (glp)
  */
 public class Console extends Tableau {
@@ -90,7 +90,6 @@ public class Console extends Tableau {
          *  to call setVisible(true) to make the frame appear.
          *  This is typically accomplished by calling show() on
          *  enclosing tableau.Console
-         *  @param model The model to put in this frame, or null if none.
          *  @param tableau The tableau responsible for this frame.
          *  @exception IllegalActionException If the model rejects the
          *   configuration attribute.
