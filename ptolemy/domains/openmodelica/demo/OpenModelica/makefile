@@ -48,6 +48,8 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 
 OTHER_FILES_TO_BE_JARED = \
 	OpenModelica.xml \
+	OpenModelicaComposite.xml \
+	OpenModelicaRecord.xml \
 	dcmotor.mo
 
 EXTRA_SRCS = \

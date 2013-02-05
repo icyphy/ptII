@@ -3,7 +3,7 @@
 # @Version: $Id$
 # @Author: Christopher Brooks (makefile only)
 #
-# @Copyright (c) 2012 The Regents of the University of California.
+# @Copyright (c) 2012-2013 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -31,7 +31,7 @@
 
 ME =		ptolemy/domains/openmodelica/lib
 
-DIRS =		compiler omc test
+DIRS =		compiler core exception omc test
 
 # Root of Ptolemy II directory
 ROOT =		../../../..
@@ -63,7 +63,7 @@ EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 # Files or directories that are present, but that 'make checkjunk'
 # should not complain about
 # Don't include demo or DIRS here, or else 'make sources' will run 'make demo'
-MISC_FILES =  compiler omc test
+MISC_FILES =  compiler core exception omc test
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES

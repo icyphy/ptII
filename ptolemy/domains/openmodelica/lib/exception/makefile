@@ -1,9 +1,9 @@
-# Makefile for OpenModelica compiler.
+# Makefile for OpenModelica compiler exceptions.
 #
 # @Version: $Id$
 # @Author: Christopher Brooks (makefile only)
 #
-# @Copyright (c) 2012 The Regents of the University of California.
+# @Copyright (c) 2012-2013 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -48,11 +48,7 @@ PTCLASSJAR =	$(PTPACKAGE).jar
 
 JSRCS = \
 	CompilerException.java \
-	ConnectException.java \
-	IModelicaCompiler.java \
-	CompilerResult.java \
-	ICompilerResult.java
-	
+	ConnectException.java
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 # Files or directories that are present, but that 'make checkjunk'
