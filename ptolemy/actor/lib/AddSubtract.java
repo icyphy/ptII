@@ -201,19 +201,16 @@ public class AddSubtract extends TypedAtomicActor {
         }
     }
 
-    /** Set the input port greater than or equal to
-     *  <code>BaseType.GENERAL</code> in case backward type inference is
-     *  enabled and the input port has no type declared.
-     *
-     *  @return A set of inequalities.
+    /** Set the plus port to be greater than or equal to the output port
+     *  if backward type inference is enabled.
+     *  @return A set of Inequalities
      */
     @Override
     protected Set<Inequality> _customTypeConstraints() {
-        HashSet<Inequality> result = new HashSet<Inequality>();
-        if (isBackwardTypeInferenceEnabled()
-                && plus.getTypeTerm().isSettable()) {
-            result.add(new Inequality(new TypeConstant(BaseType.GENERAL), plus
-                    .getTypeTerm()));
+        Set<Inequality> result = new HashSet<Inequality>();
+        if (isBackwardTypeInferenceEnabled()) {
+            result.add(new Inequality(output.getTypeTerm(), 
+                    plus.getTypeTerm()));
         }
         return result;
     }
