@@ -90,6 +90,9 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{45.0, 195.0}">
         </property>
+        <port name="R" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
     </entity>
     <entity name="RunCompositeActor" class="ptolemy.actor.lib.hoc.RunCompositeActor">
         <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="1">
@@ -141,12 +144,21 @@
             </port>
         </entity>
         <entity name="XYPlotter" class="ptolemy.actor.lib.gui.XYPlotter">
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={590, 353, 500, 344}, maximized=false}">
             </property>
-            <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute">
+            <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[435.0, 320.0]">
             </property>
+            <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>XYPlotter</title>
+<xRange min="0.0" max="0.1"/>
+<yRange min="0.0" max="0.09870605095307056"/>
+</plot>?>
+            </configure>
         </entity>
         <relation name="relation2" class="ptolemy.actor.TypedIORelation">
             <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;RecordDisassembler._time_&quot;,x=270.0,y=300.0}, tail={id=&quot;XYPlotter.inputX&quot;,x=435.0,y=320.0}, points={} } }">
@@ -172,4 +184,15 @@
         <link port="XYPlotter.inputX" relation="relation2"/>
         <link port="XYPlotter.inputY" relation="relation3"/>
     </entity>
+    <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
+        <property name="init" class="ptolemy.actor.parameters.PortParameter" value="9">
+        </property>
+        <doc>Create a sequence of tokens with increasing value</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{-55, 190}">
+        </property>
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="OpenModelica.R" relation="relation"/>
+    <link port="Ramp.output" relation="relation"/>
 </entity>
