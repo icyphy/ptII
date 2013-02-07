@@ -262,7 +262,7 @@
                 </property>
             </property>
             <property name="ArchitectureMappingModel" class="ptolemy.domains.ptides.lib.SchedulerModel">
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, 55.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{270.0, 55.0}">
                 </property>
                 <configure>
                     <entity name="" class="ptolemy.actor.TypedCompositeActor">
@@ -985,6 +985,8 @@
                             <property name="_location" class="ptolemy.kernel.util.Location" value="[465.0, -10.0]">
                             </property>
                             <entity name="_Controller" class="ptolemy.domains.modal.modal.ModalController">
+                                <property name="errorCause" class="ptolemy.data.expr.Parameter">
+                                </property>
                                 <property name="_library" class="ptolemy.moml.LibraryAttribute">
                                     <configure>
       <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.modal.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory"></property></entity></entity>
@@ -1116,6 +1118,8 @@
                                 </property>
                             </port>
                             <entity name="_Controller" class="ptolemy.domains.modal.modal.ModalController">
+                                <property name="errorCause" class="ptolemy.data.expr.Parameter">
+                                </property>
                                 <property name="_library" class="ptolemy.moml.LibraryAttribute">
                                     <configure>
       <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.modal.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory"></property></entity></entity>
@@ -2031,6 +2035,8 @@
                                 </property>
                             </port>
                             <entity name="_Controller" class="ptolemy.domains.modal.modal.ModalController">
+                                <property name="errorCause" class="ptolemy.data.expr.Parameter">
+                                </property>
                                 <property name="Ellipse" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
                                     <property name="_location" class="ptolemy.kernel.util.Location" value="[370.0, 245.0]">
                                     </property>
@@ -2495,6 +2501,8 @@
                                 </property>
                             </port>
                             <entity name="_Controller" class="ptolemy.domains.modal.modal.ModalController">
+                                <property name="errorCause" class="ptolemy.data.expr.Parameter">
+                                </property>
                                 <property name="_library" class="ptolemy.moml.LibraryAttribute">
                                     <configure>
       <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.modal.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory"></property></entity></entity>
@@ -2914,6 +2922,8 @@
                                 </property>
                             </port>
                             <entity name="_Controller" class="ptolemy.domains.modal.modal.ModalController">
+                                <property name="errorCause" class="ptolemy.data.expr.Parameter">
+                                </property>
                                 <property name="_library" class="ptolemy.moml.LibraryAttribute">
                                     <configure>
       <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.modal.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory"></property></entity></entity>
@@ -3372,7 +3382,7 @@
                 </property>
                 <property name="scheduler" class="ptolemy.data.expr.Parameter" value="ArchitectureMappingModel">
                 </property>
-                <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                <property name="executionTime" class="ptolemy.data.expr.Parameter" value="1.0">
                 </property>
                 <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
@@ -3427,6 +3437,8 @@
                     </property>
                     <property name="scheduler" class="ptolemy.data.expr.Parameter" value="ArchitectureMappingModel">
                     </property>
+                    <property name="executionTime" class="ptolemy.data.expr.Parameter" value="1.0">
+                    </property>
                 </entity>
                 <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
                     <property name="init" class="ptolemy.actor.parameters.PortParameter" value="0">
@@ -3436,7 +3448,7 @@
                     </property>
                     <property name="scheduler" class="ptolemy.data.expr.Parameter" value="ArchitectureMappingModel">
                     </property>
-                    <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                    <property name="executionTime" class="ptolemy.data.expr.Parameter" value="1.0">
                     </property>
                     <port name="trigger" class="ptolemy.actor.TypedIOPort">
                         <property name="input"/>
@@ -3476,8 +3488,8 @@
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
 <title>SequencePlotter</title>
-<xRange min="0.0" max="239.0"/>
-<yRange min="3.010299956639811" max="56.47071809921773"/>
+<xRange min="0.0" max="247.0"/>
+<yRange min="3.010299956639811" max="56.760879180932484"/>
 </plot>?>
                 </configure>
             </entity>
@@ -3501,8 +3513,8 @@
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
 <title>TimedPlotter</title>
-<xRange min="6.2" max="296.2"/>
-<yRange min="3.010299956639811" max="56.47071809921773"/>
+<xRange min="0.0" max="300.0"/>
+<yRange min="3.010299956639811" max="56.760879180932484"/>
 </plot>?>
                 </configure>
             </entity>

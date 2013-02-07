@@ -5,7 +5,7 @@
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
-        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="300">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="1000">
         </property>
         <property name="enableResourceScheduling" class="ptolemy.actor.parameters.SharedParameter" value="true">
         </property>
@@ -1127,7 +1127,7 @@
       <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.modal.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory"></property></entity></entity>
     </configure>
                                 </property>
-                                <property name="M1Size" class="ptolemy.data.expr.Parameter" value="0">
+                                <property name="M1Size" class="ptolemy.data.expr.Parameter" value="2">
                                     <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                                     </property>
                                     <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -3445,7 +3445,7 @@
                         </property>
                     </port>
                 </entity>
-                <entity name="Scale" class="ptolemy.actor.lib.Scale">
+                <entity name="Spectrum" class="ptolemy.actor.lib.Scale">
                     <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
                         <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
                         </property>
@@ -3465,8 +3465,8 @@
                 <link port="trigger" relation="relation"/>
                 <link port="Ramp.output" relation="relation4"/>
                 <link port="Ramp.trigger" relation="relation"/>
-                <link port="Scale.input" relation="relation4"/>
-                <link port="Scale.output" relation="relation3"/>
+                <link port="Spectrum.input" relation="relation4"/>
+                <link port="Spectrum.output" relation="relation3"/>
             </entity>
             <entity name="SequencePlotter" class="ptolemy.actor.lib.gui.SequencePlotter">
                 <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={526, 408, 431, 251}, maximized=false}">
@@ -3488,8 +3488,8 @@
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
 <title>SequencePlotter</title>
-<xRange min="1.7976931348623157E308" max="-1.7976931348623157E308"/>
-<yRange min="1.7976931348623157E308" max="-1.7976931348623157E308"/>
+<xRange min="0.0" max="5.0"/>
+<yRange min="7.0" max="47.0"/>
 </plot>?>
                 </configure>
             </entity>
@@ -3513,8 +3513,8 @@
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
 <title>TimedPlotter</title>
-<xRange min="1.7976931348623157E308" max="-1.7976931348623157E308"/>
-<yRange min="1.7976931348623157E308" max="-1.7976931348623157E308"/>
+<xRange min="150.1" max="950.1"/>
+<yRange min="7.0" max="47.0"/>
 </plot>?>
                 </configure>
             </entity>

@@ -51,6 +51,7 @@ OTHER_FILES_TO_BE_JARED = \
 	CoSimulation.xml \
 	CoSimulationDE.xml \
 	SimulationSDF.xml \
+	CoSimulationSimple.xml \
 	SimulationSysMLSequential.xml
 
 EXTRA_SRCS = \
