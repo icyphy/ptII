@@ -64,6 +64,7 @@ import ptolemy.domains.de.kernel.DEDirector;
 import ptolemy.domains.de.kernel.DEEventQueue;
 import ptolemy.domains.ptides.lib.ErrorHandlingAction;
 import ptolemy.domains.ptides.lib.PtidesPort;
+import ptolemy.domains.sysml.kernel.SysMLSequentialDirector;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
@@ -371,8 +372,10 @@ public class PtidesDirector extends DEDirector {
             return time;
         }
         int newIndex = index;
-        if (index <= getIndex()) {
-            newIndex = Math.max(getIndex(), index) + 1;
+        if (_currentLogicalTime != null && _currentLogicalTime.compareTo(time) == 0 && index <= getIndex()) { 
+            if (!resourceBusy()) {
+                newIndex = Math.max(getIndex(), index) + 1;
+            }
         }
 
         if (_isInitializing) {
@@ -443,8 +446,7 @@ public class PtidesDirector extends DEDirector {
      */
     public void initialize() throws IllegalActionException {
         _inputPortsForPureEvent = new HashMap<TypedIOPort, Set<TypedIOPort>>();
-        _relativeDeadlineForPureEvent = new HashMap<TypedIOPort, Double>();
-        _executionTimes = new HashMap<Actor, Time>();
+        _relativeDeadlineForPureEvent = new HashMap<TypedIOPort, Double>(); 
 
         _calculateSuperdenseDependenices();
         _calculateDelayOffsets();
@@ -1120,31 +1122,6 @@ public class PtidesDirector extends DEDirector {
         }
     }
 
-    /** Return the execution time of a given actor. 
-     * @param actor The actor.
-     * @return The execution Time.
-     * @exception IllegalActionException Thrown if time objects cannot be created.
-     */
-    private Time _getExecutionTime(
-            Actor actor) throws IllegalActionException {
-        Time executionTime = null;
-        if (_executionTimes == null) {
-            _executionTimes = new HashMap<Actor, Time>();
-        }
-        executionTime = _executionTimes.get(actor);
-        if (executionTime == null) {
-            Double executionTimeParam = _getDoubleParameterValue(
-                    (NamedObj) actor, "executionTime");
-            if (executionTimeParam == null) {
-                executionTime = new Time(this, 0.0);
-            } else {
-                executionTime = new Time(this, executionTimeParam);
-            }
-            _executionTimes.put(actor, executionTime);
-        }
-        return executionTime;
-    }
-
     /** Get the next actor that can be fired from a specified event queue. 
      *  Check whether the event is safe to process, the actors prefire
      *  returns true and the event can be scheduled. Because Ptides does
@@ -1205,19 +1182,17 @@ public class PtidesDirector extends DEDirector {
                 }
 
                 if (prefire
-                        && (!_resourceScheduling || 
-                                (_resourceScheduling && (
-                                        (queue != _pureEvents && ptidesEvent.actor() instanceof TimeDelay) ||
-                                        _schedule(
-                                        ptidesEvent.actor(),
-                                        ptidesEvent.timeStamp(),
-                                        _getExecutionTime(
-                                                ptidesEvent.actor())))))) {
-                    _currentLogicalTime = ptidesEvent.timeStamp();
-                    _currentLogicalIndex = ptidesEvent.microstep();
-                    _currentSourceTimestamp = ptidesEvent.sourceTimestamp();
-                    _removeEventsFromQueue(queue, ptidesEvent);
-                    return ptidesEvent.actor();
+                        && (!_resourceScheduling || (
+                                (queue != _pureEvents && ptidesEvent.actor() instanceof TimeDelay) ||
+                                _schedule(ptidesEvent.actor(), ptidesEvent.timeStamp())))) {
+                    if (!(ptidesEvent.actor() instanceof CompositeActor) ||
+                            ((CompositeActor)ptidesEvent.actor()).getDirector().scheduleContainedActors()) {
+                        _currentLogicalTime = ptidesEvent.timeStamp();
+                        _currentLogicalIndex = ptidesEvent.microstep();
+                        _currentSourceTimestamp = ptidesEvent.sourceTimestamp();
+                        _removeEventsFromQueue(queue, ptidesEvent);
+                        return ptidesEvent.actor();
+                    } 
                 }
             }
         }
@@ -1604,9 +1579,7 @@ public class PtidesDirector extends DEDirector {
     private Time _currentSourceTimestamp;
     private int _currentLogicalIndex;
 
-    /** The execution times of actors.
-     */
-    private HashMap<Actor, Time> _executionTimes;
+    
 
     private HashMap<Time, List<PtidesEvent>> _inputEventQueue;
 

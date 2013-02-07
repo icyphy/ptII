@@ -330,7 +330,7 @@ public class StaticSchedulingDirector extends Director {
                 }
                 Actor actor = firing.getActor();
 
-                boolean finished = _schedule(actor, null, null);
+                boolean finished = _schedule(actor, null);
                 if (!finished) {
                     _prefire = false;
                     return false;

@@ -548,6 +548,16 @@ public class Director extends Attribute implements Executable {
         }
         return localClock.getLocalTime();
     }
+    
+    /** Return true if the next actor in the model governed by this director
+     *  can be scheduled. The base class always returns true, but derived
+     *  classes might override this.
+     * @return True if next actor to be fired can be scheduled.
+     * @throws IllegalActionException not thrown here.
+     */
+    public boolean scheduleContainedActors() throws IllegalActionException {
+        return true;
+    }
 
     /** Return a causality interface for the composite actor that
      *  contains this director. This base class returns an
@@ -843,14 +853,15 @@ public class Director extends Attribute implements Executable {
 
         // Reset the flag that causes postfire() to return false.
         _finishRequested = false;
+        _resourceBusy = false;
 
         localClock.resetLocalTime(getModelStartTime());
         localClock.start();
         
 
         _resourceScheduling = false;
-        _resourceSchedulers = new ArrayList();
-        _schedulerForActor = null;
+        _resourceSchedulers = new ArrayList<ResourceSchedulerInterface>();
+        _schedulerForActor = new HashMap<Actor, ResourceSchedulerInterface>();
         for (Object entity : getContainer().attributeList(ResourceSchedulerInterface.class)) { 
             ResourceSchedulerInterface scheduler = (ResourceSchedulerInterface) entity;
             _resourceSchedulers.add(scheduler);
@@ -1251,6 +1262,14 @@ public class Director extends Attribute implements Executable {
      */
     public void resume() throws IllegalActionException {
         localClock.start();
+    }
+    
+    /** Return whether the resourceScheduler for the actor that
+     *  should be fired next is busy.
+     *  @return True if resource scheduler is busy.
+     */
+    public boolean resourceBusy() {
+        return _resourceBusy;
     }
 
     /** Specify the container.  If the specified container is an instance
@@ -1814,7 +1833,7 @@ public class Director extends Attribute implements Executable {
             throws IllegalActionException {
         return Double.MAX_VALUE;
     }
-
+    
     /** Schedule an actor for execution on a ResourceScheduler. If the actor can
      *  execute this method returns true. If resources are not available this 
      *  method returns false. 
@@ -1825,8 +1844,9 @@ public class Director extends Attribute implements Executable {
      *  @exception IllegalActionException Thrown if parameters cannot be read, actor cannot be
      *   scheduled or container cannot be fired at future time.
      */
-    protected boolean _schedule(Actor actor, Time timestamp, Time executionTime)
+    protected boolean _schedule(Actor actor, Time timestamp)
             throws IllegalActionException {
+        _resourceBusy = false;
         ResourceSchedulerInterface scheduler = _getScheduler(actor);
         Time time = null;
         Boolean finished = true;
@@ -1836,10 +1856,9 @@ public class Director extends Attribute implements Executable {
         if (scheduler != null) {
             double deadline = _getDeadline(actor, timestamp);
             time = (scheduler).schedule(actor, getEnvironmentTime(), deadline,
-                    executionTime);
+                    _getExecutionTime(actor));
             finished = _actorFinished(actor);
-            if (time != null && time.getDoubleValue() > 0.0) {
-
+            if (time != null && time.getDoubleValue() > 0.0) { 
                 CompositeActor container = (CompositeActor) ((Attribute)scheduler)
                         .getContainer();
                 container.getDirector().fireContainerAt(
@@ -1848,10 +1867,9 @@ public class Director extends Attribute implements Executable {
             }
         } else if (isEmbedded()) {
             return ((CompositeActor) (((CompositeActor) getContainer()))
-                    .getContainer()).getDirector()._schedule(actor, timestamp,
-                    executionTime);
+                    .getContainer()).getDirector()._schedule(actor, timestamp);
         }
-        return (time == null || finished);
+        return _resourceBusy = (time == null || finished);
     }
 
     /** Find resource scheduler for actor. 
@@ -1864,7 +1882,7 @@ public class Director extends Attribute implements Executable {
         }
         Object object = _schedulerForActor.get(actor);
         if (!_schedulerForActor.containsKey(actor)) {
-            if (object == null) { 
+            if (object == null) {  
                 for (Parameter parameter : ((NamedObj) actor).attributeList(Parameter.class)) {
                     try {
                         Token paramToken = ((Parameter) parameter)
@@ -1898,10 +1916,12 @@ public class Director extends Attribute implements Executable {
                         // Do nothing, the resource scheduler might
                         // have been deleted.
                     } 
+                
                     if (!_schedulerForActor.containsKey(actor)) {
                         _schedulerForActor.put(actor, null);
                     }
-                }
+                    
+                } 
             }
         }
         if (object != null) {
@@ -1966,6 +1986,36 @@ public class Director extends Attribute implements Executable {
         }
     }
 
+    /** Return the value of the executionTime parameter of an actor, if
+     *  specified. Otherwise, return null. 
+     * @param actor The actor.
+     * @return The execution time or null if no execution time is specified.
+     * @exception IllegalActionException Thrown if time objects cannot be created.
+     */
+    private Time _getExecutionTime(
+            Actor actor) throws IllegalActionException {
+        Time executionTime = null;
+        if (_executionTimes == null) {
+            _executionTimes = new HashMap<Actor, Time>();
+        }
+        executionTime = _executionTimes.get(actor);
+        if (executionTime == null) {
+            Double executionTimeParam = null;
+            Parameter parameter = (Parameter) ((NamedObj) actor).getAttribute("executionTime");
+            if (parameter != null && parameter.getToken() != null) {
+                executionTimeParam = Double.valueOf(((DoubleToken) parameter.getToken()).doubleValue());
+            } 
+            
+            if (executionTimeParam == null) {
+                executionTime = new Time(this, 0.0);
+            } else {
+                executionTime = new Time(this, executionTimeParam);
+            }
+            _executionTimes.put(actor, executionTime);
+        }
+        return executionTime;
+    }
+
     /** Initialize parameters. This is called by the constructor.
      *  @exception IllegalActionException
      *  @exception NameDuplicationException
@@ -1981,17 +2031,23 @@ public class Director extends Attribute implements Executable {
         stopTime.setTypeEquals(BaseType.DOUBLE);
         
         _defaultMicrostep = 0;
+        _executionTimes = new HashMap<Actor, Time>();
         
     }
     
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     
+    /** The execution times of actors.
+     */
+    private HashMap<Actor, Time> _executionTimes;
+
     /** Flag indicating that this director has been forced to behave
      *  as if it were at the top level.
      */
     private transient boolean _notEmbeddedForced = false;
     
+    /** Contains a map of actors and the ResourceScheduler that is specified for the actor. */
     private HashMap<Actor, ResourceSchedulerInterface> _schedulerForActor;
 
     /** Start time. */
@@ -1999,5 +2055,7 @@ public class Director extends Attribute implements Executable {
 
     /** Stop time. */
     private transient Time _stopTime;
+    
+    private boolean _resourceBusy;
 
 }

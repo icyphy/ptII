@@ -33,6 +33,7 @@ import java.util.List;
 import java.util.PriorityQueue;
 
 import ptolemy.actor.Actor;
+import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
 import ptolemy.actor.FiringEvent;
 import ptolemy.actor.FiringsRecordable;
@@ -43,10 +44,12 @@ import ptolemy.actor.NoTokenException;
 import ptolemy.actor.Receiver;
 import ptolemy.actor.SuperdenseTimeDirector;
 import ptolemy.actor.continuous.Advanceable;
+import ptolemy.actor.sched.FixedPointDirector;
 import ptolemy.actor.util.Time;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
+import ptolemy.domains.de.kernel.DEDirector;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
@@ -179,13 +182,14 @@ public class SysMLSequentialDirector extends Director implements SuperdenseTimeD
         // fire all the actors that have been waiting for this time.
         // The firing order here is the order in which the firing requests were made.
         if (_fireAtRequests.size() > 0) {
-            RefireRequest request = _fireAtRequests.peek();
+            RefireRequest request = _fireAtRequests.peek(); 
             if (currentTime.equals(request.time) && _microstep == request.microstep) {
                 // Time matches.
                 while(true) {
                     if (_stopRequested) {
                         return;
-                    }
+                    }  
+                    
                     request = _fireAtRequests.poll();
                     if (_debugging) {
                         _debug(request.actor.getFullName()
@@ -195,6 +199,9 @@ public class SysMLSequentialDirector extends Director implements SuperdenseTimeD
                     
                     if (_fireAtRequests.size() > 0) {
                         request = _fireAtRequests.peek();
+                        if (!_schedule(request.actor, getModelTime())) { 
+                            break;
+                        }
                         if (!currentTime.equals(request.time) || _microstep != request.microstep) {
                             break;
                         }
@@ -207,20 +214,25 @@ public class SysMLSequentialDirector extends Director implements SuperdenseTimeD
         }
         // Next, iterate actors until the input queue is empty.
         while (_inputQueue.size() > 0 && !_stopRequested) {
+            Input input = _inputQueue.get(0); 
+            IOPort port = input.receiver.getContainer();
+            int channel = port.getChannelForReceiver(input.receiver);
+            Actor actor = (Actor)port.getContainer();
+            if (!_schedule(actor, getModelTime())) {
+                break;
+            }
+            
             // Input queue is not empty. Extract
             // an input from the queue and deposit in the receiver, unless
             // it is an event from a flow port, in which case the value
             // has already been updated.
-            Input input = _inputQueue.remove(0);
+            input = _inputQueue.remove(0);
             
             // Make sure the actor will have exactly one input event.
             // Normally, the receivers will already be cleared, but a misbehaving
             // actor that doesn't read all its inputs, or an actor that has had
             // input ports added to it that it is not aware of will not have
-            // cleared its receivers.
-            IOPort port = input.receiver.getContainer();
-            int channel = port.getChannelForReceiver(input.receiver);
-            Actor actor = (Actor)port.getContainer();
+            // cleared its receivers.  
             _clearReceivers(actor);
 
             if (!input.isChangeEvent) {                
@@ -297,7 +309,7 @@ public class SysMLSequentialDirector extends Director implements SuperdenseTimeD
             }
         }
 
-        _fireAtRequests.add(request);
+        _fireAtRequests.add(request); 
         if (_debugging) {
             _debug(actor.getFullName()
                     + " requests firing at time "
@@ -415,6 +427,16 @@ public class SysMLSequentialDirector extends Director implements SuperdenseTimeD
     public Receiver newReceiver() {
         return new SysMLSequentialReceiver();
     }
+    
+    /** Return true if next actor in list of fire requests was scheduled
+     *  and can execute.
+     *  @return true If next actor can execute.
+     *  @exception IllegalActionExcepiton If request to resource scheduler fails.
+     */
+    public boolean scheduleContainedActors() throws IllegalActionException { 
+        RefireRequest request = _fireAtRequests.peek();  
+        return _schedule(request.actor, getModelTime()); 
+    }
 
     /** Return false if a stop has been requested or if
      *  the model has reached deadlock. Otherwise, if there is a
@@ -476,7 +498,7 @@ public class SysMLSequentialDirector extends Director implements SuperdenseTimeD
                 
         if (earliestFireAtRequest.time.compareTo(Time.POSITIVE_INFINITY) < 0) {
             if (isEmbedded()) {
-                fireContainerAt(earliestFireAtRequest.time);
+                fireContainerAt(earliestFireAtRequest.time, earliestFireAtRequest.microstep);
                 if (_debugging) {
                     _debug("+++ Requesting refiring at " + earliestFireAtRequest.time);
                 }
@@ -512,8 +534,13 @@ public class SysMLSequentialDirector extends Director implements SuperdenseTimeD
             _debug("Director: Called prefire() at time " + getModelTime());
         }
         if (isEmbedded()) {
-            setModelTime(localClock.getLocalTimeForCurrentEnvironmentTime());
-
+            setModelTime(localClock.getLocalTimeForCurrentEnvironmentTime()); 
+            Director containingDirector = ((CompositeActor)((CompositeActor)getContainer()).getContainer()).getDirector();
+            if (containingDirector instanceof DEDirector) {
+                setIndex(((DEDirector)containingDirector).getIndex());
+            } else if (containingDirector instanceof FixedPointDirector) {
+                setIndex(((FixedPointDirector)containingDirector).getIndex());
+            }
             if (_debugging) {
                 _debug("-- Setting current time to " + getModelTime());
             }
@@ -696,7 +723,7 @@ public class SysMLSequentialDirector extends Director implements SuperdenseTimeD
             firingsRecordable.recordFiring(FiringEvent.BEFORE_PREFIRE);
         }
         boolean result = true;
-        if (actor.prefire() && _schedule(actor, getModelTime(), null)) {
+        if (actor.prefire()) {
 
             if (firingsRecordable != null) {
                 firingsRecordable.recordFiring(FiringEvent.AFTER_PREFIRE);
