@@ -36,22 +36,11 @@ import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event.Builder;
 import ptolemy.kernel.util.IllegalActionException;
 
 /** <p> MetroIIActorBasicWrapper is used for wrapping a Ptolemy actor
- * to work with MetroIIDirector. It provides a basic implementation of 
- * MetroIIActorInterface: prefire(), fire() and postfire() are wrapped 
- * in startOrResume(). The execution of startOrResume() can be seen as 
- * follows: 
+ * to work with a MetroIIDirector. It provides a basic implementation of 
+ * MetroIIActorInterface.  
+ * </p>
  * 
- * <ol>
- * <li> 1. Propose MetroII event POSTFIRE_END_PREFIRE_BEGIN </li>
- * <li> 2. Check if POSTFIRE_END_PREFIRE_BEGIN is Notified. If not, go to 1 </li>
- * <li> 3. prefire() </li>
- * <li> 4. Propose MetroII event PREFIRE_END_FIRE_BEGIN </li>
- * <li> 5. Check if PREFIRE_END_FIRE_BEGIN is Notified. If not, go to 4 </li>
- * <li> 6. fire() </li>
- * <li> 7. Propose MetroII event FIRE_END_POSTFIRE_BEGIN </li>
- * <li> 8. Check if FIRE_END_POSTFIRE_BEGIN is Notified. If not, go to 4 </li>
- * <li> 9. postfire() </li>
- * </ol>
+ * 
  * 
  * @author Liangpeng Guo
  * @version $Id$
@@ -79,28 +68,30 @@ public class MetroIIActorBasicWrapper implements MetroIIActorInterface {
     /**
      * Dispose the current execution. 
      */
-    public void close() {
+    public void reset() {
         this.state = State.POSTFIRE_END_PREFIRE_BEGIN;
         currentStateEvent = createMetroIIEvent("PREFIRE_BEGIN");
     }
 
     /**
-    * Implement the MetroIIActorInterface. prefire(), fire() and postfire() are wrapped 
-    * in startOrResume(). The execution of startOrResume() can be seen as 
-    * follows: 
-    * 
+    * The functions prefire(), fire() and postfire() 
+    * are wrapped in startOrResume() as follows: 
     * <ol>
-    * <li> 1. Propose MetroII event POSTFIRE_END_PREFIRE_BEGIN </li>
-    * <li> 2. Check if POSTFIRE_END_PREFIRE_BEGIN is Notified. If not, go to 1 </li>
-    * <li> 3. prefire() </li>
-    * <li> 4. Propose MetroII event PREFIRE_END_FIRE_BEGIN </li>
-    * <li> 5. Check if PREFIRE_END_FIRE_BEGIN is Notified. If not, go to 4 </li>
-    * <li> 6. fire() </li>
-    * <li> 7. Propose MetroII event FIRE_END_POSTFIRE_BEGIN </li>
-    * <li> 8. Check if FIRE_END_POSTFIRE_BEGIN is Notified. If not, go to 4 </li>
-    * <li> 9. postfire() </li>
+    * <li> Propose MetroII event POSTFIRE_END_PREFIRE_BEGIN and wait for 
+    * the event being notified</li>
+    * <li> prefire() </li>
+    * <li> Propose MetroII event PREFIRE_END_FIRE_BEGIN and wait for the 
+    * event being notified</li>
+    * <li> fire() </li>
+    * <li> Propose MetroII event FIRE_END_POSTFIRE_BEGIN and wait for the 
+    * the event being notified</li>
+    * <li> postfire() </li>
     * </ol>
-     */
+    * where 'wait' means checking the status of MetroII event. If notified, 
+    * continue execution, otherwise proposing the same event again.
+    * 
+    * @param metroIIEventList A list of MetroII events. 
+    */
     @Override
     public void startOrResume(LinkedList<Builder> metroIIEventList)
             throws IllegalActionException {

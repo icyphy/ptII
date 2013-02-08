@@ -146,7 +146,7 @@ public class MetroIIActorGeneralWrapper extends MetroIIActorBasicWrapper {
      * Stop and dispose any associated thread. 
      */
     @Override
-    public void close() {
+    public void reset() {
         if (state == State.FIRING) {
             eventIterator.dispose();
             actor.stop();

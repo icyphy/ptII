@@ -79,12 +79,7 @@ public class MappingConstraintSolver implements ConstraintSolver {
     public MappingConstraintSolver(int size) {
         _mapping = new int[size][size];
         _size = size;
-        for (int i = 0; i < _size; i++) {
-            for (int j = 0; j < _size; j++) {
-                _mapping[i][j] = 0;
-            }
-        }
-        _currentMAXID = 0;
+        _initialize(); 
     }
 
     /** Return the adjacency matrix of mapping constraints as a
@@ -236,6 +231,18 @@ public class MappingConstraintSolver implements ConstraintSolver {
         }
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
+    private void _initialize() {
+        for (int i = 0; i < _size; i++) {
+            for (int j = 0; j < _size; j++) {
+                _mapping[i][j] = 0;
+            }
+        }
+        _currentMAXID = 0;
+    }
+    
     ///////////////////////////////////////////////////////////////////
     ////                    private fields                         ////
 

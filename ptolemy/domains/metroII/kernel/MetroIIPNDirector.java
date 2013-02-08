@@ -230,11 +230,14 @@ public class MetroIIPNDirector extends PNDirector implements
                         /**
                          * Begin MetroII event handling
                          */
-                        System.out.println(_getActiveThreadsCount());
-                        System.out
-                                .println(_getMetroIIEventBlockedThreadsCount());
-                        System.out.println(_getStoppedThreadsCount());
-                        System.out.println(_getBlockedThreadsCount());
+                        System.out.println("# Active Threads: "
+                                + _getActiveThreadsCount());
+                        System.out.println("# Blocked Threads (MoetroII) "
+                                + _getMetroIIEventBlockedThreadsCount());
+                        System.out.println("# Stopped Threads (MoetroII) "
+                                + _getStoppedThreadsCount());
+                        System.out.println("# Blocked Threads (Receiver): "
+                                + _getBlockedThreadsCount());
 
                         while (!_areThreadsDeadlocked()
                                 && !_areAllThreadsStopped()
@@ -362,6 +365,22 @@ public class MetroIIPNDirector extends PNDirector implements
     /** The set of threads that are blocked on an MetroII event. */
     protected Set _metroIIEventBlockedThreads = Collections
             .synchronizedSet(new HashSet());
+
+    /**
+     * Notify all the threads blocked on MetroII events. 
+     * Request finish on all the receivers. 
+     */
+    @Override
+    protected void _requestFinishOnReceivers() {
+        Thread current_thread = Thread.currentThread();
+        for (Object lock : _eventLock) {
+            synchronized (lock) {
+                _metroIIEventBlockedThreads.remove(current_thread);
+                lock.notifyAll();
+            }
+        }
+        super._requestFinishOnReceivers();
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                  private methods                          ////

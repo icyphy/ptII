@@ -46,6 +46,7 @@ import ptolemy.kernel.util.IllegalActionException;
  * @Pt.ProposeRating Red (glp)
  * @Pt.AcceptedRating Red (glp)
 */
+// FIXME: startOrResumable
 
 public interface MetroIIActorInterface {
     ///////////////////////////////////////////////////////////////////
@@ -73,8 +74,8 @@ public interface MetroIIActorInterface {
     public void startOrResume(LinkedList<Event.Builder> metroIIEventList)
             throws IllegalActionException;
 
-    /** Dispose any state it saves
+    /** Reset the state of startOrResumable
      * 
      */
-    public void close();
+    public void reset();
 }

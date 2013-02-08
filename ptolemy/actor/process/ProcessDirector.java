@@ -776,23 +776,9 @@ public class ProcessDirector extends Director {
         return false;
     }
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected variables               ////
-
-    /** A list of threads created but not started. */
-    protected LinkedList _newActorThreadList;
-
-    /** A flag for determining whether successive iterations will be
-     *  permitted.
-     */
-    protected boolean _notDone = true;
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
-
     /** Call requestFinish() on all receivers.
      */
-    private void _requestFinishOnReceivers() {
+    protected void _requestFinishOnReceivers() {
         CompositeActor container = (CompositeActor) getContainer();
         Iterator actors = container.deepEntityList().iterator();
         Iterator actorPorts;
@@ -820,6 +806,21 @@ public class ProcessDirector extends Director {
         // FIXME: Should this also set a flag on inside receivers
         // of the ports of the composite actor?
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected variables               ////
+
+    /** A list of threads created but not started. */
+    protected LinkedList _newActorThreadList;
+
+    /** A flag for determining whether successive iterations will be
+     *  permitted.
+     */
+    protected boolean _notDone = true;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
     
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////

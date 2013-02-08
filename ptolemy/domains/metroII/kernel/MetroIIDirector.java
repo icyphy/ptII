@@ -59,7 +59,8 @@ import ptolemy.kernel.util.Workspace;
  * <p>
  * MetroIIActorInterface has to be implemented for each actor 
  * governed by MetroIIDirector. Each actor can be seen as a process.
- * The process could pause with MetroII events returned, which is 
+ * FIXME:
+ * The process could pause with MetroII events returned (to this director), which is 
  * also referred to as proposing MetroII events. The MetroII 
  * events are then modified by MetroIIDirector. When the process 
  * is resumed, the continued execution depends on the updated MetroII 
@@ -149,6 +150,9 @@ public class MetroIIDirector extends Director {
     public MetroIIDirector(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
+        _actorList = new LinkedList<MetroIIActorInterface>();
+        _mappingConstraintSolver = new MappingConstraintSolver(_maxEvent);
+
         _initializeParameters();
         initialize();
     }
@@ -243,8 +247,9 @@ public class MetroIIDirector extends Director {
         // In the actor library, the container might be an moml.EntityLibrary.
         if (container instanceof CompositeActor) {
             Iterator<?> actors = ((CompositeActor) container).deepEntityList()
-                .iterator();
+                    .iterator();
 
+            _actorList.clear();
             while (actors.hasNext()) {
                 Actor actor = (Actor) actors.next();
                 if (actor instanceof MetroIIEventHandler) {
@@ -254,7 +259,6 @@ public class MetroIIDirector extends Director {
                 }
             }
         }
-
         _iterationCount = 0;
     }
 
@@ -293,12 +297,6 @@ public class MetroIIDirector extends Director {
                         mtb.getStatus());
             }
         }
-
-        if (_stopRequested) {
-            for (MetroIIActorInterface actor : _actorList) {
-                actor.close();
-            }
-        }
     }
 
     /** Clone the object into the specified workspace. The new object
@@ -325,11 +323,12 @@ public class MetroIIDirector extends Director {
      */
     public boolean postfire() throws IllegalActionException {
         _iterationCount++;
-        int iterationsValue = ((IntToken) iterations.getToken()).intValue();
-        if (iterationsValue > 0 && _iterationCount >= iterationsValue) {
+        int iterationsValue = ((IntToken) (iterations.getToken())).intValue();
+        if (_stopRequested || (iterationsValue > 0)
+                && (_iterationCount >= iterationsValue)) {
             _iterationCount = 0;
             for (MetroIIActorInterface actor : _actorList) {
-                actor.close();
+                actor.reset();
             }
             return false;
         }
@@ -364,10 +363,9 @@ public class MetroIIDirector extends Director {
     /** The constraint solver
      *
      */
-    private MappingConstraintSolver _mappingConstraintSolver = new MappingConstraintSolver(
-            _maxEvent);
+    private MappingConstraintSolver _mappingConstraintSolver;
     /**
      * The list of actors governed by MetroIIDirector
      */
-    private LinkedList<MetroIIActorInterface> _actorList = new LinkedList<MetroIIActorInterface>();
+    private LinkedList<MetroIIActorInterface> _actorList;
 }
