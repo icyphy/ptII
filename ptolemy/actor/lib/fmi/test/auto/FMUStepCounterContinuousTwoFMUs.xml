@@ -38,6 +38,35 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[195.0, -40.0]">
         </property>
     </property>
+    <entity name="stepCounter3" class="ptolemy.actor.lib.fmi.FMUImport">
+        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="stepCounter.fmu">
+        </property>
+        <property name="suppressWarnings" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 170.0]">
+        </property>
+        <property name="p" class="ptolemy.data.expr.Parameter" value="1.0">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
+            </property>
+        </port>
+        <port name="lastSuccessfulTime" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
+            </property>
+            <property name="_hide" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <port name="atTransitionPoint" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
+            </property>
+            <property name="_hide" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+    </entity>
     <entity name="Test" class="ptolemy.actor.lib.Test">
         <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{{0.0, 0.0}, {0.0, 0.0}, {0.0, 0.0}, {0.0, 0.0}, {0.0, 0.0}, {0.0, 0.0}, {0.0, 0.0}, {0.0, 0.0}, {0.0, 0.0}, {0.0, 0.0}, {0.0, 0.0}, {0.0, 0.0}, {0.0, 0.0}, {1.0, 0.0}, {1.0, 0.0}, {1.0, 0.0}, {1.0, 0.0}, {1.0, 0.0}, {1.0, 0.0}, {1.0, 0.0}, {1.0, 0.0}, {1.0, 0.0}, {1.0, 0.0}, {1.0, 0.0}, {1.0, 0.0}, {1.0, 0.0}, {2.0, 1.0}, {2.0, 1.0}, {2.0, 1.0}, {2.0, 1.0}, {2.0, 1.0}, {2.0, 1.0}, {2.0, 1.0}, {2.0, 1.0}, {2.0, 1.0}, {2.0, 1.0}, {2.0, 1.0}, {2.0, 1.0}, {2.0, 1.0}, {3.0, 1.0}, {3.0, 1.0}, {3.0, 1.0}, {3.0, 1.0}, {3.0, 1.0}, {3.0, 1.0}, {3.0, 1.0}, {3.0, 1.0}, {3.0, 1.0}, {3.0, 1.0}, {3.0, 1.0}, {3.0, 1.0}, {3.0, 1.0}, {4.0, 2.0}, {4.0, 2.0}, {4.0, 2.0}, {4.0, 2.0}, {4.0, 2.0}, {4.0, 2.0}, {4.0, 2.0}, {4.0, 2.0}, {4.0, 2.0}, {4.0, 2.0}, {4.0, 2.0}, {4.0, 2.0}, {4.0, 2.0}, {5.0, 2.0}, {5.0, 2.0}, {5.0, 2.0}, {5.0, 2.0}, {5.0, 2.0}, {5.0, 2.0}, {5.0, 2.0}, {5.0, 2.0}, {5.0, 2.0}, {6.0, 3.0}}">
         </property>
@@ -67,35 +96,6 @@
 <default marks="dots" stems="yes"/>
 </plot>?>
         </configure>
-    </entity>
-    <entity name="stepCounter3" class="ptolemy.actor.lib.fmi.FMUImport">
-        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="stepCounter.fmu">
-        </property>
-        <property name="suppressWarnings" class="ptolemy.data.expr.Parameter" value="true">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 170.0]">
-        </property>
-        <property name="p" class="ptolemy.data.expr.Parameter" value="1.0">
-        </property>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
-            </property>
-        </port>
-        <port name="lastSuccessfulTime" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
-            </property>
-            <property name="_hide" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-        </port>
-        <port name="atTransitionPoint" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
-            </property>
-            <property name="_hide" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-        </port>
     </entity>
     <entity name="stepCounter4" class="ptolemy.actor.lib.fmi.FMUImport">
         <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="stepCounter.fmu">
@@ -138,10 +138,10 @@
         <vertex name="vertex1" value="[155.0, 170.0]">
         </vertex>
     </relation>
+    <link port="stepCounter3.output" relation="relation3"/>
     <link port="Test.input" relation="relation2"/>
     <link port="Test.input" relation="relation3"/>
     <link port="TimedPlotter.input" relation="relation2"/>
     <link port="TimedPlotter.input" relation="relation3"/>
-    <link port="stepCounter3.output" relation="relation3"/>
     <link port="stepCounter4.output" relation="relation2"/>
 </entity>

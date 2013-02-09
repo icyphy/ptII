@@ -9,7 +9,8 @@
   <CoSimulation
     modelIdentifier="stepCounter"
     canHandleVariableCommunicationStepSize="true"
-    canHandleEvents="true"/>
+    canHandleEvents="true"
+    canGetAndSetFMUstate="true"/>
     
 <!-- FIXME: This is mostly still an FMI 1.0 file -->
 <ModelVariables>

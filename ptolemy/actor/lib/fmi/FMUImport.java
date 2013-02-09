@@ -173,8 +173,15 @@ public class FMUImport extends TypedAtomicActor implements
         suppressWarnings = new Parameter(this, "suppressWarnings");
         suppressWarnings.setTypeEquals(BaseType.BOOLEAN);
         suppressWarnings.setExpression("false");
+        
+        visible = new Parameter(this, "visible");
+        visible.setTypeEquals(BaseType.BOOLEAN);
+        visible.setExpression("false");
     }
     
+    ///////////////////////////////////////////////////////////////////
+    ////                         parameters                        ////
+
     /** The FMI version of the FMU. This is a string that defaults to "1.0"
      *  if the FMU file does not specify a version, and otherwise is the
      *  version specified in the file.
@@ -197,6 +204,12 @@ public class FMUImport extends TypedAtomicActor implements
      */
     public Parameter suppressWarnings;
 
+    /** If true, indicate to the FMU (if it supports it) that it is
+     *  allowed to create displays and otherwise interact with the user.
+     *  This is a boolean that defaults to false.
+     */
+    public Parameter visible;
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -208,7 +221,9 @@ public class FMUImport extends TypedAtomicActor implements
         double refinedStepSize = _advanceToTime(time, microstep);
         if (refinedStepSize >= 0.0) {
             _stepSizeRejected = true;
-            _refinedStepSize = refinedStepSize;
+            if (_refinedStepSize < 0.0 || refinedStepSize < _refinedStepSize) {
+                _refinedStepSize = refinedStepSize;
+            }
             return false;
         }
         return true;
@@ -226,10 +241,10 @@ public class FMUImport extends TypedAtomicActor implements
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == fmuFile) {
-            // This should not occur because the file is not editable.
             try {
                 _updateParameters();
             } catch (NameDuplicationException e) {
+                // This should not occur because the file is not editable.
                 throw new IllegalActionException(this, e, "Name duplication");
             }
         } else if (attribute == fmiVersion) {
@@ -337,7 +352,9 @@ public class FMUImport extends TypedAtomicActor implements
         double refinedStepSize = _advanceToTime(currentTime, currentMicrostep);
         if (refinedStepSize >= 0.0) {
             _stepSizeRejected = true;
-            _refinedStepSize = refinedStepSize;
+            if (_refinedStepSize < 0.0 || refinedStepSize < _refinedStepSize) {
+                _refinedStepSize = refinedStepSize;
+            }
         }
 
         ////////////////
@@ -521,7 +538,6 @@ public class FMUImport extends TypedAtomicActor implements
         }
         Function function = _nativeLibrary.getFunction(modelIdentifier + "_fmiInitializeSlave");
 
-        // FIXME: FMI-1.0 uses doubles for times.
         Director director = getDirector();
         Time startTime = director.getModelStartTime();
         Time stopTime = director.getModelStopTime();
@@ -532,13 +548,21 @@ public class FMUImport extends TypedAtomicActor implements
                 _fmiComponent, startTime.getDoubleValue(), (byte) 1,
                 stopTime.getDoubleValue() })).intValue();
         } else {
+            // The FMI 2.0 standard does not offer any suggestion for a default
+            // relative tolerance, so we just pick one, in case the director does
+            // not provide one.
+            // The 2.0beta4 spec says:
+            // "Argument "relativeTolerance" suggests a relative
+            // (local) tolerance in case the slave utilizes a
+            // numerical integrator with variable step size and
+            // error estimation.
+            double relativeTolerance = 1e-4;
+            if (director instanceof ContinuousStatefulDirector) {
+                relativeTolerance = ((ContinuousStatefulDirector)director).getErrorTolerance();
+            }
             fmiFlag  = ((Integer) function.invoke(Integer.class, new Object[] {
                 _fmiComponent, 
-                0.0, // relativeTolerance. FIXME: What to do with this?  The 2.0beta4 spec says:
-                // "Argument "relativeTolerance" suggests a relative
-                // (local) tolerance in case the slave utilizes a
-                // numerical integrator with variable step size and
-                // error estimation.
+                relativeTolerance, 
                 startTime.getDoubleValue(),
                 (byte) 1, // fmiBoolean stopTimeDefined
                 stopTime.getDoubleValue() })).intValue();
@@ -753,11 +777,18 @@ public class FMUImport extends TypedAtomicActor implements
      *  @exception IllegalActionException if it cannot be instantiated.
      */
     public void preinitialize() throws IllegalActionException {
+        // _fmiModelDescription should not be null, as an exception would
+        // have been caught by attributeChanged(), but nevertheless, we check
+        // here.
+        if (_fmiModelDescription == null) {
+            throw new IllegalActionException(this,
+                    "Reading of FMU file failed, but for some reason wasn't reported when the model was opened.");
+        }
         super.preinitialize();
         if (_debugging) {
             _debugToStdOut("FMUImport.preinitialize()");
         }
-
+        
         try {
             _nativeLibrary = _fmiModelDescription.getNativeLibrary();
         } catch (IOException e1) {
@@ -814,7 +845,10 @@ public class FMUImport extends TypedAtomicActor implements
         // Timeout in ms., 0 means wait forever.
         double timeout = 1000;
         // There is no simulator UI.
-        byte visible = 0;
+        byte toBeVisible = 0;
+        if (((BooleanToken)visible.getToken()).booleanValue()) {
+            toBeVisible = 1;
+        }
         // Run the simulator without user interaction.
         byte interactive = 0;
         // Callbacks
@@ -835,8 +869,8 @@ public class FMUImport extends TypedAtomicActor implements
                     new FMULibrary.FMUStepFinished());
             _fmiComponent = (Pointer) _fmiInstantiateSlave.invoke(Pointer.class,
                     new Object[] { getFullName(), _fmiModelDescription.guid,
-                                   fmuLocation, mimeType, timeout, visible, interactive,
-                                   callbacks, loggingOn });
+                            fmuLocation, mimeType, timeout, toBeVisible, interactive,
+                            callbacks, loggingOn });
         } else {
             // In FMI 2.0, this is a pointer to the structure, which is by
             // default how a subclass of Structure is handled, so there is no
@@ -850,7 +884,7 @@ public class FMUImport extends TypedAtomicActor implements
                     new Object[] { getFullName(), _fmiModelDescription.guid,
                                    fmuLocation,
                                    callbacks,
-                                   visible, loggingOn });
+                                   toBeVisible, loggingOn });
         }
         if (_debugging) {
             _debugToStdOut("FMUImport: successfully calledl " + modelIdentifier
@@ -1027,8 +1061,6 @@ fmiStatus fmiFreeFMUstate(fmiComponent c, fmiFMUstate* FMUstate);
             // of the integration interval, which is not the current time, in general.
             // We are calling fmiDoStep() to advance to current time, which is therefore
             // the _end_ of the integration interval.
-            // 
-            // NOTE: FMI-1.0 and 2.0 use doubles for time.
             double time = _lastFireTime.getDoubleValue();
             
             // Compute the step size.
@@ -1047,13 +1079,21 @@ fmiStatus fmiFreeFMUstate(fmiComponent c, fmiFMUstate* FMUstate);
             // FMUs that control step sizes.
             double stepSize = newTime.subtract(_lastFireTime).getDoubleValue();
             
+            /* It would be nice to do the following sanity check, but 
+             * unfortunately the ContinuousDirector completes the rounds
+             * before checking to see whether any component was happy with the
+             * step size, so it is like to re-invoke this FMU with a step
+             * size that will trigger this exception.
             if (_refinedStepSize >= 0.0 && stepSize > _refinedStepSize) {
                 throw new IllegalActionException(this,
                         "Previously rejected time advance and suggested a step size of "
                         + _refinedStepSize
                         + ", but am being offered a step size of "
-                        + stepSize);
+                        + stepSize
+                        + " at time "
+                        + time);
             }
+             */
 
             // The last argument to fmiDoStep is either newStep (for FMI 1.0),
             // which is true if we are not redoing a step, or
@@ -1116,7 +1156,7 @@ of the limitations of newStep.
             // time.
             if (timeAdvance < 0) {
                 // Correct the above values to indicate that we are redoing a step.
-                // FIXME: roll back?
+                rollBackToCommittedState();
                 time = _lastCommitTime.getDoubleValue();
                 stepSize = newTime.subtract(_lastCommitTime).getDoubleValue();
                 lastArg = 0;
@@ -1168,25 +1208,36 @@ of the limitations of newStep.
                             FMILibrary.FMIStatusKind.fmiLastSuccessfulTime,
                             valueBuffer})).intValue();
                     if (fmiFlag == FMILibrary.FMIStatus.fmiOK) {
-                        // Sanity check the time to make sure it makes sense.
                         double lastSuccessfulTime = valueBuffer.get(0);
-                        if (lastSuccessfulTime >= _lastCommitTime.getDoubleValue()) {
-                            // We want lastSuccessfulTime - lastCommitTime, which
-                            // is not necessarily equal to time. In particular,
-                            // if using an RK solver, we may be rejecting a doStep
-                            // beyond the first iteration, and the step size right
-                            // now is actually a substep.
-                            result = lastSuccessfulTime - _lastCommitTime.getDoubleValue();
-                            if (result >= stepSize) {
-                                throw new IllegalActionException(this, "FMU Rejected step size of "
-                                        + stepSize
-                                        + " at time "
-                                        + time
-                                        + ", but returns a last sucessful time of "
-                                        + lastSuccessfulTime
-                                        + ", which means it should not have rejected the step size.");
-                            }
+                        if (_debugging) {
+                            _debug("FMU reports last successful time of " + lastSuccessfulTime);
                         }
+                        // Sanity check the time to make sure it makes sense.
+                        if (lastSuccessfulTime < _lastCommitTime.getDoubleValue()) {
+                            throw new IllegalActionException(this, "FMU Rejected step size of "
+                                    + stepSize
+                                    + " at time "
+                                    + time
+                                    + ", and returns a last successful time of "
+                                    + lastSuccessfulTime
+                                    + ", which is less than the last commit time of "
+                                    + _lastCommitTime);
+                        }
+                        // Adjust the return result with a suggested time.
+                        // We want lastSuccessfulTime - lastCommitTime, which
+                        // is not necessarily equal to time. In particular,
+                        // if using an RK solver, we may be rejecting a doStep
+                        // beyond the first iteration, and the step size right
+                        // now is actually a substep.
+                        result = lastSuccessfulTime - _lastCommitTime.getDoubleValue();
+                    } else {
+                        if (_debugging) {
+                            _debug("FMU does not report a last successful time.");
+                        }
+                    }
+                } else {
+                    if (_debugging) {
+                        _debug("FMU does not provide a proceedure fmiGetRealStatus.");
                     }
                 }
                 // NOTE: Even though doStep() has been rejected,
