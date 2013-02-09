@@ -22,8 +22,12 @@ PIC =
 # Note that there is directory named stepCounter, so we add a .PHONY
 # target so that 'make helloWorld' always runs the build_fmu script.  See
 # https://www.gnu.org/software/make/manual/html_node/Phony-Targets.html
+
 .PHONY : stepCounter
+
+# build_fmu might not be executable if we extracted the sources from a jar file.
 stepCounter:
+	-chmod a+x build_fmu
 	./build_fmu stepCounter
 
 
