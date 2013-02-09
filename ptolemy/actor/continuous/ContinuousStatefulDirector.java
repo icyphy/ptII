@@ -45,4 +45,9 @@ public interface ContinuousStatefulDirector extends ContinuousStatefulComponent 
      *  @return The current integration step size.
      */
     public double getCurrentStepSize();
+    
+    /** Return the local truncation error tolerance.
+     *  @return The local truncation error tolerance.
+     */
+    public double getErrorTolerance();
 }
