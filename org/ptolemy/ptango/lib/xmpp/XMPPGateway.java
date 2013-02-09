@@ -435,7 +435,7 @@ public class XMPPGateway extends AbstractInitializableAttribute implements
                             reader = passwordFile.openForReading();
                             String line = reader.readLine();
                             if (line != null) {
-                                _password = line.toCharArray();
+                                _password = line;
                                 line = "";
                             } else {
                                 throw new IllegalActionException(this,
@@ -476,14 +476,14 @@ public class XMPPGateway extends AbstractInitializableAttribute implements
                                 "Open Connection", query);
 
                         if (dialog.buttonPressed().equals("OK")) {
-                            // The password is not stored as a parameter.
-                            _password = query.getCharArrayValue("password");
+                            // The password is not stored as a parameter.;
+                            _password = query.getStringValue("password");
                         } else {
                             return;
                         }
                     }
                 }
-                _connection.login(_userName, String.valueOf(_password), "ptolemy");
+                _connection.login(_userName, _password, "ptolemy");
             }
         } catch (Exception ex) {
             throw new IllegalActionException(this, ex,
@@ -501,7 +501,7 @@ public class XMPPGateway extends AbstractInitializableAttribute implements
     private PubSubManager _manager;
 
     /** The password last entered. */
-    private char[] _password;
+    private String _password;
 
     /** Port number of the server to connect to. */
     private int _portNumber = 5222;

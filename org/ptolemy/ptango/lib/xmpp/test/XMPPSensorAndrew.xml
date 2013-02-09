@@ -1,51 +1,65 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="XMPP_SensorAndrew" class="ptolemy.actor.TypedCompositeActor">
+<entity name="XMPPSensorAndrew" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={135, 74, 928, 640}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={135, 74, 1139, 641}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[911, 524]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0000000000000002">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{340.0, 252.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{340.00000000000017, 252.0}">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
-        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="10.0">
         </property>
         <property name="stopWhenQueueIsEmpty" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[220.0, 50.0]">
+        <property name="enforceMicrostepSemantics" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[140.0, 55.0]">
         </property>
     </property>
     <property name="XMPPGateway" class="org.ptolemy.ptango.lib.xmpp.XMPPGateway">
         <property name="server" class="ptolemy.data.expr.StringParameter" value="sensor.andrew.cmu.edu">
         </property>
-        <property name="username" class="ptolemy.data.expr.StringParameter" value="benzhang">
+        <property name="userName" class="ptolemy.data.expr.StringParameter" value="benzhang">
         </property>
         <property name="password" class="ptolemy.data.expr.StringParameter" value="benzhang2012">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{350.0, 260.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[345.0, 245.0]">
+        </property>
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model reads data from a Sensor Andrew node using the XMPP protocol&#10;&#10;The XMPPSource actor will request a firing every time new data is published &#10;to the specified Sensor Andrew node, including one firing for the initial data&#10;&#10;Note:  Sometimes the Display does not pop up a window when the model is run.&#10;However, the Display always seems to fire when &quot;Debug -&gt; Listen to Director&quot;&#10;is selected before the model is run.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 310.0]">
+        </property>
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="&#10;DE director parameters are set as follows:&#10;stopWhenQueueIsEmpty:  false, so the model will continue waiting for new events&#10;&#10;stopTime:  10.0, ten seconds, so the model terminates for regression testing.&#10;Please change this value to have the model execute longer or indefinitely.&#10;&#10;synchronizeToRealTime:  true, so that we can stop the model after stopTime real seconds">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[300.0, 35.0]">
         </property>
     </property>
     <entity name="XMPPSource" class="org.ptolemy.ptango.lib.xmpp.XMPPSource">
         <property name="nodeId" class="ptolemy.data.expr.StringParameter" value="18554da7a16b3625f7a04d017a3abd45_data">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[115.0, 200.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[115.0, 250.0]">
         </property>
     </entity>
     <entity name="Display" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={358, 429, 342, 246}, maximized=false}">
         </property>
-        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[326, 186]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[215.0, 200.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[215.0, 250.0]">
         </property>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
