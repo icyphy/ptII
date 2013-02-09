@@ -48,11 +48,11 @@ JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
 	$(JSRCS) \
-	CoSimulation.xml \
 	CoSimulationDE.xml \
-	SimulationSDF.xml \
+	CoSimulationSDF.xml \
 	CoSimulationSimple.xml \
-	SimulationSysMLSequential.xml
+	CoSimulationSysMLSequential.xml \
+	CoSimulation.xml
 
 EXTRA_SRCS = \
 	$(OTHER_FILES_TO_BE_JARED) \
