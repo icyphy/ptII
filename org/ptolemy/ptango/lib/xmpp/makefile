@@ -31,7 +31,7 @@
 
 ME =		org/ptolemy/ptango/lib/xmpp
 
-DIRS =
+DIRS =	test
 
 # Root of the Ptolemy II directory
 ROOT =		../../../../..
