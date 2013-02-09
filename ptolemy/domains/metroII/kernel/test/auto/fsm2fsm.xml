@@ -4,7 +4,7 @@
 <entity name="fsm2fsm" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={295, 373, 1042, 415}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={181, 179, 1306, 686}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1092, 595]">
     </property>
@@ -23,13 +23,13 @@
     <property name="MetroIIDirector" class="ptolemy.domains.metroII.kernel.MetroIIDirector">
         <property name="mappingFileName" class="ptolemy.data.expr.FileParameter" value="fsm2fsmMapping.txt">
         </property>
-        <property name="iterations" class="ptolemy.data.expr.Parameter" value="-1">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="100">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 40.0]">
         </property>
     </property>
     <entity name="Display" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1122, 524, 326, 209}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1123, 552, 326, 209}, maximized=false}">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[326, 186]">
         </property>
@@ -45,6 +45,8 @@
             <property name="output"/>
         </port>
         <entity name="_Controller" class="ptolemy.domains.modal.modal.ModalController">
+            <property name="errorCause" class="ptolemy.data.expr.Parameter">
+            </property>
             <property name="annotation" class="ptolemy.kernel.util.Attribute">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
@@ -201,6 +203,8 @@ Then delete this annotation.</text>
             <property name="output"/>
         </port>
         <entity name="_Controller" class="ptolemy.domains.modal.modal.ModalController">
+            <property name="errorCause" class="ptolemy.data.expr.Parameter">
+            </property>
             <property name="annotation" class="ptolemy.kernel.util.Attribute">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
