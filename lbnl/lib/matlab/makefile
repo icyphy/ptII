@@ -115,8 +115,10 @@ KRUFT = *.$(PTMATLAB_MEXEXT) \
 all: jclass $(EXTRA_TARGETS)
 
 # FIXME: these dependencies are not necessarily correct
+# ptcygpath might not be executable if we unjar'd the sources.
 closeBSDSocket.$(PTMATLAB_MEXEXT): simulinkSocket.c simulinkSocket.h
 	@echo "Invoking matlab to read compile.m and create $@"
+	-chmod a+x $(PTII)/bin/ptcygpath
 	PATH="`pwd`:`$(PTII)/bin/ptcygpath -u $(PTII)/lbnl/lib/util`:$(PTII)/lib:$(PATH)"; export PATH; \
 	LD_LIBRARY_PATH="`pwd`:$(PTII)/lbnl/lib/util:$(PTII)/lib:$(LD_LIBRARY_PATH)"; export LD_LIBRARY_PATH; \
 	DYLD_LIBRARY_PATH="`pwd`:$(PTII)/lbnl/lib/util:$(PTII)/lib:$(DYLD_LIBRARY_PATH)"; export DYLD_LIBRARY_PATH; \
