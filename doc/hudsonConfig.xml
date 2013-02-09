@@ -4,13 +4,6 @@
   <description></description>
   <project-properties class="java.util.concurrent.ConcurrentHashMap">
     <entry>
-      <string>hudson-plugins-dry-DryPublisher</string>
-      <external-property>
-        <propertyOverridden>false</propertyOverridden>
-        <modified>true</modified>
-      </external-property>
-    </entry>
-    <entry>
       <string>hudson-plugins-checkstyle-CheckStylePublisher</string>
       <external-property>
         <propertyOverridden>false</propertyOverridden>
@@ -18,11 +11,11 @@
       </external-property>
     </entry>
     <entry>
-      <string>blockBuildWhenDownstreamBuilding</string>
-      <boolean-property>
-        <originalValue class="boolean">false</originalValue>
+      <string>hudson-plugins-dry-DryPublisher</string>
+      <external-property>
         <propertyOverridden>false</propertyOverridden>
-      </boolean-property>
+        <modified>true</modified>
+      </external-property>
     </entry>
     <entry>
       <string>hudson-plugins-cobertura-CoberturaPublisher</string>
@@ -89,15 +82,28 @@
       </external-property>
     </entry>
     <entry>
+      <string>blockBuildWhenDownstreamBuilding</string>
+      <boolean-property>
+        <originalValue class="boolean">false</originalValue>
+        <propertyOverridden>false</propertyOverridden>
+      </boolean-property>
+    </entry>
+    <entry>
+      <string>hudson-plugins-disk_usage-DiskUsageProperty</string>
+      <base-property>
+        <originalValue class="hudson.plugins.disk_usage.DiskUsageProperty"/>
+        <propertyOverridden>false</propertyOverridden>
+      </base-property>
+    </entry>
+    <entry>
       <string>org-hudsonci-plugins-snapshotmonitor-SnapshotTrigger</string>
       <trigger-property>
         <propertyOverridden>false</propertyOverridden>
       </trigger-property>
     </entry>
     <entry>
-      <string>hudson-plugins-disk_usage-DiskUsageProperty</string>
+      <string>org-hudsonci-plugins-snapshotmonitor-WatchedDependenciesProperty</string>
       <base-property>
-        <originalValue class="hudson.plugins.disk_usage.DiskUsageProperty"/>
         <propertyOverridden>false</propertyOverridden>
       </base-property>
     </entry>
@@ -114,23 +120,11 @@
       </log-rotator-property>
     </entry>
     <entry>
-      <string>org-hudsonci-plugins-snapshotmonitor-WatchedDependenciesProperty</string>
-      <base-property>
-        <propertyOverridden>false</propertyOverridden>
-      </base-property>
-    </entry>
-    <entry>
       <string>hudson-plugins-pmd-PmdPublisher</string>
       <external-property>
         <propertyOverridden>false</propertyOverridden>
         <modified>true</modified>
       </external-property>
-    </entry>
-    <entry>
-      <string>scmCheckoutRetryCount</string>
-      <integer-property>
-        <propertyOverridden>false</propertyOverridden>
-      </integer-property>
     </entry>
     <entry>
       <string>blockBuildWhenUpstreamBuilding</string>
@@ -140,14 +134,20 @@
       </boolean-property>
     </entry>
     <entry>
-      <string>hudson-plugins-git-GitPublisher</string>
+      <string>scmCheckoutRetryCount</string>
+      <integer-property>
+        <propertyOverridden>false</propertyOverridden>
+      </integer-property>
+    </entry>
+    <entry>
+      <string>org-hudsonci-maven-plugin-dependencymonitor-DependencyNotifier</string>
       <external-property>
         <propertyOverridden>false</propertyOverridden>
         <modified>false</modified>
       </external-property>
     </entry>
     <entry>
-      <string>org-hudsonci-maven-plugin-dependencymonitor-DependencyNotifier</string>
+      <string>hudson-plugins-git-GitPublisher</string>
       <external-property>
         <propertyOverridden>false</propertyOverridden>
         <modified>false</modified>
@@ -182,14 +182,16 @@ PTINYOS_MOMLROOT=${WORKSPACE}/vendors/ptinyos/moml</localVarText>
     <entry>
       <string>hudson-tasks-Mailer</string>
       <external-property>
-        <originalValue class="hudson.tasks.Mailer">
-          <recipients>cxbrook@gmail.com</recipients>
-          <dontNotifyEveryUnstableBuild>false</dontNotifyEveryUnstableBuild>
-          <sendToIndividuals>false</sendToIndividuals>
-        </originalValue>
         <propertyOverridden>false</propertyOverridden>
         <modified>true</modified>
       </external-property>
+    </entry>
+    <entry>
+      <string>cleanWorkspaceRequired</string>
+      <boolean-property>
+        <originalValue class="boolean">false</originalValue>
+        <propertyOverridden>false</propertyOverridden>
+      </boolean-property>
     </entry>
     <entry>
       <string>hudson-tasks-test-AggregatedTestResultPublisher</string>
@@ -199,11 +201,16 @@ PTINYOS_MOMLROOT=${WORKSPACE}/vendors/ptinyos/moml</localVarText>
       </external-property>
     </entry>
     <entry>
-      <string>cleanWorkspaceRequired</string>
-      <boolean-property>
-        <originalValue class="boolean">false</originalValue>
+      <string>hudson-tasks-junit-JUnitResultArchiver</string>
+      <external-property>
+        <originalValue class="hudson.tasks.junit.JUnitResultArchiver">
+          <testResults>reports/junit/*.xml</testResults>
+          <keepLongStdio>false</keepLongStdio>
+          <testDataPublishers/>
+        </originalValue>
         <propertyOverridden>false</propertyOverridden>
-      </boolean-property>
+        <modified>true</modified>
+      </external-property>
     </entry>
     <entry>
       <string>htmlpublisher-HtmlPublisher</string>
@@ -231,18 +238,6 @@ PTINYOS_MOMLROOT=${WORKSPACE}/vendors/ptinyos/moml</localVarText>
       </external-property>
     </entry>
     <entry>
-      <string>hudson-tasks-junit-JUnitResultArchiver</string>
-      <external-property>
-        <originalValue class="hudson.tasks.junit.JUnitResultArchiver">
-          <testResults>reports/junit/*.xml</testResults>
-          <keepLongStdio>false</keepLongStdio>
-          <testDataPublishers/>
-        </originalValue>
-        <propertyOverridden>false</propertyOverridden>
-        <modified>true</modified>
-      </external-property>
-    </entry>
-    <entry>
       <string>hudson-tasks-Fingerprinter</string>
       <external-property>
         <propertyOverridden>false</propertyOverridden>
@@ -264,13 +259,6 @@ PTINYOS_MOMLROOT=${WORKSPACE}/vendors/ptinyos/moml</localVarText>
       </external-property>
     </entry>
     <entry>
-      <string>parametersDefinitionProperties</string>
-      <copy-write-list-property>
-        <originalValue class="hudson.util.CopyOnWriteList"/>
-        <propertyOverridden>false</propertyOverridden>
-      </copy-write-list-property>
-    </entry>
-    <entry>
       <string>hudson-tasks-JavadocArchiver</string>
       <external-property>
         <originalValue class="hudson.tasks.JavadocArchiver">
@@ -282,6 +270,13 @@ PTINYOS_MOMLROOT=${WORKSPACE}/vendors/ptinyos/moml</localVarText>
       </external-property>
     </entry>
     <entry>
+      <string>parametersDefinitionProperties</string>
+      <copy-write-list-property>
+        <originalValue class="hudson.util.CopyOnWriteList"/>
+        <propertyOverridden>false</propertyOverridden>
+      </copy-write-list-property>
+    </entry>
+    <entry>
       <string>hudson-plugins-warnings-WarningsPublisher</string>
       <external-property>
         <propertyOverridden>false</propertyOverridden>
@@ -289,10 +284,16 @@ PTINYOS_MOMLROOT=${WORKSPACE}/vendors/ptinyos/moml</localVarText>
       </external-property>
     </entry>
     <entry>
+      <string>customWorkspace</string>
+      <string-property>
+        <propertyOverridden>false</propertyOverridden>
+      </string-property>
+    </entry>
+    <entry>
       <string>hudson-plugins-emailext-ExtendedEmailPublisher</string>
       <external-property>
         <originalValue class="hudson.plugins.emailext.ExtendedEmailPublisher">
-          <recipientList>cxh@eecs.berkeley.edu</recipientList>
+          <recipientList>ptexternal-devel@chess.eecs.berkeley.edu</recipientList>
           <configuredTriggers>
             <hudson.plugins.emailext.plugins.trigger.UnstableTrigger>
               <email>
@@ -389,12 +390,6 @@ ${FAILED_TESTS}
         <propertyOverridden>false</propertyOverridden>
         <modified>true</modified>
       </external-property>
-    </entry>
-    <entry>
-      <string>customWorkspace</string>
-      <string-property>
-        <propertyOverridden>false</propertyOverridden>
-      </string-property>
     </entry>
     <entry>
       <string>quietPeriod</string>
@@ -555,28 +550,6 @@ $WORKSPACE/adm/bin/killXServer</command>
       </trigger-property>
     </entry>
     <entry>
-      <string>scm</string>
-      <scm-property>
-        <originalValue class="hudson.scm.SubversionSCM">
-          <locations>
-            <hudson.scm.SubversionSCM_-ModuleLocation>
-              <remote>https://source.eecs.berkeley.edu/svn/chess/ptII/trunk</remote>
-              <local>.</local>
-              <depthOption>infinity</depthOption>
-              <ignoreExternalsOption>false</ignoreExternalsOption>
-            </hudson.scm.SubversionSCM_-ModuleLocation>
-          </locations>
-          <excludedRegions></excludedRegions>
-          <includedRegions></includedRegions>
-          <excludedUsers></excludedUsers>
-          <excludedRevprop></excludedRevprop>
-          <excludedCommitMessages></excludedCommitMessages>
-          <workspaceUpdater class="hudson.scm.subversion.UpdateUpdater"/>
-        </originalValue>
-        <propertyOverridden>false</propertyOverridden>
-      </scm-property>
-    </entry>
-    <entry>
       <string>hudson-plugins-findbugs-FindBugsPublisher</string>
       <external-property>
         <originalValue class="hudson.plugins.findbugs.FindBugsPublisher">
@@ -605,6 +578,28 @@ $WORKSPACE/adm/bin/killXServer</command>
         <propertyOverridden>false</propertyOverridden>
         <modified>true</modified>
       </external-property>
+    </entry>
+    <entry>
+      <string>scm</string>
+      <scm-property>
+        <originalValue class="hudson.scm.SubversionSCM">
+          <locations>
+            <hudson.scm.SubversionSCM_-ModuleLocation>
+              <remote>https://source.eecs.berkeley.edu/svn/chess/ptII/trunk</remote>
+              <local>.</local>
+              <depthOption>infinity</depthOption>
+              <ignoreExternalsOption>false</ignoreExternalsOption>
+            </hudson.scm.SubversionSCM_-ModuleLocation>
+          </locations>
+          <excludedRegions></excludedRegions>
+          <includedRegions></includedRegions>
+          <excludedUsers></excludedUsers>
+          <excludedRevprop></excludedRevprop>
+          <excludedCommitMessages></excludedCommitMessages>
+          <workspaceUpdater class="hudson.scm.subversion.UpdateUpdater"/>
+        </originalValue>
+        <propertyOverridden>false</propertyOverridden>
+      </scm-property>
     </entry>
     <entry>
       <string>hudson-triggers-TimerTrigger</string>
