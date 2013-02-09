@@ -44,7 +44,6 @@ package ptolemy.domains.openmodelica.lib.omc;
 
 import java.io.IOException;
 
-import ptolemy.domains.openmodelica.lib.exception.ConnectException;
 import ptolemy.kernel.util.IllegalActionException;
 
 /**

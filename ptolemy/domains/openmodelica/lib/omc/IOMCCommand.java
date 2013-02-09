@@ -42,7 +42,6 @@
 
 package ptolemy.domains.openmodelica.lib.omc;
 
-import ptolemy.domains.openmodelica.lib.exception.ConnectException;
 
 /**
  <p>The interface to the Modelica command that should be implemented by OMCCommand.</p>

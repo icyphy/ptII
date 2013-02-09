@@ -1,5 +1,5 @@
-/* Thrown when there is an error while connecting to the compiler.
- *
+/* Super type of all exceptions.
+ * 
  * Copyright (c) 2012-2013,
  * Programming Environment Laboratory (PELAB),
  * Department of Computer and getInformation Science (IDA),
@@ -40,29 +40,36 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package ptolemy.domains.openmodelica.lib.exception;
+package ptolemy.domains.openmodelica.lib.omc;
 
 /**
-  Thrown when there is an error while connecting to the compiler.
-  
+  Super type of all exceptions that can be encountered while communicating
+  with the modelica compiler.
+ 
   @author Andreas Remar
   @version $Id$
   @since Ptolemy II 9.1
   @Pt.ProposedRating Red (cxh)
   @Pt.AcceptedRating Red (cxh)
  */
-public class ConnectException extends CompilerException {
+abstract public class CompilerException extends Exception {
     /**
-     * Constructs a connect exception with the specified detail message
-     * while there is an error at the time of connecting to the compiler.
-     * @param error Specified detail message
+     * Construct a compiler exception with the specified detail message.
+     * @param message Specified detail message.
      */
-    public ConnectException(String error) {
-        super(error);
+    public CompilerException(String message) {
+        super(message);
+    }
+
+    /**
+     * Construct a new exception with null as its detail message. 
+     */
+    public CompilerException() {
+        super();
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private variable                 ////
-    private static final long serialVersionUID = 5391049301949772469L;
+    ////                         private variables                 ////
+    private static final long serialVersionUID = -7881546855664735599L;
 
 }

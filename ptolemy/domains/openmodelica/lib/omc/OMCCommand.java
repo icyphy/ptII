@@ -42,7 +42,6 @@
 
 package ptolemy.domains.openmodelica.lib.omc;
 
-import ptolemy.domains.openmodelica.lib.exception.ConnectException;
 
 /**    
     <p> It invokes OpenModelica Compiler(OMC) by sending command to the 

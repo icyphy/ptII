@@ -59,7 +59,6 @@ import java.util.Set;
 
 import org.omg.CORBA.ORB;
 
-import ptolemy.domains.openmodelica.lib.exception.ConnectException;
 import ptolemy.domains.openmodelica.lib.omc.corba.OmcCommunication;
 import ptolemy.domains.openmodelica.lib.omc.corba.OmcCommunicationHelper;
 import ptolemy.kernel.util.IllegalActionException;
