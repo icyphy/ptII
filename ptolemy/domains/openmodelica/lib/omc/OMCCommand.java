@@ -42,7 +42,6 @@
 
 package ptolemy.domains.openmodelica.lib.omc;
 
-
 /**    
     <p> It invokes OpenModelica Compiler(OMC) by sending command to the 
     OMC server with different purposes such as building Modelica model by 
@@ -67,9 +66,13 @@ public class OMCCommand implements IOMCCommand {
      *   @exception ConnectException If buildModel command couldn't
      *   be sent to the OMC.
      */
-    public CompilerResult buildModel(String className) throws ConnectException {
-        CompilerResult result = sendCommand("buildModel(" + className + ")");
-        return result;
+    public CompilerResult buildModel(String commands) throws ConnectException {
+        // Create a unique instance of OMCProxy.
+        _omcProxy = OMCProxy.getInstance();
+
+        CompilerResult buildModelResult = _omcProxy.sendCommand("buildModel("
+                + commands + ")");
+        return buildModelResult;
     }
 
     /** Create an instance of OMCCommand object in order to provide a global point of access to the instance.
@@ -90,9 +93,11 @@ public class OMCCommand implements IOMCCommand {
      *  be sent to the OMC.
      */
     public CompilerResult loadFile(String fname) throws ConnectException {
-        CompilerResult result = sendCommand("loadFileInteractiveQualified(\""
-                + fname + "\")");
-        return result;
+        // Create a unique instance of OMCProxy.
+        _omcProxy = OMCProxy.getInstance();
+        CompilerResult loadFileInteractiveQualifiedResult = _omcProxy
+                .sendCommand("loadFileInteractiveQualified(\"" + fname + "\")");
+        return loadFileInteractiveQualifiedResult;
     }
 
     /** Load Modelica model.
@@ -103,86 +108,17 @@ public class OMCCommand implements IOMCCommand {
      */
     public CompilerResult loadModelicaModel(String modelicaScript)
             throws ConnectException {
-        CompilerResult result = sendCommand(modelicaScript);
-        return result;
-    }
-
-    /** Send a command to the OpenModelica Compiler(OMC) server and fetches the string result.
-     *  @param command The command which should be sent to the OMC.
-     *  @return CompilerResult The result of sendExpression("command").
-     *  @exception ConnectException If commands couldn't be sent to the OMC.
-     */
-    public CompilerResult sendCommand(String modelicaCommand)
-            throws ConnectException {
-        String error = null;
-        String[] retval = { "" };
-
-        if (_couldNotStartOMC) {
-            return CompilerResult.makeResult(retval, error);
-        }
-
-        if (_numberOfErrors > _showMaxErrors) {
-            return CompilerResult.makeResult(retval, error);
-        }
-
-        // Trim the start and end spaces.
-        modelicaCommand = modelicaCommand.trim();
-
         // Create a unique instance of OMCProxy.
         _omcProxy = OMCProxy.getInstance();
-
-        if (_omcProxy.hasInitialized == false) {
-            _omcProxy.initServer();
-        }
-
-        try {
-
-            // Fetch the error string from OpenModelica Compiler(OMC). 
-            // This should be called after an "Error"
-            // is received or whenever the queue of errors are emptied.
-
-            retval[0] = _omcProxy.omcc.sendExpression(modelicaCommand);
-
-            if (!modelicaCommand.equalsIgnoreCase("quit()")) {
-                error = _omcProxy.omcc.sendExpression("getErrorString()");
-            }
-
-            // Make sure the error string is not empty.
-            if (error != null && error.length() > 2) {
-                error = error.trim();
-                error = error.substring(1, error.length() - 1);
-            } else {
-                error = null;
-            }
-
-            return CompilerResult.makeResult(retval, error);
-
-        } catch (org.omg.CORBA.COMM_FAILURE x) {
-            _numberOfErrors++;
-
-            // Lose connection to OMC(OpenModelica Compiler) server.
-            throw new ConnectException(
-                    "Couldn't send command to the OpenModelica Compiler. Tried sending: "
-                            + modelicaCommand);
-
-        }
-
+        CompilerResult loadModelResult = _omcProxy.sendCommand(modelicaScript);
+        return loadModelResult;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    // Indicate if we give up on running OpenModelica Compiler(OMC) as it is unable to start. 
-    private boolean _couldNotStartOMC = false;
-
-    // Initialization of the number of errors.
-    private int _numberOfErrors = 0;
-
-    // OMCProxy Object for accessing a unique source of instance.
-    private OMCProxy _omcProxy;
-
     // OMCProxy Object for accessing a unique source of instance. 
     private static OMCCommand _omcCommandInstance = null;
 
-    // Maximum number of compiler errors to display. 
-    private int _showMaxErrors = 10;
+    // OMCProxy Object for accessing a unique source of instance.
+    private OMCProxy _omcProxy;
 }

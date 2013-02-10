@@ -32,6 +32,7 @@
 package ptolemy.domains.openmodelica.lib;
 
 import ptolemy.actor.TypedAtomicActor;
+import ptolemy.actor.TypedIOPort;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.expr.FileParameter;
@@ -40,7 +41,6 @@ import ptolemy.data.expr.StringParameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.domains.openmodelica.lib.omc.CompilerResult;
 import ptolemy.domains.openmodelica.lib.omc.ConnectException;
-import ptolemy.domains.openmodelica.lib.omc.OMCCommand;
 import ptolemy.domains.openmodelica.lib.omc.OMCProxy;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
@@ -75,6 +75,9 @@ public class OpenModelica extends TypedAtomicActor {
     public OpenModelica(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
+
+        inputPort = new TypedIOPort(this, "input", true, false);
+        inputPort.setMultiport(true);
 
         modelicaScript = new StringParameter(this, "modelicaScript");
         modelicaScript.setDisplayName("Write OpenModelica Command");
@@ -154,6 +157,9 @@ public class OpenModelica extends TypedAtomicActor {
      */
     public StringParameter fileNamePrefix;
 
+    /***/
+    public TypedIOPort inputPort;
+
     /** Integration method used for simulation.  
      *  The default value of this parameter is the string "dassl".
      */
@@ -217,7 +223,6 @@ public class OpenModelica extends TypedAtomicActor {
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         OpenModelica newObject = (OpenModelica) super.clone(workspace);
         try {
-            newObject._omcCommand = OMCCommand.getInstance();
             newObject._omcProxy = OMCProxy.getInstance();
         } catch (Throwable throwable) {
             throw new CloneNotSupportedException("Could not clone "
@@ -234,18 +239,28 @@ public class OpenModelica extends TypedAtomicActor {
     public void fire() throws IllegalActionException {
         super.fire();
 
-        try {
-            if (_debugging) {
-                _debug("OpenModelica Actor Called fire().");
-            }
+        // Create a unique instance of OMCCommand.
+        _omcProxy = OMCProxy.getInstance();
 
-            //  Create a unique instance of OMCProxy.
-            _omcProxy = OMCProxy.getInstance();
+        if (_debugging) {
+            _debug("OpenModelica Actor Called fire().");
+        }
+
+        try {
+            // Return the components which the model is composed of and modify the value of parameters/variables.
+            _omcProxy.modifyVariables(modelicaScript.getExpression(),
+                    inputPort, fileName.getExpression(),
+                    modelName.getExpression());
+        } catch (ConnectException e) {
+            throw new IllegalActionException(
+                    "Unable to modify parameters/variables value.");
+        }
+
+        try {
 
             //  Simulate the Modelica model with the selected parameters.
             _omcProxy.simulateModel(fileName.getExpression(),
-                    modelicaScript.getExpression(), modelName.getExpression(),
-                    fileNamePrefix.getExpression(),
+                    modelName.getExpression(), fileNamePrefix.getExpression(),
                     simulationStartTime.getExpression(),
                     simulationStopTime.getExpression(),
                     Integer.parseInt(numberOfIntervals.getExpression()),
@@ -254,7 +269,10 @@ public class OpenModelica extends TypedAtomicActor {
                     variableFilter.getExpression(), cflags.getExpression(),
                     simflags.getExpression());
 
-            // Plot plt file.
+            // Read a result file, returning a matrix corresponding to the variables and given size.
+            _omcProxy.displaySimulationResult(modelName.getExpression());
+
+            // Plot plt format file.
             _plotPltFile(fileNamePrefix.getExpression());
         } catch (Throwable throwable) {
             throw new IllegalActionException(this, throwable,
@@ -273,12 +291,9 @@ public class OpenModelica extends TypedAtomicActor {
         // Array for saving the file path.  
         String[] _pltPath = new String[1];
 
-        // Create a unique instance of OMCCommand.
-        _omcCommand = OMCCommand.getInstance();
-
         //Send cd() command to the (OpenModelica Compiler)OMC and fetch working directory of OMC as a result.
-        CompilerResult omcInvokingResult = _omcCommand.sendCommand("cd()");
-        _openModelicaWorkingDirectory = omcInvokingResult.getFirstResult();
+        CompilerResult cdResult = _omcProxy.sendCommand("cd()");
+        _openModelicaWorkingDirectory = cdResult.getFirstResult();
         _openModelicaWorkingDirectory = _openModelicaWorkingDirectory.replace(
                 '"', ' ').trim();
 
@@ -296,13 +311,11 @@ public class OpenModelica extends TypedAtomicActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    // OMCCommand Object for accessing a unique source of instance.
-    private OMCCommand _omcCommand;
-
     // OMCProxy Object for accessing a unique source of instance.
     private OMCProxy _omcProxy;
 
     // The return result from invoking sendExpression("cd()") to (OpenModelica Compiler)OMC.
     // The return result is the working directory of OMC.
     private String _openModelicaWorkingDirectory = null;
+
 }

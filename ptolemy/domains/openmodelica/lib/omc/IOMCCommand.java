@@ -42,7 +42,6 @@
 
 package ptolemy.domains.openmodelica.lib.omc;
 
-
 /**
  <p>The interface to the Modelica command that should be implemented by OMCCommand.</p>
 
@@ -78,12 +77,5 @@ public interface IOMCCommand {
      */
     public CompilerResult loadModelicaModel(String modelicaScript)
             throws ConnectException;
-
-    /** Send a command to the OpenModelica Compiler(OMC) and fetch the string result.
-     *  @param command The command which should be sent to the OMC.
-     *  @return CompilerResult The result of sendExpression("command").
-     *  @exception ConnectException If commands couldn't be sent to the OMC.
-     */
-    public CompilerResult sendCommand(String command) throws ConnectException;
 
 }
