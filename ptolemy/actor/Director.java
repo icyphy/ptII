@@ -248,6 +248,7 @@ public class Director extends Attribute implements Executable {
         newObject._startTime = null;
         newObject._stopTime = null;
         newObject._zeroTime = new Time(newObject);
+        newObject._executionTimes = new HashMap<Actor, Time>();
         return newObject;
     }
 
