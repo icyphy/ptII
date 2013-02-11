@@ -158,7 +158,7 @@ public class RunningMinimum extends Transformer {
     }
 
     /** Set input <= output, input <= Scalar. If backward type inference is
-     *  enabled and input has no declared type, also set input >= Scalar.
+     *  enabled and input has no declared type, also set input >= output.
      *  @return A set of inequality constraints.
      */
     @Override
@@ -169,10 +169,10 @@ public class RunningMinimum extends Transformer {
         /* input <= Scalar. */
         result.add(new Inequality(input.getTypeTerm(), new TypeConstant(
                 BaseType.SCALAR)));
-        /* input >= Scalar if backward type inference is enabled */
+        /* input >= output if backward type inference is enabled */
         if (isBackwardTypeInferenceEnabled()
                 && input.getTypeTerm().isSettable()) {
-            result.add(new Inequality(new TypeConstant(BaseType.SCALAR), 
+            result.add(new Inequality(output.getTypeTerm(), 
                     input.getTypeTerm()));
         }
         return result;
