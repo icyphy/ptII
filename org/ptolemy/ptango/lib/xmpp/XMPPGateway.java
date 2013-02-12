@@ -435,7 +435,7 @@ public class XMPPGateway extends AbstractInitializableAttribute implements
                             reader = passwordFile.openForReading();
                             String line = reader.readLine();
                             if (line != null) {
-                                _password = line;
+                                _password = line.toCharArray();
                                 line = "";
                             } else {
                                 throw new IllegalActionException(this,
@@ -477,13 +477,15 @@ public class XMPPGateway extends AbstractInitializableAttribute implements
 
                         if (dialog.buttonPressed().equals("OK")) {
                             // The password is not stored as a parameter.;
-                            _password = query.getStringValue("password");
+                            _password = query.getCharArrayValue("password");
                         } else {
                             return;
                         }
                     }
                 }
-                _connection.login(_userName, _password, "ptolemy");
+                _connection.login(_userName, new String(_password), "ptolemy");
+                // After use, set password to null for security
+                _password = null;
             }
         } catch (Exception ex) {
             throw new IllegalActionException(this, ex,
@@ -500,8 +502,11 @@ public class XMPPGateway extends AbstractInitializableAttribute implements
     /** Manager responsible for brokering publications and subscriptions. */
     private PubSubManager _manager;
 
-    /** The password last entered. */
-    private String _password;
+    /** The password last entered. Use a char array instead of a String for 
+     * security since a char array can be explictly cleared, whereas a String
+     * is immutable and persists in memory until garbage collection.  See
+     * http://stackoverflow.com/questions/8881291/why-is-char-preferred-over-string-for-passwords */
+    private char[] _password;
 
     /** Port number of the server to connect to. */
     private int _portNumber = 5222;

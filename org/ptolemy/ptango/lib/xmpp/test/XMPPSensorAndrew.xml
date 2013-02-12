@@ -31,7 +31,7 @@
         </property>
         <property name="userName" class="ptolemy.data.expr.StringParameter" value="benzhang">
         </property>
-        <property name="password" class="ptolemy.data.expr.StringParameter" value="benzhang2012">
+        <property name="passwordFile" class="ptolemy.data.expr.FileParameter" value="$HOME/SensorAndrewPassword.txt">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[345.0, 245.0]">
         </property>
