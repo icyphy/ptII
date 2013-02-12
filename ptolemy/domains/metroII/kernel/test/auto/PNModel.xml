@@ -4,7 +4,7 @@
 <entity name="PNModel" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={381, 279, 914, 607}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={141, 274, 914, 607}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 516]">
     </property>
@@ -13,9 +13,11 @@
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{-130.0, -71.83582427536231}">
     </property>
     <property name="MetroIIDirector" class="ptolemy.domains.metroII.kernel.MetroIIDirector">
-        <property name="iterations" class="ptolemy.data.expr.Parameter" value="100">
+        <property name="mappingFileName" class="ptolemy.data.expr.FileParameter" value="PNModelMapping.txt">
         </property>
-        <property name="mapping" class="ptolemy.data.expr.Parameter" value="'../mappings/pn_model_mapping.txt'">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="500">
+        </property>
+        <property name="mapping" class="ptolemy.data.expr.Parameter" value="">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-295.0, -195.0]">
         </property>
@@ -27,9 +29,9 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[155.0, 75.0]">
             </property>
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={444, 313, 928, 616}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={208, 245, 914, 607}, maximized=false}">
         </property>
-        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 500]">
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 516]">
         </property>
         <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
         </property>
@@ -40,19 +42,27 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[130.0, 215.0]">
             </property>
         </entity>
-        <entity name="Display" class="ptolemy.actor.lib.gui.Display">
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={969, 534, 342, 245}, maximized=false}">
-            </property>
-            <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[326, 186]">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, 215.0]">
-            </property>
-        </entity>
         <entity name="Ramp2" class="ptolemy.actor.lib.Ramp">
             <property name="init" class="ptolemy.actor.parameters.PortParameter" value="100000">
             </property>
             <doc>Create a sequence of tokens with increasing value</doc>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[130.0, 295.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[130.0, 290.0]">
+            </property>
+        </entity>
+        <entity name="Display" class="ptolemy.actor.lib.gui.Display">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1051, 647, 522, 205}, maximized=false}">
+            </property>
+            <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[522, 182]">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[275.0, 215.0]">
+            </property>
+        </entity>
+        <entity name="Display2" class="ptolemy.actor.lib.gui.Display">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1056, 373, 522, 205}, maximized=false}">
+            </property>
+            <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[522, 182]">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[279.33837890625, 292.27783203125]">
             </property>
         </entity>
         <relation name="relation" class="ptolemy.actor.TypedIORelation">
@@ -60,9 +70,9 @@
         <relation name="relation2" class="ptolemy.actor.TypedIORelation">
         </relation>
         <link port="Ramp.output" relation="relation"/>
-        <link port="Display.input" relation="relation"/>
-        <link port="Display.input" relation="relation2"/>
         <link port="Ramp2.output" relation="relation2"/>
+        <link port="Display.input" relation="relation"/>
+        <link port="Display2.input" relation="relation2"/>
     </entity>
     <entity name="MetroIIModalModel" class="ptolemy.domains.metroII.kernel.MetroIIModalModel">
         <property name="_tableauFactory" class="ptolemy.vergil.modal.modal.ModalTableauFactory">
@@ -70,6 +80,8 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-180.0, -70.0]">
         </property>
         <entity name="_Controller" class="ptolemy.domains.modal.modal.ModalController">
+            <property name="errorCause" class="ptolemy.data.expr.Parameter">
+            </property>
             <property name="annotation" class="ptolemy.kernel.util.Attribute">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
@@ -95,7 +107,7 @@ Then delete this annotation.</text>
       <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.modal.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory"></property></entity></entity>
     </configure>
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={554, 335, 928, 616}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={361, 142, 914, 608}, maximized=false}">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 500]">
             </property>

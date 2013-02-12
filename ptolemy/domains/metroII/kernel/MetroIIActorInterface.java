@@ -43,7 +43,7 @@ import ptolemy.kernel.util.IllegalActionException;
  * @author Liangpeng Guo
  * @version $Id$
  * @since Ptolemy II 9.1
- * @Pt.ProposeRating Red (glp)
+ * @Pt.ProposedRating Red (glp)
  * @Pt.AcceptedRating Red (glp)
 */
 // FIXME: startOrResumable

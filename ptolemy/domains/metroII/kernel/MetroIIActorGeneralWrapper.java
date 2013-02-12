@@ -46,7 +46,7 @@ import ptolemy.kernel.util.IllegalActionException;
  * @author Liangpeng Guo
  * @version $Id$
  * @since Ptolemy II 9.1
- * @Pt.ProposeRating Red (glp)
+ * @Pt.ProposedRating Red (glp)
  * @Pt.AcceptedRating Red (glp)
  *
  */
@@ -54,9 +54,6 @@ public class MetroIIActorGeneralWrapper extends MetroIIActorBasicWrapper {
     /** Construct a Actor-Thread pair.
      * 
      * @param actor The actor
-     * @param type The type of actor
-     * @param state The initial thread state
-     * @param thread The thread
      */
     public MetroIIActorGeneralWrapper(Actor actor) {
         super(actor);

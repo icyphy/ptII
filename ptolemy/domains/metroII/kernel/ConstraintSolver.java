@@ -40,14 +40,13 @@ import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event;
 *  should be updated to WAITING. </p>
 *
 *  
-* @author glp
+* @author Liangpeng Guo
 * @version $Id$
 * @since Ptolemy II 9.1
-* @Pt.ProposeRating Red (glp)
+* @Pt.ProposedRating Red (glp)
 * @Pt.AcceptedRating Red (glp)
 *
 */
-
 public interface ConstraintSolver {
     /**
      * Update the MetroII events in the specified list
