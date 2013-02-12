@@ -853,8 +853,7 @@ public class Director extends Attribute implements Executable {
         _actorsFinishedExecution = new HashSet();
 
         // Reset the flag that causes postfire() to return false.
-        _finishRequested = false;
-        _resourceBusy = false;
+        _finishRequested = false; 
 
         localClock.resetLocalTime(getModelStartTime());
         localClock.start();
@@ -1263,14 +1262,6 @@ public class Director extends Attribute implements Executable {
      */
     public void resume() throws IllegalActionException {
         localClock.start();
-    }
-    
-    /** Return whether the resourceScheduler for the actor that
-     *  should be fired next is busy.
-     *  @return True if resource scheduler is busy.
-     */
-    public boolean resourceBusy() {
-        return _resourceBusy;
     }
 
     /** Specify the container.  If the specified container is an instance
@@ -1846,8 +1837,7 @@ public class Director extends Attribute implements Executable {
      *   scheduled or container cannot be fired at future time.
      */
     protected boolean _schedule(Actor actor, Time timestamp)
-            throws IllegalActionException {
-        _resourceBusy = false;
+            throws IllegalActionException { 
         ResourceSchedulerInterface scheduler = _getScheduler(actor);
         Time time = null;
         Boolean finished = true;
@@ -1869,8 +1859,8 @@ public class Director extends Attribute implements Executable {
         } else if (isEmbedded()) {
             return ((CompositeActor) (((CompositeActor) getContainer()))
                     .getContainer()).getDirector()._schedule(actor, timestamp);
-        }
-        return _resourceBusy = (time == null || finished);
+        } 
+        return (time == null || finished);
     }
 
     /** Find resource scheduler for actor. 
@@ -2055,8 +2045,6 @@ public class Director extends Attribute implements Executable {
     private transient Time _startTime;
 
     /** Stop time. */
-    private transient Time _stopTime;
-    
-    private boolean _resourceBusy;
+    private transient Time _stopTime; 
 
 }
