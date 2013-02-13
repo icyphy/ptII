@@ -935,18 +935,16 @@ public class OMCProxy implements IOMCProxy {
             }
             break;
         case MAC:
-            //String macUsername = System.getenv("USERNAME");
-            String macUsername = username;
-            if (macUsername == null) {
+            if (username == null) {
                 System.err
                         .println("Could not get java.io.tmpdir property?  Using 'nobody'.");
-                macUsername = "nobody";
+                username = "nobody";
             }
             if (_corbaSession == null || _corbaSession.equalsIgnoreCase("")) {
-                fileName = temp + "/openmodelica." + macUsername + ".objid";
+                fileName = temp + "openmodelica." + username + ".objid";
             } else {
-                fileName = temp + "/openmodelica." + macUsername + ".objid"
-                        + "." + _corbaSession;
+                fileName = temp + "openmodelica." + username + ".objid" + "."
+                        + _corbaSession;
             }
             break;
         }
