@@ -135,8 +135,11 @@ public class OMCProxy implements IOMCProxy {
             File omcBinary = tmp[0];
             final File workingDirectory = tmp[1];
             Process proc = null;
+
+            // Start OpenModelica Compiler(OMC) as a server listening on the CORBA interface by setting +d=interactiveCorba flag.
+            // Set the name of the CORBA session by +c because of using +d=interactiveCorba.
             String command[] = { omcBinary.getAbsolutePath(),
-                    "+c=" + _corbaSession, "+d=interactiveCorba" };
+                    "+c=" + _corbaSessionName, "+d=interactiveCorba" };
 
             ArrayList<String> both = new ArrayList<String>(command.length);
             Collections.addAll(both, command);
@@ -323,7 +326,7 @@ public class OMCProxy implements IOMCProxy {
         Date date = new Date();
         SimpleDateFormat timeFormat = new SimpleDateFormat("HHmmss");
         strDate = timeFormat.format(date);
-        _corbaSession = strDate;
+        _corbaSessionName = strDate;
 
         // Check if an OMC server is already started. 
         File f = new File(_getPathToObject());
@@ -378,13 +381,13 @@ public class OMCProxy implements IOMCProxy {
         String[] componentList = null;
         String ComponentNames = null;
         String[] individualComponent = null;
-        String[] individualParameter = null;
+        String[] variableList = null;
         String parameterNames = null;
 
         _testFilePath = _systemPath
                 + "/ptolemy/domains/openmodelica/demo/OpenModelica/" + fileName;
 
-        // The model which includes both parameters and variables.
+        // The testing model which includes both parameters and variables.
         /*_testFilePath = _systemPath
                 + "/ptolemy/domains/openmodelica/demo/OpenModelica/BouncingBall.mo";*/
 
@@ -482,35 +485,62 @@ public class OMCProxy implements IOMCProxy {
 
                 if (_parameterOrVariable.compareTo("unspecified") == 0) {
 
-                    // All data objects in Modelica are instantiated from classes, including the basic data types-Real, Integer, String, Boolean-.
-                    // FIXME Setting value for parameter/variable is not yet working for Real, Integer, String, Boolean
-
                     // Return list of parameters.
-                    CompilerResult getParameterNamesResult = sendCommand("getParameterNames("
-                            + individualComponent[0] + ")");
+                    CompilerResult getComponentModifierNames = sendCommand("getComponentModifierNames("
+                            + modelName + "," + individualComponent[1] + ")");
+
+                    System.out.println("getComponentModifierNames("
+                            + getComponentModifierNames.getFirstResult().trim()
+                            + ")");
 
                     // Delete the first and last "{".
                     componentsBuffer = new StringBuffer(
-                            getParameterNamesResult.getFirstResult());
-                    componentsBuffer.deleteCharAt(0);
-                    parameterNames = componentsBuffer.deleteCharAt(
-                            componentsBuffer.length() - 2).toString();
+                            getComponentModifierNames.getFirstResult());
 
-                    // Split the result by "," in order to have access to each parameter's value.
-                    individualParameter = parameterNames.split(",");
+                    if (getComponentModifierNames.getFirstResult().trim()
+                            .compareTo("{}") == 0) {
 
-                    for (String parameter : individualParameter) {
-
-                        // Set value for variables.
-                        //FIXME - How to check if the parameter exists or not, If not, do not set value.
                         sendCommand("setComponentModifierValue(" + modelName
-                                + ", " + _componentName + "." + parameter
+                                + ", " + _componentName + ", $Code(="
+                                + inputPortValue + "))");
+
+                        System.out.println("setComponentModifierValue("
+                                + modelName + ", " + _componentName
                                 + ", $Code(=" + inputPortValue + "))");
+
+                    } else {
+                        componentsBuffer.deleteCharAt(0);
+                        parameterNames = componentsBuffer.deleteCharAt(
+                                componentsBuffer.length() - 2).toString();
+
+                        // Split the result by "," in order to have access to each parameter's value.
+                        variableList = parameterNames.split(",");
+
+                        for (String variable : variableList) {
+
+                            // Set value for variables.
+                            individualComponent[1] = individualComponent[1]
+                                    .trim();
+
+                            sendCommand("setComponentModifierValue("
+                                    + modelName + ", " + _componentName + "."
+                                    + variable + ", $Code(=" + inputPortValue
+                                    + "))");
+
+                            System.out.println("setComponentModifierValue("
+                                    + modelName + ", " + _componentName + "."
+                                    + variable + ", $Code(=" + inputPortValue
+                                    + "))");
+                        }
+
                     }
                 } else if (_parameterOrVariable.compareTo("parameter") == 0) {
 
                     // Set value for parameters.
                     sendCommand("setParameterValue(" + modelName + ","
+                            + _componentName + "," + inputPortValue + ")");
+
+                    System.out.println("setParameterValue(" + modelName + ","
                             + _componentName + "," + inputPortValue + ")");
                 }
             }
@@ -920,18 +950,21 @@ public class OMCProxy implements IOMCProxy {
                         .println("Could not get java.io.tmpdir property?  Using 'nobody'.");
                 username = "nobody";
             }
-            if (_corbaSession == null || _corbaSession.equalsIgnoreCase("")) {
+            if (_corbaSessionName == null
+                    || _corbaSessionName.equalsIgnoreCase("")) {
                 fileName = temp + "/openmodelica." + username + ".objid";
             } else {
                 fileName = temp + "/openmodelica." + username + ".objid" + "."
-                        + _corbaSession;
+                        + _corbaSessionName;
             }
             break;
         case WINDOWS:
-            if (_corbaSession == null || _corbaSession.equalsIgnoreCase("")) {
+            if (_corbaSessionName == null
+                    || _corbaSessionName.equalsIgnoreCase("")) {
                 fileName = temp + "openmodelica.objid";
             } else {
-                fileName = temp + "openmodelica.objid" + "." + _corbaSession;
+                fileName = temp + "openmodelica.objid" + "."
+                        + _corbaSessionName;
             }
             break;
         case MAC:
@@ -940,11 +973,12 @@ public class OMCProxy implements IOMCProxy {
                         .println("Could not get java.io.tmpdir property?  Using 'nobody'.");
                 username = "nobody";
             }
-            if (_corbaSession == null || _corbaSession.equalsIgnoreCase("")) {
+            if (_corbaSessionName == null
+                    || _corbaSessionName.equalsIgnoreCase("")) {
                 fileName = temp + "openmodelica." + username + ".objid";
             } else {
                 fileName = temp + "openmodelica." + username + ".objid" + "."
-                        + _corbaSession;
+                        + _corbaSessionName;
             }
             break;
         }
@@ -1058,7 +1092,7 @@ public class OMCProxy implements IOMCProxy {
     private String _componentName = null;
 
     // Initialize _corbaSession.
-    private String _corbaSession = null;
+    private String _corbaSessionName = null;
 
     // Indicate if we give up on running OpenModelica Compiler(OMC) as it is unable to start. 
     private boolean _couldNotStartOMC = false;
