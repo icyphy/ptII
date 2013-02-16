@@ -36,12 +36,14 @@ import java.util.LinkedList;
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
+import ptolemy.actor.util.PeriodicDirectorHelper;
 import ptolemy.data.IntToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.expr.FileParameter;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event;
+import ptolemy.domains.sdf.kernel.SDFDirector;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
@@ -311,6 +313,7 @@ public class MetroIIDirector extends Director {
         MetroIIDirector newObject = (MetroIIDirector) super.clone(workspace);
         newObject._mappingConstraintSolver = new MappingConstraintSolver(
                 _maxEvent);
+        newObject._actorList = (LinkedList) _actorList.clone(); 
         return newObject;
     }
 
@@ -364,6 +367,7 @@ public class MetroIIDirector extends Director {
      *
      */
     private MappingConstraintSolver _mappingConstraintSolver;
+    
     /**
      * The list of actors governed by MetroIIDirector
      */

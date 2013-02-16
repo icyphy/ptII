@@ -31,6 +31,7 @@ package ptolemy.domains.metroII.kernel;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.Iterator;
+import java.util.LinkedList;
 
 import net.jimblackler.Utils.CollectionAbortedException;
 import net.jimblackler.Utils.Collector;
@@ -99,6 +100,21 @@ public class MetroIISRDirector extends SRDirector implements
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         _init();
+    }
+
+    /** Clone the object into the specified workspace. The new object
+     *  is <i>not</i> added to the directory of that workspace (you
+     *  must do this yourself if you want it there).
+     *
+     *  @param workspace The workspace for the cloned object.
+     *  @exception CloneNotSupportedException Not thrown in this base class
+     *  @return The new Attribute.
+     */
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        MetroIISRDirector newObject = (MetroIISRDirector) super.clone(workspace);
+        newObject._nameToActor = (Hashtable<String, Actor>) _nameToActor.clone();
+        newObject._events = (ArrayList<Builder>) _events.clone(); 
+        return newObject;
     }
 
     ///////////////////////////////////////////////////////////////////
