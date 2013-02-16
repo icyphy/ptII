@@ -51,8 +51,8 @@ import ptolemy.kernel.util.StringAttribute;
  * If the selected channel has no token, then no output is produced.
  * The <i>select</i> input is required to be an integer between 0 and
  * <i>n</i>-1, where <i>n</i> is the width of the <i>input</i> port.
- * If no token has been received on the <i>select</i> port, then channel
- * 0 is sent to the output.  The <i>input</i> port may
+ * If no token has been received on the <i>select</i> port, then null
+ * is sent to the output.  The <i>input</i> port may
  * receive Tokens of any type, but all channels must have the same type.
  * <p>
  * One token is consumed from each input channel that has a token.
