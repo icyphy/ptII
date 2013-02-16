@@ -3,7 +3,7 @@
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="IndoorLocalizationMap" class="ptolemy.actor.TypedCompositeActor">
     <property name="Image" class="ptolemy.vergil.kernel.attributes.ImageAttribute">
-        <property name="source" class="ptolemy.data.expr.FileParameter" value="$PTII/org/ptolemy/ptango/demo/guidance/pages/labFloorplan.png">
+        <property name="source" class="ptolemy.data.expr.FileParameter" value="$PTII/org/ptolemy/ptango/demo/Guidance/pages/labFloorplan.png">
         </property>
         <property name="scale" class="ptolemy.data.expr.Parameter" value="100">
         </property>
@@ -78,7 +78,7 @@
         </property>
     </property>
     <property name="_defaultWebExportParameters" class="ptolemy.vergil.basic.export.web.WebExportParameters">
-        <property name="directoryToExportTo" class="ptolemy.data.expr.FileParameter" value="C:/SWEP/IoT/Berkeley/guidance">
+        <property name="directoryToExportTo" class="ptolemy.data.expr.FileParameter" value="$PTII/ptolemy/ptango/demo/Guidance/Guidance">
             <property name="allowFiles" class="ptolemy.data.expr.Parameter" value="false">
             </property>
             <property name="allowDirectories" class="ptolemy.data.expr.Parameter" value="true">

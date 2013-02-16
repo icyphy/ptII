@@ -96,7 +96,7 @@
         </property>
     </property>
     <property name="_defaultWebExportParameters" class="ptolemy.vergil.basic.export.web.WebExportParameters">
-        <property name="directoryToExportTo" class="ptolemy.data.expr.FileParameter" value="C:/SWEP/IoT/Berkeley/guidance">
+        <property name="directoryToExportTo" class="ptolemy.data.expr.FileParameter" value="$PTII/ptolemy/ptango/demo/Guidance/Guidance">
             <property name="allowFiles" class="ptolemy.data.expr.Parameter" value="false">
             </property>
             <property name="allowDirectories" class="ptolemy.data.expr.Parameter" value="true">
