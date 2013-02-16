@@ -621,7 +621,7 @@ public class HttpActor extends TypedAtomicActor implements HttpService {
 
         /** Handle an HTTP get or post request by creating a web page as the HTTP
          *  response.
-         *  @see http://docs.oracle.com/javaee/6/api/javax/servlet/http/HttpServletRequest.html
+         *  See <a href="http://docs.oracle.com/javaee/6/api/javax/servlet/http/HttpServletRequest.html">http://docs.oracle.com/javaee/6/api/javax/servlet/http/HttpServletRequest.html</a>.
          *  @param request The HTTP request.
          *  @param response The HTTP response to write to.
          *  @param type The type of request. 0 for get, 1 for post.

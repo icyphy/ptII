@@ -206,7 +206,7 @@ public class JSONToToken extends Converter {
      *  When a new ArrayToken is instantiated, all elements are converted to
      *  the least upper bound of the types found in the JSONArray. If the
      *  conversion fails, an IllegalActionException is thrown.
-     *  @param object A JSONArray
+     *  @param array A JSONArray
      *  @return An ArrayToken containing the values that corresponding to those
      *  found in the given array
      *  @exception JSONException If a non-existent value is requested from the

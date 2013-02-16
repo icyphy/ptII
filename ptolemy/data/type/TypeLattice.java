@@ -533,7 +533,7 @@ public class TypeLattice {
          *
          *  Note, that this only returns an element within the subset.
          *  To find the greatest lower bound of a set, see
-         *  {@link #greatestLowerBound(Set<Object>)}.
+         *  {@link #greatestLowerBound(Set)}.
          *
          *  @param subset a set of Types.
          *  @return A Type or null.

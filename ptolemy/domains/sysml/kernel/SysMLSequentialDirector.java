@@ -1,6 +1,6 @@
 /* Director for SysML in the style of IBM Rational Rhapsody.
 
- Copyright (c) 1998-2012 The Regents of the University of California.
+ Copyright (c) 2012-2013 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -633,8 +633,8 @@ public class SysMLSequentialDirector extends Director implements SuperdenseTimeD
     }
 
     /** Clear all the input receivers for the specified actor.
-     *  @param The actor.
-     *  @throws IllegalActionException If the receivers can't be cleared.
+     *  @param actor The actor.
+     *  @exception IllegalActionException If the receivers can't be cleared.
      */
     protected void _clearReceivers(Actor actor) throws IllegalActionException {
         List<IOPort> inputPorts = actor.inputPortList();
@@ -711,7 +711,7 @@ public class SysMLSequentialDirector extends Director implements SuperdenseTimeD
     /** Iterate the specified actor once.
      *  @return True if either prefire() returns false
      *   or postfire() returns true.
-     *  @throws IllegalActionException If the actor throws it.
+     *  @exception IllegalActionException If the actor throws it.
      */
     protected boolean _iterateActorOnce(Actor actor)
             throws IllegalActionException { 

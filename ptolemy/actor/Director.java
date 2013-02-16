@@ -1832,7 +1832,6 @@ public class Director extends Attribute implements Executable {
      *  method returns false. 
      *  @param actor The actor.
      *  @param timestamp The time the actor requests to be scheduled.
-     *  @param executionTime The execution Time for this event. 
      *  @return True if actor was scheduled and can be fired.
      *  @exception IllegalActionException Thrown if parameters cannot be read, actor cannot be
      *   scheduled or container cannot be fired at future time.

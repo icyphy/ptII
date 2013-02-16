@@ -384,7 +384,7 @@ public class XMPPGateway extends AbstractInitializableAttribute implements
      *  reused immediately, therefore it is discarded. A new Connection
      *  object shall be instantiated for reconnecting.
      *  @see Connection
-     *  @see _connectAndLogin()
+     *  @see #_connectAndLogin()
      */
     private void _disconnect() {
         if (_connection != null) {

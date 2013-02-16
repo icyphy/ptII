@@ -1,6 +1,6 @@
 /* Director for SysML in the style of IBM Rational Rhapsody.
 
- Copyright (c) 1998-2012 The Regents of the University of California.
+ Copyright (c) 2012-2013 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -394,7 +394,7 @@ public class SysMLConcurrentDirector extends ProcessDirector {
      *  it is connected to on the inside. 
      *  @param port The port.
      *  @return True if tokens were transferred.
-     *  @throws IllegalActionException If transfer fails.
+     *  @exception IllegalActionException If transfer fails.
      */
     public boolean transferInputs(IOPort port) throws IllegalActionException {
         return _transferInputs(port);
@@ -403,9 +403,8 @@ public class SysMLConcurrentDirector extends ProcessDirector {
     /** For all inputs in the input queue of the container of this
      *  actor, put the input token into the inside of the corresponding
      *  output port and then transfer outputs from that port.
-     *  @param port The port.
-     *  @return True if tokens were transferred.
-     *  @throws IllegalActionException If transfer fails.
+
+     *  @exception IllegalActionException If transfer fails.
      */
     public void transferOutputs() throws IllegalActionException {
         ActorData actorData = _actorData.get(getContainer());
@@ -430,8 +429,8 @@ public class SysMLConcurrentDirector extends ProcessDirector {
     }
 
     /** Clear all the input receivers for the specified actor.
-     *  @param The actor.
-     *  @throws IllegalActionException If the receivers can't be cleared.
+     *  @param actor The actor.
+     *  @exception IllegalActionException If the receivers can't be cleared.
      */
     protected void _clearReceivers(Actor actor) throws IllegalActionException {
         List<IOPort> inputPorts = actor.inputPortList();
@@ -481,7 +480,7 @@ public class SysMLConcurrentDirector extends ProcessDirector {
     /** Iterate the specified actor once.
      *  @return True if either prefire() returns false
      *   or postfire() returns true.
-     *  @throws IllegalActionException If the actor throws it.
+     *  @exception IllegalActionException If the actor throws it.
      */
     protected boolean _iterateActorOnce(Actor actor)
             throws IllegalActionException {
@@ -545,7 +544,7 @@ public class SysMLConcurrentDirector extends ProcessDirector {
      *  only if activeObjects = false.
      *  @return The earliest pending fireAt time in the
      *   future, or TIME.POSITIVE_INFINITY if there is none.
-     *  @throws IllegalActionException If the actor throws it.
+     *  @exception IllegalActionException If the actor throws it.
      */
     protected Time _runToCompletion(Actor actor)
             throws IllegalActionException {
@@ -791,7 +790,7 @@ public class SysMLConcurrentDirector extends ProcessDirector {
          *  only if activeObjects is true.
          *  @return True if either prefire() returns false
          *   or postfire() returns true.
-         *  @throws IllegalActionException If the actor throws it.
+         *  @exception IllegalActionException If the actor throws it.
          */
         protected boolean _iterateActor()
                 throws IllegalActionException {
