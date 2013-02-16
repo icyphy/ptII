@@ -373,7 +373,8 @@ public class PtidesDirector extends DEDirector {
         }
         int newIndex = index;
         if (_currentLogicalTime != null && _currentLogicalTime.compareTo(time) == 0 && index <= getIndex()) { 
-            if (((CompositeActor)actor).getDirector().scheduleContainedActors()) {
+            if (!(actor instanceof CompositeActor) || 
+                    ((CompositeActor)actor).getDirector().scheduleContainedActors()) {
                 newIndex = Math.max(getIndex(), index) + 1;
             }
         }
