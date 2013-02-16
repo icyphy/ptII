@@ -2,7 +2,6 @@ $CLASSPATH/lbnl/demo/CRoom/CRoom.xml
 $CLASSPATH/lbnl/demo/MatlabRoom/MatlabRoom.xml
 $CLASSPATH/lbnl/demo/SystemCommand/SystemCommand.xml
 $CLASSPATH/org/ptolemy/ptango/demo/Cookies/Cookies.xml
-$CLASSPATH/org/ptolemy/ptango/demo/DOPTemperature/DOPTemperature.xml
 $CLASSPATH/org/ptolemy/ptango/demo/EPlus70Actuator/EPlus70Actuator.xml
 $CLASSPATH/org/ptolemy/ptango/demo/ErrorHandler/ErrorHandler.xml
 $CLASSPATH/org/ptolemy/ptango/demo/Guidance/Guidance.xml
