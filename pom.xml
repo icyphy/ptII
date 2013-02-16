@@ -441,6 +441,7 @@ See $PTII/doc/coding/maven.htm
   </organization>
   <properties>
     <project.Name>Ptolemy II</project.Name>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.Url>http://ptolemy.org</project.Url>
     <project.Description>Ptolemy II consists of a group of Java packages that support heterogeneous concurrent modeling and design.</project.Description>
     <!-- skip test-compile when doing "maven package" -->
