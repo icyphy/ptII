@@ -1,6 +1,6 @@
 /* An actor that identifies peaks in an array.
 
- Copyright (c) 2003-2012 The Regents of the University of California.
+ Copyright (c) 2003-2010 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -53,7 +53,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
-/**
+/** 
  * <p>This actor outputs the indices and values of peaks in an input array.</p>
  * <p>The <i>dip</i> and <i>squelch</i> parameters control the
  * sensitivity to noise.  These are given either as absolute numbers
@@ -99,7 +99,7 @@ public class ArrayPeakSearch extends TypedAtomicActor implements Rollbackable {
     // This is a bit complicated to do, however.
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
-    /**
+    /**     
      * The amount that the signal must drop below a local maximum before a
      * peak is detected. This is a double that can be interpreted as an
      * absolute threshold or relative to the local peak, and if relative, on
@@ -108,37 +108,37 @@ public class ArrayPeakSearch extends TypedAtomicActor implements Rollbackable {
      */
     public Parameter dip;
 
-    /**
+    /**     
      * The end point of the search. If this number is larger than
      * the length of the input array, then the search is to the end
      * of the array.  This is an integer that defaults to MaxInt.
      */
     public PortParameter endIndex;
 
-    /**
+    /**     
      * The input port.  This is required to be an array of doubles
      */
     public TypedIOPort input;
 
-    /**
+    /**     
      * The maximum number of peaks to report.
      * This is an integer that defaults to MaxInt.
      */
     public Parameter maximumNumberOfPeaks;
 
-    /**
+    /**     
      * The output port for the indices of the peaks. The type is
      * {int} (array of int).
      */
     public TypedIOPort peakIndices;
 
-    /**
+    /**     
      * The output port for the values of the peaks. The type is the
      * same as the input port.
      */
     public TypedIOPort peakValues;
 
-    /**
+    /**     
      * An indicator of whether <i>dip</i> and <i>squelch</i> should
      * be interpreted as absolute or relative, and if relative, then
      * on a linear scale, in amplitude decibels, or power decibels.
@@ -151,7 +151,7 @@ public class ArrayPeakSearch extends TypedAtomicActor implements Rollbackable {
      */
     public StringParameter scale;
 
-    /**
+    /**     
      * The value below which the input is ignored by the
      * algorithm. This is a double that can be interpreted as an
      * absolute number or a relative number, and if relative, on a
@@ -161,7 +161,7 @@ public class ArrayPeakSearch extends TypedAtomicActor implements Rollbackable {
      */
     public Parameter squelch;
 
-    /**
+    /**     
      * The starting point of the search. If this number is larger than
      * the value of <i>endIndex</i>, the search is conducted backwards
      * (and the results presented in reverse order). If this number is
@@ -190,7 +190,7 @@ public class ArrayPeakSearch extends TypedAtomicActor implements Rollbackable {
 
     private static final int _RELATIVE_LINEAR = 3;
 
-    /**
+    /**     
      * Construct an actor with the given container and name.
      * @param container The container.
      * @param name The name of this actor.
@@ -232,7 +232,7 @@ public class ArrayPeakSearch extends TypedAtomicActor implements Rollbackable {
         peakIndices.setTypeEquals(new ArrayType(BaseType.INT));
     }
 
-    /**
+    /**     
      * Override the base class to set type constraints.
      * @param workspace The workspace for the new object.
      * @return A new instance of ArrayPeakSearch.
@@ -246,7 +246,7 @@ public class ArrayPeakSearch extends TypedAtomicActor implements Rollbackable {
         return newObject;
     }
 
-    /**
+    /**     
      * Consume at most one array from the input port and produce
      * two arrays containing the indices and values of the identified
      * peaks.
