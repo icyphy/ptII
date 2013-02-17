@@ -65,6 +65,7 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.ValueListener;
 import ptolemy.kernel.util.Workspace;
+import ptolemy.util.MessageHandler;
 
 ///////////////////////////////////////////////////////////////////
 //// Variable
@@ -822,6 +823,18 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
     public void setContainer(NamedObj container) throws IllegalActionException,
             NameDuplicationException {
         Nameable previousContainer = getContainer();
+        
+        // Warn if there are variables that depend on this one.
+        if (container != previousContainer
+                && previousContainer != null
+                && _valueListeners != null
+                && _valueListeners.size() > 0) {
+            if (!MessageHandler.yesNoQuestion("WARNING: There are variables depending on " + getName() + ". Continue?")) {
+                // Cancel.
+                throw new IllegalActionException(this, "Cancelled change of container.");
+            }
+        }
+
         super.setContainer(container);
 
         if (container != previousContainer) {
@@ -845,9 +858,21 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
             // If the container is being set to null, then we
             // do have to validate as there might be variables
             // that depend on this one that are no longer valid. EAL 9/6/06
-            // FIXME: Is this right?
             if (previousContainer != null) {
-                validate();
+                // Do not use validate here if the new container is null
+                // because there is no need to validate, and anyway the variable
+                // may not validate because it depends on variables that are no
+                // longer in scope.
+                if (container != null) {
+                    validate();
+                } else {
+                    // The following will mark the listeners to this variable as
+                    // needing evaluation. When that evaluation occurs, an exception 
+                    // will be thrown. NOTE: The error will only be detected later,
+                    // but this seems better than the alternatives. Note the warning
+                    // issued above.
+                    _notifyValueListeners();
+                }
             }
         }
     }
@@ -1745,19 +1770,17 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
                         // method will simply return false. This is probably reasonable
                         // since it allows opening models even if they have error
                         // conditions.
-                        handleModelError(this, ex);
+                        // handleModelError(this, ex);
                         // Thinking that this was the wrong behavior, I tried the
                         // following. However, this resulted in an exception being
                         // thrown when deleting a parameter that references another
                         // one in scope. After the container has been set to null,
                         // there is no error handler, so the above line correctly
                         // ignores the error in evaluation.
-                        /* FIXME
                         if (!handleModelError(this, ex)) {
                             result = new LinkedList();
                             result.add(ex);
                         }
-                        */
                     } catch (IllegalActionException ex2) {
                         result = new LinkedList();
                         result.add(ex2);
