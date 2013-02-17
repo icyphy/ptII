@@ -60,23 +60,24 @@ public class OMCCommand implements IOMCCommand {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                   ////
 
-    /**  Build the Modelica model by sending buildModel() to the OMC server.
-     *   @param className Main class of the model
+    /**  Build the Modelica model by sending buildModel("command") to the OMC server.
+     *   @param command The command which is sent to the OMC server.
      *   @return CompilerResult The result of sendExpression("command") method.
      *   @exception ConnectException If buildModel command couldn't
      *   be sent to the OMC.
      */
-    public CompilerResult buildModel(String commands) throws ConnectException {
+    public CompilerResult buildModel(String command) throws ConnectException {
         // Create a unique instance of OMCProxy.
         _omcProxy = OMCProxy.getInstance();
 
         CompilerResult buildModelResult = _omcProxy.sendCommand("buildModel("
-                + commands + ")");
+                + command + ")");
         return buildModelResult;
     }
 
     /** Create an instance of OMCCommand object in order to provide a global point of access to the instance.
      *  It provides a unique source of OMCCommand instance.
+     *  @return An OMCCommand object representing the instance value.
      */
     public static OMCCommand getInstance() {
 
@@ -87,7 +88,7 @@ public class OMCCommand implements IOMCCommand {
     }
 
     /** Load Modelica model from the file.
-     *  @param fname The file name.
+     *  @param fileName The name of the file which is loaded.
      *  @return CompilerResult The result of sendExpression("command") method.
      *  @exception ConnectException If loadFileInteractiveQualified command couldn't
      *  be sent to the OMC.

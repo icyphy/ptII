@@ -157,7 +157,7 @@ public class OpenModelica extends TypedAtomicActor {
      */
     public StringParameter fileNamePrefix;
 
-    /***/
+    /** Input port, which receives an integer number from Ramp. */
     public TypedIOPort inputPort;
 
     /** Integration method used for simulation.  
@@ -268,7 +268,7 @@ public class OpenModelica extends TypedAtomicActor {
                     outputFormat.getExpression(),
                     variableFilter.getExpression(), cflags.getExpression(),
                     simflags.getExpression());
-
+            
             // Read a result file, returning a matrix corresponding to the variables and given size.
             _omcProxy.displaySimulationResult(modelName.getExpression());
 

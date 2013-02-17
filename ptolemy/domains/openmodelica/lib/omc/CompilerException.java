@@ -44,7 +44,7 @@ package ptolemy.domains.openmodelica.lib.omc;
 
 /**
   Super type of all exceptions that can be encountered while communicating
-  with the modelica compiler.
+  with the Modelica compiler.
  
   @author Andreas Remar
   @version $Id$
@@ -53,9 +53,8 @@ package ptolemy.domains.openmodelica.lib.omc;
   @Pt.AcceptedRating Red (cxh)
  */
 abstract public class CompilerException extends Exception {
-    /**
-     * Construct a compiler exception with the specified detail message.
-     * @param message Specified detail message.
+    /** Construct a compiler exception with the specified detail message.
+     *  @param message Specified detail message.
      */
     public CompilerException(String message) {
         super(message);

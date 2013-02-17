@@ -53,16 +53,16 @@ package ptolemy.domains.openmodelica.lib.omc;
 */
 public interface IOMCCommand {
 
-    /**  Build the Modelica model by sending buildModel() to the OMC server.
-     *   @param className Main class of the model
+    /**  Build the Modelica model by sending buildModel("command") to the OMC server.
+     *   @param command The command which is sent to the OMC server.
      *   @return CompilerResult The result of sendExpression("command") method.
      *   @exception ConnectException If buildModel command couldn't
      *   be sent to the OMC.
      */
-    public CompilerResult buildModel(String filename) throws ConnectException;
+    public CompilerResult buildModel(String command) throws ConnectException;
 
     /** Load Modelica model from the file.
-     *  @param fname The file name.
+     *  @param fileName The name of the file which is loaded.
      *  @return CompilerResult The result of sendExpression("command") method.
      *  @exception ConnectException If loadFileInteractiveQualified command couldn't
      *  be sent to the OMC.

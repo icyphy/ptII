@@ -124,9 +124,6 @@ public class OMCLogger {
     public String createDirectoryForResult() {
 
         String logPath = null;
-
-        // Don't call getenv and USERNAME is not set on all platforms
-        //String username = System.getenv("USERNAME");
         String username = StringUtilities.getProperty("user.name");
         String temp = System.getProperty("java.io.tmpdir");
 
@@ -178,6 +175,7 @@ public class OMCLogger {
 
     /** Create an instance of OMCLogger object in order to provide a global point of access to the instance.
      *  It provides a unique source of OMCLogger instance.
+     *  @return An OMCLogger object representing the instance value.
      */
     public static OMCLogger getInstance() {
 
@@ -187,7 +185,7 @@ public class OMCLogger {
             } catch (IllegalActionException e) {
                 String message = "Unable to get instance of OMCLogger.";
                 _omcLoggerInstance.getSever(message);
-                //FIXME Add exception
+                //FIXME throw exception
             }
         }
         return _omcLoggerInstance;

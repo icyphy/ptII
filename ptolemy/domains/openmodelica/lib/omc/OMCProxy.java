@@ -246,7 +246,6 @@ public class OMCProxy implements IOMCProxy {
     /** Return the variables in the simulation file. 
      *  Read a result file and return a matrix corresponding to the variables and size given.
      *  @param fileName The executable result file of simulation in CSV format.
-     *  @return String The matrix corresponding to the variables and size given.
      *  @throws ConnectException If commands couldn't
      *   be sent to the (OpenModelica Compiler)OMC. 
      */
@@ -288,6 +287,7 @@ public class OMCProxy implements IOMCProxy {
 
     /** Create an instance of OMCProxy object in order to provide a global point of access to the instance.
      *  It provides a unique source of OMCProxy instance.
+     *  @return An OMCProxy object representing the instance value.
      */
     public static OMCProxy getInstance() {
         if (_omcProxyInstance == null) {
@@ -367,9 +367,10 @@ public class OMCProxy implements IOMCProxy {
 
     /** Load the model from the file in the first step and load Modelica model.
      *  Return the components which the model is composed of and modify the value of parameters/variables.
-     *  @param modelicascript The Modelica command.
+     *  @param modelicaScript The Modelica command.
      *  @param inputPort The input port of OpenModelica actor which reads init value of the Ramp actor.
      *  @param fileName File which the model should be loaded from.
+     *  @param modelName Name of the model which should be built.
      *  @throws IllegalActionException 
      *  @throws ConnectException If commands couldn't
      *   be sent to the (OpenModelica Compiler)OMC. 
@@ -566,7 +567,7 @@ public class OMCProxy implements IOMCProxy {
     }
 
     /** Send a command to the OpenModelica Compiler(OMC) server and fetches the string result.
-     *  @param command The command which should be sent to the OMC.
+     *  @param modelicaCommand The command which should be sent to the OMC.
      *  @return CompilerResult The result of sendExpression("command").
      *  @exception ConnectException If commands couldn't be sent to the OMC.
      */
