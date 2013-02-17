@@ -50,7 +50,8 @@ See <a href="testing.htm">Testing Ptolemy II</a> for details.
 <ol>
 <li> In Eclipse, go to Run -&gt; Debug Configurations
 <li> Select Java Application and then click the New icon.
-<li> In the Main tab, set the "Name:" to ptjacl, in "Main class:", enter <code>tcl.lang.Shell</code>.
+<li> In the Main tab, set the "Name:" to ptjacl, in "Main class:", enter <code>tcl.lang.Shell</code>. 
+   If <code>tcl.lang.Shell</code> is not found, then be sure that <code>$PTII/lib/ptlang.jar</code> is in the class path of the project by right clicking on the project and selecting Properties &gt; Java Build Path &gt;> Libraries.
 <li> <i>Optional:</i> In the Arguments tab, under "Program arguments", enter <code>alljtests.tcl</code> or any individual test tcl file. 
 (E.g. </code>SimpleDelay.tcl</code>).
 Or, leave the "Program arguments" field blank and when ptjacl is running (see below), enter text in to the Eclipse console. 
