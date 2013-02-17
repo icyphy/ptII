@@ -60,13 +60,6 @@ abstract public class CompilerException extends Exception {
         super(message);
     }
 
-    /**
-     * Construct a new exception with null as its detail message. 
-     */
-    public CompilerException() {
-        super();
-    }
-
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     private static final long serialVersionUID = -7881546855664735599L;

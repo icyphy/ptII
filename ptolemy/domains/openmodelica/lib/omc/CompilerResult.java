@@ -65,29 +65,20 @@ public class CompilerResult implements ICompilerResult {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /**
-     * Fetch the error resulted from calling sendExpression("command") to OpenModelica Compiler(OMC).
-     * @return The error resulted from calling sendExpression("command") to OMC.
+    /** Fetch the error resulted from calling sendExpression("command") to OpenModelica Compiler(OMC).
+     *  @return The error resulted from calling sendExpression("command") to OMC.
      */
     public String getError() {
         return _error;
     }
 
-    /**
-     * Fetch the first result of calling sendExpression("command") to OpenModelica Compiler(OMC).
-     * @return The first result of calling sendExpression("command") to OMC.
+    /** Fetch the first result of calling sendExpression("command") to OpenModelica Compiler(OMC).
+     *  @return The first result of calling sendExpression("command") to OMC.
      */
     public String getFirstResult() {
         return _result[0];
     }
 
-    /**
-     * Fetch multiple results of calling sendExpression("command") to OpenModelica Compiler(OMC).
-     * @return The multiple result of calling sendExpression("command") to OMC.
-     */
-    public String[] getResult() {
-        return _result;
-    }
 
     /** Make the compiler result with the result and error of sendExpression("command") to OpenModelica Compiler(OMC).
      * @param result The result of calling sendExpression("command") to OMC.
@@ -98,12 +89,6 @@ public class CompilerResult implements ICompilerResult {
         return new CompilerResult(result, error);
     }
 
-    /**
-     * Trim the first compiler result.
-     */
-    public void trimFirstResult() {
-        _result[0] = _result[0].trim();
-    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////

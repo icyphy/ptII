@@ -56,27 +56,14 @@ public interface ICompilerResult {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /**
-     * Fetch the error resulted from calling sendExpression("command") to OpenModelica Compiler(OMC).
-     * @return The error resulted from calling sendExpression("command") to OMC.
+    /** Fetch the error resulted from calling sendExpression("command") to OpenModelica Compiler(OMC).
+     *  @return The error resulted from calling sendExpression("command") to OMC.
      */
     public String getError();
 
-    /**
-     * Fetch the first result of calling sendExpression("command") to OpenModelica Compiler(OMC).
-     * @return The first result of calling sendExpression("command") to OMC.
+    /** Fetch the first result of calling sendExpression("command") to OpenModelica Compiler(OMC).
+     *  @return The first result of calling sendExpression("command") to OMC.
      */
     public String getFirstResult();
-
-    /**
-     * Fetch multiple results of calling sendExpression("command") to OpenModelica Compiler(OMC).
-     * @return The multiple result of calling sendExpression("command") to OMC.
-     */
-    public String[] getResult();
-
-    /**
-     * Trim the first compiler result.
-     */
-    public void trimFirstResult();
 
 }

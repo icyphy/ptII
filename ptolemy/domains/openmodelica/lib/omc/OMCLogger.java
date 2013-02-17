@@ -128,7 +128,7 @@ public class OMCLogger {
         String temp = System.getProperty("java.io.tmpdir");
 
         if (username == null) {
-            System.err.println("Could not get java.io.tmpdir property?  Using 'nobody'.");
+            System.err.println("Could not get user.name property?  Using 'nobody'.");
             logPath = temp + "/nobody/OpenModelica/";
         } else {
             logPath = temp + "/" + username + "/OpenModelica/";
@@ -159,12 +159,6 @@ public class OMCLogger {
         omcLogger.info(infoMessage);
     }
 
-    /** Get the Warning LogLevel and warning message will be written in the log file.
-     *  @param warningMessage The warning message.
-     */
-    public void getWarning(String warningMessage) {
-        omcLogger.warning(warningMessage);
-    }
 
     /** Get the Sever LogLevel and sever message will be written in the log file.
      *  @param severMessage The sever message.
