@@ -256,7 +256,8 @@ public class IOPort extends ComponentPort {
             Token parameterToken = ((Parameter) attribute).getToken();
 
             if (parameterToken != null) {
-                if (parameterToken instanceof ObjectToken) {
+                if (parameterToken instanceof ObjectToken &&
+                        ((ObjectToken)parameterToken).getValue() instanceof QuantityManager) {
                     // invalidate list of quantity managers.
                     _qmListValid = false;
                 }
