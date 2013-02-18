@@ -64,8 +64,8 @@ public interface IOMCProxy {
      *  @throws ConnectException If commands couldn't
      *   be sent to the (OpenModelica Compiler)OMC. 
      */
-    public void displaySimulationResult(String fileName)
-            throws ConnectException;
+    /*public void displaySimulationResult(String fileName)
+            throws ConnectException;*/
 
     /** Initialize the communication with the (OpenModelica compiler)OMC.
      *  @exception ConnectException If we're unable to start communicating with
@@ -90,10 +90,17 @@ public interface IOMCProxy {
      *  @throws ConnectException If commands couldn't
      *   be sent to the (OpenModelica Compiler)OMC. 
      */
-    public void modifyVariables(String modelicaScript, TypedIOPort inputPort,
+   /* public void modifyVariables(String modelicaScript, TypedIOPort inputPort,
             String fileName, String modelName) throws IllegalActionException,
-            ConnectException;
-
+            ConnectException;*/
+    
+    /** Plot the plt file by calling PxgraphApplication.main(dcmotor_res.plt).
+     *  @param fileNamePrefix User preferable name for the result file.
+     *  @param modelName Name of the model which should be built.
+     *  @throws ConnectException If commands could not be sent to the OMC.
+     */
+    public void plotPltFile(String fileNamePrefix,String modelName) throws ConnectException;
+    
     /** Leave and quit OpenModelica environment.
      *  @exception ConnectException If quit command couldn't
      *  be sent to OMC.

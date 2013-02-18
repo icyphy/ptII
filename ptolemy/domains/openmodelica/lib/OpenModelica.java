@@ -39,14 +39,11 @@ import ptolemy.data.expr.FileParameter;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.data.type.BaseType;
-import ptolemy.domains.openmodelica.lib.omc.CompilerResult;
-import ptolemy.domains.openmodelica.lib.omc.ConnectException;
 import ptolemy.domains.openmodelica.lib.omc.OMCProxy;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
-import ptolemy.plot.compat.PxgraphApplication;
 
 /**
     An actor that executes a Modelica script. it translates and
@@ -242,11 +239,12 @@ public class OpenModelica extends TypedAtomicActor {
         // Create a unique instance of OMCCommand.
         _omcProxy = OMCProxy.getInstance();
 
+        //FIXME
         if (_debugging) {
             _debug("OpenModelica Actor Called fire().");
         }
 
-        try {
+        /* try {
             // Return the components which the model is composed of and modify the value of parameters/variables.
             _omcProxy.modifyVariables(modelicaScript.getExpression(),
                     inputPort, fileName.getExpression(),
@@ -254,7 +252,7 @@ public class OpenModelica extends TypedAtomicActor {
         } catch (ConnectException e) {
             throw new IllegalActionException(
                     "Unable to modify parameters/variables value.");
-        }
+        }*/
 
         try {
 
@@ -268,12 +266,14 @@ public class OpenModelica extends TypedAtomicActor {
                     outputFormat.getExpression(),
                     variableFilter.getExpression(), cflags.getExpression(),
                     simflags.getExpression());
-            
+
             // Read a result file, returning a matrix corresponding to the variables and given size.
-            _omcProxy.displaySimulationResult(modelName.getExpression());
+            //_omcProxy.displaySimulationResult(modelName.getExpression());
 
             // Plot plt format file.
-            _plotPltFile(fileNamePrefix.getExpression());
+            if (outputFormat.getExpression().compareTo("plt") == 0)
+                _omcProxy.plotPltFile(fileNamePrefix.getExpression(),
+                        modelName.getExpression());
         } catch (Throwable throwable) {
             throw new IllegalActionException(this, throwable,
                     "Unable to simulate the model!");
@@ -281,41 +281,8 @@ public class OpenModelica extends TypedAtomicActor {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
-    /** Plot the plt file by calling PxgraphApplication.main(dcmotor_res.plt).
-     *  @throws ConnectException  If commands couldn't
-     *  be sent to the OMC.
-     */
-    private void _plotPltFile(String fileNamePrefix) throws ConnectException {
-
-        // Array for saving the file path.  
-        String[] _pltPath = new String[1];
-
-        //Send cd() command to the (OpenModelica Compiler)OMC and fetch working directory of OMC as a result.
-        CompilerResult cdResult = _omcProxy.sendCommand("cd()");
-        _openModelicaWorkingDirectory = cdResult.getFirstResult();
-        _openModelicaWorkingDirectory = _openModelicaWorkingDirectory.replace(
-                '"', ' ').trim();
-
-        // Save file path in the string array for invoking main() of PxgraphApplication.
-        if (fileNamePrefix.compareTo("") == 0) {
-            _pltPath[0] = _openModelicaWorkingDirectory + "/"
-                    + modelName.getExpression() + "_res.plt";
-        } else {
-            _pltPath[0] = _openModelicaWorkingDirectory + "/" + fileNamePrefix
-                    + "_res.plt";
-        }
-
-        PxgraphApplication.main(_pltPath);
-    }
-
-    ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     // OMCProxy Object for accessing a unique source of instance.
     private OMCProxy _omcProxy;
-
-    // The return result from invoking sendExpression("cd()") to (OpenModelica Compiler)OMC.
-    // The return result is the working directory of OMC.
-    private String _openModelicaWorkingDirectory = null;
 
 }

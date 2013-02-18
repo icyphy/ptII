@@ -95,8 +95,8 @@ public class OpenModelicaDirector extends ContinuousDirector {
      *  @exception IllegalActionException If the preinitialize() of
      *  one of the associated actors throws it.
      */
-    public void preinitialize() throws IllegalActionException {
-        super.preinitialize();
+    public void initialize() throws IllegalActionException {
+        super.initialize();
         try {
 
             // Create a unique instance of OMCLogger and OMCProxy.
@@ -104,10 +104,6 @@ public class OpenModelicaDirector extends ContinuousDirector {
             _omcProxy = OMCProxy.getInstance();
 
             _omcProxy.initServer();
-
-            if (_debugging) {
-                _debug("OpenModelica server is intialized.");
-            }
 
         } catch (ConnectException ex) {
             throw new IllegalActionException(this, ex,
@@ -124,7 +120,7 @@ public class OpenModelicaDirector extends ContinuousDirector {
 
         Time stopTime = getModelStopTime();
 
-        // If the stop time is infinity, then stop execution.
+        // If the stop time is infinite, then stop execution.
         if (stopTime == Time.POSITIVE_INFINITY) {
             stop();
             return false;
@@ -141,12 +137,7 @@ public class OpenModelicaDirector extends ContinuousDirector {
     public void wrapup() throws IllegalActionException {
         super.wrapup();
         try {
-
             _omcProxy.quitServer();
-
-            if (_debugging) {
-                _debug("OpenModelica server quited.");
-            }
         } catch (ConnectException ex) {
             String loggerInfo = "OpenModelica Server quited!";
             _omcLogger.getInfo(loggerInfo);
@@ -161,4 +152,5 @@ public class OpenModelicaDirector extends ContinuousDirector {
 
     // OMCProxy object for accessing a unique source of instance.
     private OMCProxy _omcProxy;
+
 }
