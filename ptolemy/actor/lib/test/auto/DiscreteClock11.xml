@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="DiscreteClock11" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 524]">
     </property>
@@ -116,8 +116,6 @@
         </property>
         <property name="values" class="ptolemy.data.expr.Parameter" value="{2.0, 1.0}">
         </property>
-        <property name="numberOfCycles" class="ptolemy.data.expr.Parameter" value="UNBOUNDED">
-        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 105.0]">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
@@ -135,7 +133,7 @@
     <entity name="DiscreteClock" class="ptolemy.actor.lib.DiscreteClock">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="10.0">
         </property>
-        <property name="period" class="ptolemy.actor.parameters.PortParameter" value="2.0">
+        <property name="period" class="ptolemy.actor.parameters.PortParameter" value="1.0">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[150.0, 140.0]">
         </property>

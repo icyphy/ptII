@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="DiscreteClock10" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 524]">
     </property>
@@ -115,8 +115,6 @@
         <property name="offsets" class="ptolemy.data.expr.Parameter" value="{1.5, 6.0}">
         </property>
         <property name="values" class="ptolemy.data.expr.Parameter" value="{2.0, 1.0}">
-        </property>
-        <property name="numberOfCycles" class="ptolemy.data.expr.Parameter" value="UNBOUNDED">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 105.0]">
         </property>

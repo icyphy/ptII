@@ -27,8 +27,6 @@
         </property>
         <property name="values" class="ptolemy.data.expr.Parameter" value="{1, 2}">
         </property>
-        <property name="numberOfCycles" class="ptolemy.data.expr.Parameter" value="UNBOUNDED">
-        </property>
         <doc>Create a set of pulses</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{240.0, 190.0}">
         </property>

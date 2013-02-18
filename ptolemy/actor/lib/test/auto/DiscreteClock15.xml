@@ -47,8 +47,6 @@
         </property>
         <property name="values" class="ptolemy.data.expr.Parameter" value="{true}">
         </property>
-        <property name="numberOfCycles" class="ptolemy.data.expr.Parameter" value="UNBOUNDED">
-        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[145.0, 120.0]">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
