@@ -226,21 +226,21 @@ public class Distributor extends Transformer implements SequenceActor {
     // The new channel number for the next output as determined by fire().
     private int _tentativeOutputPosition;
 
-    /**
-     * This class will set _port.getWidth() + " * blockSize" as expression
-     * of the parameter, but will only do it when the token is requested to
-     * delay the triggering of the width.
+    /** This parameter overrides the default behavior to always return the
+     *  value of the blockSize parameter times the width of the input port.
      */
-    private static class WidthDependentParameter extends Parameter {
+    private class WidthDependentParameter extends Parameter {
         public WidthDependentParameter(NamedObj container, String name,
                 Token token, IOPort port) throws IllegalActionException,
                 NameDuplicationException {
             super(container, name, token);
             _port = port;
+            setPersistent(false);
         }
 
         public ptolemy.data.Token getToken() throws IllegalActionException {
-            setExpression(_port.getWidth() + " * blockSize");
+            IntToken blockSizeValue = (IntToken)blockSize.getToken();
+            setToken(new IntToken(_port.getWidth() * blockSizeValue.intValue()));
             return super.getToken();
         }
 
