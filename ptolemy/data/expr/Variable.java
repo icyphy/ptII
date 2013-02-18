@@ -1646,11 +1646,12 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
             return;
         }
 
-        // If _dependencyLoop is true, then this call to evaluate() must
+        // If _dependencyLoop is true, and the value of the token has not yet
+        // been set (_needsEvaluation is true), then this call to evaluate() must
         // have been triggered by evaluating the expression of this variable,
         // which means that the expression directly or indirectly refers
         // to itself.
-        if (_dependencyLoop) {
+        if (_dependencyLoop && _needsEvaluation) {
             _dependencyLoop = false;
             throw new IllegalActionException("There is a dependency loop"
                     + " where " + getFullName() + " directly or indirectly"
