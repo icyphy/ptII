@@ -80,7 +80,6 @@ public class OMCCommand implements IOMCCommand {
      *  @return An OMCCommand object representing the instance value.
      */
     public static OMCCommand getInstance() {
-
         if (_omcCommandInstance == null) {
             _omcCommandInstance = new OMCCommand();
         }
@@ -93,11 +92,11 @@ public class OMCCommand implements IOMCCommand {
      *  @exception ConnectException If loadFileInteractiveQualified command couldn't
      *  be sent to the OMC.
      */
-    public CompilerResult loadFile(String fname) throws ConnectException {
+    public CompilerResult loadFile(String fileName) throws ConnectException {
         // Create a unique instance of OMCProxy.
         _omcProxy = OMCProxy.getInstance();
         CompilerResult loadFileInteractiveQualifiedResult = _omcProxy
-                .sendCommand("loadFileInteractiveQualified(\"" + fname + "\")");
+                .sendCommand("loadFileInteractiveQualified(\"" + fileName + "\")");
         return loadFileInteractiveQualifiedResult;
     }
 

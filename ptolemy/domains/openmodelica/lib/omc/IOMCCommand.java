@@ -67,7 +67,7 @@ public interface IOMCCommand {
      *  @exception ConnectException If loadFileInteractiveQualified command couldn't
      *  be sent to the OMC.
      */
-    public CompilerResult loadFile(String filename) throws ConnectException;
+    public CompilerResult loadFile(String fileName) throws ConnectException;
 
     /** Load Modelica model.
      *  @param modelicaScript loadModel(Modelica)

@@ -824,7 +824,7 @@ public class OMCProxy implements IOMCProxy {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
     /** Find the OpenModelica Compiler(OMC) executable file by using path variables.
-     *  @parameter executableName The name of the executable file
+     *  @param executableName The name of the executable file
      *  @return File The OMC executable file
      */
     private File _findExecutableOnPath(String executableName) {
