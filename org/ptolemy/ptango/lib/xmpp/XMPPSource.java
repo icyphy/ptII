@@ -28,13 +28,25 @@
 
 package org.ptolemy.ptango.lib.xmpp;
 
+import java.util.Hashtable;
+
+import javax.servlet.http.HttpServletResponse;
+
 import org.jivesoftware.smackx.pubsub.Item;
 import org.jivesoftware.smackx.pubsub.ItemPublishEvent;
 import org.jivesoftware.smackx.pubsub.PayloadItem;
 import org.jivesoftware.smackx.pubsub.SimplePayload;
+import org.ptolemy.ptango.lib.HttpActor;
 
+import ptolemy.actor.Initializable;
+import ptolemy.actor.TypedAtomicActor;
+import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.lib.Source;
+import ptolemy.actor.util.Time;
+import ptolemy.data.LongToken;
 import ptolemy.data.StringToken;
+import ptolemy.data.Token;
+import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
@@ -58,7 +70,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  *  @Pt.ProposedRating Red (marten)
  *  @Pt.AcceptedRating Red (marten)
  */
-public class XMPPSource extends Source implements XMPPSubscriber {
+public class XMPPSource extends TypedAtomicActor implements XMPPSubscriber {
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -71,8 +83,23 @@ public class XMPPSource extends Source implements XMPPSubscriber {
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
         nodeId = new StringParameter(this, "nodeId");
+        
+        output = new TypedIOPort(this, "output", false, true);
         output.setTypeEquals(BaseType.STRING);
+        new Parameter(output, "_showName").setExpression("true");
+        
+        // Set flag indicating that initialize() has not yet been called.
+        // Must be set prior to initialize() being called, so we set it in 
+        // the constructor.
+        _hasInitialized = false;
     }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                     ports and parameters                  ////
+    
+    /** An output port for values received from the XMPP node.
+     */
+    public TypedIOPort output;
 
     ///////////////////////////////////////////////////////////////////
     ////                     public variables                      ////
@@ -103,14 +130,44 @@ public class XMPPSource extends Source implements XMPPSubscriber {
             super.attributeChanged(attribute);
         }
     }
+    
+    /** Record the current model time and the current real time
+     *  so that output events can be time stamped with the elapsed
+     *  time since model start.
+     *  
+     *  Declare as synchronized so the handlePublishedItems() method can check 
+     *  if initialize() has been called and, if not, wait for initialize() to 
+     *  be called.
+     *  @exception IllegalActionException If the superclass throws it.
+     */
+    public synchronized void initialize() throws IllegalActionException {
+        super.initialize();
+        _hasFired = false;
+        _initializeModelTime = getDirector().getModelTime();
+        _initializeRealTime = System.currentTimeMillis();
+        _hasInitialized = true;
+        _hasFired = false;
+        this.notify();
+    }
 
     /** Send the current value of the state of this actor to the output.
+     *  Synchronized on a lock Object so that each data value will be handled
+     *  before the next one is accepted, since incoming values call the
+     *  handlePublishedItems() method from a different thread.
+     * 
      *  @exception IllegalActionException If calling send() or super.fire()
      *  throws it.
      */
     public void fire() throws IllegalActionException {
-        super.fire();
-        output.send(0, new StringToken(_currentValue));
+        synchronized (lock) {
+            super.fire();
+            output.send(0, new StringToken(_currentValue));
+            
+            // Notify the _handlePublishedItems() method that the actor has
+            // fired, so that method can continue executing
+            _hasFired = true;
+            lock.notify();
+        }
     }
 
     /** Return the nodeId. 
@@ -131,21 +188,118 @@ public class XMPPSource extends Source implements XMPPSubscriber {
     }
     
     /** Parse the published item from the XMPP node, save the XML and 
-     *  call fireAtCurrentTime().
+     *  request that the actor be fired.
      *  This method is declared in the smack ItemEventListener interface.
      *  This method is called when an item is published.
+     *  
+     *  NOTE: This method is synchronized, and the lock is _not_ released
+     *  until the method is finished processing the current item event.  The 
+     *  first item event is completely processed before a second item event
+     *  can be started.
+     *  
+     *  @param items  The item event from the XMPP node.  Can contain 
+     *  multiple pieces of information.
      */
     @Override
-    public void handlePublishedItems(ItemPublishEvent<Item> items) {
-        // FIXME: unchecked cast
-        PayloadItem<SimplePayload> item = (PayloadItem<SimplePayload>) items.getItems().get(0);
-        SimplePayload payload = item.getPayload();
-        _currentValue = payload.toXML();
-        System.out.println("Event!");
-        try {
-            getDirector().fireAtCurrentTime(this);
-        } catch (IllegalActionException e) {
-            throw new InternalErrorException(this, e, "Failed to fire at the current time.");
+    public synchronized void handlePublishedItems(ItemPublishEvent<Item> items){  
+        // Check if initialize() has been called yet.  If not, wait, releasing
+        // the lock so that initialize may be called.  Further invocations of 
+        // handlePublishedItems might also be called, but these will also wait 
+        // for initialize().
+        while (!_hasInitialized) {
+            try {
+                this.wait(0);
+            } catch (InterruptedException e) {
+                // FIXME:  Do anything special if thread is interrupted?
+                break;
+            }
+        }
+        
+        _handlePublishedItems(items);
+    }
+    
+    /** Set _hasInitialized to false, so that invocations of 
+     *  handlePublishedItems (from a different thread) will wait until the model 
+     *  has been initialized on the next execution.
+     */
+    public void wrapup() throws IllegalActionException {
+        
+        synchronized (lock) {
+            super.wrapup();
+            _hasInitialized = false;           
+            
+            // Notify the handlePublishedItems() method to stop waiting to be 
+            // fired, since this actor will not be fire again in this iteration
+            _hasFired = true;
+            lock.notify();
+        }    
+    }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                      private methods                      ////
+    
+    /** Parse the published item from the XMPP node, save the XML and 
+     *  request that the actor be fired.  Synchronized on a lock object so 
+     *  this method will release the lock on the lock object so the fire() 
+     *  method may execute, but retain the lock on XMPPSource.this object 
+     *  so that future invocations of handlePublishedItems() must block until 
+     *  the current invocation is finished.
+     *  
+     *  @param items  The item event from the XMPP node.  Can contain 
+     *  multiple pieces of information.
+     */
+    private void _handlePublishedItems(ItemPublishEvent<Item> items) {
+        // The following codeblock is synchronized on the enclosing
+        // actor. This lock _is_ released while waiting for the response,
+        // allowing the fire method to execute its own synchronized blocks.
+        synchronized (lock) {
+            _hasFired = false;
+            // FIXME: unchecked cast
+            PayloadItem<SimplePayload> item = (PayloadItem<SimplePayload>) items.getItems().get(0);
+            SimplePayload payload = item.getPayload();
+            _currentValue = payload.toXML();
+            
+            try {
+                long elapsedRealTime = System.currentTimeMillis()
+                        - _initializeRealTime;
+                Time timeOfRequest = _initializeModelTime
+                        .add(elapsedRealTime);
+                // Note that fireAt() will modify the requested firing time if it is in the past.
+                getDirector().fireAt(XMPPSource.this, timeOfRequest);
+            } catch (IllegalActionException e) {
+                throw new InternalErrorException(this, e, 
+                        "Failed to fire at the current time.");
+            }
+            
+            // Wait until this actor has been fired (thereby producing a token
+            // with the received value on its output port) before this method
+            // can be called again to receive a new value.
+            
+            // Note that other implementations are possible.  For example, 
+            // instead of blocking the caller until each value is handled,
+            // this actor could implement a bounded queue and accepted up
+            // to n values before blocking or before discarding values.
+            
+            // Note that the fire method purposefully does not block waiting for
+            // a new value, so the actor might be fired multiple times with the
+            // current value, for example if a token is received on the trigger 
+            // input port.  This ensures that XMPPSource will not block the 
+            // execution of the rest of the model - the DEDirector maintains 
+            // authority over execution.
+            
+            // wrapup() may be called before this actor is fired, meaning this 
+            // actor will not be fired.  In this situation, wrapup() sets 
+            // _hasFired to true and calls lock.notify() to wake up this thread 
+            // and allow the thread to finish
+            while (!_hasFired) {
+                try {
+                    lock.wait(0);       
+                } catch (InterruptedException e) {
+                    // FIXME:  Do anything special if thread is interrupted?
+                    break;
+                }
+            }
+            
         }
     }
 
@@ -179,6 +333,31 @@ public class XMPPSource extends Source implements XMPPSubscriber {
      *  the XMPP server. 
      */
     private XMPPGateway _gateway;
+    
+    /** A flag indicating if the actor has fired after a new value was received.
+     */
+    private boolean _hasFired;
+    
+    /** A flag indicating if initialize() was called.  handlePublishedItems() 
+     *  will wait if initialize() has not been called.
+     */
+    private boolean _hasInitialized = false;
+    
+    /** The model time at which this actor was last initialized. */
+    private Time _initializeModelTime;
+
+    /** The real time at which this actor was last initialized, in milliseconds. */
+    private long _initializeRealTime;
+    
+    /** An object for the fire() and private _handlePublishedItems() methods to 
+     * use as a lock.  We avoid using XMPPSource as the lock object here since 
+     * the public handlePublishedItems uses XMPPSource as the lock object to 
+     * ensure one method call is completed before the next, and if we use the 
+     * same lock object for the private _handlePublishedItems method, this lock
+     * will be released when wait() is called.  The actual value of this 
+     * variable is not used. 
+     */
+    private Object lock = new Object();
 
     /** The cached value of nodeId parameter.
      *  @see #nodeId

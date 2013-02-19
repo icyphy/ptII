@@ -8,14 +8,14 @@
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[911, 524]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0000000000000002">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.8000000000000003">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{340.00000000000017, 252.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{340.0000000000002, 251.99999999999994}">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
-        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="10.0">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="20.0">
         </property>
         <property name="stopWhenQueueIsEmpty" class="ptolemy.data.expr.Parameter" value="false">
         </property>
@@ -43,7 +43,7 @@
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="&#10;DE director parameters are set as follows:&#10;stopWhenQueueIsEmpty:  false, so the model will continue waiting for new events&#10;&#10;stopTime:  10.0, ten seconds, so the model terminates for regression testing.&#10;Please change this value to have the model execute longer or indefinitely.&#10;&#10;synchronizeToRealTime:  true, so that we can stop the model after stopTime real seconds">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="&#10;DE director parameters are set as follows:&#10;stopWhenQueueIsEmpty:  false, so the model will continue waiting for new events&#10;&#10;stopTime:  20.0, twenty seconds, so the model terminates for regression testing.&#10;Please change this value to have the model execute longer or indefinitely.&#10;&#10;synchronizeToRealTime:  true, so that we can stop the model after stopTime real seconds">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[300.0, 35.0]">
         </property>
