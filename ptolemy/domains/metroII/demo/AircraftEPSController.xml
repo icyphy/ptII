@@ -1,10 +1,10 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="Model" class="ptolemy.actor.TypedCompositeActor">
+<entity name="AircraftEPSController" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={251, 285, 827, 607}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={107, 183, 829, 636}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[613, 516]">
     </property>
@@ -13,6 +13,8 @@
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{480.4623092296506, 198.05982467296562}">
     </property>
     <property name="MetroIIDirector" class="ptolemy.domains.metroII.kernel.MetroIIDirector">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="53">
+        </property>
         <property name="mapping" class="ptolemy.data.expr.Parameter" value="'../mappings/Mapping.txt'">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{140, 40}">
@@ -278,7 +280,7 @@ B1~B6 - reserved zero / 1st port / 2nd port / 3rd port</text></svg></configure>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{102.0, 70.0}">
             </property>
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={97, 178, 1097, 723}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={100, 205, 1095, 694}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[881, 603]">
         </property>
@@ -287,7 +289,7 @@ B1~B6 - reserved zero / 1st port / 2nd port / 3rd port</text></svg></configure>
         <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{526.5, 233.203125}">
         </property>
         <property name="MetroIISRDirector" class="ptolemy.domains.metroII.kernel.MetroIISRDirector">
-            <property name="iterations" class="ptolemy.data.expr.Parameter" value="300">
+            <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[485.0, -30.0]">
             </property>
@@ -298,8 +300,6 @@ B1~B6 - reserved zero / 1st port / 2nd port / 3rd port</text></svg></configure>
                 </property>
                 <property name="allowDirectories" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
-            </property>
-            <property name="backgroundColor" class="ptolemy.actor.gui.ColorAttribute">
             </property>
             <property name="openCompositesBeforeExport" class="ptolemy.data.expr.Parameter" value="false">
             </property>
@@ -337,7 +337,7 @@ B1~B6 - reserved zero / 1st port / 2nd port / 3rd port</text></svg></configure>
             </port>
         </entity>
         <entity name="Display" class="ptolemy.actor.lib.gui.Display">
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={384, 485, 895, 318}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={387, 553, 897, 347}, maximized=false}">
             </property>
             <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[895, 295]">
             </property>
@@ -556,6 +556,8 @@ B1~B6 - reserved zero / 1st port / 2nd port / 3rd port</text></svg></configure>
                 </property>
             </port>
             <entity name="_Controller" class="ptolemy.domains.modal.modal.ModalController">
+                <property name="errorCause" class="ptolemy.data.expr.Parameter">
+                </property>
                 <property name="annotation" class="ptolemy.kernel.util.Attribute">
                     <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                     </property>
@@ -914,6 +916,8 @@ Then delete this annotation.</text>
                 </property>
             </port>
             <entity name="_Controller" class="ptolemy.domains.modal.modal.ModalController">
+                <property name="errorCause" class="ptolemy.data.expr.Parameter">
+                </property>
                 <property name="annotation" class="ptolemy.kernel.util.Attribute">
                     <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                     </property>
@@ -1287,6 +1291,8 @@ Then delete this annotation.</text>
                 </property>
             </port>
             <entity name="_Controller" class="ptolemy.domains.modal.modal.ModalController">
+                <property name="errorCause" class="ptolemy.data.expr.Parameter">
+                </property>
                 <property name="annotation" class="ptolemy.kernel.util.Attribute">
                     <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                     </property>
