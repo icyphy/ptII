@@ -40,8 +40,10 @@ import ptolemy.kernel.util.IllegalActionException;
 ///////////////////////////////////////////////////////////////////
 //// MetroIIActorGeneralWrapper
 
-/** <p> MetroIIActorGeneralWrapper is used to wrap any MetroII 
- * compatible actor with MetroIIActorInterface. </p> 
+/** <p> 
+ * MetroIIActorGeneralWrapper is used to wrap any MetroII 
+ * compatible actor with MetroIIActorInterface. 
+ * </p> 
  * 
  * @author Liangpeng Guo
  * @version $Id$
