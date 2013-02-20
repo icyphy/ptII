@@ -1,4 +1,4 @@
-/* Interface for MetroII Actor.
+/* StartOrResumable defines the interface of an actor to MetroIIDirector.
  
  Copyright (c) 2012-2013 The Regents of the University of California.
  All rights reserved.
@@ -34,11 +34,11 @@ import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event;
 import ptolemy.kernel.util.IllegalActionException;
 
 ///////////////////////////////////////////////////////////////////
-//// MetroII Actor
+//// StartOrResumable
 
 /**
- * A MetroIIActor is an executable entity. This interface defines the common
- * functionality in atomic actor and composite actor.
+ * StartOrResumable defines the interface of an actor to MetroIIDirector. 
+ * This interface defines the common functionality in atomic actor and composite actor.
  *
  * @author Liangpeng Guo
  * @version $Id$
@@ -46,20 +46,18 @@ import ptolemy.kernel.util.IllegalActionException;
  * @Pt.ProposedRating Red (glp)
  * @Pt.AcceptedRating Red (glp)
 */
-// FIXME: startOrResumable
 
-public interface MetroIIActorInterface {
+public interface StartOrResumable {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** <p> If it's called for the first time, the function initializes the state, 
-     *  otherwise, it resumes the state it saves last time. 
+    /** <p> 
+     *  If startOrResume() resumes from the state it saves last time. 
      *  The state means local variables, stacks or anything it needs to 
-     *  resume the execution of last time. </p> 
-     * 
-     *  <p> Continue iteratively executing the actor until any MetroII Event is 
-     *  proposed. When any MetroII Event is proposed, the function returns with the 
-     *  state of the function saved and the proposed events added into metroIIEventList. 
+     *  resume the execution of last time. 
+     *  Continue iteratively executing the actor until any MetroII Event is 
+     *  proposed. When MetroII Events are proposed, the function returns with the 
+     *  state saved and the proposed events added into metroIIEventList. 
      *  </p>
      *  
      *  IMPORTANT: the references of MetroII Events could be part of the state of the 
