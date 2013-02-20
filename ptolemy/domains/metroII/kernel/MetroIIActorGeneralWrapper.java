@@ -1,4 +1,4 @@
-/* General wrapper for Ptolemy actor to work with MetroII Semantics.
+/* GMetroIIActorGeneralWrapper is used to wrap any MetroII compatible actor with MetroIIActorInterface. 
 
  Copyright (c) 2012-2013 The Regents of the University of California.
  All rights reserved.
@@ -57,7 +57,7 @@ public class MetroIIActorGeneralWrapper extends MetroIIActorBasicWrapper {
      */
     public MetroIIActorGeneralWrapper(Actor actor) {
         super(actor);
-        this.eventIterator = null;
+        this._eventIterator = null;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -66,7 +66,7 @@ public class MetroIIActorGeneralWrapper extends MetroIIActorBasicWrapper {
     /** Start or resume the execution of an actor. The execution means 
      * calling prefire(), getfire(), and postfire(). The 
      * execution of getfire() is encapsulated in a thread (implemented 
-     * in YieldAdapter). 
+     * in YieldAdapter @see net.jimblackler.Utils.YieldAdapter). 
      * The thread pauses when getfire() yield-returns a list of MetroII 
      * events. 
      * 
@@ -79,63 +79,63 @@ public class MetroIIActorGeneralWrapper extends MetroIIActorBasicWrapper {
         /**
          * Start executing the wrapped actor in the thread. 
          */
-        if (state == State.POSTFIRE_END_PREFIRE_BEGIN) {
-            assert currentStateEvent.getName().contains("PREFIRE_BEGIN");
-            if (currentStateEvent.getStatus() == Event.Status.NOTIFIED) {
-                if (actor.prefire()) {
-                    state = State.PREFIRE_END_FIRE_BEGIN;
-                    currentStateEvent = createMetroIIEvent("FIRE_BEGIN");
+        if (_state == State.POSTFIRE_END_PREFIRE_BEGIN) {
+            assert _currentStateEvent.getName().contains("PREFIRE_BEGIN");
+            if (_currentStateEvent.getStatus() == Event.Status.NOTIFIED) {
+                if (_actor.prefire()) {
+                    _state = State.PREFIRE_END_FIRE_BEGIN;
+                    _currentStateEvent = _createMetroIIEvent("FIRE_BEGIN");
                 }
             }
-            metroIIEventList.add(currentStateEvent);
-        } else if (state == State.PREFIRE_END_FIRE_BEGIN) {
-            assert currentStateEvent.getName().contains("FIRE_BEGIN");
-            if (currentStateEvent.getStatus() == Event.Status.NOTIFIED) {
+            metroIIEventList.add(_currentStateEvent);
+        } else if (_state == State.PREFIRE_END_FIRE_BEGIN) {
+            assert _currentStateEvent.getName().contains("FIRE_BEGIN");
+            if (_currentStateEvent.getStatus() == Event.Status.NOTIFIED) {
                 /* The getfire() of each Metropolis actor is invoked by a separate thread.
                  * Each thread is encapsulated by a YieldAdapterIterable, which is used to iterate
                  * the events proposed by the thread.
                  */
-                final YieldAdapterIterable<Iterable<Event.Builder>> results = ((MetroIIEventHandler) actor)
+                final YieldAdapterIterable<Iterable<Event.Builder>> results = ((MetroIIEventHandler) _actor)
                         .adapter();
-                eventIterator = results.iterator();
-                state = State.FIRING;
-                currentStateEvent = createMetroIIEvent("FIRING");
+                _eventIterator = results.iterator();
+                _state = State.FIRING;
+                _currentStateEvent = _createMetroIIEvent("FIRING");
             }
-            metroIIEventList.add(currentStateEvent);
+            metroIIEventList.add(_currentStateEvent);
         }
         /**
          * Resume executing the wrapped actor with states saved in the thread.
          */
-        else if (state == State.FIRING) {
+        else if (_state == State.FIRING) {
             /* Every time hasNext() is called, the thread runs until the next event 
              * is proposed. If any event is proposed, hasNext() returns true. 
              * The proposed event is returned by next().  
              * If the getfire() terminates without proposing event, hasNext()
              * returns false.
              */
-            if (eventIterator.hasNext()) {
-                Iterable<Event.Builder> result = eventIterator.next();
+            if (_eventIterator.hasNext()) {
+                Iterable<Event.Builder> result = _eventIterator.next();
                 for (Builder eventBuilder : result) {
                     // Event.Builder eventBuilder = builder;
                     eventBuilder.setStatus(Event.Status.PROPOSED);
                     metroIIEventList.add(eventBuilder);
                 }
             } else {
-                state = State.FIRE_END_POSTFIRE_BEGIN;
-                currentStateEvent = createMetroIIEvent("POSTFIRE_BEGIN");
-                metroIIEventList.add(currentStateEvent);
+                _state = State.FIRE_END_POSTFIRE_BEGIN;
+                _currentStateEvent = _createMetroIIEvent("POSTFIRE_BEGIN");
+                metroIIEventList.add(_currentStateEvent);
             }
-        } else if (state == State.FIRE_END_POSTFIRE_BEGIN) {
-            assert currentStateEvent.getName().contains("POSTFIRE_BEGIN");
-            if (currentStateEvent.getStatus() == Event.Status.NOTIFIED) {
-                if (actor.postfire()) {
-                    state = State.POSTFIRE_END_PREFIRE_BEGIN;
-                    currentStateEvent = createMetroIIEvent("PREFIRE_BEGIN");
+        } else if (_state == State.FIRE_END_POSTFIRE_BEGIN) {
+            assert _currentStateEvent.getName().contains("POSTFIRE_BEGIN");
+            if (_currentStateEvent.getStatus() == Event.Status.NOTIFIED) {
+                if (_actor.postfire()) {
+                    _state = State.POSTFIRE_END_PREFIRE_BEGIN;
+                    _currentStateEvent = _createMetroIIEvent("PREFIRE_BEGIN");
                 } else {
                     // FIXME: handle the request that the actor wants to halt
                 }
             }
-            metroIIEventList.add(currentStateEvent);
+            metroIIEventList.add(_currentStateEvent);
         }
     }
 
@@ -144,9 +144,9 @@ public class MetroIIActorGeneralWrapper extends MetroIIActorBasicWrapper {
      */
     @Override
     public void reset() {
-        if (state == State.FIRING) {
-            eventIterator.dispose();
-            actor.stop();
+        if (_state == State.FIRING) {
+            _eventIterator.dispose();
+            _actor.stop();
         }
     }
 
@@ -156,6 +156,6 @@ public class MetroIIActorGeneralWrapper extends MetroIIActorBasicWrapper {
     /**
      * Thread that is firing the actor
      */
-    private YieldAdapterIterator<Iterable<Event.Builder>> eventIterator;
+    private YieldAdapterIterator<Iterable<Event.Builder>> _eventIterator;
 
 }

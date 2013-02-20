@@ -1,4 +1,4 @@
-/* Basic wrapper for Ptolemy actor to work with MetroIIDirector.
+/* MetroIIActorBasicWrapper is a basic wrapper for Ptolemy actor to work with a MetroIIDirector.
 
  Copyright (c) 2012-2013 The Regents of the University of California.
  All rights reserved.
@@ -35,9 +35,10 @@ import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event;
 import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event.Builder;
 import ptolemy.kernel.util.IllegalActionException;
 
-/** <p> MetroIIActorBasicWrapper is used for wrapping a Ptolemy actor
+/** <p> 
+ * MetroIIActorBasicWrapper is a basic wrapper for Ptolemy actor 
  * to work with a MetroIIDirector. It provides a basic implementation of 
- * MetroIIActorInterface.  
+ * MetroIIActorInterface. @see MetroIIActorBasicWrapper#startOrResume
  * </p>
  * 
  * 
@@ -49,24 +50,26 @@ import ptolemy.kernel.util.IllegalActionException;
  * @Pt.AcceptedRating Red (glp)
  *
  */
-public class MetroIIActorBasicWrapper implements MetroIIActorInterface {
+public class MetroIIActorBasicWrapper implements StartOrResumable {
 
     /** Construct a basic wrapper.
      * 
      * @param actor The actor
      */
     public MetroIIActorBasicWrapper(Actor actor) {
-        this.actor = actor;
-        this.state = State.POSTFIRE_END_PREFIRE_BEGIN;
-        currentStateEvent = createMetroIIEvent("PREFIRE_BEGIN");
+        this._actor = actor;
+        reset(); 
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /**
      * Dispose the current execution. 
      */
     public void reset() {
-        this.state = State.POSTFIRE_END_PREFIRE_BEGIN;
-        currentStateEvent = createMetroIIEvent("PREFIRE_BEGIN");
+        _state = State.POSTFIRE_END_PREFIRE_BEGIN;
+        _currentStateEvent = _createMetroIIEvent("PREFIRE_BEGIN");
     }
 
     /**
@@ -91,29 +94,29 @@ public class MetroIIActorBasicWrapper implements MetroIIActorInterface {
     @Override
     public void startOrResume(LinkedList<Builder> metroIIEventList)
             throws IllegalActionException {
-        if (state == State.POSTFIRE_END_PREFIRE_BEGIN) {
-            assert currentStateEvent.getName().contains("PREFIRE_BEGIN");
-            if (currentStateEvent.getStatus() == Event.Status.NOTIFIED) {
-                if (actor.prefire()) {
-                    state = State.PREFIRE_END_FIRE_BEGIN;
-                    currentStateEvent = createMetroIIEvent("FIRE_BEGIN");
+        if (_state == State.POSTFIRE_END_PREFIRE_BEGIN) {
+            assert _currentStateEvent.getName().contains("PREFIRE_BEGIN");
+            if (_currentStateEvent.getStatus() == Event.Status.NOTIFIED) {
+                if (_actor.prefire()) {
+                    _state = State.PREFIRE_END_FIRE_BEGIN;
+                    _currentStateEvent = _createMetroIIEvent("FIRE_BEGIN");
                 }
             }
-            metroIIEventList.add(currentStateEvent);
-        } else if (state == State.PREFIRE_END_FIRE_BEGIN) {
-            assert currentStateEvent.getName().contains("FIRE_BEGIN");
-            if (currentStateEvent.getStatus() == Event.Status.NOTIFIED) {
-                actor.fire();
-                state = State.FIRE_END_POSTFIRE_BEGIN;
-                currentStateEvent = createMetroIIEvent("POSTFIRE_BEGIN");
+            metroIIEventList.add(_currentStateEvent);
+        } else if (_state == State.PREFIRE_END_FIRE_BEGIN) {
+            assert _currentStateEvent.getName().contains("FIRE_BEGIN");
+            if (_currentStateEvent.getStatus() == Event.Status.NOTIFIED) {
+                _actor.fire();
+                _state = State.FIRE_END_POSTFIRE_BEGIN;
+                _currentStateEvent = _createMetroIIEvent("POSTFIRE_BEGIN");
             }
-            metroIIEventList.add(currentStateEvent);
-        } else if (state == State.FIRE_END_POSTFIRE_BEGIN) {
-            assert currentStateEvent.getName().contains("POSTFIRE_BEGIN");
-            if (currentStateEvent.getStatus() == Event.Status.NOTIFIED) {
-                if (actor.postfire()) {
-                    state = State.POSTFIRE_END_PREFIRE_BEGIN;
-                    currentStateEvent = createMetroIIEvent("PREFIRE_BEGIN");
+            metroIIEventList.add(_currentStateEvent);
+        } else if (_state == State.FIRE_END_POSTFIRE_BEGIN) {
+            assert _currentStateEvent.getName().contains("POSTFIRE_BEGIN");
+            if (_currentStateEvent.getStatus() == Event.Status.NOTIFIED) {
+                if (_actor.postfire()) {
+                    _state = State.POSTFIRE_END_PREFIRE_BEGIN;
+                    _currentStateEvent = _createMetroIIEvent("PREFIRE_BEGIN");
                 } else {
                     // FIXME: handle the request that the actor wants to halt
                     //                if (_debugging) {
@@ -122,20 +125,28 @@ public class MetroIIActorBasicWrapper implements MetroIIActorInterface {
                     //                }
                 }
             }
-            metroIIEventList.add(currentStateEvent);
+            metroIIEventList.add(_currentStateEvent);
         }
     }
 
+    
+    /** Actor state 
+     */
+    public enum State {
+        POSTFIRE_END_PREFIRE_BEGIN, PREFIRE_END_FIRE_BEGIN, FIRING, FIRE_END_POSTFIRE_BEGIN
+    }
+
+    
     ///////////////////////////////////////////////////////////////////
     ////                    protected fields                       ////
 
     /** Create a MetroII event
      * 
      */
-    protected Builder createMetroIIEvent(String name) {
+    protected Builder _createMetroIIEvent(String name) {
         Event.Builder builder = Event.newBuilder();
-        builder.setName(actor.getFullName() + "." + name);
-        builder.setOwner(actor.getFullName());
+        builder.setName(_actor.getFullName() + "." + name);
+        builder.setOwner(_actor.getFullName());
         builder.setStatus(Event.Status.PROPOSED);
         builder.setType(Event.Type.GENERIC);
         return builder;
@@ -144,22 +155,16 @@ public class MetroIIActorBasicWrapper implements MetroIIActorInterface {
     /** Current state event
      * 
      */
-    protected Builder currentStateEvent;
+    protected Builder _currentStateEvent;
 
     /** Actor state
      * 
      */
-    protected State state;
-
-    /** Actor state 
-     */
-    protected enum State {
-        POSTFIRE_END_PREFIRE_BEGIN, PREFIRE_END_FIRE_BEGIN, FIRING, FIRE_END_POSTFIRE_BEGIN
-    }
+    protected State _state;
 
     /** Actor which is being fired 
      * 
      */
-    protected Actor actor;
+    protected Actor _actor;
 
 }
