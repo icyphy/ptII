@@ -31,7 +31,6 @@ package ptolemy.domains.metroII.kernel;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.Iterator;
-import java.util.LinkedList;
 
 import net.jimblackler.Utils.CollectionAbortedException;
 import net.jimblackler.Utils.Collector;
