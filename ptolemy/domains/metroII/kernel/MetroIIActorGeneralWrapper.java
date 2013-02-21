@@ -150,6 +150,7 @@ public class MetroIIActorGeneralWrapper extends MetroIIActorBasicWrapper {
             _eventIterator.dispose();
             _actor.stop();
         }
+        super.reset(); 
     }
 
     ///////////////////////////////////////////////////////////////////

@@ -242,7 +242,7 @@ public class MetroIISRDirector extends SRDirector implements
     ////                         private variables                 ////
 
     /**
-     * Lookup table for actor by name
+     * Lookup table for actor by MetroII event name
      */
     private Hashtable<String, Actor> _nameToActor = new Hashtable<String, Actor>();
 

@@ -8,6 +8,7 @@
         <doc>MetroII directors.</doc>
 		<property name="MetroIIDirector" class="ptolemy.domains.metroII.kernel.MetroIIDirector" />
 		<property name="MetroIIFSMDirector" class="ptolemy.domains.metroII.kernel.MetroIIFSMDirector" />
+		<property name="MetroIIDEDirector" class="ptolemy.domains.metroII.kernel.MetroIIDEDirector" />
 		<property name="MetroIISRDirector" class="ptolemy.domains.metroII.kernel.MetroIISRDirector" />
 		<property name="MetroIIPNDirector" class="ptolemy.domains.metroII.kernel.MetroIIPNDirector" />
 		<property name="MetroIISystemCDirector" class="ptolemy.domains.metroII.kernel.MetroIISystemCDirector" />
