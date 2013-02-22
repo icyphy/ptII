@@ -829,12 +829,15 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
                 && previousContainer != null
                 && _valueListeners != null
                 && _valueListeners.size() > 0) {
-            if (!MessageHandler.yesNoQuestion("WARNING: There are variables depending on " + getName() + ". Continue?")) {
-                // Cancel.
-                // Throw an exception that includes the name of the variable and the first listener.
-                throw new IllegalActionException(this, "Cancelled change of container because the variable \""
-                        + getName() + "\" has " + _valueListeners.size() + " listener(s): " + _valueListeners.get(0));
-            }
+            // In the short term, print out a stack trace if we get to here.
+            new IllegalActionException(this, "Warning: in Variable.setContainer, one or more variables depend on " 
+                    + getName() + ", which \" has " + _valueListeners.size() + " listener(s): " + ": " + _valueListeners.get(0)).printStackTrace();
+//             if (!MessageHandler.yesNoQuestion("WARNING: There are variables depending on " + getName() + ". Continue?")) {
+//                 // Cancel.
+//                 // Throw an exception that includes the name of the variable and the first listener.
+//                 throw new IllegalActionException(this, "Cancelled change of container because the variable \""
+//                         + getName() + "\" has " + _valueListeners.size() + " listener(s): " + ": " + _valueListeners.get(0));
+//             }
         }
 
         super.setContainer(container);
