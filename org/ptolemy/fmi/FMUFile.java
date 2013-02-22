@@ -283,8 +283,16 @@ public class FMUFile {
             }
         }
 
-        if (!foundCoSimulation) {
-            System.out.println("Warning: FMU does not support CoSimulation.");
+        // According to the FMI standard version 1.0 (see page 33 of
+        // the FMI for co-simulation), the implementation tag is
+        // optional.
+        if (!fmiModelDescription.fmiVersion.equals("1.0") && !foundCoSimulation) {
+            System.out.println("Warning: FMU version "
+                    + fmiModelDescription.fmiVersion
+                    + "does not support CoSimulation.  "
+                    + "In FMI 1.0, the CoSimulation_Standalone element is optional.  "
+                    + "In FMI 2.0, there must be a CoSimulation element.  " 
+                    + "Note that Model Exchange is not yet supported by Ptolemy II.");
         }
                 
         // ModelVariables.
