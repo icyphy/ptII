@@ -11,7 +11,7 @@
 	<property name="droid_screenSize" class="ptolemy.homer.kernel.ScreenSize"
 		value="[600, 400]">
 	</property>
-	<property name="droid_client" class="ptolemy.data.expr.Parameter"
+	<property name="droid_client" class="ptolemy.data.expr.StringParameter"
 		value="HTC EVO 4G">
 	</property>
 	<property name="droid_orientation" class="ptolemy.data.expr.Parameter"
@@ -27,7 +27,7 @@
 			<!-- Label example. -->
 			<property name="label1" class="ptolemy.kernel.util.StringAttribute"
 				value="Example label">
-				<property name="droid_tab" class="ptolemy.data.expr.Parameter"
+				<property name="droid_tab" class="ptolemy.data.expr.StringParameter"
 					value="tab1"></property>
 				<!-- Some of the properties, like AndoridLocation, are required. -->
 				<!-- Contains the following information: The x and y position of the 
@@ -49,7 +49,7 @@
 			value="Second tab">
 			<property name="label2" class="ptolemy.kernel.util.StringAttribute"
 				value="Anar's Request">
-				<property name="droid_tab" class="ptolemy.data.expr.Parameter"
+				<property name="droid_tab" class="ptolemy.data.expr.StringParameter"
 					value="tab2"></property>
 				<!-- Some of the properties, like AndoridLocation, are required. -->
 				<property name="droid_location" class="ptolemy.homer.kernel.HomerLocation"
@@ -71,7 +71,7 @@
 		next to it to maintain the original connections. -->
 	<entity name="Ramp" class="ptolemy.actor.lib.Ramp">
 		<doc>Create a sequence of tokens with increasing value</doc>
-		<property name="_remote" class="ptolemy.data.expr.Parameter"
+		<property name="_remote" class="ptolemy.data.expr.StringParameter"
 			value="source"></property>
 		<!-- Remote property indicate that this entity runs on the client. -->
 	</entity>
@@ -96,12 +96,12 @@
 	<!-- Sink example. It is very similar to sources, these actors need user 
 		interface definitions. -->
 	<entity name="Display" class="ptserver.test.SysOutActor">
-		<property name="_remote" class="ptolemy.data.expr.Parameter"
+		<property name="_remote" class="ptolemy.data.expr.StringParameter"
 			value="sink"></property>
 		<!-- User interface properties to indicate position. -->
 		<property name="droid_location" class="ptolemy.homer.kernel.HomerLocation"
 			value="[10, 55, 150, 150]"></property>
-		<property name="droid_tab" class="ptolemy.data.expr.Parameter"
+		<property name="droid_tab" class="ptolemy.data.expr.StringParameter"
 			value="tab1"></property>
 		<!-- The following properties will set up whether users can view the entity's 
 			parameters, change them, etc. -->
@@ -136,12 +136,12 @@
 	<property name="Ramp2" class="ptolemy.kernel.util.Attribute">
 		<property name="init" class="ptolemy.data.expr.Parameter"
 			value="0">
-			<property name="_remote" class="ptolemy.data.expr.Parameter"
+			<property name="_remote" class="ptolemy.data.expr.StringParameter"
 				value="attribute"></property>
 			<!-- User interface properties to indicate position. -->
 			<property name="droid_location" class="ptolemy.homer.kernel.HomerLocation"
 				value="[10, 65, 250, 50]"></property>
-			<property name="droid_tab" class="ptolemy.data.expr.Parameter"
+			<property name="droid_tab" class="ptolemy.data.expr.StringParameter"
 				value="tab2"></property>
 			<property name="droid_style" class="ptolemy.actor.gui.style.ChoiceStyle">
 				<property name="0" class="ptolemy.kernel.util.StringAttribute"
