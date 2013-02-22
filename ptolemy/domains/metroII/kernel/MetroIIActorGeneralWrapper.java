@@ -81,7 +81,7 @@ public class MetroIIActorGeneralWrapper extends MetroIIActorBasicWrapper {
         /**
          * Start executing the wrapped actor in the thread. 
          */
-        if (_state == State.POSTFIRE_END_PREFIRE_BEGIN) {
+        if (_state == State.PREFIRE_BEGIN) {
             assert _currentStateEvent.getName().contains("PREFIRE_BEGIN");
             if (_currentStateEvent.getStatus() == Event.Status.NOTIFIED) {
                 if (_actor.prefire()) {
@@ -131,11 +131,18 @@ public class MetroIIActorGeneralWrapper extends MetroIIActorBasicWrapper {
             assert _currentStateEvent.getName().contains("POSTFIRE_BEGIN");
             if (_currentStateEvent.getStatus() == Event.Status.NOTIFIED) {
                 if (_actor.postfire()) {
-                    _state = State.POSTFIRE_END_PREFIRE_BEGIN;
-                    _currentStateEvent = _createMetroIIEvent("PREFIRE_BEGIN");
+                    _state = State.POSTFIRE_END;
+                    _currentStateEvent = _createMetroIIEvent("POSTFIRE_END");
                 } else {
                     // FIXME: handle the request that the actor wants to halt
                 }
+            }
+            metroIIEventList.add(_currentStateEvent);
+        } else if (_state == State.POSTFIRE_END) {
+            assert _currentStateEvent.getName().contains("POSTFIRE_END"); 
+            if (_currentStateEvent.getStatus() == Event.Status.NOTIFIED) {
+                _state = State.PREFIRE_BEGIN; 
+                _currentStateEvent = _createMetroIIEvent("PREFIRE_BEGIN"); 
             }
             metroIIEventList.add(_currentStateEvent);
         }

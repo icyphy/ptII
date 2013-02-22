@@ -68,7 +68,7 @@ public class MetroIIActorBasicWrapper implements StartOrResumable {
      * Dispose the current execution. 
      */
     public void reset() {
-        _state = State.POSTFIRE_END_PREFIRE_BEGIN;
+        _state = State.PREFIRE_BEGIN;
         _currentStateEvent = _createMetroIIEvent("PREFIRE_BEGIN");
     }
 
@@ -94,7 +94,7 @@ public class MetroIIActorBasicWrapper implements StartOrResumable {
     @Override
     public void startOrResume(LinkedList<Builder> metroIIEventList)
             throws IllegalActionException {
-        if (_state == State.POSTFIRE_END_PREFIRE_BEGIN) {
+        if (_state == State.PREFIRE_BEGIN) {
             assert _currentStateEvent.getName().contains("PREFIRE_BEGIN");
             if (_currentStateEvent.getStatus() == Event.Status.NOTIFIED) {
                 if (_actor.prefire()) {
@@ -115,8 +115,8 @@ public class MetroIIActorBasicWrapper implements StartOrResumable {
             assert _currentStateEvent.getName().contains("POSTFIRE_BEGIN");
             if (_currentStateEvent.getStatus() == Event.Status.NOTIFIED) {
                 if (_actor.postfire()) {
-                    _state = State.POSTFIRE_END_PREFIRE_BEGIN;
-                    _currentStateEvent = _createMetroIIEvent("PREFIRE_BEGIN");
+                    _state = State.POSTFIRE_END;
+                    _currentStateEvent = _createMetroIIEvent("POSTFIRE_END");
                 } else {
                     // FIXME: handle the request that the actor wants to halt
                     //                if (_debugging) {
@@ -126,14 +126,22 @@ public class MetroIIActorBasicWrapper implements StartOrResumable {
                 }
             }
             metroIIEventList.add(_currentStateEvent);
+        } else if (_state == State.POSTFIRE_END) {
+            assert _currentStateEvent.getName().contains("POSTFIRE_END");
+            if (_currentStateEvent.getStatus() == Event.Status.NOTIFIED) {
+                _state = State.PREFIRE_BEGIN; 
+                _currentStateEvent = _createMetroIIEvent("PREFIRE_BEGIN");
+            }
+            metroIIEventList.add(_currentStateEvent);
         }
+        
     }
 
     
     /** Actor state 
      */
     public enum State {
-        POSTFIRE_END_PREFIRE_BEGIN, PREFIRE_END_FIRE_BEGIN, FIRING, FIRE_END_POSTFIRE_BEGIN
+        PREFIRE_BEGIN, PREFIRE_END_FIRE_BEGIN, FIRING, FIRE_END_POSTFIRE_BEGIN, POSTFIRE_END
     }
 
     

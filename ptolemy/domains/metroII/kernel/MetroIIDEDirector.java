@@ -2,11 +2,14 @@ package ptolemy.domains.metroII.kernel;
 
 import java.util.ArrayList;
 import java.util.Hashtable;
+import java.util.Iterator;
+import java.util.LinkedList;
 
 import net.jimblackler.Utils.CollectionAbortedException;
 import net.jimblackler.Utils.ResultHandler;
 import net.jimblackler.Utils.YieldAdapterIterable;
 import ptolemy.actor.Actor;
+import ptolemy.actor.CompositeActor;
 import ptolemy.actor.FiringEvent;
 import ptolemy.domains.de.kernel.DEDirector;
 import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event;
@@ -14,6 +17,7 @@ import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event.Builder;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NamedObj;
 
 public class MetroIIDEDirector extends DEDirector implements
@@ -23,7 +27,32 @@ public class MetroIIDEDirector extends DEDirector implements
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         // TODO Auto-generated constructor stub
-        setEmbedded(false); 
+        setEmbedded(false);
+    }
+
+    @Override
+    public void initialize() throws IllegalActionException {
+        super.initialize();
+        Nameable container = getContainer();
+
+        // In the actor library, the container might be an moml.EntityLibrary.
+        if (container instanceof CompositeActor) {
+            Iterator<?> actors = ((CompositeActor) container).deepEntityList()
+                    .iterator();
+
+            _actorDictionary.clear();
+            while (actors.hasNext()) {
+                Actor actor = (Actor) actors.next();
+                if (actor instanceof MetroIIEventHandler) {
+                    _actorDictionary.put(actor.getFullName(),
+                            new MetroIIActorGeneralWrapper(actor));
+                } else {
+                    _actorDictionary.put(actor.getFullName(),
+                            new MetroIIActorBasicWrapper(actor));
+                }
+            }
+        }
+
     }
 
     public ArrayList<Event.Builder> events = new ArrayList<Event.Builder>();
@@ -78,9 +107,9 @@ public class MetroIIDEDirector extends DEDirector implements
                 // Do not do this if _stopFireRequested is true,
                 // since there may in fact be actors to fire, but
                 // their firing has been deferred.
-                if (!_stopFireRequested) {
-                    _noMoreActorsToFire = true;
-                }
+                //                if (!_stopFireRequested) {
+                //                    _noMoreActorsToFire = true;
+                //                }
             } else {
                 // Case 2:
                 // If this director belongs to an opaque composite model,
@@ -284,59 +313,81 @@ public class MetroIIDEDirector extends DEDirector implements
                         + "  with microstep as " + _microstep);
             }
 
-            do {
-                ArrayList<Actor> actorList = new ArrayList<Actor>();
+            ArrayList<Actor> actorList = new ArrayList<Actor>();
 
-                // NOTE: This fire method does not call super.fire()
-                // because this method is very different from that of the super class.
-                // A BIG while loop that handles all events with the same tag.
-                while (true) {
-                    Pair<Actor, Integer> actorAndState = _checkNextActorToFire();
-                    int result = actorAndState.second;
+            // NOTE: This fire method does not call super.fire()
+            // because this method is very different from that of the super class.
+            // A BIG while loop that handles all events with the same tag.
+            while (true) {
+                Pair<Actor, Integer> actorAndState = _checkNextActorToFire();
+                int result = actorAndState.second;
 
-                    assert result <= 1 && result >= -1;
-                    if (result == 1) {
-                        continue;
-                    } else if (result == -1) {
-                        _noActorToFire();
-                        break;
-                        // return;
-                    } // else if 0, keep executing
+                assert result <= 1 && result >= -1;
+                if (result == 1) {
+                    continue;
+                } else if (result == -1) {
+                    _noActorToFire();
+                    break;
+                    // return;
+                } // else if 0, keep executing
+                //if (!actorList.contains(actorAndState.first)) {
                     actorList.add(actorAndState.first);
+                //}
+                // after actor firing, the subclass may wish to perform some book keeping
+                // procedures. However in this class the following method does nothing.
+                _actorFired();
 
-                    // after actor firing, the subclass may wish to perform some book keeping
-                    // procedures. However in this class the following method does nothing.
-                    _actorFired();
+                if (!_checkForNextEvent()) {
+                    break;
+                } // else keep executing in the current iteration
+            } // Close the BIG while loop.
 
-                    if (!_checkForNextEvent()) {
-                        break;
-                    } // else keep executing in the current iteration
-                } // Close the BIG while loop.
-
+            do {
+                ArrayList<Actor> firingActorList = new ArrayList<Actor>();
+                events.clear();
                 for (Actor actor : actorList) {
-                    Builder builder = _makeEventBuilder(actor.getFullName(),
-                            Event.Type.BEGIN);
-                    events.add(builder);
-                    _nameToActor.put(builder.getName(), actor);
-                }
-                resultHandler.handleResult(events);
-                ArrayList<Event.Builder> tmp_events = new ArrayList<Event.Builder>();
-                for (Builder builder : events) {
-                    if (builder.getStatus() == Event.Status.NOTIFIED) {
-                        Actor actor = _nameToActor.get(builder.getName());
-                        actor.fire(); 
-                        if (!actor.postfire()) {
-                            // This actor requests not to be fired again.
-                            _disableActor(actor);
-                        }
-                    }
-                    else {
-                        tmp_events.add(builder); 
-                    }
-                }
-                events = tmp_events; 
+                    StartOrResumable metroActor = _actorDictionary.get(actor
+                            .getFullName());
+                    LinkedList<Event.Builder> metroIIEventList = new LinkedList<Event.Builder>();
+                    metroActor.startOrResume(metroIIEventList);
 
-            } while (events.size() > 0);
+                    if (metroIIEventList.size() == 1
+                            && metroIIEventList.get(0).getName()
+                                    .contains("POSTFIRE_END")) {
+                        metroIIEventList.get(0)
+                                .setStatus(Event.Status.NOTIFIED);
+                        metroActor.startOrResume(metroIIEventList);
+                        assert metroIIEventList.size() == 1
+                                && metroIIEventList.get(0).getName()
+                                        .contains("PREFIRE_BEGIN");
+                    } else {
+                        firingActorList.add(actor);
+                        events.addAll(metroIIEventList);
+                    }
+                }
+                actorList = firingActorList;
+                resultHandler.handleResult(events);
+                //                ArrayList<Event.Builder> tmp_events = new ArrayList<Event.Builder>();
+                //                for (Actor actor : actorList) {
+                //                    StartOrResumable metroActor = _actorDictionary.get(actor.getFullName());
+                //                    LinkedList<Event.Builder> metroIIEventList = new LinkedList<Event.Builder>();
+                //                    metroActor.startOrResume(metroIIEventList); 
+
+                //                    if (builder.getStatus() == Event.Status.NOTIFIED) {
+                //                        Actor actor = _nameToActor.get(builder.getName());
+                //                        actor.fire(); 
+                //                        if (!actor.postfire()) {
+                //                            // This actor requests not to be fired again.
+                //                            _disableActor(actor);
+                //                        }
+                //                    }
+                //                    else {
+                //                        tmp_events.add(builder); 
+                //                    }
+                //                }
+                //                events = tmp_events; 
+
+            } while (actorList.size() > 0);
             // Since we are now actually stopping the firing, we can set this false.
             _stopFireRequested = false;
 
@@ -380,5 +431,10 @@ public class MetroIIDEDirector extends DEDirector implements
      * Lookup table for actor by MetroII event name
      */
     private Hashtable<String, Actor> _nameToActor = new Hashtable<String, Actor>();
+
+    /**
+     * The list of actors governed by MetroIIDEDirector
+     */
+    private Hashtable<String, StartOrResumable> _actorDictionary = new Hashtable<String, StartOrResumable>();
 
 }

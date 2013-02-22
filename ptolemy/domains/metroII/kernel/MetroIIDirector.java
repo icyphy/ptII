@@ -36,7 +36,6 @@ import java.util.LinkedList;
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
-import ptolemy.actor.util.Time;
 import ptolemy.data.IntToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.expr.FileParameter;
@@ -340,29 +339,6 @@ public class MetroIIDirector extends Director {
         return true;
     }
 
-//    /** 
-//     *  MetroIIDirector has no notion of time. Will always answer 'yes'
-//     *  for any fireAt request. 
-//     * 
-//     *  This default implementation just delegates to
-//     *  {@link #fireContainerAt(Time, int)}
-//     *  @param actor The actor scheduled to be fired.
-//     *  @param time The requested time.
-//     *  @param microstep The requested microstep.
-//     *  @return An instance of Time with the current time value, or
-//     *   if there is an executive director, the time at which the
-//     *   container of this director will next be fired
-//     *   in response to this request.
-//     *  @see #fireAtCurrentTime(Actor)
-//     *  @see #fireContainerAt(Time)
-//     *  @exception IllegalActionException If there is an executive director
-//     *   and it throws it. Derived classes may choose to throw this
-//     *   exception for other reasons.
-//     */
-//    public Time fireAt(Actor actor, Time time, int microstep)
-//            throws IllegalActionException {
-//        return time;
-//    }
     
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
