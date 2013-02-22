@@ -126,6 +126,8 @@ test MultiportToSinglePort-1.1 {output port should not be a multi port} {
 
 set chainedTransitionMoML  "$header 
 <entity name=\"chainedTransitionMoML\" class=\"ptolemy.actor.TypedCompositeActor\">
+           <property name=\"slope\" class=\"ptolemy.data.expr.Parameter\" value=\"42.0\">
+           </property>
             <entity name=\"Const\" class=\"ptolemy.actor.lib.Const\">
                 <property name=\"value\" class=\"ptolemy.data.expr.Parameter\" value=\"slope\">
                 </property>
