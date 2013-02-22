@@ -297,7 +297,7 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
      */
     public synchronized void addValueListener(ValueListener listener) {
         if (_valueListeners == null) {
-            _valueListeners = new LinkedList();
+            _valueListeners = new LinkedList<ValueListener>();
         }
 
         if (!_valueListeners.contains(listener)) {
@@ -831,7 +831,9 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
                 && _valueListeners.size() > 0) {
             if (!MessageHandler.yesNoQuestion("WARNING: There are variables depending on " + getName() + ". Continue?")) {
                 // Cancel.
-                throw new IllegalActionException(this, "Cancelled change of container.");
+                // Throw an exception that includes the name of the variable and the first listener.
+                throw new IllegalActionException(this, "Cancelled change of container because the variable \""
+                        + getName() + "\" has " + _valueListeners.size() + " listener(s): " + _valueListeners.get(0));
             }
         }
 
@@ -2062,7 +2064,7 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
     protected ParserScope _parserScope = null;
 
     /** Listeners for changes in value. */
-    protected List _valueListeners;
+    protected List<ValueListener> _valueListeners;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
