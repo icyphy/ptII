@@ -190,11 +190,10 @@ public class TimeDelay extends Transformer {
             throws IllegalActionException {
         if (attribute == delay) {
             double newDelay = ((DoubleToken) (delay.getToken())).doubleValue();
-            double minimumDelayValue = _minimumDelay();
-            if (newDelay < minimumDelayValue) {
+            if (newDelay < _minimumDelay) {
                 throw new IllegalActionException(this,
                         "Cannot have delay less than minimumDelay of "
-                                + minimumDelayValue + ". Attempt to set it to "
+                                + _minimumDelay + ". Attempt to set it to "
                                 + newDelay);
             } else {
                 _delay = newDelay;
@@ -208,10 +207,9 @@ public class TimeDelay extends Transformer {
                         "Cannot have minimumDelay > delay "
                                 + (newMinimumDelay > newDelay)
                                 + ". Modify the delay value.");
-            } else {
-                _minimumDelay = newMinimumDelay;
-                _delay = newDelay;
             }
+            _minimumDelay = newMinimumDelay;
+            _delay = newDelay;
         } else {
             super.attributeChanged(attribute);
         }
@@ -239,9 +237,8 @@ public class TimeDelay extends Transformer {
      *  @see #getCausalityInterface()
      */
     public void declareDelayDependency() throws IllegalActionException {
-        double minimumDelayValue = _minimumDelay();
-        _declareDelayDependency(delay.getPort(), output, minimumDelayValue);
-        _declareDelayDependency(input, output, minimumDelayValue);
+        _declareDelayDependency(delay.getPort(), output, _minimumDelay);
+        _declareDelayDependency(input, output, _minimumDelay);
     }
 
     /** Read one token from the input. Send out a token that is scheduled
@@ -440,18 +437,6 @@ public class TimeDelay extends Transformer {
         return (comparison == 0 && microstep >= event.microstep);
     }
 
-    /** Return the value of <i>minimumDelay</i>.
-     *  @return The minimum delay from the input to the output.
-     *  @exception IllegalActionException If the <i>minimumDelay</i>
-     *   parameter cannot be evaluated.
-     */
-    protected double _minimumDelay() throws IllegalActionException {
-        double minimumDelayValue = _minimumDelay;
-        minimumDelayValue = ((DoubleToken) (minimumDelay.getToken()))
-                .doubleValue();
-        return minimumDelayValue;
-    }
-
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
@@ -459,7 +444,7 @@ public class TimeDelay extends Transformer {
     protected double _delay;
 
     /** The amount of minimumDelay. */
-    protected double _minimumDelay;
+    protected double _minimumDelay = 0.0;
 
     /** A local queue to store the delayed output tokens. */
     protected LinkedList<PendingEvent> _pendingOutputs;
