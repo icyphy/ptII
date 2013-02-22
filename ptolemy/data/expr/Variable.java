@@ -1773,7 +1773,7 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
                         // method will simply return false. This is probably reasonable
                         // since it allows opening models even if they have error
                         // conditions.
-                        // handleModelError(this, ex);
+                        //handleModelError(this, ex);
                         // Thinking that this was the wrong behavior, I tried the
                         // following. However, this resulted in an exception being
                         // thrown when deleting a parameter that references another
@@ -1781,8 +1781,14 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
                         // there is no error handler, so the above line correctly
                         // ignores the error in evaluation.
                         if (!handleModelError(this, ex)) {
-                            result = new LinkedList();
-                            result.add(ex);
+                            // In the short term, warn about errors opening models.
+                            // There are a bunch of things that need to be fixed, but there are also
+                            // legitimate models such as ptolemy/actor/parameters/test/auto/ParameterSetTest.xml 
+                            // that refer to parameter not present when the model is parsed.
+                            new IllegalActionException(this, ex, "Warning:, there was a problem propagating \"" + getName() 
+                                    + "\".").printStackTrace();
+                            //result = new LinkedList();
+                            //result.add(ex);
                         }
                     } catch (IllegalActionException ex2) {
                         result = new LinkedList();
