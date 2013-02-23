@@ -63,6 +63,7 @@ JSRCS = \
 	FMILibrary.java \
 	FMIModelDescription.java \
 	FMIScalarVariable.java \
+	FMUBuilder.java \
 	FMUFile.java \
 	FMULibrary.java \
 	FMULog.java \

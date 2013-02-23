@@ -152,7 +152,28 @@ public class FMIModelDescription {
                     + "following files with 'binaries' in the path:\n"
                     + binariesFiles;
             System.out.println(message + "\n Original error:\n " + throwable);
-            throw new IOException(message, throwable);
+	    File sharedLibraryFile = new File(sharedLibrary);
+	    if (!sharedLibraryFile.exists()) {
+		FMUBuilder builder = new FMUBuilder();
+		boolean isBuildOK = builder.build(sharedLibraryFile);
+		System.out.println("Builder messages:\n" + builder.buffer + "\n" + isBuildOK);
+		if (!isBuildOK || !sharedLibraryFile.exists()) {
+		    throw new IOException("The build of sharedLibrary File failed\n" + message, throwable);
+		} else {
+		    try {
+			_nativeLibrary = NativeLibrary.getInstance(sharedLibrary);		    
+		    } catch (Throwable throwable2) {
+			throw new IOException("Attempted to build shared "
+					      + "library for the current "
+					      + "platform because "
+					      + sharedLibrary
+					      + " was not found.  "
+					      + "However, loading the library failed?\n"
+					      + "The original error was: "
+					      + message + "\n" + throwable, throwable2);
+		    }
+		} 
+	    }
         }
         return _nativeLibrary;
     }
