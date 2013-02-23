@@ -151,18 +151,29 @@ public class FMIModelDescription {
                     + "The fmu file contains the "
                     + "following files with 'binaries' in the path:\n"
                     + binariesFiles;
-            System.out.println(message + "\n Original error:\n " + throwable);
 	    File sharedLibraryFile = new File(sharedLibrary);
 	    if (!sharedLibraryFile.exists()) {
-		FMUBuilder builder = new FMUBuilder();
-		boolean isBuildOK = builder.build(sharedLibraryFile);
-		System.out.println("Builder messages:\n" + builder.buffer + "\n" + isBuildOK);
-		if (!isBuildOK || !sharedLibraryFile.exists()) {
-		    throw new IOException("The build of sharedLibrary File failed\n" + message, throwable);
+                FMUBuilder builder = new FMUBuilder();
+                boolean isBuildOK = false;
+                try {
+                    isBuildOK = builder.build(sharedLibraryFile);
+                    System.out.println("FMU Builder messages:\n" + builder.buffer);
+                } catch (Throwable throwable2) {
+                    throw new IOException("Failed to build \"" 
+                            + sharedLibraryFile + "\".\nThe build was:\n"
+                            + builder.buffer + "\n" + message
+                            + "\nThe initial exception was: " + throwable,
+                            throwable2);
+                }
+                if (!isBuildOK) {
+		    throw new IOException("It was not possible to build \""
+                            + sharedLibraryFile + "\": "
+                            + builder.buffer + "\n" + message,
+                            throwable);
 		} else {
 		    try {
 			_nativeLibrary = NativeLibrary.getInstance(sharedLibrary);		    
-		    } catch (Throwable throwable2) {
+		    } catch (Throwable throwable3) {
 			throw new IOException("Attempted to build shared "
 					      + "library for the current "
 					      + "platform because "
@@ -170,7 +181,7 @@ public class FMIModelDescription {
 					      + " was not found.  "
 					      + "However, loading the library failed?\n"
 					      + "The original error was: "
-					      + message + "\n" + throwable, throwable2);
+					      + message + "\n" + throwable, throwable3);
 		    }
 		} 
 	    }

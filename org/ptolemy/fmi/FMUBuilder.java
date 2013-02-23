@@ -95,10 +95,10 @@ public class FMUBuilder {
      *  <code>binaries/</code>.  Adjacent to the <code>binaries/</code>
      *  directory is the <code>sources/</code> directory.
      *
-     *  @param sharedLibrary  The shared library that should be built.
-     *  @return The library of functions for the current platform.
-     *  @throws IOException If the FMU file does not contain binaries
-     *   for the current platform.
+     *  @param sharedLibraryFile  The shared library that should be built.
+     *  @return true if the sharedLibraryFile was built.
+     *  @throws IOException If the FMU contains a makefile but
+     *  there was a problem building the shared library.
      */
     public boolean build(File sharedLibraryFile) throws IOException {
 	stdout(_eol + "Attempting to build " + sharedLibraryFile + _eol);
@@ -109,7 +109,7 @@ public class FMUBuilder {
 
 	if (!sourcesDirectory.exists()) {
 	    stderr("The source directory \"" + sourcesDirectory  + "\" does not exist." + _eol);
-	    return true;
+	    return false;
 	}
 
 	// FIXME: eventually, we should not use make.
