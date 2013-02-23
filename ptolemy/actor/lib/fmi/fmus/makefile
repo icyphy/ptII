@@ -70,6 +70,18 @@ JCLASS = $(JSRCS:%.java=%.class)
 
 all: suball 
 install: subinstall jars
+update:
+	@if [ "x$(DIRS)" != "x" ]; then \
+		set $(DIRS); \
+		for x do \
+		    if [ -w $$x ] ; then \
+			( cd $$x ; \
+			echo making update in $(ME)/$$x ; \
+			$(MAKE) $(MFLAGS) $(MAKEVARS) update ;\
+			) \
+		    fi ; \
+		done ; \
+	fi
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

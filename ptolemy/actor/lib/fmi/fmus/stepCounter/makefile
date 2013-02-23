@@ -83,9 +83,15 @@ all: jclass stepCounter.fmu
 
 
 install: jclass stepCounter.fmu jars
+	@echo "Optionally run 'make update' to update the test/auto directory."
 
 stepCounter.fmu: $(FMU_SRCS)
 	(cd src/sources; $(MAKE))
+
+# We don't check in stepCounter.fmu because it will be different on each platform
+# Instead, run make update to update the test directory.
+update: stepCounter.fmu
+	cp stepCounter.fmu ../../test/auto/stepCounter2.fmu 
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
