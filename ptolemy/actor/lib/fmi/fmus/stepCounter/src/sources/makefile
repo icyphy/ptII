@@ -5,6 +5,8 @@
 # The architecture: linux32, linux64, darwin32, darwin64
 ARCH = darwin64
 
+ARCH_DIR = ../binaries/$(ARCH)/
+
 # Either cs for co-simuluation or me for model exchange.
 INCLUDE = -DFMI_COSIMULATION -I.
 
@@ -35,36 +37,29 @@ stepCounter:
 	./build_fmu stepCounter
 
 
-ARCH_DIR = ../binaries/$(ARCH)/
-$(ARCH_DIR):
-	@if [ ! -d $(ARCH_DIR) ]; then \
-		echo "Creating $(ARCH_DIR)"; \
-		mkdir -p $(ARCH_DIR); \
-	fi
-
 #####
 # The rules below build for a specific architecture.  These rules are
 # called by Ptolemy if a shared library is missing.
 
-darwin64: $(ARCH_DIR)
+darwin64:
 	$(MAKE) ARCH=darwin64 PIC= SHARED_LIBRARY_SUFFIX=dylib stepCounter.dylib
-	mv stepCounter.dylib $(ARCH_DIR)
+	mv stepCounter.dylib ../binaries/darwin64
 
-linux32: $(ARCH_DIR)
+linux32:
 	$(MAKE) ARCH=linux32 CBITSFLAGS=-m32 PIC=-fPIC SHARED_LIBRARY_SUFFIX=so stepCounter.so
-	mv stepCounter.so $(ARCH_DIR)
+	mv stepCounter.so ../binaries/linux32
 
-linux64: $(ARCH_DIR)
+linux64:
 	$(MAKE) ARCH=linux64 PIC=-fPIC SHARED_LIBRARY_SUFFIX=so stepCounter.so
-	mv stepCounter.so $(ARCH_DIR)
+	mv stepCounter.so ../binaries/linux64
 
-win32: $(ARCH_DIR)
+win32:
 	$(MAKE) ARCH=win32 PIC= SHARED_LIBRARY_SUFFIX=dll stepCounter.dll
-	mv stepCounter.dll $(ARCH_DIR)
+	mv stepCounter.dll ../binaries/win32
 
-win64: $(ARCH_DIR)
+win64:
 	$(MAKE) ARCH=win64 PIC= SHARED_LIBRARY_SUFFIX=dll stepCounter.dll
-	mv stepCounter.dll $(ARCH_DIR)
+	mv stepCounter.dll ../binaries/win64
 
 #####
 
