@@ -156,8 +156,6 @@ test release-3.1 {Run svn status and look for files that should be checked in.  
 !       ptolemy/vergil/basic/layout/kieler/test/layoutPerformance2.xml} {
 ?       .maven} {
 ?       cobertura.ser} {
-?       ptolemy/actor/lib/fmi/fmus/stepCounter/src/binaries} {
-?       ptolemy/actor/lib/fmi/fmus/stepCounter/stepCounter.fmu} {
 ?       ptolemy/actor/lib/jai/test/auto/PtolemyII.bmp} {
 ?       ptolemy/actor/lib/jai/test/auto/PtolemyII.jpg} {
 ?       ptolemy/actor/lib/jai/test/auto/PtolemyII.pgm} {
@@ -174,9 +172,18 @@ M       lib/diva.jar}}
 	    puts "Result was:\n$result\nWhich is ok"
             set resultMessage {}
         } else {
-	    puts "Result was:\n $result \
-                \nWhich is not\n $result1 \nHere's the diff:\n [diffText $result $result1] \
-                or\n $result2 Here's the diff:\n [diffText $result $result2]"
+	    puts "This test is annoying, it runs svn status on the build directory to
+                look for files that are not checked in.  There are two states:
+                1) Running \"cd \$PTII/adm/test; \$PTII/bin/ptjacl Release.tcl\" on a regular, non-nightly build machine
+	        2) Running the same command by hand on the nightly build machine.
+	        The result of (cd \$PTII; svn status) was:\n $result \
+                \nWhich is not the same as the result on a regular, non-nightly build machine.
+                $result1 \nHere's the diff:\n [diffText $result $result1] \
+                or the command on the nightly build machine\n $result2 Here's the diff:\n [diffText $result $result2]
+                The fix is to run (cd \$PTII; svn status)
+                and for each modified file, either remove it, check it in or add it to svn:ignore by running
+                \$PTII/adm/bin/svnignoreupdate in the directory above the file to be ignored or by using
+                \"svn propertyset svn:ignore filename; svn commit -m 'Added filename to svn:ignore.'\""
 	    set resultMessage $result
         }
     }
