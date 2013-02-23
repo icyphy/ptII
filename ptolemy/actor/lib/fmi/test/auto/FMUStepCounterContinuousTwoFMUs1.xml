@@ -39,7 +39,7 @@
         </property>
     </property>
     <entity name="stepCounter3" class="ptolemy.actor.lib.fmi.FMUImport">
-        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="stepCounter.fmu">
+        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="stepCounter1.fmu">
         </property>
         <property name="suppressWarnings" class="ptolemy.data.expr.Parameter" value="true">
         </property>
@@ -98,7 +98,7 @@
         </configure>
     </entity>
     <entity name="stepCounter4" class="ptolemy.actor.lib.fmi.FMUImport">
-        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="stepCounter.fmu">
+        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="stepCounter1.fmu">
         </property>
         <property name="suppressWarnings" class="ptolemy.data.expr.Parameter" value="true">
         </property>
