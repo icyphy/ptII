@@ -83,7 +83,7 @@
         </configure>
     </entity>
     <entity name="stepCounter2" class="ptolemy.actor.lib.fmi.FMUImport">
-        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="/ptII/ptolemy/actor/lib/fmi/fmus/stepCounter/stepCounter.fmu">
+        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="$PTII/ptolemy/actor/lib/fmi/test/auto/stepCounter2.fmu">
         </property>
         <property name="suppressWarnings" class="ptolemy.data.expr.Parameter" value="true">
         </property>
