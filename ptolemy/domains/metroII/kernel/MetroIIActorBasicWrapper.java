@@ -35,13 +35,10 @@ import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event;
 import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event.Builder;
 import ptolemy.kernel.util.IllegalActionException;
 
-/** <p> 
+/** 
  * MetroIIActorBasicWrapper is a basic wrapper for Ptolemy actor 
  * to work with a MetroIIDirector. It provides a basic implementation of 
  * MetroIIActorInterface. @see MetroIIActorBasicWrapper#startOrResume
- * </p>
- * 
- * 
  * 
  * @author Liangpeng Guo
  * @version $Id$

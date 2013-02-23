@@ -55,17 +55,18 @@ JSRCS = \
 	MappingConstraintSolver.java \
 	MetroIIActorBasicWrapper.java \
 	MetroIIActorGeneralWrapper.java \
-	MetroIIActorInterface.java \
 	MetroIICompositeActor.java \
 	MetroIIDEDirector.java \
 	MetroIIDirector.java \
 	MetroIIEventHandler.java \
 	MetroIIFSMDirector.java \
 	MetroIIModalModel.java \
+	MetroIIPtidesDirector.java \
 	MetroIIPNDirector.java \
 	MetroIIPNQueueReceiver.java \
 	MetroIISRDirector.java \
-	MetroIISystemCDirector.java
+	MetroIISystemCDirector.java \
+	StartOrResumable.java
 
 OTHER_FILES_TO_BE_JARED =
 
@@ -80,9 +81,10 @@ MISC_FILES =	$(DIRS) test
 OPTIONAL_FILES = \
 	doc \
 	'MetroIIActorBasicWrapper$$State.class' \
-	'MetroIIPNDirector$$1.class' \
 	'MetroIIActorThread$$State.class' \
 	'MetroIIActorThread$$Type.class' \
+	'MetroIIDEDirector$$Pair.class' \
+	'MetroIIPNDirector$$1.class' \
 	'MetroIICompositeActor$$1.class' \
 	'MetroIIFSMDirector$$1.class' \
 	'MetroIIModalModel$$1.class' \
