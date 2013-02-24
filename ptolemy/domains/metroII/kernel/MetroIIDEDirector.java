@@ -19,6 +19,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.Workspace;
 
 public class MetroIIDEDirector extends DEDirector implements
         MetroIIEventHandler {
@@ -30,6 +31,22 @@ public class MetroIIDEDirector extends DEDirector implements
         setEmbedded(false);
     }
 
+    /** Clone the object into the specified workspace. The new object
+     *  is <i>not</i> added to the directory of that workspace (you
+     *  must do this yourself if you want it there).
+     *
+     *  @param workspace The workspace for the cloned object.
+     *  @exception CloneNotSupportedException Not thrown in this base class
+     *  @return The new Attribute.
+     */
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        MetroIIDEDirector newObject = (MetroIIDEDirector) super.clone(workspace);
+        newObject._nameToActor = (Hashtable<String, Actor>) _nameToActor.clone();
+        newObject._actorDictionary = (Hashtable<String, StartOrResumable>) _actorDictionary.clone();
+        newObject._events = (ArrayList<Builder>) _events.clone();
+        return newObject;
+    }
+    
     @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
@@ -55,7 +72,6 @@ public class MetroIIDEDirector extends DEDirector implements
 
     }
 
-    public ArrayList<Event.Builder> events = new ArrayList<Event.Builder>();
 
     public class Pair<F, S> {
         private F first; //first member of pair
@@ -344,7 +360,7 @@ public class MetroIIDEDirector extends DEDirector implements
 
             do {
                 ArrayList<Actor> firingActorList = new ArrayList<Actor>();
-                events.clear();
+                _events.clear();
                 for (Actor actor : actorList) {
                     StartOrResumable metroActor = _actorDictionary.get(actor
                             .getFullName());
@@ -362,11 +378,11 @@ public class MetroIIDEDirector extends DEDirector implements
                                         .contains("PREFIRE_BEGIN");
                     } else {
                         firingActorList.add(actor);
-                        events.addAll(metroIIEventList);
+                        _events.addAll(metroIIEventList);
                     }
                 }
                 actorList = firingActorList;
-                resultHandler.handleResult(events);
+                resultHandler.handleResult(_events);
                 //                ArrayList<Event.Builder> tmp_events = new ArrayList<Event.Builder>();
                 //                for (Actor actor : actorList) {
                 //                    StartOrResumable metroActor = _actorDictionary.get(actor.getFullName());
@@ -437,4 +453,5 @@ public class MetroIIDEDirector extends DEDirector implements
      */
     private Hashtable<String, StartOrResumable> _actorDictionary = new Hashtable<String, StartOrResumable>();
 
+    private ArrayList<Event.Builder> _events = new ArrayList<Event.Builder>();
 }

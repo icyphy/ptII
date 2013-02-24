@@ -34,6 +34,7 @@ package ptolemy.domains.metroII.kernel;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Hashtable;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -77,6 +78,7 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.Workspace;
 
 /** 
  *
@@ -114,6 +116,20 @@ public class MetroIIPtidesDirector extends MetroIIDEDirector {
 
     }
 
+    /** Clone the object into the specified workspace. The new object
+     *  is <i>not</i> added to the directory of that workspace (you
+     *  must do this yourself if you want it there).
+     *
+     *  @param workspace The workspace for the cloned object.
+     *  @exception CloneNotSupportedException Not thrown in this base class
+     *  @return The new Attribute.
+     */
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        MetroIIPtidesDirector newObject = (MetroIIPtidesDirector) super.clone(workspace);
+
+        return newObject;
+    }
+    
     ///////////////////////////////////////////////////////////////////
     ////                         public parameters                 ////
 
