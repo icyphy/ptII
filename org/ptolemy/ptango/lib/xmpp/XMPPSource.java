@@ -1,6 +1,6 @@
 /* An actor that subscribes to an XMPP XEP-0060 node and fires upon an event.
 
- Copyright (c) 2012 The Regents of the University of California.
+ Copyright (c) 2012-2013 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -54,6 +54,7 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Workspace;
 
 ///////////////////////////////////////////////////////////////////
 //// XMPPSource
@@ -131,6 +132,18 @@ public class XMPPSource extends TypedAtomicActor implements XMPPSubscriber {
         }
     }
     
+    /** Clone the actor into the specified workspace.
+     *  @param workspace The workspace for the new object.
+     *  @return A new actor.
+     *  @exception CloneNotSupportedException If a derived class contains
+     *   an attribute that cannot be cloned.
+     */
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        XMPPSource newObject = (XMPPSource) super.clone(workspace);
+        newObject.lock = new Object();
+        return newObject;
+    }
+
     /** Record the current model time and the current real time
      *  so that output events can be time stamped with the elapsed
      *  time since model start.
