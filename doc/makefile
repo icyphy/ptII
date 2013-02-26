@@ -452,7 +452,6 @@ HYVISUAL_DOCS = \
 PTIDES_PACKAGES = \
 	ptolemy.domains.ptides.kernel \
 	ptolemy.domains.ptides.lib \
-	ptolemy.domains.ptides.lib.io \
 	ptolemy.domains.ptides.lib.luminary \
 	ptolemy.domains.ptides.lib.qm
 
