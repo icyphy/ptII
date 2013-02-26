@@ -549,7 +549,7 @@ For example:
     <junit fork="yes"
 	   forkmode="perTest"
 	   jvm="ptolemy/util/test/junit/javachdir"
-	   maxmemory="2500m"
+	   maxmemory="3500m"
 	   printsummary="withOutAndErr"
 	   showoutput="no"
 	   timeout="${timeout.long}">
@@ -577,7 +577,7 @@ For example:
     <junit fork="yes"
 	   forkmode="perTest"
 	   jvm="ptolemy/util/test/junit/javachdir"
-	   maxmemory="2500m"
+	   maxmemory="3500m"
 	   printsummary="withOutAndErr"
 	   showoutput="yes"
 	   timeout="${timeout.longest}">
