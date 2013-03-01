@@ -624,6 +624,12 @@ src_jar: #$(PTII_SRC)
 	(cd src_jar/ptII$(VERSION); rm -rf `cat ../../src.ex`)
 	echo "About to remove unneeded sources from `pwd`"; \
 	(cd src_jar/ptII$(VERSION); rm -rf $(PTII_SRC_TO_BE_REMOVED))
+	# Fix up doc/makefile
+	egrep -v "giotto.cgc|openmodelica" \
+		src_jar/ptII$(VERSION)/doc/makefile \
+		> src_jar/ptII$(VERSION)/doc/makefile.tmp
+	mv src_jar/ptII$(VERSION)/doc/makefile.tmp \
+		src_jar/ptII$(VERSION)/doc/makefile
 
 ############################################
 # HyVisual
