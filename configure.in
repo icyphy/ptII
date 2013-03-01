@@ -4255,9 +4255,12 @@ PTSERVER_JARS=
 
 # We only need to look for Hessian if $PTSERVER_USER_DIR is present
 PTSERVER_USER_DIR="$PTII/ptserver"
-if test ! -d "$PTSERVER_USER_DIR"; then
-    PT_MSG_STATUS([$PTSERVER_USER_DIR is not present,
-    so we need not find the Hessian, Jetty, Servlet and WMQTT interfaces.])
+PTSERVER_USER_DIR2="$PTII/ptolemy/homer"
+if test ! -d "$PTSERVER_USER_DIR" -o ! -d "$PTSERVER_USER_DIR2" -o -z "$PTHOMER_DIR"; then
+    PT_MSG_STATUS([$PTSERVER_USER_DIR or
+    $PTSERVER_USER_DIR2 are not present or
+    Homer was not found
+    so we need not find the Hessian, Jetty, Servlet and WMQTT interfaces for ptserver.])
 else
     # We checked for Jetty above.	
     if test  -f "$PTJETTY_JAR"; then
