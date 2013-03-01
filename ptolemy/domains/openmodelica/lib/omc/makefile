@@ -52,13 +52,14 @@ PTCLASSALLJARS = \
 	corba/corba.jar
 
 JSRCS = \
+	CompilerException.java \
 	CompilerResult.java \
+	ConnectException.java \
 	ICompilerResult.java \
 	IOMCCommand.java \
 	IOMCProxy.java \
 	OMCCommand.java \
 	OMCLogger.java \
-	OMCParser.java \
 	OMCProxy.java
 
 # Files or directories that are present, but that 'make checkjunk'

@@ -3,7 +3,7 @@
 # @Version: $Id$
 # @Author: Christopher Brooks (makefile only)
 #
-# @Copyright (c) 2008-2009 The Regents of the University of California.
+# @Copyright (c) 2013 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -31,7 +31,7 @@
 
 ME =		ptolemy/domains/openmodelica/lib/test
 
-DIRS =		auto
+DIRS =		junit
 
 # Root of Ptolemy II directory
 ROOT =		../../../../..
@@ -67,7 +67,7 @@ EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS) #$(JSIMPLE_TESTS) #$(JGRAPHICAL_TESTS)
 # Files or directories that are present, but that 'make checkjunk'
 # should not complain about
 # Don't include demo or DIRS here, or else 'make sources' will run 'make demo'
-MISC_FILES = auto 
+MISC_FILES = alljtests.tcl auto junit
 
 # Don't include all or install rules here, we want the user
 # to run 'make tests' to run the tests.

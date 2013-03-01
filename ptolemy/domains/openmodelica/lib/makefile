@@ -31,7 +31,7 @@
 
 ME =		ptolemy/domains/openmodelica/lib
 
-DIRS =		compiler core omc test
+DIRS =		core omc test
 
 # Root of Ptolemy II directory
 ROOT =		../../../..
@@ -49,7 +49,6 @@ PTPACKAGE =   lib
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
 PTCLASSALLJARS = \
-	compiler/compiler.jar \
 	omc/omc.jar
 
 JSRCS = \
