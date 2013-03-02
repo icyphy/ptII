@@ -42,7 +42,7 @@ import ptolemy.data.IntToken;
 import ptolemy.data.RecordToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
-import ptolemy.data.type.BaseType; 
+import ptolemy.data.type.BaseType;
 import ptolemy.domains.ptides.kernel.PtidesDirector;
 import ptolemy.domains.ptides.lib.OutputDevice;
 import ptolemy.graph.Inequality;

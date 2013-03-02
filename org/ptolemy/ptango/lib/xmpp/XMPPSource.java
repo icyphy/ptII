@@ -28,24 +28,15 @@
 
 package org.ptolemy.ptango.lib.xmpp;
 
-import java.util.Hashtable;
-
-import javax.servlet.http.HttpServletResponse;
-
 import org.jivesoftware.smackx.pubsub.Item;
 import org.jivesoftware.smackx.pubsub.ItemPublishEvent;
 import org.jivesoftware.smackx.pubsub.PayloadItem;
 import org.jivesoftware.smackx.pubsub.SimplePayload;
-import org.ptolemy.ptango.lib.HttpActor;
 
-import ptolemy.actor.Initializable;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
-import ptolemy.actor.lib.Source;
 import ptolemy.actor.util.Time;
-import ptolemy.data.LongToken;
 import ptolemy.data.StringToken;
-import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.data.type.BaseType;

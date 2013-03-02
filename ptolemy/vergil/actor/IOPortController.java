@@ -45,7 +45,7 @@ import ptolemy.actor.PublisherPort;
 import ptolemy.actor.SubscriberPort;
 import ptolemy.actor.gui.ColorAttribute;
 import ptolemy.actor.gui.PtolemyPreferences;
-import ptolemy.actor.lib.qm.CompositeQM; 
+import ptolemy.actor.lib.qm.CompositeQM;
 import ptolemy.actor.lib.qm.MonitoredQuantityManager;
 import ptolemy.actor.parameters.ParameterPort;
 import ptolemy.data.ArrayToken;

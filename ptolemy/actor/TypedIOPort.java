@@ -34,7 +34,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
-import ptolemy.actor.Librariable;
 import ptolemy.data.Token;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.StructuredType;

@@ -37,11 +37,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.text.DefaultCaret;
 
-import ptolemy.actor.gui.Effigy;
-import ptolemy.actor.gui.PtolemyEffigy;
-import ptolemy.actor.gui.Tableau;
-import ptolemy.actor.gui.TableauFactory;
-import ptolemy.actor.gui.TextEditor;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;

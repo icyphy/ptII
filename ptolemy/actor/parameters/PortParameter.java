@@ -28,7 +28,7 @@
 package ptolemy.actor.parameters;
 
 import ptolemy.actor.Initializable;
-import ptolemy.actor.TypedActor;  
+import ptolemy.actor.TypedActor;
 import ptolemy.data.StringToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.AbstractInitializableParameter;

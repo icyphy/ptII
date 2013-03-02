@@ -64,7 +64,6 @@ import ptolemy.domains.de.kernel.DEDirector;
 import ptolemy.domains.de.kernel.DEEventQueue;
 import ptolemy.domains.ptides.lib.ErrorHandlingAction;
 import ptolemy.domains.ptides.lib.PtidesPort;
-import ptolemy.domains.sysml.kernel.SysMLSequentialDirector;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;

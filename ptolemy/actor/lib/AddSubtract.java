@@ -33,8 +33,6 @@ import java.util.Set;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.Token;
-import ptolemy.data.type.BaseType;
-import ptolemy.data.type.TypeConstant;
 import ptolemy.graph.Inequality;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;

@@ -34,7 +34,6 @@ package ptolemy.domains.metroII.kernel;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Hashtable;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -44,7 +43,6 @@ import java.util.TreeSet;
 
 import net.jimblackler.Utils.CollectionAbortedException;
 import net.jimblackler.Utils.ResultHandler;
-
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.IOPort;
