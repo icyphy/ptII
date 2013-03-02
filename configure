@@ -10802,11 +10802,16 @@ PTSERVER_JARS=
 
 # We only need to look for Hessian if $PTSERVER_USER_DIR is present
 PTSERVER_USER_DIR="$PTII/ptserver"
-if test ! -d "$PTSERVER_USER_DIR"; then
-    if test "${PTVERBOSE:-none}" != "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: $PTSERVER_USER_DIR is not present,
-    so we need not find the Hessian, Jetty, Servlet and WMQTT interfaces." >&5
-$as_echo "$PTSERVER_USER_DIR is not present,
-    so we need not find the Hessian, Jetty, Servlet and WMQTT interfaces." >&6; }; fi
+PTSERVER_USER_DIR2="$PTII/ptolemy/homer"
+if test ! -d "$PTSERVER_USER_DIR" -o ! -d "$PTSERVER_USER_DIR2" -o -z "$PTHOMER_DIR"; then
+    if test "${PTVERBOSE:-none}" != "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: $PTSERVER_USER_DIR or
+    $PTSERVER_USER_DIR2 are not present or
+    Homer was not found
+    so we need not find the Hessian, Jetty, Servlet and WMQTT interfaces for ptserver." >&5
+$as_echo "$PTSERVER_USER_DIR or
+    $PTSERVER_USER_DIR2 are not present or
+    Homer was not found
+    so we need not find the Hessian, Jetty, Servlet and WMQTT interfaces for ptserver." >&6; }; fi
 else
     # We checked for Jetty above.
     if test  -f "$PTJETTY_JAR"; then
