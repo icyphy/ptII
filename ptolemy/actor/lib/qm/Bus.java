@@ -64,10 +64,12 @@ import ptolemy.kernel.util.Workspace;
  *  This is similar to the {@link Server} actor.
  *  Tokens are processed in FIFO order.
  *  <p>
- *  This quantity manager will be used on any connection between actors
- *  where the receiving
- *  port has a parameter with an ObjectToken that refers
- *  to this Bus. Note that the name of this parameter is irrelevant.
+ *  To use this quantity manager, drag an instance of this Bus
+ *  into the model, and (optionally)
+ *  assign it a name. Then, on any input port whose communication is to be
+ *  mediated by this instance of Bus, add a parameter to the port, and
+ *  assign as the value of the parameter the name of this instance.
+ *  That name will resolve to an ObjectToken referring to this instance.
  *  <p>
  *  FIXME: This receiver behaves differently for Continuous and DE. Allowing
  *  the use of this actor across hierarchies might therefore be problematic.
