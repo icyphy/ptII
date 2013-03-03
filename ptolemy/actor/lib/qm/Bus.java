@@ -338,6 +338,13 @@ public class Bus extends MonitoredQuantityManager {
      */
     public void sendToken(Receiver source, Receiver receiver, Token token)
             throws IllegalActionException {
+        // If the token is null, then this means there is not actually
+        // something to send. Do not take up bus resources for this.
+        // FIXME: Is this the right thing to do?
+        // Presumably, this is an issue with the Continuous domain.
+        if (token == null) {
+            return;
+        }
         Time currentTime = getDirector().getModelTime();
         // Send "absent" if there is nothing to send.
         if (_nextTimeFree == null || _tokens.size() == 0
@@ -382,12 +389,6 @@ public class Bus extends MonitoredQuantityManager {
             }
         }
 
-        // If the token is null, then this means there is not actually
-        // something to send. Do not take up bus resources for this.
-        // FIXME: This makes no sense here.
-        if (token == null) {
-            return;
-        }
         if (_debugging) {
             _debug("At time " + getDirector().getModelTime()
                     + ", initiating send to "
