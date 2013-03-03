@@ -696,6 +696,11 @@ if ![info exists timeOutSeconds] {
 	    [java::call System getProperty ptolemy.ptII.timeOutSeconds]
 }
 
+# The Variable class will pop up a dialog if there are variable
+# dependency issues.  We set the ptolemy.ptII.nonInteractive property
+# to true so that MessageHandler ignores these warnings.
+java::call System setProperty ptolemy.ptII.nonInteractive true
+
 if {"$isRunningNightlyBuild" == "true" \
 	|| "$timeOutSeconds" != "" } {
     if {"$timeOutSeconds" == ""} {
