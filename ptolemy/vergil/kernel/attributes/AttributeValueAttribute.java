@@ -31,6 +31,7 @@ import java.math.RoundingMode;
 import java.text.NumberFormat;
 import java.util.Collection;
 
+import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.Token;
@@ -89,6 +90,11 @@ public class AttributeValueAttribute extends AbstractTextAttribute implements
         displayWidth = new Parameter(this, "displayWidth");
         displayWidth.setExpression("6");
         displayWidth.setTypeEquals(BaseType.INT);
+        
+        useExpression = new Parameter(this, "useExpression");
+        useExpression.setExpression("false");
+        useExpression.setTypeEquals(BaseType.BOOLEAN);
+
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -101,6 +107,11 @@ public class AttributeValueAttribute extends AbstractTextAttribute implements
      *  default value 6.
      */
     public Parameter displayWidth;
+    
+    /** If true, display the expression rather than the value.
+     *  This is a boolean that defaults to false.
+     */
+    public Parameter useExpression;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -274,24 +285,29 @@ public class AttributeValueAttribute extends AbstractTextAttribute implements
         try {
             if (container != null) {
                 if (_attribute instanceof Variable) {
-                    Token token = ((Variable) _attribute).getToken();
-                    String value = "absent";
-                    if (token != null) {
-                        value = token.toString();
-                        // Suppress scientific notation if it's a double.
-                        if (token instanceof DoubleToken) {
-                            double doubleValue = ((DoubleToken) token)
-                                    .doubleValue();
-                            NumberFormat format = NumberFormat.getInstance();
-                            format.setGroupingUsed(false);
-                            format.setMinimumFractionDigits(1);
-                            format.setRoundingMode(RoundingMode.UNNECESSARY);
-                            value = format.format(doubleValue);
-                            // If the value shown is 0.0, make sure it's actually zero.
-                            if (value.equals("0.0") && doubleValue != 0.0) {
-                                value = "0.00000...";
+                    String value;
+                    if (!((BooleanToken)useExpression.getToken()).booleanValue()) {
+                        Token token = ((Variable) _attribute).getToken();
+                        value = "absent";
+                        if (token != null) {
+                            value = token.toString();
+                            // Suppress scientific notation if it's a double.
+                            if (token instanceof DoubleToken) {
+                                double doubleValue = ((DoubleToken) token)
+                                        .doubleValue();
+                                NumberFormat format = NumberFormat.getInstance();
+                                format.setGroupingUsed(false);
+                                format.setMinimumFractionDigits(1);
+                                format.setRoundingMode(RoundingMode.UNNECESSARY);
+                                value = format.format(doubleValue);
+                                // If the value shown is 0.0, make sure it's actually zero.
+                                if (value.equals("0.0") && doubleValue != 0.0) {
+                                    value = "0.00000...";
+                                }
                             }
                         }
+                    } else {
+                        value = _attribute.getExpression();
                     }
                     String truncated = value;
                     int width = _displayWidth;
