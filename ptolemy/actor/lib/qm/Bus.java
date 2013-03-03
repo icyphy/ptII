@@ -200,7 +200,7 @@ public class Bus extends MonitoredQuantityManager {
             //
             // What comes next is complicated. Hold onto your hat.
             // The scope of a quantity manager includes everything
-            // below its container (actually, its global, if you
+            // below its container (actually, it is global, if you
             // use a fully qualified name), even across opaque composite
             // boundaries. This is because shared resources are
             // shared, and could be used anywhere in a model.
@@ -339,7 +339,7 @@ public class Bus extends MonitoredQuantityManager {
     public void sendToken(Receiver source, Receiver receiver, Token token)
             throws IllegalActionException {
         Time currentTime = getDirector().getModelTime();
-        // FIXME: Why is the following needed?
+        // Send "absent" if there is nothing to send.
         if (_nextTimeFree == null || _tokens.size() == 0
                 || currentTime.compareTo(_nextTimeFree) != 0
                 || receiver != _nextReceiver) {
@@ -347,7 +347,6 @@ public class Bus extends MonitoredQuantityManager {
             // At least in the Continuous domain, we need to make sure
             // the delegated receiver knows this so that it becomes
             // known and absent.
-
             if (getDirector() instanceof FixedPointDirector) {
                 receiver.put(null);
             }
@@ -368,8 +367,7 @@ public class Bus extends MonitoredQuantityManager {
                                 + " in the same iteration.");
             }
         } else {
-
-            // In the Continuous domain, this actor gets fired if tokens are available
+            // In the Continuous domain, this actor gets fired whether tokens are available
             // or not. In the DE domain we need to schedule a refiring.
             if (getDirector() instanceof FixedPointDirector) {
                 _receiversAndTokensToSendTo.put(receiver, token);
@@ -386,6 +384,7 @@ public class Bus extends MonitoredQuantityManager {
 
         // If the token is null, then this means there is not actually
         // something to send. Do not take up bus resources for this.
+        // FIXME: This makes no sense here.
         if (token == null) {
             return;
         }
