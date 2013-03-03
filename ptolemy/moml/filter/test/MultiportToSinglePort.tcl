@@ -129,8 +129,6 @@ set chainedTransitionMoML  "$header
            <property name=\"slope\" class=\"ptolemy.data.expr.Parameter\" value=\"42.0\">
            </property>
             <entity name=\"Const\" class=\"ptolemy.actor.lib.Const\">
-                <property name=\"value\" class=\"ptolemy.data.expr.Parameter\" value=\"slope\">
-                </property>
                 <property name=\"_location\" class=\"ptolemy.kernel.util.Location\" value=\"85.0, 145.0\">
                 </property>
                 <port name=\"trigger\" class=\"ptolemy.actor.TypedIOPort\">
