@@ -1,4 +1,4 @@
-/* This actor implements a Network Bus.
+/* This actor implements a StuckAt Fault with a fixed probability.
 
 @Copyright (c) 2010-2011 The Regents of the University of California.
 All rights reserved.
@@ -55,24 +55,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
 /** This actor is an {@link QuantityManager} that, when its
- *  {@link #sendToken(Receiver, Receiver, Token)} method is called, delays
- *  the delivery of the specified token to the specified receiver
- *  according to a service rule. Specifically, if the actor is
- *  not currently servicing a previous token, then it delivers
- *  the token with a delay given by the <i>serviceTime</i> parameter.
- *  If the actor is currently servicing a previous token, then it waits
- *  until it has finished servicing that token (and any other pending
- *  tokens), and then delays an additional amount given by <i>serviceTime</i>.
- *  This is similar to the {@link Server} actor.
- *  Tokens are processed in FIFO order.
- *  <p>
- *  This quantity manager will be used on any connection between actors
- *  where the receiving
- *  port has a parameter with an ObjectToken that refers
- *  to this Bus. Note that the name of this parameter is irrelevant.
- *  <p>
- *  FIXME: This receiver behaves differently for Continuous and DE. Allowing
- *  the use of this actor across hierarchies might therefore be problematic.
+ *  ...
  *  @author Ilge Akkaya, Patricia Derler, Edward A. Lee
  *  @version $Id$
  *  @since Ptolemy II 8.0
