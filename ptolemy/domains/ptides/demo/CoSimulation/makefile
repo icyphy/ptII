@@ -52,7 +52,8 @@ OTHER_FILES_TO_BE_JARED = \
 	CoSimulationSDF.xml \
 	CoSimulationSimple.xml \
 	CoSimulationSysMLSequential.xml \
-	CoSimulation.xml
+	CoSimulation.xml \
+	SysMLABC_OneCPU.xml
 
 EXTRA_SRCS = \
 	$(OTHER_FILES_TO_BE_JARED) \
