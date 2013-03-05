@@ -122,7 +122,7 @@ public class TTESwitch extends MonitoredQuantityManager {
      *  @return A new intermediate receiver.
      *  @exception IllegalActionException If parameter
      */
-    public IntermediateReceiver getReceiver(Receiver receiver)
+    public IntermediateReceiver createIntermediateReceiver(Receiver receiver)
             throws IllegalActionException {
         IntermediateReceiver intermediateReceiver = _receivers.get(receiver);
         if (intermediateReceiver == null) {
@@ -161,7 +161,7 @@ public class TTESwitch extends MonitoredQuantityManager {
      */
     public Receiver getReceiver(Receiver receiver, IOPort port)
             throws IllegalActionException {
-        return getReceiver(receiver);
+        return createIntermediateReceiver(receiver);
     }
 
     /** Clone this actor into the specified workspace. The new actor is

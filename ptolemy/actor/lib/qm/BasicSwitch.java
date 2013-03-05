@@ -139,7 +139,7 @@ public class BasicSwitch extends MonitoredQuantityManager {
      *  @exception IllegalActionException If the receiver is an
      *  ouptut port.
      */
-    public IntermediateReceiver getReceiver(Receiver receiver)
+    public IntermediateReceiver createIntermediateReceiver(Receiver receiver)
             throws IllegalActionException {
         if (receiver.getContainer().isOutput()) {
             throw new IllegalActionException(receiver.getContainer(),
@@ -161,7 +161,7 @@ public class BasicSwitch extends MonitoredQuantityManager {
      */
     public Receiver getReceiver(Receiver receiver, IOPort port)
             throws IllegalActionException {
-        return getReceiver(receiver);
+        return createIntermediateReceiver(receiver);
     }
 
     /** Make sure that this quantity manager is only used in the DE domain.

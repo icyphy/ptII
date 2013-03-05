@@ -5,12 +5,12 @@
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
-        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="10">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="5">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[130.0, 65.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[125.0, -97.5]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={13, 102, 794, 634}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={320, 55, 794, 634}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[560, 524]">
     </property>
@@ -21,7 +21,7 @@
     <property name="qm" class="ptolemy.data.expr.Parameter" value="C">
     </property>
     <entity name="A" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[135.0, 132.5]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[130.0, -30.0]">
         </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={233, 132, 834, 634}, maximized=false}">
         </property>
@@ -49,6 +49,8 @@
         <port name="port" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[585.0, 270.0]">
+            </property>
+            <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="WEST">
             </property>
         </port>
         <entity name="DiscreteClock" class="ptolemy.actor.lib.DiscreteClock">
@@ -78,7 +80,7 @@
         <link port="Ramp.trigger" relation="relation"/>
     </entity>
     <entity name="B" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[225.0, 190.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[315.0, -32.5]">
         </property>
         <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
             <property name="_location" class="ptolemy.kernel.util.Location" value="{55, 50}">
@@ -111,7 +113,7 @@
             </property>
         </port>
         <entity name="Scale" class="ptolemy.actor.lib.Scale">
-            <property name="factor" class="ptolemy.data.expr.Parameter" value="2">
+            <property name="factor" class="ptolemy.data.expr.Parameter" value="1">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
                 <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
@@ -130,11 +132,11 @@
         <link port="Scale.output" relation="relation2"/>
     </entity>
     <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={735, 303, 500, 344}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={419, 402, 500, 344}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[455.0, 230.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[450.0, 67.5]">
         </property>
         <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
@@ -143,14 +145,14 @@
 <title>TimedPlotter</title>
 <xLabel></xLabel>
 <yLabel></yLabel>
-<xRange min="0.0" max="10.0"/>
-<yRange min="-12.0" max="12.0"/>
+<xRange min="0.0" max="5.0"/>
+<yRange min="-5.0" max="6.0"/>
 <default stems="yes"/>
 </plot>?>
         </configure>
     </entity>
     <entity name="C" class="ptolemy.actor.lib.qm.CompositeQM">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[260.0, 70.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[225.0, 27.5]">
         </property>
         <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
             <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 25.0]">
@@ -203,7 +205,7 @@
             </property>
         </property>
         <entity name="A_p" class="ptolemy.actor.lib.Const">
-            <property name="value" class="ptolemy.data.expr.Parameter" value="10.0">
+            <property name="value" class="ptolemy.data.expr.Parameter" value="5.0">
             </property>
             <doc>Create a constant sequence.</doc>
             <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
@@ -236,7 +238,7 @@
             </property>
         </entity>
         <entity name="X_p" class="ptolemy.actor.lib.Const">
-            <property name="value" class="ptolemy.data.expr.Parameter" value="-10.0">
+            <property name="value" class="ptolemy.data.expr.Parameter" value="-5.0">
             </property>
             <doc>Create a constant sequence.</doc>
             <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
@@ -384,7 +386,7 @@
         <link port="Const2.trigger" relation="relation13"/>
     </entity>
     <entity name="X" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[135.0, 335.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[130.0, 172.5]">
         </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={233, 132, 834, 634}, maximized=false}">
         </property>
@@ -412,6 +414,8 @@
         <port name="port" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{580.0, 260.0}">
+            </property>
+            <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="WEST">
             </property>
         </port>
         <entity name="DiscreteClock" class="ptolemy.actor.lib.DiscreteClock">
@@ -445,7 +449,7 @@
         <link port="Ramp.trigger" relation="relation"/>
     </entity>
     <entity name="Y" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[225.0, 260.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[310.0, 172.5]">
         </property>
         <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
             <property name="_location" class="ptolemy.kernel.util.Location" value="{55, 50}">
@@ -478,7 +482,7 @@
             </property>
         </port>
         <entity name="Scale" class="ptolemy.actor.lib.Scale">
-            <property name="factor" class="ptolemy.data.expr.Parameter" value="2">
+            <property name="factor" class="ptolemy.data.expr.Parameter" value="1">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
                 <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">

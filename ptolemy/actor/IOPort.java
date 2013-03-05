@@ -60,12 +60,14 @@ import ptolemy.kernel.ComponentRelation;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.Relation;
 import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.InvalidStateException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.Workspace;
+import ptolemy.moml.MoMLParser;
 
 ///////////////////////////////////////////////////////////////////
 //// IOPort
@@ -259,8 +261,7 @@ public class IOPort extends ComponentPort {
                         ((ObjectToken)parameterToken).getValue() 
                         instanceof QuantityManager) {
                     // Invalidate list of quantity managers.
-                    _qmListValid = false;
-                    _invalidate();
+                    _qmListValid = false;  
                 }
             }
         }
@@ -1360,13 +1361,13 @@ public class IOPort extends ComponentPort {
                 for (int i = 0; i < attributeList().size(); i++) {
                     Object attr = attributeList().get(i);
                     if (attr instanceof Parameter) {
-                        Token paramToken = ((Parameter) attr).getToken(); //
+                        Token paramToken = ((Parameter) attr).getToken(); 
                         if (paramToken instanceof ObjectToken) {
                             Object paramObject = ((ObjectToken) paramToken)
                                     .getValue();
                             if (paramObject instanceof QuantityManager) {
                                 ((QuantityManager) paramObject).setTempPort(this);
-                                ((Parameter)attr).invalidate();
+                                ((Parameter)attr).validate();
                                 ((QuantityManager) paramObject).setTempPort(null);
                                 _qmList.add((QuantityManager) paramObject);
                             }

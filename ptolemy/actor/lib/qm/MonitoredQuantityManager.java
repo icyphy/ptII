@@ -34,6 +34,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import ptolemy.actor.Actor;
+import ptolemy.actor.IOPort;
 import ptolemy.actor.IntermediateReceiver;
 import ptolemy.actor.NoRoomException;
 import ptolemy.actor.QuantityManager;
@@ -116,7 +117,7 @@ public abstract class MonitoredQuantityManager extends TypedAtomicActor
      *  @return A new intermediate receiver.
      *  @exception IllegalActionException Not thrown in this class but may be thrown in derived classes.
      */
-    public Receiver getReceiver(Receiver receiver)
+    public Receiver createIntermediateReceiver(Receiver receiver)
             throws IllegalActionException {
         IntermediateReceiver intermediateReceiver = new IntermediateReceiver(
                 this, receiver);
@@ -179,6 +180,12 @@ public abstract class MonitoredQuantityManager extends TypedAtomicActor
             // FIXME not implemented yet.
         }
         super.attributeChanged(attribute);
+    }
+    
+    protected IOPort _tempPort = null;
+    
+    public void setTempPort(IOPort port) {
+        _tempPort = port;
     }
 
     /** Send token to receiver.

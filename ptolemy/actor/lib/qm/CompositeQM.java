@@ -87,6 +87,12 @@ public class CompositeQM extends TypedCompositeActor implements QuantityManager 
         super(workspace);
         _initialize();
     }
+    
+    @Override
+    public void setTempPort(IOPort port) {
+        // TODO Auto-generated method stub
+        
+    }
 
     /** Construct a CompositeQM with a name and a container.
      *  The container argument must not be null, or a
@@ -148,7 +154,7 @@ public class CompositeQM extends TypedCompositeActor implements QuantityManager 
      *  @return A new intermediate receiver.
      *  @exception IllegalActionException Not thrown in this class but may be thrown in derived classes.
      */
-    public Receiver getReceiver(Receiver receiver)
+    public Receiver createIntermediateReceiver(Receiver receiver)
             throws IllegalActionException {
         IntermediateReceiver intermediateReceiver = new IntermediateReceiver(
                 this, receiver);

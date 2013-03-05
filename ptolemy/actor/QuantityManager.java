@@ -57,17 +57,7 @@ public interface QuantityManager {
      *  @return A new receiver.
      *  @exception IllegalActionException If the receiver cannot be created.
      */
-    public abstract Receiver getReceiver(Receiver receiver)
-            throws IllegalActionException;
-
-    /** Create a receiver to mediate a communication via the specified receiver. This
-     *  receiver is linked to a specific port of the quantity manager.
-     *  @param receiver Receiver whose communication is to be mediated.
-     *  @param port Port of the quantity manager.
-     *  @return A new receiver.
-     *  @exception IllegalActionException If the receiver cannot be created.
-     */
-    public abstract Receiver getReceiver(Receiver receiver, IOPort port)
+    public abstract Receiver createIntermediateReceiver(Receiver receiver)
             throws IllegalActionException;
 
     /** Reset the QuantityManager.
@@ -87,5 +77,7 @@ public interface QuantityManager {
     public void sendToken(Receiver source, Receiver receiver, Token token)
             throws IllegalActionException;
     
+    public void setTempPort(IOPort port);
 
+    
 }

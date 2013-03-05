@@ -267,7 +267,7 @@ public class AFDXESs extends MonitoredQuantityManager {
      *  @param receiver The receiver that is being wrapped.
      *  @return A new intermediate receiver.
      */
-    public IntermediateReceiver getReceiver(Receiver receiver) {
+    public IntermediateReceiver createIntermediateReceiver(Receiver receiver) {
         IntermediateReceiver intermediateReceiver = new IntermediateReceiver(
                 this, receiver);
         return intermediateReceiver;
@@ -282,7 +282,7 @@ public class AFDXESs extends MonitoredQuantityManager {
      */
     public Receiver getReceiver(Receiver receiver, IOPort port)
             throws IllegalActionException {
-        return getReceiver(receiver);
+        return createIntermediateReceiver(receiver);
     }
 
     /** Initialize the actor.
