@@ -254,16 +254,16 @@ public class IOPort extends ComponentPort {
 
         if (attribute instanceof Parameter) {
             Token parameterToken = ((Parameter) attribute).getToken();
-
             if (parameterToken != null) {
                 if (parameterToken instanceof ObjectToken &&
-                        ((ObjectToken)parameterToken).getValue() instanceof QuantityManager) {
-                    // invalidate list of quantity managers.
+                        ((ObjectToken)parameterToken).getValue() 
+                        instanceof QuantityManager) {
+                    // Invalidate list of quantity managers.
                     _qmListValid = false;
+                    _invalidate();
                 }
             }
         }
-
         super.attributeChanged(attribute);
     }
 
@@ -1352,21 +1352,23 @@ public class IOPort extends ComponentPort {
      *  @exception IllegalActionException Thrown if the token of the parameter
      *      containing the quantity manager object cannot be retrieved.
      */
-    public List getQuantityManagers() throws IllegalActionException {
-        if (_qmListValid == false) {
-            _qmList = new ArrayList();
+    public List<QuantityManager> getQuantityManagers() throws IllegalActionException {
+        if (_qmListValid == false) { 
+
+            _qmList = new ArrayList<QuantityManager>();
             if (attributeList().size() > 0) {
                 for (int i = 0; i < attributeList().size(); i++) {
                     Object attr = attributeList().get(i);
                     if (attr instanceof Parameter) {
-                        Token paramToken = ((Parameter) attr).getToken();
+                        Token paramToken = ((Parameter) attr).getToken(); //
                         if (paramToken instanceof ObjectToken) {
                             Object paramObject = ((ObjectToken) paramToken)
                                     .getValue();
-                            if ((paramObject instanceof QuantityManager)
-                                    || (paramObject instanceof IOPort && ((IOPort) paramObject)
-                                            .getContainer() instanceof QuantityManager)) {
-                                _qmList.add(paramObject);
+                            if (paramObject instanceof QuantityManager) {
+                                ((QuantityManager) paramObject).setTempPort(this);
+                                ((Parameter)attr).invalidate();
+                                ((QuantityManager) paramObject).setTempPort(null);
+                                _qmList.add((QuantityManager) paramObject);
                             }
                         }
                     }
@@ -3076,15 +3078,6 @@ public class IOPort extends ComponentPort {
         _workspace.doneWriting();
     }
 
-    /** Set the local receivers table from outside. This is only used by the
-     *  CompositeQuantityManager. FIXME: find a better solution.
-     *  @param map The new local receivers table.
-     */
-    public void setLocalReceiversTable(
-            HashMap<IORelation, List<Receiver[][]>> map) {
-        _localReceiversTable = map;
-    }
-
     /** If the argument is true, make the port a multiport.
      *  That is, make it capable of linking with multiple IORelations,
      *  or with IORelations that have width greater than one.
@@ -4316,27 +4309,6 @@ public class IOPort extends ComponentPort {
      *  first quantity manager. Etc.
      *  @see QuantityManager
      *  @param receiver The receiver to wrap.
-     *  @return Either a new receiver wrapping the specified receiver,
-     *   or the specified receiver.
-     *  @exception IllegalActionException If any parameter of the port
-     *   cannot be evaluated.
-     */
-    protected Receiver _wrapReceiver(Receiver receiver)
-            throws IllegalActionException {
-        return _wrapReceiver(receiver, 0);
-    }
-
-    /** If this port has parameters whose values are tokens that contain
-     *  an object implementing {@link QuantityManager}, then wrap the
-     *  receiver specified in the argument using those quantity managers.
-     *  If there are no such parameters, then simply return the specified
-     *  receiver. If there is one such parameter, then use the quantity
-     *  manager to wrap the specified receiver in a new receiver, and return
-     *  that receiver. If there are two such parameters, then use the second
-     *  quantity manager to create a receiver that wraps that created by the
-     *  first quantity manager. Etc.
-     *  @see QuantityManager
-     *  @param receiver The receiver to wrap.
      *  @param channel Channel id used to determine the source port.
      *  @return Either a new receiver wrapping the specified receiver,
      *   or the specified receiver.
@@ -4346,17 +4318,11 @@ public class IOPort extends ComponentPort {
     protected Receiver _wrapReceiver(Receiver receiver, int channel)
             throws IllegalActionException {
         Receiver result = receiver;
-        List qmList = getQuantityManagers();
+        List<QuantityManager> qmList = getQuantityManagers();
         if (isInput()) {
             for (int i = qmList.size() - 1; i >= 0; i--) {
-                Object object = qmList.get(i);
-                if (object instanceof QuantityManager) {
-                    result = ((QuantityManager) object).getReceiver(result);
-                } else if (object instanceof IOPort) {
-                    result = ((QuantityManager) ((IOPort) object)
-                            .getContainer()).getReceiver(result,
-                            ((IOPort) object));
-                }
+                QuantityManager quantityManager = qmList.get(i); 
+                result = quantityManager.createIntermediateReceiver(result);
             }
             if (result instanceof IntermediateReceiver) {
                 IntermediateReceiver intermediateReceiver = (IntermediateReceiver) result;
@@ -4365,15 +4331,8 @@ public class IOPort extends ComponentPort {
             }
         } else {
             for (int i = 0; i < qmList.size(); i++) {
-                Object object = qmList.get(i);
-                if (object instanceof QuantityManager) {
-                    result = ((QuantityManager) object).getReceiver(result);
-                } else if (object instanceof IOPort) {
-                    IntermediateReceiver ir = (IntermediateReceiver) ((QuantityManager) ((IOPort) object)
-                            .getContainer()).getReceiver(result,
-                            ((IOPort) object));
-                    _intermediateFarReceiver = ir;
-                }
+                QuantityManager quantityManager = qmList.get(i);  
+                result = quantityManager.createIntermediateReceiver(result); 
             }
         }
         // FIXME what if isInput && isOutput??
@@ -4865,7 +4824,7 @@ public class IOPort extends ComponentPort {
     private transient long _numberOfSourcesVersion = -1;
 
     /** List of quantity managers specified for the port. */
-    private List _qmList;
+    private List<QuantityManager> _qmList;
 
     /** True if list of quantity managers was not modified since
      *  it was last modified.
