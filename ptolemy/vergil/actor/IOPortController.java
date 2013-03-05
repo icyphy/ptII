@@ -335,8 +335,6 @@ public class IOPortController extends AttributeController {
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
 
-    List<MonitoredQuantityManager> _qmList;
-
     /**
      * Render the ports of components as triangles. Multiports are rendered
      * hollow, while single ports are rendered filled in black. ParameterPort
@@ -443,51 +441,44 @@ public class IOPortController extends AttributeController {
 
             // Handle quantity managers.
             try {
-                if (port instanceof IOPort) {
-
-                    List qmList;
-                    //port.workspace().getReadAccess();
-                    List list = ((IOPort) port).getQuantityManagers();
-                    if (list != null) {
-                        qmList = new ArrayList(list);
-                        //port.workspace().doneReading();
-
-                        if (qmList != _qmList && qmList.size() > 0) {
-
-                            _qmList = qmList;
-
-                            Object object = null;
-                            if (((IOPort) port).isOutput()) {
-                                object = qmList.get(0);
-                            } else {
-                                object = qmList.get(qmList.size() - 1);
-                            }
-                            ColorAttribute color = null;
-                            if (object instanceof MonitoredQuantityManager) {
-                                color = ((MonitoredQuantityManager)object).color; 
-                            } else if (object instanceof CompositeQM) {
-                                color = ((CompositeQM) object).color;
-                            } 
-                            fill = color.asColor();
-
-                            StringAttribute info = (StringAttribute) port
-                                    .getAttribute("_showInfo");
-                            if (info == null) {
-                                info = new StringAttribute(port, "_showInfo");
-                            }
-
-                            StringBuffer qmStringBuffer = new StringBuffer();
-                            for (int j = 0; j < qmList.size(); j++) {
-                                if (qmStringBuffer.length() > 0) {
-                                    qmStringBuffer.append(", ");
-                                }
-                                qmStringBuffer
-                                        .append(((NamedObj) qmList.get(j))
-                                                .getName());
-                            }
-                            info.setExpression("QM: "
-                                    + qmStringBuffer.toString());
+                if (port instanceof IOPort) { 
+                    List qmList = ((IOPort) port).getQuantityManagers();
+                    if (qmList != null && qmList.size() > 0) {  
+                        Object object = null;
+                        if (((IOPort) port).isOutput()) {
+                            object = qmList.get(0);
+                        } else {
+                            object = qmList.get(qmList.size() - 1);
                         }
+                        ColorAttribute color = null;
+                        if (object instanceof MonitoredQuantityManager) {
+                            color = ((MonitoredQuantityManager)object).color; 
+                        } else if (object instanceof CompositeQM) {
+                            color = ((CompositeQM) object).color;
+                        } 
+                        fill = color.asColor();
+
+                        StringAttribute info = (StringAttribute) port
+                                .getAttribute("_showInfo");
+                        if (info == null) {
+                            info = new StringAttribute(port, "_showInfo");
+                        }
+
+                        StringBuffer qmStringBuffer = new StringBuffer();
+                        for (int j = 0; j < qmList.size(); j++) {
+                            if (qmStringBuffer.length() > 0) {
+                                qmStringBuffer.append(", ");
+                            }
+                            qmStringBuffer
+                                    .append(((NamedObj) qmList.get(j))
+                                            .getName());
+                        }
+                        info.setExpression("QM: "
+                                + qmStringBuffer.toString());
+                    } else {
+                        StringAttribute info = (StringAttribute) port
+                            .getAttribute("_showInfo");
+                        port.removeAttribute(info);
                     }
                 }
             } catch (IllegalActionException e1) {
@@ -497,6 +488,7 @@ public class IOPortController extends AttributeController {
                 // Ignore. This exception should be thrown because before adding the
                 // new ColorAttribute any previous attribute with the same name is
                 // removed.
+                e.printStackTrace();
             }
 
             ColorAttribute colorAttribute;
@@ -523,8 +515,8 @@ public class IOPortController extends AttributeController {
             //ActorGraphModel model = (ActorGraphModel) getController()
             //        .getGraphModel();
 
-            int portRotation = _getCardinality(port);
-            int direction = _getDirection(portRotation);
+            int portRotation = getCardinality(port);
+            int direction = getDirection(portRotation);
 
             // Transform the port shape so it is facing the right way.
             double rotation = portRotation;
