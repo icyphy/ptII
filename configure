@@ -4034,7 +4034,7 @@ do
     if test -f "$jar"; then
 
         if test "$windows" = "yes" ; then
-	   // Avoid /cygdrive/c in .classpath
+	   # Avoid /cygdrive/c in .classpath
 	   jar=`cygpath --mixed "$jar"`
 	fi
 
@@ -6676,7 +6676,7 @@ $as_echo "$PTDB_JAR" >&6; }; fi
 	    # $PTII/makefile
 	    PTDB_DIR=ptdb
             # PTDB_PACKAGES is used in ptII/doc/makefile
-	    PTDB_PACKAGES=`find ptdb -name "*.java" | grep -v /test | awk -F / '{printf("%s", $1); for (i = 2; i < NF; i++) printf(".%s", $i); printf("\n")}' | sort | uniq | awk '{printf("%s ", $0)}'`
+	    PTDB_PACKAGES=`$FIND ptdb -name "*.java" | grep -v /test | awk -F / '{printf("%s", $1); for (i = 2; i < NF; i++) printf(".%s", $i); printf("\n")}' | sort | uniq | awk '{printf("%s ", $0)}'`
          fi
     fi
 
@@ -11031,7 +11031,7 @@ fi
 
 if test -z "$PTPOWERMOCK_DIR"; then
     if test -d ptdb; then
-        ptdbTestDirectories=`find ptdb -name test`
+        ptdbTestDirectories=`$FIND ptdb -name test`
         for ptdbTestDirectory in $ptdbTestDirectories
         do
             updateExcludes "$ptdbTestDirectory/"
