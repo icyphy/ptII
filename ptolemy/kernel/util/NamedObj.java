@@ -356,6 +356,18 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
     }
+    
+    /** React to the deletion of an attribute. This method is called
+     *  by a contained attributed when it is deleted. In this base class,
+     *  the method does nothing. In derived classes, this method may deal
+     *  with consequences of deletion, for instance, update local variables.
+     *  @param attribute The attribute that was deleted.
+     *  @throws IllegalActionException If the deletion is not acceptable
+     *    to this container (not thrown in this base class).
+     */
+    public void attributeDeleted(Attribute attribute) 
+            throws IllegalActionException { 
+    }
 
     /** Return a list of the attributes contained by this object.
      *  If there are no attributes, return an empty list.

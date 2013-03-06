@@ -4816,6 +4816,8 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
 
             String toUndo = _getUndoForDeleteAttribute(toDelete);
 
+            NamedObj container = toDelete.getContainer();
+            container.attributeDeleted(toDelete);
             toDelete.setContainer(null);
             undoMoML.append(toUndo);
             while (derivedObjects.hasNext()) {

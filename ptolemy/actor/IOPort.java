@@ -265,6 +265,30 @@ public class IOPort extends ComponentPort {
         }
         super.attributeChanged(attribute);
     }
+    
+    /** React to the deletion of an attribute. If the attribute is 
+     *  a {@see QuantityManager}, invalidate the local variable state
+     *  information about QuantityManagers on this port. This causes 
+     *  the port to update QuantityManager information and receivers.
+     *  @param attribute The attribute that was deleted.
+     *  @throws IllegalActionException If the deletion is not acceptable
+     *    to this container (not thrown in this base class).
+     */
+    public void attributeDeleted(Attribute attribute) 
+            throws IllegalActionException {  
+        if (attribute instanceof Parameter) {
+            Token parameterToken = ((Parameter) attribute).getToken();
+            if (parameterToken != null) {
+                if (parameterToken instanceof ObjectToken &&
+                        ((ObjectToken)parameterToken).getValue() 
+                        instanceof QuantityManager) {
+                    // Invalidate list of quantity managers.
+                    _qmListValid = false;  
+                }
+            }
+        }
+        super.attributeDeleted(attribute);
+    }
 
     /** Send a token to all connected receivers.
      *  Tokens are in general immutable, so each receiver is given a
