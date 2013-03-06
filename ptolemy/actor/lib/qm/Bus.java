@@ -407,15 +407,24 @@ public class Bus extends MonitoredQuantityManager {
         }
     }
     
-    public Bus setParameters(Object messageLength) throws IllegalActionException { 
-        _messageLengths.put(_tempPort, (Double) messageLength);
+    /** Set the messageLength for messages from a specific port. The port 
+     *  specifies this by a function call in the QuantityManager parameter.
+     *  "Bus.setParameters(1.1)"
+     *  @param messageLength The length of the message. The message is then delayed
+     *    by serviceTime * messageLength.
+     *  @return This.
+     *  @throws IllegalActionException Not thrown here.
+     */
+    public Bus setParameters(double messageLength) throws IllegalActionException { 
+        // The port is stored in _tempPort by IOPort in getQuantityManagers().
+        // if the _tempPort is null this method might still be called because the
+        // attribute is validated. In that case, just return "this", which then is 
+        // used to 
+        if (_tempPort != null) {
+            _messageLengths.put(_tempPort, (Double) messageLength);
+        }
         return this;
     } 
-    
-//    public Bus setParameters(Object object, double messageLength) throws IllegalActionException { 
-//        _messageLengths.put((IOPort) object, messageLength);
-//        return this;
-//    } 
 
     /**
      * Reset the quantity manager and clear the tokens.
