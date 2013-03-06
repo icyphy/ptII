@@ -30,13 +30,13 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.actor.lib.qm;
 
-import java.util.HashMap;
+import java.util.Hashtable;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.IntermediateReceiver;
 import ptolemy.actor.QuantityManager;
-import ptolemy.actor.Receiver;
+import ptolemy.actor.Receiver; 
 import ptolemy.actor.lib.qm.QuantityManagerListener.EventType;
 import ptolemy.actor.sched.FixedPointDirector;
 import ptolemy.actor.util.FIFOQueue;
@@ -98,7 +98,8 @@ public class Bus extends MonitoredQuantityManager {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         _tokens = new FIFOQueue();
-        _receiversAndTokensToSendTo = new HashMap();
+        _receiversAndTokensToSendTo = new Hashtable<Receiver, Token>();
+        _messageLengths = new Hashtable<IOPort, Double>();
 
         serviceTime = new Parameter(this, "serviceTime");
         serviceTime.setExpression("0.1");
@@ -108,27 +109,13 @@ public class Bus extends MonitoredQuantityManager {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Create an intermediate receiver that wraps a given receiver.
-     *  @param receiver The receiver that is being wrapped.
-     *  @return A new intermediate receiver.
+    ///////////////////////////////////////////////////////////////////
+    //                          public variables                     //
+    
+    /** The service time. This is a double with default 0.1.
+     *  It is required to be positive.
      */
-    public IntermediateReceiver getReceiver(Receiver receiver) {
-        IntermediateReceiver intermediateReceiver = new IntermediateReceiver(
-                this, receiver);
-        return intermediateReceiver;
-    }
-
-    /** Create a receiver to mediate a communication via the specified receiver. This
-     *  receiver is linked to a specific port of the quantity manager.
-     *  @param receiver Receiver whose communication is to be mediated.
-     *  @param port Port of the quantity manager.
-     *  @return A new receiver.
-     *  @exception IllegalActionException If the receiver cannot be created.
-     */
-    public Receiver getReceiver(Receiver receiver, IOPort port)
-            throws IllegalActionException {
-        return getReceiver(receiver);
-    }
+    public Parameter serviceTime;
 
     /** If the attribute is <i>serviceTime</i>, then ensure that the value
      *  is non-negative.
@@ -148,6 +135,28 @@ public class Bus extends MonitoredQuantityManager {
         super.attributeChanged(attribute);
     }
 
+    /** Create an intermediate receiver that wraps a given receiver.
+     *  @param receiver The receiver that is being wrapped.
+     *  @return A new intermediate receiver.
+     */
+    public IntermediateReceiver createIntermediateReceiver(Receiver receiver) {
+        IntermediateReceiver intermediateReceiver = new IntermediateReceiver(
+                this, receiver);
+        return intermediateReceiver;
+    }
+
+    /** Create a receiver to mediate a communication via the specified receiver. This
+     *  receiver is linked to a specific port of the quantity manager.
+     *  @param receiver Receiver whose communication is to be mediated.
+     *  @param port Port of the quantity manager.
+     *  @return A new receiver.
+     *  @exception IllegalActionException If the receiver cannot be created.
+     */
+    public Receiver getReceiver(Receiver receiver, IOPort port)
+            throws IllegalActionException {
+        return createIntermediateReceiver(receiver);
+    }
+
     /** Clone this actor into the specified workspace. The new actor is
      *  <i>not</i> added to the directory of that workspace (you must do this
      *  yourself if you want it there).
@@ -163,22 +172,15 @@ public class Bus extends MonitoredQuantityManager {
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         Bus newObject = (Bus) super.clone(workspace);
+        newObject._tokens = new FIFOQueue();
+        newObject._receiversAndTokensToSendTo = new Hashtable<Receiver, Token>();
+        newObject._messageLengths = new Hashtable<IOPort, Double>();
+        
         newObject._nextReceiver = null;
         newObject._nextTimeFree = null;
-        newObject._receiversAndTokensToSendTo = new HashMap();
+        
         newObject._serviceTimeValue = 0.1;
-        newObject._tokens = new FIFOQueue();
         return newObject;
-    }
-
-    /** Initialize the actor.
-     *  @exception IllegalActionException If the superclass throws it.
-     */
-    public void initialize() throws IllegalActionException {
-        super.initialize();
-        _receiversAndTokensToSendTo.clear();
-        _tokens.clear();
-        _nextTimeFree = null;
     }
 
     /** Send first token in the queue to the target receiver.
@@ -191,9 +193,8 @@ public class Bus extends MonitoredQuantityManager {
                 && currentTime.compareTo(_nextTimeFree) == 0) {
             Object[] output = (Object[]) _tokens.get(0);
             Receiver receiver = (Receiver) output[0];
-            Token token = (Token) output[1];
-            //receiver.put(token);
-
+            Token token = (Token) output[1]; 
+    
             // FIXME: See the FIXME's below. The commented
             // out code below is an attempt to address it, but a
             // questionable one.
@@ -217,7 +218,7 @@ public class Bus extends MonitoredQuantityManager {
             // but there is no assurance that the director's
             // container will fire to handle that token.
             // We handle this by requesting a firing of the composite.
-
+    
             //            if (!(receiver instanceof IntermediateReceiver)) {
             //                Actor container = (Actor) receiver.getContainer()
             //                        .getContainer();
@@ -247,12 +248,22 @@ public class Bus extends MonitoredQuantityManager {
             //            } else {
             _sendToReceiver(receiver, token);
             //            }
-
+    
             if (_debugging) {
                 _debug("At time " + currentTime + ", completing send to "
                         + receiver.getContainer().getFullName() + ": " + token);
             }
         }
+    }
+
+    /** Initialize the actor.
+     *  @exception IllegalActionException If the superclass throws it.
+     */
+    public void initialize() throws IllegalActionException {
+        super.initialize();
+        _receiversAndTokensToSendTo.clear();
+        _tokens.clear();
+        _nextTimeFree = null;
     }
 
     /** If there are still tokens in the queue and a token has been produced in the fire,
@@ -338,7 +349,7 @@ public class Bus extends MonitoredQuantityManager {
      */
     public void sendToken(Receiver source, Receiver receiver, Token token)
             throws IllegalActionException {
-        // If the token is null, then this means there is not actually
+     // If the token is null, then this means there is not actually
         // something to send. Do not take up bus resources for this.
         // FIXME: Is this the right thing to do?
         // Presumably, this is an issue with the Continuous domain.
@@ -387,7 +398,7 @@ public class Bus extends MonitoredQuantityManager {
                     _scheduleRefire();
                 }
             }
-        }
+        } 
 
         if (_debugging) {
             _debug("At time " + getDirector().getModelTime()
@@ -395,37 +406,48 @@ public class Bus extends MonitoredQuantityManager {
                     + receiver.getContainer().getFullName() + ": " + token);
         }
     }
+    
+    public Bus setParameters(Object messageLength) throws IllegalActionException { 
+        _messageLengths.put(_tempPort, (Double) messageLength);
+        return this;
+    } 
+    
+//    public Bus setParameters(Object object, double messageLength) throws IllegalActionException { 
+//        _messageLengths.put((IOPort) object, messageLength);
+//        return this;
+//    } 
 
     /**
      * Reset the quantity manager and clear the tokens.
      */
     public void reset() {
-        //_tokens.clear();
+        _tokens.clear();
     }
 
     ///////////////////////////////////////////////////////////////////
     //                          public variables                     //
-
-    /** The service time. This is a double with default 0.1.
-     *  It is required to be positive.
-     */
-    public Parameter serviceTime;
-
-    ///////////////////////////////////////////////////////////////////
-    //                          protected methods                    //
 
     /** Schedule a refiring of the actor.
      *  @exception IllegalActionException Thrown if the actor cannot be rescheduled
      */
     protected void _scheduleRefire() throws IllegalActionException {
         Time currentTime = getDirector().getModelTime();
-        _nextTimeFree = currentTime.add(_serviceTimeValue);
         _nextReceiver = (Receiver) ((Object[]) _tokens.get(0))[0];
+        IOPort port = _nextReceiver.getContainer();
+        
+        Double messageLength = _messageLengths.get(port);
+        if (messageLength == null) {
+            messageLength = 1.0; 
+        }
+        
+        _nextTimeFree = currentTime.add(_serviceTimeValue * messageLength);
         _fireAt(_nextTimeFree);
     }
 
     ///////////////////////////////////////////////////////////////////
     //                           private variables                   //
+
+    private Hashtable<IOPort, Double> _messageLengths;
 
     /** Next receiver to which the next token to be sent is destined. */
     private Receiver _nextReceiver;
@@ -433,15 +455,15 @@ public class Bus extends MonitoredQuantityManager {
     /** Next time a token is sent and the next token can be processed. */
     private Time _nextTimeFree;
 
-    /** Map of receivers and tokens to which the token provided via sendToken() should
-     *  be sent to.
+    /** Map of receivers and tokens to which the token provided via 
+     *  sendToken() should be sent to. This is used with FixedPointDirectors.
      */
-    private HashMap<Receiver, Token> _receiversAndTokensToSendTo;
+    private Hashtable<Receiver, Token> _receiversAndTokensToSendTo;
 
     /** Delay imposed on every token. */
     private double _serviceTimeValue;
 
-    /** Tokens stored for processing. */
+    /** Tokens stored for processing. This is used with the DE Director. */
     private FIFOQueue _tokens;
 
 }
