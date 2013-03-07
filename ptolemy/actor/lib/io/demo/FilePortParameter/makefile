@@ -47,7 +47,10 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
-	FilePortParameter.xml
+	FilePortParameter.xml \
+	filePortParameterFiles/1.txt \
+	filePortParameterFiles/2.txt \
+	filePortParameterFiles/3.txt
 
 EXTRA_SRCS = \
 	$(JSRCS) \

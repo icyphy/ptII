@@ -69,8 +69,6 @@ TCL_SRCS = \
 	testJavaCG.tcl \
 	testParameters.tcl
 
-
-
 # Shell scripts that should be made executable
 SCRIPTS = \
 	GenerateConciseLog.py \

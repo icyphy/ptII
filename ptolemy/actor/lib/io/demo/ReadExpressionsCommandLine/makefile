@@ -47,7 +47,8 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
-	ReadExpressionsCommandLine.xml
+	ReadExpressionsCommandLine.xml \
+	data2.ptd	
 
 EXTRA_SRCS = \
 	$(JSRCS) \

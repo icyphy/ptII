@@ -156,6 +156,7 @@ OPTIONAL_FILES = \
 	'CustomizeDocumentationAction$$3.class' \
 	'DependencyHighlighter$$DependencyController.class' \
 	'DependencyHighlighter$$HighlightDependents.class' \
+	'DependencyResultsDialog$$1.class'\
 	'DependencyResultsDialog$$DependencyResultsNamedObjRenderer.class' \
 	'EditorDropTarget$$1.class' \
 	'EditorDropTarget$$DTListener.class' \

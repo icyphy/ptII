@@ -95,6 +95,8 @@ OPTIONAL_FILES = \
 	demo \
 	doc \
 	'AbstractCase$$CaseDirector.class' \
+	'ApplyFunction$$1.class' \
+	'ApplyFunction$$ReturnTypeFunction.class' \
 	'CaseDirector$$1.class' \
 	'IterateOverArray$$1.class' \
 	'IterateOverArray$$2.class' \

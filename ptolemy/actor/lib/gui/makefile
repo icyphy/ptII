@@ -128,6 +128,7 @@ OPTIONAL_FILES = \
 	'HistogramPlotter$$1.class' \
 	'InteractiveShell$$1.class' \
 	'InteractiveShell$$2.class' \
+	'InteractiveShell$$3.class' \
 	'InteractiveShell$$ShellFrame.class' \
 	'InteractiveShell$$ShellTableau.class' \
 	'MatrixViewer$$1.class' \

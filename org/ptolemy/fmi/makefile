@@ -96,6 +96,7 @@ OPTIONAL_FILES = \
 	'FMIScalarVariable$$Alias.class' \
 	'FMIScalarVariable$$Causality.class' \
 	'FMIScalarVariable$$Variability.class' \
+	'FMUBuilder$$_StreamReaderThread.class' \
 	'FMULibrary$$FMUAllocateMemory.class' \
 	'FMULibrary$$FMUFreeMemory.class' \
 	'FMULibrary$$FMULogger.class' \

@@ -58,6 +58,17 @@ EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
+	'SysMLADirector$$ActorData.class' \
+	'SysMLConcurrentDirector$$1.class' \
+	'SysMLConcurrentDirector$$ActorData.class' \
+	'SysMLConcurrentDirector$$Input.class' \
+	'SysMLConcurrentDirector$$SingleQueueProcessThread.class' \
+	'SysMLConcurrentDirector$$SysMLAReceiver.class' \
+	'SysMLSequentialDirector$$1.class' \
+	'SysMLSequentialDirector$$Input.class' \
+	'SysMLSequentialDirector$$RefireRequest.class' \
+	'SysMLSequentialDirector$$SuperdenseTime.class' \
+	'SysMLSequentialDirector$$SysMLSequentialReceiver.class' \
 	'SysMLADirector$$1.class' \
 	'SysMLADirector$$Input.class' \
 	'SysMLADirector$$SingleQueueProcessThread.class' \

@@ -32,7 +32,7 @@
 ME =		doc/books/systems
 
 # Sub directories to run make in.
-DIRS =		continuous dataflow discreteevents expressions fsm intro \
+DIRS =		architecture continuous dataflow discreteevents expressions fsm intro \
 		modal modelingtime plotter pn synchronous types vergil
 
 # Root of Ptolemy II directory

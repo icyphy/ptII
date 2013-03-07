@@ -48,7 +48,7 @@ TCL_SRCS = \
 	testDefs.tcl
 
 JSRCS = \
-
+	ASTTest.java
 
 # Non-graphical Java tests written in Tcl
 JSIMPLE_TESTS = \

@@ -1,10 +1,10 @@
-# Makefile for the Ptolemy backtracking package
+# Makefile for Ptolemy II anomaly detection actors.
 #
-# @Authors: Christopher Brooks (makefile only)
+# @Authors: Christopher Brooks, based on a file by Thomas M. Parks
 #
-# @Version: $Id$
+# @Version: $Id: makefile 65446 2013-01-12 01:06:04Z cxh $
 #
-# @Copyright (c) 2005-2009 The Regents of the University of California.
+# @Copyright (c) 2013 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -26,68 +26,51 @@
 # CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 # ENHANCEMENTS, OR MODIFICATIONS.
 #
-# 						PT_COPYRIGHT_VERSION_2
-# 						COPYRIGHTENDKEY
+#                                               PT_COPYRIGHT_VERSION_2
+#                                               COPYRIGHTENDKEY
 
-ME =		ptolemy/backtrack/eclipse/ast/transform
+ME =            ptolemy/actor/lib/anomaly
 
-DIRS = 		
+DIRS = 		#test #demo
 
 # Root of the Java directory
-ROOT =		../../../../..
+ROOT =          ../../../..
 
-# PTBACKTRACK_ECLIPSE_JARS is set in $PTII/mk/ptII.mk
-# PTBACKTRACK_ECLIPSE_JARS always has a leading CLASSPATHSEPARATOR
-CLASSPATH =	$(ROOT)$(PTBACKTRACK_ECLIPSE_JARS)
+# JYTHON_JAR is set in $PTII/mk/ptII.mk by running configure
+CLASSPATH =     $(ROOT)$(CLASSPATHSEPARATOR)
 
 # Get configuration info
-CONFIG =	$(ROOT)/mk/ptII.mk
+CONFIG =        $(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	transform
+PTPACKAGE =     anomaly
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
-# Don't use GNU make extensions here
-#    $(wildcard *.java)
-JSRCS = \
-	AbstractTransformer.java \
-	AliasHandler.java \
-	AssignmentHandler.java \
-	AssignmentRule.java \
-	AssignmentTransformer.java \
-	ASTDuplicatedFieldException.java \
-	ASTDuplicatedMethodException.java \
-	ClassHandler.java \
-	ConstructorHandler.java \
-	ConstructorTransformer.java \
-	CrossAnalysisHandler.java \
-	FieldDeclarationHandler.java \
-	HandlerList.java \
-	MethodDeclarationHandler.java \
-	PackageRule.java \
-	TransformRule.java
+OTHER_FILES_TO_BE_JARED = \
+	anomaly.xml \
+	PacketDropFaultGenerator.java \
+	StuckAtFaultGenerator.java
 
-OTHER_FILES_TO_BE_JARED =
+JSRCS = \
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES =	$(DIRS)
+# Don't include demo or DIRS here, or else 'make sources' will run 'make demo'
+MISC_FILES = test doc-files
 
 # make checkjunk will not report OPTIONAL_FILES as trash
-# make realclean removes OPTIONAL_FILES
+# make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	doc \
-	'AssignmentTransformer$$NodeReplace.class' \
-	'AssignmentTransformer$$RehandleDeclarationRecord.class' \
-	'PackageRule$$Renamer.class' \
+	demo \
+        doc
 
 JCLASS = $(JSRCS:%.java=%.class)
 
 all: jclass
-install: jclass $(PTCLASSJAR)
+install: jclass jars
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

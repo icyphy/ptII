@@ -104,6 +104,7 @@ PTAUXALLJAR =	libKore.jar
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
 	$(PTAUXALLJARS) \
+	anomaly/anomaly.jar \
 	fmi/fmi.jar \
 	gui/gui.jar \
 	javasound/javasound.jar \
@@ -364,6 +365,7 @@ MISC_FILES =	$(DIRS)
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
+	anomaly \
 	comm \
 	doc \
 	jai \
@@ -377,6 +379,7 @@ OPTIONAL_FILES = \
 	'AbsoluteValue$$1.class' \
 	'AbsoluteValue$$FunctionTerm.class' \
 	'AbsoluteValue$$TypeOfAbsoluteValue.class' \
+	'ArrayElement$$ArrayTypeFunction.class' \
 	'Commutator$$WidthDependentParameter.class' \
 	'Distributor$$WidthDependentParameter.class' \
 	'Exec$$_StreamReaderThread.class' \

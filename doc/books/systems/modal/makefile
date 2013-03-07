@@ -50,9 +50,12 @@ EXAMPLE_MODELS = \
 	FSM.xml \
 	FSMEditor.xml \
 	Heartbeat.xml \
+	History.xml \
 	Hysteresis.xml \
 	ModalModel.xml \
+	Preemptive.xml \
 	PreemptiveTransition.xml \
+	Reset.xml \
 	ResetFinal.xml \
 	ResetTransition.xml \
 	SimpleFSMStructure.xml \

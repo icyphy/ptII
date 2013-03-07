@@ -88,6 +88,7 @@ JSRCS = \
 	ColorAttribute.java \
 	CompositeActorApplication.java \
 	CompositeActorSimpleApplication.java \
+	Console.java \
 	ConfigurationApplication.java \
 	CustomQueryBoxParameter.java \
 	Configuration.java \
@@ -203,6 +204,9 @@ OPTIONAL_FILES = \
 	'Configurer$$2$$1.class' \
 	'Configurer$$2.class' \
 	'Configurer$$3.class' \
+	'Console$$ConsoleFrame.class' \
+	'Console$$ConsoleFrame$$MyByteArrayOutputStream.class' \
+	'Console$$Factory.class' \
 	'DebugListenerTableau$$1.class' \
 	'DebugListenerTableau$$DebugListenerFrame.class' \
 	'EditParametersDialog$$1.class' \

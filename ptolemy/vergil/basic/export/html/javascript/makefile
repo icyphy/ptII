@@ -56,6 +56,7 @@ JSRCS =
 OTHER_FILES_TO_BE_JARED = \
 	blank.gif \
 	dygraph-combined.js \
+	dygraph-license.htm \
 	fancy_close.png \
 	fancy_loading.png \
 	fancy_nav_left.png \

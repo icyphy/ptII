@@ -125,6 +125,9 @@ OPTIONAL_FILES = \
 	'Query$$QueryItemListener.class' \
 	'Query$$QueryScrollPane.class' \
 	'Query$$SliderListener.class' \
+	'Query$$2.class'\
+	'ShellTextArea$$4$$1.class'\
+	'ShellTextArea$$6.class'\
 	'ShellTextArea$$1.class' \
 	'ShellTextArea$$2.class' \
 	'ShellTextArea$$3$$1.class' \

@@ -100,6 +100,8 @@ OPTIONAL_FILES = \
 	'FSMActor$$1.class' \
 	'FSMActor$$PortScope.class' \
 	'FSMDirector$$1.class' \
+	'FSMActor$$TimeoutFunction.class' \
+	'FSMActor$$TimeoutFunctionToken.class' \
 	'State$$UpdateContentsRequest.class' \
 	'State$$InvisibleModalModel.class'
 
