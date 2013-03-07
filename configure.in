@@ -2053,7 +2053,7 @@ else
         PT_MSG_RESULT($PTII/lib/g4ltl.jar)
 	PTG4LTL_JAR="$PTII/lib/g4ltl.jar"
 	PTG4LTL_DIR=g4ltl
-	PTG4LTL_PACKAGES="ptolemy.vergil.actor.g4ltl"
+	PTG4LTL_PACKAGES="ptolemy.vergil.basic.imprt.g4ltl"
         updateClasspath "$PTG4LTL_JAR"
     else
         AC_MSG_WARN([Failed to find $PTII/lib/g4ltl.jar,
