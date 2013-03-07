@@ -67,6 +67,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.StringWriter;
 import java.io.Writer;
+import java.lang.reflect.Constructor;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -115,6 +116,7 @@ import ptolemy.actor.gui.properties.ToolBar;
 import ptolemy.actor.parameters.ParameterPort;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.DoubleToken;
+import ptolemy.data.StringToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.ExpertParameter;
 import ptolemy.data.expr.Parameter;
@@ -2151,20 +2153,39 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                 .configurations().get(0);
         // NOTE: Configuration should not be null, but just in case:
         if (configuration != null) {
-            // Import Functional Mock-up (FMU) Action.
+
+            // Here, we get the _importActionClassNames from the configuration.
+            // _importActionClassNames is an array of Strings where each element
+            // names a class to that is an import action.
+            // See also _classesToRemove in Configuration.java
             try {
-                _importFMUAction = (AbstractAction) configuration
-                        .getStringParameterAsClass("_importFMUActionClassName",
-                                new Class[] { Top.class },
-                                new Object[] { this });
+                Parameter importActionClassNames = (Parameter) configuration.getAttribute("_importActionClassNames", Parameter.class);
+                ArrayToken importActionClassNamesToken = (ArrayToken) importActionClassNames.getToken();
+                for (int i = 0; i < importActionClassNamesToken.length(); i++) {
+                    String importActionClassName = ((StringToken) importActionClassNamesToken
+                            .getElement(i)).stringValue();
+                    try {
+                        // Get the class, instantiate it and add it to the menu.
+                        Class importActionClass = Class.forName(importActionClassName);
+                        Constructor constructor = importActionClass.getDeclaredConstructor(
+                                new Class[] { Top.class });
+                        AbstractAction importAction = (AbstractAction)constructor.newInstance(new Object[] { this });
+                        JMenuItem importItem = new JMenuItem(importAction);
+                        importMenu.add(importItem);
+                    } catch (Throwable throwable) {
+                        // We do not want to abort at this point because the worst
+                        // case is that we will have no Import FMU in the menu.
+                        // That is better than preventing the user from opening a model.
+                        System.err
+                            .println("Warning: Tried to create the an import menu item, but failed: "
+                                    + throwable);
+                    }
+                }
             } catch (Throwable throwable) {
-                // We do not want to abort at this point because the worst
-                // case is that we will have no Import FMU in the menu.
-                // That is better than preventing the user from opening a model.
-                System.err
-                        .println("Warning: Tried to create the Import FMU menu item, but failed: "
-                                + throwable);
+                System.err.println("Problem reading the _importActionClassNames parameter from "
+                        + "the confinguration: " + throwable);
             }
+
             // PDF Action.
             try {
                 _exportPDFAction = (AbstractAction) configuration
@@ -2223,12 +2244,6 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
         //                 }
 
         // End of block to uncomment.
-
-        if (_importFMUAction != null) {
-            // Insert the Import FMU item.
-            JMenuItem importItem = new JMenuItem(_importFMUAction);
-            importMenu.add(importItem);
-        }
 
         if (_exportPDFAction != null) {
             // Insert the Export PDF item.

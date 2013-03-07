@@ -1,8 +1,8 @@
-# Makefile for the ptolemy/vergil/basic/imprt package
+# Makefile for to import an FSMActor using LTL synthesis (G4LTL).
 #
-# @Authors: Christopher Hylands, based on a file by Thomas M. Parks
+# @Authors: Christopher Brooks, based on a file by Thomas M. Parks
 #
-# @Version: $Id: makefile 62737 2012-01-06 20:50:16Z cxh $
+# @Version: $Id: makefile 62315 2011-10-26 05:48:14Z cxh $
 #
 # @Copyright (c) 2012 The Regents of the University of California.
 # All rights reserved.
@@ -30,35 +30,38 @@
 # 						COPYRIGHTENDKEY
 
 
-ME =		ptolemy/vergil/basic/imprt
+ME =		ptolemy/vergil/basic/imprt/g4ltl
 
-# If the $PTII/lib/g4ltl.jar file is found, then PTG4LTL_DIR is set to g4ltl.
-DIRS =		$(PTG4LTL_DIR) fmu 
+DIRS =
 
 # Root of the Java directory
-ROOT =		../../../..
+ROOT =		../../../../..
 
-CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(DIVA_JAR)
+# PTG4LTL_JAR is set by configure
+CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(PTG4LTL_JAR)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	imprt
+PTPACKAGE = 	g4ltl
 PTCLASSJAR =	$(PTPACKAGE).jar
-# We don't include the subjars because ptiny should not include the export facilities.
-#PTCLASSALLJAR =
 
-PTAUXALLJAR = imprtFull.jar
+PTAUXALLJAR =	g4ltlFull.jar
 
-# Include the .class files from these jars in PTAUXALLJARS
-PTAUXALLJARS = \
-		fmu/fmu.jar
+#PTCLASSALLJAR = 
+# Include the .class files from these jars in PTCLASSALLJAR
+#PTCLASSALLJARS =
 
-JSRCS =
+JSRCS = \
+	ImportG4LTLAction.java
 
-EXTRA_SRCS =	$(JSRCS)
+OTHER_FILES_TO_BE_JARED =
+
+EXTRA_SRCS = \
+	$(JSRCS) \
+	$(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
