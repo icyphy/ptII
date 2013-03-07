@@ -44,7 +44,7 @@ import ptolemy.kernel.util.SingletonAttribute;
 
  @author Edward A. Lee, Christian Motika, Miro Spoenemann
  @version $Id$
- @since Ptolemy II 8.0
+ @since Ptolemy II 9.0
  @Pt.ProposedRating Yellow (eal)
  @Pt.AcceptedRating Red (eal)
  @see State

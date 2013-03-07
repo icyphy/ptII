@@ -50,7 +50,7 @@ import ptolemy.kernel.util.NamedObj;
  *
  * @author Liangpeng Guo
  * @version $Id$
- * @since Ptolemy II 9.1
+ * @since Ptolemy II 9.0
  * @Pt.ProposedRating Red (glp)
  * @Pt.AcceptedRating Red (glp)
  */

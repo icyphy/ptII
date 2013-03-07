@@ -63,7 +63,7 @@ import ptolemy.kernel.util.Workspace;
 
  @author Edward A. Lee
  @version $Id$
- @since Ptolemy II 1.0
+ @since Ptolemy II 9.0
  @Pt.ProposedRating Yellow (eal)
  @Pt.AcceptedRating Red (liuj)
  */

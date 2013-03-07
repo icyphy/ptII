@@ -50,7 +50,7 @@ import ptolemy.kernel.util.IllegalActionException;
  *  than put().
  *  @author Patricia Derler, Edward A. Lee
  *  @version $Id$
- *  @since Ptolemy II 8.1
+ *  @since Ptolemy II 9.0
  *  @Pt.ProposedRating Yellow (derler)
  *  @Pt.AcceptedRating Red (derler)
  */

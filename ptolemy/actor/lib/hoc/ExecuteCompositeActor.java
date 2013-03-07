@@ -96,7 +96,7 @@ import ptolemy.kernel.util.Workspace;
 
  @author Edward A. Lee, Yang Zhao, Elaine Cheong
  @version $Id$
- @since Ptolemy II 4.0
+ @since Ptolemy II 9.0
  @see ModelReference
  @see ptolemy.actor.lib.SetVariable
  @Pt.ProposedRating Yellow (eal)

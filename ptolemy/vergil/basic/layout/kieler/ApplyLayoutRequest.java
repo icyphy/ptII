@@ -47,7 +47,7 @@ import ptolemy.kernel.util.NamedObj;
  *
  * @author Miro Spoenemann (<a href="mailto:msp@informatik.uni-kiel.de">msp</a>)
  * @version $Id$
- * @since Ptolemy II 8.1
+ * @since Ptolemy II 9.0
  * @Pt.ProposedRating Red (msp)
  * @Pt.AcceptedRating Red (msp)
  */

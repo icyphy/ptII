@@ -46,7 +46,7 @@ import ptolemy.plot.Plot;
  * *
  * @author Patricia Derler
    @version $Id$
-   @since Ptolemy II 0.2
+   @since Ptolemy II 9.0
 
    @Pt.ProposedRating Red (derler)
    @Pt.AcceptedRating Red (derler)

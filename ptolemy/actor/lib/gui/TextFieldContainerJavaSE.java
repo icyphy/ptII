@@ -41,7 +41,7 @@ JavaSE implementation of the TextFieldContainerInterface.
 
 @author Ishwinder Singh
 @version $Id$
-@since @since Ptolemy II 8.1
+@since Ptolemy II 9.0
 @Pt.ProposedRating Red (ishwinde)
 @Pt.AcceptedRating Red (ishwinde)
 */

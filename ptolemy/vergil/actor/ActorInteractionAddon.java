@@ -41,7 +41,7 @@ import diva.graph.GraphController;
  * to the name of the class that implements this interface.
  *
  * @author Lyle Holsinger
- * @since Ptolemy II 8.1
+ * @since Ptolemy II 9.0
  * @version $Id$
  * @Pt.ProposedRating red (lholsing)
  * @Pt.AcceptedRating red (lholsing)

@@ -41,7 +41,7 @@ import ptolemy.kernel.util.NamedObj;
  @see EditorFactory
  @author Edward A. Lee
  @version $Id$
- @since Ptolemy II 2.0
+ @since Ptolemy II 9.0
  @Pt.ProposedRating Red (eal)
  @Pt.AcceptedRating Red (johnr)
  */

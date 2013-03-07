@@ -62,7 +62,7 @@ import ptolemy.math.FixPoint;
 
  @author Edward A. Lee
  @version $Id$
- @since Ptolemy II 4.0
+ @since Ptolemy II 9.0
  @Pt.ProposedRating Red (zhouye)
  @Pt.AcceptedRating Red (cxh)
  */

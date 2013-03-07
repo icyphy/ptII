@@ -45,7 +45,7 @@ This is a PortParameter for MirrorComposites.
 @see ParameterPort
 @author Patricia Derler
 @version $Id$
-@since Ptolemy II 3.0
+@since Ptolemy II 9.0
 @Pt.ProposedRating Red (derler)
 @Pt.AcceptedRating Red (derler)
 */

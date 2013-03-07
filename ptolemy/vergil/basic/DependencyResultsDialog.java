@@ -53,7 +53,7 @@ import ptolemy.util.MessageHandler;
 
    @author Christopher Brooks, Based on SearchResultsDialog by Edward A. Lee
    @version $Id: DependencyResultsDialog.java 63152 2012-03-08 21:28:43Z derler $
-   @since Ptolemy II 8.1
+   @since Ptolemy II 9.0
    @Pt.ProposedRating Yellow (cxh)
    @Pt.AcceptedRating Red (cxh)
 */

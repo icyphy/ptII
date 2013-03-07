@@ -43,7 +43,7 @@ import javax.swing.filechooser.FileFilter;
  *
  * @author Christopher Brooks
  * @version $Id$
- * @since Ptolemy II 8.1
+ * @since Ptolemy II 9.0
  * @Pt.ProposedRating Red (cxh)
  * @Pt.AcceptedRating Red (cxh)
  */

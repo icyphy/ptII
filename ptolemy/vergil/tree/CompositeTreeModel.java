@@ -46,7 +46,7 @@ import ptolemy.kernel.CompositeEntity;
 
  @author Christopher Brooks, based on FullTreeModel by Steve Neuendorffer and Edward A. Lee
  @version $Id: CompositeTreeModel.java 57040 2010-01-27 20:52:32Z cxh $
- @since Ptolemy II 1.0
+ @since Ptolemy II 9.0
  @Pt.ProposedRating Red (eal)
  @Pt.AcceptedRating Red (johnr)
  */

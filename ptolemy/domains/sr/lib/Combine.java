@@ -45,7 +45,7 @@ import ptolemy.kernel.util.StringAttribute;
 
  @author Christian Motika
  @version $Id$
- @since Ptolemy II 8.1
+ @since Ptolemy II 9.0
  @Pt.ProposedRating red (cmot)
  @Pt.AcceptedRating red (cmot)
  */

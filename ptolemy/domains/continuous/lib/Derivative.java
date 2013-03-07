@@ -112,7 +112,7 @@ import ptolemy.kernel.util.StringAttribute;
 
  @author Edward A. Lee and Janette Cardoso
  @version $Id$
- @since Ptolemy II 8.1
+ @since Ptolemy II 9.0
  @Pt.ProposedRating Yellow (eal)
  @Pt.AcceptedRating Red (eal)
  */

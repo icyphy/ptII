@@ -70,7 +70,7 @@ good as the Kieler layout mechanism, so use the @see KielerLayoutMechanism.</p>
 
 @author  Christopher Brooks, based on KielerLayoutAction by Christian Motika and BasicGraphFrame by Steve Neuendorffer and Edward A. Lee
 @version $Id$
-@since Ptolemy II 8.1
+@since Ptolemy II 9.0
 @Pt.ProposedRating Red (cmot)
 @Pt.AcceptedRating Red (cmot)
 */

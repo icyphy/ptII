@@ -38,7 +38,7 @@ import java.net.URL;
  * Definitions for an object that plots data.
  * @author ahuseyno
  * @version $Id$
- * @since Ptolemy II 8.1
+ * @since Ptolemy II 9.0
  * @Pt.ProposedRating Red (cxh)
  * @Pt.AcceptedRating Red (cxh)
  */
@@ -219,7 +219,7 @@ public interface PlotInterface extends PlotBoxInterface {
      *  or if setReuseDatasets(false) has been called.
      *  @return false if setReuseDatasets() has not yet been called
      *  or if setReuseDatasets(false) has been called.
-     *  @since Ptplot 5.3
+     *  @since Ptolemy II 9.0
      *  @see #setReuseDatasets(boolean)
      */
     public boolean getReuseDatasets();

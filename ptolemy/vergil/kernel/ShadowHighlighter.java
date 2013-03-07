@@ -44,6 +44,8 @@ import diva.canvas.toolbox.BasicHighlighter;
  *
  * @version        $Id$
  * @author         Edward A. Lee
+@version $Id$
+@since Ptolemy II 9.0
  */
 public class ShadowHighlighter extends BasicHighlighter {
 

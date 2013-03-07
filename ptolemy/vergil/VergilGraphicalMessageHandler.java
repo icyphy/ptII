@@ -41,7 +41,7 @@ import ptolemy.vergil.basic.BasicGraphFrame;
 
  @author  Christopher Brooks
  @version $Id: ActorGraphicalMessageHandler.java 61458 2011-07-11 19:54:07Z cxh $
- @since Ptolemy II 8.1
+ @since Ptolemy II 9.0
  @Pt.ProposedRating Red (cxh)
  @Pt.AcceptedRating Red (cxh)
  */

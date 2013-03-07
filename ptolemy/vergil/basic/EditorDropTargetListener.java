@@ -69,7 +69,7 @@ import diva.util.UserObjectContainer;
  *
  * @author Sven Koehler, Contributor: Christopher Brooks.
  * @version $Id$
- * @since Ptolemy II 8.1
+ * @since Ptolemy II 9.0
  * @Pt.ProposedRating Red (eal)
  * @Pt.AcceptedRating Red (johnr)
  */

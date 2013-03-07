@@ -47,7 +47,7 @@ import ptolemy.kernel.util.InternalErrorException;
 
  @author Edward A. Lee
  @version $Id$
- @since Ptolemy II 0.4
+ @since Ptolemy II 9.0
  @Pt.ProposedRating Yellow (cxh)
  @Pt.AcceptedRating Red (cxh) nil token code
  */

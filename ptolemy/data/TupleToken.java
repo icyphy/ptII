@@ -39,7 +39,7 @@ import ptolemy.kernel.util.IllegalActionException;
 
  @author Yang Zhao
  @version $Id$
- @since Ptolemy II 8.0
+ @since Ptolemy II 9.0
  @Pt.ProposedRating Yellow (neuendor)
  @Pt.AcceptedRating Red (cxh)
  */

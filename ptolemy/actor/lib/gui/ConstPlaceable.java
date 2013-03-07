@@ -54,7 +54,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 
  @author Yuhong Xiong, Edward A. Lee
  @version $Id$
- @since Ptolemy II 0.2
+ @since Ptolemy II 9.0
  @Pt.ProposedRating Green (eal)
  @Pt.AcceptedRating Green (bilung)
  */

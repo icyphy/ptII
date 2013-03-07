@@ -44,7 +44,7 @@ import ptolemy.kernel.util.Settable;
 
  @author Lyle Holsinger
  @version $Id$
- @since Ptolemy II 8.1
+ @since Ptolemy II 9.0
  @Pt.ProposedRating Yellow (lholsing)
  @Pt.AcceptedRating Red (lholsing)
  */

@@ -38,7 +38,7 @@ import java.io.OutputStream;
  * Interface indicating support for exporting an image.
  * @author Edward A. Lee
  * @version $Id$
- * @since Ptolemy II 8.1
+ * @since Ptolemy II 9.0
  * @Pt.ProposedRating Red (cxh)
  * @Pt.AcceptedRating Red (cxh)
  */

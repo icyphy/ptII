@@ -40,7 +40,7 @@ Class containing the platform independent code of LiveSound actor.
 
 @author Brian K. Vogel and Neil E. Turner and Steve Neuendorffer, Edward A. Lee, Contributor: Dennis Geurts, Ishwinder Singh
 @version $Id$
-@since Ptolemy II 1.0
+@since Ptolemy II 9.0
 @Pt.ProposedRating Red (ishwinde)
 @Pt.AcceptedRating Red (ishwinde)
 */

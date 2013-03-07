@@ -41,7 +41,7 @@ import java.util.Vector;
  * Definitions for an object that contains a plotter.
  * @author ahuseyno
  * @version $Id$
- * @since Ptolemy II 8.1
+ * @since Ptolemy II 9.0
  * @Pt.ProposedRating Red (cxh)
  * @Pt.AcceptedRating Red (cxh)
  */
@@ -197,7 +197,7 @@ public interface PlotBoxInterface {
      *  The legend would have been set by addLegend().
      *  @param legend The String naming the legend
      *  @return The legend dataset, or -1 if not found.
-     *  @since Ptplot 5.2p1
+     *  @since Ptolemy II 9.0
      */
     public int getLegendDataset(String legend);
 

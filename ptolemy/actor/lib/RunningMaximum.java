@@ -50,7 +50,7 @@ import ptolemy.kernel.util.Workspace;
 
  @author Thomas Huining Feng
  @version $Id$
- @since Ptolemy II 8.0
+ @since Ptolemy II 9.0
  @Pt.ProposedRating Yellow (tfeng)
  @Pt.AcceptedRating Red (tfeng)
  */

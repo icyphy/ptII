@@ -58,7 +58,7 @@ more information.
 
 @author  Shanna-Shaye Forbes based on the DecoratedAttributesImplementation.java by Bert Rodiers.
 @version $Id$
-@since Ptolemy II 8.1
+@since Ptolemy II 9.0
 @Pt.ProposedRating Red (sssf)
 @Pt.AcceptedRating Red (sssf)
  */

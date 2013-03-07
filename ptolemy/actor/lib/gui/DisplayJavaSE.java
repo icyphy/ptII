@@ -78,7 +78,7 @@ to use this actor to log large output streams.</p>
 
 @author Yuhong Xiong, Edward A. Lee Contributors: Ishwinder Singh
 @version $Id$
-@since Ptolemy II 1.0
+@since Ptolemy II 9.0
 */
 
 public class DisplayJavaSE extends AbstractPlaceableJavaSE implements

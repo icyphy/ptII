@@ -68,7 +68,7 @@ import diva.util.Filter;
  *
  * @author  Christian Motika
  * @version $Id: IGuiAction.java 59288 2010-09-27 19:39:22Z cmot $
- * @since Ptolemy II 8.1
+ * @since Ptolemy II 9.0
  * @Pt.ProposedRating Red (cmot)
  * @Pt.AcceptedRating Red (cmot)
  */

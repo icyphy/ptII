@@ -53,7 +53,7 @@ import diva.canvas.connector.PerimeterSite;
  * to relations.
  *
  * @author Christian Motika
- * @since Ptolemy II 8.1
+ * @since Ptolemy II 9.0
  * @Pt.ProposedRating Red (cmot)
  */
 

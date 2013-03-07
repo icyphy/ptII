@@ -82,7 +82,7 @@ import ptolemy.math.ExtendedMath;
  *
  * @author Ilge Akkaya, Patricia Derler, Edward A. Lee, Christos Stergiou, Michael Zimmer
  * @version $Id$
- * @since Ptolemy II 8.1
+ * @since Ptolemy II 9.0
  * @Pt.ProposedRating yellow (eal)
  * @Pt.AcceptedRating red (eal)
  */

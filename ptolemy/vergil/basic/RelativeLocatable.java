@@ -41,7 +41,7 @@ import ptolemy.kernel.util.RelativeLocation;
 
  @author Edward A. Lee, Christian Motika, Miro Spoenemann
  @version $Id$
- @since Ptolemy II 2.1
+ @since Ptolemy II 9.0
  @Pt.ProposedRating Yellow (cxh)
  @Pt.AcceptedRating Red (cxh)
  */

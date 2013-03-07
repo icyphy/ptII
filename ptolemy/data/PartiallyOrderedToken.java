@@ -38,7 +38,7 @@ import ptolemy.kernel.util.IllegalActionException;
  language.
 
  @author Ben Lickly
- @since Ptolemy II 8.1
+ @since Ptolemy II 9.0
  @Pt.ProposedRating Red (blickly)
  @Pt.AcceptedRating Red (blickly)
  */
