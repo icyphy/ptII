@@ -568,6 +568,7 @@ ALLPACKAGES = \
 	$(USER_PACKAGES) \
 	doc.doclets \
 	ptolemy.actor.process \
+	ptolemy.actor.lib.anomaly \
 	ptolemy.actor.lib.net \
 	ptolemy.actor.lib.qm \
 	ptolemy.actor.lib.video \
