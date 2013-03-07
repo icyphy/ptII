@@ -514,6 +514,15 @@ ORACLE_OJDBC_JAR = 	@ORACLE_OJDBC_JAR@
 PSDF_DIR =	@PSDF_DIR@
 
 
+# The G4LTL jar file, used for Import an FSMActor using LTL synthesis (G4LTL)
+PTG4LTL_JAR =	@PTG4LTL_JAR@
+
+# If the g4ltl.jar file is set, then PTG4LTL_DIR is set to g4ltl and used in vergil/actor/makefile.
+PTG4LTL_DIR = 	@PTG4LTL_DIR@
+
+# Packages in Ptolemy that depend on g4ltl.jar
+PTG4LTL_PACKAGES = @PTG4LTL_PACKAGES@
+
 # Set to -I$PTII/mescal/include or -I/usr/local/include if gmp.h is found
 # and used in $PTII/mescal/relsat
 # FIXME: There could be problems if PTII have spaces

@@ -2028,6 +2028,41 @@ else
 fi 
 
 #--------------------------------------------------------------------
+#       g4ltl "G4LTL is a standalone tool and a Java library for
+#       automatically generating controllers realizing linear temporal
+#       logic (LTL).
+#	http://www6.in.tum.de/~chengch/g4ltl
+#--------------------------------------------------------------------
+# PTG4LTL_DIR is set to g4ltl if the g4ltl jar file was found
+# $PTII/ptolemy/vergil/actor/makefile uses PTG4LTL_DIR
+PTG4LTL_DIR=
+
+# PTG4LTL_PACKAGES is used in doc/makefile
+PTG4LTL_PACKAGES=
+
+# The location of the protobuf jar file, typically $PTII/lib/g4ltl.jar
+PTG4LTL_JAR=
+
+# We only need look for g4ltl if $PTII/ptolemy/vergil/basic/g4ltl exists
+G4LTL_USER_DIR="$PTII/ptolemy/vergil/actor/g4ltl"
+if test ! -d "$G4LTL_USER_DIR"; then
+    PT_MSG_STATUS([$G4LTL_USER_DIR is not present, so we need not find ProtoBuf.])
+else
+    AC_MSG_CHECKING([G4LTL])
+    if test -f "$PTII/lib/g4ltl.jar"; then
+        PT_MSG_RESULT($PTII/lib/g4ltl.jar)
+	PTG4LTL_JAR="$PTII/lib/g4ltl.jar"
+	PTG4LTL_DIR=g4ltl
+	PTG4LTL_PACKAGES="ptolemy.vergil.actor.g4ltl"
+        updateClasspath "$PTG4LTL_JAR"
+    else
+        AC_MSG_WARN([Failed to find $PTII/lib/g4ltl.jar,
+	which means that importing an FSMActor using LTL synthesis (G4LTL) will not be supported.]);
+        updateExcludes "ptolemy/vergil/actor/g4ltl"
+    fi
+fi
+
+#--------------------------------------------------------------------
 #       GMP - GNU arbitrary precision arithmetic library, needed only by mescal
 #       
 #--------------------------------------------------------------------
@@ -5666,6 +5701,15 @@ AC_SUBST(PTFMI_DIR)
 
 # PTFMI_PACKAGES is used in doc/makefile
 AC_SUBST(PTFMI_PACKAGES)
+
+# The G4LTL jar file, used for Import an FSMActor using LTL synthesis (G4LTL)
+AC_SUBST(PTG4LTL_JAR)
+
+# If the g4ltl.jar file is set, then PTG4LTL_DIR is set to g4ltl and used in vergil/actor/makefile.
+AC_SUBST(PTG4LTL_DIR)
+
+# Packages in Ptolemy that depend on g4ltl.jar
+AC_SUBST(PTG4LTL_PACKAGES)
 
 # Set to -I$PTII/mescal/include or -I/usr/local/include if gmp.h is found
 # and used in $PTII/mescal/relsat
