@@ -159,19 +159,23 @@ public class FMIScalarVariable {
             Node child = element.getChildNodes().item(i);
             if (child instanceof Element) {
                 Element childElement = (Element) child;
-                _typeName = childElement.getNodeName();
-                if (_typeName.equals("Boolean")) {
-                    type = new FMIBooleanType(name, description, childElement);
-                } else if (_typeName.equals("Enumeration")) {
-                    type = new FMIIntegerType(name, description, childElement);
-                    _typeName = "Integer";
-                } else if (_typeName.equals("Integer")) {
-                    type = new FMIIntegerType(name, description, childElement);
-                } else if (_typeName.equals("Real")) {
-                    type = new FMIRealType(name, description, childElement);
-                } else if (_typeName.equals("String")) {
-                    type = new FMIStringType(name, description, childElement);
-                } else if (_typeName.equals("DirectDependency")) {
+                // Check to see if the childElement is DirectDependency.  If it is, then process
+                // it.  If not, then we assume that it is a type and set _typeName.
+                // There was a bug where a modelDescription.xml file from Dymola had
+                // <ScalarVariable
+                //  name="Troo_1"
+                //  valueReference="335544320"
+                //  causality="output">
+                //  <Real
+                //   declaredType="Modelica.Blocks.Interfaces.RealOutput"
+                //   unit="degC"
+                //   min="-273.15"/>
+                // <DirectDependency/>
+                // </ScalarVariable>
+                // and we got:
+                // Error looking up function 'stepCounter_fmiGetDirectDependency': dlsym(0x7fc0ea0091d0, stepCounter_fmiGetDirectDependency): symbol not found
+                //
+                if (childElement.getNodeName().equals("DirectDependency")) {
                     // Iterate over the children of this element to find the
                     // names of the dependents.
                     // FIXME: In FMI 2.0, DirectDependency will be replaced by
@@ -193,12 +197,26 @@ public class FMIScalarVariable {
                         }
                     }
                 } else {
-                    if (!_errorElements.contains(_typeName)) {
-                        _errorElements.add(_typeName);
-                        System.out.println(element + ": Child element \""
-                                + _typeName + "\" not implemented yet.");
+                    _typeName = childElement.getNodeName();
+                    if (_typeName.equals("Boolean")) {
+                        type = new FMIBooleanType(name, description, childElement);
+                    } else if (_typeName.equals("Enumeration")) {
+                        type = new FMIIntegerType(name, description, childElement);
+                        _typeName = "Integer";
+                    } else if (_typeName.equals("Integer")) {
+                        type = new FMIIntegerType(name, description, childElement);
+                    } else if (_typeName.equals("Real")) {
+                        type = new FMIRealType(name, description, childElement);
+                    } else if (_typeName.equals("String")) {
+                        type = new FMIStringType(name, description, childElement);
+                    } else {
+                        if (!_errorElements.contains(_typeName)) {
+                            _errorElements.add(_typeName);
+                            System.out.println(element + ": Child element \""
+                                    + _typeName + "\" not implemented yet.");
+                        }
+                        _typeName = "skip";
                     }
-                    _typeName = "skip";
                 }
             }
         }
