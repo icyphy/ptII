@@ -1,6 +1,6 @@
 /* A class to parse the Procedural template macro constructs in a code generation scope.
 
-Copyright (c) 2009-2011 The Regents of the University of California.
+Copyright (c) 2009-2013 The Regents of the University of California.
 All rights reserved.
 Permission is hereby granted, without written agreement and without
 license or royalty fees, to use, copy, modify, and distribute this

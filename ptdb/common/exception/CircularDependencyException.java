@@ -1,5 +1,5 @@
 /* Thrown when actions result in circular dependencies between models.
-@Copyright (c) 2010-2011 The Regents of the University of California.
+@Copyright (c) 2010-2013 The Regents of the University of California.
 All rights reserved.
 
 Permission is hereby granted, without written agreement and without

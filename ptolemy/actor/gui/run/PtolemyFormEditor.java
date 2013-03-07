@@ -1,6 +1,6 @@
 /* A panel for editing the layout of a customizable run control panel.
 
- Copyright (c) 2007-2011 The Regents of the University of California.
+ Copyright (c) 2007-2013 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -27,7 +27,7 @@
  This class is based on FormEditor by Michael Connor, which
  bears the following copyright:
 
- * Copyright (c) 2004-2011 by Michael Connor. All Rights Reserved.
+ * Copyright (c) 2004-2013 by Michael Connor. All Rights Reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:

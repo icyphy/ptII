@@ -14,12 +14,15 @@ $PTII/adm/bin/ptIIfiles | egrep -v '\.#' |egrep -v '\.au$' \
         | egrep -v '\.dSYM/' \
 	| egrep -v '\.dsp$' |egrep -v '\.dsw$' \
         | egrep -v '\.dylib$' \
+        | egrep -v '\.fmu$' \
 	| egrep -v '\.fm$'  |egrep -v '\.fig$' \
         | egrep -v '\.ec3$' \
 	| egrep -v '\.eps$' |egrep -v '\.exe$' \
         | egrep -v '\.gz$'  |egrep -v '\.gif$' \
         | egrep -v '\.GIF$' \
         | egrep -v '\.ico$' |egrep -v '\.icns$' \
+        | egrep -v '\.idf$' \
+        | egrep -v '\.idl$' \
         | egrep -v '\.ilk$' \
         | egrep -v '\.isj$' \
 	| egrep -v '\.jar$' |egrep -v '\.jnilib$' \
@@ -43,6 +46,7 @@ $PTII/adm/bin/ptIIfiles | egrep -v '\.#' |egrep -v '\.au$' \
 	| egrep -v '\.qcf$' | egrep -v '\.so$' \
         | egrep -v '\.so\.[0-9]*$' \
         | egrep -v '\.tif$' \
+        | egrep -v '\.tiff$' \
         | egrep -v '\.vbs$' \
         | egrep -v '\.vsd$' \
 	| egrep -v '\.wav$' \

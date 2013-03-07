@@ -1,7 +1,7 @@
 /* An interface implemented by objects that are interested in being kept
  informed about type changes in a Typeable object.
 
- Copyright (c) 1998-2010 The Regents of the University of California.
+ Copyright (c) 1998-2013 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this

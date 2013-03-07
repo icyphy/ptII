@@ -1,7 +1,7 @@
 /*
  Created on 01 sept. 2003
 
- Copyright (c) 2003-2007 THALES.
+ Copyright (c) 2003-2013 THALES.
  All rights reserved.
 
  Permission is hereby granted, without written agreement and without

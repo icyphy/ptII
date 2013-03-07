@@ -1,6 +1,6 @@
 /* Top-level window with a menubar and status bar.
 
- Copyright (c) 1998-2012 The Regents of the University of California.
+ Copyright (c) 1998-2013 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -571,7 +571,7 @@ public abstract class Top extends JFrame {
                 + "By: Claudius Ptolemaeus, ptolemy@eecs.berkeley.edu\n"
                 + "For more information, see\n"
                 + "http://ptolemy.eecs.berkeley.edu/ptolemyII\n\n"
-                + "Copyright (c) 1997-2012, "
+                + "Copyright (c) 1997-2013, "
                 + "The Regents of the University of California.",
                 "About Ptolemy II", JOptionPane.INFORMATION_MESSAGE);
     }

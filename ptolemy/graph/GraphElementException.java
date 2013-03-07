@@ -1,6 +1,6 @@
 /* Exception of accessing graph elements in wrong ways.
 
- Copyright (c) 2002-2010 The University of Maryland.
+ Copyright (c) 2002-2013 The University of Maryland.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this

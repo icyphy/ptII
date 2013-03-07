@@ -1,6 +1,6 @@
 /* The graph controller for models that can be executed.
 
- Copyright (c) 1999-2012 The Regents of the University of California.
+ Copyright (c) 1999-2013 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this

@@ -3,7 +3,7 @@
  This file was automatically generated with a preprocessor, so that
  similar matrix operations are supported on ints, longs, floats, and doubles.
 
- Copyright (c) 1998-2011 The Regents of the University of California.
+ Copyright (c) 1998-2013 The Regents of the University of California.
  All rights reserved.
 
  Permission is hereby granted, without written agreement and without

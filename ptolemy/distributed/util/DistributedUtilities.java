@@ -1,6 +1,6 @@
 /* Utilities for the distributed package.
 
- @Copyright (c) 2005-2010 The Regents of Aalborg University.
+ @Copyright (c) 2005-2013 The Regents of Aalborg University.
  All rights reserved.
 
  Permission is hereby granted, without written agreement and without

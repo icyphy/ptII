@@ -1,6 +1,6 @@
 /* An actor to execute the input model.
 
-@Copyright (c) 2008-2011 The Regents of the University of California.
+@Copyright (c) 2008-2013 The Regents of the University of California.
 All rights reserved.
 
 Permission is hereby granted, without written agreement and without

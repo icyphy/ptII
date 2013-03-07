@@ -1,5 +1,5 @@
 /*
- Copyright (c) 2003-2006 THALES.
+ Copyright (c) 2003-2013 THALES.
  All rights reserved.
 
  Permission is hereby granted, without written agreement and without

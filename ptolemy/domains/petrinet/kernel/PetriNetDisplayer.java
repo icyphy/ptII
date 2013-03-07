@@ -1,6 +1,6 @@
 /* An interface that displays Petri Net evolution information
 
- Copyright (c) 2011-2012 The Regents of the University of California.
+ Copyright (c) 2011-2013 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -22,7 +22,7 @@
  ENHANCEMENTS, OR MODIFICATIONS.
 
 ************************************************
- Copyright (c) 2011-2012 The University of Florida
+ Copyright (c) 2011-2013 The University of Florida
 
  All rights reserved.
  Permission is hereby granted, without written agreement and without

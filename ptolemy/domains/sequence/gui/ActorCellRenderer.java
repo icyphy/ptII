@@ -1,5 +1,5 @@
 /* A renderer that displays getDisplayName() instead of the standard name in a JList.
- Copyright (c) 2010-2011 The Regents of the University of California.
+ Copyright (c) 2010-2013 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this

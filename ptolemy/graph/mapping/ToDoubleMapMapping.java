@@ -1,6 +1,6 @@
 /* A ToDoubleMapping that is based on a Map.
 
- Copyright (c) 2003-2010 The University of Maryland.
+ Copyright (c) 2003-2013 The University of Maryland.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this

@@ -1,7 +1,7 @@
 /* This actor implements an AFDX virtual-link parameter which
  * is used to configure a virtual-link.
 
-@Copyright (c) 2010-2011 The Regents of the University of California.
+@Copyright (c) 2010-2013 The Regents of the University of California.
 All rights reserved.
 
 Permission is hereby granted, without written agreement and without
