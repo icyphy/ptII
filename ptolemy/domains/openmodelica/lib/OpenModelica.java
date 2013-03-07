@@ -83,6 +83,12 @@ public class OpenModelica extends TypedAtomicActor {
         fileName = new FileParameter(this, "fileName");
         fileName.setDisplayName("File name");
 
+        processingType = new StringParameter(this, "processingType");
+        processingType.setDisplayName("Select interactive or batch processing");
+        processingType.setExpression("batch");
+        processingType.addChoice("batch");
+        processingType.addChoice("interactive");
+
         modelName = new StringParameter(this, "modelName");
         modelName.setTypeEquals(BaseType.STRING);
         modelName.setDisplayName("Model name");
@@ -144,7 +150,7 @@ public class OpenModelica extends TypedAtomicActor {
      */
     public StringParameter cflags;
 
-    /** File which the model should be loaded from.
+    /** File which the model should be loaded from.  
      *  There is no default value, file should be selected.
      */
     public FileParameter fileName;
@@ -157,52 +163,57 @@ public class OpenModelica extends TypedAtomicActor {
     /** Input port, which receives an integer number from Ramp. */
     public TypedIOPort inputPort;
 
-    /** Integration method used for simulation.
+    /** Integration method used for simulation.  
      *  The default value of this parameter is the string "dassl".
      */
     public StringParameter method;
 
-    /** Modelica command.
+    /** The Modelica command.  
      *  The default value of this parameter is the string "loadModel(Modelica)".
      */
     public StringParameter modelicaScript;
 
-    /** Name of the model which should be built.
+    /** Name of the model which should be built. 
      *  The default value of this parameter is the string "dcmotor".
      */
     public StringParameter modelName;
 
-    /** Number of intervals in the result file.
+    /** Number of intervals in the result file.  
      *  The default value of this parameter is the integer 500.
      */
     public Parameter numberOfIntervals;
 
-    /** Format of the result file.
+    /** Format of the result file.  
      *  The default value of this parameter is the string "mat".
      */
     public static StringParameter outputFormat;
 
-    /** Simulation flags.
+    /** Type of processing for running the executable result file of building the Modelica model.
+     *  The default value of this parameter is the string "batch".
+     */
+    public StringParameter processingType;
+
+    /** Simulation flags.  
      *  The default value of this parameter is the string "".
      */
     public StringParameter simflags;
 
-    /** The start time of simulation.
+    /** The start time of simulation.    
      *  The default value of this parameter is the double 0.0.
      */
     public Parameter simulationStartTime;
 
-    /** The stop time of simulation.
+    /** The stop time of simulation.  
      *  The default value of this parameter is the double 0.1.
      */
     public Parameter simulationStopTime;
 
-    /** Tolerance used by the integration method.
+    /** Tolerance used by the integration method.  
      *  The default value of this parameter is the double 0.0001.
      */
     public Parameter tolerance;
 
-    /** Filter for variables that should be stored in the result file.
+    /** Filter for variables that should be stored in the result file.  
      *  The default value of this parameter is the string ".*".
      */
     public StringParameter variableFilter;
@@ -265,16 +276,15 @@ public class OpenModelica extends TypedAtomicActor {
                     tolerance.getExpression(), method.getExpression(),
                     outputFormat.getExpression(),
                     variableFilter.getExpression(), cflags.getExpression(),
-                    simflags.getExpression());
+                    simflags.getExpression(), processingType.getExpression());
 
             // Read a result file, returning a matrix corresponding to the variables and given size.
             //_omcProxy.displaySimulationResult(modelName.getExpression());
 
             // Plot plt format file.
-            if (outputFormat.getExpression().compareTo("plt") == 0) {
+            if (outputFormat.getExpression().compareTo("plt") == 0)
                 _omcProxy.plotPltFile(fileNamePrefix.getExpression(),
                         modelName.getExpression());
-            }
         } catch (Throwable throwable) {
             throw new IllegalActionException(this, throwable,
                     "Unable to simulate the model!");
