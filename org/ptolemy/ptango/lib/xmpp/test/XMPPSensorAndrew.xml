@@ -4,13 +4,13 @@
 <entity name="XMPPSensorAndrew" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={135, 74, 1139, 641}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1, 26, 1209, 681}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[911, 524]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[981, 564]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.8000000000000003">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.8000000000000004">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{340.0000000000002, 251.99999999999994}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{619.699199120603, 355.6841237437186}">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -33,13 +33,13 @@
         </property>
         <property name="passwordFile" class="ptolemy.data.expr.FileParameter" value="$HOME/.ptSensorAndrewPassword.txt">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[345.0, 245.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{330.0, 245.0}">
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model reads data from a Sensor Andrew node using the XMPP protocol&#10;&#10;The XMPPSource actor will request a firing every time new data is published &#10;to the specified Sensor Andrew node, including one firing for the initial data&#10;&#10;Note:  Sometimes the Display does not pop up a window when the model is run.&#10;However, the Display always seems to fire when &quot;Debug -&gt; Listen to Director&quot;&#10;is selected before the model is run.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model reads data from a Sensor Andrew node using the XMPP protocol&#10;&#10;The XMPPSource actor will request a firing every time new data is published &#10;to the specified Sensor Andrew node, including one firing for the initial data&#10;&#10;The SensorAndrewDataExtractor class extracts the data for the &#10;&lt;transducerValue&gt; node where the &quot;id&quot; attribute equals the value&#10;of the &quot;id&quot; parameter.&#10;&#10;The model extracts the voltage, analog temperature, &#10;and y and z acceleration from the XML data&#10;from the Sensor Andrew node specified in actor XMPPSource.&#10;&#10;The format of the output is completely flexible!  This is defined in the XSL script.&#10;Currently, the ouput text is formatted like a Ptolemy record.&#10;&#10;For another XSLT example, please see:&#10;$PTII/ptolemy/actor/lib/xslt/demo/MoMLFileTransformation/MOMLFileTransformation.xml">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 310.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[585.0, 260.0]">
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -48,22 +48,244 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[300.0, 35.0]">
         </property>
     </property>
+    <class name="SensorAndrewDataExtractorClass" extends="ptolemy.actor.TypedCompositeActor">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[340.0, 650.0]">
+        </property>
+        <property name="id" class="ptolemy.data.expr.Parameter" value="&quot;&quot;">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 25.0]">
+            </property>
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={307, 135, 928, 617}, maximized=false}">
+        </property>
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 500]">
+        </property>
+        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+        </property>
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{357.0, 259.0}">
+        </property>
+        <port name="XML" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 95.0]">
+            </property>
+        </port>
+        <port name="dataValue" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[415.0, 105.0]">
+            </property>
+        </port>
+        <entity name="XSLTransformer" class="ptolemy.actor.lib.xslt.XSLTransformer">
+            <property name="styleSheetParameters" class="ptolemy.actor.parameters.PortParameter" value="{elementID = &quot;$elementID&quot;}">
+            </property>
+            <property name="styleSheetFile" class="ptolemy.data.expr.FileParameter" value="SensorAndrewXMLtoText.xsl">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[300.0, 105.0]">
+            </property>
+        </entity>
+        <entity name="RecordAssembler" class="ptolemy.actor.lib.RecordAssembler">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[210.0, 155.0]">
+            </property>
+            <port name="idParameter" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+            </port>
+        </entity>
+        <entity name="Const" class="ptolemy.actor.lib.Const">
+            <property name="value" class="ptolemy.data.expr.Parameter" value="id">
+            </property>
+            <doc>Create a constant sequence.</doc>
+            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+                </property>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[125.0, 175.0]">
+            </property>
+        </entity>
+        <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+            <vertex name="vertex1" value="[70.0, 95.0]">
+            </vertex>
+        </relation>
+        <link port="XML" relation="relation5"/>
+        <link port="dataValue" relation="relation"/>
+        <link port="XSLTransformer.input" relation="relation5"/>
+        <link port="XSLTransformer.output" relation="relation"/>
+        <link port="XSLTransformer.styleSheetParameters" relation="relation4"/>
+        <link port="RecordAssembler.output" relation="relation4"/>
+        <link port="RecordAssembler.idParameter" relation="relation3"/>
+        <link port="Const.output" relation="relation3"/>
+        <link port="Const.trigger" relation="relation5"/>
+    </class>
     <entity name="XMPPSource" class="org.ptolemy.ptango.lib.xmpp.XMPPSource">
         <property name="nodeId" class="ptolemy.data.expr.StringParameter" value="18554da7a16b3625f7a04d017a3abd45_data">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[115.0, 250.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[115.0, 245.0]">
         </property>
     </entity>
     <entity name="Display" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={358, 429, 342, 246}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={235, 428, 342, 246}, maximized=false}">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[326, 186]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[215.0, 250.0]">
+        <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="40">
+        </property>
+        <property name="suppressBlankLines" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[245.0, 245.0]">
         </property>
     </entity>
+    <entity name="StringToXML" class="ptolemy.actor.lib.conversions.StringToXML">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[225.0, 350.0]">
+        </property>
+    </entity>
+    <entity name="Display2" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={624, 426, 342, 246}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[326, 186]">
+        </property>
+        <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="40">
+        </property>
+        <property name="suppressBlankLines" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[515.0, 335.0]">
+        </property>
+    </entity>
+    <entity name="SensorAndrewDataExtractor1" class="SensorAndrewDataExtractorClass">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{340.0, 320.0}">
+        </property>
+        <property name="id" class="ptolemy.data.expr.Parameter" value="&quot;voltage&quot;">
+        </property>
+        <entity name="XSLTransformer" class="ptolemy.actor.lib.xslt.XSLTransformer">
+            <property name="styleSheetParameters" class="ptolemy.actor.parameters.PortParameter" value="{idParameter = &quot;voltage&quot;}">
+            </property>
+        </entity>
+        <entity name="Const" class="ptolemy.actor.lib.Const">
+            <property name="value" class="ptolemy.data.expr.Parameter" value="id">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+                </property>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+                </property>
+            </property>
+        </entity>
+    </entity>
+    <entity name="SensorAndrewDataExtractor2" class="SensorAndrewDataExtractorClass">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[340.0, 395.0]">
+        </property>
+        <property name="id" class="ptolemy.data.expr.Parameter" value="&quot;analog_temp&quot;">
+        </property>
+        <entity name="XSLTransformer" class="ptolemy.actor.lib.xslt.XSLTransformer">
+            <property name="styleSheetParameters" class="ptolemy.actor.parameters.PortParameter" value="{idParameter = &quot;analog_temp&quot;}">
+            </property>
+        </entity>
+        <entity name="Const" class="ptolemy.actor.lib.Const">
+            <property name="value" class="ptolemy.data.expr.Parameter" value="id">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+                </property>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+                </property>
+            </property>
+        </entity>
+    </entity>
+    <entity name="SensorAndrewDataExtractor3" class="SensorAndrewDataExtractorClass">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[340.0, 475.0]">
+        </property>
+        <property name="id" class="ptolemy.data.expr.Parameter" value="&quot;acc_y&quot;">
+        </property>
+        <entity name="XSLTransformer" class="ptolemy.actor.lib.xslt.XSLTransformer">
+            <property name="styleSheetParameters" class="ptolemy.actor.parameters.PortParameter" value="{idParameter = &quot;acc_y&quot;}">
+            </property>
+        </entity>
+        <entity name="Const" class="ptolemy.actor.lib.Const">
+            <property name="value" class="ptolemy.data.expr.Parameter" value="id">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+                </property>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+                </property>
+            </property>
+        </entity>
+    </entity>
+    <entity name="SensorAndrewDataExtractor4" class="SensorAndrewDataExtractorClass">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[340.0, 540.0]">
+        </property>
+        <property name="id" class="ptolemy.data.expr.Parameter" value="&quot;acc_z&quot;">
+        </property>
+        <entity name="XSLTransformer" class="ptolemy.actor.lib.xslt.XSLTransformer">
+            <property name="styleSheetParameters" class="ptolemy.actor.parameters.PortParameter" value="{idParameter = &quot;acc_z&quot;}">
+            </property>
+        </entity>
+        <entity name="Const" class="ptolemy.actor.lib.Const">
+            <property name="value" class="ptolemy.data.expr.Parameter" value="id">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+                </property>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+                </property>
+            </property>
+        </entity>
+    </entity>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="[185.0, 245.0]">
+        </vertex>
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="[280.0, 350.0]">
+        </vertex>
+    </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <link port="XMPPSource.output" relation="relation"/>
-    <link port="Display.input" relation="relation"/>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="XMPPSource.output" relation="relation2"/>
+    <link port="Display.input" relation="relation2"/>
+    <link port="StringToXML.input" relation="relation2"/>
+    <link port="StringToXML.output" relation="relation5"/>
+    <link port="Display2.input" relation="relation"/>
+    <link port="Display2.input" relation="relation3"/>
+    <link port="Display2.input" relation="relation4"/>
+    <link port="Display2.input" relation="relation6"/>
+    <link port="SensorAndrewDataExtractor1.XML" relation="relation5"/>
+    <link port="SensorAndrewDataExtractor1.dataValue" relation="relation"/>
+    <link port="SensorAndrewDataExtractor2.XML" relation="relation5"/>
+    <link port="SensorAndrewDataExtractor2.dataValue" relation="relation3"/>
+    <link port="SensorAndrewDataExtractor3.XML" relation="relation5"/>
+    <link port="SensorAndrewDataExtractor3.dataValue" relation="relation4"/>
+    <link port="SensorAndrewDataExtractor4.XML" relation="relation5"/>
+    <link port="SensorAndrewDataExtractor4.dataValue" relation="relation6"/>
 </entity>
