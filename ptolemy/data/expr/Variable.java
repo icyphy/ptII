@@ -1788,10 +1788,10 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
                             // There are a bunch of things that need to be fixed, but there are also
                             // legitimate models such as ptolemy/actor/parameters/test/auto/ParameterSetTest.xml
                             // that refer to parameter not present when the model is parsed.
-                            new IllegalActionException(this, ex,
-                                    "Warning:, there was a problem propagating \""
-                                            + getName() + "\".")
-                                    .printStackTrace();
+                            //new IllegalActionException(this, ex,
+                            //        "Warning:, there was a problem propagating \""
+                            //                + getName() + "\".")
+                            //        .printStackTrace();
                             //result = new LinkedList();
                             //result.add(ex);
                         }
