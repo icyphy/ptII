@@ -45,7 +45,7 @@ package ptolemy.domains.openmodelica.lib.omc;
 /**
  <p>The interface to the Modelica command that should be implemented by OMCCommand.</p>
 
-    @author Mana Mirzaei
+    @author Mana Mirzaei 
     @version $Id$
     @since Ptolemy II 9.1
     @Pt.ProposedRating Red (cxh)
@@ -53,29 +53,28 @@ package ptolemy.domains.openmodelica.lib.omc;
 */
 public interface IOMCCommand {
 
-    /**  Build the Modelica model by sending buildModel("command") to the OMC server.
-     *   @param command The command which is sent to the OMC server.
-     *   @return CompilerResult The result of sendExpression("command") method.
+    /**  Build the Modelica model by sending buildModel(className) to the OMC.
+     *   @param modelName The Name of the model which should be built.
+     *   @return CompilerResult The result of sending buildModel(className) command to the OMC.
      *   @exception ConnectException If buildModel command couldn't
      *   be sent to the OMC.
      */
-    public CompilerResult buildModel(String command) throws ConnectException;
+    public CompilerResult buildModel(String modelName) throws ConnectException;
 
     /** Load Modelica model from the file.
      *  @param fileName The name of the file which is loaded.
-     *  @return CompilerResult The result of sendExpression("command") method.
+     *  @return CompilerResult The result of sending loadFileInteractiveQualified("fileName") command to the OMC.
      *  @exception ConnectException If loadFileInteractiveQualified command couldn't
      *  be sent to the OMC.
      */
     public CompilerResult loadFile(String fileName) throws ConnectException;
 
-    /** Load Modelica model.
-     *  @param modelicaScript loadModel(Modelica)
-     *  @return CompilerResult The result of sendExpression("loadModel(Modelica)") method.
+    /** Load the Modelica model.
+     *  @param modelName The Name of the model which should be loaded from the Modelica library.
+     *  @return CompilerResult The result of sending loadModel(modelName) command to the OMC.
      *  @exception ConnectException If the command couldn't
      *  be sent to the OMC.
      */
-    public CompilerResult loadModelicaModel(String modelicaScript)
-            throws ConnectException;
+    public CompilerResult loadModel(String modelName) throws ConnectException;
 
 }
