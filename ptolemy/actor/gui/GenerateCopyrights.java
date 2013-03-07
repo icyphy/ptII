@@ -272,6 +272,9 @@ public class GenerateCopyrights {
         _addIfPresent(copyrightsMap, "org.jivesoftware.smack.XMPPConnection",
                 "lib/smack-license.htm");
 
+        _addIfPresent(copyrightsMap, "g4ltl.SolverUtility",
+                "lib/g4ltl-license.htm");
+
         // Check for the _applicationCopyrights parameter
         try {
             Parameter applicationCopyrights = (Parameter) configuration
