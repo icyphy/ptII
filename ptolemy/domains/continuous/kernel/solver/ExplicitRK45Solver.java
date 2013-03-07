@@ -111,35 +111,38 @@ public class ExplicitRK45Solver extends ContinuousODESolver {
 
         switch (_roundCount) {
         case 0:
-            outputValue = xn + (h * k[0] * _B[0][0]);
+            outputValue = xn + h * k[0] * _B[0][0];
             break;
 
         case 1:
-            outputValue = xn + (h * ((k[0] * _B[1][0]) + (k[1] * _B[1][1])));
+            outputValue = xn + h * (k[0] * _B[1][0] + k[1] * _B[1][1]);
             break;
 
         case 2:
-            outputValue = xn
-                    + (h * ((k[0] * _B[2][0]) + (k[1] * _B[2][1]) + (k[2] * _B[2][2])));
+            outputValue = xn + h
+                    * (k[0] * _B[2][0] + k[1] * _B[2][1] + k[2] * _B[2][2]);
             break;
 
         case 3:
             outputValue = xn
-                    + (h * ((k[0] * _B[3][0]) + (k[1] * _B[3][1])
-                            + (k[2] * _B[3][2]) + (k[3] * _B[3][3])));
+                    + h
+                    * (k[0] * _B[3][0] + k[1] * _B[3][1] + k[2] * _B[3][2] + k[3]
+                            * _B[3][3]);
             break;
 
         case 4:
             outputValue = xn
-                    + (h * ((k[0] * _B[4][0]) + (k[1] * _B[4][1])
-                            + (k[2] * _B[4][2]) + (k[3] * _B[4][3]) + (k[4] * _B[4][4])));
+                    + h
+                    * (k[0] * _B[4][0] + k[1] * _B[4][1] + k[2] * _B[4][2]
+                            + k[3] * _B[4][3] + k[4] * _B[4][4]);
             break;
 
         case 5:
             outputValue = xn
-                    + (h * ((k[0] * _B[5][0]) + (k[1] * _B[5][1])
-                            + (k[2] * _B[5][2]) + (k[3] * _B[5][3])
-                            + (k[4] * _B[5][4]) + (k[5] * _B[5][5])));
+                    + h
+                    * (k[0] * _B[5][0] + k[1] * _B[5][1] + k[2] * _B[5][2]
+                            + k[3] * _B[5][3] + k[4] * _B[5][4] + k[5]
+                            * _B[5][5]);
             break;
 
         case 6:
@@ -165,8 +168,8 @@ public class ExplicitRK45Solver extends ContinuousODESolver {
         double h = _director.getCurrentStepSize();
         double[] k = integrator.getAuxVariables();
         double error = h
-                * Math.abs((k[0] * _E[0]) + (k[1] * _E[1]) + (k[2] * _E[2])
-                        + (k[3] * _E[3]) + (k[4] * _E[4]) + (k[5] * _E[5]));
+                * Math.abs(k[0] * _E[0] + k[1] * _E[1] + k[2] * _E[2] + k[3]
+                        * _E[3] + k[4] * _E[4] + k[5] * _E[5]);
 
         integrator.setAuxVariables(_ERROR_INDEX, error);
 
@@ -198,13 +201,13 @@ public class ExplicitRK45Solver extends ContinuousODESolver {
      *  @return The next step size suggested by the given integrator.
      */
     public double integratorSuggestedStepSize(ContinuousIntegrator integrator) {
-        double error = (integrator.getAuxVariables())[_ERROR_INDEX];
+        double error = integrator.getAuxVariables()[_ERROR_INDEX];
         double h = _director.getCurrentStepSize();
         double tolerance = _director.getErrorTolerance();
         double newh = 5.0 * h;
 
         if (error > tolerance) {
-            newh = h * Math.pow((tolerance / error), 1.0 / _ORDER);
+            newh = h * Math.pow(tolerance / error, 1.0 / _ORDER);
         }
 
         if (_isDebugging()) {
@@ -273,10 +276,9 @@ public class ExplicitRK45Solver extends ContinuousODESolver {
             { 37.0 / 378, 0.0, 250.0 / 621, 125.0 / 594, 0.0, 512.0 / 1771 } };
 
     /** E coefficients */
-    private static final double[] _E = { (37.0 / 378) - (2825.0 / 27648), 0.0,
-            (250.0 / 621) - (18575.0 / 48384),
-            (125.0 / 594) - (13525.0 / 55296), 0.0 - (277.0 / 14336),
-            (512.0 / 1771) - 0.25 };
+    private static final double[] _E = { 37.0 / 378 - 2825.0 / 27648, 0.0,
+            250.0 / 621 - 18575.0 / 48384, 125.0 / 594 - 13525.0 / 55296,
+            0.0 - 277.0 / 14336, 512.0 / 1771 - 0.25 };
 
     /** The index of the error stored in the auxiliary variables. */
     private static final int _ERROR_INDEX = _TIME_INCREMENTS.length;

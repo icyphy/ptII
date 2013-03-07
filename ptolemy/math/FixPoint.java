@@ -171,7 +171,7 @@ public class FixPoint implements Cloneable, Serializable {
     public FixPoint(int intValue, boolean signed) {
         // Create a new integer FixPoint value with
         // a small precision but with a "grow" overflow strategy.
-        this(intValue, new FixPointQuantization(new Precision((signed ? 1 : 0),
+        this(intValue, new FixPointQuantization(new Precision(signed ? 1 : 0,
                 (signed ? 1 : 0) + 1, 0), Overflow.GROW, Rounding.HALF_EVEN));
     }
 
@@ -237,7 +237,7 @@ public class FixPoint implements Cloneable, Serializable {
      */
     public static Precision multiplyPrecision(Precision leftArgument,
             Precision rightArgument) {
-        int sign = ((leftArgument.getSign() == 1) || (rightArgument.getSign() == 1)) ? 1
+        int sign = leftArgument.getSign() == 1 || rightArgument.getSign() == 1 ? 1
                 : 0;
         int fractionBits = leftArgument.getFractionBitLength()
                 + rightArgument.getFractionBitLength();
@@ -260,7 +260,7 @@ public class FixPoint implements Cloneable, Serializable {
      */
     public static Precision dividePrecision(Precision leftArgument,
             Precision rightArgument) {
-        int sign = ((leftArgument.getSign() == 1) || (rightArgument.getSign() == 1)) ? 1
+        int sign = leftArgument.getSign() == 1 || rightArgument.getSign() == 1 ? 1
                 : 0;
         int integerBits = leftArgument.getIntegerBitLength()
                 + rightArgument.getFractionBitLength() + sign;
@@ -412,7 +412,7 @@ public class FixPoint implements Cloneable, Serializable {
             // (i.e. the -exponent) and add one to give us an
             // extra digit.
             int resultExp = quant.getPrecision().getExponent();
-            int scale = (resultExp < 0) ? -resultExp : 0;
+            int scale = resultExp < 0 ? -resultExp : 0;
             scale++;
             BigDecimal result = numerator.divide(denominator, scale,
                     BigDecimal.ROUND_HALF_EVEN);
@@ -425,7 +425,7 @@ public class FixPoint implements Cloneable, Serializable {
 
         } catch (ArithmeticException e) {
             Overflow anOverflow = quant.getOverflow();
-            BigInteger infinity = (_value.signum() >= 0) ? anOverflow
+            BigInteger infinity = _value.signum() >= 0 ? anOverflow
                     .plusInfinity(quant) : anOverflow.minusInfinity(quant);
 
             if (infinity != null) {
@@ -782,7 +782,7 @@ public class FixPoint implements Cloneable, Serializable {
         // we need to strip redundant trailing 0's.
         int i = bigString.length() - 1;
 
-        while ((bigString.charAt(i) == '0') && (bigString.charAt(i - 1) != '.')) {
+        while (bigString.charAt(i) == '0' && bigString.charAt(i - 1) != '.') {
             --i;
         }
 

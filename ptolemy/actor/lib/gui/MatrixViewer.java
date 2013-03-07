@@ -230,7 +230,7 @@ public class MatrixViewer extends AbstractPlaceableActor {
     public void place(Container container) {
         // If there was a previous container that doesn't match this one,
         // remove the pane from it.
-        if ((_container != null) && (_pane != null)) {
+        if (_container != null && _pane != null) {
             _container.remove(_pane);
             _container = null;
         }
@@ -382,7 +382,7 @@ public class MatrixViewer extends AbstractPlaceableActor {
     private void _remove() {
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
-                if ((_container != null) && (_pane != null)) {
+                if (_container != null && _pane != null) {
                     _container.remove(_pane);
                     _container = null;
                 }

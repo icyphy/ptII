@@ -180,7 +180,7 @@ public class Copernicus {
         StringParameter output = (StringParameter) _generatorAttribute
                 .getAttribute("output");
 
-        if ((output != null) && (output.getToken() != null)) {
+        if (output != null && output.getToken() != null) {
             String fileName = output.stringValue();
 
             if (!fileName.equals("")) {
@@ -316,7 +316,7 @@ public class Copernicus {
      *  0 if the process executed normally.
      */
     public static int executeCommand(String command) throws Exception {
-        if ((command == null) || (command.length() == 0)) {
+        if (command == null || command.length() == 0) {
             System.out.println("Warning, null or 0 length command string "
                     + "passed to Copernicus.executeCommand()");
             return 0;
@@ -334,7 +334,7 @@ public class Copernicus {
 
         System.out.println("About to execute:\n ");
 
-        for (int i = 0; i < (commands.length - 1); i++) {
+        for (int i = 0; i < commands.length - 1; i++) {
             System.out.println("        \"" + commands[i] + "\" \\");
         }
 
@@ -583,7 +583,7 @@ public class Copernicus {
         // the basename of the file.
         // FIXME: is this correct for filenames?
         if (toplevel.getName().length() == 0) {
-            String baseName = (new File(modelPathOrURL)).getName();
+            String baseName = new File(modelPathOrURL).getName();
 
             if (baseName.lastIndexOf('.') != -1) {
                 baseName = baseName.substring(0, baseName.lastIndexOf('.'));
@@ -718,7 +718,7 @@ public class Copernicus {
 
             if (_parseArg(arg) == false) {
                 if (arg.trim().startsWith("-")) {
-                    if (i >= (args.length - 1)) {
+                    if (i >= args.length - 1) {
                         throw new IllegalActionException("Cannot set "
                                 + "parameter " + arg + " when no value is "
                                 + "given.");

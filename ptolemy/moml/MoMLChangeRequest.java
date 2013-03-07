@@ -194,7 +194,7 @@ public class MoMLChangeRequest extends ChangeRequest {
         } else {
             List deferList = ((InstantiableNamedObj) object).getChildren();
 
-            if ((deferList != null) && (deferList.size() > 0)) {
+            if (deferList != null && deferList.size() > 0) {
                 return object;
             } else {
                 return getDeferredToParent(object.getContainer());

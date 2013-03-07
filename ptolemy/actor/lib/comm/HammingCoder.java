@@ -201,7 +201,7 @@ public class HammingCoder extends Transformer {
 
             _order = _codeSizeValue - _uncodeSizeValue;
 
-            if (_codeSizeValue != ((1 << _order) - 1)) {
+            if (_codeSizeValue != (1 << _order) - 1) {
                 throw new IllegalActionException(this,
                         "Invalid pair of uncodedRate and codedRate.");
             }
@@ -213,11 +213,11 @@ public class HammingCoder extends Transformer {
             int index = 0;
 
             for (int i = 1; i <= _codeSizeValue; i++) {
-                if (i == (1 << flag)) {
+                if (i == 1 << flag) {
                     flag++;
                 } else {
                     for (int j = 0; j < _order; j++) {
-                        _parityMatrix[index][j] = (i >> (_order - j - 1)) & 1;
+                        _parityMatrix[index][j] = i >> _order - j - 1 & 1;
                     }
 
                     index++;
@@ -245,14 +245,14 @@ public class HammingCoder extends Transformer {
 
         for (int i = 0; i < _uncodeSizeValue; i++) {
             for (int j = 0; j < _order; j++) {
-                parity[j] = parity[j]
-                        ^ ((result[i].booleanValue() ? 1 : 0) & _parityMatrix[i][j]);
+                parity[j] = parity[j] ^ (result[i].booleanValue() ? 1 : 0)
+                        & _parityMatrix[i][j];
             }
         }
 
         // Send the parity results to the output.
         for (int i = 0; i < _order; i++) {
-            result[i + _uncodeSizeValue] = new BooleanToken((parity[i] == 1));
+            result[i + _uncodeSizeValue] = new BooleanToken(parity[i] == 1);
         }
 
         output.broadcast(result, result.length);

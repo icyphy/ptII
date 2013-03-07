@@ -167,23 +167,23 @@ public class KielerLayoutConnector extends LinkManhattanConnector {
 
                 // First make sure that the radius is not
                 // bigger than half one of the arms of the triplets
-                double d0 = Math.sqrt(((x1 - x0) * (x1 - x0))
-                        + ((y1 - y0) * (y1 - y0)));
-                double d1 = Math.sqrt(((x2 - x1) * (x2 - x1))
-                        + ((y2 - y1) * (y2 - y1)));
+                double d0 = Math.sqrt((x1 - x0) * (x1 - x0) + (y1 - y0)
+                        * (y1 - y0));
+                double d1 = Math.sqrt((x2 - x1) * (x2 - x1) + (y2 - y1)
+                        * (y2 - y1));
                 double r = Math.min(_bendRadius, d0);
                 r = Math.min(r, d1);
 
                 // The degenerate case of a direct line.
-                if ((d0 == 0.0) || (d1 == 0.0)) {
+                if (d0 == 0.0 || d1 == 0.0) {
                     path.lineTo((float) x1, (float) y1);
                 } else {
                     // Next calculate the intermediate points
                     // that define the bend.
-                    double intX0 = x1 + ((r / d0) * (x0 - x1));
-                    double intY0 = y1 + ((r / d0) * (y0 - y1));
-                    double intX1 = x1 + ((r / d1) * (x2 - x1));
-                    double intY1 = y1 + ((r / d1) * (y2 - y1));
+                    double intX0 = x1 + r / d0 * (x0 - x1);
+                    double intY0 = y1 + r / d0 * (y0 - y1);
+                    double intX1 = x1 + r / d1 * (x2 - x1);
+                    double intY1 = y1 + r / d1 * (y2 - y1);
 
                     // Next draw the line from the previous
                     // coord to the intermediate coord, and
@@ -208,9 +208,9 @@ public class KielerLayoutConnector extends LinkManhattanConnector {
             // Pick a location for the label in the middle of the connector.
             Point2D point1 = bendPointList.get(count / 2 - 1);
             Point2D point2 = bendPointList.get(count / 2);
-            _labelLocation = (new Point2D.Double(
+            _labelLocation = new Point2D.Double(
                     (point1.getX() + point2.getX()) / 2,
-                    (point1.getY() + point2.getY()) / 2));
+                    (point1.getY() + point2.getY()) / 2);
             repositionLabel();
 
             repaint();

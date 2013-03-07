@@ -103,7 +103,7 @@ public class JAIBandSelect extends Transformer {
             _indiceArray = new int[data.length];
 
             for (int i = 0; i < data.length; i++) {
-                _indiceArray[i] = ((IntToken) (data[i])).intValue();
+                _indiceArray[i] = ((IntToken) data[i]).intValue();
             }
         } else {
             super.attributeChanged(attribute);

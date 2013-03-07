@@ -123,7 +123,7 @@ public class JopReadPort extends Source {
         if (_firstFire) {
             // read the value - simulate the us counter on JOP
             // at address -127
-            int v = ((int) System.currentTimeMillis()) * 1000;
+            int v = (int) System.currentTimeMillis() * 1000;
             // I would like a _val.set() to avoid garbage
             _val = new IntToken(v);
             _firstFire = false;

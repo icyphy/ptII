@@ -81,10 +81,10 @@ public class LazyTypedCompositeActorChanges extends MoMLFilterSimple {
         // which will open up a large xml file and then close after 2 seconds.
         if (attributeName.equals("class")) {
             if (attributeValue.equals("ptolemy.actor.TypedCompositeActor")
-                    && (container != null /* && container.toplevel() != container */)) {
+                    && container != null) {
                 if (container instanceof InstantiableNamedObj
-                        && !(((InstantiableNamedObj) container)
-                                .isWithinClassDefinition())) {
+                        && !((InstantiableNamedObj) container)
+                                .isWithinClassDefinition()) {
                     // We found a class outside of a class change.
                     MoMLParser.setModified(true);
                     return "ptolemy.actor.LazyTypedCompositeActor";

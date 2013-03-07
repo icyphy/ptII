@@ -190,10 +190,10 @@ public class FSMGraphFrame extends ExtendedGraphFrame implements ActionListener 
         ActionListener debugMenuListener = _getDebugMenuListener();
 
         // Set the action command and listener for each menu item.
-        for (int i = 0; i < debugMenuItems.length; i++) {
-            debugMenuItems[i].setActionCommand(debugMenuItems[i].getText());
-            debugMenuItems[i].addActionListener(debugMenuListener);
-            _debugMenu.add(debugMenuItems[i]);
+        for (JMenuItem debugMenuItem : debugMenuItems) {
+            debugMenuItem.setActionCommand(debugMenuItem.getText());
+            debugMenuItem.addActionListener(debugMenuListener);
+            _debugMenu.add(debugMenuItem);
         }
 
         _menubar.add(_debugMenu);
@@ -449,7 +449,7 @@ public class FSMGraphFrame extends ExtendedGraphFrame implements ActionListener 
 
                             NamedObj model = getModel();
 
-                            if ((model != null) && (_listeningTo != model)) {
+                            if (model != null && _listeningTo != model) {
                                 if (_listeningTo != null) {
                                     _listeningTo
                                             .removeDebugListener(_controller);
@@ -465,7 +465,7 @@ public class FSMGraphFrame extends ExtendedGraphFrame implements ActionListener 
                         }
                     }
                 } else if (actionCommand.equals("Stop Animating")
-                        && (_listeningTo != null)) {
+                        && _listeningTo != null) {
                     _listeningTo.removeDebugListener(_controller);
                     _controller.clearAnimation();
                     _listeningTo = null;

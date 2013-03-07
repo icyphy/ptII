@@ -112,7 +112,7 @@ public class MonotonicityConcept extends MapTypeInfiniteConcept<Concept> {
      *  @see ptolemy.data.ontologies.Concept#isAboveOrEqualTo(ptolemy.data.ontologies.Concept)
      */
     public int compare(Concept concept) throws IllegalActionException {
-        if (!(concept.getOntology().equals(getOntology()))) {
+        if (!concept.getOntology().equals(getOntology())) {
             throw new IllegalActionException(this,
                     "Attempt to compare elements from two distinct ontologies");
         }

@@ -231,7 +231,7 @@ public class OrderedMerge extends TypedAtomicActor {
                         }
                         // Read from the same port again, so leave
                         // _tentativeNextPort alone.
-                    } else if ((readToken.equals(_lastProduced))) {
+                    } else if (readToken.equals(_lastProduced)) {
                         // Token is the same as last produced.
                         // Do not send an output and leave everything the same
                         // Except there is no longer a recorded token.
@@ -240,8 +240,7 @@ public class OrderedMerge extends TypedAtomicActor {
                         }
                     } else {
                         // Not a duplicate.
-                        if ((readToken.isLessThan(_recordedToken))
-                                .booleanValue()) {
+                        if (readToken.isLessThan(_recordedToken).booleanValue()) {
                             // Produce the smaller output.
                             output.send(0, readToken);
                             _tentativeLastProduced = readToken;
@@ -274,7 +273,7 @@ public class OrderedMerge extends TypedAtomicActor {
                             }
 
                             _tentativeRecordedToken = readToken;
-                            _tentativeReadFromA = (_nextPort == inputA);
+                            _tentativeReadFromA = _nextPort == inputA;
 
                             // Swap ports.
                             if (_nextPort == inputA) {
@@ -286,7 +285,7 @@ public class OrderedMerge extends TypedAtomicActor {
                     }
                 } else {
                     // Not eliminating duplicates.
-                    if ((readToken.isLessThan(_recordedToken)).booleanValue()) {
+                    if (readToken.isLessThan(_recordedToken).booleanValue()) {
                         // Produce the smaller output.
                         output.send(0, readToken);
 
@@ -315,7 +314,7 @@ public class OrderedMerge extends TypedAtomicActor {
                         }
 
                         _tentativeRecordedToken = readToken;
-                        _tentativeReadFromA = (_nextPort == inputA);
+                        _tentativeReadFromA = _nextPort == inputA;
 
                         // Swap ports.
                         if (_nextPort == inputA) {

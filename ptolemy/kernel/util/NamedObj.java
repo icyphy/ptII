@@ -882,7 +882,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
 
             String className = getClassName();
 
-            if ((depth == 0) && (getContainer() == null)) {
+            if (depth == 0 && getContainer() == null) {
                 // No container, and this is a top level moml element.
                 // Generate header information.
                 // NOTE: Used to generate this only if the top-level
@@ -1297,7 +1297,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
 
             Nameable container = getContainer();
 
-            while ((container != null) && (container != parent)) {
+            while (container != null && container != parent) {
                 if (visited.contains(container)) {
                     // Cannot use "this" as a constructor argument to the
                     // exception or we'll get stuck infinitely
@@ -1465,8 +1465,8 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
             return false;
         }
 
-        int override = (_override.get(0)).intValue();
-        return (override == 0);
+        int override = _override.get(0).intValue();
+        return override == 0;
     }
 
     /** Return true if this object is persistent.
@@ -1478,7 +1478,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
      *  @see MoMLExportable
      */
     public boolean isPersistent() {
-        return ((_isPersistent == null) || _isPersistent.booleanValue());
+        return _isPersistent == null || _isPersistent.booleanValue();
     }
 
     /** Return an iterator over contained object that currently exist,
@@ -2214,7 +2214,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
             while (_override.size() <= depth) {
                 _override.add(Integer.valueOf(0));
             }
-            int breadth = (_override.get(depth)).intValue();
+            int breadth = _override.get(depth).intValue();
             _override.set(depth, Integer.valueOf(breadth + 1));
         }
         Iterator<?> objects = lazyContainedObjectsIterator();
@@ -2306,7 +2306,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
      */
     protected List<ChangeRequest> _copyChangeRequestList() {
         synchronized (_changeLock) {
-            if ((_changeRequests != null) && (_changeRequests.size() > 0)) {
+            if (_changeRequests != null && _changeRequests.size() > 0) {
                 // Copy the change requests lists because it may
                 // be modified during execution.
                 List<ChangeRequest> copy = new LinkedList(_changeRequests);
@@ -2456,7 +2456,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
 
             StringBuffer result = new StringBuffer(_getIndentPrefix(indent));
 
-            if ((bracket == 1) || (bracket == 2)) {
+            if (bracket == 1 || bracket == 2) {
                 result.append("{");
             }
 
@@ -2496,7 +2496,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
                     }
                 }
 
-                result.append((_getIndentPrefix(indent) + "}"));
+                result.append(_getIndentPrefix(indent) + "}");
             }
 
             if (bracket == 2) {
@@ -2692,12 +2692,12 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
             // Export MoML if the value of the object is
             // propagated in but from outside the scope
             // of the export.
-            if (_override.size() > (depth + 1)) {
+            if (_override.size() > depth + 1) {
                 return false;
             }
 
             // Export MoML if the value has been set directly.
-            if ((_override.size() == 1) && ((_override.get(0)).intValue() == 0)) {
+            if (_override.size() == 1 && _override.get(0).intValue() == 0) {
                 return false;
             }
         }
@@ -2753,7 +2753,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
             // cloned from an object that had persistence
             // set to true), then override that and
             // reset to where persistence is unspecified.
-            if ((containedObject._isPersistent != null)
+            if (containedObject._isPersistent != null
                     && containedObject._isPersistent.booleanValue()) {
                 containedObject._isPersistent = null;
             }
@@ -2977,7 +2977,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
                 continue;
             }
             try {
-                Collection<Settable> validated = (attribute).validate();
+                Collection<Settable> validated = attribute.validate();
                 if (validated != null) {
                     attributesValidated.addAll(validated);
                 }
@@ -3134,7 +3134,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
                     // If the override list is not long enough for the
                     // new depth, make it long enough. It should at most
                     // be one element short.
-                    if (newOverride.size() <= (depth + 1)) {
+                    if (newOverride.size() <= depth + 1) {
                         newOverride.add(Integer.valueOf(0));
                     }
                 }
@@ -3153,7 +3153,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
             int myBreadth = 0;
 
             if (propagate) {
-                myBreadth = (override.get(depth)).intValue();
+                myBreadth = override.get(depth).intValue();
             }
 
             // Iterate over the children.
@@ -3328,7 +3328,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
         if (candidate.size() == changer.size()) {
             int index = candidate.size() - 1;
 
-            while ((index >= 0)
+            while (index >= 0
                     && candidate.get(index).equals(changer.get(index))) {
                 index--;
             }
@@ -3337,8 +3337,8 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
                 // The two lists are identical, so there be no shadowing.
                 return false;
             } else {
-                int candidateBreadth = (candidate.get(index)).intValue();
-                int changerBreadth = (changer.get(index)).intValue();
+                int candidateBreadth = candidate.get(index).intValue();
+                int changerBreadth = changer.get(index).intValue();
 
                 if (candidateBreadth < changerBreadth) {
                     return true;

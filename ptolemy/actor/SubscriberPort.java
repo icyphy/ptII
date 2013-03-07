@@ -271,9 +271,9 @@ public class SubscriberPort extends PubSubPort {
                     IOPort port = (IOPort) ports.next();
                     int depth = port.getContainer().depthInHierarchy();
 
-                    if (port.isInput() && (depth >= depthOfDirector)) {
+                    if (port.isInput() && depth >= depthOfDirector) {
                         insidePorts.addLast(port);
-                    } else if (port.isOutput() && (depth < depthOfDirector)) {
+                    } else if (port.isOutput() && depth < depthOfDirector) {
                         insidePorts.addLast(port);
                     }
                 }
@@ -289,11 +289,11 @@ public class SubscriberPort extends PubSubPort {
             if (isOpaque()) {
                 Receiver[][] receivers = getReceivers();
                 if (receivers != null) {
-                    for (int i = 0; i < receivers.length; i++) {
+                    for (Receiver[] receiver : receivers) {
                         for (int j = 0; j < receivers.length; j++) {
                             for (Token token : ((ArrayToken) initialOutputsValue)
                                     .arrayValue()) {
-                                receivers[i][j].put(token);
+                                receiver[j].put(token);
                             }
                         }
                     }

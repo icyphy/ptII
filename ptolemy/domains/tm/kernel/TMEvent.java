@@ -191,14 +191,13 @@ public class TMEvent implements Comparable {
         if (tmEvent == this) {
             return true;
         }
-        if ((tmEvent == null) || (tmEvent.getClass() != getClass())) {
+        if (tmEvent == null || tmEvent.getClass() != getClass()) {
             return false;
         } else {
             TMEvent event = (TMEvent) tmEvent;
-            if (compareTo(event) == 0
-                    && (receiver() != null && receiver().equals(
-                            event.receiver()))
-                    && (token() != null && token().equals(event.token()))
+            if (compareTo(event) == 0 && receiver() != null
+                    && receiver().equals(event.receiver()) && token() != null
+                    && token().equals(event.token())
                     && priority() == event.priority()
                     && processingTime() == event.processingTime()) {
                 return true;

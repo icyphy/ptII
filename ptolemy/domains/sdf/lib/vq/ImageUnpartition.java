@@ -119,18 +119,18 @@ public class ImageUnpartition extends Transformer {
         _partitionColumns = ((IntToken) partitionColumns.getToken()).intValue();
         _partitionRows = ((IntToken) partitionRows.getToken()).intValue();
 
-        if ((_imageColumns % _partitionColumns) != 0) {
+        if (_imageColumns % _partitionColumns != 0) {
             throw new IllegalActionException(imageColumns, partitionColumns,
                     "Partition size must evenly divide image size");
         }
 
-        if ((_imageRows % _partitionRows) != 0) {
+        if (_imageRows % _partitionRows != 0) {
             throw new IllegalActionException(imageRows, partitionRows,
                     "Partition size must evenly divide image size");
         }
 
         _image = new int[_imageRows][_imageColumns];
-        _partitionCount = (_imageColumns * _imageRows) / _partitionColumns
+        _partitionCount = _imageColumns * _imageRows / _partitionColumns
                 / _partitionRows;
     }
 
@@ -155,8 +155,8 @@ public class ImageUnpartition extends Transformer {
             for (i = 0; i < _imageColumns; i += _partitionColumns, partitionNumber++) {
                 IntMatrixToken partition = (IntMatrixToken) _partitions[partitionNumber];
 
-                if ((partition.getRowCount() != _partitionRows)
-                        || (partition.getColumnCount() != _partitionColumns)) {
+                if (partition.getRowCount() != _partitionRows
+                        || partition.getColumnCount() != _partitionColumns) {
                     throw new IllegalActionException(
                             "input data must be partitionRows "
                                     + "by partitionColumns");

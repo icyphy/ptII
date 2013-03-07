@@ -99,7 +99,7 @@ public class ParseTreeSpecializer extends AbstractParseTreeVisitor {
         ptolemy.data.Token value = null;
         String functionName = node.getFunctionName();
 
-        if ((_scope != null) && (functionName != null)) {
+        if (_scope != null && functionName != null) {
             if (!_excludedNames.contains(functionName)) {
                 value = _scope.get(node.getFunctionName());
                 if (value instanceof ObjectToken) {

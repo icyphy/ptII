@@ -171,7 +171,7 @@ public class PlotTableau extends Tableau {
      */
     private void _parseURL(URL url) {
         try {
-            PlotTableauFrame frame = ((PlotTableauFrame) getFrame());
+            PlotTableauFrame frame = (PlotTableauFrame) getFrame();
 
             if (frame != null) {
                 // FIXME: Should use a HistogramMLParser to get a histogram

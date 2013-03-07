@@ -419,8 +419,9 @@ public class GTIngredientsEditor extends PtolemyDialog {
                         object, configuration));
                 tableau.show();
             } catch (Throwable throwable) {
-                throw new InternalErrorException(null, throwable, "Unable to create "
-                        + "ingredient editor for " + object.getName());
+                throw new InternalErrorException(null, throwable,
+                        "Unable to create " + "ingredient editor for "
+                                + object.getName());
             }
         }
 

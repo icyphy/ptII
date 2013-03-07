@@ -55,77 +55,76 @@ import ptolemy.kernel.util.Workspace;
  */
 public class CanBusPriority extends Transformer {
 
-   /** Construct an actor with the given container and name.
-    *  @param container The container.
-    *  @param name The name of this actor.
-    *  @exception IllegalActionException If the actor cannot be contained
-    *   by the proposed container.
-    *  @exception NameDuplicationException If the container already has an
-    *   actor with this name.
-    */
-   public CanBusPriority(CompositeEntity container, String name)
-           throws NameDuplicationException, IllegalActionException {
-       super(container, name);
+    /** Construct an actor with the given container and name.
+     *  @param container The container.
+     *  @param name The name of this actor.
+     *  @exception IllegalActionException If the actor cannot be contained
+     *   by the proposed container.
+     *  @exception NameDuplicationException If the container already has an
+     *   actor with this name.
+     */
+    public CanBusPriority(CompositeEntity container, String name)
+            throws NameDuplicationException, IllegalActionException {
+        super(container, name);
 
-       value = new Parameter(this, "value");
-       value.setExpression("1");
-       value.setTypeEquals(BaseType.INT);
+        value = new Parameter(this, "value");
+        value.setExpression("1");
+        value.setTypeEquals(BaseType.INT);
 
-       // icon description
-       _attachText("_iconDescription", "<svg>\n"
-               + "<rect x=\"0\" y=\"0\" "
-               + "width=\"60\" height=\"20\" "
-               + "style=\"fill:white\"/>\n" + "</svg>\n");
-   }
+        // icon description
+        _attachText("_iconDescription", "<svg>\n" + "<rect x=\"0\" y=\"0\" "
+                + "width=\"60\" height=\"20\" " + "style=\"fill:white\"/>\n"
+                + "</svg>\n");
+    }
 
-   ///////////////////////////////////////////////////////////////////
-   ////                     ports and parameters                  ////
+    ///////////////////////////////////////////////////////////////////
+    ////                     ports and parameters                  ////
 
-   /**
-    *  Value of the CanId parameter.
-    */
-   public Parameter value;
+    /**
+     *  Value of the CanId parameter.
+     */
+    public Parameter value;
 
-   ///////////////////////////////////////////////////////////////////
-   ////                         public methods                    ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
-   /** If the parameter changed is <i>CanId</i>, then ensure that the value
-    *  is non-negative.
-    *  @param attribute The attribute that changed.
-    *  @exception IllegalActionException If the service time is negative.
-    */
-   public void attributeChanged(Attribute attribute)
-           throws IllegalActionException {
-       if (attribute == value) {
-           int n = ((IntToken) value.getToken()).intValue();
-           if (n <= 0.0) {
-               throw new IllegalActionException(this,
-                       "Cannot have negative or zero CanId: " + n);
-           }
-       }
-       super.attributeChanged(attribute);
-   }
+    /** If the parameter changed is <i>CanId</i>, then ensure that the value
+     *  is non-negative.
+     *  @param attribute The attribute that changed.
+     *  @exception IllegalActionException If the service time is negative.
+     */
+    public void attributeChanged(Attribute attribute)
+            throws IllegalActionException {
+        if (attribute == value) {
+            int n = ((IntToken) value.getToken()).intValue();
+            if (n <= 0.0) {
+                throw new IllegalActionException(this,
+                        "Cannot have negative or zero CanId: " + n);
+            }
+        }
+        super.attributeChanged(attribute);
+    }
 
-   /** Clone the actor into the specified workspace. This calls the
-    *  base class and then sets the type constraints.
-    *  @param workspace The workspace for the new object.
-    *  @return A new actor.
-    *  @exception CloneNotSupportedException If a derived class has
-    *   an attribute that cannot be cloned.
-    */
-   public Object clone(Workspace workspace) throws CloneNotSupportedException {
-       CanBusPriority newObject = (CanBusPriority) super.clone(workspace);
-       return newObject;
-   }
+    /** Clone the actor into the specified workspace. This calls the
+     *  base class and then sets the type constraints.
+     *  @param workspace The workspace for the new object.
+     *  @return A new actor.
+     *  @exception CloneNotSupportedException If a derived class has
+     *   an attribute that cannot be cloned.
+     */
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        CanBusPriority newObject = (CanBusPriority) super.clone(workspace);
+        return newObject;
+    }
 
-   /**
-    * Take the input (if there is such one) and put it in the output.
-    *  @exception IllegalActionException If there is no director.
-    */
-   public void fire() throws IllegalActionException {
-       super.fire();
-       if (input.hasToken(0)) {
-           output.send(0, input.get(0));
-       }
-   }
+    /**
+     * Take the input (if there is such one) and put it in the output.
+     *  @exception IllegalActionException If there is no director.
+     */
+    public void fire() throws IllegalActionException {
+        super.fire();
+        if (input.hasToken(0)) {
+            output.send(0, input.get(0));
+        }
+    }
 }

@@ -796,8 +796,8 @@ public class GiottoCEmachineFrameworkGenerator extends GiottoCodeGenerator {
                 String sanitizedOutPortName = StringUtilities
                         .sanitizeName(outPort.getName(model));
                 String arrayLength = _getArrayLength(outPort);
-                String sourceActorName = StringUtilities.sanitizeName((outPort
-                        .getContainer()).getName());
+                String sourceActorName = StringUtilities.sanitizeName(outPort
+                        .getContainer().getName());
 
                 if (firstParameter) {
                     firstParameter = false;

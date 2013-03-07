@@ -145,15 +145,13 @@ public class CircularSweep3D extends GRShadedShape {
         int k = 0;
         int m = 0;
 
-        for (i = 0; i < (numberOfSweepVertices - 1); i++) {
+        for (i = 0; i < numberOfSweepVertices - 1; i++) {
             for (j = 0; j < numberOfSlices; j++) {
-                float cosFactor1 = (float) Math
-                        .cos((span * j) / numberOfSlices);
-                float sinFactor1 = (float) Math
-                        .sin((span * j) / numberOfSlices);
-                float cosFactor2 = (float) Math.cos((span * (j + 1))
+                float cosFactor1 = (float) Math.cos(span * j / numberOfSlices);
+                float sinFactor1 = (float) Math.sin(span * j / numberOfSlices);
+                float cosFactor2 = (float) Math.cos(span * (j + 1)
                         / numberOfSlices);
-                float sinFactor2 = (float) Math.sin((span * (j + 1))
+                float sinFactor2 = (float) Math.sin(span * (j + 1)
                         / numberOfSlices);
 
                 polydata[k] = data[m] * cosFactor1;
@@ -220,13 +218,12 @@ public class CircularSweep3D extends GRShadedShape {
      *   cannot be evaluated.
      */
     private float[] _getPolyline() throws IllegalActionException {
-        ArrayToken token = ((ArrayToken) polyline.getToken());
+        ArrayToken token = (ArrayToken) polyline.getToken();
         int numberOfElements = token.length();
         float[] data = new float[numberOfElements];
 
         for (int i = 0; i < numberOfElements; i++) {
-            data[i] = (float) ((DoubleToken) (token.getElement(i)))
-                    .doubleValue();
+            data[i] = (float) ((DoubleToken) token.getElement(i)).doubleValue();
         }
 
         return data;
@@ -238,7 +235,7 @@ public class CircularSweep3D extends GRShadedShape {
      *   cannot be evaluated.
      */
     private int _getVertexCount() throws IllegalActionException {
-        ArrayToken token = ((ArrayToken) polyline.getToken());
+        ArrayToken token = (ArrayToken) polyline.getToken();
         return token.length() / 2;
     }
 

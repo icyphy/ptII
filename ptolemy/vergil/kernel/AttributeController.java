@@ -134,8 +134,8 @@ public class AttributeController extends IconController {
     public static void renderHighlight(NamedObj namedObj, Figure figure) {
         // New way to specify a highlight color.
         try {
-            ColorAttribute highlightAttribute = (ColorAttribute) (namedObj
-                    .getAttribute("_highlightColor", ColorAttribute.class));
+            ColorAttribute highlightAttribute = (ColorAttribute) namedObj
+                    .getAttribute("_highlightColor", ColorAttribute.class);
             if (highlightAttribute != null
                     && !highlightAttribute.getExpression().trim().equals("")) {
                 Color color = highlightAttribute.asColor();

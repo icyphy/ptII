@@ -69,8 +69,7 @@ public class ConstructAssociativeType extends MonotonicFunction {
             // only consider ports that are connected
             if (port.isOutput() && port.numberOfSinks() > 0) {
                 _ports.add(port);
-            }
-            else if (port.isInput() && port.numberOfSources() > 0) {
+            } else if (port.isInput() && port.numberOfSources() > 0) {
                 _ports.add(port);
             }
         }

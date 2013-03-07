@@ -87,11 +87,11 @@ public class PhaseUnwrap extends Transformer {
             double phaseChange = newPhase - _previousPhaseInput;
 
             if (phaseChange < -Math.PI) {
-                phaseChange += (2 * Math.PI);
+                phaseChange += 2 * Math.PI;
             }
 
             if (phaseChange > Math.PI) {
-                phaseChange -= (2 * Math.PI);
+                phaseChange -= 2 * Math.PI;
             }
 
             _tempPreviousPhaseOutput = _previousPhaseOutput + phaseChange;

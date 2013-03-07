@@ -297,15 +297,15 @@ public class ModalController extends NamedProgramCodeGeneratorAdapter {
             Actor[] actors = state.getRefinement();
 
             if (actors != null) {
-                for (int i = 0; i < actors.length; i++) {
+                for (Actor actor : actors) {
                     NamedProgramCodeGeneratorAdapter actorHelper = (NamedProgramCodeGeneratorAdapter) getCodeGenerator()
-                            .getAdapter(actors[i]);
+                            .getAdapter(actor);
 
                     // fire the actor
 
                     code.append(actorHelper.generateFireCode());
 
-                    List<IOPort> outputPorts = actors[i].outputPortList();
+                    List<IOPort> outputPorts = actor.outputPortList();
                     for (IOPort outputPort : outputPorts) {
 
                         String source = outputPort.getFullName().substring(1)
@@ -365,19 +365,19 @@ public class ModalController extends NamedProgramCodeGeneratorAdapter {
         String str;
         Receiver rec[][] = port.getRemoteReceivers();
 
-        for (int i = 0; i < rec.length; i++) {
-            for (int j = 0; j < rec[i].length; j++) {
+        for (Receiver[] element : rec) {
+            for (int j = 0; j < element.length; j++) {
                 //str = rec[i][j].toString();
                 //str = str.substring(str.indexOf("{") + 2, str.lastIndexOf("."));
                 //str = str.replace('.', '_');
                 code.append(getCodeGenerator().comment(
                         "MC: updatePortOffsets: "
-                                + rec[i][j].getContainer().getFullName()));
-                String portName = StringUtilities.sanitizeName(rec[i][j]
+                                + element[j].getContainer().getFullName()));
+                String portName = StringUtilities.sanitizeName(element[j]
                         .getContainer().getFullName());
                 // FIXME: Defaulting to buffer size 1.
                 str = getCodeGenerator().generatePortName(
-                        (TypedIOPort) rec[i][j].getContainer(),
+                        (TypedIOPort) element[j].getContainer(),
                         portName.substring(1), 1);
                 code.append(str + " = ");
             }
@@ -415,9 +415,9 @@ public class ModalController extends NamedProgramCodeGeneratorAdapter {
         String str;
         Receiver rec[][] = port.getRemoteReceivers();
 
-        for (int i = 0; i < rec.length; i++) {
-            for (int j = 0; j < rec[i].length; j++) {
-                str = rec[i][j].toString();
+        for (Receiver[] element : rec) {
+            for (int j = 0; j < element.length; j++) {
+                str = element[j].toString();
                 str = str.substring(str.indexOf("{") + 2, str.lastIndexOf("."));
                 str = str.replace('.', '_');
 
@@ -551,8 +551,8 @@ public class ModalController extends NamedProgramCodeGeneratorAdapter {
             Set<Actor> actorsSet = new HashSet();
             ;
             if (actors != null) {
-                for (int i = 0; i < actors.length; i++) {
-                    actorsSet.add(actors[i]);
+                for (Actor actor : actors) {
+                    actorsSet.add(actor);
                 }
             }
 
@@ -595,7 +595,8 @@ public class ModalController extends NamedProgramCodeGeneratorAdapter {
             try {
                 return state.nonpreemptiveTransitionList().iterator();
             } catch (IllegalActionException e) {
-                throw new InternalErrorException(state, e, "Error evaluating transition parameters.");
+                throw new InternalErrorException(state, e,
+                        "Error evaluating transition parameters.");
             }
         }
     }
@@ -611,7 +612,8 @@ public class ModalController extends NamedProgramCodeGeneratorAdapter {
             try {
                 return state.preemptiveTransitionList().iterator();
             } catch (IllegalActionException e) {
-                throw new InternalErrorException(state, e, "Error evaluating transition parameters.");
+                throw new InternalErrorException(state, e,
+                        "Error evaluating transition parameters.");
             }
         }
     }

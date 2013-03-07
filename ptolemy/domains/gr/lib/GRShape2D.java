@@ -120,8 +120,8 @@ abstract public class GRShape2D extends GRActor2D {
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
-        if (((attribute == rgbFillColor) || (attribute == rgbOutlineColor) || (attribute == outlineWidth))
-                && (_viewScreen != null)) {
+        if ((attribute == rgbFillColor || attribute == rgbOutlineColor || attribute == outlineWidth)
+                && _viewScreen != null) {
             _setAppearance(_figure);
         }
 

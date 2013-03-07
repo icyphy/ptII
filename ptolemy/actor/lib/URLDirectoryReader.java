@@ -267,17 +267,17 @@ public class URLDirectoryReader extends URLReader {
                     File[] files = file.listFiles();
                     List resultsList = new LinkedList();
 
-                    for (int i = 0; i < files.length; i++) {
-                        String filename = files[i].getName();
+                    for (File file2 : files) {
+                        String filename = file2.getName();
 
-                        if ((endsWith == null) || (endsWith.length() == 0)
+                        if (endsWith == null || endsWith.length() == 0
                                 || filename.endsWith(endsWith)) {
                             resultsList.add(source + filename);
                         }
                     }
 
                     String[] results = new String[resultsList.size()];
-                    return (String[]) (resultsList.toArray(results));
+                    return (String[]) resultsList.toArray(results);
                 } else if (file.isFile()) {
                     return new String[] { file.toString() };
                 } else {
@@ -393,8 +393,8 @@ public class URLDirectoryReader extends URLReader {
                                             // could try opening a connection
                                             // here to verify that the target
                                             // exists.
-                                            if ((endsWith == null)
-                                                    || (endsWith.length() == 0)
+                                            if (endsWith == null
+                                                    || endsWith.length() == 0
                                                     || target
                                                             .endsWith(endsWith)) {
                                                 resultsList
@@ -417,7 +417,7 @@ public class URLDirectoryReader extends URLReader {
         }
 
         String[] results = new String[resultsList.size()];
-        return (String[]) (resultsList.toArray(results));
+        return (String[]) resultsList.toArray(results);
     }
 
     ///////////////////////////////////////////////////////////////////

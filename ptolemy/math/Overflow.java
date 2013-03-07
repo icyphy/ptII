@@ -327,7 +327,7 @@ public abstract class Overflow implements Cloneable, Serializable {
      * @return FixPoint value with as few bits as necessary.
      */
     public static FixPoint quantizeMinimum(BigInteger bigInt, Precision p) {
-        int sign = (p.isSigned() ? 1 : 0);
+        int sign = p.isSigned() ? 1 : 0;
         int int_bits = bigInt.bitLength();
         if (int_bits == 0) {
             int_bits++;

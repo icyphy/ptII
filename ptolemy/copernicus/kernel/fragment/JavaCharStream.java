@@ -125,7 +125,7 @@ public class JavaCharStream {
                         - tokenBegin, bufpos);
                 bufcolumn = newbufcolumn;
 
-                bufpos += (bufsize - tokenBegin);
+                bufpos += bufsize - tokenBegin;
             } else {
                 System.arraycopy(buffer, tokenBegin, newbuffer, 0, bufsize
                         - tokenBegin);
@@ -145,7 +145,7 @@ public class JavaCharStream {
             throw new Error(t.getMessage());
         }
 
-        available = (bufsize += 2048);
+        available = bufsize += 2048;
         tokenBegin = 0;
     }
 
@@ -215,7 +215,7 @@ public class JavaCharStream {
             }
         } else if (available > tokenBegin) {
             available = bufsize;
-        } else if ((tokenBegin - available) < 2048) {
+        } else if (tokenBegin - available < 2048) {
             ExpandBuff(true);
         } else {
             available = tokenBegin;
@@ -227,14 +227,14 @@ public class JavaCharStream {
 
         if (prevCharIsLF) {
             prevCharIsLF = false;
-            line += (column = 1);
+            line += column = 1;
         } else if (prevCharIsCR) {
             prevCharIsCR = false;
 
             if (c == '\n') {
                 prevCharIsLF = true;
             } else {
-                line += (column = 1);
+                line += column = 1;
             }
         }
 
@@ -249,7 +249,7 @@ public class JavaCharStream {
 
         case '\t':
             column--;
-            column += (8 - (column & 07));
+            column += 8 - (column & 07);
             break;
 
         default:
@@ -293,7 +293,7 @@ public class JavaCharStream {
                         UpdateLineColumn(c);
 
                         // found a non-backslash char.
-                        if ((c == 'u') && ((backSlashCnt & 1) == 1)) {
+                        if (c == 'u' && (backSlashCnt & 1) == 1) {
                             if (--bufpos < 0) {
                                 bufpos = bufsize - 1;
                             }
@@ -322,8 +322,8 @@ public class JavaCharStream {
                     ++column;
                 }
 
-                buffer[bufpos] = c = (char) ((hexval(c) << 12)
-                        | (hexval(ReadByte()) << 8) | (hexval(ReadByte()) << 4) | hexval(ReadByte()));
+                buffer[bufpos] = c = (char) (hexval(c) << 12
+                        | hexval(ReadByte()) << 8 | hexval(ReadByte()) << 4 | hexval(ReadByte()));
 
                 column += 4;
             } catch (java.io.IOException e) {
@@ -339,7 +339,7 @@ public class JavaCharStream {
             }
         } else {
             UpdateLineColumn(c);
-            return (c);
+            return c;
         }
     }
 
@@ -410,7 +410,7 @@ public class JavaCharStream {
         line = startline;
         column = startcolumn - 1;
 
-        if ((buffer == null) || (buffersize != buffer.length)) {
+        if (buffer == null || buffersize != buffer.length) {
             available = bufsize = buffersize;
             buffer = new char[buffersize];
             bufline = new int[buffersize];
@@ -473,7 +473,7 @@ public class JavaCharStream {
     public char[] GetSuffix(int len) {
         char[] ret = new char[len];
 
-        if ((bufpos + 1) >= len) {
+        if (bufpos + 1 >= len) {
             System.arraycopy(buffer, bufpos - len + 1, ret, 0, len);
         } else {
             System.arraycopy(buffer, bufsize - (len - bufpos - 1), ret, 0, len
@@ -510,11 +510,11 @@ public class JavaCharStream {
         int nextColDiff = 0;
         int columnDiff = 0;
 
-        while ((i < len)
-                && (bufline[j = start % bufsize] == bufline[k = ++start
-                        % bufsize])) {
+        while (i < len
+                && bufline[j = start % bufsize] == bufline[k = ++start
+                        % bufsize]) {
             bufline[j] = newLine;
-            nextColDiff = (columnDiff + bufcolumn[k]) - bufcolumn[j];
+            nextColDiff = columnDiff + bufcolumn[k] - bufcolumn[j];
             bufcolumn[j] = newCol + columnDiff;
             columnDiff = nextColDiff;
             i++;

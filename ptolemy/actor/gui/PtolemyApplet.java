@@ -203,7 +203,7 @@ public class PtolemyApplet extends BasicJApplet implements ExecutionListener {
 
             // This might not actually be a top level, because we might
             // be looking inside.  So we check before creating a manager.
-            if ((_toplevel.getContainer() == null)
+            if (_toplevel.getContainer() == null
                     && _toplevel instanceof CompositeActor) {
                 if (((CompositeActor) _toplevel).getManager() == null) {
                     _manager = new Manager(_workspace, "manager");
@@ -276,7 +276,7 @@ public class PtolemyApplet extends BasicJApplet implements ExecutionListener {
      *  of the manager. If there is no manager, do nothing.
      */
     public void stop() {
-        if ((_manager != null) && _setupOK) {
+        if (_manager != null && _setupOK) {
             _manager.stop();
         }
     }
@@ -313,8 +313,7 @@ public class PtolemyApplet extends BasicJApplet implements ExecutionListener {
             Constructor[] constructors = modelClass.getConstructors();
             boolean foundConstructor = false;
 
-            for (int i = 0; i < constructors.length; i++) {
-                Constructor constructor = constructors[i];
+            for (Constructor constructor : constructors) {
                 Class[] parameterTypes = constructor.getParameterTypes();
 
                 if (parameterTypes.length != arguments.length) {
@@ -324,7 +323,7 @@ public class PtolemyApplet extends BasicJApplet implements ExecutionListener {
                 boolean match = true;
 
                 for (int j = 0; j < parameterTypes.length; j++) {
-                    if (!(parameterTypes[j].isInstance(arguments[j]))) {
+                    if (!parameterTypes[j].isInstance(arguments[j])) {
                         match = false;
                         break;
                     }
@@ -440,8 +439,8 @@ public class PtolemyApplet extends BasicJApplet implements ExecutionListener {
             }
         }
 
-        ModelPane pane = new ModelPane(((CompositeActor) _toplevel),
-                orientation, controls);
+        ModelPane pane = new ModelPane((CompositeActor) _toplevel, orientation,
+                controls);
         pane.setBackground(null);
         getContentPane().add(pane);
     }

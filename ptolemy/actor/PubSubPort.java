@@ -138,7 +138,7 @@ public abstract class PubSubPort extends TypedIOPort implements
      *   an attribute that cannot be cloned.
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        PubSubPort newObject = (PubSubPort) (super.clone(workspace));
+        PubSubPort newObject = (PubSubPort) super.clone(workspace);
 
         // Set the type constraints.
         try {

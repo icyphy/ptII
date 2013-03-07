@@ -177,7 +177,7 @@ public class ArrayPlotter extends Plotter implements SequenceActor {
         int width = input.getWidth();
         _offset = ((IntToken) startingDataset.getToken()).intValue();
 
-        if ((_tokens == null) || (_tokens.length != width)) {
+        if (_tokens == null || _tokens.length != width) {
             _tokens = new ArrayToken[width];
         }
 
@@ -193,8 +193,8 @@ public class ArrayPlotter extends Plotter implements SequenceActor {
                     // NOTE: We assume the superclass ensures this cast is safe.
                     ((PlotInterface) plot).clear(i + _offset);
 
-                    for (int j = 0; j < currentArray.length; j++) {
-                        double currentValue = ((DoubleToken) currentArray[j])
+                    for (Token element : currentArray) {
+                        double currentValue = ((DoubleToken) element)
                                 .doubleValue();
                         ((PlotInterface) plot).addPoint(i + _offset, xValue,
                                 currentValue, true);
@@ -230,8 +230,8 @@ public class ArrayPlotter extends Plotter implements SequenceActor {
                     // NOTE: We assume the superclass ensures this cast is safe.
                     ((PlotInterface) plot).clear(i + _offset);
 
-                    for (int j = 0; j < currentArray.length; j++) {
-                        double currentValue = ((DoubleToken) currentArray[j])
+                    for (Token element : currentArray) {
+                        double currentValue = ((DoubleToken) element)
                                 .doubleValue();
                         ((PlotInterface) plot).addPoint(i + _offset, xValue,
                                 currentValue, true);

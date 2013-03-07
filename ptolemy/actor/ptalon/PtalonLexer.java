@@ -236,21 +236,21 @@ public class PtalonLexer extends antlr.CharScanner implements PtalonTokenTypes,
                         break;
                     }
                     default:
-                        if ((LA(1) == ':') && (LA(2) == '=')) {
+                        if (LA(1) == ':' && LA(2) == '=') {
                             mASSIGN(true);
-                        } else if ((LA(1) == '=') && (LA(2) == '>')) {
+                        } else if (LA(1) == '=' && LA(2) == '>') {
                             mTRANSFORM(true);
-                        } else if ((LA(1) == '/') && (LA(2) == '/')) {
+                        } else if (LA(1) == '/' && LA(2) == '/') {
                             mLINE_COMMENT(true);
-                        } else if ((LA(1) == '[') && (LA(2) == '[')) {
+                        } else if (LA(1) == '[' && LA(2) == '[') {
                             mEXPRESSION(true);
-                        } else if ((LA(1) == '/') && (LA(2) == '*')) {
+                        } else if (LA(1) == '/' && LA(2) == '*') {
                             mCOMMENT(true);
-                        } else if ((LA(1) == '[') && (true)) {
+                        } else if (LA(1) == '[' && true) {
                             mLBRACKET(true);
-                        } else if ((LA(1) == '=') && (true)) {
+                        } else if (LA(1) == '=' && true) {
                             mEQUALS(true);
-                        } else if ((LA(1) == ':') && (true)) {
+                        } else if (LA(1) == ':' && true) {
                             mCOLON(true);
                         } else {
                             if (LA(1) == EOF_CHAR) {
@@ -735,7 +735,7 @@ public class PtalonLexer extends antlr.CharScanner implements PtalonTokenTypes,
         {
             int _cnt92 = 0;
             _loop92: do {
-                if (((LA(1) >= '0' && LA(1) <= '9'))) {
+                if (LA(1) >= '0' && LA(1) <= '9') {
                     matchRange('0', '9');
                 } else {
                     if (_cnt92 >= 1) {
@@ -750,12 +750,12 @@ public class PtalonLexer extends antlr.CharScanner implements PtalonTokenTypes,
             } while (true);
         }
         {
-            if ((LA(1) == '.')) {
+            if (LA(1) == '.') {
                 match('.');
                 {
                     int _cnt95 = 0;
                     _loop95: do {
-                        if (((LA(1) >= '0' && LA(1) <= '9'))) {
+                        if (LA(1) >= '0' && LA(1) <= '9') {
                             matchRange('0', '9');
                         } else {
                             if (_cnt95 >= 1) {
@@ -964,12 +964,12 @@ public class PtalonLexer extends antlr.CharScanner implements PtalonTokenTypes,
             case '\n':
             case '\r': {
                 {
-                    if ((LA(1) == '\r') && (LA(2) == '\n')) {
+                    if (LA(1) == '\r' && LA(2) == '\n') {
                         match('\r');
                         match('\n');
-                    } else if ((LA(1) == '\r') && (true)) {
+                    } else if (LA(1) == '\r' && true) {
                         match('\r');
-                    } else if ((LA(1) == '\n')) {
+                    } else if (LA(1) == '\n') {
                         match('\n');
                     } else {
                         throw new NoViableAltForCharException(LA(1),
@@ -1005,7 +1005,7 @@ public class PtalonLexer extends antlr.CharScanner implements PtalonTokenTypes,
         match("//");
         {
             _loop106: do {
-                if ((_tokenSet_1.member(LA(1)))) {
+                if (_tokenSet_1.member(LA(1))) {
                     {
                         match(_tokenSet_1);
                     }
@@ -1016,16 +1016,16 @@ public class PtalonLexer extends antlr.CharScanner implements PtalonTokenTypes,
             } while (true);
         }
         {
-            if ((LA(1) == '\n' || LA(1) == '\r')) {
+            if (LA(1) == '\n' || LA(1) == '\r') {
                 {
-                    if ((LA(1) == '\r') && (LA(2) == '\n')) {
+                    if (LA(1) == '\r' && LA(2) == '\n') {
                         {
                             match('\r');
                             match('\n');
                         }
-                    } else if ((LA(1) == '\r') && (true)) {
+                    } else if (LA(1) == '\r' && true) {
                         match('\r');
-                    } else if ((LA(1) == '\n')) {
+                    } else if (LA(1) == '\n') {
                         match('\n');
                     } else {
                         throw new NoViableAltForCharException(LA(1),
@@ -1061,12 +1061,12 @@ public class PtalonLexer extends antlr.CharScanner implements PtalonTokenTypes,
         {
             _loop112: do {
                 // nongreedy exit test
-                if ((LA(1) == ']') && (LA(2) == ']') && (true)) {
+                if (LA(1) == ']' && LA(2) == ']' && true) {
                     break _loop112;
                 }
-                if (((LA(1) >= '\u0000' && LA(1) <= '\u007f'))
-                        && ((LA(2) >= '\u0000' && LA(2) <= '\u007f'))
-                        && ((LA(3) >= '\u0000' && LA(3) <= '\u007f'))) {
+                if (LA(1) >= '\u0000' && LA(1) <= '\u007f' && LA(2) >= '\u0000'
+                        && LA(2) <= '\u007f' && LA(3) >= '\u0000'
+                        && LA(3) <= '\u007f') {
                     matchNot(EOF_CHAR);
                 } else {
                     break _loop112;
@@ -1096,12 +1096,12 @@ public class PtalonLexer extends antlr.CharScanner implements PtalonTokenTypes,
         {
             _loop115: do {
                 // nongreedy exit test
-                if ((LA(1) == '*') && (LA(2) == '/') && (true)) {
+                if (LA(1) == '*' && LA(2) == '/' && true) {
                     break _loop115;
                 }
-                if (((LA(1) >= '\u0000' && LA(1) <= '\u007f'))
-                        && ((LA(2) >= '\u0000' && LA(2) <= '\u007f'))
-                        && ((LA(3) >= '\u0000' && LA(3) <= '\u007f'))) {
+                if (LA(1) >= '\u0000' && LA(1) <= '\u007f' && LA(2) >= '\u0000'
+                        && LA(2) <= '\u007f' && LA(3) >= '\u0000'
+                        && LA(3) <= '\u007f') {
                     matchNot(EOF_CHAR);
                 } else {
                     break _loop115;

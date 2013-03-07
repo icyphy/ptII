@@ -107,7 +107,7 @@ public class AdaptiveMedian extends Transformer {
         if (attribute == maxWindowSize) {
             _maxWindowSize = ((IntToken) maxWindowSize.getToken()).intValue();
 
-            if ((_maxWindowSize % 2) == 0) {
+            if (_maxWindowSize % 2 == 0) {
                 throw new IllegalActionException(this,
                         "Window Size must be odd!!");
             }
@@ -139,8 +139,8 @@ public class AdaptiveMedian extends Transformer {
                     // Check if we can create a region of interest or
                     // not.  If we can't (i.e. we are at or near the
                     // edge of an image) then just keep the data.
-                    if (((i - dist) < 0) || ((j - dist) < 0)
-                            || ((i + dist) >= width) || ((j + dist) >= height)) {
+                    if (i - dist < 0 || j - dist < 0 || i + dist >= width
+                            || j + dist >= height) {
                         outputData[i][j] = data[i][j];
                         windowSize = 3;
                         break;
@@ -148,8 +148,8 @@ public class AdaptiveMedian extends Transformer {
                         double[][] temp = new double[windowSize][windowSize];
 
                         // Create a local region of interest around the pixel.
-                        for (int k = (i - dist); k <= (i + dist); k++) {
-                            for (int l = (j - dist); l <= (j + dist); l++) {
+                        for (int k = i - dist; k <= i + dist; k++) {
+                            for (int l = j - dist; l <= j + dist; l++) {
                                 temp[k - (i - dist)][l - (j - dist)] = data[k][l];
                             }
                         }
@@ -169,8 +169,8 @@ public class AdaptiveMedian extends Transformer {
                         // output the medium because there is a very
                         // good chance that the pixel was noised.
                         // After this, the window size is reset.
-                        if ((median > min) && (median < max)) {
-                            if ((data[i][j] > min) && (data[i][j] < max)) {
+                        if (median > min && median < max) {
+                            if (data[i][j] > min && data[i][j] < max) {
                                 outputData[i][j] = data[i][j];
                                 windowSize = 3;
                                 break;
@@ -231,12 +231,12 @@ public class AdaptiveMedian extends Transformer {
 
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
-                median[(i * size) + j] = input[i][j];
+                median[i * size + j] = input[i][j];
             }
         }
 
-        for (int i = 0; i < (size * size); i++) {
-            for (int j = 0; j < ((size * size) - 1); j++) {
+        for (int i = 0; i < size * size; i++) {
+            for (int j = 0; j < size * size - 1; j++) {
                 if (median[j] > median[j + 1]) {
                     double temporaryValue = median[j];
                     median[j] = median[j + 1];
@@ -245,7 +245,7 @@ public class AdaptiveMedian extends Transformer {
             }
         }
 
-        return median[((size * size) - 1) / 2];
+        return median[(size * size - 1) / 2];
     }
 
     /** Find the minimum value in a region of interest.

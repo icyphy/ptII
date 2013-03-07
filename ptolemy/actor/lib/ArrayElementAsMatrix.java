@@ -172,8 +172,8 @@ public class ArrayElementAsMatrix extends Transformer {
                     || yOffsetValue < 0
                     || xValue < 0
                     || yValue < 0
-                    || (xValue * xOffsetValue + yValue * yOffsetValue >= token
-                            .length())) {
+                    || xValue * xOffsetValue + yValue * yOffsetValue >= token
+                            .length()) {
                 throw new IllegalActionException(this, "xValue (" + xValue
                         + ") * xOffsetValue *(" + xOffsetValue
                         + " ) + yValue (" + yValue + ") * yOffsetValue ("

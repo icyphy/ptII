@@ -168,8 +168,8 @@ public class JAIAffineTransform extends Transformer {
             DoubleMatrixToken affineMatrixToken = (DoubleMatrixToken) affineMatrix
                     .getToken();
 
-            if ((affineMatrixToken.getColumnCount() == 3)
-                    && (affineMatrixToken.getRowCount() == 2)) {
+            if (affineMatrixToken.getColumnCount() == 3
+                    && affineMatrixToken.getRowCount() == 2) {
                 _matrixValue = affineMatrixToken.doubleMatrix();
                 _affineTransform = new AffineTransform(_matrixValue[0][0],
                         _matrixValue[1][0], _matrixValue[0][1],

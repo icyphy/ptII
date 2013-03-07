@@ -93,7 +93,7 @@ public abstract class ConceptFunction {
         }
 
         _name = name;
-        _numArgsIsFixed = (numArgs >= 0);
+        _numArgsIsFixed = numArgs >= 0;
         _outputRangeOntology = inputOutputOntology;
         _argumentDomainOntologies = new LinkedList<Ontology>();
         if (_numArgsIsFixed) {

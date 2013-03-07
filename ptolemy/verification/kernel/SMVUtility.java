@@ -168,8 +168,7 @@ public class SMVUtility {
         // List out all FSMs/ModalModels(with refinements) with their
         // states and transitions.
 
-        for (Iterator actors = (model.entityList()).iterator(); actors
-                .hasNext();) {
+        for (Iterator actors = model.entityList().iterator(); actors.hasNext();) {
             Entity innerEntity = (Entity) actors.next();
             if (innerEntity instanceof FSMActor) {
                 // Directly generate the whole description of the system.
@@ -219,11 +218,10 @@ public class SMVUtility {
         mainModuleDescription.append("\n\nMODULE main \n");
         mainModuleDescription.append("\tVAR \n");
 
-        for (Iterator actors = (model.entityList()).iterator(); actors
-                .hasNext();) {
+        for (Iterator actors = model.entityList().iterator(); actors.hasNext();) {
             Entity innerEntity = (Entity) actors.next();
-            if ((innerEntity instanceof FSMActor)
-                    || (innerEntity instanceof ModalModel)) {
+            if (innerEntity instanceof FSMActor
+                    || innerEntity instanceof ModalModel) {
                 mainModuleDescription.append("\t\t" + innerEntity.getName()
                         + ": " + innerEntity.getName() + "(");
 
@@ -455,16 +453,15 @@ public class SMVUtility {
                 // Retrieve the guardExpression for checking the existence
                 // of inner variables used in FmcAutomaton.
                 String guard = transition.getGuardExpression();
-                if ((guard != null) && !guard.trim().equals("")) {
+                if (guard != null && !guard.trim().equals("")) {
                     if (hasAnnotation) {
                         // do nothing
                     } else {
                         // Separate each guard expression into substring
                         String[] guardSplitExpression = guard.split("(&&)");
                         if (guardSplitExpression.length != 0) {
-                            for (int i = 0; i < guardSplitExpression.length; i++) {
-                                String subGuardCondition = guardSplitExpression[i]
-                                        .trim();
+                            for (String element : guardSplitExpression) {
+                                String subGuardCondition = element.trim();
                                 // Retrieve the left value of the inequality.
                                 String[] characterOfSubGuard = subGuardCondition
                                         .split("(>=)|(<=)|(==)|(!=)|[><]");
@@ -577,11 +574,11 @@ public class SMVUtility {
                 }
 
                 String expression = transition.outputActions.getExpression();
-                if ((expression != null) && !expression.trim().equals("")) {
+                if (expression != null && !expression.trim().equals("")) {
                     // Retrieve possible value of the variable
                     String[] splitExpression = expression.split(";");
-                    for (int i = 0; i < splitExpression.length; i++) {
-                        String[] characters = splitExpression[i].split("=");
+                    for (String element : splitExpression) {
+                        String[] characters = element.split("=");
                         String lValue_isPresent = characters[0].trim()
                                 + "_isPresent";
 
@@ -697,7 +694,7 @@ public class SMVUtility {
                 // Retrieve the guardExpression for checking the existence
                 // of inner variables used in FmcAutomaton.
                 String guard = transition.getGuardExpression();
-                if ((guard != null) && !guard.trim().equals("")) {
+                if (guard != null && !guard.trim().equals("")) {
                     if (hasAnnotation) {
                         // do nothing
                     } else {
@@ -708,10 +705,9 @@ public class SMVUtility {
                         // Separate each guard expression into substring
                         String[] guardSplitExpression = guard.split("(&&)");
                         if (guardSplitExpression.length != 0) {
-                            for (int i = 0; i < guardSplitExpression.length; i++) {
+                            for (String element : guardSplitExpression) {
 
-                                String subGuardCondition = guardSplitExpression[i]
-                                        .trim();
+                                String subGuardCondition = element.trim();
                                 // Retrieve the left value of the
                                 // inequality.
                                 String[] characterOfSubGuard = subGuardCondition
@@ -819,11 +815,11 @@ public class SMVUtility {
                 }
 
                 String expression = transition.setActions.getExpression();
-                if ((expression != null) && !expression.trim().equals("")) {
+                if (expression != null && !expression.trim().equals("")) {
                     // Retrieve possible value of the variable
                     String[] splitExpression = expression.split(";");
-                    for (int i = 0; i < splitExpression.length; i++) {
-                        String[] characters = splitExpression[i].split("=");
+                    for (String element : splitExpression) {
+                        String[] characters = element.split("=");
                         if (characters.length >= 1) {
                             String lValue = characters[0].trim();
                             if (Pattern.matches("^-?\\d+$",
@@ -961,7 +957,7 @@ public class SMVUtility {
 
             // create initial state
             State stateInThis = actor.getInitialState();
-            String name = (stateInThis == null ? "" : stateInThis.getName());
+            String name = stateInThis == null ? "" : stateInThis.getName();
             frontier.put(name, stateInThis);
             returnStateSet.add(stateInThis);
             // iterate
@@ -1103,7 +1099,7 @@ public class SMVUtility {
 
                 HashSet<String> variableUsedInTransitionSet = new HashSet<String>();
 
-                if ((guard != null) && !guard.trim().equals("")) {
+                if (guard != null && !guard.trim().equals("")) {
                     if (hasAnnotation) {
 
                     } else {
@@ -1117,10 +1113,9 @@ public class SMVUtility {
                         String[] guardSplitExpression = guard.split("(&&)");
 
                         if (guardSplitExpression.length != 0) {
-                            for (int i = 0; i < guardSplitExpression.length; i++) {
+                            for (String element : guardSplitExpression) {
                                 // Trim tab/space
-                                String subGuardCondition = guardSplitExpression[i]
-                                        .trim();
+                                String subGuardCondition = element.trim();
 
                                 // Retrieve the left value of the
                                 // inequality. Here we may still have two
@@ -1180,15 +1175,14 @@ public class SMVUtility {
                     }
                 }
 
-                if ((setAction != null) && !setAction.trim().equals("")) {
+                if (setAction != null && !setAction.trim().equals("")) {
 
                     String[] setActionSplitExpression = setAction.split("(;)");
 
                     if (setActionSplitExpression.length != 0) {
-                        for (int i = 0; i < setActionSplitExpression.length; i++) {
+                        for (String element : setActionSplitExpression) {
                             // Trim tab/space
-                            String subSetActionCondition = setActionSplitExpression[i]
-                                    .trim();
+                            String subSetActionCondition = element.trim();
 
                             String[] characterOfSubSetAction = subSetActionCondition
                                     .split("(=)");
@@ -1201,14 +1195,13 @@ public class SMVUtility {
 
                 }
 
-                if ((outputAction != null) && !outputAction.trim().equals("")) {
+                if (outputAction != null && !outputAction.trim().equals("")) {
                     String[] outputActionSplitExpression = outputAction
                             .split("(;)");
                     if (outputActionSplitExpression.length != 0) {
-                        for (int i = 0; i < outputActionSplitExpression.length; i++) {
+                        for (String element : outputActionSplitExpression) {
                             // Trim tab/space
-                            String subOutputActionCondition = outputActionSplitExpression[i]
-                                    .trim();
+                            String subOutputActionCondition = element.trim();
 
                             String[] characterOfSubOutputAction = subOutputActionCondition
                                     .split("(=)");
@@ -1310,17 +1303,16 @@ public class SMVUtility {
                 // guard expression says that X<3, then the domain would be
                 // restricted to only {1,2}.
 
-                if ((guard != null) && !guard.trim().equals("")) {
+                if (guard != null && !guard.trim().equals("")) {
                     if (hasAnnotation) {
                         // do nothing
                     } else {
                         // Separate each guard expression into substring
                         String[] guardSplitExpression = guard.split("(&&)");
                         if (guardSplitExpression.length != 0) {
-                            for (int i = 0; i < guardSplitExpression.length; i++) {
+                            for (String element : guardSplitExpression) {
 
-                                String subGuardCondition = guardSplitExpression[i]
-                                        .trim();
+                                String subGuardCondition = element.trim();
 
                                 // Retrieve the left value of the
                                 // inequality.
@@ -1879,12 +1871,12 @@ public class SMVUtility {
                 String setActionExpression = transition.setActions
                         .getExpression();
 
-                if ((setActionExpression != null)
+                if (setActionExpression != null
                         && !setActionExpression.trim().equals("")) {
                     // Retrieve possible value of the variable
                     String[] splitExpression = setActionExpression.split(";");
-                    for (int i = 0; i < splitExpression.length; i++) {
-                        String[] characters = splitExpression[i].split("=");
+                    for (String element : splitExpression) {
+                        String[] characters = element.split("=");
                         if (characters.length >= 1) {
                             String lValue = characters[0].trim();
                             String rValue = characters[1].trim();
@@ -2156,13 +2148,13 @@ public class SMVUtility {
 
                 String outputActionExpression = transition.outputActions
                         .getExpression();
-                if ((outputActionExpression != null)
+                if (outputActionExpression != null
                         && !outputActionExpression.trim().equals("")) {
                     // Retrieve possible value of the variable
                     String[] splitExpression = outputActionExpression
                             .split(";");
-                    for (int i = 0; i < splitExpression.length; i++) {
-                        String[] characters = splitExpression[i].split("=");
+                    for (String element : splitExpression) {
+                        String[] characters = element.split("=");
                         String lValue = characters[0].trim();
 
                         String statePrecondition = "state="
@@ -2215,8 +2207,7 @@ public class SMVUtility {
         }
 
         // List out all FSMs with their states.
-        for (Iterator actors = (model.entityList()).iterator(); actors
-                .hasNext();) {
+        for (Iterator actors = model.entityList().iterator(); actors.hasNext();) {
             Entity innerEntity = (Entity) actors.next();
             if (innerEntity instanceof FmvAutomaton) {
                 // See if there are states that is marked.
@@ -2282,8 +2273,8 @@ public class SMVUtility {
                     if (state instanceof State) {
                         String refinementList = ((State) state).refinementName
                                 .getExpression();
-                        if ((refinementList == null)
-                                || (refinementList.equalsIgnoreCase(""))) {
+                        if (refinementList == null
+                                || refinementList.equalsIgnoreCase("")) {
                             continue;
                         } else {
                             TypedActor[] innerActors = ((State) state)
@@ -2297,7 +2288,7 @@ public class SMVUtility {
                                         if (upperLevelStatement.toString()
                                                 .trim().equalsIgnoreCase("")) {
                                             HashSet<String> subSpecificationStateSet = _generateGraphicalSpecificationRecursiveStep(
-                                                    ((CompositeActor) innerActor),
+                                                    (CompositeActor) innerActor,
                                                     specType,
                                                     upperLevelStatement
                                                             .append(innerEntity
@@ -2307,7 +2298,7 @@ public class SMVUtility {
                                                     .addAll(subSpecificationStateSet);
                                         } else {
                                             HashSet<String> subSpecificationStateSet = _generateGraphicalSpecificationRecursiveStep(
-                                                    ((CompositeActor) innerActor),
+                                                    (CompositeActor) innerActor,
                                                     specType,
                                                     upperLevelStatement
                                                             .append("."
@@ -2420,7 +2411,7 @@ public class SMVUtility {
             // if the new value is zero, then we should append a negation to the
             // premise
             boolean b2 = Pattern.matches(".*_value", lValue);
-            if ((b2 == true) && (newVariableValue.trim().equalsIgnoreCase("0"))) {
+            if (b2 == true && newVariableValue.trim().equalsIgnoreCase("0")) {
                 // Store in the array with !(currentPremise)
                 VariableTransitionInfo newTransitionInfo = new VariableTransitionInfo();
                 newTransitionInfo._preCondition = " !(" + currentPremise + ") ";
@@ -2468,7 +2459,7 @@ public class SMVUtility {
                     // that is possible to perform transition
                     ArrayList<Integer> vList = valueDomain
                             .get(keySetArray[index]);
-                    if ((vList != null) && (vList.size() != 0)) {
+                    if (vList != null && vList.size() != 0) {
                         for (int i = 0; i < vList.size(); i++) {
 
                             // check whether the offset is positive or negative.
@@ -2523,8 +2514,8 @@ public class SMVUtility {
                                                 && variableInfo._maxValue != null) {
                                             int minimumInBoundary = Integer
                                                     .parseInt(variableInfo._minValue);
-                                            for (int j = 0; j < (Integer
-                                                    .parseInt(newVariableValue)); j++) {
+                                            for (int j = 0; j < Integer
+                                                    .parseInt(newVariableValue); j++) {
 
                                                 // We need to make sure that it
                                                 // would
@@ -2535,7 +2526,7 @@ public class SMVUtility {
                                                 // and use GT to replace the
                                                 // value.
 
-                                                if ((minimumInBoundary + j) > Integer
+                                                if (minimumInBoundary + j > Integer
                                                         .parseInt(variableInfo._maxValue)) {
                                                     _generatePremiseAndResultEachTransitionRecursiveStep(
                                                             newPremise,
@@ -2581,12 +2572,12 @@ public class SMVUtility {
                                             String updatedVariableValue = String
                                                     .valueOf(vList.get(i)
                                                             .intValue()
-                                                            + (Integer
-                                                                    .parseInt(newVariableValue)));
+                                                            + Integer
+                                                                    .parseInt(newVariableValue));
 
                                             if (vList.get(i).intValue()
-                                                    + (Integer
-                                                            .parseInt(newVariableValue)) > Integer
+                                                    + Integer
+                                                            .parseInt(newVariableValue) > Integer
                                                         .parseInt(variableInfo._maxValue)) {
                                                 // Use DOMAIN_GT to replace the
                                                 // value.
@@ -2645,8 +2636,8 @@ public class SMVUtility {
                                                 && variableInfo._maxValue != null) {
                                             int maximumInBoundary = Integer
                                                     .parseInt(variableInfo._maxValue);
-                                            for (int j = 0; j > (Integer
-                                                    .parseInt(newVariableValue)); j--) {
+                                            for (int j = 0; j > Integer
+                                                    .parseInt(newVariableValue); j--) {
                                                 // here j-- because
                                                 // newVariableValue is
                                                 // negative
@@ -2660,7 +2651,7 @@ public class SMVUtility {
                                                 // and use LS to replace the
                                                 // value.
 
-                                                if ((maximumInBoundary + j) < Integer
+                                                if (maximumInBoundary + j < Integer
                                                         .parseInt(variableInfo._minValue)) {
                                                     _generatePremiseAndResultEachTransitionRecursiveStep(
                                                             newPremise,
@@ -2708,12 +2699,12 @@ public class SMVUtility {
                                             String updatedVariableValue = String
                                                     .valueOf(vList.get(i)
                                                             .intValue()
-                                                            + (Integer
-                                                                    .parseInt(newVariableValue)));
+                                                            + Integer
+                                                                    .parseInt(newVariableValue));
 
                                             if (vList.get(i).intValue()
-                                                    + (Integer
-                                                            .parseInt(newVariableValue)) < Integer
+                                                    + Integer
+                                                            .parseInt(newVariableValue) < Integer
                                                         .parseInt(variableInfo._minValue)) {
                                                 // Use DOMAIN_LS to replace the
                                                 // value.
@@ -2747,7 +2738,7 @@ public class SMVUtility {
                     ArrayList<Integer> vList = valueDomain
                             .get(keySetArray[index]);
 
-                    if ((vList != null) && (vList.size() != 0)) {
+                    if (vList != null && vList.size() != 0) {
                         for (int i = 0; i < vList.size(); i++) {
 
                             // check whether the offset is positive or negative.
@@ -2771,8 +2762,8 @@ public class SMVUtility {
                                     VariableInfo variableInfo = _variableInfo
                                             .get(lValue);
                                     if (variableInfo != null) {
-                                        if ((variableInfo._minValue != null)
-                                                && (variableInfo._maxValue != null)) {
+                                        if (variableInfo._minValue != null
+                                                && variableInfo._maxValue != null) {
                                             // If original variable value is GT,
                                             // we
                                             // place conservative analysis and
@@ -2795,8 +2786,8 @@ public class SMVUtility {
 
                                             int maximumInBoundary = Integer
                                                     .parseInt(variableInfo._maxValue);
-                                            for (int j = 0; j < (Integer
-                                                    .parseInt(newVariableValue)); j++) {
+                                            for (int j = 0; j < Integer
+                                                    .parseInt(newVariableValue); j++) {
 
                                                 // We need to make sure that it
                                                 // would
@@ -2807,7 +2798,7 @@ public class SMVUtility {
                                                 // and use LS to replace the
                                                 // value.
 
-                                                if ((maximumInBoundary - j) < Integer
+                                                if (maximumInBoundary - j < Integer
                                                         .parseInt(variableInfo._minValue)) {
                                                     _generatePremiseAndResultEachTransitionRecursiveStep(
                                                             newPremise,
@@ -2848,15 +2839,15 @@ public class SMVUtility {
 
                                     String updatedVariableValue = String
                                             .valueOf(vList.get(i).intValue()
-                                                    - (Integer
-                                                            .parseInt(newVariableValue)));
+                                                    - Integer
+                                                            .parseInt(newVariableValue));
                                     VariableInfo variableInfo = _variableInfo
                                             .get(lValue);
                                     if (variableInfo != null) {
                                         if (variableInfo._minValue != null) {
                                             if (vList.get(i).intValue()
-                                                    - (Integer
-                                                            .parseInt(newVariableValue)) < Integer
+                                                    - Integer
+                                                            .parseInt(newVariableValue) < Integer
                                                         .parseInt(variableInfo._minValue)) {
                                                 // Use DOMAIN_LS to replace the
                                                 // value.
@@ -2913,8 +2904,8 @@ public class SMVUtility {
                                             int minimumInBoundary = Integer
                                                     .parseInt(variableInfo._minValue);
 
-                                            for (int j = 0; j > (Integer
-                                                    .parseInt(newVariableValue)); j--) {
+                                            for (int j = 0; j > Integer
+                                                    .parseInt(newVariableValue); j--) {
 
                                                 // We need to make sure that it
                                                 // would
@@ -2925,7 +2916,7 @@ public class SMVUtility {
                                                 // and use GT to replace the
                                                 // value.
 
-                                                if ((minimumInBoundary - j) < Integer
+                                                if (minimumInBoundary - j < Integer
                                                         .parseInt(variableInfo._maxValue)) {
                                                     _generatePremiseAndResultEachTransitionRecursiveStep(
                                                             newPremise,
@@ -2981,12 +2972,12 @@ public class SMVUtility {
                                             String updatedVariableValue = String
                                                     .valueOf(vList.get(i)
                                                             .intValue()
-                                                            - (Integer
-                                                                    .parseInt(newVariableValue)));
+                                                            - Integer
+                                                                    .parseInt(newVariableValue));
 
                                             if (vList.get(i).intValue()
-                                                    - (Integer
-                                                            .parseInt(newVariableValue)) > Integer
+                                                    - Integer
+                                                            .parseInt(newVariableValue) > Integer
                                                         .parseInt(variableInfo._maxValue)) {
                                                 // Use DOMAIN_LS to replace the
                                                 // value.
@@ -3017,7 +3008,7 @@ public class SMVUtility {
 
                     ArrayList<Integer> vList = valueDomain
                             .get(keySetArray[index]);
-                    if ((vList != null) && (vList.size() != 0)) {
+                    if (vList != null && vList.size() != 0) {
                         for (int i = 0; i < vList.size(); i++) {
 
                             // check whether the offset is positive or negative.
@@ -3098,14 +3089,14 @@ public class SMVUtility {
                                                         * Integer
                                                                 .parseInt(newVariableValue) <= Integer
                                                             .parseInt(variableInfo._maxValue)) {
-                                                    if ((starter
+                                                    if (starter
                                                             * Integer
                                                                     .parseInt(newVariableValue) < Integer
-                                                                .parseInt(variableInfo._minValue))
-                                                            && ((starter + 1)
+                                                                .parseInt(variableInfo._minValue)
+                                                            && (starter + 1)
                                                                     * Integer
                                                                             .parseInt(newVariableValue) >= Integer
-                                                                        .parseInt(variableInfo._minValue))) {
+                                                                        .parseInt(variableInfo._minValue)) {
                                                         // This IF statement
                                                         // represents
                                                         // tricks mentioned
@@ -3119,14 +3110,14 @@ public class SMVUtility {
                                                                 lValue, "ls",
                                                                 operatingSign);
 
-                                                    } else if ((starter
+                                                    } else if (starter
                                                             * Integer
                                                                     .parseInt(newVariableValue) <= Integer
-                                                                .parseInt(variableInfo._maxValue))
-                                                            && (starter
+                                                                .parseInt(variableInfo._maxValue)
+                                                            && starter
                                                                     * Integer
                                                                             .parseInt(newVariableValue) >= Integer
-                                                                        .parseInt(variableInfo._minValue))) {
+                                                                        .parseInt(variableInfo._minValue)) {
                                                         String updatedVariableValue = String
                                                                 .valueOf(starter
                                                                         * Integer
@@ -3196,14 +3187,14 @@ public class SMVUtility {
                                                         * Integer
                                                                 .parseInt(newVariableValue) >= Integer
                                                             .parseInt(variableInfo._minValue)) {
-                                                    if ((starter
+                                                    if (starter
                                                             * Integer
                                                                     .parseInt(newVariableValue) > Integer
-                                                                .parseInt(variableInfo._maxValue))
-                                                            && ((starter - 1)
+                                                                .parseInt(variableInfo._maxValue)
+                                                            && (starter - 1)
                                                                     * Integer
                                                                             .parseInt(newVariableValue) <= Integer
-                                                                        .parseInt(variableInfo._maxValue))) {
+                                                                        .parseInt(variableInfo._maxValue)) {
 
                                                         _generatePremiseAndResultEachTransitionRecursiveStep(
                                                                 newPremise,
@@ -3214,14 +3205,14 @@ public class SMVUtility {
                                                                 lValue, "gt",
                                                                 operatingSign);
 
-                                                    } else if ((starter
+                                                    } else if (starter
                                                             * Integer
                                                                     .parseInt(newVariableValue) <= Integer
-                                                                .parseInt(variableInfo._maxValue))
-                                                            && (starter
+                                                                .parseInt(variableInfo._maxValue)
+                                                            && starter
                                                                     * Integer
                                                                             .parseInt(newVariableValue) >= Integer
-                                                                        .parseInt(variableInfo._minValue))) {
+                                                                        .parseInt(variableInfo._minValue)) {
                                                         String updatedVariableValue = String
                                                                 .valueOf(starter
                                                                         * Integer
@@ -3263,8 +3254,8 @@ public class SMVUtility {
 
                                     String updatedVariableValue = String
                                             .valueOf(vList.get(i).intValue()
-                                                    * (Integer
-                                                            .parseInt(newVariableValue)));
+                                                    * Integer
+                                                            .parseInt(newVariableValue));
 
                                     VariableInfo variableInfo = _variableInfo
                                             .get(lValue);
@@ -3277,16 +3268,16 @@ public class SMVUtility {
                                         if (variableInfo._minValue != null
                                                 && variableInfo._maxValue != null) {
                                             if (vList.get(i).intValue()
-                                                    * (Integer
-                                                            .parseInt(newVariableValue)) < Integer
+                                                    * Integer
+                                                            .parseInt(newVariableValue) < Integer
                                                         .parseInt(variableInfo._minValue)) {
                                                 // Use DOMAIN_LS to replace the
                                                 // value.
                                                 updatedVariableValue = "ls";
 
                                             } else if (vList.get(i).intValue()
-                                                    * (Integer
-                                                            .parseInt(newVariableValue)) > Integer
+                                                    * Integer
+                                                            .parseInt(newVariableValue) > Integer
                                                         .parseInt(variableInfo._maxValue)) {
                                                 updatedVariableValue = "gt";
                                             }
@@ -3383,14 +3374,14 @@ public class SMVUtility {
                                                         * Integer
                                                                 .parseInt(newVariableValue) >= Integer
                                                             .parseInt(variableInfo._minValue)) {
-                                                    if ((starter
+                                                    if (starter
                                                             * Integer
                                                                     .parseInt(newVariableValue) > Integer
-                                                                .parseInt(variableInfo._maxValue))
-                                                            && ((starter + 1)
+                                                                .parseInt(variableInfo._maxValue)
+                                                            && (starter + 1)
                                                                     * Integer
                                                                             .parseInt(newVariableValue) <= Integer
-                                                                        .parseInt(variableInfo._maxValue))) {
+                                                                        .parseInt(variableInfo._maxValue)) {
 
                                                         _generatePremiseAndResultEachTransitionRecursiveStep(
                                                                 newPremise,
@@ -3401,14 +3392,14 @@ public class SMVUtility {
                                                                 lValue, "gt",
                                                                 operatingSign);
 
-                                                    } else if ((starter
+                                                    } else if (starter
                                                             * Integer
                                                                     .parseInt(newVariableValue) <= Integer
-                                                                .parseInt(variableInfo._maxValue))
-                                                            && (starter
+                                                                .parseInt(variableInfo._maxValue)
+                                                            && starter
                                                                     * Integer
                                                                             .parseInt(newVariableValue) >= Integer
-                                                                        .parseInt(variableInfo._minValue))) {
+                                                                        .parseInt(variableInfo._minValue)) {
                                                         String updatedVariableValue = String
                                                                 .valueOf(starter
                                                                         * Integer
@@ -3525,14 +3516,14 @@ public class SMVUtility {
                                                         * Integer
                                                                 .parseInt(newVariableValue) <= Integer
                                                             .parseInt(variableInfo._maxValue)) {
-                                                    if ((starter
+                                                    if (starter
                                                             * Integer
                                                                     .parseInt(newVariableValue) < Integer
-                                                                .parseInt(variableInfo._minValue))
-                                                            && ((starter + 1)
+                                                                .parseInt(variableInfo._minValue)
+                                                            && (starter + 1)
                                                                     * Integer
                                                                             .parseInt(newVariableValue) >= Integer
-                                                                        .parseInt(variableInfo._minValue))) {
+                                                                        .parseInt(variableInfo._minValue)) {
 
                                                         _generatePremiseAndResultEachTransitionRecursiveStep(
                                                                 newPremise,
@@ -3543,14 +3534,14 @@ public class SMVUtility {
                                                                 lValue, "ls",
                                                                 operatingSign);
 
-                                                    } else if ((starter
+                                                    } else if (starter
                                                             * Integer
                                                                     .parseInt(newVariableValue) <= Integer
-                                                                .parseInt(variableInfo._maxValue))
-                                                            && (starter
+                                                                .parseInt(variableInfo._maxValue)
+                                                            && starter
                                                                     * Integer
                                                                             .parseInt(newVariableValue) >= Integer
-                                                                        .parseInt(variableInfo._minValue))) {
+                                                                        .parseInt(variableInfo._minValue)) {
                                                         String updatedVariableValue = String
                                                                 .valueOf(starter
                                                                         * Integer
@@ -3615,12 +3606,12 @@ public class SMVUtility {
                                             String updatedVariableValue = String
                                                     .valueOf(vList.get(i)
                                                             .intValue()
-                                                            - (Integer
-                                                                    .parseInt(newVariableValue)));
+                                                            - Integer
+                                                                    .parseInt(newVariableValue));
 
                                             if (vList.get(i).intValue()
-                                                    - (Integer
-                                                            .parseInt(newVariableValue)) > Integer
+                                                    - Integer
+                                                            .parseInt(newVariableValue) > Integer
                                                         .parseInt(variableInfo._maxValue)) {
                                                 // Use DOMAIN_LS to replace the
                                                 // value.
@@ -3707,11 +3698,11 @@ public class SMVUtility {
                             .get(keySetArray[index]);
 
                     // Do as usual
-                    if ((vList != null) && (vList.size() != 0)) {
+                    if (vList != null && vList.size() != 0) {
                         for (int i = 0; i < vList.size(); i++) {
                             String updatedVariableValue = String.valueOf(vList
                                     .get(i).intValue()
-                                    / (Integer.parseInt(newVariableValue)));
+                                    / Integer.parseInt(newVariableValue));
                             // retrieve the string and concatenate
                             String newPremise = currentPremise + " & "
                                     + keySetArray[index] + "="
@@ -3741,7 +3732,7 @@ public class SMVUtility {
 
                     ArrayList<Integer> vList = valueDomain
                             .get(keySetArray[index]);
-                    if ((vList != null) && (vList.size() != 0)) {
+                    if (vList != null && vList.size() != 0) {
                         boolean b1 = Pattern.matches(".*_isPresent",
                                 keySetArray[index].trim());
                         if (b1 == true) {
@@ -3755,7 +3746,7 @@ public class SMVUtility {
                         } else {
                             boolean b2 = Pattern.matches(".*_value",
                                     keySetArray[index].trim());
-                            if ((b2 == true) && (vList.size() == 2)) {
+                            if (b2 == true && vList.size() == 2) {
                                 // See if vList.size() == 2, if so simply
                                 // attach XX_isPresent to the value.
                                 String[] variable = keySetArray[index].trim()
@@ -3857,7 +3848,7 @@ public class SMVUtility {
 
                 ArrayList<Integer> vList = valueDomain.get(keySetArray[index]);
 
-                if ((vList != null) && (vList.size() != 0)) {
+                if (vList != null && vList.size() != 0) {
                     // if the keySetArray[index] is similar to "XX_isPresent",
                     // skip the update of premise.
                     boolean b = Pattern.matches(".*_isPresent",
@@ -3870,7 +3861,7 @@ public class SMVUtility {
                     } else {
                         boolean b2 = Pattern.matches(".*_value",
                                 keySetArray[index].trim());
-                        if ((b2 == true) && (vList.size() == 2)) {
+                        if (b2 == true && vList.size() == 2) {
 
                             _generatePremiseAndResultEachTransitionRecursiveStep(
                                     currentPremise, index + 1, maxIndex,
@@ -4040,8 +4031,8 @@ public class SMVUtility {
             if (state instanceof State) {
                 String refinementList = ((State) state).refinementName
                         .getExpression();
-                if ((refinementList == null)
-                        || (refinementList.equalsIgnoreCase(""))) {
+                if (refinementList == null
+                        || refinementList.equalsIgnoreCase("")) {
                     continue;
                 } else {
                     TypedActor[] actors = ((State) state).getRefinement();
@@ -4062,8 +4053,8 @@ public class SMVUtility {
                 }
             }
         }
-        if ((isStateMachineRefinementInLayer == false)
-                && (isGeneralRefinementInLayer == false)) {
+        if (isStateMachineRefinementInLayer == false
+                && isGeneralRefinementInLayer == false) {
             // This means that there is no refinement in this ModalModel
             // We simply take out the controller to perform the generation
             // process (the controller is an FSMActor).
@@ -4079,8 +4070,8 @@ public class SMVUtility {
                 if (state instanceof State) {
                     String refinementList = ((State) state).refinementName
                             .getExpression();
-                    if ((refinementList == null)
-                            || (refinementList.equalsIgnoreCase(""))) {
+                    if (refinementList == null
+                            || refinementList.equalsIgnoreCase("")) {
 
                     } else {
                         TypedActor[] actors = ((State) state).getRefinement();
@@ -4180,8 +4171,7 @@ public class SMVUtility {
         StringBuffer returnFmvFormat = new StringBuffer("");
 
         // List out all FSMs with their states.
-        for (Iterator actors = (model.entityList()).iterator(); actors
-                .hasNext();) {
+        for (Iterator actors = model.entityList().iterator(); actors.hasNext();) {
             Entity innerEntity = (Entity) actors.next();
             if (innerEntity instanceof FSMActor) {
                 // Directly generate the whole description of the system.
@@ -4239,8 +4229,7 @@ public class SMVUtility {
 
         ArrayList<String> subSystemNameList = new ArrayList<String>();
 
-        for (Iterator actors = (model.entityList()).iterator(); actors
-                .hasNext();) {
+        for (Iterator actors = model.entityList().iterator(); actors.hasNext();) {
             Entity innerEntity = (Entity) actors.next();
             if (innerEntity instanceof FSMActor) {
                 FSMActor innerFSMActor = (FSMActor) innerEntity;
@@ -4327,8 +4316,8 @@ public class SMVUtility {
                     if (state instanceof State) {
                         String refinementList = ((State) state).refinementName
                                 .getExpression();
-                        if ((refinementList == null)
-                                || (refinementList.equalsIgnoreCase(""))) {
+                        if (refinementList == null
+                                || refinementList.equalsIgnoreCase("")) {
                         } else {
                             // There is refinement in this state
                             TypedActor[] refinementSystemActors = ((State) state)
@@ -4628,8 +4617,8 @@ public class SMVUtility {
             if (state instanceof State) {
                 String refinementList = ((State) state).refinementName
                         .getExpression();
-                if ((refinementList == null)
-                        || (refinementList.equalsIgnoreCase(""))) {
+                if (refinementList == null
+                        || refinementList.equalsIgnoreCase("")) {
                     continue;
                 } else {
                     TypedActor[] actors = ((State) state).getRefinement();
@@ -4756,8 +4745,7 @@ public class SMVUtility {
                                 // these subsystems are controlled by the state
                                 // of the controller.
 
-                                if ((signalInfo != null)
-                                        && (signalInfo.size() > 0)) {
+                                if (signalInfo != null && signalInfo.size() > 0) {
                                     moduleDescription.append(", state );\n");
                                 } else {
                                     moduleDescription.append(" state );\n");
@@ -4781,8 +4769,8 @@ public class SMVUtility {
                                     // all modules in the lower level
                                     // (one layer lower only)
 
-                                    for (Iterator innerInnerActors = (((CompositeActor) innerActor)
-                                            .entityList()).iterator(); innerInnerActors
+                                    for (Iterator innerInnerActors = ((CompositeActor) innerActor)
+                                            .entityList().iterator(); innerInnerActors
                                             .hasNext();) {
                                         StringBuffer moduleDescription = new StringBuffer(
                                                 "");
@@ -4902,8 +4890,8 @@ public class SMVUtility {
                                                     }
                                                 }
                                             }
-                                            if ((signalInfo != null)
-                                                    && (signalInfo.size() > 0)) {
+                                            if (signalInfo != null
+                                                    && signalInfo.size() > 0) {
                                                 moduleDescription
                                                         .append(" , state );\n");
                                             } else {
@@ -5022,8 +5010,8 @@ public class SMVUtility {
                                                     }
                                                 }
                                             }
-                                            if ((signalInfo != null)
-                                                    && (signalInfo.size() > 0)) {
+                                            if (signalInfo != null
+                                                    && signalInfo.size() > 0) {
                                                 moduleDescription
                                                         .append(", state );\n");
                                             } else {
@@ -5282,7 +5270,7 @@ public class SMVUtility {
             String valName = newItVariableSet.next();
             boolean b1 = Pattern.matches(".*_isPresent", valName);
             boolean b2 = Pattern.matches(".*_value", valName);
-            if ((b1 == true) || (b2 == true)) {
+            if (b1 == true || b2 == true) {
 
             } else {
                 returnSmvFormat.append("\t\tinit(" + valName + ") := "
@@ -5375,7 +5363,7 @@ public class SMVUtility {
         frontAttachment.append(returnSmvFormat);
 
         if (signalVariableSet != null) {
-            if ((signalVariableSet.size() != 0)) {
+            if (signalVariableSet.size() != 0) {
                 frontAttachment.append("\n\tDEFINE\n");
                 Iterator<String> newItSignalVariableSet = signalVariableSet
                         .iterator();

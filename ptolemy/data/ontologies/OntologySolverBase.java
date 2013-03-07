@@ -167,7 +167,6 @@ public abstract class OntologySolverBase extends MoMLModelAttribute {
         //System.out.println("OntologySolverBase: Constants after cleaning: " + Constants.constants());
     }
 
-
     /** Clone the object into the specified workspace.
      *  @param workspace The workspace for the new object.
      *  @return A new NamedObj.
@@ -506,7 +505,7 @@ public abstract class OntologySolverBase extends MoMLModelAttribute {
             return solver._adapterStore.get(component);
         }
 
-        if ((component instanceof IOPort) || (component instanceof Attribute)) {
+        if (component instanceof IOPort || component instanceof Attribute) {
             if (((NamedObj) component).getContainer() == null) {
                 System.err.println("component container is null: " + component);
             }

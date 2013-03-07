@@ -114,10 +114,10 @@ public class SyntacticCodeGenerator extends GenericCodeGenerator {
         code.append("{--- Syntactic Representation of graph ---}" + _eol);
 
         _syntaxGraph = new SyntacticGraph();
-        _syntaxGraph.setName("syntaxGraph" + (++_graphCount));
+        _syntaxGraph.setName("syntaxGraph" + ++_graphCount);
 
         // Get top level actor
-        CompositeEntity container = ((CompositeEntity) getContainer());
+        CompositeEntity container = (CompositeEntity) getContainer();
         _syntaxGraph.build(container);
         _showGraph();
 

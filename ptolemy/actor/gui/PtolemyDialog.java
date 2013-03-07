@@ -109,9 +109,8 @@ public abstract class PtolemyDialog extends JFrame implements ActionListener {
         Point ownerLoc = owner.getLocation();
         Rectangle screenBounds = null;
 
-        for (int screen = 0; screen < SCREENS.length; screen++) {
-            GraphicsConfiguration gc = SCREENS[screen]
-                    .getDefaultConfiguration();
+        for (GraphicsDevice element : SCREENS) {
+            GraphicsConfiguration gc = element.getDefaultConfiguration();
             Rectangle bounds = gc.getBounds();
 
             if (bounds.contains(ownerLoc)) {
@@ -122,10 +121,8 @@ public abstract class PtolemyDialog extends JFrame implements ActionListener {
 
         if (screenBounds != null) {
             Dimension size = getPreferredSize();
-            int x = (screenBounds.x + (screenBounds.width / 2))
-                    - (size.width / 2);
-            int y = (screenBounds.y + (screenBounds.height / 2))
-                    - (size.height / 2);
+            int x = screenBounds.x + screenBounds.width / 2 - size.width / 2;
+            int y = screenBounds.y + screenBounds.height / 2 - size.height / 2;
             setLocation(x, y);
         } else {
             setLocationRelativeTo(_owner);
@@ -248,7 +245,7 @@ public abstract class PtolemyDialog extends JFrame implements ActionListener {
     protected void _showHelp() {
         URL toRead = _getHelpURL();
 
-        if ((toRead != null) && (_configuration != null)) {
+        if (toRead != null && _configuration != null) {
             try {
                 _configuration.openModel(null, toRead, toRead.toExternalForm());
             } catch (Exception ex) {
@@ -287,7 +284,7 @@ public abstract class PtolemyDialog extends JFrame implements ActionListener {
         _buttons.add(_cancelButton);
 
         for (int i = 0; i < _buttons.getComponentCount(); i++) {
-            ((JButton) (_buttons.getComponent(i))).addActionListener(this);
+            ((JButton) _buttons.getComponent(i)).addActionListener(this);
         }
 
         return _buttons;

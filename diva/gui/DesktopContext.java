@@ -604,7 +604,7 @@ public class DesktopContext extends AppContextDelegate implements MDIContext {
 
             if (f.getContentPane().getComponentCount() == 1) {
                 c = (JComponent) f.getContentPane().getComponent(0);
-            } else if ((f.getContentPane().getComponentCount() == 0)
+            } else if (f.getContentPane().getComponentCount() == 0
                     && isMaximizeMode()) {
                 c = getCurrentContentPane();
             } else {

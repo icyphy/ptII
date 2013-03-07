@@ -105,12 +105,12 @@ public class DataCollector extends TypedAtomicActor {
                 _parkingManager.update(updateMsg);
                 debug.send(0, updateMsg);
 
-                if ((_parkingManager.getAvailable().size() == 0) && !_isFull) {
+                if (_parkingManager.getAvailable().size() == 0 && !_isFull) {
                     _isFull = true;
                     isFull.send(0, new BooleanToken("true"));
                 }
 
-                if ((_parkingManager.getAvailable().size() > 0) && _isFull) {
+                if (_parkingManager.getAvailable().size() > 0 && _isFull) {
                     _isFull = false;
                     isFull.send(0, new BooleanToken("false"));
                 }

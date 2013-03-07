@@ -249,9 +249,9 @@ public class ActorRecursion extends TypedCompositeActor {
                     "The executive Director must be a DDFDirector.");
         }
 
-        if ((_recursionActor.inputPortList().size() != inputPortList().size())
-                || (_recursionActor.outputPortList().size() != outputPortList()
-                        .size())) {
+        if (_recursionActor.inputPortList().size() != inputPortList().size()
+                || _recursionActor.outputPortList().size() != outputPortList()
+                        .size()) {
             throw new IllegalActionException(this, "The recursionActor "
                     + recursionActor.stringValue()
                     + " must have the same number of input ports and "
@@ -286,8 +286,8 @@ public class ActorRecursion extends TypedCompositeActor {
                         + "'s width " + matchingPort.getWidth() + ".");
             }
 
-            if ((port.isInput() && !matchingPort.isInput())
-                    || (port.isOutput() && !matchingPort.isOutput())) {
+            if (port.isInput() && !matchingPort.isInput() || port.isOutput()
+                    && !matchingPort.isOutput()) {
                 throw new IllegalActionException(this, "The matching ports: "
                         + port.getFullName() + " and "
                         + matchingPort.getFullName()
@@ -521,7 +521,7 @@ public class ActorRecursion extends TypedCompositeActor {
                         // some sense.
                         if (productionRate[i] < 0) {
                             productionRate[i] = rate;
-                        } else if ((rate >= 0) && (rate < productionRate[i])) {
+                        } else if (rate >= 0 && rate < productionRate[i]) {
                             productionRate[i] = rate;
                         }
                     }

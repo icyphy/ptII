@@ -140,13 +140,13 @@ public class ExtendedMouseFilter extends MouseFilter {
      * Test whether the given MouseEvent passes the filter.
      */
     public boolean accept(MouseEvent event) {
-        if ((_pressNumber != -1) && (event.getClickCount() != _pressNumber)) {
+        if (_pressNumber != -1 && event.getClickCount() != _pressNumber) {
             return false;
         }
 
         int m = event.getModifiersEx();
-        boolean val = (event.getButton() == _button)
-                && (_modifierFlags == (m & _modifierMask));
+        boolean val = event.getButton() == _button
+                && _modifierFlags == (m & _modifierMask);
 
         //         System.out.println("event = " + event);
         //         System.out.println("FILTER = " + this);

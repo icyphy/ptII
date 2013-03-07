@@ -101,12 +101,12 @@ public class ASTPtUnionConstructNode extends ASTPtRootNode {
         ASTPtRecordConstructNode recordNode = (ASTPtRecordConstructNode) node;
 
         // Empty records are allowed (Are they?)
-        if ((recordNode._fieldNames == null) && (_labelNames == null)) {
+        if (recordNode._fieldNames == null && _labelNames == null) {
             return true;
         }
 
         // But both must be empty
-        if ((recordNode._fieldNames == null) || (_labelNames == null)) {
+        if (recordNode._fieldNames == null || _labelNames == null) {
             return false;
         }
 

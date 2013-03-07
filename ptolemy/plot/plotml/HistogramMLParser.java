@@ -96,9 +96,9 @@ public class HistogramMLParser extends PlotMLParser {
 
                 // NOTE: If only one of these is given, then the other
                 // is ignored.
-                if ((widthSpec != null) && (offsetSpec != null)) {
-                    double width = (Double.valueOf(widthSpec)).doubleValue();
-                    double offset = (Double.valueOf(offsetSpec)).doubleValue();
+                if (widthSpec != null && offsetSpec != null) {
+                    double width = Double.valueOf(widthSpec).doubleValue();
+                    double offset = Double.valueOf(offsetSpec).doubleValue();
                     ((Histogram) _plot).setBars(width, offset);
                 }
             } else if (elementName.equals("bin")) {
@@ -110,12 +110,11 @@ public class HistogramMLParser extends PlotMLParser {
 
                     // NOTE: If only one of these is given, then the other
                     // is ignored.
-                    if ((widthSpec != null) && (offsetSpec != null)) {
-                        double width = (Double.valueOf(widthSpec))
-                                .doubleValue();
+                    if (widthSpec != null && offsetSpec != null) {
+                        double width = Double.valueOf(widthSpec).doubleValue();
                         histogram.setBinWidth(width);
 
-                        double offset = (Double.valueOf(offsetSpec))
+                        double offset = Double.valueOf(offsetSpec)
                                 .doubleValue();
                         histogram.setBinOffset(offset);
                     }
@@ -168,7 +167,7 @@ public class HistogramMLParser extends PlotMLParser {
         _checkForNull(ySpec, "No y value for element \"" + element + "\"");
 
         // NOTE: Do not use parseDouble() to maintain Java 1.1 compatibility.
-        double y = (Double.valueOf(ySpec)).doubleValue();
+        double y = Double.valueOf(ySpec).doubleValue();
         ((Histogram) _plot).addPoint(_currentDataset, y);
     }
 }

@@ -103,7 +103,6 @@ public class XMPPSource extends TypedAtomicActor implements XMPPSubscriber {
      */
     public StringParameter nodeId;
 
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -259,15 +258,15 @@ public class XMPPSource extends TypedAtomicActor implements XMPPSubscriber {
         synchronized (lock) {
             _hasFired = false;
             // FIXME: unchecked cast
-            PayloadItem<SimplePayload> item = (PayloadItem<SimplePayload>) items.getItems().get(0);
+            PayloadItem<SimplePayload> item = (PayloadItem<SimplePayload>) items
+                    .getItems().get(0);
             SimplePayload payload = item.getPayload();
             _currentValue = payload.toXML();
 
             try {
                 long elapsedRealTime = System.currentTimeMillis()
                         - _initializeRealTime;
-                Time timeOfRequest = _initializeModelTime
-                        .add(elapsedRealTime);
+                Time timeOfRequest = _initializeModelTime.add(elapsedRealTime);
                 // Note that fireAt() will modify the requested firing time if it is in the past.
                 getDirector().fireAt(XMPPSource.this, timeOfRequest);
             } catch (IllegalActionException e) {
@@ -313,7 +312,6 @@ public class XMPPSource extends TypedAtomicActor implements XMPPSubscriber {
      */
     @Override
     public void setGateway(XMPPGateway gateway) {
-        _gateway = gateway;
 
     }
 
@@ -332,11 +330,6 @@ public class XMPPSource extends TypedAtomicActor implements XMPPSubscriber {
 
     /** The XML payload from XMPP node. */
     private String _currentValue;
-
-    /** The gateway that handles the connection between this actor and
-     *  the XMPP server.
-     */
-    private XMPPGateway _gateway;
 
     /** A flag indicating if the actor has fired after a new value was received.
      */

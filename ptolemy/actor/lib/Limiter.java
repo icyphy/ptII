@@ -116,9 +116,9 @@ public class Limiter extends Transformer {
         super.fire();
         if (input.hasToken(0)) {
             ScalarToken in = (ScalarToken) input.get(0);
-            if ((in.isLessThan((ScalarToken) bottom.getToken())).booleanValue()) {
+            if (in.isLessThan((ScalarToken) bottom.getToken()).booleanValue()) {
                 output.send(0, bottom.getToken());
-            } else if ((in.isGreaterThan((ScalarToken) top.getToken()))
+            } else if (in.isGreaterThan((ScalarToken) top.getToken())
                     .booleanValue()) {
                 output.send(0, top.getToken());
             } else {

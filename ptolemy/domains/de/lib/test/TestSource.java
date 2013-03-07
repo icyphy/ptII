@@ -77,7 +77,7 @@ public class TestSource extends TypedAtomicActor {
         super.fire();
         double increment = 0.0;
 
-        if ((input.isOutsideConnected()) && input.hasToken(0)) {
+        if (input.isOutsideConnected() && input.hasToken(0)) {
             DoubleToken in = (DoubleToken) input.get(0);
             increment = in.doubleValue();
         }

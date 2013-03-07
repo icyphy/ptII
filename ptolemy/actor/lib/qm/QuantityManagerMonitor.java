@@ -124,14 +124,14 @@ public class QuantityManagerMonitor extends TypedAtomicActor implements
         }
 
         double x = time;
-        double y = ((_quantityManagers.indexOf(qm)));
-        int actorDataset = (_quantityManagers.indexOf(qm));
+        double y = _quantityManagers.indexOf(qm);
+        int actorDataset = _quantityManagers.indexOf(qm);
         if (event == null) {
             plot.addPoint(actorDataset, x, y, false);
         } else if (event == EventType.RECEIVED) {
-            plot.addPoint(actorDataset, x, y + 0.1 * (messageCnt), true);
+            plot.addPoint(actorDataset, x, y + 0.1 * messageCnt, true);
         } else if (event == EventType.SENT) {
-            plot.addPoint(actorDataset, x, y + 0.1 * (messageCnt), true);
+            plot.addPoint(actorDataset, x, y + 0.1 * messageCnt, true);
         }
         plot.fillPlot();
         plot.repaint();

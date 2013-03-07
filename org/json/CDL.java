@@ -97,8 +97,8 @@ public class CDL {
         for (;;) {
             String value = getValue(x);
             char c = x.next();
-            if (value == null
-                    || (ja.length() == 0 && value.length() == 0 && c != ',')) {
+            if (value == null || ja.length() == 0 && value.length() == 0
+                    && c != ',') {
                 return null;
             }
             ja.put(value);

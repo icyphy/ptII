@@ -77,7 +77,7 @@ public abstract class EquationVisitor {
         Iterator iter = unitExpr.getUTerms().iterator();
 
         while (iter.hasNext()) {
-            UnitTerm term = (UnitTerm) (iter.next());
+            UnitTerm term = (UnitTerm) iter.next();
             term.visit(this);
         }
 

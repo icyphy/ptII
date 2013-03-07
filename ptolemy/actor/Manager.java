@@ -322,7 +322,7 @@ public class Manager extends NamedObj implements Runnable {
         }
 
         // Make a record of the time execution starts.
-        long startTime = (new Date()).getTime();
+        long startTime = new Date().getTime();
 
         _debug("-- Manager execute() called.");
 
@@ -655,7 +655,7 @@ public class Manager extends NamedObj implements Runnable {
             // but rather only executed when executeChangeRequests() is called.
             setDeferringChangeRequests(true);
 
-            long startTime = (new Date()).getTime();
+            long startTime = new Date().getTime();
             preinitializeAndResolveTypes();
             if (System.currentTimeMillis() - startTime > minimumStatisticsTime) {
                 setStatusMessage(timeAndMemory(startTime));
@@ -714,7 +714,7 @@ public class Manager extends NamedObj implements Runnable {
 
         boolean result = true;
 
-        long startTime = (new Date()).getTime();
+        long startTime = new Date().getTime();
         // Execute the change requests before acquiring read access on the
         // workspace. The reason for this is that the change requests are safe
         // anyway, since they acquire write access on the workspace.
@@ -1037,8 +1037,8 @@ public class Manager extends NamedObj implements Runnable {
         } finally {
             try {
                 // FIXME: should this be synchronized on this?
-                if ((manager.getState() != IDLE)
-                        && (manager.getState() != WRAPPING_UP)) {
+                if (manager.getState() != IDLE
+                        && manager.getState() != WRAPPING_UP) {
                     manager.wrapup();
                 }
             } catch (Throwable throwable) {
@@ -1058,7 +1058,7 @@ public class Manager extends NamedObj implements Runnable {
      *  @see #addExecutionListener(ExecutionListener)
      */
     public void removeExecutionListener(ExecutionListener listener) {
-        if ((listener == null) || (_executionListeners == null)) {
+        if (listener == null || _executionListeners == null) {
             return;
         }
         List<WeakReference<ExecutionListener>> toRemove = new LinkedList<WeakReference<ExecutionListener>>();
@@ -1343,7 +1343,7 @@ public class Manager extends NamedObj implements Runnable {
                 + "K Free: "
                 + freeMemory
                 + "K ("
-                + Math.round((((double) freeMemory) / ((double) totalMemory)) * 100.0)
+                + Math.round((double) freeMemory / (double) totalMemory * 100.0)
                 + "%)";
     }
 
@@ -1369,7 +1369,7 @@ public class Manager extends NamedObj implements Runnable {
             // NOTE: Synchronizing here is not correct.
             // See Workspace.wait(Object)
             // synchronized (this) {
-            while ((getState() != IDLE) && (getState() != CORRUPTED)) {
+            while (getState() != IDLE && getState() != CORRUPTED) {
                 try {
                     workspace().wait(this);
                 } catch (InterruptedException ex) {
@@ -1393,7 +1393,7 @@ public class Manager extends NamedObj implements Runnable {
         // will cause deadlock. Instead, we use a small barrier
         // here to check and set the state.
         synchronized (this) {
-            if ((_state == IDLE) || (_state == WRAPPING_UP)) {
+            if (_state == IDLE || _state == WRAPPING_UP) {
                 throw new IllegalActionException(this,
                         "Cannot wrap up. The current state is: "
                                 + _state.getDescription());

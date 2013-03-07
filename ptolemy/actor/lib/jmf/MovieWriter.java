@@ -366,7 +366,7 @@ public class MovieWriter extends Sink implements ControllerListener,
             TrackControl[] trackControl = processor.getTrackControls();
             Format[] format = trackControl[0].getSupportedFormats();
 
-            if ((format == null) || (format.length <= 0)) {
+            if (format == null || format.length <= 0) {
                 throw new IllegalActionException("Cannot support input format");
             }
 
@@ -463,7 +463,7 @@ public class MovieWriter extends Sink implements ControllerListener,
             throws IllegalActionException {
         synchronized (_waitSync) {
             try {
-                while ((processor.getState() < state) && _stateTransitionOK) {
+                while (processor.getState() < state && _stateTransitionOK) {
                     _waitSync.wait();
                 }
             } catch (Exception e) {
@@ -530,8 +530,7 @@ public class MovieWriter extends Sink implements ControllerListener,
             //                      Format.NOT_SPECIFIED,
             //                      Format.byteArray,
             //                      (float)_frameRate);
-            _videoFormat = (VideoFormat) (_jmfImageToken.getValue())
-                    .getFormat();
+            _videoFormat = (VideoFormat) _jmfImageToken.getValue().getFormat();
         }
 
         public boolean endOfStream() {

@@ -92,8 +92,8 @@ public class FixPointQuantization extends Quantization {
 
         int strLen = string.length();
 
-        if ((strLen >= 2) && (string.charAt(0) == '(')
-                && (string.charAt(strLen - 1) == ')')) {
+        if (strLen >= 2 && string.charAt(0) == '('
+                && string.charAt(strLen - 1) == ')') {
             string = string.substring(1, strLen - 1);
         }
 

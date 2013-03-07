@@ -171,9 +171,9 @@ public class NondeterministicMerge extends TypedCompositeActor {
              */
 
             Manager manager = getManager();
-            if ((manager != null) && (manager.getState() != Manager.IDLE)
-                    && (manager.getState() != Manager.INFERING_WIDTHS)
-                    && (manager.getState() != Manager.PREINITIALIZING)) {
+            if (manager != null && manager.getState() != Manager.IDLE
+                    && manager.getState() != Manager.INFERING_WIDTHS
+                    && manager.getState() != Manager.PREINITIALIZING) {
                 _reinitializeInnerActors();
             }
         }

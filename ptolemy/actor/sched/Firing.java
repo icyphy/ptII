@@ -160,7 +160,7 @@ public class Firing extends ScheduleElement {
         int iterationCount = getIterationCount();
 
         if (iterationCount > 1) {
-            result += (" " + iterationCount + " times");
+            result += " " + iterationCount + " times";
         }
 
         return result;
@@ -197,7 +197,7 @@ public class Firing extends ScheduleElement {
                 throw new ConcurrentModificationException(
                         "Schedule structure changed while iterator is active.");
             } else {
-                return (_currentElement <= _iterationCount);
+                return _currentElement <= _iterationCount;
             }
         }
 

@@ -183,13 +183,13 @@ public class Comparator extends TypedAtomicActor {
     public void fire() throws IllegalActionException {
         super.fire();
         BooleanToken result = BooleanToken.FALSE;
-        double leftIn = ((ScalarToken) (left.get(0))).doubleValue();
-        double rightIn = ((ScalarToken) (right.get(0))).doubleValue();
+        double leftIn = ((ScalarToken) left.get(0)).doubleValue();
+        double rightIn = ((ScalarToken) right.get(0)).doubleValue();
 
         switch (_comparison) {
         case _GT:
 
-            if ((leftIn + _tolerance) > rightIn) {
+            if (leftIn + _tolerance > rightIn) {
                 result = BooleanToken.TRUE;
             }
 
@@ -197,7 +197,7 @@ public class Comparator extends TypedAtomicActor {
 
         case _GE:
 
-            if ((leftIn + _tolerance) >= rightIn) {
+            if (leftIn + _tolerance >= rightIn) {
                 result = BooleanToken.TRUE;
             }
 
@@ -205,7 +205,7 @@ public class Comparator extends TypedAtomicActor {
 
         case _LT:
 
-            if (leftIn < (rightIn + _tolerance)) {
+            if (leftIn < rightIn + _tolerance) {
                 result = BooleanToken.TRUE;
             }
 
@@ -213,7 +213,7 @@ public class Comparator extends TypedAtomicActor {
 
         case _LE:
 
-            if (leftIn <= (rightIn + _tolerance)) {
+            if (leftIn <= rightIn + _tolerance) {
                 result = BooleanToken.TRUE;
             }
 
@@ -221,8 +221,8 @@ public class Comparator extends TypedAtomicActor {
 
         case _EQ:
 
-            if ((leftIn <= (rightIn + _tolerance))
-                    && (leftIn >= (rightIn - _tolerance))) {
+            if (leftIn <= rightIn + _tolerance
+                    && leftIn >= rightIn - _tolerance) {
                 result = BooleanToken.TRUE;
             }
 

@@ -75,7 +75,7 @@ public class FunctionToken extends Token {
         ParseTreeTypeInference inference = new ParseTreeTypeInference();
         inference.inferTypes(tree);
 
-        Token token = (new ParseTreeEvaluator()).evaluateParseTree(tree);
+        Token token = new ParseTreeEvaluator().evaluateParseTree(tree);
 
         if (token instanceof FunctionToken) {
             _function = ((FunctionToken) token)._function;

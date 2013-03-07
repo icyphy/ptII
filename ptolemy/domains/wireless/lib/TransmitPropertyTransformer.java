@@ -174,8 +174,8 @@ public class TransmitPropertyTransformer extends LifeCycleManager implements
      *   an attribute that cannot be cloned.
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        TransmitPropertyTransformer newObject = (TransmitPropertyTransformer) (super
-                .clone(workspace));
+        TransmitPropertyTransformer newObject = (TransmitPropertyTransformer) super
+                .clone(workspace);
 
         // set the type constraints
         newObject.output.setTypeSameAs(newObject.input);
@@ -256,7 +256,7 @@ public class TransmitPropertyTransformer extends LifeCycleManager implements
                 // Found the port.
                 foundOne = true;
 
-                Entity container = (Entity) (port.getContainer());
+                Entity container = (Entity) port.getContainer();
                 String channelName = ((WirelessIOPort) port).outsideChannel
                         .stringValue();
                 CompositeEntity container2 = (CompositeEntity) container
@@ -296,7 +296,7 @@ public class TransmitPropertyTransformer extends LifeCycleManager implements
                 // Found the port.
                 foundOne = true;
 
-                Entity container = (Entity) (port.getContainer());
+                Entity container = (Entity) port.getContainer();
                 String channelName = ((WirelessIOPort) port).outsideChannel
                         .stringValue();
                 CompositeEntity container2 = (CompositeEntity) container

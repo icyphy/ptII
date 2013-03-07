@@ -186,7 +186,7 @@ public class TextEditor extends TableauFrame implements DocumentListener,
                 - format.getImageableY();
 
         double lineHeight = graphics2D.getFontMetrics().getHeight()
-                - (graphics2D.getFontMetrics().getLeading() / 2);
+                - graphics2D.getFontMetrics().getLeading() / 2;
 
         int linesPerPage = (int) Math.floor((format.getHeight()
                 - format.getImageableY() - bottomMargin)

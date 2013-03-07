@@ -194,7 +194,7 @@ public class Expression extends TypedAtomicActor {
         Iterator inputPorts = inputPortList().iterator();
 
         while (inputPorts.hasNext()) {
-            IOPort port = (IOPort) (inputPorts.next());
+            IOPort port = (IOPort) inputPorts.next();
 
             // FIXME: Handle multiports
             if (port.isOutsideConnected()) {
@@ -290,7 +290,7 @@ public class Expression extends TypedAtomicActor {
         Iterator inputPorts = inputPortList().iterator();
 
         while (inputPorts.hasNext()) {
-            IOPort port = (IOPort) (inputPorts.next());
+            IOPort port = (IOPort) inputPorts.next();
 
             // FIXME: Handle multiports
             if (port.isOutsideConnected()) {
@@ -436,10 +436,8 @@ public class Expression extends TypedAtomicActor {
                 // messages when functions are not found.
                 InequalityTerm[] terms = getVariables();
 
-                for (int i = 0; i < terms.length; i++) {
-                    InequalityTerm term = terms[i];
-
-                    if ((term != this) && (term.getValue() == BaseType.UNKNOWN)) {
+                for (InequalityTerm term : terms) {
+                    if (term != this && term.getValue() == BaseType.UNKNOWN) {
                         return BaseType.UNKNOWN;
                     }
                 }
@@ -497,7 +495,7 @@ public class Expression extends TypedAtomicActor {
                     String name = (String) elements.next();
                     InequalityTerm term = _scope.getTypeTerm(name);
 
-                    if ((term != null) && term.isSettable()) {
+                    if (term != null && term.isSettable()) {
                         termList.add(term);
                     }
                 }

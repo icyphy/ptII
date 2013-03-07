@@ -186,7 +186,7 @@ public class TxCoordination extends MACActorBase {
 
             boolean backoff = true;
 
-            if ((_mBkIP != null) && _mBkIP instanceof Variable) {
+            if (_mBkIP != null && _mBkIP instanceof Variable) {
                 Token token = ((Variable) _mBkIP).getToken();
                 backoff = ((BooleanToken) token).booleanValue();
             } //FIXME: assume it is instanceof variable.
@@ -234,7 +234,7 @@ public class TxCoordination extends MACActorBase {
 
             if (kind == Timeout) {
                 if (_ccw != _aCWmax) {
-                    _ccw = (2 * _ccw) + 1;
+                    _ccw = 2 * _ccw + 1;
                 }
 
                 // backoff before retry
@@ -268,7 +268,7 @@ public class TxCoordination extends MACActorBase {
                     setTimer(SifsTimeout, endRx.add(_dSifsDly * 1e-6));
 
                     int durId = _aSifsTime + _aPreambleLength
-                            + _aPlcpHeaderLength + (_sAckCtsLng / _mBrate);
+                            + _aPlcpHeaderLength + _sAckCtsLng / _mBrate;
                     _setDurIdField(_tpdu, durId);
                     _currentState = Wait_Cts_Sifs;
                 }
@@ -330,7 +330,7 @@ public class TxCoordination extends MACActorBase {
 
             if (kind == Timeout) {
                 if (_ccw != _aCWmax) {
-                    _ccw = (2 * _ccw) + 1;
+                    _ccw = 2 * _ccw + 1;
                 }
 
                 // backoff before retry
@@ -397,7 +397,7 @@ public class TxCoordination extends MACActorBase {
         _ccw = _aCWmin;
         _seqNum = 0;
         _CTSTimeout = _aSifsTime + _aPreambleLength + _aPlcpHeaderLength
-                + _aSlotTime + (_sAckCtsLng / _mBrate);
+                + _aSlotTime + _sAckCtsLng / _mBrate;
 
         NamedObj macComposite = getContainer().getContainer();
 
@@ -425,7 +425,7 @@ public class TxCoordination extends MACActorBase {
                 new IntToken(duration), new IntToken(RA), new IntToken(TA),
                 new IntToken(160) };
         RecordToken pkt = new RecordToken(RtsPacket, DataPacketValues);
-        return (pkt);
+        return pkt;
     }
 
     private RecordToken _createDataPacket(RecordToken msg, int dest_addr)
@@ -444,20 +444,19 @@ public class TxCoordination extends MACActorBase {
                 new IntToken(0),
                 new IntToken(123),
                 new IntToken(_aSifsTime + _aPreambleLength + _aPlcpHeaderLength
-                        + (_sAckCtsLng / _mBrate)),
+                        + _sAckCtsLng / _mBrate),
                 new IntToken(dest_addr),
                 new IntToken(getID()),
                 new IntToken(0),
-                new IntToken(_seqNum - (_seqNum / 4096 * 4096)),
+                new IntToken(_seqNum - _seqNum / 4096 * 4096),
                 new IntToken(0),
                 new IntToken(0),
                 msg,
-                new IntToken((34 * 8)
-                        + ((IntToken) msg.get("Length")).intValue()) };
+                new IntToken(34 * 8 + ((IntToken) msg.get("Length")).intValue()) };
         _seqNum++;
 
         RecordToken pkt = new RecordToken(DataPacket, DataPacketValues);
-        return (pkt);
+        return pkt;
     }
 
     private RecordToken _setRetryField(RecordToken msg, int retryBit)
@@ -472,7 +471,7 @@ public class TxCoordination extends MACActorBase {
                 msg.get("Length") };
 
         RecordToken pkt = new RecordToken(DataPacket, DataPacketValues);
-        return (pkt);
+        return pkt;
     }
 
     private RecordToken _setDurIdField(RecordToken msg, int durId)
@@ -487,7 +486,7 @@ public class TxCoordination extends MACActorBase {
                 msg.get("Length") };
 
         RecordToken pkt = new RecordToken(DataPacket, DataPacketValues);
-        return (pkt);
+        return pkt;
     }
 
     private void _backoff(int ccw, int cnt) throws IllegalActionException {
@@ -520,8 +519,8 @@ public class TxCoordination extends MACActorBase {
         int retryBit = ((IntToken) _tpdu.get("retryBit")).intValue();
         int Addr1 = ((IntToken) _tpdu.get("Addr1")).intValue();
 
-        if ((length > _dotllRTSThreshold) && (retryBit == 0)
-                && (Addr1 != mac_broadcast_addr)) {
+        if (length > _dotllRTSThreshold && retryBit == 0
+                && Addr1 != mac_broadcast_addr) {
             _currentState = Wait_Rts_Backoff;
         } else {
             _currentState = Wait_Mpdu_Backoff;
@@ -550,11 +549,11 @@ public class TxCoordination extends MACActorBase {
         int length = ((IntToken) _tpdu.get("Length")).intValue();
         int Addr1 = ((IntToken) _tpdu.get("Addr1")).intValue();
 
-        int durId = (3 * (_aSifsTime + _aPreambleLength + _aPlcpHeaderLength))
-                + ((length + (2 * _sAckCtsLng)) / _mBrate);
+        int durId = 3 * (_aSifsTime + _aPreambleLength + _aPlcpHeaderLength)
+                + (length + 2 * _sAckCtsLng) / _mBrate;
 
         // no RTS is needed for broadcast
-        if ((length <= _dotllRTSThreshold) || (Addr1 == mac_broadcast_addr)) {
+        if (length <= _dotllRTSThreshold || Addr1 == mac_broadcast_addr) {
             //Note: Charlie, you didn't surround this if with {}, which causes the
             //else block below related to the if below. There are several of this kind
             // of errors...

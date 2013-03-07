@@ -165,8 +165,8 @@ public class ProgramCodeGeneratorAdapter extends CodeGeneratorAdapter {
                         _eol
                                 + getCodeGenerator().comment(
                                         shortBlockName
-                                                + (((Nameable) getComponent())
-                                                        .getName())));
+                                                + ((Nameable) getComponent())
+                                                        .getName()));
             }
         }
         return processCode(codeStream.toString());

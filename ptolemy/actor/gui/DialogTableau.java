@@ -106,12 +106,12 @@ public class DialogTableau extends Tableau {
 
             while (dialogs.hasNext()) {
                 DialogTableau dialogTableau = (DialogTableau) dialogs.next();
-                PtolemyDialog existingDialog = ((PtolemyDialog) (dialogTableau
-                        .getFrame()));
+                PtolemyDialog existingDialog = (PtolemyDialog) dialogTableau
+                        .getFrame();
 
-                if ((existingDialog != null)
-                        && (existingDialog.getClass() == dialogClass)
-                        && (dialogTableau.hasTarget(target))) {
+                if (existingDialog != null
+                        && existingDialog.getClass() == dialogClass
+                        && dialogTableau.hasTarget(target)) {
                     return dialogTableau;
                 }
             }
@@ -119,18 +119,18 @@ public class DialogTableau extends Tableau {
             // Now, do the same test on the container of the effigy.
             NamedObj container = effigy.getContainer();
 
-            if ((container != null) && (container instanceof PtolemyEffigy)) {
+            if (container != null && container instanceof PtolemyEffigy) {
                 dialogs = ((PtolemyEffigy) container).entityList(
                         DialogTableau.class).iterator();
 
                 while (dialogs.hasNext()) {
                     DialogTableau dialogTableau = (DialogTableau) dialogs
                             .next();
-                    PtolemyDialog existingDialog = ((PtolemyDialog) (dialogTableau
-                            .getFrame()));
+                    PtolemyDialog existingDialog = (PtolemyDialog) dialogTableau
+                            .getFrame();
 
-                    if ((existingDialog.getClass() == dialogClass)
-                            && (dialogTableau.hasTarget(target))) {
+                    if (existingDialog.getClass() == dialogClass
+                            && dialogTableau.hasTarget(target)) {
                         return dialogTableau;
                     }
                 }
@@ -148,14 +148,13 @@ public class DialogTableau extends Tableau {
             Constructor[] constructors = dialogClass.getConstructors();
             Constructor constructor = null;
 
-            for (int i = 0; i < constructors.length; i++) {
-                Class[] pType = constructors[i].getParameterTypes();
+            for (Constructor constructor2 : constructors) {
+                Class[] pType = constructor2.getParameterTypes();
 
-                if ((pType.length == 4) && (pType[0] == DialogTableau.class)
-                        && (pType[1] == Frame.class)
-                        && (pType[2] == Entity.class)
-                        && (pType[3] == Configuration.class)) {
-                    constructor = constructors[i];
+                if (pType.length == 4 && pType[0] == DialogTableau.class
+                        && pType[1] == Frame.class && pType[2] == Entity.class
+                        && pType[3] == Configuration.class) {
+                    constructor = constructor2;
                     break;
                 }
             }
@@ -207,7 +206,7 @@ public class DialogTableau extends Tableau {
     public boolean hasTarget(Entity entity) {
         Entity target = getTarget();
 
-        if ((target != null) && (target == entity)) {
+        if (target != null && target == entity) {
             return true;
         }
 

@@ -102,13 +102,12 @@ public class MultiportToSinglePort extends MoMLFilterSimple {
             _lastNameSeen = attributeValue;
 
             if (_currentlyProcessingActorWithPropertyClassChanges) {
-                if ((_portName != null) && _portName.equals(attributeValue)) {
+                if (_portName != null && _portName.equals(attributeValue)) {
                     // We will do the above checks only if we found a
                     // class that had property class changes.
                     //_foundChange = true;
                 } else {
-                    if (attributeValue.equals("multiport")
-                            && (container != null)
+                    if (attributeValue.equals("multiport") && container != null
                             && container.getName().equals(_portName)) {
                         // What if the multiport is false?
                         //_foundChange = false;
@@ -158,7 +157,7 @@ public class MultiportToSinglePort extends MoMLFilterSimple {
                 //                 _foundChange = false;
                 //                 return attributeValue;
             } else if (_currentlyProcessingActorWithPropertyClassChanges
-                    && (container != null)
+                    && container != null
                     && !container.getFullName().equals(_currentActorFullName)
                     && !container.getFullName().startsWith(
                             _currentActorFullName)) {

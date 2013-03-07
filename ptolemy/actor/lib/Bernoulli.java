@@ -109,7 +109,7 @@ public class Bernoulli extends RandomSource {
      *  @exception IllegalActionException If parameter values are incorrect.
      */
     protected void _generateRandomNumber() throws IllegalActionException {
-        if (_random.nextDouble() < ((DoubleToken) (trueProbability.getToken()))
+        if (_random.nextDouble() < ((DoubleToken) trueProbability.getToken())
                 .doubleValue()) {
             _current = true;
         } else {

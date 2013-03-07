@@ -138,9 +138,9 @@ public class ExtensionFileFilter extends FileFilter implements FilenameFilter {
     public ExtensionFileFilter(String[] filters, String description) {
         this.filters = new Hashtable(filters.length);
 
-        for (int i = 0; i < filters.length; i++) {
+        for (String filter : filters) {
             // add filters one by one
-            addExtension(filters[i]);
+            addExtension(filter);
         }
 
         setDescription(description);
@@ -179,7 +179,7 @@ public class ExtensionFileFilter extends FileFilter implements FilenameFilter {
 
             String extension = getExtension(f);
 
-            if ((extension != null) && (filters.get(extension) != null)) {
+            if (extension != null && filters.get(extension) != null) {
                 return true;
             }
         }
@@ -205,11 +205,11 @@ public class ExtensionFileFilter extends FileFilter implements FilenameFilter {
         int i = name.lastIndexOf('.');
 
         String extension = "";
-        if ((i > 0) && (i < (name.length() - 1))) {
+        if (i > 0 && i < name.length() - 1) {
             extension = name.substring(i + 1).toLowerCase();
         }
 
-        if ((extension != null) && (filters.get(extension) != null)) {
+        if (extension != null && filters.get(extension) != null) {
             return true;
         }
         return false;
@@ -237,7 +237,7 @@ public class ExtensionFileFilter extends FileFilter implements FilenameFilter {
             String filename = f.getName();
             int i = filename.lastIndexOf('.');
 
-            if ((i > 0) && (i < (filename.length() - 1))) {
+            if (i > 0 && i < filename.length() - 1) {
                 return filename.substring(i + 1).toLowerCase();
             }
         }
@@ -280,7 +280,7 @@ public class ExtensionFileFilter extends FileFilter implements FilenameFilter {
      */
     public String getDescription() {
         if (fullDescription == null) {
-            if ((description == null) || isExtensionListInDescription()) {
+            if (description == null || isExtensionListInDescription()) {
                 if (description != null) {
                     fullDescription = description;
                 } else {
@@ -300,7 +300,7 @@ public class ExtensionFileFilter extends FileFilter implements FilenameFilter {
                     result.append(".");
                     result.append(extension);
 
-                    if (extensionNumber < (size - 1)) {
+                    if (extensionNumber < size - 1) {
                         result.append(", ");
                     } else if (extensionNumber < size) {
                         result.append(" and ");

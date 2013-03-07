@@ -156,7 +156,7 @@ public class ActorProductLatticeConstraintsDefinitionAdapter extends
             } else if (!isActorElementIgnored(constraintExpression)
                     && !isActorElementUnconstrained(constraintExpression)) {
                 _setConstraints(actorElement,
-                        ((StringToken) (constraintExpression.getToken()))
+                        ((StringToken) constraintExpression.getToken())
                                 .stringValue());
             }
         }

@@ -117,12 +117,12 @@ public class BusAssembler extends TypedAtomicActor {
         Iterator inputPorts = inputPortList().iterator();
         TypedIOPort inputPort = (TypedIOPort) (inputPorts.hasNext() ? inputPorts
                 .next() : null);
-        int inputWidth = (inputPort != null) ? inputPort.getWidth() : 0;
+        int inputWidth = inputPort != null ? inputPort.getWidth() : 0;
         int i = 0;
         int j = 0;
 
         while (inputPort != null) {
-            if ((i < inputWidth) && inputPort.hasToken(i)) {
+            if (i < inputWidth && inputPort.hasToken(i)) {
                 Token t = inputPort.get(i);
 
                 if (j < _outputWidth) {
@@ -135,7 +135,7 @@ public class BusAssembler extends TypedAtomicActor {
             if (++i >= inputWidth) {
                 inputPort = (TypedIOPort) (inputPorts.hasNext() ? inputPorts
                         .next() : null);
-                inputWidth = (inputPort != null) ? inputPort.getWidth() : 0;
+                inputWidth = inputPort != null ? inputPort.getWidth() : 0;
                 i = 0;
             }
         }

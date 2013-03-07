@@ -92,7 +92,7 @@ public class TokenToJSON extends Converter {
      */
     public void fire() throws IllegalActionException {
         super.fire();
-        output.send(0, constructJSONString((input.get(0))));
+        output.send(0, constructJSONString(input.get(0)));
     }
 
     /** Return false if the input port has no token, otherwise return

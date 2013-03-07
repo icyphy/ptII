@@ -73,7 +73,8 @@ public class ErrorHandlingAction extends SetVariable {
      *  @exception NameDuplicationException Thrown if the name is already used.
      *  @exception IllegalActionException Thrown if parameters cannot be created.
      */
-    public ErrorHandlingAction(Workspace workspace) throws IllegalActionException, NameDuplicationException {
+    public ErrorHandlingAction(Workspace workspace)
+            throws IllegalActionException, NameDuplicationException {
         super(workspace);
         _init();
     }
@@ -86,7 +87,7 @@ public class ErrorHandlingAction extends SetVariable {
      *  @exception IllegalActionException Thrown if parameters cannot be created.
      */
     public ErrorHandlingAction(CompositeEntity container, String name)
-        throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         _init();
@@ -124,7 +125,7 @@ public class ErrorHandlingAction extends SetVariable {
 
     /** The possible error handling action strings.
      */
-    public static enum ErrorHandlingActionString{
+    public static enum ErrorHandlingActionString {
         DropEvent, ExecuteEvent, FixTimestamp, ClearAllEvents, ClearEarlierEvents, ClearCorruptEvents
     }
 
@@ -135,17 +136,17 @@ public class ErrorHandlingAction extends SetVariable {
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == action) {
-            String string = ((StringToken)action.getToken()).stringValue();
+            String string = ((StringToken) action.getToken()).stringValue();
             variableName.setExpression(string);
 
             if (getContainer() instanceof CompositeActor) {
-                CompositeActor container = (CompositeActor)getContainer();
+                CompositeActor container = (CompositeActor) getContainer();
                 while (!container.getName().equals("ErrorHandler")) {
                     if (container == container.toplevel()) {
                         return;
                         // do nothing
                     }
-                    container = (CompositeActor)container.getContainer();
+                    container = (CompositeActor) container.getContainer();
                 }
                 if (container.getAttribute(string) == null) {
                     try {
@@ -169,17 +170,18 @@ public class ErrorHandlingAction extends SetVariable {
      *  call super.clone(workspace).
      *  @exception CloneNotSupportedException Not thrown here.
      */
-//    public Object clone(workspace) throws CloneNotSupportedException {
-//        ErrorHandlingAction newObject = (ErrorHandlingAction) super.clone(workspace);
-//        return newObject;
-//    }
+    //    public Object clone(workspace) throws CloneNotSupportedException {
+    //        ErrorHandlingAction newObject = (ErrorHandlingAction) super.clone(workspace);
+    //        return newObject;
+    //    }
 
     /** Initialize parameters.
      * @exception NameDuplicationException If parameter name is already used.
      * @exception IllegalActionException If parameter cannot be created or type cannot
      * be assigned.
      */
-    private void _init() throws IllegalActionException, NameDuplicationException {
+    private void _init() throws IllegalActionException,
+            NameDuplicationException {
         action = new Parameter(this, "action");
         action.setTypeEquals(BaseType.STRING);
         action.addChoice("\"" + DropEvent + "\"");

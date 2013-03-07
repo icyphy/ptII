@@ -852,8 +852,8 @@ public class SDFDirector extends StaticSchedulingDirector {
     private void _createOutputBufferSizeAndOffsetMap()
             throws IllegalActionException {
 
-        Iterator<?> outputPorts = ((Actor) ((CompositeActor) _director
-                .getContainer())).outputPortList().iterator();
+        Iterator<?> outputPorts = ((Actor) (CompositeActor) _director
+                .getContainer()).outputPortList().iterator();
 
         while (outputPorts.hasNext()) {
 
@@ -917,8 +917,8 @@ public class SDFDirector extends StaticSchedulingDirector {
                     _ports.setReadOffset(port, i, Integer.valueOf(0));
                 } else {
                     // Read offset is a variable.
-                    code.append(CodeStream.indent(((String) readOffset)
-                            + " = 0;" + _eol));
+                    code.append(CodeStream.indent((String) readOffset + " = 0;"
+                            + _eol));
                 }
                 Object writeOffset = _ports.getWriteOffset(port, i);
                 if (writeOffset instanceof Integer) {
@@ -926,7 +926,7 @@ public class SDFDirector extends StaticSchedulingDirector {
                     _ports.setWriteOffset(port, i, Integer.valueOf(0));
                 } else {
                     // Write offset is a variable.
-                    code.append(CodeStream.indent(((String) writeOffset)
+                    code.append(CodeStream.indent((String) writeOffset
                             + " = 0;" + _eol));
                 }
             }

@@ -255,7 +255,7 @@ public class CompositeProcessDirector extends ProcessDirector {
      *   of one of the deeply contained actors throws it.
      */
     public void initialize() throws IllegalActionException {
-        CompositeActor container = ((CompositeActor) getContainer());
+        CompositeActor container = (CompositeActor) getContainer();
 
         if (container != null) {
             CompositeActor containersContainer = (CompositeActor) container

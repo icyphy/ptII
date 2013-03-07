@@ -137,7 +137,7 @@ public class SequenceToArray extends SDFTransformer {
      *   an attribute that cannot be cloned.
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        SequenceToArray newObject = (SequenceToArray) (super.clone(workspace));
+        SequenceToArray newObject = (SequenceToArray) super.clone(workspace);
         try {
             newObject.output.setTypeAtLeast(ActorTypeUtil.arrayOf(
                     newObject.input, newObject.arrayLength));

@@ -252,7 +252,7 @@ public class Simulator extends SDFTransformer {
                     if (firstFire) {
                         firstFire = false;
                     } else {
-                        if (Math.abs((simTimRea - simTimReaPre)
+                        if (Math.abs(simTimRea - simTimReaPre
                                 - (simTim - simTimPre)) > 0.0001) {
                             final String em = "Simulation time of "
                                     + this.getFullName()
@@ -709,9 +709,9 @@ public class Simulator extends SDFTransformer {
         cliPro.redirectErrorStream(true);
         cliPro.setProcessArguments(com, worDir);
         // Check if we run in headless mode
-        final boolean showConsole = ((BooleanToken) (showConsoleWindow
-                .getToken())).booleanValue();
-        cliPro.showConsoleWindow(showConsole && (!isHeadless));
+        final boolean showConsole = ((BooleanToken) showConsoleWindow
+                .getToken()).booleanValue();
+        cliPro.showConsoleWindow(showConsole && !isHeadless);
 
         // Set simulation log file.
         // The call to System.gc() is required on Windows: If this actor is called multiple times

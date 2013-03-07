@@ -86,7 +86,7 @@ public class BooleanMatrixToken extends MatrixToken {
     public BooleanMatrixToken(String init) throws IllegalActionException {
         PtParser parser = new PtParser();
         ASTPtRootNode tree = parser.generateParseTree(init);
-        Token token = (new ParseTreeEvaluator()).evaluateParseTree(tree);
+        Token token = new ParseTreeEvaluator().evaluateParseTree(tree);
 
         if (token instanceof BooleanMatrixToken) {
             boolean[][] value = ((BooleanMatrixToken) token).booleanMatrix();
@@ -117,7 +117,7 @@ public class BooleanMatrixToken extends MatrixToken {
                     "BooleanMatrixToken: The specified" + " array is null.");
         }
 
-        if (tokens.length != (rows * columns)) {
+        if (tokens.length != rows * columns) {
             throw new IllegalActionException(
                     "BooleanMatrixToken: The specified"
                             + " array is not of the correct length");
@@ -181,7 +181,7 @@ public class BooleanMatrixToken extends MatrixToken {
 
         int compare = TypeLattice.compare(BaseType.BOOLEAN_MATRIX, token);
 
-        if ((compare == CPO.LOWER) || (compare == CPO.INCOMPARABLE)) {
+        if (compare == CPO.LOWER || compare == CPO.INCOMPARABLE) {
             throw new IllegalActionException(
                     notSupportedIncomparableConversionMessage(token,
                             "[boolean]"));
@@ -371,8 +371,8 @@ public class BooleanMatrixToken extends MatrixToken {
         // This assumes the matrices tile.
         int rows = 0;
         int columns = 0;
-        for (int i = 0; i < matrices.length; i++) {
-            rows += matrices[i][0].getRowCount();
+        for (MatrixToken[] matrice : matrices) {
+            rows += matrice[0].getRowCount();
         }
         for (int j = 0; j < matrices[0].length; j++) {
             columns += matrices[0][j].getColumnCount();

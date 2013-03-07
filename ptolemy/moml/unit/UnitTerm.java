@@ -102,7 +102,7 @@ public class UnitTerm implements UnitPresentation {
         }
 
         if (getExponent() != 1) {
-            retv += ("^" + getExponent());
+            retv += "^" + getExponent();
         }
 
         return retv;
@@ -174,21 +174,21 @@ public class UnitTerm implements UnitPresentation {
      * @return True if this is a Unit.
      */
     public boolean isUnit() {
-        return (_type == _UNIT);
+        return _type == _UNIT;
     }
 
     /** True is this is a UnitExpr.
      * @return True is this is a UnitExpr.
      */
     public boolean isUnitExpr() {
-        return (_type == _UNITEXPR);
+        return _type == _UNITEXPR;
     }
 
     /** True if this a variable.
      * @return True if this a variable.
      */
     public boolean isVariable() {
-        return (_type == _VARIABLE);
+        return _type == _VARIABLE;
     }
 
     /** Set the exponent.
@@ -248,7 +248,7 @@ public class UnitTerm implements UnitPresentation {
         }
 
         if (getExponent() != 1) {
-            retv += ("^" + getExponent());
+            retv += "^" + getExponent();
         }
 
         return retv;

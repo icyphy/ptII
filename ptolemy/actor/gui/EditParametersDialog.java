@@ -178,7 +178,7 @@ public class EditParametersDialog extends ComponentDialog implements
                 ComponentDialog dialog = new ComponentDialog(_owner,
                         "Edit preferences for " + target.getName(), panel);
 
-                if (!(dialog.buttonPressed().equals("OK"))) {
+                if (!dialog.buttonPressed().equals("OK")) {
                     // Restore original parameter values.
                     panel.restore();
                 }
@@ -249,7 +249,7 @@ public class EditParametersDialog extends ComponentDialog implements
      */
     public void changeExecuted(ChangeRequest change) {
         // Ignore if this is not the originator.
-        if ((change == null) || (change.getSource() != this)) {
+        if (change == null || change.getSource() != this) {
             return;
         }
 
@@ -269,7 +269,7 @@ public class EditParametersDialog extends ComponentDialog implements
      */
     public void changeFailed(ChangeRequest change, final Exception exception) {
         // Ignore if this is not the originator.
-        if ((change == null) || (change.getSource() != this)) {
+        if (change == null || change.getSource() != this) {
             return;
         }
 

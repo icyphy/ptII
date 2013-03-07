@@ -305,7 +305,7 @@ public class ComponentPort extends Port {
      */
     public void insertLink(int index, Relation relation)
             throws IllegalActionException {
-        if ((relation != null) && (_workspace != relation.workspace())) {
+        if (relation != null && _workspace != relation.workspace()) {
             throw new IllegalActionException(this, relation,
                     "Cannot link because workspaces are different.");
         }
@@ -574,7 +574,7 @@ public class ComponentPort extends Port {
      */
     public void setContainer(Entity entity) throws IllegalActionException,
             NameDuplicationException {
-        if ((entity != null) && (_workspace != entity.workspace())) {
+        if (entity != null && _workspace != entity.workspace()) {
             throw new IllegalActionException(this, entity,
                     "Cannot set container because workspaces are different.");
         }
@@ -603,7 +603,7 @@ public class ComponentPort extends Port {
      *  @param relation The relation to unlink.
      */
     public void unlink(Relation relation) {
-        if ((relation != null) && _isInsideLinkable(relation.getContainer())) {
+        if (relation != null && _isInsideLinkable(relation.getContainer())) {
             // An inside link
             unlinkInside(relation);
         } else {
@@ -702,7 +702,7 @@ public class ComponentPort extends Port {
      */
     protected void _checkContainer(Entity container)
             throws IllegalActionException {
-        if (!(container instanceof ComponentEntity) && (container != null)) {
+        if (!(container instanceof ComponentEntity) && container != null) {
             throw new IllegalActionException(container, this,
                     "ComponentPort can only be contained by ComponentEntity");
         }
@@ -739,7 +739,7 @@ public class ComponentPort extends Port {
             // Check that the container is not a class or that
             // if it is, that this is an inside link.
             if (container.isClassDefinition()
-                    && (container != relation.getContainer())) {
+                    && container != relation.getContainer()) {
                 throw new IllegalActionException(this, relation,
                         "Cannot establish a link to a port contained "
                                 + "by a class definition");
@@ -752,8 +752,8 @@ public class ComponentPort extends Port {
             // Superclass assures that the container is not null.
             Nameable relationContainer = relation.getContainer();
 
-            if ((container != relationContainer)
-                    && (container.getContainer() != relationContainer)) {
+            if (container != relationContainer
+                    && container.getContainer() != relationContainer) {
                 // Link crosses levels of the hierarchy.
                 // Ensure that an export occurs.
                 // If it's an inside link, then make the container
@@ -811,8 +811,7 @@ public class ComponentPort extends Port {
             Entity container = (Entity) getContainer();
             // Superclass assures that the container is not null.
             Nameable relationContainer = relation.getContainer();
-            if (container.isClassDefinition()
-                    && (container != relationContainer)) {
+            if (container.isClassDefinition() && container != relationContainer) {
                 throw new IllegalActionException(this, relation,
                         "Cannot establish a link to a port contained "
                                 + "by a class definition");
@@ -1061,7 +1060,7 @@ public class ComponentPort extends Port {
 
             StringBuffer result = new StringBuffer();
 
-            if ((bracket == 1) || (bracket == 2)) {
+            if (bracket == 1 || bracket == 2) {
                 result.append(super._description(detail, indent, 1));
             } else {
                 result.append(super._description(detail, indent, 0));
@@ -1136,7 +1135,7 @@ public class ComponentPort extends Port {
      *  @param relation The relation to link to.
      */
     private void _doLink(Relation relation) throws IllegalActionException {
-        if ((relation != null) && (_workspace != relation.workspace())) {
+        if (relation != null && _workspace != relation.workspace()) {
             throw new IllegalActionException(this, relation,
                     "Cannot link because workspaces are different.");
         }

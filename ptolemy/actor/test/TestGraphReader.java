@@ -69,7 +69,7 @@ public class TestGraphReader {
         TestGraphReader tester = new TestGraphReader();
         CompositeActor toplevel = tester._readGraph(args);
         GraphReader graphReader = new GraphReader();
-        DirectedGraph graph = (DirectedGraph) (graphReader.convert(toplevel));
+        DirectedGraph graph = (DirectedGraph) graphReader.convert(toplevel);
         tester._printGraph(graph);
     }
 
@@ -96,7 +96,7 @@ public class TestGraphReader {
 
         while (sources.hasNext()) {
             System.out.println("source #" + sourceNumber++ + ": "
-                    + ((Node) (sources.next())).getWeight());
+                    + ((Node) sources.next()).getWeight());
             System.out.println();
         }
 
@@ -109,7 +109,7 @@ public class TestGraphReader {
 
         while (sinks.hasNext()) {
             System.out.println("sink #" + sinkNumber++ + ": "
-                    + ((Node) (sinks.next())).getWeight());
+                    + ((Node) sinks.next()).getWeight());
             System.out.println();
         }
     }
@@ -139,7 +139,7 @@ public class TestGraphReader {
         if (!(toplevel instanceof CompositeActor)) {
             throw new RuntimeException("Top level must be a CompositeActor "
                     + "(in this case, it is '"
-                    + ((toplevel == null) ? "null" : toplevel.getClass()
+                    + (toplevel == null ? "null" : toplevel.getClass()
                             .getName()) + "')\n");
         }
 

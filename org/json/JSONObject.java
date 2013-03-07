@@ -153,9 +153,9 @@ public class JSONObject {
      */
     public JSONObject(JSONObject jo, String[] names) {
         this();
-        for (int i = 0; i < names.length; i += 1) {
+        for (String name : names) {
             try {
-                putOnce(names[i], jo.opt(names[i]));
+                putOnce(name, jo.opt(name));
             } catch (Exception ignore) {
             }
         }
@@ -277,8 +277,7 @@ public class JSONObject {
     public JSONObject(Object object, String names[]) {
         this();
         Class c = object.getClass();
-        for (int i = 0; i < names.length; i += 1) {
-            String name = names[i];
+        for (String name : names) {
             try {
                 putOpt(name, c.getField(name).get(object));
             } catch (Exception ignore) {
@@ -400,13 +399,11 @@ public class JSONObject {
      */
     public boolean getBoolean(String key) throws JSONException {
         Object o = get(key);
-        if (o.equals(Boolean.FALSE)
-                || (o instanceof String && ((String) o)
-                        .equalsIgnoreCase("false"))) {
+        if (o.equals(Boolean.FALSE) || o instanceof String
+                && ((String) o).equalsIgnoreCase("false")) {
             return false;
-        } else if (o.equals(Boolean.TRUE)
-                || (o instanceof String && ((String) o)
-                        .equalsIgnoreCase("true"))) {
+        } else if (o.equals(Boolean.TRUE) || o instanceof String
+                && ((String) o).equalsIgnoreCase("true")) {
             return true;
         }
         throw new JSONException("JSONObject[" + quote(key)
@@ -855,11 +852,10 @@ public class JSONObject {
 
         boolean includeSuperClass = klass.getClassLoader() != null;
 
-        Method[] methods = (includeSuperClass) ? klass.getMethods() : klass
+        Method[] methods = includeSuperClass ? klass.getMethods() : klass
                 .getDeclaredMethods();
-        for (int i = 0; i < methods.length; i += 1) {
+        for (Method method : methods) {
             try {
-                Method method = methods[i];
                 if (Modifier.isPublic(method.getModifiers())) {
                     String name = method.getName();
                     String key = "";
@@ -1083,8 +1079,8 @@ public class JSONObject {
                 sb.append("\\r");
                 break;
             default:
-                if (c < ' ' || (c >= '\u0080' && c < '\u00a0')
-                        || (c >= '\u2000' && c < '\u2100')) {
+                if (c < ' ' || c >= '\u0080' && c < '\u00a0' || c >= '\u2000'
+                        && c < '\u2100') {
                     t = "000" + Integer.toHexString(c);
                     sb.append("\\u" + t.substring(t.length() - 4));
                 } else {
@@ -1146,7 +1142,7 @@ public class JSONObject {
          */
 
         char b = s.charAt(0);
-        if ((b >= '0' && b <= '9') || b == '.' || b == '-' || b == '+') {
+        if (b >= '0' && b <= '9' || b == '.' || b == '-' || b == '+') {
             if (b == '0' && s.length() > 2
                     && (s.charAt(1) == 'x' || s.charAt(1) == 'X')) {
                 try {
@@ -1462,8 +1458,8 @@ public class JSONObject {
                 return new JSONObject((Map) object);
             }
             Package objectPackage = object.getClass().getPackage();
-            String objectPackageName = (objectPackage != null ? objectPackage
-                    .getName() : "");
+            String objectPackageName = objectPackage != null ? objectPackage
+                    .getName() : "";
             if (objectPackageName.startsWith("java.")
                     || objectPackageName.startsWith("javax.")
                     || object.getClass().getClassLoader() == null) {

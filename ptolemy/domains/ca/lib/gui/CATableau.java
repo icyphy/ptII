@@ -233,23 +233,21 @@ class CAMatrixViewer extends Component {
             int rowCount = this.matrix.length;
             int columnCount = this.matrix[0].length;
 
-            float rowWidth = ((float) this.getWidth()) / ((float) rowCount);
-            float columnWidth = ((float) this.getHeight())
-                    / ((float) columnCount);
+            float rowWidth = (float) this.getWidth() / (float) rowCount;
+            float columnWidth = (float) this.getHeight() / (float) columnCount;
 
             int borderSize = (int) (rowWidth / 6.0);
             // create shadow trianlge
-            int[] xPoints = new int[] { 0, (int) (columnWidth),
-                    (int) (columnWidth) };
-            int[] yPoints = new int[] { (int) (rowWidth), 0, (int) (rowWidth) };
+            int[] xPoints = new int[] { 0, (int) columnWidth, (int) columnWidth };
+            int[] yPoints = new int[] { (int) rowWidth, 0, (int) rowWidth };
 
             for (int i = 0; i < rowCount; i++) {
                 for (int j = 0; j < columnCount; j++) {
-                    int x1 = (int) ((j) * columnWidth);
-                    int y1 = (int) ((i) * rowWidth);
+                    int x1 = (int) (j * columnWidth);
+                    int y1 = (int) (i * rowWidth);
 
-                    int x2 = (int) (columnWidth);
-                    int y2 = (int) (rowWidth);
+                    int x2 = (int) columnWidth;
+                    int y2 = (int) rowWidth;
                     if (matrix[i][j] > 0.0) {
 
                         graphics.translate(x1, y1);
@@ -270,12 +268,12 @@ class CAMatrixViewer extends Component {
             graphics.setColor(darkGray);
             graphics.drawRect(0, 0, this.getWidth() - 1, this.getHeight() - 1);
             for (int i = 1; i <= columnCount; i++) {
-                int x = (int) ((i) * columnWidth);
+                int x = (int) (i * columnWidth);
                 graphics.drawLine(x, 0, x, this.getHeight());
             }
 
             for (int i = 1; i <= rowCount; i++) {
-                int y = (int) ((i) * rowWidth);
+                int y = (int) (i * rowWidth);
                 graphics.drawLine(0, y, this.getWidth(), y);
             }
         }

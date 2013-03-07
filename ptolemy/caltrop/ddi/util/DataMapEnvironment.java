@@ -76,8 +76,8 @@ public class DataMapEnvironment implements Environment {
             if (pvi.isList()) {
                 // if we have read the entire list, return it. otherwise,
                 // throw an exception.
-                if (data.size() > ((pvi._repeatVal * pvi.getLength())
-                        - (pvi.getLength()) - pvi.getIndex())) {
+                if (data.size() > pvi._repeatVal * pvi.getLength()
+                        - pvi.getLength() - pvi.getIndex()) {
                     // we've read enough tokens to construct the entire list.
                     List result = new ArrayList();
 
@@ -179,11 +179,10 @@ public class DataMapEnvironment implements Environment {
     private Map _createNameToPortVarInfoMap(InputPattern[] inputPatterns) {
         Map result = new HashMap();
 
-        for (int i = 0; i < inputPatterns.length; i++) {
-            InputPattern inputPattern = inputPatterns[i];
+        for (InputPattern inputPattern : inputPatterns) {
             int repeatVal = -1; // no repeat expression.
             Expression repeatExpr = inputPattern.getRepeatExpr();
-            boolean isList = ((repeatExpr == null) ? false : true);
+            boolean isList = repeatExpr == null ? false : true;
 
             if (isList) {
                 repeatVal = _context.intValue(_eval.evaluate(repeatExpr));

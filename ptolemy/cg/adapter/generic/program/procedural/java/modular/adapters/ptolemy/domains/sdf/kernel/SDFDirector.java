@@ -619,14 +619,13 @@ public class SDFDirector
             // when the channel specification is not an integer.
             if (dynamicReferencesAllowed) {
                 try {
-                    channelNumber = (Integer.valueOf(channelAndOffset[0]))
+                    channelNumber = Integer.valueOf(channelAndOffset[0])
                             .intValue();
                 } catch (NumberFormatException ex) {
                     isChannelNumberInt = false;
                 }
             } else {
-                channelNumber = (Integer.valueOf(channelAndOffset[0]))
-                        .intValue();
+                channelNumber = Integer.valueOf(channelAndOffset[0]).intValue();
             }
         }
 
@@ -863,13 +862,13 @@ public class SDFDirector
 
     static private boolean _checkLocal(boolean forComposite, IOPort port)
             throws IllegalActionException {
-        return (port.isInput() && !forComposite && port.isOutsideConnected())
-                || (port.isOutput() && forComposite);
+        return port.isInput() && !forComposite && port.isOutsideConnected()
+                || port.isOutput() && forComposite;
     }
 
     static private boolean _checkRemote(boolean forComposite, IOPort port) {
-        return (port.isOutput() && !forComposite)
-                || (port.isInput() && forComposite);
+        return port.isOutput() && !forComposite || port.isInput()
+                && forComposite;
     }
 
     /**
@@ -889,7 +888,7 @@ public class SDFDirector
         }
 
         String channelOffset = generateName(port);
-        channelOffset += (isWrite) ? "_writeOffset" : "_readOffset";
+        channelOffset += isWrite ? "_writeOffset" : "_readOffset";
         channelOffset += "[" + channelString + "]";
 
         return channelOffset;

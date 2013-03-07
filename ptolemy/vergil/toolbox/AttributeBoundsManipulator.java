@@ -88,7 +88,7 @@ public class AttributeBoundsManipulator extends BoundsManipulator {
         // FIXME: Diva has a bug where this method is called on the
         // prototype rather than the instance that has a child.
         // We work around this by getting access to the instance.
-        if ((child == null) && (_instanceDecorator != null)) {
+        if (child == null && _instanceDecorator != null) {
             child = _instanceDecorator.getChild();
         }
 
@@ -116,8 +116,8 @@ public class AttributeBoundsManipulator extends BoundsManipulator {
             Attribute locationParameter = _container.getAttribute("_location");
 
             // Proceed only if the container has these parameters.
-            if ((widthParameter instanceof Parameter)
-                    && (heightParameter instanceof Parameter)) {
+            if (widthParameter instanceof Parameter
+                    && heightParameter instanceof Parameter) {
                 // Snap the new width and height to the grid (not the parameter values!).
                 // The reason is that it is the new width and height, not the parameter
                 // values, are what is visible on the screen.
@@ -139,8 +139,8 @@ public class AttributeBoundsManipulator extends BoundsManipulator {
                             .getToken();
                     if (previousWidth instanceof DoubleToken
                             && _boundsOnMousePressed != null) {
-                        newWidth = (snappedWidthHeight[0] / _boundsOnMousePressed
-                                .getWidth())
+                        newWidth = snappedWidthHeight[0]
+                                / _boundsOnMousePressed.getWidth()
                                 * ((DoubleToken) previousWidth).doubleValue();
                     }
                 } catch (IllegalActionException e1) {
@@ -153,8 +153,8 @@ public class AttributeBoundsManipulator extends BoundsManipulator {
                             .getToken();
                     if (previousHeight instanceof DoubleToken
                             && _boundsOnMousePressed != null) {
-                        newHeight = (snappedWidthHeight[1] / _boundsOnMousePressed
-                                .getHeight())
+                        newHeight = snappedWidthHeight[1]
+                                / _boundsOnMousePressed.getHeight()
                                 * ((DoubleToken) previousHeight).doubleValue();
                     }
                 } catch (IllegalActionException e1) {
@@ -197,13 +197,13 @@ public class AttributeBoundsManipulator extends BoundsManipulator {
                         // displacement according to the following formulas
                         // (this is a tricky geometry problem!).
                         newX = snappedXY[0]
-                                + (snappedWidthHeight[0] / _boundsOnMousePressed
-                                        .getWidth())
+                                + snappedWidthHeight[0]
+                                / _boundsOnMousePressed.getWidth()
                                 * (previousLocation[0] - _boundsOnMousePressed
                                         .getX());
                         newY = snappedXY[1]
-                                + (snappedWidthHeight[1] / _boundsOnMousePressed
-                                        .getHeight())
+                                + snappedWidthHeight[1]
+                                / _boundsOnMousePressed.getHeight()
                                 * (previousLocation[1] - _boundsOnMousePressed
                                         .getY());
                     } else {
@@ -257,7 +257,7 @@ public class AttributeBoundsManipulator extends BoundsManipulator {
         // FIXME: Diva has a bug where this method is called on the
         // prototype rather than the instance that has a child.
         // We work around this by getting access to the instance.
-        if ((child == null) && (_instanceDecorator != null)) {
+        if (child == null && _instanceDecorator != null) {
             child = _instanceDecorator.getChild();
         }
 

@@ -164,7 +164,7 @@ public class LimitedRangeChannel extends DelayChannel {
             range = field.doubleValue();
         }
 
-        boolean result = (_distanceBetween(source, destination) <= range);
+        boolean result = _distanceBetween(source, destination) <= range;
 
         // Whether a port is in range depends on the
         // transmit properties of this sender, so we set up

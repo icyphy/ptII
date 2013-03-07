@@ -413,7 +413,7 @@ public class KielerJUnitTest {
         Iterator tableaux = Configuration.findEffigy(model)
                 .entityList(Tableau.class).iterator();
         while (tableaux.hasNext()) {
-            Tableau tableau = (Tableau) (tableaux.next());
+            Tableau tableau = (Tableau) tableaux.next();
             if (tableau.getFrame() instanceof BasicGraphFrame) {
                 frame = (BasicGraphFrame) tableau.getFrame();
                 break;

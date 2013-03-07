@@ -307,7 +307,7 @@ public class Bus extends MonitoredQuantityManager {
         // only token on the queue, then request a firing at
         // the time that token should be delivered to the
         // delegated receiver.
-        if ((getDirector() instanceof FixedPointDirector)
+        if (getDirector() instanceof FixedPointDirector
                 && _receiversAndTokensToSendTo != null) {
             for (Receiver receiver : _receiversAndTokensToSendTo.keySet()) {
                 Token token = _receiversAndTokensToSendTo.get(receiver);
@@ -349,7 +349,7 @@ public class Bus extends MonitoredQuantityManager {
      */
     public void sendToken(Receiver source, Receiver receiver, Token token)
             throws IllegalActionException {
-     // If the token is null, then this means there is not actually
+        // If the token is null, then this means there is not actually
         // something to send. Do not take up bus resources for this.
         // FIXME: Is this the right thing to do?
         // Presumably, this is an issue with the Continuous domain.
@@ -415,13 +415,14 @@ public class Bus extends MonitoredQuantityManager {
      *  @return This.
      *  @exception IllegalActionException Not thrown here.
      */
-    public Bus setParameters(double messageLength) throws IllegalActionException {
+    public Bus setParameters(double messageLength)
+            throws IllegalActionException {
         // The port is stored in _tempPort by IOPort in getQuantityManagers().
         // if the _tempPort is null this method might still be called because the
         // attribute is validated. In that case, just return "this", which then is
         // used to
         if (_tempPort != null) {
-            _messageLengths.put(_tempPort, (Double) messageLength);
+            _messageLengths.put(_tempPort, messageLength);
         }
         return this;
     }

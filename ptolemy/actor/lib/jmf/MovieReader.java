@@ -141,7 +141,7 @@ public class MovieReader extends Source implements ControllerListener {
                                 "Invalid URL.\n(Tried copying the file '"
                                         + url.toString()
                                         + "', to '"
-                                        + ((urlCopy == null) ? "null" : urlCopy
+                                        + (urlCopy == null ? "null" : urlCopy
                                                 .toString())
                                         + "', (copyFileName was: '"
                                         + copyFileName
@@ -313,7 +313,7 @@ public class MovieReader extends Source implements ControllerListener {
     protected boolean _waitForState(int state) throws IllegalActionException {
         synchronized (_waitSync) {
             try {
-                while ((_player.getState() != state) && _stateTransitionOK) {
+                while (_player.getState() != state && _stateTransitionOK) {
                     _waitSync.wait();
                 }
             } catch (Throwable throwable) {
@@ -333,8 +333,8 @@ public class MovieReader extends Source implements ControllerListener {
         try {
             Control[] controls = _player.getControls();
 
-            for (int i = 0; i < controls.length; i++) {
-                controlNames.append(controls[i] + "\n");
+            for (Control control : controls) {
+                controlNames.append(control + "\n");
             }
         } catch (Throwable throwable) {
             controlNames.append("Could not get controls: " + throwable);

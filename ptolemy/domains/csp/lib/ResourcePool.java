@@ -221,8 +221,8 @@ public class ResourcePool extends CSPActor {
         }
         int successfulBranch = chooseBranch(branches);
         if (_debugging && _VERBOSE_DEBUGGING) {
-            for (int i = 0; i < branches.length; i++) {
-                branches[i].removeDebugListener(this);
+            for (ConditionalBranch branche : branches) {
+                branche.removeDebugListener(this);
             }
         }
         if (successfulBranch < 0) {

@@ -167,7 +167,7 @@ public class SelectionInteractor extends CompositeInteractor {
         if (_selectionFilter.accept(event)) {
             // If the item is not already in the selection, clear
             // the selection and then add this one.
-            if (!(_selection.containsSelection(figure))) {
+            if (!_selection.containsSelection(figure)) {
                 _selection.clearSelection();
                 _selection.addSelection(figure);
                 isChanged = true;
@@ -184,7 +184,7 @@ public class SelectionInteractor extends CompositeInteractor {
         }
 
         // Set the target of all attached drag interactors
-        if ((_selection.getSelectionCount() > 0)
+        if (_selection.getSelectionCount() > 0
                 && _selection.containsSelection(figure)) {
             Object[] target = _selection.getSelectionAsArray();
             Iterator<?> i = interactors();

@@ -61,7 +61,7 @@ public abstract class IteratorIterator extends IteratorAdapter {
         while (_subiterator != null && !_subiterator.hasNext()) {
             _subiterator = iterator(_iterator.next());
         }
-        return (_subiterator != null);
+        return _subiterator != null;
     }
 
     /* Convert an object returned by the top-level iterator
@@ -80,6 +80,6 @@ public abstract class IteratorIterator extends IteratorAdapter {
             _subiterator = iterator(_iterator.next());
         }
 
-        return (_subiterator.next());
+        return _subiterator.next();
     }
 }

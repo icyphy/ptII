@@ -232,7 +232,7 @@ public class DoubleMatrixMath {
 
         a = allocCopy(matrix);
 
-        for (int pivot = 0; pivot < (n - 1); pivot++) {
+        for (int pivot = 0; pivot < n - 1; pivot++) {
             // find the biggest absolute pivot
             double big = Math.abs(a[pivot][pivot]);
             int swapRow = 0; // initialize for no swap
@@ -275,7 +275,7 @@ public class DoubleMatrixMath {
                 double temp = a[row][pivot];
 
                 for (int col = pivot + 1; col < n; col++) {
-                    a[row][col] -= (a[pivot][col] * temp);
+                    a[row][col] -= a[pivot][col] * temp;
                 }
             }
         }
@@ -500,7 +500,7 @@ public class DoubleMatrixMath {
                     Ai[row][icol] = 0.0;
 
                     for (int col = 0; col < n; col++) {
-                        Ai[row][col] -= (Ai[icol][col] * temp);
+                        Ai[row][col] -= Ai[icol][col] * temp;
                     }
                 }
             }
@@ -622,7 +622,7 @@ public class DoubleMatrixMath {
             double sum = 0.0;
 
             for (int j = 0; j < rows; j++) {
-                sum += (matrix[j][i] * array[j]);
+                sum += matrix[j][i] * array[j];
             }
 
             returnValue[i] = sum;
@@ -656,7 +656,7 @@ public class DoubleMatrixMath {
             double sum = 0.0;
 
             for (int j = 0; j < columns; j++) {
-                sum += (matrix[i][j] * array[j]);
+                sum += matrix[i][j] * array[j];
             }
 
             returnValue[i] = sum;
@@ -690,7 +690,7 @@ public class DoubleMatrixMath {
                 double sum = 0.0;
 
                 for (int k = 0; k < matrix2.length; k++) {
-                    sum += (matrix1[i][k] * matrix2[k][j]);
+                    sum += matrix1[i][k] * matrix2[k][j];
                 }
 
                 returnValue[i][j] = sum;
@@ -880,9 +880,9 @@ public class DoubleMatrixMath {
     public static final double sum(final double[][] matrix) {
         double sum = 0.0;
 
-        for (int i = 0; i < matrix.length; i++) {
-            for (int j = 0; j < matrix[i].length; j++) {
-                sum += matrix[i][j];
+        for (double[] element : matrix) {
+            for (int j = 0; j < element.length; j++) {
+                sum += element[j];
             }
         }
 
@@ -1019,14 +1019,14 @@ public class DoubleMatrixMath {
             for (int j = 0; j < _columns(matrix); j++) {
                 sb.append(Double.toString(matrix[i][j]));
 
-                if (j < (_columns(matrix) - 1)) {
+                if (j < _columns(matrix) - 1) {
                     sb.append(elementDelimiter);
                 }
             }
 
             sb.append(vectorEnd);
 
-            if (i < (_rows(matrix) - 1)) {
+            if (i < _rows(matrix) - 1) {
                 sb.append(vectorDelimiter);
             }
         }
@@ -1091,8 +1091,8 @@ public class DoubleMatrixMath {
 
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
-                if ((matrix1[i][j] > (matrix2[i][j] + distance))
-                        || (matrix1[i][j] < (matrix2[i][j] - distance))) {
+                if (matrix1[i][j] > matrix2[i][j] + distance
+                        || matrix1[i][j] < matrix2[i][j] - distance) {
                     return false;
                 }
             }
@@ -1125,8 +1125,8 @@ public class DoubleMatrixMath {
 
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
-                if ((matrix1[i][j] > (matrix2[i][j] + errorMatrix[i][j]))
-                        || (matrix1[i][j] < (matrix2[i][j] - errorMatrix[i][j]))) {
+                if (matrix1[i][j] > matrix2[i][j] + errorMatrix[i][j]
+                        || matrix1[i][j] < matrix2[i][j] - errorMatrix[i][j]) {
                     return false;
                 }
             }
@@ -1153,7 +1153,7 @@ public class DoubleMatrixMath {
         int rows = _rows(matrix1);
         int columns = _columns(matrix1);
 
-        if ((rows != _rows(matrix2)) || (columns != _columns(matrix2))) {
+        if (rows != _rows(matrix2) || columns != _columns(matrix2)) {
             throw new IllegalArgumentException("ptolemy.math.DoubleMatrixMath."
                     + caller + "() : one matrix " + _dimensionString(matrix1)
                     + " is not the same size as another matrix "
@@ -1193,7 +1193,7 @@ public class DoubleMatrixMath {
      *  @return a string describing the dimensions of this matrix.
      */
     protected static final String _dimensionString(final double[][] matrix) {
-        return ("[" + _rows(matrix) + " x " + _columns(matrix) + "]");
+        return "[" + _rows(matrix) + " x " + _columns(matrix) + "]";
     }
 
     /** Given a set of row vectors rowArrays[0] ... rowArrays[n-1], compute :

@@ -137,8 +137,8 @@ public class LatticeOntologyModalFSMAdapter extends
             }
         }
 
-        boolean constrainSource = (interconnectConstraintType == ConstraintType.EQUALS)
-                || (interconnectConstraintType == ConstraintType.SOURCE_GE_SINK);
+        boolean constrainSource = interconnectConstraintType == ConstraintType.EQUALS
+                || interconnectConstraintType == ConstraintType.SOURCE_GE_SINK;
 
         Iterator outputActions = outputActionMap.entrySet().iterator();
         while (outputActions.hasNext()) {

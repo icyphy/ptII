@@ -166,7 +166,7 @@ abstract public class Profile {
                             new URL[] { url });
 
                     classInstance = classLoader.loadClass(className);
-                    _profile = (Profile) (classInstance.newInstance());
+                    _profile = (Profile) classInstance.newInstance();
                 }
             } catch (Throwable throwable) {
                 _profile = null;

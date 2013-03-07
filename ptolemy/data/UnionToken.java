@@ -57,7 +57,7 @@ public class UnionToken extends AbstractNotConvertibleToken {
      *  @exception IllegalActionException If the label or the value is null.
      */
     public UnionToken(String label, Token value) throws IllegalActionException {
-        if ((label == null) || (value == null)) {
+        if (label == null || value == null) {
             throw new IllegalActionException("UnionToken: The label or the "
                     + "value is null.");
         }
@@ -83,7 +83,7 @@ public class UnionToken extends AbstractNotConvertibleToken {
             _label = unionToken.label();
             _value = unionToken.value();
 
-            if ((_label == null) || (_value == null)) {
+            if (_label == null || _value == null) {
                 throw new IllegalActionException("UnionToken: The label "
                         + "or the value is null.");
             }

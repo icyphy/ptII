@@ -108,7 +108,6 @@ public class LiveLink extends FileParameter implements Editable {
                 "createEditor() should not be called.");
     }
 
-
     /** Create an editor for configuring the specified object.
      *  This editor will have no parent window.
      *  @param object The object to configure.
@@ -135,7 +134,7 @@ public class LiveLink extends FileParameter implements Editable {
             List<URIAttribute> attributes = toplevel
                     .attributeList(URIAttribute.class);
             if (attributes != null && attributes.size() > 0) {
-                base = (attributes.get(0)).getURL();
+                base = attributes.get(0).getURL();
             }
             URL toOpen = asURL();
             configuration.openModel(base, toOpen, toOpen.toExternalForm());

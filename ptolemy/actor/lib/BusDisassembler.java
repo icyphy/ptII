@@ -91,9 +91,9 @@ public class BusDisassembler extends TypedAtomicActor {
         super.fire();
         int inputWidth = input.getWidth();
         Iterator<TypedIOPort> outputPorts = outputPortList().iterator();
-        TypedIOPort outputPort = (outputPorts.hasNext() ? outputPorts.next()
-                : null);
-        int outputWidth = (outputPort != null) ? outputPort.getWidth() : 0;
+        TypedIOPort outputPort = outputPorts.hasNext() ? outputPorts.next()
+                : null;
+        int outputWidth = outputPort != null ? outputPort.getWidth() : 0;
         int j = 0;
 
         for (int i = 0; i < inputWidth; i++) {
@@ -106,12 +106,12 @@ public class BusDisassembler extends TypedAtomicActor {
             }
 
             if (outputPort != null) {
-                if (j < (outputWidth - 1)) {
+                if (j < outputWidth - 1) {
                     j++;
                 } else {
-                    outputPort = (outputPorts.hasNext() ? outputPorts.next()
-                            : null);
-                    outputWidth = (outputPort != null) ? outputPort.getWidth()
+                    outputPort = outputPorts.hasNext() ? outputPorts.next()
+                            : null;
+                    outputWidth = outputPort != null ? outputPort.getWidth()
                             : 0;
                     j = 0;
                 }

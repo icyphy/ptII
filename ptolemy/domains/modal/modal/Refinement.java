@@ -269,7 +269,7 @@ public class Refinement extends TypedCompositeActor implements RefinementActor {
      */
     protected void _checkContainer(Entity container)
             throws IllegalActionException {
-        if (!(container instanceof ModalModel) && (container != null)) {
+        if (!(container instanceof ModalModel) && container != null) {
             throw new IllegalActionException(container, this,
                     "Refinement can only be contained by "
                             + "ModalModel objects.");

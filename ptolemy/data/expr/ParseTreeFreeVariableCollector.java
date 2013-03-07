@@ -161,7 +161,7 @@ public class ParseTreeFreeVariableCollector extends AbstractParseTreeVisitor {
     protected boolean _isValidName(String name) throws IllegalActionException {
         if (_scope != null) {
             try {
-                return (_scope.getType(name) != null);
+                return _scope.getType(name) != null;
             } catch (Exception ex) {
                 return false;
             }

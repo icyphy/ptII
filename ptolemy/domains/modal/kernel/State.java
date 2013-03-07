@@ -464,7 +464,7 @@ public class State extends ComponentEntity implements ConfigurableEntity,
 
             String names = refinementName.getExpression();
 
-            if ((names == null) || names.trim().equals("")) {
+            if (names == null || names.trim().equals("")) {
                 _refinementVersion = workspace().getVersion();
                 _refinement = null;
                 return null;
@@ -530,7 +530,8 @@ public class State extends ComponentEntity implements ConfigurableEntity,
      *  @exception IllegalActionException If the parameters giving transition
      *   properties cannot be evaluated.
      */
-    public List nonErrorNonTerminationTransitionList() throws IllegalActionException {
+    public List nonErrorNonTerminationTransitionList()
+            throws IllegalActionException {
         if (_transitionListVersion != workspace().getVersion()) {
             _updateTransitionLists();
         }
@@ -734,7 +735,7 @@ public class State extends ComponentEntity implements ConfigurableEntity,
 
             // If this state is final, it should not have any outgoing
             // transitions.
-            if (((BooleanToken)isFinalState.getToken()).booleanValue()) {
+            if (((BooleanToken) isFinalState.getToken()).booleanValue()) {
                 if (outgoingPort.linkedRelationList().size() > 0) {
                     throw new IllegalActionException(this,
                             "Final state cannot have outgoing transitions");
@@ -779,12 +780,14 @@ public class State extends ComponentEntity implements ConfigurableEntity,
                     // then all refinements are FSM refinements. This is because non-FSM
                     // refinements can only be known to have terminated in postfire, and that
                     // is too late to produce outputs for some domains (SR and Continuous, at least).
-                    if (!transition.outputActions.getExpression().trim().equals("")) {
+                    if (!transition.outputActions.getExpression().trim()
+                            .equals("")) {
                         for (Actor refinementActor : refinements) {
                             if (!(refinementActor instanceof ModalRefinement)) {
-                                throw new IllegalActionException(transition,
+                                throw new IllegalActionException(
+                                        transition,
                                         "Termination transition cannot have output actions because "
-                                        + "such a transition is taken in the postfire phase of execution.");
+                                                + "such a transition is taken in the postfire phase of execution.");
                             }
                         }
                     }

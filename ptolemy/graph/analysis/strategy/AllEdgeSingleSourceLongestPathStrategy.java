@@ -106,14 +106,14 @@ public class AllEdgeSingleSourceLongestPathStrategy extends CachedStrategy
         int predecessorsIndex = predecessors[graph().nodeLabel(endNode)];
         Node predecessor = null;
 
-        if ((predecessorsIndex != -1)) {
+        if (predecessorsIndex != -1) {
             predecessor = graph().node(predecessorsIndex);
 
             do {
                 pathNodes.add(predecessor);
                 predecessorsIndex = predecessors[graph().nodeLabel(predecessor)];
 
-                if ((predecessorsIndex != -1)) {
+                if (predecessorsIndex != -1) {
                     predecessor = graph().node(predecessorsIndex);
                 } else {
                     break;
@@ -231,7 +231,8 @@ public class AllEdgeSingleSourceLongestPathStrategy extends CachedStrategy
                         }
                     }
 
-                    if ((actualDistance < (predecessorDistance + connectingEdgeCost))) {
+                    if (actualDistance < predecessorDistance
+                            + connectingEdgeCost) {
                         distance[graph.nodeLabel(v)] = predecessorDistance
                                 + connectingEdgeCost;
                         _predecessor[graph.nodeLabel(v)] = graph.nodeLabel(u);

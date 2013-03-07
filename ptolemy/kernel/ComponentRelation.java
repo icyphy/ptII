@@ -403,7 +403,7 @@ public class ComponentRelation extends Relation {
      */
     public void setContainer(CompositeEntity container)
             throws IllegalActionException, NameDuplicationException {
-        if ((container != null) && (_workspace != container.workspace())) {
+        if (container != null && _workspace != container.workspace()) {
             throw new IllegalActionException(this, container,
                     "Cannot set container because workspaces are different.");
         }
@@ -489,10 +489,10 @@ public class ComponentRelation extends Relation {
 
         CompositeEntity container = (CompositeEntity) getContainer();
 
-        if ((container != null)) {
+        if (container != null) {
             ComponentRelation another = container.getRelation(name);
 
-            if ((another != null) && (another != this)) {
+            if (another != null && another != this) {
                 throw new NameDuplicationException(container,
                         "Name duplication: " + name);
             }
@@ -532,7 +532,7 @@ public class ComponentRelation extends Relation {
             Iterator portsIterator = ports.iterator();
 
             while (portsIterator.hasNext()) {
-                ((ComponentPort) (portsIterator.next())).unlinkInside(this);
+                ((ComponentPort) portsIterator.next()).unlinkInside(this);
             }
         } finally {
             _workspace.doneWriting();

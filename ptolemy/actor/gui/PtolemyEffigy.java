@@ -252,7 +252,7 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
      */
     protected void _checkContainer(CompositeEntity container)
             throws IllegalActionException {
-        if ((container != null) && !(container instanceof ModelDirectory)
+        if (container != null && !(container instanceof ModelDirectory)
                 && !(container instanceof PtolemyEffigy)) {
             throw new IllegalActionException(this, container,
                     "The container can only be set to an "

@@ -148,7 +148,8 @@ public class RecordToken extends AbstractNotConvertibleToken {
      *  keys or values, or if it contains non-String keys or non-Token
      *  values.
      */
-    public RecordToken(Map<String, Token> fieldMap) throws IllegalActionException {
+    public RecordToken(Map<String, Token> fieldMap)
+            throws IllegalActionException {
         _initializeStorage();
 
         // iterate through map and put values under sanitized key in local map
@@ -392,7 +393,7 @@ public class RecordToken extends AbstractNotConvertibleToken {
         // order the labels
         int size = labelsObjects.length;
 
-        for (int i = 0; i < (size - 1); i++) {
+        for (int i = 0; i < size - 1; i++) {
             for (int j = i + 1; j < size; j++) {
                 String labeli = (String) labelsObjects[i];
                 String labelj = (String) labelsObjects[j];
@@ -753,15 +754,14 @@ public class RecordToken extends AbstractNotConvertibleToken {
     // This method is called by the constructor.
     private void _initialize(String[] labels, Token[] values)
             throws IllegalActionException {
-        if ((labels == null) || (values == null)
-                || (labels.length != values.length)) {
+        if (labels == null || values == null || labels.length != values.length) {
             throw new IllegalActionException("RecordToken: the labels or "
                     + "the values array do not have the same length, "
                     + "or is null.");
         }
 
         for (int i = 0; i < labels.length; i++) {
-            if ((labels[i] == null) || (values[i] == null)) {
+            if (labels[i] == null || values[i] == null) {
                 throw new IllegalActionException("RecordToken: the " + i
                         + "'th element of the labels or values array is null");
             }

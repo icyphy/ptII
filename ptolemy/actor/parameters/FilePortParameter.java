@@ -283,8 +283,8 @@ public class FilePortParameter extends PortParameter implements
         try {
             File file = FileUtilities.nameToFile(name, getBaseDirectory());
             if (file != null) {
-                if ((file.toString().indexOf("!/") != -1)
-                        || (file.toString().indexOf("!\\") != -1)) {
+                if (file.toString().indexOf("!/") != -1
+                        || file.toString().indexOf("!\\") != -1) {
                     // We have a jar url, try dereferencing it.
                     // ModelReference.xml needed this under Webstart.
                     try {

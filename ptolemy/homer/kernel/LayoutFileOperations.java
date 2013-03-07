@@ -294,7 +294,7 @@ public final class LayoutFileOperations {
 
                     Parameter enabled = (Parameter) elementOnScreen
                             .getAttribute(HomerConstants.ENABLED_NODE);
-                    if ((enabled != null) && (enabled.getToken() != null)) {
+                    if (enabled != null && enabled.getToken() != null) {
                         enabledNode.setToken(enabled.getToken());
                     } else {
                         enabledNode.setToken(new BooleanToken(true));
@@ -314,7 +314,7 @@ public final class LayoutFileOperations {
 
                     Parameter required = (Parameter) elementOnScreen
                             .getAttribute(HomerConstants.REQUIRED_NODE);
-                    if ((required != null) && (required.getToken() != null)) {
+                    if (required != null && required.getToken() != null) {
                         requiredNode.setToken(required.getToken());
                     } else {
                         requiredNode.setToken(new BooleanToken(false));

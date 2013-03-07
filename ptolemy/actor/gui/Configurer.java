@@ -155,13 +155,13 @@ public class Configurer extends JPanel implements CloseListener {
      *  is EXPERT.  Otherwise, return false.
      */
     public static boolean isVisible(NamedObj target, Settable settable) {
-        if ((settable.getVisibility() == Settable.FULL)
-                || (settable.getVisibility() == Settable.NOT_EDITABLE)) {
+        if (settable.getVisibility() == Settable.FULL
+                || settable.getVisibility() == Settable.NOT_EDITABLE) {
             return true;
         }
 
-        if ((target.getAttribute("_expertMode") != null)
-                && (settable.getVisibility() == Settable.EXPERT)) {
+        if (target.getAttribute("_expertMode") != null
+                && settable.getVisibility() == Settable.EXPERT) {
             return true;
         }
 
@@ -254,8 +254,7 @@ public class Configurer extends JPanel implements CloseListener {
                     String newValue = parameter.getExpression();
                     String defaultValue = parameter.getDefaultExpression();
 
-                    if ((defaultValue != null)
-                            && !newValue.equals(defaultValue)) {
+                    if (defaultValue != null && !newValue.equals(defaultValue)) {
                         buffer.append("<property name=\"");
                         buffer.append(((NamedObj) parameter).getName(_object));
                         buffer.append("\" value=\"");

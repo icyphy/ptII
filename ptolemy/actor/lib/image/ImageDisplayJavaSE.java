@@ -201,7 +201,7 @@ public class ImageDisplayJavaSE extends AbstractPlaceableJavaSE implements
     public void placeContainer(Container container) {
         // If there was a previous container that doesn't match this one,
         // remove the pane from it.
-        if ((_container != null) && (_picture != null)) {
+        if (_container != null && _picture != null) {
             _container.remove(_picture);
             _container = null;
         }
@@ -408,7 +408,7 @@ public class ImageDisplayJavaSE extends AbstractPlaceableJavaSE implements
             int ySize = image.getHeight(null);
 
             // If the size has changed, have to recreate the Picture object.
-            if ((_oldXSize != xSize) || (_oldYSize != ySize)) {
+            if (_oldXSize != xSize || _oldYSize != ySize) {
                 _oldXSize = xSize;
                 _oldYSize = ySize;
 

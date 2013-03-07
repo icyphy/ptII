@@ -152,7 +152,7 @@ public class IIR extends Transformer {
         }
 
         // Initialize filter state.
-        if ((_numerator != null) && (_denominator != null)) {
+        if (_numerator != null && _denominator != null) {
             _initStateVector();
         }
     }

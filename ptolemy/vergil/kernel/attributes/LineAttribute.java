@@ -112,7 +112,7 @@ public class LineAttribute extends ShapeAttribute {
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
-        if ((attribute == x) || (attribute == y)) {
+        if (attribute == x || attribute == y) {
             double xValue = ((DoubleToken) x.getToken()).doubleValue();
             double yValue = ((DoubleToken) y.getToken()).doubleValue();
             _icon.setShape(new Line2D.Double(0.0, 0.0, xValue, yValue));

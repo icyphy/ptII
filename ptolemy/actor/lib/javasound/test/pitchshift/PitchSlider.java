@@ -180,7 +180,7 @@ public class PitchSlider extends JFrame {
 
         if (args.length == 1) {
             // Optional argument is the sampling rate.
-            sampRate = (Double.valueOf(args[0])).doubleValue();
+            sampRate = Double.valueOf(args[0]).doubleValue();
         } else {
             sampRate = 22050;
         }

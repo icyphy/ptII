@@ -281,8 +281,8 @@ public class ModelAttributePanel extends JPanel {
      */
     public void setValue(String value) {
 
-        if (((XMLDBAttribute) _attributeMap.get(_attributeName
-                .getSelectedItem().toString())) == null) {
+        if ((XMLDBAttribute) _attributeMap.get(_attributeName.getSelectedItem()
+                .toString()) == null) {
 
             return;
 
@@ -322,8 +322,8 @@ public class ModelAttributePanel extends JPanel {
 
     private void updateDisplay() {
 
-        if (((XMLDBAttribute) _attributeMap.get(_attributeName
-                .getSelectedItem().toString())) == null) {
+        if ((XMLDBAttribute) _attributeMap.get(_attributeName.getSelectedItem()
+                .toString()) == null) {
 
             _listValue.setEnabled(false);
             _textValue.setEnabled(false);
@@ -395,7 +395,7 @@ public class ModelAttributePanel extends JPanel {
 
         String[] returnList = new String[attMap.size() + 1];
 
-        Iterator iterator = (attMap.keySet()).iterator();
+        Iterator iterator = attMap.keySet().iterator();
 
         int i = 0;
         returnList[i++] = "";

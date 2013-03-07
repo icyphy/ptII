@@ -119,8 +119,8 @@ public class Title extends StringParameter implements WebExportable {
         String[] families = GraphicsEnvironment.getLocalGraphicsEnvironment()
                 .getAvailableFontFamilyNames();
 
-        for (int i = 0; i < families.length; i++) {
-            fontFamily.addChoice(families[i]);
+        for (String familie : families) {
+            fontFamily.addChoice(familie);
         }
 
         bold = new Parameter(this, "bold");
@@ -222,8 +222,8 @@ public class Title extends StringParameter implements WebExportable {
             } else {
                 _icon.setAnchor(SwingConstants.NORTH_WEST);
             }
-        } else if (((attribute == fontFamily) || (attribute == textSize)
-                || (attribute == bold) || (attribute == italic))
+        } else if ((attribute == fontFamily || attribute == textSize
+                || attribute == bold || attribute == italic)
                 && !_inAttributeChanged) {
             try {
                 // Prevent redundant actions here... When we evaluate the

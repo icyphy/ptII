@@ -373,7 +373,7 @@ public class Attribute extends NamedObj {
      */
     public void setContainer(NamedObj container) throws IllegalActionException,
             NameDuplicationException {
-        if ((container != null) && (_workspace != container.workspace())) {
+        if (container != null && _workspace != container.workspace()) {
             throw new IllegalActionException(this, container,
                     "Cannot set container because workspaces are different.");
         }
@@ -460,10 +460,10 @@ public class Attribute extends NamedObj {
 
         NamedObj container = getContainer();
 
-        if ((container != null)) {
+        if (container != null) {
             Attribute another = container.getAttribute(name);
 
-            if ((another != null) && (another != this)) {
+            if (another != null && another != this) {
                 throw new NameDuplicationException(container,
                         "Name duplication: " + name);
             }
@@ -509,7 +509,7 @@ public class Attribute extends NamedObj {
             String relativeName) throws IllegalActionException {
         Attribute candidate = container.getAttribute(relativeName);
 
-        if ((candidate != null) && !getClass().isInstance(candidate)) {
+        if (candidate != null && !getClass().isInstance(candidate)) {
             throw new IllegalActionException(this, "Expected "
                     + candidate.getFullName() + " to be an instance of "
                     + getClass().getName() + ", but it is "

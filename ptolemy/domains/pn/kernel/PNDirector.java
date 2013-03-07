@@ -280,8 +280,8 @@ public class PNDirector extends CompositeProcessDirector {
         // If the container has input ports and there are active processes
         // in the container, then the execution might restart on receiving
         // additional data.
-        if (!((((CompositeActor) getContainer()).inputPortList()).isEmpty())
-                && (_getActiveThreadsCount() != 0)) {
+        if (!((CompositeActor) getContainer()).inputPortList().isEmpty()
+                && _getActiveThreadsCount() != 0) {
             // Avoid returning false on detected deadlock.
             return !_stopRequested;
         } else {
@@ -474,10 +474,10 @@ public class PNDirector extends CompositeProcessDirector {
             int maximumCapacity = ((IntToken) maximumQueueCapacity.getToken())
                     .intValue();
 
-            if ((maximumCapacity > 0) && ((capacity * 2) > maximumCapacity)) {
+            if (maximumCapacity > 0 && capacity * 2 > maximumCapacity) {
                 int channel = smallestCapacityQueue.getContainer()
                         .getChannelForReceiver(smallestCapacityQueue);
-                String msg = "Queue size " + (capacity * 2)
+                String msg = "Queue size " + capacity * 2
                         + " exceeds the maximum capacity in port "
                         + smallestCapacityQueue.getContainer().getFullName()
                         + (channel > 0 ? " (channel " + channel + ")" : "")
@@ -533,7 +533,7 @@ public class PNDirector extends CompositeProcessDirector {
      *  This might be thrown by derived classes.
      */
     protected boolean _resolveInternalDeadlock() throws IllegalActionException {
-        if ((_writeBlockedQueues.isEmpty()) && (!_readBlockedQueues.isEmpty())) {
+        if (_writeBlockedQueues.isEmpty() && !_readBlockedQueues.isEmpty()) {
             // There is a real deadlock.
             if (_debugging) {
                 _debug("Deadlock detected: no processes blocked on write, but some are blocked on read.");

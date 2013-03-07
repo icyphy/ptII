@@ -174,14 +174,14 @@ public class Derivative extends TypedAtomicActor {
     public void fire() throws IllegalActionException {
         super.fire();
 
-        if (!(input.isKnown(0))) {
+        if (!input.isKnown(0)) {
             if (_debugging) {
                 _debug("fire: Input is not known.");
             }
             return;
         }
 
-        if (!(input.hasToken(0))) {
+        if (!input.hasToken(0)) {
             if (_debugging) {
                 _debug("fire: Input has no token.");
             }
@@ -266,7 +266,7 @@ public class Derivative extends TypedAtomicActor {
     public boolean postfire() throws IllegalActionException {
         boolean result = super.postfire();
 
-        if (!(input.hasToken(0))) {
+        if (!input.hasToken(0)) {
             initialize();
             if (_debugging) {
                 _debug("Postfire: Input has no token. Initializing.");

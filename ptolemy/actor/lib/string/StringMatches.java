@@ -82,13 +82,13 @@ public class StringMatches extends TypedAtomicActor {
         pattern = new PortParameter(this, "pattern");
         pattern.setStringMode(true);
         pattern.setExpression("");
-        (new SingletonParameter(pattern.getPort(), "_showName"))
+        new SingletonParameter(pattern.getPort(), "_showName")
                 .setToken(BooleanToken.TRUE);
 
         matchString = new PortParameter(this, "matchString");
         matchString.setStringMode(true);
         matchString.setExpression("");
-        (new SingletonParameter(matchString.getPort(), "_showName"))
+        new SingletonParameter(matchString.getPort(), "_showName")
                 .setToken(BooleanToken.TRUE);
 
         output = new TypedIOPort(this, "output", false, true);

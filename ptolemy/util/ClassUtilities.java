@@ -74,8 +74,8 @@ public class ClassUtilities {
      */
     public static List jarURLDirectories(URL jarURL) throws IOException {
         List directories = new LinkedList();
-        JarURLConnection connection = (JarURLConnection) (jarURL
-                .openConnection());
+        JarURLConnection connection = (JarURLConnection) jarURL
+                .openConnection();
         String jarEntryName = connection.getEntryName();
         if (jarEntryName.endsWith("/")) {
             jarEntryName = jarEntryName.substring(0, jarEntryName.length() - 1);
@@ -212,8 +212,8 @@ public class ClassUtilities {
             List<File> sourceDirectories = new LinkedList<File>();
             String classPath[] = StringUtilities.getProperty("java.class.path")
                     .split(StringUtilities.getProperty("path.separator"));
-            for (int i = 0; i < classPath.length; i++) {
-                File directory = new File(classPath[i]);
+            for (String element : classPath) {
+                File directory = new File(element);
                 if (directory.isDirectory()) {
                     // We have a potential winner.
                     while (directory != null) {

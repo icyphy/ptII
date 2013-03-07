@@ -679,7 +679,7 @@ public class ArrayToken extends AbstractNotConvertibleToken {
             for (int i = 0; i < selection.length(); i++) {
                 // We could check for out-of-bounds indicies and ignore them,
                 // if we wanted to.
-                int index = ((IntToken) (selection.getElement(i))).intValue();
+                int index = ((IntToken) selection.getElement(i)).intValue();
                 result.add(getElement(index));
             }
         } else {
@@ -689,7 +689,7 @@ public class ArrayToken extends AbstractNotConvertibleToken {
 
         if (result.size() > 0) {
             Token[] resultArray = new Token[result.size()];
-            resultArray = (Token[]) (result.toArray(resultArray));
+            resultArray = (Token[]) result.toArray(resultArray);
             return new ArrayToken(resultArray);
         } else {
             return new ArrayToken(getElementType());
@@ -951,8 +951,8 @@ public class ArrayToken extends AbstractNotConvertibleToken {
         // so values have to be accessed via the getElement() method,
         // which is overridden in the subclasses.
 
-        if ((count > 0) && (index < length()) && (index >= 0)) {
-            if ((count + index) > length()) {
+        if (count > 0 && index < length() && index >= 0) {
+            if (count + index > length()) {
                 count = length() - index;
             }
 
@@ -1030,7 +1030,7 @@ public class ArrayToken extends AbstractNotConvertibleToken {
         for (int i = 0; i < length(); i++) {
             buffer.append(getElement(i).toString());
 
-            if (i < (length() - 1)) {
+            if (i < length() - 1) {
                 buffer.append(", ");
             }
         }

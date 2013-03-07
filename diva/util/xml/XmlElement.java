@@ -326,7 +326,7 @@ public class XmlElement {
 
         String pcdata = getPCData();
 
-        if ((elementCount() > 0) || (pcdata.length() > 0)) {
+        if (elementCount() > 0 || pcdata.length() > 0) {
             out.write(">");
 
             if (elementCount() > 0) {

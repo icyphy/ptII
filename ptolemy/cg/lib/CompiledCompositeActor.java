@@ -374,14 +374,14 @@ public class CompiledCompositeActor extends TypedCompositeActor {
                     }
 
                     Method[] methods = classInstance.getMethods();
-                    for (int i = 0; i < methods.length; i++) {
-                        String name = methods[i].getName();
+                    for (Method method : methods) {
+                        String name = method.getName();
                         if (name.equals("fire")) {
-                            _fireMethod = methods[i];
+                            _fireMethod = method;
                         } else if (name.equals("initialize")) {
-                            _initializeMethod = methods[i];
+                            _initializeMethod = method;
                         } else if (name.equals("wrapup")) {
-                            _wrapupMethod = methods[i];
+                            _wrapupMethod = method;
                         }
                     }
                     if (_fireMethod == null) {
@@ -996,11 +996,11 @@ public class CompiledCompositeActor extends TypedCompositeActor {
                         payload = getPayload.invoke(tmpOutputTokens[i][k],
                                 (Object[]) null);
 
-                        Field objSize = (payload.getClass().getField("size"));
+                        Field objSize = payload.getClass().getField("size");
                         int size = objSize.getInt(payload);
 
-                        Field elementsField = (payload.getClass()
-                                .getField("elements"));
+                        Field elementsField = payload.getClass().getField(
+                                "elements");
                         Object[] elements = (Object[]) elementsField
                                 .get(payload);
 

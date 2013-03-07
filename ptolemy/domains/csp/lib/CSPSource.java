@@ -79,7 +79,7 @@ public class CSPSource extends Source {
             NameDuplicationException {
         super(container, name);
         _value = initValue;
-        tokenLimit = new Parameter(this, "tokenLimit", (new IntToken(limit)));
+        tokenLimit = new Parameter(this, "tokenLimit", new IntToken(limit));
     }
 
     ///////////////////////////////////////////////////////////////////

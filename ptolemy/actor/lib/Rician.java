@@ -129,15 +129,15 @@ public class Rician extends RandomSource {
      *  @exception IllegalActionException If parameter values are incorrect.
      */
     protected void _generateRandomNumber() throws IllegalActionException {
-        double xMeanValue = ((DoubleToken) (xMean.getToken())).doubleValue();
-        double yMeanValue = ((DoubleToken) (yMean.getToken())).doubleValue();
-        double standardDeviationValue = ((DoubleToken) (standardDeviation
-                .getToken())).doubleValue();
+        double xMeanValue = ((DoubleToken) xMean.getToken()).doubleValue();
+        double yMeanValue = ((DoubleToken) yMean.getToken()).doubleValue();
+        double standardDeviationValue = ((DoubleToken) standardDeviation
+                .getToken()).doubleValue();
         double xRawNum = _random.nextGaussian();
         double yRawNum = _random.nextGaussian();
-        _current = java.lang.Math.sqrt(java.lang.Math.pow(
-                (xRawNum * standardDeviationValue) + xMeanValue, 2)
-                + java.lang.Math.pow((yRawNum * standardDeviationValue)
+        _current = java.lang.Math.sqrt(java.lang.Math.pow(xRawNum
+                * standardDeviationValue + xMeanValue, 2)
+                + java.lang.Math.pow(yRawNum * standardDeviationValue
                         + yMeanValue, 2));
     }
 

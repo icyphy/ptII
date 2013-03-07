@@ -195,7 +195,7 @@ public class HTMLPageAssembler extends TypedAtomicActor {
                             "Cannot find a \"div\" with id = \"" + divID
                                     + "\" in the template file.");
                 }
-                for (int i = (port.getWidth() - 1); i >= 0; i--) {
+                for (int i = port.getWidth() - 1; i >= 0; i--) {
                     Token token = port.get(i);
                     StringBuffer htmlText = new StringBuffer();
                     if (token instanceof ArrayToken) {

@@ -110,7 +110,7 @@ public class OptimalScheduleFinder {
             boolean scheduleFound = false;
 
             // continue searching until a schedule has been found
-            while ((!scheduleFound) && !toExplore.isEmpty()) {
+            while (!scheduleFound && !toExplore.isEmpty()) {
                 // take the first state to further explore from our sorted list
                 _State state = toExplore.removeFirstState();
                 // test if it is an end state, in which case we are ready.
@@ -207,7 +207,7 @@ public class OptimalScheduleFinder {
             boolean scheduleFound = false;
 
             // continue searching until a schedule has been found
-            while ((!scheduleFound) && !toExplore.isEmpty()) {
+            while (!scheduleFound && !toExplore.isEmpty()) {
                 // take the first state to further explore from our sorted list
                 _State state = toExplore.removeFirstState();
                 // test if it is an end state, in which case we are ready.
@@ -922,8 +922,8 @@ public class OptimalScheduleFinder {
          */
         boolean isEndState() {
             // test all actors
-            for (int i = 0; i < actorContent.length; i++) {
-                if (actorContent[i] > 0) {
+            for (int element : actorContent) {
+                if (element > 0) {
                     return false;
                 }
             }
@@ -936,8 +936,8 @@ public class OptimalScheduleFinder {
          */
         int getFiringsToCompletion() {
             int result = 0;
-            for (int i = 0; i < actorContent.length; i++) {
-                result += actorContent[i];
+            for (int element : actorContent) {
+                result += element;
             }
             return result;
         }

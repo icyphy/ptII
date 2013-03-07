@@ -223,8 +223,8 @@ public class ProductLatticeOntologySolverDisplayActions extends
             // Determine which entity was selected for the look inside action.
             super.actionPerformed(e);
 
-            ProductLatticeOntologySolver solver = ((ProductLatticeOntologySolver) ProductLatticeOntologySolverDisplayActions.this
-                    .getContainer());
+            ProductLatticeOntologySolver solver = (ProductLatticeOntologySolver) ProductLatticeOntologySolverDisplayActions.this
+                    .getContainer();
             OntologyMoMLHandler handler = solver.getMoMLHandler();
 
             try {

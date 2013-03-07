@@ -208,8 +208,8 @@ public class TaskReporter extends Sink {
             NameComponent namecomp = new NameComponent(
                     ((StringToken) coordinatorName.getToken()).stringValue(),
                     "Multi");
-            _debug(getName(), " looking for name: ",
-                    (coordinatorName.getToken()).toString());
+            _debug(getName(), " looking for name: ", coordinatorName.getToken()
+                    .toString());
 
             NameComponent[] path = { namecomp };
             _coordinator = ptolemy.actor.corba.CoordinatorUtil.CoordinatorHelper

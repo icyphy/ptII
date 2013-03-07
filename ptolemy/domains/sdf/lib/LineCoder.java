@@ -116,7 +116,7 @@ public class LineCoder extends SDFTransformer {
      *   an attribute that cannot be cloned.
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        LineCoder newObject = (LineCoder) (super.clone(workspace));
+        LineCoder newObject = (LineCoder) super.clone(workspace);
 
         // set the type constraints
         try {
@@ -142,7 +142,7 @@ public class LineCoder extends SDFTransformer {
             boolean data = ((BooleanToken) tokens[i]).booleanValue();
 
             if (data) {
-                tableAddress |= (1 << i);
+                tableAddress |= 1 << i;
             }
         }
 
@@ -156,7 +156,7 @@ public class LineCoder extends SDFTransformer {
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
 
-        _wordLength = ((IntToken) (wordLength.getToken())).intValue();
+        _wordLength = ((IntToken) wordLength.getToken()).intValue();
 
         // Set the token consumption rate.
         input_tokenConsumptionRate.setToken(new IntToken(_wordLength));

@@ -111,9 +111,8 @@ public class PolarToCartesian extends TypedAtomicActor {
      */
     public void fire() throws IllegalActionException {
         super.fire();
-        double magnitudeValue = ((DoubleToken) (magnitude.get(0)))
-                .doubleValue();
-        double angleValue = ((DoubleToken) (angle.get(0))).doubleValue();
+        double magnitudeValue = ((DoubleToken) magnitude.get(0)).doubleValue();
+        double angleValue = ((DoubleToken) angle.get(0)).doubleValue();
 
         double xValue = magnitudeValue * Math.cos(angleValue);
         double yValue = magnitudeValue * Math.sin(angleValue);

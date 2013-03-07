@@ -337,8 +337,8 @@ public class WindowPropertiesAttribute extends Parameter implements
             width = width > maxWidth ? maxWidth : width;
             height = height > maxHeight ? maxHeight : height;
 
-            y = (y + height) > (maxHeight) ? (maxHeight - height) : y;
-            x = (x + width) > (maxWidth) ? (maxWidth - width) : x;
+            y = y + height > maxHeight ? maxHeight - height : y;
+            x = x + width > maxWidth ? maxWidth - width : x;
 
             frame.setBounds(x, y, width, height);
 

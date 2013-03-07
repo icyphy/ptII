@@ -130,7 +130,7 @@ public class BooleanToken extends ScalarToken {
 
         int compare = TypeLattice.compare(BaseType.BOOLEAN, token);
 
-        if ((compare == CPO.LOWER) || (compare == CPO.INCOMPARABLE)) {
+        if (compare == CPO.LOWER || compare == CPO.INCOMPARABLE) {
             throw new IllegalActionException(
                     notSupportedIncomparableConversionMessage(token, "boolean"));
         }

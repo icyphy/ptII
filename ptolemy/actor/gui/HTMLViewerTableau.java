@@ -197,7 +197,7 @@ public class HTMLViewerTableau extends Tableau {
                     URL anotherURL = ClassUtilities
                             .jarURLEntryResource(urlString);
 
-                    if ((anotherURL == null) && (urlString.indexOf("#") != -1)) {
+                    if (anotherURL == null && urlString.indexOf("#") != -1) {
                         anotherURL = _entryResourceWithoutFragment(urlString);
                     }
 
@@ -345,7 +345,7 @@ public class HTMLViewerTableau extends Tableau {
             URL anotherURL = Thread.currentThread().getContextClassLoader()
                     .getResource(relativePath);
 
-            if ((anotherURL == null) && (relativePath.indexOf('#') != -1)) {
+            if (anotherURL == null && relativePath.indexOf('#') != -1) {
                 // getResource does not work on paths that look like:
                 // "package-summary.html#package_description"
                 // So, we get the resource without the

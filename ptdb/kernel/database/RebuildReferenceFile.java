@@ -387,7 +387,7 @@ public class RebuildReferenceFile extends OracleXMLDBConnection {
                     + " models.");
             int count = 1;
             for (XMLDBModel model : allModelsList) {
-                System.out.println("Processing " + (count++) + " of "
+                System.out.println("Processing " + count++ + " of "
                         + allModelsList.size() + " models.");
                 _buildReferenceString(model);
             }

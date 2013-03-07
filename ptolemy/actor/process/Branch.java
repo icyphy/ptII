@@ -96,7 +96,7 @@ public class Branch implements Runnable {
             throws IllegalActionException {
         _controller = controller;
 
-        if ((producerReceiver == null) || (consumerReceiver == null)) {
+        if (producerReceiver == null || consumerReceiver == null) {
             throw new IllegalActionException("The boundary "
                     + "receivers of this branch are null.");
         }

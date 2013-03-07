@@ -28,7 +28,6 @@
 package ptolemy.vergil.actor;
 
 import java.awt.Color;
-import java.util.Iterator;
 import java.util.List;
 
 import ptolemy.actor.PublisherPort;
@@ -128,8 +127,8 @@ public class LinkController extends BasicEdgeController {
         List<?> configsList = Configuration.configurations();
 
         Configuration config = null;
-        for (Iterator<?> it = configsList.iterator(); it.hasNext();) {
-            config = (Configuration) it.next();
+        for (Object name : configsList) {
+            config = (Configuration) name;
             if (config != null) {
                 break;
             }
@@ -232,7 +231,7 @@ public class LinkController extends BasicEdgeController {
             ManhattanConnector connector = new KielerLayoutConnector(tailSite,
                     headSite, link);
 
-            if ((link.getHead() != null) && (link.getTail() != null)) {
+            if (link.getHead() != null && link.getTail() != null) {
                 connector.setLineWidth((float) 2.0);
             }
 
@@ -255,8 +254,8 @@ public class LinkController extends BasicEdgeController {
                 try {
                     // Old style of colors.
                     // FIXME: This isn't quite right for relation groups.
-                    StringAttribute colorAttribute = (StringAttribute) (relation
-                            .getAttribute("_color", StringAttribute.class));
+                    StringAttribute colorAttribute = (StringAttribute) relation
+                            .getAttribute("_color", StringAttribute.class);
 
                     if (colorAttribute != null) {
                         String color = colorAttribute.getExpression();
@@ -278,8 +277,8 @@ public class LinkController extends BasicEdgeController {
                     connector.setStrokePaint(color);
                 }
 
-                StringAttribute _explAttr = (StringAttribute) (relation
-                        .getAttribute("_explanation"));
+                StringAttribute _explAttr = (StringAttribute) relation
+                        .getAttribute("_explanation");
 
                 if (_explAttr != null) {
                     connector.setToolTipText(_explAttr.getExpression());
@@ -318,11 +317,10 @@ public class LinkController extends BasicEdgeController {
             boolean isPubSubPort = object instanceof PublisherPort
                     || object instanceof SubscriberPort;
 
-            if ((object instanceof Port && !isPubSubPort)
-                    || object instanceof Vertex
-                    || (object instanceof Link && c != f)
-                    || (object instanceof Locatable && ((Locatable) object)
-                            .getContainer() instanceof Port)) {
+            if (object instanceof Port && !isPubSubPort
+                    || object instanceof Vertex || object instanceof Link
+                    && c != f || object instanceof Locatable
+                    && ((Locatable) object).getContainer() instanceof Port) {
 
                 // It is possible to link with an existing link.
                 // If this existing link has a vertex as head or tail,
@@ -352,11 +350,10 @@ public class LinkController extends BasicEdgeController {
             boolean isPubSubPort = object instanceof PublisherPort
                     || object instanceof SubscriberPort;
 
-            if ((object instanceof Port && !isPubSubPort)
-                    || object instanceof Vertex
-                    || (object instanceof Link && c != f)
-                    || (object instanceof Locatable && ((Locatable) object)
-                            .getContainer() instanceof Port)) {
+            if (object instanceof Port && !isPubSubPort
+                    || object instanceof Vertex || object instanceof Link
+                    && c != f || object instanceof Locatable
+                    && ((Locatable) object).getContainer() instanceof Port) {
 
                 // It is possible to link with an existing link.
                 // If this existing link has a vertex as head or tail,
@@ -422,7 +419,7 @@ public class LinkController extends BasicEdgeController {
             Connector c = evt.getConnector();
             Figure f = evt.getTarget();
             Link link = (Link) c.getUserObject();
-            Object node = (f == null) ? null : f.getUserObject();
+            Object node = f == null ? null : f.getUserObject();
             ActorGraphModel model = (ActorGraphModel) getController()
                     .getGraphModel();
 
@@ -455,7 +452,7 @@ public class LinkController extends BasicEdgeController {
             // Set the width correctly, so we know whether or not it
             // is connected.  Note that this happens *after* the model
             // is modified.
-            if ((link.getHead() != null) && (link.getTail() != null)) {
+            if (link.getHead() != null && link.getTail() != null) {
                 ((ManhattanConnector) c).setLineWidth((float) 2.0);
             } else {
                 ((ManhattanConnector) c).setLineWidth((float) 1.0);

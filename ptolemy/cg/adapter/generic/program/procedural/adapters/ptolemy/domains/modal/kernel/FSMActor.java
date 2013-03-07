@@ -333,7 +333,7 @@ public class FSMActor extends NamedProgramCodeGeneratorAdapter {
 
                                 containerReference.append(")");
 
-                                codeBuffer.append((containerHelper)
+                                codeBuffer.append(containerHelper
                                         .processCode(containerReference
                                                 .toString())
                                         + " = ");
@@ -386,7 +386,7 @@ public class FSMActor extends NamedProgramCodeGeneratorAdapter {
 
                                     containerReference.append(")");
 
-                                    codeBuffer.append((containerHelper)
+                                    codeBuffer.append(containerHelper
                                             .processCode(containerReference
                                                     .toString())
                                             + " = ");
@@ -413,8 +413,8 @@ public class FSMActor extends NamedProgramCodeGeneratorAdapter {
                 Actor[] actors = transition.getRefinement();
 
                 if (actors != null) {
-                    for (int i = 0; i < actors.length; i++) {
-                        NamedProgramCodeGeneratorAdapter helper = (NamedProgramCodeGeneratorAdapter) getAdapter(actors[i]);
+                    for (Actor actor : actors) {
+                        NamedProgramCodeGeneratorAdapter helper = (NamedProgramCodeGeneratorAdapter) getAdapter(actor);
                         // fire the actor
                         codeBuffer.append(helper.generateFireCode());
                     }

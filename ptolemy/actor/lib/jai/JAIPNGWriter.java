@@ -169,7 +169,7 @@ public class JAIPNGWriter extends JAIWriter {
 
             for (int i = 0; i < data.length; i++) {
                 _valueArray = new int[data.length];
-                _valueArray[i] = ((IntToken) (data[i])).intValue();
+                _valueArray[i] = ((IntToken) data[i]).intValue();
             }
         } else {
             super.attributeChanged(attribute);

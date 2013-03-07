@@ -88,8 +88,8 @@ public class FixedPointScheduler extends Scheduler {
         if (director == null) {
             throw new NotSchedulableException(this, "No director.  ");
         }
-        CompositeActor compositeActor = (CompositeActor) (director
-                .getContainer());
+        CompositeActor compositeActor = (CompositeActor) director
+                .getContainer();
         if (compositeActor == null) {
             throw new NotSchedulableException(this, "No container.");
         }

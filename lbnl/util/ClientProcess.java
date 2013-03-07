@@ -318,9 +318,9 @@ public class ClientProcess extends Thread {
                     final String osName = System.getProperty("os.name")
                             .toLowerCase();
                     if (osName.indexOf("linux") > -1) {
-                        locY -= (dY + 22);
+                        locY -= dY + 22;
                     } else if (osName.indexOf("mac") > -1) {
-                        locY -= (dY + 22);
+                        locY -= dY + 22;
                     } else {
                         locY -= dY;
                     }
@@ -587,8 +587,8 @@ public class ClientProcess extends Thread {
     public static void main(String args[]) throws IllegalActionException {
         ClientProcess c = new ClientProcess("Test");
         List<String> com = new ArrayList<String>();
-        for (int i = 0; i < args.length; i++) {
-            com.add(args[i]);
+        for (String arg : args) {
+            com.add(arg);
         }
         c.setProcessArguments(com, ".");
         c.run();

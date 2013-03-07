@@ -206,13 +206,13 @@ public class ExpressionConceptFunctionParseTreeEvaluator extends
             return;
         } else if (node.getFunctionName().compareTo("projectLeft") == 0) {
             Concept c = argValues.get(0);
-            ProductLatticeConcept p = ((ProductLatticeConcept) c);
+            ProductLatticeConcept p = (ProductLatticeConcept) c;
             List<Concept> tuple = p.getConceptTuple();
             _evaluatedChildToken = new ConceptToken(tuple.get(0));
             return;
         } else if (node.getFunctionName().compareTo("projectRight") == 0) {
             Concept c = argValues.get(0);
-            ProductLatticeConcept p = ((ProductLatticeConcept) c);
+            ProductLatticeConcept p = (ProductLatticeConcept) c;
             List<Concept> tuple = p.getConceptTuple();
             _evaluatedChildToken = new ConceptToken(tuple.get(tuple.size() - 1));
             return;

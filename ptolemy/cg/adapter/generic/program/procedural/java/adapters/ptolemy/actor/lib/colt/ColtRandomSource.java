@@ -83,7 +83,7 @@ public abstract class ColtRandomSource extends NamedProgramCodeGeneratorAdapter 
 
         ptolemy.actor.lib.colt.ColtRandomSource actor = (ptolemy.actor.lib.colt.ColtRandomSource) getComponent();
 
-        long seedValue = ((LongToken) (actor.seed.getToken())).longValue();
+        long seedValue = ((LongToken) actor.seed.getToken()).longValue();
 
         ArrayList<String> args = new ArrayList<String>();
         CodeStream codeStream = _templateParser.getCodeStream();
@@ -103,8 +103,7 @@ public abstract class ColtRandomSource extends NamedProgramCodeGeneratorAdapter 
 
         String generatorClassValue = ((StringToken) actor.generatorClass
                 .getToken()).stringValue();
-        if ((generatorClassValue == null)
-                || generatorClassValue.equals("DRand")) {
+        if (generatorClassValue == null || generatorClassValue.equals("DRand")) {
             codeStream.appendCodeBlock("setRandomNumberGeneratorDRand");
         } else if (generatorClassValue.equals("MersenneTwister (MT19937)")) {
             codeStream.appendCodeBlock("setRandomNumberMersenneTwister");

@@ -210,14 +210,14 @@ public class TestModel extends GTEvent {
             return data;
         }
 
-        if (_numberOfInputTokensSeen >= ((ArrayToken) (correctValues.getToken()))
+        if (_numberOfInputTokensSeen >= ((ArrayToken) correctValues.getToken())
                 .length()) {
             // Consume and discard input values.  We are beyond the end
             // of the correctValues array.
             return data;
         }
 
-        Token referenceToken = ((ArrayToken) (correctValues.getToken()))
+        Token referenceToken = ((ArrayToken) correctValues.getToken())
                 .getElement(_numberOfInputTokensSeen);
 
         Token token;
@@ -296,13 +296,13 @@ public class TestModel extends GTEvent {
                 }
             }
 
-            if (_numberOfInputTokensSeen < ((ArrayToken) (correctValues
-                    .getToken())).length()) {
+            if (_numberOfInputTokensSeen < ((ArrayToken) correctValues
+                    .getToken()).length()) {
                 String errorMessage = "The test produced only "
                         + _numberOfInputTokensSeen
                         + " tokens, yet the correctValues parameter was "
                         + "expecting "
-                        + ((ArrayToken) (correctValues.getToken())).length()
+                        + ((ArrayToken) correctValues.getToken()).length()
                         + " tokens.";
                 if (((BooleanToken) requireAllCorrectValues.getToken())
                         .booleanValue()) {
@@ -318,8 +318,7 @@ public class TestModel extends GTEvent {
 
         // Note that wrapup() might get called by the manager before
         // we have any data...
-        if (training && (_trainingTokens != null)
-                && (_trainingTokens.size() > 0)) {
+        if (training && _trainingTokens != null && _trainingTokens.size() > 0) {
             Object[] newValues = _trainingTokens.toArray();
 
             // NOTE: Support input multiport for the benefit of derived classes.
@@ -364,7 +363,7 @@ public class TestModel extends GTEvent {
         }
 
         if (training
-                && ((_trainingTokens == null) || (_trainingTokens.size() == 0))) {
+                && (_trainingTokens == null || _trainingTokens.size() == 0)) {
             System.err.println("Warning: '" + getFullName()
                     + "' The test produced 0 tokens.");
             // If we get no data and we are training, set the expression

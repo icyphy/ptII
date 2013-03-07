@@ -140,7 +140,7 @@ public class MoMLCommandLineApplication extends MoMLSimpleApplication {
         for (int i = 0; i < args.length - 1; i++) {
             String arg = args[i];
             if (arg.trim().startsWith("-")) {
-                if (i >= (args.length - 1)) {
+                if (i >= args.length - 1) {
                     throw new IllegalActionException("Cannot set "
                             + "parameter " + arg + " when no value is "
                             + "given.");
@@ -163,7 +163,7 @@ public class MoMLCommandLineApplication extends MoMLSimpleApplication {
                 }
 
                 // Now try for parameters in the director
-                Director director = (toplevel).getDirector();
+                Director director = toplevel.getDirector();
 
                 if (director != null) {
                     attribute = director.getAttribute(parameterName);

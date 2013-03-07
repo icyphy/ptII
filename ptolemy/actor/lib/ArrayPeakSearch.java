@@ -135,9 +135,9 @@ public class ArrayPeakSearch extends TypedAtomicActor {
         peakValues = new TypedIOPort(this, "peakValues", false, true);
         peakIndices = new TypedIOPort(this, "peakIndices", false, true);
 
-        (new SingletonParameter(peakValues, "_showName"))
+        new SingletonParameter(peakValues, "_showName")
                 .setToken(BooleanToken.TRUE);
-        (new SingletonParameter(peakIndices, "_showName"))
+        new SingletonParameter(peakIndices, "_showName")
                 .setToken(BooleanToken.TRUE);
 
         // Set Type Constraints.
@@ -312,7 +312,7 @@ public class ArrayPeakSearch extends TypedAtomicActor {
                 // works properly.
                 double maxValue = localMax;
 
-                for (int i = 0; i <= (inputSize - 1); i = i + increment) {
+                for (int i = 0; i <= inputSize - 1; i = i + increment) {
                     double indata = ((DoubleToken) inputArray.getElement(i))
                             .doubleValue();
 
@@ -323,16 +323,16 @@ public class ArrayPeakSearch extends TypedAtomicActor {
 
                 if (scaleValue.equals("relative amplitude decibels")) {
                     scaleIndicator = _RELATIVE_DB;
-                    dipThreshold = localMax * Math.pow(10.0, (-dipValue / 20));
-                    riseThreshold = localMin * Math.pow(10.0, (dipValue / 20));
+                    dipThreshold = localMax * Math.pow(10.0, -dipValue / 20);
+                    riseThreshold = localMin * Math.pow(10.0, dipValue / 20);
                     squelchValue = maxValue
-                            * Math.pow(10.0, (-squelchValue / 20));
+                            * Math.pow(10.0, -squelchValue / 20);
                 } else if (scaleValue.equals("relative power decibels")) {
                     scaleIndicator = _RELATIVE_DB_POWER;
-                    dipThreshold = localMax * Math.pow(10.0, (-dipValue / 10));
-                    riseThreshold = localMin * Math.pow(10.0, (dipValue / 10));
+                    dipThreshold = localMax * Math.pow(10.0, -dipValue / 10);
+                    riseThreshold = localMin * Math.pow(10.0, dipValue / 10);
                     squelchValue = maxValue
-                            * Math.pow(10.0, (-squelchValue / 10));
+                            * Math.pow(10.0, -squelchValue / 10);
                 } else if (scaleValue.equals("relative linear")) {
                     scaleIndicator = _RELATIVE_LINEAR;
                     dipThreshold = localMax - dipValue;
@@ -360,12 +360,12 @@ public class ArrayPeakSearch extends TypedAtomicActor {
                         switch (scaleIndicator) {
                         case _RELATIVE_DB:
                             riseThreshold = localMin
-                                    * Math.pow(10.0, (dipValue / 20));
+                                    * Math.pow(10.0, dipValue / 20);
                             break;
 
                         case _RELATIVE_DB_POWER:
                             riseThreshold = localMin
-                                    * Math.pow(10.0, (dipValue / 10));
+                                    * Math.pow(10.0, dipValue / 10);
                             break;
 
                         case _RELATIVE_LINEAR:
@@ -378,18 +378,18 @@ public class ArrayPeakSearch extends TypedAtomicActor {
                         _debug("-- Looking for a value above " + riseThreshold);
                     }
 
-                    if ((indata > riseThreshold) && (indata > squelchValue)) {
+                    if (indata > riseThreshold && indata > squelchValue) {
                         localMax = indata;
 
                         switch (scaleIndicator) {
                         case _RELATIVE_DB:
                             dipThreshold = localMax
-                                    * Math.pow(10.0, (-dipValue / 20));
+                                    * Math.pow(10.0, -dipValue / 20);
                             break;
 
                         case _RELATIVE_DB_POWER:
                             dipThreshold = localMax
-                                    * Math.pow(10.0, (-dipValue / 10));
+                                    * Math.pow(10.0, -dipValue / 10);
                             break;
 
                         case _RELATIVE_LINEAR:
@@ -402,18 +402,18 @@ public class ArrayPeakSearch extends TypedAtomicActor {
                         searchPeak = true;
                     }
                 } else if (searchPeak) {
-                    if ((indata > localMax) && (indata > squelchValue)) {
+                    if (indata > localMax && indata > squelchValue) {
                         localMax = indata;
 
                         switch (scaleIndicator) {
                         case _RELATIVE_DB:
                             dipThreshold = localMax
-                                    * Math.pow(10.0, (-dipValue / 20));
+                                    * Math.pow(10.0, -dipValue / 20);
                             break;
 
                         case _RELATIVE_DB_POWER:
                             dipThreshold = localMax
-                                    * Math.pow(10.0, (-dipValue / 10));
+                                    * Math.pow(10.0, -dipValue / 10);
                             break;
 
                         case _RELATIVE_LINEAR:
@@ -428,7 +428,7 @@ public class ArrayPeakSearch extends TypedAtomicActor {
                         _debug("-- Looking for a value below " + dipThreshold);
                     }
 
-                    if ((indata < dipThreshold) && (localMax > squelchValue)) {
+                    if (indata < dipThreshold && localMax > squelchValue) {
                         if (_debugging) {
                             _debug("** Found a peak with value " + localMax
                                     + " at index " + localMaxIndex);
@@ -446,12 +446,12 @@ public class ArrayPeakSearch extends TypedAtomicActor {
                         switch (scaleIndicator) {
                         case _RELATIVE_DB:
                             riseThreshold = localMin
-                                    * Math.pow(10.0, (dipValue / 20));
+                                    * Math.pow(10.0, dipValue / 20);
                             break;
 
                         case _RELATIVE_DB_POWER:
                             riseThreshold = localMin
-                                    * Math.pow(10.0, (dipValue / 10));
+                                    * Math.pow(10.0, dipValue / 10);
                             break;
 
                         case _RELATIVE_LINEAR:

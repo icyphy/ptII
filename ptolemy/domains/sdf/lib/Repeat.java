@@ -104,7 +104,7 @@ public class Repeat extends SDFTransformer {
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
 
-        if ((attribute == numberOfTimes) || (attribute == blockSize)) {
+        if (attribute == numberOfTimes || attribute == blockSize) {
             int repetitions = ((IntToken) numberOfTimes.getToken()).intValue();
             int count = ((IntToken) blockSize.getToken()).intValue();
 

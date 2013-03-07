@@ -203,7 +203,7 @@ public class BrowserLauncher {
                 // Ignored, we try to fix this below.
             }
 
-            if ((urlFile == null) || !urlFile.exists()) {
+            if (urlFile == null || !urlFile.exists()) {
                 // The file could not be found, so try the search path mambo.
                 // We might be in the Swing Event thread, so
                 // Thread.currentThread().getContextClassLoader()
@@ -214,7 +214,7 @@ public class BrowserLauncher {
                     Class refClass = Class.forName(refClassName);
                     URL entryURL = refClass.getClassLoader().getResource(url);
 
-                    if ((entryURL != null) && !url.startsWith("jar:")) {
+                    if (entryURL != null && !url.startsWith("jar:")) {
                         System.out.println("BrowserLauncher: Could not "
                                 + "find '" + url + "', but '" + entryURL
                                 + "' was found.");
@@ -628,7 +628,7 @@ public class BrowserLauncher {
 
                     if (version == 2) {
                         jvm = MRJ_2_0;
-                    } else if ((version >= 2.1) && (version < 3)) {
+                    } else if (version >= 2.1 && version < 3) {
                         // Assume that all 2.x versions of MRJ work the
                         // same.  MRJ 2.1 actually works via
                         // Runtime.exec() and 2.2 supports that but has an
@@ -907,9 +907,9 @@ public class BrowserLauncher {
 
             // Avoid a FilenameFilter because
             // that can't be stopped mid-list
-            for (int i = 0; i < systemFolderFiles.length; i++) {
+            for (String systemFolderFile : systemFolderFiles) {
                 try {
-                    File file = new File(systemFolder, systemFolderFiles[i]);
+                    File file = new File(systemFolder, systemFolderFile);
 
                     if (!file.isFile()) {
                         continue;

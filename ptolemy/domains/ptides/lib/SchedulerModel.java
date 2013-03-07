@@ -147,12 +147,14 @@ public class SchedulerModel extends ResourceScheduler {
 
         _fireModel(currentPlatformTime);
 
-        Parameter parameter = (Parameter)((CompositeActor)_model).getAttribute("resume" + actor.getName());
+        Parameter parameter = (Parameter) ((CompositeActor) _model)
+                .getAttribute("resume" + actor.getName());
         if (parameter == null || parameter.getToken() == null) {
-            throw new IllegalActionException(this, "Tried to schedule actor " + actor +
-                    " but no parameter " + "resume" + actor.getName() + " was found!");
+            throw new IllegalActionException(this, "Tried to schedule actor "
+                    + actor + " but no parameter " + "resume" + actor.getName()
+                    + " was found!");
         }
-        finished = ((BooleanToken)parameter.getToken()).booleanValue();
+        finished = ((BooleanToken) parameter.getToken()).booleanValue();
         if (finished) {
             time = getTime(0.0);
             parameter.setToken(new BooleanToken(false));
@@ -179,16 +181,19 @@ public class SchedulerModel extends ResourceScheduler {
 
     private void _fireModel(Time currentPlatformTime)
             throws IllegalActionException {
-        Time time = ((CompositeActor)_model).getDirector().getModelNextIterationTime();
+        Time time = ((CompositeActor) _model).getDirector()
+                .getModelNextIterationTime();
         int index = 1;
         while (time.compareTo(currentPlatformTime) <= 0) {
-            ((CompositeActor)_model).getDirector().setModelTime(time);
-            ((DEDirector)((CompositeActor)_model).getDirector()).setIndex(index);
-            ((CompositeActor)_model).prefire();
-            ((CompositeActor)_model).fire();
-            ((CompositeActor)_model).postfire();
+            ((CompositeActor) _model).getDirector().setModelTime(time);
+            ((DEDirector) ((CompositeActor) _model).getDirector())
+                    .setIndex(index);
+            ((CompositeActor) _model).prefire();
+            ((CompositeActor) _model).fire();
+            ((CompositeActor) _model).postfire();
             Time previousTime = time;
-            time = ((CompositeActor)_model).getDirector().getModelNextIterationTime();
+            time = ((CompositeActor) _model).getDirector()
+                    .getModelNextIterationTime();
             if (time.equals(previousTime)) {
                 index++;
             } else {

@@ -94,7 +94,7 @@ public class ParhiMaximumProfitToCostRatioStrategy extends CachedStrategy
      *  @return Return the maximum profit to cost ratio of the given graph.
      */
     public double maximumRatio() {
-        return ((Double) (_result())).doubleValue();
+        return ((Double) _result()).doubleValue();
     }
 
     /** Return a description of the analyzer.
@@ -197,8 +197,8 @@ public class ParhiMaximumProfitToCostRatioStrategy extends CachedStrategy
                     .clone();
             HashMap delayGraphProfitMap = new HashMap();
 
-            for (int j = 0; j < edges.length; j++) {
-                Edge edge = (Edge) edges[j];
+            for (Object edge2 : edges) {
+                Edge edge = (Edge) edge2;
                 Node source = edge.source();
                 Node sink = edge.sink();
 
@@ -216,7 +216,7 @@ public class ParhiMaximumProfitToCostRatioStrategy extends CachedStrategy
                         thisRoundGraph.removeEdge(edge);
                     }
 
-                    if ((source != delayNode) && (sink != delayNode)) {
+                    if (source != delayNode && sink != delayNode) {
                         if (_delayNodeList.contains(source)) {
                             thisRoundGraph.removeEdge(edge);
                         } else {
@@ -253,7 +253,7 @@ public class ParhiMaximumProfitToCostRatioStrategy extends CachedStrategy
                 Node sink = (Node) _delayNodeList.get(j);
 
                 if (_firstOrderLongestPathMatrix[i][j] >= 0) {
-                    if (!((source == sink) && (_firstOrderLongestPathMatrix[i][j] == 0))) {
+                    if (!(source == sink && _firstOrderLongestPathMatrix[i][j] == 0)) {
                         Edge addedEdge = delayGraph.addEdge(source, sink);
                         delayGraphEdgeProfits.put(addedEdge, Double
                                 .valueOf(_firstOrderLongestPathMatrix[i][j]));
@@ -274,25 +274,25 @@ public class ParhiMaximumProfitToCostRatioStrategy extends CachedStrategy
             Node delayNode = (Node) delayNodes[i];
 
             for (int j = 0; j < delayNodes.length; j++) {
-                if ((i != j) || (delayNodes.length != 1)) {
+                if (i != j || delayNodes.length != 1) {
                     Node endDelayNode = (Node) delayNodes[j];
-                    List path = ((SingleSourceLongestPathAnalysis) (D
-                            .get(delayNode))).path(endDelayNode);
+                    List path = ((SingleSourceLongestPathAnalysis) D
+                            .get(delayNode)).path(endDelayNode);
 
                     for (int k = 0; k < path.size(); k++) {
-                        if (!(_delayNodeList.contains(path.get(k)))) {
+                        if (!_delayNodeList.contains(path.get(k))) {
                             _maximumProfitToCostRatioCycle.add(path.get(k));
                         }
                     }
                 } else if (delayNodes.length == 1) {
-                    Node predecessor = (Node) (predecessorMap.get(delayNode));
+                    Node predecessor = (Node) predecessorMap.get(delayNode);
 
-                    if (!(_delayNodeList.contains(predecessor))) {
-                        List path = ((SingleSourceLongestPathAnalysis) (D
-                                .get(delayNode))).path(predecessor);
+                    if (!_delayNodeList.contains(predecessor)) {
+                        List path = ((SingleSourceLongestPathAnalysis) D
+                                .get(delayNode)).path(predecessor);
 
                         for (int k = 0; k < path.size(); k++) {
-                            if (!(_delayNodeList.contains(path.get(k)))) {
+                            if (!_delayNodeList.contains(path.get(k))) {
                                 _maximumProfitToCostRatioCycle.add(path.get(k));
                             }
                         }
@@ -334,11 +334,11 @@ public class ParhiMaximumProfitToCostRatioStrategy extends CachedStrategy
                 Node column = (Node) _delayNodeList.get(i);
                 Node row = (Node) _delayNodeList.get(j);
                 double value = 0;
-                double[] distances = ((SingleSourceLongestPathAnalysis) (D
-                        .get(column))).distance();
-                Node predecessor = (Node) (predecessorMap.get(row));
+                double[] distances = ((SingleSourceLongestPathAnalysis) D
+                        .get(column)).distance();
+                Node predecessor = (Node) predecessorMap.get(row);
 
-                if ((i != j) || _delayNodeList.contains(predecessor)) {
+                if (i != j || _delayNodeList.contains(predecessor)) {
                     value = distances[graph.nodeLabel(row)];
                 } else {
                     value = distances[graph.nodeLabel(predecessor)];

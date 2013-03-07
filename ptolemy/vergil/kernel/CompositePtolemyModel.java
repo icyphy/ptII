@@ -87,8 +87,7 @@ public class CompositePtolemyModel implements CompositeModel {
 
         long version = ((NamedObj) composite).workspace().getVersion();
 
-        if ((_nodeList == null) || (composite != _composite)
-                || (version != _version)) {
+        if (_nodeList == null || composite != _composite || version != _version) {
             _nodeList = _nodeList((NamedObj) composite, true, true);
             _composite = composite;
             _version = version;
@@ -106,13 +105,12 @@ public class CompositePtolemyModel implements CompositeModel {
      */
     public Iterator nodes(Object composite) {
         if (!(composite instanceof NamedObj)) {
-            return (new LinkedList()).iterator();
+            return new LinkedList().iterator();
         }
 
         long version = ((NamedObj) composite).workspace().getVersion();
 
-        if ((_nodeList == null) || (composite != _composite)
-                || (version != _version)) {
+        if (_nodeList == null || composite != _composite || version != _version) {
             _nodeList = _nodeList((NamedObj) composite, true, true);
             _composite = composite;
             _version = version;
@@ -130,13 +128,13 @@ public class CompositePtolemyModel implements CompositeModel {
      */
     public Iterator nodesBeforeEdges(Object composite) {
         if (!(composite instanceof NamedObj)) {
-            return (new LinkedList()).iterator();
+            return new LinkedList().iterator();
         }
 
         long version = ((NamedObj) composite).workspace().getVersion();
 
-        if ((_nodeListBefore == null) || (composite != _compositeBefore)
-                || (version != _versionBefore)) {
+        if (_nodeListBefore == null || composite != _compositeBefore
+                || version != _versionBefore) {
             _nodeListBefore = _nodeList((NamedObj) composite, true, false);
             _compositeBefore = composite;
             _versionBefore = version;
@@ -154,13 +152,13 @@ public class CompositePtolemyModel implements CompositeModel {
      */
     public Iterator nodesAfterEdges(Object composite) {
         if (!(composite instanceof NamedObj)) {
-            return (new LinkedList()).iterator();
+            return new LinkedList().iterator();
         }
 
         long version = ((NamedObj) composite).workspace().getVersion();
 
-        if ((_nodeListAfter == null) || (composite != _compositeAfter)
-                || (version != _versionAfter)) {
+        if (_nodeListAfter == null || composite != _compositeAfter
+                || version != _versionAfter) {
             _nodeListAfter = _nodeList((NamedObj) composite, false, true);
             _compositeAfter = composite;
             _versionAfter = version;
@@ -242,8 +240,8 @@ public class CompositePtolemyModel implements CompositeModel {
                     Attribute attribute = (Attribute) attributes.next();
                     List locations = attribute.attributeList(Locatable.class);
 
-                    if ((locations.size() > 0)
-                            && (attribute.getAttribute("_renderFirst") != null)) {
+                    if (locations.size() > 0
+                            && attribute.getAttribute("_renderFirst") != null) {
                         nodes.add(locations.get(0));
                     }
                 }
@@ -346,8 +344,8 @@ public class CompositePtolemyModel implements CompositeModel {
                 while (attributes.hasNext()) {
                     Attribute attribute = (Attribute) attributes.next();
 
-                    if ((attribute.getAttribute("_renderFirst") != null)
-                            || (attribute.getAttribute("_renderLast") != null)) {
+                    if (attribute.getAttribute("_renderFirst") != null
+                            || attribute.getAttribute("_renderLast") != null) {
                         // Already rendered, or to be rendered later.
                         continue;
                     }
@@ -378,8 +376,8 @@ public class CompositePtolemyModel implements CompositeModel {
                     Attribute attribute = (Attribute) attributes.next();
                     List locations = attribute.attributeList(Locatable.class);
 
-                    if ((locations.size() > 0)
-                            && (attribute.getAttribute("_renderLast") != null)) {
+                    if (locations.size() > 0
+                            && attribute.getAttribute("_renderLast") != null) {
                         nodes.add(locations.get(0));
                     }
                 }

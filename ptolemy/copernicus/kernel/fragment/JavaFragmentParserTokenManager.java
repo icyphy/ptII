@@ -654,7 +654,7 @@ public class JavaFragmentParserTokenManager implements
     }
 
     private final int jjMoveStringLiteralDfa5_0(long old0, long active0) {
-        if (((active0 &= old0)) == 0L) {
+        if ((active0 &= old0) == 0L) {
             return jjStartNfa_0(3, old0, 0L);
         }
         try {
@@ -721,7 +721,7 @@ public class JavaFragmentParserTokenManager implements
     }
 
     private final int jjMoveStringLiteralDfa6_0(long old0, long active0) {
-        if (((active0 &= old0)) == 0L) {
+        if ((active0 &= old0) == 0L) {
             return jjStartNfa_0(4, old0, 0L);
         }
         try {
@@ -775,7 +775,7 @@ public class JavaFragmentParserTokenManager implements
     }
 
     private final int jjMoveStringLiteralDfa7_0(long old0, long active0) {
-        if (((active0 &= old0)) == 0L) {
+        if ((active0 &= old0) == 0L) {
             return jjStartNfa_0(5, old0, 0L);
         }
         try {
@@ -808,7 +808,7 @@ public class JavaFragmentParserTokenManager implements
     }
 
     private final int jjMoveStringLiteralDfa8_0(long old0, long active0) {
-        if (((active0 &= old0)) == 0L) {
+        if ((active0 &= old0) == 0L) {
             return jjStartNfa_0(6, old0, 0L);
         }
         try {
@@ -844,7 +844,7 @@ public class JavaFragmentParserTokenManager implements
     }
 
     private final int jjMoveStringLiteralDfa9_0(long old0, long active0) {
-        if (((active0 &= old0)) == 0L) {
+        if ((active0 &= old0) == 0L) {
             return jjStartNfa_0(7, old0, 0L);
         }
         try {
@@ -873,7 +873,7 @@ public class JavaFragmentParserTokenManager implements
     }
 
     private final int jjMoveStringLiteralDfa10_0(long old0, long active0) {
-        if (((active0 &= old0)) == 0L) {
+        if ((active0 &= old0) == 0L) {
             return jjStartNfa_0(8, old0, 0L);
         }
         try {
@@ -892,7 +892,7 @@ public class JavaFragmentParserTokenManager implements
     }
 
     private final int jjMoveStringLiteralDfa11_0(long old0, long active0) {
-        if (((active0 &= old0)) == 0L) {
+        if ((active0 &= old0) == 0L) {
             return jjStartNfa_0(9, old0, 0L);
         }
         try {
@@ -1372,7 +1372,7 @@ public class JavaFragmentParserTokenManager implements
                     }
                 } while (i != startsAt);
             } else {
-                int hiByte = (curChar >> 8);
+                int hiByte = curChar >> 8;
                 int i1 = hiByte >> 6;
                 long l1 = 1L << (hiByte & 077);
                 int i2 = (curChar & 0xff) >> 6;
@@ -1569,7 +1569,7 @@ public class JavaFragmentParserTokenManager implements
             long l1, long l2) {
         switch (hiByte) {
         case 0:
-            return ((jjbitVec2[i2] & l2) != 0L);
+            return (jjbitVec2[i2] & l2) != 0L;
         default:
             if ((jjbitVec0[i1] & l1) != 0L) {
                 return true;
@@ -1582,15 +1582,15 @@ public class JavaFragmentParserTokenManager implements
             long l1, long l2) {
         switch (hiByte) {
         case 0:
-            return ((jjbitVec4[i2] & l2) != 0L);
+            return (jjbitVec4[i2] & l2) != 0L;
         case 48:
-            return ((jjbitVec5[i2] & l2) != 0L);
+            return (jjbitVec5[i2] & l2) != 0L;
         case 49:
-            return ((jjbitVec6[i2] & l2) != 0L);
+            return (jjbitVec6[i2] & l2) != 0L;
         case 51:
-            return ((jjbitVec7[i2] & l2) != 0L);
+            return (jjbitVec7[i2] & l2) != 0L;
         case 61:
-            return ((jjbitVec8[i2] & l2) != 0L);
+            return (jjbitVec8[i2] & l2) != 0L;
         default:
             if ((jjbitVec3[i1] & l1) != 0L) {
                 return true;
@@ -1716,7 +1716,7 @@ public class JavaFragmentParserTokenManager implements
         Token t = Token.newToken(jjmatchedKind);
         t.kind = jjmatchedKind;
         String im = jjstrLiteralImages[jjmatchedKind];
-        t.image = (im == null) ? input_stream.GetImage() : im;
+        t.image = im == null ? input_stream.GetImage() : im;
         t.beginLine = input_stream.getBeginLine();
         t.beginColumn = input_stream.getBeginColumn();
         t.endLine = input_stream.getEndLine();
@@ -1760,7 +1760,7 @@ public class JavaFragmentParserTokenManager implements
                     try {
                         input_stream.backup(0);
                         while (curChar <= 32
-                                && (0x100003600L & (1L << curChar)) != 0L) {
+                                && (0x100003600L & 1L << curChar) != 0L) {
                             curChar = input_stream.BeginToken();
                         }
                     } catch (java.io.IOException e1) {
@@ -1799,21 +1799,21 @@ public class JavaFragmentParserTokenManager implements
                     if (jjmatchedPos + 1 < curPos) {
                         input_stream.backup(curPos - jjmatchedPos - 1);
                     }
-                    if ((jjtoToken[jjmatchedKind >> 6] & (1L << (jjmatchedKind & 077))) != 0L) {
+                    if ((jjtoToken[jjmatchedKind >> 6] & 1L << (jjmatchedKind & 077)) != 0L) {
                         matchedToken = jjFillToken();
                         matchedToken.specialToken = specialToken;
                         if (jjnewLexState[jjmatchedKind] != -1) {
                             curLexState = jjnewLexState[jjmatchedKind];
                         }
                         return matchedToken;
-                    } else if ((jjtoSkip[jjmatchedKind >> 6] & (1L << (jjmatchedKind & 077))) != 0L) {
-                        if ((jjtoSpecial[jjmatchedKind >> 6] & (1L << (jjmatchedKind & 077))) != 0L) {
+                    } else if ((jjtoSkip[jjmatchedKind >> 6] & 1L << (jjmatchedKind & 077)) != 0L) {
+                        if ((jjtoSpecial[jjmatchedKind >> 6] & 1L << (jjmatchedKind & 077)) != 0L) {
                             matchedToken = jjFillToken();
                             if (specialToken == null) {
                                 specialToken = matchedToken;
                             } else {
                                 matchedToken.specialToken = specialToken;
-                                specialToken = (specialToken.next = matchedToken);
+                                specialToken = specialToken.next = matchedToken;
                             }
                             SkipLexicalActions(matchedToken);
                         } else {
@@ -1872,7 +1872,7 @@ public class JavaFragmentParserTokenManager implements
     }
 
     void MoreLexicalActions() {
-        jjimageLen += (lengthOfMatch = jjmatchedPos + 1);
+        jjimageLen += lengthOfMatch = jjmatchedPos + 1;
         switch (jjmatchedKind) {
         case 7:
             if (image == null) {

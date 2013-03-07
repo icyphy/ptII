@@ -179,7 +179,7 @@ public class ShapeIcon extends DynamicEditorIcon {
         // list while this method is traversing it.
         Runnable doSet = new Runnable() {
             public void run() {
-                synchronized(_figures) {
+                synchronized (_figures) {
                     Iterator figures = _liveFigureIterator();
 
                     while (figures.hasNext()) {
@@ -199,7 +199,7 @@ public class ShapeIcon extends DynamicEditorIcon {
      */
     public void setDashArray(float[] dashArray) {
         // Avoid calling swing if things haven't actually changed.
-        if ((_dashArray != null) && Arrays.equals(_dashArray, dashArray)) {
+        if (_dashArray != null && Arrays.equals(_dashArray, dashArray)) {
             return;
         }
 
@@ -213,7 +213,7 @@ public class ShapeIcon extends DynamicEditorIcon {
         // list while this method is traversing it.
         Runnable doSet = new Runnable() {
             public void run() {
-                synchronized(_figures) {
+                synchronized (_figures) {
                     Iterator figures = _liveFigureIterator();
 
                     while (figures.hasNext()) {
@@ -233,7 +233,7 @@ public class ShapeIcon extends DynamicEditorIcon {
      */
     public void setFillColor(Color fillColor) {
         // Avoid calling swing if things haven't actually changed.
-        if ((_fillColor != null) && _fillColor.equals(fillColor)) {
+        if (_fillColor != null && _fillColor.equals(fillColor)) {
             return;
         }
 
@@ -247,7 +247,7 @@ public class ShapeIcon extends DynamicEditorIcon {
         // list while this method is traversing it.
         Runnable doSet = new Runnable() {
             public void run() {
-                synchronized(_figures) {
+                synchronized (_figures) {
                     Iterator figures = _liveFigureIterator();
 
                     while (figures.hasNext()) {
@@ -267,7 +267,7 @@ public class ShapeIcon extends DynamicEditorIcon {
      */
     public void setLineColor(Color lineColor) {
         // Avoid calling swing if things haven't actually changed.
-        if ((_lineColor != null) && _lineColor.equals(lineColor)) {
+        if (_lineColor != null && _lineColor.equals(lineColor)) {
             return;
         }
 
@@ -281,7 +281,7 @@ public class ShapeIcon extends DynamicEditorIcon {
         // list while this method is traversing it.
         Runnable doSet = new Runnable() {
             public void run() {
-                synchronized(_figures) {
+                synchronized (_figures) {
                     Iterator figures = _liveFigureIterator();
 
                     while (figures.hasNext()) {
@@ -315,7 +315,7 @@ public class ShapeIcon extends DynamicEditorIcon {
         // list while this method is traversing it.
         Runnable doSet = new Runnable() {
             public void run() {
-                synchronized(_figures) {
+                synchronized (_figures) {
                     Iterator figures = _liveFigureIterator();
 
                     while (figures.hasNext()) {
@@ -344,7 +344,7 @@ public class ShapeIcon extends DynamicEditorIcon {
         // list while this method is traversing it.
         Runnable doSet = new Runnable() {
             public void run() {
-                synchronized(_figures) {
+                synchronized (_figures) {
                     Iterator figures = _liveFigureIterator();
 
                     while (figures.hasNext()) {

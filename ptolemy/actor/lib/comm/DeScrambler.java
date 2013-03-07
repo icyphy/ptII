@@ -140,7 +140,7 @@ public class DeScrambler extends Transformer {
         _latestShiftReg = _shiftReg;
 
         int mask = ((IntToken) polynomial.getToken()).intValue();
-        BooleanToken inputToken = ((BooleanToken) input.get(0));
+        BooleanToken inputToken = (BooleanToken) input.get(0);
         boolean inputTokenValue = inputToken.booleanValue();
         int reg = _latestShiftReg << 1;
 
@@ -153,7 +153,7 @@ public class DeScrambler extends Transformer {
 
         // Calculate the parity of the masked word.
         while (masked > 0) {
-            parity = parity ^ (masked & 1);
+            parity = parity ^ masked & 1;
             masked = masked >> 1;
         }
 

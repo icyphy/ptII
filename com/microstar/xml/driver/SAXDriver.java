@@ -432,7 +432,7 @@ public class SAXDriver implements XmlHandler, Locator, Attributes, XMLReader //i
     }
 
     public String getName(int i) {
-        return (String) (attributeNames.elementAt(i));
+        return (String) attributeNames.elementAt(i);
     }
 
     public String getType(int i) {
@@ -471,7 +471,7 @@ public class SAXDriver implements XmlHandler, Locator, Attributes, XMLReader //i
     }
 
     public String getValue(int i) {
-        return (String) (attributeValues.elementAt(i));
+        return (String) attributeValues.elementAt(i);
     }
 
     public String getType(String name) {
@@ -502,7 +502,7 @@ public class SAXDriver implements XmlHandler, Locator, Attributes, XMLReader //i
     }
 
     public String getSystemId() {
-        return (String) (entityStack.peek());
+        return (String) entityStack.peek();
     }
 
     public int getLineNumber() {

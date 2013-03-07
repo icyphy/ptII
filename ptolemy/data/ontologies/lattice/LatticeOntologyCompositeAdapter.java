@@ -138,7 +138,7 @@ public class LatticeOntologyCompositeAdapter extends LatticeOntologyAdapter {
                 // If the port is a multiport with more than one channel,
                 // don't add any constraints.  These will be added
                 // by the actor's adapter.
-                if (!((port).isMultiport() && (port).getWidth() > 1)) {
+                if (!(port.isMultiport() && port.getWidth() > 1)) {
                     _constrainObject(adapter.interconnectConstraintType, port,
                             _getConstraintingPorts(constraintSource, port));
                 }

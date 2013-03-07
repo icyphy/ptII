@@ -170,7 +170,7 @@ public class NonInterruptibleTimer extends Timer {
         // Schedule a refiring to produce the corresponding
         // output at the time: current time + delay specified by the input
         // being processed.
-        if ((_delayedInputTokensList.size() != 0)
+        if (_delayedInputTokensList.size() != 0
                 && _delayedOutputTokens.isEmpty()) {
             // NOTE: the input has a fixed data type as double.
             DoubleToken delayToken = (DoubleToken) _delayedInputTokensList

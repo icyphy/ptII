@@ -171,9 +171,9 @@ public class VisibleTreeModel extends FullTreeModel {
     protected boolean _isVisible(NamedObj object) {
         List iconList = object.attributeList(EditorIcon.class);
 
-        if ((iconList.size() > 0)
-                || (object.getAttribute("_iconDescription") != null)
-                || (object.getAttribute("_smallIconDescription") != null)) {
+        if (iconList.size() > 0
+                || object.getAttribute("_iconDescription") != null
+                || object.getAttribute("_smallIconDescription") != null) {
             return true;
         } else {
             return false;

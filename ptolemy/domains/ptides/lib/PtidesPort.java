@@ -168,7 +168,7 @@ public class PtidesPort extends MirrorPort {
      *  @return The timestamp.
      */
     public Object[] getTimeStampForToken(Token t) {
-        Object[] times = (Object[])_transmittedTokenTimestamps.get(t);
+        Object[] times = _transmittedTokenTimestamps.get(t);
         _transmittedTokenCnt.put(t, _transmittedTokenCnt.get(t).intValue() - 1);
         if (_transmittedTokenCnt.get(t).intValue() == 0) {
             _transmittedTokenTimestamps.remove(t);
@@ -224,7 +224,8 @@ public class PtidesPort extends MirrorPort {
             throws IllegalActionException, NoRoomException {
         Time timestamp = ((CompositeActor) getContainer()).getDirector()
                 .getModelTime();
-        Time sourceTimestamp = ((PtidesDirector)((CompositeActor) getContainer()).getDirector()).getCurrentSourceTimestamp();
+        Time sourceTimestamp = ((PtidesDirector) ((CompositeActor) getContainer())
+                .getDirector()).getCurrentSourceTimestamp();
         if (sourceTimestamp == null) {
             sourceTimestamp = timestamp;
         }
@@ -235,7 +236,8 @@ public class PtidesPort extends MirrorPort {
         if (_transmittedTokenTimestamps.get(token) == null) {
             _transmittedTokenCnt.put(token, 0);
         }
-        _transmittedTokenTimestamps.put(token, new Object[]{timestamp, sourceTimestamp});
+        _transmittedTokenTimestamps.put(token, new Object[] { timestamp,
+                sourceTimestamp });
         _transmittedTokenCnt.put(token, _transmittedTokenCnt.get(token)
                 .intValue() + 1);
         super.send(channelIndex, token);

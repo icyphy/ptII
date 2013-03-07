@@ -72,7 +72,7 @@ public class BasicPropertyContainer implements PropertyContainer {
             o = _mapping.get(key);
         }
 
-        if ((o == null) && (_defaults != null)) {
+        if (o == null && _defaults != null) {
             return _defaults.getProperty(key);
         }
 

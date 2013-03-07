@@ -194,8 +194,8 @@ public class LinearDifferenceEquationSystem extends Transformer {
             // Check that it is a square matrix.
             DoubleMatrixToken token = (DoubleMatrixToken) A.getToken();
 
-            if ((token.getRowCount() == 0) || (token.getColumnCount() == 0)
-                    || (token.getRowCount() != token.getColumnCount())) {
+            if (token.getRowCount() == 0 || token.getColumnCount() == 0
+                    || token.getRowCount() != token.getColumnCount()) {
                 throw new IllegalActionException(this,
                         "The A matrix must be a nonempty square matrix.");
             }
@@ -203,7 +203,7 @@ public class LinearDifferenceEquationSystem extends Transformer {
             // Check that B is a matrix.
             DoubleMatrixToken token = (DoubleMatrixToken) B.getToken();
 
-            if ((token.getRowCount() == 0) || (token.getColumnCount() == 0)) {
+            if (token.getRowCount() == 0 || token.getColumnCount() == 0) {
                 throw new IllegalActionException(this,
                         "The B matrix must be a nonempty matrix.");
             }
@@ -211,14 +211,14 @@ public class LinearDifferenceEquationSystem extends Transformer {
             // Check that C is a matrix.
             DoubleMatrixToken token = (DoubleMatrixToken) C.getToken();
 
-            if ((token.getRowCount() == 0) || (token.getColumnCount() == 0)) {
+            if (token.getRowCount() == 0 || token.getColumnCount() == 0) {
                 throw new IllegalActionException(this,
                         "The C matrix must be a nonempty matrix.");
             }
         } else if (attribute == D) {
             DoubleMatrixToken token = (DoubleMatrixToken) D.getToken();
 
-            if ((token.getRowCount() == 0) || (token.getColumnCount() == 0)) {
+            if (token.getRowCount() == 0 || token.getColumnCount() == 0) {
                 throw new IllegalActionException(this,
                         "The D matrix must be a nonempty matrix.");
             }
@@ -227,7 +227,7 @@ public class LinearDifferenceEquationSystem extends Transformer {
             DoubleMatrixToken token = (DoubleMatrixToken) initialStates
                     .getToken();
 
-            if ((token.getColumnCount() != 1) || (token.getRowCount() < 1)) {
+            if (token.getColumnCount() != 1 || token.getRowCount() < 1) {
                 throw new IllegalActionException(this,
                         "The initialStates must be a column vector.");
             }

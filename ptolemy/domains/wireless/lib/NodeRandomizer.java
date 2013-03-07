@@ -264,7 +264,7 @@ public class NodeRandomizer extends TypedAtomicActor {
     public void initialize() throws IllegalActionException {
         super.initialize();
 
-        long seedValue = ((LongToken) (seed.getToken())).longValue();
+        long seedValue = ((LongToken) seed.getToken()).longValue();
 
         if (seedValue == 0) {
             seedValue = System.currentTimeMillis() + hashCode();
@@ -351,11 +351,11 @@ public class NodeRandomizer extends TypedAtomicActor {
                 // If the precision is 0, then use the maximum precision allowed by double.
                 // Otherwise, round according to the maxPrecision parameter.
                 if (_mathContext == null) {
-                    randomLocation[i] = low
-                            + ((_random.nextDouble()) * (high - low));
+                    randomLocation[i] = low + _random.nextDouble()
+                            * (high - low);
                 } else {
-                    double candidateRandomLocation = low
-                            + ((_random.nextDouble()) * (high - low));
+                    double candidateRandomLocation = low + _random.nextDouble()
+                            * (high - low);
                     // Create a BigDecimal with the specified precision.
                     BigDecimal decimal = new BigDecimal(
                             candidateRandomLocation, _mathContext);

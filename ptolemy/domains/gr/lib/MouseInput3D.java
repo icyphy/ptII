@@ -165,12 +165,12 @@ public class MouseInput3D extends GRActor3D {
                 wakeup = (WakeupCriterion) criteria.nextElement();
                 event = ((WakeupOnAWTEvent) wakeup).getAWTEvent();
 
-                for (int i = 0; i < event.length; i++) {
-                    eventId = event[i].getID();
+                for (AWTEvent element : event) {
+                    eventId = element.getID();
 
                     if (eventId == MouseEvent.MOUSE_PRESSED) {
-                        _xClicked = ((MouseEvent) event[i]).getX();
-                        _yClicked = ((MouseEvent) event[i]).getY();
+                        _xClicked = ((MouseEvent) element).getX();
+                        _yClicked = ((MouseEvent) element).getY();
                         _hasData = true;
                         try {
                             getDirector().fireAtCurrentTime(MouseInput3D.this);

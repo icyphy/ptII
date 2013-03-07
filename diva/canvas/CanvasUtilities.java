@@ -79,13 +79,13 @@ public final class CanvasUtilities {
     public static final double SOUTH = Math.PI / 2;
 
     /** double representation of NORTHWEST: -135 degrees (-PI*3/4) **/
-    public static final double NORTHWEST = (-Math.PI * 3) / 4;
+    public static final double NORTHWEST = -Math.PI * 3 / 4;
 
     /** double representation of NORTHEAST: -45 degrees (PI/4) **/
     public static final double NORTHEAST = -Math.PI / 4;
 
     /** double representation of SOUTHWEST: 135 degrees (PI*3/4) **/
-    public static final double SOUTHWEST = (Math.PI * 3) / 4;
+    public static final double SOUTHWEST = Math.PI * 3 / 4;
 
     /** double representation of SOUTHEAST: 45 degrees (PI/4) **/
     public static final double SOUTHEAST = Math.PI / 4;
@@ -263,21 +263,21 @@ public final class CanvasUtilities {
     public static int getDirection(double angle) {
         angle = moduloAngle(angle);
 
-        if (angle < ((-Math.PI * 7) / 8)) {
+        if (angle < -Math.PI * 7 / 8) {
             return SwingConstants.WEST;
-        } else if (angle < ((-Math.PI * 5) / 8)) {
+        } else if (angle < -Math.PI * 5 / 8) {
             return SwingConstants.NORTH_WEST;
-        } else if (angle < ((-Math.PI * 3) / 8)) {
+        } else if (angle < -Math.PI * 3 / 8) {
             return SwingConstants.NORTH;
-        } else if (angle < ((-Math.PI * 1) / 8)) {
+        } else if (angle < -Math.PI * 1 / 8) {
             return SwingConstants.NORTH_EAST;
-        } else if (angle < ((Math.PI * 1) / 8)) {
+        } else if (angle < Math.PI * 1 / 8) {
             return SwingConstants.EAST;
-        } else if (angle < ((Math.PI * 3) / 8)) {
+        } else if (angle < Math.PI * 3 / 8) {
             return SwingConstants.SOUTH_EAST;
-        } else if (angle < ((Math.PI * 5) / 8)) {
+        } else if (angle < Math.PI * 5 / 8) {
             return SwingConstants.SOUTH;
-        } else if (angle < ((Math.PI * 7) / 8)) {
+        } else if (angle < Math.PI * 7 / 8) {
             return SwingConstants.SOUTH_WEST;
         } else {
             return SwingConstants.WEST;
@@ -404,11 +404,11 @@ public final class CanvasUtilities {
      */
     public static double moduloAngle(double angle) {
         while (angle > Math.PI) {
-            angle -= (2 * Math.PI);
+            angle -= 2 * Math.PI;
         }
 
         while (angle < -Math.PI) {
-            angle += (2 * Math.PI);
+            angle += 2 * Math.PI;
         }
 
         return angle;
@@ -432,7 +432,7 @@ public final class CanvasUtilities {
         while (i.hasNext()) {
             f = (Figure) i.next();
 
-            if ((f instanceof FigureContainer)) {
+            if (f instanceof FigureContainer) {
                 picked = ((FigureContainer) f).pick(region);
 
                 if (picked != null) {
@@ -582,30 +582,32 @@ public final class CanvasUtilities {
             at.getMatrix(m);
 
             switch (at.getType()) {
-            case (AffineTransform.TYPE_GENERAL_SCALE | AffineTransform.TYPE_TRANSLATION):
-            case (AffineTransform.TYPE_UNIFORM_SCALE | AffineTransform.TYPE_TRANSLATION):
-                xdash = (x * m[m00]) + m[m02];
-                ydash = (y * m[m11]) + m[m12];
+            case AffineTransform.TYPE_GENERAL_SCALE
+                    | AffineTransform.TYPE_TRANSLATION:
+            case AffineTransform.TYPE_UNIFORM_SCALE
+                    | AffineTransform.TYPE_TRANSLATION:
+                xdash = x * m[m00] + m[m02];
+                ydash = y * m[m11] + m[m12];
                 wdash = w * m[m00];
                 hdash = h * m[m11];
                 break;
 
-            case (AffineTransform.TYPE_GENERAL_SCALE):
-            case (AffineTransform.TYPE_UNIFORM_SCALE):
+            case AffineTransform.TYPE_GENERAL_SCALE:
+            case AffineTransform.TYPE_UNIFORM_SCALE:
                 xdash = x * m[m00];
                 ydash = y * m[m11];
                 wdash = w * m[m00];
                 hdash = h * m[m11];
                 break;
 
-            case (AffineTransform.TYPE_TRANSLATION):
+            case AffineTransform.TYPE_TRANSLATION:
                 xdash = x + m[m02];
                 ydash = y + m[m12];
                 wdash = w;
                 hdash = h;
                 break;
 
-            case (AffineTransform.TYPE_IDENTITY):
+            case AffineTransform.TYPE_IDENTITY:
                 xdash = x;
                 ydash = y;
                 wdash = w;

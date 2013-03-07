@@ -154,7 +154,7 @@ public class RecursiveLattice extends Transformer {
             ArrayToken value = (ArrayToken) reflectionCoefficients.getToken();
             int valueLength = value.length();
 
-            if ((_backward == null) || (valueLength != (_backward.length - 1))) {
+            if (_backward == null || valueLength != _backward.length - 1) {
                 // Need to allocate or reallocate the arrays.
                 _backward = new double[valueLength + 1];
                 _backwardCache = new double[valueLength + 1];
@@ -268,8 +268,7 @@ public class RecursiveLattice extends Transformer {
 
             for (int i = 1; i <= M; i++) {
                 k = _reflectionCoefficients[M - i];
-                _forwardCache[i] = (k * _backwardCache[i])
-                        + _forwardCache[i - 1];
+                _forwardCache[i] = k * _backwardCache[i] + _forwardCache[i - 1];
             }
 
             output.broadcast(new DoubleToken(_forwardCache[M]));
@@ -277,8 +276,8 @@ public class RecursiveLattice extends Transformer {
             // Backward:  Compute the w's for the next round
             for (int i = 1; i < M; i++) {
                 k = -_reflectionCoefficients[M - 1 - i];
-                _backwardCache[i] = _backwardCache[i + 1]
-                        + (k * _forwardCache[i + 1]);
+                _backwardCache[i] = _backwardCache[i + 1] + k
+                        * _forwardCache[i + 1];
             }
 
             _backwardCache[M] = _forwardCache[M];

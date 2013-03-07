@@ -239,8 +239,8 @@ public class ActorEditorGraphController extends ActorViewerGraphController {
 
             Link link = null;
 
-            if ((getSourceType() == TOOLBAR_TYPE)
-                    || (getSourceType() == MENUBAR_TYPE)) {
+            if (getSourceType() == TOOLBAR_TYPE
+                    || getSourceType() == MENUBAR_TYPE) {
                 // No location in the action, so put it in the middle.
                 BasicGraphFrame frame = ActorEditorGraphController.this
                         .getFrame();

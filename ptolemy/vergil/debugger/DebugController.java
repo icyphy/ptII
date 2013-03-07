@@ -119,8 +119,8 @@ public class DebugController extends SingletonConfigurableAttribute {
                         .getGraphModel();
                 NamedObj toplevel = graphModel.getPtolemyModel();
 
-                while ((objToHighlight != null)
-                        && (objToHighlight.getContainer() != toplevel)) {
+                while (objToHighlight != null
+                        && objToHighlight.getContainer() != toplevel) {
                     objToHighlight = objToHighlight.getContainer();
                 }
 

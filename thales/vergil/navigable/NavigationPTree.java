@@ -84,9 +84,9 @@ public class NavigationPTree extends PTree {
         }
 
         public void valueChanged(TreeSelectionEvent e) {
-            NamedObj obj = (((NamedObj) e.getPath().getLastPathComponent()));
+            NamedObj obj = (NamedObj) e.getPath().getLastPathComponent();
 
-            if ((obj != null) && (_jTree.getSelectionPath() != null)) {
+            if (obj != null && _jTree.getSelectionPath() != null) {
                 if (obj instanceof CompositeEntity) {
                     try {
                         SingleWindowApplication._mainFrame.getConfiguration()

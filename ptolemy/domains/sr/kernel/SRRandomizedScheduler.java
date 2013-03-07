@@ -118,8 +118,8 @@ public class SRRandomizedScheduler extends Scheduler {
                     + "cannot schedule graph with no director.");
         }
 
-        CompositeActor compositeActor = (CompositeActor) (director
-                .getContainer());
+        CompositeActor compositeActor = (CompositeActor) director
+                .getContainer();
 
         if (compositeActor == null) {
             throw new NotSchedulableException(this, "SRRandomizedScheduler "

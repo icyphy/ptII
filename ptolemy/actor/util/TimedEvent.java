@@ -105,7 +105,7 @@ public class TimedEvent implements Comparable<TimedEvent> {
         if (timedEvent == this) {
             return true;
         }
-        if ((timedEvent == null) || (timedEvent.getClass() != getClass())) {
+        if (timedEvent == null || timedEvent.getClass() != getClass()) {
             return false;
         } else {
             TimedEvent event = (TimedEvent) timedEvent;
@@ -268,7 +268,7 @@ public class TimedEvent implements Comparable<TimedEvent> {
 
             // To avoid returning NaN or 0.0 for the width, if this is
             // the result, leave the bin width unchanged.
-            if ((effAverage == 0) || (nEffSamples == 0)) {
+            if (effAverage == 0 || nEffSamples == 0) {
                 return;
             }
 

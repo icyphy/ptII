@@ -168,7 +168,7 @@ public class StringToken extends AbstractConvertibleToken {
 
         int compare = TypeLattice.compare(BaseType.STRING, token);
 
-        if ((compare == CPO.LOWER) || (compare == CPO.INCOMPARABLE)) {
+        if (compare == CPO.LOWER || compare == CPO.INCOMPARABLE) {
             throw new IllegalActionException(
                     notSupportedIncomparableConversionMessage(token, "string"));
         }

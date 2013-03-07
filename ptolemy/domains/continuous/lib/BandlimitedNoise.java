@@ -210,10 +210,10 @@ public class BandlimitedNoise extends Gaussian {
      *  @exception IllegalActionException If parameter values are incorrect.
      */
     protected double _generateGaussian() throws IllegalActionException {
-        double standardDeviationValue = ((DoubleToken) (standardDeviation
-                .getToken())).doubleValue();
+        double standardDeviationValue = ((DoubleToken) standardDeviation
+                .getToken()).doubleValue();
         double rawNum = _random.nextGaussian();
-        return (rawNum * standardDeviationValue);
+        return rawNum * standardDeviationValue;
     }
 
     /** Generate a new random number. This gets called in initialize()

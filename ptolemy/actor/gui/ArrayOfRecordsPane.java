@@ -248,13 +248,13 @@ public class ArrayOfRecordsPane extends JPanel {
         public Object getValueAt(int row, int column) {
             // There is a bug in JTable, where it happily tries to access
             // rows and columns that are outside of range.
-            if ((row >= _array.length()) || (column >= _columns.size())) {
-                return ("");
+            if (row >= _array.length() || column >= _columns.size()) {
+                return "";
             }
             Token element = ((RecordToken) _array.getElement(row)).get(_columns
                     .get(column));
             if (element == null) {
-                return ("");
+                return "";
             }
             // Strip off the extra quotation marks if necessary.
             if (element instanceof StringToken) {
@@ -325,7 +325,7 @@ public class ArrayOfRecordsPane extends JPanel {
          *  @return An empty String.
          */
         public Object getValueAt(int row, int column) {
-            return ("");
+            return "";
         }
     }
 

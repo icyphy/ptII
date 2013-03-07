@@ -355,7 +355,7 @@ public class ConfigurableAttribute extends Attribute implements Configurable,
         StringBuffer value = new StringBuffer();
 
         // If a source is given, read its data.
-        if ((_configureSource != null) && !_configureSource.trim().equals("")) {
+        if (_configureSource != null && !_configureSource.trim().equals("")) {
             URL textFile = new URL(_configureSource);
             InputStream stream = textFile.openStream();
             BufferedReader reader = null;
@@ -404,7 +404,7 @@ public class ConfigurableAttribute extends Attribute implements Configurable,
 
         String sourceSpec = "";
 
-        if ((_configureSource != null) && !_configureSource.trim().equals("")) {
+        if (_configureSource != null && !_configureSource.trim().equals("")) {
             sourceSpec = " source=\"" + _configureSource + "\"";
 
             if (_configureText == null) {

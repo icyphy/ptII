@@ -129,19 +129,18 @@ public class TCPPacketReceiver extends InputDevice {
             // send all the received tokens to the outputs according to their timestamps
             while (pLabels.hasNext()) {
 
-                Time lastModelTime = ptidesDirector.getModelTime();
-                int lastMicrostep = ptidesDirector.getMicrostep();
+                ptidesDirector.getModelTime();
+                ptidesDirector.getMicrostep();
 
                 String singleEventLabel = (String) pLabels.next();
                 //String singleEventLabel = Integer.toString(i);
                 RecordToken singleEventRecord = (RecordToken) dataContent
                         .get(singleEventLabel);
-                Time tokenTimestamp = new Time(getDirector(),
-                        ((DoubleToken) (singleEventRecord.get(timestamp)))
+                new Time(getDirector(),
+                        ((DoubleToken) singleEventRecord.get(timestamp))
                                 .doubleValue());
 
-                int tokenMicrostep = ((IntToken) (singleEventRecord
-                        .get(microstep))).intValue();
+                ((IntToken) singleEventRecord.get(microstep)).intValue();
 
                 if (output != null) {
                     // FIXME setTag not supported in Ptides director

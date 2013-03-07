@@ -251,8 +251,8 @@ public final class DefaultComponentFactory implements ComponentFactory {
         StringBuffer buffer = new StringBuffer();
         do {
             // Check whether the next index has a mnemonic marker, too
-            if ((markerIndex + 1 < length)
-                    && (textWithMnemonic.charAt(markerIndex + 1) == MNEMONIC_MARKER)) {
+            if (markerIndex + 1 < length
+                    && textWithMnemonic.charAt(markerIndex + 1) == MNEMONIC_MARKER) {
                 end = markerIndex + 1;
                 quotedMarkers++;
             } else {
@@ -270,7 +270,7 @@ public final class DefaultComponentFactory implements ComponentFactory {
 
         String text = buffer.toString();
         label.setText(text);
-        if ((mnemonicIndex != -1) && (mnemonicIndex < text.length())) {
+        if (mnemonicIndex != -1 && mnemonicIndex < text.length()) {
             label.setDisplayedMnemonic(text.charAt(mnemonicIndex));
             label.setDisplayedMnemonicIndex(mnemonicIndex);
         }

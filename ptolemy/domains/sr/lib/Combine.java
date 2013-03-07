@@ -199,7 +199,7 @@ public class Combine extends TypedAtomicActor {
     private void resetValue() {
         if (_function == _MINIMUM) {
             _value = 10000000;
-        } else if ((_function == _MULTIPLY) || (_function == _AND)) {
+        } else if (_function == _MULTIPLY || _function == _AND) {
             _value = 1;
         } else {
             _value = 0;
@@ -257,7 +257,7 @@ public class Combine extends TypedAtomicActor {
             break;
         case _AND:
             //assume: 1 true, 0 false
-            if ((old == 0) || (in == 0)) {
+            if (old == 0 || in == 0) {
                 result = 0;
             } else {
                 result = 1;
@@ -265,7 +265,7 @@ public class Combine extends TypedAtomicActor {
             break;
         case _OR:
             //assume: 1 true, 0 false
-            if ((old == 1) || (in == 1)) {
+            if (old == 1 || in == 1) {
                 result = 1;
             } else {
                 result = 0;

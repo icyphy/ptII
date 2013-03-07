@@ -138,8 +138,8 @@ public class Plotter extends PlotterBase {
             plot.setAutomaticRescale(true);
         }
 
-        if ((_getImplementation().getFrame() == null)
-                && ((_getImplementation().getPlatformContainer() == null))) {
+        if (_getImplementation().getFrame() == null
+                && _getImplementation().getPlatformContainer() == null) {
             _getImplementation().initializeEffigy();
             _implementDeferredConfigurations();
             _getImplementation().updateSize();

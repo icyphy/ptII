@@ -204,7 +204,7 @@ public class GiottoDirector extends StaticSchedulingDirector implements
             return;
         }
 
-        while ((_unitIndex < _schedule.size()) && !_stopRequested) {
+        while (_unitIndex < _schedule.size() && !_stopRequested) {
             setModelTime(_expectedNextIterationTime);
 
             // Grab the next minor cycle (unit) schedule to execute.
@@ -282,11 +282,9 @@ public class GiottoDirector extends StaticSchedulingDirector implements
                     }
                     Receiver[][] channelArray = port.getRemoteReceivers();
 
-                    for (int i = 0; i < channelArray.length; i++) {
-                        Receiver[] receiverArray = channelArray[i];
-
-                        for (int j = 0; j < receiverArray.length; j++) {
-                            GiottoReceiver receiver = (GiottoReceiver) receiverArray[j];
+                    for (Receiver[] receiverArray : channelArray) {
+                        for (Receiver element : receiverArray) {
+                            GiottoReceiver receiver = (GiottoReceiver) element;
                             receiver.update();
                         }
                     }
@@ -326,7 +324,7 @@ public class GiottoDirector extends StaticSchedulingDirector implements
             //this compensates for rounding errors that may occur
             if (_unitIndex == _lcm) {
                 _expectedNextIterationTime = new Time(this, _iterationCount
-                        + (_periodValue * (_unitIndex)));
+                        + _periodValue * _unitIndex);
                 if (_debugging) {
                     _debug("unit index is equal to lcm");
                     _debug("iteration count is: " + _iterationCount);
@@ -517,7 +515,7 @@ public class GiottoDirector extends StaticSchedulingDirector implements
 
         // Iterate through all output ports to see if any have initialValue
         // parameters or init values from initialization.
-        CompositeActor compositeActor = (CompositeActor) (getContainer());
+        CompositeActor compositeActor = (CompositeActor) getContainer();
         List actorList = compositeActor.deepEntityList();
         ListIterator actors = actorList.listIterator();
 
@@ -539,11 +537,9 @@ public class GiottoDirector extends StaticSchedulingDirector implements
 
                     Receiver[][] channelArray = port.getRemoteReceivers();
 
-                    for (int i = 0; i < channelArray.length; i++) {
-                        Receiver[] receiverArray = channelArray[i];
-
-                        for (int j = 0; j < receiverArray.length; j++) {
-                            GiottoReceiver receiver = (GiottoReceiver) receiverArray[j];
+                    for (Receiver[] receiverArray : channelArray) {
+                        for (Receiver element : receiverArray) {
+                            GiottoReceiver receiver = (GiottoReceiver) element;
                             receiver.update();
                         }
                     }
@@ -583,10 +579,9 @@ public class GiottoDirector extends StaticSchedulingDirector implements
             return !_stopRequested && !_finishRequested;
         }
 
-        int numberOfIterations = ((IntToken) (iterations.getToken()))
-                .intValue();
+        int numberOfIterations = ((IntToken) iterations.getToken()).intValue();
 
-        if ((numberOfIterations > 0) && (_iterationCount >= numberOfIterations)) {
+        if (numberOfIterations > 0 && _iterationCount >= numberOfIterations) {
             // iterations limit is reached
             _iterationCount = 0;
 
@@ -674,7 +669,7 @@ public class GiottoDirector extends StaticSchedulingDirector implements
         }
         // before initialize the contained actors, reset the period parameter
         // if the model is embedded inside another giotto model.
-        CompositeActor compositeActor = (CompositeActor) (getContainer());
+        CompositeActor compositeActor = (CompositeActor) getContainer();
 
         if (isEmbedded()) {
             Director executiveDirector = compositeActor.getExecutiveDirector();
@@ -740,7 +735,7 @@ public class GiottoDirector extends StaticSchedulingDirector implements
             if (port.hasToken(i)) {
                 Token t = port.get(i);
 
-                if ((insideReceivers != null) && (insideReceivers[i] != null)) {
+                if (insideReceivers != null && insideReceivers[i] != null) {
                     if (_debugging) {
                         _debug(getName(),
                                 "transferring input from " + port.getName()

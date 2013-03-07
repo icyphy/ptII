@@ -115,7 +115,7 @@ public class UnitSolverDialog extends PtolemyDialog implements
 
         // ((TypedCompositeActor) (((PtolemyEffigy) (_tableau.getContainer()))
         //      .getModel()));
-        BasicGraphFrame parent = (BasicGraphFrame) (_tableau.getFrame());
+        BasicGraphFrame parent = (BasicGraphFrame) _tableau.getFrame();
         JGraph jGraph = parent.getJGraph();
         GraphPane graphPane = jGraph.getGraphPane();
         _controller = graphPane.getGraphController();
@@ -257,7 +257,7 @@ public class UnitSolverDialog extends PtolemyDialog implements
         Iterator entities = _model.entityList(ComponentEntity.class).iterator();
 
         while (entities.hasNext()) {
-            ComponentEntity entity = (ComponentEntity) (entities.next());
+            ComponentEntity entity = (ComponentEntity) entities.next();
             String entityDeletes = _deletesIfNecessary(entity);
             moml.append("<entity name=\"" + entity.getName() + "\">");
 
@@ -268,7 +268,7 @@ public class UnitSolverDialog extends PtolemyDialog implements
             Iterator ports = entity.portList().iterator();
 
             while (ports.hasNext()) {
-                Port port = (Port) (ports.next());
+                Port port = (Port) ports.next();
                 String portDeletes = _deletesIfNecessary(port);
 
                 if (portDeletes != null) {
@@ -283,7 +283,7 @@ public class UnitSolverDialog extends PtolemyDialog implements
         Iterator relations = _model.relationList().iterator();
 
         while (relations.hasNext()) {
-            Relation relation = (Relation) (relations.next());
+            Relation relation = (Relation) relations.next();
             String relationDeletes = _deletesIfNecessary(relation);
 
             if (relationDeletes != null) {
@@ -325,7 +325,7 @@ public class UnitSolverDialog extends PtolemyDialog implements
         if (index >= 0) {
             _showComponents();
 
-            Solution solution = (Solution) (_solutions.elementAt(index));
+            Solution solution = (Solution) _solutions.elementAt(index);
             solution.annotateGraph();
 
             //solution.trace();
@@ -342,7 +342,7 @@ public class UnitSolverDialog extends PtolemyDialog implements
          *  @return The element at the specified index.
          */
         public Object getElementAt(int index) {
-            return ((Solution) (_solutions.elementAt(index))).getStateDesc();
+            return ((Solution) _solutions.elementAt(index)).getStateDesc();
         }
 
         /** Return the number of solutions.
@@ -396,7 +396,7 @@ public class UnitSolverDialog extends PtolemyDialog implements
         Attribute color = obj.getAttribute("_color");
         Attribute explanation = obj.getAttribute("_explanation");
 
-        if ((color != null) && (explanation != null)) {
+        if (color != null && explanation != null) {
             retv = "<deleteProperty name=\"_color\"/>"
                     + "<deleteProperty name=\"_explanation\"/>";
         }
@@ -414,9 +414,9 @@ public class UnitSolverDialog extends PtolemyDialog implements
         if (_tableau.getFrame() instanceof BasicGraphFrame) {
             Object[] selection = _selectionModel.getSelectionAsArray();
 
-            for (int i = 0; i < selection.length; i++) {
-                if (selection[i] instanceof Figure) {
-                    Object userObject = ((Figure) selection[i]).getUserObject();
+            for (Object element : selection) {
+                if (element instanceof Figure) {
+                    Object userObject = ((Figure) element).getUserObject();
                     NamedObj actual = (NamedObj) _graphModel
                             .getSemanticObject(userObject);
 
@@ -440,14 +440,14 @@ public class UnitSolverDialog extends PtolemyDialog implements
         if (_tableau.getFrame() instanceof BasicGraphFrame) {
             Object[] selection = _selectionModel.getSelectionAsArray();
 
-            for (int i = 0; i < selection.length; i++) {
-                if (selection[i] instanceof Figure) {
-                    Object userObject = ((Figure) selection[i]).getUserObject();
+            for (Object element : selection) {
+                if (element instanceof Figure) {
+                    Object userObject = ((Figure) element).getUserObject();
                     NamedObj actual = (NamedObj) _graphModel
                             .getSemanticObject(userObject);
 
-                    if ((actual instanceof Relation)
-                            && (!relations.contains(actual))) {
+                    if (actual instanceof Relation
+                            && !relations.contains(actual)) {
                         relations.add((Relation) actual);
                     }
                 }

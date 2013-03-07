@@ -82,7 +82,7 @@ public class FloydWarshallCycleExistenceStrategy extends CachedStrategy
      *  @return True if the graph is a directed graph.
      */
     public boolean valid() {
-        return (graph() instanceof DirectedGraph);
+        return graph() instanceof DirectedGraph;
     }
 
     ///////////////////////////////////////////////////////////////////

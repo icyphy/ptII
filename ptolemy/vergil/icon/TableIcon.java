@@ -353,9 +353,9 @@ public class TableIcon extends DynamicEditorIcon {
         // FindBugs: [H B BC] Random object created and used only once [DMI_RANDOM_USED_ONLY_ONCE]
         // Actually this is the intend since you want a unique color for
         // each specific object (hence it can't be completely random).
-        int code = (new Random(hashCode).nextInt());
-        float red = ((code >> 16) & 0xff) / 256.0f;
-        float green = ((code >> 8) & 0xff) / 256.0f;
+        int code = new Random(hashCode).nextInt();
+        float red = (code >> 16 & 0xff) / 256.0f;
+        float green = (code >> 8 & 0xff) / 256.0f;
         float blue = (code & 0xff) / 256.0f;
         // Make sure the color is at least as dark as close to a pure red, green, or blue.
         // This means that the magnitude of the r,g,b vector is no greater than 1.0.

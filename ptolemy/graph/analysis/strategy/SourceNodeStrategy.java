@@ -87,7 +87,7 @@ public class SourceNodeStrategy extends CachedStrategy implements
      *  @return True if the given graph is of class DirectedGraph.
      */
     public boolean valid() {
-        return (graph() instanceof DirectedGraph);
+        return graph() instanceof DirectedGraph;
     }
 
     ///////////////////////////////////////////////////////////////////

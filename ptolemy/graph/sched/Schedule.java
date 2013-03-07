@@ -285,7 +285,7 @@ public class Schedule extends ScheduleElement {
      * @return The element at the specified position in the list.
      */
     public ScheduleElement get(int index) {
-        return ((ScheduleElement) _schedule.get(index));
+        return (ScheduleElement) _schedule.get(index);
     }
 
     /** Return an iterator over the schedule elements of this schedule.
@@ -363,7 +363,7 @@ public class Schedule extends ScheduleElement {
      */
     public ScheduleElement remove(int index) {
         _incrementVersion();
-        return ((ScheduleElement) _schedule.remove(index));
+        return (ScheduleElement) _schedule.remove(index);
     }
 
     /** Return the number of elements in this list.
@@ -371,7 +371,7 @@ public class Schedule extends ScheduleElement {
      *  @return The number of elements in this list.
      */
     public int size() {
-        return (_schedule.size());
+        return _schedule.size();
     }
 
     /** Print the schedule in a nested parenthesis style. Please see
@@ -411,13 +411,13 @@ public class Schedule extends ScheduleElement {
 
         while (i.hasNext()) {
             ScheduleElement e = (ScheduleElement) i.next();
-            result.append((e + "\n"));
+            result.append(e + "\n");
         }
 
         result.append("}");
 
         if (getIterationCount() > 1) {
-            result.append((" " + getIterationCount() + " times"));
+            result.append(" " + getIterationCount() + " times");
         }
 
         return result.toString();
@@ -677,9 +677,9 @@ public class Schedule extends ScheduleElement {
 
             if (node == null) {
                 return null;
-            } else if (node.size() > (++_horizontalNodePosition[_currentDepth + 1])) {
+            } else if (node.size() > ++_horizontalNodePosition[_currentDepth + 1]) {
                 return node;
-            } else if ((++_iterationCounts[_currentDepth]) < node
+            } else if (++_iterationCounts[_currentDepth] < node
                     .getIterationCount()) {
                 _horizontalNodePosition[_currentDepth + 1] = 0;
                 return node;
@@ -687,7 +687,7 @@ public class Schedule extends ScheduleElement {
 
             _horizontalNodePosition[_currentDepth + 1] = 0;
             _iterationCounts[_currentDepth] = 0;
-            return (_backTrack(node));
+            return _backTrack(node);
         }
 
         /** Start at the specified node and move down the tree
@@ -700,7 +700,7 @@ public class Schedule extends ScheduleElement {
          */
         private ScheduleElement _findLeafNode(Schedule node) {
             // Check if we need to resize the arrays.
-            if ((_iterationCounts.length - 1) < (_currentDepth + 2)) {
+            if (_iterationCounts.length - 1 < _currentDepth + 2) {
                 // Need to resize.
                 int[] temp = new int[_currentDepth + 2];
 

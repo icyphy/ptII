@@ -63,15 +63,15 @@ public class AddSubtract extends LatticeOntologyAdapter {
             ptolemy.actor.lib.AddSubtract actor) throws IllegalActionException {
         super(solver, actor, false);
 
-        _addDefinition = (ConceptFunctionDefinitionAttribute) (_solver
-                .getContainedModel())
-                .getAttribute(LatticeOntologySolver.ADD_FUNCTION_NAME);
-        _negateDefinition = (ConceptFunctionDefinitionAttribute) (_solver
-                .getContainedModel())
-                .getAttribute(LatticeOntologySolver.NEGATE_FUNCTION_NAME);
-        _subtractDefinition = (ConceptFunctionDefinitionAttribute) (_solver
-                .getContainedModel())
-                .getAttribute(LatticeOntologySolver.SUBTRACT_FUNCTION_NAME);
+        _addDefinition = (ConceptFunctionDefinitionAttribute) _solver
+                .getContainedModel().getAttribute(
+                        LatticeOntologySolver.ADD_FUNCTION_NAME);
+        _negateDefinition = (ConceptFunctionDefinitionAttribute) _solver
+                .getContainedModel().getAttribute(
+                        LatticeOntologySolver.NEGATE_FUNCTION_NAME);
+        _subtractDefinition = (ConceptFunctionDefinitionAttribute) _solver
+                .getContainedModel().getAttribute(
+                        LatticeOntologySolver.SUBTRACT_FUNCTION_NAME);
 
         // If definitions for addition, subtraction, and negation concept
         // functions cannot be found, just use the default constraints.

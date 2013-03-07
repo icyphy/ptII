@@ -113,7 +113,7 @@ public class Switch extends Transformer {
         if (input.hasToken(0)) {
             Token token = input.get(0);
 
-            if ((_control >= 0) && (_control < output.getWidth())) {
+            if (_control >= 0 && _control < output.getWidth()) {
                 output.send(_control, token);
             }
         }

@@ -135,8 +135,8 @@ public class Commutator extends Transformer implements SequenceActor {
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         Commutator newObject = (Commutator) super.clone(workspace);
-        newObject.output_tokenProductionRate = (Parameter) (newObject.output
-                .getAttribute("tokenProductionRate"));
+        newObject.output_tokenProductionRate = (Parameter) newObject.output
+                .getAttribute("tokenProductionRate");
         ((WidthDependentParameter) newObject.output_tokenProductionRate)
                 .setPort(newObject.input);
         return newObject;
@@ -227,7 +227,7 @@ public class Commutator extends Transformer implements SequenceActor {
         }
 
         public ptolemy.data.Token getToken() throws IllegalActionException {
-            IntToken blockSizeValue = (IntToken)blockSize.getToken();
+            IntToken blockSizeValue = (IntToken) blockSize.getToken();
             setToken(new IntToken(_port.getWidth() * blockSizeValue.intValue()));
             return super.getToken();
         }

@@ -223,8 +223,7 @@ public class Triangulator extends TypedAtomicActor {
             double newestTime = Double.NEGATIVE_INFINITY;
 
             for (int i = 0; i < 3; i++) {
-                if ((_locationsX[i] == locationX)
-                        && (_locationsY[i] == locationY)) {
+                if (_locationsX[i] == locationX && _locationsY[i] == locationY) {
                     _times[i] = time;
                     foundMatch = true;
                 }
@@ -277,7 +276,7 @@ public class Triangulator extends TypedAtomicActor {
             }
 
             // Get signal speed, from the signalPropagationSpeed parameter.
-            double speed = ((DoubleToken) (signalPropagationSpeed.getToken()))
+            double speed = ((DoubleToken) signalPropagationSpeed.getToken())
                     .doubleValue();
 
             // FIXME: Pass in the arrays for scalability.
@@ -337,15 +336,15 @@ public class Triangulator extends TypedAtomicActor {
     private double _checkResult(double[] result, double x1, double y1,
             double t1, double x2, double y2, double t2, double x3, double y3,
             double t3, double v) {
-        if ((result[2] > t1) || (result[2] > t2) || (result[2] > t3)) {
+        if (result[2] > t1 || result[2] > t2 || result[2] > t3) {
             return Double.POSITIVE_INFINITY;
         }
 
-        double tdiff1 = Math.abs((_distance(x1, y1, result[0], result[1]) / v)
+        double tdiff1 = Math.abs(_distance(x1, y1, result[0], result[1]) / v
                 - (t1 - result[2]));
-        double tdiff2 = Math.abs((_distance(x2, y2, result[0], result[1]) / v)
+        double tdiff2 = Math.abs(_distance(x2, y2, result[0], result[1]) / v
                 - (t2 - result[2]));
-        double tdiff3 = Math.abs((_distance(x3, y3, result[0], result[1]) / v)
+        double tdiff3 = Math.abs(_distance(x3, y3, result[0], result[1]) / v
                 - (t3 - result[2]));
 
         if (_debugging) {
@@ -363,7 +362,7 @@ public class Triangulator extends TypedAtomicActor {
      *  @return The distance.
      */
     private static double _distance(double x1, double y1, double x2, double y2) {
-        return Math.sqrt(((x1 - x2) * (x1 - x2)) + ((y1 - y2) * (y1 - y2)));
+        return Math.sqrt((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2));
     }
 
     /** Calculate the location and time of a sound event from the given
@@ -404,44 +403,43 @@ public class Triangulator extends TypedAtomicActor {
                 { 2 * (x3 - x1), 2 * (y3 - y1) } };
         double[] b = { 2 * v2 * (t2 - t1), 2 * v2 * (t3 - t1) };
         double[] c = {
-                (((t1 * t1 * v2) - (t2 * t2 * v2) + (x2 * x2)) - (x1 * x1) + (y2 * y2))
-                        - (y1 * y1),
+                t1 * t1 * v2 - t2 * t2 * v2 + x2 * x2 - x1 * x1 + y2 * y2 - y1
+                        * y1,
 
-                (((t1 * t1 * v2) - (t3 * t3 * v2) + (x3 * x3)) - (x1 * x1) + (y3 * y3))
-                        - (y1 * y1) };
+                t1 * t1 * v2 - t3 * t3 * v2 + x3 * x3 - x1 * x1 + y3 * y3 - y1
+                        * y1 };
 
         // FIXME: what if det_m is 0? That is, the three sensors are located on
         // a straight line.
-        double det_m = (m[0][0] * m[1][1]) - (m[1][0] * m[0][1]);
+        double det_m = m[0][0] * m[1][1] - m[1][0] * m[0][1];
         double[][] m_inv = { { m[1][1] / det_m, -m[0][1] / det_m },
                 { -m[1][0] / det_m, m[0][0] / det_m } };
-        double[] m_inv_b = { (m_inv[0][0] * b[0]) + (m_inv[0][1] * b[1]),
-                (m_inv[1][0] * b[0]) + (m_inv[1][1] * b[1]) };
-        double[] m_inv_c = { (m_inv[0][0] * c[0]) + (m_inv[0][1] * c[1]),
-                (m_inv[1][0] * c[0]) + (m_inv[1][1] * c[1]) };
-        double ea = ((m_inv_b[0] * m_inv_b[0]) + (m_inv_b[1] * m_inv_b[1]))
-                - v2;
-        double eb = (2 * m_inv_b[0] * (m_inv_c[0] - x1))
-                + (2 * m_inv_b[1] * (m_inv_c[1] - y1)) + (2 * v2 * t1);
-        double ec = (((m_inv_c[0] - x1) * (m_inv_c[0] - x1)) + ((m_inv_c[1] - y1) * (m_inv_c[1] - y1)))
-                - (t1 * t1 * v2);
-        double delta = (eb * eb) - (4 * ea * ec);
+        double[] m_inv_b = { m_inv[0][0] * b[0] + m_inv[0][1] * b[1],
+                m_inv[1][0] * b[0] + m_inv[1][1] * b[1] };
+        double[] m_inv_c = { m_inv[0][0] * c[0] + m_inv[0][1] * c[1],
+                m_inv[1][0] * c[0] + m_inv[1][1] * c[1] };
+        double ea = m_inv_b[0] * m_inv_b[0] + m_inv_b[1] * m_inv_b[1] - v2;
+        double eb = 2 * m_inv_b[0] * (m_inv_c[0] - x1) + 2 * m_inv_b[1]
+                * (m_inv_c[1] - y1) + 2 * v2 * t1;
+        double ec = (m_inv_c[0] - x1) * (m_inv_c[0] - x1) + (m_inv_c[1] - y1)
+                * (m_inv_c[1] - y1) - t1 * t1 * v2;
+        double delta = eb * eb - 4 * ea * ec;
 
         //System.out.println("delta is " + delta);
         if (delta > 0) {
             // Try both roots and compare
             // Solution #1
             result[2] = (-eb + Math.sqrt(delta)) / ea / 2;
-            result[0] = (m_inv_b[0] * result[2]) + m_inv_c[0];
-            result[1] = (m_inv_b[1] * result[2]) + m_inv_c[1];
+            result[0] = m_inv_b[0] * result[2] + m_inv_c[0];
+            result[1] = m_inv_b[1] * result[2] + m_inv_c[1];
             double tdiff1 = _checkResult(result, x1, y1, t1, x2, y2, t2, x3,
                     y3, t3, v);
 
             // Solution #2
             double[] result2 = new double[3];
             result2[2] = (-eb - Math.sqrt(delta)) / ea / 2;
-            result2[0] = (m_inv_b[0] * result2[2]) + m_inv_c[0];
-            result2[1] = (m_inv_b[1] * result2[2]) + m_inv_c[1];
+            result2[0] = m_inv_b[0] * result2[2] + m_inv_c[0];
+            result2[1] = m_inv_b[1] * result2[2] + m_inv_c[1];
 
             double tdiff2 = _checkResult(result2, x1, y1, t1, x2, y2, t2, x3,
                     y3, t3, v);
@@ -464,8 +462,8 @@ public class Triangulator extends TypedAtomicActor {
             }
         } else {
             result[2] = -eb / ea / 2;
-            result[0] = (m_inv_b[0] * result[2]) + m_inv_c[0];
-            result[1] = (m_inv_b[1] * result[2]) + m_inv_c[1];
+            result[0] = m_inv_b[0] * result[2] + m_inv_c[0];
+            result[1] = m_inv_b[1] * result[2] + m_inv_c[1];
 
             if (_checkResult(result, x1, y1, t1, x2, y2, t2, x3, y3, t3, v) < _EPSILON * 3) {
                 return result;

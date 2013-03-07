@@ -188,7 +188,7 @@ public class DEEvent implements Comparable {
         if (!(object instanceof DEEvent)) {
             return false;
         }
-        return (compareTo(object) == 0 && ((DEEvent) object).actor() == _actor);
+        return compareTo(object) == 0 && ((DEEvent) object).actor() == _actor;
     }
 
     /** Return true if this event has the same tag with the specified one,
@@ -198,7 +198,7 @@ public class DEEvent implements Comparable {
      *  and their depths are the same.
      */
     public final boolean hasTheSameTagAndDepthAs(DEEvent event) {
-        return hasTheSameTagAs(event) && (_depth == event.depth());
+        return hasTheSameTagAs(event) && _depth == event.depth();
     }
 
     /** Return true if this event has the same tag as the argument DE event.
@@ -206,8 +206,8 @@ public class DEEvent implements Comparable {
      *  @return True if this event has the same tag as the specified one.
      */
     public boolean hasTheSameTagAs(DEEvent event) {
-        return (_timestamp.equals(event.timeStamp()))
-                && (_microstep == event.microstep());
+        return _timestamp.equals(event.timeStamp())
+                && _microstep == event.microstep();
     }
 
     /** Return the hash code for the event object.
@@ -216,7 +216,7 @@ public class DEEvent implements Comparable {
      */
     public int hashCode() {
         int primitiveFieldHash = _depth >>> _microstep;
-        int objectFieldHash = ((_actor != null) ? _actor.hashCode() : 1) >>> ((_ioPort != null) ? _ioPort
+        int objectFieldHash = (_actor != null ? _actor.hashCode() : 1) >>> (_ioPort != null ? _ioPort
                 .hashCode() : 1);
         // If the exclusive or of the primitive is 0, then just
         // return the xor of the hashes of the actor and ioport

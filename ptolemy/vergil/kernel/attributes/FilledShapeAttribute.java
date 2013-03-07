@@ -132,8 +132,7 @@ public abstract class FilledShapeAttribute extends ShapeAttribute {
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
-        if (((attribute == width) || (attribute == height))
-                && !_inAttributeChanged) {
+        if ((attribute == width || attribute == height) && !_inAttributeChanged) {
             try {
                 // Prevent redundant actions here... When we evaluate the
                 // _other_ attribute here (whichever one did _not_ trigger
@@ -147,8 +146,7 @@ public abstract class FilledShapeAttribute extends ShapeAttribute {
                 double heightValue = ((DoubleToken) height.getToken())
                         .doubleValue();
 
-                if ((widthValue != _widthValue)
-                        || (heightValue != _heightValue)) {
+                if (widthValue != _widthValue || heightValue != _heightValue) {
                     _widthValue = widthValue;
                     _heightValue = heightValue;
                     _icon.setShape(_newShape());

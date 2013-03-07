@@ -102,7 +102,7 @@ public class BitsToInt extends SDFConverter {
         if (attribute == numberOfBits) {
             int rate = ((IntToken) numberOfBits.getToken()).intValue();
 
-            if ((rate < 1) || (rate > 32)) {
+            if (rate < 1 || rate > 32) {
                 throw new IllegalActionException(this,
                         "Invalid number of bits: " + rate);
             }
@@ -137,7 +137,7 @@ public class BitsToInt extends SDFConverter {
 
         if (((BooleanToken) bits[0]).booleanValue()) {
             //convert integer to negative value.
-            integer = integer - (1 << (rate - 1));
+            integer = integer - (1 << rate - 1);
         }
 
         IntToken value = new IntToken(integer);

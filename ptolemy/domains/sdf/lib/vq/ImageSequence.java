@@ -161,7 +161,7 @@ public class ImageSequence extends Source {
                 int location = temporaryFileName.lastIndexOf('*');
 
                 while (location >= 0) {
-                    arr[location] = (byte) ('0' + (i % 10));
+                    arr[location] = (byte) ('0' + i % 10);
                     i = i / 10;
                     temporaryFileName = new String(arr);
                     location = temporaryFileName.lastIndexOf('*');
@@ -180,7 +180,8 @@ public class ImageSequence extends Source {
                 source = dataurl.openStream();
 
                 // Load the frame from the file.
-                if (_fullRead(source, _frameBytes) != (_imageRows * _imageColumns)) {
+                if (_fullRead(source, _frameBytes) != _imageRows
+                        * _imageColumns) {
                     throw new IllegalActionException("Error reading "
                             + "image file!");
                 }

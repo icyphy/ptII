@@ -38,7 +38,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -78,12 +77,10 @@ public class DefaultComponentBuilder implements ComponentBuilder {
                 .getPropertyDescriptors();
 
         if (properties != null) {
-            for (int i = 0; i < properties.length; i++) {
-                String propertyName = properties[i];
+            for (String propertyName : properties) {
                 PropertyDescriptor propertyDescriptor = null;
 
-                for (int index = 0; index < propertyDescriptors.length; index++) {
-                    PropertyDescriptor thisDescriptor = propertyDescriptors[index];
+                for (PropertyDescriptor thisDescriptor : propertyDescriptors) {
                     if (thisDescriptor.getName().equals(propertyName)) {
                         propertyDescriptor = thisDescriptor;
                         break;
@@ -146,8 +143,8 @@ public class DefaultComponentBuilder implements ComponentBuilder {
             InvocationTargetException {
         Object instance = clazz.newInstance();
 
-        for (Iterator i = objectProperties.keySet().iterator(); i.hasNext();) {
-            String key = (String) i.next();
+        for (Object element : objectProperties.keySet()) {
+            String key = (String) element;
             PropertyDescriptor propertyDescriptor = nameToDescriptor.get(key);
             Object value = objectProperties.get(key);
             Method writeMethod = propertyDescriptor.getWriteMethod();

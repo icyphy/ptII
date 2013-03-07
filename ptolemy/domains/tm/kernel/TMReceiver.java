@@ -157,7 +157,7 @@ public class TMReceiver extends AbstractReceiver {
                 if (actor != null) {
                     Director director;
 
-                    if ((port.isOutput()) && (actor instanceof CompositeActor)
+                    if (port.isOutput() && actor instanceof CompositeActor
                             && ((CompositeActor) actor).isOpaque()) {
                         director = actor.getDirector();
                     } else {
@@ -205,7 +205,7 @@ public class TMReceiver extends AbstractReceiver {
      *  @return True if there are more tokens.
      */
     public final boolean hasToken() {
-        return (!_tokens.isEmpty());
+        return !_tokens.isEmpty();
     }
 
     /** Return true if there are <i>numberOfTokens</i>
@@ -214,7 +214,7 @@ public class TMReceiver extends AbstractReceiver {
      *  @return True if there are <i>numberOfTokens</i> tokens available.
      */
     public final boolean hasToken(int numberOfTokens) {
-        return (_tokens.size() >= numberOfTokens);
+        return _tokens.size() >= numberOfTokens;
     }
 
     /** Put a token into this receiver. Note that

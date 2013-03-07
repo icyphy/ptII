@@ -118,7 +118,7 @@ public class FigureIcon extends ImageIcon {
     public FigureIcon(Figure figure, int x, int y, int border, boolean antialias) {
         super();
 
-        if (figure instanceof ImageFigure && (border == 0)) {
+        if (figure instanceof ImageFigure && border == 0) {
             ImageFigure imageFigure = (ImageFigure) figure;
             Image image = imageFigure.getImage();
             if (image != null) {
@@ -130,8 +130,8 @@ public class FigureIcon extends ImageIcon {
             }
         } else {
             Rectangle2D bounds = figure.getBounds();
-            Rectangle2D size = new Rectangle2D.Double(border, border, x
-                    - (2 * border), y - (2 * border));
+            Rectangle2D size = new Rectangle2D.Double(border, border, x - 2
+                    * border, y - 2 * border);
             AffineTransform transform = CanvasUtilities.computeFitTransform(
                     bounds, size);
             figure.transform(transform);

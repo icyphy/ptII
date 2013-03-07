@@ -162,8 +162,8 @@ public class CCodegenUtilities {
             returnVal = "(*env)->NewObject(env, ";
         }
         returnVal = returnVal.concat(objectType + ", " + methodID);
-        for (int i = 0; i < arguments.length; i++) {
-            returnVal = returnVal.concat(", " + arguments[i]);
+        for (String argument : arguments) {
+            returnVal = returnVal.concat(", " + argument);
         }
         returnVal = returnVal.concat(")");
         return returnVal;

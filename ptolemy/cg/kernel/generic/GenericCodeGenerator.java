@@ -356,7 +356,7 @@ public abstract class GenericCodeGenerator extends Attribute implements
         if (_isTopLevel()) {
 
             // If necessary, create a manager.
-            Actor container = ((Actor) getContainer());
+            Actor container = (Actor) getContainer();
             Manager manager = container.getManager();
 
             TypedCompositeActor toplevel = (TypedCompositeActor) ((NamedObj) container)
@@ -376,7 +376,7 @@ public abstract class GenericCodeGenerator extends Attribute implements
                 // We call wrapup here so that the state gets set to idle.
                 // This makes it difficult to test the Exit actor.
                 try {
-                    long startTime = (new Date()).getTime();
+                    long startTime = new Date().getTime();
                     manager.wrapup();
                     _printTimeAndMemory(startTime, "CodeGenerator: "
                             + "wrapup consumed: ");
@@ -443,7 +443,7 @@ public abstract class GenericCodeGenerator extends Attribute implements
                     continue;
                 }
                 if (args[i].trim().startsWith("-")) {
-                    if (i >= (args.length - 1)) {
+                    if (i >= args.length - 1) {
                         throw new IllegalActionException("t set "
                                 + "parameter " + args[i] + " when no value is "
                                 + "given.");
@@ -752,7 +752,7 @@ public abstract class GenericCodeGenerator extends Attribute implements
      */
     public void setContainer(NamedObj container) throws IllegalActionException,
             NameDuplicationException {
-        if ((container != null) && !(container instanceof CompositeEntity)) {
+        if (container != null && !(container instanceof CompositeEntity)) {
             throw new IllegalActionException(this, container,
                     "CodeGenerator can only be contained"
                             + " by CompositeEntity");
@@ -1039,8 +1039,7 @@ public abstract class GenericCodeGenerator extends Attribute implements
                     .newInstance(new Object[] { component });
         } catch (ClassCastException ex0) {
             throw new InternalErrorException(
-                    (component instanceof NamedObj ? (NamedObj) component
-                            : null),
+                    component instanceof NamedObj ? (NamedObj) component : null,
                     ex0,
                     "Problem casting a "
                             + constructor
@@ -1086,7 +1085,7 @@ public abstract class GenericCodeGenerator extends Attribute implements
      *  @return The current time.
      */
     protected long _printTimeAndMemory(long startTime, String message) {
-        long currentTime = (new Date()).getTime();
+        long currentTime = new Date().getTime();
         if (currentTime - startTime > 10000) {
             System.gc();
             System.out.println(message + Manager.timeAndMemory(startTime));
@@ -1452,20 +1451,20 @@ public abstract class GenericCodeGenerator extends Attribute implements
 
             boolean foundLanguage = false;
             // Use a two column table to make it easy to add languages
-            for (int l = 0; l < _languages.length; l++) {
-                if (_languages[l][0].equals(languageValue)) {
-                    generatorPackageValue = _languages[l][1];
+            for (String[] _language : _languages) {
+                if (_language[0].equals(languageValue)) {
+                    generatorPackageValue = _language[1];
                     foundLanguage = true;
                     break;
                 }
             }
             if (!foundLanguage) {
                 StringBuffer languageError = new StringBuffer();
-                for (int l = 0; l < _languages.length; l++) {
+                for (String[] _language : _languages) {
                     if (languageError.length() > 0) {
                         languageError.append(",");
                     }
-                    languageError.append(_languages[l][0]);
+                    languageError.append(_language[0]);
                 }
                 generatorPackageValue = "ptolemy.cg.kernel.generic.program.procedural."
                         + languageValue;

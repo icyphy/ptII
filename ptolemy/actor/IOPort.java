@@ -255,9 +255,8 @@ public class IOPort extends ComponentPort {
         if (attribute instanceof Parameter) {
             Token parameterToken = ((Parameter) attribute).getToken();
             if (parameterToken != null) {
-                if (parameterToken instanceof ObjectToken &&
-                        ((ObjectToken)parameterToken).getValue()
-                        instanceof QuantityManager) {
+                if (parameterToken instanceof ObjectToken
+                        && ((ObjectToken) parameterToken).getValue() instanceof QuantityManager) {
                     // Invalidate list of quantity managers.
                     _qmListValid = false;
                 }
@@ -279,9 +278,8 @@ public class IOPort extends ComponentPort {
         if (attribute instanceof Parameter) {
             Token parameterToken = ((Parameter) attribute).getToken();
             if (parameterToken != null) {
-                if (parameterToken instanceof ObjectToken &&
-                        ((ObjectToken)parameterToken).getValue()
-                        instanceof QuantityManager) {
+                if (parameterToken instanceof ObjectToken
+                        && ((ObjectToken) parameterToken).getValue() instanceof QuantityManager) {
                     // Invalidate list of quantity managers.
                     _qmListValid = false;
                 }
@@ -339,15 +337,15 @@ public class IOPort extends ComponentPort {
 
             // NOTE: This does not call send() here, because send()
             // repeats the above on each call.
-            for (int i = 0; i < farReceivers.length; i++) {
-                if (farReceivers[i] == null) {
+            for (Receiver[] farReceiver : farReceivers) {
+                if (farReceiver == null) {
                     continue;
                 }
 
-                if (farReceivers[i].length > 0) {
+                if (farReceiver.length > 0) {
                     // Delegate to the receiver to handle putting to all
                     // receivers, since domain-specific techniques might be relevant.
-                    farReceivers[i][0].putToAll(token, farReceivers[i]);
+                    farReceiver[0].putToAll(token, farReceiver);
                 }
             }
         } finally {
@@ -415,16 +413,16 @@ public class IOPort extends ComponentPort {
 
             // NOTE: This does not call send() here, because send()
             // repeats the above on each call.
-            for (int i = 0; i < farReceivers.length; i++) {
-                if (farReceivers[i] == null) {
+            for (Receiver[] farReceiver : farReceivers) {
+                if (farReceiver == null) {
                     continue;
                 }
 
-                if (farReceivers[i].length > 0) {
+                if (farReceiver.length > 0) {
                     // Delegate to the receiver to handle putting to all
                     // receivers, since domain-specific techniques might be relevant.
-                    farReceivers[i][0].putArrayToAll(tokenArray, vectorLength,
-                            farReceivers[i]);
+                    farReceiver[0].putArrayToAll(tokenArray, vectorLength,
+                            farReceiver);
                 }
             }
         } finally {
@@ -466,13 +464,13 @@ public class IOPort extends ComponentPort {
         // NOTE: Conceivably, clear() in some domains may block,
         // so we make sure to release read access above before calling
         // clear().
-        for (int i = 0; i < farReceivers.length; i++) {
-            if (farReceivers[i] == null) {
+        for (Receiver[] farReceiver : farReceivers) {
+            if (farReceiver == null) {
                 continue;
             }
 
-            for (int j = 0; j < farReceivers[i].length; j++) {
-                farReceivers[i][j].clear();
+            for (int j = 0; j < farReceiver.length; j++) {
+                farReceiver[j].clear();
             }
         }
     }
@@ -638,7 +636,7 @@ public class IOPort extends ComponentPort {
                 if (relation != null) {
                     int width = relation.getWidth();
 
-                    if (!madeOne && (myWidth == 1) && (width > 1)) {
+                    if (!madeOne && myWidth == 1 && width > 1) {
                         width = 1;
                     }
                     if (width == -1) {
@@ -670,7 +668,7 @@ public class IOPort extends ComponentPort {
                         _localReceiversTable.put(relation, occurrences);
                     }
 
-                    if ((myWidth == 1) && madeOne) {
+                    if (myWidth == 1 && madeOne) {
                         // Made the one receiver we need. Nothing more to do.
                         break;
                     }
@@ -1264,7 +1262,7 @@ public class IOPort extends ComponentPort {
                 if (seen.containsKey(relation)) {
                     // Have seen this relation before.  Increment
                     // the occurrence number.
-                    occurrence = (seen.get(relation)).intValue();
+                    occurrence = seen.get(relation).intValue();
                     occurrence++;
                 }
 
@@ -1273,8 +1271,8 @@ public class IOPort extends ComponentPort {
                 Receiver[][] receivers = getReceivers(relation, occurrence);
 
                 if (receivers != null) {
-                    for (int i = 0; i < receivers.length; i++) {
-                        _localInsideReceivers[index++] = receivers[i];
+                    for (Receiver[] receiver : receivers) {
+                        _localInsideReceivers[index++] = receiver;
                     }
                 }
             }
@@ -1375,7 +1373,8 @@ public class IOPort extends ComponentPort {
      *  @exception IllegalActionException Thrown if the token of the parameter
      *      containing the quantity manager object cannot be retrieved.
      */
-    public List<QuantityManager> getQuantityManagers() throws IllegalActionException {
+    public List<QuantityManager> getQuantityManagers()
+            throws IllegalActionException {
         if (_qmListValid == false) {
 
             _qmList = new ArrayList<QuantityManager>();
@@ -1388,9 +1387,11 @@ public class IOPort extends ComponentPort {
                             Object paramObject = ((ObjectToken) paramToken)
                                     .getValue();
                             if (paramObject instanceof QuantityManager) {
-                                ((QuantityManager) paramObject).setTempPort(this);
-                                ((Parameter)attr).validate();
-                                ((QuantityManager) paramObject).setTempPort(null);
+                                ((QuantityManager) paramObject)
+                                        .setTempPort(this);
+                                ((Parameter) attr).validate();
+                                ((QuantityManager) paramObject)
+                                        .setTempPort(null);
                                 _qmList.add((QuantityManager) paramObject);
                             }
                         }
@@ -1480,7 +1481,7 @@ public class IOPort extends ComponentPort {
                         if (seen.containsKey(relation)) {
                             // Have seen this relation before.  Increment
                             // the occurrence number.
-                            occurrence = (seen.get(relation)).intValue();
+                            occurrence = seen.get(relation).intValue();
                             occurrence++;
                         }
                         seen.put(relation, Integer.valueOf(occurrence));
@@ -1489,8 +1490,8 @@ public class IOPort extends ComponentPort {
                                 occurrence);
 
                         if (receiverRelation != null) {
-                            for (int i = 0; i < receiverRelation.length; i++) {
-                                _localReceivers[index++] = receiverRelation[i];
+                            for (Receiver[] element : receiverRelation) {
+                                _localReceivers[index++] = element;
                             }
                         }
                     }
@@ -1613,7 +1614,7 @@ public class IOPort extends ComponentPort {
 
             // For opaque port, try the cached _farReceivers
             // Check validity of cached version
-            if (isOpaque() && (_farReceiversVersion == _workspace.getVersion())) {
+            if (isOpaque() && _farReceiversVersion == _workspace.getVersion()) {
                 return _farReceivers;
             }
 
@@ -1886,7 +1887,7 @@ public class IOPort extends ComponentPort {
         try {
             Receiver[][] farReceivers = getRemoteReceivers();
 
-            if ((farReceivers == null) || (farReceivers[channelIndex] == null)) {
+            if (farReceivers == null || farReceivers[channelIndex] == null) {
                 result = false;
             } else {
                 for (int j = 0; j < farReceivers[channelIndex].length; j++) {
@@ -1929,7 +1930,7 @@ public class IOPort extends ComponentPort {
         try {
             Receiver[][] farReceivers = getInsideReceivers();
 
-            if ((farReceivers == null) || (farReceivers[channelIndex] == null)) {
+            if (farReceivers == null || farReceivers[channelIndex] == null) {
                 result = false;
             } else {
                 for (int j = 0; j < farReceivers[channelIndex].length; j++) {
@@ -1973,7 +1974,7 @@ public class IOPort extends ComponentPort {
         Receiver[][] receivers = getReceivers();
         boolean result = false;
 
-        if ((receivers != null) && (channelIndex >= receivers.length)) {
+        if (receivers != null && channelIndex >= receivers.length) {
             if (!isInput()) {
                 throw new IllegalActionException(this,
                         "Port is not an input port!");
@@ -1985,7 +1986,7 @@ public class IOPort extends ComponentPort {
             }
         }
 
-        if ((receivers != null) && (receivers[channelIndex] != null)) {
+        if (receivers != null && receivers[channelIndex] != null) {
             for (int j = 0; j < receivers[channelIndex].length; j++) {
                 if (receivers[channelIndex][j].hasToken()) {
                     result = true;
@@ -2026,7 +2027,7 @@ public class IOPort extends ComponentPort {
             // there's no director.
             Receiver[][] receivers = getReceivers();
 
-            if ((receivers != null) && (receivers[channelIndex] != null)) {
+            if (receivers != null && receivers[channelIndex] != null) {
                 for (int j = 0; j < receivers[channelIndex].length; j++) {
                     if (receivers[channelIndex][j].hasToken(tokens)) {
                         result = true;
@@ -2183,9 +2184,9 @@ public class IOPort extends ComponentPort {
                 IOPort port = (IOPort) ports.next();
                 int depth = port.getContainer().depthInHierarchy();
 
-                if (port.isInput() && (depth >= depthOfDirector)) {
+                if (port.isInput() && depth >= depthOfDirector) {
                     result.addLast(port);
-                } else if (port.isOutput() && (depth < depthOfDirector)) {
+                } else if (port.isOutput() && depth < depthOfDirector) {
                     result.addLast(port);
                 }
             }
@@ -2229,9 +2230,9 @@ public class IOPort extends ComponentPort {
                 IOPort port = (IOPort) ports.next();
                 int depth = port.getContainer().depthInHierarchy();
 
-                if (port.isInput() && (depth < depthOfDirector)) {
+                if (port.isInput() && depth < depthOfDirector) {
                     result.addLast(port);
-                } else if (port.isOutput() && (depth >= depthOfDirector)) {
+                } else if (port.isOutput() && depth >= depthOfDirector) {
                     result.addLast(port);
                 }
             }
@@ -2274,7 +2275,7 @@ public class IOPort extends ComponentPort {
                     IOPort p = (IOPort) ports.next();
 
                     // Rule out case where this port itself is listed...
-                    if ((p != this) && p.isInput()) {
+                    if (p != this && p.isInput()) {
                         _isInput = true;
                     }
                 }
@@ -2432,7 +2433,7 @@ public class IOPort extends ComponentPort {
             if (isOutput()) {
                 Receiver[][] receivers = getInsideReceivers();
 
-                if ((receivers != null) && (receivers[channelIndex] != null)) {
+                if (receivers != null && receivers[channelIndex] != null) {
                     for (int j = 0; j < receivers[channelIndex].length; j++) {
                         if (!receivers[channelIndex][j].isKnown()) {
                             result = false;
@@ -2445,7 +2446,7 @@ public class IOPort extends ComponentPort {
             if (result && isInput()) {
                 Receiver[][] receivers = deepGetReceivers();
 
-                if ((receivers != null) && (receivers[channelIndex] != null)) {
+                if (receivers != null && receivers[channelIndex] != null) {
                     for (int j = 0; j < receivers[channelIndex].length; j++) {
                         if (!receivers[channelIndex][j].isKnown()) {
                             result = false;
@@ -2509,7 +2510,7 @@ public class IOPort extends ComponentPort {
                     IOPort p = (IOPort) ports.next();
 
                     // Rule out case where this port itself is listed...
-                    if ((p != this) && p.isOutput()) {
+                    if (p != this && p.isOutput()) {
                         _isOutput = true;
                     }
                 }
@@ -2599,10 +2600,10 @@ public class IOPort extends ComponentPort {
                         IOPort port = (IOPort) ports.next();
                         int depth = port.getContainer().depthInHierarchy();
 
-                        if (port.isInput() && (depth >= depthOfDirector)) {
+                        if (port.isInput() && depth >= depthOfDirector) {
                             result.addLast(port);
-                        } else if (port.isOutput() && (depth < depthOfDirector)
-                                && (port.numberOfSinks() > 0)) {
+                        } else if (port.isOutput() && depth < depthOfDirector
+                                && port.numberOfSinks() > 0) {
                             result.addLast(port);
                         }
                     }
@@ -2662,10 +2663,10 @@ public class IOPort extends ComponentPort {
                     IOPort port = (IOPort) ports.next();
                     int depth = port.depthInHierarchy();
 
-                    if (port.isInput() && (depth <= depthOfDirector)
-                            && (port.numberOfSources() > 0)) {
+                    if (port.isInput() && depth <= depthOfDirector
+                            && port.numberOfSources() > 0) {
                         result.addLast(port);
-                    } else if (port.isOutput() && (depth > depthOfDirector)) {
+                    } else if (port.isOutput() && depth > depthOfDirector) {
                         result.addLast(port);
                     }
                 }
@@ -2762,9 +2763,8 @@ public class IOPort extends ComponentPort {
                 // any non-runtime exception.
                 farReceivers = getRemoteReceivers();
 
-                if ((farReceivers == null)
-                        || (farReceivers.length <= channelIndex)
-                        || (farReceivers[channelIndex] == null)) {
+                if (farReceivers == null || farReceivers.length <= channelIndex
+                        || farReceivers[channelIndex] == null) {
                     return;
                 }
             } finally {
@@ -2837,9 +2837,8 @@ public class IOPort extends ComponentPort {
                 // any non-runtime exception.
                 farReceivers = getRemoteReceivers();
 
-                if ((farReceivers == null)
-                        || (farReceivers.length <= channelIndex)
-                        || (farReceivers[channelIndex] == null)) {
+                if (farReceivers == null || farReceivers.length <= channelIndex
+                        || farReceivers[channelIndex] == null) {
                     return;
                 }
             } finally {
@@ -2888,8 +2887,8 @@ public class IOPort extends ComponentPort {
             // any non-runtime exception.
             farReceivers = getRemoteReceivers();
 
-            if ((farReceivers == null) || (farReceivers.length <= channelIndex)
-                    || (farReceivers[channelIndex] == null)) {
+            if (farReceivers == null || farReceivers.length <= channelIndex
+                    || farReceivers[channelIndex] == null) {
                 return;
             }
         } finally {
@@ -2926,8 +2925,8 @@ public class IOPort extends ComponentPort {
             _workspace.getReadAccess();
             farReceivers = deepGetReceivers();
 
-            if ((farReceivers == null) || (farReceivers.length <= channelIndex)
-                    || (farReceivers[channelIndex] == null)) {
+            if (farReceivers == null || farReceivers.length <= channelIndex
+                    || farReceivers[channelIndex] == null) {
                 return;
             }
         } finally {
@@ -2996,9 +2995,8 @@ public class IOPort extends ComponentPort {
                 // any non-runtime exception.
                 farReceivers = deepGetReceivers();
 
-                if ((farReceivers == null)
-                        || (farReceivers.length <= channelIndex)
-                        || (farReceivers[channelIndex] == null)) {
+                if (farReceivers == null || farReceivers.length <= channelIndex
+                        || farReceivers[channelIndex] == null) {
                     return;
                 }
             } finally {
@@ -3219,9 +3217,9 @@ public class IOPort extends ComponentPort {
                         IOPort port = (IOPort) ports.next();
                         int depth = port.getContainer().depthInHierarchy();
 
-                        if (port.isInput() && (depth >= depthOfDirector)) {
+                        if (port.isInput() && depth >= depthOfDirector) {
                             _sinkPortList.addLast(port);
-                        } else if (port.isOutput() && (depth < depthOfDirector)) {
+                        } else if (port.isOutput() && depth < depthOfDirector) {
                             _sinkPortList.addLast(port);
                         }
                     }
@@ -3273,9 +3271,9 @@ public class IOPort extends ComponentPort {
                     IOPort port = (IOPort) ports.next();
                     int depth = port.depthInHierarchy();
 
-                    if (port.isInput() && (depth <= depthOfDirector)) {
+                    if (port.isInput() && depth <= depthOfDirector) {
                         _sourcePortList.addLast(port);
-                    } else if (port.isOutput() && (depth > depthOfDirector)) {
+                    } else if (port.isOutput() && depth > depthOfDirector) {
                         _sourcePortList.addLast(port);
                     }
                 }
@@ -3451,7 +3449,7 @@ public class IOPort extends ComponentPort {
 
             Relation toDelete = (Relation) _relationsList.get(index);
 
-            if ((toDelete != null) && (_localReceiversTable != null)) {
+            if (toDelete != null && _localReceiversTable != null) {
                 _removeReceivers(toDelete);
                 _localReceiversTable.remove(toDelete);
                 _localReceiversVersion = -1;
@@ -3508,8 +3506,8 @@ public class IOPort extends ComponentPort {
             if (_localReceiversTable != null) {
                 // Have to clone the local receivers table to avoid
                 // a ConcurrentModificationException.
-                HashMap<IORelation, List<Receiver[][]>> clonedMap = (HashMap<IORelation, List<Receiver[][]>>) (_localReceiversTable
-                        .clone());
+                HashMap<IORelation, List<Receiver[][]>> clonedMap = (HashMap<IORelation, List<Receiver[][]>>) _localReceiversTable
+                        .clone();
 
                 for (IORelation relation : clonedMap.keySet()) {
                     if (!isInsideLinked(relation)) {
@@ -3542,8 +3540,8 @@ public class IOPort extends ComponentPort {
             if (_localReceiversTable != null) {
                 // Have to clone the local receivers table to avoid
                 // a ConcurrentModificationException.
-                HashMap<IORelation, List<Receiver[][]>> clonedMap = (HashMap<IORelation, List<Receiver[][]>>) (_localReceiversTable
-                        .clone());
+                HashMap<IORelation, List<Receiver[][]>> clonedMap = (HashMap<IORelation, List<Receiver[][]>>) _localReceiversTable
+                        .clone();
 
                 for (IORelation relation : clonedMap.keySet()) {
 
@@ -3650,7 +3648,7 @@ public class IOPort extends ComponentPort {
      */
     protected void _checkContainer(Entity container)
             throws IllegalActionException {
-        if (!(container instanceof Actor) && (container != null)) {
+        if (!(container instanceof Actor) && container != null) {
             throw new IllegalActionException(container, this,
                     "IOPort can only be contained by objects implementing "
                             + "the Actor interface.");
@@ -3752,7 +3750,7 @@ public class IOPort extends ComponentPort {
 
             StringBuffer result = new StringBuffer();
 
-            if ((bracket == 1) || (bracket == 2)) {
+            if (bracket == 1 || bracket == 2) {
                 result.append(super._description(detail, indent, 1));
             } else {
                 result.append(super._description(detail, indent, 0));
@@ -3815,16 +3813,16 @@ public class IOPort extends ComponentPort {
 
                 Receiver[][] receivers = getReceivers();
 
-                for (int i = 0; i < receivers.length; i++) {
+                for (Receiver[] receiver : receivers) {
                     // One list item per group
                     result.append(_getIndentPrefix(indent + 1) + "{\n");
 
-                    for (int j = 0; j < receivers[i].length; j++) {
+                    for (int j = 0; j < receiver.length; j++) {
                         result.append(_getIndentPrefix(indent + 2));
                         result.append("{");
 
-                        if (receivers[i][j] != null) {
-                            result.append(receivers[i][j].getClass().getName());
+                        if (receiver[j] != null) {
+                            result.append(receiver[j].getClass().getName());
                         }
 
                         result.append("}\n");
@@ -3847,21 +3845,21 @@ public class IOPort extends ComponentPort {
                 receivers = getRemoteReceivers();
 
                 if (receivers != null) {
-                    for (int i = 0; i < receivers.length; i++) {
+                    for (Receiver[] receiver : receivers) {
                         // One list item per group
                         result.append(_getIndentPrefix(indent + 1) + "{\n");
 
-                        if (receivers[i] != null) {
-                            for (int j = 0; j < receivers[i].length; j++) {
+                        if (receiver != null) {
+                            for (int j = 0; j < receiver.length; j++) {
                                 result.append(_getIndentPrefix(indent + 2));
                                 result.append("{");
 
-                                if (receivers[i][j] != null) {
-                                    result.append(receivers[i][j].getClass()
+                                if (receiver[j] != null) {
+                                    result.append(receiver[j].getClass()
                                             .getName());
                                     result.append(" in ");
-                                    result.append(receivers[i][j]
-                                            .getContainer().getFullName());
+                                    result.append(receiver[j].getContainer()
+                                            .getFullName());
                                 }
 
                                 result.append("}\n");
@@ -4092,7 +4090,7 @@ public class IOPort extends ComponentPort {
                 results[index] = oneResult;
                 index++;
 
-                if ((oneResult != null) && (oneResult.length > width)) {
+                if (oneResult != null && oneResult.length > width) {
                     width = oneResult.length;
                 }
             }
@@ -4105,14 +4103,14 @@ public class IOPort extends ComponentPort {
                 // for each channel.
                 int numberOfReplicas = 0;
 
-                for (int j = 0; j < results.length; j++) {
-                    if ((results[j] == null) || (i >= results[j].length)
-                            || (results[j][i] == null)) {
+                for (Receiver[][] result2 : results) {
+                    if (result2 == null || i >= result2.length
+                            || result2[i] == null) {
                         // This result has no more replicas to contribute.
                         continue;
                     }
 
-                    numberOfReplicas += results[j][i].length;
+                    numberOfReplicas += result2[i].length;
                 }
 
                 result[i] = new Receiver[numberOfReplicas];
@@ -4120,15 +4118,15 @@ public class IOPort extends ComponentPort {
                 // Next, copy the replicas into the result.
                 index = 0;
 
-                for (int j = 0; j < results.length; j++) {
-                    if ((results[j] == null) || (i >= results[j].length)
-                            || (results[j][i] == null)) {
+                for (Receiver[][] result2 : results) {
+                    if (result2 == null || i >= result2.length
+                            || result2[i] == null) {
                         // This result has no more replicas to contribute.
                         continue;
                     }
 
-                    for (int k = 0; k < results[j][i].length; k++) {
-                        result[i][index] = results[j][i][k];
+                    for (int k = 0; k < result2[i].length; k++) {
+                        result[i][index] = result2[i][k];
                         index++;
                     }
                 }
@@ -4264,13 +4262,13 @@ public class IOPort extends ComponentPort {
                 Iterator<Receiver[][]> iterator = receivers.iterator();
                 while (iterator.hasNext()) {
                     Receiver[][] receiverArray = iterator.next();
-                    for (int i = 0; i < receiverArray.length; i++) {
-                        if (receiverArray[i] != null) {
-                            for (int j = 0; j < receiverArray[i].length; j++) {
-                                if (receiverArray[i][j] != null) {
+                    for (Receiver[] element : receiverArray) {
+                        if (element != null) {
+                            for (int j = 0; j < element.length; j++) {
+                                if (element[j] != null) {
                                     try {
                                         removed = true;
-                                        receiverArray[i][j].setContainer(null);
+                                        element[j].setContainer(null);
                                     } catch (IllegalActionException e) {
                                         // This should not happen because we are setting
                                         // the container to null.
@@ -4406,7 +4404,7 @@ public class IOPort extends ComponentPort {
             if (_isInsideLinkable(relation.getContainer())) {
                 // An inside link
                 // Check for existing inside links
-                if (!isMultiport() && (numInsideLinks() >= 1)) {
+                if (!isMultiport() && numInsideLinks() >= 1) {
                     throw new IllegalActionException(this, relation,
                             "Attempt to link more than one relation "
                                     + "to a single port.");
@@ -4423,7 +4421,7 @@ public class IOPort extends ComponentPort {
             } else {
                 // An outside link
                 // Check for existing outside links
-                if (!isMultiport() && (numLinks() >= 1)) {
+                if (!isMultiport() && numLinks() >= 1) {
                     throw new IllegalActionException(this, relation,
                             "Attempt to link more than one relation "
                                     + "to a single port.");
@@ -4433,13 +4431,13 @@ public class IOPort extends ComponentPort {
             if (_isInsideLinkable(relation.getContainer())) {
                 // An inside link
                 // Check for existing inside links
-                if (!isMultiport() && (numInsideLinks() >= 1)) {
+                if (!isMultiport() && numInsideLinks() >= 1) {
                     throw new IllegalActionException(this, relation,
                             "Attempt to link more than one relation "
                                     + "to a single port.");
                 }
 
-                if ((relation.getWidth() != 1) || !relation.isWidthFixed()) {
+                if (relation.getWidth() != 1 || !relation.isWidthFixed()) {
                     // Relation is a bus.
                     if (!isMultiport()) {
                         throw new IllegalActionException(this, relation,
@@ -4465,13 +4463,13 @@ public class IOPort extends ComponentPort {
             } else {
                 // An outside link
                 // Check for existing outside links
-                if (!isMultiport() && (numLinks() >= 1)) {
+                if (!isMultiport() && numLinks() >= 1) {
                     throw new IllegalActionException(this, relation,
                             "Attempt to link more than one relation "
                                     + "to a single port.");
                 }
 
-                if ((relation.getWidth() != 1) || !relation.isWidthFixed()) {
+                if (relation.getWidth() != 1 || !relation.isWidthFixed()) {
                     // Relation is a bus.
 
                     /* This is now allowed.
@@ -4488,8 +4486,7 @@ public class IOPort extends ComponentPort {
 
                         // A null link (supported since indexed links) might
                         // yield a null relation here. EAL 7/19/00.
-                        if ((theRelation != null)
-                                && !theRelation.isWidthFixed()) {
+                        if (theRelation != null && !theRelation.isWidthFixed()) {
                             throw new IllegalActionException(
                                     this,
                                     relation,
@@ -4537,7 +4534,7 @@ public class IOPort extends ComponentPort {
 
         int width = relation.getWidth();
 
-        if ((getWidth() == 1) && (width > 1)) {
+        if (getWidth() == 1 && width > 1) {
             // This can occur if we have a wide relation driving a narrower
             // port.
             width = 1;
@@ -4563,7 +4560,7 @@ public class IOPort extends ComponentPort {
                 List<?> list = _localReceiversTable.get(relation);
 
                 try {
-                    result = (Receiver[][]) (list.get(occurrence));
+                    result = (Receiver[][]) list.get(occurrence);
                 } catch (IndexOutOfBoundsException ex) {
                     return _EMPTY_RECEIVER_ARRAY;
                 }

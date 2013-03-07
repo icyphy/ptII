@@ -155,8 +155,8 @@ public class XSLTransformer extends Transformer {
         }
 
         if (_transformer != null) {
-            RecordToken parameters = (RecordToken) (styleSheetParameters
-                    .getToken());
+            RecordToken parameters = (RecordToken) styleSheetParameters
+                    .getToken();
             if (parameters != null) {
                 Iterator labels = parameters.labelSet().iterator();
 

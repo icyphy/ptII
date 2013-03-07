@@ -152,7 +152,7 @@ public class SmartSender extends TypedAtomicActor {
 
                             if (port instanceof IOPort
                                     && ((IOPort) port).isInput()
-                                    && (!((IOPort) port).isOutsideConnected())) {
+                                    && !((IOPort) port).isOutsideConnected()) {
                                 container.connect(output, (IOPort) port);
                                 return;
                             }

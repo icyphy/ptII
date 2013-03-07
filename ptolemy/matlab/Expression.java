@@ -282,7 +282,7 @@ public class Expression extends TypedAtomicActor {
         // First set default debugging level, then check for more
         matlabEngine.setDebugging((byte) 0);
 
-        Parameter debugging = ((Parameter) getAttribute("_debugging"));
+        Parameter debugging = (Parameter) getAttribute("_debugging");
 
         if (debugging != null) {
             Token t = debugging.getToken();
@@ -357,7 +357,7 @@ public class Expression extends TypedAtomicActor {
         Iterator inputPorts = inputPortList().iterator();
 
         while (inputPorts.hasNext()) {
-            IOPort port = (IOPort) (inputPorts.next());
+            IOPort port = (IOPort) inputPorts.next();
 
             if (!port.hasToken(0)) {
                 return false;
@@ -412,7 +412,7 @@ public class Expression extends TypedAtomicActor {
             Iterator inputPorts = inputPortList().iterator();
 
             while (inputPorts.hasNext()) {
-                IOPort port = (IOPort) (inputPorts.next());
+                IOPort port = (IOPort) inputPorts.next();
                 matlabEngine.put(engine, port.getName(), port.get(0));
             }
 
@@ -421,7 +421,7 @@ public class Expression extends TypedAtomicActor {
             Iterator outputPorts = outputPortList().iterator();
 
             while (outputPorts.hasNext()) {
-                IOPort port = (IOPort) (outputPorts.next());
+                IOPort port = (IOPort) outputPorts.next();
 
                 // FIXME: Handle multiports
                 if (port.isOutsideConnected()) {

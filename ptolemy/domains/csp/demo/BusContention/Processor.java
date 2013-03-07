@@ -143,9 +143,9 @@ public class Processor extends CSPActor {
 
         if (delayTime < 0.25) {
             delayTime = 2.5;
-        } else if ((delayTime >= 0.25) && (delayTime < 0.5)) {
+        } else if (delayTime >= 0.25 && delayTime < 0.5) {
             delayTime = 5.0;
-        } else if ((delayTime >= 0.5) && (delayTime < 0.75)) {
+        } else if (delayTime >= 0.5 && delayTime < 0.75) {
             delayTime = 7.5;
         } else {
             delayTime = 10.0;

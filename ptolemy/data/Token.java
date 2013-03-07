@@ -337,9 +337,8 @@ public class Token implements Serializable {
     public static String notSupportedConversionMessage(Token token,
             String typeString) {
         // We use this method to factor out a very common message
-        return ("Conversion is not supported from "
-                + token.getClass().getName() + " '" + token.toString()
-                + "' to the type " + typeString + ".");
+        return "Conversion is not supported from " + token.getClass().getName()
+                + " '" + token.toString() + "' to the type " + typeString + ".";
     }
 
     /** Return a string with an error message that states that
@@ -352,10 +351,10 @@ public class Token implements Serializable {
     public static String notSupportedIncomparableConversionMessage(Token token,
             String typeString) {
         // We use this method to factor out a very common message
-        return ("Conversion is not supported from "
-                + token.getClass().getName() + " '" + token.toString()
-                + "' to the type " + typeString
-                + " because the type of the token is higher " + "or incomparable with the given type.");
+        return "Conversion is not supported from " + token.getClass().getName()
+                + " '" + token.toString() + "' to the type " + typeString
+                + " because the type of the token is higher "
+                + "or incomparable with the given type.";
     }
 
     /** Return a string with an error message that states that the
@@ -371,11 +370,12 @@ public class Token implements Serializable {
     public static String notSupportedIncomparableMessage(String operation,
             Token firstToken, Token secondToken) {
         // We use this method to factor out a very common message
-        return (operation + " method not supported between "
+        return operation + " method not supported between "
                 + firstToken.getClass().getName() + " '"
                 + firstToken.toString() + "' and "
                 + secondToken.getClass().getName() + " '"
-                + secondToken.toString() + "' because the types are incomparable.");
+                + secondToken.toString()
+                + "' because the types are incomparable.";
     }
 
     /** Return a string with an error message that states that the
@@ -389,11 +389,11 @@ public class Token implements Serializable {
     public static String notSupportedMessage(String operation,
             Token firstToken, Token secondToken) {
         // We use this method to factor out a very common message
-        return (operation + " operation not supported between "
+        return operation + " operation not supported between "
                 + firstToken.getClass().getName() + " '"
                 + firstToken.toString() + "' and "
                 + secondToken.getClass().getName() + " '"
-                + secondToken.toString() + "'");
+                + secondToken.toString() + "'";
     }
 
     /** Returns a new Token representing the multiplicative identity.
@@ -452,7 +452,7 @@ public class Token implements Serializable {
         } else {
             ptolemy.data.Token result = this;
 
-            for (int k = 0; k < (times - 1); k++) {
+            for (int k = 0; k < times - 1; k++) {
                 result = result.multiply(this);
             }
 

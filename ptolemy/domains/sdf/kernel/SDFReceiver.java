@@ -176,7 +176,7 @@ public class SDFReceiver extends AbstractReceiver {
     public Token[] getArray(int count) {
         // Check if we need to reallocate the cached
         // token array.
-        if ((_tokenArray == null) || (count != _tokenArray.length)) {
+        if (_tokenArray == null || count != _tokenArray.length) {
             // Reallocate token array.
             _tokenArray = new Token[count];
         }
@@ -236,7 +236,7 @@ public class SDFReceiver extends AbstractReceiver {
             return true;
         }
 
-        return (_queue.size() + tokens) <= _queue.getCapacity();
+        return _queue.size() + tokens <= _queue.getCapacity();
     }
 
     /** Return true if get() will succeed in returning a token.

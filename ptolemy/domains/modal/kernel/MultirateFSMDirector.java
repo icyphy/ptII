@@ -117,7 +117,7 @@ public class MultirateFSMDirector extends FSMDirector {
         FSMActor controller = getController();
         State currentState = controller.currentState();
         Actor[] actors = currentState.getRefinement();
-        if ((actors == null) || (actors.length != 1)) {
+        if (actors == null || actors.length != 1) {
             throw new IllegalActionException(currentState,
                     "Current state is required to have exactly one refinement: "
                             + currentState.getName());
@@ -249,7 +249,7 @@ public class MultirateFSMDirector extends FSMDirector {
         for (int i = 0; i < port.getWidth(); i++) {
             // For each channel
             try {
-                if ((insideReceivers != null) && (insideReceivers[i] != null)) {
+                if (insideReceivers != null && insideReceivers[i] != null) {
                     for (int j = 0; j < insideReceivers[i].length; j++) {
                         // Since we only transfer number of tokens
                         // declared by the port rate, we should be
@@ -309,7 +309,7 @@ public class MultirateFSMDirector extends FSMDirector {
         Receiver[][] insideReceivers = port.getInsideReceivers();
 
         for (int i = 0; i < port.getWidth(); i++) {
-            if ((insideReceivers != null) && (insideReceivers[i] != null)) {
+            if (insideReceivers != null && insideReceivers[i] != null) {
                 for (int k = 0; k < rate; k++) {
                     // Only transfer number of tokens declared by the port
                     // rate. Throw exception if there are not enough tokens.
@@ -400,7 +400,7 @@ public class MultirateFSMDirector extends FSMDirector {
         while (variables.hasNext() && isConstantAndIdentical) {
             Variable rateVariable = (Variable) variables.next();
             isConstantAndIdentical = isConstantAndIdentical
-                    && (analysis.getChangeContext(rateVariable) == null);
+                    && analysis.getChangeContext(rateVariable) == null;
 
             if (isConstantAndIdentical) {
                 Token newValue = analysis.getConstantValue(rateVariable);
@@ -409,7 +409,7 @@ public class MultirateFSMDirector extends FSMDirector {
                     value = newValue;
                 } else {
                     isConstantAndIdentical = isConstantAndIdentical
-                            && (newValue.equals(value));
+                            && newValue.equals(value);
                 }
             }
         }
@@ -470,7 +470,7 @@ public class MultirateFSMDirector extends FSMDirector {
                         break;
                     }
                     // Move up another level in the hierarchy.
-                    container = (CompositeActor) (container.getContainer());
+                    container = (CompositeActor) container.getContainer();
                     director = container.getExecutiveDirector();
                 } else {
                     return container;
@@ -522,44 +522,45 @@ public class MultirateFSMDirector extends FSMDirector {
 
         // Check that the state has a refinement.
         TypedActor[] currentRefinements = currentState.getRefinement();
-        if ((currentRefinements == null) || (currentRefinements.length != 1)) {
+        if (currentRefinements == null || currentRefinements.length != 1) {
             throw new IllegalActionException(this,
-                    "Destination state (after any immediate transitions)" +
-                    " is required to have exactly one refinement: "
+                    "Destination state (after any immediate transitions)"
+                            + " is required to have exactly one refinement: "
                             + currentState.getName());
         }
 
-        TypedCompositeActor currentRefinement = (TypedCompositeActor) (currentRefinements[0]);
+        TypedCompositeActor currentRefinement = (TypedCompositeActor) currentRefinements[0];
         Director refinementDir = currentRefinement.getDirector();
         // If the refinement is a nested state machine, recursively descend until we
         // find a refinement that is not.
         while (refinementDir instanceof FSMDirector && refinementDir != this) {
-            controller = ((FSMDirector)refinementDir).getController();
+            controller = ((FSMDirector) refinementDir).getController();
             currentState = controller.currentState();
             currentRefinements = currentState.getRefinement();
-            if ((currentRefinements == null) || (currentRefinements.length != 1)) {
-                throw new IllegalActionException(this,
-                        "Initial state (after any immediate transitions)" +
-                        " is required to have exactly one refinement: "
+            if (currentRefinements == null || currentRefinements.length != 1) {
+                throw new IllegalActionException(
+                        this,
+                        "Initial state (after any immediate transitions)"
+                                + " is required to have exactly one refinement: "
                                 + currentState.getName());
             }
             // Set the refinement and its director.
-            currentRefinement = (TypedCompositeActor) (currentRefinements[0]);
+            currentRefinement = (TypedCompositeActor) currentRefinements[0];
             refinementDir = currentRefinement.getDirector();
         }
 
-        if (refinementDir instanceof StaticSchedulingDirector && refinementDir != this) {
+        if (refinementDir instanceof StaticSchedulingDirector
+                && refinementDir != this) {
             // Force the schedule to be computed, if necessary.
             // Update the refinement's production and consumption rates.
             refinementDir.invalidateSchedule();
-            ((StaticSchedulingDirector)refinementDir).getScheduler().getSchedule();
+            ((StaticSchedulingDirector) refinementDir).getScheduler()
+                    .getSchedule();
         }
 
         // Record consumption and production rates in the ports of this actor.
-        boolean inputRateChanged =
-                _updateInputTokenConsumptionRates(currentRefinement);
-        boolean outputRateChanged =
-                _updateOutputTokenProductionRates(currentRefinement);
+        boolean inputRateChanged = _updateInputTokenConsumptionRates(currentRefinement);
+        boolean outputRateChanged = _updateOutputTokenProductionRates(currentRefinement);
         // Tell the upper level scheduler that the current schedule
         // is no longer valid.
         // FIXME: Apparently, this can't work because that
@@ -669,9 +670,11 @@ public class MultirateFSMDirector extends FSMDirector {
 
                     // Also set the rate of the controller.
                     FSMActor controller = getController();
-                    IOPort controllerPort = (IOPort)controller.getPort(inputPortOutside.getName());
+                    IOPort controllerPort = (IOPort) controller
+                            .getPort(inputPortOutside.getName());
                     if (controllerPort != null) {
-                        DFUtilities.setTokenConsumptionRate(controllerPort, portRateToSet);
+                        DFUtilities.setTokenConsumptionRate(controllerPort,
+                                portRateToSet);
                     }
                 }
             }
@@ -739,9 +742,11 @@ public class MultirateFSMDirector extends FSMDirector {
                     // Note that we set the _consumption_ rate, because this an input port
                     // (as well as an output port) for the controller.
                     FSMActor controller = getController();
-                    IOPort controllerPort = (IOPort)controller.getPort(outputPortOutside.getName());
+                    IOPort controllerPort = (IOPort) controller
+                            .getPort(outputPortOutside.getName());
                     if (controllerPort != null) {
-                        DFUtilities.setTokenConsumptionRate(controllerPort, portRateToSet);
+                        DFUtilities.setTokenConsumptionRate(controllerPort,
+                                portRateToSet);
                     }
                 }
             }

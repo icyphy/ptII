@@ -329,7 +329,7 @@ public class EditorIcon extends Attribute {
             String name = container.getDisplayName();
 
             // Do not add a label figure if the name is null.
-            if ((name != null) && !name.equals("")) {
+            if (name != null && !name.equals("")) {
                 if (!_isPropertySet(container, "_centerName")) {
                     LabelFigure label = new LabelFigure(name, _labelFont, 1.0,
                             SwingConstants.SOUTH_WEST);
@@ -358,8 +358,9 @@ public class EditorIcon extends Attribute {
                     .equals("Overridden parameters only");
             boolean showAllParameters = value.equals("All");
 
-            if ((showOverriddenParameters && !_isPropertySet(container,
-                    "_hideAllParameters")) || showAllParameters) {
+            if (showOverriddenParameters
+                    && !_isPropertySet(container, "_hideAllParameters")
+                    || showAllParameters) {
                 StringBuffer parameters = new StringBuffer();
                 Iterator settables = container.attributeList(Settable.class)
                         .iterator();

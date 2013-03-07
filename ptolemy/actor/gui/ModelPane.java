@@ -242,7 +242,7 @@ public class ModelPane extends JPanel implements CloseListener {
     public void setDefaultButton() {
         JRootPane root = getRootPane();
 
-        if ((root != null) && ((_show & BUTTONS) != 0)) {
+        if (root != null && (_show & BUTTONS) != 0) {
             root.setDefaultButton(_goButton);
             _goButton.setMnemonic(KeyEvent.VK_G);
             _pauseButton.setMnemonic(KeyEvent.VK_P);
@@ -361,14 +361,14 @@ public class ModelPane extends JPanel implements CloseListener {
                 }
             }
 
-            if ((_controlPanel != null) && (_layout == HORIZONTAL)) {
+            if (_controlPanel != null && _layout == HORIZONTAL) {
                 // Why they call this glue is beyond me, but what it does
                 // is make extra space to fill in the bottom.
                 _controlPanel.add(Box.createVerticalGlue());
             }
 
             // If there are two queries, make them the same width.
-            if ((_parameterQuery != null) && (_directorQuery != null)) {
+            if (_parameterQuery != null && _directorQuery != null) {
                 Dimension modelSize = _parameterQuery.getPreferredSize();
                 Dimension directorSize = _directorQuery.getPreferredSize();
 
@@ -601,7 +601,7 @@ public class ModelPane extends JPanel implements CloseListener {
 
             case KeyEvent.VK_M:
 
-                if (_control && (_model != null)) {
+                if (_control && _model != null) {
                     System.out.println(_model.exportMoML());
                     MessageHandler.message("Exported MoML to standard out.");
                 }

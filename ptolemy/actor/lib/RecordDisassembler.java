@@ -181,10 +181,11 @@ public class RecordDisassembler extends TypedAtomicActor {
                             } else {
                                 if (!_printedWarning) {
                                     _printedWarning = true;
-                                    System.err.println(getFullName()
-                                           + ": Could not find port for label \""
-                                                + label
-                                                + "\"  This can occur if the Record field name has spaces or other non Java identifier characters in it");
+                                    System.err
+                                            .println(getFullName()
+                                                    + ": Could not find port for label \""
+                                                    + label
+                                                    + "\"  This can occur if the Record field name has spaces or other non Java identifier characters in it");
                                 }
                             }
                         }

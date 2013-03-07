@@ -92,7 +92,7 @@ public class BasicGrabHandle extends BasicRectangle implements GrabHandle {
         double x = p.getX();
         double y = p.getY();
 
-        if ((x != _x) || (y != _y)) {
+        if (x != _x || y != _y) {
             _x = x;
             _y = y;
             ((Rectangle2D) getShape()).setFrame(x - _size, y - _size,

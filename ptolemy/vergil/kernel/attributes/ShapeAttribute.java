@@ -143,7 +143,7 @@ public abstract class ShapeAttribute extends VisibleAttribute {
         } else if (attribute == dashArray) {
             ArrayToken value = (ArrayToken) dashArray.getToken();
 
-            if ((value == null) || (value.length() == 0)) {
+            if (value == null || value.length() == 0) {
                 _icon.setDashArray(null);
             } else {
                 float[] floatValue = new float[value.length()];

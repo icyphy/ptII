@@ -75,7 +75,7 @@ public class TestWorkspace6 extends TestWorkspaceBase {
     }
 
     public void runTest() {
-        (new Thread() {
+        new Thread() {
             public void run() {
                 try {
                     sleep(1000);
@@ -86,7 +86,7 @@ public class TestWorkspace6 extends TestWorkspaceBase {
                 // interrupt T2 while it is waiting for read access
                 _thread.interrupt();
             }
-        }).start();
+        }.start();
         super.runTest();
     }
 

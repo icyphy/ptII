@@ -204,7 +204,7 @@ public class GridAnnealingLayout extends AbstractGlobalLayout {
 
                     // see if we should put the nodes back
                     // in their previous positions
-                    if ((deltaCost > 0) && (_random.nextDouble() > prob)) {
+                    if (deltaCost > 0 && _random.nextDouble() > prob) {
                         curCost -= deltaCost;
 
                         if (node1 == null) {
@@ -245,13 +245,13 @@ public class GridAnnealingLayout extends AbstractGlobalLayout {
         double[] placeX = new double[_gw];
 
         for (int x = 0; x < _gw; x++) {
-            placeX[x] = (((0.5 + x) * dim.getWidth()) / _gw) + dim.getX();
+            placeX[x] = (0.5 + x) * dim.getWidth() / _gw + dim.getX();
         }
 
         double[] placeY = new double[_gh];
 
         for (int y = 0; y < _gh; y++) {
-            placeY[y] = (((0.5 + y) * dim.getHeight()) / _gh) + dim.getY();
+            placeY[y] = (0.5 + y) * dim.getHeight() / _gh + dim.getY();
         }
 
         for (int i = 0; i < _gw; i++) {
@@ -317,7 +317,7 @@ public class GridAnnealingLayout extends AbstractGlobalLayout {
         head = _getParentInGraph(head);
         tail = _getParentInGraph(tail);
 
-        if ((head == null) || (tail == null)) {
+        if (head == null || tail == null) {
             return 0;
         }
 
@@ -325,7 +325,7 @@ public class GridAnnealingLayout extends AbstractGlobalLayout {
         int[] phead = getXY(head);
         double heightCost = HEIGHT_FACTOR * Math.abs(phead[1] - ptail[1]);
         double widthCost = WIDTH_FACTOR * Math.abs(phead[0] - ptail[0]);
-        double elbowCost = ((heightCost == 0) || (widthCost == 0)) ? 0
+        double elbowCost = heightCost == 0 || widthCost == 0 ? 0
                 : ELBOW_PENALTY;
         double overlapCost = numOverlaps(edge, _graph) * EDGE_OVERLAP_PENALTY;
         double crossingCost = numCrossings(edge, _graph) * CROSSING_PENALTY;
@@ -406,7 +406,7 @@ public class GridAnnealingLayout extends AbstractGlobalLayout {
             // Infer the number of horizontal nodes.
             _gw = nodeCount / _gh;
 
-            while ((_gh * _gw) < nodeCount) {
+            while (_gh * _gw < nodeCount) {
                 _gw++;
             }
 
@@ -439,7 +439,7 @@ public class GridAnnealingLayout extends AbstractGlobalLayout {
             initGrid();
 
             // Avoid exceptions if the graph is not visible.
-            if ((_gh == 0) || (_gw == 0)) {
+            if (_gh == 0 || _gw == 0) {
                 return;
             }
 
@@ -495,7 +495,7 @@ public class GridAnnealingLayout extends AbstractGlobalLayout {
         inHead = _getParentInGraph(inHead);
         inTail = _getParentInGraph(inTail);
 
-        if ((inHead == null) || (inTail == null)) {
+        if (inHead == null || inTail == null) {
             return 0;
         }
 
@@ -510,9 +510,8 @@ public class GridAnnealingLayout extends AbstractGlobalLayout {
                 Object tail = model.getTail(edge);
                 Object head = model.getHead(edge);
 
-                if ((tail == null) || (head == null) || (tail == inTail)
-                        || (tail == inHead) || (head == inTail)
-                        || (head == inHead)) {
+                if (tail == null || head == null || tail == inTail
+                        || tail == inHead || head == inTail || head == inHead) {
                     //these cannot cross
                     continue;
                 }
@@ -554,7 +553,7 @@ public class GridAnnealingLayout extends AbstractGlobalLayout {
         inHead = _getParentInGraph(inHead);
         inTail = _getParentInGraph(inTail);
 
-        if ((inHead == null) || (inTail == null)) {
+        if (inHead == null || inTail == null) {
             return 0;
         }
 
@@ -573,12 +572,12 @@ public class GridAnnealingLayout extends AbstractGlobalLayout {
                         head = _getParentInGraph(head);
                         tail = _getParentInGraph(tail);
 
-                        if ((head != null) && (tail != null)) {
+                        if (head != null && tail != null) {
                             int[] tailPt = getXY(tail);
                             int[] headPt = getXY(head);
 
-                            if ((tailPt[which] == headPt[which])
-                                    && (tailPt[which] == inTailPt[which])) {
+                            if (tailPt[which] == headPt[which]
+                                    && tailPt[which] == inTailPt[which]) {
                                 //int other = which + (1 % 2);
 
                                 // test to see if the "other" coordinate is
@@ -604,7 +603,7 @@ public class GridAnnealingLayout extends AbstractGlobalLayout {
      * annealing settles.  The Default value is .95.
      */
     public void setCoolingFactor(double val) {
-        if ((val <= 0) || (val > 1)) {
+        if (val <= 0 || val > 1) {
             String err = "Cooling factor must be greater than 0 and less or equal to 1: "
                     + val;
             throw new IllegalArgumentException(err);
@@ -697,7 +696,7 @@ public class GridAnnealingLayout extends AbstractGlobalLayout {
     private Object _getParentInGraph(Object node) {
         GraphModel model = getLayoutTarget().getGraphModel();
 
-        while ((node != null) && !model.containsNode(_graph, node)) {
+        while (node != null && !model.containsNode(_graph, node)) {
             Object parent = model.getParent(node);
 
             if (model.isNode(parent)) {

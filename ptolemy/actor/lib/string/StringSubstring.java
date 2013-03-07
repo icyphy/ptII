@@ -75,18 +75,17 @@ public class StringSubstring extends Transformer {
         start = new PortParameter(this, "start");
         start.setExpression("0");
         start.setTypeEquals(BaseType.INT);
-        (new SingletonParameter(start.getPort(), "_showName"))
+        new SingletonParameter(start.getPort(), "_showName")
                 .setToken(BooleanToken.TRUE);
 
         stop = new PortParameter(this, "stop");
         stop.setExpression("0");
         stop.setTypeEquals(BaseType.INT);
-        (new SingletonParameter(stop.getPort(), "_showName"))
+        new SingletonParameter(stop.getPort(), "_showName")
                 .setToken(BooleanToken.TRUE);
 
         input.setTypeEquals(BaseType.STRING);
-        (new SingletonParameter(input, "_showName"))
-                .setToken(BooleanToken.TRUE);
+        new SingletonParameter(input, "_showName").setToken(BooleanToken.TRUE);
 
         output.setTypeEquals(BaseType.STRING);
     }

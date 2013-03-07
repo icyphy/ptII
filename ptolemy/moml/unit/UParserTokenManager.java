@@ -39,13 +39,6 @@ public class UParserTokenManager implements UParserConstants {
         debugStream = ds;
     }
 
-    private final int jjStopStringLiteralDfa_0(int pos, long active0) {
-        switch (pos) {
-        default:
-            return -1;
-        }
-    }
-
     private int jjStopAtPos(int pos, int kind) {
         jjmatchedKind = kind;
         jjmatchedPos = pos;
@@ -425,7 +418,7 @@ public class UParserTokenManager implements UParserConstants {
         final int beginColumn;
         final int endColumn;
         String im = jjstrLiteralImages[jjmatchedKind];
-        curTokenImage = (im == null) ? input_stream.GetImage() : im;
+        curTokenImage = im == null ? input_stream.GetImage() : im;
         beginLine = input_stream.getBeginLine();
         beginColumn = input_stream.getBeginColumn();
         endLine = input_stream.getEndLine();
@@ -463,7 +456,7 @@ public class UParserTokenManager implements UParserConstants {
 
             try {
                 input_stream.backup(0);
-                while (curChar <= 32 && (0x100002600L & (1L << curChar)) != 0L) {
+                while (curChar <= 32 && (0x100002600L & 1L << curChar) != 0L) {
                     curChar = input_stream.BeginToken();
                 }
             } catch (java.io.IOException e1) {
@@ -476,7 +469,7 @@ public class UParserTokenManager implements UParserConstants {
                 if (jjmatchedPos + 1 < curPos) {
                     input_stream.backup(curPos - jjmatchedPos - 1);
                 }
-                if ((jjtoToken[jjmatchedKind >> 6] & (1L << (jjmatchedKind & 077))) != 0L) {
+                if ((jjtoToken[jjmatchedKind >> 6] & 1L << (jjmatchedKind & 077)) != 0L) {
                     matchedToken = jjFillToken();
                     return matchedToken;
                 } else {

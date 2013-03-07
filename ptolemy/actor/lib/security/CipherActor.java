@@ -290,11 +290,11 @@ abstract public class CipherActor extends CryptographyActor {
                 // If the mode or padding parameters are the empty
                 // string, then we use the default for the algorithm
                 // If they are not empty
-                String modeArgument = (_mode.length() > 0) ? ("/" + _mode) : "";
-                String paddingArgument = (_padding.length() > 0) ? ("/" + _padding)
+                String modeArgument = _mode.length() > 0 ? "/" + _mode : "";
+                String paddingArgument = _padding.length() > 0 ? "/" + _padding
                         : "";
 
-                if ((_mode.length() == 0) && (_padding.length() > 0)) {
+                if (_mode.length() == 0 && _padding.length() > 0) {
                     modeArgument = "/";
                 }
 

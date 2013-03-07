@@ -192,8 +192,8 @@ public class PushSupplier extends Sink {
             NameComponent namecomp = new NameComponent(
                     ((StringToken) remoteConsumerName.getToken()).stringValue(),
                     "");
-            _debug(getName(), " looking for name: ",
-                    (remoteConsumerName.getToken()).toString());
+            _debug(getName(), " looking for name: ", remoteConsumerName
+                    .getToken().toString());
 
             NameComponent[] path = { namecomp };
 

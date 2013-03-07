@@ -183,7 +183,7 @@ public class MultiInstanceComposite extends TypedCompositeActor {
         super.preinitialize();
 
         // Master only from here on
-        if ((getDirector() == null) || (getDirector().getContainer() != this)) {
+        if (getDirector() == null || getDirector().getContainer() != this) {
             throw new IllegalActionException(this, getFullName()
                     + "No director.");
         }
@@ -352,12 +352,12 @@ public class MultiInstanceComposite extends TypedCompositeActor {
                             boolean isInsideLinked = otherPort
                                     .isInsideGroupLinked(oldRelation);
 
-                            if ((port.isInput() && ((!isInsideLinked && otherPort
-                                    .isOutput()) || (isInsideLinked && otherPort
-                                    .isInput())))
-                                    || (port.isOutput() && ((!isInsideLinked && otherPort
-                                            .isInput()) || (isInsideLinked && otherPort
-                                            .isOutput())))) {
+                            if (port.isInput()
+                                    && (!isInsideLinked && otherPort.isOutput() || isInsideLinked
+                                            && otherPort.isInput())
+                                    || port.isOutput()
+                                    && (!isInsideLinked && otherPort.isInput() || isInsideLinked
+                                            && otherPort.isOutput())) {
                                 if (otherPort.isMultiport()) {
                                     if (!isRelationCreated) {
                                         relation = new TypedIORelation(

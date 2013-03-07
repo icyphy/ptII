@@ -244,9 +244,8 @@ public class PtolemyQuery extends Query implements QueryListener,
                                 Double.toString(max));
 
                         // Get the quantized integer for the current value.
-                        int quantized = ((int) Math
-                                .round(((current - min) * precision)
-                                        / (max - min)));
+                        int quantized = (int) Math.round((current - min)
+                                * precision / (max - min));
                         component = addSlider(name, displayName, quantized, 0,
                                 precision, minLabel, maxLabel);
                         attachParameter(attribute, name);
@@ -354,7 +353,7 @@ public class PtolemyQuery extends Query implements QueryListener,
                         _addSubmitAction(component, attribute.getName(),
                                 attribute);
                     } else if (attribute instanceof Parameter
-                            && (((Parameter) attribute).getChoices() != null)) {
+                            && ((Parameter) attribute).getChoices() != null) {
                         Parameter castAttribute = (Parameter) attribute;
 
                         // NOTE: Make this always editable since Parameter
@@ -368,9 +367,9 @@ public class PtolemyQuery extends Query implements QueryListener,
                         foundStyle = true;
                         _addSubmitAction(component, attribute.getName(),
                                 attribute);
-                    } else if ((attribute instanceof NamedObj)
-                            && ((((NamedObj) attribute)
-                                    .getAttribute("_textWidthHint") != null) || ((NamedObj) attribute)
+                    } else if (attribute instanceof NamedObj
+                            && (((NamedObj) attribute)
+                                    .getAttribute("_textWidthHint") != null || ((NamedObj) attribute)
                                     .getAttribute("_textHeightHint") != null)) {
                         // Support hints for text height and/or width so that actors
                         // don't have to use a ParameterEditorStyle, which depends
@@ -458,7 +457,7 @@ public class PtolemyQuery extends Query implements QueryListener,
                 defaultValue = "";
             }
 
-            if (!(foundStyle)) {
+            if (!foundStyle) {
 
                 // Make the text scrollable.
                 final JTextArea area = addTextArea(attribute.getName(),
@@ -467,7 +466,6 @@ public class PtolemyQuery extends Query implements QueryListener,
                         preferredForegroundColor(attribute), 1,
                         DEFAULT_ENTRY_WIDTH);
                 area.setRows(Math.min(5, area.getLineCount()));
-
 
                 _addSubmitAction(area, attribute.getName(), attribute);
 
@@ -571,7 +569,7 @@ public class PtolemyQuery extends Query implements QueryListener,
             Attribute tooltipAttribute = ((NamedObj) attribute)
                     .getAttribute("tooltip");
 
-            if ((tooltipAttribute != null)
+            if (tooltipAttribute != null
                     && tooltipAttribute instanceof Documentation) {
                 setToolTip(entryName,
                         ((Documentation) tooltipAttribute).getValueAsString());
@@ -604,7 +602,7 @@ public class PtolemyQuery extends Query implements QueryListener,
             String name = change.getDescription();
 
             if (_attributes.containsKey(name)) {
-                final Settable attribute = (Settable) (_attributes.get(name));
+                final Settable attribute = (Settable) _attributes.get(name);
 
                 // Make a record of the successful attribute value change
                 // in case some future change fails and the user
@@ -627,7 +625,7 @@ public class PtolemyQuery extends Query implements QueryListener,
     public void changeFailed(final ChangeRequest change, Exception exception) {
         // Ignore if this was not the originator, or if the error has already
         // been reported, or if the change request is null.
-        if ((change == null) || (change.getSource() != this)) {
+        if (change == null || change.getSource() != this) {
             return;
         }
 
@@ -676,7 +674,7 @@ public class PtolemyQuery extends Query implements QueryListener,
             if (patternStart >= 0) {
                 int nextQuote = description.indexOf("\"", patternStart + 16);
 
-                if (nextQuote > (patternStart + 15)) {
+                if (nextQuote > patternStart + 15) {
                     tmpEntryName = description.substring(patternStart + 16,
                             nextQuote);
                 }
@@ -751,7 +749,7 @@ public class PtolemyQuery extends Query implements QueryListener,
     public void changed(final String name) {
         // Check if the entry that changed is in the mapping.
         if (_attributes.containsKey(name)) {
-            final Settable attribute = (Settable) (_attributes.get(name));
+            final Settable attribute = (Settable) _attributes.get(name);
 
             if (attribute == null) {
                 // No associated attribute.
@@ -800,8 +798,8 @@ public class PtolemyQuery extends Query implements QueryListener,
                                 .getToken()).doubleValue();
                         double min = ((DoubleToken) ((DoubleRangeParameter) attribute).min
                                 .getToken()).doubleValue();
-                        double newValueAsDouble = min
-                                + (((max - min) * newValue) / precision);
+                        double newValueAsDouble = min + (max - min) * newValue
+                                / precision;
                         stringValue = "" + newValueAsDouble;
                     } catch (IllegalActionException e) {
                         throw new InternalErrorException(e);
@@ -1077,7 +1075,7 @@ public class PtolemyQuery extends Query implements QueryListener,
                 revalidate();
                 try {
                     Component parent = component.getParent();
-                    while ((parent != null)
+                    while (parent != null
                             && !(parent instanceof EditParametersDialog)) {
                         parent = parent.getParent();
                     }
@@ -1122,8 +1120,8 @@ public class PtolemyQuery extends Query implements QueryListener,
                         .getToken()).intValue();
 
                 // Get the quantized integer for the current value.
-                int quantized = ((int) Math.round(((current - min) * precision)
-                        / (max - min)));
+                int quantized = (int) Math.round((current - min) * precision
+                        / (max - min));
 
                 newValue = "" + quantized;
             } catch (IllegalActionException e) {

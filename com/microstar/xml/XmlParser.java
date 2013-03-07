@@ -877,7 +877,7 @@ public class XmlParser {
         skipWhitespace();
         c = readCh();
 
-        while ((c != '/') && (c != '>')) {
+        while (c != '/' && c != '>') {
             unread(c);
             parseAttribute(gi);
             skipWhitespace();
@@ -971,7 +971,7 @@ public class XmlParser {
 
         // Read the value, normalizing whitespace
         // if it is not CDATA.
-        if ((type == ATTRIBUTE_CDATA) || (type == ATTRIBUTE_UNDECLARED)) {
+        if (type == ATTRIBUTE_CDATA || type == ATTRIBUTE_UNDECLARED) {
             value = readLiteral(LIT_CHAR_REF | LIT_ENTITY_REF);
         } else {
             value = readLiteral(LIT_CHAR_REF | LIT_ENTITY_REF | LIT_NORMALIZE);
@@ -1342,7 +1342,7 @@ public class XmlParser {
 
         // Get the string of enumerated values
         // if necessary.
-        if ((type == ATTRIBUTE_ENUMERATED) || (type == ATTRIBUTE_NOTATION)) {
+        if (type == ATTRIBUTE_ENUMERATED || type == ATTRIBUTE_NOTATION) {
             enumeration = dataBufferToString();
         }
 
@@ -1599,8 +1599,8 @@ public class XmlParser {
             dataBufferAppend((char) value);
         } else if (value <= 0x000fffff) {
             // > 16 bits, surrogate needed
-            dataBufferAppend((char) (0xd8 | ((value & 0x000ffc00) >> 10)));
-            dataBufferAppend((char) (0xdc | (value & 0x0003ff)));
+            dataBufferAppend((char) (0xd8 | (value & 0x000ffc00) >> 10));
+            dataBufferAppend((char) (0xdc | value & 0x0003ff));
         } else {
             // too big for surrogate
             error("character reference " + value + " is too large for UTF-16",
@@ -1737,7 +1737,7 @@ public class XmlParser {
         c = readCh();
         unread(c);
 
-        if ((c == '"') || (c == '\'')) {
+        if (c == '"' || c == '\'') {
             // Internal entity.
             context = CONTEXT_ENTITYVALUE;
             value = readLiteral(LIT_CHAR_REF | LIT_PE_REF);
@@ -1785,7 +1785,7 @@ public class XmlParser {
         // Read the external identifiers.
         ids = readExternalIds(true);
 
-        if ((ids[0] == null) && (ids[1] == null)) {
+        if (ids[0] == null && ids[1] == null) {
             error("external identifier missing", nname, null);
         }
 
@@ -1924,8 +1924,8 @@ public class XmlParser {
 
                 case '%':
 
-                    if ((context == CONTEXT_DTD)
-                            || (context == CONTEXT_ENTITYVALUE)) {
+                    if (context == CONTEXT_DTD
+                            || context == CONTEXT_ENTITYVALUE) {
                         break loop;
                     } // else fall through...
 
@@ -1968,8 +1968,8 @@ public class XmlParser {
                 switch (readBuffer[i]) {
                 case '%':
 
-                    if ((context == CONTEXT_DTD)
-                            || (context == CONTEXT_ENTITYVALUE)) {
+                    if (context == CONTEXT_DTD
+                            || context == CONTEXT_ENTITYVALUE) {
                         break loop;
                     } // else fall through...
 
@@ -2068,7 +2068,7 @@ public class XmlParser {
         // Find the delimiter.
         delim = readCh();
 
-        if ((delim != '"') && (delim != '\'') && (delim != (char) 0)) {
+        if (delim != '"' && delim != '\'' && delim != (char) 0) {
             error("expected '\"' or \"'\"", delim, null);
             return null;
         }
@@ -2239,12 +2239,12 @@ public class XmlParser {
         int end = dataBufferPos;
 
         // Skip whitespace at the start.
-        while ((j < end) && isWhitespace(dataBuffer[j])) {
+        while (j < end && isWhitespace(dataBuffer[j])) {
             j++;
         }
 
         // Skip whitespace at the end.
-        while ((end > j) && isWhitespace(dataBuffer[end - 1])) {
+        while (end > j && isWhitespace(dataBuffer[end - 1])) {
             end--;
         }
 
@@ -2255,7 +2255,7 @@ public class XmlParser {
             // Normalise all other whitespace to
             // a single space.
             if (isWhitespace(c)) {
-                while ((j < end) && isWhitespace(dataBuffer[j++])) {
+                while (j < end && isWhitespace(dataBuffer[j++])) {
                 }
 
                 dataBuffer[i++] = ' ';
@@ -2320,8 +2320,8 @@ public class XmlParser {
     void require(String delim) throws java.lang.Exception {
         char[] ch = delim.toCharArray();
 
-        for (int i = 0; i < ch.length; i++) {
-            require(ch[i]);
+        for (char element : ch) {
+            require(element);
         }
     }
 
@@ -2374,8 +2374,8 @@ public class XmlParser {
         int hash = 0;
 
         // Generate a hash code.
-        for (int i = start; i < (start + length); i++) {
-            hash = ((hash << 1) & 0xffffff) + ch[i];
+        for (int i = start; i < start + length; i++) {
+            hash = (hash << 1 & 0xffffff) + ch[i];
         }
 
         hash = hash % SYMBOL_TABLE_LENGTH;
@@ -2407,7 +2407,7 @@ public class XmlParser {
                     // Stop if there are no more tuples.
                     if (ch[start + i] != chFound[i]) {
                         break;
-                    } else if (i == (length - 1)) {
+                    } else if (i == length - 1) {
                         // That's it, we have a match!
                         return (String) bucket[index + 1];
                     }
@@ -2535,8 +2535,8 @@ public class XmlParser {
             element[0] = Integer.valueOf(CONTENT_UNDECLARED);
             element[1] = null;
             element[2] = null;
-        } else if ((contentType != CONTENT_UNDECLARED)
-                && (((Integer) element[0]).intValue() != CONTENT_UNDECLARED)) {
+        } else if (contentType != CONTENT_UNDECLARED
+                && ((Integer) element[0]).intValue() != CONTENT_UNDECLARED) {
             error("multiple declarations for element type", name, null);
             return;
         }
@@ -2677,7 +2677,7 @@ public class XmlParser {
 
         if (attribute == null) {
             return null;
-        } else if ((attribute[4] == null) && (attribute[1] != null)) {
+        } else if (attribute[4] == null && attribute[1] != null) {
             try {
                 pushString(null, (char) 0 + (String) attribute[1] + (char) 0);
                 attribute[4] = readLiteral(LIT_NORMALIZE | LIT_CHAR_REF
@@ -3084,8 +3084,8 @@ public class XmlParser {
         // entity reference but peeks ahead to
         // catch the '%' in parameter entity
         // declarations.
-        if ((c == '%')
-                && ((context == CONTEXT_DTD) || (context == CONTEXT_ENTITYVALUE))) {
+        if (c == '%'
+                && (context == CONTEXT_DTD || context == CONTEXT_ENTITYVALUE)) {
             char c2 = readCh();
             unread(c2);
 
@@ -3203,7 +3203,7 @@ public class XmlParser {
         dataBufferFlush();
 
         // Make the URL absolute.
-        if ((systemId != null) && (externalEntity != null)) {
+        if (systemId != null && externalEntity != null) {
             systemId = new URL(externalEntity.getURL(), systemId).toString();
         } else if (baseURI != null) {
             try {
@@ -3216,7 +3216,7 @@ public class XmlParser {
         // See if the application wants to
         // redirect the system ID and/or
         // supply its own character stream.
-        if ((systemId != null) && (handler != null)) {
+        if (systemId != null && handler != null) {
             Object input = handler.resolveEntity(publicId, systemId);
 
             if (input != null) {
@@ -3268,7 +3268,7 @@ public class XmlParser {
         }
 
         // Attempt to detect the encoding.
-        if ((encoding == null) && (externalEntity != null)) {
+        if (encoding == null && externalEntity != null) {
             encoding = externalEntity.getContentEncoding();
         }
 
@@ -3406,7 +3406,7 @@ public class XmlParser {
      * @see #detectEncoding
      */
     boolean tryEncoding(byte[] sig, byte b1, byte b2, byte b3, byte b4) {
-        return ((sig[0] == b1) && (sig[1] == b2) && (sig[2] == b3) && (sig[3] == b4));
+        return sig[0] == b1 && sig[1] == b2 && sig[2] == b3 && sig[3] == b4;
     }
 
     /**
@@ -3419,7 +3419,7 @@ public class XmlParser {
      * @see #detectEncoding
      */
     boolean tryEncoding(byte[] sig, byte b1, byte b2) {
-        return ((sig[0] == b1) && (sig[1] == b2));
+        return sig[0] == b1 && sig[1] == b2;
     }
 
     /**
@@ -3552,7 +3552,7 @@ public class XmlParser {
         case INPUT_EXTERNAL:
             dataBufferFlush();
 
-            if ((handler != null) && (externalEntity != null)) {
+            if (handler != null && externalEntity != null) {
                 handler.endExternalEntity(externalEntity.getURL().toString());
             }
 
@@ -3922,7 +3922,7 @@ public class XmlParser {
             switch (readBuffer[j]) {
             case '\r':
 
-                if (j == (readBufferLength - 1)) {
+                if (j == readBufferLength - 1) {
                     readBufferOverflow = '\r';
                     readBufferLength--;
                     break loop;
@@ -3972,12 +3972,12 @@ public class XmlParser {
                 readBuffer[j++] = (char) b1;
             } else if ((b1 & 0xe0) == 0xc0) {
                 // 2-byte sequence: 00000yyyyyxxxxxx = 110yyyyy 10xxxxxx
-                readBuffer[j++] = (char) (((b1 & 0x1f) << 6) | getNextUtf8Byte(
+                readBuffer[j++] = (char) ((b1 & 0x1f) << 6 | getNextUtf8Byte(
                         i++, count));
             } else if ((b1 & 0xf0) == 0xe0) {
                 // 3-byte sequence: zzzzyyyyyyxxxxxx = 1110zzzz 10yyyyyy 10xxxxxx
-                readBuffer[j++] = (char) (((b1 & 0x0f) << 12)
-                        | (getNextUtf8Byte(i++, count) << 6) | getNextUtf8Byte(
+                readBuffer[j++] = (char) ((b1 & 0x0f) << 12
+                        | getNextUtf8Byte(i++, count) << 6 | getNextUtf8Byte(
                         i++, count));
             } else if ((b1 & 0xf8) == 0xf0) {
                 // 4-byte sequence: 11101110wwwwzzzzyy + 110111yyyyxxxxxx
@@ -3987,9 +3987,9 @@ public class XmlParser {
                 int b3 = getNextUtf8Byte(i++, count);
                 int b4 = getNextUtf8Byte(i++, count);
                 readBuffer[j++] = (char) (0xd800
-                        | ((((b1 & 0x07) << 2) | (((b2 & 0x30) >> 4) - 1)) << 6)
-                        | ((b2 & 0x0f) << 2) | ((b3 & 0x30) >> 4));
-                readBuffer[j++] = (char) (0xdc | ((b3 & 0x0f) << 6) | b4);
+                        | ((b1 & 0x07) << 2 | ((b2 & 0x30) >> 4) - 1) << 6
+                        | (b2 & 0x0f) << 2 | (b3 & 0x30) >> 4);
+                readBuffer[j++] = (char) (0xdc | (b3 & 0x0f) << 6 | b4);
 
                 // TODO: test that surrogate value is legal.
             } else {
@@ -4040,7 +4040,7 @@ public class XmlParser {
         }
 
         // Return the significant bits.
-        return (val & 0x3f);
+        return val & 0x3f;
     }
 
     /**
@@ -4085,12 +4085,12 @@ public class XmlParser {
             throws java.lang.Exception {
         int j = readBufferPos;
 
-        if ((count > 0) && ((count % 2) != 0)) {
+        if (count > 0 && count % 2 != 0) {
             encodingError("odd number of bytes in UCS-2 encoding", -1, count);
         }
 
         for (int i = 0; i < count; i += 2) {
-            readBuffer[j++] = (char) (((rawReadBuffer[i] & 0xff) << shift1) | ((rawReadBuffer[i + 1] & 0xff) << shift2));
+            readBuffer[j++] = (char) ((rawReadBuffer[i] & 0xff) << shift1 | (rawReadBuffer[i + 1] & 0xff) << shift2);
 
             if (readBuffer[j - 1] == '\r') {
                 sawCR = true;
@@ -4121,16 +4121,17 @@ public class XmlParser {
         int j = readBufferPos;
         int value;
 
-        if ((count > 0) && ((count % 4) != 0)) {
+        if (count > 0 && count % 4 != 0) {
             encodingError(
                     "number of bytes in UCS-4 encoding not divisible by 4", -1,
                     count);
         }
 
         for (int i = 0; i < count; i += 4) {
-            value = (((rawReadBuffer[i] & 0xff) << shift1)
-                    | ((rawReadBuffer[i + 1] & 0xff) << shift2)
-                    | ((rawReadBuffer[i + 2] & 0xff) << shift3) | ((rawReadBuffer[i + 3] & 0xff) << shift4));
+            value = (rawReadBuffer[i] & 0xff) << shift1
+                    | (rawReadBuffer[i + 1] & 0xff) << shift2
+                    | (rawReadBuffer[i + 2] & 0xff) << shift3
+                    | (rawReadBuffer[i + 3] & 0xff) << shift4;
 
             if (value < 0x0000ffff) {
                 readBuffer[j++] = (char) value;
@@ -4139,8 +4140,8 @@ public class XmlParser {
                     sawCR = true;
                 }
             } else if (value < 0x000fffff) {
-                readBuffer[j++] = (char) (0xd8 | ((value & 0x000ffc00) >> 10));
-                readBuffer[j++] = (char) (0xdc | (value & 0x0003ff));
+                readBuffer[j++] = (char) (0xd8 | (value & 0x000ffc00) >> 10);
+                readBuffer[j++] = (char) (0xdc | value & 0x0003ff);
             } else {
                 encodingError("value cannot be represented in UTF-16", value, i);
             }

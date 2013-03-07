@@ -114,18 +114,18 @@ public class PlotMLParser extends PlotBoxMLParser {
 
                 // NOTE: If only one of these is given, then the other
                 // is ignored.
-                if ((widthSpec == null) || (offsetSpec == null)) {
+                if (widthSpec == null || offsetSpec == null) {
                     ((PlotInterface) _plot).setBars(true);
                 } else {
-                    double width = (Double.valueOf(widthSpec)).doubleValue();
-                    double offset = (Double.valueOf(offsetSpec)).doubleValue();
+                    double width = Double.valueOf(widthSpec).doubleValue();
+                    double offset = Double.valueOf(offsetSpec).doubleValue();
                     ((PlotInterface) _plot).setBars(width, offset);
                 }
             } else if (elementName.equals("dataset")) {
                 String name = (String) _attributes.get("name");
 
-                if (!((PlotInterface) _plot).getReuseDatasets()
-                        || (name == null) || (_currentDataset < 0)) {
+                if (!((PlotInterface) _plot).getReuseDatasets() || name == null
+                        || _currentDataset < 0) {
                     // reuseDatasets was not present or if it was,
                     // the current dataset does not have a name
                     // or we have not yet seen a dataset.
@@ -291,20 +291,20 @@ public class PlotMLParser extends PlotBoxMLParser {
         String lowSpec = (String) _attributes.get("lowErrorBar");
         String highSpec = (String) _attributes.get("highErrorBar");
 
-        if ((lowSpec == null) && (highSpec == null)) {
+        if (lowSpec == null && highSpec == null) {
             ((PlotInterface) _plot).addPoint(_currentDataset, x, y, connected);
         } else {
             double low;
             double high;
 
             if (lowSpec != null) {
-                low = (Double.valueOf(lowSpec)).doubleValue();
+                low = Double.valueOf(lowSpec).doubleValue();
             } else {
                 low = x;
             }
 
             if (highSpec != null) {
-                high = (Double.valueOf(highSpec)).doubleValue();
+                high = Double.valueOf(highSpec).doubleValue();
             } else {
                 high = x;
             }

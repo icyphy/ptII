@@ -354,7 +354,7 @@ public class ViewScreen2D extends GRActor2D implements Placeable,
      */
     protected void _addChild(Figure figure) throws IllegalActionException {
         if (figure.getInteractor() instanceof FigureInteractor) {
-            ((FigureInteractor) (figure.getInteractor())).setViewScreen(this);
+            ((FigureInteractor) figure.getInteractor()).setViewScreen(this);
         }
 
         _layer.add(figure);
@@ -428,7 +428,7 @@ public class ViewScreen2D extends GRActor2D implements Placeable,
                 upperLeftXValue, upperLeftYValue, lowerRightXValue
                         - upperLeftXValue, lowerRightYValue - upperLeftYValue);
 
-        if ((visibleRect.getHeight() == 0) || (visibleRect.getWidth() == 0)) {
+        if (visibleRect.getHeight() == 0 || visibleRect.getWidth() == 0) {
             throw new IllegalActionException(this, "The width and height "
                     + "of the visible rectangle cannot be zero.");
         }
@@ -625,7 +625,7 @@ public class ViewScreen2D extends GRActor2D implements Placeable,
                     && _mouseInWindow
                     && (getCrosshairX().getBounds().contains(e.getLayerPoint())
                             || getCrosshairY().getBounds().contains(
-                                    e.getLayerPoint()) || (_mouseDragging == true))) {
+                                    e.getLayerPoint()) || _mouseDragging == true)) {
                 _mouseDragging = true;
                 _canvas.setCursor(Cursor
                         .getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));

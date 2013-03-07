@@ -212,10 +212,11 @@ public class MessageHandler {
      *  @return True if the answer is the first option, false if it is the second.
      *  @exception ptolemy.util.CancelException If the user selects the third option.
      */
-    public static boolean yesNoCancelQuestion(
-            String question, String trueOption, String falseOption, String exceptionOption)
+    public static boolean yesNoCancelQuestion(String question,
+            String trueOption, String falseOption, String exceptionOption)
             throws ptolemy.util.CancelException {
-        return _handler._yesNoCancelQuestion(question, trueOption, falseOption, exceptionOption);
+        return _handler._yesNoCancelQuestion(question, trueOption, falseOption,
+                exceptionOption);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -318,17 +319,11 @@ public class MessageHandler {
      *  @return True if the answer is the first option, false if it is the second.
      *  @exception ptolemy.util.CancelException If the user selects the third option.
      */
-    protected boolean _yesNoCancelQuestion(
-            String question, String trueOption, String falseOption, String exceptionOption)
+    protected boolean _yesNoCancelQuestion(String question, String trueOption,
+            String falseOption, String exceptionOption)
             throws ptolemy.util.CancelException {
-        System.out.print(question
-                + " ("
-                + trueOption
-                + " or "
-                + falseOption
-                + " or "
-                + exceptionOption
-                + ") ");
+        System.out.print(question + " (" + trueOption + " or " + falseOption
+                + " or " + exceptionOption + ") ");
 
         BufferedReader stdIn = new BufferedReader(new InputStreamReader(
                 System.in));
@@ -341,7 +336,8 @@ public class MessageHandler {
             } else {
                 if (reply.trim().toLowerCase().equals(trueOption.toLowerCase())) {
                     return true;
-                } else if (reply.trim().toLowerCase().equals(exceptionOption.toLowerCase())) {
+                } else if (reply.trim().toLowerCase()
+                        .equals(exceptionOption.toLowerCase())) {
                     throw new ptolemy.util.CancelException("Cancelled: "
                             + question);
                 }

@@ -124,7 +124,7 @@ public class AllPairShortestPathAnalysis extends Analysis {
      *  path algorithm.
      */
     public double[][] shortestPathMatrix() {
-        return (((AllPairShortestPathAnalyzer) analyzer()).shortestPathMatrix());
+        return ((AllPairShortestPathAnalyzer) analyzer()).shortestPathMatrix();
     }
 
     /** Return a description of the analysis and the associated analyzer.

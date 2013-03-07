@@ -276,7 +276,7 @@ public abstract class PtolemyFrame extends TableauFrame {
                 if (tableau instanceof DialogTableau) {
                     DialogTableau dialogTableau = (DialogTableau) tableau;
 
-                    if (!(dialogTableau.close())) {
+                    if (!dialogTableau.close()) {
                         return false;
                     }
                 }
@@ -366,7 +366,7 @@ public abstract class PtolemyFrame extends TableauFrame {
             if (manager != null) {
                 Manager.State state = manager.getState();
 
-                if ((state == Manager.IDLE) && (state == Manager.PAUSED)) {
+                if (state == Manager.IDLE && state == Manager.PAUSED) {
                     return super._saveAs();
                 } else {
                     manager.pause();
@@ -393,7 +393,7 @@ public abstract class PtolemyFrame extends TableauFrame {
     protected JFileChooser _saveAsJFileChooserComponent() {
         JFileChooser fileChooser = super._saveAsJFileChooserComponent();
 
-        if ((_model != null) && (_model.getContainer() != null)) {
+        if (_model != null && _model.getContainer() != null) {
             _query = new Query();
             _query.addCheckBox("submodel", "Save submodel only", false);
             fileChooser.setAccessory(_query);
@@ -413,7 +413,7 @@ public abstract class PtolemyFrame extends TableauFrame {
     protected FileDialog _saveAsFileDialogComponent() {
         FileDialog fileDialog = super._saveAsFileDialogComponent();
 
-        if ((_model != null) && (_model.getContainer() != null)) {
+        if (_model != null && _model.getContainer() != null) {
             _query = new Query();
             _query.addCheckBox("submodel", "Save submodel only", false);
             // The problem here is that with FileDialog, we can't add the
@@ -473,10 +473,9 @@ public abstract class PtolemyFrame extends TableauFrame {
                 // we do no delegating.
                 if (_model == null) {
                     effigy = effigy.topEffigy();
-                } else if ((_query == null)
-                        || ((_model.getContainer() != null) && (_query
-                                .hasEntry("submodel") && !_query
-                                .getBooleanValue("submodel")))) {
+                } else if (_query == null || _model.getContainer() != null
+                        && _query.hasEntry("submodel")
+                        && !_query.getBooleanValue("submodel")) {
                     effigy = effigy.masterEffigy();
                 }
 

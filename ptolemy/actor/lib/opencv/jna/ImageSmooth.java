@@ -88,8 +88,8 @@ public class ImageSmooth extends Transformer {
      *  @exception IllegalActionException If thrown while writing to the port.
      */
     public void fire() throws IllegalActionException {
-        int size1 = ((IntToken) (size1Param.getToken())).intValue();
-        int size2 = ((IntToken) (size2Param.getToken())).intValue();
+        int size1 = ((IntToken) size1Param.getToken()).intValue();
+        int size2 = ((IntToken) size2Param.getToken()).intValue();
 
         if (input.hasToken(0)) {
             ObjectToken inputToken = (ObjectToken) input.get(0);

@@ -228,8 +228,8 @@ public class Histogram extends PlotBox {
                 + " , PlotML format. Exported from Histogram. -->");
 
         super.writeFormat(output);
-        output.println("<barGraph width=\"" + (_barwidth * _binWidth)
-                + "\" offset=\"" + (_baroffset * _binWidth) + "\"/>");
+        output.println("<barGraph width=\"" + _barwidth * _binWidth
+                + "\" offset=\"" + _baroffset * _binWidth + "\"/>");
 
         for (int dataset = 0; dataset < _points.size(); dataset++) {
             // Write the dataset directive
@@ -250,7 +250,7 @@ public class Histogram extends PlotBox {
                 Integer count = (Integer) data.get(bin);
 
                 // The X axis value is a bit complex to get.
-                int xValue = (int) ((bin.intValue() * _binWidth) + _binOffset);
+                int xValue = (int) (bin.intValue() * _binWidth + _binOffset);
                 output.println("<p x=\"" + xValue + "\" y=\""
                         + count.intValue() + "\"/>");
             }
@@ -294,8 +294,8 @@ public class Histogram extends PlotBox {
         setYLabel("count");
 
         for (int i = 0; i <= 1000; i++) {
-            this.addPoint(0, 5.0 * Math.cos((Math.PI * i) / 500.0));
-            this.addPoint(1, (10.0 * _random.nextDouble()) - 5.0);
+            this.addPoint(0, 5.0 * Math.cos(Math.PI * i / 500.0));
+            this.addPoint(1, 10.0 * _random.nextDouble() - 5.0);
             this.addPoint(2, 2.0 * _random.nextGaussian());
         }
 
@@ -465,13 +465,13 @@ public class Histogram extends PlotBox {
             }
         }
 
-        if ((ypos <= _lry) && (xpos <= _lrx) && (xpos >= _ulx)) {
+        if (ypos <= _lry && xpos <= _lrx && xpos >= _ulx) {
             // left x position of bar.
-            int barlx = (int) (xpos - ((_barwidth * _binWidth * _xscale) / 2) + (dataset
-                    * _baroffset * _binWidth * _xscale));
+            int barlx = (int) (xpos - _barwidth * _binWidth * _xscale / 2 + dataset
+                    * _baroffset * _binWidth * _xscale);
 
             // right x position of bar
-            int barrx = (int) (barlx + (_barwidth * _binWidth * _xscale));
+            int barrx = (int) (barlx + _barwidth * _binWidth * _xscale);
 
             if (barlx < _ulx) {
                 barlx = _ulx;
@@ -497,7 +497,7 @@ public class Histogram extends PlotBox {
                 zeroypos = _uly;
             }
 
-            if ((_yMin >= 0) || (ypos <= zeroypos)) {
+            if (_yMin >= 0 || ypos <= zeroypos) {
                 graphics.fillRect(barlx, (int) ypos, barrx - barlx,
                         (int) (zeroypos - ypos));
             } else {
@@ -562,9 +562,9 @@ public class Histogram extends PlotBox {
                 _currentdataset++;
 
                 if (lcLine.length() > 0) {
-                    String legend = (line.substring(8)).trim();
+                    String legend = line.substring(8).trim();
 
-                    if ((legend != null) && (legend.length() > 0)) {
+                    if (legend != null && legend.length() > 0) {
                         addLegend(_currentdataset, legend);
                     }
                 }
@@ -579,10 +579,10 @@ public class Histogram extends PlotBox {
                 String baroffset = null;
 
                 if (comma > 0) {
-                    barwidth = (line.substring(5, comma)).trim();
-                    baroffset = (line.substring(comma + 1)).trim();
+                    barwidth = line.substring(5, comma).trim();
+                    baroffset = line.substring(comma + 1).trim();
                 } else {
-                    barwidth = (line.substring(5)).trim();
+                    barwidth = line.substring(5).trim();
                 }
 
                 try {
@@ -590,7 +590,7 @@ public class Histogram extends PlotBox {
                     double boffset = _baroffset;
 
                     if (baroffset != null) {
-                        boffset = (Double.valueOf(baroffset)).doubleValue();
+                        boffset = Double.valueOf(baroffset).doubleValue();
                     }
 
                     setBars(bwidth.doubleValue(), boffset);
@@ -600,7 +600,7 @@ public class Histogram extends PlotBox {
 
                 return true;
             } else if (lcLine.startsWith("binwidth:")) {
-                String binwidth = (line.substring(9)).trim();
+                String binwidth = line.substring(9).trim();
 
                 try {
                     Double bwidth = Double.valueOf(binwidth);
@@ -611,7 +611,7 @@ public class Histogram extends PlotBox {
 
                 return true;
             } else if (lcLine.startsWith("binoffset:")) {
-                String binoffset = (line.substring(10)).trim();
+                String binoffset = line.substring(10).trim();
 
                 try {
                     Double boffset = Double.valueOf(binoffset);
@@ -661,7 +661,7 @@ public class Histogram extends PlotBox {
                     // ignore if format is bogus.
                 }
             } else {
-                String y = (line.substring(fieldsplit + 1)).trim();
+                String y = line.substring(fieldsplit + 1).trim();
 
                 try {
                     Double ypt = Double.valueOf(y);
@@ -767,7 +767,7 @@ public class Histogram extends PlotBox {
         _checkDatasetIndex(dataset);
 
         // Calculate the bin number.
-        int bin = (int) (Math.round((value - _binOffset) / _binWidth));
+        int bin = (int) Math.round((value - _binOffset) / _binWidth);
         Integer binobj = Integer.valueOf(bin);
 
         // Add to the appropriate bin
@@ -785,7 +785,7 @@ public class Histogram extends PlotBox {
         }
 
         // For auto-ranging, keep track of min and max.
-        double x = (bin * _binWidth) + _binOffset;
+        double x = bin * _binWidth + _binOffset;
 
         if (x < _xBottom) {
             if (_automaticRescale() && _xTop != -Double.MAX_VALUE
@@ -797,7 +797,7 @@ public class Histogram extends PlotBox {
             }
         }
 
-        double xtop = x + (_binWidth / 2.0);
+        double xtop = x + _binWidth / 2.0;
 
         if (xtop > _xTop) {
             if (_automaticRescale() && _xTop != -Double.MAX_VALUE
@@ -829,7 +829,7 @@ public class Histogram extends PlotBox {
         // been dismissed.
         Graphics graphics = getGraphics();
 
-        if (_showing && (graphics != null)) {
+        if (_showing && graphics != null) {
             // In swing, updates to showing graphics must be done in the
             // event thread, not here.  Thus, we have to queue the request.
             final int pendingDataset = dataset;
@@ -896,7 +896,7 @@ public class Histogram extends PlotBox {
         }
 
         double y = count;
-        double x = (_binWidth * bin) + _binOffset;
+        double x = _binWidth * bin + _binOffset;
 
         if (_xlog) {
             if (x <= 0.0) {

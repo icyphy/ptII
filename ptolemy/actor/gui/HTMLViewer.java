@@ -281,7 +281,7 @@ public class HTMLViewer extends TableauFrame implements Printable,
                     // Nonetheless, it's perfectly doable if we can get the
                     // target...
                     if (configuration != null) {
-                        if (useBrowser && (BrowserEffigy.staticFactory != null)) {
+                        if (useBrowser && BrowserEffigy.staticFactory != null) {
                             // Note that openModel will call MessageHandler
                             // if there are problems, so there is no point
                             // putting a try/catch block here.

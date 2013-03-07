@@ -122,7 +122,7 @@ public class Box3D extends GRShadedShape {
             throws IllegalActionException {
         // Check that a box has been previously created.
         if (_changesAllowedNow
-                && ((attribute == xLength) || (attribute == yHeight) || (attribute == zWidth))) {
+                && (attribute == xLength || attribute == yHeight || attribute == zWidth)) {
             if (_scaleTransform != null) {
                 float height = (float) (((DoubleToken) yHeight.getToken())
                         .doubleValue() / 2.0);
@@ -174,7 +174,7 @@ public class Box3D extends GRShadedShape {
         int primitiveFlags = Primitive.GENERATE_NORMALS;
         URL textureURL = texture.asURL();
 
-        if ((textureURL != null) || _changesAllowedNow) {
+        if (textureURL != null || _changesAllowedNow) {
             primitiveFlags = primitiveFlags | Primitive.GENERATE_TEXTURE_COORDS;
         }
 

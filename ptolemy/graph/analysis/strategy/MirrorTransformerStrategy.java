@@ -122,8 +122,8 @@ public class MirrorTransformerStrategy extends CachedStrategy implements
      *  @return The mirror graph.
      */
     public Graph mirror(Graph graph, boolean cloneWeights) {
-        if ((graph.getClass() != graph().getClass())
-                || (cloneWeights != _cloneWeights)) {
+        if (graph.getClass() != graph().getClass()
+                || cloneWeights != _cloneWeights) {
             reset();
         }
 
@@ -176,7 +176,7 @@ public class MirrorTransformerStrategy extends CachedStrategy implements
 
         try {
             // Kepler (jdk1.4?) requires this cast
-            mirrorGraph = (_graph.getClass().newInstance());
+            mirrorGraph = _graph.getClass().newInstance();
         } catch (Exception exception) {
             throw new RuntimeException("Could not create an empty graph from "
                     + "this one.\n" + exception + "\n");

@@ -111,19 +111,19 @@ public class StringReplace extends TypedAtomicActor {
         pattern = new PortParameter(this, "pattern");
         pattern.setStringMode(true);
         pattern.setExpression("");
-        (new SingletonParameter(pattern.getPort(), "_showName"))
+        new SingletonParameter(pattern.getPort(), "_showName")
                 .setToken(BooleanToken.TRUE);
 
         replacement = new PortParameter(this, "replacement");
         replacement.setStringMode(true);
         replacement.setExpression("");
-        (new SingletonParameter(replacement.getPort(), "_showName"))
+        new SingletonParameter(replacement.getPort(), "_showName")
                 .setToken(BooleanToken.TRUE);
 
         stringToEdit = new PortParameter(this, "stringToEdit");
         stringToEdit.setStringMode(true);
         stringToEdit.setExpression("");
-        (new SingletonParameter(stringToEdit.getPort(), "_showName"))
+        new SingletonParameter(stringToEdit.getPort(), "_showName")
                 .setToken(BooleanToken.TRUE);
 
         output = new TypedIOPort(this, "output", false, true);
@@ -205,7 +205,7 @@ public class StringReplace extends TypedAtomicActor {
      *   an attribute that cannot be cloned.
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        StringReplace newObject = (StringReplace)super.clone(workspace);
+        StringReplace newObject = (StringReplace) super.clone(workspace);
         try {
             newObject.attributeChanged(newObject.pattern);
         } catch (IllegalActionException e) {
@@ -236,8 +236,8 @@ public class StringReplace extends TypedAtomicActor {
                 .stringValue();
         boolean replaceAllTokens = ((BooleanToken) replaceAll.getToken())
                 .booleanValue();
-        boolean regularExpressionValue = ((BooleanToken) regularExpression.getToken())
-                .booleanValue();
+        boolean regularExpressionValue = ((BooleanToken) regularExpression
+                .getToken()).booleanValue();
 
         if (regularExpressionValue) {
             if (_pattern == null) {
@@ -265,7 +265,8 @@ public class StringReplace extends TypedAtomicActor {
                     outputString = match.replaceFirst(replacementValue);
                 }
             } catch (Exception ex) {
-                throw new IllegalActionException(this, ex, "String replace failed.");
+                throw new IllegalActionException(this, ex,
+                        "String replace failed.");
             }
 
             output.send(0, new StringToken(outputString));
@@ -273,9 +274,11 @@ public class StringReplace extends TypedAtomicActor {
             // No regular expression.
             String outputString;
             if (replaceAllTokens) {
-                outputString = stringToEditValue.replaceAll(_patternValue, replacementValue);
+                outputString = stringToEditValue.replaceAll(_patternValue,
+                        replacementValue);
             } else {
-                outputString = stringToEditValue.replace(_patternValue, replacementValue);
+                outputString = stringToEditValue.replace(_patternValue,
+                        replacementValue);
             }
             output.send(0, new StringToken(outputString));
         }

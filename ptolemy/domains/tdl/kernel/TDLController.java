@@ -97,7 +97,7 @@ public class TDLController extends TDLActor {
         try {
             _workspace.getWriteAccess();
 
-            if (_mirrorDisable || (getContainer() == null)) {
+            if (_mirrorDisable || getContainer() == null) {
                 // Have already called the super class.
                 // This time, process the request.
                 TDLRefinementPort port = new TDLRefinementPort(this, name);
@@ -168,7 +168,7 @@ public class TDLController extends TDLActor {
      */
     protected void _checkContainer(Entity container)
             throws IllegalActionException {
-        if (!(container instanceof ModalModel) && (container != null)) {
+        if (!(container instanceof ModalModel) && container != null) {
             throw new IllegalActionException(container, this,
                     "ModalController can only be contained by "
                             + "ModalModel objects.");

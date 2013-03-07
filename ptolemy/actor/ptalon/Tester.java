@@ -37,8 +37,8 @@ public class Tester {
     public static void main(String args[]) {
         String in = "ptalonActor:a(x := <1/>, y := <2/>)(z := ptalonActor:b(y := <2/>, z := <2/>))";
         String[] out = _parseActorExpression(in);
-        for (int i = 0; i < out.length; i++) {
-            System.out.println(out[i]);
+        for (String element : out) {
+            System.out.println(element);
         }
     }
 
@@ -55,7 +55,7 @@ public class Tester {
                 parenthesis++;
             } else if (remains.charAt(i) == ')') {
                 parenthesis--;
-            } else if ((remains.charAt(i) == ',') && (parenthesis == 0)) {
+            } else if (remains.charAt(i) == ',' && parenthesis == 0) {
                 markers.add(i);
             }
         }

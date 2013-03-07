@@ -110,8 +110,8 @@ public class Complex {
      *  arc cosine of the given complex number.
      */
     public final Complex acos() {
-        Complex c1 = new Complex(1.0 - (real * real) + (imag * imag), -2.0
-                * real * imag);
+        Complex c1 = new Complex(1.0 - real * real + imag * imag, -2.0 * real
+                * imag);
         Complex c2 = c1.sqrt();
         Complex c3 = new Complex(real - c2.imag, imag + c2.real);
         Complex c4 = c3.log();
@@ -144,8 +144,8 @@ public class Complex {
      *  principal hyperbolic arc cosine of this complex number.
      */
     public final Complex acosh() {
-        Complex c1 = new Complex((real * real) - (imag * imag) - 1.0, 2.0
-                * real * imag);
+        Complex c1 = new Complex(real * real - imag * imag - 1.0, 2.0 * real
+                * imag);
         Complex c2 = c1.sqrt();
         Complex c3 = add(c2);
         return c3.log();
@@ -201,8 +201,8 @@ public class Complex {
      *  of this complex number.
      */
     public final Complex asin() {
-        Complex c1 = new Complex(1.0 - (real * real) + (imag * imag), -2.0
-                * real * imag);
+        Complex c1 = new Complex(1.0 - real * real + imag * imag, -2.0 * real
+                * imag);
         Complex c2 = c1.sqrt();
         Complex c3 = new Complex(c2.real - imag, c2.imag + real);
         Complex c4 = c3.log();
@@ -235,8 +235,8 @@ public class Complex {
      *  hyperbolic arc sine of this complex number.
      */
     public final Complex asinh() {
-        Complex c1 = new Complex((1.0 + (real * real)) - (imag * imag), 2.0
-                * real * imag);
+        Complex c1 = new Complex(1.0 + real * real - imag * imag, 2.0 * real
+                * imag);
         Complex c2 = c1.sqrt();
         Complex c3 = add(c2);
         return c3.log();
@@ -268,9 +268,9 @@ public class Complex {
      *  tangent of this complex number.
      */
     public final Complex atan() {
-        double denominator = (real * real) + ((imag + 1.0) * (imag + 1.0));
-        Complex c1 = new Complex(((-real * real) - (imag * imag) + 1.0)
-                / denominator, (2.0 * real) / denominator);
+        double denominator = real * real + (imag + 1.0) * (imag + 1.0);
+        Complex c1 = new Complex((-real * real - imag * imag + 1.0)
+                / denominator, 2.0 * real / denominator);
         Complex c2 = c1.log();
         return new Complex(c2.imag * 0.5, -c2.real * 0.5);
     }
@@ -301,9 +301,9 @@ public class Complex {
      *  hyperbolic arc tangent of this complex number.
      */
     public final Complex atanh() {
-        double denominator = ((1.0 - real) * (1.0 - real)) + (imag * imag);
-        Complex c1 = new Complex(((-real * real) - (imag * imag) + 1.0)
-                / denominator, (2.0 * imag) / denominator);
+        double denominator = (1.0 - real) * (1.0 - real) + imag * imag;
+        Complex c1 = new Complex((-real * real - imag * imag + 1.0)
+                / denominator, 2.0 * imag / denominator);
         Complex c2 = c1.log();
         return new Complex(c2.real * 0.5, c2.imag * 0.5);
     }
@@ -484,8 +484,8 @@ public class Complex {
     public final Complex divide(Complex divisor) {
         // This algorithm results from writing a/b as (ab*)/magSquared(b).
         double denominator = divisor.magnitudeSquared();
-        return new Complex(((real * divisor.real) + (imag * divisor.imag))
-                / denominator, ((imag * divisor.real) - (real * divisor.imag))
+        return new Complex((real * divisor.real + imag * divisor.imag)
+                / denominator, (imag * divisor.real - real * divisor.imag)
                 / denominator);
     }
 
@@ -496,7 +496,7 @@ public class Complex {
      */
     public final boolean equals(Object z) {
         if (z instanceof Complex) {
-            return ((((Complex) z).real == real) && (((Complex) z).imag == imag));
+            return ((Complex) z).real == real && ((Complex) z).imag == imag;
         }
         return false;
     }
@@ -597,7 +597,7 @@ public class Complex {
      *  @return True if this is infinite.
      */
     public final boolean isInfinite() {
-        return (Double.isInfinite(real) || Double.isInfinite(imag));
+        return Double.isInfinite(real) || Double.isInfinite(imag);
     }
 
     /** Return true if either the real or imaginary part of the given
@@ -619,7 +619,7 @@ public class Complex {
      *  @return True if this is NaN.
      */
     public final boolean isNaN() {
-        return (Double.isNaN(real) || Double.isNaN(imag));
+        return Double.isNaN(real) || Double.isNaN(imag);
     }
 
     /** Return true if either the real or imaginary part of the given
@@ -695,7 +695,7 @@ public class Complex {
      *  complex number.
      */
     public double magnitudeSquared() {
-        return (real * real) + (imag * imag);
+        return real * real + imag * imag;
     }
 
     /** Return the square of the magnitude of this complex number.
@@ -720,8 +720,8 @@ public class Complex {
      *  @see Complex#scale
      */
     public Complex multiply(Complex w) {
-        return new Complex((w.real * real) - (w.imag * imag), (w.real * imag)
-                + (w.imag * real));
+        return new Complex(w.real * real - w.imag * imag, w.real * imag
+                + w.imag * real);
     }
 
     /** Negate this complex number.
@@ -807,8 +807,8 @@ public class Complex {
         // to something of the form ae^jb.
         double lnrho = Math.log(magnitude());
         double theta = angle();
-        double magnitude = Math.exp((lnrho * y.real) - (theta * y.imag));
-        double angle = (lnrho * y.imag) + (theta * y.real);
+        double magnitude = Math.exp(lnrho * y.real - theta * y.imag);
+        double angle = lnrho * y.imag + theta * y.real;
         return polarToComplex(magnitude, angle);
     }
 
@@ -831,7 +831,7 @@ public class Complex {
      *  @return A new complex number that with value <em>z <sup>y</sup></em>.
      */
     public static Complex pow(double z, Complex y) {
-        return (new Complex(z, 0.0)).pow(y);
+        return new Complex(z, 0.0).pow(y);
     }
 
     /** Return the real part of the specified complex number.

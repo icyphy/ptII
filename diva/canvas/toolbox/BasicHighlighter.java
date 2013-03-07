@@ -111,8 +111,7 @@ public class BasicHighlighter extends FigureDecorator {
     public Rectangle2D getBounds() {
         Rectangle2D b = getChild().getBounds();
         Rectangle2D bounds = new Rectangle2D.Double(b.getX() - _halo, b.getY()
-                - _halo, b.getWidth() + (2 * _halo), b.getHeight()
-                + (2 * _halo));
+                - _halo, b.getWidth() + 2 * _halo, b.getHeight() + 2 * _halo);
 
         return bounds;
     }
@@ -167,8 +166,8 @@ public class BasicHighlighter extends FigureDecorator {
         Rectangle2D bounds = getChild().getShape().getBounds2D();
         double x = bounds.getX() - _halo;
         double y = bounds.getY() - _halo;
-        double w = bounds.getWidth() + (2 * _halo);
-        double h = bounds.getHeight() + (2 * _halo);
+        double w = bounds.getWidth() + 2 * _halo;
+        double h = bounds.getHeight() + 2 * _halo;
 
         if (_stroke == null) {
             g.fill(new Rectangle2D.Double(x, y, w, h));
@@ -198,8 +197,8 @@ public class BasicHighlighter extends FigureDecorator {
         Rectangle2D bounds = getChild().getBounds();
         double x = bounds.getX() - _halo;
         double y = bounds.getY() - _halo;
-        double w = bounds.getWidth() + (2 * _halo);
-        double h = bounds.getHeight() + (2 * _halo);
+        double w = bounds.getWidth() + 2 * _halo;
+        double h = bounds.getHeight() + 2 * _halo;
 
         getParent().repaint(
                 DamageRegion.createDamageRegion(getTransformContext(), x, y, w,

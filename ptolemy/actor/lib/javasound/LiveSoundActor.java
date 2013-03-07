@@ -163,12 +163,12 @@ public class LiveSoundActor extends TypedAtomicActor {
             if (attribute == transferSize) {
                 _transferSize = ((IntToken) transferSize.getToken()).intValue();
                 if (!_isExecuting
-                        && (LiveSound.getTransferSize() != _transferSize)) {
+                        && LiveSound.getTransferSize() != _transferSize) {
                     LiveSound.setTransferSize(_transferSize);
                 }
             } else if (attribute == bufferSize) {
                 _bufferSize = ((IntToken) bufferSize.getToken()).intValue();
-                if (!_isExecuting && (LiveSound.getBufferSize() != _bufferSize)) {
+                if (!_isExecuting && LiveSound.getBufferSize() != _bufferSize) {
                     LiveSound.setBufferSize(_bufferSize);
                 }
             } else if (attribute == channels) {
@@ -184,7 +184,7 @@ public class LiveSoundActor extends TypedAtomicActor {
 
                 // Only set the channels if it is different than
                 // the currently active channels.
-                if (!_isExecuting && (LiveSound.getChannels() != _channels)) {
+                if (!_isExecuting && LiveSound.getChannels() != _channels) {
                     LiveSound.setChannels(_channels);
                 }
             } else if (attribute == sampleRate) {
@@ -192,7 +192,7 @@ public class LiveSoundActor extends TypedAtomicActor {
 
                 // Only set the sample rate if it is different than
                 // the currently active sample rate.
-                if (!_isExecuting && (LiveSound.getSampleRate() != _sampleRate)) {
+                if (!_isExecuting && LiveSound.getSampleRate() != _sampleRate) {
                     LiveSound.setSampleRate(_sampleRate);
                 }
             } else if (attribute == bitsPerSample) {
@@ -202,7 +202,7 @@ public class LiveSoundActor extends TypedAtomicActor {
                 // Only set the bitsPerSample if it is different than
                 // the currently active bitsPerSample.
                 if (!_isExecuting
-                        && (LiveSound.getBitsPerSample() != _bitsPerSample)) {
+                        && LiveSound.getBitsPerSample() != _bitsPerSample) {
                     LiveSound.setBitsPerSample(_bitsPerSample);
                 }
             }

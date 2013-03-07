@@ -102,7 +102,7 @@ public class RecordConcept extends MapTypeInfiniteConcept<Concept> {
      */
     public int compare(Concept concept) throws IllegalActionException {
         if (concept.getOntology() == null
-                || !(concept.getOntology().equals(getOntology()))) {
+                || !concept.getOntology().equals(getOntology())) {
             throw new IllegalActionException(this,
                     "Attempt to compare elements from two distinct ontologies");
         }

@@ -129,7 +129,7 @@ public class Vertex extends Location {
         String value = getExpression();
         String valueTerm = "";
 
-        if ((value != null) && !value.equals("")) {
+        if (value != null && !value.equals("")) {
             valueTerm = " value=\"" + StringUtilities.escapeForXML(value)
                     + "\"";
         }

@@ -110,7 +110,7 @@ public class RemoveProperties extends MoMLFilterSimple {
 
         if (attributeName.equals("name")) {
             if (_propertiesToBeRemoved.containsKey(attributeValue)
-                    && (element != null) && element.equals("property")) {
+                    && element != null && element.equals("property")) {
                 _foundPropertyToBeRemoved = true;
                 _propertyMap = (HashMap) _propertiesToBeRemoved
                         .get(attributeValue);

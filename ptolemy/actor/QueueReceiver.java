@@ -186,7 +186,7 @@ public class QueueReceiver extends AbstractReceiver {
                     "The number of tokens must be greater than 0");
         }
 
-        return (_queue.size() + numberOfTokens) < _queue.getCapacity();
+        return _queue.size() + numberOfTokens < _queue.getCapacity();
     }
 
     /** Return true if the next call to get() will succeed without a

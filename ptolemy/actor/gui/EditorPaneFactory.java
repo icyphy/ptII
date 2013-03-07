@@ -168,7 +168,7 @@ public class EditorPaneFactory extends Attribute {
             query.add(tabs, BorderLayout.CENTER);
         }
 
-        PtolemyQuery queryForMainAttributes = (numberOfTabs > 1) ? mainTab
+        PtolemyQuery queryForMainAttributes = numberOfTabs > 1 ? mainTab
                 : query;
 
         for (Settable parameter : parameters) {

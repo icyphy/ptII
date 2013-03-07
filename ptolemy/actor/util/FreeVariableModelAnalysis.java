@@ -111,9 +111,8 @@ public class FreeVariableModelAnalysis {
         // Next, compute the set of variable names defined in this container.
         Set variableNames = new HashSet();
 
-        for (Iterator variables = model.attributeList(Variable.class)
-                .iterator(); variables.hasNext();) {
-            Variable variable = (Variable) variables.next();
+        for (Object element : model.attributeList(Variable.class)) {
+            Variable variable = (Variable) element;
             variableNames.add(variable.getName());
         }
 
@@ -128,9 +127,8 @@ public class FreeVariableModelAnalysis {
         PtParser parser = new PtParser();
         ParseTreeFreeVariableCollector collector = new ParseTreeFreeVariableCollector();
 
-        for (Iterator variables = model.attributeList(Variable.class)
-                .iterator(); variables.hasNext();) {
-            Variable variable = (Variable) variables.next();
+        for (Object element : model.attributeList(Variable.class)) {
+            Variable variable = (Variable) element;
             String expression = variable.getExpression();
             ASTPtRootNode root;
 

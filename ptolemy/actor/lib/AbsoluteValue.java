@@ -171,7 +171,7 @@ public class AbsoluteValue extends Transformer {
          *  @return A Type.
          */
         public Object getValue() {
-            return (_outputType(_port.getType()));
+            return _outputType(_port.getType());
         }
 
         /** Return the variables in this term. If the type of the input port

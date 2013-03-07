@@ -148,7 +148,7 @@ public class MovableViewScreen3D extends ViewScreen3D {
         ArrayToken axisToken = (ArrayToken) viewerRotationAxis.getToken();
         DoubleToken angleToken = (DoubleToken) viewerRotationAngle.getToken();
 
-        if ((positionToken.length() != 3) || (axisToken.length() != 3)) {
+        if (positionToken.length() != 3 || axisToken.length() != 3) {
             throw new IllegalActionException(
                     "viewerPosition and viewerRotaionAxis arrays must have length 3.");
         }
@@ -174,7 +174,7 @@ public class MovableViewScreen3D extends ViewScreen3D {
             axisX = ((DoubleToken) axisToken.getElement(0)).doubleValue();
             axisY = ((DoubleToken) axisToken.getElement(1)).doubleValue();
             axisZ = ((DoubleToken) axisToken.getElement(2)).doubleValue();
-            angle = (angleToken).doubleValue();
+            angle = angleToken.doubleValue();
 
             Quat4d quaternion = new Quat4d();
             quaternion.set(new AxisAngle4d(axisX, axisY, axisZ, angle));
@@ -206,7 +206,7 @@ public class MovableViewScreen3D extends ViewScreen3D {
         _axis = (ArrayToken) viewerRotationAxis.getToken();
         _angle = (DoubleToken) viewerRotationAngle.getToken();
 
-        if ((_position.length() != 3) || (_axis.length() != 3)) {
+        if (_position.length() != 3 || _axis.length() != 3) {
             throw new IllegalActionException(
                     "viewerPosition and viewerRotaionAxis arrays must have length 3.");
         }
@@ -217,7 +217,7 @@ public class MovableViewScreen3D extends ViewScreen3D {
         axisX = ((DoubleToken) _axis.getElement(0)).doubleValue();
         axisY = ((DoubleToken) _axis.getElement(1)).doubleValue();
         axisZ = ((DoubleToken) _axis.getElement(2)).doubleValue();
-        angle = (_angle).doubleValue();
+        angle = _angle.doubleValue();
 
         Quat4d quaternion = new Quat4d();
         quaternion.set(new AxisAngle4d(axisX, axisY, axisZ, angle));

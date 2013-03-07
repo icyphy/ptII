@@ -73,8 +73,8 @@ public class ShortTitleTabbedPaneUI extends BasicTabbedPaneUI {
         if (title.length() > TAB_MINIMUM_SIZE) {
             taille = SwingUtilities.computeStringWidth(
                     metrics,
-                    (title.substring(title.length() - TAB_MINIMUM_SIZE,
-                            title.length()))) + 3;
+                    title.substring(title.length() - TAB_MINIMUM_SIZE,
+                            title.length())) + 3;
         } else {
             taille = super.calculateTabWidth(tabPlacement, tabIndex, metrics);
         }

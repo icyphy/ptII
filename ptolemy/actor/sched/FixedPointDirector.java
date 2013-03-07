@@ -531,8 +531,7 @@ public class FixedPointDirector extends StaticSchedulingDirector implements
         // Check whether the current execution has reached its iteration limit.
         _currentIteration++;
         int numberOfIterations = ((IntToken) iterations.getToken()).intValue();
-        if ((numberOfIterations > 0)
-                && (_currentIteration >= numberOfIterations)) {
+        if (numberOfIterations > 0 && _currentIteration >= numberOfIterations) {
             super.postfire();
             return false;
         }
@@ -973,7 +972,6 @@ public class FixedPointDirector extends StaticSchedulingDirector implements
      *  constraints.
      */
     private Set _actorsAllowedToFire = new HashSet();
-
 
     /** Actors that were fired in the most recent invocation of the fire() method. */
     protected Set _actorsFired = new HashSet();

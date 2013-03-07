@@ -222,7 +222,7 @@ public abstract class BaseType implements Type, Serializable {
         }
 
         int typeInfo = TypeLattice.compare(this, type);
-        return ((typeInfo == CPO.SAME) || (typeInfo == CPO.HIGHER));
+        return typeInfo == CPO.SAME || typeInfo == CPO.HIGHER;
     }
 
     /** Test if this Type is UNKNOWN.
@@ -250,7 +250,7 @@ public abstract class BaseType implements Type, Serializable {
      *  @return True if this type is UNKNOWN; false otherwise.
      */
     public boolean isSubstitutionInstance(Type type) {
-        return (this == UNKNOWN) || (this == type);
+        return this == UNKNOWN || this == type;
     }
 
     /** Return the type of the multiplicative identity for elements of

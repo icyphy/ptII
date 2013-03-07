@@ -82,7 +82,7 @@ public class CenterSite extends AbstractSite {
      */
     public double getX() {
         Rectangle2D bounds = _parentFigure.getBounds();
-        return bounds.getX() + (bounds.getWidth() / 2);
+        return bounds.getX() + bounds.getWidth() / 2;
     }
 
     /** Get the y-coordinate of the site.  The site
@@ -91,6 +91,6 @@ public class CenterSite extends AbstractSite {
      */
     public double getY() {
         Rectangle2D bounds = _parentFigure.getBounds();
-        return bounds.getY() + (bounds.getHeight() / 2);
+        return bounds.getY() + bounds.getHeight() / 2;
     }
 }

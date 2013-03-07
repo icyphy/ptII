@@ -85,7 +85,7 @@ public class UnitLibrary {
         Vector library = UnitLibrary.getLibrary();
 
         for (int i = 0; i < library.size(); i++) {
-            Unit lUnit = (Unit) (library.elementAt(i));
+            Unit lUnit = (Unit) library.elementAt(i);
 
             if (lUnit.getScale() != 1.0) {
                 continue;
@@ -127,7 +127,7 @@ public class UnitLibrary {
         Unit retv = null;
 
         for (int i = 0; i < possibles.size(); i++) {
-            Unit possible = (Unit) (possibles.elementAt(i));
+            Unit possible = (Unit) possibles.elementAt(i);
             double distance = Math.abs(possible.getScale() - unit.getScale());
 
             if (distance < scalarDistance) {
@@ -188,11 +188,11 @@ public class UnitLibrary {
         Vector library = getLibrary();
 
         for (int i = 0; i < library.size(); i++) {
-            Unit lUnit = (Unit) (library.elementAt(i));
+            Unit lUnit = (Unit) library.elementAt(i);
             Vector names = lUnit.getLabels();
 
             for (int j = 0; j < names.size(); j++) {
-                if (((String) (names.elementAt(j))).equals(name)) {
+                if (((String) names.elementAt(j)).equals(name)) {
                     return lUnit;
                 }
             }
@@ -210,7 +210,7 @@ public class UnitLibrary {
         Vector library = UnitLibrary.getLibrary();
 
         for (int i = 0; i < library.size(); i++) {
-            Unit lUnit = (Unit) (library.elementAt(i));
+            Unit lUnit = (Unit) library.elementAt(i);
 
             if (lUnit.hasSameType(unit)) {
                 retv.add(lUnit);
@@ -250,7 +250,7 @@ public class UnitLibrary {
 
             momlParser.parse(base, inURL);
 
-            us = (UnitSystem) (container.getAttribute("SI"));
+            us = (UnitSystem) container.getAttribute("SI");
         } catch (Throwable throwable) {
             throw new InternalErrorException(null, throwable,
                     "Failed to initialize statics in UnitLibrary");
@@ -290,7 +290,7 @@ public class UnitLibrary {
             Iterator iter = pairs.iterator();
 
             while (iter.hasNext()) {
-                UnitNameExprPair pair = (UnitNameExprPair) (iter.next());
+                UnitNameExprPair pair = (UnitNameExprPair) iter.next();
                 String expr = pair.getUExpr();
 
                 try {
@@ -313,7 +313,7 @@ public class UnitLibrary {
             Vector units = getLibrary();
 
             for (int i = 0; i < units.size(); i++) {
-                System.out.println(((Unit) (units.elementAt(i))).toString());
+                System.out.println(((Unit) units.elementAt(i)).toString());
             }
         }
     }

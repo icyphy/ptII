@@ -235,8 +235,8 @@ abstract public class GRShadedShape extends GRActor3D {
         // constructor, and don't need to do any of this.
         if (allowRuntimeChanges != null) {
             if (_changesAllowedNow) {
-                if ((attribute == transparency)
-                        && (_transparencyAttributes != null)) {
+                if (attribute == transparency
+                        && _transparencyAttributes != null) {
                     float transparent = (float) ((DoubleToken) transparency
                             .getToken()).doubleValue();
 
@@ -251,7 +251,7 @@ abstract public class GRShadedShape extends GRActor3D {
                     _transparencyAttributes.setTransparency(transparent);
                 }
 
-                if ((attribute == flat) && (_coloringAttributes != null)) {
+                if (attribute == flat && _coloringAttributes != null) {
                     boolean flatValue = ((BooleanToken) flat.getToken())
                             .booleanValue();
                     int shadeModel = ColoringAttributes.SHADE_GOURAUD;
@@ -280,10 +280,10 @@ abstract public class GRShadedShape extends GRActor3D {
                     }
                 }
 
-                if ((attribute == texture) && (_appearance != null)) {
+                if (attribute == texture && _appearance != null) {
                     URL textureURL = texture.asURL();
 
-                    if ((_viewScreen != null) && (textureURL != null)) {
+                    if (_viewScreen != null && textureURL != null) {
                         TextureLoader loader;
                         loader = new TextureLoader(textureURL,
                                 _viewScreen.getCanvas());
@@ -296,7 +296,7 @@ abstract public class GRShadedShape extends GRActor3D {
                     }
                 }
 
-                if ((attribute == wireFrame) && (_polygonAttributes != null)) {
+                if (attribute == wireFrame && _polygonAttributes != null) {
                     int mode = PolygonAttributes.POLYGON_FILL;
 
                     if (((BooleanToken) wireFrame.getToken()).booleanValue()) {
@@ -410,7 +410,7 @@ abstract public class GRShadedShape extends GRActor3D {
         float transparent = (float) ((DoubleToken) transparency.getToken())
                 .doubleValue();
 
-        if ((transparent > 0.0) || allowChanges) {
+        if (transparent > 0.0 || allowChanges) {
             int mode = TransparencyAttributes.NICEST;
 
             if (transparent == 0.0) {
@@ -512,7 +512,7 @@ abstract public class GRShadedShape extends GRActor3D {
 
         // If runtime changes are allowed, then we need to set texture
         // attributes even if not needed now.
-        if ((attributes == null)
+        if (attributes == null
                 && ((BooleanToken) allowRuntimeChanges.getToken())
                         .booleanValue()) {
             attributes = new TextureAttributes();

@@ -176,8 +176,8 @@ public class BoxedValuesIcon extends XMLIcon {
             while (settables.hasNext()) {
                 Settable settable = (Settable) settables.next();
 
-                if ((settable.getVisibility() != Settable.FULL)
-                        && (settable.getVisibility() != Settable.NOT_EDITABLE)) {
+                if (settable.getVisibility() != Settable.FULL
+                        && settable.getVisibility() != Settable.NOT_EDITABLE) {
                     continue;
                 }
 

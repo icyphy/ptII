@@ -200,7 +200,7 @@ public class Round extends Transformer {
             Token[] inArray = input.get(0, count);
 
             for (int i = 0; i < count; i++) {
-                double value = ((DoubleToken) (inArray[i])).doubleValue();
+                double value = ((DoubleToken) inArray[i]).doubleValue();
                 if (Double.isNaN(value)) {
                     throw new IllegalActionException(
                             "Input is Double.NaN, "

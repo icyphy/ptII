@@ -116,17 +116,17 @@ public class PtDoclet {
                     .forName("ptolemy.kernel.util.StringAttribute");
 
             ClassDoc[] classes = root.classes();
-            for (int i = 0; i < classes.length; i++) {
-                String className = classes[i].toString();
-                if (classes[i].subclassOf(namedObjDoc)) {
+            for (ClassDoc classe : classes) {
+                String className = classe.toString();
+                if (classe.subclassOf(namedObjDoc)) {
                     _writeDoc(
                             className,
-                            _generateClassLevelDocumentation(classes[i])
-                                    + _generateFieldDocumentation(classes[i],
+                            _generateClassLevelDocumentation(classe)
+                                    + _generateFieldDocumentation(classe,
                                             typedIOPortClass, "port")
-                                    + _generateFieldDocumentation(classes[i],
+                                    + _generateFieldDocumentation(classe,
                                             parameterClass, "property")
-                                    + _generateFieldDocumentation(classes[i],
+                                    + _generateFieldDocumentation(classe,
                                             stringAttributeClass, "property")
                                     + "</doc>\n");
 
@@ -160,8 +160,8 @@ public class PtDoclet {
 
         Tag tag[] = programElementDoc.tags("UserLevelDocumentation");
         StringBuffer textTag = new StringBuffer();
-        for (int k = 0; k < tag.length; k++) {
-            textTag.append(tag[k].text());
+        for (Tag element : tag) {
+            textTag.append(element.text());
         }
 
         if (textTag.toString().length() > 0) {
@@ -184,9 +184,9 @@ public class PtDoclet {
         // should do this, but it does not.
         StringBuffer documentation = new StringBuffer();
         Tag tag[] = programElementDoc.inlineTags();
-        for (int i = 0; i < tag.length; i++) {
-            if (tag[i] instanceof SeeTag) {
-                SeeTag seeTag = (SeeTag) tag[i];
+        for (Tag element : tag) {
+            if (element instanceof SeeTag) {
+                SeeTag seeTag = (SeeTag) element;
                 documentation.append("<a href=\"");
                 // The dot separated class or package name, if any.
                 String classOrPackageName = null;
@@ -228,7 +228,7 @@ public class PtDoclet {
                 }
                 documentation.append("\">" + target + "</a>");
             } else {
-                documentation.append(tag[i].text());
+                documentation.append(element.text());
             }
         }
         return documentation.toString();
@@ -261,16 +261,16 @@ public class PtDoclet {
         String[] classTags = { "author", "version", "since",
                 "Pt.ProposedRating", "Pt.AcceptedRating",
                 "UserLevelDocumentation" };
-        for (int j = 0; j < classTags.length; j++) {
-            tags = classDoc.tags(classTags[j]);
+        for (String classTag : classTags) {
+            tags = classDoc.tags(classTag);
             if (tags.length > 0) {
                 StringBuffer textTag = new StringBuffer();
-                for (int k = 0; k < tags.length; k++) {
-                    textTag.append(tags[k].text());
+                for (Tag tag : tags) {
+                    textTag.append(tag.text());
                 }
-                documentation.append("  <" + classTags[j] + ">"
+                documentation.append("  <" + classTag + ">"
                         + StringUtilities.escapeForXML(textTag.toString())
-                        + "</" + classTags[j] + ">\n");
+                        + "</" + classTag + ">\n");
             }
         }
         return documentation;
@@ -292,8 +292,8 @@ public class PtDoclet {
         StringBuffer documentation = new StringBuffer();
         FieldDoc[] fields = classDoc.fields();
         // FIXME: get fields from superclasses?
-        for (int i = 0; i < fields.length; i++) {
-            String className = fields[i].type().toString();
+        for (FieldDoc field : fields) {
+            String className = field.type().toString();
             //System.out.println(element + ": Processing " + className);
 
             try {
@@ -306,19 +306,18 @@ public class PtDoclet {
                 }
                 Class type = Class.forName(className);
                 if (fieldBaseClass.isAssignableFrom(type)) {
-                    documentation
-                            .append("    <!--"
-                                    + className
-                                    + "-->\n"
-                                    + "    <"
-                                    + element
-                                    + " name=\""
-                                    + fields[i].name()
-                                    + "\">"
-                                    + StringUtilities
-                                            .escapeForXML(_inlineTagCommentText(fields[i]))
-                                    + _customTagCommentText(fields[i]) + "</"
-                                    + element + ">\n");
+                    documentation.append("    <!--"
+                            + className
+                            + "-->\n"
+                            + "    <"
+                            + element
+                            + " name=\""
+                            + field.name()
+                            + "\">"
+                            + StringUtilities
+                                    .escapeForXML(_inlineTagCommentText(field))
+                            + _customTagCommentText(field) + "</" + element
+                            + ">\n");
                 }
             } catch (ClassNotFoundException ex) {
                 // Ignored, we probably have a primitive type like boolean.
@@ -357,8 +356,7 @@ public class PtDoclet {
      *  @return the value of the -d parameter, if any, otherwise return null.
      */
     private static String _getOutputDirectory(String[][] options) {
-        for (int i = 0; i < options.length; i++) {
-            String[] option = options[i];
+        for (String[] option : options) {
             if (option[0].equals("-d")) {
                 return option[1];
             }
@@ -412,7 +410,7 @@ public class PtDoclet {
         // documentation for, then link to the .html file that
         // presumably was generated by javadoc; otherwise, link to the
         // .xml file
-        String extension = (isIncluded ? ".xml" : ".html");
+        String extension = isIncluded ? ".xml" : ".html";
 
         System.out.println("PtDoclet: relativize: " + baseDirectory + " "
                 + baseClassName + " " + baseClassParts.length + " " + offset

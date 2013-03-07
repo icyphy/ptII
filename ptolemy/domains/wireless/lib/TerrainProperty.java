@@ -300,7 +300,7 @@ public class TerrainProperty extends TypedAtomicActor implements
             double multiplier = 0.0;
             // Avoid divide by zero, though in theory it's OK.
             if (_attenuation > 0.0) {
-                multiplier = Math.exp((Math.log(0.5) / _attenuation) * depth);
+                multiplier = Math.exp(Math.log(0.5) / _attenuation * depth);
             }
 
             // Create a record token with the receive power.
@@ -467,10 +467,10 @@ public class TerrainProperty extends TypedAtomicActor implements
             // the double values.  It is close enough to zero to not make a
             // difference while still accounding for rounding errors.
 
-            if (((p[0] - a1[0]) * (p[0] - a2[0]) <= 0.00001)
-                    && ((p[1] - a1[1]) * (p[1] - a2[1]) <= 0.00001)
-                    && ((p[0] - b1[0]) * (p[0] - b2[0]) <= 0.00001)
-                    && ((p[1] - b1[1]) * (p[1] - b2[1]) <= 0.00001)) {
+            if ((p[0] - a1[0]) * (p[0] - a2[0]) <= 0.00001
+                    && (p[1] - a1[1]) * (p[1] - a2[1]) <= 0.00001
+                    && (p[0] - b1[0]) * (p[0] - b2[0]) <= 0.00001
+                    && (p[1] - b1[1]) * (p[1] - b2[1]) <= 0.00001) {
 
                 return p;
             }

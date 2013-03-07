@@ -228,7 +228,7 @@ public class PtalonActor extends TypedCompositeActor implements Configurable {
             if (base != null) {
                 _configureSource = base.toExternalForm();
             }
-            if ((text != null) && (!text.trim().equals(""))) {
+            if (text != null && !text.trim().equals("")) {
                 XmlParser parser = new XmlParser();
                 PtalonMLHandler handler = new PtalonMLHandler(this);
                 parser.setHandler(handler);
@@ -363,10 +363,9 @@ public class PtalonActor extends TypedCompositeActor implements Configurable {
 
         int uniqueNameIndex = 1;
 
-        while ((getAttribute(candidate) != null)
-                || (getPort(candidate) != null)
-                || (getEntity(candidate) != null)
-                || (getRelation(candidate) != null)) {
+        while (getAttribute(candidate) != null || getPort(candidate) != null
+                || getEntity(candidate) != null
+                || getRelation(candidate) != null) {
             candidate = prefix + uniqueNameIndex++;
         }
 
@@ -601,8 +600,9 @@ public class PtalonActor extends TypedCompositeActor implements Configurable {
             ptalonCodeLocation.setVisibility(Settable.NOT_EDITABLE);
             _codeManager.assignInternalParameters();
         } catch (Throwable throwable) {
-            throw new IllegalActionException(this, throwable, "Failed to process "
-                    + "the ptalonCodeLocation \"" + ptalonCodeLocation + "\"");
+            throw new IllegalActionException(this, throwable,
+                    "Failed to process " + "the ptalonCodeLocation \""
+                            + ptalonCodeLocation + "\"");
         }
     }
 

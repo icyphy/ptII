@@ -130,9 +130,9 @@ public class Slice extends FixTransformer {
             boolean lsbValue = ((StringToken) lsb.getToken()).stringValue()
                     .equals("LSB");
 
-            int newStartValue = (lsbValue) ? widthValue - endValue : startValue;
-            int newEndValue = (lsbValue) ? widthValue - startValue : endValue;
-            int shiftBits = (lsbValue) ? startValue : widthValue - endValue;
+            int newStartValue = lsbValue ? widthValue - endValue : startValue;
+            int newEndValue = lsbValue ? widthValue - startValue : endValue;
+            int shiftBits = lsbValue ? startValue : widthValue - endValue;
 
             char[] mask = new char[widthValue];
             Arrays.fill(mask, '0');
@@ -144,7 +144,7 @@ public class Slice extends FixTransformer {
             Precision precision = new Precision(
                     ((Parameter) getAttribute("outputPrecision"))
                             .getExpression());
-            if ((newEndValue - newStartValue) != precision.getNumberOfBits()) {
+            if (newEndValue - newStartValue != precision.getNumberOfBits()) {
                 throw new IllegalActionException(this, "Bit width of "
                         + (newEndValue - newStartValue)
                         + " is not equal to precision " + precision);

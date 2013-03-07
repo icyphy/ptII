@@ -114,7 +114,7 @@ public class ArrayToMatrix extends Transformer {
      *   contains an attribute that cannot be cloned.
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        ArrayToMatrix newObject = (ArrayToMatrix) (super.clone(workspace));
+        ArrayToMatrix newObject = (ArrayToMatrix) super.clone(workspace);
         newObject.input.setTypeAtLeast(ArrayType.ARRAY_BOTTOM);
         newObject.output.setTypeAtMost(BaseType.MATRIX);
         return newObject;

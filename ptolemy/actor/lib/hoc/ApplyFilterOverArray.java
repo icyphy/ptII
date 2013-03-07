@@ -319,7 +319,7 @@ public class ApplyFilterOverArray extends TypedAtomicActor implements
             LinkedList list = new LinkedList();
             ArrayToken array = (ArrayToken) inputArray.get(0);
 
-            while ((i < _outputLength) && (j < array.length())) {
+            while (i < _outputLength && j < array.length()) {
                 Token t = array.getElement(j);
                 _updateParameter(t);
 

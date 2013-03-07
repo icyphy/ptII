@@ -76,7 +76,7 @@ public class CaseDirector extends Director {
         //new Exception("CaseDirector.generateFireCode()").printStackTrace();
         StringBuffer code = new StringBuffer();
 
-        ProgramCodeGenerator codeGenerator = (getCodeGenerator());
+        ProgramCodeGenerator codeGenerator = getCodeGenerator();
         ((BooleanToken) codeGenerator.inline.getToken()).booleanValue();
 
         ptolemy.actor.lib.hoc.Case container = (ptolemy.actor.lib.hoc.Case) getComponent()

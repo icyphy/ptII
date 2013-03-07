@@ -456,8 +456,8 @@ public class DatagramReader extends TypedAtomicActor {
                 //multicast IP ranges from 224.0.0.1 to 239.255.255.255(inclusive).
                 //Note: don't use 224.0.0.1 ~ 224.255.255.255 when the live time
                 //of the socket is specified larger than 1.
-                if ((_defaultReturnAddress.compareTo("224.0.0.1") >= 0)
-                        && (_defaultReturnAddress.compareTo("239.255.255.255") <= 0)) {
+                if (_defaultReturnAddress.compareTo("224.0.0.1") >= 0
+                        && _defaultReturnAddress.compareTo("239.255.255.255") <= 0) {
                     _multiCast = true;
 
                     try {
@@ -508,7 +508,7 @@ public class DatagramReader extends TypedAtomicActor {
             // conditions when notified, so extra notifications merely
             // waste a little CPU.
         } else if (attribute == overwrite) {
-            _overwrite = ((BooleanToken) (overwrite.getToken())).booleanValue();
+            _overwrite = ((BooleanToken) overwrite.getToken()).booleanValue();
 
             if (_overwrite) {
                 synchronized (_syncFireAndThread) {
@@ -516,8 +516,8 @@ public class DatagramReader extends TypedAtomicActor {
                 }
             }
         } else if (attribute == blockAwaitingDatagram) {
-            _blockAwaitingDatagram = ((BooleanToken) (blockAwaitingDatagram
-                    .getToken())).booleanValue();
+            _blockAwaitingDatagram = ((BooleanToken) blockAwaitingDatagram
+                    .getToken()).booleanValue();
 
             if (!_blockAwaitingDatagram) {
                 synchronized (_syncFireAndThread) {
@@ -553,7 +553,7 @@ public class DatagramReader extends TypedAtomicActor {
                 if (_multiCast == true) {
                 }
 
-                if ((_socket != null) || (_multicastSocket != null)) {
+                if (_socket != null || _multicastSocket != null) {
                     // Verify presence & health of the thread.
                     if (_socketReadingThread == null) {
                         throw new IllegalActionException(this, "thread == null");
@@ -562,12 +562,12 @@ public class DatagramReader extends TypedAtomicActor {
                                 "thread is not Alive");
                     }
 
-                    int newSocketNumber = ((IntToken) (localSocketNumber
-                            .getToken())).intValue();
+                    int newSocketNumber = ((IntToken) localSocketNumber
+                            .getToken()).intValue();
 
-                    if ((_multicastSocket != null)
-                            && (newSocketNumber != _multicastSocket
-                                    .getLocalPort())) {
+                    if (_multicastSocket != null
+                            && newSocketNumber != _multicastSocket
+                                    .getLocalPort()) {
                         synchronized (_syncSocket) {
                             if (_inReceive) {
                                 // Wait for receive to finish, if it
@@ -606,8 +606,8 @@ public class DatagramReader extends TypedAtomicActor {
                                 }
                             }
                         }
-                    } else if ((_socket != null)
-                            && (newSocketNumber != _socket.getLocalPort())) {
+                    } else if (_socket != null
+                            && newSocketNumber != _socket.getLocalPort()) {
                         synchronized (_syncSocket) {
                             if (_inReceive) {
                                 // Wait for receive to finish, if it
@@ -650,7 +650,7 @@ public class DatagramReader extends TypedAtomicActor {
             // the same thing.
         } else if (attribute == actorBufferLength) {
             synchronized (_syncBufferLength) {
-                _actorBufferLength = ((IntToken) (actorBufferLength.getToken()))
+                _actorBufferLength = ((IntToken) actorBufferLength.getToken())
                         .intValue();
             }
 
@@ -660,7 +660,7 @@ public class DatagramReader extends TypedAtomicActor {
             // set the size and get the existing size both block if
             // the socket is being received on.  This flag is set to 1
             // in initialize().
-        } else if ((attribute == platformBufferLength) && (_socket != null)) {
+        } else if (attribute == platformBufferLength && _socket != null) {
             synchronized (_syncBufferLength) {
                 _ChangeRequestedToPlatformBufferLength++;
             }
@@ -727,7 +727,7 @@ public class DatagramReader extends TypedAtomicActor {
             // latter case, there is always a packet waiting because
             // otherwise fireAtCurrentTime() would not have been
             // called.
-            while (_blockAwaitingDatagram && (_packetsAlreadyAwaitingFire == 0)) {
+            while (_blockAwaitingDatagram && _packetsAlreadyAwaitingFire == 0) {
                 try {
                     _fireIsWaiting = true;
                     _syncFireAndThread.wait();
@@ -835,16 +835,16 @@ public class DatagramReader extends TypedAtomicActor {
                 .stringValue();
 
         //check whether is ip multicase datagram.
-        if ((_defaultReturnAddress.compareTo("224.0.0.1") >= 0)
-                && (_defaultReturnAddress.compareTo("239.255.255.255") <= 0)) {
+        if (_defaultReturnAddress.compareTo("224.0.0.1") >= 0
+                && _defaultReturnAddress.compareTo("239.255.255.255") <= 0) {
             _multiCast = true;
         } else {
             _multiCast = false;
         }
 
-        int portNumber = ((IntToken) (localSocketNumber.getToken())).intValue();
+        int portNumber = ((IntToken) localSocketNumber.getToken()).intValue();
 
-        if ((portNumber < 0) || (portNumber > 65535)) {
+        if (portNumber < 0 || portNumber > 65535) {
             throw new IllegalActionException(this, localSocketNumber
                     + " is outside the required 0..65535 range");
         }
@@ -1228,8 +1228,8 @@ public class DatagramReader extends TypedAtomicActor {
 
                 // Allocate or resize the packet buffers.
                 synchronized (_syncBufferLength) {
-                    if ((_receivePacket == null)
-                            || (_receiveAllocated != _actorBufferLength)) {
+                    if (_receivePacket == null
+                            || _receiveAllocated != _actorBufferLength) {
                         _receivePacket = new DatagramPacket(
                                 new byte[_actorBufferLength],
                                 _actorBufferLength);
@@ -1358,7 +1358,7 @@ public class DatagramReader extends TypedAtomicActor {
                 synchronized (_syncFireAndThread) {
                     // Wait, if need be, for buffer space or overwrite
                     // permission
-                    while ((_packetsAlreadyAwaitingFire != 0) && !_overwrite) {
+                    while (_packetsAlreadyAwaitingFire != 0 && !_overwrite) {
                         try {
                             _syncFireAndThread.wait();
                         } catch (InterruptedException ex) {

@@ -166,7 +166,7 @@ public class GeneratorAttribute extends SingletonAttribute implements
      */
     public boolean hasParameter(String name) throws IllegalActionException {
         Attribute attribute = getAttribute(name);
-        return (attribute != null);
+        return attribute != null;
     }
 
     /** If this GeneratorAttribute has not yet been initialized, the
@@ -286,9 +286,9 @@ public class GeneratorAttribute extends SingletonAttribute implements
 
         if (!ptIIUserDirectoryFile.isDirectory()
                 || !ptIIUserDirectoryFile.canWrite()
-                || ((JNLPUtilities.isRunningUnderWebStart() || (StringUtilities
-                        .getProperty("lax.user.dir").length() > 0)) && (ptIIUserDirectory
-                        .equals(ptII)))) {
+                || (JNLPUtilities.isRunningUnderWebStart() || StringUtilities
+                        .getProperty("lax.user.dir").length() > 0)
+                && ptIIUserDirectory.equals(ptII)) {
             if (!ptIIUserDirectoryFile.isDirectory()) {
                 System.out
                         .println("AppletWriter: WARNING: ptIIUserDirectory = '"
@@ -309,9 +309,9 @@ public class GeneratorAttribute extends SingletonAttribute implements
                                     + " canWrite: "
                                     + ptIIUserDirectoryFile.canWrite()
                                     + " WebStart: "
-                                    + (JNLPUtilities.isRunningUnderWebStart() || (StringUtilities
+                                    + (JNLPUtilities.isRunningUnderWebStart() || StringUtilities
                                             .getProperty("lax.user.dir")
-                                            .length() > 0)) + " ptII: " + ptII);
+                                            .length() > 0) + " ptII: " + ptII);
                 }
             }
 
@@ -354,7 +354,7 @@ public class GeneratorAttribute extends SingletonAttribute implements
         String ptIIUserDirectoryAsURL;
 
         try {
-            ptIIUserDirectoryAsURL = (new File(ptIIUserDirectory)).toURI()
+            ptIIUserDirectoryAsURL = new File(ptIIUserDirectory).toURI()
                     .toURL().toString();
         } catch (java.net.MalformedURLException ex) {
             ptIIUserDirectoryAsURL = ex.getMessage();
@@ -465,7 +465,7 @@ public class GeneratorAttribute extends SingletonAttribute implements
             Attribute tooltipAttribute = ((NamedObj) attribute)
                     .getAttribute("tooltip");
 
-            if ((tooltipAttribute != null)
+            if (tooltipAttribute != null
                     && tooltipAttribute instanceof Documentation) {
                 results.append("\n Documentation: "
                         + ((Documentation) tooltipAttribute).getValueAsString());
@@ -636,7 +636,7 @@ public class GeneratorAttribute extends SingletonAttribute implements
             String sanitizedResourceName = ptolemy.util.ClassUtilities
                     .lookupClassAsResource(necessaryClass);
 
-            if ((sanitizedResourceName != null)
+            if (sanitizedResourceName != null
                     && !classPathList.contains(sanitizedResourceName)) {
                 classPathList.add(sanitizedResourceName);
             }

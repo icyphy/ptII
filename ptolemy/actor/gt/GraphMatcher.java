@@ -124,8 +124,8 @@ public class GraphMatcher extends GraphAnalyzer {
      *  @exception Exception If the rule file or the model file cannot be read.
      */
     public static void main(String[] args) throws Exception {
-        if (!(args.length == 2 || (args.length == 3 && args[0]
-                .equalsIgnoreCase("-A")))) {
+        if (!(args.length == 2 || args.length == 3
+                && args[0].equalsIgnoreCase("-A"))) {
             System.err.println("USAGE: java [-A] "
                     + GraphMatcher.class.getName() + " <rule.xml> <host.xml>");
             StringUtilities.exit(1);

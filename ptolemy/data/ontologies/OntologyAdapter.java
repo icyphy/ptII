@@ -322,9 +322,9 @@ public abstract class OntologyAdapter {
             // only consider StringAttributes, ignore all subclasses
             if (attribute.getClass().equals(
                     ptolemy.kernel.util.StringAttribute.class)) {
-                if ((((StringAttribute) attribute).getName()
-                        .equalsIgnoreCase("guardTransition"))
-                        || ((((StringAttribute) attribute).getContainer() instanceof Expression))
+                if (((StringAttribute) attribute).getName().equalsIgnoreCase(
+                        "guardTransition")
+                        || ((StringAttribute) attribute).getContainer() instanceof Expression
                         && ((StringAttribute) attribute).getName()
                                 .equalsIgnoreCase("expression")) {
 
@@ -337,10 +337,10 @@ public abstract class OntologyAdapter {
                     // subclasses
                     if (attribute instanceof PortParameter) {
                         result.add(attribute);
-                    } else if ((attribute.getClass()
-                            .equals(ptolemy.data.expr.Parameter.class))
-                            || (attribute.getClass()
-                                    .equals(ptolemy.data.expr.StringParameter.class))) {
+                    } else if (attribute.getClass().equals(
+                            ptolemy.data.expr.Parameter.class)
+                            || attribute.getClass().equals(
+                                    ptolemy.data.expr.StringParameter.class)) {
 
                         // FIXME: implement filter interface, so that adapter
                         // classes can specify which attributes
@@ -392,7 +392,7 @@ public abstract class OntologyAdapter {
 
         for (IOPort connectedPort : (List<IOPort>) port.connectedPortList()) {
             boolean isInput = connectedPort.isInput();
-            boolean isCompositeOutput = (connectedPort.getContainer() instanceof CompositeEntity)
+            boolean isCompositeOutput = connectedPort.getContainer() instanceof CompositeEntity
                     && !isInput
                     && port.depthInHierarchy() > connectedPort
                             .depthInHierarchy();
@@ -418,7 +418,7 @@ public abstract class OntologyAdapter {
 
         for (IOPort connectedPort : (List<IOPort>) port.connectedPortList()) {
             boolean isInput = connectedPort.isInput();
-            boolean isCompositeInput = (connectedPort.getContainer() instanceof CompositeEntity)
+            boolean isCompositeInput = connectedPort.getContainer() instanceof CompositeEntity
                     && isInput
                     && port.depthInHierarchy() > connectedPort
                             .depthInHierarchy();

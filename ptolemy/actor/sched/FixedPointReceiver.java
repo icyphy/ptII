@@ -179,7 +179,7 @@ public class FixedPointReceiver extends AbstractReceiver {
      */
     public boolean hasToken() {
         if (isKnown()) {
-            return (_token != null);
+            return _token != null;
         } else {
             throw new InvalidStateException(getContainer(),
                     "hasToken() called on FixedPointReceiver with "

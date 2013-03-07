@@ -110,8 +110,8 @@ public class CheckModelSize {
 
         }
 
-        for (int i = 0; i < args.length; i++) {
-            String fileName = args[i];
+        for (String arg : args) {
+            String fileName = arg;
             //             if (fileName.endsWith("ENM_11_18_04.xml")
             //                     || fileName.endsWith("IPCC_Base_Layers.xml")
             //                     || fileName.endsWith("dataFrame_R.xml")
@@ -266,8 +266,8 @@ public class CheckModelSize {
                                     .getElement(1)).doubleValue();
 
                             // Avoid comparing floats.
-                            if (Math.abs(x - (width / 2.0)) > 0.1
-                                    || Math.abs(y - (height / 2.0)) > 0.1) {
+                            if (Math.abs(x - width / 2.0) > 0.1
+                                    || Math.abs(y - height / 2.0) > 0.1) {
                                 analysis.append(" Center([" + x + ", " + y
                                         + "]) is not centered, should be ["
                                         + width / 2.0 + ", " + height / 2.0

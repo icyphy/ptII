@@ -189,7 +189,7 @@ public class HammingDecoder extends Transformer {
 
             _order = _codeSizeValue - _uncodeSizeValue;
 
-            if (_codeSizeValue != ((1 << _order) - 1)) {
+            if (_codeSizeValue != (1 << _order) - 1) {
                 throw new IllegalActionException(this,
                         "Invalid pair of uncodedRate and codedRate.");
             }
@@ -209,14 +209,14 @@ public class HammingDecoder extends Transformer {
 
             // Generate the parity matrix and look-up table.
             for (int i = 1; i <= _codeSizeValue; i++) {
-                if (i == (1 << flag)) {
+                if (i == 1 << flag) {
                     _index[i] = _codeSizeValue - 1 - flag;
                     flag++;
                 } else {
                     _index[i] = pos;
 
                     for (int j = 0; j < _order; j++) {
-                        _parityMatrix[pos][j] = (i >> (_order - j - 1)) & 1;
+                        _parityMatrix[pos][j] = i >> _order - j - 1 & 1;
                     }
 
                     pos++;
@@ -231,7 +231,7 @@ public class HammingDecoder extends Transformer {
         BooleanToken[] input = new BooleanToken[_codeSizeValue];
 
         for (int i = 0; i < _codeSizeValue; i++) {
-            input[i] = ((BooleanToken) inputToken[i]);
+            input[i] = (BooleanToken) inputToken[i];
         }
 
         // Compute syndrome.
@@ -246,13 +246,13 @@ public class HammingDecoder extends Transformer {
 
         for (int i = 0; i < _order; i++) {
             for (int j = 0; j < _uncodeSizeValue; j++) {
-                syndrome[i] = syndrome[i]
-                        ^ ((input[j].booleanValue() ? 1 : 0) & _parityMatrix[j][i]);
+                syndrome[i] = syndrome[i] ^ (input[j].booleanValue() ? 1 : 0)
+                        & _parityMatrix[j][i];
             }
 
             syndrome[i] = syndrome[i]
                     ^ (input[i + _uncodeSizeValue].booleanValue() ? 1 : 0);
-            eValue = (eValue << 1) | syndrome[i];
+            eValue = eValue << 1 | syndrome[i];
         }
 
         int eIndex = _index[eValue];

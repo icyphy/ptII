@@ -257,7 +257,7 @@ public class SerialComm extends TypedAtomicActor {
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
-        if ((attribute == serialPortName) || (attribute == baudRate)) {
+        if (attribute == serialPortName || attribute == baudRate) {
             /* Do nothing */
 
             // One desired behavior would be to use the new serial port
@@ -338,7 +338,7 @@ public class SerialComm extends TypedAtomicActor {
         synchronized (PortListener.class) {
             try {
                 // Produce output to the serial port first.
-                if ((dataToSend.isOutsideConnected()) && dataToSend.hasToken(0)) {
+                if (dataToSend.isOutsideConnected() && dataToSend.hasToken(0)) {
                     ArrayToken dataArrayToken = (ArrayToken) dataToSend.get(0);
                     OutputStream out = _serialPort.getOutputStream();
                     int inputLength = dataArrayToken.length();
@@ -376,7 +376,7 @@ public class SerialComm extends TypedAtomicActor {
                 // ignore the call.  This is not quite right, and could
                 // make the actor fail in domains where stopFire() is essential
                 // (are there any?).
-                while ((bytesAvailable < _minimumOutputSize) && _blocking
+                while (bytesAvailable < _minimumOutputSize && _blocking
                         && !_stopRequested /* && !_stopFireRequested */) {
                     try {
                         if (_debugging) {
@@ -402,8 +402,7 @@ public class SerialComm extends TypedAtomicActor {
                 }
                 if (bytesAvailable >= _minimumOutputSize) {
                     // Read only if at least desired amount of data is present.
-                    if (_discardOldData
-                            && (bytesAvailable > _maximumOutputSize)) {
+                    if (_discardOldData && bytesAvailable > _maximumOutputSize) {
                         // Skip excess bytes.
                         int excess = bytesAvailable - _maximumOutputSize;
 
@@ -476,7 +475,7 @@ public class SerialComm extends TypedAtomicActor {
                                         InputStream in = _serialPort
                                                 .getInputStream();
                                         int bytesAvailable = in.available();
-                                        while ((bytesAvailable < _minimumOutputSize)
+                                        while (bytesAvailable < _minimumOutputSize
                                                 && !_stopRequested) {
                                             PortListener.class.wait();
                                             bytesAvailable = in.available();
@@ -537,7 +536,7 @@ public class SerialComm extends TypedAtomicActor {
                     }
 
                     // The 2000 above is 2000mS to open the port, otherwise time out.
-                    int bits_per_second = ((IntToken) (baudRate.getToken()))
+                    int bits_per_second = ((IntToken) baudRate.getToken())
                             .intValue();
                     _serialPort.setSerialPortParams(bits_per_second,
                             SerialPort.DATABITS_8, SerialPort.STOPBITS_1,

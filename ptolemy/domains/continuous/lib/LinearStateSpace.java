@@ -185,8 +185,8 @@ public class LinearStateSpace extends TypedCompositeActor {
             // Check that it is a square matrix.
             DoubleMatrixToken token = (DoubleMatrixToken) A.getToken();
 
-            if ((token.getRowCount() == 0) || (token.getColumnCount() == 0)
-                    || (token.getRowCount() != token.getColumnCount())) {
+            if (token.getRowCount() == 0 || token.getColumnCount() == 0
+                    || token.getRowCount() != token.getColumnCount()) {
                 throw new IllegalActionException(this,
                         "The A matrix must be a nonempty square matrix.");
             }
@@ -196,7 +196,7 @@ public class LinearStateSpace extends TypedCompositeActor {
             // Check that B is a matrix.
             DoubleMatrixToken token = (DoubleMatrixToken) B.getToken();
 
-            if ((token.getRowCount() == 0) || (token.getColumnCount() == 0)) {
+            if (token.getRowCount() == 0 || token.getColumnCount() == 0) {
                 throw new IllegalActionException(this,
                         "The B matrix must be a nonempty matrix.");
             }
@@ -206,7 +206,7 @@ public class LinearStateSpace extends TypedCompositeActor {
             // Check that C is a matrix.
             DoubleMatrixToken token = (DoubleMatrixToken) C.getToken();
 
-            if ((token.getRowCount() == 0) || (token.getColumnCount() == 0)) {
+            if (token.getRowCount() == 0 || token.getColumnCount() == 0) {
                 throw new IllegalActionException(this,
                         "The C matrix must be a nonempty matrix.");
             }
@@ -215,7 +215,7 @@ public class LinearStateSpace extends TypedCompositeActor {
         } else if (attribute == D) {
             DoubleMatrixToken token = (DoubleMatrixToken) D.getToken();
 
-            if ((token.getRowCount() == 0) || (token.getColumnCount() == 0)) {
+            if (token.getRowCount() == 0 || token.getColumnCount() == 0) {
                 throw new IllegalActionException(this,
                         "The D matrix must be a nonempty matrix.");
             }
@@ -226,7 +226,7 @@ public class LinearStateSpace extends TypedCompositeActor {
             DoubleMatrixToken token = (DoubleMatrixToken) initialStates
                     .getToken();
 
-            if ((token.getRowCount() != 1) || (token.getColumnCount() < 1)) {
+            if (token.getRowCount() != 1 || token.getColumnCount() < 1) {
                 throw new IllegalActionException(this,
                         "The initialStates must be a row vector.");
             }

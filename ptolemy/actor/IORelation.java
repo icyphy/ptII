@@ -351,7 +351,7 @@ public class IORelation extends ComponentRelation {
      */
     public boolean isWidthFixed() throws IllegalActionException {
         int width = _getUserWidth();
-        return (width != WIDTH_TO_INFER);
+        return width != WIDTH_TO_INFER;
     }
 
     /** List the input ports that this relation connects to from the
@@ -602,7 +602,7 @@ public class IORelation extends ComponentRelation {
      */
     public void setContainer(CompositeEntity container)
             throws IllegalActionException, NameDuplicationException {
-        if (!(container instanceof CompositeActor) && (container != null)) {
+        if (!(container instanceof CompositeActor) && container != null) {
             throw new IllegalActionException(this, container,
                     "IORelation can only be contained by CompositeActor.");
         }
@@ -755,7 +755,7 @@ public class IORelation extends ComponentRelation {
 
             String result;
 
-            if ((bracket == 1) || (bracket == 2)) {
+            if (bracket == 1 || bracket == 2) {
                 result = super._description(detail, indent, 1);
             } else {
                 result = super._description(detail, indent, 0);
@@ -767,7 +767,7 @@ public class IORelation extends ComponentRelation {
                 }
 
                 result += "configuration {";
-                result += ("width " + getWidth());
+                result += "width " + getWidth();
 
                 if (isWidthFixed()) {
                     result += " fixed";
@@ -837,11 +837,11 @@ public class IORelation extends ComponentRelation {
      */
     private Receiver[][] _cascade(Receiver[][] array1, Receiver[][] array2)
             throws InvalidStateException, IllegalActionException {
-        if ((array1 == null) || (array1.length <= 0)) {
+        if (array1 == null || array1.length <= 0) {
             return array2;
         }
 
-        if ((array2 == null) || (array2.length <= 0)) {
+        if (array2 == null || array2.length <= 0) {
             return array1;
         }
 
@@ -866,7 +866,7 @@ public class IORelation extends ComponentRelation {
                     result[i][j] = array1[i][j];
                 }
 
-                for (int j = m1; j < (m1 + m2); j++) {
+                for (int j = m1; j < m1 + m2; j++) {
                     result[i][j] = array2[i][j - m1];
                 }
             }

@@ -274,8 +274,8 @@ public class ModalController extends FSMActor implements DropTargetHandler,
                 // created its own port. That will result in the code
                 // above executing because it will set _mirrorDisable to true
                 // on this port before doing the call.
-                ModalPort containerPort = (container == null ? null
-                        : (ModalPort) container.getPort(name));
+                ModalPort containerPort = container == null ? null
+                        : (ModalPort) container.getPort(name);
                 if (containerPort == null) {
                     // The container does not have a mirror port.
                     // Delegate upwards.
@@ -382,7 +382,7 @@ public class ModalController extends FSMActor implements DropTargetHandler,
      */
     protected void _checkContainer(Entity container)
             throws IllegalActionException {
-        if (!(container instanceof ModalModel) && (container != null)) {
+        if (!(container instanceof ModalModel) && container != null) {
             throw new IllegalActionException(container, this,
                     "ModalController can only be contained by "
                             + "ModalModel objects.");
@@ -486,7 +486,7 @@ public class ModalController extends FSMActor implements DropTargetHandler,
 
         String currentRefinements = state.refinementName.getExpression();
 
-        if ((currentRefinements == null) || currentRefinements.equals("")) {
+        if (currentRefinements == null || currentRefinements.equals("")) {
             currentRefinements = name;
         } else {
             currentRefinements = currentRefinements.trim() + ", " + name;

@@ -285,7 +285,7 @@ public class FMIScalarVariable {
      */
     public void setBoolean(Pointer fmiComponent, boolean value) {
         ByteBuffer valueBuffer = ByteBuffer.allocate(1).put(0,
-                (value ? (byte) 1 : (byte) 0));
+                value ? (byte) 1 : (byte) 0);
         _setValue(fmiComponent, valueBuffer, FMIBooleanType.class);
     }
 
@@ -475,10 +475,12 @@ public class FMIScalarVariable {
                 // FIXME: Don't use runtime exception.
                 throw new RuntimeException("Platform not supported.", e);
             }
-            _fmiGetFunction = nativeLibrary.getFunction(
-                    fmiModelDescription.modelIdentifier + "_fmiGet" + _typeName);
-            _fmiSetFunction = nativeLibrary.getFunction(
-                    fmiModelDescription.modelIdentifier + "_fmiSet" + _typeName);
+            _fmiGetFunction = nativeLibrary
+                    .getFunction(fmiModelDescription.modelIdentifier
+                            + "_fmiGet" + _typeName);
+            _fmiSetFunction = nativeLibrary
+                    .getFunction(fmiModelDescription.modelIdentifier
+                            + "_fmiSet" + _typeName);
         }
         _getOrSetValue(fmiComponent, valueBuffer, typeClass, _fmiGetFunction);
     }
@@ -502,8 +504,9 @@ public class FMIScalarVariable {
                 // FIXME: Don't use runtime exception.
                 throw new RuntimeException("Platform not supported.", e);
             }
-            _fmiSetFunction = nativeLibrary.getFunction(
-                    fmiModelDescription.modelIdentifier + "_fmiSet" + _typeName);
+            _fmiSetFunction = nativeLibrary
+                    .getFunction(fmiModelDescription.modelIdentifier
+                            + "_fmiSet" + _typeName);
         }
         _getOrSetValue(fmiComponent, valueBuffer, typeClass, _fmiSetFunction);
     }

@@ -58,10 +58,10 @@ public class DistributedUtilities {
         // integersArrayToString(receiversIntegers));
         LinkedList list = new LinkedList();
 
-        for (int i = 0; i < receiversIntegers.length; i++) {
-            for (int j = 0; j < receiversIntegers[i].length; j++) {
-                if (receiversIntegers[i][j] != null) {
-                    list.add(receiversIntegers[i][j]);
+        for (Integer[] receiversInteger : receiversIntegers) {
+            for (int j = 0; j < receiversInteger.length; j++) {
+                if (receiversInteger[j] != null) {
+                    list.add(receiversInteger[j]);
                 }
             }
         }
@@ -107,9 +107,9 @@ public class DistributedUtilities {
 
         StringBuffer print = new StringBuffer();
 
-        for (int i = 0; i < array.length; i++) {
-            for (int j = 0; j < array[i].length; j++) {
-                print.append(array[i][j] + " ");
+        for (Integer[] element : array) {
+            for (int j = 0; j < element.length; j++) {
+                print.append(element[j] + " ");
             }
 
             print.append("\n");
@@ -131,9 +131,9 @@ public class DistributedUtilities {
 
         StringBuffer print = new StringBuffer();
 
-        for (int i = 0; i < array.length; i++) {
-            for (int j = 0; j < array[i].length; j++) {
-                print.append(((DistributedSDFReceiver) array[i][j]).getID()
+        for (Receiver[] element : array) {
+            for (int j = 0; j < element.length; j++) {
+                print.append(((DistributedSDFReceiver) element[j]).getID()
                         + " ");
             }
 

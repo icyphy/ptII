@@ -215,11 +215,11 @@ public class RenameConfigurer extends Query implements ChangeListener,
      */
     public void changeFailed(ChangeRequest change, Exception exception) {
         // Ignore if this is not the originator.
-        if ((change != null) && (change.getSource() != this)) {
+        if (change != null && change.getSource() != this) {
             return;
         }
 
-        if ((change != null) && !change.isErrorReported()) {
+        if (change != null && !change.isErrorReported()) {
             change.setErrorReported(true);
             MessageHandler.error("Rename failed: ", exception);
         }

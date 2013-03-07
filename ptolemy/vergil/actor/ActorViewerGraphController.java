@@ -139,8 +139,8 @@ public class ActorViewerGraphController extends RunnableGraphController {
                 AbstractBasicGraphModel graphModel = (AbstractBasicGraphModel) getGraphModel();
                 NamedObj toplevel = graphModel.getPtolemyModel();
 
-                while ((objToHighlight != null)
-                        && (objToHighlight.getContainer() != toplevel)) {
+                while (objToHighlight != null
+                        && objToHighlight.getContainer() != toplevel) {
                     objToHighlight = objToHighlight.getContainer();
                 }
 
@@ -161,8 +161,8 @@ public class ActorViewerGraphController extends RunnableGraphController {
                         FiringEvent.FiringEventType type = ((FiringEvent) event)
                                 .getType();
 
-                        if ((type == FiringEvent.BEFORE_ITERATE)
-                                || (type == FiringEvent.BEFORE_FIRE)) {
+                        if (type == FiringEvent.BEFORE_ITERATE
+                                || type == FiringEvent.BEFORE_FIRE) {
                             _animationRenderer.renderSelected(figure);
                             _animated = figure;
 
@@ -174,8 +174,8 @@ public class ActorViewerGraphController extends RunnableGraphController {
                                 } catch (InterruptedException ex) {
                                 }
                             }
-                        } else if ((type == FiringEvent.AFTER_ITERATE)
-                                || (type == FiringEvent.AFTER_POSTFIRE)) {
+                        } else if (type == FiringEvent.AFTER_ITERATE
+                                || type == FiringEvent.AFTER_POSTFIRE) {
                             if (_animated != null) {
                                 _animationRenderer.renderDeselected(_animated);
                             }
@@ -264,7 +264,7 @@ public class ActorViewerGraphController extends RunnableGraphController {
                 // In the viewer, there will not be a class definition
                 // controller that is distinct from the entity controller.
                 // In the edit, there will be.
-                if ((_classDefinitionController != null)
+                if (_classDefinitionController != null
                         && ((Entity) semanticObject).isClassDefinition()) {
                     return _classDefinitionController;
                 } else if (isActorOfInterest) {

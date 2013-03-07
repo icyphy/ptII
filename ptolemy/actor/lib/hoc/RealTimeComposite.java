@@ -427,7 +427,7 @@ public class RealTimeComposite extends MirrorComposite {
             if (inputFrame == this) {
                 return true;
             }
-            if ((inputFrame == null) || (inputFrame.getClass() != getClass())) {
+            if (inputFrame == null || inputFrame.getClass() != getClass()) {
                 return false;
             } else {
                 InputFrame frame = (InputFrame) inputFrame;

@@ -271,7 +271,7 @@ public class BasicModularGraphModel extends MutableModularGraphModel {
          * nothing.
          */
         public Iterator nodesAfterEdges(Object composite) {
-            return (new NullIterator());
+            return new NullIterator();
         }
     }
 }

@@ -112,21 +112,22 @@ public class ExportModelJUnitTest {
                 + " $PTII/bin/ptinvoke "
                 + "ptolemy.vergil.basic.export.ExportModel -force htm "
                 + (run ? "-run " : " ")
-                + (openComposites ? "-openComposites " : " ")
-                + "-timeOut " + timeOut
-                + " -whiteBackground " + modelPath + " $PTII/" + modelDirectory
-                + "/" + modelName);
+                + (openComposites ? "-openComposites " : " ") + "-timeOut "
+                + timeOut + " -whiteBackground " + modelPath + " $PTII/"
+                + modelDirectory + "/" + modelName);
 
         if (!openComposites) {
-            System.out.println("Warning: not opening composites for "
-                               + modelPath
-                               + ". See ptolemy/vergil/basic/export/test/junit/ExportModelJUnitTest.java");
+            System.out
+                    .println("Warning: not opening composites for "
+                            + modelPath
+                            + ". See ptolemy/vergil/basic/export/test/junit/ExportModelJUnitTest.java");
         }
 
         if (!run) {
-            System.out.println("Warning: not running "
-                               + modelPath
-                               + ". See ptolemy/vergil/basic/export/test/junit/ExportModelJUnitTest.java");
+            System.out
+                    .println("Warning: not running "
+                            + modelPath
+                            + ". See ptolemy/vergil/basic/export/test/junit/ExportModelJUnitTest.java");
         }
         // ExportModel.exportModel() calls System.exit() unless we set this property.
         System.setProperty("ptolemy.ptII.doNotExit", "true");
@@ -137,9 +138,7 @@ public class ExportModelJUnitTest {
             exportModel.exportModel(false /* copyJavaScriptFiles */,
                     true /* force */, "htm", fullModelPath, run,
                     openComposites, false /* open results */, outputDirectory,
-                    false /* save */,
-                    timeOut,
-                    true /* whitebackground */);
+                    false /* save */, timeOut, true /* whitebackground */);
             System.out.println(Manager.timeAndMemory(startTime));
         } catch (Throwable throwable) {
             throwable.printStackTrace();
@@ -211,8 +210,8 @@ public class ExportModelJUnitTest {
         String[] skip = {
                 // Fails with: Cannot render to more than 32 Canvas3Ds
                 "Gravitation.xml", "GravitationWithCollisionDetection.xml", };
-        for (int i = 0; i < skip.length; i++) {
-            if (modelPath.indexOf(skip[i]) != -1) {
+        for (String element : skip) {
+            if (modelPath.indexOf(element) != -1) {
                 return false;
             }
         }
@@ -223,12 +222,11 @@ public class ExportModelJUnitTest {
      */
     private boolean _openModel(String modelPath) {
         // Pathnames that should be skipped
-        String[] skip = {
-            "ScaleWithEmbeddedCFileActor", // Only works on 32-bit
-            "SimplePassPointer", // Only works on 32-bit
+        String[] skip = { "ScaleWithEmbeddedCFileActor", // Only works on 32-bit
+                "SimplePassPointer", // Only works on 32-bit
         };
-        for (int i = 0; i < skip.length; i++) {
-            if (modelPath.indexOf(skip[i]) != -1) {
+        for (String element : skip) {
+            if (modelPath.indexOf(element) != -1) {
                 return false;
             }
         }
@@ -271,8 +269,8 @@ public class ExportModelJUnitTest {
                 "TunnelingBallDevice", // Annotation says that it cannot be run.
                 "VideoCapture.xml", // Requires a video camera.
         };
-        for (int i = 0; i < skip.length; i++) {
-            if (modelPath.indexOf(skip[i]) != -1) {
+        for (String element : skip) {
+            if (modelPath.indexOf(element) != -1) {
                 return false;
             }
         }
@@ -285,11 +283,9 @@ public class ExportModelJUnitTest {
      */
     private long _timeOut(String modelPath) {
         // Pathnames for demos that get a longer running time
-        String[] longRunningDemos = {
-            "ExecDemos.xml"
-        };
-        for (int i = 0; i < longRunningDemos.length; i++) {
-            if (modelPath.indexOf(longRunningDemos[i]) != -1) {
+        String[] longRunningDemos = { "ExecDemos.xml" };
+        for (String longRunningDemo : longRunningDemos) {
+            if (modelPath.indexOf(longRunningDemo) != -1) {
                 return 30000 * 2;
             }
         }

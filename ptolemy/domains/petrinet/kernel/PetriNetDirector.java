@@ -376,7 +376,7 @@ public class PetriNetDirector extends Director {
             throws IllegalActionException {
         // Copied from actor.lib.RandomSource
         if (attribute == seed) {
-            long seedValue = ((LongToken) (seed.getToken())).longValue();
+            long seedValue = ((LongToken) seed.getToken()).longValue();
 
             if (seedValue != _generatorSeed) {
                 _needNewGenerator = true;
@@ -397,7 +397,7 @@ public class PetriNetDirector extends Director {
         // Based on ptolemy.actor.lib.RandomSource.
         // We need a clone(Workspace) method so that Actor Oriented Classes
         // work.
-        PetriNetDirector newObject = (PetriNetDirector) (super.clone(workspace));
+        PetriNetDirector newObject = (PetriNetDirector) super.clone(workspace);
 
         newObject.iterations = (Parameter) newObject.getAttribute("iterations");
 
@@ -477,7 +477,7 @@ public class PetriNetDirector extends Director {
                 }
             }
             if (placeCount > 0) {
-                Collections.sort(placeList, ((Place) placeList.get(0)));
+                Collections.sort(placeList, (Place) placeList.get(0));
             }
             names = new String[placeCount];
             int i = 0;
@@ -493,8 +493,8 @@ public class PetriNetDirector extends Director {
                 i++;
             }
 
-            for (int j = 0; j < names.length; j++) {
-                description.append(names[j] + " ");
+            for (String name : names) {
+                description.append(name + " ");
             }
             description.append("\n");
             cPlace = placeList.iterator();
@@ -510,7 +510,7 @@ public class PetriNetDirector extends Director {
             int iter = ((IntToken) iterations.getToken()).intValue();
             if (iter >= 0) {
                 while (test) {
-                    if ((iter == 0) || (time < iter)) {
+                    if (iter == 0 || time < iter) {
                         _debug("" + iter + " " + time);
                         cPlace = placeList.iterator();
                         i = 0;
@@ -845,7 +845,7 @@ public class PetriNetDirector extends Director {
         }
         original.append(marking);
         int nameWidth = placeNames[index].length();
-        for (int i = 0; i < (nameWidth - mWidth) + 1; i++) {
+        for (int i = 0; i < nameWidth - mWidth + 1; i++) {
             original.append(" ");
         }
     }
@@ -872,7 +872,7 @@ public class PetriNetDirector extends Director {
      */
     private void _createGenerator() throws IllegalActionException {
         // From actor.lib.RandomSource
-        long seedValue = ((LongToken) (seed.getToken())).longValue();
+        long seedValue = ((LongToken) seed.getToken()).longValue();
         _generatorSeed = seedValue;
 
         if (seedValue == 0L) {

@@ -147,7 +147,7 @@ public class EditorDropTargetListener implements DropTargetListener {
                 _highlightedFigure = null;
             }
 
-            if ((over != null) && _dropTarget.isDropIntoEnabled()) {
+            if (over != null && _dropTarget.isDropIntoEnabled()) {
                 if (_highlighter == null) {
                     _highlighter = new AnimationRenderer(Color.white);
                 }
@@ -200,7 +200,7 @@ public class EditorDropTargetListener implements DropTargetListener {
         GraphModel model = controller.getGraphModel();
         NamedObj rootContainer = (NamedObj) model.getRoot();
 
-        if ((targetContainer == null) || !_dropTarget.isDropIntoEnabled()) {
+        if (targetContainer == null || !_dropTarget.isDropIntoEnabled()) {
             // Find the default container for the dropped object
             targetContainer = rootContainer;
         }
@@ -271,9 +271,9 @@ public class EditorDropTargetListener implements DropTargetListener {
             // the Ptolemy method for dropping
             boolean lsidFlag = true;
             try {
-                String lsidString = ((StringAttribute) (dropObj
-                        .getAttribute("entityId"))).getExpression();
-                if ((lsidString == null) || (lsidString.equals(""))) {
+                String lsidString = ((StringAttribute) dropObj
+                        .getAttribute("entityId")).getExpression();
+                if (lsidString == null || lsidString.equals("")) {
                     lsidFlag = false;
                 }
             } catch (Exception eee) {

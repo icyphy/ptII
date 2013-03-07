@@ -59,7 +59,7 @@ public class ExtendedMath {
                     + "is required to be greater than 1.  Got " + x);
         }
 
-        return Math.log(x + Math.sqrt((x * x) - 1));
+        return Math.log(x + Math.sqrt(x * x - 1));
     }
 
     /** Return the inverse hyperbolic sine of the argument.
@@ -68,9 +68,9 @@ public class ExtendedMath {
         double result;
 
         if (x < 0) {
-            result = -Math.log(-x + Math.sqrt((x * x) + 1));
+            result = -Math.log(-x + Math.sqrt(x * x + 1));
         } else {
-            result = Math.log(x + Math.sqrt((x * x) + 1));
+            result = Math.log(x + Math.sqrt(x * x + 1));
         }
 
         return result;
@@ -188,7 +188,7 @@ public class ExtendedMath {
     /** Return the hyperbolic tangent of the argument.
      */
     public static final double tanh(final double x) {
-        return (sinh(x) / cosh(x));
+        return sinh(x) / cosh(x);
     }
 
     ///////////////////////////////////////////////////////////////////

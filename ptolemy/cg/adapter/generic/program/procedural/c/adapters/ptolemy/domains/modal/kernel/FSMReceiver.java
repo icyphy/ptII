@@ -49,7 +49,8 @@ public class FSMReceiver
      *  with the given FSMReceiver.
      *  @param component The associated component.
      */
-    public FSMReceiver(ptolemy.domains.modal.kernel.FSMReceiver component) throws IllegalActionException {
+    public FSMReceiver(ptolemy.domains.modal.kernel.FSMReceiver component)
+            throws IllegalActionException {
         super(component);
     }
 

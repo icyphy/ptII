@@ -133,7 +133,7 @@ public final class Edge extends Element {
         String result = "(" + _source + ", " + _sink;
 
         if (showWeight && hasWeight()) {
-            result += (", " + _weight);
+            result += ", " + _weight;
         }
 
         result += ")";

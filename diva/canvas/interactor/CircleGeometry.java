@@ -300,9 +300,9 @@ public class CircleGeometry implements Geometry {
          */
         public boolean isNormal(int direction) {
             double theta1 = getAngle(direction);
-            double theta2 = (_normal < 0) ? (_normal + (2 * Math.PI)) : _normal;
+            double theta2 = _normal < 0 ? _normal + 2 * Math.PI : _normal;
             // Don't compare floats with ==
-            return (Math.abs(theta1 - theta2) < 0.000001);
+            return Math.abs(theta1 - theta2) < 0.000001;
         }
 
         /** Translate the site by the indicated distance,
@@ -320,7 +320,7 @@ public class CircleGeometry implements Geometry {
 
             double cx = _rect.getCenterX();
             double cy = _rect.getCenterY();
-            double r = Math.sqrt((_offX * _offX) + (_offY * _offY));
+            double r = Math.sqrt(_offX * _offX + _offY * _offY);
             double theta = Math.atan(_offY / _offX);
 
             if (_offX < 0) {

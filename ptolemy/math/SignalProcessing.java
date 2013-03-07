@@ -67,7 +67,7 @@ public class SignalProcessing {
      */
     public static final boolean close(double first, double second) {
         double diff = first - second;
-        return (Math.abs(diff) < EPSILON);
+        return Math.abs(diff) < EPSILON;
     }
 
     /** Return a new array that is the convolution of the two argument arrays.
@@ -82,7 +82,7 @@ public class SignalProcessing {
      */
     public static final double[] convolve(double[] array1, double[] array2) {
         double[] result;
-        int resultSize = (array1.length + array2.length) - 1;
+        int resultSize = array1.length + array2.length - 1;
 
         if (resultSize < 0) {
             // If we attempt to convolve two zero length arrays, return
@@ -96,7 +96,7 @@ public class SignalProcessing {
         // The result is assumed initialized to zero.
         for (int i = 0; i < array1.length; i++) {
             for (int j = 0; j < array2.length; j++) {
-                result[i + j] += (array1[i] * array2[j]);
+                result[i + j] += array1[i] * array2[j];
             }
         }
 
@@ -119,7 +119,7 @@ public class SignalProcessing {
      */
     public static final Complex[] convolve(Complex[] array1, Complex[] array2) {
         Complex[] result;
-        int resultSize = (array1.length + array2.length) - 1;
+        int resultSize = array1.length + array2.length - 1;
 
         if (resultSize < 0) {
             // If we attempt to convolve two zero length arrays, return
@@ -133,8 +133,10 @@ public class SignalProcessing {
 
         for (int i = 0; i < array1.length; i++) {
             for (int j = 0; j < array2.length; j++) {
-                reals[i + j] += ((array1[i].real * array2[j].real) - (array1[i].imag * array2[j].imag));
-                imags[i + j] += ((array1[i].imag * array2[j].real) + (array1[i].real * array2[j].imag));
+                reals[i + j] += array1[i].real * array2[j].real
+                        - array1[i].imag * array2[j].imag;
+                imags[i + j] += array1[i].imag * array2[j].real
+                        + array1[i].real * array2[j].imag;
             }
         }
 
@@ -284,14 +286,14 @@ public class SignalProcessing {
                             + "downsampling factor must be greater than 0.");
         }
 
-        if ((startIndex < 0) || (startIndex > (x.length - 1))) {
+        if (startIndex < 0 || startIndex > x.length - 1) {
             throw new IllegalArgumentException(
                     "ptolemy.math.SignalProcessing.downsample(): "
                             + "startIndex must be between 0 and L - 1, where L is the "
                             + "size of the input array.");
         }
 
-        int length = ((x.length + 1) - startIndex) / n;
+        int length = (x.length + 1 - startIndex) / n;
         double[] returnValue = new double[length];
 
         int destIndex;
@@ -455,7 +457,7 @@ public class SignalProcessing {
 
         // Make sure the tables have enough entries for the DCT computation
         // at size N/4
-        if ((order - 2) > _FFCTGenLimit) {
+        if (order - 2 > _FFCTGenLimit) {
             _FFCTTableGen(order - 2);
         }
 
@@ -540,7 +542,7 @@ public class SignalProcessing {
 
         // Make sure the tables have enough entries for the DCT computation
         // at size N/4
-        if ((order - 2) > _FFCTGenLimit) {
+        if (order - 2 > _FFCTGenLimit) {
             _FFCTTableGen(order - 2);
         }
 
@@ -807,7 +809,7 @@ public class SignalProcessing {
         }
 
         for (n = halfM + 1; n < length; n++) {
-            window[n] = 2.0 - (n * twoOverM);
+            window[n] = 2.0 - n * twoOverM;
         }
 
         return window;
@@ -830,12 +832,12 @@ public class SignalProcessing {
         int n;
         double[] window = new double[length];
 
-        double twoPiOverM = (2.0 * Math.PI) / M;
+        double twoPiOverM = 2.0 * Math.PI / M;
         double fourPiOverM = 2.0 * twoPiOverM;
 
         for (n = 0; n < length; n++) {
-            window[n] = 0.42 - (0.5 * Math.cos(twoPiOverM * n))
-                    + (0.08 * Math.cos(fourPiOverM * n));
+            window[n] = 0.42 - 0.5 * Math.cos(twoPiOverM * n) + 0.08
+                    * Math.cos(fourPiOverM * n);
         }
 
         return window;
@@ -858,14 +860,14 @@ public class SignalProcessing {
         int n;
         double[] window = new double[length];
 
-        double twoPiOverM = (2.0 * Math.PI) / M;
+        double twoPiOverM = 2.0 * Math.PI / M;
         double fourPiOverM = 2.0 * twoPiOverM;
         double sixPiOverM = 3.0 * twoPiOverM;
 
         for (n = 0; n < length; n++) {
-            window[n] = (0.35875 - (0.48829 * Math.cos(twoPiOverM * n)) + (0.14128 * Math
-                    .cos(fourPiOverM * n)))
-                    - (0.01168 * Math.cos(sixPiOverM * n));
+            window[n] = 0.35875 - 0.48829 * Math.cos(twoPiOverM * n) + 0.14128
+                    * Math.cos(fourPiOverM * n) - 0.01168
+                    * Math.cos(sixPiOverM * n);
         }
 
         return window;
@@ -885,8 +887,8 @@ public class SignalProcessing {
             double standardDeviation, double extent, int length) {
         GaussianSampleGenerator generator = new GaussianSampleGenerator(0.0,
                 standardDeviation);
-        return sampleWave(length, -extent * standardDeviation,
-                (2.0 * extent * standardDeviation) / length, generator);
+        return sampleWave(length, -extent * standardDeviation, 2.0 * extent
+                * standardDeviation / length, generator);
     }
 
     /** Return a new array that is filled with samples of a Hamming
@@ -906,10 +908,10 @@ public class SignalProcessing {
         int n;
         double[] window = new double[length];
 
-        double twoPiOverM = (2.0 * Math.PI) / M;
+        double twoPiOverM = 2.0 * Math.PI / M;
 
         for (n = 0; n < length; n++) {
-            window[n] = 0.54 - (0.46 * Math.cos(twoPiOverM * n));
+            window[n] = 0.54 - 0.46 * Math.cos(twoPiOverM * n);
         }
 
         return window;
@@ -932,10 +934,10 @@ public class SignalProcessing {
         int n;
         double[] window = new double[length];
 
-        double twoPiOverM = (2.0 * Math.PI) / M;
+        double twoPiOverM = 2.0 * Math.PI / M;
 
         for (n = 0; n < length; n++) {
-            window[n] = 0.5 - (0.5 * Math.cos(twoPiOverM * n));
+            window[n] = 0.5 - 0.5 * Math.cos(twoPiOverM * n);
         }
 
         return window;
@@ -1138,7 +1140,7 @@ public class SignalProcessing {
      */
     public static final Complex[] poleZeroToFrequency(Complex[] poles,
             Complex[] zeros, Complex gain, int numSteps) {
-        double step = (2 * Math.PI) / numSteps;
+        double step = 2 * Math.PI / numSteps;
         Complex[] freq = new Complex[numSteps];
 
         double angle = -Math.PI;
@@ -1214,14 +1216,14 @@ public class SignalProcessing {
                             + "period should be greater than 0.");
         }
 
-        double point = (2 / period)
-                * Math.IEEEremainder(time + (phase * period), period);
+        double point = 2 / period
+                * Math.IEEEremainder(time + phase * period, period);
 
         // get rid of negative zero
-        point = (point == -0.0) ? 0.0 : point;
+        point = point == -0.0 ? 0.0 : point;
 
         // hole at +1.0
-        return (point == 1.0) ? (-1.0) : point;
+        return point == 1.0 ? -1.0 : point;
     }
 
     /** Return sin(x)/x, the so-called sinc function.
@@ -1264,11 +1266,11 @@ public class SignalProcessing {
                             + "period should be greater than 0.");
         }
 
-        double point = (2 / period)
-                * Math.IEEEremainder(time + (phase * period), period);
+        double point = 2 / period
+                * Math.IEEEremainder(time + phase * period, period);
 
         // hole at +1.0
-        return ((point >= 0) && (point < 1)) ? 1.0 : (-1.0);
+        return point >= 0 && point < 1 ? 1.0 : -1.0;
     }
 
     /** Return a sample of a triangle wave with the specified period and
@@ -1292,11 +1294,11 @@ public class SignalProcessing {
                             + "period should be greater than 0.");
         }
 
-        double point = Math.IEEEremainder(time + (phase * period), period);
+        double point = Math.IEEEremainder(time + phase * period, period);
 
-        if (((-period / 2.0) <= point) && (point < (-period / 4.0))) {
+        if (-period / 2.0 <= point && point < -period / 4.0) {
             point = -(4.0 / period * point) - 2;
-        } else if (((-period / 4.0) <= point) && (point < (period / 4.0))) {
+        } else if (-period / 4.0 <= point && point < period / 4.0) {
             point = 4.0 / period * point;
         } else { // if (T/4.0 <= point && point < T/2.0)
             point = -(4.0 / period * point) + 2;
@@ -1337,12 +1339,12 @@ public class SignalProcessing {
         for (int i = 0; i < angles.length; i++) {
             result[i] = angles[i];
 
-            while ((result[i] - previous) < -Math.PI) {
-                result[i] += (2 * Math.PI);
+            while (result[i] - previous < -Math.PI) {
+                result[i] += 2 * Math.PI;
             }
 
-            while ((result[i] - previous) > Math.PI) {
-                result[i] -= (2 * Math.PI);
+            while (result[i] - previous > Math.PI) {
+                result[i] -= 2 * Math.PI;
             }
 
             previous = result[i];
@@ -1576,7 +1578,7 @@ public class SignalProcessing {
          *  exponents.
          */
         public PolynomialSampleGenerator(double[] coefficients, int direction) {
-            if ((direction != 1) && (direction != -1)) {
+            if (direction != 1 && direction != -1) {
                 throw new IllegalArgumentException(
                         "ptolemy.math.SignalProcessing.LineSampleGenerator: "
                                 + "direction must be either 1 or -1");
@@ -1599,9 +1601,9 @@ public class SignalProcessing {
 
             for (int i = 1; i < _coeffLength; i++) {
                 if (_direction == 1) {
-                    sum += (_coefficients[i] * tn);
+                    sum += _coefficients[i] * tn;
                 } else {
-                    sum += (_coefficients[i] / tn);
+                    sum += _coefficients[i] / tn;
                 }
 
                 tn *= time;
@@ -1670,7 +1672,7 @@ public class SignalProcessing {
         }
 
         public final double operate(double time) {
-            return Math.cos((_frequency * time) + _phase);
+            return Math.cos(_frequency * time + _phase);
         }
 
         private final double _frequency;
@@ -1735,14 +1737,14 @@ public class SignalProcessing {
 
             x *= _excess;
 
-            double denominator = 1.0 - (4.0 * x * x);
+            double denominator = 1.0 - 4.0 * x * x;
 
             // If the denominator is close to zero, take it to be zero.
             if (close(denominator, 0.0)) {
                 return s * ExtendedMath.PI_OVER_4;
             }
 
-            return (s * Math.cos(Math.PI * x)) / denominator;
+            return s * Math.cos(Math.PI * x) / denominator;
         }
 
         private final double _oneOverFZC;
@@ -1809,11 +1811,10 @@ public class SignalProcessing {
             double fourExcessOverPI = _fourExcess / Math.PI;
             double oneOverSqrtFZC = 1.0 / _sqrtFZC;
 
-            _sampleAtZero = ((fourExcessOverPI + 1.0) - _excess)
-                    * oneOverSqrtFZC;
+            _sampleAtZero = (fourExcessOverPI + 1.0 - _excess) * oneOverSqrtFZC;
             _fourExcessOverPISqrtFZC = fourExcessOverPI * oneOverSqrtFZC;
 
-            _fzcSqrtFZCOverEightExcessPI = (firstZeroCrossing * _sqrtFZC)
+            _fzcSqrtFZCOverEightExcessPI = firstZeroCrossing * _sqrtFZC
                     / _eightExcessPI;
             _fzcOverFourExcess = firstZeroCrossing / _fourExcess;
 
@@ -1833,14 +1834,14 @@ public class SignalProcessing {
             double x = time * _oneOverFZC;
 
             if (_excess == 0.0) {
-                return (_sqrtFZC * Math.sin(Math.PI * x)) / (Math.PI * time);
+                return _sqrtFZC * Math.sin(Math.PI * x) / (Math.PI * time);
             }
 
             double oneMinusTime = _oneMinus * time;
             double onePlusTime = _onePlus * time;
 
             // Check to see whether we will get divide by zero.
-            double denominator = (time * time * _sixteenExcessSquared)
+            double denominator = time * time * _sixteenExcessSquared
                     - _squareFZC;
 
             if (close(denominator, 0.0)) {
@@ -1849,15 +1850,16 @@ public class SignalProcessing {
 
                 return _fzcSqrtFZCOverEightExcessPI
                         * oneOverTime
-                        * ((_onePlus * Math.sin(onePlusTime))
-                                - (_oneMinusFZCOverFourExcess * oneOverTime * Math
-                                        .cos(oneMinusTime)) + (_fzcOverFourExcess
-                                * oneOverTimeSquared * Math.sin(oneMinusTime)));
+                        * (_onePlus * Math.sin(onePlusTime)
+                                - _oneMinusFZCOverFourExcess * oneOverTime
+                                * Math.cos(oneMinusTime) + _fzcOverFourExcess
+                                * oneOverTimeSquared * Math.sin(oneMinusTime));
             }
 
-            return (_fourExcessOverPISqrtFZC * (Math.cos(onePlusTime) + (Math
-                    .sin(oneMinusTime) / (x * _fourExcess))))
-                    / (1.0 - (_sixteenExcessSquared * x * x));
+            return _fourExcessOverPISqrtFZC
+                    * (Math.cos(onePlusTime) + Math.sin(oneMinusTime)
+                            / (x * _fourExcess))
+                    / (1.0 - _sixteenExcessSquared * x * x);
         }
 
         private final double _oneOverFZC;
@@ -1934,7 +1936,7 @@ public class SignalProcessing {
 
         // Zero pad the array if necessary
         if (x.length < size) {
-            x = (inverse == _INVERSE_TRANSFORM) ? ComplexArrayMath.padMiddle(x,
+            x = inverse == _INVERSE_TRANSFORM ? ComplexArrayMath.padMiddle(x,
                     size) : ComplexArrayMath.resize(x, size);
         }
 
@@ -1967,7 +1969,7 @@ public class SignalProcessing {
             double[] returnValue = new double[3];
             returnValue[0] = x[0] + x[1] + x[2] + x[3];
             returnValue[1] = x[0] - x[2];
-            returnValue[2] = (x[0] - x[1] + x[2]) - x[3];
+            returnValue[2] = x[0] - x[1] + x[2] - x[3];
             return returnValue;
         }
         }
@@ -2041,8 +2043,8 @@ public class SignalProcessing {
 
         for (int k = 0; k < quarterN; k++) {
             int twoIp = (k << 1) + 1;
-            x3[k] = ((k & 1) == 1) ? (x[size - twoIp] - x[twoIp])
-                    : (x[twoIp] - x[size - twoIp]);
+            x3[k] = (k & 1) == 1 ? x[size - twoIp] - x[twoIp] : x[twoIp]
+                    - x[size - twoIp];
         }
 
         double[] halfSinDFT = _sinDFT(x1, halfN, order - 1);
@@ -2094,7 +2096,7 @@ public class SignalProcessing {
                 x4[n] = x[twoN];
             }
 
-            if ((twoN + 1) >= x.length) {
+            if (twoN + 1 >= x.length) {
                 x4[size - n - 1] = 0.0;
             } else {
                 x4[size - n - 1] = x[twoN + 1];
@@ -2137,7 +2139,7 @@ public class SignalProcessing {
             double[] ct = _CTable[i];
 
             for (int k = 0; k < N; k++) {
-                double arg = (Math.PI * k) / (2.0 * N);
+                double arg = Math.PI * k / (2.0 * N);
                 double c = Math.cos(arg);
                 double s = Math.sin(arg);
                 p1t[k] = c + s;

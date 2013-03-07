@@ -266,7 +266,7 @@ public class DoubleArrayMath {
         double sum = 0.0;
 
         for (int i = 0; i < length; i++) {
-            sum += (array1[i] * array2[i]);
+            sum += array1[i] * array2[i];
         }
 
         return sum;
@@ -299,10 +299,10 @@ public class DoubleArrayMath {
         double[] returnValue = new double[array.length];
 
         for (int i = 0; i < array.length; i++) {
-            if ((array[i] > top) || (array[i] == Double.POSITIVE_INFINITY)) {
+            if (array[i] > top || array[i] == Double.POSITIVE_INFINITY) {
                 returnValue[i] = top;
-            } else if ((array[i] < bottom)
-                    || (array[i] == Double.NEGATIVE_INFINITY)) {
+            } else if (array[i] < bottom
+                    || array[i] == Double.NEGATIVE_INFINITY) {
                 returnValue[i] = bottom;
             } else {
                 returnValue[i] = array[i];
@@ -458,7 +458,7 @@ public class DoubleArrayMath {
         double[] returnValue = new double[newLength];
         int copySize = Math.min(newLength, array.length - startIdx);
 
-        if ((startIdx >= array.length) && (copySize > 0)) {
+        if (startIdx >= array.length && copySize > 0) {
             throw new IllegalArgumentException("resize():  the start index '"
                     + startIdx
                     + "' is greater than equal to the array length '"
@@ -510,8 +510,8 @@ public class DoubleArrayMath {
     public static final double sum(double[] array) {
         double sum = 0.0;
 
-        for (int i = 0; i < array.length; i++) {
-            sum += array[i];
+        for (double element : array) {
+            sum += element;
         }
 
         return sum;
@@ -524,8 +524,8 @@ public class DoubleArrayMath {
     public static final double sumOfSquares(double[] array) {
         double sum = 0.0;
 
-        for (int i = 0; i < array.length; i++) {
-            sum += (array[i] * array[i]);
+        for (double element : array) {
+            sum += element * element;
         }
 
         return sum;
@@ -625,7 +625,7 @@ public class DoubleArrayMath {
         for (int i = 0; i < length; i++) {
             sb.append(Double.toString(array[i]));
 
-            if (i < (length - 1)) {
+            if (i < length - 1) {
                 sb.append(elementDelimiter);
             }
         }
@@ -654,8 +654,8 @@ public class DoubleArrayMath {
         int length = _commonLength(array1, array2, "DoubleArrayMath.within");
 
         for (int i = 0; i < length; i++) {
-            if ((array1[i] > (array2[i] + maxError))
-                    || (array1[i] < (array2[i] - maxError))) {
+            if (array1[i] > array2[i] + maxError
+                    || array1[i] < array2[i] - maxError) {
                 return false;
             }
         }
@@ -684,8 +684,8 @@ public class DoubleArrayMath {
         int length = _commonLength(array1, array2, "DoubleArrayMath.within");
 
         for (int i = 0; i < length; i++) {
-            if ((array1[i] > (array2[i] + maxError[i]))
-                    || (array1[i] < (array2[i] - maxError[i]))) {
+            if (array1[i] > array2[i] + maxError[i]
+                    || array1[i] < array2[i] - maxError[i]) {
                 return false;
             }
         }

@@ -72,7 +72,7 @@ public class Utilities {
             Object element = elements.next();
             String elementString;
 
-            if ((element instanceof Collection) && recursive) {
+            if (element instanceof Collection && recursive) {
                 elementString = toSortedString((Collection) element, recursive);
             } else {
                 elementString = element.toString();
@@ -80,8 +80,8 @@ public class Utilities {
 
             int i;
 
-            for (i = 0; (i < result.size())
-                    && (((String) result.get(i)).compareTo(elementString) < 0); i++) {
+            for (i = 0; i < result.size()
+                    && ((String) result.get(i)).compareTo(elementString) < 0; i++) {
                 ;
             }
 

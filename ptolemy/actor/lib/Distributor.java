@@ -145,8 +145,8 @@ public class Distributor extends Transformer implements SequenceActor {
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         Distributor newObject = (Distributor) super.clone(workspace);
-        newObject.input_tokenConsumptionRate = (Parameter) (newObject.input
-                .getAttribute("tokenConsumptionRate"));
+        newObject.input_tokenConsumptionRate = (Parameter) newObject.input
+                .getAttribute("tokenConsumptionRate");
         ((WidthDependentParameter) newObject.input_tokenConsumptionRate)
                 .setPort(newObject.output);
         return newObject;
@@ -239,7 +239,7 @@ public class Distributor extends Transformer implements SequenceActor {
         }
 
         public ptolemy.data.Token getToken() throws IllegalActionException {
-            IntToken blockSizeValue = (IntToken)blockSize.getToken();
+            IntToken blockSizeValue = (IntToken) blockSize.getToken();
             setToken(new IntToken(_port.getWidth() * blockSizeValue.intValue()));
             return super.getToken();
         }

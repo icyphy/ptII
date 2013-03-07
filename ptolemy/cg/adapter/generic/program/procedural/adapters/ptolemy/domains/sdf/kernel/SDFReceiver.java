@@ -132,8 +132,8 @@ public class SDFReceiver extends Receiver {
             forComposite = false;
         }
         if (port.isInput()
-                && ((Actor) (sourcePort.getContainer())).getDirector() != ((Actor) (port
-                        .getContainer())).getDirector()) {
+                && ((Actor) sourcePort.getContainer()).getDirector() != ((Actor) port
+                        .getContainer()).getDirector()) {
             // Needed for $PTII/ptolemy/cg/adapter/generic/program/procedural/java/adapters/ptolemy/actor/lib/test/auto/hierarchicalModel_2_2e.xml
             forComposite = false;
         }

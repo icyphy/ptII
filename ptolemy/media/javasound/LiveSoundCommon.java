@@ -195,8 +195,8 @@ public class LiveSoundCommon {
             // For each channel,
             for (int currChannel = 0; currChannel < _channels; currChannel++) {
                 // Starting index of relevant bytes.
-                int j = (currSamp * _bytesPerSample * _channels)
-                        + (_bytesPerSample * currChannel);
+                int j = currSamp * _bytesPerSample * _channels
+                        + _bytesPerSample * currChannel;
                 // Note: preserve sign of high order bits.
                 int result = byteArray[j++];
 
@@ -210,15 +210,15 @@ public class LiveSoundCommon {
                     // Running ptolemy/actor/lib/javasound/test/auto/testAudioCapture_AudioPlayer.xml
                     // results in a much better sound.
                     // See https://chess.eecs.berkeley.edu/bugzilla/show_bug.cgi?id=356
-                    result += (byteArray[j++] & 0xff);
+                    result += byteArray[j++] & 0xff;
 
                 case 3:
                     result <<= 8;
-                    result += (byteArray[j++] & 0xff);
+                    result += byteArray[j++] & 0xff;
 
                 case 2:
                     result <<= 8;
-                    result += (byteArray[j++] & 0xff);
+                    result += byteArray[j++] & 0xff;
                 }
 
                 doubleArray[currChannel][currSamp] = result
@@ -269,8 +269,8 @@ public class LiveSoundCommon {
                 // Note: Floor instead of cast to remove deadrange at zero.
                 int intValue = (int) Math.floor(sample * _maxSample);
 
-                int base = (currSamp * _bytesPerSample * _channels)
-                        + (_bytesPerSample * currChannel);
+                int base = currSamp * _bytesPerSample * _channels
+                        + _bytesPerSample * currChannel;
                 // Create byte representation of current sample.
                 // Note: unsigned Shift right.
                 // Note: fall through from higher number cases.

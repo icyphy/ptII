@@ -94,7 +94,7 @@ public class CodeGeneratorUtilities {
                 String value = variable.getToken().toString();
 
                 // Strip out any leading and trailing double quotes
-                if (value.startsWith("\"") && (value.length() > 2)) {
+                if (value.startsWith("\"") && value.length() > 2) {
                     value = value.substring(1, value.length() - 1);
                 }
 

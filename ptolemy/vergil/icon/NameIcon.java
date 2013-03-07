@@ -311,8 +311,9 @@ public class NameIcon extends EditorIcon {
         // Quantize the width to an even multiple of the resolution.
         // The icon is centered on snap to grid, so this ensures that both
         // ends align with the grid.
-        width = (Math.floor((width + defaultResolution)
-                / (2.0 * defaultResolution)) * 2.0 * defaultResolution);
+        width = Math.floor((width + defaultResolution)
+                / (2.0 * defaultResolution))
+                * 2.0 * defaultResolution;
 
         return new Point2D.Double(width, height);
     }

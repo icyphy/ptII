@@ -91,7 +91,7 @@ public class PlotMLApplet extends PlotApplet {
         }
         bin.reset();
 
-        if ((new String(peek)).startsWith("<?xm")) {
+        if (new String(peek).startsWith("<?xm")) {
             // file is an XML file.
             PlotMLParser parser = _newParser();
 

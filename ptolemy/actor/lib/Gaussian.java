@@ -114,11 +114,11 @@ public class Gaussian extends RandomSource {
      *  @exception IllegalActionException If parameter values are incorrect.
      */
     protected void _generateRandomNumber() throws IllegalActionException {
-        double meanValue = ((DoubleToken) (mean.getToken())).doubleValue();
-        double standardDeviationValue = ((DoubleToken) (standardDeviation
-                .getToken())).doubleValue();
+        double meanValue = ((DoubleToken) mean.getToken()).doubleValue();
+        double standardDeviationValue = ((DoubleToken) standardDeviation
+                .getToken()).doubleValue();
         double rawNum = _random.nextGaussian();
-        _current = (rawNum * standardDeviationValue) + meanValue;
+        _current = rawNum * standardDeviationValue + meanValue;
     }
 
     ///////////////////////////////////////////////////////////////////

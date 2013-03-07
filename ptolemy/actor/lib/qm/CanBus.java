@@ -254,7 +254,7 @@ public class CanBus extends MonitoredQuantityManager {
             ListIterator<Object[]> li = _tokenTree.get(_channelUsed)
                     .listIterator();
             while (li.hasNext()) {
-                receiverSet.add((Receiver) ((li.next())[0]));
+                receiverSet.add((Receiver) li.next()[0]);
             }
             _multiCast.put(_channelUsed, receiverSet.size());
         }
@@ -262,24 +262,26 @@ public class CanBus extends MonitoredQuantityManager {
         // "Most recent frame" case, we sort the list of frames of the bus owner
         // by testing if the frame is visible at the current firing time.
         if (_mostRecentFrame) {
-                LinkedList<Object []> listToSort = _tokenTree.get(_channelUsed);
+            LinkedList<Object[]> listToSort = _tokenTree.get(_channelUsed);
 
-                for (int i = 0; i < listToSort.size(); i++) {
-                        for (int mostRecent = i +1 ; mostRecent < listToSort.size(); mostRecent++) {
+            for (int i = 0; i < listToSort.size(); i++) {
+                for (int mostRecent = i + 1; mostRecent < listToSort.size(); mostRecent++) {
 
-                                // If a message will be delivered at time t we consider that
-                                // the CanBus will be occupied at time t. So , all messages
-                                // arriving at time t must be re-emitted => "> 0" condition.
-                            if (listToSort.get(i)[0] == listToSort.get(mostRecent)[0]
-                                      && (this.getDirector().getModelTime())
-                                  .compareTo(((Time) listToSort.get(mostRecent)[2])
-                                                  .add(nextTokenTransmissionTime())) > 0) {
-                                listToSort.remove(i);
-                                i--;
-                                }
-                        }
+                    // If a message will be delivered at time t we consider that
+                    // the CanBus will be occupied at time t. So , all messages
+                    // arriving at time t must be re-emitted => "> 0" condition.
+                    if (listToSort.get(i)[0] == listToSort.get(mostRecent)[0]
+                            && this.getDirector()
+                                    .getModelTime()
+                                    .compareTo(
+                                            ((Time) listToSort.get(mostRecent)[2])
+                                                    .add(nextTokenTransmissionTime())) > 0) {
+                        listToSort.remove(i);
+                        i--;
+                    }
                 }
-                }
+            }
+        }
 
         // delivers (if required) the intended token to the intended receiver
         if (_nextTokenFiringTime != null && _nextTokenFiringTime == currentTime) {
@@ -354,7 +356,7 @@ public class CanBus extends MonitoredQuantityManager {
      * @return The next token to be sent according to the CAN protocol.
      */
     public Token nextToken() {
-        return (Token) (_tokenTree.get(nextCanId()).element())[1];
+        return (Token) _tokenTree.get(nextCanId()).element()[1];
     }
 
     /** Method that compute the size of the next token that need to be sent according to the CAN protocol
@@ -385,7 +387,7 @@ public class CanBus extends MonitoredQuantityManager {
      */
     public double nextTokenTransmissionTime() {
         //  Variable frame size
-            //  return nextTokenSize()/(_bitRate*1000);
+        //  return nextTokenSize()/(_bitRate*1000);
 
         return _frameSize / (_bitRate * 1000);
     }
@@ -402,18 +404,21 @@ public class CanBus extends MonitoredQuantityManager {
         while (it.hasNext()) {
             entry = it.next();
             if (_debugging) {
-                    _debug("Key: " + entry.getKey().toString());
+                _debug("Key: " + entry.getKey().toString());
 
-                    if (!entry.getValue().isEmpty()) {
-                            for (int i=0; i < entry.getValue().size(); i++) {
-                                    _debug("Receiver: "
-                                                    + ((Receiver) entry.getValue().get(i)[0]).toString()
-                                                    + " Token: "
-                                                    + ((Token) entry.getValue().get(i)[1]).toString()
-                                                    + " Time: "+((Time) entry.getValue().get(i)[2])
-                                                            .getDoubleValue());
-                            }
+                if (!entry.getValue().isEmpty()) {
+                    for (int i = 0; i < entry.getValue().size(); i++) {
+                        _debug("Receiver: "
+                                + ((Receiver) entry.getValue().get(i)[0])
+                                        .toString()
+                                + " Token: "
+                                + ((Token) entry.getValue().get(i)[1])
+                                        .toString()
+                                + " Time: "
+                                + ((Time) entry.getValue().get(i)[2])
+                                        .getDoubleValue());
                     }
+                }
             }
         }
     }
@@ -455,21 +460,19 @@ public class CanBus extends MonitoredQuantityManager {
 
             _channelUsed = id;
 
-            ((LinkedList<Object[]>) _tokenTree.get(id)).add(new Object[] {
-                    receiver, token, visibleAt });
+            _tokenTree.get(id).add(new Object[] { receiver, token, visibleAt });
 
             _nextTokenFiringTime = currentTime.add(nextTokenTransmissionTime());
             _fireAt(_nextTokenFiringTime);
             _startingTime = currentTime;
 
         } else {
-                Time visibleAt = this.getDirector().getModelTime();
+            Time visibleAt = this.getDirector().getModelTime();
 
-                ((LinkedList<Object[]>) _tokenTree.get(id)).add(new Object[] {
-                                    receiver, token, visibleAt});
-                    if (currentTime.equals(_startingTime)) {
-                            _channelUsed = nextCanId();
-                    }
+            _tokenTree.get(id).add(new Object[] { receiver, token, visibleAt });
+            if (currentTime.equals(_startingTime)) {
+                _channelUsed = nextCanId();
+            }
         }
     }
 

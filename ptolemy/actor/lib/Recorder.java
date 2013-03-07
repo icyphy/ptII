@@ -145,12 +145,12 @@ public class Recorder extends Sink {
      *  @return The latest input token.
      */
     public Token getLatest(int channel) {
-        if ((_latest == null) || (channel >= _latest.length)
-                || (_latest[channel] == null)) {
-            return (_bottom);
+        if (_latest == null || channel >= _latest.length
+                || _latest[channel] == null) {
+            return _bottom;
         }
 
-        return (_latest[channel]);
+        return _latest[channel];
     }
 
     /** Get the record for the specified channel number.  If in any
@@ -207,14 +207,14 @@ public class Recorder extends Sink {
             }
         }
 
-        int capacityValue = ((IntToken) (capacity.getToken())).intValue();
+        int capacityValue = ((IntToken) capacity.getToken()).intValue();
 
         if (capacityValue != 0) {
             _records.add(record);
             _timeRecord.add(Double.valueOf(getDirector().getModelTime()
                     .getDoubleValue()));
 
-            if ((capacityValue > 0) && (_records.size() > capacityValue)) {
+            if (capacityValue > 0 && _records.size() > capacityValue) {
                 // Remove the first element.
                 _records.remove(0);
                 _timeRecord.remove(0);

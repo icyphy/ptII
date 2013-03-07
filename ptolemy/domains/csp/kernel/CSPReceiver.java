@@ -345,8 +345,7 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
      */
     public boolean isReadBlocked() {
         synchronized (_getDirector()) {
-            return (_getWaiting != null)
-                    || (_conditionalReceiveWaiting != null);
+            return _getWaiting != null || _conditionalReceiveWaiting != null;
         }
     }
 
@@ -357,7 +356,7 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
      */
     public boolean isWriteBlocked() {
         synchronized (_getDirector()) {
-            return (_putWaiting != null) || (_conditionalSendWaiting != null);
+            return _putWaiting != null || _conditionalSendWaiting != null;
         }
     }
 
@@ -547,8 +546,8 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
                                     + " This is not permitted.");
                 }
                 _threadCount = receivers.length;
-                for (int j = 0; j < receivers.length; j++) {
-                    final CSPReceiver receiver = (CSPReceiver) receivers[j];
+                for (Receiver receiver2 : receivers) {
+                    final CSPReceiver receiver = (CSPReceiver) receiver2;
                     String name = "Send to "
                             + receiver.getContainer().getFullName();
                     Thread putThread = new Thread(name) {

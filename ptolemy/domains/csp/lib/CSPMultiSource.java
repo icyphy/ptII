@@ -76,7 +76,7 @@ public class CSPMultiSource extends CSPActor {
     public CSPMultiSource() throws IllegalActionException,
             NameDuplicationException {
         super();
-        tokenLimit = new Parameter(this, "tokenLimit", (new IntToken(-1)));
+        tokenLimit = new Parameter(this, "tokenLimit", new IntToken(-1));
     }
 
     /** Construct a CSPMultiSource with the specified container and
@@ -103,7 +103,7 @@ public class CSPMultiSource extends CSPActor {
         output = new TypedIOPort(this, "output", false, true);
         output.setMultiport(true);
         output.setTypeEquals(BaseType.INT);
-        tokenLimit = new Parameter(this, "tokenLimit", (new IntToken(limit)));
+        tokenLimit = new Parameter(this, "tokenLimit", new IntToken(limit));
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -147,7 +147,7 @@ public class CSPMultiSource extends CSPActor {
             boolean continueCDO = true;
 
             while (continueCDO) {
-                if ((count > limit) && (limit >= 0)) {
+                if (count > limit && limit >= 0) {
                     return;
                 }
 

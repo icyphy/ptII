@@ -149,9 +149,9 @@ public class Sensor extends TypedAtomicActor {
         hide.setVisibility(Settable.EXPERT);
 
         // Hide the ports.
-        (new SingletonParameter(output, "_hide")).setToken(BooleanToken.TRUE);
-        (new SingletonParameter(input, "_hide")).setToken(BooleanToken.TRUE);
-        (new SingletonParameter(signal, "_hide")).setToken(BooleanToken.TRUE);
+        new SingletonParameter(output, "_hide").setToken(BooleanToken.TRUE);
+        new SingletonParameter(input, "_hide").setToken(BooleanToken.TRUE);
+        new SingletonParameter(signal, "_hide").setToken(BooleanToken.TRUE);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -279,8 +279,9 @@ public class Sensor extends TypedAtomicActor {
             DoubleToken time = (DoubleToken) inputToken.get("time");
             IntToken d = (IntToken) inputToken.get("depth");
 
-            if ((time.doubleValue() > _timeValue)
-                    || ((time.doubleValue() == _timeValue) && (d.intValue() < _parentDepth))) {
+            if (time.doubleValue() > _timeValue
+                    || time.doubleValue() == _timeValue
+                    && d.intValue() < _parentDepth) {
                 //the root node may have been changed
                 //or there is a shorter path.
                 ArrayToken locationArray = (ArrayToken) inputToken

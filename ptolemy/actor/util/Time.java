@@ -472,7 +472,7 @@ public class Time implements Comparable {
      */
     public final boolean isNegative() {
         if (_timeValue != null) {
-            return (_timeValue.signum() == -1);
+            return _timeValue.signum() == -1;
         }
         return _isNegativeInfinite;
     }
@@ -491,7 +491,7 @@ public class Time implements Comparable {
      */
     public final boolean isPositive() {
         if (_timeValue != null) {
-            return (_timeValue.signum() == 1);
+            return _timeValue.signum() == 1;
         }
         return _isPositiveInfinite;
     }
@@ -508,7 +508,7 @@ public class Time implements Comparable {
      */
     public final boolean isZero() {
         if (_timeValue != null) {
-            return (_timeValue.signum() == 0);
+            return _timeValue.signum() == 0;
         }
         return false;
     }
@@ -664,7 +664,7 @@ public class Time implements Comparable {
         double precision = _timeResolution();
         long multiple = Math.round(value / precision);
 
-        if (Math.abs((multiple * precision) - value) > precision) {
+        if (Math.abs(multiple * precision - value) > precision) {
             throw new IllegalActionException(
                     "The given time value "
                             + value
@@ -674,7 +674,7 @@ public class Time implements Comparable {
                             + ". The maximum value that can always be precisely converted is "
                             + maximumAccurateValueAsDouble()
                             + ". A number close to your value that can be converted is "
-                            + (multiple * precision));
+                            + multiple * precision);
         }
 
         return BigInteger.valueOf(multiple);

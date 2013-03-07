@@ -164,7 +164,7 @@ public class FunctionType extends StructuredType implements Cloneable {
         if (object == this) {
             return true;
         }
-        if ((object == null) || (object.getClass() != getClass())) {
+        if (object == null || object.getClass() != getClass()) {
             return false;
         } else {
             FunctionType functionType = (FunctionType) object;
@@ -202,7 +202,7 @@ public class FunctionType extends StructuredType implements Cloneable {
      *  @return a Type.
      */
     public Type getArgType(int i) {
-        if ((i < 0) || (i >= _argTypeTerms.length)) {
+        if (i < 0 || i >= _argTypeTerms.length) {
             return null;
         }
 
@@ -622,7 +622,7 @@ public class FunctionType extends StructuredType implements Cloneable {
             Type type2 = t2.getArgType(i);
             int result = TypeLattice.compare(type1, type2);
 
-            if ((result == CPO.HIGHER) || (result == CPO.INCOMPARABLE)) {
+            if (result == CPO.HIGHER || result == CPO.INCOMPARABLE) {
                 return false;
             }
         }
@@ -672,7 +672,7 @@ public class FunctionType extends StructuredType implements Cloneable {
             if (object == this) {
                 return true;
             }
-            if ((object == null) || (object.getClass() != getClass())) {
+            if (object == null || object.getClass() != getClass()) {
                 return false;
             } else {
                 FieldTypeTerm fieldTypeTerm = (FieldTypeTerm) object;
@@ -708,7 +708,7 @@ public class FunctionType extends StructuredType implements Cloneable {
                 return variable;
             }
 
-            return (new InequalityTerm[0]);
+            return new InequalityTerm[0];
         }
 
         /** Return a hash code value for this object.
@@ -755,7 +755,7 @@ public class FunctionType extends StructuredType implements Cloneable {
          *  @return True if this field type is a type variable.
          */
         public boolean isSettable() {
-            return (!_declaredType.isConstant());
+            return !_declaredType.isConstant();
         }
 
         /** Check whether the current element type is acceptable.

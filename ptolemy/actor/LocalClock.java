@@ -182,8 +182,8 @@ public class LocalClock extends AbstractSettableAttribute {
                     if (manager != null) {
                         Manager.State state = manager.getState();
 
-                        if ((state != Manager.IDLE)
-                                && (state != Manager.PREINITIALIZING)) {
+                        if (state != Manager.IDLE
+                                && state != Manager.PREINITIALIZING) {
                             throw new IllegalActionException(this,
                                     "Cannot change timePrecision during a run.");
                         }
@@ -255,7 +255,7 @@ public class LocalClock extends AbstractSettableAttribute {
             environmentTimePassedSinceCommitDoubleValue = environmentTimePassedSinceCommitDoubleValue
                     / _drift;
             environmentTimePassedSinceCommit = new Time(
-                    ((Director) getContainer()),
+                    (Director) getContainer(),
                     environmentTimePassedSinceCommitDoubleValue);
         }
         Time environmentTime = _lastCommitEnvironmentTime
@@ -328,7 +328,7 @@ public class LocalClock extends AbstractSettableAttribute {
                     .getDoubleValue();
             localTimePassedSinceCommitDoubleValue = localTimePassedSinceCommitDoubleValue
                     * _drift;
-            localTimePassedSinceCommit = new Time(((Director) getContainer()),
+            localTimePassedSinceCommit = new Time((Director) getContainer(),
                     localTimePassedSinceCommitDoubleValue);
         }
         Time localTime = _lastCommitEnvironmentTime.subtract(_offset).add(

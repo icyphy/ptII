@@ -74,8 +74,8 @@ public final class LayoutUtilities {
     public static final void placeNoReroute(LayoutTarget target, Object node,
             double x, double y) {
         Rectangle2D bounds = target.getBounds(node);
-        target.translate(node, x - (bounds.getWidth() / 2) - bounds.getX(), y
-                - (bounds.getHeight() / 2) - bounds.getY());
+        target.translate(node, x - bounds.getWidth() / 2 - bounds.getX(), y
+                - bounds.getHeight() / 2 - bounds.getY());
     }
 
     /**

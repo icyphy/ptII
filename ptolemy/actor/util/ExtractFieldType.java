@@ -157,7 +157,7 @@ public class ExtractFieldType extends MonotonicFunction {
             return variable;
         }
 
-        return (new InequalityTerm[0]);
+        return new InequalityTerm[0];
     }
 
     ///////////////////////////////////////////////////////////////////

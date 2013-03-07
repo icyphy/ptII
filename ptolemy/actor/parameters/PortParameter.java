@@ -161,8 +161,9 @@ public class PortParameter extends AbstractInitializableParameter implements
      *  @exception NameDuplicationException If the name coincides with
      *   a parameter already in the container.
      */
-    public PortParameter(NamedObj container, String name, boolean initializeParameterPort)
-            throws IllegalActionException, NameDuplicationException {
+    public PortParameter(NamedObj container, String name,
+            boolean initializeParameterPort) throws IllegalActionException,
+            NameDuplicationException {
         super(container, name);
         // If we get to here, we know the container is a ComponentEntity,
         // so the cast is safe.
@@ -431,7 +432,7 @@ public class PortParameter extends AbstractInitializableParameter implements
     public void update() throws IllegalActionException {
         ParameterPort port = _port;
 
-        if ((port != null) && (port.isOutsideConnected()) && port.hasToken(0)) {
+        if (port != null && port.isOutsideConnected() && port.hasToken(0)) {
             Token token = port.get(0);
             setCurrentValue(token);
             // Have to validate so that containers of dependent

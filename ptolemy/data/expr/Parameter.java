@@ -237,7 +237,7 @@ public class Parameter extends Variable {
         }
 
         String valueTerm = "";
-        if ((value != null)) {
+        if (value != null) {
             valueTerm = " value=\"" + StringUtilities.escapeForXML(value)
                     + "\"";
         }
@@ -258,7 +258,7 @@ public class Parameter extends Variable {
      *  @see #addChoice(String)
      */
     public String[] getChoices() {
-        if ((_choices == null) || (_choices.size() == 0)) {
+        if (_choices == null || _choices.size() == 0) {
             return null;
         } else {
             return (String[]) _choices.toArray(new String[_choices.size()]);

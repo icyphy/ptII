@@ -84,7 +84,7 @@ public class WirelessToWired extends TypedAtomicActor {
         super(container, name);
 
         properties = new TypedIOPort(this, "properties", false, true);
-        (new SingletonParameter(properties, "_showName"))
+        new SingletonParameter(properties, "_showName")
                 .setToken(BooleanToken.TRUE);
 
         // Create and configure the parameters.
@@ -97,7 +97,7 @@ public class WirelessToWired extends TypedAtomicActor {
 
         payload = new TypedIOPort(this, "payload", false, true);
         payload.setTypeSameAs(input);
-        (new SingletonParameter(payload, "_showName"))
+        new SingletonParameter(payload, "_showName")
                 .setToken(BooleanToken.TRUE);
 
         _attachText("_iconDescription", "<svg>\n"
@@ -138,7 +138,7 @@ public class WirelessToWired extends TypedAtomicActor {
      *   an attribute that cannot be cloned.
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        WirelessToWired newObject = (WirelessToWired) (super.clone(workspace));
+        WirelessToWired newObject = (WirelessToWired) super.clone(workspace);
 
         // set the type constraints
         newObject.payload.setTypeSameAs(newObject.input);

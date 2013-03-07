@@ -376,7 +376,7 @@ public class CompositeActorApplication {
             String arg = args[i];
 
             if (_parseArg(arg) == false) {
-                if (arg.startsWith("-") && (i < (args.length - 1))) {
+                if (arg.startsWith("-") && i < args.length - 1) {
                     // Save in case this is a parameter name and value.
                     _parameterNames.add(arg.substring(1));
                     _parameterValues.add(args[i + 1]);

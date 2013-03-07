@@ -80,9 +80,9 @@ public class FuzzyDoubleComparator implements Comparator {
         double firstValue = ((Double) first).doubleValue();
         double secondValue = ((Double) second).doubleValue();
 
-        if (firstValue < (secondValue - (_threshold / 2.0))) {
+        if (firstValue < secondValue - _threshold / 2.0) {
             return -1;
-        } else if (firstValue > (secondValue + (_threshold / 2.0))) {
+        } else if (firstValue > secondValue + _threshold / 2.0) {
             return 1;
         } else {
             return 0;

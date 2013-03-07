@@ -123,7 +123,7 @@ public class ActorConstraintsDefinitionAdapter extends LatticeOntologyAdapter {
                             .getAttribute(objName);
                 }
                 _setConstraints(actorElement,
-                        ((StringToken) (constraintExpression.getToken()))
+                        ((StringToken) constraintExpression.getToken())
                                 .stringValue());
             }
         }
@@ -246,7 +246,7 @@ public class ActorConstraintsDefinitionAdapter extends LatticeOntologyAdapter {
         Ontology functionOntology = getSolver().getOntology();
         List<Ontology> domainOntologies = new ArrayList<Ontology>(
                 argumentTerms.length);
-        for (int i = 0; i < argumentTerms.length; i++) {
+        for (InequalityTerm argumentTerm : argumentTerms) {
             domainOntologies.add(functionOntology);
         }
 

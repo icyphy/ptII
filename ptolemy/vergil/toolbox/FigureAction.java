@@ -189,7 +189,7 @@ public class FigureAction extends AbstractAction {
             if (currentFigure != null) {
                 _target = null;
 
-                while ((_target == null) && (currentFigure != null)) {
+                while (_target == null && currentFigure != null) {
                     Object object = currentFigure;
 
                     if (object instanceof Figure) {

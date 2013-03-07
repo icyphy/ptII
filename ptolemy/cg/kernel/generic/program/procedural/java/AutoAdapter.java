@@ -1000,7 +1000,7 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
             if (!isAutoAdapteredRemotePort(inputPort)) {
                 if (!inputPort.isMultiport()
                         && inputPort.isOutsideConnected()
-                        && ((inputPort instanceof ParameterPort) || inputPort
+                        && (inputPort instanceof ParameterPort || inputPort
                                 .numLinks() > 0)) {
                     // Only generate code if we have a ParameterPort or we are connected.
                     // $PTII/bin/ptcg -language java $PTII/ptolemy/cg/kernel/generic/program/procedural/java/test/auto/AutoAdapterTwoActors.xml
@@ -1221,13 +1221,13 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                 // It could be that the name of the port and the variable name
                 // do not match.
                 Field[] fields = component.getClass().getFields();
-                for (int i = 0; i < fields.length; i++) {
-                    if (fields[i].get(component) instanceof Port) {
-                        Port portField = (Port) fields[i].get(component);
+                for (Field field : fields) {
+                    if (field.get(component) instanceof Port) {
+                        Port portField = (Port) field.get(component);
                         String portFieldName = portField.getName();
                         portNames.append("<" + portFieldName + "> ");
                         if (portName.equals(portFieldName)) {
-                            foundPortField = fields[i];
+                            foundPortField = field;
                             break;
                         }
                     }
@@ -1896,8 +1896,8 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
 
                     // Use castPort.getName() and get the real name of the port.
                     // $PTII/bin/ptcg -language java $PTII/ptolemy/cg/kernel/generic/program/procedural/java/test/auto/ActorWithPortNameProblemTest.xml
-                    IOPort actorPort = (IOPort) (((Entity) getComponent())
-                            .getPort(castPort.getName()));
+                    IOPort actorPort = (IOPort) ((Entity) getComponent())
+                            .getPort(castPort.getName());
 
                     if (actorPort == null) {
                         Entity container = (Entity) getComponent()
@@ -2100,8 +2100,8 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                                 + readingRemoteParametersDepth);
                     }
                     //String remoteActorC3Symbol = getCodeGenerator().generateVariableName((((NamedObj) remoteActor).getContainer().getContainer().getContainer()));
-                    NamedObj remoteActorC3 = ((remoteActor.getContainer()
-                            .getContainer().getContainer()));
+                    NamedObj remoteActorC3 = remoteActor.getContainer()
+                            .getContainer().getContainer();
                     String remoteActorC3Symbol = _generatePtTypedCompositeActorName(
                             remoteActorC3, remoteActorC3.getName());
                     code.append("TypedCompositeActor c1 = (TypedCompositeActor)"

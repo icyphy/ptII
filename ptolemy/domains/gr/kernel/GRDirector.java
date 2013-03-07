@@ -165,7 +165,7 @@ public class GRDirector extends StaticSchedulingDirector {
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         _reset();
 
-        GRDirector newObject = (GRDirector) (super.clone(workspace));
+        GRDirector newObject = (GRDirector) super.clone(workspace);
         return newObject;
     }
 
@@ -375,10 +375,10 @@ public class GRDirector extends StaticSchedulingDirector {
         // if we do, then the model does not run.
         /*boolean result =*/super.postfire();
 
-        int totalIterations = ((IntToken) (iterations.getToken())).intValue();
+        int totalIterations = ((IntToken) iterations.getToken()).intValue();
         _iteration++;
 
-        if ((totalIterations > 0) && (_iteration >= totalIterations)) {
+        if (totalIterations > 0 && _iteration >= totalIterations) {
             _iteration = 0;
             return false;
         }

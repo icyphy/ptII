@@ -211,8 +211,8 @@ public class JTextAreaExec extends JPanel implements ExecuteCommands {
 
             if (_debug) {
                 // For debugging
-                for (int i = 0; i < _envp.length; i++) {
-                    stdout("JTextArea.appendToPath() " + _envp[i]);
+                for (String element : _envp) {
+                    stdout("JTextArea.appendToPath() " + element);
                 }
             }
         }
@@ -257,8 +257,8 @@ public class JTextAreaExec extends JPanel implements ExecuteCommands {
 
             return environmentMap.get(key);
         }
-        for (int i = 0; i < _envp.length; i++) {
-            String envpKey = _envp[i].substring(0, _envp[i].indexOf("="));
+        for (String element : _envp) {
+            String envpKey = element.substring(0, element.indexOf("="));
             if (key.length() == envpKey.length()
                     && key.regionMatches(false /*ignoreCase*/, 0, envpKey, 0,
                             envpKey.length())) {
@@ -269,10 +269,10 @@ public class JTextAreaExec extends JPanel implements ExecuteCommands {
                             + "), \""
                             + envpKey
                             + "\"\n\t_envp not null, returning: "
-                            + _envp[i].substring(key.length() + 1,
-                                    _envp[i].length()));
+                            + element.substring(key.length() + 1,
+                                    element.length()));
                 }
-                return _envp[i].substring(key.length() + 1, _envp[i].length());
+                return element.substring(key.length() + 1, element.length());
             }
         }
         return null;
@@ -400,7 +400,7 @@ public class JTextAreaExec extends JPanel implements ExecuteCommands {
     ////                         private methods                   ////
     // Enable the Start button if there are any commands in the list.
     private void _enableStartButton() {
-        if ((_commands != null) && (_commands.size() > 0)) {
+        if (_commands != null && _commands.size() > 0) {
             _startButton.setEnabled(true);
         } else {
             _startButton.setEnabled(false);
@@ -447,8 +447,8 @@ public class JTextAreaExec extends JPanel implements ExecuteCommands {
 
                     StringBuffer statusCommand = new StringBuffer();
 
-                    for (int i = 0; i < commandTokens.length; i++) {
-                        appendJTextArea("        " + commandTokens[i]);
+                    for (String commandToken : commandTokens) {
+                        appendJTextArea("        " + commandToken);
 
                         // Accumulate the first 50 chars for use in
                         // the status buffer.
@@ -457,7 +457,7 @@ public class JTextAreaExec extends JPanel implements ExecuteCommands {
                                 statusCommand.append(" ");
                             }
 
-                            statusCommand.append(commandTokens[i]);
+                            statusCommand.append(commandToken);
                         }
                     }
 

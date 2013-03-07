@@ -79,7 +79,7 @@ public class ApplyFunction extends TypedAtomicActor {
         super(workspace);
         output = new TypedIOPort(this, "output", false, true);
         function = new PortParameter(this, "function");
-        (new SingletonParameter(function, "_showName"))
+        new SingletonParameter(function, "_showName")
                 .setToken(BooleanToken.TRUE);
     }
 
@@ -203,7 +203,7 @@ public class ApplyFunction extends TypedAtomicActor {
                 return BaseType.UNKNOWN;
             }
             if (functionType instanceof FunctionType) {
-                return ((FunctionType)functionType).getReturnType();
+                return ((FunctionType) functionType).getReturnType();
             }
             throw new IllegalActionException(ApplyFunction.this,
                     "function is not a function. It is a " + functionType);

@@ -359,7 +359,7 @@ public abstract class ActorController extends AttributeController {
          *  @param event The action event
          */
         public void actionPerformed(ActionEvent event) {
-            if ((_configuration == null) && (_tableauFrame == null)) {
+            if (_configuration == null && _tableauFrame == null) {
                 MessageHandler
                         .error("Cannot listen to actor without a configuration.");
                 return;

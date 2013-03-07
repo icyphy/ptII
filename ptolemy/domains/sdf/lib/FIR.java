@@ -179,7 +179,7 @@ public class FIR extends SDFTransformer {
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == interpolation) {
-            IntToken token = (IntToken) (interpolation.getToken());
+            IntToken token = (IntToken) interpolation.getToken();
             _interpolationValue = token.intValue();
 
             if (_interpolationValue <= 0) {
@@ -190,7 +190,7 @@ public class FIR extends SDFTransformer {
 
             _reinitializeNeeded = true;
         } else if (attribute == decimation) {
-            IntToken token = (IntToken) (decimation.getToken());
+            IntToken token = (IntToken) decimation.getToken();
             _decimationValue = token.intValue();
 
             if (_decimationValue <= 0) {
@@ -200,7 +200,7 @@ public class FIR extends SDFTransformer {
 
             _reinitializeNeeded = true;
         } else if (attribute == decimationPhase) {
-            IntToken token = (IntToken) (decimationPhase.getToken());
+            IntToken token = (IntToken) decimationPhase.getToken();
             _decimationPhaseValue = token.intValue();
 
             if (_decimationPhaseValue < 0) {
@@ -225,7 +225,7 @@ public class FIR extends SDFTransformer {
      *   an attribute that cannot be cloned.
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        FIR newObject = (FIR) (super.clone(workspace));
+        FIR newObject = (FIR) super.clone(workspace);
 
         // Set the type constraints.
         newObject.taps.setTypeAtLeast(ArrayType.ARRAY_BOTTOM);
@@ -268,10 +268,10 @@ public class FIR extends SDFTransformer {
 
                 // Compute the inner product.
                 for (int i = 0; i < _phaseLength; i++) {
-                    int tapsIndex = (i * _interpolationValue) + phase;
+                    int tapsIndex = i * _interpolationValue + phase;
 
-                    int dataIndex = ((_mostRecent + _decimationValue) - inC + i)
-                            % (_data.length);
+                    int dataIndex = (_mostRecent + _decimationValue - inC + i)
+                            % _data.length;
 
                     if (tapsIndex < _taps.length) {
                         _tapItem = _taps[tapsIndex];
@@ -352,7 +352,7 @@ public class FIR extends SDFTransformer {
      *
      */
     protected void _initializeTaps() throws IllegalActionException {
-        ArrayToken tapsToken = (ArrayToken) (taps.getToken());
+        ArrayToken tapsToken = (ArrayToken) taps.getToken();
         _taps = tapsToken.arrayValue();
 
         // Get a token representing zero in the appropriate type.
@@ -374,7 +374,7 @@ public class FIR extends SDFTransformer {
 
         _phaseLength = _taps.length / _interpolationValue;
 
-        if ((_taps.length % _interpolationValue) != 0) {
+        if (_taps.length % _interpolationValue != 0) {
             _phaseLength++;
         }
 
@@ -504,7 +504,7 @@ public class FIR extends SDFTransformer {
 
             int phaseLength = _taps.length / _interpolationValue;
 
-            if ((_taps.length % _interpolationValue) != 0) {
+            if (_taps.length % _interpolationValue != 0) {
                 phaseLength++;
             }
             for (int i = 0; i < phaseLength; i++) {

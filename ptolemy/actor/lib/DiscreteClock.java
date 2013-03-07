@@ -511,7 +511,7 @@ public class DiscreteClock extends TimedSource {
         // separately, and checking in initialize() is not really
         // sufficient, since the values of these parameters can
         // change at run time.
-        ArrayToken val = (ArrayToken) (values.getToken());
+        ArrayToken val = (ArrayToken) values.getToken();
         if (_offsets.length != val.length()) {
             throw new IllegalActionException(this,
                     "Values and offsets vectors do not have the same length.");
@@ -547,8 +547,8 @@ public class DiscreteClock extends TimedSource {
      *  the values parameter.
      */
     protected Token _getValue(int index) throws IllegalActionException {
-        ArrayToken val = (ArrayToken) (values.getToken());
-        if ((val == null) || (val.length() <= index)) {
+        ArrayToken val = (ArrayToken) values.getToken();
+        if (val == null || val.length() <= index) {
             throw new IllegalActionException(this,
                     "Index out of range of the values parameter.");
         }

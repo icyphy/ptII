@@ -90,8 +90,8 @@ public class Console extends Tableau {
          *   configuration attribute.
          *  @exception NameDuplicationException If a name collision occurs.
          */
-        public ConsoleFrame(Tableau tableau)
-                throws IllegalActionException, NameDuplicationException {
+        public ConsoleFrame(Tableau tableau) throws IllegalActionException,
+                NameDuplicationException {
             super(tableau.getTitle());
 
             JPanel component = new JPanel();
@@ -102,13 +102,15 @@ public class Console extends Tableau {
             // Display total memory and free memory.
             final JTextArea textArea = new JTextArea("", 20, 80);
 
-            ByteArrayOutputStream baos = new MyByteArrayOutputStream(textArea, tableau);
+            ByteArrayOutputStream baos = new MyByteArrayOutputStream(textArea,
+                    tableau);
             System.setOut(new PrintStream(baos));
 
             textArea.setText("Standard output is redirected to here.");
             textArea.setEditable(false);
 
-            ((DefaultCaret) textArea.getCaret()).setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
+            ((DefaultCaret) textArea.getCaret())
+                    .setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
             JScrollPane scrollPane = new JScrollPane(textArea);
 
             add(scrollPane);
@@ -119,7 +121,8 @@ public class Console extends Tableau {
          */
         @Override
         protected boolean _close() {
-            System.setOut(new PrintStream(new FileOutputStream(FileDescriptor.out)));
+            System.setOut(new PrintStream(new FileOutputStream(
+                    FileDescriptor.out)));
             System.out.println("Standard output is back.");
             return super._close();
         }
@@ -138,18 +141,21 @@ public class Console extends Tableau {
                 textArea = c;
                 tab = t;
             }
+
             @Override
-            public void write(int b)  {
+            public void write(int b) {
                 super.write(b);
                 textArea.setText(this.toString());
                 tab.show();
             }
+
             @Override
-            public void write(byte[] b, int off, int len)  {
+            public void write(byte[] b, int off, int len) {
                 super.write(b, off, len);
                 textArea.setText(this.toString());
                 tab.show();
             }
+
             private JTextArea textArea;
             private Tableau tab;
 
@@ -190,8 +196,7 @@ public class Console extends Tableau {
         public Tableau createTableau(Effigy effigy) throws Exception {
             if (effigy instanceof PtolemyEffigy) {
                 // First see whether the effigy already contains a tableau
-                Console tableau = (Console) effigy
-                        .getEntity("ConsoleTableau");
+                Console tableau = (Console) effigy.getEntity("ConsoleTableau");
 
                 if (tableau == null) {
                     tableau = new Console((PtolemyEffigy) effigy,

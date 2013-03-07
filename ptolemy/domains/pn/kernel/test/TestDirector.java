@@ -81,12 +81,12 @@ public class TestDirector extends AtomicActor {
 
         for (i = 0; i < 2; i++) {
             output.broadcast(new IntToken(i));
-            profile += ("broadcast new token " + i + "\n");
+            profile += "broadcast new token " + i + "\n";
         }
 
         for (i = 0; i < 2; i++) {
             int ans = ((IntToken) input.get(0)).intValue();
-            profile += ("received new token " + ans + "\n");
+            profile += "received new token " + ans + "\n";
         }
 
         try {
@@ -99,7 +99,7 @@ public class TestDirector extends AtomicActor {
         }
 
         output.broadcast(new IntToken(i));
-        profile += ("broadcast new token " + i + "\n");
+        profile += "broadcast new token " + i + "\n";
     }
 
     /** Return a profile which contains the various actions performed by this

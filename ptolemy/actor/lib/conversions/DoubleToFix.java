@@ -133,7 +133,7 @@ public class DoubleToFix extends Converter {
         if (attribute == precision) {
             IntMatrixToken token = (IntMatrixToken) precision.getToken();
 
-            if ((token.getRowCount() != 1) || (token.getColumnCount() != 2)) {
+            if (token.getRowCount() != 1 || token.getColumnCount() != 2) {
                 throw new IllegalActionException(this,
                         "Invalid precision (not a 1 by 2 matrix).");
             }

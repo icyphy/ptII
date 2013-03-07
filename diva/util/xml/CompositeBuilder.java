@@ -127,7 +127,7 @@ public class CompositeBuilder extends AbstractXmlBuilder {
             return getDelegate().build(elt, type);
         }
 
-        XmlBuilder builder = (XmlBuilder) (Class.forName(val[1]).newInstance());
+        XmlBuilder builder = (XmlBuilder) Class.forName(val[1]).newInstance();
         builder.setDelegate(this);
         return builder.build(elt, val[0]);
     }
@@ -148,7 +148,7 @@ public class CompositeBuilder extends AbstractXmlBuilder {
             return getDelegate().generate(in);
         }
 
-        XmlBuilder builder = (XmlBuilder) (Class.forName(val[1]).newInstance());
+        XmlBuilder builder = (XmlBuilder) Class.forName(val[1]).newInstance();
         builder.setDelegate(this);
         return builder.generate(in);
     }

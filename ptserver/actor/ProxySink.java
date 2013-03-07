@@ -133,10 +133,9 @@ public class ProxySink extends ProxyActor {
     public void throttle(boolean force) {
         synchronized (this) {
             long waitTime = _MIN_WAIT;
-            while ((!_proxyModelInfrastructure.isStopped() && _proxyModelInfrastructure
-                    .getPingPongLatency() > _proxyModelInfrastructure
-                    .getMaxlatency())
-                    || force) {
+            while (!_proxyModelInfrastructure.isStopped()
+                    && _proxyModelInfrastructure.getPingPongLatency() > _proxyModelInfrastructure
+                            .getMaxlatency() || force) {
                 force = false;
                 try {
                     wait(waitTime);

@@ -156,7 +156,7 @@ public class ErasureChannel extends AtomicWirelessChannel {
     public void initialize() throws IllegalActionException {
         super.initialize();
 
-        long seedValue = ((LongToken) (seed.getToken())).longValue();
+        long seedValue = ((LongToken) seed.getToken()).longValue();
 
         if (seedValue != 0) {
             _random.setSeed(seedValue);
@@ -205,7 +205,7 @@ public class ErasureChannel extends AtomicWirelessChannel {
         }
 
         // Make sure a probability of 1.0 is truly a sure loss.
-        if ((probability < 1.0) && (experiment >= probability)) {
+        if (probability < 1.0 && experiment >= probability) {
             super._transmitTo(token, sender, receiver, properties);
         } else {
             if (_debugging) {

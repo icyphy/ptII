@@ -655,8 +655,8 @@ public final class FormLayout implements LayoutManager2, Serializable {
     private void adjustGroupIndices(int[][] allGroupIndices, int modifiedIndex,
             boolean remove) {
         final int offset = remove ? -1 : +1;
-        for (int group = 0; group < allGroupIndices.length; group++) {
-            int[] groupIndices = allGroupIndices[group];
+        for (int[] allGroupIndice : allGroupIndices) {
+            int[] groupIndices = allGroupIndice;
             for (int i = 0; i < groupIndices.length; i++) {
                 int index = groupIndices[i];
                 if (index == modifiedIndex && remove) {
@@ -1144,8 +1144,8 @@ public final class FormLayout implements LayoutManager2, Serializable {
 
                 CellConstraints constraints = (CellConstraints) entry
                         .getValue();
-                if ((constraints.gridWidth > 1)
-                        && (constraints.gridWidth > maxFixedSizeColsTable[constraints.gridX - 1])) {
+                if (constraints.gridWidth > 1
+                        && constraints.gridWidth > maxFixedSizeColsTable[constraints.gridX - 1]) {
                     //int compWidth = minimumWidthMeasure.sizeOf(component);
                     int compWidth = defaultWidthMeasure.sizeOf(component);
                     //int compWidth = preferredWidthMeasure.sizeOf(component);
@@ -1159,8 +1159,8 @@ public final class FormLayout implements LayoutManager2, Serializable {
                     }
                 }
 
-                if ((constraints.gridHeight > 1)
-                        && (constraints.gridHeight > maxFixedSizeRowsTable[constraints.gridY - 1])) {
+                if (constraints.gridHeight > 1
+                        && constraints.gridHeight > maxFixedSizeRowsTable[constraints.gridY - 1]) {
                     //int compHeight = minimumHeightMeasure.sizeOf(component);
                     int compHeight = defaultHeightMeasure.sizeOf(component);
                     //int compHeight = preferredHeightMeasure.sizeOf(component);
@@ -1377,17 +1377,16 @@ public final class FormLayout implements LayoutManager2, Serializable {
         }
 
         // For each group equalize the sizes.
-        for (int group = 0; group < groups.length; group++) {
-            int[] groupIndices = groups[group];
+        for (int[] groupIndices : groups) {
             int groupMaxSize = 0;
             // Compute the group's maximum size.
-            for (int i = 0; i < groupIndices.length; i++) {
-                int index = groupIndices[i] - 1;
+            for (int groupIndice : groupIndices) {
+                int index = groupIndice - 1;
                 groupMaxSize = Math.max(groupMaxSize, sizes[index]);
             }
             // Set all sizes of this group to the group's maximum size.
-            for (int i = 0; i < groupIndices.length; i++) {
-                int index = groupIndices[i] - 1;
+            for (int groupIndice : groupIndices) {
+                int index = groupIndice - 1;
                 sizes[index] = groupMaxSize;
             }
         }

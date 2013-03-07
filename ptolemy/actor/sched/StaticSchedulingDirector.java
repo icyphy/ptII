@@ -283,7 +283,6 @@ public class StaticSchedulingDirector extends Director {
         return super.postfire() && _postfireReturns;
     }
 
-
     /** Return true if the director is ready to fire. This method is
      *  called by the container of this director to determine whether
      *  the director is ready to execute. It does <i>not</i> call

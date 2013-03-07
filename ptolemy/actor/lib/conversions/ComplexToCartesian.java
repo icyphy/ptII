@@ -101,7 +101,7 @@ public class ComplexToCartesian extends TypedAtomicActor {
      */
     public void fire() throws IllegalActionException {
         super.fire();
-        Complex complexNumber = ((ComplexToken) (input.get(0))).complexValue();
+        Complex complexNumber = ((ComplexToken) input.get(0)).complexValue();
 
         x.send(0, new DoubleToken(complexNumber.real));
         y.send(0, new DoubleToken(complexNumber.imag));

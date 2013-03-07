@@ -30,7 +30,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 package ptdb.gui;
 
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 
 import javax.swing.AbstractListModel;
@@ -108,8 +107,7 @@ public class ArrayModelList extends AbstractListModel {
      * @param item The item to be removed from the list.
      */
     public void removeItem(String item) {
-        for (Iterator<String> iterator = _items.iterator(); iterator.hasNext();) {
-            String existingItem = iterator.next();
+        for (String existingItem : _items) {
             if (existingItem.equals(item)) {
                 int index = _items.indexOf(item);
 

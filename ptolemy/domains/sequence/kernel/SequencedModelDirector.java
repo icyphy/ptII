@@ -301,9 +301,9 @@ public abstract class SequencedModelDirector extends Director {
                         BooleanToken.TRUE)
                         && defaultOutputInitialValue.getToken().equals(
                                 BooleanToken.TRUE)) {
-                    initialValueParameter = (Parameter) (actorEntity
+                    initialValueParameter = (Parameter) actorEntity
                             .getAttribute(_getInitialValueParameterName(port,
-                                    channel).trim()));
+                                    channel).trim());
                     if (initialValueParameter == null) {
                         if (userDefinedDefaultOutputInitialValue.getToken() != null) {
                             port.send(channel,
@@ -323,9 +323,9 @@ public abstract class SequencedModelDirector extends Director {
                         BooleanToken.TRUE)
                         && defaultOutputInitialValue.getToken().equals(
                                 BooleanToken.FALSE)) {
-                    initialValueParameter = (Parameter) (actorEntity
+                    initialValueParameter = (Parameter) actorEntity
                             .getAttribute(_getInitialValueParameterName(port,
-                                    channel).trim()));
+                                    channel).trim());
                     if (initialValueParameter == null) {
                         if (port.isMultiport()) {
                             throw new IllegalActionException(
@@ -503,13 +503,13 @@ public abstract class SequencedModelDirector extends Director {
                     if (compositeActor.getDirector() != null
                             && !sequenceAttributes.isEmpty()) {
 
-                        if ((compositeActor.getDirector().getClass() == SequenceDirector.class)
-                                && (sequenceAttributes.get(0).getClass() == ProcessAttribute.class)) {
+                        if (compositeActor.getDirector().getClass() == SequenceDirector.class
+                                && sequenceAttributes.get(0).getClass() == ProcessAttribute.class) {
                             System.out.println("Warning: " + actor.getName()
                                     + "'s Process Attribute will be ignored");
                         }
-                        if ((compositeActor.getDirector().getClass() == ProcessDirector.class)
-                                && (sequenceAttributes.get(0).getClass() == SequenceAttribute.class)) {
+                        if (compositeActor.getDirector().getClass() == ProcessDirector.class
+                                && sequenceAttributes.get(0).getClass() == SequenceAttribute.class) {
 
                             System.out.println("Warning: " + actor.getName()
                                     + "'s Sequence Attribute will be ignored");
@@ -652,10 +652,10 @@ public abstract class SequencedModelDirector extends Director {
      *  does not contain a legal value.
      */
     public boolean postfire() throws IllegalActionException {
-        int iterationsValue = ((IntToken) (iterations.getToken())).intValue();
+        int iterationsValue = ((IntToken) iterations.getToken()).intValue();
         _iterationCount++;
 
-        if ((iterationsValue > 0) && (_iterationCount >= iterationsValue)) {
+        if (iterationsValue > 0 && _iterationCount >= iterationsValue) {
             _iterationCount = 0;
             return false;
         }

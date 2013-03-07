@@ -89,7 +89,7 @@ public class SelectionEvent extends java.util.EventObject {
                 int i = 0;
 
                 public boolean hasNext() {
-                    return (i < _added.length);
+                    return i < _added.length;
                 }
 
                 public Object next() throws NoSuchElementException {
@@ -114,7 +114,7 @@ public class SelectionEvent extends java.util.EventObject {
                 int i = 0;
 
                 public boolean hasNext() {
-                    return (i < _removed.length);
+                    return i < _removed.length;
                 }
 
                 public Object next() throws NoSuchElementException {

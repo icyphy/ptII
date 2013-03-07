@@ -71,7 +71,7 @@ public class AttributeChanged extends Entity {
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == param) {
-            _param = ((DoubleToken) (param.getToken())).doubleValue();
+            _param = ((DoubleToken) param.getToken()).doubleValue();
         }
     }
 

@@ -114,16 +114,16 @@ public class ND_2 extends TypedAtomicActor {
      */
     public void fire() throws IllegalActionException {
         super.fire();
-        for (int k = 1; k <= (1 * K); k += 1) {
-            for (int j = 1; j <= (1 * N); j += 1) {
+        for (int k = 1; k <= 1 * K; k += 1) {
+            for (int j = 1; j <= 1 * N; j += 1) {
                 out_0 = x_1.retrieve(x_1.atKey(k, j));
                 _debug(" Broadcast from ND_2: " + out_0);
 
-                if ((j - 1) == 0) {
+                if (j - 1 == 0) {
                     WP_4.broadcast(new DoubleToken(out_0));
                 }
 
-                if ((j - 2) >= 0) {
+                if (j - 2 >= 0) {
                     WP_8.broadcast(new DoubleToken(out_0));
                 }
             }

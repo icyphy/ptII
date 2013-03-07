@@ -285,7 +285,7 @@ public abstract class AbstractGraphController implements GraphController {
         // the edges first, then the nodes, since we cannot blow away
         // selection on an edge before getting rid of the endpoints of
         // the edge.
-        Iterator figures = (new HashSet(_map.values())).iterator();
+        Iterator figures = new HashSet(_map.values()).iterator();
 
         while (figures.hasNext()) {
             Figure figure = (Figure) figures.next();
@@ -309,7 +309,7 @@ public abstract class AbstractGraphController implements GraphController {
             }
         }
 
-        figures = (new HashSet(_map.values())).iterator();
+        figures = new HashSet(_map.values()).iterator();
 
         while (figures.hasNext()) {
             Figure figure = (Figure) figures.next();
@@ -348,7 +348,7 @@ public abstract class AbstractGraphController implements GraphController {
         }
 
         // Save the selected nodes.
-        Iterator nodes = (GraphUtilities.nodeSet(_model.getRoot(), _model))
+        Iterator nodes = GraphUtilities.nodeSet(_model.getRoot(), _model)
                 .iterator();
 
         while (nodes.hasNext()) {
@@ -395,7 +395,7 @@ public abstract class AbstractGraphController implements GraphController {
         }
 
         // Restore the selected nodes.
-        nodes = (GraphUtilities.nodeSet(_model.getRoot(), _model)).iterator();
+        nodes = GraphUtilities.nodeSet(_model.getRoot(), _model).iterator();
 
         while (nodes.hasNext()) {
             Object node = nodes.next();

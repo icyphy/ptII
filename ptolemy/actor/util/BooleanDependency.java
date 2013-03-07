@@ -88,10 +88,10 @@ public class BooleanDependency implements Dependency {
         if (object == this) {
             return true;
         }
-        if ((object == null) || (object.getClass() != getClass())) {
+        if (object == null || object.getClass() != getClass()) {
             return false;
         } else {
-            return (_value == ((BooleanDependency) object)._value);
+            return _value == ((BooleanDependency) object)._value;
         }
     }
 

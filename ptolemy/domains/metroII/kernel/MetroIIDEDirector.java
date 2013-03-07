@@ -68,9 +68,12 @@ public class MetroIIDEDirector extends DEDirector implements
      *  @return The new Attribute.
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        MetroIIDEDirector newObject = (MetroIIDEDirector) super.clone(workspace);
-        newObject._nameToActor = (Hashtable<String, Actor>) _nameToActor.clone();
-        newObject._actorDictionary = (Hashtable<String, StartOrResumable>) _actorDictionary.clone();
+        MetroIIDEDirector newObject = (MetroIIDEDirector) super
+                .clone(workspace);
+        newObject._nameToActor = (Hashtable<String, Actor>) _nameToActor
+                .clone();
+        newObject._actorDictionary = (Hashtable<String, StartOrResumable>) _actorDictionary
+                .clone();
         newObject._events = (ArrayList<Builder>) _events.clone();
         return newObject;
     }
@@ -99,7 +102,6 @@ public class MetroIIDEDirector extends DEDirector implements
         }
 
     }
-
 
     public class Pair<F, S> {
         private F first; //first member of pair
@@ -374,8 +376,8 @@ public class MetroIIDEDirector extends DEDirector implements
                     break;
                     // return;
                 } // else if 0, keep executing
-                //if (!actorList.contains(actorAndState.first)) {
-                    actorList.add(actorAndState.first);
+                  //if (!actorList.contains(actorAndState.first)) {
+                actorList.add(actorAndState.first);
                 //}
                 // after actor firing, the subclass may wish to perform some book keeping
                 // procedures. However in this class the following method does nothing.
@@ -452,21 +454,6 @@ public class MetroIIDEDirector extends DEDirector implements
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-
-    /**
-     * Create a MetroII event with the given name and type.
-     * @param name Name of the MetroII event
-     * @param t Type of the MetroII event
-     * @return newly created MetroII event
-     */
-    private Event.Builder _makeEventBuilder(String name, Event.Type t) {
-        Event.Builder meb = Event.newBuilder();
-        meb.setName(name);
-        meb.setOwner(name);
-        meb.setStatus(Event.Status.PROPOSED);
-        meb.setType(t);
-        return meb;
-    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////

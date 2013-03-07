@@ -98,7 +98,7 @@ public class UnitCategory extends Attribute {
      *  @return The base unit.
      */
     public BaseUnit getBaseUnit() {
-        return (BaseUnit) (getContainer());
+        return (BaseUnit) getContainer();
     }
 
     /** Set the container and register this object in to the system wide

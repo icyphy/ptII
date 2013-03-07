@@ -69,7 +69,7 @@ public class IntegerList extends AbstractList<IntToken> {
      *  @return the integer at slot a+n.
      */
     public IntToken get(int n) {
-        if ((_a + n) > _b) {
+        if (_a + n > _b) {
             throw new IndexOutOfBoundsException(_a + " + " + n
                     + " is greater than " + _b);
         }
@@ -81,7 +81,7 @@ public class IntegerList extends AbstractList<IntToken> {
      *  @return The size of the list. (b-a)+1
      */
     public int size() {
-        return (_b - _a) + 1;
+        return _b - _a + 1;
     }
 
     ///////////////////////////////////////////////////////////////////

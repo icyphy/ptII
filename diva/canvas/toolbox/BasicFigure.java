@@ -237,7 +237,7 @@ public class BasicFigure extends AbstractFigure implements ShapedFigure {
             hit = _shape.intersects(r);
         }
 
-        if (!hit && (_stroke != null) && (_strokePaint != null)) {
+        if (!hit && _stroke != null && _strokePaint != null) {
             hit = hit || ShapeUtilities.intersectsOutline(r, _shape);
         }
 
@@ -268,7 +268,7 @@ public class BasicFigure extends AbstractFigure implements ShapedFigure {
             g.fill(_shape);
         }
 
-        if ((_stroke != null) && (_strokePaint != null)) {
+        if (_stroke != null && _strokePaint != null) {
             g.setStroke(_stroke);
             g.setPaint(_strokePaint);
             g.draw(_shape);

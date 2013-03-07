@@ -73,8 +73,8 @@ public class CSPCondGet extends CSPGet {
         int numReceivers = 0;
         Receiver[][] rcvrs = inputPort.getReceivers();
 
-        for (int i = 0; i < rcvrs.length; i++) {
-            for (int j = 0; j < rcvrs[i].length; j++) {
+        for (Receiver[] rcvr : rcvrs) {
+            for (int j = 0; j < rcvr.length; j++) {
                 numReceivers++;
             }
         }

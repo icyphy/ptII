@@ -138,7 +138,7 @@ public class TDLReceiver extends AbstractReceiver implements StateReceiver {
      * @return True if there is a token available.
      */
     public boolean hasToken() {
-        return (_token != null);
+        return _token != null;
     }
 
     /**
@@ -150,7 +150,7 @@ public class TDLReceiver extends AbstractReceiver implements StateReceiver {
      * @return True if there is a token available.
      */
     public final boolean hasToken(int numberOfTokens) {
-        return (_token != null);
+        return _token != null;
     }
 
     /**

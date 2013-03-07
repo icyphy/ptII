@@ -76,7 +76,7 @@ public class CSPBuffer extends CSPActor {
      */
     public CSPBuffer() throws IllegalActionException, NameDuplicationException {
         super();
-        depth = new Parameter(this, "depth", (new IntToken(1)));
+        depth = new Parameter(this, "depth", new IntToken(1));
         output = new TypedIOPort(this, "output", false, true);
         input = new TypedIOPort(this, "input", true, false);
 
@@ -128,7 +128,7 @@ public class CSPBuffer extends CSPActor {
     public CSPBuffer(TypedCompositeActor container, String name, int theDepth)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        depth = new Parameter(this, "depth", (new IntToken(theDepth)));
+        depth = new Parameter(this, "depth", new IntToken(theDepth));
         output = new TypedIOPort(this, "output", false, true);
         input = new TypedIOPort(this, "input", true, false);
 
@@ -174,10 +174,10 @@ public class CSPBuffer extends CSPActor {
 
             while (continueCDO) {
                 // step 1
-                guard = (_size < iDepth);
+                guard = _size < iDepth;
                 branches[0] = new ConditionalReceive(guard, input, 0, 0);
 
-                guard = (_size > 0);
+                guard = _size > 0;
                 branches[1] = new ConditionalSend(guard, output, 0, 1,
                         _buffer[_readFrom]);
 

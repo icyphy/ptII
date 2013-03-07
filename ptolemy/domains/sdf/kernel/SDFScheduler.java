@@ -785,7 +785,7 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
             Set containersSeen = new HashSet();
             for (Iterator actors = actorList.iterator(); actors.hasNext()
                     && count < 100; count++) {
-                NamedObj actor = (NamedObj) (actors.next());
+                NamedObj actor = (NamedObj) actors.next();
                 NamedObj actorContainer = actor.getContainer();
                 if (actorContainer instanceof CompositeActor
                         && !((CompositeActor) actorContainer).isOpaque()
@@ -825,7 +825,7 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
             count = 0;
             for (Iterator unreachedActors = remainingActors.iterator(); unreachedActors
                     .hasNext() && count < 100; count++) {
-                NamedObj unreachedActor = (NamedObj) (unreachedActors.next());
+                NamedObj unreachedActor = (NamedObj) unreachedActors.next();
                 messageBuffer.append(unreachedActor.getFullName() + " ");
             }
 
@@ -976,14 +976,14 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
                     // is always the container of the director, so any port
                     // that has that container must be connected on the inside.
                     if (connectedPort.isOutput()
-                            && (connectedPort.getContainer() != container)) {
+                            && connectedPort.getContainer() != container) {
                         throw new NotSchedulableException(inputPort,
                                 connectedPort,
                                 "External input port drive the same relation "
                                         + "as an output port. "
                                         + "This is not legal in SDF.");
                     } else if (connectedPort.isInput()
-                            && (connectedPort.getContainer() == container)) {
+                            && connectedPort.getContainer() == container) {
                         throw new NotSchedulableException(inputPort,
                                 connectedPort,
                                 "External input port drives the same relation "
@@ -1048,7 +1048,7 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
      */
     private void _listenToRateVariable(Variable variable, List rateVariables) {
         // The schedule depends on the rate parameter.
-        if ((variable != null) && !rateVariables.contains(variable)) {
+        if (variable != null && !rateVariables.contains(variable)) {
             if (_debugging) {
                 _debug("Listening to rate variable " + variable);
             }
@@ -1134,7 +1134,7 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
         // This results in a non-deterministic merge and is illegal.
         // Do not do this test for output ports where we are propagating
         // inwards instead of outwards.
-        if (currentPort.isOutput() && (currentPort.getContainer() != container)) {
+        if (currentPort.isOutput() && currentPort.getContainer() != container) {
             Iterator connectedPorts = currentPort.deepConnectedPortList()
                     .iterator();
 
@@ -1148,13 +1148,13 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
                 // is always the container of the director, so any port
                 // that has that container must be connected on the inside.
                 if (connectedPort.isOutput()
-                        && (connectedPort.getContainer() != container)) {
+                        && connectedPort.getContainer() != container) {
                     throw new NotSchedulableException(currentPort,
                             connectedPort,
                             "Output ports drive the same relation. "
                                     + "This is not legal in SDF.");
                 } else if (connectedPort.isInput()
-                        && (connectedPort.getContainer() == container)) {
+                        && connectedPort.getContainer() == container) {
                     throw new NotSchedulableException(currentPort,
                             connectedPort,
                             "Output port drives the same relation "
@@ -1168,7 +1168,7 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
         // input port, then it does not drive the same relation as some
         // other output port or some other external input port.
         // This results in a non-deterministic merge and is illegal.
-        if (currentPort.isInput() && (currentPort.getContainer() == container)) {
+        if (currentPort.isInput() && currentPort.getContainer() == container) {
             Iterator connectedPorts = currentPort.deepInsidePortList()
                     .iterator();
 
@@ -1182,14 +1182,14 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
                 // is always the container of the director, so any port
                 // that has that container must be connected on the inside.
                 if (connectedPort.isOutput()
-                        && (connectedPort.getContainer() != container)) {
+                        && connectedPort.getContainer() != container) {
                     throw new NotSchedulableException(currentPort,
                             connectedPort,
                             "External input port drive the same relation "
                                     + "as an output port. "
                                     + "This is not legal in SDF.");
                 } else if (connectedPort.isInput()
-                        && (connectedPort.getContainer() == container)) {
+                        && connectedPort.getContainer() == container) {
                     throw new NotSchedulableException(currentPort,
                             connectedPort,
                             "External input port drives the same relation "
@@ -1272,7 +1272,7 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
             Fraction desiredFiring;
 
             // HDF actors might have zero rates...
-            if ((currentRate == 0) && (connectedRate > 0)) {
+            if (currentRate == 0 && connectedRate > 0) {
                 // The current port of the current actor has a rate
                 // of 0, and the current connected port of the
                 // connected actor has a positive integer rate.
@@ -1280,7 +1280,7 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
                 // the connected actor to 0 so that it will
                 // not appear in the final static schedule.
                 desiredFiring = Fraction.ZERO;
-            } else if ((currentRate > 0) && (connectedRate == 0)) {
+            } else if (currentRate > 0 && connectedRate == 0) {
                 // The current port of the current actor has a
                 // positive integer rate, and the current
                 // connected port of the connected actor has
@@ -1295,7 +1295,7 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
                 // Set the firing count of the connected actor to
                 // be 1.
                 desiredFiring = new Fraction(1);
-            } else if ((currentRate == 0) && (connectedRate == 0)) {
+            } else if (currentRate == 0 && connectedRate == 0) {
                 // Give the connected actor the same rate as the
                 // current actor.
                 desiredFiring = currentFiring;
@@ -1355,13 +1355,13 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
                                     + " Perhaps there is a link to a port within a class "
                                     + "definition? The container of "
                                     + currentPort.getFullName()
-                                    + (((Entity) (currentPort.getContainer()))
+                                    + (((Entity) currentPort.getContainer())
                                             .isWithinClassDefinition() ? " is"
                                             : " is not")
                                     + " within an actor oriented class definition. "
                                     + "The container of "
                                     + connectedPort.getFullName()
-                                    + (((Entity) (connectedPort.getContainer()))
+                                    + (((Entity) connectedPort.getContainer())
                                             .isWithinClassDefinition() ? " is"
                                             : " is not")
                                     + " within an actor oriented class definition.");
@@ -1686,7 +1686,7 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
 
                 // Get all its outputPorts
                 // and simulate the proper production of tokens.
-                for (Iterator outputPorts = (currentActor).outputPortList()
+                for (Iterator outputPorts = currentActor.outputPortList()
                         .iterator(); outputPorts.hasNext();) {
                     IOPort outputPort = (IOPort) outputPorts.next();
 
@@ -1745,7 +1745,7 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
                     // i.e. all its inputs are satisfied, and it
                     // appears in the unscheduled actors list
                     // then put it on the readyToScheduleActorList.
-                    if ((inputCount <= 0)
+                    if (inputCount <= 0
                             && unscheduledActorList.contains(currentActor)) {
                         readyToScheduleActorList.addFirst(currentActor);
                     }
@@ -1869,8 +1869,8 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
                 if (enforce) {
                     int capacity = receiver.getCapacity();
 
-                    if ((capacity == SDFReceiver.INFINITE_CAPACITY)
-                            || (receiver._waitingTokens > capacity)) {
+                    if (capacity == SDFReceiver.INFINITE_CAPACITY
+                            || receiver._waitingTokens > capacity) {
                         receiver.setCapacity(count);
                     }
                 }
@@ -1888,7 +1888,7 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
                     // Note that the actor may appear more than once.
                     // This is OK, since we remove all of the appearances from
                     // the list when the actor is actually scheduled.
-                    if ((inputCount < 1) && (firingsRemaining > 0)) {
+                    if (inputCount < 1 && firingsRemaining > 0) {
                         // Ned Stoffel suggested changing this from
                         // addLast() to addFirst() so as to minimize
                         // the number of tokens in transit.  "This leads
@@ -1934,7 +1934,7 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
                     }
 
                     SDFReceiver receiver = (SDFReceiver) receivers[channel][copy];
-                    receiver._waitingTokens -= (tokenRate * firingCount);
+                    receiver._waitingTokens -= tokenRate * firingCount;
 
                     if (receiver._waitingTokens < tokenRate) {
                         stillReadyToSchedule = false;
@@ -1997,8 +1997,8 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
                 if (enforce) {
                     int capacity = receiver.getCapacity();
 
-                    if ((capacity == SDFReceiver.INFINITE_CAPACITY)
-                            || (receiver._waitingTokens > capacity)) {
+                    if (capacity == SDFReceiver.INFINITE_CAPACITY
+                            || receiver._waitingTokens > capacity) {
                         receiver.setCapacity(receiver._waitingTokens);
                     }
                 }
@@ -2019,7 +2019,7 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
                     // Note that the actor may appear more than once.
                     // This is OK, since we remove all of the appearances from
                     // the list when the actor is actually scheduled.
-                    if ((inputCount < 1) && (firingsRemaining > 0)) {
+                    if (inputCount < 1 && firingsRemaining > 0) {
                         // Ned Stoffel suggested changing this from
                         // addLast() to addFirst() so as to minimize
                         // the number of tokens in transit.  "This leads
@@ -2082,8 +2082,8 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
                 if (enforce) {
                     int capacity = receiver.getCapacity();
 
-                    if ((capacity == SDFReceiver.INFINITE_CAPACITY)
-                            || (receiver._waitingTokens > capacity)) {
+                    if (capacity == SDFReceiver.INFINITE_CAPACITY
+                            || receiver._waitingTokens > capacity) {
                         receiver.setCapacity(receiver._waitingTokens);
                     }
                 }
@@ -2104,7 +2104,7 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
                     // Note that the actor may appear more than once.
                     // This is OK, since we remove all of the appearances from
                     // the list when the actor is actually scheduled.
-                    if ((inputCount < 1) && (firingsRemaining > 0)) {
+                    if (inputCount < 1 && firingsRemaining > 0) {
                         // Ned Stoffel suggested changing this from
                         // addLast() to addFirst() so as to minimize
                         // the number of tokens in transit.  "This leads
@@ -2124,13 +2124,13 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
      *  on such ports.
      */
     @SuppressWarnings("unused")
-    private void _simulateInitialOutputTokens(IOPort outputPort, int initialTokens)
-            throws IllegalActionException {
+    private void _simulateInitialOutputTokens(IOPort outputPort,
+            int initialTokens) throws IllegalActionException {
         Receiver[][] receivers = outputPort.getInsideReceivers();
 
         if (_debugging && VERBOSE) {
-            _debug("Initializing with " + initialTokens + " tokens on the inside of "
-                    + outputPort.getFullName());
+            _debug("Initializing with " + initialTokens
+                    + " tokens on the inside of " + outputPort.getFullName());
             _debug(" input channels = " + receivers.length);
             _debug(" width = " + outputPort.getWidthInside());
         }
@@ -2158,8 +2158,8 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
                 if (enforce) {
                     int capacity = receiver.getCapacity();
 
-                    if ((capacity == SDFReceiver.INFINITE_CAPACITY)
-                            || (receiver._waitingTokens > capacity)) {
+                    if (capacity == SDFReceiver.INFINITE_CAPACITY
+                            || receiver._waitingTokens > capacity) {
                         receiver.setCapacity(receiver._waitingTokens);
                     }
                 }

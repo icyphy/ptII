@@ -98,7 +98,7 @@ public class Tag implements Comparable {
         if (!(arg0 instanceof Tag)) {
             return false;
         }
-        return (compareTo(arg0) == 0);
+        return compareTo(arg0) == 0;
     }
 
     /** Hashcode for this class.

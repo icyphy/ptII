@@ -77,7 +77,7 @@ public class OntologyResolutionException extends IllegalActionException {
             Nameable nameable, Throwable cause, String detail) {
         super(solver, nameable, cause, detail);
 
-        assert (solver != null);
+        assert solver != null;
 
         _solver = solver;
     }

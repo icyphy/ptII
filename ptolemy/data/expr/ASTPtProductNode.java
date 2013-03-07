@@ -101,8 +101,8 @@ public class ASTPtProductNode extends ASTPtRootNode {
         Iterator nodeTokens = ((ASTPtProductNode) node)._lexicalTokens
                 .iterator();
 
-        for (Iterator tokens = _lexicalTokens.iterator(); tokens.hasNext();) {
-            Token token = (Token) tokens.next();
+        for (Object element : _lexicalTokens) {
+            Token token = (Token) element;
             Token nodeToken = (Token) nodeTokens.next();
 
             if (token.kind != nodeToken.kind) {

@@ -180,27 +180,27 @@ public class Blob implements ConnectorEnd {
 
         switch (_style) {
         case BLOB_CIRCLE:
-            p.setLocation(_originX + (2 * _unit), _originY);
+            p.setLocation(_originX + 2 * _unit, _originY);
             break;
 
         case BLOB_DIAMOND:
-            p.setLocation(_originX + (3 * _unit), _originY);
+            p.setLocation(_originX + 3 * _unit, _originY);
             break;
 
         case BLOB_CIRCLE_DIAMOND:
-            p.setLocation(_originX + (4 * _unit), _originY);
+            p.setLocation(_originX + 4 * _unit, _originY);
             break;
 
         case ARROW_CIRCLE_H:
-            p.setLocation(_originX + (4 * _unit), _originY);
+            p.setLocation(_originX + 4 * _unit, _originY);
             break;
 
         case TRIANGLE:
-            p.setLocation(_originX + (2 * _unit), _originY);
+            p.setLocation(_originX + 2 * _unit, _originY);
             break;
 
         case ERROR:
-            p.setLocation(_originX + (2 * _unit), _originY);
+            p.setLocation(_originX + 2 * _unit, _originY);
             break;
         }
 
@@ -269,9 +269,9 @@ public class Blob implements ConnectorEnd {
 
             Polygon2D polygon = new Polygon2D.Float();
             polygon.moveTo(_originX, _originY);
-            polygon.lineTo(_originX + (1.5 * _unit), _originY - _unit);
-            polygon.lineTo(_originX + (3.0 * _unit), _originY);
-            polygon.lineTo(_originX + (1.5 * _unit), _originY + _unit);
+            polygon.lineTo(_originX + 1.5 * _unit, _originY - _unit);
+            polygon.lineTo(_originX + 3.0 * _unit, _originY);
+            polygon.lineTo(_originX + 1.5 * _unit, _originY + _unit);
             polygon.lineTo(_originX, _originY);
             polygon.closePath();
             _shape = polygon;
@@ -347,20 +347,17 @@ public class Blob implements ConnectorEnd {
 
             // Circle part.
             arrow.moveTo(_originX + 2 * _unit, _originY);
-            arrow.curveTo(
-                    _originX + 2 * _unit, _originY - 1.3 * _unit,
-                    _originX, _originY - 1.3 * _unit,
-                    _originX, _originY);
+            arrow.curveTo(_originX + 2 * _unit, _originY - 1.3 * _unit,
+                    _originX, _originY - 1.3 * _unit, _originX, _originY);
             /*
             arrow.lineTo(_originX + 2 * _unit + 1.5 * _unit, _originY - _unit);
             arrow.lineTo(_originX + 2 * _unit + 3.0 * _unit, _originY);
             arrow.lineTo(_originX + 2 * _unit + 1.5 * _unit, _originY + _unit);
             arrow.lineTo(_originX + 2 * _unit, _originY);
             */
-            arrow.curveTo(
-                    _originX, _originY + 1.3 * _unit,
-                    _originX + 2 * _unit, _originY + 1.3 * _unit,
-                    _originX + 2 * _unit, _originY);
+            arrow.curveTo(_originX, _originY + 1.3 * _unit, _originX + 2
+                    * _unit, _originY + 1.3 * _unit, _originX + 2 * _unit,
+                    _originY);
 
             // H part.
             double halfHeight = 0.60 * _unit;
@@ -377,7 +374,7 @@ public class Blob implements ConnectorEnd {
             Path2D triangle = new Path2D.Float();
             triangle.moveTo(_originX, _originY);
             triangle.lineTo(_originX, _originY + _unit);
-            triangle.lineTo(_originX + 2* _unit, _originY);
+            triangle.lineTo(_originX + 2 * _unit, _originY);
             triangle.lineTo(_originX, _originY - _unit);
             triangle.closePath();
             _shape = triangle;

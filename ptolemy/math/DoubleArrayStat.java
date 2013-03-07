@@ -84,7 +84,7 @@ public class DoubleArrayStat extends DoubleArrayMath {
             double sum = 0.0;
 
             for (int i = start; i < limit; i++) {
-                sum += (x[i] * x[i + lag]);
+                sum += x[i] * x[i + lag];
             }
 
             returnValue[lag - startLag] = sum;
@@ -116,7 +116,7 @@ public class DoubleArrayStat extends DoubleArrayMath {
         double sum = 0.0;
 
         for (int i = start; i < limit; i++) {
-            sum += (x[i] * x[i + lag]);
+            sum += x[i] * x[i + lag];
         }
 
         return sum;
@@ -153,7 +153,7 @@ public class DoubleArrayStat extends DoubleArrayMath {
             double sum = 0.0;
 
             for (int i = start; i < limit; i++) {
-                sum += (x[i] * y[i + lag]);
+                sum += x[i] * y[i + lag];
             }
 
             returnValue[lag - startLag] = sum;
@@ -186,7 +186,7 @@ public class DoubleArrayStat extends DoubleArrayMath {
         double sum = 0.0;
 
         for (int i = start; i < limit; i++) {
-            sum += (x[i] * y[i + lag]);
+            sum += x[i] * y[i + lag];
         }
 
         return sum;
@@ -222,7 +222,7 @@ public class DoubleArrayStat extends DoubleArrayMath {
             } else if (p[i] == 0.0) {
                 // do nothing
             } else {
-                h -= (p[i] * ExtendedMath.log2(p[i]));
+                h -= p[i] * ExtendedMath.log2(p[i]);
             }
         }
 
@@ -340,8 +340,8 @@ public class DoubleArrayStat extends DoubleArrayMath {
     public static final double productOfElements(double[] array) {
         double product = 1.0;
 
-        for (int i = 0; i < array.length; i++) {
-            product *= array[i];
+        for (double element : array) {
+            product *= element;
         }
 
         return product;
@@ -366,7 +366,7 @@ public class DoubleArrayStat extends DoubleArrayMath {
         }
 
         for (int i = 0; i < N; i++) {
-            returnValue[i] = (_random.nextDouble() < p) ? 1.0 : 0.0;
+            returnValue[i] = _random.nextDouble() < p ? 1.0 : 0.0;
         }
 
         return returnValue;
@@ -416,8 +416,7 @@ public class DoubleArrayStat extends DoubleArrayMath {
         }
 
         for (int i = 0; i < N; i++) {
-            returnValue[i] = mean
-                    + (_random.nextGaussian() * standardDeviation);
+            returnValue[i] = mean + _random.nextGaussian() * standardDeviation;
         }
 
         return returnValue;
@@ -448,7 +447,7 @@ public class DoubleArrayStat extends DoubleArrayMath {
             u = _random.nextDouble();
 
             while (f <= u) {
-                p *= (mean / (j + 1.0));
+                p *= mean / (j + 1.0);
                 f += p;
                 j += 1.0;
             }
@@ -475,7 +474,7 @@ public class DoubleArrayStat extends DoubleArrayMath {
         }
 
         for (int i = 0; i < N; i++) {
-            returnValue[i] = (_random.nextDouble() * range) + a;
+            returnValue[i] = _random.nextDouble() * range + a;
         }
 
         return returnValue;
@@ -506,7 +505,7 @@ public class DoubleArrayStat extends DoubleArrayMath {
         double d = 0.0;
 
         for (int i = 0; i < length; i++) {
-            if ((p[i] < 0.0) || (q[i] < 0.0)) {
+            if (p[i] < 0.0 || q[i] < 0.0) {
                 throw new IllegalArgumentException(
                         "ptolemy.math.DoubleArrayStat.relativeEntropy() : "
                                 + "Negative probability encountered.");
@@ -515,7 +514,7 @@ public class DoubleArrayStat extends DoubleArrayMath {
             } else if (q[i] == 0.0) {
                 return Double.POSITIVE_INFINITY;
             } else {
-                d += (p[i] * ExtendedMath.log2(p[i] / q[i]));
+                d += p[i] * ExtendedMath.log2(p[i] / q[i]);
             }
         }
 
@@ -562,8 +561,8 @@ public class DoubleArrayStat extends DoubleArrayMath {
     public static final double sumOfElements(double[] array) {
         double sum = 0.0;
 
-        for (int i = 0; i < array.length; i++) {
-            sum += array[i];
+        for (double element : array) {
+            sum += element;
         }
 
         return sum;
@@ -606,7 +605,7 @@ public class DoubleArrayStat extends DoubleArrayMath {
     public static double variance(double[] array, boolean sample) {
         int length = _nonZeroLength(array, "DoubleArrayStat.variance");
 
-        if (sample && (array.length < 2)) {
+        if (sample && array.length < 2) {
             throw new IllegalArgumentException(
                     "ptolemy.math.DoubleArrayStat.variance() : "
                             + "sample variance and standard deviation of an array "
@@ -617,12 +616,12 @@ public class DoubleArrayStat extends DoubleArrayMath {
         double sum = 0.0;
 
         for (int i = 0; i < length; i++) {
-            ex2 += (array[i] * array[i]);
+            ex2 += array[i] * array[i];
             sum += array[i];
         }
 
-        double norm = sample ? (length - 1) : length;
-        double sumSquaredOverLength = (sum * sum) / length;
+        double norm = sample ? length - 1 : length;
+        double sumSquaredOverLength = sum * sum / length;
         return (ex2 - sumSquaredOverLength) / norm;
     }
 

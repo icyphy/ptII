@@ -156,8 +156,8 @@ public class NonStrictFSMDirector extends FSMDirector {
         List transitionList = currentState.outgoingPort.linkedRelationList();
 
         // Choose a preemptive transition
-        List enabledTransitions = controller.enabledTransitions(
-                transitionList, true, false);
+        List enabledTransitions = controller.enabledTransitions(transitionList,
+                true, false);
 
         // Ensure that if there are multiple enabled transitions, all of them
         // must be nondeterministic.
@@ -434,14 +434,14 @@ public class NonStrictFSMDirector extends FSMDirector {
         CompositeActor container = (CompositeActor) getContainer();
 
         if (refinements != null) {
-            for (int i = 0; i < refinements.length; i++) {
-                Iterator inputPorts = refinements[i].inputPortList().iterator();
+            for (TypedActor refinement : refinements) {
+                Iterator inputPorts = refinement.inputPortList().iterator();
 
                 while (inputPorts.hasNext()) {
                     IOPort inputPort = (IOPort) inputPorts.next();
 
-                    if ((inputPort.isOutsideConnected())
-                            && (DFUtilities.getRate(inputPort) > 0)) {
+                    if (inputPort.isOutsideConnected()
+                            && DFUtilities.getRate(inputPort) > 0) {
                         Iterator inputPortsOutside = inputPort
                                 .deepConnectedInPortList().iterator();
 
@@ -449,7 +449,7 @@ public class NonStrictFSMDirector extends FSMDirector {
                             IOPort inputPortOutside = (IOPort) inputPortsOutside
                                     .next();
 
-                            if ((inputPortOutside.getContainer() == container)
+                            if (inputPortOutside.getContainer() == container
                                     && !_refinementReferredInputPorts
                                             .contains(inputPortOutside)) {
                                 _refinementReferredInputPorts
@@ -512,7 +512,7 @@ public class NonStrictFSMDirector extends FSMDirector {
             Transition transition = (Transition) transitions.next();
             String string = transition.getGuardExpression();
 
-            if (string.equals("") && !(transition.isErrorTransition())) {
+            if (string.equals("") && !transition.isErrorTransition()) {
                 throw new IllegalActionException(this, "guard expression on "
                         + transition.getName() + "is null!");
             }

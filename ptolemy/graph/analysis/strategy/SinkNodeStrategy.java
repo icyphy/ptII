@@ -78,7 +78,7 @@ public class SinkNodeStrategy extends CachedStrategy implements
     public String toString() {
         String result = "Sink node analysis for the following graph.\n"
                 + graph().toString();
-        result += ("The sink nodes are:\n" + _result());
+        result += "The sink nodes are:\n" + _result();
         return result;
     }
 
@@ -88,7 +88,7 @@ public class SinkNodeStrategy extends CachedStrategy implements
      *  @return True if the given graph is of class DirectedGraph.
      */
     public boolean valid() {
-        return (graph() instanceof DirectedGraph);
+        return graph() instanceof DirectedGraph;
     }
 
     ///////////////////////////////////////////////////////////////////

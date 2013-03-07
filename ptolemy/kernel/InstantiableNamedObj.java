@@ -232,7 +232,7 @@ public class InstantiableNamedObj extends NamedObj implements Instantiable {
             return;
         }
 
-        if ((depth == 0) && (getContainer() == null)) {
+        if (depth == 0 && getContainer() == null) {
             // No container, and this is a top level moml element.
             // Generate header information.
             // NOTE: Currently, there is only one class designation,
@@ -464,8 +464,8 @@ public class InstantiableNamedObj extends NamedObj implements Instantiable {
         workspace().getWriteAccess();
 
         try {
-            if (!isClass && _isClassDefinition && (getChildren() != null)
-                    && (getChildren().size() > 0)) {
+            if (!isClass && _isClassDefinition && getChildren() != null
+                    && getChildren().size() > 0) {
                 throw new IllegalActionException(this,
                         "Cannot change from a class to an instance because"
                                 + " there are subclasses and/or instances.");
@@ -515,7 +515,7 @@ public class InstantiableNamedObj extends NamedObj implements Instantiable {
      */
     protected void _setParent(Instantiable parent)
             throws IllegalActionException {
-        if ((parent != null) && !(parent instanceof InstantiableNamedObj)) {
+        if (parent != null && !(parent instanceof InstantiableNamedObj)) {
             throw new IllegalActionException(this,
                     "Parent of an InstantiableNamedObj must also "
                             + "be an InstantiableNamedObj.");
@@ -541,7 +541,7 @@ public class InstantiableNamedObj extends NamedObj implements Instantiable {
                         WeakReference reference = (WeakReference) references
                                 .next();
 
-                        if ((reference == null) || (reference.get() == this)) {
+                        if (reference == null || reference.get() == this) {
                             references.remove();
                         }
                     }

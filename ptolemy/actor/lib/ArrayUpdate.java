@@ -111,7 +111,7 @@ public class ArrayUpdate extends Transformer {
      *   an attribute that cannot be cloned.
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        ArrayUpdate newObject = (ArrayUpdate) (super.clone(workspace));
+        ArrayUpdate newObject = (ArrayUpdate) super.clone(workspace);
 
         // Set the type constraints.
         newObject.input.setTypeAtLeast(ArrayType.ARRAY_BOTTOM);
@@ -137,7 +137,7 @@ public class ArrayUpdate extends Transformer {
         value.update();
 
         if (input.hasToken(0)) {
-            ArrayToken inputValue = ((ArrayToken) input.get(0));
+            ArrayToken inputValue = (ArrayToken) input.get(0);
             int indexValue = ((IntToken) index.getToken()).intValue();
             output.send(0, inputValue.update(indexValue, value.getToken()));
         }

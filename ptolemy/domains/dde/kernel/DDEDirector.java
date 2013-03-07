@@ -222,8 +222,8 @@ public class DDEDirector extends CompositeProcessDirector {
             return time;
         }
 
-        if ((_completionTime.getDoubleValue() != ETERNITY)
-                && (time.compareTo(_completionTime) > 0)) {
+        if (_completionTime.getDoubleValue() != ETERNITY
+                && time.compareTo(_completionTime) > 0) {
             return time;
         }
 

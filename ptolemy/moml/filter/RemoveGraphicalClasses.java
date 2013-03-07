@@ -236,8 +236,8 @@ public class RemoveGraphicalClasses extends MoMLFilterSimple {
         _graphicalClasses.put("ptolemy.vergil.kernel.attributes.TextAttribute",
                 null);
 
-        _graphicalClasses.put(
-                "ptolemy.vergil.basic.export.web.BasicJSPlotter", null);
+        _graphicalClasses.put("ptolemy.vergil.basic.export.web.BasicJSPlotter",
+                null);
         _graphicalClasses.put(
                 "ptolemy.vergil.basic.export.web.DygraphsJSPlotter", null);
         // Classes that import ptolemy.vergil.icon.ValueIcon
@@ -250,10 +250,8 @@ public class RemoveGraphicalClasses extends MoMLFilterSimple {
         _graphicalClasses
                 .put("ptolemy.vergil.basic.export.web.HTMLImage", null);
         // HTMLText extends WebContent which imports ValueIcon
-        _graphicalClasses
-                .put("ptolemy.vergil.basic.export.web.HTMLText", null);
-        _graphicalClasses
-                .put("ptolemy.vergil.basic.export.web.IconLink", null);
+        _graphicalClasses.put("ptolemy.vergil.basic.export.web.HTMLText", null);
+        _graphicalClasses.put("ptolemy.vergil.basic.export.web.IconLink", null);
         _graphicalClasses.put("ptolemy.vergil.basic.export.web.IconScript",
                 null);
         _graphicalClasses.put(
@@ -264,8 +262,8 @@ public class RemoveGraphicalClasses extends MoMLFilterSimple {
         _graphicalClasses.put("ptolemy.vergil.basic.export.web.Title", null);
         _graphicalClasses.put("ptolemy.vergil.basic.export.web.WebContent",
                 null);
-        _graphicalClasses.put("ptolemy.vergil.basic.export.web.WebExportable", null);
-
+        _graphicalClasses.put("ptolemy.vergil.basic.export.web.WebExportable",
+                null);
 
         _graphicalClasses.put("ptolemy.vergil.basic.NodeControllerFactory",
                 null);

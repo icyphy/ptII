@@ -217,7 +217,7 @@ public class InterfaceAutomatonTransition extends Transition {
      */
     public void setContainer(CompositeEntity container)
             throws IllegalActionException, NameDuplicationException {
-        if (!(container instanceof InterfaceAutomaton) && (container != null)) {
+        if (!(container instanceof InterfaceAutomaton) && container != null) {
             throw new IllegalActionException(container, this,
                     "Transition can only be contained by instances of "
                             + "InterfaceAutomaton.");

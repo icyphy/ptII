@@ -171,7 +171,7 @@ public class IntMatrixToken extends MatrixToken {
     public IntMatrixToken(String init) throws IllegalActionException {
         PtParser parser = new PtParser();
         ASTPtRootNode tree = parser.generateParseTree(init);
-        Token token = (new ParseTreeEvaluator()).evaluateParseTree(tree);
+        Token token = new ParseTreeEvaluator().evaluateParseTree(tree);
 
         if (token instanceof IntMatrixToken) {
             int[][] value = ((IntMatrixToken) token).intMatrix();
@@ -259,7 +259,7 @@ public class IntMatrixToken extends MatrixToken {
 
         int compare = TypeLattice.compare(BaseType.INT_MATRIX, token);
 
-        if ((compare == CPO.LOWER) || (compare == CPO.INCOMPARABLE)) {
+        if (compare == CPO.LOWER || compare == CPO.INCOMPARABLE) {
             throw new IllegalActionException(
                     notSupportedIncomparableConversionMessage(token, "[int]"));
         }
@@ -300,7 +300,7 @@ public class IntMatrixToken extends MatrixToken {
         // Check to make sure that the token is convertible to INT.
         int compare = TypeLattice.compare(BaseType.INT, token);
 
-        if ((compare == CPO.SAME) || (compare == CPO.HIGHER)) {
+        if (compare == CPO.SAME || compare == CPO.HIGHER) {
             if (token.isNil()) {
                 throw new IllegalActionException(
                         Token.notSupportedConversionMessage(token, "[int]"));
@@ -409,7 +409,7 @@ public class IntMatrixToken extends MatrixToken {
      */
     public Token getElementAsToken(int row, int column)
             throws ArrayIndexOutOfBoundsException {
-        return new IntToken(_value[(row * _columnCount) + column]);
+        return new IntToken(_value[row * _columnCount + column]);
     }
 
     /** Return the element of the contained matrix at the specified
@@ -421,7 +421,7 @@ public class IntMatrixToken extends MatrixToken {
      *   row or column number is outside the range of the matrix.
      */
     public int getElementAt(int row, int column) {
-        return _value[(row * _columnCount) + column];
+        return _value[row * _columnCount + column];
     }
 
     /** Return the Type of the tokens contained in this matrix token.
@@ -502,8 +502,8 @@ public class IntMatrixToken extends MatrixToken {
         // This assumes the matrices tile.
         int rows = 0;
         int columns = 0;
-        for (int i = 0; i < matrices.length; i++) {
-            rows += matrices[i][0].getRowCount();
+        for (MatrixToken[] matrice : matrices) {
+            rows += matrice[0].getRowCount();
         }
         for (int j = 0; j < matrices[0].length; j++) {
             columns += matrices[0][j].getColumnCount();
@@ -773,7 +773,7 @@ public class IntMatrixToken extends MatrixToken {
                 int ib = j;
 
                 for (int ia = i * n; ia < ta; ia++, ib += p) {
-                    sum += (A[ia] * B[ib]);
+                    sum += A[ia] * B[ib];
                 }
 
                 newMatrix[in++] = sum;

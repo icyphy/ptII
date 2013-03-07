@@ -252,13 +252,13 @@ public class UndoContext {
      *  @see #moveContextEnd(NamedObj, NamedObj)
      */
     public static String moveContextStart(NamedObj context, NamedObj containee) {
-        if ((context == null) || (containee == null)) {
+        if (context == null || containee == null) {
             return "";
         }
 
         NamedObj container = containee.getContainer();
 
-        if ((container == null) || (container == context)) {
+        if (container == null || container == context) {
             return "";
         }
 

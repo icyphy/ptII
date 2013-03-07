@@ -495,14 +495,13 @@ public class StaticSchedulingDirector extends Director {
             // when the channel specification is not an integer.
             if (dynamicReferencesAllowed) {
                 try {
-                    channelNumber = (Integer.valueOf(channelAndOffset[0]))
+                    channelNumber = Integer.valueOf(channelAndOffset[0])
                             .intValue();
                 } catch (NumberFormatException ex) {
                     isChannelNumberInt = false;
                 }
             } else {
-                channelNumber = (Integer.valueOf(channelAndOffset[0]))
-                        .intValue();
+                channelNumber = Integer.valueOf(channelAndOffset[0]).intValue();
             }
         }
         if (!isChannelNumberInt) { // variable channel reference.
@@ -654,11 +653,12 @@ public class StaticSchedulingDirector extends Director {
             Double periodValue = ((DoubleToken) ((Variable) period).getToken())
                     .doubleValue();
             if (periodValue != 0.0) {
-                if (variableDeclarations.toString().indexOf(StaticSchedulingDirector.CURRENTTIME_DECLARATION) == -1) {
+                if (variableDeclarations.toString().indexOf(
+                        StaticSchedulingDirector.CURRENTTIME_DECLARATION) == -1) {
                     variableDeclarations.append(_eol
                             + getCodeGenerator().comment(
                                     "Director has a period attribute,"
-                                    + " so we track current time."));
+                                            + " so we track current time."));
                     variableDeclarations.append(CURRENTTIME_DECLARATION);
                 }
             }
@@ -801,13 +801,13 @@ public class StaticSchedulingDirector extends Director {
 
     static private boolean _checkLocal(boolean forComposite, IOPort port)
             throws IllegalActionException {
-        return (port.isInput() && !forComposite && port.isOutsideConnected())
-                || (port.isOutput() && forComposite);
+        return port.isInput() && !forComposite && port.isOutsideConnected()
+                || port.isOutput() && forComposite;
     }
 
     static private boolean _checkRemote(boolean forComposite, IOPort port) {
-        return (port.isOutput() && !forComposite)
-                || (port.isInput() && forComposite);
+        return port.isOutput() && !forComposite || port.isInput()
+                && forComposite;
     }
 
     /**
@@ -828,7 +828,7 @@ public class StaticSchedulingDirector extends Director {
         }
 
         String channelOffset = generatePortName(port)
-                + ((isWrite) ? "_writeOffset" : "_readOffset") + "["
+                + (isWrite ? "_writeOffset" : "_readOffset") + "["
                 + channelString + "]";
 
         return channelOffset;
@@ -872,7 +872,7 @@ public class StaticSchedulingDirector extends Director {
 
         if (tokenizer2.countTokens() == 2) {
             String type = tokenizer2.nextToken().trim();
-            return (type.length() > 0) ? type : null;
+            return type.length() > 0 ? type : null;
         }
         return null;
     }
@@ -921,8 +921,8 @@ public class StaticSchedulingDirector extends Director {
     private String _getRefName(String name) throws IllegalActionException {
         StringTokenizer tokenizer = new StringTokenizer(name, "#,", true);
 
-        if ((tokenizer.countTokens() != 1) && (tokenizer.countTokens() != 3)
-                && (tokenizer.countTokens() != 5)) {
+        if (tokenizer.countTokens() != 1 && tokenizer.countTokens() != 3
+                && tokenizer.countTokens() != 5) {
             throw new IllegalActionException(getComponent(),
                     "Reference not found: " + name);
         }
@@ -1128,13 +1128,13 @@ public class StaticSchedulingDirector extends Director {
                 if (readOffset instanceof Integer) {
                     _ports.setReadOffset(_port, i, Integer.valueOf(0));
                 } else {
-                    code.append(((String) readOffset) + " = 0;" + _eol);
+                    code.append((String) readOffset + " = 0;" + _eol);
                 }
                 Object writeOffset = _ports.getWriteOffset(_port, i);
                 if (writeOffset instanceof Integer) {
                     _ports.setWriteOffset(_port, i, Integer.valueOf(0));
                 } else {
-                    code.append(((String) writeOffset) + " = 0;" + _eol);
+                    code.append((String) writeOffset + " = 0;" + _eol);
                 }
             }
             return code.toString();
@@ -1335,7 +1335,7 @@ public class StaticSchedulingDirector extends Director {
                 if (offsetObject instanceof Integer && _isInteger(offsetString)) {
 
                     int offset = ((Integer) offsetObject).intValue()
-                            + (Integer.valueOf(offsetString)).intValue();
+                            + Integer.valueOf(offsetString).intValue();
 
                     offset %= getBufferSize(channel);
                     temp = Integer.toString(offset);

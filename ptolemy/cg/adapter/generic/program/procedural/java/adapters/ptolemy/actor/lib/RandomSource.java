@@ -83,7 +83,7 @@ public abstract class RandomSource extends NamedProgramCodeGeneratorAdapter {
         ArrayList<String> args = new ArrayList<String>();
         CodeStream codeStream = _templateParser.getCodeStream();
 
-        long seedValue = ((LongToken) (actor.seed.getToken())).longValue();
+        long seedValue = ((LongToken) actor.seed.getToken()).longValue();
 
         if (seedValue == 0) {
             args.add(Integer.toString(actor.hashCode()));

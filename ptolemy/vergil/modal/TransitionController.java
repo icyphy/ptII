@@ -204,12 +204,14 @@ public class TransitionController extends BasicEdgeController {
                                 Color.red);
                         blob.setFilled(true);
                         c.setTailEnd(blob);
-                    } else if (transition.isImmediate() && !transition.isPreemptive()) {
+                    } else if (transition.isImmediate()
+                            && !transition.isPreemptive()) {
                         Blob blob = new Blob(0, 0, 0, Blob.BLOB_DIAMOND, 5.0,
                                 Color.red);
                         blob.setFilled(true);
                         c.setTailEnd(blob);
-                    } else if (transition.isImmediate() && transition.isPreemptive()) {
+                    } else if (transition.isImmediate()
+                            && transition.isPreemptive()) {
                         Blob blob = new Blob(0, 0, 0, Blob.BLOB_CIRCLE_DIAMOND,
                                 5.0, Color.red);
                         blob.setFilled(true);
@@ -219,7 +221,8 @@ public class TransitionController extends BasicEdgeController {
                         blob.setFilled(true);
                         c.setTailEnd(blob);
                     } else if (transition.isTermination()) {
-                        Blob blob = new Blob(0, 0, 0, Blob.TRIANGLE, 5.0, Color.green);
+                        Blob blob = new Blob(0, 0, 0, Blob.TRIANGLE, 5.0,
+                                Color.green);
                         blob.setFilled(true);
                         c.setTailEnd(blob);
                     }
@@ -259,8 +262,8 @@ public class TransitionController extends BasicEdgeController {
                 String labelStr = transition.getLabel();
 
                 try {
-                    double exitAngle = ((DoubleToken) (transition.exitAngle
-                            .getToken())).doubleValue();
+                    double exitAngle = ((DoubleToken) transition.exitAngle
+                            .getToken()).doubleValue();
 
                     // If the angle is too large, then truncate it to
                     // a reasonable value.
@@ -277,7 +280,7 @@ public class TransitionController extends BasicEdgeController {
                     // go to zero.
                     double minimum = Math.PI / 999.0;
 
-                    if ((exitAngle < minimum) && (exitAngle > -minimum)) {
+                    if (exitAngle < minimum && exitAngle > -minimum) {
                         if (exitAngle > 0.0) {
                             exitAngle = minimum;
                         } else {
@@ -288,7 +291,7 @@ public class TransitionController extends BasicEdgeController {
                     c.setAngle(exitAngle);
 
                     // Set the gamma angle
-                    double gamma = ((DoubleToken) (transition.gamma.getToken()))
+                    double gamma = ((DoubleToken) transition.gamma.getToken())
                             .doubleValue();
                     c.setGamma(gamma);
                 } catch (IllegalActionException ex) {
@@ -408,7 +411,7 @@ public class TransitionController extends BasicEdgeController {
             Connector c = evt.getConnector();
             Figure f = evt.getTarget();
             Object edge = c.getUserObject();
-            Object node = (f == null) ? null : f.getUserObject();
+            Object node = f == null ? null : f.getUserObject();
             FSMGraphModel model = (FSMGraphModel) getController()
                     .getGraphModel();
 
@@ -433,7 +436,7 @@ public class TransitionController extends BasicEdgeController {
             Link link = (Link) edge;
             ComponentRelation transition = link.getRelation();
 
-            if ((transition != null) && c instanceof ArcConnector) {
+            if (transition != null && c instanceof ArcConnector) {
                 double angle = ((ArcConnector) c).getAngle();
                 double gamma = ((ArcConnector) c).getGamma();
 
@@ -504,12 +507,12 @@ public class TransitionController extends BasicEdgeController {
                     refinements = ((State) target).getRefinement();
                 }
 
-                if ((refinements != null) && (refinements.length > 0)) {
-                    for (int i = 0; i < refinements.length; i++) {
+                if (refinements != null && refinements.length > 0) {
+                    for (TypedActor refinement : refinements) {
                         // Open each refinement.
                         // Derived classes may open the instance, this class opens the model.
                         _openInstanceOrModel(_configuration,
-                                (NamedObj) refinements[i]);
+                                (NamedObj) refinement);
                     }
                 } else {
                     MessageHandler.error("No refinement.");

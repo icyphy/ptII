@@ -144,7 +144,7 @@ public class PlotApplication extends PlotFrame {
 
         _parseArgs(args);
 
-        if ((args == null) || (args.length == 0)) {
+        if (args == null || args.length == 0) {
             samplePlot();
         }
 
@@ -260,11 +260,11 @@ public class PlotApplication extends PlotFrame {
         int width = 500; // Default width of the graph
         int height = 300; // Default height of the graph
 
-        while ((args != null) && (i < args.length)) {
+        while (args != null && i < args.length) {
             arg = args[i++];
 
             if (arg.equals("-height")) {
-                if (i > (args.length - 1)) {
+                if (i > args.length - 1) {
                     throw new CmdLineArgException(_usage());
                 }
 
@@ -288,7 +288,7 @@ public class PlotApplication extends PlotFrame {
                 StringUtilities.exit(0);
                 continue;
             } else if (arg.equals("-width")) {
-                if (i > (args.length - 1)) {
+                if (i > args.length - 1) {
                     throw new CmdLineArgException(
                             "-width requires an integer argument");
                 }

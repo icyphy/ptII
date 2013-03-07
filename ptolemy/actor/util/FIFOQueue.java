@@ -236,8 +236,8 @@ public class FIFOQueue implements Cloneable {
      *  @return A boolean indicating success.
      */
     public boolean put(Object element) {
-        if ((_queueCapacity == INFINITE_CAPACITY)
-                || (_queueCapacity > _queueList.size())) {
+        if (_queueCapacity == INFINITE_CAPACITY
+                || _queueCapacity > _queueList.size()) {
             _queueList.addLast(element);
             return true;
         } else {
@@ -255,12 +255,12 @@ public class FIFOQueue implements Cloneable {
      *  @see #getCapacity
      */
     public void setCapacity(int capacity) throws IllegalActionException {
-        if ((capacity < 0) && (capacity != INFINITE_CAPACITY)) {
+        if (capacity < 0 && capacity != INFINITE_CAPACITY) {
             throw new IllegalActionException(_container,
                     "Cannot set queue capacity to " + capacity);
         }
 
-        if ((capacity != INFINITE_CAPACITY) && (size() > capacity)) {
+        if (capacity != INFINITE_CAPACITY && size() > capacity) {
             throw new IllegalActionException(_container,
                     "Queue contains more elements than the proposed capacity.");
         }

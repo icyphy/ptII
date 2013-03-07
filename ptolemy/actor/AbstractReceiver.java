@@ -135,7 +135,7 @@ public abstract class AbstractReceiver implements Receiver {
     public Token[] getArray(int numberOfTokens) throws NoTokenException {
         // Check whether we need to reallocate the cached
         // token array.
-        if ((_tokenCache == null) || (numberOfTokens != _tokenCache.length)) {
+        if (_tokenCache == null || numberOfTokens != _tokenCache.length) {
             // Reallocate the token array.
             _tokenCache = new Token[numberOfTokens];
         }
@@ -332,8 +332,8 @@ public abstract class AbstractReceiver implements Receiver {
                     "Not enough tokens supplied.");
         }
 
-        for (int j = 0; j < receivers.length; j++) {
-            IOPort container = receivers[j].getContainer();
+        for (Receiver receiver : receivers) {
+            IOPort container = receiver.getContainer();
             // For each receiver, check to see whether the destination port
             // is marked to receive constant data from a ConstantPublisherPort,
             // and whether it has already received as many tokens as it expects.
@@ -344,14 +344,14 @@ public abstract class AbstractReceiver implements Receiver {
                         // Do not put the token. The finite number has been reached.
                         break;
                     } else {
-                        receivers[j].put(container
+                        receiver.put(container
                                 .convert(container._constantToken));
                         container._constantTokensSent++;
                     }
                 }
             } else {
                 // The following will do the conversion.
-                receivers[j].putArray(tokens, numberOfTokens);
+                receiver.putArray(tokens, numberOfTokens);
             }
         }
     }
@@ -376,8 +376,8 @@ public abstract class AbstractReceiver implements Receiver {
      */
     public void putToAll(Token token, Receiver[] receivers)
             throws NoRoomException, IllegalActionException {
-        for (int j = 0; j < receivers.length; j++) {
-            IOPort container = receivers[j].getContainer();
+        for (Receiver receiver : receivers) {
+            IOPort container = receiver.getContainer();
             // For each receiver, check to see whether the destination port
             // is marked to receive constant data from a ConstantPublisherPort,
             // and whether it has already received as many tokens as it expects.
@@ -387,16 +387,15 @@ public abstract class AbstractReceiver implements Receiver {
                     // Do not put the token. The finite number has been reached.
                     continue;
                 } else {
-                    receivers[j].put(container
-                            .convert(container._constantToken));
+                    receiver.put(container.convert(container._constantToken));
                     container._constantTokensSent++;
                 }
             } else {
                 // If there is no container, then perform no conversion.
                 if (container == null || token == null) {
-                    receivers[j].put(token);
+                    receiver.put(token);
                 } else {
-                    receivers[j].put(container.convert(token));
+                    receiver.put(container.convert(token));
                 }
             }
         }

@@ -567,7 +567,7 @@ public class ActorConstraintsDefinitionAttribute extends Attribute {
             // If no actor icon file was found, then use the _iconDescription
             // attribute.
 
-            ConfigurableAttribute actorIconAttribute = (ConfigurableAttribute) (tempActorInstance)
+            ConfigurableAttribute actorIconAttribute = (ConfigurableAttribute) tempActorInstance
                     .getAttribute("_iconDescription");
             if (actorIconAttribute != null) {
                 String iconDescription = actorIconAttribute.getConfigureText();

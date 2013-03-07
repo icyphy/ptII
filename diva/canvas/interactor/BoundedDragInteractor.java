@@ -74,12 +74,12 @@ public class BoundedDragInteractor extends DragInteractor {
         double ey = e.getLayerY();
         Rectangle2D b = f.getBounds();
 
-        double x = (_bounds.getX() + ex) - b.getX();
-        double y = (_bounds.getY() + ey) - b.getY();
+        double x = _bounds.getX() + ex - b.getX();
+        double y = _bounds.getY() + ey - b.getY();
 
-        double w = (_bounds.getX() + _bounds.getWidth() + ex)
+        double w = _bounds.getX() + _bounds.getWidth() + ex
                 - (b.getX() + b.getWidth()) - x;
-        double h = (_bounds.getY() + _bounds.getHeight() + ey)
+        double h = _bounds.getY() + _bounds.getHeight() + ey
                 - (b.getY() + b.getHeight()) - y;
 
         // Finally (!), set the bounds constraint

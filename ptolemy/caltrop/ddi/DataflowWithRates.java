@@ -115,9 +115,7 @@ public class DataflowWithRates extends Dataflow {
 
     // Return true if at least one action does not have a guard.
     protected boolean _atLeastOneUnguardedAction() {
-        for (int i = 0; i < _actions.length; i++) {
-            Action action = _actions[i];
-
+        for (Action action : _actions) {
             if (action.getGuards().length == 0) {
                 return true;
             }
@@ -130,8 +128,8 @@ public class DataflowWithRates extends Dataflow {
     protected boolean _checkInitializerGuards() {
         Action[] initializers = _actor.getInitializers();
 
-        for (int i = 0; i < initializers.length; i++) {
-            Action initializer = initializers[i];
+        for (Action initializer2 : initializers) {
+            Action initializer = initializer2;
             Expression[] guards = initializer.getGuards();
 
             for (int j = 0; j < guards.length; j++) {
@@ -166,8 +164,7 @@ public class DataflowWithRates extends Dataflow {
 
         InputPattern[] inputPatterns = action.getInputPatterns();
 
-        for (int j = 0; j < inputPatterns.length; j++) {
-            InputPattern inputPattern = inputPatterns[j];
+        for (InputPattern inputPattern : inputPatterns) {
             Expression repeatExpr = inputPattern.getRepeatExpr();
             int repeatVal = _computeRepeatExpression(repeatExpr, action);
             signature.addInputRate(inputPattern.getPortname(),
@@ -176,8 +173,7 @@ public class DataflowWithRates extends Dataflow {
 
         OutputExpression[] outputexps = action.getOutputExpressions();
 
-        for (int j = 0; j < outputexps.length; j++) {
-            OutputExpression outputexp = outputexps[j];
+        for (OutputExpression outputexp : outputexps) {
             Expression repeatExpr = outputexp.getRepeatExpr();
             int repeatVal = _computeRepeatExpression(repeatExpr, action);
             signature.addOutputRate(outputexp.getPortname(),
@@ -234,8 +230,8 @@ public class DataflowWithRates extends Dataflow {
     protected static boolean _isBoundByPortVar(String name, Action action) {
         InputPattern[] inputPatterns = action.getInputPatterns();
 
-        for (int i = 0; i < inputPatterns.length; i++) {
-            if (_isIn(name, inputPatterns[i].getVariables())) {
+        for (InputPattern inputPattern : inputPatterns) {
+            if (_isIn(name, inputPattern.getVariables())) {
                 return true;
             }
         }
@@ -244,8 +240,8 @@ public class DataflowWithRates extends Dataflow {
     }
 
     private static boolean _isIn(String name, String[] names) {
-        for (int i = 0; i < names.length; i++) {
-            if (name.equals(names[i])) {
+        for (String name2 : names) {
+            if (name.equals(name2)) {
                 return true;
             }
         }
@@ -254,8 +250,8 @@ public class DataflowWithRates extends Dataflow {
     }
 
     private static boolean _isIn(String name, Decl[] decls) {
-        for (int i = 0; i < decls.length; i++) {
-            if (name.equals(decls[i].getName())) {
+        for (Decl decl : decls) {
+            if (name.equals(decl.getName())) {
                 return true;
             }
         }

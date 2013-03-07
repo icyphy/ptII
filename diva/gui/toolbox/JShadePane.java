@@ -193,7 +193,7 @@ public class JShadePane extends JPanel {
      */
     public int indexOfShade(String title) {
         for (int i = 0; i < getShadeCount(); i++) {
-            if (getTitleAt(i).equals((title == null) ? "" : title)) {
+            if (getTitleAt(i).equals(title == null ? "" : title)) {
                 return i;
             }
         }
@@ -208,7 +208,7 @@ public class JShadePane extends JPanel {
      */
     public void insertShade(String title, Icon icon, Component component,
             String tip, int index) {
-        if ((icon != null) && icon instanceof ImageIcon) {
+        if (icon != null && icon instanceof ImageIcon) {
             new ImageIcon(GrayFilter.createDisabledImage(((ImageIcon) icon)
                     .getImage()));
         }
@@ -309,7 +309,7 @@ public class JShadePane extends JPanel {
      * Set the background color at the given index.
      */
     public void setBackgroundAt(int index, Color background) {
-        Shade p = (Shade) (_shades.get(index));
+        Shade p = (Shade) _shades.get(index);
         p._button.setBackground(background);
     }
 
@@ -317,7 +317,7 @@ public class JShadePane extends JPanel {
      * Set the disabled icon for the button at the given index.
      */
     public void setDisabledIconAt(int index, Icon icon) {
-        Shade p = (Shade) (_shades.get(index));
+        Shade p = (Shade) _shades.get(index);
         p._button.setDisabledIcon(icon);
     }
 
@@ -325,7 +325,7 @@ public class JShadePane extends JPanel {
      * Set the enabledness of the shade at the given index.
      */
     public void setEnabledAt(int index, boolean enabled) {
-        Shade p = (Shade) (_shades.get(index));
+        Shade p = (Shade) _shades.get(index);
         p._button.setEnabled(enabled);
 
         //FIXME - what is the right behavior if this
@@ -336,7 +336,7 @@ public class JShadePane extends JPanel {
      * Set the foreground color at the given index.
      */
     public void setForegroundAt(int index, Color foreground) {
-        Shade p = (Shade) (_shades.get(index));
+        Shade p = (Shade) _shades.get(index);
         p._button.setForeground(foreground);
 
         //FIXME - what is the right behavior if this
@@ -347,7 +347,7 @@ public class JShadePane extends JPanel {
      * Set the disabled icon for the button at the given index.
      */
     public void setIconAt(int index, Icon icon) {
-        Shade p = (Shade) (_shades.get(index));
+        Shade p = (Shade) _shades.get(index);
         p._button.setIcon(icon);
     }
 
@@ -369,7 +369,7 @@ public class JShadePane extends JPanel {
      * Set the title string at the given index.
      */
     public void setTitleAt(int index, String title) {
-        Shade p = (Shade) (_shades.get(index));
+        Shade p = (Shade) _shades.get(index);
         p._button.setText(title);
     }
 
@@ -442,11 +442,11 @@ public class JShadePane extends JPanel {
         }
 
         public int getAccessibleChildrenCount() {
-            return (_component instanceof Accessible) ? 1 : 0;
+            return _component instanceof Accessible ? 1 : 0;
         }
 
         public Accessible getAccessibleChild(int i) {
-            return (_component instanceof Accessible) ? (Accessible) _component
+            return _component instanceof Accessible ? (Accessible) _component
                     : null;
         }
 
@@ -557,7 +557,7 @@ public class JShadePane extends JPanel {
         }
 
         public Accessible getAccessibleAt(Point p) {
-            return (_component instanceof Accessible) ? (Accessible) _component
+            return _component instanceof Accessible ? (Accessible) _component
                     : null;
         }
 
@@ -621,7 +621,7 @@ public class JShadePane extends JPanel {
                             public void actionPerformed(ActionEvent e) {
                                 int i = sp.getSelectedIndex() + 1;
 
-                                if ((i >= 1) && (i < sp.getShadeCount())) {
+                                if (i >= 1 && i < sp.getShadeCount()) {
                                     sp.removeShadeAt(i);
                                 }
                             }

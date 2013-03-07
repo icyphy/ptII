@@ -291,7 +291,7 @@ public class HierarchicalStateController extends StateController {
                 return;
             }
 
-            if ((refinements == null) || (refinements.length < 1)) {
+            if (refinements == null || refinements.length < 1) {
                 MessageHandler.error("No refinements to remove.");
                 return;
             }
@@ -343,7 +343,7 @@ public class HierarchicalStateController extends StateController {
             while (states.hasNext()) {
                 NamedObj other = (NamedObj) states.next();
 
-                if ((other != state) && other instanceof State) {
+                if (other != state && other instanceof State) {
                     String refinementList = ((State) other).refinementName
                             .getExpression();
 

@@ -206,8 +206,8 @@ public class IconController extends ParameterizedNodeController {
             // attributes that specify its color or an explanation.
             // Old way to specify a color.
             try {
-                StringAttribute colorAttr = (StringAttribute) (object
-                        .getAttribute("_color", StringAttribute.class));
+                StringAttribute colorAttr = (StringAttribute) object
+                        .getAttribute("_color", StringAttribute.class);
                 if (colorAttr != null) {
                     String color = colorAttr.getExpression();
                     AnimationRenderer animationRenderer = new AnimationRenderer(
@@ -229,8 +229,8 @@ public class IconController extends ParameterizedNodeController {
             // shadow specification. An empty color results in no shadow.
             try {
                 // If the object itself has a shadow specification, use that.
-                ColorAttribute shadowAttribute = (ColorAttribute) (object
-                        .getAttribute("_shadowColor", ColorAttribute.class));
+                ColorAttribute shadowAttribute = (ColorAttribute) object
+                        .getAttribute("_shadowColor", ColorAttribute.class);
                 if (shadowAttribute != null) {
                     if (!shadowAttribute.getExpression().trim().equals("")) {
                         Color color = shadowAttribute.asColor();
@@ -243,9 +243,9 @@ public class IconController extends ParameterizedNodeController {
                     // If the container has a shadow specification, use that.
                     NamedObj container = object.getContainer();
                     if (container != null) {
-                        shadowAttribute = (ColorAttribute) (container
+                        shadowAttribute = (ColorAttribute) container
                                 .getAttribute("_shadowColor",
-                                        ColorAttribute.class));
+                                        ColorAttribute.class);
                         if (shadowAttribute != null
                                 && !shadowAttribute.getExpression().trim()
                                         .equals("")) {
@@ -262,8 +262,8 @@ public class IconController extends ParameterizedNodeController {
             }
 
             try {
-                StringAttribute explanationAttribute = (StringAttribute) (object
-                        .getAttribute("_explanation", StringAttribute.class));
+                StringAttribute explanationAttribute = (StringAttribute) object
+                        .getAttribute("_explanation", StringAttribute.class);
                 if (explanationAttribute != null) {
                     result.setToolTipText(explanationAttribute.getExpression());
                 }

@@ -115,7 +115,7 @@ public class UnsignedByteToken extends ScalarToken {
             // which is not really what we want.
             int value = Integer.parseInt(init);
 
-            if ((value > 255) || (value < 0)) {
+            if (value > 255 || value < 0) {
                 throw new IllegalActionException("Value '" + init
                         + "' is out of the range of Unsigned Byte");
             }
@@ -181,7 +181,7 @@ public class UnsignedByteToken extends ScalarToken {
         }
         int compare = TypeLattice.compare(BaseType.UNSIGNED_BYTE, token);
 
-        if ((compare == CPO.LOWER) || (compare == CPO.INCOMPARABLE)) {
+        if (compare == CPO.LOWER || compare == CPO.INCOMPARABLE) {
             throw new IllegalActionException(
                     notSupportedIncomparableConversionMessage(token, "byte"));
         }
@@ -498,7 +498,7 @@ public class UnsignedByteToken extends ScalarToken {
         long left = longValue();
         long distance = Math.round(Math.floor(epsilon));
 
-        if ((right > (left + distance)) || (right < (left - distance))) {
+        if (right > left + distance || right < left - distance) {
             return BooleanToken.FALSE;
         } else {
             return BooleanToken.TRUE;

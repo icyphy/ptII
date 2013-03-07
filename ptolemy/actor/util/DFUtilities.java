@@ -77,7 +77,7 @@ public class DFUtilities {
         public int compare(Object object1, Object object2) {
             // Note: This is rather slow, because getFullName is not cached.
 
-            if ((object1 instanceof NamedObj) && (object2 instanceof NamedObj)) {
+            if (object1 instanceof NamedObj && object2 instanceof NamedObj) {
                 // Compare full names.
                 NamedObj namedObject1 = (NamedObj) object1;
                 NamedObj namedObject2 = (NamedObj) object2;

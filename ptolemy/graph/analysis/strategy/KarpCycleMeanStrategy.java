@@ -107,7 +107,7 @@ public class KarpCycleMeanStrategy extends CachedStrategy implements
             reset();
         }
 
-        return ((Double) (_result())).doubleValue();
+        return ((Double) _result()).doubleValue();
     }
 
     /** Return the maximum cycle mean.
@@ -260,9 +260,10 @@ public class KarpCycleMeanStrategy extends CachedStrategy implements
                         .get(node)).doubleValue();
                 double maximumPathLengthToLevelN = ((Double) maximumPathLength[n]
                         .get(node)).doubleValue();
-                double cycleMeanValue = ((Double) (cycleMean.get(node)))
+                double cycleMeanValue = ((Double) cycleMean.get(node))
                         .doubleValue();
-                double testValue = ((maximumPathLengthToLevelN - maximumPathLengthToLevelK) / (n - k));
+                double testValue = (maximumPathLengthToLevelN - maximumPathLengthToLevelK)
+                        / (n - k);
 
                 if (cycleMeanValue > testValue) {
                     cycleMean.put(node, Double.valueOf(testValue));
@@ -270,7 +271,7 @@ public class KarpCycleMeanStrategy extends CachedStrategy implements
                 }
             }
 
-            double cycleMeanValue = ((Double) (cycleMean.get(node)))
+            double cycleMeanValue = ((Double) cycleMean.get(node))
                     .doubleValue();
 
             if (result < cycleMeanValue) {
@@ -354,7 +355,7 @@ public class KarpCycleMeanStrategy extends CachedStrategy implements
                     weight = nextWeight;
                 }
             } else {
-                double nextWeight = -(_edgeLengths.toDouble(edge));
+                double nextWeight = -_edgeLengths.toDouble(edge);
 
                 if (nextWeight < weight) {
                     weight = nextWeight;

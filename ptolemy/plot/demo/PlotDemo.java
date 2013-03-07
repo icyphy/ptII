@@ -79,16 +79,16 @@ public class PlotDemo extends PlotApplet {
         boolean first = true;
 
         for (int i = 0; i <= 100; i++) {
-            plot.addPoint(0, i, 5 * Math.cos((Math.PI * i) / 20), !first);
-            plot.addPoint(1, i, 4.5 * Math.cos((Math.PI * i) / 25), !first);
-            plot.addPoint(2, i, 4 * Math.cos((Math.PI * i) / 30), !first);
-            plot.addPoint(3, i, 3.5 * Math.cos((Math.PI * i) / 35), !first);
-            plot.addPoint(4, i, 3 * Math.cos((Math.PI * i) / 40), !first);
-            plot.addPoint(5, i, 2.5 * Math.cos((Math.PI * i) / 45), !first);
-            plot.addPoint(6, i, 2 * Math.cos((Math.PI * i) / 50), !first);
-            plot.addPoint(7, i, 1.5 * Math.cos((Math.PI * i) / 55), !first);
-            plot.addPoint(8, i, 1 * Math.cos((Math.PI * i) / 60), !first);
-            plot.addPoint(9, i, 0.5 * Math.cos((Math.PI * i) / 65), !first);
+            plot.addPoint(0, i, 5 * Math.cos(Math.PI * i / 20), !first);
+            plot.addPoint(1, i, 4.5 * Math.cos(Math.PI * i / 25), !first);
+            plot.addPoint(2, i, 4 * Math.cos(Math.PI * i / 30), !first);
+            plot.addPoint(3, i, 3.5 * Math.cos(Math.PI * i / 35), !first);
+            plot.addPoint(4, i, 3 * Math.cos(Math.PI * i / 40), !first);
+            plot.addPoint(5, i, 2.5 * Math.cos(Math.PI * i / 45), !first);
+            plot.addPoint(6, i, 2 * Math.cos(Math.PI * i / 50), !first);
+            plot.addPoint(7, i, 1.5 * Math.cos(Math.PI * i / 55), !first);
+            plot.addPoint(8, i, 1 * Math.cos(Math.PI * i / 60), !first);
+            plot.addPoint(9, i, 0.5 * Math.cos(Math.PI * i / 65), !first);
             first = false;
         }
     }

@@ -271,9 +271,10 @@ public class OpenModelica extends TypedAtomicActor {
             //_omcProxy.displaySimulationResult(modelName.getExpression());
 
             // Plot plt format file.
-            if (outputFormat.getExpression().compareTo("plt") == 0)
+            if (outputFormat.getExpression().compareTo("plt") == 0) {
                 _omcProxy.plotPltFile(fileNamePrefix.getExpression(),
                         modelName.getExpression());
+            }
         } catch (Throwable throwable) {
             throw new IllegalActionException(this, throwable,
                     "Unable to simulate the model!");

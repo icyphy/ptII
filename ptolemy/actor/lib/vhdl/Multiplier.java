@@ -100,7 +100,7 @@ public class Multiplier extends SynchronousFixTransformer {
                 sendOutput(output, 0, result);
             }
         } else {
-            (output).resend(0);
+            output.resend(0);
         }
     }
 

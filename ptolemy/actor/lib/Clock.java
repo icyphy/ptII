@@ -473,7 +473,7 @@ public class Clock extends TimedSource {
         // separately, and checking in initialize() is not really
         // sufficient, since the values of these parameters can
         // change at run time.
-        ArrayToken val = (ArrayToken) (values.getToken());
+        ArrayToken val = (ArrayToken) values.getToken();
         if (_offsets.length != val.length()) {
             throw new IllegalActionException(this,
                     "Values and offsets vectors do not have the same length.");
@@ -544,9 +544,9 @@ public class Clock extends TimedSource {
      *  the values parameter.
      */
     protected Token _getValue(int index) throws IllegalActionException {
-        ArrayToken val = (ArrayToken) (values.getToken());
+        ArrayToken val = (ArrayToken) values.getToken();
 
-        if ((val == null) || (val.length() <= index)) {
+        if (val == null || val.length() <= index) {
             throw new IllegalActionException(this,
                     "Index out of range of the values parameter.");
         }
@@ -592,8 +592,8 @@ public class Clock extends TimedSource {
         // or a trigger input was received.
         boolean triggerConnected = trigger.numberOfSources() > 0;
         boolean fireAtNeeded = _tentativeEnabled
-                && ((!triggerConnected && _outputProduced) || (triggerConnected
-                        && _tentativeTriggered && !_outputProduced));
+                && (!triggerConnected && _outputProduced || triggerConnected
+                        && _tentativeTriggered && !_outputProduced);
         _cycleStartTime = _tentativeCycleStartTime;
         _phase = _tentativePhase;
         if (_outputProduced) {
@@ -624,8 +624,7 @@ public class Clock extends TimedSource {
         // This should be computed after the above so that a firing
         // gets requested for the tail end of the output pulses.
         int cycleLimit = ((IntToken) numberOfCycles.getToken()).intValue();
-        _enabled = _enabled
-                && ((cycleLimit <= 0) || (_cycleCount <= cycleLimit));
+        _enabled = _enabled && (cycleLimit <= 0 || _cycleCount <= cycleLimit);
     }
 
     ///////////////////////////////////////////////////////////////////

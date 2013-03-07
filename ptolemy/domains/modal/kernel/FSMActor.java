@@ -478,9 +478,8 @@ public class FSMActor extends CompositeEntity implements TypedActor,
      *  @exception IllegalActionException If the guard expression of any
      *  transition can not be evaluated.
      */
-    public List enabledTransitions(
-            List transitionList, boolean preemptive, boolean immediateOnly)
-            throws IllegalActionException {
+    public List enabledTransitions(List transitionList, boolean preemptive,
+            boolean immediateOnly) throws IllegalActionException {
         LinkedList enabledTransitions = new LinkedList();
         LinkedList defaultTransitions = new LinkedList();
 
@@ -495,8 +494,8 @@ public class FSMActor extends CompositeEntity implements TypedActor,
                     continue;
                 }
             }
-            if (preemptive && !transition.isPreemptive()
-                    || !preemptive && transition.isPreemptive()) {
+            if (preemptive && !transition.isPreemptive() || !preemptive
+                    && transition.isPreemptive()) {
                 continue;
             }
             boolean transitionRefersToUnknownInputs = !_referencedInputPortsByGuardKnown(transition);
@@ -599,7 +598,8 @@ public class FSMActor extends CompositeEntity implements TypedActor,
      */
     public void fire() throws IllegalActionException {
         if (_debugging) {
-            _debug("************ Firing FSM. Current state: " + _currentState.getName());
+            _debug("************ Firing FSM. Current state: "
+                    + _currentState.getName());
         }
 
         Time environmentTime = _getEnvironmentTime();
@@ -638,7 +638,8 @@ public class FSMActor extends CompositeEntity implements TypedActor,
 
         // Choose transitions from the preemptive transitions,
         // including any immediate transitions that these lead to.
-        List<Transition> transitionList = _currentState.nonErrorNonTerminationTransitionList();
+        List<Transition> transitionList = _currentState
+                .nonErrorNonTerminationTransitionList();
 
         // The last argument ensures that we look at all transitions
         // not just those that are marked immediate.
@@ -667,8 +668,8 @@ public class FSMActor extends CompositeEntity implements TypedActor,
                 for (Actor refinementActor : refinements) {
                     if (refinementActor instanceof CompositeActor) {
                         CompositeActor refinement = (CompositeActor) refinementActor;
-                        for (IOPort refinementPort : ((List<IOPort>) refinement
-                                .outputPortList())) {
+                        for (IOPort refinementPort : (List<IOPort>) refinement
+                                .outputPortList()) {
                             for (int i = 0; i < refinementPort.getWidth(); i++) {
                                 if (!refinementPort.isKnown(i)) {
                                     if (_debugging) {
@@ -697,7 +698,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
                         for (int i = 0; i < stateRefinements.length; ++i) {
                             if (_stopRequested
                                     || _disabledRefinements
-                                    .contains(stateRefinements[i])) {
+                                            .contains(stateRefinements[i])) {
                                 continue;
                             }
                             _setTimeForRefinement(stateRefinements[i]);
@@ -714,7 +715,8 @@ public class FSMActor extends CompositeEntity implements TypedActor,
                                 if (_modelErrorHandled == null) {
                                     stateRefinements[i].fire();
                                     if (_modelErrorHandled == null) {
-                                        _stateRefinementsToPostfire.add(stateRefinements[i]);
+                                        _stateRefinementsToPostfire
+                                                .add(stateRefinements[i]);
                                     }
                                 }
                             }
@@ -730,7 +732,8 @@ public class FSMActor extends CompositeEntity implements TypedActor,
                             }
                             return;
                         }
-                        throw new IllegalActionException(this, ex, "Exception occurred executing refinement.");
+                        throw new IllegalActionException(this, ex,
+                                "Exception occurred executing refinement.");
                     }
                     if (_modelErrorHandled != null) {
                         // A model error was thrown.
@@ -762,7 +765,8 @@ public class FSMActor extends CompositeEntity implements TypedActor,
                 // all refinements have reached a final state. Allowing this now
                 // means that the termination transition can produce outputs before
                 // postfire, which is essential in SR and Continuous domains.
-                List<Transition> terminationTransitions = _currentState.terminationTransitionList();
+                List<Transition> terminationTransitions = _currentState
+                        .terminationTransitionList();
                 // Assume until proven otherwise that termination transitions should
                 // not be checked.
                 boolean checkTerminationTransitions = false;
@@ -780,13 +784,17 @@ public class FSMActor extends CompositeEntity implements TypedActor,
                                 // if all refinements are transitioning to a final state
                                 // or are already in a final state.
                                 ModalRefinement refinement = (ModalRefinement) refinementActor;
-                                FSMActor refinementController = refinement.getController();
-                                State destinationState = refinementController._destinationState();
+                                FSMActor refinementController = refinement
+                                        .getController();
+                                State destinationState = refinementController
+                                        ._destinationState();
                                 // If the current state is not a final state and we are not transitioning
                                 // to a final state, then no termination transition can be enabled.
-                                if (!(((BooleanToken)refinementController.currentState().isFinalState.getToken()).booleanValue())
-                                        && (destinationState == null
-                                        || !((BooleanToken)destinationState.isFinalState.getToken()).booleanValue())) {
+                                if (!((BooleanToken) refinementController
+                                        .currentState().isFinalState.getToken())
+                                        .booleanValue()
+                                        && (destinationState == null || !((BooleanToken) destinationState.isFinalState
+                                                .getToken()).booleanValue())) {
                                     // No chosen transition, or the destination
                                     // state is not final.
                                     // Cannot take termination transition.
@@ -806,7 +814,9 @@ public class FSMActor extends CompositeEntity implements TypedActor,
                     // not just those that are marked immediate.
                     // The third from the last ensures that we look only at
                     // non-preemptive transitions.
-                    _chooseTransitions(_currentState.nonpreemptiveTransitionList(), false, false, false);
+                    _chooseTransitions(
+                            _currentState.nonpreemptiveTransitionList(), false,
+                            false, false);
                 } else {
                     // The second to last argument ensures that we look at all transitions
                     // not just those that are marked immediate.
@@ -1119,8 +1129,8 @@ public class FSMActor extends CompositeEntity implements TypedActor,
      *  @return true if new input tokens have been received.
      */
     public boolean hasInput() {
-        Iterator<?> inPorts = ((CompositeActor) getContainer())
-                .inputPortList().iterator();
+        Iterator<?> inPorts = ((CompositeActor) getContainer()).inputPortList()
+                .iterator();
         while (inPorts.hasNext() && !_stopRequested) {
             Port port = (Port) inPorts.next();
             if (hasInput(port)) {
@@ -1154,7 +1164,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         _inputTokenMap.clear();
         errorMessage.setExpression("");
         errorClass.setExpression("");
-        errorCause.setToken((Token)null);
+        errorCause.setToken((Token) null);
         _modelErrorHandled = null;
 
         _transitionTaken = false;
@@ -1207,16 +1217,19 @@ public class FSMActor extends CompositeEntity implements TypedActor,
             // then request a refiring at the current time.
             try {
                 // State may have changed. Get new transition list.
-                transitionList = _currentState.outgoingPort.linkedRelationList();
+                transitionList = _currentState.outgoingPort
+                        .linkedRelationList();
                 // Check both preemptive and non-preemptive transitions.
                 if (_debugging) {
                     _debug("** Checking preemptive transitions to see whether to request a firing at the current time.");
                 }
-                List enabledTransitions = enabledTransitions(transitionList, true, false);
+                List enabledTransitions = enabledTransitions(transitionList,
+                        true, false);
                 if (_debugging) {
                     _debug("** Checking non-preemptive transitions to see whether to request a firing at the current time.");
                 }
-                enabledTransitions.addAll(enabledTransitions(transitionList, false, false));
+                enabledTransitions.addAll(enabledTransitions(transitionList,
+                        false, false));
                 if (enabledTransitions.size() > 0) {
                     if (_debugging) {
                         _debug("A transition from the initial state is enabled. FSMActor requesting refiring by at "
@@ -1330,7 +1343,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
     public int iterate(int count) throws IllegalActionException {
         int n = 0;
 
-        while ((n++ < count) && !_stopRequested) {
+        while (n++ < count && !_stopRequested) {
             if (prefire()) {
                 fire();
 
@@ -1480,22 +1493,23 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         if (refinements != null) {
             for (Actor stateRefinement : refinements) {
                 Director refinementDirector = stateRefinement.getDirector();
-                if (_lastChosenTransitions.size() != 0 && refinementDirector != director) {
+                if (_lastChosenTransitions.size() != 0
+                        && refinementDirector != director) {
                     refinementDirector.suspend();
                 }
             }
         }
 
         // Check for termination transitions.
-        if (refinements != null
-                && refinements.length > 0
+        if (refinements != null && refinements.length > 0
                 && _disabledRefinements.size() == refinements.length) {
             // All refinements have terminated. If no other
             // transition is enabled, see whether there is a termination transition.
             if (_lastChosenTransitions.size() == 0) {
                 // Choose transitions from the termination transitions,
                 // including any immediate transitions that these lead to.
-                List<Transition> transitionList = _currentState.terminationTransitionList();
+                List<Transition> transitionList = _currentState
+                        .terminationTransitionList();
                 // The second last argument ensures that we look at all transitions
                 // not just those that are marked immediate.
                 // Third from last argument ensures that we look only at non-preemptive transitions.
@@ -1554,7 +1568,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         _inputTokenMap.clear();
         errorMessage.setExpression("");
         errorClass.setExpression("");
-        errorCause.setToken((Token)null);
+        errorCause.setToken((Token) null);
         _modelErrorHandled = null;
 
         return !_reachedFinalState && !_stopRequested;
@@ -1592,7 +1606,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         _inputTokenMap.clear();
         errorMessage.setExpression("");
         errorClass.setExpression("");
-        errorCause.setToken((Token)null);
+        errorCause.setToken((Token) null);
         _modelErrorHandled = null;
 
         // In case any further static analysis depends on the initial
@@ -1990,8 +2004,8 @@ public class FSMActor extends CompositeEntity implements TypedActor,
      *   outputs are consumed, such as SDF.
      *  @exception IllegalActionException If something goes wrong.
      */
-    protected void _chooseTransitions(
-            List<Transition> transitionList, boolean preemptive, boolean immediateOnly, boolean inInitialize)
+    protected void _chooseTransitions(List<Transition> transitionList,
+            boolean preemptive, boolean immediateOnly, boolean inInitialize)
             throws IllegalActionException {
         Transition chosenTransition = _chooseTransition(_currentState,
                 transitionList, preemptive, immediateOnly, inInitialize);
@@ -2030,13 +2044,13 @@ public class FSMActor extends CompositeEntity implements TypedActor,
                         + nextState.getName());
             }
             // Try preemptive transitions first, then non-preemptive.
-            chosenTransition = _chooseTransition(
-                    nextState, transitionList, true, true, inInitialize);
+            chosenTransition = _chooseTransition(nextState, transitionList,
+                    true, true, inInitialize);
             if (chosenTransition == null) {
                 // Only try non-preemptive transitions if no preemptive transition
                 // is enabled.
-                chosenTransition = _chooseTransition(
-                        nextState, transitionList, false, true, inInitialize);
+                chosenTransition = _chooseTransition(nextState, transitionList,
+                        false, true, inInitialize);
             }
         }
     }
@@ -2233,7 +2247,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         }
         TypedActor[] refinements = _currentState.getRefinement();
 
-        if ((refinements == null) || (refinements.length == 0)) {
+        if (refinements == null || refinements.length == 0) {
             return false;
         }
 
@@ -2426,7 +2440,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
 
                 // If we're in a new iteration, reallocate arrays to keep
                 // track of HDF data.
-                if (_newIteration && (channel == 0)) {
+                if (_newIteration && channel == 0) {
                     List[] tokenListArray = new LinkedList[width];
 
                     for (int i = 0; i < width; i++) {
@@ -2446,7 +2460,8 @@ public class FSMActor extends CompositeEntity implements TypedActor,
                 // Limit the number of tokens read to the consumption rate
                 // of the port, which by default is 1. If the MultirateFSMDirector
                 // is used, however, it may set the consumption rate other than one.
-                int numberOfTokensToRead = DFUtilities.getTokenConsumptionRate(port);
+                int numberOfTokensToRead = DFUtilities
+                        .getTokenConsumptionRate(port);
                 int count = 0;
                 while (port.hasToken(channel) && count < numberOfTokensToRead) {
                     Token token = port.get(channel);
@@ -2494,12 +2509,12 @@ public class FSMActor extends CompositeEntity implements TypedActor,
                     // NOTE: The test will only work if the _inputTokenMap is reset
                     // between iterations. Ptera does not do this!!!
                     // if (_inputTokenMap.get(portName + "_isPresent") == null) {
-                        if (_debugging) {
-                            _debug("---", port.getName(), "(" + channel + ") has ",
-                                    "no tokens at time "
-                                    + getDirector().getModelTime());
-                        }
-                        _setInputTokenMap(port, channel, null, null);
+                    if (_debugging) {
+                        _debug("---", port.getName(), "(" + channel + ") has ",
+                                "no tokens at time "
+                                        + getDirector().getModelTime());
+                    }
+                    _setInputTokenMap(port, channel, null, null);
                     // }
                 }
             }
@@ -2740,14 +2755,16 @@ public class FSMActor extends CompositeEntity implements TypedActor,
                                     controllerPort, channel,
                                     controller._currentState, false, null);
                             if (channelIsAbsent) {
-                                Integer channelThatMustBeUnknown = controller._outputsThatMustBeUnknown.get(controllerPort);
-                                if (channelThatMustBeUnknown == null || channelThatMustBeUnknown.intValue() != channel) {
+                                Integer channelThatMustBeUnknown = controller._outputsThatMustBeUnknown
+                                        .get(controllerPort);
+                                if (channelThatMustBeUnknown == null
+                                        || channelThatMustBeUnknown.intValue() != channel) {
                                     foundAbsentOutputs = true;
                                     controllerPort.send(channel, null);
                                     if (_debugging) {
                                         _debug("Asserting absent output: "
-                                                + port.getName() + ", on channel "
-                                                + channel);
+                                                + port.getName()
+                                                + ", on channel " + channel);
                                     }
                                 }
                             }
@@ -2770,8 +2787,10 @@ public class FSMActor extends CompositeEntity implements TypedActor,
                             _debug("Asserting absent output: " + port.getName()
                                     + ", on channel " + channel);
                         }
-                        Integer channelThatMustBeUnknown = controller._outputsThatMustBeUnknown.get(port);
-                        if (channelThatMustBeUnknown == null || channelThatMustBeUnknown.intValue() != channel) {
+                        Integer channelThatMustBeUnknown = controller._outputsThatMustBeUnknown
+                                .get(port);
+                        if (channelThatMustBeUnknown == null
+                                || channelThatMustBeUnknown.intValue() != channel) {
                             // Send absent.
                             port.send(channel, null);
                             foundAbsentOutputs = true;
@@ -2825,7 +2844,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
                     IOPort inPort = (IOPort) inPorts.next();
                     boolean[] flags = new boolean[inPort.getWidth()];
 
-                    if ((actors == null) || (actors.length == 0)) {
+                    if (actors == null || actors.length == 0) {
                         java.util.Arrays.fill(flags, false);
                         stateMap.put(inPort, flags);
                         continue;
@@ -2876,7 +2895,8 @@ public class FSMActor extends CompositeEntity implements TypedActor,
     private void _chooseErrorTransition(Throwable ex)
             throws IllegalActionException {
         if (_currentState != null) {
-            List<Transition> errorTransitionList = _currentState.errorTransitionList();
+            List<Transition> errorTransitionList = _currentState
+                    .errorTransitionList();
             if (errorTransitionList.size() > 0) {
                 if (_debugging) {
                     _debug("** Exception occurred executing refinement. Checking error transitions.");
@@ -2885,9 +2905,10 @@ public class FSMActor extends CompositeEntity implements TypedActor,
                 errorMessage.setExpression(ex.getMessage());
                 errorClass.setExpression(ex.getClass().getName());
                 if (ex instanceof KernelException) {
-                    Nameable cause = ((KernelException)ex).getNameable1();
+                    Nameable cause = ((KernelException) ex).getNameable1();
                     if (cause != null) {
-                        errorCause.setToken(new ObjectToken(cause, cause.getClass()));
+                        errorCause.setToken(new ObjectToken(cause, cause
+                                .getClass()));
                     }
                 }
 
@@ -2935,8 +2956,8 @@ public class FSMActor extends CompositeEntity implements TypedActor,
      *   transition enabled and not all of them are nondeterministic.
      */
     private Transition _chooseTransition(State currentState,
-            List transitionList, boolean preemptive, boolean immediateOnly, boolean inInitialize)
-            throws IllegalActionException {
+            List transitionList, boolean preemptive, boolean immediateOnly,
+            boolean inInitialize) throws IllegalActionException {
 
         // Get the transitions enabled from the current state.
         List<Transition> enabledTransitions = enabledTransitions(
@@ -3054,8 +3075,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
                 //
                 // Note that at this point, _lastChosenTransition is the transition _into_
                 // the current state, if there is one.
-                if (!inInitialize
-                        && _lastChosenTransition != null
+                if (!inInitialize && _lastChosenTransition != null
                         && !_lastChosenTransition.isHistory()) {
                     _initializeRefinements(currentState);
                 }
@@ -3119,7 +3139,8 @@ public class FSMActor extends CompositeEntity implements TypedActor,
                         if (!port.isKnown(channel)) {
                             port.send(channel, null);
                             if (_debugging) {
-                                _debug("--- Asserting that output " + port.getName() + " is absent.");
+                                _debug("--- Asserting that output "
+                                        + port.getName() + " is absent.");
                             }
                         }
                     }
@@ -3159,8 +3180,8 @@ public class FSMActor extends CompositeEntity implements TypedActor,
      *  @exception IllegalActionException If any commit action throws it,
      *   or the last chosen transition does not have a destination state.
      */
-    private void _commitLastChosenTransition(boolean inPreinitialize, boolean inInitialize)
-            throws IllegalActionException {
+    private void _commitLastChosenTransition(boolean inPreinitialize,
+            boolean inInitialize) throws IllegalActionException {
         Transition currentTransition = _lastChosenTransitions
                 .get(_currentState);
         if (currentTransition == null) {
@@ -3215,7 +3236,8 @@ public class FSMActor extends CompositeEntity implements TypedActor,
             // the destination refinement.
             // Do not do this if we are in preinitialize(), as the refinement
             // has not been preinitialized yet.
-            if (!currentTransition.isHistory() && !inPreinitialize && !inInitialize) {
+            if (!currentTransition.isHistory() && !inPreinitialize
+                    && !inInitialize) {
                 _initializeRefinements(nextState);
             }
         }
@@ -3321,7 +3343,8 @@ public class FSMActor extends CompositeEntity implements TypedActor,
      *  @exception IllegalActionException If geting remove receivers or
      *   resetting them fails.
      */
-    private void _forceUnknownOutput(IOPort port, int channel) throws IllegalActionException {
+    private void _forceUnknownOutput(IOPort port, int channel)
+            throws IllegalActionException {
         Receiver[][] receivers = port.getRemoteReceivers();
         if (receivers != null) {
             if (receivers.length > channel && receivers[channel] != null) {
@@ -3329,7 +3352,8 @@ public class FSMActor extends CompositeEntity implements TypedActor,
                     if (receivers[channel][j] instanceof FSMReceiver) {
                         receivers[channel][j].reset();
                         // Propagate outwards until there are no more FSMReceivers.
-                        IOPort destinationPort = receivers[channel][j].getContainer();
+                        IOPort destinationPort = receivers[channel][j]
+                                .getContainer();
                         if (_debugging) {
                             _debug("--- Setting inside of port "
                                     + destinationPort.getFullName()
@@ -3345,6 +3369,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
             }
         }
     }
+
     /** Return the environment time.
      *  If this actor is the controller for a modal model,
      *  then return the model time of the modal model's executive director,
@@ -3450,9 +3475,12 @@ public class FSMActor extends CompositeEntity implements TypedActor,
                 if (channelForIdentifier < 0) {
                     channelForIdentifier = 0;
                 }
-                if (channelForIdentifier != null && !portForIdentifier.isKnown(channelForIdentifier)) {
-                    List<IOPort> portsAssigned = transition.outputActions.getDestinations();
-                    List<Integer> channelsAssigned = transition.outputActions.getChannelNumberList();
+                if (channelForIdentifier != null
+                        && !portForIdentifier.isKnown(channelForIdentifier)) {
+                    List<IOPort> portsAssigned = transition.outputActions
+                            .getDestinations();
+                    List<Integer> channelsAssigned = transition.outputActions
+                            .getChannelNumberList();
                     int i = 0;
                     if (portsAssigned != null) {
                         for (IOPort port : portsAssigned) {
@@ -3461,10 +3489,11 @@ public class FSMActor extends CompositeEntity implements TypedActor,
                             if (channel == null) {
                                 // Interpret this to mean all channels.
                                 for (int j = 0; j < port.getWidth(); j++) {
-                                    _outputsThatMustBeUnknown.put(port,  Integer.valueOf(j));
+                                    _outputsThatMustBeUnknown.put(port,
+                                            Integer.valueOf(j));
                                 }
                             } else {
-                                _outputsThatMustBeUnknown.put(port,  channel);
+                                _outputsThatMustBeUnknown.put(port, channel);
                             }
                         }
                     }
@@ -3497,11 +3526,11 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         while (inputPorts.hasNext()) {
             IOPort inPort = (IOPort) inputPorts.next();
             Receiver[][] receivers = inPort.getReceivers();
-            for (int i = 0; i < receivers.length; i++) {
-                if (receivers[i] != null) {
-                    for (int j = 0; j < receivers[i].length; j++) {
-                        if (receivers[i][j] != null) {
-                            receivers[i][j].reset();
+            for (Receiver[] receiver : receivers) {
+                if (receiver != null) {
+                    for (int j = 0; j < receiver.length; j++) {
+                        if (receiver[j] != null) {
+                            receiver[j].reset();
                         }
                     }
                 }
@@ -3892,7 +3921,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
      *  of a firing because they are set on transitions that
      *  are not known to be enabled or disabled.
      */
-    private Map<IOPort,Integer> _outputsThatMustBeUnknown = new HashMap<IOPort,Integer>();
+    private Map<IOPort, Integer> _outputsThatMustBeUnknown = new HashMap<IOPort, Integer>();
 
     // True if the current state is a final state.
     private boolean _reachedFinalState;
@@ -3910,7 +3939,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
     private Time _timeOfNextTimeoutExpiration;
 
     // Argument type for the timeout function.
-    private static Type[] _TIMEOUT_FUNCTION_ARGUMENT_TYPE= {BaseType.DOUBLE};
+    private static Type[] _TIMEOUT_FUNCTION_ARGUMENT_TYPE = { BaseType.DOUBLE };
 
     // Hashtable to save an array of tokens for each port.
     // This is used in HDF when multiple tokens are consumed
@@ -3999,7 +4028,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
             // Check to see if this is something we refer to.
             Port port = _getPortForIdentifier(name);
 
-            if ((port != null) && port instanceof Typeable) {
+            if (port != null && port instanceof Typeable) {
                 if (name.endsWith("_isPresent")) {
                     return BaseType.BOOLEAN;
 
@@ -4052,7 +4081,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
             // Check to see if this is something we refer to.
             Port port = _getPortForIdentifier(name);
 
-            if ((port != null) && port instanceof Typeable) {
+            if (port != null && port instanceof Typeable) {
                 return ((Typeable) port).getTypeTerm();
             }
 
@@ -4098,7 +4127,8 @@ public class FSMActor extends CompositeEntity implements TypedActor,
                 // Try to convert to a double.
                 arguments[0] = DoubleToken.convert(arguments[0]);
             }
-            Time targetTime = _timeEnteredCurrentState.add(((DoubleToken)arguments[0]).doubleValue());
+            Time targetTime = _timeEnteredCurrentState
+                    .add(((DoubleToken) arguments[0]).doubleValue());
             Time currentTime = getDirector().getModelTime();
 
             if (targetTime.compareTo(currentTime) <= 0) {
@@ -4119,12 +4149,15 @@ public class FSMActor extends CompositeEntity implements TypedActor,
             }
             return BooleanToken.FALSE;
         }
+
         public int getNumberOfArguments() {
             return 1;
         }
+
         public boolean isCongruent(Function function) {
-            return (function instanceof TimeoutFunction);
+            return function instanceof TimeoutFunction;
         }
+
         public String toString() {
             return "function(t:double):boolean";
         }
@@ -4133,7 +4166,8 @@ public class FSMActor extends CompositeEntity implements TypedActor,
     /** The implementation of the timeout function as a token. */
     private class TimeoutFunctionToken extends FunctionToken {
         public TimeoutFunctionToken() {
-            super(new TimeoutFunction(), new FunctionType(_TIMEOUT_FUNCTION_ARGUMENT_TYPE, BaseType.BOOLEAN));
+            super(new TimeoutFunction(), new FunctionType(
+                    _TIMEOUT_FUNCTION_ARGUMENT_TYPE, BaseType.BOOLEAN));
         }
     }
 }

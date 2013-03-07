@@ -89,7 +89,7 @@ public class MatrixTokenTableau extends TokenTableau {
      *  @param token The token to append.
      */
     public void append(Token token) {
-        if ((_pane != null) && token instanceof MatrixToken) {
+        if (_pane != null && token instanceof MatrixToken) {
             _pane.display((MatrixToken) token);
         }
     }

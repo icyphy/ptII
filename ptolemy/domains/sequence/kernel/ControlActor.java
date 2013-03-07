@@ -133,7 +133,7 @@ public class ControlActor extends TypedAtomicActor {
 
     public boolean hasEnabledOutports() {
         // Should never be null, but check just in case
-        if ((_enabledOutports != null) && !_enabledOutports.isEmpty()) {
+        if (_enabledOutports != null && !_enabledOutports.isEmpty()) {
             return true;
         } else {
             return false;

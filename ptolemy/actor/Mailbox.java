@@ -104,7 +104,7 @@ public class Mailbox extends AbstractReceiver {
      *  @return True if this mailbox is empty.
      */
     public boolean hasRoom() {
-        return (_token == null);
+        return _token == null;
     }
 
     /** Return true if the argument is 1 and the mailbox is empty,
@@ -123,7 +123,7 @@ public class Mailbox extends AbstractReceiver {
         }
 
         if (numberOfTokens == 1) {
-            return (_token == null);
+            return _token == null;
         }
 
         return false;
@@ -133,7 +133,7 @@ public class Mailbox extends AbstractReceiver {
      *  @return True if this mailbox is not empty.
      */
     public boolean hasToken() {
-        return (_token != null);
+        return _token != null;
     }
 
     /** Return true if the argument is 1 and this mailbox is not empty,
@@ -151,7 +151,7 @@ public class Mailbox extends AbstractReceiver {
         }
 
         if (numberOfTokens == 1) {
-            return (_token != null);
+            return _token != null;
         }
 
         return false;

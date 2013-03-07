@@ -159,9 +159,7 @@ public abstract class DEThreadActor extends DEActor implements Runnable {
             // check for availability of tokens in the list of ports.
             // If any of the listed ports has at least a token, then return
             // Otherwise, wait for more new inputs.
-            for (int i = 0; i < ports.length; i++) {
-                IOPort port = ports[i];
-
+            for (IOPort port : ports) {
                 for (int j = 0; j < port.getWidth(); j++) {
                     if (port.hasToken(j)) {
                         return;

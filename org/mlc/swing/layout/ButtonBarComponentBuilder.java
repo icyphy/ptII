@@ -142,9 +142,8 @@ public class ButtonBarComponentBuilder implements ComponentBuilder {
         String justification = (String) properties.get("justification");
         if (justification == null || justification.trim().length() == 0) {
             justification = left;
-        } else if ((!justification.equals(left))
-                && (!justification.equals(right))
-                && (!justification.equals(center))) {
+        } else if (!justification.equals(left) && !justification.equals(right)
+                && !justification.equals(center)) {
             throw new InstantiationException(
                     "justification should be either left, right, or center");
         }

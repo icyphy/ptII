@@ -53,7 +53,7 @@ public class Cookie {
             c = s.charAt(i);
             if (c < ' ' || c == '+' || c == '%' || c == '=' || c == ';') {
                 sb.append('%');
-                sb.append(Character.forDigit((char) ((c >>> 4) & 0x0f), 16));
+                sb.append(Character.forDigit((char) (c >>> 4 & 0x0f), 16));
                 sb.append(Character.forDigit((char) (c & 0x0f), 16));
             } else {
                 sb.append(c);

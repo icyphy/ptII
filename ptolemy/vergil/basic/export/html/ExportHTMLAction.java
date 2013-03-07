@@ -331,7 +331,8 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable,
             contents = new LinkedList<StringBuffer>();
             _contents.put(webElement.getParent(), contents);
         }
-        StringBuffer webElementBuffer = new StringBuffer(webElement.getExpression());
+        StringBuffer webElementBuffer = new StringBuffer(
+                webElement.getExpression());
         // Check to see whether contents are already present.
         if (onceOnly) {
             // FIXME: Will List.contains() work if two StringBuffers
@@ -728,13 +729,10 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable,
             // Use HTML5 tags.  Use charset utf-8 to support extended characters
             // We use println so as to get the correct eol character for
             // the local platform.
-            printWriter
-                    .println("<!DOCTYPE html>");
-            printWriter
-                    .println("<html>");
+            printWriter.println("<!DOCTYPE html>");
+            printWriter.println("<html>");
             printWriter.println("<head>");
-            printWriter
-                    .println("<meta charset=utf-8>");
+            printWriter.println("<meta charset=utf-8>");
 
             // Define the path to the SSI files on the ptolemy site.
             String ssiRoot = "http://ptolemy.org/";
@@ -763,12 +761,8 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable,
             }
 
             // In HTML5, can omit "type" attributes for scripts and stylesheets
-            printWriter
-                    .println("<link rel=\"stylesheet\"  href=\""
-                            + jsLibrary
-                            + "javascript/"
-                            + FILENAMES[2]
-                            + "\" media=\"screen\"/>");
+            printWriter.println("<link rel=\"stylesheet\"  href=\"" + jsLibrary
+                    + "javascript/" + FILENAMES[2] + "\" media=\"screen\"/>");
             if (usePtWebsite) {
                 // FIXME: this absolute path is not very safe.  The
                 // problem is that we don't know where $PTII is located on
@@ -784,18 +778,15 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable,
 
             // In HTML5, can omit "type" attributes for scripts and stylesheets
             // NOTE: Due to a bug somewhere (browser, Javascript, etc.), can't end this with />. Have to use </script>.
-            printWriter
-                    .println("<script src=\"" + jsLibrary + "javascript/"
-                            + FILENAMES[0] + "\"></script>");
-            printWriter
-                    .println("<script src=\"" + jsLibrary + "javascript/"
-                            + FILENAMES[1] + "\"></script>");
+            printWriter.println("<script src=\"" + jsLibrary + "javascript/"
+                    + FILENAMES[0] + "\"></script>");
+            printWriter.println("<script src=\"" + jsLibrary + "javascript/"
+                    + FILENAMES[1] + "\"></script>");
 
             // FILENAMES[2] is a stylesheet <link, so it goes in the head, see above.
 
-            printWriter
-                    .println("<script src=\"" + jsLibrary + "javascript/"
-                            + FILENAMES[3] + "\"></script>");
+            printWriter.println("<script src=\"" + jsLibrary + "javascript/"
+                    + FILENAMES[3] + "\"></script>");
             // Could alternatively use a CDS (Content Delivery Service) for the JavaScript library for jquery.
             // index.println("<script type=\"text/javascript\" src=\"http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js\"></script>");
 
@@ -825,16 +816,17 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable,
                 // background color is given.
                 Color background = parameters.backgroundColor;
                 if (parameters.backgroundColor == null) {
-                    JCanvas canvas = _basicGraphFrame.getJGraph().getGraphPane().getCanvas();
+                    JCanvas canvas = _basicGraphFrame.getJGraph()
+                            .getGraphPane().getCanvas();
                     background = canvas.getBackground();
                 }
-                String color = "#"
-                        + String.format("%02x", background.getRed())
+                String color = "#" + String.format("%02x", background.getRed())
                         + String.format("%02x", background.getGreen())
                         + String.format("%02x", background.getBlue());
 
                 printWriter.println("<body>");
-                printWriter.println("<div style=\"background-color:" + color + "\">");
+                printWriter.println("<div style=\"background-color:" + color
+                        + "\">");
             }
 
             _printHTML(printWriter, "start");
@@ -848,10 +840,8 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable,
                         + ".jnlp\">WebStart version</a>.");
             }
             // Put the image in.
-            printWriter.println("<img src=\"" + _sanitizedModelName
-                    + "."
-                    + _parameters.imageFormat
-                    + "\" usemap=\"#iconmap\" "
+            printWriter.println("<img src=\"" + _sanitizedModelName + "."
+                    + _parameters.imageFormat + "\" usemap=\"#iconmap\" "
                     // The HTML Validator at http://validator.w3.org/check wants an alt tag
                     + "alt=\"" + _sanitizedModelName + "model\"/>");
             printWriter.println(map);
@@ -1022,10 +1012,11 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable,
 
                 // Write the name of the actor followed by the table.
                 result.append("<area shape=\"rect\" coords=\""
-                        + (int) location.topLeftX + "," + (int) location.topLeftY
-                        + "," + (int) location.bottomRightX + ","
-                        + (int) location.bottomRightY + "\"\n" + attributeString
-                        + "alt=\"" + title + "\"/>\n");
+                        + (int) location.topLeftX + ","
+                        + (int) location.topLeftY + ","
+                        + (int) location.bottomRightX + ","
+                        + (int) location.bottomRightY + "\"\n"
+                        + attributeString + "alt=\"" + title + "\"/>\n");
             }
 
         }
@@ -1291,8 +1282,8 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable,
                         - _PADDING;
                 i.topLeftY = figureBounds.getY() * scaleY + translateY
                         - _PADDING;
-                i.bottomRightX = i.topLeftX + (width * scaleX) + 2 * _PADDING;
-                i.bottomRightY = i.topLeftY + (height * scaleY) + 2 * _PADDING;
+                i.bottomRightX = i.topLeftX + width * scaleX + 2 * _PADDING;
+                i.bottomRightY = i.topLeftY + height * scaleY + 2 * _PADDING;
 
                 // If the rectangle is not visible, no more to do.
                 if (i.bottomRightX < 0.0 || i.bottomRightY < 0.0
@@ -1400,7 +1391,7 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable,
                 throw new InternalErrorException(e);
             }
         }
-        List<Entity> entities = (entity).entityList();
+        List<Entity> entities = entity.entityList();
         for (Entity inside : entities) {
             _openEntity(inside, tableauxToClose, masterEffigy, graphFrame);
         }
@@ -1512,8 +1503,8 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable,
 
         /** String representation. */
         public String toString() {
-            return (object.getName() + " from (" + topLeftX + ", " + topLeftY
-                    + ") to (" + bottomRightX + ", " + bottomRightY + ")");
+            return object.getName() + " from (" + topLeftX + ", " + topLeftY
+                    + ") to (" + bottomRightX + ", " + bottomRightY + ")";
         }
     }
 }

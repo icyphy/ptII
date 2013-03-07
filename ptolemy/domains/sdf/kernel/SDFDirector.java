@@ -315,7 +315,6 @@ public class SDFDirector extends StaticSchedulingDirector implements
      */
     public Parameter vectorizationFactor;
 
-
     /** The value used to signify special behavior for the
      *  iterations parameter.
      */
@@ -441,7 +440,7 @@ public class SDFDirector extends StaticSchedulingDirector implements
     public int getIterations() throws IllegalActionException {
         // See "SDF director iterations parameter default of 0 is unfriendly"
         // http://bugzilla.ecoinformatics.org/show_bug.cgi?id=5546
-        int iterationsValue = ((IntToken) (iterations.getToken())).intValue();
+        int iterationsValue = ((IntToken) iterations.getToken()).intValue();
         if (iterationsValue > 0) {
             return iterationsValue;
         }
@@ -627,7 +626,7 @@ public class SDFDirector extends StaticSchedulingDirector implements
         boolean synchronizeValue = ((BooleanToken) synchronizeToRealTime
                 .getToken()).booleanValue();
 
-        if ((periodValue > 0.0) && synchronizeValue) {
+        if (periodValue > 0.0 && synchronizeValue) {
             int depth = 0;
             try {
                 synchronized (this) {
@@ -701,7 +700,7 @@ public class SDFDirector extends StaticSchedulingDirector implements
         }
 
         // Check to see whether the input ports have enough data.
-        TypedCompositeActor container = ((TypedCompositeActor) getContainer());
+        TypedCompositeActor container = (TypedCompositeActor) getContainer();
         Iterator inputPorts = container.inputPortList().iterator();
         while (inputPorts.hasNext()) {
             IOPort inputPort = (IOPort) inputPorts.next();
@@ -720,7 +719,7 @@ public class SDFDirector extends StaticSchedulingDirector implements
             }
 
             for (int channel = 0; channel < inputPort.getWidth(); channel++) {
-                if ((threshold > 0) && !inputPort.hasToken(channel, threshold)) {
+                if (threshold > 0 && !inputPort.hasToken(channel, threshold)) {
                     if (_debugging) {
                         _debug("Port " + inputPort.getFullName()
                                 + " does not have enough tokens: " + threshold
@@ -775,7 +774,7 @@ public class SDFDirector extends StaticSchedulingDirector implements
         int iterationsValue = getIterations();
         _iterationCount++;
 
-        if ((iterationsValue > 0) && (_iterationCount >= iterationsValue)) {
+        if (iterationsValue > 0 && _iterationCount >= iterationsValue) {
             _iterationCount = 0;
             return false;
         }

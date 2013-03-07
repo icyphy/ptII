@@ -262,9 +262,9 @@ public class NamedProgramCodeGeneratorAdapter extends
                         necessaryFileShortName);
                 File necessaryFileSource = new File(necessaryFileName);
                 if (!necessaryFileDestination.exists()
-                        || (necessaryFileSource.exists() && necessaryFileSource
-                                .lastModified() > necessaryFileDestination
-                                .lastModified())) {
+                        || necessaryFileSource.exists()
+                        && necessaryFileSource.lastModified() > necessaryFileDestination
+                                .lastModified()) {
                     // If the dest file does not exist or is older than the
                     // source file, we do the copy
                     System.out.println("Copying " + necessaryFileSource
@@ -397,7 +397,7 @@ public class NamedProgramCodeGeneratorAdapter extends
         // on each actor.
         StringBuffer code = new StringBuffer();
 
-        String composite = (getComponent() instanceof CompositeActor) ? "Composite Actor: "
+        String composite = getComponent() instanceof CompositeActor ? "Composite Actor: "
                 : "";
 
         code.append(_eol
@@ -1298,7 +1298,7 @@ public class NamedProgramCodeGeneratorAdapter extends
         int rate = Math.max(DFUtilities.getTokenProductionRate(source.port),
                 DFUtilities.getTokenConsumptionRate(source.port));
 
-        for (int offset = 0; offset < rate || (offset == 0 && rate == 0); offset++) {
+        for (int offset = 0; offset < rate || offset == 0 && rate == 0; offset++) {
             statements.append(_generateTypeConvertStatement(source, sink,
                     offset));
         }

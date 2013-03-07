@@ -139,7 +139,7 @@ public class Excel extends TypedAtomicActor {
         WritableWorkbook workbook = null;
         //WritableSheet sheet = null;
         try {
-            workbook = Workbook.createWorkbook((new File(destFileName)));
+            workbook = Workbook.createWorkbook(new File(destFileName));
             /*sheet =*/workbook.createSheet("Res", 0);
 
         } catch (IOException e) {

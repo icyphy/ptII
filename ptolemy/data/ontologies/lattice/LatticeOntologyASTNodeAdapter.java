@@ -98,7 +98,7 @@ public class LatticeOntologyASTNodeAdapter extends LatticeOntologyAdapter {
      *  @exception IllegalActionException Not thrown in this base class.
      */
     public List<Inequality> constraintList() throws IllegalActionException {
-        boolean constrainParent = (interconnectConstraintType == ConstraintType.SINK_GE_SOURCE);
+        boolean constrainParent = interconnectConstraintType == ConstraintType.SINK_GE_SOURCE;
         boolean isEqualConstraint = interconnectConstraintType == ConstraintType.EQUALS;
 
         if (getComponent() instanceof ASTPtLeafNode) {

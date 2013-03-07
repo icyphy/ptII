@@ -143,8 +143,7 @@ public class SuperdenseTime implements Comparable {
         if (superdenseTime == this) {
             return true;
         }
-        if ((superdenseTime == null)
-                || (superdenseTime.getClass() != getClass())) {
+        if (superdenseTime == null || superdenseTime.getClass() != getClass()) {
             return false;
         } else {
             return compareTo((SuperdenseTime) superdenseTime) == 0;

@@ -247,7 +247,7 @@ public class ViterbiDecoder extends Transformer {
          "Unrecognized interpolation type: " + modeName);
          }
          } else */
-        if ((attribute == softDecoding) || (attribute == trellisDecoding)) {
+        if (attribute == softDecoding || attribute == trellisDecoding) {
             _trellisMode = ((BooleanToken) trellisDecoding.getToken())
                     .booleanValue();
             _softMode = ((BooleanToken) softDecoding.getToken()).booleanValue();
@@ -290,7 +290,7 @@ public class ViterbiDecoder extends Transformer {
 
             _depthInvalid = true;
         } else if (attribute == polynomialArray) {
-            ArrayToken maskToken = ((ArrayToken) polynomialArray.getToken());
+            ArrayToken maskToken = (ArrayToken) polynomialArray.getToken();
             _maskNumber = maskToken.length();
             _mask = new int[_maskNumber];
             _maxPolyValue = 0;
@@ -373,9 +373,9 @@ public class ViterbiDecoder extends Transformer {
         if (_mode == _TRELLIS) {
             _constellation = new Complex[1 << constellationOrder];
 
-            ArrayToken ampToken = ((ArrayToken) constellation.getToken());
+            ArrayToken ampToken = (ArrayToken) constellation.getToken();
 
-            if (ampToken.length() != (1 << constellationOrder)) {
+            if (ampToken.length() != 1 << constellationOrder) {
                 throw new IllegalActionException(this,
                         "Invalid amplitudes for soft decoding!");
             }
@@ -385,9 +385,9 @@ public class ViterbiDecoder extends Transformer {
                         .complexValue();
             }
         } else if (_mode == _SOFT) {
-            ArrayToken ampToken = ((ArrayToken) constellation.getToken());
+            ArrayToken ampToken = (ArrayToken) constellation.getToken();
 
-            if (ampToken.length() != (1 << constellationOrder)) {
+            if (ampToken.length() != 1 << constellationOrder) {
                 throw new IllegalActionException(this,
                         "Invalid amplitudes for soft decoding!");
             }
@@ -428,7 +428,7 @@ public class ViterbiDecoder extends Transformer {
 
             // Compute the necessary dimensions for the truth table and
             // the length of buffers used to store possible input sequence.
-            _rowNum = 1 << (_shiftRegLength - _inputNumber);
+            _rowNum = 1 << _shiftRegLength - _inputNumber;
             _colNum = 1 << _inputNumber;
             _truthTable = new int[_rowNum][_colNum][3];
             _distance = new double[_rowNum];
@@ -456,7 +456,7 @@ public class ViterbiDecoder extends Transformer {
             // produced from the encoder.
             for (int state = 0; state < _rowNum; state++) {
                 for (int head = 0; head < _colNum; head++) {
-                    int reg = head << (_shiftRegLength - _inputNumber);
+                    int reg = head << _shiftRegLength - _inputNumber;
                     reg = reg + state;
 
                     int[] parity = _calculateParity(_mask, _maskNumber, reg);
@@ -537,7 +537,7 @@ public class ViterbiDecoder extends Transformer {
 
                 // Find the minimum distance and corresponding previous
                 // state for each possible current state of the shift register.
-                if ((colIndex == 0) || (d < minDistance)) {
+                if (colIndex == 0 || d < minDistance) {
                     minDistance = d;
                     minState = oldState;
                     minInput = _truthTable[state][colIndex][2];
@@ -572,7 +572,7 @@ public class ViterbiDecoder extends Transformer {
             int minIndex = 0;
 
             for (int state = 0; state < _rowNum; state++) {
-                if ((state == 0) || (_distance[state] < minD)) {
+                if (state == 0 || _distance[state] < minD) {
                     minD = _distance[state];
                     minIndex = state;
                 }
@@ -645,7 +645,7 @@ public class ViterbiDecoder extends Transformer {
 
             // Calculate the parity of the masked word.
             while (masked > 0) {
-                parity[i] = parity[i] ^ (masked & 1);
+                parity[i] = parity[i] ^ masked & 1;
                 masked = masked >> 1;
             }
         }

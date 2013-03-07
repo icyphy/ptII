@@ -159,7 +159,7 @@ public class PlotterBase extends TypedAtomicActor implements Configurable,
 
                 String value = legend.getExpression();
 
-                if ((value != null) && !value.trim().equals("")) {
+                if (value != null && !value.trim().equals("")) {
                     StringTokenizer tokenizer = new StringTokenizer(value, ",");
                     int channel = 0;
 
@@ -241,7 +241,7 @@ public class PlotterBase extends TypedAtomicActor implements Configurable,
         if (plot instanceof PlotInterface) {
             PlotMLParser parser = new PlotMLParser((PlotInterface) plot);
 
-            if ((source != null) && !source.trim().equals("")) {
+            if (source != null && !source.trim().equals("")) {
                 URL xmlFile = new URL(base, source);
                 InputStream stream = xmlFile.openStream();
                 parser.parse(base, stream);
@@ -252,7 +252,7 @@ public class PlotterBase extends TypedAtomicActor implements Configurable,
             // Avoid trying to parse whitespace only text.
             if (text != null) {
                 String trimmed = text.trim();
-                if ((trimmed != null) && !trimmed.equals("")) {
+                if (trimmed != null && !trimmed.equals("")) {
                     // NOTE: Regrettably, the XML parser we are using cannot
                     // deal with having a single processing instruction at the
                     // outer level.  Thus, we have to strip it.
@@ -414,7 +414,7 @@ public class PlotterBase extends TypedAtomicActor implements Configurable,
         Nameable previousContainer = getContainer();
         super.setContainer(container);
 
-        if ((container != previousContainer) && (previousContainer != null)) {
+        if (container != previousContainer && previousContainer != null) {
             _remove();
         }
     }
@@ -527,7 +527,7 @@ public class PlotterBase extends TypedAtomicActor implements Configurable,
                 String source = sources.next();
                 String text = texts.next();
 
-                if ((source != null) && !source.trim().equals("")) {
+                if (source != null && !source.trim().equals("")) {
                     output.write(_getIndentPrefix(depth)
                             + "<configure source=\"" + source + "\">");
 
@@ -541,7 +541,7 @@ public class PlotterBase extends TypedAtomicActor implements Configurable,
                 if (text != null) {
                     output.write(text.trim() + "\n");
 
-                    if ((source != null) && !source.trim().equals("")) {
+                    if (source != null && !source.trim().equals("")) {
                         output.write(_getIndentPrefix(depth) + "]]>\n");
                     }
                 }

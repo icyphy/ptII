@@ -95,8 +95,8 @@ public class ContainerLayout implements LayoutManager2 {
         formLayout = new FormLayout(delimit(columnSpecs), delimit(rowSpecs));
 
         // now we have to add all of the compenents to the new form
-        for (Iterator i = componentsToNames.keySet().iterator(); i.hasNext();) {
-            Component component = (Component) i.next();
+        for (Object element : componentsToNames.keySet()) {
+            Component component = (Component) element;
             String componentName = componentsToNames.get(component);
             CellConstraints constraints = componentConstraints
                     .get(componentName);
@@ -166,8 +166,8 @@ public class ContainerLayout implements LayoutManager2 {
             CellConstraints constraints) {
         componentConstraints.put(name, constraints);
 
-        for (Iterator i = componentsToNames.keySet().iterator(); i.hasNext();) {
-            Component component = (Component) i.next();
+        for (Object element : componentsToNames.keySet()) {
+            Component component = (Component) element;
             String thisName = componentsToNames.get(component);
             if (thisName.equals(componentName)) {
                 formLayout.setConstraints(component, constraints);
@@ -413,8 +413,7 @@ public class ContainerLayout implements LayoutManager2 {
                                 .getClass());
                         PropertyDescriptor[] props = beanInfo
                                 .getPropertyDescriptors();
-                        for (int index = 0; index < props.length; index++) {
-                            PropertyDescriptor propertyDescriptor = props[index];
+                        for (PropertyDescriptor propertyDescriptor : props) {
                             if (propertyDescriptor.getName().equals(prop)) {
                                 Method writeMethod = propertyDescriptor
                                         .getWriteMethod();

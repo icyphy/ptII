@@ -196,7 +196,7 @@ public class SplitReader extends Source {
             String newFileOrURL = ((StringToken) fileOrURL.getToken())
                     .stringValue();
 
-            if ((_previousFileOrURL != null)
+            if (_previousFileOrURL != null
                     && !newFileOrURL.equals(_previousFileOrURL)) {
                 _previousFileOrURL = newFileOrURL;
                 fileOrURL.close();
@@ -314,7 +314,7 @@ public class SplitReader extends Source {
                     if (_currentLine == null) {
                         _currentLine = "EOF";
                         _reachedEOF = true;
-                        if ((i == 0) && (j == 0)) {
+                        if (i == 0 && j == 0) {
                             endOfFile.broadcast(BooleanToken.TRUE);
                             return false;
                         }

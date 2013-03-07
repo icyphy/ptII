@@ -250,8 +250,9 @@ public class DesignPatternGetMoMLAction {
             return buffer.toString();
         } catch (Throwable throwable) {
             // This should not occur.
-            throw new InternalErrorException(null, throwable, "Unable to get the "
-                    + "Moml content for group " + group.getName() + ".");
+            throw new InternalErrorException(null, throwable,
+                    "Unable to get the " + "Moml content for group "
+                            + group.getName() + ".");
         }
     }
 

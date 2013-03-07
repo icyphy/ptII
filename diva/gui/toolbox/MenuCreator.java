@@ -90,7 +90,7 @@ public class MenuCreator extends AbstractInteractor {
     /** Process a mousePressed or mouseReleased event.
      */
     private void _doEvent(LayerEvent e) {
-        if ((_factory != null) && e.isPopupTrigger()) {
+        if (_factory != null && e.isPopupTrigger()) {
             Figure source = e.getFigureSource();
             JPopupMenu menu = _factory.create(source);
 

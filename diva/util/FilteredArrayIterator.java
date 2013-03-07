@@ -59,7 +59,7 @@ public abstract class FilteredArrayIterator extends NullArrayIterator {
     protected void advance() {
         _nextindex++;
 
-        while ((_nextindex < _arraylen) && !accept(_array[_nextindex])) {
+        while (_nextindex < _arraylen && !accept(_array[_nextindex])) {
             _nextindex++;
         }
 

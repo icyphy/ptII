@@ -148,7 +148,7 @@ public class ParameterNameChanges extends MoMLFilterSimple {
                 _propertyMap = (HashMap) _classesWithParameterNameChanges
                         .get(attributeValue);
             } else if (_currentlyProcessingActorWithParameterNameChanges
-                    && (_newName != null)) {
+                    && _newName != null) {
                 // We found a property class to change, and now we
                 // found the class itself that needs changing.
                 // Only return the new class once, but we might
@@ -160,7 +160,7 @@ public class ParameterNameChanges extends MoMLFilterSimple {
                 //                 }
                 _newName = null;
             } else if (_currentlyProcessingActorWithParameterNameChanges
-                    && (container != null)
+                    && container != null
                     && !container.getFullName().equals(_currentActorFullName)
                     && !container.getFullName().startsWith(
                             _currentActorFullName)) {

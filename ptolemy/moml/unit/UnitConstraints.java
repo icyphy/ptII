@@ -91,14 +91,14 @@ public class UnitConstraints implements UnitPresentation {
         _bindings = new Bindings(entities);
 
         for (int i = 0; i < entities.size(); i++) {
-            ComponentEntity componentEntity = (ComponentEntity) (entities
-                    .elementAt(i));
+            ComponentEntity componentEntity = (ComponentEntity) entities
+                    .elementAt(i);
             Vector actorConstraints = new Vector();
             List unitsAttrs = componentEntity
                     .attributeList(UnitAttribute.class);
 
             for (int j = 0; j < unitsAttrs.size(); j++) {
-                UnitAttribute attr = (UnitAttribute) (unitsAttrs.get(j));
+                UnitAttribute attr = (UnitAttribute) unitsAttrs.get(j);
 
                 if (attr.getName().equals("_unitConstraints")) {
                     actorConstraints.addAll(attr.getUnitConstraints()
@@ -107,8 +107,8 @@ public class UnitConstraints implements UnitPresentation {
             }
 
             for (int j = 0; j < actorConstraints.size(); j++) {
-                UnitEquation uEquation = ((UnitEquation) (actorConstraints
-                        .elementAt(j))).copy();
+                UnitEquation uEquation = ((UnitEquation) actorConstraints
+                        .elementAt(j)).copy();
                 _equationVisitor.expand(uEquation, componentEntity);
                 uEquation.setSource(componentEntity);
                 addConstraint(uEquation);
@@ -119,8 +119,8 @@ public class UnitConstraints implements UnitPresentation {
             while (iter.hasNext()) {
                 IOPort actorPort = (IOPort) iter.next();
                 UnitExpr rhsExpr = null;
-                UnitAttribute ua = (UnitAttribute) (actorPort
-                        .getAttribute("_units"));
+                UnitAttribute ua = (UnitAttribute) actorPort
+                        .getAttribute("_units");
 
                 if (ua != null) {
                     rhsExpr = ua.getUnitExpr();
@@ -136,30 +136,30 @@ public class UnitConstraints implements UnitPresentation {
         }
 
         for (int i = 0; i < relations.size(); i++) {
-            IORelation relation = (IORelation) (relations.elementAt(i));
+            IORelation relation = (IORelation) relations.elementAt(i);
             List ports = relation.linkedPortList();
             IOPort inputPort = null;
             Iterator portIter = ports.iterator();
 
             while (portIter.hasNext()) {
-                IOPort port = (IOPort) (portIter.next());
+                IOPort port = (IOPort) portIter.next();
 
                 if (port.isOutput()) {
                     inputPort = port;
                 }
             }
 
-            if ((inputPort != null)
+            if (inputPort != null
                     && _bindings.bindingExists(inputPort.getName(inputPort
                             .getContainer().getContainer()))) {
                 Iterator portsIterator = ports.iterator();
 
                 while (portsIterator.hasNext()) {
-                    IOPort outPort = (IOPort) (portsIterator.next());
+                    IOPort outPort = (IOPort) portsIterator.next();
 
-                    if ((outPort != inputPort)
-                            && (_bindings.bindingExists(outPort.getName(outPort
-                                    .getContainer().getContainer())))) {
+                    if (outPort != inputPort
+                            && _bindings.bindingExists(outPort.getName(outPort
+                                    .getContainer().getContainer()))) {
                         UnitExpr lhsUExpr = new UnitExpr(outPort);
                         UnitExpr rhsUExpr = new UnitExpr(inputPort);
                         UnitEquation uC = new UnitEquation(lhsUExpr, rhsUExpr);
@@ -209,13 +209,13 @@ public class UnitConstraints implements UnitPresentation {
         StringBuffer retv = new StringBuffer();
 
         if (!_constraints.isEmpty()) {
-            retv.append(((UnitEquation) (_constraints.elementAt(0)))
+            retv.append(((UnitEquation) _constraints.elementAt(0))
                     .descriptiveForm());
         }
 
         for (int i = 1; i < _constraints.size(); i++) {
-            retv.append((";" + ((UnitEquation) (_constraints.get(i)))
-                    .descriptiveForm()));
+            retv.append(";"
+                    + ((UnitEquation) _constraints.get(i)).descriptiveForm());
         }
 
         return retv.toString();

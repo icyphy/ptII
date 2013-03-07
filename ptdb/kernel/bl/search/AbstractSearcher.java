@@ -159,7 +159,7 @@ public abstract class AbstractSearcher implements ResultHandler {
                     // from the current searcher needs to intersect with the
                     // results passed by the previous searchers.
 
-                    if ((!_isFirstSearcher()) && _isIntersectNeeded()) {
+                    if (!_isFirstSearcher() && _isIntersectNeeded()) {
 
                         // FIXME to delete later
                         //                    if (!(this instanceof HierarchyFetcher)

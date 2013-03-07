@@ -318,9 +318,9 @@ public class ProcessDirector extends Director {
             IOPort port = (IOPort) ports.next();
             Receiver[][] receivers = port.getReceivers();
 
-            for (int i = 0; i < receivers.length; i++) {
-                for (int j = 0; j < receivers[i].length; j++) {
-                    receivers[i][j].reset();
+            for (Receiver[] receiver : receivers) {
+                for (int j = 0; j < receiver.length; j++) {
+                    receiver[j].reset();
                 }
             }
         }
@@ -380,7 +380,7 @@ public class ProcessDirector extends Director {
         _notDone = _notDone && !_stopRequested && !_finishRequested;
 
         if (_debugging) {
-            synchronized(this) {
+            synchronized (this) {
                 _debug("Called postfire().");
                 _debug("_stopRequested = " + _stopRequested);
                 _debug("_stopFireRequested = " + _stopFireRequested);
@@ -507,7 +507,7 @@ public class ProcessDirector extends Director {
 
         // Create a notification thread so that this returns immediately
         // (doesn't have to get a synchronized lock).
-        (new NotifyThread(this)).start();
+        new NotifyThread(this).start();
     }
 
     /** Request that execution stop at the conclusion of the current
@@ -682,7 +682,7 @@ public class ProcessDirector extends Director {
 
                 // Do the notification in a new thread so as not
                 // to deadlock with this synchronized block.
-                (new NotifyThread(manager)).start();
+                new NotifyThread(manager).start();
 
                 // Wait until all threads stop.
                 while (_activeThreads.size() > 0) {
@@ -711,7 +711,8 @@ public class ProcessDirector extends Director {
      *  @return True if there are no active processes in the container.
      */
     protected synchronized boolean _areAllThreadsStopped() {
-        return (_getActiveThreadsCount() == (_getStoppedThreadsCount() + _getBlockedThreadsCount()));
+        return _getActiveThreadsCount() == _getStoppedThreadsCount()
+                + _getBlockedThreadsCount();
     }
 
     /** Return true if the count of active processes in the container is 0.
@@ -720,7 +721,7 @@ public class ProcessDirector extends Director {
      *  @return True if there are no active processes in the container.
      */
     protected synchronized boolean _areThreadsDeadlocked() {
-        return (_activeThreads.size() == 0);
+        return _activeThreads.size() == 0;
     }
 
     /** Return the number of active threads under the control of this
@@ -793,10 +794,10 @@ public class ProcessDirector extends Director {
                 // Setting finished flag in the receivers.
                 Receiver[][] receivers = port.getReceivers();
 
-                for (int i = 0; i < receivers.length; i++) {
-                    for (int j = 0; j < receivers[i].length; j++) {
-                        if (receivers[i][j] instanceof ProcessReceiver) {
-                            ((ProcessReceiver) receivers[i][j]).requestFinish();
+                for (Receiver[] receiver : receivers) {
+                    for (int j = 0; j < receiver.length; j++) {
+                        if (receiver[j] instanceof ProcessReceiver) {
+                            ((ProcessReceiver) receiver[j]).requestFinish();
                         }
                     }
                 }
@@ -820,7 +821,6 @@ public class ProcessDirector extends Director {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////

@@ -166,7 +166,7 @@ public class BasicLayoutTarget implements LayoutTarget {
      */
     public boolean isNodeVisible(Object node) {
         Figure nf = _controller.getFigure(node);
-        return ((nf != null) && nf.isVisible() && (nf.getParent() != null));
+        return nf != null && nf.isVisible() && nf.getParent() != null;
     }
 
     /**
@@ -175,7 +175,7 @@ public class BasicLayoutTarget implements LayoutTarget {
      */
     public boolean isEdgeVisible(Object edge) {
         Connector ef = (Connector) _controller.getFigure(edge);
-        return ((ef != null) && ef.isVisible() && (ef.getParent() != null));
+        return ef != null && ef.isVisible() && ef.getParent() != null;
     }
 
     /**
@@ -189,7 +189,7 @@ public class BasicLayoutTarget implements LayoutTarget {
         Iterator j = new FilteredIterator(i, new Filter() {
             public boolean accept(Object o) {
                 Figure f = (Figure) o;
-                return (model.isNode(f.getUserObject()));
+                return model.isNode(f.getUserObject());
             }
         });
 
@@ -210,7 +210,7 @@ public class BasicLayoutTarget implements LayoutTarget {
         Iterator i = zlist.getIntersectedFigures(r).figuresFromFront();
         Iterator j = new FilteredIterator(i, new Filter() {
             public boolean accept(Object o) {
-                return (o instanceof Connector);
+                return o instanceof Connector;
             }
         });
         return new ProxyIterator(j) {
@@ -243,7 +243,7 @@ public class BasicLayoutTarget implements LayoutTarget {
      * @see #getViewport(Object)
      */
     public void setLayoutPercentage(double d) {
-        if ((d <= 0) || (d > 1)) {
+        if (d <= 0 || d > 1) {
             String err = "Layout percentage must be between 0 and 1";
             throw new IllegalArgumentException(err);
         } else {

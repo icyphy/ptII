@@ -61,7 +61,7 @@ public class PtalonPopulator extends antlr.TreeParser implements
     public final void port_declaration(AST _t) throws RecognitionException,
             PtalonRuntimeException {
 
-        PtalonAST port_declaration_AST_in = (_t == ASTNULL) ? null
+        PtalonAST port_declaration_AST_in = _t == ASTNULL ? null
                 : (PtalonAST) _t;
         returnAST = null;
         ASTPair currentAST = new ASTPair();
@@ -634,7 +634,7 @@ public class PtalonPopulator extends antlr.TreeParser implements
     public final void parameter_declaration(AST _t)
             throws RecognitionException, PtalonRuntimeException {
 
-        PtalonAST parameter_declaration_AST_in = (_t == ASTNULL) ? null
+        PtalonAST parameter_declaration_AST_in = _t == ASTNULL ? null
                 : (PtalonAST) _t;
         returnAST = null;
         ASTPair currentAST = new ASTPair();
@@ -783,7 +783,7 @@ public class PtalonPopulator extends antlr.TreeParser implements
     public final void assigned_parameter_declaration(AST _t)
             throws RecognitionException, PtalonRuntimeException {
 
-        PtalonAST assigned_parameter_declaration_AST_in = (_t == ASTNULL) ? null
+        PtalonAST assigned_parameter_declaration_AST_in = _t == ASTNULL ? null
                 : (PtalonAST) _t;
         returnAST = null;
         ASTPair currentAST = new ASTPair();
@@ -980,7 +980,7 @@ public class PtalonPopulator extends antlr.TreeParser implements
 
     public final void qualified_identifier(AST _t) throws RecognitionException {
 
-        PtalonAST qualified_identifier_AST_in = (_t == ASTNULL) ? null
+        PtalonAST qualified_identifier_AST_in = _t == ASTNULL ? null
                 : (PtalonAST) _t;
         returnAST = null;
         ASTPair currentAST = new ASTPair();
@@ -1001,7 +1001,7 @@ public class PtalonPopulator extends antlr.TreeParser implements
     public final void relation_declaration(AST _t) throws RecognitionException,
             PtalonRuntimeException {
 
-        PtalonAST relation_declaration_AST_in = (_t == ASTNULL) ? null
+        PtalonAST relation_declaration_AST_in = _t == ASTNULL ? null
                 : (PtalonAST) _t;
         returnAST = null;
         ASTPair currentAST = new ASTPair();
@@ -1108,7 +1108,7 @@ public class PtalonPopulator extends antlr.TreeParser implements
     public final void transparent_relation_declaration(AST _t)
             throws RecognitionException, PtalonRuntimeException {
 
-        PtalonAST transparent_relation_declaration_AST_in = (_t == ASTNULL) ? null
+        PtalonAST transparent_relation_declaration_AST_in = _t == ASTNULL ? null
                 : (PtalonAST) _t;
         returnAST = null;
         ASTPair currentAST = new ASTPair();
@@ -1215,7 +1215,7 @@ public class PtalonPopulator extends antlr.TreeParser implements
     public final void assignment(AST _t) throws RecognitionException,
             PtalonRuntimeException {
 
-        PtalonAST assignment_AST_in = (_t == ASTNULL) ? null : (PtalonAST) _t;
+        PtalonAST assignment_AST_in = _t == ASTNULL ? null : (PtalonAST) _t;
         returnAST = null;
         ASTPair currentAST = new ASTPair();
         PtalonAST assignment_AST = null;
@@ -1404,7 +1404,7 @@ public class PtalonPopulator extends antlr.TreeParser implements
     public final void nested_actor_declaration(AST _t)
             throws RecognitionException, PtalonRuntimeException {
 
-        PtalonAST nested_actor_declaration_AST_in = (_t == ASTNULL) ? null
+        PtalonAST nested_actor_declaration_AST_in = _t == ASTNULL ? null
                 : (PtalonAST) _t;
         returnAST = null;
         ASTPair currentAST = new ASTPair();
@@ -1432,7 +1432,7 @@ public class PtalonPopulator extends antlr.TreeParser implements
                 if (_t == null) {
                     _t = ASTNULL;
                 }
-                if ((_t.getType() == ASSIGN)) {
+                if (_t.getType() == ASSIGN) {
                     b = _t == ASTNULL ? null : (PtalonAST) _t;
                     assignment(_t);
                     _t = _retTree;
@@ -1463,7 +1463,7 @@ public class PtalonPopulator extends antlr.TreeParser implements
     public final void actor_declaration(AST _t) throws RecognitionException,
             PtalonRuntimeException {
 
-        PtalonAST actor_declaration_AST_in = (_t == ASTNULL) ? null
+        PtalonAST actor_declaration_AST_in = _t == ASTNULL ? null
                 : (PtalonAST) _t;
         returnAST = null;
         ASTPair currentAST = new ASTPair();
@@ -1559,7 +1559,7 @@ public class PtalonPopulator extends antlr.TreeParser implements
                 if (_t == null) {
                     _t = ASTNULL;
                 }
-                if ((_t.getType() == ASSIGN)) {
+                if (_t.getType() == ASSIGN) {
                     assignment(_t);
                     _t = _retTree;
                     astFactory.addASTChild(currentAST, returnAST);
@@ -1586,7 +1586,7 @@ public class PtalonPopulator extends antlr.TreeParser implements
     public final void atomic_statement(AST _t) throws RecognitionException,
             PtalonRuntimeException {
 
-        PtalonAST atomic_statement_AST_in = (_t == ASTNULL) ? null
+        PtalonAST atomic_statement_AST_in = _t == ASTNULL ? null
                 : (PtalonAST) _t;
         returnAST = null;
         ASTPair currentAST = new ASTPair();
@@ -1662,7 +1662,7 @@ public class PtalonPopulator extends antlr.TreeParser implements
     public final void transformation_declaration(AST _t)
             throws RecognitionException, PtalonRuntimeException {
 
-        PtalonAST transformation_declaration_AST_in = (_t == ASTNULL) ? null
+        PtalonAST transformation_declaration_AST_in = _t == ASTNULL ? null
                 : (PtalonAST) _t;
         returnAST = null;
         ASTPair currentAST = new ASTPair();
@@ -2011,7 +2011,7 @@ public class PtalonPopulator extends antlr.TreeParser implements
     public final void conditional_statement(AST _t)
             throws RecognitionException, PtalonRuntimeException {
 
-        PtalonAST conditional_statement_AST_in = (_t == ASTNULL) ? null
+        PtalonAST conditional_statement_AST_in = _t == ASTNULL ? null
                 : (PtalonAST) _t;
         returnAST = null;
         ASTPair currentAST = new ASTPair();
@@ -2192,7 +2192,7 @@ public class PtalonPopulator extends antlr.TreeParser implements
     public final void iterative_statement(AST _t) throws RecognitionException,
             PtalonRuntimeException {
 
-        PtalonAST iterative_statement_AST_in = (_t == ASTNULL) ? null
+        PtalonAST iterative_statement_AST_in = _t == ASTNULL ? null
                 : (PtalonAST) _t;
         returnAST = null;
         ASTPair currentAST = new ASTPair();
@@ -2372,7 +2372,7 @@ public class PtalonPopulator extends antlr.TreeParser implements
     public final void iterative_statement_evaluator(AST _t)
             throws RecognitionException, PtalonRuntimeException {
 
-        PtalonAST iterative_statement_evaluator_AST_in = (_t == ASTNULL) ? null
+        PtalonAST iterative_statement_evaluator_AST_in = _t == ASTNULL ? null
                 : (PtalonAST) _t;
         returnAST = null;
         ASTPair currentAST = new ASTPair();
@@ -2535,8 +2535,7 @@ public class PtalonPopulator extends antlr.TreeParser implements
     public final void transformation(AST _t) throws RecognitionException,
             PtalonRuntimeException {
 
-        PtalonAST transformation_AST_in = (_t == ASTNULL) ? null
-                : (PtalonAST) _t;
+        PtalonAST transformation_AST_in = _t == ASTNULL ? null : (PtalonAST) _t;
         returnAST = null;
         ASTPair currentAST = new ASTPair();
         PtalonAST transformation_AST = null;
@@ -2660,7 +2659,7 @@ public class PtalonPopulator extends antlr.TreeParser implements
     public final void actor_definition(AST _t, PtalonEvaluator info)
             throws RecognitionException, PtalonRuntimeException {
 
-        PtalonAST actor_definition_AST_in = (_t == ASTNULL) ? null
+        PtalonAST actor_definition_AST_in = _t == ASTNULL ? null
                 : (PtalonAST) _t;
         returnAST = null;
         ASTPair currentAST = new ASTPair();

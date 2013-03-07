@@ -429,7 +429,6 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
                     if (super.hasRoom()) {
                         super.put(token);
 
-
                         // If any thread is blocked on a get(), then it will become
                         // unblocked. Notify the director now so that there isn't a
                         // spurious deadlock detection.

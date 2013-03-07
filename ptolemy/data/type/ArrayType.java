@@ -572,7 +572,7 @@ public class ArrayType extends StructuredType implements Cloneable,
             if (retval == ptolemy.graph.CPO.HIGHER) {
                 retval = ptolemy.graph.CPO.INCOMPARABLE;
             } else if (retval == ptolemy.graph.CPO.SAME) {
-             // same element type but arrayArgType has no length [a, n] <= [a]
+                // same element type but arrayArgType has no length [a, n] <= [a]
                 retval = ptolemy.graph.CPO.LOWER;
             }
         } else if (arrayArgType.hasKnownLength()) {
@@ -708,7 +708,7 @@ public class ArrayType extends StructuredType implements Cloneable,
          *  @return An array of InequalityTerm.
          */
         public InequalityTerm[] getVariables() {
-            return (new InequalityTerm[0]);
+            return new InequalityTerm[0];
         }
 
         /** Throw an exception. This term cannot be set.
@@ -793,7 +793,7 @@ public class ArrayType extends StructuredType implements Cloneable,
                 return variable;
             }
 
-            return (new InequalityTerm[0]);
+            return new InequalityTerm[0];
         }
 
         /** Reset the variable part of the element type to the specified
@@ -924,7 +924,7 @@ public class ArrayType extends StructuredType implements Cloneable,
          *  @return An array of InequalityTerm.
          */
         public InequalityTerm[] getVariables() {
-            return (new InequalityTerm[0]);
+            return new InequalityTerm[0];
         }
 
         /** Throw an exception. This term cannot be set.
@@ -1066,7 +1066,7 @@ public class ArrayType extends StructuredType implements Cloneable,
                 return variable;
             }
 
-            return (new InequalityTerm[0]);
+            return new InequalityTerm[0];
         }
 
         /** Delegate to the element type term of the associated typeable.
@@ -1214,7 +1214,7 @@ public class ArrayType extends StructuredType implements Cloneable,
          *  @return An array of InequalityTerm.
          */
         public InequalityTerm[] getVariables() {
-            return (new InequalityTerm[0]);
+            return new InequalityTerm[0];
         }
 
         /** Throw an exception. This term cannot be set.

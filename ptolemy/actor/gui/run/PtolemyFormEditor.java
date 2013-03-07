@@ -287,8 +287,7 @@ public class PtolemyFormEditor extends JPanel {
             BeanInfo beanInfo = Introspector.getBeanInfo(component.getClass());
             PropertyDescriptor[] props = beanInfo.getPropertyDescriptors();
             Map<String, String> previousValues = new HashMap<String, String>();
-            for (int index = 0; index < props.length; index++) {
-                PropertyDescriptor propertyDescriptor = props[index];
+            for (PropertyDescriptor propertyDescriptor : props) {
                 // Present String and Color-valued properties.
                 if (propertyDescriptor.getPropertyType() == String.class) {
                     String propertyName = propertyDescriptor.getName();
@@ -310,7 +309,7 @@ public class PtolemyFormEditor extends JPanel {
                     // Use the syntax of arrays to present the color.
                     for (int j = 0; j < components.length; j++) {
                         string.append(components[j]);
-                        if (j < (components.length - 1)) {
+                        if (j < components.length - 1) {
                             string.append(",");
                         } else {
                             string.append("}");
@@ -325,8 +324,7 @@ public class PtolemyFormEditor extends JPanel {
                     query);
             if (dialog.buttonPressed().equals("OK")) {
                 // Set each property that has changed.
-                for (int index = 0; index < props.length; index++) {
-                    PropertyDescriptor propertyDescriptor = props[index];
+                for (PropertyDescriptor propertyDescriptor : props) {
                     // Present String and Color-valued properties.
                     if (propertyDescriptor.getPropertyType() == String.class) {
                         String propertyName = propertyDescriptor.getName();
@@ -720,8 +718,7 @@ public class PtolemyFormEditor extends JPanel {
 
         // lets go down the tree
         Component[] children = _container.getComponents();
-        for (int index = 0; index < children.length; index++) {
-            Component component = children[index];
+        for (Component component : children) {
             if (component instanceof Container) {
                 ((Container) component).doLayout();
             }

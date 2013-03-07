@@ -65,7 +65,7 @@ public class GRColorChanges extends MoMLFilterSimple {
      */
     public String filterAttributeValue(NamedObj container, String element,
             String attributeName, String attributeValue, String xmlFile) {
-        if ((attributeValue != null) && (attributeName != null)) {
+        if (attributeValue != null && attributeName != null) {
             if (attributeValue.equals("RGB color")
                     && attributeName.equals("name")
                     && _actorsWithRGBColor.contains(container.getClass()
@@ -103,7 +103,7 @@ public class GRColorChanges extends MoMLFilterSimple {
         if (_foundOne) {
             _foundOne = false;
 
-            if ((elementName != null)
+            if (elementName != null
                     && elementName.equals("property")
                     && container.getName().equals("diffuseColor")
                     && ((Settable) container).getExpression().trim()
@@ -119,11 +119,10 @@ public class GRColorChanges extends MoMLFilterSimple {
 
         // Fix the background color of the ViewScreen actor.
         // Note that the ViewScreen actor also has a name change.
-        if ((container != null)
-                && container.getName().equals("backgroundColor")) {
+        if (container != null && container.getName().equals("backgroundColor")) {
             NamedObj actor = container.getContainer();
 
-            if ((actor != null)
+            if (actor != null
                     && actor.getClass().getName()
                             .startsWith("ptolemy.domains.gr.lib.ViewScreen")) {
                 String value = ((Settable) container).getExpression().trim();
@@ -138,10 +137,10 @@ public class GRColorChanges extends MoMLFilterSimple {
         }
 
         // Fix the polygon attribute of the PolyCylinder3D actor.
-        if ((container != null) && container.getName().equals("polygon")) {
+        if (container != null && container.getName().equals("polygon")) {
             NamedObj actor = container.getContainer();
 
-            if ((actor != null)
+            if (actor != null
                     && actor.getClass().getName()
                             .equals("ptolemy.domains.gr.lib.PolyCylinder3D")) {
                 String value = ((Settable) container).getExpression().trim();
@@ -156,10 +155,10 @@ public class GRColorChanges extends MoMLFilterSimple {
         }
 
         // Fix the polyline attribute of the CircularSweep3D actor.
-        if ((container != null) && container.getName().equals("polyline")) {
+        if (container != null && container.getName().equals("polyline")) {
             NamedObj actor = container.getContainer();
 
-            if ((actor != null)
+            if (actor != null
                     && actor.getClass().getName()
                             .equals("ptolemy.domains.gr.lib.CircularSweep3D")) {
                 String value = ((Settable) container).getExpression().trim();

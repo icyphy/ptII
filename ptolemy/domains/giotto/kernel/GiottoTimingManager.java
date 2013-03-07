@@ -222,7 +222,7 @@ public class GiottoTimingManager extends SingletonAttribute implements
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == seed) {
-            long seedValue = ((LongToken) (seed.getToken())).longValue();
+            long seedValue = ((LongToken) seed.getToken()).longValue();
 
             if (seedValue != _generatorSeed) {
                 _needNewGenerator = true;
@@ -256,8 +256,8 @@ public class GiottoTimingManager extends SingletonAttribute implements
             return;
         }
 
-        if ((previousContainer != null)
-                && (previousContainer instanceof CompositeActor)) {
+        if (previousContainer != null
+                && previousContainer instanceof CompositeActor) {
             // _piggybackContainer should be non-null, but we check anyway.
             if (_piggybackContainer != null) {
                 _piggybackContainer.removePiggyback(_executable);
@@ -397,7 +397,7 @@ public class GiottoTimingManager extends SingletonAttribute implements
                             return;
                         }
 
-                        while ((_unitIndex < _schedule.size())) {
+                        while (_unitIndex < _schedule.size()) {
 
                             // Grab the next minor cycle (unit) schedule to execute.
                             Schedule unitSchedule = (Schedule) _schedule
@@ -431,7 +431,7 @@ public class GiottoTimingManager extends SingletonAttribute implements
                                 }
                                 _totalObservedExecutionTime += t;
                                 if (t > actorWCET) {
-                                    _overRunThusFar += (t - actorWCET);
+                                    _overRunThusFar += t - actorWCET;
                                     _myPhysicalTime += t;//(_overRunThusFar;
                                     if (_debugging) {
                                         _debug("the actor WCET estimate was "
@@ -544,14 +544,13 @@ public class GiottoTimingManager extends SingletonAttribute implements
                                 _debug("throw an exception");
                             }
                             // this is the static check before execution
-                            throw new IllegalActionException(
-                                    container,
+                            throw new IllegalActionException(container,
                                     "total WCET of ("
                                             + wcet
                                             + ") is larger than period ("
                                             + _periodValue
                                             + ") for actor "
-                                            + ((CompositeActor) (getContainer()))
+                                            + ((CompositeActor) getContainer())
                                                     .getDisplayName());
 
                         } //end of if
@@ -632,7 +631,7 @@ public class GiottoTimingManager extends SingletonAttribute implements
      *  seed Token.
      */
     protected void _createGenerator() throws IllegalActionException {
-        long seedValue = ((LongToken) (seed.getToken())).longValue();
+        long seedValue = ((LongToken) seed.getToken()).longValue();
         _generatorSeed = seedValue;
 
         if (seedValue == 0L) {

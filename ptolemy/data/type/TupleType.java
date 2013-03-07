@@ -177,7 +177,7 @@ public class TupleType extends StructuredType implements Cloneable {
      *  @return a Type.
      */
     public Type getElementType(int i) {
-        if ((i < 0) || (i >= _elementTypeTerms.length)) {
+        if (i < 0 || i >= _elementTypeTerms.length) {
             return null;
         }
 
@@ -557,7 +557,7 @@ public class TupleType extends StructuredType implements Cloneable {
             Type type2 = t2.getElementType(i);
             int result = TypeLattice.compare(type1, type2);
 
-            if ((result == CPO.HIGHER) || (result == CPO.INCOMPARABLE)) {
+            if (result == CPO.HIGHER || result == CPO.INCOMPARABLE) {
                 return false;
             }
         }
@@ -617,7 +617,7 @@ public class TupleType extends StructuredType implements Cloneable {
                 return variable;
             }
 
-            return (new InequalityTerm[0]);
+            return new InequalityTerm[0];
         }
 
         /** Reset the variable part of the element type to the specified
@@ -649,7 +649,7 @@ public class TupleType extends StructuredType implements Cloneable {
          *  @return True if this field type is a type variable.
          */
         public boolean isSettable() {
-            return (!_declaredType.isConstant());
+            return !_declaredType.isConstant();
         }
 
         /** Check whether the current element type is acceptable.

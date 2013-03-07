@@ -463,9 +463,9 @@ public class FractionMatrixMath {
     public static final Fraction sum(final Fraction[][] matrix) {
         Fraction sum = new Fraction(0, 1);
 
-        for (int i = 0; i < matrix.length; i++) {
-            for (int j = 0; j < matrix[i].length; j++) {
-                sum = sum.add(matrix[i][j]);
+        for (Fraction[] element : matrix) {
+            for (int j = 0; j < element.length; j++) {
+                sum = sum.add(element[j]);
             }
         }
 
@@ -539,14 +539,14 @@ public class FractionMatrixMath {
             for (int j = 0; j < _columns(matrix); j++) {
                 sb.append(matrix[i][j].toString());
 
-                if (j < (_columns(matrix) - 1)) {
+                if (j < _columns(matrix) - 1) {
                     sb.append(elementDelimiter);
                 }
             }
 
             sb.append(vectorEnd);
 
-            if (i < (_rows(matrix) - 1)) {
+            if (i < _rows(matrix) - 1) {
                 sb.append(vectorDelimiter);
             }
         }
@@ -606,7 +606,7 @@ public class FractionMatrixMath {
         int rows = _rows(matrix1);
         int columns = _columns(matrix1);
 
-        if ((rows != _rows(matrix2)) || (columns != _columns(matrix2))) {
+        if (rows != _rows(matrix2) || columns != _columns(matrix2)) {
             throw new IllegalArgumentException(
                     "ptolemy.math.FractionMatrixMath." + caller
                             + "() : one matrix " + _dimensionString(matrix1)
@@ -647,7 +647,7 @@ public class FractionMatrixMath {
      *  @return a string describing the dimensions of this matrix.
      */
     protected static final String _dimensionString(final Fraction[][] matrix) {
-        return ("[" + _rows(matrix) + " x " + _columns(matrix) + "]");
+        return "[" + _rows(matrix) + " x " + _columns(matrix) + "]";
     }
 
     /** Return the number of rows of a matrix. */

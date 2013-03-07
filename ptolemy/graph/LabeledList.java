@@ -198,7 +198,7 @@ public class LabeledList implements List {
      *  has the specified label.
      */
     public Object get(int label) {
-        if ((label < 0) || (label >= _elements.size())) {
+        if (label < 0 || label >= _elements.size()) {
             throw new IndexOutOfBoundsException("Invalid label: " + label);
         }
 
@@ -223,7 +223,7 @@ public class LabeledList implements List {
         if (element == null) {
             return -1;
         } else {
-            Integer label = (Integer) (_labels.get(element));
+            Integer label = (Integer) _labels.get(element);
 
             if (label == null) {
                 return -1;
@@ -261,7 +261,7 @@ public class LabeledList implements List {
         if (element == null) {
             throw new NullPointerException("Null element specified.");
         } else {
-            Integer label = (Integer) (_labels.get(element));
+            Integer label = (Integer) _labels.get(element);
 
             if (label == null) {
                 throw new IllegalArgumentException(
@@ -431,7 +431,7 @@ public class LabeledList implements List {
 
         while (elements.hasNext()) {
             Object element = elements.next();
-            result.append(((includeLabels) ? (label(element) + ": ") : "")
+            result.append((includeLabels ? label(element) + ": " : "")
                     + element + (elements.hasNext() ? delimiter : ""));
         }
 
@@ -459,7 +459,7 @@ public class LabeledList implements List {
      */
     private String _elementDump(Object element) {
         return "The offending element follows:\n"
-                + ((element == null) ? "null" : element) + "\n";
+                + (element == null ? "null" : element) + "\n";
     }
 
     /** Fill in the labels map with the appropriate indices of

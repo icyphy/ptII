@@ -111,7 +111,7 @@ public class LocatableNodeDragInteractor extends NodeDragInteractor {
         transform[0] = _dragStart[0] - dragEnd[0];
         transform[1] = _dragStart[1] - dragEnd[1];
 
-        if ((transform[0] == 0.0) && (transform[1] == 0.0)) {
+        if (transform[0] == 0.0 && transform[1] == 0.0) {
             return;
         }
 
@@ -134,9 +134,9 @@ public class LocatableNodeDragInteractor extends NodeDragInteractor {
         // appear more than once
         HashSet<NamedObj> namedObjSet = new HashSet<NamedObj>();
 
-        for (int i = 0; i < selection.length; i++) {
-            if (selection[i] instanceof Figure) {
-                Object userObject = ((Figure) selection[i]).getUserObject();
+        for (Object element : selection) {
+            if (element instanceof Figure) {
+                Object userObject = ((Figure) element).getUserObject();
 
                 if (graphModel.isEdge(userObject)
                         || graphModel.isNode(userObject)) {

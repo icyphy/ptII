@@ -255,7 +255,7 @@ public class MoMLSimpleStatisticalApplication extends
 
             if (_parseArg(arg) == false) {
                 if (arg.trim().startsWith("-")) {
-                    if (i >= (args.length - 1)) {
+                    if (i >= args.length - 1) {
                         throw new IllegalActionException("Cannot set "
                                 + "parameter " + arg + " when no value is "
                                 + "given.");

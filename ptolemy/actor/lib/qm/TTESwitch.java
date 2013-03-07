@@ -229,8 +229,8 @@ public class TTESwitch extends MonitoredQuantityManager {
         Time currentTime = getDirector().getModelTime();
         if (_nextTimeFree != null
                 && currentTime.compareTo(_nextTimeFree) == 0
-                && (_ttTokens.size() == 1 || (_ttTokens.size() == 0 && _etTokens
-                        .size() > 0))) {
+                && (_ttTokens.size() == 1 || _ttTokens.size() == 0
+                        && _etTokens.size() > 0)) {
             _nextTimeFree = currentTime.add(_serviceTimeValue);
             _fireAt(_nextTimeFree);
         }
@@ -255,8 +255,8 @@ public class TTESwitch extends MonitoredQuantityManager {
                             + " while a new time-triggered message is received at port "
                             + receiver.getContainer() + " at time "
                             + getDirector().getModelTime());
-        } else if (_ttTokens.size() == 1
-                || (_ttTokens.size() == 0 && _etTokens.size() > 0)) {
+        } else if (_ttTokens.size() == 1 || _ttTokens.size() == 0
+                && _etTokens.size() > 0) {
             Time currentTime = getDirector().getModelTime();
             _nextTimeFree = currentTime.add(_serviceTimeValue);
             _fireAt(_nextTimeFree);

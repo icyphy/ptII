@@ -59,7 +59,7 @@ public class PolygonIterator implements PathIterator {
         if (pl instanceof Polygon2D.Float) {
             Polygon2D.Float f = (Polygon2D.Float) pl;
 
-            if ((at == null) || at.isIdentity()) {
+            if (at == null || at.isIdentity()) {
                 for (int i = 0; i < count; i++) {
                     _coords[i] = f._coords[i];
                 }
@@ -69,7 +69,7 @@ public class PolygonIterator implements PathIterator {
         } else {
             Polygon2D.Double d = (Polygon2D.Double) pl;
 
-            if ((at == null) || at.isIdentity()) {
+            if (at == null || at.isIdentity()) {
                 System.arraycopy(d._coords, 0, _coords, 0, count);
             } else {
                 at.transform(d._coords, 0, _coords, 0, count / 2);

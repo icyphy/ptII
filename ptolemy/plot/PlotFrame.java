@@ -180,10 +180,10 @@ public class PlotFrame extends JFrame implements PropertyChangeListener,
         FileMenuListener fml = new FileMenuListener();
 
         // Set the action command and listener for each menu item.
-        for (int i = 0; i < fileMenuItems.length; i++) {
-            fileMenuItems[i].setActionCommand(fileMenuItems[i].getText());
-            fileMenuItems[i].addActionListener(fml);
-            _fileMenu.add(fileMenuItems[i]);
+        for (JMenuItem fileMenuItem : fileMenuItems) {
+            fileMenuItem.setActionCommand(fileMenuItem.getText());
+            fileMenuItem.addActionListener(fml);
+            _fileMenu.add(fileMenuItem);
         }
 
         _menubar.add(_fileMenu);
@@ -205,10 +205,10 @@ public class PlotFrame extends JFrame implements PropertyChangeListener,
         SpecialMenuListener sml = new SpecialMenuListener();
 
         // Set the action command and listener for each menu item.
-        for (int i = 0; i < specialMenuItems.length; i++) {
-            specialMenuItems[i].setActionCommand(specialMenuItems[i].getText());
-            specialMenuItems[i].addActionListener(sml);
-            _specialMenu.add(specialMenuItems[i]);
+        for (JMenuItem specialMenuItem : specialMenuItems) {
+            specialMenuItem.setActionCommand(specialMenuItem.getText());
+            specialMenuItem.addActionListener(sml);
+            _specialMenu.add(specialMenuItem);
         }
 
         _menubar.add(_specialMenu);
@@ -558,10 +558,10 @@ public class PlotFrame extends JFrame implements PropertyChangeListener,
 
         PrintService pdfPrintService = null;
         PrintService printServices[] = PrinterJob.lookupPrintServices();
-        for (int i = 0; i < printServices.length; i++) {
-            if (printServices[i].getName().indexOf("PDF") != -1) {
+        for (PrintService printService : printServices) {
+            if (printService.getName().indexOf("PDF") != -1) {
                 foundPDFPrinter = true;
-                pdfPrintService = printServices[i];
+                pdfPrintService = printService;
             }
         }
 

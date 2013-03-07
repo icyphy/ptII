@@ -788,7 +788,7 @@ public class ShallowModelTransformer extends SceneTransformer implements
             /* isClass = */((InstantiableNamedObj) object).isClassDefinition();
         }
 
-        if ((deferredObject == null) && (object.getClassName() != null)) {
+        if (deferredObject == null && object.getClassName() != null) {
             try {
                 // First try to find the local moml class that
                 // we extend
@@ -816,8 +816,7 @@ public class ShallowModelTransformer extends SceneTransformer implements
 
                 Constructor[] constructors = theClass.getConstructors();
 
-                for (int i = 0; i < constructors.length; i++) {
-                    Constructor constructor = constructors[i];
+                for (Constructor constructor : constructors) {
                     Class[] parameterTypes = constructor.getParameterTypes();
 
                     if (parameterTypes.length != _reflectionArguments.length) {
@@ -827,8 +826,8 @@ public class ShallowModelTransformer extends SceneTransformer implements
                     boolean match = true;
 
                     for (int j = 0; j < parameterTypes.length; j++) {
-                        if (!(parameterTypes[j]
-                                .isInstance(_reflectionArguments[j]))) {
+                        if (!parameterTypes[j]
+                                .isInstance(_reflectionArguments[j])) {
                             match = false;
                             break;
                         }
@@ -881,7 +880,7 @@ public class ShallowModelTransformer extends SceneTransformer implements
                                     .hasNext();) {
                                 MoMLFilter momlFilter = (MoMLFilter) momlFilters
                                         .next();
-                                results.append("\nFilter " + (++i) + "\n"
+                                results.append("\nFilter " + ++i + "\n"
                                         + momlFilter.toString());
                             }
                         } catch (Exception ex2) {
@@ -967,7 +966,7 @@ public class ShallowModelTransformer extends SceneTransformer implements
 
         // actor/lib/test/auto/ElectronicUnitBase1.xml and others were failing
         // here, so now we check for null.
-        if ((object == null) || (object.attributeList() == null)) {
+        if (object == null || object.attributeList() == null) {
             System.out.println("ShallowModelTransformer: Warning: "
                     + "object == null, or object.attributeList() == null?, "
                     + "object: " + (object == null ? "null" : object));

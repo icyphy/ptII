@@ -126,7 +126,7 @@ public class LocatableNodeController extends BasicNodeController {
             Locatable object = (Locatable) node;
             double[] location = object.getLocation();
 
-            if ((location != null) && (location.length == 2)) {
+            if (location != null && location.length == 2) {
                 return true;
             }
         }
@@ -318,7 +318,7 @@ public class LocatableNodeController extends BasicNodeController {
      *  @return the newly created figure.
      */
     protected Figure _renderNode(java.lang.Object node) {
-        if ((node == null) || _hide(node)) {
+        if (node == null || _hide(node)) {
             // Return an empty figure.
             Figure newFigure = new CompositeFigure();
             newFigure.setVisible(false);
@@ -334,8 +334,8 @@ public class LocatableNodeController extends BasicNodeController {
 
             if (_decoratable
                     && object instanceof NamedObj
-                    && (((NamedObj) object).getDerivedLevel() < Integer.MAX_VALUE)
-                    && (cf != null)) {
+                    && ((NamedObj) object).getDerivedLevel() < Integer.MAX_VALUE
+                    && cf != null) {
                 // float[] dash = { 2.0f, 5.0f };
                 Stroke stroke = new BasicStroke(2f, /* width */
                 BasicStroke.CAP_SQUARE, /* cap   */

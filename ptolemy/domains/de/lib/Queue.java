@@ -301,11 +301,11 @@ public class Queue extends Transformer {
         boolean hasTrigger = false;
 
         if (input.isOutsideConnected()) {
-            hasInput = (input.hasToken(0));
+            hasInput = input.hasToken(0);
         }
 
         if (trigger.isOutsideConnected()) {
-            hasTrigger = (trigger.hasToken(0));
+            hasTrigger = trigger.hasToken(0);
         }
 
         return hasInput || hasTrigger;

@@ -109,11 +109,10 @@ public class CartesianToPolar extends TypedAtomicActor {
      */
     public void fire() throws IllegalActionException {
         super.fire();
-        double xValue = ((DoubleToken) (x.get(0))).doubleValue();
-        double yValue = ((DoubleToken) (y.get(0))).doubleValue();
+        double xValue = ((DoubleToken) x.get(0)).doubleValue();
+        double yValue = ((DoubleToken) y.get(0)).doubleValue();
 
-        double magnitudeValue = Math
-                .sqrt((xValue * xValue) + (yValue * yValue));
+        double magnitudeValue = Math.sqrt(xValue * xValue + yValue * yValue);
         double angleValue = Math.atan2(yValue, xValue);
 
         magnitude.send(0, new DoubleToken(magnitudeValue));

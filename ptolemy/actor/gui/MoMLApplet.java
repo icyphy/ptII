@@ -200,7 +200,7 @@ public class MoMLApplet extends PtolemyApplet {
         NamedObj toplevel = parser.parse(docBase, xmlFile);
         _workspace = toplevel.workspace();
 
-        if ((_fragment != null) && !_fragment.trim().equals("")) {
+        if (_fragment != null && !_fragment.trim().equals("")) {
             // A fragment was specified, so we should look inside.
             ComponentEntity inside = null;
 

@@ -298,7 +298,7 @@ public class MirrorComposite extends TypedCompositeActor implements
                             ComponentPort insidePort = (ComponentPort) entityPorts
                                     .next();
                             if (!_mirrorParameterPorts
-                                    && (insidePort instanceof ParameterPort)) {
+                                    && insidePort instanceof ParameterPort) {
                                 continue;
                             }
                             String name = insidePort.getName();
@@ -503,7 +503,7 @@ public class MirrorComposite extends TypedCompositeActor implements
 
         // Have to copy the list to avoid a concurrent
         // modification exception.
-        Iterator ports = (new LinkedList(portList())).iterator();
+        Iterator ports = new LinkedList(portList()).iterator();
 
         while (ports.hasNext()) {
             Port port = (Port) ports.next();

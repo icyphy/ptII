@@ -800,8 +800,8 @@ public final class CellConstraints implements Cloneable, Serializable {
      */
     private Alignment concreteAlignment(Alignment cellAlignment,
             FormSpec formSpec) {
-        return formSpec == null ? (cellAlignment == DEFAULT ? FILL
-                : cellAlignment) : usedAlignment(cellAlignment, formSpec);
+        return formSpec == null ? cellAlignment == DEFAULT ? FILL
+                : cellAlignment : usedAlignment(cellAlignment, formSpec);
     }
 
     /**
@@ -931,7 +931,7 @@ public final class CellConstraints implements Cloneable, Serializable {
         buffer.append(hAlign);
         buffer.append("; vAlign=");
         buffer.append(vAlign);
-        if (!(EMPTY_INSETS.equals(insets))) {
+        if (!EMPTY_INSETS.equals(insets)) {
             buffer.append("; insets=");
             buffer.append(insets);
         }
@@ -984,7 +984,7 @@ public final class CellConstraints implements Cloneable, Serializable {
             buffer.append(concreteAlignment(vAlign, rowSpec).abbreviation());
         }
         buffer.append("\"");
-        if (!(EMPTY_INSETS.equals(insets))) {
+        if (!EMPTY_INSETS.equals(insets)) {
             buffer.append(", ");
             buffer.append(insets);
         }

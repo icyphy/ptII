@@ -204,7 +204,7 @@ public class SketchedSource extends SequencePlotter implements EditListener {
                 _initialTraceIsSet = false;
                 _showInitialTrace();
             }
-        } else if ((attribute == yBottom) || (attribute == yTop)) {
+        } else if (attribute == yBottom || attribute == yTop) {
             _setRanges();
         } else {
             super.attributeChanged(attribute);
@@ -235,7 +235,7 @@ public class SketchedSource extends SequencePlotter implements EditListener {
      *  @param dataset The data set that has been modified.
      */
     public synchronized void editDataModified(EditablePlot source, int dataset) {
-        if ((dataset == 0) && !_settingInitialTrace) {
+        if (dataset == 0 && !_settingInitialTrace) {
             _dataModified = true;
             _data = ((EditablePlot) plot).getData(0);
 
@@ -247,8 +247,7 @@ public class SketchedSource extends SequencePlotter implements EditListener {
                 if (runValue) {
                     Manager manager = getManager();
 
-                    if ((manager != null)
-                            && (manager.getState() == Manager.IDLE)) {
+                    if (manager != null && manager.getState() == Manager.IDLE) {
                         // Instead of calling manager.startRun(),
                         // call manager.execute().
                         // Otherwise applets have problems.
@@ -395,7 +394,7 @@ public class SketchedSource extends SequencePlotter implements EditListener {
             for (int i = 0; i < lengthValue; i++) {
                 double value = 0.0;
 
-                if ((defaultValues != null) && (i < defaultValues.length())) {
+                if (defaultValues != null && i < defaultValues.length()) {
                     value = ((DoubleToken) defaultValues.getElement(i))
                             .doubleValue();
                 }

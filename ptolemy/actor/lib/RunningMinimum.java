@@ -172,8 +172,7 @@ public class RunningMinimum extends Transformer {
         /* input >= output if backward type inference is enabled */
         if (isBackwardTypeInferenceEnabled()
                 && input.getTypeTerm().isSettable()) {
-            result.add(new Inequality(output.getTypeTerm(),
-                    input.getTypeTerm()));
+            result.add(new Inequality(output.getTypeTerm(), input.getTypeTerm()));
         }
         return result;
     }

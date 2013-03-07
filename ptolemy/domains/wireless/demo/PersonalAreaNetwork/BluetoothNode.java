@@ -131,9 +131,9 @@ public class BluetoothNode extends TypedAtomicActor {
         hide.setVisibility(Settable.EXPERT);
 
         // Hide the ports.
-        (new SingletonParameter(output, "_hide")).setToken(BooleanToken.TRUE);
-        (new SingletonParameter(input, "_hide")).setToken(BooleanToken.TRUE);
-        (new SingletonParameter(signal, "_hide")).setToken(BooleanToken.TRUE);
+        new SingletonParameter(output, "_hide").setToken(BooleanToken.TRUE);
+        new SingletonParameter(input, "_hide").setToken(BooleanToken.TRUE);
+        new SingletonParameter(signal, "_hide").setToken(BooleanToken.TRUE);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -209,9 +209,9 @@ public class BluetoothNode extends TypedAtomicActor {
         super.fire();
 
         if (BluetoothChannel.increaseRange) {
-            incRange = (((DoubleToken) (range.getToken())).doubleValue());
+            incRange = ((DoubleToken) range.getToken()).doubleValue();
 
-            incRange = incRange + (incRange * .10);
+            incRange = incRange + incRange * .10;
 
             if (incRange <= 55.0) {
                 range.setToken("55");
@@ -219,13 +219,13 @@ public class BluetoothNode extends TypedAtomicActor {
                 _circle.height.setToken("range*2");
             }
 
-            if ((incRange >= 60.5) && (incRange <= 61.0)) {
+            if (incRange >= 60.5 && incRange <= 61.0) {
                 range.setToken("60.5");
                 _circle.width.setToken("range*2");
                 _circle.height.setToken("range*2");
             }
 
-            if ((incRange >= 66.55) && (incRange <= 67.0)) {
+            if (incRange >= 66.55 && incRange <= 67.0) {
                 range.setToken("66.55");
                 _circle.width.setToken("range*2");
                 _circle.height.setToken("range*2");

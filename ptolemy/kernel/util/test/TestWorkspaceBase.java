@@ -81,7 +81,8 @@ public abstract class TestWorkspaceBase {
             try {
                 thread.join();
             } catch (InterruptedException ex) {
-                _profile += ("Test thread " + thread.getName() + " interrupted\n");
+                _profile += "Test thread " + thread.getName()
+                        + " interrupted\n";
             }
         }
 

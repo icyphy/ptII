@@ -70,11 +70,11 @@ public class TrigFunction extends NamedProgramCodeGeneratorAdapter {
         ptolemy.actor.lib.TrigFunction actor = (ptolemy.actor.lib.TrigFunction) getComponent();
 
         String function = actor.function.getExpression();
-        String codeBlockName = (function.equals("sin")) ? "sinBlock"
-                : ((function.equals("cos")) ? "cosBlock" : ((function
-                        .equals("tan")) ? "tanBlock" : ((function
-                        .equals("asin")) ? "asinBlock" : ((function
-                        .equals("acos")) ? "acosBlock" : "atanBlock"))));
+        String codeBlockName = function.equals("sin") ? "sinBlock" : function
+                .equals("cos") ? "cosBlock"
+                : function.equals("tan") ? "tanBlock"
+                        : function.equals("asin") ? "asinBlock" : function
+                                .equals("acos") ? "acosBlock" : "atanBlock";
         ArrayList<String> args = new ArrayList<String>();
         code.append(getTemplateParser().generateBlockCode(codeBlockName, args));
 

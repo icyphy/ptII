@@ -117,7 +117,7 @@ public class BoundsSite extends AbstractSite {
         switch (_side) {
         case SwingConstants.NORTH:
         case SwingConstants.SOUTH:
-            x = bounds.getX() + (_offset / 100.0 * bounds.getWidth());
+            x = bounds.getX() + _offset / 100.0 * bounds.getWidth();
             break;
 
         case SwingConstants.EAST:
@@ -141,7 +141,7 @@ public class BoundsSite extends AbstractSite {
         switch (_side) {
         case SwingConstants.EAST:
         case SwingConstants.WEST:
-            y = bounds.getY() + (_offset / 100.0 * bounds.getHeight());
+            y = bounds.getY() + _offset / 100.0 * bounds.getHeight();
             break;
 
         case SwingConstants.SOUTH:

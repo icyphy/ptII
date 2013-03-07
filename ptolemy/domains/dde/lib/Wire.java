@@ -105,18 +105,18 @@ public class Wire extends TypedAtomicActor {
             _continueIterations = false;
         }
 
-        for (int i = 0; i < inputReceivers.length; i++) {
-            for (int j = 0; j < inputReceivers[i].length; j++) {
-                DDEReceiver inputReceiver = (DDEReceiver) inputReceivers[i][j];
+        for (Receiver[] inputReceiver2 : inputReceivers) {
+            for (int j = 0; j < inputReceiver2.length; j++) {
+                DDEReceiver inputReceiver = (DDEReceiver) inputReceiver2[j];
 
                 if (inputReceiver.hasToken()) {
                     token = inputReceiver.get();
 
                     Receiver[][] outReceivers = output.getRemoteReceivers();
 
-                    for (int k = 0; k < outReceivers.length; k++) {
-                        for (int l = 0; l < outReceivers[k].length; l++) {
-                            DDEReceiver outReceiver = (DDEReceiver) outReceivers[k][l];
+                    for (Receiver[] outReceiver2 : outReceivers) {
+                        for (int l = 0; l < outReceiver2.length; l++) {
+                            DDEReceiver outReceiver = (DDEReceiver) outReceiver2[l];
                             Thread thread = Thread.currentThread();
 
                             if (thread instanceof DDEThread) {

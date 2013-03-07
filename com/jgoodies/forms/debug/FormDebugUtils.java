@@ -162,14 +162,14 @@ public final class FormDebugUtils {
      */
     public static void dumpGridBounds(FormLayout.LayoutInfo layoutInfo) {
         System.out.print("COLUMN ORIGINS: ");
-        for (int col = 0; col < layoutInfo.columnOrigins.length; col++) {
-            System.out.print(layoutInfo.columnOrigins[col] + " ");
+        for (int columnOrigin : layoutInfo.columnOrigins) {
+            System.out.print(columnOrigin + " ");
         }
         System.out.println();
 
         System.out.print("ROW ORIGINS:    ");
-        for (int row = 0; row < layoutInfo.rowOrigins.length; row++) {
-            System.out.print(layoutInfo.rowOrigins[row] + " ");
+        for (int rowOrigin : layoutInfo.rowOrigins) {
+            System.out.print(rowOrigin + " ");
         }
         System.out.println();
     }

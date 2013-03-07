@@ -68,8 +68,8 @@ public abstract class Polygon2D implements Shape {
      * is the same as the first vertex, then it merges them.
      */
     public void closePath() {
-        if ((getX(getVertexCount() - 1) == getX(0))
-                && (getY(getVertexCount() - 1) == getY(0))) {
+        if (getX(getVertexCount() - 1) == getX(0)
+                && getY(getVertexCount() - 1) == getY(0)) {
             _coordCount -= 2;
         }
 
@@ -84,7 +84,7 @@ public abstract class Polygon2D implements Shape {
         // The previous implementation failed if the polygon had a vertical or horizontal
         // edge with the same value as one of the arguments.
         // See diva/util/java2d/test/junit/Polygon2DJUnitTest.java
-        Path2D path = (this instanceof Polygon2D.Float) ? new Path2D.Float()
+        Path2D path = this instanceof Polygon2D.Float ? new Path2D.Float()
                 : new Path2D.Double();
         path.moveTo(getX(0), getY(0));
         for (int i = 1; i < getVertexCount(); i++) {
@@ -370,7 +370,7 @@ public abstract class Polygon2D implements Shape {
          * @exception IndexOutOfBoundsException The index is out of bounds.
          */
         public double getY(int index) {
-            return _coords[(index * 2) + 1];
+            return _coords[index * 2 + 1];
         }
 
         /** Add a new vertex to the end of the line.
@@ -420,7 +420,7 @@ public abstract class Polygon2D implements Shape {
          * @exception IndexOutOfBoundsException The index is out of bounds.
          */
         public void setY(int index, double y) {
-            _coords[(index * 2) + 1] = (float) y;
+            _coords[index * 2 + 1] = (float) y;
         }
 
         /** Transform the polygon with the given transform.
@@ -536,7 +536,7 @@ public abstract class Polygon2D implements Shape {
          * @exception IndexOutOfBoundsException The index is out of bounds.
          */
         public double getY(int index) {
-            return _coords[(index * 2) + 1];
+            return _coords[index * 2 + 1];
         }
 
         /** Add a new vertex to the end of the line.
@@ -581,7 +581,7 @@ public abstract class Polygon2D implements Shape {
          * @exception IndexOutOfBoundsException The index is out of bounds.
          */
         public void setY(int index, double y) {
-            _coords[(index * 2) + 1] = y;
+            _coords[index * 2 + 1] = y;
         }
 
         /** Transform the polygon with the given transform.

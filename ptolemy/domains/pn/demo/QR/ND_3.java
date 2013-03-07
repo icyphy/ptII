@@ -137,27 +137,27 @@ public class ND_3 extends TypedAtomicActor {
      */
     public void fire() throws IllegalActionException {
         super.fire();
-        for (int k = 1; k <= (1 * K); k += 1) {
-            for (int j = 1; j <= (1 * N); j += 1) {
-                if ((k - 2) >= 0) {
+        for (int k = 1; k <= 1 * K; k += 1) {
+            for (int j = 1; j <= 1 * N; j += 1) {
+                if (k - 2 >= 0) {
                     r_2.add(Double.valueOf(((DoubleToken) RP_1.get(0))
                             .doubleValue()));
                     in_0 = ((Double) r_2.elementAt(w_r_2++)).doubleValue();
                 }
 
-                if ((k - 1) == 0) {
+                if (k - 1 == 0) {
                     r_1.add(Double.valueOf(((DoubleToken) RP_2.get(0))
                             .doubleValue()));
                     in_0 = ((Double) r_1.elementAt(w_r_1++)).doubleValue();
                 }
 
-                if ((j - 2) >= 0) {
+                if (j - 2 >= 0) {
                     x_3.add(Double.valueOf(((DoubleToken) RP_3.get(0))
                             .doubleValue()));
                     in_1 = ((Double) x_3.elementAt(w_x_3++)).doubleValue();
                 }
 
-                if ((j - 1) == 0) {
+                if (j - 1 == 0) {
                     x_1.add(Double.valueOf(((DoubleToken) RP_4.get(0))
                             .doubleValue()));
                     in_1 = ((Double) x_1.elementAt(w_x_1++)).doubleValue();
@@ -168,15 +168,15 @@ public class ND_3 extends TypedAtomicActor {
                 //out_1 = _argOut1;
                 out_2 = _argOut2;
 
-                if ((K - k - 1) >= 0) {
+                if (K - k - 1 >= 0) {
                     WP_1.broadcast(new DoubleToken(out_0));
                 }
 
-                if ((-K + k) == 0) {
+                if (-K + k == 0) {
                     WP_11.broadcast(new DoubleToken(out_0));
                 }
 
-                if ((N - j - 1) >= 0) {
+                if (N - j - 1 >= 0) {
                     WP_10.broadcast(new DoubleToken(out_2));
                 }
             }
@@ -195,7 +195,7 @@ public class ND_3 extends TypedAtomicActor {
     ////                         private methods                   ////
     private void _Vectorize(double arg0, double arg1) {
         _argOut2 = -1 * Math.atan2(arg1, arg0);
-        _argOut0 = (Math.cos(_argOut2) * arg0) - (Math.sin(_argOut2) * arg1);
+        _argOut0 = Math.cos(_argOut2) * arg0 - Math.sin(_argOut2) * arg1;
         //_argOut1 = 0.0;
     }
 

@@ -441,7 +441,7 @@ public class ContinuousDirector extends FixedPointDirector implements
         // are in the future. Presumably, since we are redoing a speculative
         // solver iteration, there must have been no inputs at the
         // _iterationBeginTime, which is now our _currentTime.
-        if ((!_redoingSolverIteration && _transferInputsToInside())
+        if (!_redoingSolverIteration && _transferInputsToInside()
                 || _currentStepSize == 0.0) {
             _currentStepSize = 0.0;
             _ODESolver._reset();
@@ -694,7 +694,7 @@ public class ContinuousDirector extends FixedPointDirector implements
         // is embedded in a DE model but has no input ports, without the
         // following statements, the composite actor has no chance to be fired.
         // Also, we want to be sure to be fired at the stop time.
-        if (isEmbedded() && (_enclosingContinuousDirector() == null)) {
+        if (isEmbedded() && _enclosingContinuousDirector() == null) {
             // In preinitialize(), _startTime was set to the start time of
             // the executive director. However, this invocation of initialize()
             // may be occurring later in the execution of a model, as a result
@@ -2018,7 +2018,7 @@ public class ContinuousDirector extends FixedPointDirector implements
                 Object actor = actors.next();
                 if (actor instanceof ContinuousStatefulComponent) {
                     _statefulComponents.add(actor);
-                } else if ((actor instanceof CompositeActor)
+                } else if (actor instanceof CompositeActor
                         && ((CompositeEntity) actor).isOpaque()
                         && !((CompositeEntity) actor).isAtomic()) {
                     Director director = ((Actor) actor).getDirector();
@@ -2045,7 +2045,7 @@ public class ContinuousDirector extends FixedPointDirector implements
                 Object actor = actors.next();
                 if (actor instanceof ContinuousStepSizeController) {
                     _stepSizeControllers.add(actor);
-                } else if ((actor instanceof CompositeActor)
+                } else if (actor instanceof CompositeActor
                         && ((CompositeEntity) actor).isOpaque()
                         && !((CompositeEntity) actor).isAtomic()) {
                     Director director = ((Actor) actor).getDirector();

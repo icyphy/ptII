@@ -143,7 +143,7 @@ public class Memory extends SynchronousFixTransformer {
             }
 
             // Consume tokens from all input ports.
-            FixToken in = ((FixToken) dataIn.get(0));
+            FixToken in = (FixToken) dataIn.get(0);
 
             FixToken addressToken = (FixToken) address.get(0);
             FixPoint addressFixValue = addressToken.fixValue();

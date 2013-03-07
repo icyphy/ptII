@@ -95,8 +95,8 @@ public class PtidesEvent extends DEEvent {
      *          but its value cannot be obtained, which should be an integer.
      */
     public PtidesEvent(Actor actor, IOPort ioPort, Time timeStamp,
-            int microstep, int depth, Time absoluteDeadline, Time sourceTimestamp)
-            throws IllegalActionException {
+            int microstep, int depth, Time absoluteDeadline,
+            Time sourceTimestamp) throws IllegalActionException {
         super(actor, timeStamp, microstep, depth);
         assert absoluteDeadline != null;
         _ioPort = ioPort;
@@ -124,10 +124,10 @@ public class PtidesEvent extends DEEvent {
      *  but its value cannot be obtained, which should be an integer.
      */
     public PtidesEvent(IOPort ioPort, int channel, Time timeStamp,
-            int microstep, int depth, Token token, Receiver receiver, Time sourceTimestamp)
-            throws IllegalActionException {
+            int microstep, int depth, Token token, Receiver receiver,
+            Time sourceTimestamp) throws IllegalActionException {
         super(ioPort, timeStamp, microstep, depth);
-        assert (token != null && receiver != null);
+        assert token != null && receiver != null;
         _channel = channel;
         _token = token;
         _receiver = receiver;
@@ -156,7 +156,8 @@ public class PtidesEvent extends DEEvent {
     public PtidesEvent(IOPort ioPort, int channel, Time timeStamp,
             int microstep, int depth, Token token, Receiver receiver,
             Time deadline, Time sourceTimestamp) throws IllegalActionException {
-        this(ioPort, channel, timeStamp, microstep, depth, token, receiver, sourceTimestamp);
+        this(ioPort, channel, timeStamp, microstep, depth, token, receiver,
+                sourceTimestamp);
         _absoluteDeadline = deadline;
     }
 
@@ -225,8 +226,8 @@ public class PtidesEvent extends DEEvent {
         int primitiveFieldHash = super.hashCode() >>> _channel;
         int absoluteDeadlineHash = _absoluteDeadline == null ? 0
                 : _absoluteDeadline.hashCode();
-        int objectFieldHash = (isPureEvent() ? absoluteDeadlineHash : (_token
-                .hashCode()) >>> _receiver.hashCode());
+        int objectFieldHash = isPureEvent() ? absoluteDeadlineHash : _token
+                .hashCode() >>> _receiver.hashCode();
         return primitiveFieldHash >>> objectFieldHash;
     }
 
@@ -238,7 +239,8 @@ public class PtidesEvent extends DEEvent {
         }
         Double timePrecision = null;
         try {
-            timePrecision = PtidesDirector._getDoubleParameterValue((NamedObj) actor, "timePrecision");
+            timePrecision = PtidesDirector._getDoubleParameterValue(
+                    (NamedObj) actor, "timePrecision");
         } catch (IllegalActionException e) {
             // In this case timePrecision is set to 0.0 in the next lines.
         }
@@ -246,11 +248,12 @@ public class PtidesEvent extends DEEvent {
             timePrecision = 0.0;
         }
 
-        return ((_timestamp.compareTo(event.timeStamp()) == 0 && _microstep == event.microstep()) ||
-                _timestamp.compareTo(event.timeStamp()) <= 0 ||
-                (_timestamp.subtract(timePrecision).compareTo(event.timeStamp()) <= 0 &&
-                _timestamp.add(timePrecision).compareTo(event.timeStamp()) >= 0)
-                );
+        return _timestamp.compareTo(event.timeStamp()) == 0
+                && _microstep == event.microstep()
+                || _timestamp.compareTo(event.timeStamp()) <= 0
+                || _timestamp.subtract(timePrecision).compareTo(
+                        event.timeStamp()) <= 0
+                && _timestamp.add(timePrecision).compareTo(event.timeStamp()) >= 0;
     }
 
     /** Return true if this event is a pure event.
@@ -267,7 +270,7 @@ public class PtidesEvent extends DEEvent {
      */
     public final Receiver receiver() {
         if (!isPureEvent()) {
-            assert (_receiver != null);
+            assert _receiver != null;
         }
         return _receiver;
     }
@@ -282,7 +285,7 @@ public class PtidesEvent extends DEEvent {
      *  and token field is null.
      */
     public final Token token() {
-        if (!isPureEvent() && (_token == null)) {
+        if (!isPureEvent() && _token == null) {
             throw new InternalErrorException("A non-pure event should "
                     + "not have a token field that is null");
         }
@@ -323,8 +326,7 @@ public class PtidesEvent extends DEEvent {
                         + (_receiver.getContainer() != null ? _receiver
                                 .getContainer().getFullName() : "")
                         + ".receiver }") + ", isPureEvent = " + _isPureEvent
-                + ", sourceTimestamp = "
-                + _sourceTimestamp + "}";
+                + ", sourceTimestamp = " + _sourceTimestamp + "}";
     }
 
     ///////////////////////////////////////////////////////////////////

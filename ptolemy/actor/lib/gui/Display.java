@@ -316,7 +316,7 @@ public class Display extends TypedAtomicActor implements PortablePlaceable {
         Nameable previousContainer = getContainer();
         super.setContainer(container);
 
-        if ((container != previousContainer) && (previousContainer != null)) {
+        if (container != previousContainer && previousContainer != null) {
             _remove();
         }
     }

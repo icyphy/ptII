@@ -108,8 +108,8 @@ public class SignatureActor extends TypedAtomicActor {
 
         Provider[] providers = Security.getProviders();
 
-        for (int i = 0; i < providers.length; i++) {
-            provider.addChoice(providers[i].getName());
+        for (Provider provider2 : providers) {
+            provider.addChoice(provider2.getName());
         }
 
         signatureAlgorithm = new StringParameter(this, "signatureAlgorithm");

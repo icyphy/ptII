@@ -414,7 +414,7 @@ public class SootUtilities {
             Type returnType = newMethod.getReturnType();
 
             if (returnType instanceof RefType
-                    && (((RefType) returnType).getSootClass() == oldClass)) {
+                    && ((RefType) returnType).getSootClass() == oldClass) {
                 newMethod.setReturnType(RefType.v(newClass));
             }
 
@@ -425,11 +425,11 @@ public class SootUtilities {
                 Type type = (Type) oldParamTypes.next();
 
                 if (type instanceof RefType
-                        && (((RefType) type).getSootClass() == oldClass)) {
+                        && ((RefType) type).getSootClass() == oldClass) {
                     paramTypes.add(RefType.v(newClass));
                 } else if (type instanceof RefType
-                        && (((RefType) type).getSootClass().getName()
-                                .startsWith(oldClass.getName()))) {
+                        && ((RefType) type).getSootClass().getName()
+                                .startsWith(oldClass.getName())) {
                     SootClass changeClass = _getInnerClassCopy(oldClass,
                             ((RefType) type).getSootClass(), newClass);
                     paramTypes.add(RefType.v(changeClass));
@@ -454,7 +454,7 @@ public class SootUtilities {
                 Type type = local.getType();
 
                 if (type instanceof RefType
-                        && (((RefType) type).getSootClass() == oldClass)) {
+                        && ((RefType) type).getSootClass() == oldClass) {
                     local.setType(RefType.v(newClass));
                 }
             }
@@ -537,7 +537,7 @@ public class SootUtilities {
                         Type type = r.getType();
 
                         if (type instanceof RefType
-                                && (((RefType) type).getSootClass() == oldClass)) {
+                                && ((RefType) type).getSootClass() == oldClass) {
                             box.setValue(Jimple.v().newThisRef(
                                     RefType.v(newClass)));
                         }
@@ -547,7 +547,7 @@ public class SootUtilities {
                         Type type = r.getType();
 
                         if (type instanceof RefType
-                                && (((RefType) type).getSootClass() == oldClass)) {
+                                && ((RefType) type).getSootClass() == oldClass) {
                             box.setValue(Jimple.v().newParameterRef(
                                     RefType.v(newClass), r.getIndex()));
                         }
@@ -562,14 +562,14 @@ public class SootUtilities {
                                 .hasNext();) {
                             Type type = (Type) i.next();
                             if (type instanceof RefType
-                                    && (((RefType) type).getSootClass() == oldClass)) {
+                                    && ((RefType) type).getSootClass() == oldClass) {
                                 System.out.println("matchedParameter = "
                                         + newClass);
                                 newParameterTypes.add(RefType.v(newClass));
                             } else if (type instanceof RefType
-                                    && (((RefType) type).getSootClass()
-                                            .getName().startsWith(oldClass
-                                            .getName()))) {
+                                    && ((RefType) type).getSootClass()
+                                            .getName()
+                                            .startsWith(oldClass.getName())) {
                                 System.out.println("matchedParameter = "
                                         + newClass);
                                 SootClass changeClass = _getInnerClassCopy(
@@ -585,7 +585,7 @@ public class SootUtilities {
 
                         Type newReturnType = methodRef.returnType();
                         if (newReturnType instanceof RefType
-                                && (((RefType) newReturnType).getSootClass() == oldClass)) {
+                                && ((RefType) newReturnType).getSootClass() == oldClass) {
                             newReturnType = RefType.v(newClass);
                         }
 
@@ -881,7 +881,7 @@ public class SootUtilities {
         }
 
         // Push the constructor code into the <clinit> method.
-        SootMethod constructorMethod = (constructorStmt.getInvokeExpr())
+        SootMethod constructorMethod = constructorStmt.getInvokeExpr()
                 .getMethod();
         SootMethod staticConstructorMethod = staticClass
                 .getMethod(constructorMethod.getSubSignature());
@@ -1063,7 +1063,7 @@ public class SootUtilities {
         SootClass objectClass = PtolemyUtilities.objectClass;
 
         while (theClass != objectClass) {
-            if ((baseClass == theClass)
+            if (baseClass == theClass
                     || theClass.implementsInterface(baseClass.getName())) {
                 return true;
             }
@@ -1421,7 +1421,7 @@ public class SootUtilities {
 
             //  System.out.println("checking method " + method);
             if (method.getName().equals(name)
-                    && (args.size() == method.getParameterCount())) {
+                    && args.size() == method.getParameterCount()) {
                 Iterator parameterTypes = method.getParameterTypes().iterator();
                 Iterator arguments = args.iterator();
                 boolean isEqual = true;
@@ -1434,8 +1434,8 @@ public class SootUtilities {
                     if (argumentType != parameterType) {
                         // This is inefficient.  Full type merging is
                         // expensive and unnecessary.
-                        isEqual = (parameterType == argumentType.merge(
-                                parameterType, Scene.v()));
+                        isEqual = parameterType == argumentType.merge(
+                                parameterType, Scene.v());
                     }
 
                     if (!isEqual) {
@@ -1881,8 +1881,8 @@ public class SootUtilities {
 
                 // System.out.println("body = " + block);
                 // filter out anything that doesn't look like a loop body.
-                if ((block.getPreds().size() != 1)
-                        || (block.getSuccs().size() != 1)) {
+                if (block.getPreds().size() != 1
+                        || block.getSuccs().size() != 1) {
                     continue;
                 }
 
@@ -1891,9 +1891,9 @@ public class SootUtilities {
                 Block whileCond = (Block) block.getSuccs().get(0);
 
                 //  System.out.println("cond = " + whileCond);
-                if ((whileCond != block.getPreds().get(0))
-                        || (whileCond.getPreds().size() != 2)
-                        || (whileCond.getSuccs().size() != 2)) {
+                if (whileCond != block.getPreds().get(0)
+                        || whileCond.getPreds().size() != 2
+                        || whileCond.getSuccs().size() != 2) {
                     continue;
                 }
 
@@ -1931,7 +1931,7 @@ public class SootUtilities {
                 boolean found = false;
 
                 // walk backwards until we find a definition of the iterator.
-                while ((unit != whilePredecessor.getHead()) && !found) {
+                while (unit != whilePredecessor.getHead() && !found) {
                     if (unit instanceof DefinitionStmt
                             && ((DefinitionStmt) unit).getLeftOp().equals(
                                     iteratorLocal)) {
@@ -1942,7 +1942,7 @@ public class SootUtilities {
                 }
 
                 //  System.out.println("iterator def = " + unit);
-                DefinitionStmt iteratorDefinition = ((DefinitionStmt) unit);
+                DefinitionStmt iteratorDefinition = (DefinitionStmt) unit;
 
                 if (!(iteratorDefinition.getRightOp() instanceof InterfaceInvokeExpr)
                         || !((InterfaceInvokeExpr) iteratorDefinition
@@ -1959,7 +1959,7 @@ public class SootUtilities {
 
                 // Walk backward again until we reach the definition
                 // of the collection.
-                while ((unit != whilePredecessor.getHead()) && !found) {
+                while (unit != whilePredecessor.getHead() && !found) {
                     if (unit instanceof DefinitionStmt
                             && ((DefinitionStmt) unit).getLeftOp().equals(
                                     collectionLocal)) {
@@ -1971,11 +1971,11 @@ public class SootUtilities {
 
                 //  System.out.println("collection def = " + unit);
                 // System.out.println("field = " + field);
-                DefinitionStmt collectionDefinition = ((DefinitionStmt) unit);
+                DefinitionStmt collectionDefinition = (DefinitionStmt) unit;
 
                 if (!(collectionDefinition.getRightOp() instanceof FieldRef)
-                        || (((FieldRef) collectionDefinition.getRightOp())
-                                .getField() != field)) {
+                        || ((FieldRef) collectionDefinition.getRightOp())
+                                .getField() != field) {
                     continue;
                 }
 

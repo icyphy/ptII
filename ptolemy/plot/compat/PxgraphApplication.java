@@ -179,7 +179,7 @@ public class PxgraphApplication extends PlotApplication {
 
         // Although most of the arguments are handled by the Plot class,
         // a few are dealt with here.
-        while ((args != null) && (i < args.length)) {
+        while (args != null && i < args.length) {
             arg = args[i++];
 
             if (arg.equals("-help")) {

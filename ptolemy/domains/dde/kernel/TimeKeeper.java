@@ -232,11 +232,10 @@ public class TimeKeeper {
                 // Width inference should already have been done.
             }
 
-            for (int i = 0; i < receivers.length; i++) {
-                for (int j = 0; j < receivers[i].length; j++) {
-                    if (time.compareTo(((DDEReceiver) receivers[i][j])._lastTime) > 0) {
-                        ((DDEReceiver) receivers[i][j]).put(new NullToken(),
-                                time);
+            for (Receiver[] receiver2 : receivers) {
+                for (int j = 0; j < receiver2.length; j++) {
+                    if (time.compareTo(((DDEReceiver) receiver2[j])._lastTime) > 0) {
+                        ((DDEReceiver) receiver2[j]).put(new NullToken(), time);
                     }
                 }
             }
@@ -255,9 +254,9 @@ public class TimeKeeper {
      * @see #getModelTime()
      */
     public synchronized void setCurrentTime(Time time) {
-        if ((time.compareTo(_currentTime) < 0)
-                && (time.getDoubleValue() != PrioritizedTimedQueue.INACTIVE)
-                && (time.getDoubleValue() != PrioritizedTimedQueue.IGNORE)) {
+        if (time.compareTo(_currentTime) < 0
+                && time.getDoubleValue() != PrioritizedTimedQueue.INACTIVE
+                && time.getDoubleValue() != PrioritizedTimedQueue.IGNORE) {
             throw new IllegalArgumentException(((NamedObj) _actor).getName()
                     + " - Attempt to " + "set current time in the past."
                     + " time = " + time + "; current time = " + _currentTime);

@@ -197,7 +197,7 @@ public class MultipageParser extends HandlerBase {
      * @return Null, indicating to use the default system identifier.
      */
     public Object resolveEntity(String publicID, String systemID) {
-        if ((publicID != null) && publicID.equals(PUBLIC_ID)) {
+        if (publicID != null && publicID.equals(PUBLIC_ID)) {
             // This is the generic MoML DTD.
             return new StringReader(DTD_1);
         } else {

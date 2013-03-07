@@ -222,7 +222,7 @@ public class BooleanSelect extends TypedAtomicActor {
     public void fire() throws IllegalActionException {
         super.fire();
         if (_control == null) {
-            _control = ((BooleanToken) control.get(0));
+            _control = (BooleanToken) control.get(0);
             _controlUsed = false;
         } else {
             if (_control.booleanValue()) {
@@ -269,7 +269,7 @@ public class BooleanSelect extends TypedAtomicActor {
             control_tokenConsumptionRate.setToken(_one);
         } else {
             if (_control == null) {
-                _control = ((BooleanToken) control.get(0));
+                _control = (BooleanToken) control.get(0);
             }
             if (_control.booleanValue()) {
                 trueInput_tokenConsumptionRate.setToken(_one);

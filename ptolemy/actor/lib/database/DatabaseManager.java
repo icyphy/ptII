@@ -286,7 +286,7 @@ public class DatabaseManager extends TypedAtomicActor {
                 // Not much to do here.
             }
             // Send the error message to the output.
-            return ("Error:\n" + e.getMessage());
+            return "Error:\n" + e.getMessage();
         } finally {
             if (statement != null) {
                 try {

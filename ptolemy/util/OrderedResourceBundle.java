@@ -182,7 +182,7 @@ public class OrderedResourceBundle {
 
                 // Continue lines that end in slashes if they are not comments
                 char firstChar = readLine.charAt(keyStart);
-                if ((firstChar != '#') && (firstChar != '!')) {
+                if (firstChar != '#' && firstChar != '!') {
                     while (continueLine(readLine)) {
                         String nextLine = propsReader.readLine();
                         if (nextLine == null) {
@@ -239,7 +239,7 @@ public class OrderedResourceBundle {
                         valueIndex++;
                     }
                     String nextKey = readLine.substring(keyStart, sepIdx);
-                    String nextVal = (sepIdx < lineLen) ? readLine.substring(
+                    String nextVal = sepIdx < lineLen ? readLine.substring(
                             valueIndex, lineLen) : "";
                     orderedMap.put(unescape(nextKey), unescape(nextVal));
                 }
@@ -275,7 +275,7 @@ public class OrderedResourceBundle {
     private boolean continueLine(String line) {
         int slashCount = 0;
         int index = line.length() - 1;
-        while ((index >= 0) && (line.charAt(index--) == '\\')) {
+        while (index >= 0 && line.charAt(index--) == '\\') {
             slashCount++;
         }
         // FindBugs: The code uses x % 2 == 1 to check to see if a value is odd,
@@ -283,7 +283,7 @@ public class OrderedResourceBundle {
         // If this code is intending to check for oddness, consider
         // using x & 1 == 1, or x % 2 != 0.
 
-        return (slashCount % 2 != 0);
+        return slashCount % 2 != 0;
     }
 
     private static String getPropsFileNamePlusLocale(String baseName)
@@ -307,9 +307,9 @@ public class OrderedResourceBundle {
         String ctry = bundleLocale.getCountry();
         String vart = bundleLocale.getVariant();
 
-        boolean hasLang = (lang.length() > 0);
-        boolean hasCtry = (ctry.length() > 0);
-        boolean hasVart = (vart.length() > 0);
+        boolean hasLang = lang.length() > 0;
+        boolean hasCtry = ctry.length() > 0;
+        boolean hasVart = vart.length() > 0;
 
         baseName = baseName.replace('.', '/');
 

@@ -114,7 +114,7 @@ public class TypedIORelation extends IORelation {
      */
     protected void _checkContainer(CompositeEntity container)
             throws IllegalActionException {
-        if (!(container instanceof TypedCompositeActor) && (container != null)) {
+        if (!(container instanceof TypedCompositeActor) && container != null) {
             throw new IllegalActionException(this, container,
                     "TypedIORelation can only be contained by "
                             + "TypedCompositeActor.");

@@ -90,7 +90,7 @@ public class RealDependency implements Dependency {
      */
     public boolean equals(Object object) {
         if (object instanceof RealDependency) {
-            return (_value == ((RealDependency) object)._value);
+            return _value == ((RealDependency) object)._value;
         }
         return false;
     }
@@ -100,7 +100,7 @@ public class RealDependency implements Dependency {
      */
     public int hashCode() {
         long v = Double.doubleToLongBits(_value);
-        return (int) (v ^ (v >>> 32));
+        return (int) (v ^ v >>> 32);
     }
 
     /** Return a dependency that results from parallel composition of

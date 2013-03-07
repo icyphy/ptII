@@ -103,8 +103,8 @@ public class UpdateAnnotations extends MoMLFilterSimple {
 
         if (attributeName.equals("name")) {
             if (attributeValue.startsWith("annotation")
-                    || (attributeValue.contains("annotation") && attributeValue
-                            .contains(":"))) {
+                    || attributeValue.contains("annotation")
+                    && attributeValue.contains(":")) {
 
                 // We found a line like
                 // <property name="annotation1"
@@ -143,10 +143,12 @@ public class UpdateAnnotations extends MoMLFilterSimple {
         if (_currentlyProcessingAnnotation
                 && container != null
                 && !container.getFullName().equals(_currentAnnotationFullName)
-                && ((_currentAnnotationFullName == null) || ((_currentAnnotationFullName != null) && !_currentAnnotationFullName
-                        .startsWith(container.getFullName())))
-                && ((_currentAnnotationFullName == null) || ((_currentAnnotationFullName != null) && !container
-                        .getFullName().startsWith(_currentAnnotationFullName)))) {
+                && (_currentAnnotationFullName == null || _currentAnnotationFullName != null
+                        && !_currentAnnotationFullName.startsWith(container
+                                .getFullName()))
+                && (_currentAnnotationFullName == null || _currentAnnotationFullName != null
+                        && !container.getFullName().startsWith(
+                                _currentAnnotationFullName))) {
             // We found another class in a different container
             // while handling an annotation.
             _reset();
@@ -292,7 +294,7 @@ public class UpdateAnnotations extends MoMLFilterSimple {
             location.validate();
         }
 
-        if ((container != null)
+        if (container != null
                 && container.getFullName().equals(_currentAnnotationFullName)
                 && _textAttribute != null) {
             // 3) We are at the end of the annotation, so we delete the

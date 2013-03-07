@@ -113,7 +113,7 @@ public class XSLTUtilities {
             _exportDTD = false;
         }
 
-        if ((_exportDTD && args.length < 4) || (!_exportDTD && args.length < 3)) {
+        if (_exportDTD && args.length < 4 || !_exportDTD && args.length < 3) {
             System.err.println("Usage: java -classpath $PTII "
                     + "ptolemy.util.XSLTUtilities inputFile "
                     + "xslFile1 [xslFile2 . . .] outputFile "

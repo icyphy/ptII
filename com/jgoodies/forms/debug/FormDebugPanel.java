@@ -215,13 +215,13 @@ public class FormDebugPanel extends JPanel {
 
         g.setColor(gridColor);
         // Paint the column bounds.
-        for (int col = 0; col < layoutInfo.columnOrigins.length; col++) {
-            g.fillRect(layoutInfo.columnOrigins[col], top, 1, height);
+        for (int columnOrigin : layoutInfo.columnOrigins) {
+            g.fillRect(columnOrigin, top, 1, height);
         }
 
         // Paint the row bounds.
-        for (int row = 0; row < layoutInfo.rowOrigins.length; row++) {
-            g.fillRect(left, layoutInfo.rowOrigins[row], width, 1);
+        for (int rowOrigin : layoutInfo.rowOrigins) {
+            g.fillRect(left, rowOrigin, width, 1);
         }
 
         if (paintDiagonals) {

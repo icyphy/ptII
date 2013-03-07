@@ -610,11 +610,11 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
                             }
                         }
                     }
-                    if (j != (functions.length - 1)) {
+                    if (j != functions.length - 1) {
                         code.append(", ");
                     }
                 }
-                if (i != (types.length - 1)) {
+                if (i != types.length - 1) {
                     code.append("},");
                 } else {
                     code.append("}");
@@ -951,8 +951,8 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
                         && (typesArray[i].equals("Boolean") || typesArray[i]
                                 .equals("String"))) {
                     boolean foundEquals = false;
-                    for (int k = 0; k < functionsArray.length; k++) {
-                        if (functionsArray[k].equals("equals")) {
+                    for (String element : functionsArray) {
+                        if (element.equals("equals")) {
                             foundEquals = true;
                         }
                     }
@@ -1010,7 +1010,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
             typeStreams[i].clear();
             //typeStreams[i].appendCodeBlock(typesArray[i] + "_new");
 
-            for (int j = 0; j < functionsArray.length; j++) {
+            for (String element : functionsArray) {
 
                 // The code block declaration has to follow this convention:
                 // /*** [function name]Block ***/
@@ -1019,7 +1019,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
                 try {
                     // Boolean_isCloseTo and String_isCloseTo map to
                     // Boolean_equals and String_equals.
-                    if (functionsArray[j].equals("isCloseTo")
+                    if (element.equals("isCloseTo")
                             && (typesArray[i].equals("Boolean")
                                     || typesArray[i].equals("String") || typesArray[i]
                                         .equals("Object"))) {
@@ -1030,8 +1030,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
                             markFunctionCalled(typesArray[i] + "_equals", null);
                         }
                     } else {
-                        String functionName = typesArray[i] + "_"
-                                + functionsArray[j];
+                        String functionName = typesArray[i] + "_" + element;
 
                         if (!_unsupportedTypeFunctions.contains(functionName)
                                 && !_overloadedFunctionSet
@@ -1049,7 +1048,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
                     // reference to this label.
 
                     System.out.println("Warning, failed to find "
-                            + typesArray[i] + "_" + functionsArray[j]);
+                            + typesArray[i] + "_" + element);
                     //                     typeStreams[i].append("#define " + typesArray[i] + "_"
                     //                             + functionsArray[j] + " MISSING " + _eol);
 
@@ -1176,7 +1175,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
         code.append(super.generateVariableDeclaration());
 
         // Generate variable declarations for modified variables.
-        if (_modifiedVariables != null && !(_modifiedVariables.isEmpty())) {
+        if (_modifiedVariables != null && !_modifiedVariables.isEmpty()) {
             code.append(comment("Generate variable declarations for "
                     + "modified parameters"));
             Iterator<?> modifiedVariables = _modifiedVariables.iterator();
@@ -1219,7 +1218,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
         // }
 
         // Generate variable initialization for modified variables.
-        if (_modifiedVariables != null && !(_modifiedVariables.isEmpty())) {
+        if (_modifiedVariables != null && !_modifiedVariables.isEmpty()) {
             code.append(comment(1, "Generate variable initialization for "
                     + "modified parameters"));
 
@@ -1385,7 +1384,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
             if (!_overloadedFunctionSet.contains(name)) {
                 _overloadedFunctionSet.add(name);
 
-                String code = (javaTemplateParser == null) ? _processCode(functionCode)
+                String code = javaTemplateParser == null ? _processCode(functionCode)
                         : javaTemplateParser.processCode(functionCode);
 
                 _overloadedFunctions.append(code);
@@ -1502,7 +1501,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
                 //System.out.println(ifCount + " " + openBracketCount + " " + commentCount + " " + tryCount + " a: " + line);
                 // Keep appending lines until we are do linesPerMethod lines
                 // or the if, {}, comment or try/catch block ends.
-                for (int i = 0; (i + 1 < linesPerMethod && line != null)
+                for (int i = 0; i + 1 < linesPerMethod && line != null
                         || ifCount > 0 || openBracketCount > 0
                         || commentCount > 0 || tryCount > 0 || switchCount > 0; i++) {
                     lineNumber++;
@@ -1664,20 +1663,20 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
             String[] typesArray = new String[types.size()];
             types.toArray(typesArray);
             // Add imports for non-empty declareBlocks (usually just Array)
-            for (int i = 0; i < typesArray.length; i++) {
+            for (String element : typesArray) {
                 String typesTemplate = "$CLASSPATH/ptolemy/cg/kernel/generic/program/procedural/java/type/"
-                        + typesArray[i] + ".j";
+                        + element + ".j";
                 CodeStream codeStream = new CodeStream(typesTemplate, this);
                 try {
                     if (codeStream.getCodeBlock("declareBlock").length() > 0) {
-                        String typeName = _typeNameCG(typesArray[i]);
+                        String typeName = _typeNameCG(element);
                         _typeDeclarations.append("import " + topPackageName
                                 + typeName + ";" + _eol);
                     }
                 } catch (IllegalActionException ex) {
                     IOException exception = new IOException(
-                            "Failed to get the declare block for "
-                                    + typesArray[i] + " from " + typesTemplate);
+                            "Failed to get the declare block for " + element
+                                    + " from " + typesTemplate);
                     exception.initCause(ex);
                     throw exception;
                 }
@@ -2120,7 +2119,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
      *  @exception IllegalActionException If illegal macro names are found.
      */
     protected String _processCode(String code) throws IllegalActionException {
-        ProgramCodeGeneratorAdapter adapter = ((ProgramCodeGeneratorAdapter) getAdapter(getContainer()));
+        ProgramCodeGeneratorAdapter adapter = (ProgramCodeGeneratorAdapter) getAdapter(getContainer());
         return adapter.processCode(code);
     }
 
@@ -2366,9 +2365,9 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
 
         // If necessary, add a trailing / after codeDirectory.
         String makefileOutputName = codeDirectory.stringValue()
-                + ((!codeDirectory.stringValue().endsWith("/") && !codeDirectory
-                        .stringValue().endsWith("\\")) ? "/" : "")
-                + _sanitizedModelName + ".mk";
+                + (!codeDirectory.stringValue().endsWith("/")
+                        && !codeDirectory.stringValue().endsWith("\\") ? "/"
+                        : "") + _sanitizedModelName + ".mk";
 
         BufferedReader makefileTemplateReader = null;
 

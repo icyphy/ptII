@@ -152,8 +152,8 @@ public class PthalesScheduler extends SDFScheduler {
             NotSchedulableException {
         // Context of this scheduler.
         PthalesDirector director = (PthalesDirector) getContainer();
-        CompositeActor compositeActor = (CompositeActor) (director
-                .getContainer());
+        CompositeActor compositeActor = (CompositeActor) director
+                .getContainer();
         List<Actor> actors = compositeActor.deepEntityList();
 
         CompositeActor model = (CompositeActor) director.getContainer();

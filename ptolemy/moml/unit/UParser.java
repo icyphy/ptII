@@ -93,7 +93,7 @@ public class UParser implements UParserConstants {
         firstUnitTerm = uTerm();
         unitExpr.addUnitTerm(firstUnitTerm);
         label_1: while (true) {
-            switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk) {
+            switch (jj_ntk == -1 ? jj_ntk() : jj_ntk) {
             case MULTIPLY:
             case DIVIDE:
             case INTEGER:
@@ -107,7 +107,7 @@ public class UParser implements UParserConstants {
                 jj_la1[0] = jj_gen;
                 break label_1;
             }
-            switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk) {
+            switch (jj_ntk == -1 ? jj_ntk() : jj_ntk) {
             case DIVIDE:
                 jj_consume_token(DIVIDE);
                 unitTerm = uTerm();
@@ -177,7 +177,7 @@ public class UParser implements UParserConstants {
 
             unitTerm.setExponent(exponent);
         } else {
-            switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk) {
+            switch (jj_ntk == -1 ? jj_ntk() : jj_ntk) {
             case UNITLABEL:
             case PORT:
                 U = unit();
@@ -236,7 +236,7 @@ public class UParser implements UParserConstants {
 
     final public Token unit() throws ParseException {
         Token retv;
-        switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk) {
+        switch (jj_ntk == -1 ? jj_ntk() : jj_ntk) {
         case UNITLABEL:
             retv = jj_consume_token(UNITLABEL);
             break;
@@ -286,7 +286,7 @@ public class UParser implements UParserConstants {
         Token r;
         UnitExpr lhs, rhs;
         lhs = uExpr();
-        switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk) {
+        switch (jj_ntk == -1 ? jj_ntk() : jj_ntk) {
         case EQUALS:
             r = jj_consume_token(EQUALS);
             break;
@@ -311,7 +311,7 @@ public class UParser implements UParserConstants {
     final public int exponent() throws ParseException {
         Token x;
         int retv;
-        switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk) {
+        switch (jj_ntk == -1 ? jj_ntk() : jj_ntk) {
         case INTEGER:
             x = jj_consume_token(INTEGER);
             retv = Integer.parseInt(x.image);
@@ -342,7 +342,7 @@ public class UParser implements UParserConstants {
     final public double number() throws ParseException {
         int len;
         String tidied, x;
-        switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk) {
+        switch (jj_ntk == -1 ? jj_ntk() : jj_ntk) {
         case DOUBLE:
             jj_consume_token(DOUBLE);
             Double value;
@@ -408,7 +408,7 @@ public class UParser implements UParserConstants {
                     // If the size was specified as long, then create a long.
                     {
                         if (true) {
-                            return (Long.parseLong(x, radix));
+                            return Long.parseLong(x, radix);
                         }
                     }
                 } else {
@@ -731,8 +731,8 @@ public class UParser implements UParserConstants {
             jj_gen++;
             if (++jj_gc > 100) {
                 jj_gc = 0;
-                for (int i = 0; i < jj_2_rtns.length; i++) {
-                    JJCalls c = jj_2_rtns[i];
+                for (JJCalls jj_2_rtn : jj_2_rtns) {
+                    JJCalls c = jj_2_rtn;
                     while (c != null) {
                         if (c.gen < jj_gen) {
                             c.first = null;
@@ -812,9 +812,9 @@ public class UParser implements UParserConstants {
 
     private int jj_ntk() {
         if ((jj_nt = token.next) == null) {
-            return (jj_ntk = (token.next = token_source.getNextToken()).kind);
+            return jj_ntk = (token.next = token_source.getNextToken()).kind;
         } else {
-            return (jj_ntk = jj_nt.kind);
+            return jj_ntk = jj_nt.kind;
         }
     }
 
@@ -835,9 +835,8 @@ public class UParser implements UParserConstants {
             for (int i = 0; i < jj_endpos; i++) {
                 jj_expentry[i] = jj_lasttokens[i];
             }
-            jj_entries_loop: for (java.util.Iterator<?> it = jj_expentries
-                    .iterator(); it.hasNext();) {
-                int[] oldentry = (int[]) (it.next());
+            jj_entries_loop: for (Object name : jj_expentries) {
+                int[] oldentry = (int[]) name;
                 if (oldentry.length == jj_expentry.length) {
                     for (int i = 0; i < jj_expentry.length; i++) {
                         if (oldentry[i] != jj_expentry[i]) {
@@ -865,7 +864,7 @@ public class UParser implements UParserConstants {
         for (int i = 0; i < 7; i++) {
             if (jj_la1[i] == jj_gen) {
                 for (int j = 0; j < 32; j++) {
-                    if ((jj_la1_0[i] & (1 << j)) != 0) {
+                    if ((jj_la1_0[i] & 1 << j) != 0) {
                         la1tokens[j] = true;
                     }
                 }

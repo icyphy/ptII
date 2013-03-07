@@ -78,7 +78,7 @@ public class ArrayLength extends Transformer {
      *   an attribute that cannot be cloned.
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        ArrayLength newObject = (ArrayLength) (super.clone(workspace));
+        ArrayLength newObject = (ArrayLength) super.clone(workspace);
 
         // Set the type constraints.
         newObject.input.setTypeAtLeast(ArrayType.ARRAY_BOTTOM);

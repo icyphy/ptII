@@ -158,7 +158,7 @@ public class Location extends SingletonAttribute implements Locatable {
         String value = getExpression();
         String valueTerm = "";
 
-        if ((value != null) && !value.equals("")) {
+        if (value != null && !value.equals("")) {
             valueTerm = " value=\"" + StringUtilities.escapeForXML(value)
                     + "\"";
         }
@@ -229,7 +229,7 @@ public class Location extends SingletonAttribute implements Locatable {
             return _expression;
         }
 
-        if ((_location == null) || (_location.length == 0)) {
+        if (_location == null || _location.length == 0) {
             return "";
         }
 
@@ -237,7 +237,7 @@ public class Location extends SingletonAttribute implements Locatable {
         // can be passed to setExpression().
         StringBuffer result = new StringBuffer("{");
 
-        for (int i = 0; i < (_location.length - 1); i++) {
+        for (int i = 0; i < _location.length - 1; i++) {
             result.append(_location[i]);
             result.append(", ");
         }

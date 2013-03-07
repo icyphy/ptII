@@ -55,7 +55,7 @@ public class AFDXVlink {
      * @param source
      * @exception IllegalActionException
      */
-    public AFDXVlink (Receiver source) throws IllegalActionException {
+    public AFDXVlink(Receiver source) throws IllegalActionException {
         // 'vlink' parameter and value.
         Parameter vlParam = (Parameter) ((NamedObj) ((IntermediateReceiver) source).source)
                 .getAttribute("vlink");
@@ -87,7 +87,7 @@ public class AFDXVlink {
      * @param sched The name of the virtual-link scheduler.
      * @param src The initial actor connected to the virtual-link.
      */
-    public AFDXVlink (String nm, Double b, int ts, String sched, Actor src) {
+    public AFDXVlink(String nm, Double b, int ts, String sched, Actor src) {
         this._name = nm;
         this._bag = b;
         this._trameSize = ts;
@@ -121,12 +121,9 @@ public class AFDXVlink {
     }
 
     public String toString() {
-        return "Object AFDXVlink {"
-                + "vl_name=" + _name + " bag=" + _bag.toString()
-                + " trameSize=" + _trameSize
-                + " schedulerMux=" + _schedulerMux
-                + " source=" + _source
-                + "}";
+        return "Object AFDXVlink {" + "vl_name=" + _name + " bag="
+                + _bag.toString() + " trameSize=" + _trameSize
+                + " schedulerMux=" + _schedulerMux + " source=" + _source + "}";
     }
 
     /** The name of the virtual-link

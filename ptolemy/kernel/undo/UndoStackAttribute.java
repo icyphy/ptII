@@ -148,7 +148,7 @@ public class UndoStackAttribute extends SingletonAttribute {
         try {
             workspace().getWriteAccess();
 
-            if ((_inUndo == 0) && (_inRedo == 0)) {
+            if (_inUndo == 0 && _inRedo == 0) {
                 if (_undoEntries.size() > 1) {
                     UndoAction lastUndo = (UndoAction) _undoEntries.pop();
                     UndoAction firstUndo = (UndoAction) _undoEntries.pop();

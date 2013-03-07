@@ -307,7 +307,7 @@ public class ComplexMatrixMath {
 
         a = allocCopy(matrix);
 
-        for (int pivot = 0; pivot < (n - 1); pivot++) {
+        for (int pivot = 0; pivot < n - 1; pivot++) {
             // find the biggest absolute pivot
             double big = a[pivot][pivot].magnitudeSquared();
             int swapRow = 0; // initialize for no swap
@@ -1008,9 +1008,9 @@ public class ComplexMatrixMath {
     public static final Complex sum(final Complex[][] matrix) {
         Complex sum = Complex.ZERO;
 
-        for (int i = 0; i < matrix.length; i++) {
-            for (int j = 0; j < matrix[i].length; j++) {
-                sum = sum.add(matrix[i][j]);
+        for (Complex[] element : matrix) {
+            for (int j = 0; j < element.length; j++) {
+                sum = sum.add(element[j]);
             }
         }
 
@@ -1080,14 +1080,14 @@ public class ComplexMatrixMath {
             for (int j = 0; j < _columns(matrix); j++) {
                 sb.append(matrix[i][j].toString());
 
-                if (j < (_columns(matrix) - 1)) {
+                if (j < _columns(matrix) - 1) {
                     sb.append(elementDelimiter);
                 }
             }
 
             sb.append(vectorEnd);
 
-            if (i < (_rows(matrix) - 1)) {
+            if (i < _rows(matrix) - 1) {
                 sb.append(vectorDelimiter);
             }
         }
@@ -1280,7 +1280,7 @@ public class ComplexMatrixMath {
         int rows = _rows(matrix1);
         int columns = _columns(matrix1);
 
-        if ((rows != _rows(matrix2)) || (columns != _columns(matrix2))) {
+        if (rows != _rows(matrix2) || columns != _columns(matrix2)) {
             throw new IllegalArgumentException(
                     "ptolemy.math.ComplexMatrixMath." + caller
                             + "() : one matrix " + _dimensionString(matrix1)
@@ -1324,7 +1324,7 @@ public class ComplexMatrixMath {
      *  @return A string specifying the dimensions of the given matrix.
      */
     protected static final String _dimensionString(final Complex[][] matrix) {
-        return ("[" + _rows(matrix) + " x " + _columns(matrix) + "]");
+        return "[" + _rows(matrix) + " x " + _columns(matrix) + "]";
     }
 
     /** Orthogonalize the rows of a matrix.

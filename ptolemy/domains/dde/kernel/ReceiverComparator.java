@@ -103,22 +103,22 @@ public class ReceiverComparator implements Comparator {
         double time1 = receiver1.getReceiverTime().getDoubleValue();
         double time2 = receiver2.getReceiverTime().getDoubleValue();
 
-        if ((time1 == PrioritizedTimedQueue.IGNORE)
-                || (time2 == PrioritizedTimedQueue.IGNORE)) {
+        if (time1 == PrioritizedTimedQueue.IGNORE
+                || time2 == PrioritizedTimedQueue.IGNORE) {
             _timeKeeper._ignoredReceivers = true;
         } else {
             _timeKeeper._ignoredReceivers = false;
         }
 
         // Compare Nonnegative Time with Negative Time
-        if ((time1 >= 0) && (time2 < 0)) {
+        if (time1 >= 0 && time2 < 0) {
             return -1;
-        } else if ((time1 < 0) && (time2 >= 0)) {
+        } else if (time1 < 0 && time2 >= 0) {
             return 1;
         }
 
         // Compare Nonnegative Time with Nonnegative Time
-        if ((time1 >= 0) && (time2 >= 0)) {
+        if (time1 >= 0 && time2 >= 0) {
             if (time1 < time2) {
                 return -1;
             } else if (time1 > time2) {
@@ -127,11 +127,11 @@ public class ReceiverComparator implements Comparator {
         }
 
         // Compare Negative Time with Negative Time
-        if ((time1 == PrioritizedTimedQueue.IGNORE)
-                && (time2 == PrioritizedTimedQueue.INACTIVE)) {
+        if (time1 == PrioritizedTimedQueue.IGNORE
+                && time2 == PrioritizedTimedQueue.INACTIVE) {
             return -1;
-        } else if ((time1 == PrioritizedTimedQueue.INACTIVE)
-                && (time2 == PrioritizedTimedQueue.IGNORE)) {
+        } else if (time1 == PrioritizedTimedQueue.INACTIVE
+                && time2 == PrioritizedTimedQueue.IGNORE) {
             return 1;
         }
 

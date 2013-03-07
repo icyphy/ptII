@@ -128,7 +128,7 @@ public abstract class ColtRandomSource extends RandomSource {
             String generatorClassValue = ((StringToken) generatorClass
                     .getToken()).stringValue();
 
-            if ((generatorClassValue != null)
+            if (generatorClassValue != null
                     && !generatorClassValue.equals(_generatorClassName)) {
                 _needNewGenerator = true;
             }
@@ -145,7 +145,7 @@ public abstract class ColtRandomSource extends RandomSource {
 
     /** Create the random number generator using current parameter values. */
     protected void _createGenerator() throws IllegalActionException {
-        long seedValue = ((LongToken) (seed.getToken())).longValue();
+        long seedValue = ((LongToken) seed.getToken()).longValue();
         Token token = privateSeed.getToken();
         if (token != null) {
             seedValue = ((LongToken) token).longValue();
@@ -167,7 +167,7 @@ public abstract class ColtRandomSource extends RandomSource {
             }
         }
 
-        StringToken generatorToken = ((StringToken) generatorClass.getToken());
+        StringToken generatorToken = (StringToken) generatorClass.getToken();
         String generatorClassValue = null;
 
         if (generatorToken != null) {
@@ -176,8 +176,7 @@ public abstract class ColtRandomSource extends RandomSource {
 
         _generatorClassName = generatorClassValue;
 
-        if ((generatorClassValue == null)
-                || generatorClassValue.equals("DRand")) {
+        if (generatorClassValue == null || generatorClassValue.equals("DRand")) {
             _randomNumberGenerator = new DRand((int) seedValue);
         } else if (generatorClassValue.equals("MersenneTwister (MT19937)")) {
             _randomNumberGenerator = new MersenneTwister((int) seedValue);

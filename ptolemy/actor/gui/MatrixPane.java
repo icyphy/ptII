@@ -178,9 +178,9 @@ public class MatrixPane extends JScrollPane {
         public Object getValueAt(int row, int column) {
             // There is a bug in JTable, where it happily tries to access
             // rows and columns that are outside of range.
-            if ((row >= _matrix.getRowCount())
-                    || (column >= _matrix.getColumnCount())) {
-                return (_emptyStringToken);
+            if (row >= _matrix.getRowCount()
+                    || column >= _matrix.getColumnCount()) {
+                return _emptyStringToken;
             }
 
             return _matrix.getElementAsToken(row, column).toString();
@@ -222,7 +222,7 @@ public class MatrixPane extends JScrollPane {
          *   at the specified row and column.
          */
         public Object getValueAt(int row, int column) {
-            return (_emptyStringToken);
+            return _emptyStringToken;
         }
     }
 }

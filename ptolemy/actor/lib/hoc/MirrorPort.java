@@ -146,8 +146,8 @@ public class MirrorPort extends TypedIOPort {
             NameDuplicationException {
         super.setContainer(container);
 
-        if ((container == null) && (_associatedPort != null)
-                && (_associatedPort.getContainer() != null)) {
+        if (container == null && _associatedPort != null
+                && _associatedPort.getContainer() != null) {
             // Use a MoML change request to ensure propagation.
             // Note that when that change request is executed,
             // this port will be the associated port, but no
@@ -169,7 +169,7 @@ public class MirrorPort extends TypedIOPort {
     public void setInput(boolean isInput) throws IllegalActionException {
         super.setInput(isInput);
 
-        if ((_associatedPort != null) && (_associatedPort.isInput() != isInput)) {
+        if (_associatedPort != null && _associatedPort.isInput() != isInput) {
             // Use a MoML change request to ensure propagation.
             // Note that when that change request is executed,
             // this port will be the associated port, but no
@@ -192,8 +192,8 @@ public class MirrorPort extends TypedIOPort {
     public void setMultiport(boolean isMultiport) throws IllegalActionException {
         super.setMultiport(isMultiport);
 
-        if ((_associatedPort != null)
-                && (_associatedPort.isMultiport() != isMultiport)) {
+        if (_associatedPort != null
+                && _associatedPort.isMultiport() != isMultiport) {
             // Use a MoML change request to ensure propagation.
             // Note that when that change request is executed,
             // this port will be the associated port, but no
@@ -208,7 +208,7 @@ public class MirrorPort extends TypedIOPort {
 
         // Set the associated port first, so that if it fails, we
         // don't change the status of this one either.
-        if (!_settingAssociatedPort && (_associatedPort != null)) {
+        if (!_settingAssociatedPort && _associatedPort != null) {
             try {
                 _settingAssociatedPort = true;
                 _associatedPort.setMultiport(isMultiport);
@@ -228,8 +228,7 @@ public class MirrorPort extends TypedIOPort {
             NameDuplicationException {
         super.setName(name);
 
-        if ((_associatedPort != null)
-                && !_associatedPort.getName().equals(name)) {
+        if (_associatedPort != null && !_associatedPort.getName().equals(name)) {
             // Use a MoML change request to ensure propagation.
             // Note that when that change request is executed,
             // this port will be the associated port, but no
@@ -250,8 +249,7 @@ public class MirrorPort extends TypedIOPort {
     public void setOutput(boolean isOutput) throws IllegalActionException {
         super.setOutput(isOutput);
 
-        if ((_associatedPort != null)
-                && (_associatedPort.isOutput() != isOutput)) {
+        if (_associatedPort != null && _associatedPort.isOutput() != isOutput) {
             // Use a MoML change request to ensure propagation.
             // Note that when that change request is executed,
             // this port will be the associated port, but no

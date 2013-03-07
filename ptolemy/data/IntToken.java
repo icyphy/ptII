@@ -122,14 +122,14 @@ public class IntToken extends ScalarToken {
 
         int compare = TypeLattice.compare(BaseType.INT, token);
 
-        if ((compare == CPO.LOWER) || (compare == CPO.INCOMPARABLE)) {
+        if (compare == CPO.LOWER || compare == CPO.INCOMPARABLE) {
             throw new IllegalActionException(
                     notSupportedIncomparableConversionMessage(token, "int"));
         }
 
         compare = TypeLattice.compare(BaseType.SHORT, token);
 
-        if ((compare == CPO.SAME) || (compare == CPO.HIGHER)) {
+        if (compare == CPO.SAME || compare == CPO.HIGHER) {
             ShortToken shortToken = ShortToken.convert(token);
             IntToken result = new IntToken(shortToken.intValue());
             if (shortToken._unitCategoryExponents != null
@@ -429,7 +429,7 @@ public class IntToken extends ScalarToken {
         double right = ((IntToken) rightArgument).doubleValue();
         double left = doubleValue();
 
-        if ((right > (left + epsilon)) || (right < (left - epsilon))) {
+        if (right > left + epsilon || right < left - epsilon) {
             return BooleanToken.FALSE;
         } else {
             return BooleanToken.TRUE;

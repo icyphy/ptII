@@ -197,7 +197,7 @@ public class Test extends NonStrictTest {
 
         // If we are past the end of the expected inputs, then read
         // and discard all inputs and output true
-        if (_numberOfInputTokensSeen >= ((ArrayToken) (correctValues.getToken()))
+        if (_numberOfInputTokensSeen >= ((ArrayToken) correctValues.getToken())
                 .length()) {
             if (_debugging) {
                 _debug("Past the end of training data. Read and discard all inputs.");
@@ -215,11 +215,11 @@ public class Test extends NonStrictTest {
             return;
         }
 
-        Token referenceToken = ((ArrayToken) (correctValues.getToken()))
+        Token referenceToken = ((ArrayToken) correctValues.getToken())
                 .getElement(_numberOfInputTokensSeen);
         Token[] reference;
 
-        if ((width == 1) && !(referenceToken instanceof ArrayToken)) {
+        if (width == 1 && !(referenceToken instanceof ArrayToken)) {
             reference = new Token[1];
             reference[0] = referenceToken;
         } else {
@@ -298,8 +298,8 @@ public class Test extends NonStrictTest {
         _numberOfInputTokensSeen++;
 
         if (output.numberOfSinks() > 0) {
-            if (_numberOfInputTokensSeen >= ((ArrayToken) (correctValues
-                    .getToken())).length()) {
+            if (_numberOfInputTokensSeen >= ((ArrayToken) correctValues
+                    .getToken()).length()) {
                 // Seen all expected inputs.
                 output.send(0, BooleanToken.TRUE);
             } else {

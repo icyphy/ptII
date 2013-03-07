@@ -706,7 +706,7 @@ public class DistributedSDFScheduler extends SDFScheduler {
                         // i.e. all its inputs are satisfied, and it
                         // appears in the unscheduled actors list
                         // then put it at the END of readyToScheduleActorList.
-                        if ((inputCount <= 0)
+                        if (inputCount <= 0
                                 && unscheduledActorList.contains(currentActor)) {
                             readyToScheduleActorList.addFirst(currentActor);
                         }
@@ -809,8 +809,8 @@ public class DistributedSDFScheduler extends SDFScheduler {
                 // Update the buffer size, if necessary.
                 int capacity = receiver.getCapacity();
 
-                if ((capacity == SDFReceiver.INFINITE_CAPACITY)
-                        || (receiver._waitingTokens > capacity)) {
+                if (capacity == SDFReceiver.INFINITE_CAPACITY
+                        || receiver._waitingTokens > capacity) {
                     receiver.setCapacity(receiver._waitingTokens);
                 }
 
@@ -830,7 +830,7 @@ public class DistributedSDFScheduler extends SDFScheduler {
                     // Note that the actor may appear more than once.
                     // This is OK, since we remove all of the appearances from
                     // the list when the actor is actually scheduled.
-                    if ((inputCount < 1) && (firingsRemaining > 0)) {
+                    if (inputCount < 1 && firingsRemaining > 0) {
                         // Ned Stoffel suggested changing this from
                         // addLast() to addFirst() so as to minimize
                         // the number of tokens in transit.  "This leads

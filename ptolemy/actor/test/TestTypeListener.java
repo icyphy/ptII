@@ -71,7 +71,7 @@ public class TestTypeListener implements TypeListener {
         _message = event.getSource().getFullName() + "/";
 
         Type oldtype = event.getOldType();
-        _message += (oldtype.toString() + "/");
+        _message += oldtype.toString() + "/";
 
         Type newtype = event.getNewType();
         _message += newtype.toString();

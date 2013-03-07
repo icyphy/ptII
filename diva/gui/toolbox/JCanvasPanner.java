@@ -291,8 +291,8 @@ public class JCanvasPanner extends JPanel {
     private class PanMouseListener extends MouseAdapter implements
             MouseMotionListener {
         public void mousePressed(MouseEvent evt) {
-            if ((_target != null)
-                    && ((evt.getModifiers() & InputEvent.BUTTON1_MASK) != 0)) {
+            if (_target != null
+                    && (evt.getModifiers() & InputEvent.BUTTON1_MASK) != 0) {
                 setPosition(evt.getX(), evt.getY());
             }
         }
@@ -301,8 +301,8 @@ public class JCanvasPanner extends JPanel {
         }
 
         public void mouseDragged(MouseEvent evt) {
-            if ((_target != null)
-                    && ((evt.getModifiers() & InputEvent.BUTTON1_MASK) != 0)) {
+            if (_target != null
+                    && (evt.getModifiers() & InputEvent.BUTTON1_MASK) != 0) {
                 setPosition(evt.getX(), evt.getY());
             }
         }

@@ -354,7 +354,7 @@ public class CompositeFigure extends AbstractFigureContainer {
                 _children.getIntersectedFigures(region).figuresFromFront(),
                 region);
 
-        if ((hit == null) && (_background != null) && _background.hit(region)) {
+        if (hit == null && _background != null && _background.hit(region)) {
             return CanvasUtilities.pick(new UnitIterator(_background), region);
         }
 
@@ -372,7 +372,7 @@ public class CompositeFigure extends AbstractFigureContainer {
 
         Figure hit = CanvasUtilities.pick(figuresFromFront(), region, filter);
 
-        if ((hit == null) && (_background != null) && _background.hit(region)) {
+        if (hit == null && _background != null && _background.hit(region)) {
             return CanvasUtilities.pick(new UnitIterator(_background), region,
                     filter);
         }
@@ -409,7 +409,7 @@ public class CompositeFigure extends AbstractFigureContainer {
         // Check to make sure that this repaint isn't being triggered
         // by something below in the hierarchy that has moved in such
         // a way as to modify the bounding box.
-        if ((_cachedBounds != null) && !_cachedBounds.contains(d.getBounds())) {
+        if (_cachedBounds != null && !_cachedBounds.contains(d.getBounds())) {
             _cachedBounds = null;
         }
 

@@ -87,8 +87,8 @@ public class Inequality {
      */
     public boolean equals(Object object) {
         if (object instanceof Inequality) {
-            return (((Inequality) object)._greaterTerm.equals(_greaterTerm) && ((Inequality) object)._lesserTerm
-                    .equals(_lesserTerm));
+            return ((Inequality) object)._greaterTerm.equals(_greaterTerm)
+                    && ((Inequality) object)._lesserTerm.equals(_lesserTerm);
         }
         return false;
     }
@@ -129,7 +129,7 @@ public class Inequality {
     public boolean isSatisfied(CPO cpo) throws IllegalActionException {
         int result = cpo.compare(_lesserTerm.getValue(),
                 _greaterTerm.getValue());
-        return ((result == CPO.LOWER) || (result == CPO.SAME));
+        return result == CPO.LOWER || result == CPO.SAME;
     }
 
     /** Override the base class to describe the inequality.

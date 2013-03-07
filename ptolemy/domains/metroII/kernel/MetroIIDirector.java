@@ -327,9 +327,9 @@ public class MetroIIDirector extends Director {
      */
     public boolean postfire() throws IllegalActionException {
         _iterationCount++;
-        int iterationsValue = ((IntToken) (iterations.getToken())).intValue();
-        if (_stopRequested || (iterationsValue > 0)
-                && (_iterationCount >= iterationsValue)) {
+        int iterationsValue = ((IntToken) iterations.getToken()).intValue();
+        if (_stopRequested || iterationsValue > 0
+                && _iterationCount >= iterationsValue) {
             _iterationCount = 0;
             for (StartOrResumable actor : _actorList) {
                 actor.reset();
@@ -338,7 +338,6 @@ public class MetroIIDirector extends Director {
         }
         return true;
     }
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////

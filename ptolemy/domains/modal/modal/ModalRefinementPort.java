@@ -344,8 +344,8 @@ public class ModalRefinementPort extends RefinementPort {
             // to ports in the enclosing modal model and its refinements.
             super.setContainer(container);
 
-            if ((oldContainer instanceof CompositeEntity)
-                    && (container != oldContainer)) {
+            if (oldContainer instanceof CompositeEntity
+                    && container != oldContainer) {
                 // The port is being removed from the current container.
                 // Remove it from the mirrored ports.
                 Iterator entities = ((CompositeEntity) oldContainer)
@@ -617,7 +617,7 @@ public class ModalRefinementPort extends RefinementPort {
      */
     protected void _checkContainer(Entity container)
             throws IllegalActionException {
-        if (!(container instanceof CompositeEntity) && (container != null)) {
+        if (!(container instanceof CompositeEntity) && container != null) {
             throw new IllegalActionException(container, this,
                     "ModalPort can only be contained by CompositeEntity objects. "
                             + "The container was: " + container);

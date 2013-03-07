@@ -243,8 +243,8 @@ public class Backoff extends MACActorBase {
             switch (_messageType) {
             // modify standard here
             case Busy:
-                _slotCnt -= (int) ((_currentTime.subtract(_backoffStartTime)
-                        .getDoubleValue() * 1e6) / _aSlotTime);
+                _slotCnt -= (int) (_currentTime.subtract(_backoffStartTime)
+                        .getDoubleValue() * 1e6 / _aSlotTime);
                 cancelTimer(_BackoffTimer);
                 _state = Channel_Busy;
                 _status = Busy;
@@ -269,7 +269,7 @@ public class Backoff extends MACActorBase {
     public void initialize() throws IllegalActionException {
         super.initialize();
 
-        long sd = ((LongToken) (seed.getToken())).longValue();
+        long sd = ((LongToken) seed.getToken()).longValue();
 
         if (sd != 0) {
             _random.setSeed(sd);

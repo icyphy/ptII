@@ -157,8 +157,7 @@ public class ExportImageJUnitTest {
         // FIXME: we should get the list of acceptable format names from
         // BasicGraphFrame
         String[] formatNames = new String[] { "GIF", "PNG" };
-        for (int i = 0; i < formatNames.length; i++) {
-            final String formatName = formatNames[i];
+        for (final String formatName : formatNames) {
             Runnable exportImageAction = new Runnable() {
                 public void run() {
                     try {
@@ -193,9 +192,9 @@ public class ExportImageJUnitTest {
                             manager = new Manager(
                                     imageDisplayModel[0].workspace(),
                                     "MyManager");
-                            (imageDisplayModel[0]).setManager(manager);
+                            imageDisplayModel[0].setManager(manager);
                         }
-                        (imageDisplayModel[0])
+                        imageDisplayModel[0]
                                 .setModelErrorHandler(new BasicModelErrorHandler());
                         manager.execute();
 

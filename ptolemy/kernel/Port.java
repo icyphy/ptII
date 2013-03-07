@@ -304,7 +304,7 @@ public class Port extends NamedObj {
      *   by a class definition.
      */
     public void link(Relation relation) throws IllegalActionException {
-        if ((relation != null) && (_workspace != relation.workspace())) {
+        if (relation != null && _workspace != relation.workspace()) {
             throw new IllegalActionException(this, relation,
                     "Cannot link because workspaces are different.");
         }
@@ -598,7 +598,7 @@ public class Port extends NamedObj {
      */
     public void setContainer(Entity entity) throws IllegalActionException,
             NameDuplicationException {
-        if ((entity != null) && (_workspace != entity.workspace())) {
+        if (entity != null && _workspace != entity.workspace()) {
             throw new IllegalActionException(this, entity,
                     "Cannot set container because workspaces are different.");
         }
@@ -695,10 +695,10 @@ public class Port extends NamedObj {
 
         Entity container = (Entity) getContainer();
 
-        if ((container != null)) {
+        if (container != null) {
             Port another = container.getPort(name);
 
-            if ((another != null) && (another != this)) {
+            if (another != null && another != this) {
                 throw new NameDuplicationException(container,
                         "Name duplication: " + name);
             }
@@ -835,7 +835,7 @@ public class Port extends NamedObj {
 
             StringBuffer result = new StringBuffer();
 
-            if ((bracket == 1) || (bracket == 2)) {
+            if (bracket == 1 || bracket == 2) {
                 result.append(super._description(detail, indent, 1));
             } else {
                 result.append(super._description(detail, indent, 0));
@@ -903,7 +903,7 @@ public class Port extends NamedObj {
 
         Port candidate = ((Entity) container).getPort(relativeName);
 
-        if ((candidate != null) && !getClass().isInstance(candidate)) {
+        if (candidate != null && !getClass().isInstance(candidate)) {
             throw new IllegalActionException(this, "Expected "
                     + candidate.getFullName() + " to be an instance of "
                     + getClass().getName() + ", but it is "

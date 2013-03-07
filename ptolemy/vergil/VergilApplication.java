@@ -345,7 +345,7 @@ public class VergilApplication extends MoMLApplication {
         Parameter hideUserLibraryAttribute = (Parameter) configuration
                 .getAttribute("_hideUserLibrary", Parameter.class);
 
-        if ((hideUserLibraryAttribute == null)
+        if (hideUserLibraryAttribute == null
                 || hideUserLibraryAttribute.getExpression().equals("false")) {
 
             // Load the user library.
@@ -377,7 +377,7 @@ public class VergilApplication extends MoMLApplication {
         Parameter applicationBlankPtolemyEffigyAtStartup = (Parameter) configuration
                 .getAttribute("_applicationBlankPtolemyEffigyAtStartup",
                         Parameter.class);
-        if ((applicationBlankPtolemyEffigyAtStartup != null)
+        if (applicationBlankPtolemyEffigyAtStartup != null
                 && applicationBlankPtolemyEffigyAtStartup.getExpression()
                         .equals("true")) {
 

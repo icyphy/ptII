@@ -200,7 +200,7 @@ public class LayoutHint extends SingletonAttribute implements Settable {
         String value = getExpression();
         String valueTerm = "";
 
-        if ((value != null) && !value.equals("")) {
+        if (value != null && !value.equals("")) {
             valueTerm = " value=\"" + StringUtilities.escapeForXML(value)
                     + "\"";
         }
@@ -500,7 +500,7 @@ public class LayoutHint extends SingletonAttribute implements Settable {
                 // A LayoutHintItem has a head and tail entry, which are
                 // records containing an identifying String, coordinates,
                 // and optionally the width of a multiport.
-                RecordToken headToken = ((RecordToken) layoutItem.get("head"));
+                RecordToken headToken = (RecordToken) layoutItem.get("head");
                 NamedObj head = _findNamedObj(this,
                         ((StringToken) headToken.get("id")).stringValue());
                 Point2D.Double headLocation = new Point2D.Double();
@@ -514,7 +514,7 @@ public class LayoutHint extends SingletonAttribute implements Settable {
                             .intValue();
                 }
 
-                RecordToken tailToken = ((RecordToken) layoutItem.get("tail"));
+                RecordToken tailToken = (RecordToken) layoutItem.get("tail");
                 NamedObj tail = _findNamedObj(this,
                         ((StringToken) tailToken.get("id")).stringValue());
                 Point2D.Double tailLocation = new Point2D.Double();
@@ -599,7 +599,7 @@ public class LayoutHint extends SingletonAttribute implements Settable {
      * @return the changed array
      */
     private static double[] _reverseCoordinateArray(double[] bendPoints) {
-        int size = bendPoints.length - (bendPoints.length % 2);
+        int size = bendPoints.length - bendPoints.length % 2;
         // Make sure only to process even length.
         // Don't do anything if the array has only one location.
         if (size >= 4) {
@@ -777,7 +777,7 @@ public class LayoutHint extends SingletonAttribute implements Settable {
                 buffer.append(",index=" + _tailMultiportIndex[1]);
             }
             buffer.append("}, " + "points={");
-            for (int i = 0; i < (_bendPoints.length - 1); i += 2) {
+            for (int i = 0; i < _bendPoints.length - 1; i += 2) {
                 if (i > 0) {
                     buffer.append(",");
                 }
@@ -858,8 +858,8 @@ public class LayoutHint extends SingletonAttribute implements Settable {
             // now we know the head and tail have been moved but the relative
             // location is the same
             // we can safely translate everything
-            _translate((newHeadLocation.x - _headLocation.x),
-                    (newHeadLocation.y - _headLocation.y));
+            _translate(newHeadLocation.x - _headLocation.x, newHeadLocation.y
+                    - _headLocation.y);
             return true;
         }
 
@@ -925,7 +925,7 @@ public class LayoutHint extends SingletonAttribute implements Settable {
             _tailLocation.y += y;
             // iterate all bend points, make sure that in a faulty odd
             // array, the last entry is ignored
-            for (int i = 0; i < (_bendPoints.length - 1); i += 2) {
+            for (int i = 0; i < _bendPoints.length - 1; i += 2) {
                 _bendPoints[i] += x;
                 _bendPoints[i + 1] += y;
             }

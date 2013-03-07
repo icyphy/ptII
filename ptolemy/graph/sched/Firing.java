@@ -214,7 +214,7 @@ public class Firing extends ScheduleElement {
         String result = "Fire firing element " + _firingElement;
 
         if (getIterationCount() > 1) {
-            result += (" " + getIterationCount() + " times");
+            result += " " + getIterationCount() + " times";
         }
 
         return result;
@@ -249,7 +249,7 @@ public class Firing extends ScheduleElement {
                 throw new ConcurrentModificationException(
                         "Schedule structure changed while iterator is active.");
             } else {
-                return (_currentElement <= getIterationCount());
+                return _currentElement <= getIterationCount();
             }
         }
 

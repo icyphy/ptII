@@ -322,7 +322,7 @@ public class ModularCodeGenTypedCompositeActor extends LazyTypedCompositeActor {
             while (inputPorts.hasNext()) {
                 TypedIOPort port = (TypedIOPort) inputPorts.next();
                 int rate = DFUtilities.getTokenConsumptionRate(port);
-                Type type = (port).getType();
+                Type type = port.getType();
                 Object tokenHolder = null;
 
                 int numberOfChannels = port.getWidth() < port.getWidthInside() ? port
@@ -511,14 +511,14 @@ public class ModularCodeGenTypedCompositeActor extends LazyTypedCompositeActor {
             Method[] methods = classInstance.getMethods();
             Method initializeMethod = null;
 
-            for (int i = 0; i < methods.length; i++) {
-                String name = methods[i].getName();
+            for (Method method : methods) {
+                String name = method.getName();
                 if (name.equals("fire")) {
-                    _fireMethod = methods[i];
+                    _fireMethod = method;
                 }
 
                 if (name.equals("initialize")) {
-                    initializeMethod = methods[i];
+                    initializeMethod = method;
                 }
             }
             if (_fireMethod == null) {
@@ -559,7 +559,7 @@ public class ModularCodeGenTypedCompositeActor extends LazyTypedCompositeActor {
      *  a profile class or if the parent method returns true.
      */
     public boolean isOpaque() {
-        return (_USE_PROFILE && _getProfile() != null) || super.isOpaque();
+        return _USE_PROFILE && _getProfile() != null || super.isOpaque();
     }
 
     /** Create a new relation with the specified name, add it to the
@@ -911,12 +911,12 @@ public class ModularCodeGenTypedCompositeActor extends LazyTypedCompositeActor {
 
         // Published ports are in stored in the immediate opaque parent's composite.
         NamedObj container = getContainer();
-        while ((container instanceof CompositeActor)
+        while (container instanceof CompositeActor
                 && !((CompositeActor) container).isOpaque()) {
             container = ((CompositeActor) container).getContainer();
         }
 
-        if ((container instanceof CompositeActor)) {
+        if (container instanceof CompositeActor) {
             isPublishPort = ((CompositeActor) container).isPublishedPort(port);
         }
 
@@ -964,7 +964,7 @@ public class ModularCodeGenTypedCompositeActor extends LazyTypedCompositeActor {
 
                 ClassLoader classLoader = new URLClassLoader(urls);
                 classInstance = classLoader.loadClass(className);
-                _profile = (Profile) (classInstance.newInstance());
+                _profile = (Profile) classInstance.newInstance();
                 portList();
             }
         } catch (Throwable throwable) {
@@ -1026,7 +1026,7 @@ public class ModularCodeGenTypedCompositeActor extends LazyTypedCompositeActor {
             }
         } else if (publisher) {
             NamedObj container = getContainer();
-            while ((container instanceof CompositeActor)
+            while (container instanceof CompositeActor
                     && !((CompositeActor) container).isOpaque()) {
                 container = ((CompositeActor) container).getContainer();
             }
@@ -1115,11 +1115,11 @@ public class ModularCodeGenTypedCompositeActor extends LazyTypedCompositeActor {
                         payload = getPayload.invoke(tmpOutputTokens[i][k],
                                 (Object[]) null);
 
-                        Field objSize = (payload.getClass().getField("size"));
+                        Field objSize = payload.getClass().getField("size");
                         int size = objSize.getInt(payload);
 
-                        Field elementsField = (payload.getClass()
-                                .getField("elements"));
+                        Field elementsField = payload.getClass().getField(
+                                "elements");
                         Object[] elements = (Object[]) elementsField
                                 .get(payload);
 

@@ -118,7 +118,7 @@ public class LabelWrapper extends AbstractFigure {
     /** Paint this figure
      */
     public void paint(Graphics2D g) {
-        if ((_child != null) && isVisible()) {
+        if (_child != null && isVisible()) {
             _child.paint(g);
             _label.paint(g);
         }

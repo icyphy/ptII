@@ -153,7 +153,7 @@ public class PaintedShape extends AbstractPaintedGraphic {
         }
 
         // Stroke it
-        if ((stroke != null) && (strokePaint != null)) {
+        if (stroke != null && strokePaint != null) {
             g.setStroke(stroke);
             g.setPaint(strokePaint);
             g.draw(shape);
@@ -167,8 +167,8 @@ public class PaintedShape extends AbstractPaintedGraphic {
         if (lineWidth <= 0.0) {
             stroke = null;
         } else {
-            if ((stroke == null)
-                    || (lineWidth != ((BasicStroke) stroke).getLineWidth())) {
+            if (stroke == null
+                    || lineWidth != ((BasicStroke) stroke).getLineWidth()) {
                 stroke = AbstractPaintedGraphic.getStroke(lineWidth);
             }
         }

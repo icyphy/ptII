@@ -129,8 +129,8 @@ public class SensorHandler extends InputDevice {
         // parameter of the director is 0.0.
         Parameter parameter = (Parameter) getDirector().getAttribute(
                 "schedulerExecutionTime");
-        if ((parameter != null)
-                && (((DoubleToken) parameter.getToken()).doubleValue() != 0.0)) {
+        if (parameter != null
+                && ((DoubleToken) parameter.getToken()).doubleValue() != 0.0) {
             boolean flag = false;
             for (TypedIOPort input : inputPortList()) {
                 for (IOPort sourcePort : input.sourcePortList()) {

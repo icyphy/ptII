@@ -155,10 +155,10 @@ public class ArrayPlotterXY extends Plotter implements SequenceActor {
         if (jointWidth > ywidth) {
             jointWidth = ywidth;
         }
-        if ((_xtokens == null) || (_xtokens.length != jointWidth)) {
+        if (_xtokens == null || _xtokens.length != jointWidth) {
             _xtokens = new ArrayToken[jointWidth];
         }
-        if ((_ytokens == null) || (_ytokens.length != jointWidth)) {
+        if (_ytokens == null || _ytokens.length != jointWidth) {
             _ytokens = new ArrayToken[jointWidth];
         }
 

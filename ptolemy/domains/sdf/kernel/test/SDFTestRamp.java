@@ -74,7 +74,7 @@ public class SDFTestRamp extends TypedAtomicActor {
      *   cannot be cloned.
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        SDFTestRamp newObject = (SDFTestRamp) (super.clone(workspace));
+        SDFTestRamp newObject = (SDFTestRamp) super.clone(workspace);
         newObject.output = (TypedIOPort) newObject.getPort("output");
         return newObject;
     }

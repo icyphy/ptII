@@ -113,7 +113,7 @@ public class JimpleWriter extends SceneTransformer implements HasPhaseOptions {
                 fileName = "";
             }
 
-            fileName += (theClass.getName() + ".jimple");
+            fileName += theClass.getName() + ".jimple";
 
             FileOutputStream streamOut = null;
             PrintWriter writerOut = null;

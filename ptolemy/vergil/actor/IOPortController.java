@@ -34,7 +34,6 @@ import java.awt.geom.Ellipse2D;
 import java.awt.geom.Line2D;
 import java.awt.geom.Path2D;
 import java.awt.geom.Rectangle2D;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.SwingConstants;
@@ -213,7 +212,7 @@ public class IOPortController extends AttributeController {
 
         // Ensure that the port rotation is one of
         // {-270, -180, -90, 0, 90, 180, 270}.
-        portRotation = 90 * ((portRotation / 90) % 4);
+        portRotation = 90 * (portRotation / 90 % 4);
 
         // Finally, check for horizontal or vertical flipping.
         try {
@@ -452,7 +451,7 @@ public class IOPortController extends AttributeController {
                         }
                         ColorAttribute color = null;
                         if (object instanceof MonitoredQuantityManager) {
-                            color = ((MonitoredQuantityManager)object).color;
+                            color = ((MonitoredQuantityManager) object).color;
                         } else if (object instanceof CompositeQM) {
                             color = ((CompositeQM) object).color;
                         }
@@ -469,15 +468,13 @@ public class IOPortController extends AttributeController {
                             if (qmStringBuffer.length() > 0) {
                                 qmStringBuffer.append(", ");
                             }
-                            qmStringBuffer
-                                    .append(((NamedObj) qmList.get(j))
-                                            .getName());
+                            qmStringBuffer.append(((NamedObj) qmList.get(j))
+                                    .getName());
                         }
-                        info.setExpression("QM: "
-                                + qmStringBuffer.toString());
+                        info.setExpression("QM: " + qmStringBuffer.toString());
                     } else {
                         StringAttribute info = (StringAttribute) port
-                            .getAttribute("_showInfo");
+                                .getAttribute("_showInfo");
                         port.removeAttribute(info);
                     }
                 }
@@ -493,8 +490,8 @@ public class IOPortController extends AttributeController {
 
             ColorAttribute colorAttribute;
             try {
-                colorAttribute = (ColorAttribute) (port.getAttribute("_color",
-                        ColorAttribute.class));
+                colorAttribute = (ColorAttribute) port.getAttribute("_color",
+                        ColorAttribute.class);
                 if (colorAttribute != null) {
                     Color color = colorAttribute.asColor();
                     fill = color;
@@ -536,8 +533,8 @@ public class IOPortController extends AttributeController {
                     if (!tipText.equals(displayName)) {
                         tipText = displayName + " (" + tipText + ")";
                     }
-                    StringAttribute _explAttr = (StringAttribute) (port
-                            .getAttribute("_explanation"));
+                    StringAttribute _explAttr = (StringAttribute) port
+                            .getAttribute("_explanation");
 
                     if (_explAttr != null) {
                         tipText = _explAttr.getExpression();
@@ -586,8 +583,8 @@ public class IOPortController extends AttributeController {
                                     tipText = displayName + " (" + tipText
                                             + ")";
                                 }
-                                StringAttribute _explAttr = (StringAttribute) (port
-                                        .getAttribute("_explanation"));
+                                StringAttribute _explAttr = (StringAttribute) port
+                                        .getAttribute("_explanation");
 
                                 if (_explAttr != null) {
                                     tipText = _explAttr.getExpression();
@@ -623,32 +620,32 @@ public class IOPortController extends AttributeController {
 
                         if (direction == SwingConstants.EAST) {
                             startX = x + width;
-                            startY = y + (height / 2);
-                            endX = startX
-                                    + (extent * MULTIPORT_CONNECTION_SPACING);
-                            endY = startY
-                                    + (extent * MULTIPORT_CONNECTION_SPACING);
+                            startY = y + height / 2;
+                            endX = startX + extent
+                                    * MULTIPORT_CONNECTION_SPACING;
+                            endY = startY + extent
+                                    * MULTIPORT_CONNECTION_SPACING;
                         } else if (direction == SwingConstants.WEST) {
                             startX = x;
-                            startY = y + (height / 2);
-                            endX = startX
-                                    - (extent * MULTIPORT_CONNECTION_SPACING);
-                            endY = startY
-                                    - (extent * MULTIPORT_CONNECTION_SPACING);
+                            startY = y + height / 2;
+                            endX = startX - extent
+                                    * MULTIPORT_CONNECTION_SPACING;
+                            endY = startY - extent
+                                    * MULTIPORT_CONNECTION_SPACING;
                         } else if (direction == SwingConstants.NORTH) {
-                            startX = x + (width / 2);
+                            startX = x + width / 2;
                             startY = y;
-                            endX = startX
-                                    - (extent * MULTIPORT_CONNECTION_SPACING);
-                            endY = startY
-                                    - (extent * MULTIPORT_CONNECTION_SPACING);
+                            endX = startX - extent
+                                    * MULTIPORT_CONNECTION_SPACING;
+                            endY = startY - extent
+                                    * MULTIPORT_CONNECTION_SPACING;
                         } else {
-                            startX = x + (width / 2);
+                            startX = x + width / 2;
                             startY = y + height;
-                            endX = startX
-                                    + (extent * MULTIPORT_CONNECTION_SPACING);
-                            endY = startY
-                                    + (extent * MULTIPORT_CONNECTION_SPACING);
+                            endX = startX + extent
+                                    * MULTIPORT_CONNECTION_SPACING;
+                            endY = startY + extent
+                                    * MULTIPORT_CONNECTION_SPACING;
                         }
 
                         Line2D line = new Line2D.Double(startX, startY, endX,

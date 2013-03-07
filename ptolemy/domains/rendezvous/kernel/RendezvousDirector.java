@@ -187,7 +187,8 @@ public class RendezvousDirector extends CompositeProcessDirector {
      *  @return True if all threads are stopped or blocked.
      */
     protected synchronized boolean _areAllThreadsStopped() {
-        return (_getActiveThreadsCount() == (_getStoppedThreadsCount() + _getBlockedThreadsCount()));
+        return _getActiveThreadsCount() == _getStoppedThreadsCount()
+                + _getBlockedThreadsCount();
     }
 
     /** Return true if all active threads are blocked.
@@ -230,7 +231,7 @@ public class RendezvousDirector extends CompositeProcessDirector {
             Parameter suppress = (Parameter) getContainer().getAttribute(
                     "SuppressDeadlockReporting", Parameter.class);
 
-            if ((suppress == null)
+            if (suppress == null
                     || !(suppress.getToken() instanceof BooleanToken)
                     || !((BooleanToken) suppress.getToken()).booleanValue()) {
                 MessageHandler

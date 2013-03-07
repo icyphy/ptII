@@ -335,7 +335,7 @@ public class MultiCompositePort extends TypedIOPort {
 
             MultiCompositeActor model = (MultiCompositeActor) getContainer();
 
-            if ((model != null) && (container != model)) {
+            if (model != null && container != model) {
                 // The port is being removed from the current container.
                 // Remove it from the mirrored ports.
                 Iterator entities = model.entityList().iterator();
@@ -586,7 +586,7 @@ public class MultiCompositePort extends TypedIOPort {
      */
     protected void _checkContainer(Entity container)
             throws IllegalActionException {
-        if (!(container instanceof MultiCompositeActor) && (container != null)) {
+        if (!(container instanceof MultiCompositeActor) && container != null) {
             throw new IllegalActionException(container, this,
                     "MultiCompositePort can only be contained by MultiCompositeActor objects. "
                             + "The container was: " + container);

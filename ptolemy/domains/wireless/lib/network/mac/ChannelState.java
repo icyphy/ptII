@@ -169,7 +169,7 @@ public class ChannelState extends MACActorBase {
                 _messageType = ((IntToken) _inputMessage.get("kind"))
                         .intValue();
 
-                if ((_messageType == UseDifs) || (_messageType == UseEifs)) {
+                if (_messageType == UseDifs || _messageType == UseEifs) {
                     if (_messageType == UseDifs) {
                         _dIfs = _dDIfs - _aRxTxTurnaroundTime;
                     } else if (_messageType == UseEifs) {
@@ -331,8 +331,8 @@ public class ChannelState extends MACActorBase {
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
-        _dDIfs = _aSifsTime + (2 * _aSlotTime);
-        _dEIfs = _aSifsTime + (_sAckCtsLng / _mBrate) + _aPreambleLength
+        _dDIfs = _aSifsTime + 2 * _aSlotTime;
+        _dEIfs = _aSifsTime + _sAckCtsLng / _mBrate + _aPreambleLength
                 + _aPlcpHeaderLength + _dDIfs;
         _dIfs = _dEIfs;
         _state = 0;
@@ -367,8 +367,8 @@ public class ChannelState extends MACActorBase {
             // new NAV
             Time tNew = new Time(getDirector(),
                     ((DoubleToken) _inputMessage.get("tRef")).doubleValue()
-                            + (((IntToken) _inputMessage.get("dNav"))
-                                    .intValue() * 1e-6));
+                            + ((IntToken) _inputMessage.get("dNav")).intValue()
+                            * 1e-6);
 
             // if the new NAV is larger than the existing one, use it instead
             if (tNew.compareTo(_NavTimer.expirationTime) > 0) {
@@ -397,10 +397,10 @@ public class ChannelState extends MACActorBase {
     }
 
     private boolean _setNav() throws IllegalActionException {
-        Time expirationTime = new Time(
-                getDirector(),
+        Time expirationTime = new Time(getDirector(),
                 ((DoubleToken) _inputMessage.get("tRef")).doubleValue()
-                        + (((IntToken) _inputMessage.get("dNav")).intValue() * 1e-6));
+                        + ((IntToken) _inputMessage.get("dNav")).intValue()
+                        * 1e-6);
         _setAttribute(_tNavEnd,
                 new DoubleToken(expirationTime.getDoubleValue()));
 

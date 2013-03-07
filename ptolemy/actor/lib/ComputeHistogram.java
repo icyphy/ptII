@@ -162,8 +162,8 @@ public class ComputeHistogram extends TypedAtomicActor {
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
-        if ((attribute == minimumValue) || (attribute == maximumValue)
-                || (attribute == numberOfBins)) {
+        if (attribute == minimumValue || attribute == maximumValue
+                || attribute == numberOfBins) {
             _minimumValue = ((DoubleToken) minimumValue.getToken())
                     .doubleValue();
             _maximumValue = ((DoubleToken) maximumValue.getToken())
@@ -238,18 +238,17 @@ public class ComputeHistogram extends TypedAtomicActor {
      */
     public boolean prefire() throws IllegalActionException {
         int count = ((IntToken) inputCount.getToken()).intValue();
-        return (input.hasToken(0, count) && super.prefire());
+        return input.hasToken(0, count) && super.prefire();
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
     private void _addPoint(double value) {
         // Calculate the bin number.
-        int bin = (int) (Math
-                .round((value - (_minimumValue + (_binWidth * 0.5)))
-                        / _binWidth));
+        int bin = (int) Math.round((value - (_minimumValue + _binWidth * 0.5))
+                / _binWidth);
 
-        if ((bin >= 0) && (bin < _numberOfBins)) {
+        if (bin >= 0 && bin < _numberOfBins) {
             _bins[bin]++;
         }
     }

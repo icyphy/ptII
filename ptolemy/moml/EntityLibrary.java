@@ -147,7 +147,8 @@ import ptolemy.util.MessageHandler;
  */
 
 // FIXME: Have to do ports and relations.  Only done attributes and entities.
-public class EntityLibrary extends CompositeEntity implements LazyComposite, Librariable {
+public class EntityLibrary extends CompositeEntity implements LazyComposite,
+        Librariable {
     /** Construct a library in the default workspace with no
      *  container and an empty string as its name. Add the library to the
      *  workspace directory.
@@ -512,12 +513,12 @@ public class EntityLibrary extends CompositeEntity implements LazyComposite, Lib
 
                 parser.setContext(this);
 
-                if ((_configureSource != null) && !_configureSource.equals("")) {
+                if (_configureSource != null && !_configureSource.equals("")) {
                     URL xmlFile = new URL(_base, _configureSource);
                     parser.parse(xmlFile, xmlFile);
                 }
 
-                if ((_configureText != null) && !_configureText.equals("")) {
+                if (_configureText != null && !_configureText.equals("")) {
                     // NOTE: Regrettably, the XML parser we are using cannot
                     // deal with having a single processing instruction at the
                     // outer level.  Thus, we have to strip it.

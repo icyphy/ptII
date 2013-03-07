@@ -173,11 +173,11 @@ public class ComponentActor extends TypedCompositeActor implements Component {
             if (castPort.isOpaque()) {
                 Manager manager = getManager();
 
-                if (castPort.isOutput() && (getDirector() != null)
-                        && (manager != null)
-                        && (manager.getState() != Manager.IDLE)
-                        && (manager.getState() != Manager.INFERING_WIDTHS)
-                        && (manager.getState() != Manager.PREINITIALIZING)) {
+                if (castPort.isOutput() && getDirector() != null
+                        && manager != null
+                        && manager.getState() != Manager.IDLE
+                        && manager.getState() != Manager.INFERING_WIDTHS
+                        && manager.getState() != Manager.PREINITIALIZING) {
 
                     // Note that even if castPort is opaque, we still have to
                     // check for director above.
@@ -190,11 +190,11 @@ public class ComponentActor extends TypedCompositeActor implements Component {
                     }
                 }
 
-                if (castPort.isInput() && (getExecutiveDirector() != null)
-                        && (manager != null)
-                        && (manager.getState() != Manager.IDLE)
-                        && (manager.getState() != Manager.INFERING_WIDTHS)
-                        && (manager.getState() != Manager.PREINITIALIZING)) {
+                if (castPort.isInput() && getExecutiveDirector() != null
+                        && manager != null
+                        && manager.getState() != Manager.IDLE
+                        && manager.getState() != Manager.INFERING_WIDTHS
+                        && manager.getState() != Manager.PREINITIALIZING) {
                     try {
                         castPort.createReceivers();
                     } catch (IllegalActionException ex) {

@@ -312,7 +312,7 @@ public class PtalonMatcher extends TypedCompositeActor implements
         }
         for (Object parameterObject : attributeList(PtalonExpressionParameter.class)) {
             PtalonExpressionParameter parameter = (PtalonExpressionParameter) parameterObject;
-            if (!(parameters.contains(parameter))) {
+            if (!parameters.contains(parameter)) {
                 if (parameter.getAttribute("_hide") == null) {
                     new Parameter(parameter, "_hide")
                             .setToken(BooleanToken.TRUE);
@@ -420,9 +420,8 @@ public class PtalonMatcher extends TypedCompositeActor implements
         public boolean equals(Object object) {
             if (object instanceof HashKey) {
                 HashKey key = (HashKey) object;
-                if (_codeLocation == key._codeLocation
-                        || (_codeLocation != null && _codeLocation
-                                .equals(key._codeLocation))) {
+                if (_codeLocation == key._codeLocation || _codeLocation != null
+                        && _codeLocation.equals(key._codeLocation)) {
                     return _parameterMap.equals(key._parameterMap);
                 }
             }

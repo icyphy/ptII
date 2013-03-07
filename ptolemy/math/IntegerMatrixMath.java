@@ -590,7 +590,7 @@ public class IntegerMatrixMath {
             int sum = 0;
 
             for (int j = 0; j < rows; j++) {
-                sum += (matrix[j][i] * array[j]);
+                sum += matrix[j][i] * array[j];
             }
 
             returnValue[i] = sum;
@@ -623,7 +623,7 @@ public class IntegerMatrixMath {
             int sum = 0;
 
             for (int j = 0; j < columns; j++) {
-                sum += (matrix[i][j] * array[j]);
+                sum += matrix[i][j] * array[j];
             }
 
             returnValue[i] = sum;
@@ -657,7 +657,7 @@ public class IntegerMatrixMath {
                 int sum = 0;
 
                 for (int k = 0; k < matrix2.length; k++) {
-                    sum += (matrix1[i][k] * matrix2[k][j]);
+                    sum += matrix1[i][k] * matrix2[k][j];
                 }
 
                 returnValue[i][j] = sum;
@@ -816,9 +816,9 @@ public class IntegerMatrixMath {
     public static final int sum(final int[][] matrix) {
         int sum = 0;
 
-        for (int i = 0; i < matrix.length; i++) {
-            for (int j = 0; j < matrix[i].length; j++) {
-                sum += matrix[i][j];
+        for (int[] element : matrix) {
+            for (int j = 0; j < element.length; j++) {
+                sum += element[j];
             }
         }
 
@@ -955,14 +955,14 @@ public class IntegerMatrixMath {
             for (int j = 0; j < _columns(matrix); j++) {
                 sb.append(Integer.toString(matrix[i][j]));
 
-                if (j < (_columns(matrix) - 1)) {
+                if (j < _columns(matrix) - 1) {
                     sb.append(elementDelimiter);
                 }
             }
 
             sb.append(vectorEnd);
 
-            if (i < (_rows(matrix) - 1)) {
+            if (i < _rows(matrix) - 1) {
                 sb.append(vectorDelimiter);
             }
         }
@@ -1028,8 +1028,8 @@ public class IntegerMatrixMath {
 
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
-                if ((matrix1[i][j] > (matrix2[i][j] + distance))
-                        || (matrix1[i][j] < (matrix2[i][j] - distance))) {
+                if (matrix1[i][j] > matrix2[i][j] + distance
+                        || matrix1[i][j] < matrix2[i][j] - distance) {
                     return false;
                 }
             }
@@ -1060,8 +1060,8 @@ public class IntegerMatrixMath {
 
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
-                if ((matrix1[i][j] > (matrix2[i][j] + errorMatrix[i][j]))
-                        || (matrix1[i][j] < (matrix2[i][j] - errorMatrix[i][j]))) {
+                if (matrix1[i][j] > matrix2[i][j] + errorMatrix[i][j]
+                        || matrix1[i][j] < matrix2[i][j] - errorMatrix[i][j]) {
                     return false;
                 }
             }
@@ -1081,7 +1081,7 @@ public class IntegerMatrixMath {
         int rows = _rows(matrix1);
         int columns = _columns(matrix1);
 
-        if ((rows != _rows(matrix2)) || (columns != _columns(matrix2))) {
+        if (rows != _rows(matrix2) || columns != _columns(matrix2)) {
             throw new IllegalArgumentException(
                     "ptolemy.math.IntegerMatrixMath." + caller
                             + "() : one matrix " + _dimensionString(matrix1)
@@ -1122,7 +1122,7 @@ public class IntegerMatrixMath {
      *  @return a string describing the dimensions of this matrix.
      */
     protected static final String _dimensionString(final int[][] matrix) {
-        return ("[" + _rows(matrix) + " x " + _columns(matrix) + "]");
+        return "[" + _rows(matrix) + " x " + _columns(matrix) + "]";
     }
 
     /** Return the number of rows of a matrix. */

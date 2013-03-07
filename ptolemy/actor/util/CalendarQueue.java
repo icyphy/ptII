@@ -234,7 +234,7 @@ public class CalendarQueue implements Debuggable {
      *  @return True if empty, false otherwise.
      */
     public final boolean isEmpty() {
-        return (_queueSize == 0);
+        return _queueSize == 0;
     }
 
     /** Return the power of two belonging to the least integer
@@ -259,7 +259,7 @@ public class CalendarQueue implements Debuggable {
 
         int result = 1;
 
-        while (((1 << result) < value) && (result < 32)) {
+        while (1 << result < value && result < 32) {
             result = result << 1;
         }
 
@@ -312,8 +312,8 @@ public class CalendarQueue implements Debuggable {
         // are put in the queue), or the queue size is zero,
         // or if the new entry is less than the current
         // smallest entry) then update the minimum entry of the queue.
-        if ((_minimumEntry == null) || (_queueSize == 0)
-                || (_cqComparator.compare(entry, _minimumEntry) < 0)) {
+        if (_minimumEntry == null || _queueSize == 0
+                || _cqComparator.compare(entry, _minimumEntry) < 0) {
             _minimumEntry = entry;
             _minVirtualBucket = _cqComparator.getVirtualBinNumber(entry);
             _minBucket = _getBinIndex(entry);
@@ -511,8 +511,8 @@ public class CalendarQueue implements Debuggable {
                 // this will cause problems if the getVirtualBinNumber()
                 // returns something other than Long.MAX_VALUE that
                 // is the same as minimumNextVirtualBucket.
-                if ((nextVirtualBucket < minimumNextVirtualBucket)
-                        || (nextVirtualBucket == Long.MAX_VALUE)) {
+                if (nextVirtualBucket < minimumNextVirtualBucket
+                        || nextVirtualBucket == Long.MAX_VALUE) {
                     foundValue = true;
                     minimumNextVirtualBucket = nextVirtualBucket;
                     nextStartBucket = currentBucket;
@@ -549,8 +549,8 @@ public class CalendarQueue implements Debuggable {
     // The entry is collected only if it is strictly greater than the
     // previously collected entry.
     private void _collect(Object entry) {
-        if ((_previousTakenEntry == null)
-                || (_cqComparator.compare(entry, _previousTakenEntry) > 0)) {
+        if (_previousTakenEntry == null
+                || _cqComparator.compare(entry, _previousTakenEntry) > 0) {
             _sampleEntries[_sampleEntryIndex++] = entry;
 
             if (_sampleEntryIndex == _SAMPLE_SIZE) {
@@ -568,7 +568,7 @@ public class CalendarQueue implements Debuggable {
      *  @param message The message.
      */
     private final void _debug(String message) {
-        if ((_debugListeners == null) || !_debugging) {
+        if (_debugListeners == null || !_debugging) {
             return;
         } else {
             Iterator listeners = _debugListeners.iterator();
@@ -639,7 +639,8 @@ public class CalendarQueue implements Debuggable {
                 // The bucket is not empty.
                 Object minimumInBucket = _bucket[i].head.contents;
 
-                if (_cqComparator.getVirtualBinNumber(minimumInBucket) == (_minVirtualBucket + j)) {
+                if (_cqComparator.getVirtualBinNumber(minimumInBucket) == _minVirtualBucket
+                        + j) {
                     // The entry is in the current year. Record its index.
                     _indexOfMinimumBucket = i;
                     break;
@@ -866,11 +867,11 @@ public class CalendarQueue implements Debuggable {
                 return false;
             }
 
-            return (head.find(object) != null);
+            return head.find(object) != null;
         }
 
         public final boolean isEmpty() {
-            return (head == null);
+            return head == null;
         }
 
         // Insert the specified entry into the list, in sorted position.

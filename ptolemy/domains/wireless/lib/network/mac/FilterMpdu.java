@@ -156,7 +156,7 @@ public class FilterMpdu extends MACActorBase {
                     dup = _searchTupleCache(pdu);
                 }
 
-                if ((intFieldValue(pdu, "retryBit") == 0) || !dup) {
+                if (intFieldValue(pdu, "retryBit") == 0 || !dup) {
                     RecordToken msgout = new RecordToken(
                             RxIndicateMessageFields, new Token[] {
                                     new IntToken(RxIndicate),
@@ -192,8 +192,8 @@ public class FilterMpdu extends MACActorBase {
             }
             // if this packet is not for me
             else {
-                if ((intFieldValue(pdu, "Type") == ControlType)
-                        && (intFieldValue(pdu, "Subtype") == Rts)) {
+                if (intFieldValue(pdu, "Type") == ControlType
+                        && intFieldValue(pdu, "Subtype") == Rts) {
                     src = Rts;
                 }
 
@@ -233,8 +233,7 @@ public class FilterMpdu extends MACActorBase {
         while (tuples.hasNext()) {
             int[] tuple = (int[]) tuples.next();
 
-            if ((addr == tuple[0]) && (seqNum == tuple[1])
-                    && (fragNum == tuple[2])) {
+            if (addr == tuple[0] && seqNum == tuple[1] && fragNum == tuple[2]) {
                 return true;
             }
         }
@@ -253,7 +252,7 @@ public class FilterMpdu extends MACActorBase {
 
             // if both Addr2 and SeqNum match, use this entry
             // but overwite its FragNum
-            if ((addr == tuple[0]) && (seqNum == tuple[1])) {
+            if (addr == tuple[0] && seqNum == tuple[1]) {
                 tuple[2] = fragNum;
                 return;
             }

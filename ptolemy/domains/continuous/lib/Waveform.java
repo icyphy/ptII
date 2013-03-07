@@ -252,8 +252,8 @@ public class Waveform extends DiscreteClock {
 
         // compute the interpolated value
         double indexSqr = index * index;
-        return (coef[0] * indexSqr * index) + (coef[1] * indexSqr)
-                + (coef[2] * index) + coef[3];
+        return coef[0] * indexSqr * index + coef[1] * indexSqr + coef[2]
+                * index + coef[3];
     }
 
     /** Return the interpolation result for the current model time.
@@ -276,7 +276,7 @@ public class Waveform extends DiscreteClock {
 
         // Time into the current cycle.
         Time currentTime = getDirector().getModelTime();
-        double time = (currentTime.subtract(_cycleStartTime)).getDoubleValue();
+        double time = currentTime.subtract(_cycleStartTime).getDoubleValue();
 
         // indexIndexStart is the index to _offsets whose entry is the
         // index to the left of the interpolation point.
@@ -301,7 +301,7 @@ public class Waveform extends DiscreteClock {
                     .doubleValue();
         }
 
-        if (indexIndexStart == (numRefPoints - 1)) {
+        if (indexIndexStart == numRefPoints - 1) {
             endTime = _offsets[0] + periodValue;
             endValue = ((DoubleToken) _getValue(0)).doubleValue();
         } else {
@@ -311,9 +311,8 @@ public class Waveform extends DiscreteClock {
         }
 
         if (_interpolation == _LINEAR) {
-            return new DoubleToken(
-                    startValue
-                            + (((time - startTime) * (endValue - startValue)) / (endTime - startTime)));
+            return new DoubleToken(startValue + (time - startTime)
+                    * (endValue - startValue) / (endTime - startTime));
         }
 
         // order is 3. Need the points before Start and the point after End
@@ -343,10 +342,10 @@ public class Waveform extends DiscreteClock {
                     .doubleValue();
         }
 
-        if (indexIndexStart == (numRefPoints - 1)) {
+        if (indexIndexStart == numRefPoints - 1) {
             timeAfterEnd = _offsets[1] + periodValue;
             valueAfterEnd = ((DoubleToken) _getValue(1)).doubleValue();
-        } else if (indexIndexStart == (numRefPoints - 2)) {
+        } else if (indexIndexStart == numRefPoints - 2) {
             if (periodValue > 0 && periodValue != Double.POSITIVE_INFINITY) {
                 timeAfterEnd = _offsets[0] + periodValue;
                 valueAfterEnd = ((DoubleToken) _getValue(0)).doubleValue();

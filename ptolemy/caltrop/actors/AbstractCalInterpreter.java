@@ -240,10 +240,10 @@ abstract public class AbstractCalInterpreter extends TypedAtomicActor {
 
         CompositeEntity container = (CompositeEntity) getContainer();
 
-        if ((_lastGeneratedActorName != null)
+        if (_lastGeneratedActorName != null
                 && _lastGeneratedActorName.equals(getName())) {
-            if ((container != null)
-                    && (container.getEntity(actor.getName()) != this)) {
+            if (container != null
+                    && container.getEntity(actor.getName()) != this) {
                 _lastGeneratedActorName = ((CompositeEntity) getContainer())
                         .uniqueName(actor.getName());
                 setName(_lastGeneratedActorName);
@@ -265,8 +265,8 @@ abstract public class AbstractCalInterpreter extends TypedAtomicActor {
                 + "CAL\n" + "</text>\n" + "<text x=\"-16\" y=\"17\" "
                 + "style=\"font-size:10\">\n" + name + "\n" + "</text>\n"
                 + "</svg>\n";
-        ConfigurableAttribute iconDescription = ((ConfigurableAttribute) getAttribute(
-                "_iconDescription", ConfigurableAttribute.class));
+        ConfigurableAttribute iconDescription = (ConfigurableAttribute) getAttribute(
+                "_iconDescription", ConfigurableAttribute.class);
         // Only update the parameter if the new value is different from the
         // old value.  This avoids a ConcurrentModificationException in
         // ptolemy/configs/test/allConfigs.tcl
@@ -296,7 +296,7 @@ abstract public class AbstractCalInterpreter extends TypedAtomicActor {
         }
 
         ptolemy.data.type.Type t = ptolemy.data.type.BaseType.forName(s);
-        return (t == null) ? ptolemy.data.type.BaseType.GENERAL : t;
+        return t == null ? ptolemy.data.type.BaseType.GENERAL : t;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -322,13 +322,13 @@ abstract public class AbstractCalInterpreter extends TypedAtomicActor {
         if (decls != null) {
             ExprEvaluator eval = new ExprEvaluator(_theContext, env);
 
-            for (int i = 0; i < decls.length; i++) {
-                String var = decls[i].getName();
-                Expression valExpr = decls[i].getInitialValue();
+            for (Decl decl : decls) {
+                String var = decl.getName();
+                Expression valExpr = decl.getInitialValue();
 
                 // Note: this assumes that declarations are
                 // ordered by eager dependency
-                Object value = (valExpr == null) ? _theContext.createNull()
+                Object value = valExpr == null ? _theContext.createNull()
                         : eval.evaluate(valExpr);
                 env.bind(var, value);
             }
@@ -384,23 +384,22 @@ abstract public class AbstractCalInterpreter extends TypedAtomicActor {
         Set portNames = new HashSet();
 
         // Create new ports.
-        for (int i = 0; i < ports.length; i++) {
-            TypedIOPort port = (TypedIOPort) getPort(ports[i].getName());
+        for (PortDecl port2 : ports) {
+            TypedIOPort port = (TypedIOPort) getPort(port2.getName());
 
-            if ((port != null)
-                    && ((port.isInput() != isInput)
-                            || (port.isOutput() != isOutput) || (port
-                            .isMultiport() != ports[i].isMultiport()))) {
+            if (port != null
+                    && (port.isInput() != isInput
+                            || port.isOutput() != isOutput || port
+                            .isMultiport() != port2.isMultiport())) {
                 port.setContainer(null);
                 port = null;
             }
 
             if (port == null) {
-                port = new TypedIOPort(this, ports[i].getName(), isInput,
-                        isOutput);
+                port = new TypedIOPort(this, port2.getName(), isInput, isOutput);
             }
 
-            portNames.add(ports[i].getName());
+            portNames.add(port2.getName());
         }
 
         // Release any ports which are no longer used.
@@ -414,9 +413,9 @@ abstract public class AbstractCalInterpreter extends TypedAtomicActor {
         }
 
         // Set the types.
-        for (int i = 0; i < ports.length; i++) {
-            ((TypedIOPort) getPort(ports[i].getName()))
-                    .setTypeEquals(_getPtolemyType(ports[i].getType()));
+        for (PortDecl port : ports) {
+            ((TypedIOPort) getPort(port.getName()))
+                    .setTypeEquals(_getPtolemyType(port.getType()));
         }
     }
 

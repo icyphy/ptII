@@ -70,7 +70,7 @@ public class PtalonMLHandler extends HandlerBase {
      */
     public void attribute(String aname, String value, boolean isSpecified)
             throws Exception {
-        if ((aname != null) && (value != null)) {
+        if (aname != null && value != null) {
             _attributes.put(aname, value);
         }
     }

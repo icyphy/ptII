@@ -198,9 +198,9 @@ public class DDEIOPort extends TypedIOPort {
                     .getDoubleValue();
         }
 
-        if ((sentTimeValue < currentTimeValue)
-                && (sentTimeValue != PrioritizedTimedQueue.IGNORE)
-                && (sentTimeValue != PrioritizedTimedQueue.INACTIVE)) {
+        if (sentTimeValue < currentTimeValue
+                && sentTimeValue != PrioritizedTimedQueue.IGNORE
+                && sentTimeValue != PrioritizedTimedQueue.INACTIVE) {
             throw new IllegalActionException(this, "Time values in "
                     + "the past are not allowed.");
         }

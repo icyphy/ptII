@@ -353,7 +353,7 @@ public class ComplexArrayMath {
         Complex[] returnValue;
         int size;
 
-        if ((realPart != null) && (imagPart != null)) {
+        if (realPart != null && imagPart != null) {
             size = DoubleArrayMath._commonLength(realPart, imagPart,
                     "ComplexArrayMath.formComplexArray");
             returnValue = new Complex[size];
@@ -467,7 +467,7 @@ public class ComplexArrayMath {
         Complex[] returnValue = new Complex[array.length];
 
         // Check validity of the rectangle.
-        if ((bottom.real > top.real) || (bottom.imag > top.imag)) {
+        if (bottom.real > top.real || bottom.imag > top.imag) {
             throw new IllegalArgumentException(
                     "Complex.limit requires that bottom lie below and "
                             + "to the left of top.");
@@ -619,7 +619,7 @@ public class ComplexArrayMath {
         System.arraycopy(array, halfLengthFloor, returnValue, newLength
                 - halfLengthCeil, halfLengthCeil);
 
-        for (int i = halfLengthCeil; i < (newLength - halfLengthCeil); i++) {
+        for (int i = halfLengthCeil; i < newLength - halfLengthCeil; i++) {
             returnValue[i] = Complex.ZERO;
         }
 
@@ -721,9 +721,9 @@ public class ComplexArrayMath {
         double real = 1.0;
         double imag = 0.0;
 
-        for (int i = 0; i < array.length; i++) {
-            double tmp = (real * array[i].real) - (imag * array[i].imag);
-            imag = (real * array[i].imag) + (imag * array[i].real);
+        for (Complex element : array) {
+            double tmp = real * element.real - imag * element.imag;
+            imag = real * element.imag + imag * element.real;
             real = tmp;
         }
 
@@ -790,7 +790,7 @@ public class ComplexArrayMath {
         Complex[] returnValue = new Complex[newLength];
         int copySize = Math.min(newLength, array.length - startIdx);
 
-        if ((startIdx >= array.length) && (copySize > 0)) {
+        if (startIdx >= array.length && copySize > 0) {
             throw new IllegalArgumentException("resize():  the start index '"
                     + startIdx
                     + "' is greater than equal to the array length '"
@@ -931,7 +931,7 @@ public class ComplexArrayMath {
         for (int i = 0; i < length; i++) {
             sb.append(array[i].toString());
 
-            if (i < (length - 1)) {
+            if (i < length - 1) {
                 sb.append(elementDelimiter);
             }
         }

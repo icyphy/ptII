@@ -227,7 +227,7 @@ public class FloatMatrixMath {
 
         a = allocCopy(matrix);
 
-        for (int pivot = 0; pivot < (n - 1); pivot++) {
+        for (int pivot = 0; pivot < n - 1; pivot++) {
             // find the biggest absolute pivot
             float big = Math.abs(a[pivot][pivot]);
             int swapRow = 0; // initialize for no swap
@@ -270,7 +270,7 @@ public class FloatMatrixMath {
                 float temp = a[row][pivot];
 
                 for (int col = pivot + 1; col < n; col++) {
-                    a[row][col] -= (a[pivot][col] * temp);
+                    a[row][col] -= a[pivot][col] * temp;
                 }
             }
         }
@@ -484,7 +484,7 @@ public class FloatMatrixMath {
                     Ai[row][icol] = 0.0f;
 
                     for (int col = 0; col < n; col++) {
-                        Ai[row][col] -= (Ai[icol][col] * temp);
+                        Ai[row][col] -= Ai[icol][col] * temp;
                     }
                 }
             }
@@ -585,7 +585,7 @@ public class FloatMatrixMath {
             float sum = 0.0f;
 
             for (int j = 0; j < rows; j++) {
-                sum += (matrix[j][i] * array[j]);
+                sum += matrix[j][i] * array[j];
             }
 
             returnValue[i] = sum;
@@ -619,7 +619,7 @@ public class FloatMatrixMath {
             float sum = 0.0f;
 
             for (int j = 0; j < columns; j++) {
-                sum += (matrix[i][j] * array[j]);
+                sum += matrix[i][j] * array[j];
             }
 
             returnValue[i] = sum;
@@ -653,7 +653,7 @@ public class FloatMatrixMath {
                 float sum = 0.0f;
 
                 for (int k = 0; k < matrix2.length; k++) {
-                    sum += (matrix1[i][k] * matrix2[k][j]);
+                    sum += matrix1[i][k] * matrix2[k][j];
                 }
 
                 returnValue[i][j] = sum;
@@ -842,9 +842,9 @@ public class FloatMatrixMath {
     public static final float sum(final float[][] matrix) {
         float sum = 0.0f;
 
-        for (int i = 0; i < matrix.length; i++) {
-            for (int j = 0; j < matrix[i].length; j++) {
-                sum += matrix[i][j];
+        for (float[] element : matrix) {
+            for (int j = 0; j < element.length; j++) {
+                sum += element[j];
             }
         }
 
@@ -982,14 +982,14 @@ public class FloatMatrixMath {
             for (int j = 0; j < _columns(matrix); j++) {
                 sb.append(Float.toString(matrix[i][j]));
 
-                if (j < (_columns(matrix) - 1)) {
+                if (j < _columns(matrix) - 1) {
                     sb.append(elementDelimiter);
                 }
             }
 
             sb.append(vectorEnd);
 
-            if (i < (_rows(matrix) - 1)) {
+            if (i < _rows(matrix) - 1) {
                 sb.append(vectorDelimiter);
             }
         }
@@ -1053,8 +1053,8 @@ public class FloatMatrixMath {
 
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
-                if ((matrix1[i][j] > (matrix2[i][j] + distance))
-                        || (matrix1[i][j] < (matrix2[i][j] - distance))) {
+                if (matrix1[i][j] > matrix2[i][j] + distance
+                        || matrix1[i][j] < matrix2[i][j] - distance) {
                     return false;
                 }
             }
@@ -1084,8 +1084,8 @@ public class FloatMatrixMath {
 
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
-                if ((matrix1[i][j] > (matrix2[i][j] + errorMatrix[i][j]))
-                        || (matrix1[i][j] < (matrix2[i][j] - errorMatrix[i][j]))) {
+                if (matrix1[i][j] > matrix2[i][j] + errorMatrix[i][j]
+                        || matrix1[i][j] < matrix2[i][j] - errorMatrix[i][j]) {
                     return false;
                 }
             }
@@ -1105,7 +1105,7 @@ public class FloatMatrixMath {
         int rows = _rows(matrix1);
         int columns = _columns(matrix1);
 
-        if ((rows != _rows(matrix2)) || (columns != _columns(matrix2))) {
+        if (rows != _rows(matrix2) || columns != _columns(matrix2)) {
             throw new IllegalArgumentException("ptolemy.math.FloatMatrixMath."
                     + caller + "() : one matrix " + _dimensionString(matrix1)
                     + " is not the same size as another matrix "
@@ -1140,7 +1140,7 @@ public class FloatMatrixMath {
      *  @return a string describing the dimensions of this matrix.
      */
     protected static final String _dimensionString(final float[][] matrix) {
-        return ("[" + _rows(matrix) + " x " + _columns(matrix) + "]");
+        return "[" + _rows(matrix) + " x " + _columns(matrix) + "]";
     }
 
     /** Given a set of row vectors rowArrays[0] ... rowArrays[n-1], compute :

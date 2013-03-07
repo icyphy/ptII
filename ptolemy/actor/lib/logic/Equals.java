@@ -106,7 +106,7 @@ public class Equals extends Transformer {
 
             if (reference == null) {
                 reference = next;
-            } else if (!(next.isEqualTo(reference)).booleanValue()) {
+            } else if (!next.isEqualTo(reference).booleanValue()) {
                 result = BooleanToken.FALSE;
             }
         }

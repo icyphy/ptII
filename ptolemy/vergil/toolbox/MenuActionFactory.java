@@ -158,8 +158,8 @@ public class MenuActionFactory implements MenuItemFactory {
             // Requested a submenu with a group of actions.
             final JMenu submenu = new JMenu(_label);
             menu.add(submenu, _label);
-            for (int i = 0; i < _actions.length; i++) {
-                _add(submenu, _actions[i]);
+            for (Action _action2 : _actions) {
+                _add(submenu, _action2);
             }
             menuItem = submenu;
         }

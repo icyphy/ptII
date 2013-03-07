@@ -122,7 +122,7 @@ public class SaltAndPepper extends Transformer {
                 double value = Math.random();
 
                 if (value < _probability) {
-                    if (value < (_probability / 2)) {
+                    if (value < _probability / 2) {
                         data[i][j] = 0.0F;
                     } else {
                         data[i][j] = 255.0F;

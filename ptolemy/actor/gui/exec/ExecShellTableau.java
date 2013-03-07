@@ -234,7 +234,7 @@ public class ExecShellTableau extends Tableau implements ShellInterpreter {
     // Execute the command.  Update the output with
     // the command being run and the output.
     private String _executeCommand(String command) {
-        if ((command == null) || (command.length() == 0)) {
+        if (command == null || command.length() == 0) {
             return "";
         }
 
@@ -254,7 +254,7 @@ public class ExecShellTableau extends Tableau implements ShellInterpreter {
                 //stdout("About to execute:\n");
                 StringBuffer statusCommand = new StringBuffer();
 
-                for (int i = 0; i < commandTokens.length; i++) {
+                for (String commandToken : commandTokens) {
                     //stdout("        " + commandTokens[i]);
                     // Accumulate the first 50 chars for use in
                     // the status buffer.
@@ -263,7 +263,7 @@ public class ExecShellTableau extends Tableau implements ShellInterpreter {
                             statusCommand.append(" ");
                         }
 
-                        statusCommand.append(commandTokens[i]);
+                        statusCommand.append(commandToken);
                     }
                 }
 

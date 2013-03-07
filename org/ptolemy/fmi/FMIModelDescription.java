@@ -147,8 +147,7 @@ public class FMIModelDescription {
             }
             String message = "Current platform not supported by this FMU. "
                     + "Attempted to load \"" + sharedLibrary
-                    + "\" shared library, "
-                    + "The fmu file contains the "
+                    + "\" shared library, " + "The fmu file contains the "
                     + "following files with 'binaries' in the path:\n"
                     + binariesFiles;
             File sharedLibraryFile = new File(sharedLibrary);
@@ -157,7 +156,8 @@ public class FMIModelDescription {
                 boolean isBuildOK = false;
                 try {
                     isBuildOK = builder.build(sharedLibraryFile);
-                    System.out.println("FMU Builder messages:\n" + builder.buffer);
+                    System.out.println("FMU Builder messages:\n"
+                            + builder.buffer);
                 } catch (Throwable throwable2) {
                     throw new IOException("Failed to build \""
                             + sharedLibraryFile + "\".\nThe build was:\n"
@@ -167,21 +167,20 @@ public class FMIModelDescription {
                 }
                 if (!isBuildOK) {
                     throw new IOException("It was not possible to build \""
-                            + sharedLibraryFile + "\": "
-                            + builder.buffer + "\n" + message,
-                            throwable);
+                            + sharedLibraryFile + "\": " + builder.buffer
+                            + "\n" + message, throwable);
                 } else {
                     try {
-                        _nativeLibrary = NativeLibrary.getInstance(sharedLibrary);
+                        _nativeLibrary = NativeLibrary
+                                .getInstance(sharedLibrary);
                     } catch (Throwable throwable3) {
                         throw new IOException("Attempted to build shared "
-                                              + "library for the current "
-                                              + "platform because "
-                                              + sharedLibrary
-                                              + " was not found.  "
-                                              + "However, loading the library failed?\n"
-                                              + "The original error was: "
-                                              + message + "\n" + throwable, throwable3);
+                                + "library for the current "
+                                + "platform because " + sharedLibrary
+                                + " was not found.  "
+                                + "However, loading the library failed?\n"
+                                + "The original error was: " + message + "\n"
+                                + throwable, throwable3);
                     }
                 }
             }

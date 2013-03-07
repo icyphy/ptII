@@ -69,9 +69,9 @@ public class Round extends NamedProgramCodeGeneratorAdapter {
         ptolemy.actor.lib.conversions.Round actor = (ptolemy.actor.lib.conversions.Round) getComponent();
 
         String function = actor.function.getExpression();
-        String codeBlockName = (function.equals("ceil")) ? "ceilBlock"
-                : ((function.equals("floor")) ? "floorBlock" : ((function
-                        .equals("round")) ? "roundBlock" : "truncateBlock"));
+        String codeBlockName = function.equals("ceil") ? "ceilBlock" : function
+                .equals("floor") ? "floorBlock"
+                : function.equals("round") ? "roundBlock" : "truncateBlock";
 
         //code.append(getTemplateParser().generateBlockCode(codeBlockName, null));
         //return code.toString();

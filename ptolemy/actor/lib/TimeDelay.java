@@ -189,8 +189,8 @@ public class TimeDelay extends Transformer {
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == delay || attribute == minimumDelay) {
-            double newDelay = ((DoubleToken) (delay.getToken())).doubleValue();
-            double newMinimumDelay = ((DoubleToken) (minimumDelay.getToken()))
+            double newDelay = ((DoubleToken) delay.getToken()).doubleValue();
+            double newMinimumDelay = ((DoubleToken) minimumDelay.getToken())
                     .doubleValue();
             if (newMinimumDelay > newDelay) {
                 throw new IllegalActionException(this,
@@ -378,8 +378,8 @@ public class TimeDelay extends Transformer {
                 PendingEvent nextNewestEvent = iterator.next();
                 comparison = newEvent.timeStamp
                         .compareTo(nextNewestEvent.timeStamp);
-                if (comparison > 0
-                        || (comparison == 0 && newEvent.microstep >= newestEvent.microstep)) {
+                if (comparison > 0 || comparison == 0
+                        && newEvent.microstep >= newestEvent.microstep) {
                     // New event is later than or equal to current one.
                     // First replace the current element, then add the current element back in.
                     iterator.set(newEvent);
@@ -424,7 +424,7 @@ public class TimeDelay extends Transformer {
         }
         // If the time is right and the microstep matches or exceeds
         // the desired microstep, then it is time.
-        return (comparison == 0 && microstep >= event.microstep);
+        return comparison == 0 && microstep >= event.microstep;
     }
 
     ///////////////////////////////////////////////////////////////////

@@ -259,8 +259,8 @@ public class RemoteObjectList extends JPanel implements ActionListener {
      *  @param e The action event details.
      */
     public void actionPerformed(ActionEvent e) {
-        if ((e instanceof NonVisualContentEvent)
-                && (((NonVisualContentEvent) e).getElement() != null)) {
+        if (e instanceof NonVisualContentEvent
+                && ((NonVisualContentEvent) e).getElement() != null) {
             if (e.getActionCommand().equals("add")) {
                 _addItem(((NonVisualContentEvent) e).getElement());
             }

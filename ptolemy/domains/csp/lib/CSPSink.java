@@ -70,7 +70,7 @@ public class CSPSink extends Sink {
     public CSPSink(CompositeActor container, String name, int limit)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        tokenLimit = new Parameter(this, "tokenLimit", (new IntToken(limit)));
+        tokenLimit = new Parameter(this, "tokenLimit", new IntToken(limit));
         input.setMultiport(false);
     }
 

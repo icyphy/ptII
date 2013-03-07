@@ -64,9 +64,9 @@ public class CSPHasToken extends CSPGet {
         Receiver[][] rcvrs = inputPort.getReceivers();
         CSPReceiver rcvr = null;
 
-        for (int i = 0; i < rcvrs.length; i++) {
-            for (int j = 0; j < rcvrs[i].length; j++) {
-                rcvr = (CSPReceiver) rcvrs[i][j];
+        for (Receiver[] rcvr2 : rcvrs) {
+            for (int j = 0; j < rcvr2.length; j++) {
+                rcvr = (CSPReceiver) rcvr2[j];
             }
         }
 

@@ -102,10 +102,9 @@ public class AFDXESs extends MonitoredQuantityManager {
         _afdxSchedMuxsQueue = new HashMap<String, LinkedList<TimedEvent>>();
 
         // icon description
-        _attachText("_iconDescription", "<svg>\n"
-                + "<rect x=\"0\" y=\"0\" "
-                + "width=\"60\" height=\"20\" "
-                + "style=\"fill:white\"/>\n" + "</svg>\n");
+        _attachText("_iconDescription", "<svg>\n" + "<rect x=\"0\" y=\"0\" "
+                + "width=\"60\" height=\"20\" " + "style=\"fill:white\"/>\n"
+                + "</svg>\n");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -129,8 +128,7 @@ public class AFDXESs extends MonitoredQuantityManager {
             throws IllegalActionException {
 
         if (attribute == bitRate) {
-            double value = ((DoubleToken) bitRate.getToken())
-                    .doubleValue();
+            double value = ((DoubleToken) bitRate.getToken()).doubleValue();
             if (value < 0.0) {
                 throw new IllegalActionException(this,
                         "Cannot have negative bitRate: " + value);
@@ -179,7 +177,8 @@ public class AFDXESs extends MonitoredQuantityManager {
         boolean multicast = false;
 
         // Send events from virtual links to the corresponding scheduler multiplexor
-        for (Entry<String, LinkedList<TimedEvent>> entry : _afdxVLinksQueue.entrySet()) {
+        for (Entry<String, LinkedList<TimedEvent>> entry : _afdxVLinksQueue
+                .entrySet()) {
 
             if (entry.getValue().size() > 0) {
                 TimedEvent e = entry.getValue().getFirst();
@@ -190,29 +189,29 @@ public class AFDXESs extends MonitoredQuantityManager {
 
                     // lastTimeStamp and multicast (factorization)
                     if (_afdxSchedMuxsQueue.get(vl.getSchedulerMux()).size() > 0) {
-                        Object[] last = (Object[]) _afdxSchedMuxsQueue
-                                .get(vl.getSchedulerMux()).getLast().contents;
+                        Object[] last = (Object[]) _afdxSchedMuxsQueue.get(
+                                vl.getSchedulerMux()).getLast().contents;
                         Object[] output = (Object[]) e.contents;
 
-                        if ( ((AFDXVlink) output[2]).getSource()
-                                .equals(((AFDXVlink) last[2]).getSource())
-                                && ((Time) output[3]).compareTo((Time) last[3]) == 0) {
+                        if (((AFDXVlink) output[2]).getSource().equals(
+                                ((AFDXVlink) last[2]).getSource())
+                                && ((Time) output[3]).compareTo(last[3]) == 0) {
                             multicast = true;
                         }
 
-                        lastTimeStamp = _afdxSchedMuxsQueue
-                                .get(vl.getSchedulerMux()).getLast().timeStamp;
+                        lastTimeStamp = _afdxSchedMuxsQueue.get(
+                                vl.getSchedulerMux()).getLast().timeStamp;
                     }
 
                     if (multicast) {
                         computedTimeStamp = lastTimeStamp;
                         multicast = false;
                     } else {
-                        computedTimeStamp = lastTimeStamp
-                                .add(vl.getTrameSize() / (_bitRate*1000000));
+                        computedTimeStamp = lastTimeStamp.add(vl.getTrameSize()
+                                / (_bitRate * 1000000));
                     }
-                    _afdxSchedMuxsQueue.get(vl.getSchedulerMux())
-                    .add(new TimedEvent(computedTimeStamp, e.contents));
+                    _afdxSchedMuxsQueue.get(vl.getSchedulerMux()).add(
+                            new TimedEvent(computedTimeStamp, e.contents));
 
                     entry.getValue().remove(e);
                 }
@@ -222,7 +221,8 @@ public class AFDXESs extends MonitoredQuantityManager {
         if (_nextFireTime != null && currentTime.compareTo(_nextFireTime) == 0) {
 
             // Delivers (if required) the intended token to the intended receiver
-            for (Entry<String, LinkedList<TimedEvent>> entry : _afdxSchedMuxsQueue.entrySet()) {
+            for (Entry<String, LinkedList<TimedEvent>> entry : _afdxSchedMuxsQueue
+                    .entrySet()) {
 
                 if (entry.getValue().size() > 0) {
                     TimedEvent e = entry.getValue().getFirst();
@@ -234,10 +234,12 @@ public class AFDXESs extends MonitoredQuantityManager {
                         // FIXME (GL): check properly if the receiver is an AFDXSwitch
                         // case: the receiver is an AFDXSwitch qm
                         if (receiver instanceof IntermediateReceiver) {
-                            String[] labels = new String[] { timestamp, vlink, payload };
+                            String[] labels = new String[] { timestamp, vlink,
+                                    payload };
                             Token[] values = new Token[] {
-                                    new DoubleToken(e.timeStamp.getDoubleValue()),
-                                    new ObjectToken (output[2]),
+                                    new DoubleToken(
+                                            e.timeStamp.getDoubleValue()),
+                                    new ObjectToken(output[2]),
                                     (Token) output[1] };
                             RecordToken record = new RecordToken(labels, values);
                             _sendToReceiver((Receiver) output[0], record);
@@ -251,7 +253,7 @@ public class AFDXESs extends MonitoredQuantityManager {
 
                         if (_debugging) {
                             _debug("Send from end-system:" + entry.getKey()
-                                    +" at time: " + currentTime);
+                                    + " at time: " + currentTime);
                         }
                     }
                 }
@@ -308,13 +310,15 @@ public class AFDXESs extends MonitoredQuantityManager {
      */
     public void printSMQueue() {
         _debug("-- Start printing SchedulerMultiplexor Queue");
-        for (Entry<String, LinkedList<TimedEvent>> entry : _afdxSchedMuxsQueue.entrySet()) {
+        for (Entry<String, LinkedList<TimedEvent>> entry : _afdxSchedMuxsQueue
+                .entrySet()) {
             String sm = entry.getKey();
             _debug("scheduler_multiplexor : " + sm + "{");
 
             for (TimedEvent e : entry.getValue()) {
                 Object[] output = (Object[]) e.contents;
-                _debug("timestamp: " + e.timeStamp + " | value=" + output[1].toString());
+                _debug("timestamp: " + e.timeStamp + " | value="
+                        + output[1].toString());
             }
             _debug("}");
         }
@@ -325,13 +329,15 @@ public class AFDXESs extends MonitoredQuantityManager {
      */
     public void printVlinksQueue() {
         _debug("-- Start printing the VLinksQueue");
-        for (Entry<String, LinkedList<TimedEvent>> entry : _afdxVLinksQueue.entrySet()) {
+        for (Entry<String, LinkedList<TimedEvent>> entry : _afdxVLinksQueue
+                .entrySet()) {
             String vl = entry.getKey();
-           _debug("vlink_name : " + vl + " {");
+            _debug("vlink_name : " + vl + " {");
 
             for (TimedEvent e : entry.getValue()) {
                 Object[] output = (Object[]) e.contents;
-                _debug("timestamp: " + e.timeStamp + " | value=" + output[1].toString());
+                _debug("timestamp: " + e.timeStamp + " | value="
+                        + output[1].toString());
             }
             _debug("}");
         }
@@ -360,11 +366,11 @@ public class AFDXESs extends MonitoredQuantityManager {
         Time lastTimeStamp = null;
         boolean multicast = false;
 
-        AFDXVlink vl = new AFDXVlink (source);
+        AFDXVlink vl = new AFDXVlink(source);
 
         if (!_lastEmissionTable.containsKey(vl.getName())) {
-            _lastEmissionTable.put(vl.getName(),
-                    new Time(getDirector(), currentTime.getDoubleValue()));
+            _lastEmissionTable.put(vl.getName(), new Time(getDirector(),
+                    currentTime.getDoubleValue()));
         }
 
         if (!_virtualLinkTable.containsKey(vl.getName())) {
@@ -384,7 +390,8 @@ public class AFDXESs extends MonitoredQuantityManager {
         if (_afdxVLinksQueue.get(vl.getName()).size() > 0) {
             lastTimeStamp = _afdxVLinksQueue.get(vl.getName()).getLast().timeStamp;
 
-            Object[] output = (Object[]) _afdxVLinksQueue.get(vl.getName()).getLast().contents;
+            Object[] output = (Object[]) _afdxVLinksQueue.get(vl.getName())
+                    .getLast().contents;
             if (((AFDXVlink) output[2]).getSource().equals(
                     ((IntermediateReceiver) source).source)
                     && ((Time) output[3]).compareTo(currentTime) == 0) {
@@ -396,10 +403,11 @@ public class AFDXESs extends MonitoredQuantityManager {
 
         if (multicast) {
             _lastEmissionTable.put(vl.getName(), lastTimeStamp);
-            _afdxVLinksQueue.get(vl.getName()).add(new TimedEvent(lastTimeStamp, new Object[] { receiver, token, vl , currentTime}));
+            _afdxVLinksQueue.get(vl.getName()).add(
+                    new TimedEvent(lastTimeStamp, new Object[] { receiver,
+                            token, vl, currentTime }));
             multicast = false;
-        }
-        else {
+        } else {
             // Compute the delay according to the AFDX bag emission policy
             if (lastTimeStamp.compareTo(currentTime) == 0
                     && _afdxVLinksQueue.get(vl.getName()).size() < 1) {
@@ -409,13 +417,15 @@ public class AFDXESs extends MonitoredQuantityManager {
             } else if (lastTimeStamp.add(vl.getBag()).compareTo(currentTime) == 0) {
                 _delay = 0.0;
             } else if (lastTimeStamp.add(vl.getBag()).compareTo(currentTime) > 0) {
-                _delay = lastTimeStamp.add(vl.getBag()).subtract(currentTime).getDoubleValue();
+                _delay = lastTimeStamp.add(vl.getBag()).subtract(currentTime)
+                        .getDoubleValue();
             }
 
             _lastEmissionTable.put(vl.getName(), currentTime.add(_delay));
 
-            _afdxVLinksQueue.get(vl.getName()).add(new TimedEvent(currentTime.add(_delay),
-                    new Object[] { receiver, token, vl , currentTime}));
+            _afdxVLinksQueue.get(vl.getName()).add(
+                    new TimedEvent(currentTime.add(_delay), new Object[] {
+                            receiver, token, vl, currentTime }));
         }
 
         _tokenCount++;
@@ -451,10 +461,12 @@ public class AFDXESs extends MonitoredQuantityManager {
     protected void _scheduleRefire() throws IllegalActionException {
         _nextFireTime = Time.POSITIVE_INFINITY;
 
-        for (Entry<String, LinkedList<TimedEvent>> entry : _afdxVLinksQueue.entrySet()) {
+        for (Entry<String, LinkedList<TimedEvent>> entry : _afdxVLinksQueue
+                .entrySet()) {
             _nextFireTime = _getNextFireTime(_nextFireTime, entry.getValue());
         }
-        for (Entry<String, LinkedList<TimedEvent>> entry : _afdxSchedMuxsQueue.entrySet()) {
+        for (Entry<String, LinkedList<TimedEvent>> entry : _afdxSchedMuxsQueue
+                .entrySet()) {
             _nextFireTime = _getNextFireTime(_nextFireTime, entry.getValue());
         }
 
@@ -492,7 +504,6 @@ public class AFDXESs extends MonitoredQuantityManager {
     /** Value of the bit rate of the bus.
      */
     protected double _bitRate;
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////

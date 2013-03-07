@@ -125,7 +125,8 @@ public class GenerateCopyrights {
         _addIfPresent(copyrightsMap, "mescal.domains.mescalPE.kernel.parser",
                 "mescal/configs/doc/cup-copyright.htm");
 
-        _addIfPresent(copyrightsMap, "net.jimblackler.Utils.YieldAdapterIterator",
+        _addIfPresent(copyrightsMap,
+                "net.jimblackler.Utils.YieldAdapterIterator",
                 "net/jimblackler/Utils/jimblacklerUtils-license.htm");
 
         _addIfPresent(copyrightsMap, "org.eclipse.jetty.server.Server",
@@ -281,10 +282,10 @@ public class GenerateCopyrights {
                         .getToken();
 
                 for (int i = 0; i < copyrightTokens.length(); i++) {
-                    StringToken actorToken = (StringToken) (((RecordToken) copyrightTokens
-                            .getElement(i)).get("actor"));
-                    StringToken copyrightToken = (StringToken) (((RecordToken) copyrightTokens
-                            .getElement(i)).get("copyright"));
+                    StringToken actorToken = (StringToken) ((RecordToken) copyrightTokens
+                            .getElement(i)).get("actor");
+                    StringToken copyrightToken = (StringToken) ((RecordToken) copyrightTokens
+                            .getElement(i)).get("copyright");
                     _addIfPresent(copyrightsMap, actorToken.stringValue(),
                             copyrightToken.stringValue());
                 }

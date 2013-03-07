@@ -330,13 +330,13 @@ public class DtdDemo extends XmlApp {
 
         buf.append('"');
 
-        for (int i = 0; i < ch.length; i++) {
-            if (ch[i] == '"') {
+        for (char element : ch) {
+            if (element == '"') {
                 buf.append("&#22;");
-            } else if (ch[i] > 0x7f) {
-                buf.append("&#" + (int) ch[i] + ";");
+            } else if (element > 0x7f) {
+                buf.append("&#" + (int) element + ";");
             } else {
-                buf.append(ch[i]);
+                buf.append(element);
             }
         }
 

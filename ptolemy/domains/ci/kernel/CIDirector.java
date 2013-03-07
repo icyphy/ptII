@@ -225,8 +225,8 @@ public class CIDirector extends Director {
                 return;
             } else {
                 synchronized (this) {
-                    if ((_asyncPushedActors.size() == 0)
-                            && (_asyncPulledActors.size() == 0)) {
+                    if (_asyncPushedActors.size() == 0
+                            && _asyncPulledActors.size() == 0) {
                         try {
                             if (_debugging) {
                                 _debug("Wait for async request...");
@@ -296,9 +296,8 @@ public class CIDirector extends Director {
      *  @exception IllegalActionException Not thrown in this base class.
      */
     public boolean postfire() throws IllegalActionException {
-        if ((_actorManagers.size() == 0) && (_asyncPushedActors.size() == 0)
-                && (_asyncPulledActors.size() == 0)
-                && (_actorsToFire.size() == 0)) {
+        if (_actorManagers.size() == 0 && _asyncPushedActors.size() == 0
+                && _asyncPulledActors.size() == 0 && _actorsToFire.size() == 0) {
             return false;
         } else {
             return !_finishRequested;
@@ -324,8 +323,8 @@ public class CIDirector extends Director {
         if (_isTopLevel()) {
             return true;
         } else {
-            return (_asyncPushedActors.size() > 0)
-                    || (_asyncPulledActors.size() > 0);
+            return _asyncPushedActors.size() > 0
+                    || _asyncPulledActors.size() > 0;
         }
     }
 
@@ -575,8 +574,8 @@ public class CIDirector extends Director {
             }
         }
 
-        return (!hasInput && outputIsPush) || (!hasOutput && !inputIsPush)
-                || (!inputIsPush && outputIsPush);
+        return !hasInput && outputIsPush || !hasOutput && !inputIsPush
+                || !inputIsPush && outputIsPush;
     }
 
     /** Return true if the given actor has a pending pull request.
@@ -723,7 +722,7 @@ public class CIDirector extends Director {
             }
         }
 
-        return (!outputIsPush && (!hasInput || !inputIsPush));
+        return !outputIsPush && (!hasInput || !inputIsPush);
     }
 
     // Return the next actor pulled by an active actor.

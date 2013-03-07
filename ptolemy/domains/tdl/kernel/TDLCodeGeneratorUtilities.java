@@ -290,7 +290,7 @@ public class TDLCodeGeneratorUtilities {
      */
     protected static boolean _initialize(TypedCompositeActor model) {
         Director director = model.getDirector();
-        return (director instanceof DEDirector);
+        return director instanceof DEDirector;
     }
 
     /**

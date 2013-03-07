@@ -530,7 +530,7 @@ public class OntologyGraphModel extends AbstractBasicGraphModel {
                     endPoint = link.getTail();
                 }
 
-                if ((endPoint != null) && endPoint.equals(nodeLocation)) {
+                if (endPoint != null && endPoint.equals(nodeLocation)) {
                     conceptLinkList.add(link);
                 }
             }
@@ -762,7 +762,7 @@ public class OntologyGraphModel extends AbstractBasicGraphModel {
         private String _linkHeadOrTail(NamedObj container, StringBuffer moml,
                 StringBuffer failmoml, NamedObj linkHead, NamedObj linkTail,
                 ConceptRelation linkRelation, boolean isHead) {
-            if ((linkHead != null) && (linkTail != null)) {
+            if (linkHead != null && linkTail != null) {
                 NamedObj head = (NamedObj) getSemanticObject(linkHead);
                 NamedObj tail = (NamedObj) getSemanticObject(linkTail);
 

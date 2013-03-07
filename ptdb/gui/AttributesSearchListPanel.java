@@ -152,26 +152,26 @@ public class AttributesSearchListPanel extends AttributesListPanel {
         // Get a list of all attributes we have displayed.
         Component[] componentArray1 = _attListPanel.getComponents();
 
-        for (int i = 0; i < componentArray1.length; i++) {
+        for (Component element : componentArray1) {
 
-            if (componentArray1[i] instanceof JPanel) {
+            if (element instanceof JPanel) {
 
-                Component[] componentArray2 = ((JPanel) componentArray1[i])
+                Component[] componentArray2 = ((JPanel) element)
                         .getComponents();
 
-                for (int j = 0; j < componentArray2.length; j++) {
+                for (Component element2 : componentArray2) {
 
-                    if (componentArray2[j] instanceof ModelAttributePanel) {
+                    if (element2 instanceof ModelAttributePanel) {
 
                         try {
 
                             StringParameter stringParameter;
                             stringParameter = new StringParameter(
                                     new NamedObj(),
-                                    ((ModelAttributePanel) componentArray2[j])
+                                    ((ModelAttributePanel) element2)
                                             .getAttributeName());
                             stringParameter
-                                    .setExpression(((ModelAttributePanel) componentArray2[j])
+                                    .setExpression(((ModelAttributePanel) element2)
                                             .getValue());
                             returnList.add(stringParameter);
 
@@ -187,16 +187,16 @@ public class AttributesSearchListPanel extends AttributesListPanel {
 
         }
 
-        for (int i = 0; i < componentArray1.length; i++) {
+        for (Component element : componentArray1) {
 
-            if (componentArray1[i] instanceof JPanel) {
+            if (element instanceof JPanel) {
 
-                Component[] componentArray2 = ((JPanel) componentArray1[i])
+                Component[] componentArray2 = ((JPanel) element)
                         .getComponents();
 
-                for (int j = 0; j < componentArray2.length; j++) {
+                for (Component element2 : componentArray2) {
 
-                    if (componentArray2[j] instanceof GenericAttributePanel) {
+                    if (element2 instanceof GenericAttributePanel) {
 
                         try {
 
@@ -204,21 +204,21 @@ public class AttributesSearchListPanel extends AttributesListPanel {
 
                             attribute.setGenericAttribute(true);
 
-                            if ((((GenericAttributePanel) componentArray2[j])
-                                    .getAttributeClass()).length() > 0) {
+                            if (((GenericAttributePanel) element2)
+                                    .getAttributeClass().length() > 0) {
                                 attribute
-                                        .setGenericClassName((((GenericAttributePanel) componentArray2[j])
-                                                .getAttributeClass()));
+                                        .setGenericClassName(((GenericAttributePanel) element2)
+                                                .getAttributeClass());
                             }
 
                             attribute
-                                    .setName(((GenericAttributePanel) componentArray2[j])
+                                    .setName(((GenericAttributePanel) element2)
                                             .getAttributeName());
 
                             //if ((((GenericAttributePanel) componentArray2[j])
                             //        .getValue()).length()>0) {
                             attribute
-                                    .setExpression(((GenericAttributePanel) componentArray2[j])
+                                    .setExpression(((GenericAttributePanel) element2)
                                             .getValue());
                             //}
 
@@ -251,18 +251,18 @@ public class AttributesSearchListPanel extends AttributesListPanel {
 
         Component[] componentArray1 = _attListPanel.getComponents();
 
-        for (int i = 0; i < componentArray1.length; i++) {
+        for (Component element : componentArray1) {
 
-            if (componentArray1[i] instanceof JPanel) {
+            if (element instanceof JPanel) {
 
-                Component[] componentArray2 = ((JPanel) componentArray1[i])
+                Component[] componentArray2 = ((JPanel) element)
                         .getComponents();
 
-                for (int j = 0; j < componentArray2.length; j++) {
+                for (Component element2 : componentArray2) {
 
-                    if (componentArray2[j] instanceof GenericAttributePanel) {
+                    if (element2 instanceof GenericAttributePanel) {
 
-                        if (((GenericAttributePanel) componentArray2[j])
+                        if (((GenericAttributePanel) element2)
                                 .getAttributeName().equals("")) {
 
                             return false;

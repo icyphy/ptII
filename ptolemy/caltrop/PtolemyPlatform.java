@@ -146,7 +146,7 @@ public class PtolemyPlatform implements Platform {
                 try {
                     int a = _theContext.intValue(args[0]);
                     int b = _theContext.intValue(args[1]);
-                    List res = (b < a) ? Collections.EMPTY_LIST
+                    List res = b < a ? Collections.EMPTY_LIST
                             : new IntegerList(_theContext, a, b);
                     return _theContext.createList(res);
                 } catch (Exception ex) {
@@ -701,7 +701,7 @@ public class PtolemyPlatform implements Platform {
                 try {
                     IntToken a = (IntToken) args[0];
                     IntToken b = (IntToken) args[1];
-                    int res = (a.intValue() * b.intValue()); // & 0x7ffff;
+                    int res = a.intValue() * b.intValue(); // & 0x7ffff;
                     return _theContext.createInteger(res);
                 } catch (Exception ex) {
                     throw new InterpreterException(
@@ -721,7 +721,7 @@ public class PtolemyPlatform implements Platform {
 
                     if (a instanceof IntToken) {
                         int n = ((IntToken) a).intValue() / 256;
-                        int res = (n > 255) ? 255 : ((n < 0) ? 0 : n);
+                        int res = n > 255 ? 255 : n < 0 ? 0 : n;
                         return _theContext.createInteger(res);
                     } else {
                         throw new InterpreterException(
@@ -815,7 +815,7 @@ public class PtolemyPlatform implements Platform {
 
         public boolean isNull(Object o) {
             return o instanceof ObjectToken
-                    && (((ObjectToken) o).getValue() == null);
+                    && ((ObjectToken) o).getValue() == null;
         }
 
         public Object createBoolean(boolean b) {
@@ -935,9 +935,8 @@ public class PtolemyPlatform implements Platform {
         }
 
         public boolean isList(Object o) {
-            return (o instanceof PtArrayList)
-                    || (o instanceof ObjectToken && ((ObjectToken) o)
-                            .getValue() instanceof List);
+            return o instanceof PtArrayList || o instanceof ObjectToken
+                    && ((ObjectToken) o).getValue() instanceof List;
         }
 
         public List getList(Object o) {
@@ -1026,10 +1025,9 @@ public class PtolemyPlatform implements Platform {
         }
 
         public boolean isFunction(Object a) {
-            return (a instanceof FunctionToken)
-                    || (a instanceof ObjectToken && ((ObjectToken) a)
-                            .getValue() instanceof Function)
-                    || (a instanceof Function);
+            return a instanceof FunctionToken || a instanceof ObjectToken
+                    && ((ObjectToken) a).getValue() instanceof Function
+                    || a instanceof Function;
         }
 
         public Object applyFunction(Object function, Object[] args) {
@@ -1110,7 +1108,7 @@ public class PtolemyPlatform implements Platform {
 
         ///////// Misc.
         public Object getLocation(Object structure, Object[] location) {
-            if ((location.length == 1) && isInteger(location[0])) {
+            if (location.length == 1 && isInteger(location[0])) {
                 int index = intValue(location[0]);
 
                 if (structure instanceof ArrayToken) {
@@ -1132,7 +1130,7 @@ public class PtolemyPlatform implements Platform {
                                 ex);
                     }
                 }
-            } else if ((location.length == 2) && isInteger(location[0])
+            } else if (location.length == 2 && isInteger(location[0])
                     && isInteger(location[1])) {
                 int index1 = intValue(location[0]);
                 int index2 = intValue(location[1]);
@@ -1149,7 +1147,7 @@ public class PtolemyPlatform implements Platform {
 
         public void setLocation(Object structure, Object[] location,
                 Object value) {
-            if ((location.length == 1) && isInteger(location[0])) {
+            if (location.length == 1 && isInteger(location[0])) {
                 int index = intValue(location[0]);
 
                 if (structure instanceof ObjectToken) {

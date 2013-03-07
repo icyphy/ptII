@@ -149,9 +149,9 @@ public class MatrixSplit extends SDFTransformer {
         }
         MatrixToken inputValue = (MatrixToken) input.get(0);
         MatrixToken[][] result = inputValue.split(rowsValue, columnsValue);
-        for (int i = 0; i < result.length; i++) {
-            for (int j = 0; j < result[i].length; j++) {
-                output.send(0, result[i][j]);
+        for (MatrixToken[] element : result) {
+            for (int j = 0; j < element.length; j++) {
+                output.send(0, element[j]);
             }
         }
     }

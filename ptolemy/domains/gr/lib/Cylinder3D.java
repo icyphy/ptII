@@ -128,7 +128,7 @@ public class Cylinder3D extends GRShadedShape {
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         // Check that a box has been previously created.
-        if ((attribute == radius) || (attribute == height)) {
+        if (attribute == radius || attribute == height) {
             if (_scaleTransform != null) {
                 float radiusValue = (float) ((DoubleToken) radius.getToken())
                         .doubleValue();
@@ -168,7 +168,7 @@ public class Cylinder3D extends GRShadedShape {
         int primitiveFlags = Primitive.GENERATE_NORMALS;
         URL textureURL = texture.asURL();
 
-        if ((textureURL != null) || allowChanges) {
+        if (textureURL != null || allowChanges) {
             primitiveFlags = primitiveFlags | Primitive.GENERATE_TEXTURE_COORDS;
         }
 

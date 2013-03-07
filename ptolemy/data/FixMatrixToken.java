@@ -98,7 +98,7 @@ public class FixMatrixToken extends MatrixToken {
     public FixMatrixToken(String init) throws IllegalActionException {
         PtParser parser = new PtParser();
         ASTPtRootNode tree = parser.generateParseTree(init);
-        Token token = (new ParseTreeEvaluator()).evaluateParseTree(tree);
+        Token token = new ParseTreeEvaluator().evaluateParseTree(tree);
 
         if (token instanceof FixMatrixToken) {
             FixPoint[][] value = ((FixMatrixToken) token).fixMatrix();
@@ -152,7 +152,7 @@ public class FixMatrixToken extends MatrixToken {
                     + " array is null.");
         }
 
-        if (tokens.length != (rows * columns)) {
+        if (tokens.length != rows * columns) {
             throw new IllegalActionException("FixMatrixToken: The specified"
                     + " array is not of the correct length");
         }
@@ -202,7 +202,7 @@ public class FixMatrixToken extends MatrixToken {
 
         int compare = TypeLattice.compare(BaseType.FIX_MATRIX, token);
 
-        if ((compare == CPO.LOWER) || (compare == CPO.INCOMPARABLE)) {
+        if (compare == CPO.LOWER || compare == CPO.INCOMPARABLE) {
             throw new IllegalActionException(
                     notSupportedIncomparableConversionMessage(token, "[fix]"));
         }
@@ -406,8 +406,8 @@ public class FixMatrixToken extends MatrixToken {
         // This assumes the matrices tile.
         int rows = 0;
         int columns = 0;
-        for (int i = 0; i < matrices.length; i++) {
-            rows += matrices[i][0].getRowCount();
+        for (MatrixToken[] matrice : matrices) {
+            rows += matrice[0].getRowCount();
         }
         for (int j = 0; j < matrices[0].length; j++) {
             columns += matrices[0][j].getColumnCount();
@@ -819,7 +819,7 @@ public class FixMatrixToken extends MatrixToken {
                     precision = _value[i][j].getPrecision();
                 }
 
-                if ((_precision != null) && !_precision.equals(precision)) {
+                if (_precision != null && !_precision.equals(precision)) {
                     throw new IllegalActionException(
                             "Attempt to create a FixMatrixToken"
                                     + " with unequal precisions: " + _precision

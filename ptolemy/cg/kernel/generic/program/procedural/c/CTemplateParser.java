@@ -134,8 +134,8 @@ public class CTemplateParser extends ProceduralTemplateParser {
                 && sink.port.isOutput()) {
             sinkPortChannel = "@" + sinkPortChannel;
         }
-        String sinkRef = ((NamedProgramCodeGeneratorAdapter) (codeGenerator
-                .getAdapter(sink.port.getContainer()))).getReference(
+        String sinkRef = ((NamedProgramCodeGeneratorAdapter) codeGenerator
+                .getAdapter(sink.port.getContainer())).getReference(
                 sinkPortChannel, true);
 
         // When the sink port is contained by a modal controller, it is

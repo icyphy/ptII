@@ -141,8 +141,8 @@ public class GeneratorTableau extends Tableau {
                 _save();
             }
 
-            if ((getEffigy() == null) || (getEffigy().uri == null)
-                    || (getEffigy().uri.getURI() == null)) {
+            if (getEffigy() == null || getEffigy().uri == null
+                    || getEffigy().uri.getURI() == null) {
                 // If the user does File -> New -> GraphEditor,
                 // View -> Code Generator, then we might end up
                 // dealing with an Effigy that has a null url.

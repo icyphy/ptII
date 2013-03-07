@@ -564,13 +564,13 @@ public class CompositeEntity extends ComponentEntity {
     public ComponentRelation connect(ComponentPort port1, ComponentPort port2,
             String relationName) throws IllegalActionException,
             NameDuplicationException {
-        if ((port1 == null) || (port2 == null)) {
+        if (port1 == null || port2 == null) {
             throw new IllegalActionException(this,
                     "Attempt to connect null port.");
         }
 
-        if ((port1.workspace() != port2.workspace())
-                || (port1.workspace() != _workspace)) {
+        if (port1.workspace() != port2.workspace()
+                || port1.workspace() != _workspace) {
             throw new IllegalActionException(port1, port2,
                     "Cannot connect ports because workspaces are different.");
         }
@@ -967,9 +967,10 @@ public class CompositeEntity extends ComponentEntity {
                 }
 
                 // Apply filter.
-                if ((filter == null)
-                        || (filter.contains(relation) && (filter.contains(port) || filter
-                                .contains(port.getContainer())))) {
+                if (filter == null
+                        || filter.contains(relation)
+                        && (filter.contains(port) || filter.contains(port
+                                .getContainer()))) {
                     // If the relation is not persistent, then do not export the link.
                     if (relation != null && !relation.isPersistent()) {
                         continue;
@@ -1069,7 +1070,7 @@ public class CompositeEntity extends ComponentEntity {
                     // common implier with the relation. We know that the port
                     // is contained within its container, so we don't have to
                     // check it separately for a common implier.
-                    if (port.getDerivedLevel() <= (depth + 1)
+                    if (port.getDerivedLevel() <= depth + 1
                             && _commonImplier(relation, depth,
                                     port.getContainer(), depth)) {
                         continue;
@@ -1093,10 +1094,10 @@ public class CompositeEntity extends ComponentEntity {
                     */
 
                     // Apply filter.
-                    if ((filter == null)
-                            || (filter.contains(relation) && (filter
-                                    .contains(port) || filter.contains(port
-                                    .getContainer())))) {
+                    if (filter == null
+                            || filter.contains(relation)
+                            && (filter.contains(port) || filter.contains(port
+                                    .getContainer()))) {
                         // If the relation is not persistent, then do
                         // not export the link.
                         if (relation == null || !relation.isPersistent()) {
@@ -1199,9 +1200,8 @@ public class CompositeEntity extends ComponentEntity {
                     }
 
                     // Apply filter.
-                    if ((filter == null)
-                            || (filter.contains(relation) && filter
-                                    .contains(otherRelation))) {
+                    if (filter == null || filter.contains(relation)
+                            && filter.contains(otherRelation)) {
                         // In order to support level-crossing links, consider the
                         // possibility that the relation is not contained by this.
                         String relationName;
@@ -2095,10 +2095,9 @@ public class CompositeEntity extends ComponentEntity {
 
         int uniqueNameIndex = 2;
 
-        while ((getAttribute(candidate) != null)
-                || (getPort(candidate) != null)
-                || (getEntity(candidate) != null)
-                || (getRelation(candidate) != null)) {
+        while (getAttribute(candidate) != null || getPort(candidate) != null
+                || getEntity(candidate) != null
+                || getRelation(candidate) != null) {
             candidate = prefix + uniqueNameIndex++;
         }
 
@@ -2250,7 +2249,7 @@ public class CompositeEntity extends ComponentEntity {
 
             StringBuffer result = new StringBuffer();
 
-            if ((bracket == 1) || (bracket == 2)) {
+            if (bracket == 1 || bracket == 2) {
                 result.append(super._description(detail, indent, 1));
             } else {
                 result.append(super._description(detail, indent, 0));
@@ -2317,7 +2316,7 @@ public class CompositeEntity extends ComponentEntity {
      */
     protected void _exportMoMLContents(Writer output, int depth)
             throws IOException {
-        if ((depth == 1) && (getContainer() == null)) {
+        if (depth == 1 && getContainer() == null) {
             if (getAttribute("_createdBy") == null) {
                 // If there is no _createdBy attribute, then add one.
                 output.write(_getIndentPrefix(depth)

@@ -429,7 +429,7 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
         // A BIG while loop that handles all events with the same tag.
         while (true) {
             int result = _fire();
-            assert (result <= 1 && result >= -1);
+            assert result <= 1 && result >= -1;
             if (result == 1) {
                 continue;
             } else if (result == -1) {
@@ -691,8 +691,8 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
             // be resolved. In other words, the model next iteration time is
             // just the current time.
             Object[] events = _eventQueue.toArray();
-            for (int i = 0; i < events.length; i++) {
-                DEEvent event = (DEEvent) events[i];
+            for (Object event2 : events) {
+                DEEvent event = (DEEvent) event2;
                 Time eventTime = event.timeStamp();
                 int eventMicrostep = event.microstep();
                 if (eventTime.compareTo(getModelTime()) > 0
@@ -916,7 +916,7 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
         synchronized (_eventQueue) {
             if (!_eventQueue.isEmpty() && !moreOutputsToTransfer) {
                 DEEvent next = _eventQueue.get();
-                if ((next.timeStamp().compareTo(getModelTime()) > 0)) {
+                if (next.timeStamp().compareTo(getModelTime()) > 0) {
                     _microstep = 0;
                 }
             }
@@ -934,7 +934,7 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
             if (moreOutputsToTransfer) {
                 fireContainerAt(getModelTime());
             } else if (_noMoreActorsToFire
-                    && (stop || (getModelTime().compareTo(getModelStopTime()) == 0))) {
+                    && (stop || getModelTime().compareTo(getModelStopTime()) == 0)) {
                 if (_debugging) {
                     _debug("No more actors to fire and time to stop.");
                 }
@@ -1369,7 +1369,7 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
             if (!_eventQueue.isEmpty()) {
                 DEEvent next = _eventQueue.get();
 
-                if ((next.timeStamp().compareTo(getModelTime()) > 0)) {
+                if (next.timeStamp().compareTo(getModelTime()) > 0) {
                     // If the next event is in the future time,
                     // jump out of the big while loop in fire() and
                     // proceed to postfire().
@@ -1379,8 +1379,8 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
                     // jump out of the big while loop in fire() and
                     // proceed to postfire().
                     return false;
-                } else if ((next.timeStamp().compareTo(getModelTime()) < 0)
-                        || (next.microstep() < _microstep)) {
+                } else if (next.timeStamp().compareTo(getModelTime()) < 0
+                        || next.microstep() < _microstep) {
                     throw new IllegalActionException(
                             "The tag of the next event (" + next.timeStamp()
                                     + "." + next.microstep()
@@ -1439,9 +1439,8 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
      */
     protected void _enqueueEvent(Actor actor, Time time, int defaultMicrostep)
             throws IllegalActionException {
-        if ((_eventQueue == null)
-                || ((_disabledActors != null) && _disabledActors
-                        .contains(actor))) {
+        if (_eventQueue == null || _disabledActors != null
+                && _disabledActors.contains(actor)) {
             return;
         }
 
@@ -1508,9 +1507,8 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
             throws IllegalActionException {
         Actor actor = (Actor) ioPort.getContainer();
 
-        if ((_eventQueue == null)
-                || ((_disabledActors != null) && _disabledActors
-                        .contains(actor))) {
+        if (_eventQueue == null || _disabledActors != null
+                && _disabledActors.contains(actor)) {
             return;
         }
 
@@ -1878,7 +1876,7 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
                 // that only happen at the current tag.
                 // If the event is in the past, that is an error,
                 // because the event should have been consumed in prefire().
-                if ((nextEvent.timeStamp().compareTo(getModelTime()) < 0)) {
+                if (nextEvent.timeStamp().compareTo(getModelTime()) < 0) {
                     // missed an event
                     throw new IllegalActionException(
                             "Fire: Missed an event: the next event tag "
@@ -1916,7 +1914,7 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
 
                 int comparison = nextEvent.timeStamp()
                         .compareTo(getModelTime());
-                if (comparison > 0 || (comparison == 0 && !microstepMatches)) {
+                if (comparison > 0 || comparison == 0 && !microstepMatches) {
                     // reset the next event
                     nextEvent = null;
 
@@ -1934,8 +1932,8 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
                     // 1. An actor to be fired has been found; or
                     // 2. There are no more events in the event queue,
                     // and the current time is equal to the stop time.
-                    if ((actorToFire != null)
-                            || (getModelTime().equals(getModelStopTime()))) {
+                    if (actorToFire != null
+                            || getModelTime().equals(getModelStopTime())) {
                         // jump out of the loop: LOOPLABEL::GetNextEvent
                         break;
                     }
@@ -2130,7 +2128,7 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
 
                     // NOTE: The _enqueueEvent method discards the events
                     // for disabled actors.
-                    if ((_disabledActors != null)
+                    if (_disabledActors != null
                             && _disabledActors.contains(actorToFire)) {
                         // This actor has requested not to be fired again.
                         if (_debugging) {
@@ -2202,10 +2200,8 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
             }
         } // close the loop: LOOPLABEL::GetNextEvent
 
-
-        if (actorToFire != null &&
-                _resourceScheduling &&
-                !_schedule(actorToFire, getModelTime())) {
+        if (actorToFire != null && _resourceScheduling
+                && !_schedule(actorToFire, getModelTime())) {
             return null;
         }
         // Note that the actor to be fired can be null.
@@ -2394,7 +2390,8 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
      *  only when all inputs at the current microstep are known. See
      *  $PTII/ptolemy/domains/de/test/auto/DEFixedPointLimitation.xml.
      */
-    private static class DECausalityInterface extends CausalityInterfaceForComposites {
+    private static class DECausalityInterface extends
+            CausalityInterfaceForComposites {
         // FindBugs indicates that this should be a static class.
 
         /** Construct a causality interface for the specified actor.

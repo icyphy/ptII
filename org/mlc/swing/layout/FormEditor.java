@@ -540,8 +540,7 @@ public class FormEditor extends JPanel {
 
         // lets go down the tree
         Component[] children = container.getComponents();
-        for (int index = 0; index < children.length; index++) {
-            Component component = children[index];
+        for (Component component : children) {
             if (component instanceof Container) {
                 ((Container) component).doLayout();
             }
@@ -605,8 +604,7 @@ public class FormEditor extends JPanel {
 
             if (container != null) {
                 Component[] containerComponents = container.getComponents();
-                for (int index = 0; index < containerComponents.length; index++) {
-                    Component insertComponent = containerComponents[index];
+                for (Component insertComponent : containerComponents) {
                     String insertComponentName = getComponentName(insertComponent);
 
                     int insertIndex = 0;
@@ -672,7 +670,7 @@ public class FormEditor extends JPanel {
             Font font = list.getFont();
             setFont(font.deriveFont(component.isVisible() ? Font.PLAIN
                     : Font.BOLD));
-            setBorder((cellHasFocus) ? UIManager
+            setBorder(cellHasFocus ? UIManager
                     .getBorder("List.focusCellHighlightBorder") : noFocusBorder);
 
             return this;

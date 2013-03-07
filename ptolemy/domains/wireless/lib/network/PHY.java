@@ -215,7 +215,7 @@ public class PHY extends NetworkActorBase {
         int kind = whoTimeout2(); // check if a timer times out and which
         Time currentTime = getDirector().getModelTime();
 
-        if ((oldnum > 0) && (_numBusyTimers == 0)) {
+        if (oldnum > 0 && _numBusyTimers == 0) {
             // update channel status
             RecordToken ChannelStatusMsg = new RecordToken(SignalMsgFields,
                     new Token[] { new IntToken(Idle) });
@@ -258,8 +258,8 @@ public class PHY extends NetworkActorBase {
                 }
 
                 // let us be a little picky about receiving a message
-                if ((power > _sensitivity)
-                        && ((_interference == 0.0) || ((power / _interference) > _SNRThresholdInDB))) {
+                if (power > _sensitivity
+                        && (_interference == 0.0 || power / _interference > _SNRThresholdInDB)) {
                     if (_debugging) {
                         //Token dbg = new DoubleToken(power / _interference);
                         _debug(getFullName()
@@ -336,8 +336,8 @@ public class PHY extends NetworkActorBase {
                     toMAC.send(0, new UnionToken("RxData", RxDataMsg));
                 } else if (subType.intValue() == Rts) {
                     toMAC.send(0, new UnionToken("RxRts", RxDataMsg));
-                } else if ((subType.intValue() == Cts)
-                        || (subType.intValue() == Ack)) {
+                } else if (subType.intValue() == Cts
+                        || subType.intValue() == Ack) {
                     toMAC.send(0, new UnionToken("CsRts", RxDataMsg));
                 } else {
                     throw new IllegalActionException(this,
@@ -363,7 +363,7 @@ public class PHY extends NetworkActorBase {
                 _handleInterference();
 
                 // check collision
-                if ((_receivedPower / _interference) <= _SNRThresholdInDB) {
+                if (_receivedPower / _interference <= _SNRThresholdInDB) {
                     _rxStatus = Error;
                 }
             } else if (fromMAC.hasToken(0)) {
@@ -569,8 +569,8 @@ public class PHY extends NetworkActorBase {
                     }
                 }
 
-                if (((timer.kind == InterferenceDone) || (timer.kind == RxDone))
-                        && (timer.power > _sensitivity)) {
+                if ((timer.kind == InterferenceDone || timer.kind == RxDone)
+                        && timer.power > _sensitivity) {
                     _numBusyTimers--;
                 }
 
@@ -702,8 +702,8 @@ public class PHY extends NetworkActorBase {
         int length = ((IntToken) msg.get("length")).intValue();
 
         // compute the duration of this packet ( with the PHY overhead added)
-        _txDuration = ((double) length / _txRate)
-                + ((_aPreambleLength + _aPlcpHeaderLength) * 1e-6);
+        _txDuration = (double) length / _txRate
+                + (_aPreambleLength + _aPlcpHeaderLength) * 1e-6;
 
         // send TxStartConfirm to the MAC
         RecordToken TxStartConfirmMsg = new RecordToken(SignalMsgFields,

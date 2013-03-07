@@ -128,7 +128,8 @@ public class OMCLogger {
         String temp = System.getProperty("java.io.tmpdir");
 
         if (username == null) {
-            System.err.println("Could not get user.name property?  Using 'nobody'.");
+            System.err
+                    .println("Could not get user.name property?  Using 'nobody'.");
             logPath = temp + "/nobody/OpenModelica/";
         } else {
             logPath = temp + "/" + username + "/OpenModelica/";
@@ -158,7 +159,6 @@ public class OMCLogger {
     public void getInfo(String infoMessage) {
         omcLogger.info(infoMessage);
     }
-
 
     /** Get the Sever LogLevel and sever message will be written in the log file.
      *  @param severMessage The sever message.

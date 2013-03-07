@@ -134,8 +134,8 @@ public class VariableFIR extends FIR {
             throws IllegalActionException {
         super.attributeChanged(attribute);
 
-        if ((attribute == interpolation) || (attribute == decimation)
-                || (attribute == blockSize)) {
+        if (attribute == interpolation || attribute == decimation
+                || attribute == blockSize) {
             _reinitializeNeeded = true;
         }
     }
@@ -148,7 +148,7 @@ public class VariableFIR extends FIR {
      *   an attribute that cannot be cloned.
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        VariableFIR newObject = (VariableFIR) (super.clone(workspace));
+        VariableFIR newObject = (VariableFIR) super.clone(workspace);
 
         newObject.newTaps.setTypeSameAs(newObject.taps);
         newObject.output.setTypeSameAs(newObject.input);
@@ -161,7 +161,7 @@ public class VariableFIR extends FIR {
      */
     public void fire() throws IllegalActionException {
         if (newTaps.hasToken(0)) {
-            ArrayToken tapsToken = (ArrayToken) (newTaps.get(0));
+            ArrayToken tapsToken = (ArrayToken) newTaps.get(0);
             _taps = tapsToken.arrayValue();
 
             // Get a token representing zero in the appropriate type.

@@ -187,8 +187,8 @@ public class SequenceAttribute extends Parameter implements Comparable {
         if (sequenceAttribute == this) {
             return true;
         }
-        if ((sequenceAttribute == null)
-                || (sequenceAttribute.getClass() != getClass())) {
+        if (sequenceAttribute == null
+                || sequenceAttribute.getClass() != getClass()) {
             return false;
         } else {
             SequenceAttribute attribute = (SequenceAttribute) sequenceAttribute;
@@ -247,7 +247,7 @@ public class SequenceAttribute extends Parameter implements Comparable {
 
             if (((CompositeActor) container.getContainer()).getDirector() != null) {
 
-                if ((this.getClass() == SequenceAttribute.class)
+                if (this.getClass() == SequenceAttribute.class
                         && ((CompositeActor) container.getContainer())
                                 .getDirector().getClass() == ProcessDirector.class) {
 
@@ -255,7 +255,7 @@ public class SequenceAttribute extends Parameter implements Comparable {
                             + "'s Sequence Attribute will be ignored");
                     System.out.println(sbf);
                 }
-                if ((this.getClass() == ProcessAttribute.class)
+                if (this.getClass() == ProcessAttribute.class
                         && ((CompositeActor) container.getContainer())
                                 .getDirector().getClass() == SequenceDirector.class) {
                     sbf.append("Warning: " + container.getName()

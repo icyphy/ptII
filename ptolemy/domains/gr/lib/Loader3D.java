@@ -101,8 +101,8 @@ public class Loader3D extends GRShadedShape {
 
         //if (!noTriangulate) flags |= ObjectFile.TRIANGULATE;
         //if (!noStripify) flags |= ObjectFile.STRIPIFY;
-        ObjectFile objectFile = new ObjectFile(flags,
-                (float) ((creaseAngle * Math.PI) / 180.0));
+        ObjectFile objectFile = new ObjectFile(flags, (float) (creaseAngle
+                * Math.PI / 180.0));
         Scene scene = null;
 
         try {

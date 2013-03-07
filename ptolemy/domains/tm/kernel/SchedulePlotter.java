@@ -155,8 +155,8 @@ public class SchedulePlotter extends Attribute implements ScheduleListener {
                     }
 
                     int _oldState = ((Integer) _taskState.get(id)).intValue();
-                    plot.addPoint(id, time, id + (_oldState / 2.1), true);
-                    plot.addPoint(id, time, id + (scheduleEvent / 2.1), true);
+                    plot.addPoint(id, time, id + _oldState / 2.1, true);
+                    plot.addPoint(id, time, id + scheduleEvent / 2.1, true);
                     _taskState.set(id, Integer.valueOf(scheduleEvent));
                     plot.fillPlot();
                     plot.repaint();

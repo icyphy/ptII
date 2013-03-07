@@ -80,12 +80,13 @@ public class SDFDirector
 
         // FindBugs 1.3.8 incorrectly warns "Unnecessary type check
         // done using instanceof operator"
-        if ((container instanceof CompiledCompositeActor && ((BooleanToken) getCodeGenerator().generateEmbeddedCode
-                .getToken()).booleanValue())
-        // Findbugs says that we don't need this instance check
-        // because container is, by definition, a CompositeActor.
-        // thus, we could probably remove this if ().
-                || (container instanceof CompositeActor)) {
+        if (container instanceof CompiledCompositeActor
+                && ((BooleanToken) getCodeGenerator().generateEmbeddedCode
+                        .getToken()).booleanValue()
+                // Findbugs says that we don't need this instance check
+                // because container is, by definition, a CompositeActor.
+                // thus, we could probably remove this if ().
+                || container instanceof CompositeActor) {
 
             // FindBugs wants this instanceof check.
             if (!(inputPort instanceof TypedIOPort)) {
@@ -187,12 +188,13 @@ public class SDFDirector
 
         // FindBugs 1.3.8 incorrectly warns "Unnecessary type check
         // done using instanceof operator"
-        if ((container instanceof CompiledCompositeActor && ((BooleanToken) getCodeGenerator().generateEmbeddedCode
-                .getToken()).booleanValue())
-        // Findbugs says that we don't need this instance check
-        // because container is, by definition, a CompositeActor.
-        // thus, we could probably remove this if ().
-                || (container instanceof CompositeActor)) {
+        if (container instanceof CompiledCompositeActor
+                && ((BooleanToken) getCodeGenerator().generateEmbeddedCode
+                        .getToken()).booleanValue()
+                // Findbugs says that we don't need this instance check
+                // because container is, by definition, a CompositeActor.
+                // thus, we could probably remove this if ().
+                || container instanceof CompositeActor) {
 
             ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.IOPort portAdapter = (ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.IOPort) getAdapter(outputPort);
 

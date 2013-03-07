@@ -68,7 +68,7 @@ public class Bindings {
      */
     public Bindings(Vector nodes) {
         for (int i = 0; i < nodes.size(); i++) {
-            ComponentEntity actor = (ComponentEntity) (nodes.elementAt(i));
+            ComponentEntity actor = (ComponentEntity) nodes.elementAt(i);
             Iterator iter = actor.portList().iterator();
 
             while (iter.hasNext()) {
@@ -92,7 +92,7 @@ public class Bindings {
         Iterator iter = _keys.iterator();
 
         while (iter.hasNext()) {
-            String key = (String) (iter.next());
+            String key = (String) iter.next();
 
             if (key.equals(vLabel)) {
                 return true;
@@ -109,7 +109,7 @@ public class Bindings {
      * @return The value for the variable.
      */
     public Unit get(String vLabel) {
-        Unit u = (Unit) (_VarLabel2Unit.get(vLabel));
+        Unit u = (Unit) _VarLabel2Unit.get(vLabel);
         return u;
     }
 
@@ -121,8 +121,8 @@ public class Bindings {
         Iterator keys = _keys.iterator();
 
         while (keys.hasNext()) {
-            String varLabel = (String) (keys.next());
-            Unit unit = (Unit) (_VarLabel2Unit.get(varLabel));
+            String varLabel = (String) keys.next();
+            Unit unit = (Unit) _VarLabel2Unit.get(varLabel);
             String unitExpr = "null";
 
             if (unit != null) {
@@ -162,7 +162,7 @@ public class Bindings {
         int i = 0;
 
         while (iter.hasNext()) {
-            retv[i++] = (String) (iter.next());
+            retv[i++] = (String) iter.next();
         }
 
         return retv;

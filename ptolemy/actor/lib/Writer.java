@@ -120,7 +120,7 @@ public class Writer extends Sink {
      */
     public void setWriter(java.io.Writer writer) throws IllegalActionException {
         try {
-            if ((_writer != null) && (_writer != _stdOut)) {
+            if (_writer != null && _writer != _stdOut) {
                 _writer.close();
             }
         } catch (IOException ex) {

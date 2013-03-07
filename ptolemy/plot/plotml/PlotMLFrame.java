@@ -151,7 +151,7 @@ public class PlotMLFrame extends PlotFrame {
         }
         bin.reset();
 
-        if ((new String(peek)).startsWith("<?xm")) {
+        if (new String(peek).startsWith("<?xm")) {
             // file is an XML file.
             PlotBoxMLParser parser;
 

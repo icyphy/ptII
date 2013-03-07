@@ -215,9 +215,8 @@ public class LayoutFrame extends JFrame implements MultiContainerFrame {
                     Map<Component, String> componentsToNames = containerLayout
                             .getComponentsToNames();
 
-                    for (Iterator i = componentsToNames.keySet().iterator(); i
-                            .hasNext();) {
-                        Component component = (Component) i.next();
+                    for (Object element : componentsToNames.keySet()) {
+                        Component component = (Component) element;
                         String componentName = componentsToNames.get(component);
                         if (editor.isNewComponent(component)) {
                             String _decl = "";
@@ -267,8 +266,8 @@ public class LayoutFrame extends JFrame implements MultiContainerFrame {
                             // the set [using JButton and ButtonBar was generating
                             // two JButton import statements]
                             String[] outstrs = _import.split("\n");
-                            for (int ii = 0; ii < outstrs.length; ii++) {
-                                importSet.add(outstrs[ii]);
+                            for (String outstr : outstrs) {
+                                importSet.add(outstr);
                             }
 
                             declBuffer.append(_decl + "\n");
@@ -462,9 +461,9 @@ public class LayoutFrame extends JFrame implements MultiContainerFrame {
         // EAL, 3/3/06.
         Container container = constraintsManager.getContainer(layout);
         Component[] components = container.getComponents();
-        for (int i = 0; i < components.length; i++) {
-            if (components[i] instanceof Container) {
-                String componentName = layout.getComponentName(components[i]);
+        for (Component component2 : components) {
+            if (component2 instanceof Container) {
+                String componentName = layout.getComponentName(component2);
                 if (hasContainer(componentName)) {
                     removeContainer(componentName);
                 }

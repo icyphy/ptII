@@ -486,9 +486,9 @@ public class TransformationEditor extends GTFrame implements ActionListener,
         TransformationRule transformer = (TransformationRule) getModel();
         CompositeActorMatcher replacement = transformer.getReplacement();
         List<ComponentEntity> entities = new LinkedList<ComponentEntity>();
-        for (int i = 0; i < rows.length; i++) {
+        for (int row : rows) {
             String replacementName = _getCellEditorValue((JPanel) _tableModel
-                    .getValueAt(rows[i], 2));
+                    .getValueAt(row, 2));
             ComponentEntity entity = replacement.getEntity(replacementName);
             if (entity != null) {
                 entities.add(entity);
@@ -711,9 +711,9 @@ public class TransformationEditor extends GTFrame implements ActionListener,
             GraphModel graphModel = controller.getGraphModel();
             SelectionModel model = controller.getSelectionModel();
             Object[] selection = model.getSelectionAsArray();
-            for (int i = 0; i < selection.length; i++) {
-                if (selection[i] instanceof Figure) {
-                    Object userObject = ((Figure) selection[i]).getUserObject();
+            for (Object element : selection) {
+                if (element instanceof Figure) {
+                    Object userObject = ((Figure) element).getUserObject();
 
                     if (graphModel.isEdge(userObject)) {
                         Object semanticObject = graphModel
@@ -902,7 +902,7 @@ public class TransformationEditor extends GTFrame implements ActionListener,
         protected Figure _renderNode(Object node) {
             Figure nf = super._renderNode(node);
 
-            if ((node != null) && !_hide(node)) {
+            if (node != null && !_hide(node)) {
                 GraphModel model = getController().getGraphModel();
                 Object object = model.getSemanticObject(node);
                 CompositeFigure cf = _getCompositeFigure(nf);
@@ -1013,7 +1013,7 @@ public class TransformationEditor extends GTFrame implements ActionListener,
         private class Renderer extends PortRenderer {
 
             public Figure render(Object node) {
-                if ((node != null) && !_hide(node)) {
+                if (node != null && !_hide(node)) {
                     Figure nf = super.render(node);
                     GraphModel graphModel = getController().getGraphModel();
                     Object object = graphModel.getSemanticObject(node);
@@ -1116,7 +1116,7 @@ public class TransformationEditor extends GTFrame implements ActionListener,
     protected class TransformationRelationController extends RelationController {
 
         protected Figure _renderNode(Object node) {
-            if ((node != null) && !_hide(node)) {
+            if (node != null && !_hide(node)) {
                 Figure nf = super._renderNode(node);
                 GraphModel graphModel = getController().getGraphModel();
                 Object object = graphModel.getSemanticObject(node);
@@ -1166,7 +1166,7 @@ public class TransformationEditor extends GTFrame implements ActionListener,
             public Figure render(Object node) {
                 Figure nf = super.render(node);
 
-                if ((node != null) && !_hide(node)) {
+                if (node != null && !_hide(node)) {
                     GraphModel model = getController().getGraphModel();
                     Object object = model.getSemanticObject(node);
                     CompositeFigure cf = _getCompositeFigure(nf);

@@ -531,7 +531,7 @@ public class MACActorBase extends NetworkActorBase {
 
             if (idAttribute instanceof Variable) {
                 Variable idVariable = (Variable) idAttribute;
-                id = ((IntToken) (idVariable.getToken())).intValue();
+                id = ((IntToken) idVariable.getToken()).intValue();
             }
         } catch (IllegalActionException ex) {
             // ignore, use the default id

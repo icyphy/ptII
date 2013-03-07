@@ -423,7 +423,7 @@ public class ModularCompiledSDFTypedCompositeActor extends
             while (inputPorts.hasNext()) {
                 TypedIOPort port = (TypedIOPort) inputPorts.next();
                 int rate = DFUtilities.getTokenConsumptionRate(port);
-                Type type = (port).getType();
+                Type type = port.getType();
                 Object tokenHolder = null;
 
                 int numberOfChannels = port.getWidth() < port.getWidthInside() ? port
@@ -594,14 +594,14 @@ public class ModularCompiledSDFTypedCompositeActor extends
             Method[] methods = classInstance.getMethods();
             Method initializeMethod = null;
 
-            for (int i = 0; i < methods.length; i++) {
-                String name = methods[i].getName();
+            for (Method method : methods) {
+                String name = method.getName();
                 if (name.equals("fire")) {
-                    _fireMethod = methods[i];
+                    _fireMethod = method;
                 }
 
                 if (name.equals("initialize")) {
-                    initializeMethod = methods[i];
+                    initializeMethod = method;
                 }
             }
             if (_fireMethod == null) {
@@ -1105,7 +1105,7 @@ public class ModularCompiledSDFTypedCompositeActor extends
 
                 ClassLoader classLoader = new URLClassLoader(urls);
                 classInstance = classLoader.loadClass(className);
-                _profile = (Profile) (classInstance.newInstance());
+                _profile = (Profile) classInstance.newInstance();
 
             } catch (IllegalActionException e) {
                 // TODO Auto-generated catch block
@@ -1311,7 +1311,7 @@ public class ModularCompiledSDFTypedCompositeActor extends
 
                 ClassLoader classLoader = new URLClassLoader(urls);
                 classInstance = classLoader.loadClass(className);
-                _profile = (Profile) (classInstance.newInstance());
+                _profile = (Profile) classInstance.newInstance();
             }
         } catch (Throwable throwable) {
             try {
@@ -1423,11 +1423,11 @@ public class ModularCompiledSDFTypedCompositeActor extends
                         payload = getPayload.invoke(tmpOutputTokens[i][k],
                                 (Object[]) null);
 
-                        Field objSize = (payload.getClass().getField("size"));
+                        Field objSize = payload.getClass().getField("size");
                         int size = objSize.getInt(payload);
 
-                        Field elementsField = (payload.getClass()
-                                .getField("elements"));
+                        Field elementsField = payload.getClass().getField(
+                                "elements");
                         Object[] elements = (Object[]) elementsField
                                 .get(payload);
 

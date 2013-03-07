@@ -144,8 +144,8 @@ import com.sun.jna.Pointer;
  * @Pt.ProposedRating Red (cxh)
  * @Pt.AcceptedRating Red (cxh)
  */
-public class FMUImport extends TypedAtomicActor implements
-        Advanceable, ContinuousStepSizeController, ContinuousStatefulComponent {
+public class FMUImport extends TypedAtomicActor implements Advanceable,
+        ContinuousStepSizeController, ContinuousStatefulComponent {
     // FIXME: For FMI Co-simulation, we want to extend TypedAtomicActor.
     // For model exchange, we want to extend TypedCompositeActor.
 
@@ -217,7 +217,8 @@ public class FMUImport extends TypedAtomicActor implements
      *  @return True if advancement to the specified time succeeds.
      *  @exception IllegalActionException If an error occurs advancing time.
      */
-    public boolean advance(Time time, int microstep) throws IllegalActionException {
+    public boolean advance(Time time, int microstep)
+            throws IllegalActionException {
         double refinedStepSize = _advanceToTime(time, microstep);
         if (refinedStepSize >= 0.0) {
             _stepSizeRejected = true;
@@ -251,7 +252,8 @@ public class FMUImport extends TypedAtomicActor implements
             try {
                 _fmiVersion = Double.parseDouble(fmiVersion.stringValue());
             } catch (NumberFormatException ex) {
-                throw new IllegalActionException(this,
+                throw new IllegalActionException(
+                        this,
                         "Invalid fmiVersion. Required to be of the form n.m, where n and m are natural numbers.");
             }
         }
@@ -347,7 +349,7 @@ public class FMUImport extends TypedAtomicActor implements
         Time currentTime = director.getModelTime();
         int currentMicrostep = 1;
         if (director instanceof SuperdenseTimeDirector) {
-            currentMicrostep = ((SuperdenseTimeDirector)director).getIndex();
+            currentMicrostep = ((SuperdenseTimeDirector) director).getIndex();
         }
         double refinedStepSize = _advanceToTime(currentTime, currentMicrostep);
         if (refinedStepSize >= 0.0) {
@@ -489,10 +491,10 @@ public class FMUImport extends TypedAtomicActor implements
                 }
 
                 if (_debugging) {
-                    _debugToStdOut("FMUImport.fire(): Output " + scalarVariable.name
-                            + " sends value " + token
-                            + " at time " + currentTime
-                            + " and microstep " + currentMicrostep);
+                    _debugToStdOut("FMUImport.fire(): Output "
+                            + scalarVariable.name + " sends value " + token
+                            + " at time " + currentTime + " and microstep "
+                            + currentMicrostep);
                 }
                 port.send(0, token);
             }
@@ -536,7 +538,8 @@ public class FMUImport extends TypedAtomicActor implements
             _debugToStdOut("FMUCoSimulation: about to call " + modelIdentifier
                     + "_fmiInitializeSlave");
         }
-        Function function = _nativeLibrary.getFunction(modelIdentifier + "_fmiInitializeSlave");
+        Function function = _nativeLibrary.getFunction(modelIdentifier
+                + "_fmiInitializeSlave");
 
         Director director = getDirector();
         Time startTime = director.getModelStartTime();
@@ -544,9 +547,9 @@ public class FMUImport extends TypedAtomicActor implements
 
         int fmiFlag;
         if (_fmiVersion < 2.0) {
-            fmiFlag  = ((Integer) function.invoke(Integer.class, new Object[] {
-                _fmiComponent, startTime.getDoubleValue(), (byte) 1,
-                stopTime.getDoubleValue() })).intValue();
+            fmiFlag = ((Integer) function.invoke(Integer.class, new Object[] {
+                    _fmiComponent, startTime.getDoubleValue(), (byte) 1,
+                    stopTime.getDoubleValue() })).intValue();
         } else {
             // The FMI 2.0 standard does not offer any suggestion for a default
             // relative tolerance, so we just pick one, in case the director does
@@ -558,29 +561,28 @@ public class FMUImport extends TypedAtomicActor implements
             // error estimation.
             double relativeTolerance = 1e-4;
             if (director instanceof ContinuousStatefulDirector) {
-                relativeTolerance = ((ContinuousStatefulDirector)director).getErrorTolerance();
+                relativeTolerance = ((ContinuousStatefulDirector) director)
+                        .getErrorTolerance();
             }
-            fmiFlag  = ((Integer) function.invoke(Integer.class, new Object[] {
-                _fmiComponent,
-                relativeTolerance,
-                startTime.getDoubleValue(),
-                (byte) 1, // fmiBoolean stopTimeDefined
-                stopTime.getDoubleValue() })).intValue();
+            fmiFlag = ((Integer) function.invoke(
+                    Integer.class,
+                    new Object[] { _fmiComponent, relativeTolerance,
+                            startTime.getDoubleValue(), (byte) 1, // fmiBoolean stopTimeDefined
+                            stopTime.getDoubleValue() })).intValue();
         }
 
         if (fmiFlag > FMILibrary.FMIStatus.fmiWarning) {
             throw new IllegalActionException(this, "Could not simulate, "
                     + modelIdentifier
                     + "_fmiInitializeSlave(Component, /* startTime */ "
-                    + startTime.getDoubleValue()
-                    + ", 1, /* stopTime */" + stopTime.getDoubleValue()
-                    + ") returned "
+                    + startTime.getDoubleValue() + ", 1, /* stopTime */"
+                    + stopTime.getDoubleValue() + ") returned "
                     + _fmiStatusDescription(fmiFlag));
         }
         _lastCommitTime = startTime;
         _lastFireTime = startTime;
         if (director instanceof SuperdenseTimeDirector) {
-            _lastFireMicrostep = ((SuperdenseTimeDirector)director).getIndex();
+            _lastFireMicrostep = ((SuperdenseTimeDirector) director).getIndex();
         } else {
             // Director must be discrete, so we assume microstep == 1.
             _lastFireMicrostep = 1;
@@ -619,7 +621,8 @@ public class FMUImport extends TypedAtomicActor implements
         // This is important because we want to be able to view
         // a model that references an FMU even if the FMU does not
         // support the current platform.
-        FMIModelDescription fmiModelDescription = FMUFile.parseFMUFile(fmuFileName);
+        FMIModelDescription fmiModelDescription = FMUFile
+                .parseFMUFile(fmuFileName);
 
         // FIXME: Use URLs, not files so that we can work from JarZip files.
 
@@ -763,10 +766,12 @@ public class FMUImport extends TypedAtomicActor implements
             // has not been handled. The director must not
             // be capable of supporting components that reject
             // step sizes.
-            throw new IllegalActionException(this, getDirector(),
+            throw new IllegalActionException(
+                    this,
+                    getDirector(),
                     "FMU discarded a step, rejecting the director's step size."
-                    + " But the director has not handled it."
-                    + " Hence, this director is incompatible with this FMU.");
+                            + " But the director has not handled it."
+                            + " Hence, this director is incompatible with this FMU.");
         }
         _refinedStepSize = -1.0;
         _firstFire = true;
@@ -781,7 +786,8 @@ public class FMUImport extends TypedAtomicActor implements
         // have been caught by attributeChanged(), but nevertheless, we check
         // here.
         if (_fmiModelDescription == null) {
-            throw new IllegalActionException(this,
+            throw new IllegalActionException(
+                    this,
                     "Reading of FMU file failed, but for some reason wasn't reported when the model was opened.");
         }
         super.preinitialize();
@@ -798,17 +804,21 @@ public class FMUImport extends TypedAtomicActor implements
             // fact that the library was found but the
             // load failed.  Under Windows, we may get
             // "The specified module could not be found."
-            throw new IllegalActionException(this, e1, "Current platform not supported by this FMU");
+            throw new IllegalActionException(this, e1,
+                    "Current platform not supported by this FMU");
         }
         if (_nativeLibrary != null) {
-            _fmiDoStep = _nativeLibrary.getFunction(
-                    _fmiModelDescription.modelIdentifier + "_fmiDoStep");
-            _fmiInstantiateSlave = _nativeLibrary.getFunction(
-                    _fmiModelDescription.modelIdentifier + "_fmiInstantiateSlave");
+            _fmiDoStep = _nativeLibrary
+                    .getFunction(_fmiModelDescription.modelIdentifier
+                            + "_fmiDoStep");
+            _fmiInstantiateSlave = _nativeLibrary
+                    .getFunction(_fmiModelDescription.modelIdentifier
+                            + "_fmiInstantiateSlave");
             // Optional function.
             try {
-                _fmiGetRealStatus = _nativeLibrary.getFunction(
-                        _fmiModelDescription.modelIdentifier + "_fmiGetRealStatus");
+                _fmiGetRealStatus = _nativeLibrary
+                        .getFunction(_fmiModelDescription.modelIdentifier
+                                + "_fmiGetRealStatus");
             } catch (UnsatisfiedLinkError ex) {
                 // The FMU has not provided the function.
                 _fmiGetRealStatus = null;
@@ -817,12 +827,15 @@ public class FMUImport extends TypedAtomicActor implements
         if (_fmiModelDescription.canGetAndSetFMUstate) {
             // Retrieve the following FMI 2.0 functions for
             // getting and setting state.
-            _fmiFreeFMUstate = _nativeLibrary.getFunction(
-                    _fmiModelDescription.modelIdentifier + "_fmiFreeFMUstate");
-            _fmiGetFMUstate = _nativeLibrary.getFunction(
-                    _fmiModelDescription.modelIdentifier + "_fmiGetFMUstate");
-            _fmiSetFMUstate = _nativeLibrary.getFunction(
-                    _fmiModelDescription.modelIdentifier + "_fmiSetFMUstate");
+            _fmiFreeFMUstate = _nativeLibrary
+                    .getFunction(_fmiModelDescription.modelIdentifier
+                            + "_fmiFreeFMUstate");
+            _fmiGetFMUstate = _nativeLibrary
+                    .getFunction(_fmiModelDescription.modelIdentifier
+                            + "_fmiGetFMUstate");
+            _fmiSetFMUstate = _nativeLibrary
+                    .getFunction(_fmiModelDescription.modelIdentifier
+                            + "_fmiSetFMUstate");
         }
 
         _checkFmi();
@@ -846,7 +859,7 @@ public class FMUImport extends TypedAtomicActor implements
         double timeout = 1000;
         // There is no simulator UI.
         byte toBeVisible = 0;
-        if (((BooleanToken)visible.getToken()).booleanValue()) {
+        if (((BooleanToken) visible.getToken()).booleanValue()) {
             toBeVisible = 1;
         }
         // Run the simulator without user interaction.
@@ -864,27 +877,28 @@ public class FMUImport extends TypedAtomicActor implements
 
         if (_fmiVersion < 2.0) {
             callbacks = new FMICallbackFunctions.ByValue(
-                    new FMULibrary.FMULogger(), new FMULibrary.FMUAllocateMemory(),
+                    new FMULibrary.FMULogger(),
+                    new FMULibrary.FMUAllocateMemory(),
                     new FMULibrary.FMUFreeMemory(),
                     new FMULibrary.FMUStepFinished());
-            _fmiComponent = (Pointer) _fmiInstantiateSlave.invoke(Pointer.class,
-                    new Object[] { getFullName(), _fmiModelDescription.guid,
-                            fmuLocation, mimeType, timeout, toBeVisible, interactive,
-                            callbacks, loggingOn });
+            _fmiComponent = (Pointer) _fmiInstantiateSlave.invoke(
+                    Pointer.class, new Object[] { getFullName(),
+                            _fmiModelDescription.guid, fmuLocation, mimeType,
+                            timeout, toBeVisible, interactive, callbacks,
+                            loggingOn });
         } else {
             // In FMI 2.0, this is a pointer to the structure, which is by
             // default how a subclass of Structure is handled, so there is no
             // need for the inner class ByValue, as above.
-            callbacks = new FMICallbackFunctions(
-                    new FMULibrary.FMULogger(), new FMULibrary.FMUAllocateMemory(),
+            callbacks = new FMICallbackFunctions(new FMULibrary.FMULogger(),
+                    new FMULibrary.FMUAllocateMemory(),
                     new FMULibrary.FMUFreeMemory(),
                     new FMULibrary.FMUStepFinished());
 
-            _fmiComponent = (Pointer) _fmiInstantiateSlave.invoke(Pointer.class,
-                    new Object[] { getFullName(), _fmiModelDescription.guid,
-                                   fmuLocation,
-                                   callbacks,
-                                   toBeVisible, loggingOn });
+            _fmiComponent = (Pointer) _fmiInstantiateSlave.invoke(
+                    Pointer.class, new Object[] { getFullName(),
+                            _fmiModelDescription.guid, fmuLocation, callbacks,
+                            toBeVisible, loggingOn });
         }
         if (_debugging) {
             _debugToStdOut("FMUImport: successfully calledl " + modelIdentifier
@@ -910,15 +924,18 @@ public class FMUImport extends TypedAtomicActor implements
         // Otherwise, make no suggestion.
         if (_refinedStepSize >= 0.0) {
             if (_debugging) {
-                _debugToStdOut("===> Suggesting a refined step size of " + _refinedStepSize);
+                _debugToStdOut("===> Suggesting a refined step size of "
+                        + _refinedStepSize);
             }
             return _refinedStepSize;
         }
         Director director = getDirector();
         if (director instanceof ContinuousStatefulDirector) {
-            double half = ((ContinuousStatefulDirector) director).getCurrentStepSize()*0.5;
+            double half = ((ContinuousStatefulDirector) director)
+                    .getCurrentStepSize() * 0.5;
             if (_debugging) {
-                _debugToStdOut("===> Suggesting a refined step size of half the current step size, or " + half);
+                _debugToStdOut("===> Suggesting a refined step size of half the current step size, or "
+                        + half);
             }
             return half;
         }
@@ -940,23 +957,22 @@ public class FMUImport extends TypedAtomicActor implements
             // address of a null-valued pointer. During wrapup, the memory
             // should be freed and the FMUstate pointer set to null. If it
             // is already null, the call should be ignored.
-        /*
-fmiStatus fmiGetFMUstate (fmiComponent c, fmiFMUstate* FMUstate);
-fmiStatus fmiSetFMUstate (fmiComponent c, fmiFMUstate FMUstate);
-fmiStatus fmiFreeFMUstate(fmiComponent c, fmiFMUstate* FMUstate);
-         */
+            /*
+            fmiStatus fmiGetFMUstate (fmiComponent c, fmiFMUstate* FMUstate);
+            fmiStatus fmiSetFMUstate (fmiComponent c, fmiFMUstate FMUstate);
+            fmiStatus fmiFreeFMUstate(fmiComponent c, fmiFMUstate* FMUstate);
+             */
         } else {
-            if (!((BooleanToken)suppressWarnings.getToken()).booleanValue()) {
+            if (!((BooleanToken) suppressWarnings.getToken()).booleanValue()) {
                 try {
-                    boolean response = MessageHandler.yesNoCancelQuestion(
-                            "FMU does not support rolling back to a previous state in time, "
-                                    + "but it is being asked to roll back from time "
-                                    + _lastFireTime
-                                    + " to time "
-                                    + _lastCommitTime,
-                                    "Proceed",
+                    boolean response = MessageHandler
+                            .yesNoCancelQuestion(
+                                    "FMU does not support rolling back to a previous state in time, "
+                                            + "but it is being asked to roll back from time "
+                                            + _lastFireTime + " to time "
+                                            + _lastCommitTime, "Proceed",
                                     "Proceed and do not warn me again",
-                            "Cancel");
+                                    "Cancel");
                     if (!response) {
                         // User has asked to not be warned again.
                         // NOTE: This does not mark the model modified, so
@@ -965,7 +981,8 @@ fmiStatus fmiFreeFMUstate(fmiComponent c, fmiFMUstate* FMUstate);
                     }
                 } catch (CancelException e) {
                     // User cancelled, so we throw an exception to stop the execution.
-                    throw new IllegalActionException(this, e, "Execution cancelled.");
+                    throw new IllegalActionException(this, e,
+                            "Execution cancelled.");
                 }
             }
         }
@@ -1001,14 +1018,14 @@ fmiStatus fmiFreeFMUstate(fmiComponent c, fmiFMUstate* FMUstate);
     public void wrapup() throws IllegalActionException {
         _checkFmi();
         String modelIdentifier = _fmiModelDescription.modelIdentifier;
-        Function fmiTerminateSlave = _nativeLibrary
-                .getFunction(modelIdentifier + "_fmiTerminateSlave");
+        Function fmiTerminateSlave = _nativeLibrary.getFunction(modelIdentifier
+                + "_fmiTerminateSlave");
         int fmiFlag = ((Integer) fmiTerminateSlave
                 .invokeInt(new Object[] { _fmiComponent })).intValue();
         if (fmiFlag > FMILibrary.FMIStatus.fmiWarning) {
             throw new IllegalActionException(this,
                     "Could not terminate slave: "
-                    + _fmiStatusDescription(fmiFlag));
+                            + _fmiStatusDescription(fmiFlag));
         }
 
         Function fmiFreeSlaveInstance = _nativeLibrary
@@ -1042,7 +1059,8 @@ fmiStatus fmiFreeFMUstate(fmiComponent c, fmiFMUstate* FMUstate);
      *  @exception IllegalActionException If fmiDoStep() returns anything other than
      *   fmiDiscard or fmiOK.
      */
-    protected double _advanceToTime(Time newTime, int newMicrostep) throws IllegalActionException {
+    protected double _advanceToTime(Time newTime, int newMicrostep)
+            throws IllegalActionException {
         String modelIdentifier = _fmiModelDescription.modelIdentifier;
 
         // By default, the FMU does not suggest a refined step size,
@@ -1050,7 +1068,8 @@ fmiStatus fmiFreeFMUstate(fmiComponent c, fmiFMUstate* FMUstate);
         double result = -1.0;
 
         int timeAdvance = newTime.compareTo(_lastFireTime);
-        if (timeAdvance != 0 || (timeAdvance == 0 && newMicrostep > _lastFireMicrostep)) {
+        if (timeAdvance != 0 || timeAdvance == 0
+                && newMicrostep > _lastFireMicrostep) {
             // Time or microstep has advanced or time has declined
             // since the last invocation of fire() or initialize().
             // Even if only the microstep has advanced, we should still call
@@ -1105,49 +1124,49 @@ fmiStatus fmiFreeFMUstate(fmiComponent c, fmiFMUstate* FMUstate);
             // For FMI 1.0, there is not really a good solution. There are two
             // flawed possibilities, described below.  We implement the first
             // flawed possibility.
-/*
-Suppose an RK 2-3 solver chooses a step size
-of, say, 1.0 seconds at communication point (current time)
-0.0. It will want to obtain outputs from the FMU at times
-0.0, 0.5, 0.75, and 1.0.  Since there are three time intervals
-here, there need to be three calls to fmiDoStep().  E.g.,
+            /*
+            Suppose an RK 2-3 solver chooses a step size
+            of, say, 1.0 seconds at communication point (current time)
+            0.0. It will want to obtain outputs from the FMU at times
+            0.0, 0.5, 0.75, and 1.0.  Since there are three time intervals
+            here, there need to be three calls to fmiDoStep().  E.g.,
 
-  fmiDoStep(component, 0.0, 0.5, true);  // newStep == true
-  fmiDoStep(component, 0.5, 0.25, true);  // newStep == true
-  fmiDoStep(component, 0.75, 0.25, true);  // newStep == true
+              fmiDoStep(component, 0.0, 0.5, true);  // newStep == true
+              fmiDoStep(component, 0.5, 0.25, true);  // newStep == true
+              fmiDoStep(component, 0.75, 0.25, true);  // newStep == true
 
-The last two calls have to specify newStep == true because
-otherwise the slave will interpret this as restarting the
-previous computation, which has an earlier communication point.
-Moreover, when we get fired at time 0.5, the provided inputs
-correspond to those at time 0.5. So we can provide those inputs
-to the FMU and proceed.
+            The last two calls have to specify newStep == true because
+            otherwise the slave will interpret this as restarting the
+            previous computation, which has an earlier communication point.
+            Moreover, when we get fired at time 0.5, the provided inputs
+            correspond to those at time 0.5. So we can provide those inputs
+            to the FMU and proceed.
 
-But now, if the last fmiDoStep is rejected, then _all three_
-have to be redone. The slave, however, will not have a
-record of its state at time 0.0 unless it is recording
-the state at _all_ communication points, which is clearly
-not a good solution.
+            But now, if the last fmiDoStep is rejected, then _all three_
+            have to be redone. The slave, however, will not have a
+            record of its state at time 0.0 unless it is recording
+            the state at _all_ communication points, which is clearly
+            not a good solution.
 
-So the above sequence won't work.  There is an alternative.
-The orchestrator could do this:
+            So the above sequence won't work.  There is an alternative.
+            The orchestrator could do this:
 
-  fmiDoStep(component, 0.0, 0.5, true);  // newStep == true
-  fmiDoStep(component, 0.0, 0.75, false);  // newStep == false
-  fmiDoStep(component, 0.0, 1.0, false);  // newStep == false
+              fmiDoStep(component, 0.0, 0.5, true);  // newStep == true
+              fmiDoStep(component, 0.0, 0.75, false);  // newStep == false
+              fmiDoStep(component, 0.0, 1.0, false);  // newStep == false
 
-The slave has to redo time intervals even if the step size
-is ultimately accepted. This would also require that at times
-0.5 and 0.75, we do not provide the new inputs to the FMU.
-It would need to run with the inputs from time 0.0.
-Also, this will be less accurate,
-because with the first execution sequence, input values are
-provided for times 0.5 and 0.75, but for the second, they
-are not.
+            The slave has to redo time intervals even if the step size
+            is ultimately accepted. This would also require that at times
+            0.5 and 0.75, we do not provide the new inputs to the FMU.
+            It would need to run with the inputs from time 0.0.
+            Also, this will be less accurate,
+            because with the first execution sequence, input values are
+            provided for times 0.5 and 0.75, but for the second, they
+            are not.
 
-Appendix B of the 1.0 standard has an extensive discussion
-of the limitations of newStep.
- */
+            Appendix B of the 1.0 standard has an extensive discussion
+            of the limitations of newStep.
+             */
             byte lastArg = 1;
 
             // If we have moved backwards in time, then we are redoing an integration
@@ -1175,9 +1194,10 @@ of the limitations of newStep.
                 if (_fmiVersion >= 2.0) {
                     lastArgDescription = ", /* noSetFMUStatePriorToCurrentPoint */";
                 }
-                _debugToStdOut("FMIImport.fire(): about to call " + modelIdentifier
-                        + "_fmiDoStep(Component, /* time */ " + time
-                        + ", /* stepSize */" + stepSize + lastArgDescription + lastArg + ")");
+                _debugToStdOut("FMIImport.fire(): about to call "
+                        + modelIdentifier + "_fmiDoStep(Component, /* time */ "
+                        + time + ", /* stepSize */" + stepSize
+                        + lastArgDescription + lastArg + ")");
             }
 
             // Invoke fmiDoStep.
@@ -1192,7 +1212,8 @@ of the limitations of newStep.
             // If the FMU discarded the step, handle this.
             if (fmiFlag == FMILibrary.FMIStatus.fmiDiscard) {
                 if (_debugging) {
-                    _debugToStdOut("Rejected step size of " + stepSize + " at time " + time);
+                    _debugToStdOut("Rejected step size of " + stepSize
+                            + " at time " + time);
                 }
                 // By default, if the FMU does not provide better information,
                 // we suggest a refined step size of half the current step size.
@@ -1203,25 +1224,30 @@ of the limitations of newStep.
                     // a suggested step size.
                     // This function returns fmiDiscard if not supported.
                     DoubleBuffer valueBuffer = DoubleBuffer.allocate(1);
-                    fmiFlag = ((Integer) _fmiGetRealStatus.invokeInt(new Object[] {
-                            _fmiComponent,
-                            FMILibrary.FMIStatusKind.fmiLastSuccessfulTime,
-                            valueBuffer})).intValue();
+                    fmiFlag = ((Integer) _fmiGetRealStatus
+                            .invokeInt(new Object[] {
+                                    _fmiComponent,
+                                    FMILibrary.FMIStatusKind.fmiLastSuccessfulTime,
+                                    valueBuffer })).intValue();
                     if (fmiFlag == FMILibrary.FMIStatus.fmiOK) {
                         double lastSuccessfulTime = valueBuffer.get(0);
                         if (_debugging) {
-                            _debug("FMU reports last successful time of " + lastSuccessfulTime);
+                            _debug("FMU reports last successful time of "
+                                    + lastSuccessfulTime);
                         }
                         // Sanity check the time to make sure it makes sense.
-                        if (lastSuccessfulTime < _lastCommitTime.getDoubleValue()) {
-                            throw new IllegalActionException(this, "FMU Rejected step size of "
-                                    + stepSize
-                                    + " at time "
-                                    + time
-                                    + ", and returns a last successful time of "
-                                    + lastSuccessfulTime
-                                    + ", which is less than the last commit time of "
-                                    + _lastCommitTime);
+                        if (lastSuccessfulTime < _lastCommitTime
+                                .getDoubleValue()) {
+                            throw new IllegalActionException(
+                                    this,
+                                    "FMU Rejected step size of "
+                                            + stepSize
+                                            + " at time "
+                                            + time
+                                            + ", and returns a last successful time of "
+                                            + lastSuccessfulTime
+                                            + ", which is less than the last commit time of "
+                                            + _lastCommitTime);
                         }
                         // Adjust the return result with a suggested time.
                         // We want lastSuccessfulTime - lastCommitTime, which
@@ -1229,7 +1255,8 @@ of the limitations of newStep.
                         // if using an RK solver, we may be rejecting a doStep
                         // beyond the first iteration, and the step size right
                         // now is actually a substep.
-                        result = lastSuccessfulTime - _lastCommitTime.getDoubleValue();
+                        result = lastSuccessfulTime
+                                - _lastCommitTime.getDoubleValue();
                     } else {
                         if (_debugging) {
                             _debug("FMU does not report a last successful time.");
@@ -1292,15 +1319,14 @@ of the limitations of newStep.
         if (director instanceof ContinuousStatefulDirector) {
             // FIXME: depending on ContinuousDirector here.
             stepSize = ((ContinuousStatefulDirector) getDirector())
-                .getCurrentStepSize();
+                    .getCurrentStepSize();
 
         } else if (director instanceof PeriodicDirector) {
-            stepSize = ((PeriodicDirector) getDirector())
-                .periodValue();
+            stepSize = ((PeriodicDirector) getDirector()).periodValue();
         } else {
             throw new IllegalActionException(this,
                     "Don't know how to get the step size for "
-                    + director.getClass().getName() + ".");
+                            + director.getClass().getName() + ".");
         }
         return stepSize;
     }
@@ -1339,17 +1365,20 @@ of the limitations of newStep.
             throws IllegalActionException {
         // FIXME: What about arrays?
         if (scalar.type instanceof FMIBooleanType) {
-            parameter.setToken(new BooleanToken(scalar.getBoolean(_fmiComponent)));
+            parameter.setToken(new BooleanToken(scalar
+                    .getBoolean(_fmiComponent)));
         } else if (scalar.type instanceof FMIIntegerType) {
             // FIXME: handle Enumerations?
             parameter.setToken(new IntToken(scalar.getInt(_fmiComponent)));
         } else if (scalar.type instanceof FMIRealType) {
-            parameter.setToken(new DoubleToken(scalar.getDouble(_fmiComponent)));
+            parameter
+                    .setToken(new DoubleToken(scalar.getDouble(_fmiComponent)));
         } else if (scalar.type instanceof FMIStringType) {
-            parameter.setToken(new StringToken(scalar.getString(_fmiComponent)));
+            parameter
+                    .setToken(new StringToken(scalar.getString(_fmiComponent)));
         } else {
-            throw new IllegalActionException("Type "
-                    + scalar.type + " not supported.");
+            throw new IllegalActionException("Type " + scalar.type
+                    + " not supported.");
         }
     }
 
@@ -1458,14 +1487,15 @@ of the limitations of newStep.
     private void _checkFmi() throws IllegalActionException {
         if (_fmiModelDescription == null) {
             throw new IllegalActionException(this,
-                    "Could not get the FMU model description? "
-                    + "Perhaps \"" + fmuFile.asFile() + "\" does not exist or is not readable?");
+                    "Could not get the FMU model description? " + "Perhaps \""
+                            + fmuFile.asFile()
+                            + "\" does not exist or is not readable?");
         }
         if (_fmiModelDescription.modelIdentifier == null) {
             throw new IllegalActionException(this,
                     "Could not get the modelIdentifier, perhaps the .fmu file \""
-                    + fmuFile.asFile()
-                    + "\" did not contain a modelDescription.xml file?");
+                            + fmuFile.asFile()
+                            + "\" did not contain a modelDescription.xml file?");
         }
         String missingFunction = null;
         if (_fmiDoStep == null) {
@@ -1478,11 +1508,12 @@ of the limitations of newStep.
             String sharedLibrary = "";
             try {
                 sharedLibrary = "the shared library \""
-                    + FMUFile.fmuSharedLibrary(_fmiModelDescription)
-                    + "\" was probably not found after the .fmu file was unzipped?";
+                        + FMUFile.fmuSharedLibrary(_fmiModelDescription)
+                        + "\" was probably not found after the .fmu file was unzipped?";
 
             } catch (IOException ex) {
-                sharedLibrary = "the shared library could not be obtained from the fmu: " + ex;
+                sharedLibrary = "the shared library could not be obtained from the fmu: "
+                        + ex;
             }
             List<String> binariesFiles = new LinkedList<String>();
             // Get the list pathnames that contain the string "binaries"
@@ -1491,17 +1522,20 @@ of the limitations of newStep.
                     binariesFiles.add(file.toString() + "\n");
                 }
             }
-            throw new IllegalActionException(this,
-                    "Could not get the " + _fmiModelDescription.modelIdentifier
-                    + missingFunction + "() C function?  Perhaps the .fmu file \""
-                    + fmuFile.asFile()
-                    + "\" does not contain a shared library for the current "
-                    + "platform?  "
-                    + "When the .fmu file was loaded, "
-                    + sharedLibrary
-                    + "  The .fmu file contained the following files with 'binaries'"
-                    + " in the path:\n" + binariesFiles);
-         }
+            throw new IllegalActionException(
+                    this,
+                    "Could not get the "
+                            + _fmiModelDescription.modelIdentifier
+                            + missingFunction
+                            + "() C function?  Perhaps the .fmu file \""
+                            + fmuFile.asFile()
+                            + "\" does not contain a shared library for the current "
+                            + "platform?  "
+                            + "When the .fmu file was loaded, "
+                            + sharedLibrary
+                            + "  The .fmu file contained the following files with 'binaries'"
+                            + " in the path:\n" + binariesFiles);
+        }
     }
 
     /** Given a FMIType object, return a string suitable for setting

@@ -150,7 +150,8 @@ public class DependencyResultsDialog extends SearchResultsDialog {
     ////                         inner classes                     ////
 
     /** Default renderer for results table. */
-    private static class DependencyResultsNamedObjRenderer extends DefaultTableCellRenderer {
+    private static class DependencyResultsNamedObjRenderer extends
+            DefaultTableCellRenderer {
         // FindBugs indicates that this should be a static class.
 
         public void setValue(Object value) {

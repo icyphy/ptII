@@ -100,7 +100,7 @@ public class ArrayToElements extends Transformer {
      *   contains an attribute that cannot be cloned.
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        ArrayToElements newObject = (ArrayToElements) (super.clone(workspace));
+        ArrayToElements newObject = (ArrayToElements) super.clone(workspace);
         try {
             newObject.output.setTypeAtLeast(ArrayType
                     .elementType(newObject.input));

@@ -344,10 +344,10 @@ public class ActorGraphFrame extends ExtendedGraphFrame
         _debugMenuListener = new DebugMenuListener();
 
         // Set the action command and listener for each menu item.
-        for (int i = 0; i < debugMenuItems.length; i++) {
-            debugMenuItems[i].setActionCommand(debugMenuItems[i].getText());
-            debugMenuItems[i].addActionListener(_debugMenuListener);
-            _debugMenu.add(debugMenuItems[i]);
+        for (JMenuItem debugMenuItem : debugMenuItems) {
+            debugMenuItem.setActionCommand(debugMenuItem.getText());
+            debugMenuItem.addActionListener(_debugMenuListener);
+            _debugMenu.add(debugMenuItem);
         }
 
         _menubar.add(_debugMenu);
@@ -368,8 +368,7 @@ public class ActorGraphFrame extends ExtendedGraphFrame
 
         NamedObj ptModel = getModel();
 
-        if (ptModel instanceof CompositeActor
-                && (ptModel.getContainer() == null)) {
+        if (ptModel instanceof CompositeActor && ptModel.getContainer() == null) {
             CompositeActor ptActorModel = (CompositeActor) ptModel;
             Manager manager = ptActorModel.getManager();
 
@@ -564,7 +563,7 @@ public class ActorGraphFrame extends ExtendedGraphFrame
                                 Director director = ((Actor) model)
                                         .getDirector();
 
-                                while ((director == null)
+                                while (director == null
                                         && model instanceof Actor) {
                                     model = model.getContainer();
 
@@ -574,8 +573,8 @@ public class ActorGraphFrame extends ExtendedGraphFrame
                                     }
                                 }
 
-                                if ((director != null)
-                                        && (_listeningTo != director)) {
+                                if (director != null
+                                        && _listeningTo != director) {
                                     if (_listeningTo != null) {
                                         _listeningTo
                                                 .removeDebugListener(_controller);
@@ -673,7 +672,7 @@ public class ActorGraphFrame extends ExtendedGraphFrame
                 String rootName = _lastAttributeClassName;
                 int period = rootName.lastIndexOf(".");
 
-                if ((period >= 0) && (rootName.length() > (period + 1))) {
+                if (period >= 0 && rootName.length() > period + 1) {
                     rootName = rootName.substring(period + 1);
                 }
 
@@ -751,7 +750,7 @@ public class ActorGraphFrame extends ExtendedGraphFrame
                 String rootName = _lastEntityClassName;
                 int period = rootName.lastIndexOf(".");
 
-                if ((period >= 0) && (rootName.length() > (period + 1))) {
+                if (period >= 0 && rootName.length() > period + 1) {
                     rootName = rootName.substring(period + 1);
                 }
 
@@ -764,7 +763,7 @@ public class ActorGraphFrame extends ExtendedGraphFrame
                 // specify a "source".
                 String source = "";
 
-                if (!(_lastLocation.trim().equals(""))) {
+                if (!_lastLocation.trim().equals("")) {
                     source = " source=\"" + _lastLocation.trim() + "\"";
                 }
 
@@ -932,7 +931,7 @@ public class ActorGraphFrame extends ExtendedGraphFrame
                 String rootName = _lastPortClassName;
                 int period = rootName.lastIndexOf(".");
 
-                if ((period >= 0) && (rootName.length() > (period + 1))) {
+                if (period >= 0 && rootName.length() > period + 1) {
                     rootName = rootName.substring(period + 1);
                 }
 
@@ -945,7 +944,7 @@ public class ActorGraphFrame extends ExtendedGraphFrame
                 // specify a "source".
                 String source = "";
 
-                if (!(_lastLocation.trim().equals(""))) {
+                if (!_lastLocation.trim().equals("")) {
                     source = " source=\"" + _lastLocation.trim() + "\"";
                 }
 

@@ -92,7 +92,7 @@ public class KeyToken extends Token {
         java.security.Key rightKey = ((KeyToken) rightArgument).getValue();
         java.security.Key leftKey = getValue();
 
-        if ((rightKey == null) || (leftKey == null)) {
+        if (rightKey == null || leftKey == null) {
             return BooleanToken.FALSE;
         }
 
@@ -135,7 +135,7 @@ public class KeyToken extends Token {
 
         byte[] encoded = _value.getEncoded();
 
-        for (int i = 0; i < (encoded.length - 1); i++) {
+        for (int i = 0; i < encoded.length - 1; i++) {
             result.append(" " + encoded[i] + ",");
         }
 

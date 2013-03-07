@@ -186,10 +186,10 @@ public class RunTableau extends Tableau {
             DebugMenuListener debugMenuListener = new DebugMenuListener();
 
             // Set the action command and listener for each menu item.
-            for (int i = 0; i < debugMenuItems.length; i++) {
-                debugMenuItems[i].setActionCommand(debugMenuItems[i].getText());
-                debugMenuItems[i].addActionListener(debugMenuListener);
-                _debugMenu.add(debugMenuItems[i]);
+            for (JMenuItem debugMenuItem : debugMenuItems) {
+                debugMenuItem.setActionCommand(debugMenuItem.getText());
+                debugMenuItem.addActionListener(debugMenuListener);
+                _debugMenu.add(debugMenuItem);
             }
 
             _menubar.add(_debugMenu);

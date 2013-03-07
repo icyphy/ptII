@@ -369,7 +369,7 @@ public class IntegerArrayMath {
         int sum = 0;
 
         for (int i = 0; i < length; i++) {
-            sum += (array1[i] * array2[i]);
+            sum += array1[i] * array2[i];
         }
 
         return sum;
@@ -392,9 +392,9 @@ public class IntegerArrayMath {
         int[] returnValue = new int[array.length];
 
         for (int i = 0; i < array.length; i++) {
-            if ((array[i] > top) || (array[i] == Integer.MAX_VALUE)) {
+            if (array[i] > top || array[i] == Integer.MAX_VALUE) {
                 returnValue[i] = top;
-            } else if ((array[i] < bottom) || (array[i] == Integer.MIN_VALUE)) {
+            } else if (array[i] < bottom || array[i] == Integer.MIN_VALUE) {
                 returnValue[i] = bottom;
             } else {
                 returnValue[i] = array[i];
@@ -555,7 +555,7 @@ public class IntegerArrayMath {
         int[] returnValue = new int[newLength];
         int copySize = Math.min(newLength, array.length - startIdx);
 
-        if ((startIdx >= array.length) && (copySize > 0)) {
+        if (startIdx >= array.length && copySize > 0) {
             throw new IllegalArgumentException("resize():  the start index '"
                     + startIdx
                     + "' is greater than equal to the array length '"
@@ -667,8 +667,8 @@ public class IntegerArrayMath {
     public static final int sumOfSquares(int[] array) {
         int sum = 0;
 
-        for (int i = 0; i < array.length; i++) {
-            sum += (array[i] * array[i]);
+        for (int element : array) {
+            sum += element * element;
         }
 
         return sum;
@@ -768,7 +768,7 @@ public class IntegerArrayMath {
         for (int i = 0; i < length; i++) {
             sb.append(Integer.toString(array[i]));
 
-            if (i < (length - 1)) {
+            if (i < length - 1) {
                 sb.append(elementDelimiter);
             }
         }
@@ -797,8 +797,8 @@ public class IntegerArrayMath {
         int length = _commonLength(array1, array2, "IntegerArrayMath.within");
 
         for (int i = 0; i < length; i++) {
-            if ((array1[i] > (array2[i] + maxError))
-                    || (array1[i] < (array2[i] - maxError))) {
+            if (array1[i] > array2[i] + maxError
+                    || array1[i] < array2[i] - maxError) {
                 return false;
             }
         }
@@ -827,8 +827,8 @@ public class IntegerArrayMath {
         int length = _commonLength(array1, array2, "IntegerArrayMath.within");
 
         for (int i = 0; i < length; i++) {
-            if ((array1[i] > (array2[i] + maxError[i]))
-                    || (array1[i] < (array2[i] - maxError[i]))) {
+            if (array1[i] > array2[i] + maxError[i]
+                    || array1[i] < array2[i] - maxError[i]) {
                 return false;
             }
         }

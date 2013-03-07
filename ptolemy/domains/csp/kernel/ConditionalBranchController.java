@@ -130,19 +130,18 @@ public class ConditionalBranchController extends AbstractBranchController {
 
                 ConditionalBranch onlyBranch = null;
 
-                for (int i = 0; i < branches.length; i++) {
+                for (ConditionalBranch branche : branches) {
                     // If the guard is false, then the branch is not enabled.
-                    if (branches[i].getGuard()) {
+                    if (branche.getGuard()) {
                         // Create a thread for this enabled branch
-                        Nameable actor = branches[i].getController()
-                                .getParent();
-                        String name = actor.getName() + branches[i].getID();
+                        Nameable actor = branche.getController().getParent();
+                        String name = actor.getName() + branche.getID();
                         if (_debugging) {
                             _debug("** Creating branch: " + name);
                         }
-                        Thread thread = new Thread((Runnable) branches[i], name);
+                        Thread thread = new Thread((Runnable) branche, name);
                         _threadList.add(0, thread);
-                        onlyBranch = branches[i];
+                        onlyBranch = branche;
                     }
                 }
 
@@ -204,7 +203,7 @@ public class ConditionalBranchController extends AbstractBranchController {
                     _blockedController = Thread.currentThread();
                     director.threadBlocked(_blockedController, null);
                     // wait for a branch to succeed
-                    while ((_successfulBranch == -1) && (_branchesActive > 0)
+                    while (_successfulBranch == -1 && _branchesActive > 0
                             && !director.isStopRequested()) {
                         director.wait();
                     }
@@ -223,7 +222,7 @@ public class ConditionalBranchController extends AbstractBranchController {
                 for (int i = 0; i < branches.length; i++) {
                     // If the guard for a branch is false, it means a
                     // thread was not created for that branch.
-                    if ((i != _successfulBranch) && (branches[i].getGuard())) {
+                    if (i != _successfulBranch && branches[i].getGuard()) {
                         branches[i]._setAlive(false);
                         if (_debugging) {
                             _debug("** Killing branch: " + branches[i].getID());
@@ -374,7 +373,7 @@ public class ConditionalBranchController extends AbstractBranchController {
     protected boolean _isBranchReady(int branchNumber) {
         Object director = _getDirector();
         synchronized (director) {
-            if ((_branchTrying == -1) || (_branchTrying == branchNumber)) {
+            if (_branchTrying == -1 || _branchTrying == branchNumber) {
                 // store branchNumber
                 _branchTrying = branchNumber;
                 director.notifyAll();

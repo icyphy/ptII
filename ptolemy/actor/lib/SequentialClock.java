@@ -304,9 +304,9 @@ public class SequentialClock extends TypedAtomicActor implements SequenceActor {
      *  @exception IllegalActionException If there is no director.
      */
     public boolean prefire() throws IllegalActionException {
-        ArrayToken val = (ArrayToken) (values.getToken());
+        ArrayToken val = (ArrayToken) values.getToken();
 
-        if ((val == null) || (val.length() <= _phase)) {
+        if (val == null || val.length() <= _phase) {
             throw new IllegalActionException(this,
                     "Offsets and values parameters lengths do not match.");
         }

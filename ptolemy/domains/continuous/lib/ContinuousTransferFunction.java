@@ -169,7 +169,7 @@ public class ContinuousTransferFunction extends TypedCompositeActor {
             }
         } else if (attribute == denominator) {
             // Check that a_0 is not 0.0
-            ArrayToken aToken = (ArrayToken) (denominator.getToken());
+            ArrayToken aToken = (ArrayToken) denominator.getToken();
 
             if (((DoubleToken) aToken.getElement(0)).doubleValue() == 0.0) {
                 throw new IllegalActionException(this,
@@ -282,7 +282,7 @@ public class ContinuousTransferFunction extends TypedCompositeActor {
                             / a[0]));
                     feedforward[i] = new Scale(this, "Feedforward" + i);
                     feedforward[i].factor.setToken(new DoubleToken(
-                            (b[i + 1] - (d * a[i + 1])) / a[0]));
+                            (b[i + 1] - d * a[i + 1]) / a[0]));
 
                     // connections
                     nodes[i] = (IORelation) connect(integrators[i].state,

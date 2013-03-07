@@ -309,7 +309,7 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants,
      */
     public static void registerConstant(String name, Object value)
             throws IllegalArgumentException {
-        if ((value == null) || (name == null)) {
+        if (value == null || name == null) {
             throw new IllegalArgumentException("PtParser: cannot register "
                     + "a constant if either the name or value object is null.");
         }
@@ -475,7 +475,7 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants,
             ASTPtAssignmentNode node = (ASTPtAssignmentNode) jjtree.popNode();
             map.put(node.getIdentifier(), node);
             label_1: while (true) {
-                switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk) {
+                switch (jj_ntk == -1 ? jj_ntk() : jj_ntk) {
                 case SEPARATOR:
                     ;
                     break;
@@ -587,7 +587,7 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants,
             try {
                 stringModeElement();
                 label_2: while (true) {
-                    switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk) {
+                    switch (jj_ntk == -1 ? jj_ntk() : jj_ntk) {
                     case SMSTRING:
                     case SMDOLLAR:
                     case SMDOLLARBRACE:
@@ -677,7 +677,7 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants,
     }
 
     final public void stringModeElement() throws ParseException {
-        switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk) {
+        switch (jj_ntk == -1 ? jj_ntk() : jj_ntk) {
         case SMSTRING:
             stringModeString();
             break;
@@ -826,7 +826,7 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants,
         jjtree.openNodeScope(jjtn001);
         try {
             logicalOr();
-            switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk) {
+            switch (jj_ntk == -1 ? jj_ntk() : jj_ntk) {
             case QUESTION:
                 jj_consume_token(QUESTION);
                 expression();
@@ -878,7 +878,7 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants,
         try {
             logicalAnd();
             label_3: while (true) {
-                switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk) {
+                switch (jj_ntk == -1 ? jj_ntk() : jj_ntk) {
                 case COND_OR:
                     ;
                     break;
@@ -931,7 +931,7 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants,
         try {
             bitwiseOr();
             label_4: while (true) {
-                switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk) {
+                switch (jj_ntk == -1 ? jj_ntk() : jj_ntk) {
                 case COND_AND:
                     ;
                     break;
@@ -984,7 +984,7 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants,
         try {
             bitwiseXor();
             label_5: while (true) {
-                switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk) {
+                switch (jj_ntk == -1 ? jj_ntk() : jj_ntk) {
                 case OR:
                     ;
                     break;
@@ -1037,7 +1037,7 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants,
         try {
             bitwiseAnd();
             label_6: while (true) {
-                switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk) {
+                switch (jj_ntk == -1 ? jj_ntk() : jj_ntk) {
                 case XOR:
                     ;
                     break;
@@ -1090,7 +1090,7 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants,
         try {
             logicalEquals();
             label_7: while (true) {
-                switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk) {
+                switch (jj_ntk == -1 ? jj_ntk() : jj_ntk) {
                 case AND:
                     ;
                     break;
@@ -1143,10 +1143,10 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants,
         jjtree.openNodeScope(jjtn001);
         try {
             relational();
-            switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk) {
+            switch (jj_ntk == -1 ? jj_ntk() : jj_ntk) {
             case NOTEQUALS:
             case EQUALS:
-                switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk) {
+                switch (jj_ntk == -1 ? jj_ntk() : jj_ntk) {
                 case EQUALS:
                     x = jj_consume_token(EQUALS);
                     break;
@@ -1206,7 +1206,7 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants,
         try {
             unary();
             label_8: while (true) {
-                switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk) {
+                switch (jj_ntk == -1 ? jj_ntk() : jj_ntk) {
                 case POWER:
                     ;
                     break;
@@ -1258,12 +1258,12 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants,
         jjtree.openNodeScope(jjtn001);
         try {
             shift();
-            switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk) {
+            switch (jj_ntk == -1 ? jj_ntk() : jj_ntk) {
             case GT:
             case LT:
             case GTE:
             case LTE:
-                switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk) {
+                switch (jj_ntk == -1 ? jj_ntk() : jj_ntk) {
                 case GT:
                     x = jj_consume_token(GT);
                     break;
@@ -1328,11 +1328,11 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants,
         jjtree.openNodeScope(jjtn001);
         try {
             sum();
-            switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk) {
+            switch (jj_ntk == -1 ? jj_ntk() : jj_ntk) {
             case SHL:
             case SHR:
             case LSHR:
-                switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk) {
+                switch (jj_ntk == -1 ? jj_ntk() : jj_ntk) {
                 case SHL:
                     x = jj_consume_token(SHL);
                     break;
@@ -1395,7 +1395,7 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants,
         try {
             term();
             label_9: while (true) {
-                switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk) {
+                switch (jj_ntk == -1 ? jj_ntk() : jj_ntk) {
                 case PLUS:
                 case MINUS:
                     ;
@@ -1404,7 +1404,7 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants,
                     jj_la1[16] = jj_gen;
                     break label_9;
                 }
-                switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk) {
+                switch (jj_ntk == -1 ? jj_ntk() : jj_ntk) {
                 case PLUS:
                     x = jj_consume_token(PLUS);
                     break;
@@ -1460,7 +1460,7 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants,
         try {
             power();
             label_10: while (true) {
-                switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk) {
+                switch (jj_ntk == -1 ? jj_ntk() : jj_ntk) {
                 case MULTIPLY:
                 case DIVIDE:
                 case MODULO:
@@ -1470,7 +1470,7 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants,
                     jj_la1[18] = jj_gen;
                     break label_10;
                 }
-                switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk) {
+                switch (jj_ntk == -1 ? jj_ntk() : jj_ntk) {
                 case MULTIPLY:
                     x = jj_consume_token(MULTIPLY);
                     break;
@@ -1566,7 +1566,7 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants,
                 }
             }
         } else {
-            switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk) {
+            switch (jj_ntk == -1 ? jj_ntk() : jj_ntk) {
             case BOOL_NOT:
                 ASTPtUnaryNode jjtn002 = new ASTPtUnaryNode(JJTPTUNARYNODE);
                 boolean jjtc002 = true;
@@ -1730,7 +1730,7 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants,
         primaryElement();
         child = (ASTPtRootNode) jjtree.popNode();
         label_11: while (true) {
-            switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk) {
+            switch (jj_ntk == -1 ? jj_ntk() : jj_ntk) {
             case OPENPAREN:
             case PERIOD:
                 ;
@@ -1739,7 +1739,7 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants,
                 jj_la1[21] = jj_gen;
                 break label_11;
             }
-            switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk) {
+            switch (jj_ntk == -1 ? jj_ntk() : jj_ntk) {
             case PERIOD:
                 ASTPtMethodCallNode jjtn001 = new ASTPtMethodCallNode(
                         JJTPTMETHODCALLNODE);
@@ -1755,7 +1755,7 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants,
                         if (jj_2_5(1)) {
                             expression();
                             label_12: while (true) {
-                                switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk) {
+                                switch (jj_ntk == -1 ? jj_ntk() : jj_ntk) {
                                 case COMMA:
                                     ;
                                     break;
@@ -1818,7 +1818,7 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants,
                     if (jj_2_7(1)) {
                         expression();
                         label_13: while (true) {
-                            switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk) {
+                            switch (jj_ntk == -1 ? jj_ntk() : jj_ntk) {
                             case COMMA:
                                 ;
                                 break;
@@ -1879,7 +1879,7 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants,
         int len;
         boolean neg = false;
         String x;
-        switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk) {
+        switch (jj_ntk == -1 ? jj_ntk() : jj_ntk) {
         case MINUS:
             jj_consume_token(MINUS);
             neg = true;
@@ -1983,7 +1983,7 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants,
     final public void primaryElement() throws ParseException {
         int len;
         String tidied, x;
-        switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk) {
+        switch (jj_ntk == -1 ? jj_ntk() : jj_ntk) {
         case COMPLEX:
             ASTPtLeafNode jjtn001 = new ASTPtLeafNode(JJTPTLEAFNODE);
             boolean jjtc001 = true;
@@ -2081,7 +2081,7 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants,
 
                 // Now cut the " from each end of the string.
                 len = token.image.length();
-                tidied = token.image.substring(1, (len - 1));
+                tidied = token.image.substring(1, len - 1);
 
                 // Resolve escape sequences in the string.
                 StringTokenizer st = new StringTokenizer(tidied,
@@ -2225,7 +2225,7 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants,
             } else if (jj_2_15(2147483647)) {
                 function();
             } else {
-                switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk) {
+                switch (jj_ntk == -1 ? jj_ntk() : jj_ntk) {
                 case ID:
                 case SMID:
                 case SMIDBRACE:
@@ -2250,13 +2250,13 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants,
         try {
             jj_consume_token(FUNCTION);
             jj_consume_token(OPENPAREN);
-            switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk) {
+            switch (jj_ntk == -1 ? jj_ntk() : jj_ntk) {
             case ID:
                 jj_consume_token(ID);
                 jjtn000._argList.add(token.image);
                 optTypeSpecifier();
                 label_14: while (true) {
-                    switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk) {
+                    switch (jj_ntk == -1 ? jj_ntk() : jj_ntk) {
                     case COMMA:
                         ;
                         break;
@@ -2284,8 +2284,7 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants,
             int argCount = jjtn000.getArgumentNameList().size();
             jjtn000._argTypes = new ptolemy.data.type.Type[argCount];
             for (int i = 0; i < argCount; i++) {
-                ASTPtRootNode argChild = ((ASTPtRootNode) jjtn000
-                        .jjtGetChild(i));
+                ASTPtRootNode argChild = (ASTPtRootNode) jjtn000.jjtGetChild(i);
                 ptolemy.data.type.Type type = inference.inferTypes(argChild);
                 jjtn000._argTypes[i] = type;
             }
@@ -2323,7 +2322,7 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants,
     }
 
     final public void optTypeSpecifier() throws ParseException {
-        switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk) {
+        switch (jj_ntk == -1 ? jj_ntk() : jj_ntk) {
         case COLON:
             jj_consume_token(COLON);
             funcIf();
@@ -2351,7 +2350,7 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants,
             if (jj_2_16(1)) {
                 expression();
                 label_15: while (true) {
-                    switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk) {
+                    switch (jj_ntk == -1 ? jj_ntk() : jj_ntk) {
                     case COMMA:
                         ;
                         break;
@@ -2413,7 +2412,7 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants,
             // until the parse tree is evaluated.
             name = new StringBuffer(token.image);
             label_16: while (true) {
-                switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk) {
+                switch (jj_ntk == -1 ? jj_ntk() : jj_ntk) {
                 case PERIOD:
                     ;
                     break;
@@ -2426,10 +2425,10 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants,
                 name.append(".");
                 name.append(token.image);
             }
-            switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk) {
+            switch (jj_ntk == -1 ? jj_ntk() : jj_ntk) {
             case OPENPAREN:
                 jj_consume_token(OPENPAREN);
-                switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk) {
+                switch (jj_ntk == -1 ? jj_ntk() : jj_ntk) {
                 case INTEGER:
                     jj_consume_token(INTEGER);
                     name.append("(");
@@ -2469,7 +2468,7 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants,
         boolean jjtc000 = true;
         jjtree.openNodeScope(jjtn000);
         try {
-            switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk) {
+            switch (jj_ntk == -1 ? jj_ntk() : jj_ntk) {
             case ID:
                 jj_consume_token(ID);
                 break;
@@ -2518,12 +2517,12 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants,
             ++jjtn000._nColumns;
             ++nRows;
             funcIf();
-            switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk) {
+            switch (jj_ntk == -1 ? jj_ntk() : jj_ntk) {
             case CLOSEBRACKET:
             case COMMA:
             case SEPARATOR:
                 label_17: while (true) {
-                    switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk) {
+                    switch (jj_ntk == -1 ? jj_ntk() : jj_ntk) {
                     case COMMA:
                         ;
                         break;
@@ -2536,7 +2535,7 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants,
                     funcIf();
                 }
                 label_18: while (true) {
-                    switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk) {
+                    switch (jj_ntk == -1 ? jj_ntk() : jj_ntk) {
                     case SEPARATOR:
                         ;
                         break;
@@ -2550,7 +2549,7 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants,
                     funcIf();
                     ++i;
                     label_19: while (true) {
-                        switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk) {
+                        switch (jj_ntk == -1 ? jj_ntk() : jj_ntk) {
                         case COMMA:
                             ;
                             break;
@@ -2589,7 +2588,7 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants,
                 jj_consume_token(COLON);
                 funcIf();
                 label_20: while (true) {
-                    switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk) {
+                    switch (jj_ntk == -1 ? jj_ntk() : jj_ntk) {
                     case SEPARATOR:
                         ;
                         break;
@@ -2663,7 +2662,7 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants,
             jj_consume_token(SETEQUALS);
             funcIf();
             label_21: while (true) {
-                switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk) {
+                switch (jj_ntk == -1 ? jj_ntk() : jj_ntk) {
                 case COMMA:
                     ;
                     break;
@@ -2725,7 +2724,7 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants,
             jj_consume_token(SETEQUALS);
             funcIf();
             label_22: while (true) {
-                switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk) {
+                switch (jj_ntk == -1 ? jj_ntk() : jj_ntk) {
                 case COMMA:
                     ;
                     break;
@@ -2787,7 +2786,7 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants,
             jj_consume_token(SETEQUALS);
             funcIf();
             label_23: while (true) {
-                switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk) {
+                switch (jj_ntk == -1 ? jj_ntk() : jj_ntk) {
                 case COMMA:
                     ;
                     break;
@@ -2845,7 +2844,7 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants,
             jj_consume_token(OPENBRACE);
             funcIf();
             label_24: while (true) {
-                switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk) {
+                switch (jj_ntk == -1 ? jj_ntk() : jj_ntk) {
                 case COMMA:
                     ;
                     break;
@@ -3806,8 +3805,8 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants,
             jj_gen++;
             if (++jj_gc > 100) {
                 jj_gc = 0;
-                for (int i = 0; i < jj_2_rtns.length; i++) {
-                    JJCalls c = jj_2_rtns[i];
+                for (JJCalls jj_2_rtn : jj_2_rtns) {
+                    JJCalls c = jj_2_rtn;
                     while (c != null) {
                         if (c.gen < jj_gen) {
                             c.first = null;
@@ -3887,9 +3886,9 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants,
 
     private int jj_ntk() {
         if ((jj_nt = token.next) == null) {
-            return (jj_ntk = (token.next = token_source.getNextToken()).kind);
+            return jj_ntk = (token.next = token_source.getNextToken()).kind;
         } else {
-            return (jj_ntk = jj_nt.kind);
+            return jj_ntk = jj_nt.kind;
         }
     }
 
@@ -3910,9 +3909,8 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants,
             for (int i = 0; i < jj_endpos; i++) {
                 jj_expentry[i] = jj_lasttokens[i];
             }
-            jj_entries_loop: for (java.util.Iterator<?> it = jj_expentries
-                    .iterator(); it.hasNext();) {
-                int[] oldentry = (int[]) (it.next());
+            jj_entries_loop: for (Object name : jj_expentries) {
+                int[] oldentry = (int[]) name;
                 if (oldentry.length == jj_expentry.length) {
                     for (int i = 0; i < jj_expentry.length; i++) {
                         if (oldentry[i] != jj_expentry[i]) {
@@ -3940,13 +3938,13 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants,
         for (int i = 0; i < 45; i++) {
             if (jj_la1[i] == jj_gen) {
                 for (int j = 0; j < 32; j++) {
-                    if ((jj_la1_0[i] & (1 << j)) != 0) {
+                    if ((jj_la1_0[i] & 1 << j) != 0) {
                         la1tokens[j] = true;
                     }
-                    if ((jj_la1_1[i] & (1 << j)) != 0) {
+                    if ((jj_la1_1[i] & 1 << j) != 0) {
                         la1tokens[32 + j] = true;
                     }
-                    if ((jj_la1_2[i] & (1 << j)) != 0) {
+                    if ((jj_la1_2[i] & 1 << j) != 0) {
                         la1tokens[64 + j] = true;
                     }
                 }

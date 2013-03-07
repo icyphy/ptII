@@ -223,9 +223,9 @@ public class GraphPatternSearchEditor extends TransformationEditor implements
                     for (GTIngredient gtIngredient : gtIngredientsAttribute
                             .getIngredientList()) {
 
-                        if ((gtIngredient instanceof DynamicNameCriterion)
-                                && (!gtIngredient.getValue(0).toString().trim()
-                                        .isEmpty())) {
+                        if (gtIngredient instanceof DynamicNameCriterion
+                                && !gtIngredient.getValue(0).toString().trim()
+                                        .isEmpty()) {
 
                             PTDBSearchAttribute gtIngredientAttribute = new PTDBSearchAttribute();
 
@@ -255,8 +255,8 @@ public class GraphPatternSearchEditor extends TransformationEditor implements
         List<Port> portsList = pattern.portList();
         ArrayList<Port> ports = new ArrayList<Port>();
 
-        for (Iterator iterator = portsList.iterator(); iterator.hasNext();) {
-            Port port = (Port) iterator.next();
+        for (Object element : portsList) {
+            Port port = (Port) element;
             ports.add(port);
         }
 
@@ -264,8 +264,8 @@ public class GraphPatternSearchEditor extends TransformationEditor implements
         List<Relation> relationsList = pattern.relationList();
         ArrayList<Relation> relations = new ArrayList<Relation>();
 
-        for (Iterator iterator = relationsList.iterator(); iterator.hasNext();) {
-            Relation relation = (Relation) iterator.next();
+        for (Object element : relationsList) {
+            Relation relation = (Relation) element;
             relations.add(relation);
         }
 
@@ -281,10 +281,10 @@ public class GraphPatternSearchEditor extends TransformationEditor implements
             Entity entity = (Entity) iterator.next();
 
             if (entity instanceof CompositeEntity) {
-                if ((entity instanceof CompositeActorMatcher)
-                        || (entity instanceof FSMMatcher)
-                        || (entity instanceof ModalModelMatcher)
-                        || (entity instanceof PtalonMatcher)) {
+                if (entity instanceof CompositeActorMatcher
+                        || entity instanceof FSMMatcher
+                        || entity instanceof ModalModelMatcher
+                        || entity instanceof PtalonMatcher) {
                     // Skip the CompositeActorMatcher.
                     continue;
                 }
@@ -300,10 +300,10 @@ public class GraphPatternSearchEditor extends TransformationEditor implements
 
                     for (GTIngredient gtIngredient : gtIngredientsAttribute
                             .getIngredientList()) {
-                        if ((gtIngredient instanceof DynamicNameCriterion)
-                                && (!((DynamicNameCriterion) gtIngredient)
+                        if (gtIngredient instanceof DynamicNameCriterion
+                                && !((DynamicNameCriterion) gtIngredient)
                                         .getValue(0).toString().trim()
-                                        .isEmpty())) {
+                                        .isEmpty()) {
 
                             PTDBSearchComponentEntity ptdbSearchComponentEntity = new PTDBSearchComponentEntity();
                             ptdbSearchComponentEntity

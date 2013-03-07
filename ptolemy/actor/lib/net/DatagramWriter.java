@@ -232,8 +232,8 @@ public class DatagramWriter extends TypedAtomicActor {
                                 + _socket.getLocalPort());
                     }
 
-                    _localSocketNumber = ((IntToken) (localSocketNumber
-                            .getToken())).intValue();
+                    _localSocketNumber = ((IntToken) localSocketNumber
+                            .getToken()).intValue();
 
                     if (_debugging) {
                         _debug("Socket number is " + _localSocketNumber);
@@ -293,7 +293,7 @@ public class DatagramWriter extends TypedAtomicActor {
 
         for (int jj = 0; jj < remoteAddress.getWidth(); jj++) {
             if (remoteAddress.hasToken(jj)) {
-                address = ((StringToken) (remoteAddress.get(jj))).stringValue();
+                address = ((StringToken) remoteAddress.get(jj)).stringValue();
             }
         }
 
@@ -359,10 +359,10 @@ public class DatagramWriter extends TypedAtomicActor {
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
-        _localSocketNumber = ((IntToken) (localSocketNumber.getToken()))
+        _localSocketNumber = ((IntToken) localSocketNumber.getToken())
                 .intValue();
 
-        if ((_localSocketNumber < 0) || (_localSocketNumber > 65535)) {
+        if (_localSocketNumber < 0 || _localSocketNumber > 65535) {
             throw new IllegalActionException(this, "Local socket number "
                     + _localSocketNumber + " must be between 0 and 65535.");
         }
@@ -396,7 +396,7 @@ public class DatagramWriter extends TypedAtomicActor {
         _remoteSocketNumber = ((IntToken) defaultRemoteSocketNumber.getToken())
                 .intValue();
 
-        if ((_remoteSocketNumber < 0) || (_remoteSocketNumber > 65535)) {
+        if (_remoteSocketNumber < 0 || _remoteSocketNumber > 65535) {
             _remoteSocketNumber &= 65535; // Truncate to 16 bits.
             throw new IllegalActionException(this, "defaultRemoteSocketNumber"
                     + _remoteSocketNumber

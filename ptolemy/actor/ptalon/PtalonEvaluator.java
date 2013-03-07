@@ -452,12 +452,11 @@ public class PtalonEvaluator extends AbstractPtalonEvaluator {
         if (_currentActorTree == null) {
             throw new PtalonRuntimeException("No actor to create.");
         }
-        if ((_currentActorTree.created)) {
+        if (_currentActorTree.created) {
             if (_inNewWhileIteration()) {
                 if (_currentIfTree.isForStatement) {
                     int iteration = _currentActorTree.createdIteration;
-                    if ((iteration == 0)
-                            || (iteration == _currentIfTree.entered)) {
+                    if (iteration == 0 || iteration == _currentIfTree.entered) {
                         // Just go to the the next thing after the out
                         // if in this case.
                     } else {
@@ -475,7 +474,7 @@ public class PtalonEvaluator extends AbstractPtalonEvaluator {
                         }
                     }
                     int iteration = _currentActorTree.createdIteration;
-                    if ((iteration == 0) || (iteration == tree.entered)) {
+                    if (iteration == 0 || iteration == tree.entered) {
                         // Just go to the the next thing after the out
                         // if in this case.
                     } else {
@@ -628,7 +627,7 @@ public class PtalonEvaluator extends AbstractPtalonEvaluator {
                 parenthesis++;
             } else if (remains.charAt(i) == ')') {
                 parenthesis--;
-            } else if ((remains.charAt(i) == ',') && (parenthesis == 0)) {
+            } else if (remains.charAt(i) == ',' && parenthesis == 0) {
                 markers.add(i);
             }
         }
@@ -1186,7 +1185,7 @@ public class PtalonEvaluator extends AbstractPtalonEvaluator {
             } catch (Throwable throwable) {
                 throw new PtalonRuntimeException(
                         "Unable to check if this actor declaration is ready.",
-                                                 throwable);
+                        throwable);
             }
         }
 

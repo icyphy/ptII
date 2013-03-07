@@ -158,11 +158,11 @@ public class KeyInput3D extends GRActor3D {
                 wakeup = (WakeupCriterion) criteria.nextElement();
                 event = ((WakeupOnAWTEvent) wakeup).getAWTEvent();
 
-                for (int i = 0; i < event.length; i++) {
-                    eventId = event[i].getID();
+                for (AWTEvent element : event) {
+                    eventId = element.getID();
 
                     if (eventId == KeyEvent.KEY_PRESSED) {
-                        _keycode = ((KeyEvent) event[i]).getKeyChar();
+                        _keycode = ((KeyEvent) element).getKeyChar();
                         _hasData = true;
                     }
                 }

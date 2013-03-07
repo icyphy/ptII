@@ -407,7 +407,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                         Location loc = (Location) userObject;
                         NamedObj locationContainer = loc.getContainer();
                         if (locationContainer != null
-                                && (locationContainer instanceof IOPort)) {
+                                && locationContainer instanceof IOPort) {
                             NamedObj portContainer = locationContainer
                                     .getContainer();
                             if (portContainer != null
@@ -498,7 +498,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                 }
 
                 // For the edges at the boundary.
-                if ((!headOK && tailOK) || (headOK && !tailOK)) {
+                if (!headOK && tailOK || headOK && !tailOK) {
 
                     LinkElementProperties headProperties = LinkElementProperties
                             .extractLinkProperties(head);
@@ -608,13 +608,17 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                         } else {
                             // The port is outside the hierarchy.
                             // The relation must be inside.
-                            if ((isInput && headProperties.type == ElementInLinkType.PORT_IN_ACTOR)
-                                    || (isOutput && headProperties.type == ElementInLinkType.STANDALONE_PORT)) {
+                            if (isInput
+                                    && headProperties.type == ElementInLinkType.PORT_IN_ACTOR
+                                    || isOutput
+                                    && headProperties.type == ElementInLinkType.STANDALONE_PORT) {
                                 newPorts.append("<property name=\"output\"/>");
                             }
 
-                            if ((isOutput && headProperties.type == ElementInLinkType.PORT_IN_ACTOR)
-                                    || (isInput && headProperties.type == ElementInLinkType.STANDALONE_PORT)) {
+                            if (isOutput
+                                    && headProperties.type == ElementInLinkType.PORT_IN_ACTOR
+                                    || isInput
+                                    && headProperties.type == ElementInLinkType.STANDALONE_PORT) {
                                 newPorts.append("<property name=\"input\"/>");
                             }
 
@@ -1023,7 +1027,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
         Object objectUnderMouse = null;
 
         while (figureUnderMouse instanceof UserObjectContainer
-                && (objectUnderMouse == null)) {
+                && objectUnderMouse == null) {
             objectUnderMouse = ((UserObjectContainer) figureUnderMouse)
                     .getUserObject();
 
@@ -1554,7 +1558,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
         Component component = _getRightComponent().getParent();
         Component parent = component.getParent();
 
-        while ((parent != null) && !(parent instanceof Frame)) {
+        while (parent != null && !(parent instanceof Frame)) {
             component = parent;
             parent = component.getParent();
         }
@@ -1792,11 +1796,10 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
         }
 
         Rectangle2D viewSize = getVisibleRectangle();
-        Rectangle2D paddedViewSize = new Rectangle2D.Double(
-                viewSize.getX() + _ZOOM_FIT_PADDING,
-                viewSize.getY() + _ZOOM_FIT_PADDING,
-                viewSize.getWidth() - 2*_ZOOM_FIT_PADDING,
-                viewSize.getHeight() - 2*_ZOOM_FIT_PADDING);
+        Rectangle2D paddedViewSize = new Rectangle2D.Double(viewSize.getX()
+                + _ZOOM_FIT_PADDING, viewSize.getY() + _ZOOM_FIT_PADDING,
+                viewSize.getWidth() - 2 * _ZOOM_FIT_PADDING,
+                viewSize.getHeight() - 2 * _ZOOM_FIT_PADDING);
         AffineTransform newTransform = CanvasUtilities.computeFitTransform(
                 bounds, paddedViewSize);
         JCanvas canvas = pane.getCanvas();
@@ -2446,9 +2449,9 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
         HashSet<Object> nodeSet = new HashSet<Object>();
 
         // First get all the nodes.
-        for (int i = 0; i < selection.length; i++) {
-            if (selection[i] instanceof Figure) {
-                Object userObject = ((Figure) selection[i]).getUserObject();
+        for (Object element : selection) {
+            if (element instanceof Figure) {
+                Object userObject = ((Figure) element).getUserObject();
 
                 if (graphModel.isNode(userObject)) {
                     NamedObj actual = (NamedObj) graphModel
@@ -2462,9 +2465,9 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
             }
         }
 
-        for (int i = 0; i < selection.length; i++) {
-            if (selection[i] instanceof Figure) {
-                Object userObject = ((Figure) selection[i]).getUserObject();
+        for (Object element : selection) {
+            if (element instanceof Figure) {
+                Object userObject = ((Figure) element).getUserObject();
 
                 if (graphModel.isEdge(userObject)) {
                     // Check to see if the head and tail are both being
@@ -2592,8 +2595,8 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
         // If we don't have a library, we might be trying to only show
         // models
         // FIXME: should we be checking for _library instead?
-        if (configuration != null &&
-                (CompositeEntity) configuration.getEntity("actor library") != null) {
+        if (configuration != null
+                && (CompositeEntity) configuration.getEntity("actor library") != null) {
             // Create the panner.
             _graphPanner = new JCanvasPanner(getJGraph());
             _graphPanner.setPreferredSize(new Dimension(200, 150));
@@ -3808,7 +3811,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                 return;
             }
             NamedObj root = (NamedObj) _libraryModel.getRoot();
-            if (!(text.equals(_previousText))) {
+            if (!text.equals(_previousText)) {
                 // Restart the search from the beginning.
                 if (_stack == null) {
                     _stack = new Stack<NamedObj>();

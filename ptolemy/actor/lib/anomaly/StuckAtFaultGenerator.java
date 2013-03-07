@@ -47,7 +47,6 @@ import ptolemy.data.DoubleToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
-import ptolemy.domains.de.lib.Server;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
@@ -101,11 +100,11 @@ public class StuckAtFaultGenerator extends MonitoredQuantityManager {
     public IntermediateReceiver getReceiver(Receiver receiver) {
         IntermediateReceiver intermediateReceiver;
         if (_wrappedReceivers.get(receiver) == null) {
-             intermediateReceiver = new IntermediateReceiver(
-                    this, receiver);
+            intermediateReceiver = new IntermediateReceiver(this, receiver);
             _wrappedReceivers.put(receiver, intermediateReceiver);
         } else {
-             intermediateReceiver = (IntermediateReceiver)(_wrappedReceivers.get(receiver));
+            intermediateReceiver = (IntermediateReceiver) _wrappedReceivers
+                    .get(receiver);
         }
 
         return intermediateReceiver;
@@ -131,10 +130,12 @@ public class StuckAtFaultGenerator extends MonitoredQuantityManager {
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == stuckAtFaultProbability) {
-            double value = ((DoubleToken) stuckAtFaultProbability.getToken()).doubleValue();
+            double value = ((DoubleToken) stuckAtFaultProbability.getToken())
+                    .doubleValue();
             if (value < 0.0 || value > 1.0) {
                 throw new IllegalActionException(this,
-                        "Cannot have a probability value outside range [0.0,1.0]: " + value);
+                        "Cannot have a probability value outside range [0.0,1.0]: "
+                                + value);
             }
             _stuckAtFaultProbabilityValue = value;
         }
@@ -155,7 +156,8 @@ public class StuckAtFaultGenerator extends MonitoredQuantityManager {
      *  @return A new Bus.
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        StuckAtFaultGenerator newObject = (StuckAtFaultGenerator) super.clone(workspace);
+        StuckAtFaultGenerator newObject = (StuckAtFaultGenerator) super
+                .clone(workspace);
         newObject._nextReceiver = null;
         newObject._nextTimeFree = null;
         newObject._receiversAndTokensToSendTo = new HashMap();
@@ -190,43 +192,38 @@ public class StuckAtFaultGenerator extends MonitoredQuantityManager {
         //Time currentTime = getDirector().getModelTime();
         // In a continuous domain this actor could be fired before any token has
         // been received; _nextTimeFree could be null.
-        if ( _tokens.size() > 0 ) {
+        if (_tokens.size() > 0) {
             Object[] output = (Object[]) _tokens.get(0);
             //current receiver being processed
             Receiver receiver = (Receiver) output[0];
             Token token = (Token) output[1];
 
             // if the particular receiver is new (no stuckAt status)
-            if (null == _isStuck.get(receiver) || false ) {
+            if (null == _isStuck.get(receiver) || false) {
                 boolean decideOnHealth = false;
                 //FIXME: Math.random() is seeded from the current time, use
                 // the Ptolemy version here instead that allows to set the seed
-                if ( Math.random() > (1.0 - _stuckAtFaultProbabilityValue)) {
+                if (Math.random() > 1.0 - _stuckAtFaultProbabilityValue) {
                     decideOnHealth = true;
                 }
 
                 _isStuck.put(receiver, new BooleanToken(decideOnHealth));
-            }
-            else if (_isStuck.get(receiver).booleanValue() == true) {
+            } else if (_isStuck.get(receiver).booleanValue() == true) {
                 // the receiver is stuck, send the last known healthy token value
-                if (_lastKnownHealthyTokens.get(receiver) == null ) {
+                if (_lastKnownHealthyTokens.get(receiver) == null) {
                     _lastKnownHealthyTokens.put(receiver, token);
-                }
-                else {
+                } else {
                     token = _lastKnownHealthyTokens.get(receiver);
                 }
-            }
-            else {
+            } else {
                 //roll the dice
                 boolean decideOnHealth = false;
-                if ( Math.random() > 1.0 - _stuckAtFaultProbabilityValue) {
+                if (Math.random() > 1.0 - _stuckAtFaultProbabilityValue) {
                     decideOnHealth = true;
 
                 }
                 _isStuck.put(receiver, new BooleanToken(decideOnHealth));
             }
-
-
 
             _sendToReceiver(receiver, token);
             //            }
@@ -280,7 +277,7 @@ public class StuckAtFaultGenerator extends MonitoredQuantityManager {
         // only token on the queue, then request a firing at
         // the time that token should be delivered to the
         // delegated receiver.
-        if ((getDirector() instanceof FixedPointDirector)
+        if (getDirector() instanceof FixedPointDirector
                 && _receiversAndTokensToSendTo != null) {
             for (Receiver receiver : _receiversAndTokensToSendTo.keySet()) {
                 Token token = _receiversAndTokensToSendTo.get(receiver);
@@ -428,8 +425,6 @@ public class StuckAtFaultGenerator extends MonitoredQuantityManager {
     private HashMap<Receiver, Token> _lastKnownHealthyTokens;
 
     private HashMap<Receiver, BooleanToken> _isStuck;
-
-
 
     /** Fault probability per token. */
     private double _stuckAtFaultProbabilityValue;

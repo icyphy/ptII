@@ -203,9 +203,8 @@ public class StateBubble extends AbstractFigure {
 
             Ellipse2D bounds = (Ellipse2D) _outsideEllipse.shape;
             Shape s = new Ellipse2D.Double(bounds.getX() + _spacing,
-                    bounds.getY() + _spacing, bounds.getWidth()
-                            - (2 * _spacing), bounds.getHeight()
-                            - (2 * _spacing));
+                    bounds.getY() + _spacing, bounds.getWidth() - 2 * _spacing,
+                    bounds.getHeight() - 2 * _spacing);
 
             _insideEllipse = new PaintedShape(s);
             _outsideEllipse.setLineWidth(1);

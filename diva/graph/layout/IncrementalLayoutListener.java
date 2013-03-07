@@ -55,7 +55,7 @@ public class IncrementalLayoutListener implements diva.graph.GraphViewListener {
     /**
      */
     public void edgeDrawn(GraphViewEvent e) {
-        if ((_filter != null) && !_filter.accept(e.getTarget())) {
+        if (_filter != null && !_filter.accept(e.getTarget())) {
             return;
         }
 
@@ -65,7 +65,7 @@ public class IncrementalLayoutListener implements diva.graph.GraphViewListener {
     /**
      */
     public void edgeRouted(GraphViewEvent e) {
-        if ((_filter != null) && !_filter.accept(e.getTarget())) {
+        if (_filter != null && !_filter.accept(e.getTarget())) {
             return;
         }
 
@@ -89,7 +89,7 @@ public class IncrementalLayoutListener implements diva.graph.GraphViewListener {
     /**
      */
     public void nodeDrawn(GraphViewEvent e) {
-        if ((_filter != null) && !_filter.accept(e.getTarget())) {
+        if (_filter != null && !_filter.accept(e.getTarget())) {
             return;
         }
 
@@ -99,7 +99,7 @@ public class IncrementalLayoutListener implements diva.graph.GraphViewListener {
     /**
      */
     public void nodeMoved(GraphViewEvent e) {
-        if ((_filter != null) && !_filter.accept(e.getTarget())) {
+        if (_filter != null && !_filter.accept(e.getTarget())) {
             return;
         }
 

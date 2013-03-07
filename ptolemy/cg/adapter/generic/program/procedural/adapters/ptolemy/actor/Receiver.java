@@ -166,7 +166,7 @@ public abstract class Receiver extends ProgramCodeGeneratorAdapter {
 
         if (equalIndex < 0) {
             throw new IllegalActionException(
-                    (getComponent()).getContainer(),
+                    getComponent().getContainer(),
                     "The parsed type conversion statement is"
                             + "expected to be of the form: sinkRef = $convert(sourceRef), not \""
                             + token + "\", which does not contain \"=\".");

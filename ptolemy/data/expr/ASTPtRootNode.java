@@ -172,12 +172,12 @@ public class ASTPtRootNode implements Node, Cloneable {
         }
 
         // Empty children are allowed
-        if ((node._children == null) && (_children == null)) {
+        if (node._children == null && _children == null) {
             return true;
         }
 
         // But both must be empty
-        if ((node._children == null) || (_children == null)) {
+        if (node._children == null || _children == null) {
             return false;
         }
 
@@ -256,7 +256,7 @@ public class ASTPtRootNode implements Node, Cloneable {
     }
 
     public int jjtGetNumChildren() {
-        return (_children == null) ? 0 : _children.size();
+        return _children == null ? 0 : _children.size();
     }
 
     public Node jjtGetParent() {

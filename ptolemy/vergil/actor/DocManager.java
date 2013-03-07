@@ -1082,7 +1082,7 @@ public class DocManager extends HandlerBase {
      *  @return Null, indicating to use the default system identifier.
      */
     public Object resolveEntity(String publicID, String systemID) {
-        if ((publicID != null)
+        if (publicID != null
                 && publicID.equals("-//UC Berkeley//DTD DocML 1//EN")) {
             // This is the generic DocML DTD.
             return new StringReader(DocML_DTD_1);

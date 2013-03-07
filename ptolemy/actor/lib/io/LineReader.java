@@ -167,7 +167,7 @@ public class LineReader extends Source {
             String newFileOrURL = ((StringToken) fileOrURL.getToken())
                     .stringValue();
 
-            if ((_previousFileOrURL != null)
+            if (_previousFileOrURL != null
                     && !newFileOrURL.equals(_previousFileOrURL)) {
                 if (_debugging) {
                     _debug("Closing file: " + _previousFileOrURL);

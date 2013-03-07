@@ -253,7 +253,7 @@ public class ConvolutionalCoder extends Transformer {
             // Set the input consumption rate.
             _inputRate.setToken(new IntToken(_inputNumber));
         } else if (attribute == polynomialArray) {
-            ArrayToken maskToken = ((ArrayToken) polynomialArray.getToken());
+            ArrayToken maskToken = (ArrayToken) polynomialArray.getToken();
             _maskNumber = maskToken.length();
             _mask = new int[_maskNumber];
             _maxPolyValue = 0;
@@ -313,7 +313,7 @@ public class ConvolutionalCoder extends Transformer {
                         "Output rate should be larger than input rate.");
             }
 
-            if ((1 << _inputNumber) > _maxPolyValue) {
+            if (1 << _inputNumber > _maxPolyValue) {
                 throw new IllegalActionException(this,
                         "The highest order of all polynomials is too low.");
             }
@@ -393,7 +393,7 @@ public class ConvolutionalCoder extends Transformer {
 
             // Calculate the parity of the masked word.
             while (masked > 0) {
-                parity[i] = parity[i] ^ (masked & 1);
+                parity[i] = parity[i] ^ masked & 1;
                 masked = masked >> 1;
             }
         }

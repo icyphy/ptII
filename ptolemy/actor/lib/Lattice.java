@@ -150,7 +150,7 @@ public class Lattice extends Transformer {
             ArrayToken value = (ArrayToken) reflectionCoefficients.getToken();
             _order = value.length();
 
-            if ((_backward == null) || (_order != _backward.length)) {
+            if (_backward == null || _order != _backward.length) {
                 // Need to reallocate the arrays.
                 _reallocate();
             }
@@ -240,7 +240,7 @@ public class Lattice extends Transformer {
     /** Initialize the state of the filter.
      */
     public void initialize() throws IllegalActionException {
-        for (int i = 0; i < (_order + 1); i++) {
+        for (int i = 0; i < _order + 1; i++) {
             _forward[i] = 0.0;
             _forwardCache[i] = 0.0;
             _backward[i] = 0.0;
@@ -283,7 +283,7 @@ public class Lattice extends Transformer {
         // Update forward errors.
         for (int i = 0; i < _order; i++) {
             k = _reflectionCoefficients[i];
-            _forwardCache[i + 1] = (-k * _backwardCache[i]) + _forwardCache[i];
+            _forwardCache[i + 1] = -k * _backwardCache[i] + _forwardCache[i];
         }
 
         // Backward: Compute the weights for the next round Note:
@@ -292,7 +292,7 @@ public class Lattice extends Transformer {
         // subclasses which adapt the reflection coefficients.
         for (int i = _order; i > 0; i--) {
             k = _reflectionCoefficients[i - 1];
-            _backwardCache[i] = (-k * _forwardCache[i - 1])
+            _backwardCache[i] = -k * _forwardCache[i - 1]
                     + _backwardCache[i - 1];
         }
     }

@@ -325,7 +325,7 @@ public class PetiteToken extends ScalarToken {
         double right = ((PetiteToken) rightArgument).doubleValue();
         double left = petiteValue();
 
-        if ((right > (left + epsilon)) || (right < (left - epsilon))) {
+        if (right > left + epsilon || right < left - epsilon) {
             return BooleanToken.FALSE;
         } else {
             return BooleanToken.TRUE;
@@ -401,7 +401,7 @@ public class PetiteToken extends ScalarToken {
      */
     protected static double _adjust(double number) {
         if (number >= 1.0) {
-            return (1.0 - Double.MIN_VALUE);
+            return 1.0 - Double.MIN_VALUE;
         } else {
             if (number < -1.0) {
                 return -1.0;

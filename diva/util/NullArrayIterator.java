@@ -74,7 +74,7 @@ public class NullArrayIterator extends IteratorAdapter {
     protected void advance() {
         _nextindex++;
 
-        while ((_nextindex < _arraylen) && (_array[_nextindex] == null)) {
+        while (_nextindex < _arraylen && _array[_nextindex] == null) {
             _nextindex++;
         }
 

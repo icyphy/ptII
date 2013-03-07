@@ -109,55 +109,51 @@ public class PortConnectSite extends AbstractSite {
         double xout;
         double yout;
 
-        if ((normal < CanvasUtilities.NORTHWEST)
-                || (normal > CanvasUtilities.SOUTHWEST)) {
+        if (normal < CanvasUtilities.NORTHWEST
+                || normal > CanvasUtilities.SOUTHWEST) {
             // On the left edge.
             if (_id > 0) {
                 int numberOfLinks = _terminal.getNumberOfLinks();
-                xout = x
-                        - ((numberOfLinks - _id) * IOPortController.MULTIPORT_CONNECTION_SPACING);
-                yout = (y + (height / 2))
-                        - ((numberOfLinks - _id) * IOPortController.MULTIPORT_CONNECTION_SPACING);
+                xout = x - (numberOfLinks - _id)
+                        * IOPortController.MULTIPORT_CONNECTION_SPACING;
+                yout = y + height / 2 - (numberOfLinks - _id)
+                        * IOPortController.MULTIPORT_CONNECTION_SPACING;
             } else {
                 xout = x;
-                yout = y + (height / 2);
+                yout = y + height / 2;
             }
         } else if (normal < CanvasUtilities.NORTHEAST) {
             // On the top edge.
             if (_id > 0) {
                 int numberOfLinks = _terminal.getNumberOfLinks();
-                yout = y
-                        - ((numberOfLinks - _id) * IOPortController.MULTIPORT_CONNECTION_SPACING);
-                xout = (x + (width / 2))
-                        - ((numberOfLinks - _id) * IOPortController.MULTIPORT_CONNECTION_SPACING);
+                yout = y - (numberOfLinks - _id)
+                        * IOPortController.MULTIPORT_CONNECTION_SPACING;
+                xout = x + width / 2 - (numberOfLinks - _id)
+                        * IOPortController.MULTIPORT_CONNECTION_SPACING;
             } else {
-                xout = x + (width / 2);
+                xout = x + width / 2;
                 yout = y;
             }
         } else if (normal < CanvasUtilities.SOUTHEAST) {
             // On the right edge.
             if (_id > 0) {
-                xout = x
-                        + width
-                        + ((_id - 1) * IOPortController.MULTIPORT_CONNECTION_SPACING);
-                yout = y
-                        + (height / 2)
-                        + ((_id - 1) * IOPortController.MULTIPORT_CONNECTION_SPACING);
+                xout = x + width + (_id - 1)
+                        * IOPortController.MULTIPORT_CONNECTION_SPACING;
+                yout = y + height / 2 + (_id - 1)
+                        * IOPortController.MULTIPORT_CONNECTION_SPACING;
             } else {
                 xout = x + width;
-                yout = y + (height / 2);
+                yout = y + height / 2;
             }
         } else {
             // On the bottom edge.
             if (_id > 0) {
-                yout = y
-                        + height
-                        + ((_id - 1) * IOPortController.MULTIPORT_CONNECTION_SPACING);
-                xout = x
-                        + (width / 2)
-                        + ((_id - 1) * IOPortController.MULTIPORT_CONNECTION_SPACING);
+                yout = y + height + (_id - 1)
+                        * IOPortController.MULTIPORT_CONNECTION_SPACING;
+                xout = x + width / 2 + (_id - 1)
+                        * IOPortController.MULTIPORT_CONNECTION_SPACING;
             } else {
-                xout = x + (width / 2);
+                xout = x + width / 2;
                 yout = y + height;
             }
         }

@@ -106,7 +106,7 @@ public class NonStrictLogicFunction extends LogicFunction {
         for (int i = 0; i < input.getWidth(); i++) {
             if (input.isKnown(i)) {
                 if (input.hasToken(i)) {
-                    in = (BooleanToken) (input.get(i));
+                    in = (BooleanToken) input.get(i);
 
                     if (in != null) {
                         value = _updateFunction(in, value);

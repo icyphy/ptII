@@ -195,8 +195,8 @@ public class IconScript extends Script implements WebExportable {
     protected void _provideAttributes(WebExporter exporter)
             throws IllegalActionException {
 
-    // FIXME:  Support multiple events in the future.  E.g. onclick() and
-    // ontap() might call the same Javascript method.
+        // FIXME:  Support multiple events in the future.  E.g. onclick() and
+        // ontap() might call the same Javascript method.
         WebAttribute webAttribute;
 
         NamedObj container = getContainer();

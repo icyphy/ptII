@@ -212,7 +212,7 @@ public abstract class ModularGraphModel extends AbstractGraphModel {
             return model.inEdges(node);
         }
 
-        return (new LinkedList()).iterator();
+        return new LinkedList().iterator();
     }
 
     /**
@@ -228,7 +228,7 @@ public abstract class ModularGraphModel extends AbstractGraphModel {
             return model.outEdges(node);
         }
 
-        return (new LinkedList()).iterator();
+        return new LinkedList().iterator();
     }
 
     /**

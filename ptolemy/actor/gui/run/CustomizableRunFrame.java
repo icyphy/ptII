@@ -99,11 +99,10 @@ public class CustomizableRunFrame extends TableauFrame {
         CustomizeMenuListener customizeMenuListener = new CustomizeMenuListener();
 
         // Set the action command and listener for each menu item.
-        for (int i = 0; i < customizeMenuItems.length; i++) {
-            customizeMenuItems[i].setActionCommand(customizeMenuItems[i]
-                    .getText());
-            customizeMenuItems[i].addActionListener(customizeMenuListener);
-            _customizeMenu.add(customizeMenuItems[i]);
+        for (JMenuItem customizeMenuItem : customizeMenuItems) {
+            customizeMenuItem.setActionCommand(customizeMenuItem.getText());
+            customizeMenuItem.addActionListener(customizeMenuListener);
+            _customizeMenu.add(customizeMenuItem);
         }
 
         _menubar.add(_customizeMenu);

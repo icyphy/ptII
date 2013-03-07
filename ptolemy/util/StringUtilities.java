@@ -124,7 +124,7 @@ public class StringUtilities {
         if (tokenizer.countTokens() > 42) {
             StringBuffer results = new StringBuffer();
 
-            for (int i = 0; (i < 42) && tokenizer.hasMoreTokens(); i++) {
+            for (int i = 0; i < 42 && tokenizer.hasMoreTokens(); i++) {
                 results.append(tokenizer.nextToken());
             }
 
@@ -439,7 +439,7 @@ public class StringUtilities {
                         // abnormalHome will have values like: "/C:/ptII/"
                         // which cause no end of trouble, so we construct a File
                         // and call toString().
-                        _ptolemyPtIIDir = (new File(abnormalHome)).toString();
+                        _ptolemyPtIIDir = new File(abnormalHome).toString();
 
                         // If we are running under Web Start, then strip off
                         // the trailing "!"
@@ -767,7 +767,7 @@ public class StringUtilities {
             String token = tokenizer.nextToken();
             int mark = 0;
 
-            while (mark < (token.length() - length)) {
+            while (mark < token.length() - length) {
                 // We look for the space from the end of the first length
                 // characters.  If we find one, then we use that
                 // as the place to insert a newline.
@@ -782,7 +782,7 @@ public class StringUtilities {
                 } else {
                     results.append(token.substring(mark, mark + lastSpaceIndex)
                             + LINE_SEPARATOR);
-                    mark += (lastSpaceIndex + 1);
+                    mark += lastSpaceIndex + 1;
                 }
             }
 
@@ -877,10 +877,10 @@ public class StringUtilities {
             return replacement + string.substring(prefix.length());
         } else {
             try {
-                String prefixCanonicalPath = (new File(prefix))
+                String prefixCanonicalPath = new File(prefix)
                         .getCanonicalPath();
 
-                String stringCanonicalPath = (new File(string))
+                String stringCanonicalPath = new File(string)
                         .getCanonicalPath();
 
                 if (stringCanonicalPath.startsWith(prefixCanonicalPath)) {
@@ -964,7 +964,7 @@ public class StringUtilities {
                         token += " ";
                     }
 
-                    token += (singleToken + streamTokenizer.sval);
+                    token += singleToken + streamTokenizer.sval;
                 } else {
                     token = singleToken + streamTokenizer.sval;
                     commandList.add(token);

@@ -36,7 +36,6 @@ import java.util.List;
 import ptolemy.actor.util.Time;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.ObjectToken;
-import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.DecoratedAttributesImplementation;
@@ -112,8 +111,7 @@ public abstract class ResourceScheduler extends MoMLModelAttribute implements
      */
     public DecoratedAttributes createDecoratedAttributes(NamedObj target)
             throws IllegalActionException, NameDuplicationException {
-        DecoratedAttributesImplementation decoratedAttributes =
-            new DecoratedAttributesImplementation(
+        DecoratedAttributesImplementation decoratedAttributes = new DecoratedAttributesImplementation(
                 target, this);
         if (target.getAttribute("scheduler") == null) {
             Parameter schedulerParameter = new Parameter(target, "scheduler");
@@ -227,8 +225,6 @@ public abstract class ResourceScheduler extends MoMLModelAttribute implements
         return null;
     }
 
-
-
     /** Return a new time object using the enclosing director.
      *  @param time Double value of the new time object.
      *  @return The new time object.
@@ -322,24 +318,24 @@ public abstract class ResourceScheduler extends MoMLModelAttribute implements
     protected void _getActorsToSchedule(CompositeActor compositeActor)
             throws IllegalActionException {
         for (Object entity : compositeActor.entityList()) {
-            Parameter schedulerAttribute = (Parameter)((NamedObj)entity).getAttribute("scheduler");
-            if (schedulerAttribute != null && schedulerAttribute.getToken() != null &&
-                    schedulerAttribute.getToken() instanceof ObjectToken &&
-                    ((ObjectToken) schedulerAttribute.getToken()).getValue() instanceof ResourceScheduler) {
-                ResourceScheduler scheduler = (ResourceScheduler) ((ObjectToken) schedulerAttribute.getToken()).getValue();
-                if (scheduler == this
-                        || (/*scheduler instanceof DynamicCoreAssignmentScheduler &&*/
-                                !(entity instanceof ResourceScheduler))) {
+            Parameter schedulerAttribute = (Parameter) ((NamedObj) entity)
+                    .getAttribute("scheduler");
+            if (schedulerAttribute != null
+                    && schedulerAttribute.getToken() != null
+                    && schedulerAttribute.getToken() instanceof ObjectToken
+                    && ((ObjectToken) schedulerAttribute.getToken()).getValue() instanceof ResourceScheduler) {
+                ResourceScheduler scheduler = (ResourceScheduler) ((ObjectToken) schedulerAttribute
+                        .getToken()).getValue();
+                if (scheduler == this || !(entity instanceof ResourceScheduler)) {
                     Double executionTime = ResourceScheduler
-                            ._getDoubleParameterValue(
-                                    (NamedObj) compositeActor,
+                            ._getDoubleParameterValue(compositeActor,
                                     "executionTime");
 
                     if (executionTime != null) {
                         _remainingTimes.put(compositeActor, null);
                     }
                     _actors.add((NamedObj) entity);
-                    event((NamedObj) compositeActor, 0.0, null);
+                    event(compositeActor, 0.0, null);
                 }
             } else if (entity instanceof CompositeActor) {
                 _getActorsToSchedule((CompositeActor) entity);
@@ -391,51 +387,6 @@ public abstract class ResourceScheduler extends MoMLModelAttribute implements
 
     ///////////////////////////////////////////////////////////////////
     //                        private methods                        //
-
-    /** Read actor parameters such as
-     *  - which resource scheduler the actor is assigned to
-     *  - the execution time
-     *  and store these properties in local variables.
-     * @param actor The actor.
-     * @exception IllegalActionException Thrown if parameters cannot
-     * be parsed.
-     */
-    private void _readActorParameters(Actor actor)
-            throws IllegalActionException {
-        /*if (actor instanceof DynamicCoreAssignmentScheduler) {
-            return;
-        }*/
-        List attributeList = ((NamedObj) actor).attributeList();
-        if (attributeList.size() > 0) {
-            for (int i = 0; i < attributeList.size(); i++) {
-                Object attr = attributeList.get(i);
-                if (attr instanceof Parameter) {
-                    Token paramToken = ((Parameter) attr).getToken();
-                    if (paramToken instanceof ObjectToken) {
-                        Object paramObject = ((ObjectToken) paramToken)
-                                .getValue();
-                        if (paramObject instanceof ResourceScheduler) {
-                            ResourceScheduler scheduler = (ResourceScheduler) paramObject;
-                            if (scheduler == this
-                                    || (/*scheduler instanceof DynamicCoreAssignmentScheduler &&*/
-                                    !(actor instanceof ResourceScheduler))) {
-                                Double executionTime = ResourceScheduler
-                                        ._getDoubleParameterValue(
-                                                (NamedObj) actor,
-                                                "executionTime");
-
-                                if (executionTime != null) {
-                                    _remainingTimes.put(actor, null);
-                                }
-                                _actors.add((NamedObj) actor);
-                                event((NamedObj) actor, 0.0, null);
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
 
     ///////////////////////////////////////////////////////////////////
     //                      private variables                        //

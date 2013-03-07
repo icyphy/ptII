@@ -136,9 +136,9 @@ public class PtolemyTreeCellRenderer extends DefaultTreeCellRenderer {
                 //
                 // The last statement is wrong. The result is that icons do not
                 // display in the library. Hence, I've reversed the change. EAL 12/15/11.
-                if ((iconList.size() > 0)
-                        || (object.getAttribute("_iconDescription") != null)
-                        || (object.getAttribute("_smallIconDescription") != null)) {
+                if (iconList.size() > 0
+                        || object.getAttribute("_iconDescription") != null
+                        || object.getAttribute("_smallIconDescription") != null) {
                     // NOTE: this code is similar to that in IconController.
                     EditorIcon icon = null;
 
@@ -174,7 +174,7 @@ public class PtolemyTreeCellRenderer extends DefaultTreeCellRenderer {
                 // force expansion of the library. No good solution here.
                 Attribute tooltipAttribute = object.getAttribute("tooltip");
 
-                if ((tooltipAttribute != null)
+                if (tooltipAttribute != null
                         && tooltipAttribute instanceof Documentation) {
                     // FIXME: This doesn't work with calling this
                     // on either this or component.

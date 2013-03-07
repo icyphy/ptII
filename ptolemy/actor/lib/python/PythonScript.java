@@ -578,7 +578,7 @@ public class PythonScript extends TypedAtomicActor {
 
         if (method != null) {
             try {
-                if ((args == null) || (args.length == 0)) {
+                if (args == null || args.length == 0) {
                     try {
                         returnValue = method.__call__();
                     } catch (Exception ex) {
@@ -741,9 +741,9 @@ public class PythonScript extends TypedAtomicActor {
                     "os.version" };
             Properties preProperties = new Properties();
 
-            for (int i = 0; i < propertyNames.length; i++) {
-                preProperties.setProperty(propertyNames[i],
-                        System.getProperty(propertyNames[i]));
+            for (String propertyName : propertyNames) {
+                preProperties.setProperty(propertyName,
+                        System.getProperty(propertyName));
             }
 
             PySystemState.initialize(preProperties, null, new String[] { "" });

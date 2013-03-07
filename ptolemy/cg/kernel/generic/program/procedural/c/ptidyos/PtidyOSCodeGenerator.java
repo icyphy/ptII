@@ -169,7 +169,7 @@ public class PtidyOSCodeGenerator extends CCodeGenerator {
                     "PtidyOSCodeGenerator can only "
                             + "work with Ptides directors.");
         }
-        return !(director).isEmbedded();
+        return !director.isEmbedded();
     }
 
     ///////////////////////////////////////////////////////////////////

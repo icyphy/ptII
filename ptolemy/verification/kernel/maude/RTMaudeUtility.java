@@ -299,7 +299,7 @@ public class RTMaudeUtility {
         if (act instanceof Clock) {
             ret.setClass("Clock");
             ret.addStrAttr("period",
-                    (new RTMPtExp(((Clock) act).period.getExpression(), true))
+                    new RTMPtExp(((Clock) act).period.getExpression(), true)
                             .getValue());
         } else if (act instanceof TimeDelay) {
             ret.setClass("Delay");
@@ -307,13 +307,13 @@ public class RTMaudeUtility {
             if (act instanceof BoundedBufferNondeterministicDelay) {
                 ret.addStrAttr(
                         "delay",
-                        (new RTMPtExp(
+                        new RTMPtExp(
                                 ((BoundedBufferNondeterministicDelay) act).delay
-                                        .getExpression(), true)).getValue());
+                                        .getExpression(), true).getValue());
             } else {
                 ret.addStrAttr("delay",
-                        (new RTMPtExp(((TimeDelay) act).delay.getExpression(),
-                                true)).getValue());
+                        new RTMPtExp(((TimeDelay) act).delay.getExpression(),
+                                true).getValue());
             }
         } else if (act instanceof FSMActor || act instanceof ModalModel) {
             ret.setClass("FSM-Actor");
@@ -356,7 +356,7 @@ public class RTMaudeUtility {
         if (act instanceof FSMActor) {
             RTMList ri = new RTMList(";", "emptyMap");
             RTMOpTermGenerator ragn = new RTMOpTermGenerator("(", " |-> ", ")");
-            for (Variable v : (((NamedObj) act).attributeList(Variable.class))) {
+            for (Variable v : ((NamedObj) act).attributeList(Variable.class)) {
                 ri.add(ragn.get(new RTMFragment(RTMTerm.transId(v.getName())),
                         new RTMPtExp(v.getExpression())));
             }

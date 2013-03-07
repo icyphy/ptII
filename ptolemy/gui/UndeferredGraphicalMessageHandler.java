@@ -345,8 +345,8 @@ public class UndeferredGraphicalMessageHandler extends MessageHandler {
      *  @return True if the answer is the first option, false if it is the second.
      *  @exception ptolemy.util.CancelException If the user selects the third option.
      */
-    protected boolean _yesNoCancelQuestion(
-            String question, String trueOption, String falseOption, String exceptionOption)
+    protected boolean _yesNoCancelQuestion(String question, String trueOption,
+            String falseOption, String exceptionOption)
             throws ptolemy.util.CancelException {
         Object[] message = new Object[1];
         message[0] = _messageComponent(StringUtilities.ellipsis(question,

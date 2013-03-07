@@ -118,7 +118,7 @@ public class CSPMultiSink extends CSPActor {
 
             boolean continueCDO = true;
 
-            while (continueCDO || (count < 25)) {
+            while (continueCDO || count < 25) {
                 ConditionalBranch[] branches = new ConditionalBranch[size];
 
                 for (i = 0; i < size; i++) {

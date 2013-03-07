@@ -146,11 +146,11 @@ public class BluetoothChannel extends LimitedRangeChannel {
             range = field.doubleValue();
         }
 
-        boolean result = (_distanceBetween(source, destination) <= range);
+        boolean result = _distanceBetween(source, destination) <= range;
 
         if (result) {
             double dist = _distanceBetween(source, destination);
-            double incrRange = (dist / range) * 100;
+            double incrRange = dist / range * 100;
 
             if (incrRange < 90) {
                 increaseRange = true;

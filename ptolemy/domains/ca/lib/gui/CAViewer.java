@@ -100,7 +100,7 @@ public class CAViewer extends AbstractPlaceableActor {
 
         _container = container;
 
-        if ((_container != null) && (_pane != null)) {
+        if (_container != null && _pane != null) {
             _container.remove(_pane);
             _container = null;
         }

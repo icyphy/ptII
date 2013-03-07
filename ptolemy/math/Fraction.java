@@ -97,8 +97,8 @@ public class Fraction extends Object {
      *  @return The answer as another fraction in lowest terms.
      */
     public Fraction add(Fraction b) {
-        Fraction f = new Fraction((_numerator * b._denominator)
-                + (_denominator * b._numerator), _denominator * b._denominator);
+        Fraction f = new Fraction(_numerator * b._denominator + _denominator
+                * b._numerator, _denominator * b._denominator);
         return f;
     }
 
@@ -126,7 +126,8 @@ public class Fraction extends Object {
         // The Fractions are already in lowest terms, so we just compare the
         // numerator and denominator
         if (b instanceof Fraction) {
-            return ((_numerator == ((Fraction) b)._numerator) && (_denominator == ((Fraction) b)._denominator));
+            return _numerator == ((Fraction) b)._numerator
+                    && _denominator == ((Fraction) b)._denominator;
         }
         return false;
     }
@@ -193,7 +194,7 @@ public class Fraction extends Object {
     //FIXME: should this go someplace better?
     public static int lcm(int u, int v) {
         int gcd = ExtendedMath.gcd(u, v);
-        int result = (u * v) / gcd;
+        int result = u * v / gcd;
         return result;
     }
 
@@ -218,8 +219,8 @@ public class Fraction extends Object {
      *  @return The answer as another fraction in lowest terms
      */
     public Fraction subtract(Fraction b) {
-        Fraction f = new Fraction((_numerator * b._denominator)
-                - (_denominator * b._numerator), _denominator * b._denominator);
+        Fraction f = new Fraction(_numerator * b._denominator - _denominator
+                * b._numerator, _denominator * b._denominator);
         return f;
     }
 

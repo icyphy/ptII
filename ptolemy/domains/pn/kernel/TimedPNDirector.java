@@ -254,7 +254,8 @@ public class TimedPNDirector extends PNDirector {
      *  @return true if a deadlock is detected.
      */
     protected synchronized boolean _areThreadsDeadlocked() {
-        if ((_readBlockedQueues.size() + _writeBlockedQueues.size() + _delayBlockCount) >= _getActiveThreadsCount()) {
+        if (_readBlockedQueues.size() + _writeBlockedQueues.size()
+                + _delayBlockCount >= _getActiveThreadsCount()) {
             return true;
         } else {
             return false;

@@ -84,7 +84,7 @@ public class DocBuilderGUI extends PtolemyFrame {
 
         setTitle("Ptolemy II Java and Actor Documentation Builder");
 
-        if ((getEffigy() == null)) {
+        if (getEffigy() == null) {
             throw new InternalErrorException("Cannot get an effigy!");
         }
 

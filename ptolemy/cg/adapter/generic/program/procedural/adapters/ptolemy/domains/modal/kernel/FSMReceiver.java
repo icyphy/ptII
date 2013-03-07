@@ -27,7 +27,6 @@
  */
 package ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.modal.kernel;
 
-
 import ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.sdf.kernel.SDFReceiver;
 import ptolemy.kernel.util.IllegalActionException;
 

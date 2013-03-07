@@ -100,7 +100,7 @@ public class IntToBits extends SDFConverter {
         if (attribute == numberOfBits) {
             int rate = ((IntToken) numberOfBits.getToken()).intValue();
 
-            if ((rate < 1) || (rate > 32)) {
+            if (rate < 1 || rate > 32) {
                 throw new IllegalActionException(this,
                         "Invalid number of bits: " + rate);
             }
@@ -124,11 +124,11 @@ public class IntToBits extends SDFConverter {
 
         int rate = ((IntToken) numberOfBits.getToken()).intValue();
         BooleanToken[] bits = new BooleanToken[rate];
-        IntToken token = (IntToken) (input.get(0));
+        IntToken token = (IntToken) input.get(0);
         int integer = token.intValue();
 
         if (integer < 0) {
-            if (integer < -(1 << (rate - 1))) {
+            if (integer < -(1 << rate - 1)) {
                 throw new IllegalActionException(this,
                         "integer is out of range.");
             }
@@ -136,9 +136,9 @@ public class IntToBits extends SDFConverter {
             bits[0] = new BooleanToken(true);
 
             //integer = (int)(2147483648L + integer);
-            integer = ((1 << (rate - 1)) + integer);
+            integer = (1 << rate - 1) + integer;
         } else {
-            if (integer > ((1 << (rate - 1)) - 1)) {
+            if (integer > (1 << rate - 1) - 1) {
                 throw new IllegalActionException(this,
                         "integer is out of range.");
             }

@@ -194,7 +194,7 @@ public class LMSAdaptive extends FIR {
      *   an attribute that cannot be cloned.
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        LMSAdaptive newObject = (LMSAdaptive) (super.clone(workspace));
+        LMSAdaptive newObject = (LMSAdaptive) super.clone(workspace);
 
         // set the type constraints
         newObject.initialTaps.setTypeAtLeast(ArrayType.ARRAY_BOTTOM);
@@ -217,13 +217,13 @@ public class LMSAdaptive extends FIR {
         int decimationValue = ((IntToken) decimation.getToken()).intValue();
         int decimationPhaseValue = ((IntToken) decimationPhase.getToken())
                 .intValue();
-        int index = (errorDelayValue * decimationValue) + decimationPhaseValue;
+        int index = errorDelayValue * decimationValue + decimationPhaseValue;
         Token factor = error.get(0).multiply(stepSize.getToken());
 
         for (int i = 0; i < _taps.length; i++) {
             // The data item to use here should be "index" in the past,
             // where an index of zero would be the current input.
-            Token datum = _data[((_mostRecent + index) - 1) % _data.length];
+            Token datum = _data[(_mostRecent + index - 1) % _data.length];
             _taps[i] = _taps[i].add(factor.multiply(datum));
             index++;
         }

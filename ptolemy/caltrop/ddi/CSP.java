@@ -159,21 +159,21 @@ public class CSP extends AbstractDDI {
     private void _evaluateBody(Statement[] body, Environment env) {
         StmtEvaluator eval = new StmtEvaluator(_context, env);
 
-        for (int i = 0; i < body.length; i++) {
-            eval.evaluate(body[i]);
+        for (Statement element : body) {
+            eval.evaluate(element);
         }
     }
 
     private Environment _bindActionStateVars(Decl[] decls, Environment env) {
         ExprEvaluator eval = new ExprEvaluator(_context, env);
 
-        for (int i = 0; i < decls.length; i++) {
-            Expression v = decls[i].getInitialValue();
+        for (Decl decl : decls) {
+            Expression v = decl.getInitialValue();
 
             if (v == null) {
-                env.bind(decls[i].getName(), null);
+                env.bind(decl.getName(), null);
             } else {
-                env.bind(decls[i].getName(), eval.evaluate(v));
+                env.bind(decl.getName(), eval.evaluate(v));
             }
         }
 
@@ -182,8 +182,7 @@ public class CSP extends AbstractDDI {
 
     private Environment _bindInputPatternVars(InputPattern[] inputPatterns,
             Map inputData, Environment env) {
-        for (int i = 0; i < inputPatterns.length; i++) {
-            InputPattern inputPattern = inputPatterns[i];
+        for (InputPattern inputPattern : inputPatterns) {
             ChannelID chID = new ChannelID(inputPattern.getPortname(), 0);
             List data = (List) inputData.get(chID);
             Expression repeatExpr = inputPattern.getRepeatExpr();
@@ -208,7 +207,7 @@ public class CSP extends AbstractDDI {
 
                 for (int j = 0; j < repeatVal; j++) {
                     for (int k = 0; k < vars.length; k++) {
-                        l[k].add(data.get((j * vars.length) + k));
+                        l[k].add(data.get(j * vars.length + k));
                     }
                 }
 
@@ -240,16 +239,16 @@ public class CSP extends AbstractDDI {
         Map ports = new HashMap();
         PortDecl[] inputPorts = _actor.getInputPorts();
 
-        for (int i = 0; i < inputPorts.length; i++) {
-            String name = inputPorts[i].getName();
+        for (PortDecl inputPort : inputPorts) {
+            String name = inputPort.getName();
             TypedIOPort port = (TypedIOPort) _ptActor.getPort(name);
             ports.put(name, port);
         }
 
         PortDecl[] outputPorts = _actor.getOutputPorts();
 
-        for (int i = 0; i < outputPorts.length; i++) {
-            String name = outputPorts[i].getName();
+        for (PortDecl outputPort : outputPorts) {
+            String name = outputPort.getName();
             TypedIOPort port = (TypedIOPort) _ptActor.getPort(name);
             ports.put(name, port);
         }
@@ -263,15 +262,13 @@ public class CSP extends AbstractDDI {
         Map data = new HashMap();
         ExprEvaluator eval = new ExprEvaluator(_context, env);
 
-        for (int i = 0; i < outputExprs.length; i++) {
-            OutputExpression outputExpr = outputExprs[i];
+        for (OutputExpression outputExpr : outputExprs) {
             Expression repeatExpr = outputExpr.getRepeatExpr();
             List results = new ArrayList();
             Expression[] exprs = outputExpr.getExpressions();
 
             if (repeatExpr == null) {
-                for (int j = 0; j < exprs.length; j++) {
-                    Expression expr = exprs[j];
+                for (Expression expr : exprs) {
                     results.add(eval.evaluate(expr));
                 }
             } else {
@@ -289,7 +286,7 @@ public class CSP extends AbstractDDI {
                 }
             }
 
-            data.put(new ChannelID(outputExprs[i].getPortname(), 0), results);
+            data.put(new ChannelID(outputExpr.getPortname(), 0), results);
         }
 
         return data;
@@ -307,8 +304,7 @@ public class CSP extends AbstractDDI {
         if (actions.length == 1) {
             InputPattern[] inputPatterns = actions[0].getInputPatterns();
 
-            for (int i = 0; i < inputPatterns.length; i++) {
-                InputPattern inputPattern = inputPatterns[i];
+            for (InputPattern inputPattern : inputPatterns) {
                 numNeeded = numTokensNeeded(inputPattern);
 
                 List data = (List) dataSoFar.get(new ChannelID(inputPattern
@@ -335,8 +331,7 @@ public class CSP extends AbstractDDI {
             return inputProfile;
         }
 
-        for (int i = 0; i < inputPatterns.length; i++) {
-            InputPattern inputPattern = inputPatterns[i];
+        for (InputPattern inputPattern : inputPatterns) {
             numNeeded = numTokensNeeded(inputPattern);
 
             for (int j = 1; j < actions.length; j++) {
@@ -381,9 +376,7 @@ public class CSP extends AbstractDDI {
     private InputPattern getInputPattern(String name, Action action) {
         InputPattern[] inputPatterns = action.getInputPatterns();
 
-        for (int i = 0; i < inputPatterns.length; i++) {
-            InputPattern inputPattern = inputPatterns[i];
-
+        for (InputPattern inputPattern : inputPatterns) {
             if (inputPattern.getPortname().equals(name)) {
                 return inputPattern;
             }
@@ -418,8 +411,7 @@ public class CSP extends AbstractDDI {
     private Action[] filterActions(Action[] actions, Map dataSoFar) {
         List result = new LinkedList();
 
-        for (int i = 0; i < actions.length; i++) {
-            Action action = actions[i];
+        for (Action action : actions) {
             Expression[] guardExprs = action.getGuards();
             boolean guardVal = true;
 
@@ -429,8 +421,8 @@ public class CSP extends AbstractDDI {
                         dataSoFar, _env, _context);
                 ExprEvaluator eval = new ExprEvaluator(_context, env);
 
-                for (int j = 0; j < guardExprs.length; j++) {
-                    Expression guardExpr = guardExprs[j];
+                for (Expression guardExpr2 : guardExprs) {
+                    Expression guardExpr = guardExpr2;
 
                     try {
                         if (!_context.booleanValue(eval.evaluate(guardExpr))) {
@@ -460,9 +452,7 @@ public class CSP extends AbstractDDI {
     private Map computeRemainingTokens(Action[] actions, Map dataSoFar) {
         Map profile = new HashMap();
 
-        for (int i = 0; i < actions.length; i++) {
-            Action action = actions[i];
-
+        for (Action action : actions) {
             for (int j = 0; j < action.getInputPatterns().length; j++) {
                 InputPattern inputPattern = action.getInputPatterns()[j];
                 ChannelID chID = new ChannelID(inputPattern.getPortname(), 0);
@@ -494,13 +484,11 @@ public class CSP extends AbstractDDI {
 
     // for the last "burst" of reads, we can only read at most one token from each channel.
     private boolean isRemainingProfileValid(Map inputProfile, Action[] actions) {
-        for (int i = 0; i < actions.length; i++) {
-            Action action = actions[i];
+        for (Action action : actions) {
             InputPattern[] inputPatterns = action.getInputPatterns();
             boolean encountered = false;
 
-            for (int j = 0; j < inputPatterns.length; j++) {
-                InputPattern inputPattern = inputPatterns[j];
+            for (InputPattern inputPattern : inputPatterns) {
                 String name = inputPattern.getPortname();
                 ChannelID chID = new ChannelID(name, 0);
 
@@ -571,9 +559,7 @@ public class CSP extends AbstractDDI {
     }
 
     private Action selectAction(Action[] actions, Map dataSoFar) {
-        for (int i = 0; i < actions.length; i++) {
-            Action action = actions[i];
-
+        for (Action action : actions) {
             if (isFireable(action, dataSoFar)) {
                 return action;
             }
@@ -586,12 +572,11 @@ public class CSP extends AbstractDDI {
     private boolean isFireable(Action action, Map dataSoFar) {
         InputPattern[] inputPatterns = action.getInputPatterns();
 
-        for (int i = 0; i < inputPatterns.length; i++) {
-            InputPattern inputPattern = inputPatterns[i];
+        for (InputPattern inputPattern : inputPatterns) {
             int numNeeded = numTokensNeeded(inputPattern);
             List data = (List) dataSoFar.get(new ChannelID(inputPattern
                     .getPortname(), 0));
-            int numHave = (data == null) ? 0 : data.size();
+            int numHave = data == null ? 0 : data.size();
 
             if (numNeeded > numHave) {
                 return false;
@@ -674,8 +659,8 @@ class CSPTokenReader {
         _done = false;
         _resetCount();
 
-        for (int i = 0; i < _data.length; i++) {
-            _data[i].clear();
+        for (List element : _data) {
+            element.clear();
         }
     }
 

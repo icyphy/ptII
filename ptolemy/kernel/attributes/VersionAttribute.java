@@ -159,8 +159,7 @@ public class VersionAttribute extends StringAttribute implements Comparable {
             tuples = _tupleList.iterator();
         }
 
-        while (versionTuples.hasNext()
-                || ((tuples != null) && tuples.hasNext())) {
+        while (versionTuples.hasNext() || tuples != null && tuples.hasNext()) {
             String versionTuple;
             String tuple;
 
@@ -172,7 +171,7 @@ public class VersionAttribute extends StringAttribute implements Comparable {
                 versionTuple = "0";
             }
 
-            if ((tuples != null) && tuples.hasNext()) {
+            if (tuples != null && tuples.hasNext()) {
                 tuple = (String) tuples.next();
             } else {
                 tuple = "0";
@@ -220,7 +219,7 @@ public class VersionAttribute extends StringAttribute implements Comparable {
         }
 
         if (object instanceof VersionAttribute) {
-            return (compareTo(object) == 0);
+            return compareTo(object) == 0;
         }
 
         return false;
@@ -246,7 +245,7 @@ public class VersionAttribute extends StringAttribute implements Comparable {
      *  @see #compareTo(Object)
      */
     public boolean isLessThan(VersionAttribute version) {
-        return (compareTo(version) < 0);
+        return compareTo(version) < 0;
     }
 
     /** Return an iterator over the elements of the version,

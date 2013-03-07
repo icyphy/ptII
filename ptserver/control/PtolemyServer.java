@@ -234,8 +234,8 @@ public final class PtolemyServer implements IServerManager {
                 String modelName = url.substring(url.lastIndexOf("/") + 1,
                         url.lastIndexOf(".xml"));
 
-                return ((filename.startsWith(modelName + "_")) && (filename
-                        .endsWith(".layout.xml")));
+                return filename.startsWith(modelName + "_")
+                        && filename.endsWith(".layout.xml");
             }
         };
 
@@ -267,8 +267,8 @@ public final class PtolemyServer implements IServerManager {
 
         FilenameFilter modelFilter = new FilenameFilter() {
             public boolean accept(File file, String filename) {
-                return ((filename.endsWith(".xml")) && (!filename
-                        .endsWith(".layout.xml")));
+                return filename.endsWith(".xml")
+                        && !filename.endsWith(".layout.xml");
             }
         };
 
@@ -396,7 +396,7 @@ public final class PtolemyServer implements IServerManager {
 
             // Set all provided configuration parameters.
             for (int i = 0; i < args.length; i++) {
-                if ((args[i].startsWith("-")) && (i + 1 < args.length)) {
+                if (args[i].startsWith("-") && i + 1 < args.length) {
                     if (args[i].toLowerCase().equals("-servlet_port")) {
                         servletPort = Integer.parseInt(args[i + 1]);
                     } else if (args[i].toLowerCase().equals("-broker_path")) {
@@ -700,18 +700,18 @@ public final class PtolemyServer implements IServerManager {
             throws IllegalActionException {
         try {
             // If not passed, attempt to pull from configuration.
-            brokerPath = (brokerPath != null ? brokerPath : CONFIG
-                    .getString("BROKER_PATH"));
-            brokerAddress = (brokerAddress != null ? brokerAddress : (CONFIG
+            brokerPath = brokerPath != null ? brokerPath : CONFIG
+                    .getString("BROKER_PATH");
+            brokerAddress = brokerAddress != null ? brokerAddress : CONFIG
                     .getString("BROKER_ADDRESS") != null ? CONFIG
                     .getString("BROKER_ADDRESS") : InetAddress.getLocalHost()
-                    .getHostAddress()));
-            brokerPort = (brokerPort > 0 ? brokerPort : Integer.parseInt(CONFIG
-                    .getString("BROKER_PORT")));
-            servletPort = (servletPort > 0 ? servletPort : Integer
-                    .parseInt(CONFIG.getString("SERVLET_PORT")));
-            modelDirectory = (modelDirectory != null ? modelDirectory : CONFIG
-                    .getString("MODELS_DIRECTORY"));
+                    .getHostAddress();
+            brokerPort = brokerPort > 0 ? brokerPort : Integer.parseInt(CONFIG
+                    .getString("BROKER_PORT"));
+            servletPort = servletPort > 0 ? servletPort : Integer
+                    .parseInt(CONFIG.getString("SERVLET_PORT"));
+            modelDirectory = modelDirectory != null ? modelDirectory : CONFIG
+                    .getString("MODELS_DIRECTORY");
 
             // If path is specified, attempt to launch the broker process.
             if (_configureBroker(brokerPath, brokerPort)) {
@@ -807,7 +807,7 @@ public final class PtolemyServer implements IServerManager {
     private boolean _configureBroker(String brokerPath, int brokerPort)
             throws IllegalActionException {
 
-        if ((brokerPath != null) && (brokerPath.length() > 0)) {
+        if (brokerPath != null && brokerPath.length() > 0) {
             try {
                 _broker = new ProcessBuilder(new String[] { brokerPath, "-p",
                         String.valueOf(brokerPort) }).redirectErrorStream(true)

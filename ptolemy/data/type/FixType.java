@@ -153,7 +153,7 @@ public class FixType extends StructuredType implements Cloneable, Serializable {
             return false;
         }
         Precision precision = ((FixType) object).getPrecision();
-        if (!(precision.equals(_precision))) {
+        if (!precision.equals(_precision)) {
             return false;
         }
 
@@ -210,7 +210,7 @@ public class FixType extends StructuredType implements Cloneable, Serializable {
      */
     public boolean isCompatible(Type type) {
         int typeInfo = TypeLattice.compare(this, type);
-        return ((typeInfo == CPO.SAME) || (typeInfo == CPO.HIGHER));
+        return typeInfo == CPO.SAME || typeInfo == CPO.HIGHER;
     }
 
     /** Test if this Type is a constant. A Type is a constant if it
@@ -239,7 +239,7 @@ public class FixType extends StructuredType implements Cloneable, Serializable {
      */
     public boolean isSubstitutionInstance(Type type) {
         if (type instanceof StructuredType) {
-            return (((StructuredType) type)._getRepresentative() == _getRepresentative());
+            return ((StructuredType) type)._getRepresentative() == _getRepresentative();
         } else {
             return false;
         }

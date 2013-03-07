@@ -81,7 +81,7 @@ public abstract class FigureWrapper extends AbstractFigure {
     /** Paint the child if this figure is visible.
      */
     public void paint(Graphics2D g) {
-        if ((_child != null) && isVisible()) {
+        if (_child != null && isVisible()) {
             _child.paint(g);
         }
     }

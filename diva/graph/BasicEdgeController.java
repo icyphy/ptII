@@ -398,7 +398,7 @@ public class BasicEdgeController implements EdgeController {
             Connector c = evt.getConnector();
             Figure f = evt.getTarget();
             Object edge = c.getUserObject();
-            Object node = (f == null) ? null : f.getUserObject();
+            Object node = f == null ? null : f.getUserObject();
             MutableGraphModel model = (MutableGraphModel) _controller
                     .getGraphModel();
 

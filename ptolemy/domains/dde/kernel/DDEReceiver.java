@@ -256,7 +256,7 @@ public class DDEReceiver extends PrioritizedTimedQueue implements
             ///////////////////
             // Check Receiver Times
             ///////////////////
-            if ((getReceiverTime().getDoubleValue() == IGNORE) && !_terminate) {
+            if (getReceiverTime().getDoubleValue() == IGNORE && !_terminate) {
                 timeKeeper.removeAllIgnoreTokens();
 
                 sendNullTokens = true;
@@ -289,7 +289,7 @@ public class DDEReceiver extends PrioritizedTimedQueue implements
                 _readPending = thread;
                 _director.threadBlocked(thread, this, DDEDirector.READ_BLOCKED);
 
-                while ((_readPending != null) && !_terminate) {
+                while (_readPending != null && !_terminate) {
                     try {
                         workspace.wait(_director);
                     } catch (InterruptedException e) {
@@ -506,8 +506,8 @@ public class DDEReceiver extends PrioritizedTimedQueue implements
         Workspace workspace = getContainer().workspace();
 
         synchronized (_director) {
-            if ((time.compareTo(_getCompletionTime()) > 0)
-                    && (_getCompletionTime().getDoubleValue() != ETERNITY)
+            if (time.compareTo(_getCompletionTime()) > 0
+                    && _getCompletionTime().getDoubleValue() != ETERNITY
                     && !_terminate) {
                 try {
                     time = new Time(_director, INACTIVE);
@@ -538,7 +538,7 @@ public class DDEReceiver extends PrioritizedTimedQueue implements
                 _director.threadBlocked(_writePending, this,
                         DDEDirector.WRITE_BLOCKED);
 
-                while ((_writePending != null) && !_terminate) {
+                while (_writePending != null && !_terminate) {
                     try {
                         workspace.wait(_director);
                     } catch (InterruptedException e) {

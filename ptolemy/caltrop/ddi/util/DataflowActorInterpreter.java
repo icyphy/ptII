@@ -107,15 +107,14 @@ public class DataflowActorInterpreter {
 
         final InputPattern[] inputPatterns = action.getInputPatterns();
 
-        for (int i = 0; i < inputPatterns.length; i++) {
-            final InputPattern inputPattern = inputPatterns[i];
+        for (final InputPattern inputPattern : inputPatterns) {
             final String[] vars = inputPattern.getVariables();
             final Expression repExpr = inputPattern.getRepeatExpr();
 
             if (repExpr == null) {
                 for (int j = 0; j < vars.length; j++) {
-                    final InputChannel channel = ((InputPort) (inputPortMap
-                            .get(inputPattern.getPortname()))).getChannel(0); // FIXME
+                    final InputChannel channel = ((InputPort) inputPortMap
+                            .get(inputPattern.getPortname())).getChannel(0); // FIXME
                     local.bind(vars[j], new SingleTokenReaderThunk(channel, j));
                 }
             } else {
@@ -125,8 +124,8 @@ public class DataflowActorInterpreter {
                         repExprThunk);
 
                 for (int j = 0; j < vars.length; j++) {
-                    final InputChannel channel = ((InputPort) (inputPortMap
-                            .get(inputPattern.getPortname()))).getChannel(0); // FIXME
+                    final InputChannel channel = ((InputPort) inputPortMap
+                            .get(inputPattern.getPortname())).getChannel(0); // FIXME
                     local.bind(vars[j], new MultipleTokenReaderThunk(channel,
                             j, vars.length, repExprThunk, context));
                 }
@@ -135,14 +134,13 @@ public class DataflowActorInterpreter {
 
         final Decl[] decls = action.getDecls();
 
-        for (int i = 0; i < decls.length; i++) {
-            final Expression v = decls[i].getInitialValue();
+        for (Decl decl : decls) {
+            final Expression v = decl.getInitialValue();
 
             if (v == null) {
-                local.bind(decls[i].getName(), null);
+                local.bind(decl.getName(), null);
             } else {
-                local.bind(decls[i].getName(), new SimpleThunk(v, context,
-                        local));
+                local.bind(decl.getName(), new SimpleThunk(v, context, local));
             }
         }
 
@@ -179,12 +177,12 @@ public class DataflowActorInterpreter {
         final Action action = envAction;
         final InputPattern[] inputPatterns = action.getInputPatterns();
 
-        for (int i = 0; i < inputPatterns.length; i++) {
-            final InputPattern inputPattern = inputPatterns[i];
+        for (InputPattern inputPattern2 : inputPatterns) {
+            final InputPattern inputPattern = inputPattern2;
 
             // FIXME: handle multiports
-            final InputChannel channel = ((InputPort) (inputPortMap
-                    .get(inputPattern.getPortname()))).getChannel(0);
+            final InputChannel channel = ((InputPort) inputPortMap
+                    .get(inputPattern.getPortname())).getChannel(0);
 
             if (inputPattern.getRepeatExpr() == null) {
                 if (!channel.hasAvailable(inputPattern.getVariables().length)) {
@@ -206,8 +204,8 @@ public class DataflowActorInterpreter {
         final ExprEvaluator eval = new ExprEvaluator(context, env);
         final Expression[] guards = action.getGuards();
 
-        for (int i = 0; i < guards.length; i++) {
-            final Object g = eval.evaluate(guards[i]);
+        for (Expression guard : guards) {
+            final Object g = eval.evaluate(guard);
 
             if (!context.booleanValue(g)) {
                 // System.out.println("guard not satisfied:" + guards[i]);
@@ -241,8 +239,8 @@ public class DataflowActorInterpreter {
         final StmtEvaluator eval = new StmtEvaluator(context, env);
         final Statement[] body = action.getBody();
 
-        for (int i = 0; i < body.length; i++) {
-            eval.evaluate(body[i]);
+        for (Statement element : body) {
+            eval.evaluate(element);
         }
     }
 
@@ -264,13 +262,12 @@ public class DataflowActorInterpreter {
         final OutputExpression[] outputExpressions = action
                 .getOutputExpressions();
 
-        for (int i = 0; i < outputExpressions.length; i++) {
-            final OutputExpression outputExpression = outputExpressions[i];
+        for (final OutputExpression outputExpression : outputExpressions) {
             final Expression[] expressions = outputExpression.getExpressions();
             final Expression repeatExpr = outputExpression.getRepeatExpr();
 
-            final OutputChannel channel = ((OutputPort) (outputPortMap
-                    .get(outputExpression.getPortname()))).getChannel(0);
+            final OutputChannel channel = ((OutputPort) outputPortMap
+                    .get(outputExpression.getPortname())).getChannel(0);
 
             // FIXME: handle multiports
             if (repeatExpr != null) {
@@ -287,8 +284,8 @@ public class DataflowActorInterpreter {
                     }
                 }
             } else {
-                for (int j = 0; j < expressions.length; j++) {
-                    channel.put(eval.evaluate(expressions[j]));
+                for (Expression expression : expressions) {
+                    channel.put(eval.evaluate(expression));
                 }
             }
         }
@@ -472,7 +469,7 @@ public class DataflowActorInterpreter {
                 List tokens = new ArrayList();
 
                 for (int i = 0; i < length; i++) {
-                    tokens.add(channel.get(offset + (i * period)));
+                    tokens.add(channel.get(offset + i * period));
                 }
 
                 val = context.createList(tokens);

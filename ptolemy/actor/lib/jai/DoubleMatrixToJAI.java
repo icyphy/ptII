@@ -205,7 +205,7 @@ public class DoubleMatrixToJAI extends Transformer {
                                 + ") on data type " + _dataFormat);
             }
 
-            if ((_dataFormat == _DOUBLE) || (_dataFormat == _FLOAT)) {
+            if (_dataFormat == _DOUBLE || _dataFormat == _FLOAT) {
                 System.out.println("DoubleMatrixTOJAI:0");
 
                 for (int i = 0; i < width; i++) {
@@ -218,10 +218,10 @@ public class DoubleMatrixToJAI extends Transformer {
                         //                         newData[i*height + j] = newData[i*height + j] - 0.5D;
                         //                         newData[i*height + j] = newData[i*height + j]*2;
                         //                         newData[i*height + j] = newData[i*height + j]*_maxValue;
-                        newData[i + (j * width)] = data[i][j];
-                        newData[i + (j * width)] = newData[i + (j * width)] - 0.5D;
-                        newData[i + (j * width)] = newData[i + (j * width)] * 2;
-                        newData[i + (j * width)] = newData[i + (j * width)]
+                        newData[i + j * width] = data[i][j];
+                        newData[i + j * width] = newData[i + j * width] - 0.5D;
+                        newData[i + j * width] = newData[i + j * width] * 2;
+                        newData[i + j * width] = newData[i + j * width]
                                 * _maxValue;
                     }
                 }
@@ -230,8 +230,8 @@ public class DoubleMatrixToJAI extends Transformer {
                     for (int j = 0; j < height; j++) {
                         //                         newData[i*height + j] =
                         //                             data[i][j]*(_maxValue - _minValue) + _minValue;
-                        newData[i + (j * width)] = (data[i][j] * (_maxValue - _minValue))
-                                + _minValue;
+                        newData[i + j * width] = data[i][j]
+                                * (_maxValue - _minValue) + _minValue;
                     }
                 }
             }
@@ -240,7 +240,7 @@ public class DoubleMatrixToJAI extends Transformer {
             for (int i = 0; i < width; i++) {
                 for (int j = 0; j < height; j++) {
                     //                    newData[i*height + j] = data[i][j];
-                    newData[i + (j * width)] = data[i][j];
+                    newData[i + j * width] = data[i][j];
                 }
             }
         }

@@ -83,7 +83,7 @@ public class SketchApplet extends MoMLApplet implements EditListener {
             // Find out how many iterations the director expects to run for.
             CompositeActor toplevel = (CompositeActor) _toplevel;
             SDFDirector director = (SDFDirector) toplevel.getDirector();
-            int iterations = ((IntToken) (director.iterations.getToken()))
+            int iterations = ((IntToken) director.iterations.getToken())
                     .intValue();
 
             _sketchedSource = (SketchedSource) toplevel

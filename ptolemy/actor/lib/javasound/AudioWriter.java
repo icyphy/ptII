@@ -196,12 +196,11 @@ public class AudioWriter extends Sink {
             }
 
             // Check if we need to reallocate.
-            if ((_inArray == null) || (_channels != _inArray.length)) {
+            if (_inArray == null || _channels != _inArray.length) {
                 _inArray = new Token[_channels][];
             }
 
-            if ((_audioPutArray == null)
-                    || (_channels != _audioPutArray.length)) {
+            if (_audioPutArray == null || _channels != _audioPutArray.length) {
                 _audioPutArray = new double[_channels][];
             }
 

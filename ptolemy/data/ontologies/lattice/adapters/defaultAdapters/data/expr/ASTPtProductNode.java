@@ -83,17 +83,17 @@ public class ASTPtProductNode extends LatticeOntologyASTNodeAdapter {
         // Find the multiply and divide concept functions that
         // are needed for the PtProductNode monotonic function.
         ConceptFunction multiplyFunction = null;
-        ConceptFunctionDefinitionAttribute multiplyDefinition = (ConceptFunctionDefinitionAttribute) (_solver
-                .getContainedModel())
-                .getAttribute(LatticeOntologySolver.MULTIPLY_FUNCTION_NAME);
+        ConceptFunctionDefinitionAttribute multiplyDefinition = (ConceptFunctionDefinitionAttribute) _solver
+                .getContainedModel().getAttribute(
+                        LatticeOntologySolver.MULTIPLY_FUNCTION_NAME);
         if (multiplyDefinition != null) {
             multiplyFunction = multiplyDefinition.createConceptFunction();
         }
 
         ConceptFunction divideFunction = null;
-        ConceptFunctionDefinitionAttribute divideDefinition = (ConceptFunctionDefinitionAttribute) (_solver
-                .getContainedModel())
-                .getAttribute(LatticeOntologySolver.DIVIDE_FUNCTION_NAME);
+        ConceptFunctionDefinitionAttribute divideDefinition = (ConceptFunctionDefinitionAttribute) _solver
+                .getContainedModel().getAttribute(
+                        LatticeOntologySolver.DIVIDE_FUNCTION_NAME);
         if (divideDefinition != null) {
             divideFunction = divideDefinition.createConceptFunction();
         }
@@ -101,7 +101,7 @@ public class ASTPtProductNode extends LatticeOntologyASTNodeAdapter {
         InequalityTerm[] childNodeTerms = _getChildNodeTerms();
         List<Ontology> argumentDomainOntologies = new ArrayList<Ontology>(
                 childNodeTerms.length);
-        for (int i = 0; i < childNodeTerms.length; i++) {
+        for (InequalityTerm childNodeTerm : childNodeTerms) {
             argumentDomainOntologies.add(getSolver().getOntology());
         }
 

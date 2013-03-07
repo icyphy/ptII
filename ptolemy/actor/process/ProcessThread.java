@@ -255,8 +255,8 @@ public class ProcessThread extends PtolemyThread {
                                 + thrownWhenIterate);
                     }
                 } else if (thrownWhenIterate instanceof InterruptedIOException
-                        || ((thrownWhenIterate != null) && thrownWhenIterate
-                                .getCause() instanceof InterruptedIOException)) {
+                        || thrownWhenIterate != null
+                        && thrownWhenIterate.getCause() instanceof InterruptedIOException) {
                     // PSDF has problems here when run with JavaScope
                     if (_debugging) {
                         _debug("-- IO was interrupted: " + thrownWhenIterate);
@@ -315,45 +315,37 @@ public class ProcessThread extends PtolemyThread {
      *   or postfire returns true.
      *  @exception IllegalActionException If the actor throws it.
      */
-    protected boolean _iterateActor()
-            throws IllegalActionException {
+    protected boolean _iterateActor() throws IllegalActionException {
         FiringsRecordable firingsRecordable = null;
         if (_actor instanceof FiringsRecordable) {
             firingsRecordable = (FiringsRecordable) _actor;
         }
 
         if (firingsRecordable != null) {
-            firingsRecordable
-                    .recordFiring(FiringEvent.BEFORE_PREFIRE);
+            firingsRecordable.recordFiring(FiringEvent.BEFORE_PREFIRE);
         }
         boolean result = true;
         if (_actor.prefire()) {
 
             if (firingsRecordable != null) {
-                firingsRecordable
-                        .recordFiring(FiringEvent.AFTER_PREFIRE);
-                firingsRecordable
-                        .recordFiring(FiringEvent.BEFORE_FIRE);
+                firingsRecordable.recordFiring(FiringEvent.AFTER_PREFIRE);
+                firingsRecordable.recordFiring(FiringEvent.BEFORE_FIRE);
             }
 
             _actor.fire();
 
             if (firingsRecordable != null) {
-                firingsRecordable
-                        .recordFiring(FiringEvent.AFTER_FIRE);
-                firingsRecordable
-                        .recordFiring(FiringEvent.BEFORE_POSTFIRE);
+                firingsRecordable.recordFiring(FiringEvent.AFTER_FIRE);
+                firingsRecordable.recordFiring(FiringEvent.BEFORE_POSTFIRE);
             }
 
             result = _actor.postfire();
 
             if (firingsRecordable != null) {
-                firingsRecordable
-                        .recordFiring(FiringEvent.AFTER_POSTFIRE);
+                firingsRecordable.recordFiring(FiringEvent.AFTER_POSTFIRE);
             }
         } else if (firingsRecordable != null) {
-            firingsRecordable
-                    .recordFiring(FiringEvent.AFTER_PREFIRE);
+            firingsRecordable.recordFiring(FiringEvent.AFTER_PREFIRE);
         }
         return result;
     }

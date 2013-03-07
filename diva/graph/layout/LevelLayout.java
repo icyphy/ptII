@@ -170,7 +170,7 @@ public class LevelLayout extends AbstractGlobalLayout {
                     Object copyTail = map.get(origTail);
                     Object copyHead = map.get(origHead);
 
-                    if ((copyHead != null) && (copyTail != null)) {
+                    if (copyHead != null && copyTail != null) {
                         Object copyEdge = _local.createEdge(origEdge);
                         _local.setEdgeTail(this, copyEdge, copyTail);
                         _local.setEdgeHead(this, copyEdge, copyHead);
@@ -325,7 +325,7 @@ public class LevelLayout extends AbstractGlobalLayout {
                         .hasNext();) {
                     Object n2 = j.next();
                     int lvl2 = getLevel(n2);
-                    ASSERT((lvl2 == (lvl - 1)), "Level equality error " + node
+                    ASSERT(lvl2 == lvl - 1, "Level equality error " + node
                             + ", " + n2);
                 }
             }
@@ -357,7 +357,7 @@ public class LevelLayout extends AbstractGlobalLayout {
             //     node in a level it's level is appropriate
             for (int i = 1; i < levelData._levels.length; i++) {
                 ArrayList nodes = levelData._levels[i];
-                ASSERT((nodes.size() != 0), "Empty level " + i);
+                ASSERT(nodes.size() != 0, "Empty level " + i);
             }
 
             ASSERT(LayoutUtilities.checkContainment(levelData._copyGraph,
@@ -407,7 +407,7 @@ public class LevelLayout extends AbstractGlobalLayout {
      * either VERTICAL or HORIZONTAL.
      */
     public void setOrientation(int o) {
-        if ((o != VERTICAL) && (o != HORIZONTAL)) {
+        if (o != VERTICAL && o != HORIZONTAL) {
             String err = "Orientation must be either VERTICAL or HORIZONTAL";
             throw new IllegalArgumentException(err);
         }
@@ -751,7 +751,7 @@ public class LevelLayout extends AbstractGlobalLayout {
                     continue;
                 }
 
-                while (getLevel(to) > (getLevel(_local.getTail(edge)) + 1)) {
+                while (getLevel(to) > getLevel(_local.getTail(edge)) + 1) {
                     //                    debug("Creating dummy between " + e.getTail() + " & " + e.getHead());
                     //dummy gets stuck between e.tail and e.head
                     LevelInfo dumInfo = new LevelInfo();
@@ -807,7 +807,7 @@ public class LevelLayout extends AbstractGlobalLayout {
         //create some buckets to store the nodes
         levelData._levels = new ArrayList[levelData._maxLevel + 1];
 
-        for (int i = 0; i < (levelData._maxLevel + 1); i++) {
+        for (int i = 0; i < levelData._maxLevel + 1; i++) {
             levelData._levels[i] = new ArrayList();
         }
 
@@ -851,7 +851,7 @@ public class LevelLayout extends AbstractGlobalLayout {
 
         for (Iterator ins = GraphUtilities.inNodes(node, _local); ins.hasNext();) {
             Object in = ins.next();
-            ASSERT((in != null), "NULL found, n = " + node);
+            ASSERT(in != null, "NULL found, n = " + node);
 
             if (!isVisited(in)) {
                 addSubGraphReverseDFS(levelData, in);
@@ -891,7 +891,7 @@ public class LevelLayout extends AbstractGlobalLayout {
             double ystep;
             double y;
             ystep = vp.getHeight() / nonEmptyLevels;
-            y = vp.getY() + (ystep / 2);
+            y = vp.getY() + ystep / 2;
 
             //            int lnum=0;
             for (Iterator i = new ArrayIterator(levelData._levels); i.hasNext();) {
@@ -921,7 +921,7 @@ public class LevelLayout extends AbstractGlobalLayout {
                 double x;
                 xstep = vp.getWidth() / levelWidth;
 
-                x = vp.getX() + (xstep / 2);
+                x = vp.getX() + xstep / 2;
 
                 if (nodes.size() == 0) {
                     continue; //XXX why do we have an empty level???
@@ -943,7 +943,7 @@ public class LevelLayout extends AbstractGlobalLayout {
             double xstep;
             double x;
             xstep = vp.getWidth() / nonEmptyLevels;
-            x = vp.getX() + (xstep / 2);
+            x = vp.getX() + xstep / 2;
 
             for (Iterator i = new ArrayIterator(levelData._levels); i.hasNext();) {
                 ArrayList nodes = (ArrayList) i.next();
@@ -971,7 +971,7 @@ public class LevelLayout extends AbstractGlobalLayout {
                 double ystep;
                 double y;
                 ystep = vp.getHeight() / levelWidth;
-                y = vp.getY() + (ystep / 2);
+                y = vp.getY() + ystep / 2;
 
                 if (nodes.size() == 0) {
                     continue; //XXX why do we have an empty level???
@@ -999,12 +999,12 @@ public class LevelLayout extends AbstractGlobalLayout {
 
         //       debug("placing: " + inf.origNode + "(" + x + ", " + y + ")");
         if (_randomizedPlacement) {
-            x += (Math.random() * .25 * inf.width);
-            y += (Math.random() * .25 * inf.height);
+            x += Math.random() * .25 * inf.width;
+            y += Math.random() * .25 * inf.height;
         }
 
-        inf.x = x - (inf.width / 2);
-        inf.y = y - (inf.height / 2);
+        inf.x = x - inf.width / 2;
+        inf.y = y - inf.height / 2;
     }
 
     //==================================================================
@@ -1048,7 +1048,7 @@ public class LevelLayout extends AbstractGlobalLayout {
      */
     private boolean isDummy(Object node) {
         LevelInfo inf = getLevelInfo(node);
-        return (inf.origNode == null);
+        return inf.origNode == null;
     }
 
     /**
@@ -1209,7 +1209,7 @@ public class LevelLayout extends AbstractGlobalLayout {
          *       meta
          */
         for (int i = topo.size() - 1; i >= 0; i--) {
-            Object node = (topo.get(i));
+            Object node = topo.get(i);
             int usage = maxLevel;
 
             if (!_local.outEdges(node).hasNext()) {

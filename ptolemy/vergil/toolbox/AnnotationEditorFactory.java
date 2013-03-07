@@ -107,7 +107,7 @@ public class AnnotationEditorFactory extends EditorFactory {
 
         String newText = _textArea.getText();
 
-        if ((newText == null) || newText.trim().equals("")) {
+        if (newText == null || newText.trim().equals("")) {
             // NOTE: Should we delete the attribute... no visible text.
             newText = "Double click to edit text.";
         }

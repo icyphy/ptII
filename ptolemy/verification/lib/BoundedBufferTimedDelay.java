@@ -74,7 +74,7 @@ public class BoundedBufferTimedDelay extends TimeDelay {
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == bufferSize) {
-            int newBufferSize = ((IntToken) (bufferSize.getToken())).intValue();
+            int newBufferSize = ((IntToken) bufferSize.getToken()).intValue();
 
             if (newBufferSize < 1) {
                 throw new IllegalActionException(this,

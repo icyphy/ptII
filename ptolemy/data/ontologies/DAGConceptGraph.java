@@ -106,7 +106,7 @@ public class DAGConceptGraph extends ConceptGraph {
             if (o instanceof FiniteConcept) {
                 FiniteConcept c = (FiniteConcept) o;
                 if (!c.isValueAcceptable()) {
-                    for (Concept aboveConcept : (c).getCoverSetAbove()) {
+                    for (Concept aboveConcept : c.getCoverSetAbove()) {
                         if (aboveConcept.isValueAcceptable()) {
                             invalidConcepts.add(c);
                         }
@@ -134,8 +134,8 @@ public class DAGConceptGraph extends ConceptGraph {
         Concept concept1 = _getInputObjectAsAConcept(e1);
         Concept concept2 = _getInputObjectAsAConcept(e2);
 
-        if ((concept1 instanceof FiniteConcept)
-                && (concept2 instanceof FiniteConcept)) {
+        if (concept1 instanceof FiniteConcept
+                && concept2 instanceof FiniteConcept) {
             return _dag.compare(concept1, concept2);
         } else if (concept1 instanceof InfiniteConcept) {
             try {
@@ -279,8 +279,8 @@ public class DAGConceptGraph extends ConceptGraph {
      */
     private Concept _getBoundForConcepts(Concept concept1, Concept concept2,
             BoundType boundType) {
-        if ((concept1 instanceof FiniteConcept)
-                && (concept2 instanceof FiniteConcept)) {
+        if (concept1 instanceof FiniteConcept
+                && concept2 instanceof FiniteConcept) {
             switch (boundType) {
             case GREATESTLOWER:
                 return (Concept) _dag.greatestLowerBound(concept1, concept2);

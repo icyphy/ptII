@@ -122,11 +122,11 @@ public class PthalesReceiver extends SDFReceiver {
 
         // origin construction once per port (order is not important)
         int origin = 0;
-        for (int nDim = 0; nDim < _dimensions.length; nDim++) {
+        for (String _dimension : _dimensions) {
             // a base can be null so origin does not increase
-            if (base.get(_dimensions[nDim]) != null) {
-                origin += base.get(_dimensions[nDim])[0]
-                        * _jumpAddr.get(_dimensions[nDim]) * _nbTokens;
+            if (base.get(_dimension) != null) {
+                origin += base.get(_dimension)[0] * _jumpAddr.get(_dimension)
+                        * _nbTokens;
             }
         }
 
@@ -202,7 +202,7 @@ public class PthalesReceiver extends SDFReceiver {
      *  @return true or false.
      */
     public boolean hasRoom() {
-        return (_getAddress(_positionOut, false) < _buffer.length);
+        return _getAddress(_positionOut, false) < _buffer.length;
     }
 
     /** Return true if the buffer can contain n more token.
@@ -210,14 +210,14 @@ public class PthalesReceiver extends SDFReceiver {
      *  @return true or false.
      */
     public boolean hasRoom(int numberOfTokens) {
-        return (_getAddress(_positionOut + (numberOfTokens - 1), false) < _buffer.length);
+        return _getAddress(_positionOut + numberOfTokens - 1, false) < _buffer.length;
     }
 
     /** Return if the buffer contains 1 more token to be read.
      *  @return True.
      */
     public boolean hasToken() {
-        return (_getAddress(_positionIn, true) < _buffer.length);
+        return _getAddress(_positionIn, true) < _buffer.length;
     }
 
     /** Return if the buffer contains n more token to be read.
@@ -225,7 +225,7 @@ public class PthalesReceiver extends SDFReceiver {
      *  @return True.
      */
     public boolean hasToken(int numberOfTokens) {
-        return (_getAddress(_positionIn + (numberOfTokens - 1), true) < _buffer.length);
+        return _getAddress(_positionIn + numberOfTokens - 1, true) < _buffer.length;
     }
 
     /** Return true if the receiver is dynamic.
@@ -327,12 +327,11 @@ public class PthalesReceiver extends SDFReceiver {
                         _nbTokens = PthalesIOPort.getNbTokenPerData(port);
 
                         int origin = 0;
-                        for (int nDim = 0; nDim < _dimensions.length; nDim++) {
+                        for (String _dimension : _dimensions) {
                             // a base can be null so origin does not increase
-                            if (base.get(_dimensions[nDim]) != null) {
-                                origin += base.get(_dimensions[nDim])[0]
-                                        * _jumpAddr.get(_dimensions[nDim])
-                                        * _nbTokens;
+                            if (base.get(_dimension) != null) {
+                                origin += base.get(_dimension)[0]
+                                        * _jumpAddr.get(_dimension) * _nbTokens;
                             }
                         }
 
@@ -633,7 +632,7 @@ public class PthalesReceiver extends SDFReceiver {
 
         // Position computation
         int rep = (int) Math.floor(position
-                / ((double) (patternSize * _nbTokens)));
+                / (double) (patternSize * _nbTokens));
         int dim = (int) Math.floor(position % (patternSize * _nbTokens))
                 / _nbTokens;
         int numToken = (int) Math.floor(position % _nbTokens);

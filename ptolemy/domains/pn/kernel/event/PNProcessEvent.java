@@ -70,7 +70,7 @@ public class PNProcessEvent {
     public PNProcessEvent(Actor actor, int state, int cause) {
         _actor = actor;
 
-        if ((state < PROCESS_BLOCKED) || (state > PROCESS_RUNNING)) {
+        if (state < PROCESS_BLOCKED || state > PROCESS_RUNNING) {
             throw new InternalErrorException("state '" + state
                     + "' is incorrect, it must be one of " + PROCESS_BLOCKED
                     + ", " + PROCESS_FINISHED + ", " + PROCESS_PAUSED + " or "
@@ -167,8 +167,8 @@ public class PNProcessEvent {
                 cause = "FINISHED_PROPERLY";
             } else if (_cause == FINISHED_WITH_EXCEPTION) {
                 cause = "FINISHED_WITH_EXCEPTION with "
-                        + ((_exception == null) ? "null exception"
-                                : ("exception " + _exception));
+                        + (_exception == null ? "null exception" : "exception "
+                                + _exception);
             } else {
                 cause = "FINISHED_CAUSE_UNKNOWN";
             }

@@ -68,9 +68,7 @@ public class DeletionListener implements ActionListener {
 
         // Remove all the edges first, since if we remove the nodes first,
         // then removing the nodes might remove some of the edges.
-        for (int i = 0; i < userObjects.length; i++) {
-            Object userObject = userObjects[i];
-
+        for (Object userObject : userObjects) {
             if (graphModel.isEdge(userObject)) {
                 controller.removeEdge(userObject);
             }

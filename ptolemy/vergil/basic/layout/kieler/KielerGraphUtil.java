@@ -124,9 +124,9 @@ public final class KielerGraphUtil {
      */
     protected static Point2D _shrinkCoordinates(Rectangle2D originalBounds,
             Rectangle2D shrunkBounds, int direction, float offset) {
-        double widthDiff = (originalBounds.getWidth() - shrunkBounds.getWidth());
-        double heightDiff = (originalBounds.getHeight() - shrunkBounds
-                .getHeight());
+        double widthDiff = originalBounds.getWidth() - shrunkBounds.getWidth();
+        double heightDiff = originalBounds.getHeight()
+                - shrunkBounds.getHeight();
         Point2D.Double location = new Point2D.Double();
         switch (direction) {
         case SwingConstants.NORTH:

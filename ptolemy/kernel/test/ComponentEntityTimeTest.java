@@ -56,8 +56,8 @@ public class ComponentEntityTimeTest {
                         + " K Free: "
                         + freeMemory
                         + " K ("
-                        + Math.round((((double) freeMemory) / ((double) totalMemory)) * 100.0)
-                        + "%)");
+                        + Math.round((double) freeMemory / (double) totalMemory
+                                * 100.0) + "%)");
 
     }
 }

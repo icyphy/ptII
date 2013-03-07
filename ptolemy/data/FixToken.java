@@ -135,7 +135,7 @@ public class FixToken extends ScalarToken { // implements BitwiseOperationToken 
     public FixToken(String init) throws IllegalActionException {
         PtParser parser = new PtParser();
         ASTPtRootNode tree = parser.generateParseTree(init);
-        Token token = (new ParseTreeEvaluator()).evaluateParseTree(tree);
+        Token token = new ParseTreeEvaluator().evaluateParseTree(tree);
 
         if (token instanceof FixToken) {
             _value = ((FixToken) token).fixValue();
@@ -169,7 +169,7 @@ public class FixToken extends ScalarToken { // implements BitwiseOperationToken 
 
         int compare = TypeLattice.compare(BaseType.FIX, token);
 
-        if ((compare == CPO.LOWER) || (compare == CPO.INCOMPARABLE)) {
+        if (compare == CPO.LOWER || compare == CPO.INCOMPARABLE) {
             throw new IllegalActionException(
                     notSupportedIncomparableConversionMessage(token, "fix"));
         }
@@ -410,7 +410,7 @@ public class FixToken extends ScalarToken { // implements BitwiseOperationToken 
         double right = ((FixToken) rightArgument).convertToDouble();
         double left = convertToDouble();
 
-        if ((right > (left + epsilon)) || (right < (left - epsilon))) {
+        if (right > left + epsilon || right < left - epsilon) {
             return BooleanToken.FALSE;
         } else {
             return BooleanToken.TRUE;

@@ -215,8 +215,8 @@ public class ProcessAttribute extends SequenceAttribute {
         if (processAttribute == this) {
             return true;
         }
-        if ((processAttribute == null)
-                || (processAttribute.getClass() != getClass())) {
+        if (processAttribute == null
+                || processAttribute.getClass() != getClass()) {
             return false;
         } else {
             ProcessAttribute attribute = (ProcessAttribute) processAttribute;
@@ -266,7 +266,7 @@ public class ProcessAttribute extends SequenceAttribute {
         ArrayToken processArrayToken = (ArrayToken) getToken();
 
         if (processArrayToken != null && processArrayToken.length() > 0) {
-            StringToken processNameToken = (StringToken) (processArrayToken)
+            StringToken processNameToken = (StringToken) processArrayToken
                     .getElement(0);
             processName = processNameToken.stringValue();
         } else {
@@ -292,7 +292,7 @@ public class ProcessAttribute extends SequenceAttribute {
         ArrayToken processArrayToken = (ArrayToken) getToken();
 
         if (processArrayToken != null && processArrayToken.length() > 1) {
-            StringToken sequenceNumToken = (StringToken) (processArrayToken)
+            StringToken sequenceNumToken = (StringToken) processArrayToken
                     .getElement(1);
             try {
                 seqNumber = Integer.parseInt(sequenceNumToken.stringValue());

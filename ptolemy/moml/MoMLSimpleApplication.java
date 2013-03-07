@@ -276,8 +276,8 @@ public class MoMLSimpleApplication implements ChangeListener, ExecutionListener 
      */
     public static void main(String[] args) {
         try {
-            for (int i = 0; i < args.length; i++) {
-                new MoMLSimpleApplication(args[i]);
+            for (String arg : args) {
+                new MoMLSimpleApplication(arg);
             }
         } catch (Throwable ex) {
             System.err.println("Command failed: " + ex);

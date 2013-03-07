@@ -326,7 +326,7 @@ public class ExternalIOPortController extends AttributeController {
      */
     protected boolean _hide(java.lang.Object node) {
         if (node instanceof Locatable) {
-            if ((((Locatable) node).getContainer()).getAttribute("_hideInside") != null) {
+            if (((Locatable) node).getContainer().getAttribute("_hideInside") != null) {
                 return true;
             }
         }
@@ -568,7 +568,7 @@ public class ExternalIOPortController extends AttributeController {
                 }
             };
 
-            if ((name != null) && !name.equals("")
+            if (name != null && !name.equals("")
                     && !(port instanceof ParameterPort)) {
                 // Do not create a label if there is a custom icon.
                 List<EditorIcon> icons = port.attributeList(EditorIcon.class);
@@ -603,32 +603,40 @@ public class ExternalIOPortController extends AttributeController {
 
                         if (direction == SwingConstants.EAST) {
                             startX = x + width;
-                            startY = y + (height / 2);
+                            startY = y + height / 2;
                             endX = startX
-                                    + (extent * IOPortController.MULTIPORT_CONNECTION_SPACING);
+                                    + extent
+                                    * IOPortController.MULTIPORT_CONNECTION_SPACING;
                             endY = startY
-                                    + (extent * IOPortController.MULTIPORT_CONNECTION_SPACING);
+                                    + extent
+                                    * IOPortController.MULTIPORT_CONNECTION_SPACING;
                         } else if (direction == SwingConstants.WEST) {
                             startX = x;
-                            startY = y + (height / 2);
+                            startY = y + height / 2;
                             endX = startX
-                                    - (extent * IOPortController.MULTIPORT_CONNECTION_SPACING);
+                                    - extent
+                                    * IOPortController.MULTIPORT_CONNECTION_SPACING;
                             endY = startY
-                                    - (extent * IOPortController.MULTIPORT_CONNECTION_SPACING);
+                                    - extent
+                                    * IOPortController.MULTIPORT_CONNECTION_SPACING;
                         } else if (direction == SwingConstants.NORTH) {
-                            startX = x + (width / 2);
+                            startX = x + width / 2;
                             startY = y;
                             endX = startX
-                                    - (extent * IOPortController.MULTIPORT_CONNECTION_SPACING);
+                                    - extent
+                                    * IOPortController.MULTIPORT_CONNECTION_SPACING;
                             endY = startY
-                                    - (extent * IOPortController.MULTIPORT_CONNECTION_SPACING);
+                                    - extent
+                                    * IOPortController.MULTIPORT_CONNECTION_SPACING;
                         } else {
-                            startX = x + (width / 2);
+                            startX = x + width / 2;
                             startY = y + height;
                             endX = startX
-                                    + (extent * IOPortController.MULTIPORT_CONNECTION_SPACING);
+                                    + extent
+                                    * IOPortController.MULTIPORT_CONNECTION_SPACING;
                             endY = startY
-                                    + (extent * IOPortController.MULTIPORT_CONNECTION_SPACING);
+                                    + extent
+                                    * IOPortController.MULTIPORT_CONNECTION_SPACING;
                         }
 
                         Line2D line = new Line2D.Double(startX, startY, endX,
@@ -708,7 +716,7 @@ public class ExternalIOPortController extends AttributeController {
             if (port instanceof PubSubPort) {
                 String initialTokens = ((PubSubPort) port).initialTokens
                         .getExpression();
-                if (!(initialTokens.trim().equals(""))) {
+                if (!initialTokens.trim().equals("")) {
                     initialTokens = "Initial tokens: " + initialTokens;
                     label = new LabelFigure(initialTokens, _labelFont, 0.0,
                             SwingConstants.SOUTH_EAST, _pubSubLabelColor);

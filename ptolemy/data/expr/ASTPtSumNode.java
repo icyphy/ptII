@@ -101,9 +101,7 @@ public class ASTPtSumNode extends ASTPtRootNode {
         Iterator<Token> nodeTokens = ((ASTPtSumNode) node)._lexicalTokens
                 .iterator();
 
-        for (Iterator<Token> tokens = _lexicalTokens.iterator(); tokens
-                .hasNext();) {
-            Token token = tokens.next();
+        for (Token token : _lexicalTokens) {
             Token nodeToken = nodeTokens.next();
 
             if (token.kind != nodeToken.kind) {

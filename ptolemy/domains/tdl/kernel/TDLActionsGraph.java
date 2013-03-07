@@ -198,7 +198,8 @@ public class TDLActionsGraph {
         for (Node node : nodes) {
             TDLAction gnode = (TDLAction) node.getWeight();
             if (gnode.time.equals(invocationTime)
-                    && ((gnode.object != null && gnode.object.equals(actor)) || (gnode.object == null && actor == null))) {
+                    && (gnode.object != null && gnode.object.equals(actor) || gnode.object == null
+                            && actor == null)) {
                 return node;
             }
         }
@@ -352,10 +353,10 @@ public class TDLActionsGraph {
             }
         }
         if (periodic) {
-            offset = (modePeriod / frequency)
+            offset = modePeriod / frequency
                     * ((Integer) invocations.get(0) - 1);
-            let = (modePeriod / let) / frequency;
-            inv = (modePeriod / inv) / frequency;
+            let = modePeriod / let / frequency;
+            inv = modePeriod / inv / frequency;
             return new LetTask(actor, let, inv, offset);
         } else { // schedule single task as a set of tasks with different
             // lets and invocation periods
@@ -382,7 +383,7 @@ public class TDLActionsGraph {
                         .getWeight()).object;
                 State targetMode = transition.destinationState();
 
-                List<Object[]> targetNodePairs = (_modeSwitches.get(targetMode));
+                List<Object[]> targetNodePairs = _modeSwitches.get(targetMode);
                 for (Object[] targetNodePair : targetNodePairs) {
                     Node targetModeNode = (Node) targetNodePair[1];
                     if (((TDLAction) targetModeNode.getWeight()).time
@@ -540,7 +541,7 @@ public class TDLActionsGraph {
             if (connectedPort != null && connectedPort.isOutput()) {
                 for (int i = 1; i <= frequency; i++) {
                     Time invocationEndTime = new Time(_module.getDirector(),
-                            modePeriod.getLongValue() / frequency * (i));
+                            modePeriod.getLongValue() / frequency * i);
 
                     Node node = _getLastNodeBeforeTime(connectedPort,
                             invocationEndTime);
@@ -782,10 +783,10 @@ public class TDLActionsGraph {
                 for (ModalPort sensor : sensors) {
                     Node sensorNode = null, inputPortNode = null;
                     // if not already been read at this time instant
-                    if ((_tmpReadSensors.size() == 0)
+                    if (_tmpReadSensors.size() == 0
                             || _tmpReadSensors.get(invocationTime) == null
-                            || !(_tmpReadSensors.get(invocationTime))
-                                    .contains(sensor)) {
+                            || !_tmpReadSensors.get(invocationTime).contains(
+                                    sensor)) {
                         sensorNode = _createNode(invocationTime,
                                 TDLAction.READSENSOR, sensor, invocationEndNode);
                     } else {

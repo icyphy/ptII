@@ -141,7 +141,7 @@ public class SelectionDragger extends DragInteractor {
      * list are added to the selection model.
      */
     public void addSelectionModel(SelectionModel model) {
-        if (!(_selectionModels.contains(model))) {
+        if (!_selectionModels.contains(model)) {
             _selectionModels.add(model);
         }
     }
@@ -154,7 +154,7 @@ public class SelectionDragger extends DragInteractor {
      * model.
      */
     public void addSelectionInteractor(SelectionInteractor interactor) {
-        if (!(_selectionModels.contains(interactor.getSelectionModel()))) {
+        if (!_selectionModels.contains(interactor.getSelectionModel())) {
             _selectionModels.add(interactor.getSelectionModel());
         }
     }
@@ -188,7 +188,7 @@ public class SelectionDragger extends DragInteractor {
      * figure is already in the selection, do nothing.
      */
     public void expandSelection(SelectionInteractor i, Figure figure) {
-        if (!(i.getSelectionModel().containsSelection(figure))) {
+        if (!i.getSelectionModel().containsSelection(figure)) {
             i.getSelectionModel().addSelection(figure);
         }
     }
@@ -321,7 +321,7 @@ public class SelectionDragger extends DragInteractor {
                 Figure f = (Figure) i.next();
                 Interactor r = f.getInteractor();
 
-                if ((r != null) && r instanceof SelectionInteractor) {
+                if (r != null && r instanceof SelectionInteractor) {
                     SelectionInteractor interactor = (SelectionInteractor) r;
 
                     if (_selectionModels.contains(interactor
@@ -338,7 +338,7 @@ public class SelectionDragger extends DragInteractor {
                 Figure f = (Figure) i.next();
                 Interactor r = f.getInteractor();
 
-                if ((r != null) && r instanceof SelectionInteractor) {
+                if (r != null && r instanceof SelectionInteractor) {
                     SelectionInteractor interactor = (SelectionInteractor) r;
 
                     if (_selectionModels.contains(interactor
@@ -356,7 +356,7 @@ public class SelectionDragger extends DragInteractor {
                 Figure f = (Figure) i.next();
                 Interactor r = f.getInteractor();
 
-                if ((r != null) && r instanceof SelectionInteractor) {
+                if (r != null && r instanceof SelectionInteractor) {
                     SelectionInteractor interactor = (SelectionInteractor) r;
 
                     if (_selectionModels.contains(interactor

@@ -106,7 +106,7 @@ public class ThrowModelError extends Sink {
      */
     public void fire() throws IllegalActionException {
         super.fire();
-        if (!((BooleanToken)throwInPostfire.getToken()).booleanValue()) {
+        if (!((BooleanToken) throwInPostfire.getToken()).booleanValue()) {
             boolean result = false;
 
             // NOTE: We need to consume data on all channels that have data.
@@ -132,7 +132,7 @@ public class ThrowModelError extends Sink {
      *  @return Whatever the base class returns (probably true).
      */
     public boolean postfire() throws IllegalActionException {
-        if (((BooleanToken)throwInPostfire.getToken()).booleanValue()) {
+        if (((BooleanToken) throwInPostfire.getToken()).booleanValue()) {
             boolean result = false;
 
             // NOTE: We need to consume data on all channels that have data.

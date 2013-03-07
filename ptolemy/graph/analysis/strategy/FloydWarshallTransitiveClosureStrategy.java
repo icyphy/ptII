@@ -106,7 +106,7 @@ public class FloydWarshallTransitiveClosureStrategy extends
      *  @return True if the graph is a directed graph.
      */
     public boolean valid() {
-        return (graph() instanceof DirectedGraph);
+        return graph() instanceof DirectedGraph;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -149,7 +149,8 @@ public class FloydWarshallTransitiveClosureStrategy extends
      *  closure.
      */
     protected void _floydWarshallComputation(int k, int i, int j) {
-        _transitiveClosure[i][j] |= (_transitiveClosure[i][k] & _transitiveClosure[k][j]);
+        _transitiveClosure[i][j] |= _transitiveClosure[i][k]
+                & _transitiveClosure[k][j];
     }
 
     ///////////////////////////////////////////////////////////////////

@@ -111,9 +111,9 @@ public class DoubleFork extends TypedAtomicActor {
             _continueIterations = false;
         }
 
-        for (int i = 0; i < inputReceivers.length; i++) {
-            for (int j = 0; j < inputReceivers[i].length; j++) {
-                DDEReceiver inputReceiver = (DDEReceiver) inputReceivers[i][j];
+        for (Receiver[] inputReceiver2 : inputReceivers) {
+            for (int j = 0; j < inputReceiver2.length; j++) {
+                DDEReceiver inputReceiver = (DDEReceiver) inputReceiver2[j];
 
                 if (inputReceiver.hasToken()) {
                     token = inputReceiver.get();

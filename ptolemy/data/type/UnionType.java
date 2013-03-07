@@ -441,7 +441,7 @@ public class UnionType extends AssociativeType implements Cloneable {
         // Order the labels
         int size = labelArray.length;
 
-        for (int i = 0; i < (size - 1); i++) {
+        for (int i = 0; i < size - 1; i++) {
             for (int j = i + 1; j < size; j++) {
                 String labeli = (String) labelArray[i];
                 String labelj = (String) labelArray[j];
@@ -668,7 +668,7 @@ public class UnionType extends AssociativeType implements Cloneable {
             Type type2 = t2.get(label);
             int result = TypeLattice.compare(type1, type2);
 
-            if ((result == CPO.HIGHER) || (result == CPO.INCOMPARABLE)) {
+            if (result == CPO.HIGHER || result == CPO.INCOMPARABLE) {
                 return false;
             }
         }
@@ -729,7 +729,7 @@ public class UnionType extends AssociativeType implements Cloneable {
                 return variable;
             }
 
-            return (new InequalityTerm[0]);
+            return new InequalityTerm[0];
         }
 
         /** Reset the variable part of the element type to the specified
@@ -761,7 +761,7 @@ public class UnionType extends AssociativeType implements Cloneable {
          *  @return True if this field type is a type variable.
          */
         public boolean isSettable() {
-            return (!_declaredType.isConstant());
+            return !_declaredType.isConstant();
         }
 
         /** Check whether the current element type is acceptable.

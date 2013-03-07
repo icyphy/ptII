@@ -284,7 +284,7 @@ public abstract class JPseudoFrame extends JComponent {
      * a content pane displayed.
      */
     public boolean isMaximum() {
-        return (_component != null);
+        return _component != null;
     }
 
     /** Remove an action listener

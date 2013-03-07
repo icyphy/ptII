@@ -272,7 +272,7 @@ public abstract class AbstractApplication implements Application {
     public boolean closeView(View v) {
         List views = (List) _documentMap.get(v.getDocument());
 
-        if ((views.size() > 0) || closeDocument(v.getDocument())) {
+        if (views.size() > 0 || closeDocument(v.getDocument())) {
             removeView(v);
             return true;
         }
@@ -431,7 +431,7 @@ public abstract class AbstractApplication implements Application {
      * Throw an exception if the view is not known.
      */
     public void setCurrentView(View v) {
-        if ((v != null) && !_views.contains(v)) {
+        if (v != null && !_views.contains(v)) {
             throw new IllegalArgumentException("View " + v
                     + " is not known by application " + this);
         }

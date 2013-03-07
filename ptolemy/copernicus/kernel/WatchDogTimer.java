@@ -60,7 +60,7 @@ public class WatchDogTimer extends SceneTransformer implements HasPhaseOptions {
     }
 
     public void cancel() {
-        System.out.println("WatchDogTimer.cancel(): canceling " + (new Date()));
+        System.out.println("WatchDogTimer.cancel(): canceling " + new Date());
 
         if (_timer == null) {
             System.out.println("WatchDogTimer.cancel(): "
@@ -109,11 +109,11 @@ public class WatchDogTimer extends SceneTransformer implements HasPhaseOptions {
 
         String timeToDieString = PhaseOptions.getString(options, "time");
 
-        if ((timeToDieString == null) || (timeToDieString.length() == 0)) {
+        if (timeToDieString == null || timeToDieString.length() == 0) {
             return;
         }
 
-        final long timeToDie = (Long.valueOf(timeToDieString)).longValue();
+        final long timeToDie = Long.valueOf(timeToDieString).longValue();
 
         // Timers are new in JDK1.3
         // For information about Timers, see
@@ -123,7 +123,7 @@ public class WatchDogTimer extends SceneTransformer implements HasPhaseOptions {
         }
 
         // Make a record of the time when the WatchDogTimer was set
-        final long startTime = (new Date()).getTime();
+        final long startTime = new Date().getTime();
 
         TimerTask doTimeToDie = new TimerTask() {
             public void run() {

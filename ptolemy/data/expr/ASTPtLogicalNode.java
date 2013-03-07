@@ -91,14 +91,14 @@ public class ASTPtLogicalNode extends ASTPtRootNode {
      *  children.
      */
     public boolean isLogicalAnd() {
-        return (_lexicalToken.kind == PtParserConstants.COND_AND);
+        return _lexicalToken.kind == PtParserConstants.COND_AND;
     }
 
     /** Return true if the node represents the logical OR of its
      *  children.
      */
     public boolean isLogicalOr() {
-        return (_lexicalToken.kind == PtParserConstants.COND_OR);
+        return _lexicalToken.kind == PtParserConstants.COND_OR;
     }
 
     /** Traverse this node with the given visitor.

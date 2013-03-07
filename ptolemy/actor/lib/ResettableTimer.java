@@ -190,8 +190,8 @@ public class ResettableTimer extends Transformer {
             return;
         } else if (!((BooleanToken) preemptive.getToken()).booleanValue()) {
             // Non-preemptive behavior. May need to catch up.
-            while (comparison > 0
-                    || (comparison == 0 && currentMicrostep > _pendingOutputMicrostep)) {
+            while (comparison > 0 || comparison == 0
+                    && currentMicrostep > _pendingOutputMicrostep) {
                 // Current time has passed the pending output time.
                 if (_debugging) {
                     _debug("Time passed expected output time of "

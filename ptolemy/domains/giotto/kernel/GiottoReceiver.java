@@ -130,7 +130,7 @@ public class GiottoReceiver extends AbstractReceiver implements StateReceiver {
      *  @return True if there is a token available.
      */
     public boolean hasToken() {
-        return (_token != null);
+        return _token != null;
     }
 
     /** Return true if the receiver has at least one token available.
@@ -140,7 +140,7 @@ public class GiottoReceiver extends AbstractReceiver implements StateReceiver {
      *  @return True if there is a token available.
      */
     public final boolean hasToken(int numberOfTokens) {
-        return (_token != null);
+        return _token != null;
     }
 
     /** Put a token into this receiver. Any token which has been put

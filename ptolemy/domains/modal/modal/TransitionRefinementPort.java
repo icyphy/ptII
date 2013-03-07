@@ -134,9 +134,9 @@ public class TransitionRefinementPort extends RefinementPort {
         try {
             _workspace.getWriteAccess();
 
-            if (_mirrorDisable || (getContainer() == null)) {
+            if (_mirrorDisable || getContainer() == null) {
                 // process request for the sibling
-                if (_hasSibling && isOutput() && (getContainer() != null)) {
+                if (_hasSibling && isOutput() && getContainer() != null) {
                     TransitionRefinement transContainer = (TransitionRefinement) oldContainer;
                     TransitionRefinementPort sibling = (TransitionRefinementPort) transContainer
                             .getPort(getName() + "_in");
@@ -203,7 +203,7 @@ public class TransitionRefinementPort extends RefinementPort {
         try {
             _workspace.getWriteAccess();
 
-            if (_mirrorDisable || (getContainer() == null)) {
+            if (_mirrorDisable || getContainer() == null) {
                 // Have already called the super class.
                 // This time, process the request.
                 super.setInput(isInput);
@@ -254,11 +254,11 @@ public class TransitionRefinementPort extends RefinementPort {
         try {
             _workspace.getWriteAccess();
 
-            if (_mirrorDisable || (getContainer() == null)) {
+            if (_mirrorDisable || getContainer() == null) {
                 // Have already called the super class.
                 // This time, process the request.
                 // process request for the sibling
-                if (_hasSibling && isOutput() && (getContainer() != null)) {
+                if (_hasSibling && isOutput() && getContainer() != null) {
                     TransitionRefinement container = (TransitionRefinement) getContainer();
                     TransitionRefinementPort sibling = (TransitionRefinementPort) container
                             .getPort(getName() + "_in");
@@ -313,9 +313,9 @@ public class TransitionRefinementPort extends RefinementPort {
         try {
             _workspace.getWriteAccess();
 
-            if (_mirrorDisable || (getContainer() == null)) {
+            if (_mirrorDisable || getContainer() == null) {
                 //change sibling
-                if (_hasSibling && isOutput() && (getContainer() != null)) {
+                if (_hasSibling && isOutput() && getContainer() != null) {
                     TransitionRefinement container = (TransitionRefinement) getContainer();
                     TransitionRefinementPort sibling = (TransitionRefinementPort) container
                             .getPort(getName() + "_in");
@@ -390,7 +390,7 @@ public class TransitionRefinementPort extends RefinementPort {
         try {
             _workspace.getWriteAccess();
 
-            if (_mirrorDisable || (getContainer() == null)) {
+            if (_mirrorDisable || getContainer() == null) {
                 // Have already called the super class.
                 // This time, process the request.
                 super.setOutput(isOutput);

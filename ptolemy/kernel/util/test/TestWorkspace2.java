@@ -80,7 +80,7 @@ public class TestWorkspace2 extends Thread {
         try {
             for (i = 0; i < 3; i++) {
                 _workspace.getReadAccess();
-                profile += (_name + ".getReadAccess()\n");
+                profile += _name + ".getReadAccess()\n";
 
                 try {
                     // FindBugs:
@@ -117,7 +117,7 @@ public class TestWorkspace2 extends Thread {
         } finally {
             for (int j = i; j > 0; j--) {
                 _workspace.doneReading();
-                profile += (_name + ".doneReading()\n");
+                profile += _name + ".doneReading()\n";
             }
         }
     }
@@ -159,10 +159,12 @@ public class TestWorkspace2 extends Thread {
                     if (getWriteAccess) {
                         try {
                             TestWorkspace2.this._workspace.getWriteAccess();
-                            TestWorkspace2.this.profile += (_name + ".getWriteAccess()\n");
+                            TestWorkspace2.this.profile += _name
+                                    + ".getWriteAccess()\n";
                         } finally {
                             _workspace.doneWriting();
-                            TestWorkspace2.this.profile += (_name + ".doneWriting()\n");
+                            TestWorkspace2.this.profile += _name
+                                    + ".doneWriting()\n";
                         }
 
                         getWriteAccess = false;

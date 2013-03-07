@@ -110,7 +110,7 @@ public class AddMissingParameter extends MoMLFilterSimple {
                 _addProperty = _namedObjsWithMissingProperties
                         .get(attributeValue);
             } else if (_currentlyProcessingActorThatMayNeedUpdating
-                    && (container != null)
+                    && container != null
                     && !container.getFullName().equals(_currentActorFullName)
                     && !container.getFullName().startsWith(
                             _currentActorFullName)) {
@@ -167,9 +167,10 @@ public class AddMissingParameter extends MoMLFilterSimple {
         if (!_currentlyProcessingActorThatMayNeedUpdating) {
             return;
         } else if (_addProperty != null
-                && ((_addProperty.onlyAddIfPresent != null && _currentAttributeHasValue) || _addProperty.onlyAddIfPresent == null)
-                && (elementName != null) && elementName.equals("property")
-                && (container != null)
+                && (_addProperty.onlyAddIfPresent != null
+                        && _currentAttributeHasValue || _addProperty.onlyAddIfPresent == null)
+                && elementName != null && elementName.equals("property")
+                && container != null
                 && container.getFullName().equals(_currentActorFullName)) {
 
             //System.out.println("AddMissingParameter: filterEndElement: Processing!!!");

@@ -235,7 +235,7 @@ public class ModularCodeGenerator extends JavaCodeGenerator {
             boolean appendFiringFunction = false;
             Iterator inputPorts = actor.inputPortList().iterator();
             while (inputPorts.hasNext()) {
-                IOPort inputPort = (IOPort) (inputPorts.next());
+                IOPort inputPort = (IOPort) inputPorts.next();
                 externalPortName = "";
                 for (Object connectedPort : inputPort.connectedPortList()) {
                     if (container.portList().contains(connectedPort)) {
@@ -261,7 +261,7 @@ public class ModularCodeGenerator extends JavaCodeGenerator {
 
             Iterator outputPorts = actor.outputPortList().iterator();
             while (outputPorts.hasNext()) {
-                IOPort outputPort = (IOPort) (outputPorts.next());
+                IOPort outputPort = (IOPort) outputPorts.next();
                 externalPortName = "";
                 for (Object connectedPort : outputPort.connectedPortList()) {
                     if (container.portList().contains(connectedPort)) {
@@ -318,7 +318,7 @@ public class ModularCodeGenerator extends JavaCodeGenerator {
         if (_isTopLevel()) {
 
             // If necessary, create a manager.
-            Actor container = ((Actor) getContainer());
+            Actor container = (Actor) getContainer();
             Manager manager = container.getManager();
 
             if (manager == null) {
@@ -338,7 +338,7 @@ public class ModularCodeGenerator extends JavaCodeGenerator {
                 // We call wrapup here so that the state gets set to idle.
                 // This makes it difficult to test the Exit actor.
                 try {
-                    long startTime = (new Date()).getTime();
+                    long startTime = new Date().getTime();
                     manager.wrapup();
                     _printTimeAndMemory(startTime, "CodeGenerator: "
                             + "wrapup consumed: ");
@@ -383,7 +383,7 @@ public class ModularCodeGenerator extends JavaCodeGenerator {
         } else {
             boolean addComma = false;
 
-            if ((getContainer() instanceof ModularCodeGenTypedCompositeActor)
+            if (getContainer() instanceof ModularCodeGenTypedCompositeActor
                     && ((Actor) getContainer()).outputPortList().size() > 0) {
                 mainEntryCode.append(_eol + _eol
                         + "public Object[] fire (boolean export " + _eol);

@@ -159,11 +159,11 @@ public class JAIEdgeDetection extends Transformer {
             String secondName = secondMask.getExpression();
             _secondMask = _maskNumberer(secondName);
         } else if (attribute == userSpecifiedFirstMask) {
-            _firstMaskData = ((DoubleMatrixToken) userSpecifiedFirstMask
-                    .getToken());
+            _firstMaskData = (DoubleMatrixToken) userSpecifiedFirstMask
+                    .getToken();
         } else if (attribute == userSpecifiedSecondMask) {
-            _secondMaskData = ((DoubleMatrixToken) userSpecifiedSecondMask
-                    .getToken());
+            _secondMaskData = (DoubleMatrixToken) userSpecifiedSecondMask
+                    .getToken();
         } else {
             super.attributeChanged(attribute);
         }

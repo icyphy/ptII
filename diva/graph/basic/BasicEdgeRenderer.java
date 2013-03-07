@@ -53,7 +53,7 @@ public class BasicEdgeRenderer implements EdgeRenderer {
         Figure hf = headSite.getFigure();
 
         //if the edge is a self loop, create an ArcConnector instead!
-        if ((tf != null) && (hf != null) && (tf == hf)) {
+        if (tf != null && hf != null && tf == hf) {
             c = new ArcConnector(tailSite, headSite);
         } else {
             c = new StraightConnector(tailSite, headSite);

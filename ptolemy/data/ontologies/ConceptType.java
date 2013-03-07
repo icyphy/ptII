@@ -68,7 +68,7 @@ public class ConceptType extends StructuredType implements Cloneable {
      */
     @Override
     public boolean isCompatible(Type type) {
-        return (type instanceof ConceptType);
+        return type instanceof ConceptType;
     }
 
     /** Test if this type is constant.

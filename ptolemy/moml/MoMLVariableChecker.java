@@ -272,8 +272,9 @@ public class MoMLVariableChecker {
                 NamedObj containedObject = (NamedObj) containedClasses.next();
                 String missingClassName = exception.missingClassName();
                 if (missingClassName.equals(containedObject.getName())
-                        || (missingClassName.startsWith(".") && missingClassName
-                                .substring(1).equals(containedObject.getName()))) {
+                        || missingClassName.startsWith(".")
+                        && missingClassName.substring(1).equals(
+                                containedObject.getName())) {
                     try {
                         String moml = containedObject.exportMoML()
                                 .replaceFirst("<class",

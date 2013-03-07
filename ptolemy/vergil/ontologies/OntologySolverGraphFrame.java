@@ -208,10 +208,10 @@ public class OntologySolverGraphFrame extends ExtendedGraphFrame implements
         _debugMenuListener = new DebugMenuListener();
 
         // Set the action command and listener for each menu item.
-        for (int i = 0; i < debugMenuItems.length; i++) {
-            debugMenuItems[i].setActionCommand(debugMenuItems[i].getText());
-            debugMenuItems[i].addActionListener(_debugMenuListener);
-            _debugMenu.add(debugMenuItems[i]);
+        for (JMenuItem debugMenuItem : debugMenuItems) {
+            debugMenuItem.setActionCommand(debugMenuItem.getText());
+            debugMenuItem.addActionListener(_debugMenuListener);
+            _debugMenu.add(debugMenuItem);
         }
 
         // Even though the OntologySolverGraphController adds no menu items

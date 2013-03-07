@@ -129,9 +129,9 @@ public class Triangular extends RandomSource {
      *  @exception IllegalActionException If parameter values are incorrect.
      */
     protected void _generateRandomNumber() throws IllegalActionException {
-        double minValue = ((DoubleToken) (min.getToken())).doubleValue();
-        double maxValue = ((DoubleToken) (max.getToken())).doubleValue();
-        double modeValue = ((DoubleToken) (mode.getToken())).doubleValue();
+        double minValue = ((DoubleToken) min.getToken()).doubleValue();
+        double maxValue = ((DoubleToken) max.getToken()).doubleValue();
+        double modeValue = ((DoubleToken) mode.getToken()).doubleValue();
 
         if (minValue > maxValue) {
             throw new IllegalActionException(this,
@@ -153,7 +153,7 @@ public class Triangular extends RandomSource {
         double whole = maxValue - minValue;
         double right = maxValue - modeValue;
 
-        if (rawNum <= (left / whole)) {
+        if (rawNum <= left / whole) {
             _current = minValue + Math.sqrt(rawNum * whole * left);
         } else {
             _current = maxValue - Math.sqrt((1.0d - rawNum) * whole * right);

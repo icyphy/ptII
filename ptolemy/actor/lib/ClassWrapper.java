@@ -185,7 +185,7 @@ public class ClassWrapper extends TypedAtomicActor {
 
             IOPort outPort = (IOPort) getPort(portName + "Result");
 
-            if ((outPort != null) && outPort.isOutput()) {
+            if (outPort != null && outPort.isOutput()) {
                 methodInfo[2] = outPort;
             } else {
                 methodInfo[2] = null;

@@ -165,9 +165,9 @@ public class SearchResultsDialog extends PtolemyDialog implements
                 int count = e.getClickCount();
                 if (button == MouseEvent.BUTTON1 && count == 2) {
                     int[] selected = _resultsTable.getSelectedRows();
-                    for (int i = 0; i < selected.length; i++) {
+                    for (int element : selected) {
                         NamedObj selectedObject = (NamedObj) _resultsTableModel
-                                .getValueAt(selected[i], 0);
+                                .getValueAt(element, 0);
                         BasicGraphFrame.openComposite(_owner, selectedObject);
                     }
                 }
@@ -207,9 +207,9 @@ public class SearchResultsDialog extends PtolemyDialog implements
 
         // Highlight new selection.
         int[] selected = _resultsTable.getSelectedRows();
-        for (int i = 0; i < selected.length; i++) {
+        for (int element : selected) {
             NamedObj selectedObject = (NamedObj) _resultsTableModel.getValueAt(
-                    selected[i], 0);
+                    element, 0);
             _highlightResult(selectedObject);
         }
     }
@@ -466,7 +466,7 @@ public class SearchResultsDialog extends PtolemyDialog implements
     /** Comparator for sorting named objects alphabetically by name. */
     static class NamedObjComparator implements Comparator<NamedObj> {
         public int compare(NamedObj arg0, NamedObj arg1) {
-            return (arg0.getFullName().compareTo(arg1.getFullName()));
+            return arg0.getFullName().compareTo(arg1.getFullName());
         }
     }
 

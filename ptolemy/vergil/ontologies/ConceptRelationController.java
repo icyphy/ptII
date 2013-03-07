@@ -177,7 +177,7 @@ public class ConceptRelationController extends BasicEdgeController {
             Connector c = evt.getConnector();
             Figure f = evt.getTarget();
             Object edge = c.getUserObject();
-            Object node = (f == null) ? null : f.getUserObject();
+            Object node = f == null ? null : f.getUserObject();
             OntologyGraphModel model = (OntologyGraphModel) getController()
                     .getGraphModel();
 
@@ -202,7 +202,7 @@ public class ConceptRelationController extends BasicEdgeController {
             Link link = (Link) edge;
             ConceptRelation transition = (ConceptRelation) link.getRelation();
 
-            if ((transition != null) && c instanceof ArcConnector) {
+            if (transition != null && c instanceof ArcConnector) {
                 double angle = ((ArcConnector) c).getAngle();
                 double gamma = ((ArcConnector) c).getGamma();
 
@@ -260,8 +260,8 @@ public class ConceptRelationController extends BasicEdgeController {
                 c.setToolTipText(transition.getName());
                 String labelStr = transition.getLabel();
                 try {
-                    double exitAngle = ((DoubleToken) (transition.exitAngle
-                            .getToken())).doubleValue();
+                    double exitAngle = ((DoubleToken) transition.exitAngle
+                            .getToken()).doubleValue();
 
                     // If the angle is too large, then truncate it to
                     // a reasonable value.
@@ -278,7 +278,7 @@ public class ConceptRelationController extends BasicEdgeController {
                     // go to zero.
                     double minimum = Math.PI / 999.0;
 
-                    if ((exitAngle < minimum) && (exitAngle > -minimum)) {
+                    if (exitAngle < minimum && exitAngle > -minimum) {
                         if (exitAngle > 0.0) {
                             exitAngle = minimum;
                         } else {
@@ -289,7 +289,7 @@ public class ConceptRelationController extends BasicEdgeController {
                     c.setAngle(exitAngle);
 
                     // Set the gamma angle
-                    double gamma = ((DoubleToken) (transition.gamma.getToken()))
+                    double gamma = ((DoubleToken) transition.gamma.getToken())
                             .doubleValue();
                     c.setGamma(gamma);
 
@@ -297,7 +297,8 @@ public class ConceptRelationController extends BasicEdgeController {
                     c.setStrokePaint(transition.color.asColor());
 
                     // Set dashed, if appropriate.
-                    if (((BooleanToken)transition.dashed.getToken()).booleanValue()) {
+                    if (((BooleanToken) transition.dashed.getToken())
+                            .booleanValue()) {
                         float[] dashvalues = new float[2];
                         dashvalues[0] = (float) 2.0;
                         dashvalues[1] = (float) 2.0;
@@ -395,7 +396,7 @@ public class ConceptRelationController extends BasicEdgeController {
          */
         private boolean _isConnectorHeadOrTailConnectedToConcept(
                 Connector connector, Concept concept, boolean isHead) {
-            if ((connector != null)) {
+            if (connector != null) {
                 Site connectionSite = null;
                 if (isHead) {
                     connectionSite = connector.getHeadSite();

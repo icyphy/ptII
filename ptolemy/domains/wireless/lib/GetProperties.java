@@ -139,7 +139,7 @@ public class GetProperties extends TypedAtomicActor {
 
                 // Do not send properties if the port has no destinations.
                 // This prevents run-time type errors from occurring.
-                if ((propertiesValue != null) && (output.numberOfSinks() > 0)) {
+                if (propertiesValue != null && output.numberOfSinks() > 0) {
                     output.send(0, propertiesValue);
                 }
 
@@ -168,7 +168,7 @@ public class GetProperties extends TypedAtomicActor {
 
             if (port.isInput() && port instanceof WirelessIOPort) {
                 // Found the port.
-                Entity container = (Entity) (port.getContainer());
+                Entity container = (Entity) port.getContainer();
                 String channelName = ((WirelessIOPort) port).outsideChannel
                         .stringValue();
                 CompositeEntity container2 = (CompositeEntity) container

@@ -477,9 +477,7 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
                 // The following code executes only if the link is a Transition,
                 // so we can sure the entities are instances of State.
                 if (refinements != null) {
-                    for (int i = 0; i < refinements.length; i++) {
-                        TypedActor refinement = refinements[i];
-
+                    for (TypedActor refinement : refinements) {
                         // By default, if no other state or transition refers
                         // to this refinement, then we will remove it.
                         boolean removeIt = true;
@@ -500,8 +498,8 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
                                 continue;
                             }
 
-                            for (int j = 0; j < stateRefinements.length; j++) {
-                                if (stateRefinements[j] == refinement) {
+                            for (TypedActor stateRefinement : stateRefinements) {
+                                if (stateRefinement == refinement) {
                                     removeIt = false;
                                     break;
                                 }
@@ -514,7 +512,7 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
                         while (removeIt && transitions.hasNext()) {
                             Relation transition = (Relation) transitions.next();
 
-                            if ((transition == linkRelation)
+                            if (transition == linkRelation
                                     || !(transition instanceof Transition)) {
                                 continue;
                             }
@@ -532,8 +530,8 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
                                 continue;
                             }
 
-                            for (int j = 0; j < transitionRefinements.length; j++) {
-                                if (transitionRefinements[j] == refinement) {
+                            for (TypedActor transitionRefinement : transitionRefinements) {
+                                if (transitionRefinement == refinement) {
                                     removeIt = false;
                                     break;
                                 }
@@ -834,7 +832,7 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
         private String _linkHead(NamedObj container, StringBuffer moml,
                 StringBuffer failmoml, NamedObj linkHead, NamedObj linkTail,
                 Relation linkRelation) {
-            if ((linkHead != null) && (linkTail != null)) {
+            if (linkHead != null && linkTail != null) {
                 NamedObj head = (NamedObj) getSemanticObject(linkHead);
                 NamedObj tail = (NamedObj) getSemanticObject(linkTail);
 
@@ -889,11 +887,11 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
                         double angle;
 
                         if (headPort.getContainer() != tailPort.getContainer()) {
-                            angle = (Math.PI / 5.0)
-                                    + (1.5 * Math.atan(0.3 * count));
+                            angle = Math.PI / 5.0 + 1.5
+                                    * Math.atan(0.3 * count);
                         } else {
-                            angle = (Math.PI / 3.0)
-                                    - (0.75 * Math.atan(0.3 * count));
+                            angle = Math.PI / 3.0 - 0.75
+                                    * Math.atan(0.3 * count);
                         }
 
                         // Create the new relation.
@@ -962,7 +960,7 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
             // NOTE: This method is almost identical to the previous
             // one, but just enough different that it isn't obvious
             // how to combine them into one method.
-            if ((linkHead != null) && (linkTail != null)) {
+            if (linkHead != null && linkTail != null) {
                 NamedObj head = (NamedObj) getSemanticObject(linkHead);
                 NamedObj tail = (NamedObj) getSemanticObject(linkTail);
 
@@ -1202,9 +1200,7 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
                 }
 
                 if (refinements != null) {
-                    for (int i = 0; i < refinements.length; i++) {
-                        TypedActor refinement = refinements[i];
-
+                    for (TypedActor refinement : refinements) {
                         // By default, if no other state or transition refers
                         // to this refinement, then we will remove it.
                         boolean removeIt = true;
@@ -1230,8 +1226,8 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
                                 continue;
                             }
 
-                            for (int j = 0; j < stateRefinements.length; j++) {
-                                if (stateRefinements[j] == refinement) {
+                            for (TypedActor stateRefinement : stateRefinements) {
+                                if (stateRefinement == refinement) {
                                     removeIt = false;
                                     break;
                                 }
@@ -1261,8 +1257,8 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
                                 continue;
                             }
 
-                            for (int j = 0; j < transitionRefinements.length; j++) {
-                                if (transitionRefinements[j] == refinement) {
+                            for (TypedActor transitionRefinement : transitionRefinements) {
+                                if (transitionRefinement == refinement) {
                                     removeIt = false;
                                     break;
                                 }
@@ -1311,7 +1307,7 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
                 Link link = (Link) links.next();
                 NamedObj head = (NamedObj) link.getHead();
 
-                if ((head != null) && head.equals(icon)) {
+                if (head != null && head.equals(icon)) {
                     stateLinkList.add(link);
                 }
             }
@@ -1339,7 +1335,7 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
                 Link link = (Link) links.next();
                 Object tail = link.getTail();
 
-                if ((tail != null) && tail.equals(icon)) {
+                if (tail != null && tail.equals(icon)) {
                     stateLinkList.add(link);
                 }
             }

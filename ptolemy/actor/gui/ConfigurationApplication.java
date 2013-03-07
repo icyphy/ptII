@@ -829,12 +829,12 @@ public class ConfigurationApplication implements ExecutionListener {
         StringBuffer argsStringBuffer = new StringBuffer();
 
         try {
-            for (int i = 0; i < args.length; i++) {
+            for (String arg : args) {
                 if (argsStringBuffer.length() > 0) {
                     argsStringBuffer.append(" ");
                 }
 
-                argsStringBuffer.append(args[i]);
+                argsStringBuffer.append(arg);
             }
         } catch (Throwable throwable) {
             //Ignored
@@ -989,8 +989,8 @@ public class ConfigurationApplication implements ExecutionListener {
                                     MoMLParser.setErrorHandler(errorHandler);
                                 }
 
-                                if ((configuration != null)
-                                        && (configuration.getAttribute("_doc") != null)
+                                if (configuration != null
+                                        && configuration.getAttribute("_doc") != null
                                         && configuration.getAttribute("_doc") instanceof Documentation) {
                                     Documentation doc = (Documentation) configuration
                                             .getAttribute("_doc");
@@ -1288,8 +1288,8 @@ public class ConfigurationApplication implements ExecutionListener {
                             String detailMessage = "";
 
                             try {
-                                if ((inURL.toString().indexOf("!/") != -1)
-                                        && (inURL.toString().indexOf("%20") != -1)) {
+                                if (inURL.toString().indexOf("!/") != -1
+                                        && inURL.toString().indexOf("%20") != -1) {
                                     detailMessage = " The URL contains "
                                             + "'!/', so it may be a jar "
                                             + "URL, and jar URLs cannot contain "
@@ -1332,7 +1332,7 @@ public class ConfigurationApplication implements ExecutionListener {
 
             if (_parseArg(arg) == false) {
                 if (arg.trim().startsWith("-")) {
-                    if (i >= (args.length - 1)) {
+                    if (i >= args.length - 1) {
                         throw new IllegalActionException("Cannot set "
                                 + "parameter " + arg + " when no value is "
                                 + "given.");

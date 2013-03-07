@@ -78,7 +78,7 @@ public class UnitExpr implements UnitPresentation {
         Vector newUTerms = new Vector();
 
         for (int i = 0; i < _uTerms.size(); i++) {
-            UnitTerm term = (UnitTerm) (_uTerms.elementAt(i));
+            UnitTerm term = (UnitTerm) _uTerms.elementAt(i);
             newUTerms.add(term.copy());
         }
 
@@ -92,10 +92,10 @@ public class UnitExpr implements UnitPresentation {
     public String descriptiveForm() {
         Iterator iter = _uTerms.iterator();
         StringBuffer retv = new StringBuffer(
-                ((UnitTerm) (iter.next())).descriptiveForm());
+                ((UnitTerm) iter.next()).descriptiveForm());
 
         while (iter.hasNext()) {
-            retv.append(" " + ((UnitTerm) (iter.next())).descriptiveForm());
+            retv.append(" " + ((UnitTerm) iter.next()).descriptiveForm());
         }
 
         return retv.toString();
@@ -106,7 +106,7 @@ public class UnitExpr implements UnitPresentation {
      * otherwise.
      */
     public Unit getSingleUnit() {
-        if ((_uTerms.size() == 1) && ((UnitTerm) _uTerms.elementAt(0)).isUnit()) {
+        if (_uTerms.size() == 1 && ((UnitTerm) _uTerms.elementAt(0)).isUnit()) {
             return ((UnitTerm) _uTerms.elementAt(0)).getUnit();
         }
 
@@ -128,7 +128,7 @@ public class UnitExpr implements UnitPresentation {
         Vector myUTerms = new Vector();
 
         for (int i = 0; i < _uTerms.size(); i++) {
-            myUTerms.add(((UnitTerm) (_uTerms.elementAt(i))).invert());
+            myUTerms.add(((UnitTerm) _uTerms.elementAt(i)).invert());
         }
 
         retv._setUTerms(myUTerms);
@@ -150,7 +150,7 @@ public class UnitExpr implements UnitPresentation {
         Vector newUTerms = new Vector();
 
         for (int i = 0; i < _uTerms.size(); i++) {
-            UnitTerm unitTerm = (UnitTerm) (_uTerms.elementAt(i));
+            UnitTerm unitTerm = (UnitTerm) _uTerms.elementAt(i);
 
             if (unitTerm.isUnit()) {
                 reductionUnit = reductionUnit.multiplyBy(unitTerm.getUnit()
@@ -171,11 +171,10 @@ public class UnitExpr implements UnitPresentation {
         StringBuffer retv = new StringBuffer("UnitExpr:[");
 
         if (_uTerms.size() > 0) {
-            retv.append(((UnitTerm) (_uTerms.elementAt(0))).toString());
+            retv.append(((UnitTerm) _uTerms.elementAt(0)).toString());
 
             for (int i = 1; i < _uTerms.size(); i++) {
-                retv.append(" "
-                        + ((UnitTerm) (_uTerms.elementAt(i))).toString());
+                retv.append(" " + ((UnitTerm) _uTerms.elementAt(i)).toString());
             }
         }
 
@@ -199,7 +198,7 @@ public class UnitExpr implements UnitPresentation {
         Vector newUTerms = new Vector();
 
         for (int i = 0; i < _uTerms.size(); i++) {
-            UnitTerm unitTerm = (UnitTerm) (_uTerms.elementAt(i));
+            UnitTerm unitTerm = (UnitTerm) _uTerms.elementAt(i);
 
             if (unitTerm.isUnitExpr()) {
                 UnitExpr uExpr = unitTerm.getUnitExpr();

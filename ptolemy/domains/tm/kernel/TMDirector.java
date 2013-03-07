@@ -336,7 +336,7 @@ public class TMDirector extends Director {
                 // actor at the same time.
                 Actor actor = event.actor();
 
-                if ((actor == getContainer()) || !actor.prefire()) {
+                if (actor == getContainer() || !actor.prefire()) {
                     // If the actor is the container of this director,
                     // then the event is at the output boundary.
                     // Remove the event and look at the next event.
@@ -435,7 +435,7 @@ public class TMDirector extends Director {
         // returns false for the last event in the queue.
         // The event may have processing time < 0, in which case
         // it is an event at the output boundary.
-        if ((event != null) && (event.processingTime() > 0)) {
+        if (event != null && event.processingTime() > 0) {
             // Check the finish processing time.
             Time finishTime = getModelTime().add(event.processingTime());
 
@@ -449,7 +449,7 @@ public class TMDirector extends Director {
         }
 
         if (isEmbedded()
-                && (_nextIterationTime.compareTo(Time.POSITIVE_INFINITY) < 0)) {
+                && _nextIterationTime.compareTo(Time.POSITIVE_INFINITY) < 0) {
             _requestFiringAt(_nextIterationTime);
         }
     }
@@ -558,7 +558,7 @@ public class TMDirector extends Director {
             long elapsedTime = System.currentTimeMillis() - _realStartTime;
             double elapsedTimeInSeconds = elapsedTime / 1000.0;
 
-            if ((_outsideTime.getDoubleValue() - elapsedTimeInSeconds) > 1e-3) {
+            if (_outsideTime.getDoubleValue() - elapsedTimeInSeconds > 1e-3) {
                 long timeToWait = (long) (_outsideTime.subtract(
                         elapsedTimeInSeconds).getDoubleValue() * 1000.0);
 
@@ -733,8 +733,7 @@ public class TMDirector extends Director {
      *  @see #addScheduleListener(ScheduleListener)
      */
     public void removeScheduleListener(ScheduleListener listener) {
-        if ((_scheduleListeners != null)
-                && _scheduleListeners.contains(listener)) {
+        if (_scheduleListeners != null && _scheduleListeners.contains(listener)) {
             _scheduleListeners.remove(listener);
         }
     }

@@ -798,7 +798,8 @@ public class TemplateParser {
                 }
             }
             if (openCurlyBracketIndex != -1
-                    && ((openParenIndex != -1 && openCurlyBracketIndex < openParenIndex) || (openParenIndex == -1))) {
+                    && (openParenIndex != -1
+                            && openCurlyBracketIndex < openParenIndex || openParenIndex == -1)) {
                 // Houston, we might have ${foo}
                 int closeCurlyBracketIndex = code.indexOf("}", currentPos + 1);
                 if (closeCurlyBracketIndex == -1) {
@@ -846,7 +847,8 @@ public class TemplateParser {
                         nextPos));
             }
             if (openParenIndex != -1
-                    && ((openCurlyBracketIndex != -1 && openParenIndex < openCurlyBracketIndex) || (openCurlyBracketIndex == -1))) {
+                    && (openCurlyBracketIndex != -1
+                            && openParenIndex < openCurlyBracketIndex || openCurlyBracketIndex == -1)) {
                 closeParenIndex = _findClosedParen(code, openParenIndex);
 
                 if (closeParenIndex < 0) {
@@ -867,7 +869,7 @@ public class TemplateParser {
 
                 String subcode = code.substring(currentPos, nextPos);
 
-                if ((currentPos > 0) && code.charAt(currentPos - 1) == '\\') {
+                if (currentPos > 0 && code.charAt(currentPos - 1) == '\\') {
                     // found "\$", do not make replacement.
                     // FIXME: This is wrong. subcode may contain other macros
                     // to be processed.
@@ -1003,7 +1005,7 @@ public class TemplateParser {
                             + "Initial String was:\n:" + initialFunctionString);
         }
 
-        if ((closeFuncParenIndex != (functionString.length() - 1))) {
+        if (closeFuncParenIndex != functionString.length() - 1) {
             CGException
                     .throwException("Bad Syntax with the $tokenFunc / $typeFunc macro. "
                             + "[i.e. -- $tokenFunc(typeOrToken::func(arg1, ...))].  "
@@ -1085,8 +1087,8 @@ public class TemplateParser {
         int closeFuncParenIndex = constructorString.lastIndexOf(')');
 
         // Syntax checking.
-        if ((openFuncParenIndex == -1)
-                || (closeFuncParenIndex != (constructorString.length() - 1))) {
+        if (openFuncParenIndex == -1
+                || closeFuncParenIndex != constructorString.length() - 1) {
             CGException
                     .throwException("Bad Syntax with the $new() macro. "
                             + "[i.e. -- $new([elementType]Array(8, 8, arg1, arg2, ...))]");
@@ -1336,10 +1338,10 @@ public class TemplateParser {
         } else if (macro.equals("actorSymbol")) {
             if (parameter.trim().length() == 0) {
                 return _codeGenerator
-                        .generateVariableName(((NamedObj) _component));
+                        .generateVariableName((NamedObj) _component);
             } else {
                 return _codeGenerator
-                        .generateVariableName(((NamedObj) _component))
+                        .generateVariableName((NamedObj) _component)
                         + "_"
                         + processCode(parameter);
             }

@@ -174,10 +174,10 @@ public class LinkVisualizer extends TypedAtomicActor implements ChannelListener 
                 .getAttribute("_location");
         Location destinationLocation = (Location) destination.getContainer()
                 .getAttribute("_location");
-        double x = (destinationLocation.getLocation())[0]
-                - (senderLocation.getLocation())[0];
-        double y = (destinationLocation.getLocation())[1]
-                - (senderLocation.getLocation())[1];
+        double x = destinationLocation.getLocation()[0]
+                - senderLocation.getLocation()[0];
+        double y = destinationLocation.getLocation()[1]
+                - senderLocation.getLocation()[1];
         String moml = "<property name=\""
                 + lineName
                 + "\" class=\"ptolemy.vergil.kernel.attributes.LineAttribute\">"

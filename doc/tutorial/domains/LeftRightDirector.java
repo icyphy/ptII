@@ -129,8 +129,8 @@ public class LeftRightDirector extends StaticSchedulingDirector {
             // Get the director.
             NamedObj director = getContainer();
             // Get the container of the director.
-            CompositeActor compositeActor = (CompositeActor) (director
-                    .getContainer());
+            CompositeActor compositeActor = (CompositeActor) director
+                    .getContainer();
             // Get the actors to be fired by the director.
             List<Actor> actors = compositeActor.deepEntityList();
             // Create a sorted list of actors, sorted by

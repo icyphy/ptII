@@ -184,8 +184,9 @@ public class PublisherPort extends PubSubPort {
                 // NOTE: During cloning, the container reports that it is in a class definition!
                 // Hence, this PublisherPort has to do the registering when clone is
                 // set to no longer be a class definition.
-                if ((container instanceof InstantiableNamedObj && !((InstantiableNamedObj) container)
-                        .isWithinClassDefinition())
+                if (container instanceof InstantiableNamedObj
+                        && !((InstantiableNamedObj) container)
+                                .isWithinClassDefinition()
                 //                        || (container == null
                 //                                && immediateContainer instanceof InstantiableNamedObj
                 //                                && !((InstantiableNamedObj)immediateContainer).isWithinClassDefinition())
@@ -214,8 +215,8 @@ public class PublisherPort extends PubSubPort {
                                 }
 
                                 if (attribute == channel
-                                        && (!(_channel == null || _channel
-                                                .trim().equals("")))) {
+                                        && !(_channel == null || _channel
+                                                .trim().equals(""))) {
                                     // Changing the channel from a previous channel name.
                                     if (((BooleanToken) propagateNameChanges
                                             .getToken()).booleanValue()) {
@@ -232,8 +233,8 @@ public class PublisherPort extends PubSubPort {
                                 }
 
                                 if (attribute == channel
-                                        && (!(_channel == null || _channel
-                                                .trim().equals("")))) {
+                                        && !(_channel == null || _channel
+                                                .trim().equals(""))) {
                                     ((CompositeActor) container)
                                             .unregisterPublisherPort(_channel,
                                                     this, _global);
@@ -370,11 +371,11 @@ public class PublisherPort extends PubSubPort {
             Receiver[][] receivers = getInsideReceivers();
             if (receivers != null && receivers.length > 0
                     && receivers[0].length > 0) {
-                for (int i = 0; i < receivers.length; i++) {
+                for (Receiver[] receiver : receivers) {
                     for (int j = 0; j < receivers.length; j++) {
                         for (Token token : ((ArrayToken) initialOutputsValue)
                                 .arrayValue()) {
-                            receivers[i][j].put(token);
+                            receiver[j].put(token);
                         }
                     }
                 }
@@ -475,12 +476,11 @@ public class PublisherPort extends PubSubPort {
                         "Can't handle port that is neither input nor output.");
             }
             if (receivers != null) {
-                for (int i = 0; i < receivers.length; i++) {
-                    if (receivers[i] != null) {
-                        for (int j = 0; j < receivers[i].length; j++) {
-                            if (receivers[i][j] != null) {
-                                IOPort remotePort2 = receivers[i][j]
-                                        .getContainer();
+                for (Receiver[] receiver : receivers) {
+                    if (receiver != null) {
+                        for (int j = 0; j < receiver.length; j++) {
+                            if (receiver[j] != null) {
+                                IOPort remotePort2 = receiver[j].getContainer();
                                 if (remotePort2 != null) {
                                     results.addAll(_dependents(remotePort2));
                                 }

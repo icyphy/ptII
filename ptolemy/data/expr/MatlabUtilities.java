@@ -127,7 +127,7 @@ public class MatlabUtilities {
                         packageDirectories = scope.get("packageDirectories");
                     }
 
-                    if ((packageDirectories != null)
+                    if (packageDirectories != null
                             && packageDirectories instanceof StringToken) {
                         StringTokenizer dirs = new StringTokenizer(
                                 ((StringToken) packageDirectories)

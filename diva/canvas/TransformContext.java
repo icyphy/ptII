@@ -86,7 +86,7 @@ public class TransformContext {
     public void checkCacheValid(TransformContext ancestor) {
         TransformContext c = this;
 
-        while ((c != ancestor) && (c != null)) {
+        while (c != ancestor && c != null) {
             c.invalidateCache();
             c = c.getParent();
         }

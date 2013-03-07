@@ -141,7 +141,7 @@ public class GRScheduler extends Scheduler {
         }
 
         // If there is no container, there are no actors
-        CompositeActor container = (CompositeActor) (director.getContainer());
+        CompositeActor container = (CompositeActor) director.getContainer();
 
         if (container == null) {
             return null;

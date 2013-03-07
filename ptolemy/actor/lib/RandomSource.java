@@ -181,7 +181,7 @@ public abstract class RandomSource extends Source {
      *   an attribute that cannot be cloned.
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        RandomSource newObject = (RandomSource) (super.clone(workspace));
+        RandomSource newObject = (RandomSource) super.clone(workspace);
 
         // It is too soon to generate the new generator because
         // all clones will have the same actor name, which results

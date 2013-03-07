@@ -884,12 +884,11 @@ public class LatticeOntologySolver extends OntologySolver {
     protected ConstraintType _getConstraintType() throws IllegalActionException {
         String strategy = solverStrategy.stringValue();
         String fixedPoint = solvingFixedPoint.stringValue();
-        if ((strategy.equals("forward") && fixedPoint.equals("least"))
-                || (strategy.equals("backward") && fixedPoint
-                        .equals("greatest"))) {
+        if (strategy.equals("forward") && fixedPoint.equals("least")
+                || strategy.equals("backward") && fixedPoint.equals("greatest")) {
             return ConstraintType.SINK_GE_SOURCE;
-        } else if ((strategy.equals("backward") && fixedPoint.equals("least"))
-                || (strategy.equals("forward") && fixedPoint.equals("greatest"))) {
+        } else if (strategy.equals("backward") && fixedPoint.equals("least")
+                || strategy.equals("forward") && fixedPoint.equals("greatest")) {
             return ConstraintType.SOURCE_GE_SINK;
         } else if (strategy.equals("bidirectional")) {
             return ConstraintType.EQUALS;

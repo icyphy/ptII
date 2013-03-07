@@ -114,11 +114,11 @@ public class MatrixToDouble extends SDFConverter {
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
-        if ((attribute == rows) || (attribute == columns)) {
+        if (attribute == rows || attribute == columns) {
             _rows = ((IntToken) rows.getToken()).intValue();
             _columns = ((IntToken) columns.getToken()).intValue();
 
-            if ((_rows <= 0) || (_columns <= 0)) {
+            if (_rows <= 0 || _columns <= 0) {
                 throw new IllegalActionException(this,
                         "Number of rows and columns is required to be positive.");
             }
@@ -144,7 +144,7 @@ public class MatrixToDouble extends SDFConverter {
         Director director = getDirector();
 
         if (director instanceof SDFDirector) {
-            if ((inputRows * inputColumns) != (_rows * _columns)) {
+            if (inputRows * inputColumns != _rows * _columns) {
                 throw new IllegalActionException(this,
                         "Received a matrix whose dimension does not "
                                 + "match the declared dimensions.");

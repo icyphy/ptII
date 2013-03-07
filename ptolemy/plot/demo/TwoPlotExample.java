@@ -95,16 +95,16 @@ public class TwoPlotExample extends JFrame {
         boolean first = true;
 
         for (int i = 0; i <= 100; i++) {
-            leftPlot.addPoint(0, i, 5 * Math.cos((Math.PI * i) / 20), !first);
-            leftPlot.addPoint(1, i, 4.5 * Math.cos((Math.PI * i) / 25), !first);
-            leftPlot.addPoint(2, i, 4 * Math.cos((Math.PI * i) / 30), !first);
-            leftPlot.addPoint(3, i, 3.5 * Math.cos((Math.PI * i) / 35), !first);
-            leftPlot.addPoint(4, i, 3 * Math.cos((Math.PI * i) / 40), !first);
-            leftPlot.addPoint(5, i, 2.5 * Math.cos((Math.PI * i) / 45), !first);
-            leftPlot.addPoint(6, i, 2 * Math.cos((Math.PI * i) / 50), !first);
-            leftPlot.addPoint(7, i, 1.5 * Math.cos((Math.PI * i) / 55), !first);
-            leftPlot.addPoint(8, i, 1 * Math.cos((Math.PI * i) / 60), !first);
-            leftPlot.addPoint(9, i, 0.5 * Math.cos((Math.PI * i) / 65), !first);
+            leftPlot.addPoint(0, i, 5 * Math.cos(Math.PI * i / 20), !first);
+            leftPlot.addPoint(1, i, 4.5 * Math.cos(Math.PI * i / 25), !first);
+            leftPlot.addPoint(2, i, 4 * Math.cos(Math.PI * i / 30), !first);
+            leftPlot.addPoint(3, i, 3.5 * Math.cos(Math.PI * i / 35), !first);
+            leftPlot.addPoint(4, i, 3 * Math.cos(Math.PI * i / 40), !first);
+            leftPlot.addPoint(5, i, 2.5 * Math.cos(Math.PI * i / 45), !first);
+            leftPlot.addPoint(6, i, 2 * Math.cos(Math.PI * i / 50), !first);
+            leftPlot.addPoint(7, i, 1.5 * Math.cos(Math.PI * i / 55), !first);
+            leftPlot.addPoint(8, i, 1 * Math.cos(Math.PI * i / 60), !first);
+            leftPlot.addPoint(9, i, 0.5 * Math.cos(Math.PI * i / 65), !first);
             first = false;
         }
 

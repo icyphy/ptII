@@ -221,7 +221,7 @@ public class AudioReadBuffer extends Transformer {
             if (in < 0) {
                 // invalid index, so just output a 0.0
                 output.send(0, new DoubleToken(0.0));
-            } else if (in > (_audioBuffer.length - 1)) {
+            } else if (in > _audioBuffer.length - 1) {
                 // invalid index. exceeds buffer length, so
                 // just output a 0.0 and return false in postfire.
                 _postfireReturn = false;

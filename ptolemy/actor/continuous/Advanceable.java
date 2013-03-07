@@ -97,5 +97,6 @@ public interface Advanceable extends ContinuousStepSizeController {
      *  @return True if advancement to the specified time succeeds.
      *  @exception IllegalActionException If an error occurs advancing time.
      */
-    public boolean advance(Time time, int microstep) throws IllegalActionException;
+    public boolean advance(Time time, int microstep)
+            throws IllegalActionException;
 }

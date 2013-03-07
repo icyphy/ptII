@@ -207,7 +207,7 @@ public class Ontology extends CompositeEntity {
                     @SuppressWarnings("unchecked")
                     List<ComponentPort> remotePorts = link
                             .linkedPortList(concept.abovePort);
-                    assert (remotePorts.size() == 1) : "ConceptRelations can only connect two concepts";
+                    assert remotePorts.size() == 1 : "ConceptRelations can only connect two concepts";
                     for (ComponentPort remotePort : remotePorts) {
                         ((DAGConceptGraph) _graph)
                                 .addRelation(concept,

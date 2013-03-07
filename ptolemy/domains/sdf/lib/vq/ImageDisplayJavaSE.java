@@ -113,8 +113,8 @@ public class ImageDisplayJavaSE extends
 
         for (j = ySize - 1; j >= 0; j--) {
             for (i = 0; i < xSize; i++, index++) {
-                RGBbuffer[index] = (255 << 24) | ((frame[j][i] & 255) << 16)
-                        | ((frame[j][i] & 255) << 8) | (frame[j][i] & 255);
+                RGBbuffer[index] = 255 << 24 | (frame[j][i] & 255) << 16
+                        | (frame[j][i] & 255) << 8 | frame[j][i] & 255;
             }
         }
 
@@ -158,7 +158,7 @@ public class ImageDisplayJavaSE extends
             }
         } else if (_picture != null) {
             // If the size has changed, have to recreate the Picture object.
-            if ((_oldXSize != xSize) || (_oldYSize != ySize)) {
+            if (_oldXSize != xSize || _oldYSize != ySize) {
                 _oldXSize = xSize;
                 _oldYSize = ySize;
 

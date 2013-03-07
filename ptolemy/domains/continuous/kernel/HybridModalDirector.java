@@ -231,7 +231,8 @@ public class HybridModalDirector extends FSMDirector implements
             // Check whether there is any preemptive transition enabled.
             FSMActor controller = getController();
             State currentState = controller.currentState();
-            List transitionList = currentState.outgoingPort.linkedRelationList();
+            List transitionList = currentState.outgoingPort
+                    .linkedRelationList();
             List preemptiveEnabledTransitions = controller.enabledTransitions(
                     transitionList, true, false);
 
@@ -270,10 +271,10 @@ public class HybridModalDirector extends FSMDirector implements
             // the postfire method.
             // Set the local variables to be used to suggest a step
             // size in the next call to refinedStepSize().
-            if ((preemptiveEnabledTransitions.size() == 0)
-                    && (nonpreemptiveEnabledTransitions.size() == 0)
-                    && (preemptiveTrWithEvent == null)
-                    && (nonPreemptiveTrWithEvent == null)) {
+            if (preemptiveEnabledTransitions.size() == 0
+                    && nonpreemptiveEnabledTransitions.size() == 0
+                    && preemptiveTrWithEvent == null
+                    && nonPreemptiveTrWithEvent == null) {
                 _lastDistanceToBoundary = 0.0;
                 _distanceToBoundary = 0.0;
                 return true;
@@ -527,7 +528,8 @@ public class HybridModalDirector extends FSMDirector implements
                 // values of the continuous variables.
                 // Note the step size is refined such that the distanceToBoundary
                 // expected at the new step size is half of errorTolerance.
-                double refinedStepSize = (currentStepSize * (_lastDistanceToBoundary + (errorTolerance / 2)))
+                double refinedStepSize = currentStepSize
+                        * (_lastDistanceToBoundary + errorTolerance / 2)
                         / (_lastDistanceToBoundary + _distanceToBoundary);
 
                 result = Math.min(result, refinedStepSize);

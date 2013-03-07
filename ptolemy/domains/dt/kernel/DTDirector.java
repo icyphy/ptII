@@ -456,7 +456,7 @@ public class DTDirector extends SDFDirector {
             Parameter param = (Parameter) currentPort
                     .getAttribute("tokenConsumptionRate");
 
-            if ((param != null) && (currentPort.isInput())) {
+            if (param != null && currentPort.isInput()) {
                 rate = ((IntToken) param.getToken()).intValue();
 
                 if (rate > 1) {
@@ -484,7 +484,7 @@ public class DTDirector extends SDFDirector {
                     .getAttribute("tokenProductionRate");
             int outrate = 0;
 
-            if ((param != null) && (fromPort.isOutput())) {
+            if (param != null && fromPort.isOutput()) {
                 outrate = ((IntToken) param.getToken()).intValue();
             }
 
@@ -570,10 +570,10 @@ public class DTDirector extends SDFDirector {
 
         // NOTE: Cannot call super.postfire() or we increment time twice.
         // Instead, we duplicate key functionality here.
-        int iterationsValue = ((IntToken) (iterations.getToken())).intValue();
+        int iterationsValue = ((IntToken) iterations.getToken()).intValue();
         _iterationCount++;
 
-        if ((iterationsValue > 0) && (_iterationCount >= iterationsValue)) {
+        if (iterationsValue > 0 && _iterationCount >= iterationsValue) {
             _iterationCount = 0;
             return false;
         }
@@ -812,11 +812,11 @@ public class DTDirector extends SDFDirector {
                     Receiver[][] receivers = inputPort.getReceivers();
 
                     if (receivers != null) {
-                        for (int i = 0; i < receivers.length; i++) {
-                            if (receivers[i] != null) {
-                                for (int j = 0; j < receivers[i].length; j++) {
-                                    if (receivers[i][j] != null) {
-                                        _receiverTable.add(receivers[i][j]);
+                        for (Receiver[] receiver : receivers) {
+                            if (receiver != null) {
+                                for (int j = 0; j < receiver.length; j++) {
+                                    if (receiver[j] != null) {
+                                        _receiverTable.add(receiver[j]);
                                     }
                                 }
                             }
@@ -834,11 +834,11 @@ public class DTDirector extends SDFDirector {
                 Receiver[][] receivers = outputPort.getInsideReceivers();
 
                 if (receivers != null) {
-                    for (int i = 0; i < receivers.length; i++) {
-                        if (receivers[i] != null) {
-                            for (int j = 0; j < receivers[i].length; j++) {
-                                if (receivers[i][j] != null) {
-                                    _receiverTable.add(receivers[i][j]);
+                    for (Receiver[] receiver : receivers) {
+                        if (receiver != null) {
+                            for (int j = 0; j < receiver.length; j++) {
+                                if (receiver[j] != null) {
+                                    _receiverTable.add(receiver[j]);
                                 }
                             }
                         }
@@ -897,8 +897,8 @@ public class DTDirector extends SDFDirector {
         _debug("DT Director just started fire----------------"
                 + _formerValidTimeFired + " " + currentTime);
 
-        if ((currentTime.getDoubleValue() != 0) && (!_inputTokensAvailable)
-                && (currentTime.compareTo(_formerTimeFired) == 0)) {
+        if (currentTime.getDoubleValue() != 0 && !_inputTokensAvailable
+                && currentTime.compareTo(_formerTimeFired) == 0) {
             //  duplicate firings at the same time should be ignored
             //  unless there are input tokens
             _debug("duplicate firing");
@@ -932,8 +932,8 @@ public class DTDirector extends SDFDirector {
             throw new InternalErrorException("unexpected time rollback");
         }
 
-        if ((timeRemaining.getDoubleValue() > 0)
-                && (timeElapsed.getDoubleValue() > 0)) {
+        if (timeRemaining.getDoubleValue() > 0
+                && timeElapsed.getDoubleValue() > 0) {
             Iterator outputPorts = container.outputPortList().iterator();
             _isFiringAllowed = false;
 
@@ -1075,7 +1075,7 @@ public class DTDirector extends SDFDirector {
             for (int n = 1; n < periodDivider; n++) {
                 _requestRefireAt(currentTime.add(n * deltaTime));
                 _debug(" request pseudo-fire at "
-                        + (currentTime.add(n * deltaTime)).getDoubleValue());
+                        + currentTime.add(n * deltaTime).getDoubleValue());
             }
         }
     }

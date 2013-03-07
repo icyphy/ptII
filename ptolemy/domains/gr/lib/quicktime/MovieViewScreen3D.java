@@ -154,7 +154,7 @@ public class MovieViewScreen3D extends ViewScreen3D implements StdQTConstants,
             _videoMedia.addSample(_imageHandle, 0, // dataOffset,
                     info.getDataSize(), 600 / _frameRateValue, // frameDuration, in 1/600ths of a second.
                     desc, 1, // one sample
-                    (isKeyFrame ? 0 : mediaSampleNotSync)); // no flags
+                    isKeyFrame ? 0 : mediaSampleNotSync); // no flags
         } catch (Exception ex) {
             ex.printStackTrace();
         }

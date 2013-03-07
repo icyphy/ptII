@@ -133,7 +133,7 @@ public class MovingAverage extends Transformer {
         // Compute the average.
         Token sum = _data[_mostRecent];
         for (int i = 1; i < _count; i++) {
-            int dataIndex = (_mostRecent + i) % (_data.length);
+            int dataIndex = (_mostRecent + i) % _data.length;
             sum = sum.add(_data[dataIndex]);
         }
         output.send(0, _factor.multiply(sum));

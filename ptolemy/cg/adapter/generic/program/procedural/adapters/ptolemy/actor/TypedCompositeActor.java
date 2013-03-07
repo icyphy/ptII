@@ -522,7 +522,7 @@ public class TypedCompositeActor extends
         Iterator<?> outputPorts = ((ptolemy.actor.CompositeActor) getComponent())
                 .outputPortList().iterator();
 
-        if ((getComponent() instanceof ModularCodeGenTypedCompositeActor)
+        if (getComponent() instanceof ModularCodeGenTypedCompositeActor
                 && ((ptolemy.actor.CompositeActor) getComponent())
                         .outputPortList().size() > 0) {
             code.append("if (export) {" + _eol);

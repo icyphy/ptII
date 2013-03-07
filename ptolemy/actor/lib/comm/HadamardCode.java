@@ -271,7 +271,7 @@ public class HadamardCode extends Source {
 
             if (index >= halfDimension) {
                 for (int i = 0; i < halfDimension; i++) {
-                    result[halfDimension + i] = !(halfRow[i]);
+                    result[halfDimension + i] = !halfRow[i];
                 }
             } else {
                 System.arraycopy(halfRow, 0, result, halfDimension,

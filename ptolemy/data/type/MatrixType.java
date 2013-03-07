@@ -210,7 +210,7 @@ public class MatrixType extends StructuredType implements Cloneable,
      */
     public boolean isCompatible(Type type) {
         int typeInfo = TypeLattice.compare(this, type);
-        return ((typeInfo == CPO.SAME) || (typeInfo == CPO.HIGHER));
+        return typeInfo == CPO.SAME || typeInfo == CPO.HIGHER;
     }
 
     /** Test if this Type is a constant. A Type is a constant if it
@@ -235,7 +235,7 @@ public class MatrixType extends StructuredType implements Cloneable,
      */
     public boolean isSubstitutionInstance(Type type) {
         if (type instanceof StructuredType) {
-            return (((StructuredType) type)._getRepresentative() == _getRepresentative());
+            return ((StructuredType) type)._getRepresentative() == _getRepresentative();
         } else {
             return false;
         }

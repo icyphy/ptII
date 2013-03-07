@@ -143,7 +143,7 @@ public class Server {
         ////////////////////////////////////////////////////
         // Set up string
         // add zeros for number of integers and booleans
-        final int nDbl = (dblVal != null) ? dblVal.length : 0;
+        final int nDbl = dblVal != null ? dblVal.length : 0;
         StringBuffer strBuf = new StringBuffer(Integer.toString(verNo));
         strBuf.append(" " + Integer.toString(flagToClient)); // the communication flag
         strBuf.append(" " + Integer.toString(nDbl)); // then number of doubles

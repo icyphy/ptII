@@ -189,7 +189,7 @@ public class Check {
      */
     public static void main(String[] args) {
         try {
-            int number = (Integer.valueOf(args[0])).intValue();
+            int number = Integer.valueOf(args[0]).intValue();
             boolean useSimple = true;
 
             if (args.length > 1) {
@@ -330,7 +330,7 @@ public class Check {
             nameMap = new HashMap();
 
             // compute the index of the chopstick on the left
-            int leftIndex = ((index + _numberOfPhilosophers) - 1)
+            int leftIndex = (index + _numberOfPhilosophers - 1)
                     % _numberOfPhilosophers;
 
             nameMap.put("p", "c" + leftIndex + "pr");

@@ -55,7 +55,7 @@ public class PolylineIterator implements PathIterator {
         if (pl instanceof Polyline2D.Float) {
             Polyline2D.Float f = (Polyline2D.Float) pl;
 
-            if ((at == null) || at.isIdentity()) {
+            if (at == null || at.isIdentity()) {
                 for (int i = 0; i < count; i++) {
                     _coords[i] = f._coords[i];
                 }
@@ -65,7 +65,7 @@ public class PolylineIterator implements PathIterator {
         } else {
             Polyline2D.Double d = (Polyline2D.Double) pl;
 
-            if ((at == null) || at.isIdentity()) {
+            if (at == null || at.isIdentity()) {
                 System.arraycopy(d._coords, 0, _coords, 0, count);
             } else {
                 at.transform(d._coords, 0, _coords, 0, count / 2);
@@ -78,8 +78,7 @@ public class PolylineIterator implements PathIterator {
     public int currentSegment(double[] coords) {
         coords[0] = this._coords[_index];
         coords[1] = this._coords[_index + 1];
-        return ((_index == 0) ? PathIterator.SEG_MOVETO
-                : PathIterator.SEG_LINETO);
+        return _index == 0 ? PathIterator.SEG_MOVETO : PathIterator.SEG_LINETO;
     }
 
     /** Get the current segment
@@ -87,8 +86,7 @@ public class PolylineIterator implements PathIterator {
     public int currentSegment(float[] coords) {
         coords[0] = (float) this._coords[_index];
         coords[1] = (float) this._coords[_index + 1];
-        return ((_index == 0) ? PathIterator.SEG_MOVETO
-                : PathIterator.SEG_LINETO);
+        return _index == 0 ? PathIterator.SEG_MOVETO : PathIterator.SEG_LINETO;
     }
 
     /** Return the winding rule. This is WIND_NON_ZERO.
@@ -100,7 +98,7 @@ public class PolylineIterator implements PathIterator {
     /** Test if the iterator is done.
      */
     public boolean isDone() {
-        return (_index >= _coords.length);
+        return _index >= _coords.length;
     }
 
     /** Move the iterator along by one point.

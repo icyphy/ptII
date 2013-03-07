@@ -181,7 +181,7 @@ public class ColtBinomialSelector extends ColtRandomSource {
             for (int i = 0; i < _current.length; i++) {
                 // Do a selection for a population.
                 int selected = 0;
-                if ((trialsRemaining > 0) && (sourceValues[i] > 0)) {
+                if (trialsRemaining > 0 && sourceValues[i] > 0) {
                     double p = (double) sourceValues[i] / (double) sourcePool;
                     if (p < 1.0) {
                         // Make sure that selections don't exceed

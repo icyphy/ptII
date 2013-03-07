@@ -199,7 +199,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
     public CompositeModel getCompositeModel(Object composite) {
         CompositeModel result = super.getCompositeModel(composite);
 
-        if ((result == null) && composite instanceof Locatable
+        if (result == null && composite instanceof Locatable
                 && ((Locatable) composite).getContainer() instanceof Entity) {
             return _iconModel;
         }
@@ -402,7 +402,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
             Relation relation = link.getRelation();
 
             // Undo needs this: Check that the relation hasn't been removed
-            if ((relation == null) || (relation.getContainer() == null)
+            if (relation == null || relation.getContainer() == null
                     || _isHidden(relation)) {
                 // NOTE: We used to not do the next three lines when
                 // relation == null, but this seems better.
@@ -537,8 +537,8 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
             Object head = link.getHead();
             Object headObj = getSemanticObject(head);
 
-            if ((tailObj != relation) && (headObj != relation)
-                    && (link.getRelation() != relation)) {
+            if (tailObj != relation && headObj != relation
+                    && link.getRelation() != relation) {
                 // The link does not involve this relation. Skip it.
                 // NOTE: Used to skip it if the relation field of the link
                 // didn't match this relation. But we need to ignore
@@ -563,7 +563,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
                 continue;
             }
 
-            if ((tailObj != null) && linkedObjects.contains(tailObj)) {
+            if (tailObj != null && linkedObjects.contains(tailObj)) {
                 // The tail is an object in the list.
                 linkedObjects.remove(tailObj);
             } else if (tailObj != relation) {
@@ -574,7 +574,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
                 _linkSet.remove(link);
             }
 
-            if ((headObj != null) && linkedObjects.contains(headObj)) {
+            if (headObj != null && linkedObjects.contains(headObj)) {
                 // The head is an object in the list.
                 linkedObjects.remove(headObj);
             } else if (headObj != relation) {
@@ -611,8 +611,8 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
         // If there are no verticies, and the relation has exactly
         // two connections, neither of which has been made yet, then
         // create a link without a vertex for the relation.
-        if ((rootVertex == null) && (linkedObjectsCount == 2)
-                && (unlinkedPortCount == 2)
+        if (rootVertex == null && linkedObjectsCount == 2
+                && unlinkedPortCount == 2
                 && linkedObjects.get(0) instanceof Port
                 && linkedObjects.get(1) instanceof Port) {
             Port port1 = (Port) linkedObjects.get(0);
@@ -797,7 +797,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
             for (Link link : _linkSet) {
                 Object head = link.getHead();
 
-                if ((head != null) && head.equals(location)) {
+                if (head != null && head.equals(location)) {
                     portLinkList.add(link);
                 }
             }
@@ -828,7 +828,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
             for (Link link : _linkSet) {
                 Object tail = link.getTail();
 
-                if ((tail != null) && tail.equals(location)) {
+                if (tail != null && tail.equals(location)) {
                     portLinkList.add(link);
                 }
             }
@@ -953,7 +953,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
          * the edges.
          */
         public Iterator nodesAfterEdges(Object composite) {
-            return (new NullIterator());
+            return new NullIterator();
         }
 
         /** Return an iterator over the edges coming out of the given node.
@@ -1005,10 +1005,9 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
          *  representing a port.
          */
         public boolean acceptHead(Object edge, Object node) {
-            if (node instanceof Port
-                    || node instanceof Vertex
-                    || (node instanceof Locatable && ((Locatable) node)
-                            .getContainer() instanceof Port)) {
+            if (node instanceof Port || node instanceof Vertex
+                    || node instanceof Locatable
+                    && ((Locatable) node).getContainer() instanceof Port) {
                 return true;
             } else {
                 return false;
@@ -1023,10 +1022,9 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
          *  representing a port.
          */
         public boolean acceptTail(Object edge, Object node) {
-            if (node instanceof Port
-                    || node instanceof Vertex
-                    || (node instanceof Locatable && ((Locatable) node)
-                            .getContainer() instanceof Port)) {
+            if (node instanceof Port || node instanceof Vertex
+                    || node instanceof Locatable
+                    && ((Locatable) node).getContainer() instanceof Port) {
                 return true;
             } else {
                 return false;
@@ -1088,7 +1086,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
             NamedObj oldHeadSemantic = (NamedObj) getSemanticObject(oldHead);
 
             if (oldHeadSemantic != null) {
-                int headRelationIndex = (oldHeadSemantic instanceof IOPort) ? IOPort
+                int headRelationIndex = oldHeadSemantic instanceof IOPort ? IOPort
                         .getRelationIndex((IOPort) oldHeadSemantic, relation,
                                 headIsActorPort) : -1;
                 _linkWithRelation(moml, failmoml, container, oldHeadSemantic,
@@ -1098,7 +1096,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
             NamedObj oldTailSemantic = (NamedObj) getSemanticObject(oldTail);
 
             if (oldTailSemantic != null) {
-                int tailRelationIndex = (oldTailSemantic instanceof IOPort) ? IOPort
+                int tailRelationIndex = oldTailSemantic instanceof IOPort ? IOPort
                         .getRelationIndex((IOPort) oldTailSemantic, relation,
                                 tailIsActorPort) : -1;
 
@@ -1233,7 +1231,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
         private String _linkMoML(NamedObj container, StringBuffer moml,
                 StringBuffer failmoml, NamedObj linkHead, NamedObj linkTail)
                 throws Exception {
-            if ((linkHead != null) && (linkTail != null)) {
+            if (linkHead != null && linkTail != null) {
                 NamedObj head = (NamedObj) getSemanticObject(linkHead);
                 NamedObj tail = (NamedObj) getSemanticObject(linkTail);
 
@@ -1408,7 +1406,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
                 // vertex and link the new link with the vertex.
                 if (newLinkHeadOrTail instanceof Link) {
 
-                    Link oldLink = ((Link) newLinkHeadOrTail);
+                    Link oldLink = (Link) newLinkHeadOrTail;
 
                     NamedObj oldHead = (NamedObj) oldLink.getHead();
                     NamedObj oldTail = (NamedObj) oldLink.getTail();
@@ -1466,12 +1464,12 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
 
                         if (isHead) {
                             _linkWithRelation(moml, failmoml, container,
-                                    ((NamedObj) getSemanticObject(linkTail)),
-                                    -1, newRelationName);
+                                    (NamedObj) getSemanticObject(linkTail), -1,
+                                    newRelationName);
                         } else {
                             _linkWithRelation(moml, failmoml, container,
-                                    ((NamedObj) getSemanticObject(linkHead)),
-                                    -1, newRelationName);
+                                    (NamedObj) getSemanticObject(linkHead), -1,
+                                    newRelationName);
                         }
 
                         failmoml.append("<deleteRelation name=\""
@@ -1492,7 +1490,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
 
                 // FIXME: Above can return an empty name, so the following
                 // test is not quite right.
-                appendedMoML = appendedMoML || (relationName != null);
+                appendedMoML = appendedMoML || relationName != null;
             } catch (Exception ex) {
                 // The link is bad... remove it.
                 _linkSet.remove(link);
@@ -1547,10 +1545,14 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
                             link.setHead(_getLocation(container
                                     .getRelation(relationNameToAdd)));
                         } else {
-                            Object relation = container.getRelation(relationNameToAdd);
+                            Object relation = container
+                                    .getRelation(relationNameToAdd);
                             if (relation == null) {
-                                throw new NullPointerException("Getting the relation \"" + relationNameToAdd
-                                        + "\" in " + container.getFullName() + " returned null?");
+                                throw new NullPointerException(
+                                        "Getting the relation \""
+                                                + relationNameToAdd + "\" in "
+                                                + container.getFullName()
+                                                + " returned null?");
                             }
                         }
                     }
@@ -1591,7 +1593,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
                 NamedObj linkHead, NamedObj linkTail, Relation relation) {
             // If the link is already connected, then create a bit of MoML
             // to unlink the link.
-            if ((linkHead != null) && (linkTail != null)) {
+            if (linkHead != null && linkTail != null) {
                 NamedObj head = (NamedObj) getSemanticObject(linkHead);
                 NamedObj tail = (NamedObj) getSemanticObject(linkTail);
 
@@ -1694,7 +1696,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
                 // if the edge is not fully connected.  This is to
                 // prevent rerendering while
                 // an edge is being created.
-                if ((_link.getHead() != null) && (_link.getTail() != null)) {
+                if (_link.getHead() != null && _link.getTail() != null) {
                     dispatchGraphEvent(new GraphEvent(ActorGraphModel.this,
                             GraphEvent.STRUCTURE_CHANGED, getRoot()));
                 }
@@ -1778,7 +1780,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
             for (Link link : _linkSet) {
                 Object head = link.getHead();
 
-                if ((head != null) && head.equals(port)) {
+                if (head != null && head.equals(port)) {
                     portLinkList.add(link);
                 }
             }
@@ -1805,7 +1807,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
             for (Link link : _linkSet) {
                 Object tail = link.getTail();
 
-                if ((tail != null) && tail.equals(port)) {
+                if (tail != null && tail.equals(port)) {
                     portLinkList.add(link);
                 }
             }
@@ -1889,7 +1891,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
             for (Link link : _linkSet) {
                 Object head = link.getHead();
 
-                if ((head != null) && head.equals(vertex)) {
+                if (head != null && head.equals(vertex)) {
                     vertexLinkList.add(link);
                 }
             }
@@ -1917,7 +1919,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
             for (Link link : _linkSet) {
                 Object tail = link.getTail();
 
-                if ((tail != null) && tail.equals(vertex)) {
+                if (tail != null && tail.equals(vertex)) {
                     vertexLinkList.add(link);
                 }
             }

@@ -105,7 +105,7 @@ public class NonStrictLogicGate extends LogicGate {
         for (int i = 0; i < input.getWidth(); i++) {
             if (input.isKnown(i)) {
                 if (input.hasToken(i)) {
-                    in = (BooleanToken) (input.get(i));
+                    in = (BooleanToken) input.get(i);
 
                     if (in != null) {
                         value = _updateFunction(in, value);
@@ -196,8 +196,8 @@ public class NonStrictLogicGate extends LogicGate {
             default:
                 throw new InternalErrorException(
                         "Invalid value for _function private variable. "
-                                + "NonStrictLogicGate actor (" + getFullName() + ")"
-                                + " on function type " + _function);
+                                + "NonStrictLogicGate actor (" + getFullName()
+                                + ")" + " on function type " + _function);
             }
         }
 

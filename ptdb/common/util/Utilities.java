@@ -35,7 +35,6 @@ import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Hashtable;
-import java.util.Iterator;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -278,13 +277,13 @@ public class Utilities {
 
         ArrayList<XMLDBModel> returnedResults = new ArrayList<XMLDBModel>();
 
-        for (Iterator iterator = previousResults.iterator(); iterator.hasNext();) {
-            XMLDBModel xmldbModel = (XMLDBModel) iterator.next();
+        for (Object element : previousResults) {
+            XMLDBModel xmldbModel = (XMLDBModel) element;
             existingModels.put(xmldbModel.getModelName(), xmldbModel);
         }
 
-        for (Iterator iterator = currentResults.iterator(); iterator.hasNext();) {
-            XMLDBModel xmldbModel = (XMLDBModel) iterator.next();
+        for (Object element : currentResults) {
+            XMLDBModel xmldbModel = (XMLDBModel) element;
             if (existingModels.get(xmldbModel.getModelName()) != null) {
                 returnedResults.add(xmldbModel);
             }

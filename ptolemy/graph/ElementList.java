@@ -90,7 +90,7 @@ public class ElementList extends LabeledList {
 
         if (element.hasWeight()) {
             Object weight = element.getWeight();
-            ArrayList sameWeightList = (ArrayList) (_weightMap.get(weight));
+            ArrayList sameWeightList = (ArrayList) _weightMap.get(weight);
 
             if (sameWeightList == null) {
                 return false;
@@ -124,7 +124,7 @@ public class ElementList extends LabeledList {
         Object newWeight = element.hasWeight() ? element.getWeight() : null;
 
         if (_unweightedSet.contains(element)) {
-            weightValueHasChanged = (newWeight != null);
+            weightValueHasChanged = newWeight != null;
 
             if (weightValueHasChanged) {
                 _unweightedSet.remove(element);
@@ -212,7 +212,7 @@ public class ElementList extends LabeledList {
                             + " this weight is zero.");
         }
 
-        return (Element) (elements.iterator().next());
+        return (Element) elements.iterator().next();
     }
 
     /** Return all the elements in this list in the form of an unmodifiable
@@ -256,7 +256,7 @@ public class ElementList extends LabeledList {
     public void registerWeight(Element element) {
         if (element.hasWeight()) {
             Object weight = element.getWeight();
-            ArrayList sameWeightList = (ArrayList) (_weightMap.get(weight));
+            ArrayList sameWeightList = (ArrayList) _weightMap.get(weight);
 
             if (sameWeightList == null) {
                 sameWeightList = new ArrayList();
@@ -316,7 +316,7 @@ public class ElementList extends LabeledList {
             // with the removal unconditionally.
             List elementList = (List) _weightMap.get(oldWeight);
 
-            if ((elementList == null) || !elementList.remove(element)) {
+            if (elementList == null || !elementList.remove(element)) {
                 throw new GraphWeightException(oldWeight, null, _graph,
                         "Incorrect previous weight specified.");
             }

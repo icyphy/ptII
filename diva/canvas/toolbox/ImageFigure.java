@@ -123,7 +123,7 @@ public class ImageFigure extends AbstractFigure implements ImageObserver {
             int w = _image.getWidth(this);
             int h = _image.getHeight(this);
 
-            if ((w < 0) || (h < 0)) {
+            if (w < 0 || h < 0) {
                 // Width and height are not ready
                 // (Image is not fully loaded or it
                 // is fully loaded, but the Java

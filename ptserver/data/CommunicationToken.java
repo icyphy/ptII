@@ -183,11 +183,10 @@ public class CommunicationToken extends Token {
         //FIXME: check if hashCode works correctly since equals is not using equals method of portChannelTokenMap
         result = prime
                 * result
-                + ((_portChannelTokenMap == null) ? 0 : _portChannelTokenMap
+                + (_portChannelTokenMap == null ? 0 : _portChannelTokenMap
                         .hashCode());
-        result = prime
-                * result
-                + ((_targetActorName == null) ? 0 : _targetActorName.hashCode());
+        result = prime * result
+                + (_targetActorName == null ? 0 : _targetActorName.hashCode());
         return result;
     }
 

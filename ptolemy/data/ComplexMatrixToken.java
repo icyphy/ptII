@@ -120,7 +120,7 @@ public class ComplexMatrixToken extends MatrixToken {
     public ComplexMatrixToken(String init) throws IllegalActionException {
         PtParser parser = new PtParser();
         ASTPtRootNode tree = parser.generateParseTree(init);
-        Token token = (new ParseTreeEvaluator()).evaluateParseTree(tree);
+        Token token = new ParseTreeEvaluator().evaluateParseTree(tree);
 
         if (token instanceof ComplexMatrixToken) {
             Complex[][] value = ((ComplexMatrixToken) token).complexMatrix();
@@ -151,7 +151,7 @@ public class ComplexMatrixToken extends MatrixToken {
                     "ComplexMatrixToken: The specified" + " array is null.");
         }
 
-        if (tokens.length != (rows * columns)) {
+        if (tokens.length != rows * columns) {
             throw new IllegalActionException(
                     "ComplexMatrixToken: The specified"
                             + " array is not of the correct length");
@@ -208,7 +208,7 @@ public class ComplexMatrixToken extends MatrixToken {
 
         int compare = TypeLattice.compare(BaseType.COMPLEX_MATRIX, token);
 
-        if ((compare == CPO.LOWER) || (compare == CPO.INCOMPARABLE)) {
+        if (compare == CPO.LOWER || compare == CPO.INCOMPARABLE) {
             throw new IllegalActionException(
                     notSupportedIncomparableConversionMessage(token,
                             "[complex]"));
@@ -225,7 +225,7 @@ public class ComplexMatrixToken extends MatrixToken {
         // try DoubleMatrix
         compare = TypeLattice.compare(BaseType.DOUBLE_MATRIX, token);
 
-        if ((compare == CPO.SAME) || (compare == CPO.HIGHER)) {
+        if (compare == CPO.SAME || compare == CPO.HIGHER) {
             DoubleMatrixToken tem = DoubleMatrixToken.convert(token);
             return new ComplexMatrixToken(tem.complexMatrix());
         }
@@ -404,8 +404,8 @@ public class ComplexMatrixToken extends MatrixToken {
         // This assumes the matrices tile.
         int rows = 0;
         int columns = 0;
-        for (int i = 0; i < matrices.length; i++) {
-            rows += matrices[i][0].getRowCount();
+        for (MatrixToken[] matrice : matrices) {
+            rows += matrice[0].getRowCount();
         }
         for (int j = 0; j < matrices[0].length; j++) {
             columns += matrices[0][j].getColumnCount();

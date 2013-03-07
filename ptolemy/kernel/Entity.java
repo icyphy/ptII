@@ -182,14 +182,13 @@ public class Entity<T extends Port> extends InstantiableNamedObj {
             Class<?> myClass = getClass();
             Field[] fields = myClass.getFields();
 
-            for (int i = 0; i < fields.length; i++) {
+            for (Field field : fields) {
                 try {
-                    if (fields[i].get(newEntity) instanceof Port) {
+                    if (field.get(newEntity) instanceof Port) {
                         // Get the port name. Note that by convention,
                         // this is the same as the field name. But it might
                         // not be.
-                        String portName = ((Port) fields[i].get(this))
-                                .getName();
+                        String portName = ((Port) field.get(this)).getName();
                         Port port = newEntity.getPort(portName);
 
                         if (port == null) {
@@ -198,14 +197,14 @@ public class Entity<T extends Port> extends InstantiableNamedObj {
                                             + "';");
                         }
 
-                        fields[i].set(newEntity, port);
+                        field.set(newEntity, port);
                     }
                 } catch (Throwable throwable) {
                     // CloneNotSupportedException does not have a
                     // constructor that takes a cause argument, so we call
                     // initCause() and then throw.
                     CloneNotSupportedException cloneException = new CloneNotSupportedException(
-                            "Problem cloning '" + fields[i].getName() + "'");
+                            "Problem cloning '" + field.getName() + "'");
                     cloneException.initCause(throwable);
                     throw cloneException;
                 }
@@ -513,8 +512,7 @@ public class Entity<T extends Port> extends InstantiableNamedObj {
         String candidate = prefix;
         int uniqueNameIndex = 2;
 
-        while ((getAttribute(candidate) != null)
-                || (getPort(candidate) != null)) {
+        while (getAttribute(candidate) != null || getPort(candidate) != null) {
             candidate = prefix + uniqueNameIndex++;
         }
 
@@ -568,13 +566,13 @@ public class Entity<T extends Port> extends InstantiableNamedObj {
 
             StringBuffer result = new StringBuffer();
 
-            if ((bracket == 1) || (bracket == 2)) {
+            if (bracket == 1 || bracket == 2) {
                 result.append(super._description(detail, indent, 1));
             } else {
                 result.append(super._description(detail, indent, 0));
             }
 
-            if (((detail & CONTENTS) != 0) || ((detail & LINKS) != 0)) {
+            if ((detail & CONTENTS) != 0 || (detail & LINKS) != 0) {
                 if (result.toString().trim().length() > 0) {
                     result.append(" ");
                 }

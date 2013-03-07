@@ -347,8 +347,8 @@ public class ParseTreeEvaluatorForGuardExpression extends ParseTreeEvaluator {
         ptolemy.data.Token rightToken = tokens[1];
 
         ptolemy.data.Token result;
-        if ((operator.kind == PtParserConstants.EQUALS)
-                || (operator.kind == PtParserConstants.NOTEQUALS)) {
+        if (operator.kind == PtParserConstants.EQUALS
+                || operator.kind == PtParserConstants.NOTEQUALS) {
             // If the operator is about equal or not-equal relations,
             if (operator.kind == PtParserConstants.EQUALS) {
                 result = leftToken.isCloseTo(rightToken, _errorTolerance);
@@ -364,8 +364,8 @@ public class ParseTreeEvaluatorForGuardExpression extends ParseTreeEvaluator {
             // where error tolerance is used.
             // Note that subtraction is not supported for BooleanToken,
             // unlike other scalars.
-            if ((leftToken instanceof ScalarToken)
-                    && (rightToken instanceof ScalarToken)
+            if (leftToken instanceof ScalarToken
+                    && rightToken instanceof ScalarToken
                     && !(leftToken instanceof BooleanToken)) {
                 // handle the relations like x == 2.0
                 ScalarToken difference = (ScalarToken) leftToken
@@ -392,7 +392,7 @@ public class ParseTreeEvaluatorForGuardExpression extends ParseTreeEvaluator {
         } else {
             // If the operator is neither about equal nor not-equal relations,
             // both tokens must be scalar tokens.
-            if (!((leftToken instanceof ScalarToken) && (rightToken instanceof ScalarToken))) {
+            if (!(leftToken instanceof ScalarToken && rightToken instanceof ScalarToken)) {
                 throw new IllegalActionException(
                         "The "
                                 + operator.image

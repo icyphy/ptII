@@ -130,7 +130,7 @@ public class ParserAttribute extends SingletonAttribute {
             // List attributes = object.attributeList(ParserAttribute.class);
             List attributes = container.attributeList(ParserAttribute.class);
 
-            if ((attributes != null) && (attributes.size() > 0)) {
+            if (attributes != null && attributes.size() > 0) {
                 // Found one.
                 ParserAttribute attribute = (ParserAttribute) attributes.get(0);
                 return attribute.getParser();

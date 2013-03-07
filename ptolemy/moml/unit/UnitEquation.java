@@ -60,7 +60,7 @@ public class UnitEquation extends UnitConstraint implements UnitPresentation {
      */
     public static boolean areSatisfied(Vector equations) {
         for (int i = 0; i < equations.size(); i++) {
-            if (((UnitEquation) (equations.elementAt(i))).isSatisfied() != true) {
+            if (((UnitEquation) equations.elementAt(i)).isSatisfied() != true) {
                 return false;
             }
         }
@@ -85,7 +85,7 @@ public class UnitEquation extends UnitConstraint implements UnitPresentation {
         Vector leftUTerms = lhsUExpr.getUTerms();
 
         for (int i = 0; i < leftUTerms.size(); i++) {
-            UnitTerm uTerm = ((UnitTerm) (leftUTerms.elementAt(i)));
+            UnitTerm uTerm = (UnitTerm) leftUTerms.elementAt(i);
 
             if (uTerm.isUnit()) {
                 newRightUExpr.addUnitTerm(uTerm.invert());
@@ -97,7 +97,7 @@ public class UnitEquation extends UnitConstraint implements UnitPresentation {
         Vector rightUTerms = rhsUExpr.getUTerms();
 
         for (int i = 0; i < rightUTerms.size(); i++) {
-            UnitTerm uTerm = ((UnitTerm) (rightUTerms.elementAt(i)));
+            UnitTerm uTerm = (UnitTerm) rightUTerms.elementAt(i);
 
             if (uTerm.isUnit()) {
                 newRightUExpr.addUnitTerm(uTerm);
@@ -133,7 +133,7 @@ public class UnitEquation extends UnitConstraint implements UnitPresentation {
         Unit lhsUnit = lhsReduced.getSingleUnit();
         Unit rhsUnit = rhsReduced.getSingleUnit();
 
-        if ((lhsUnit == null) || (rhsUnit == null)) {
+        if (lhsUnit == null || rhsUnit == null) {
             return false;
         }
 

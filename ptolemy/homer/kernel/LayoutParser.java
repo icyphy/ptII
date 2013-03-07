@@ -117,7 +117,7 @@ public class LayoutParser {
 
         // Get the tab attributes in the layout file.
         List<Attribute> tabs = tabsAttribute.attributeList();
-        if ((tabs == null) || (tabs.size() == 0)) {
+        if (tabs == null || tabs.size() == 0) {
             return tabDefinitions;
         }
 

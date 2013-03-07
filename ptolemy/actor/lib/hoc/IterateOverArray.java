@@ -350,16 +350,16 @@ public class IterateOverArray extends MirrorComposite {
                     // If the source port belongs to me, then we want to
                     // compare its array element type to the type of the
                     // destination.
-                    if ((sourcePort.getContainer() == this)
-                            && (destinationPort.getContainer() != this)) {
+                    if (sourcePort.getContainer() == this
+                            && destinationPort.getContainer() != this) {
                         // The source port belongs to me, but not the
                         // destination.
                         Type srcElementType = ((ArrayType) srcDeclared)
                                 .getElementType();
                         compare = TypeLattice.compare(srcElementType,
                                 destinationDeclared);
-                    } else if ((sourcePort.getContainer() != this)
-                            && (destinationPort.getContainer() == this)) {
+                    } else if (sourcePort.getContainer() != this
+                            && destinationPort.getContainer() == this) {
                         // The destination port belongs to me, but not
                         // the source.
                         Type destinationElementType = ((ArrayType) destinationDeclared)
@@ -371,8 +371,7 @@ public class IterateOverArray extends MirrorComposite {
                                 destinationDeclared);
                     }
 
-                    if ((compare == CPO.HIGHER)
-                            || (compare == CPO.INCOMPARABLE)) {
+                    if (compare == CPO.HIGHER || compare == CPO.INCOMPARABLE) {
                         Inequality inequality = new Inequality(
                                 sourcePort.getTypeTerm(),
                                 destinationPort.getTypeTerm());
@@ -415,8 +414,8 @@ public class IterateOverArray extends MirrorComposite {
             if (srcUndeclared || destUndeclared) {
                 // At least one of the source/destination ports does
                 // not have declared type, form type constraint.
-                if ((sourcePort.getContainer() == this)
-                        && (destinationPort.getContainer() == this)) {
+                if (sourcePort.getContainer() == this
+                        && destinationPort.getContainer() == this) {
                     // Both ports belong to this.
                     // Require the output to be at least the input.
                     Inequality ineq1 = new Inequality(sourcePort.getTypeTerm(),
@@ -493,12 +492,12 @@ public class IterateOverArray extends MirrorComposite {
                         // type without backward type inference being
                         // enabled globally, then we need to do this here.
                         // if (isBackwardTypeInferenceEnabled()) {
-                            InequalityTerm typeTerm = sourcePort.getTypeTerm();
-                            if (typeTerm.isSettable()) {
-                                result.add(new Inequality(
-                                        new ArrayElementTypeFunction(destinationPort),
-                                        typeTerm));
-                            }
+                        InequalityTerm typeTerm = sourcePort.getTypeTerm();
+                        if (typeTerm.isSettable()) {
+                            result.add(new Inequality(
+                                    new ArrayElementTypeFunction(
+                                            destinationPort), typeTerm));
+                        }
                         // }
                     } catch (IllegalActionException e) {
                         throw new InternalErrorException(e);
@@ -584,13 +583,13 @@ public class IterateOverArray extends MirrorComposite {
 
             Set<Type> types = new HashSet<Type>();
             types.addAll(_cachedTypes);
-            for (int i = 0; i < _cachedTerms.length; i++) {
-                Object termObject = _cachedTerms[i].getAssociatedObject();
+            for (InequalityTerm _cachedTerm : _cachedTerms) {
+                Object termObject = _cachedTerm.getAssociatedObject();
                 if (termObject instanceof IOPort
                         && ((IOPort) termObject).getContainer() == IterateOverArray.this) {
                     // The type term belongs to a port of this IterateOverArray actor.
                     // Use its element type rather than its type.
-                    Object value = _cachedTerms[i].getValue();
+                    Object value = _cachedTerm.getValue();
                     if (value instanceof ArrayType) {
                         types.add(((ArrayType) value).getElementType());
                     } else if (value.equals(BaseType.GENERAL)) {
@@ -603,7 +602,7 @@ public class IterateOverArray extends MirrorComposite {
                     // so we don't need to add it to the collection. Adding unknown
                     // to the arguments to GLB does nothing.
                 } else {
-                    types.add((Type) _cachedTerms[i].getValue());
+                    types.add((Type) _cachedTerm.getValue());
                 }
             }
             // If there are no destination outputs at all, then set
@@ -794,7 +793,7 @@ public class IterateOverArray extends MirrorComposite {
          */
         public boolean postfire() throws IllegalActionException {
             boolean superReturns = super.postfire();
-            return (superReturns && _postfireReturns);
+            return superReturns && _postfireReturns;
         }
 
         /** Transfer data from an input port of the
@@ -1013,8 +1012,7 @@ public class IterateOverArray extends MirrorComposite {
                     int compare = TypeLattice.compare(token.getType(),
                             type.getElementType());
 
-                    if ((compare == CPO.HIGHER)
-                            || (compare == CPO.INCOMPARABLE)) {
+                    if (compare == CPO.HIGHER || compare == CPO.INCOMPARABLE) {
                         throw new IllegalActionException(
                                 "Run-time type checking failed. Token type: "
                                         + token.getType().toString()
@@ -1027,8 +1025,8 @@ public class IterateOverArray extends MirrorComposite {
                     // any non-runtime exception.
                     farReceivers = deepGetReceivers();
 
-                    if ((farReceivers == null)
-                            || (farReceivers[channelIndex] == null)) {
+                    if (farReceivers == null
+                            || farReceivers[channelIndex] == null) {
                         return;
                     }
                 } finally {

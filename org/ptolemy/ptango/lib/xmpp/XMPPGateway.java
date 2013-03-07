@@ -198,8 +198,9 @@ public class XMPPGateway extends AbstractInitializableAttribute implements
         boolean debugEnableValue = ((BooleanToken) debugEnable.getToken())
                 .booleanValue();
 
-        System.setProperty("smack.debugEnabled", String.valueOf(debugEnableValue));
-        XMPPConnection.DEBUG_ENABLED = debugEnableValue;
+        System.setProperty("smack.debugEnabled",
+                String.valueOf(debugEnableValue));
+        Connection.DEBUG_ENABLED = debugEnableValue;
 
         _connectAndLogin();
 
@@ -347,8 +348,7 @@ public class XMPPGateway extends AbstractInitializableAttribute implements
             _manager.deleteNode(nodeId);
         } catch (XMPPException e) {
             throw new IllegalActionException(this,
-                    "Unable to remove node with id: "
-                    + nodeId + ".");
+                    "Unable to remove node with id: " + nodeId + ".");
         }
     }
 
@@ -439,12 +439,13 @@ public class XMPPGateway extends AbstractInitializableAttribute implements
                                 line = "";
                             } else {
                                 throw new IllegalActionException(this,
-                                        "Failed to read a line from " + passwordFile);
+                                        "Failed to read a line from "
+                                                + passwordFile);
                             }
                         } catch (Exception ex) {
                             throw new IllegalActionException(this, ex,
                                     "Failed to read "
-                                    + passwordFile.stringValue());
+                                            + passwordFile.stringValue());
                         } finally {
                             if (reader != null) {
                                 try {
@@ -452,7 +453,8 @@ public class XMPPGateway extends AbstractInitializableAttribute implements
                                 } catch (IOException ex) {
                                     throw new IllegalActionException(this, ex,
                                             "Failed to close "
-                                                    + passwordFile.stringValue());
+                                                    + passwordFile
+                                                            .stringValue());
                                 }
                             }
                         }

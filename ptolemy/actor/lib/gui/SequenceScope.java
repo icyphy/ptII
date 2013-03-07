@@ -112,14 +112,14 @@ public class SequenceScope extends SequencePlotter {
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
-        if (((attribute == width) || (attribute == xUnit) || (attribute == xInit))
-                && (plot != null)) {
+        if ((attribute == width || attribute == xUnit || attribute == xInit)
+                && plot != null) {
             // Ensure that protected variables are set.
             super.attributeChanged(attribute);
 
             int widthValue = ((IntToken) width.getToken()).intValue();
-            plot.setXRange(_xInit, (_xUnit * widthValue) + _xInit);
-        } else if ((attribute == persistence) && (plot != null)) {
+            plot.setXRange(_xInit, _xUnit * widthValue + _xInit);
+        } else if (attribute == persistence && plot != null) {
             int persValue = ((IntToken) persistence.getToken()).intValue();
 
             // NOTE: We assume the superclass ensures this cast is safe.
@@ -137,7 +137,7 @@ public class SequenceScope extends SequencePlotter {
         super.initialize();
 
         int widthValue = ((IntToken) width.getToken()).intValue();
-        plot.setXRange(_xInit, (_xUnit * widthValue) + _xInit);
+        plot.setXRange(_xInit, _xUnit * widthValue + _xInit);
         plot.setWrap(true);
 
         int persValue = ((IntToken) persistence.getToken()).intValue();

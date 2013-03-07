@@ -133,7 +133,7 @@ public class Integrator extends DETransformer {
                 Token integrand = new DoubleToken(0.0);
 
                 //Calculate the interpolated value, multiply by dt
-                integrand = (currentToken.add(lastToken)).multiply(timeGap)
+                integrand = currentToken.add(lastToken).multiply(timeGap)
                         .divide(new DoubleToken(2));
 
                 //Accumulate the integrand

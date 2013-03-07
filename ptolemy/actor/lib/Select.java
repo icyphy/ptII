@@ -151,7 +151,7 @@ public class Select extends Transformer {
             _control = ((IntToken) control.get(0)).intValue();
         }
 
-        if ((_control < 0) || (_control > input.getWidth())
+        if (_control < 0 || _control > input.getWidth()
                 || !input.hasToken(_control)) {
             return false;
         }

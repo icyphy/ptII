@@ -117,8 +117,8 @@ public class ExecutorThread implements Runnable {
                     _noOfTasksExecuted++;
                     maxWait = 100;
 
-                } else if ((_taskQueue.size() == _noOfTasksExecuted)
-                        && (_taskQueue.areAllTasksAdded())) {
+                } else if (_taskQueue.size() == _noOfTasksExecuted
+                        && _taskQueue.areAllTasksAdded()) {
                     /*
                      * If all the tasks are executed and the taskQueue is
                      * complete, then the processing is completed.

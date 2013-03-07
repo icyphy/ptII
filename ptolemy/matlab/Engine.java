@@ -365,7 +365,7 @@ public class Engine {
         int retval;
 
         synchronized (semaphore) {
-            if ((eng == null) || (eng[0] == 0)) {
+            if (eng == null || eng[0] == 0) {
                 throw new IllegalActionException("matlabEngine.evalStr(): "
                         + errNotOpened);
             }
@@ -415,7 +415,7 @@ public class Engine {
         Token retval = null;
 
         synchronized (semaphore) {
-            if ((eng == null) || (eng[0] == 0)) {
+            if (eng == null || eng[0] == 0) {
                 throw new IllegalActionException("matlabEngine.get(): "
                         + errNotOpened);
             }
@@ -450,7 +450,7 @@ public class Engine {
         String str = "";
 
         synchronized (semaphore) {
-            if ((eng != null) && (eng[1] != 0)) {
+            if (eng != null && eng[1] != 0) {
                 str = ptmatlabGetOutput(eng[1], engOutputBufferSize);
             }
         }
@@ -474,7 +474,7 @@ public class Engine {
         int retval;
 
         synchronized (semaphore) {
-            if ((eng == null) || (eng[0] == 0)) {
+            if (eng == null || eng[0] == 0) {
                 throw new IllegalActionException("matlabEngine.put(): "
                         + errNotOpened);
             }
@@ -580,8 +580,8 @@ public class Engine {
         int[] dims = ptmatlabGetDimensions(ma);
         int nRows = dims[0];
         int nCols = dims[1];
-        boolean scalarStructs = (nCols == 1) && (nRows == 1);
-        boolean scalarMatrices = (nCols == 1) && (nRows == 1)
+        boolean scalarStructs = nCols == 1 && nRows == 1;
+        boolean scalarMatrices = nCols == 1 && nRows == 1
                 && par.getScalarMatrices;
         Token retval = null;
 
@@ -618,8 +618,8 @@ public class Engine {
                 } else {
                     boolean allIntegers = par.getIntMatrices;
 
-                    for (int i = 0; allIntegers && (i < a.length); i++) {
-                        for (int j = 0; allIntegers && (j < a[0].length); j++) {
+                    for (int i = 0; allIntegers && i < a.length; i++) {
+                        for (int j = 0; allIntegers && j < a[0].length; j++) {
                             allIntegers &= _doubleIsInteger(a[i][j]);
                         }
                     }
@@ -794,7 +794,7 @@ public class Engine {
                 }
             }
         } else if (t instanceof RecordToken) {
-            Object[] fieldNames = (((RecordToken) t).labelSet()).toArray();
+            Object[] fieldNames = ((RecordToken) t).labelSet().toArray();
             ma = ptmatlabCreateStructMatrix(name, fieldNames, 1, 1);
 
             if (ma == 0) {
@@ -802,18 +802,17 @@ public class Engine {
                         + "array " + name);
             }
 
-            for (int n = 0; n < fieldNames.length; n++) {
-                Token f = ((RecordToken) t).get((String) fieldNames[n]);
-                long fma = _createMxArray((String) fieldNames[n], f);
+            for (Object fieldName : fieldNames) {
+                Token f = ((RecordToken) t).get((String) fieldName);
+                long fma = _createMxArray((String) fieldName, f);
 
                 if (fma == 0) {
                     throw new IllegalActionException(
-                            "couldn't create array for field " + fieldNames[n]
+                            "couldn't create array for field " + fieldName
                                     + " in struct " + name);
                 }
 
-                ptmatlabSetStructField(name, ma, (String) fieldNames[n], 0, 0,
-                        fma);
+                ptmatlabSetStructField(name, ma, (String) fieldName, 0, 0, fma);
             }
         } else if (t instanceof StringToken) {
             String s = ((StringToken) t).stringValue();
@@ -862,8 +861,8 @@ public class Engine {
         // FindBugs reports "Test for floating point equality", which
         // may be ignored here because we really want to know if
         // the double is equal to the floor of the double.
-        return (d == Math.floor(d)) && (d <= Integer.MAX_VALUE)
-                && (d >= Integer.MIN_VALUE);
+        return d == Math.floor(d) && d <= Integer.MAX_VALUE
+                && d >= Integer.MIN_VALUE;
     }
 
     ///////////////////////////////////////////////////////////////////

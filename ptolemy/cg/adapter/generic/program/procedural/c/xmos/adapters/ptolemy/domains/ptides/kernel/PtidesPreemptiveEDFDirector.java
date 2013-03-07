@@ -99,8 +99,8 @@ public class PtidesPreemptiveEDFDirector
 
         code.append(getCodeGenerator().comment("Create a task for each actor."));
 
-        for (Actor actor : (List<Actor>) (((CompositeActor) getComponent()
-                .getContainer()).deepEntityList())) {
+        for (Actor actor : (List<Actor>) ((CompositeActor) getComponent()
+                .getContainer()).deepEntityList()) {
             NamedProgramCodeGeneratorAdapter adapter = (NamedProgramCodeGeneratorAdapter) getAdapter(actor);
             code.append(adapter.generateFireCode());
         }
@@ -270,41 +270,37 @@ public class PtidesPreemptiveEDFDirector
         _templateParser.getCodeStream().append(
                 _generateActuatorActuationFuncArrayCode());
 
-        int actuatorIndex = 0;
-        int sensorIndex = 0;
-        String devicePortId = "";
-        String deviceId = "";
         StringBuffer actuatorIds = new StringBuffer();
-//        for (Actor actor : (List<Actor>) ((CompositeActor) _director
-//                .getContainer()).deepEntityList()) {
-//            if (actor instanceof ActuatorSetup) {
-//                actuators.put(actor, Integer.valueOf(actuatorIndex));
-//                actuatorIndex++;
-//
-//                devicePortId = ((StringToken) ((Parameter) ((ActuatorSetup) actor)
-//                        .getAttribute("devicePortId")).getToken())
-//                        .stringValue();
-//                _devicePortIds.put(actor, devicePortId);
-//
-//                deviceId = ((StringToken) ((Parameter) ((ActuatorSetup) actor)
-//                        .getAttribute("deviceId")).getToken()).stringValue();
-//                _deviceIds.put(actor, deviceId);
-//            }
-//
-//            if (actor instanceof SensorHandler) {
-//                sensors.put(actor, Integer.valueOf(sensorIndex));
-//                sensorIndex++;
-//
-//                devicePortId = ((StringToken) ((Parameter) ((SensorHandler) actor)
-//                        .getAttribute("devicePortId")).getToken())
-//                        .stringValue();
-//                _devicePortIds.put(actor, devicePortId);
-//
-//                deviceId = ((StringToken) ((Parameter) ((SensorHandler) actor)
-//                        .getAttribute("deviceId")).getToken()).stringValue();
-//                _deviceIds.put(actor, deviceId);
-//            }
-//        }
+        //        for (Actor actor : (List<Actor>) ((CompositeActor) _director
+        //                .getContainer()).deepEntityList()) {
+        //            if (actor instanceof ActuatorSetup) {
+        //                actuators.put(actor, Integer.valueOf(actuatorIndex));
+        //                actuatorIndex++;
+        //
+        //                devicePortId = ((StringToken) ((Parameter) ((ActuatorSetup) actor)
+        //                        .getAttribute("devicePortId")).getToken())
+        //                        .stringValue();
+        //                _devicePortIds.put(actor, devicePortId);
+        //
+        //                deviceId = ((StringToken) ((Parameter) ((ActuatorSetup) actor)
+        //                        .getAttribute("deviceId")).getToken()).stringValue();
+        //                _deviceIds.put(actor, deviceId);
+        //            }
+        //
+        //            if (actor instanceof SensorHandler) {
+        //                sensors.put(actor, Integer.valueOf(sensorIndex));
+        //                sensorIndex++;
+        //
+        //                devicePortId = ((StringToken) ((Parameter) ((SensorHandler) actor)
+        //                        .getAttribute("devicePortId")).getToken())
+        //                        .stringValue();
+        //                _devicePortIds.put(actor, devicePortId);
+        //
+        //                deviceId = ((StringToken) ((Parameter) ((SensorHandler) actor)
+        //                        .getAttribute("deviceId")).getToken()).stringValue();
+        //                _deviceIds.put(actor, deviceId);
+        //            }
+        //        }
 
         //        for (int i = 0; i < maxNumSensorInputs - sensors.size(); i++) {
         //            args.add("");
@@ -319,9 +315,10 @@ public class PtidesPreemptiveEDFDirector
         for (Actor actuator : actuators.keySet()) {
             String deviceName = CodeGeneratorAdapter
                     .generateName((NamedObj) actuator);
-            switchstatement.append("case " + _deviceIds.get(actuator) + ":\n"
-                    + "    newEvent->fire = " + deviceName + ";\n"
-                    + "break;\n");
+            switchstatement
+                    .append("case " + _deviceIds.get(actuator) + ":\n"
+                            + "    newEvent->fire = " + deviceName + ";\n"
+                            + "break;\n");
             if (actuatorIds.length() > 0) {
                 actuatorIds.append(", ");
             }
@@ -361,14 +358,14 @@ public class PtidesPreemptiveEDFDirector
             NamedProgramCodeGeneratorAdapter adapter = (NamedProgramCodeGeneratorAdapter) getCodeGenerator()
                     .getAdapter(actor);
 
-//            if (actor instanceof ActuationDevice) {
-//                code.append("void Actuation_"
-//                        + CodeGeneratorAdapter.generateName((NamedObj) actor)
-//                        + "() {" + _eol);
-//                code.append(((ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.ptides.lib.OutputDevice) adapter)
-//                        .generateActuatorActuationFuncCode());
-//                code.append("}" + _eol);
-//            }
+            //            if (actor instanceof ActuationDevice) {
+            //                code.append("void Actuation_"
+            //                        + CodeGeneratorAdapter.generateName((NamedObj) actor)
+            //                        + "() {" + _eol);
+            //                code.append(((ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.ptides.lib.OutputDevice) adapter)
+            //                        .generateActuatorActuationFuncCode());
+            //                code.append("}" + _eol);
+            //            }
 
             String fireFunctionParameters = adapter.getFireFunctionParameters();
             code.append("void "
@@ -425,12 +422,12 @@ public class PtidesPreemptiveEDFDirector
 
         for (Actor actor : (List<Actor>) ((CompositeActor) _director
                 .getContainer()).deepEntityList()) {
-//            if (actor instanceof SensorHandler) {
-//                code.append("void "
-//                        + CodeGeneratorAdapter.generateName((NamedObj) actor)
-//                        + "(streaming chanend schedulerChannel, const Time &timestamp);"
-//                        + _eol);
-//            }
+            //            if (actor instanceof SensorHandler) {
+            //                code.append("void "
+            //                        + CodeGeneratorAdapter.generateName((NamedObj) actor)
+            //                        + "(streaming chanend schedulerChannel, const Time &timestamp);"
+            //                        + _eol);
+            //            }
         }
 
         return code.toString();
@@ -445,18 +442,20 @@ public class PtidesPreemptiveEDFDirector
 
         StringBuffer sensorDefinition = new StringBuffer();
         StringBuffer sensorReadyFlags = new StringBuffer();
-        StringBuffer sensorSwitch = new StringBuffer("while (1) {\n    select {\n");
+        StringBuffer sensorSwitch = new StringBuffer(
+                "while (1) {\n    select {\n");
         for (Actor sensor : sensors.keySet()) {
             String deviceName = CodeGeneratorAdapter
                     .generateName((NamedObj) sensor) + "_device";
 
-            sensorDefinition.append("on stdcore[1]: in port " + deviceName + " = "
-                    + _devicePortIds.get(sensor) + ";\n");
+            sensorDefinition.append("on stdcore[1]: in port " + deviceName
+                    + " = " + _devicePortIds.get(sensor) + ";\n");
 
             sensorReadyFlags.append("uint8 " + deviceName + "Ready = TRUE;\n");
 
-            sensorSwitch.append("case " + deviceName + " when pinseq(" + deviceName
-                    + "Ready) :> void:\n" + "if (" + deviceName + "Ready) {\n"
+            sensorSwitch.append("case " + deviceName + " when pinseq("
+                    + deviceName + "Ready) :> void:\n" + "if (" + deviceName
+                    + "Ready) {\n"
                     + "getTimestamp(timestamp, platformClockChannel);\n"
                     + CodeGeneratorAdapter.generateName((NamedObj) sensor)
                     + "(schedulerChannel, timestamp);\n" + deviceName
@@ -475,13 +474,14 @@ public class PtidesPreemptiveEDFDirector
             actuatorDefinition.append("on stdcore[1]: out port " + deviceName
                     + " = " + _devicePortIds.get(actuator) + ";\n");
 
-            doActuation.append("void "
-                    + deviceName
-                    + "_Actuation() {\n"
-                    + "timer time;\n uint32 count;\n"
-                    + deviceName
-                    + " <: 1;\n time :> count;\ntime when timerafter(count + 5000) :> void;"
-                    + deviceName + " <: 0;\n}\n");
+            doActuation
+                    .append("void "
+                            + deviceName
+                            + "_Actuation() {\n"
+                            + "timer time;\n uint32 count;\n"
+                            + deviceName
+                            + " <: 1;\n time :> count;\ntime when timerafter(count + 5000) :> void;"
+                            + deviceName + " <: 0;\n}\n");
 
             initActuatorString.append(deviceName + " <: 0;\n");
         }

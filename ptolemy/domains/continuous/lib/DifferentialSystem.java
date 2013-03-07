@@ -326,8 +326,8 @@ public class DifferentialSystem extends TypedCompositeActor {
                 // Create and connect the port only if the input
                 // is used.
                 for (int k = 0; k < m; k++) {
-                    Parameter stateUpdateSpec = ((Parameter) getAttribute(states[i]
-                            + "_dot"));
+                    Parameter stateUpdateSpec = (Parameter) getAttribute(states[i]
+                            + "_dot");
                     Set<String> freeIdentifiers = stateUpdateSpec
                             .getFreeIdentifiers();
                     // Create an output port only if the expression references the input.
@@ -358,7 +358,7 @@ public class DifferentialSystem extends TypedCompositeActor {
                 // in the expression for an output port
                 // if you want that output port in a feedback loop.
                 for (int k = 0; k < m; k++) {
-                    Parameter outputSpec = ((Parameter) getAttribute(outputs[l]));
+                    Parameter outputSpec = (Parameter) getAttribute(outputs[l]);
                     Set<String> freeIdentifiers = outputSpec
                             .getFreeIdentifiers();
                     // Create an output port only if the expression references the input.
@@ -426,8 +426,8 @@ public class DifferentialSystem extends TypedCompositeActor {
 
         // Check if any of the state variable names is an empty string.
         for (int i = 0; i < n; i++) {
-            String name = (((StringToken) stateNames.getElement(i))
-                    .stringValue()).trim();
+            String name = ((StringToken) stateNames.getElement(i))
+                    .stringValue().trim();
 
             if (name.equals("")) {
                 throw new IllegalActionException(this, "A state variable "
@@ -487,8 +487,7 @@ public class DifferentialSystem extends TypedCompositeActor {
         // This director is not persistent, however.
         // There is no need to store it in the MoML file, since
         // it is created here in the constructor.
-        (new ContinuousDirector(this, "ContinuousDirector"))
-                .setPersistent(false);
+        new ContinuousDirector(this, "ContinuousDirector").setPersistent(false);
 
         // icon
         _attachText("_iconDescription", "<svg>\n"

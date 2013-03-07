@@ -31,6 +31,7 @@ package ptolemy.media.javasound;
 import java.io.IOException;
 
 import javax.sound.sampled.AudioFormat;
+import javax.sound.sampled.AudioFormat.Encoding;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.DataLine;
 import javax.sound.sampled.LineUnavailableException;
@@ -228,8 +229,8 @@ public class LiveSoundJavaSE extends LiveSoundCommon implements
                 _captureData.length);
 
         // Check if we need to reallocate.
-        if ((_channels != _audioInDoubleArray.length)
-                || (_transferSize != _audioInDoubleArray[0].length)) {
+        if (_channels != _audioInDoubleArray.length
+                || _transferSize != _audioInDoubleArray[0].length) {
             // Reallocate
             _audioInDoubleArray = new double[_channels][_transferSize];
         }
@@ -377,7 +378,7 @@ public class LiveSoundJavaSE extends LiveSoundCommon implements
             _maxSampleReciprocal = 0;
         }
 
-        if ((_captureIsActive) && (_playbackIsActive)) {
+        if (_captureIsActive && _playbackIsActive) {
             // Restart capture/playback with new bitsPerSample.
             _stopCapture();
             _stopPlayback();
@@ -410,7 +411,7 @@ public class LiveSoundJavaSE extends LiveSoundCommon implements
      */
     public void setBufferSize(int bufferSize) throws IOException {
         _bufferSize = bufferSize;
-        if ((_captureIsActive) && (_playbackIsActive)) {
+        if (_captureIsActive && _playbackIsActive) {
             // Restart capture/playback with new bufferSize.
             _stopCapture();
             _stopPlayback();
@@ -446,7 +447,7 @@ public class LiveSoundJavaSE extends LiveSoundCommon implements
      */
     public void setChannels(int channels) throws IOException {
         _channels = channels;
-        if ((_captureIsActive) && (_playbackIsActive)) {
+        if (_captureIsActive && _playbackIsActive) {
             // Restart capture/playback with new number of channels.
             _stopCapture();
             _stopPlayback();
@@ -479,7 +480,7 @@ public class LiveSoundJavaSE extends LiveSoundCommon implements
      */
     public void setSampleRate(int sampleRate) throws IOException {
         _sampleRate = sampleRate;
-        if ((_captureIsActive) && (_playbackIsActive)) {
+        if (_captureIsActive && _playbackIsActive) {
             // Restart capture/playback with new sample rate.
             _stopCapture();
             _stopPlayback();
@@ -650,12 +651,12 @@ public class LiveSoundJavaSE extends LiveSoundCommon implements
         AudioFormat.Encoding[] encodings = AudioSystem
                 .getTargetEncodings(format);
         StringBuffer encodingDescriptions = new StringBuffer();
-        for (int i = 0; i < encodings.length; i++) {
-            encodingDescriptions.append(encodings[i] + "\n");
-            AudioFormat[] formats = AudioSystem.getTargetFormats(encodings[i],
+        for (Encoding encoding : encodings) {
+            encodingDescriptions.append(encoding + "\n");
+            AudioFormat[] formats = AudioSystem.getTargetFormats(encoding,
                     format);
-            for (int j = 0; j < formats.length; j++) {
-                encodingDescriptions.append("  " + formats[j] + "\n");
+            for (AudioFormat format2 : formats) {
+                encodingDescriptions.append("  " + format2 + "\n");
             }
         }
         return encodingDescriptions.toString();

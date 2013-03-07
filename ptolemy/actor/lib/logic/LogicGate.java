@@ -177,7 +177,7 @@ public class LogicGate extends Transformer {
 
         for (int i = 0; i < input.getWidth(); i++) {
             if (input.hasToken(i)) {
-                in = (BooleanToken) (input.get(i));
+                in = (BooleanToken) input.get(i);
 
                 if (in != null) {
                     value = _updateFunction(in, value);

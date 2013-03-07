@@ -161,8 +161,8 @@ public class RelationController extends ParameterizedNodeController {
                 figure.setToolTipText(relation.getName(model.getPtolemyModel()));
                 // Old way to set the color.
                 try {
-                    StringAttribute colorAttr = (StringAttribute) (relation
-                            .getAttribute("_color", StringAttribute.class));
+                    StringAttribute colorAttr = (StringAttribute) relation
+                            .getAttribute("_color", StringAttribute.class);
 
                     if (colorAttr != null) {
                         String color = colorAttr.getExpression();
@@ -209,8 +209,7 @@ public class RelationController extends ParameterizedNodeController {
                         LabelFigure label = new LabelFigure(labelString,
                                 _relationLabelFont, 0,
                                 SwingConstants.SOUTH_WEST);
-                        label.translateTo((width / 2) + 1.0,
-                                (-height / 2) - 1.0);
+                        label.translateTo(width / 2 + 1.0, -height / 2 - 1.0);
                         result.add(label);
                     }
                 } catch (IllegalActionException ex) {

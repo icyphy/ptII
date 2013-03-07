@@ -64,7 +64,6 @@ public class FMUBuilder {
         buffer = new StringBuffer();
     }
 
-
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
 
@@ -76,7 +75,6 @@ public class FMUBuilder {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-
 
     /** Build the specified shared library inside the FMU.
      *  <p>A typicaly value is
@@ -99,10 +97,12 @@ public class FMUBuilder {
         // The architecture, typically one of darwin64, linux32, linux64, win32, win64
         String architecture = sharedLibraryFile.getParentFile().getName();
 
-        File sourcesDirectory = new File(sharedLibraryFile.getParentFile().getParentFile().getParentFile(), "sources");
+        File sourcesDirectory = new File(sharedLibraryFile.getParentFile()
+                .getParentFile().getParentFile(), "sources");
 
         if (!sourcesDirectory.exists()) {
-            stderr("The source directory \"" + sourcesDirectory  + "\" does not exist." + _eol);
+            stderr("The source directory \"" + sourcesDirectory
+                    + "\" does not exist." + _eol);
             return false;
         }
 
@@ -110,7 +110,7 @@ public class FMUBuilder {
         File makefile = new File(sourcesDirectory, "makefile");
 
         if (!makefile.exists()) {
-            stderr("The makefile \"" + makefile  + "\" does not exist." + _eol);
+            stderr("The makefile \"" + makefile + "\" does not exist." + _eol);
             return false;
         }
 
@@ -122,11 +122,11 @@ public class FMUBuilder {
 
         // Set up a Thread to read in any error messages
         _StreamReaderThread errorGobbler = new _StreamReaderThread(
-                            process.getErrorStream(), this);
+                process.getErrorStream(), this);
 
         // Set up a Thread to read in any output messages
         _StreamReaderThread outputGobbler = new _StreamReaderThread(
-                            process.getInputStream(), this);
+                process.getInputStream(), this);
 
         // Start up the Threads
         errorGobbler.start();
@@ -136,12 +136,14 @@ public class FMUBuilder {
             process.waitFor();
         } catch (InterruptedException ex) {
             process.destroy();
-            throw new IOException("The process building " + sharedLibraryFile + " was interrupted.", ex);
+            throw new IOException("The process building " + sharedLibraryFile
+                    + " was interrupted.", ex);
         }
 
         int exitValue = process.exitValue();
         if (exitValue != 0) {
-            stderr("The exit value of the process building " + sharedLibraryFile + " was non-zero: " + exitValue);
+            stderr("The exit value of the process building "
+                    + sharedLibraryFile + " was non-zero: " + exitValue);
         }
         if (!sharedLibraryFile.exists()) {
             stderr("Failed to created " + sharedLibraryFile + "?");

@@ -159,8 +159,8 @@ public class MigrateModelsManager {
 
                 String fileContent = _getContent(directory);
 
-                if (checkContent == false
-                        || (checkContent && _checkFileContent(fileContent))) {
+                if (checkContent == false || checkContent
+                        && _checkFileContent(fileContent)) {
 
                     _createDBModel(modelName, fileContent,
                             directory.getAbsolutePath());
@@ -178,9 +178,10 @@ public class MigrateModelsManager {
 
         } else if (directory.isDirectory()
                 && readSubDirectories
-                || (directory.isDirectory() && !readSubDirectories && directory
-                        .getAbsolutePath().equalsIgnoreCase(
-                                parentDirectory.getAbsolutePath()))) {
+                || directory.isDirectory()
+                && !readSubDirectories
+                && directory.getAbsolutePath().equalsIgnoreCase(
+                        parentDirectory.getAbsolutePath())) {
             // If the path is a directory, get the list of files and call
             // this method recursively on each of the files.
 
@@ -188,10 +189,10 @@ public class MigrateModelsManager {
 
             if (listOfFiles != null) {
 
-                for (int i = 0; i < listOfFiles.length; i++) {
+                for (File listOfFile : listOfFiles) {
 
-                    _readFiles(listOfFiles[i], parentDirectory,
-                            readSubDirectories, checkContent);
+                    _readFiles(listOfFile, parentDirectory, readSubDirectories,
+                            checkContent);
 
                 }
             }

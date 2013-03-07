@@ -117,14 +117,15 @@ public class SuperdenseDependency extends BooleanDependency {
         if (object == this) {
             return true;
         }
-        if ((object == null) || (object.getClass() != getClass())) {
+        if (object == null || object.getClass() != getClass()) {
             return false;
         } else {
             if (((SuperdenseDependency) object)._time == Double.POSITIVE_INFINITY
                     && _time == Double.POSITIVE_INFINITY) {
                 return true;
             }
-            return (_time == ((SuperdenseDependency) object)._time && _index == ((SuperdenseDependency) object)._index);
+            return _time == ((SuperdenseDependency) object)._time
+                    && _index == ((SuperdenseDependency) object)._index;
         }
     }
 
@@ -134,7 +135,7 @@ public class SuperdenseDependency extends BooleanDependency {
      */
     public int hashCode() {
         long v = Double.doubleToLongBits(_time);
-        return (int) (v ^ (v >>> 32));
+        return (int) (v ^ v >>> 32);
     }
 
     /** Return the index value of this dependency.
@@ -154,7 +155,8 @@ public class SuperdenseDependency extends BooleanDependency {
     public Dependency oPlus(Dependency dependency) {
         // NOTE: Findbugs reports this as an Unchecked/unconfirmed cast
         if (((SuperdenseDependency) dependency)._time < _time
-                || (((SuperdenseDependency) dependency)._time == _time && ((SuperdenseDependency) dependency)._index < _index)) {
+                || ((SuperdenseDependency) dependency)._time == _time
+                && ((SuperdenseDependency) dependency)._index < _index) {
             return dependency;
         }
         return this;

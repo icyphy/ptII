@@ -134,7 +134,7 @@ public class FrontDropQueue extends CIActor {
             }
         }
 
-        return (input.hasToken(0) || (_queue.size() > 0));
+        return input.hasToken(0) || _queue.size() > 0;
     }
 
     public void preinitialize() throws IllegalActionException {

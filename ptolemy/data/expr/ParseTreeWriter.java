@@ -115,7 +115,7 @@ public class ParseTreeWriter extends AbstractParseTreeVisitor {
 
         int n = node.jjtGetNumChildren();
 
-        for (int i = 1; i < (n - 1); ++i) {
+        for (int i = 1; i < n - 1; ++i) {
             _printChild(node, i);
             _writer.print(", ");
         }
@@ -194,12 +194,12 @@ public class ParseTreeWriter extends AbstractParseTreeVisitor {
             for (int j = 0; j < columnCount; j++) {
                 _printChild(node, n++);
 
-                if (j < (columnCount - 1)) {
+                if (j < columnCount - 1) {
                     _writer.print(", ");
                 }
             }
 
-            if (i < (rowCount - 1)) {
+            if (i < rowCount - 1) {
                 _writer.print("; ");
             }
         }

@@ -284,7 +284,7 @@ public class OMCProxy implements IOMCProxy {
                     + " is: " + readSimulationResult.getFirstResult());
         }
     }
-*/
+    */
     /** Create an instance of OMCProxy object in order to provide a global point of access to the instance.
      *  It provides a unique source of OMCProxy instance.
      *  @return An OMCProxy object representing the instance value.
@@ -551,13 +551,14 @@ public class OMCProxy implements IOMCProxy {
                     "Unable to modify parameters/variables value due to connection problem with OMC");
         }
     }
-*/
+    */
     /** Plot the plt file by calling PxgraphApplication.main(dcmotor_res.plt).
      *  @param fileNamePrefix User preferable name for the result file.
      *  @param modelName Name of the model which should be built.
      *  @exception ConnectException If commands could not be sent to the OMC.
      */
-    public void plotPltFile(String fileNamePrefix,String modelName) throws ConnectException {
+    public void plotPltFile(String fileNamePrefix, String modelName)
+            throws ConnectException {
 
         // Array for saving the file path.
         String[] _pltPath = new String[1];
@@ -570,8 +571,8 @@ public class OMCProxy implements IOMCProxy {
 
         // Save file path in the string array for invoking main() of PxgraphApplication.
         if (fileNamePrefix.compareTo("") == 0) {
-            _pltPath[0] = _openModelicaWorkingDirectory + "/"
-                    + modelName + "_res.plt";
+            _pltPath[0] = _openModelicaWorkingDirectory + "/" + modelName
+                    + "_res.plt";
         } else {
             _pltPath[0] = _openModelicaWorkingDirectory + "/" + fileNamePrefix
                     + "_res.plt";
@@ -579,8 +580,6 @@ public class OMCProxy implements IOMCProxy {
 
         PxgraphApplication.main(_pltPath);
     }
-
-
 
     /** Leave and quit OpenModelica environment.
      *  Deallocate OMCProxy and OMCLogger objects.
@@ -803,7 +802,8 @@ public class OMCProxy implements IOMCProxy {
                 loggerInfo = "Simulation of " + modelName
                         + " is done successfuly.";
                 _omcLogger.getInfo(loggerInfo);
-            } else if (fileNamePrefix.compareTo("") < 0 || fileNamePrefix.compareTo("") > 0) {
+            } else if (fileNamePrefix.compareTo("") < 0
+                    || fileNamePrefix.compareTo("") > 0) {
                 // When users select File Name Prefix as the name of executable result file.
                 loggerInfo = "Simulation of " + fileNamePrefix
                         + " is done successfuly.";
@@ -1106,11 +1106,6 @@ public class OMCProxy implements IOMCProxy {
         }
     }
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
-    // The name of the Modelica model component.
-    private String _componentName = null;
-
     // Initialize _corbaSession.
     private String _corbaSessionName = null;
 
@@ -1141,9 +1136,6 @@ public class OMCProxy implements IOMCProxy {
 
     // Initialization of the number of errors.
     private int _numberOfErrors = 0;
-
-    // Indicates if the Modelica model component is variable or parameter.
-    private String _parameterOrVariable = null;
 
     // Maximum number of compiler errors to display.
     private int _showMaxErrors = 10;

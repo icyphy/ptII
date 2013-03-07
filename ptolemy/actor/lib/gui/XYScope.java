@@ -107,7 +107,7 @@ public class XYScope extends XYPlotter {
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
-        if ((attribute == persistence) && (plot != null)) {
+        if (attribute == persistence && plot != null) {
             int persValue = ((IntToken) persistence.getToken()).intValue();
 
             // NOTE: We assume the superclass ensures this cast is safe.

@@ -253,7 +253,7 @@ public class SyntacticNode extends ComponentEntity implements SyntacticTerm {
      */
     public int addPorts(Port port, boolean isin) throws IllegalActionException,
             NameDuplicationException {
-        String prefix = (isin ? "in_" : "out_");
+        String prefix = isin ? "in_" : "out_";
         List<SyntacticPort> portset = isin ? _inputs : _outputs;
         String cardinality = isin ? "WEST" : "EAST";
 
@@ -962,8 +962,8 @@ public class SyntacticNode extends ComponentEntity implements SyntacticTerm {
 
         int permlen = permutation.length;
         int pheight = permlen * 35;
-        String svgicon = "<svg>\n" + "<rect x=\"-20\" y=\"" + (-pheight)
-                + "\" width=\"40\" height=\"" + (2 * pheight)
+        String svgicon = "<svg>\n" + "<rect x=\"-20\" y=\"" + -pheight
+                + "\" width=\"40\" height=\"" + 2 * pheight
                 + "\" style=\"fill:red\"/>\n";
 
         for (int n = 0; n < permlen; ++n) {

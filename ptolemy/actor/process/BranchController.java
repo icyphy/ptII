@@ -173,8 +173,7 @@ public class BranchController implements Runnable {
 
             // If the port lacks either producer or consumer
             // receivers, then there is no point in creating a branch.
-            if ((producerReceivers.length > i)
-                    && (consumerReceivers.length > i)) {
+            if (producerReceivers.length > i && consumerReceivers.length > i) {
                 try {
                     producerReceiver = (ProcessReceiver) producerReceivers[i][0];
                     consumerReceiver = (ProcessReceiver) consumerReceivers[i][0];

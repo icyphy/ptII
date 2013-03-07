@@ -152,16 +152,16 @@ public final class ArrayFIFOQueue implements Cloneable {
         LinkedList l = new LinkedList();
         int i;
 
-        if ((_queueFront < _queueBack) || isFull()) {
-            for (i = _queueBack; (i < _queueArray.length); i++) {
+        if (_queueFront < _queueBack || isFull()) {
+            for (i = _queueBack; i < _queueArray.length; i++) {
                 l.addLast(_queueArray[i]);
             }
 
-            for (i = 0; (i < _queueFront); i++) {
+            for (i = 0; i < _queueFront; i++) {
                 l.addLast(_queueArray[i]);
             }
         } else {
-            for (i = _queueBack; (i < _queueFront); i++) {
+            for (i = _queueBack; i < _queueFront; i++) {
                 l.addLast(_queueArray[i]);
             }
         }
@@ -274,7 +274,7 @@ public final class ArrayFIFOQueue implements Cloneable {
      *  @return An enumeration of objects in the history.
      */
     public Enumeration historyElements() {
-        return Collections.enumeration((_historyList != null) ? _historyList
+        return Collections.enumeration(_historyList != null ? _historyList
                 : Collections.EMPTY_LIST);
     }
 
@@ -282,14 +282,14 @@ public final class ArrayFIFOQueue implements Cloneable {
      *  @return The current number of objects in the history.
      */
     public int historySize() {
-        return (_historyList != null) ? _historyList.size() : 0;
+        return _historyList != null ? _historyList.size() : 0;
     }
 
     /** Return true if the number of objects in the queue is zero.
      *  @return A boolean indicating whether the queue is empty.
      */
     public boolean isEmpty() {
-        return (_queueSize == 0);
+        return _queueSize == 0;
     }
 
     /** Return true if the number of objects in the queue equals the
@@ -297,7 +297,7 @@ public final class ArrayFIFOQueue implements Cloneable {
      *  @return A boolean indicating whether the queue is full.
      */
     public boolean isFull() {
-        return (_queueSize >= _queueArray.length);
+        return _queueSize >= _queueArray.length;
     }
 
     /** Put an object in the queue and return true if this will not
@@ -307,7 +307,7 @@ public final class ArrayFIFOQueue implements Cloneable {
      *  @return A boolean indicating success.
      */
     public boolean put(Object element) {
-        if ((_queueArray.length - _queueSize) >= 1) {
+        if (_queueArray.length - _queueSize >= 1) {
             _queueArray[_queueFront] = element;
             _queueFront += 1;
 
@@ -349,8 +349,8 @@ public final class ArrayFIFOQueue implements Cloneable {
      *  @return A boolean indicating success.
      */
     public boolean putArray(Object[] element, int count) {
-        if ((_queueArray.length - _queueSize) >= count) {
-            if (count <= (_queueArray.length - _queueFront)) {
+        if (_queueArray.length - _queueSize >= count) {
+            if (count <= _queueArray.length - _queueFront) {
                 System.arraycopy(element, 0, _queueArray, _queueFront, count);
                 _queueFront += count;
 
@@ -554,7 +554,7 @@ public final class ArrayFIFOQueue implements Cloneable {
                     + " does not contain enough elements!");
         }
 
-        if (count <= (_queueArray.length - _queueBack)) {
+        if (count <= _queueArray.length - _queueBack) {
             System.arraycopy(_queueArray, _queueBack, objects, 0, count);
         } else {
             System.arraycopy(_queueArray, _queueBack, objects, 0,
@@ -624,8 +624,8 @@ public final class ArrayFIFOQueue implements Cloneable {
                     + "more elements than the proposed array size.");
         }
 
-        if ((_queueMaxCapacity != INFINITE_CAPACITY)
-                && (newSize > _queueMaxCapacity)) {
+        if (_queueMaxCapacity != INFINITE_CAPACITY
+                && newSize > _queueMaxCapacity) {
             throw new InternalErrorException("The proposed"
                     + " array size exceeds the maximum declared queue size.");
         }
@@ -634,7 +634,7 @@ public final class ArrayFIFOQueue implements Cloneable {
 
         if (newSize == 0) {
             _queueFront = 0;
-        } else if ((_queueFront < _queueBack) || isFull()) {
+        } else if (_queueFront < _queueBack || isFull()) {
             System.arraycopy(_queueArray, _queueBack, newArray, 0,
                     _queueArray.length - _queueBack);
             System.arraycopy(_queueArray, 0, newArray, _queueArray.length

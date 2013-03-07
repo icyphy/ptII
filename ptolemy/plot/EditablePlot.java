@@ -252,13 +252,13 @@ public class EditablePlot extends Plot {
             PlotPoint pt = pts.get(i);
 
             // Only bother with points in visual range
-            if ((pt.x >= _xMin) && (pt.x <= _xMax)) {
+            if (pt.x >= _xMin && pt.x <= _xMax) {
                 int index = (int) ((pt.x - _xMin) * _xscale)
                         - (_lrx - _ulx - _editSpecX.length);
 
-                if ((index >= 0) && (index < _editSpecX.length)) {
+                if (index >= 0 && index < _editSpecX.length) {
                     if (_editSpecSet[index]) {
-                        pt.y = _yMax - ((_editSpecY[index] - _uly) / _yscale);
+                        pt.y = _yMax - (_editSpecY[index] - _uly) / _yscale;
 
                         // For auto-ranging, keep track of min and max.
                         if (pt.y < _yBottom) {
@@ -315,7 +315,7 @@ public class EditablePlot extends Plot {
             x = _ulx;
         }
 
-        if ((x <= _currentEditX) || (x >= _lrx)) {
+        if (x <= _currentEditX || x >= _lrx) {
             // ignore
             return;
         }
@@ -326,7 +326,7 @@ public class EditablePlot extends Plot {
             int index = step - (_lrx - _editSpecX.length);
             double proportion = (step - _currentEditX)
                     / (double) (x - _currentEditX);
-            int newY = (int) (_currentEditY + (proportion * (y - _currentEditY)));
+            int newY = (int) (_currentEditY + proportion * (y - _currentEditY));
 
             if (!_editSpecSet[index]) {
                 _editSpecX[index] = step;

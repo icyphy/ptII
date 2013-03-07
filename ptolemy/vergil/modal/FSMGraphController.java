@@ -439,8 +439,8 @@ public class FSMGraphController extends FSMViewerGraphController {
             double x;
             double y;
 
-            if ((getSourceType() == TOOLBAR_TYPE)
-                    || (getSourceType() == MENUBAR_TYPE)) {
+            if (getSourceType() == TOOLBAR_TYPE
+                    || getSourceType() == MENUBAR_TYPE) {
                 // No location in the action, so put it in the middle.
                 BasicGraphFrame frame = FSMGraphController.this.getFrame();
                 Point2D center;

@@ -99,10 +99,10 @@ public abstract class WithIconGraphController extends BasicGraphController {
 
         double[] p;
         if (_prototype.isInput() && _prototype.isOutput()) {
-            p = _offsetFigure(center.getX(),
-                    (visiblePart.getY() + visiblePart.getHeight())
-                            - _PORT_OFFSET, FigureAction.PASTE_OFFSET * 2, 0,
-                    pane, frame);
+            p = _offsetFigure(
+                    center.getX(),
+                    visiblePart.getY() + visiblePart.getHeight() - _PORT_OFFSET,
+                    FigureAction.PASTE_OFFSET * 2, 0, pane, frame);
         } else if (_prototype.isInput()) {
             p = _offsetFigure(visiblePart.getX() + _PORT_OFFSET, center.getY(),
                     0, FigureAction.PASTE_OFFSET * 2, pane, frame);
@@ -296,8 +296,8 @@ public abstract class WithIconGraphController extends BasicGraphController {
             double x;
             double y;
 
-            if ((getSourceType() == TOOLBAR_TYPE)
-                    || (getSourceType() == MENUBAR_TYPE)) {
+            if (getSourceType() == TOOLBAR_TYPE
+                    || getSourceType() == MENUBAR_TYPE) {
                 // No location in the action, so put it in the middle.
                 BasicGraphFrame frame = WithIconGraphController.this.getFrame();
                 GraphPane pane = getGraphPane();

@@ -329,7 +329,7 @@ public class JavaParseTreeCodeGenerator extends AbstractParseTreeVisitor
         // _evaluatedChildToken be set here, otherwise
         // _evaluatedChildToken will be set to the value
         // of the last token.
-        _evaluatedChildToken = (new ArrayToken(elementType, tokens));
+        _evaluatedChildToken = new ArrayToken(elementType, tokens);
 
         //if (node.isConstant()) {
         //    node.setToken(_evaluatedChildToken);
@@ -412,7 +412,7 @@ public class JavaParseTreeCodeGenerator extends AbstractParseTreeVisitor
         //_fireCode.append(")");
         _childCode = "(" + result + ")";
 
-        _evaluatedChildToken = ((ptolemy.data.Token) bitwiseResult);
+        _evaluatedChildToken = (ptolemy.data.Token) bitwiseResult;
 
         //if (node.isConstant()) {
         //    node.setToken(_evaluatedChildToken);
@@ -464,7 +464,7 @@ public class JavaParseTreeCodeGenerator extends AbstractParseTreeVisitor
         Type type = null;
         String functionName = node.getFunctionName();
 
-        if ((functionName != null) && (_scope != null)) {
+        if (functionName != null && _scope != null) {
             value = _scope.get(node.getFunctionName());
             type = _scope.getType(node.getFunctionName());
         }
@@ -503,7 +503,7 @@ public class JavaParseTreeCodeGenerator extends AbstractParseTreeVisitor
         // ignored, and not evaluated unless necessary.
         int argCount = node.jjtGetNumChildren() - 1;
 
-        if ((value != null) || (functionName == null)) {
+        if (value != null || functionName == null) {
             // The value of the first child should be either a FunctionToken,
             // an ArrayToken, or a MatrixToken.
             // ptolemy.data.Token result;
@@ -620,7 +620,7 @@ public class JavaParseTreeCodeGenerator extends AbstractParseTreeVisitor
         ExpressionFunction definedFunction = new ExpressionFunction(
                 node.getArgumentNameList(), node.getArgumentTypes(), cloneTree);
         FunctionToken result = new FunctionToken(definedFunction, type);
-        _evaluatedChildToken = (result);
+        _evaluatedChildToken = result;
 
         StringBuffer functionCode = new StringBuffer(
                 "\n/* FIXME: This code does work.*/\n");
@@ -920,7 +920,7 @@ public class JavaParseTreeCodeGenerator extends AbstractParseTreeVisitor
 
         _childCode = "(" + result + ")";
 
-        _evaluatedChildToken = (BooleanToken.getInstance(flag));
+        _evaluatedChildToken = BooleanToken.getInstance(flag);
 
         //if (node.isConstant()) {
         //    node.setToken(_evaluatedChildToken);
@@ -959,7 +959,7 @@ public class JavaParseTreeCodeGenerator extends AbstractParseTreeVisitor
                     //_fireCode.append(", ");
                     result.append(", ");
 
-                    int index = (i * column) + j;
+                    int index = i * column + j;
 
                     //int nextIndex = _fireCode.length();
                     tokens[index] = _evaluateChild(node, index);
@@ -1009,8 +1009,8 @@ public class JavaParseTreeCodeGenerator extends AbstractParseTreeVisitor
                 for (int i = 1; i < node.getRowCount(); ++i) {
                     if (columnCount != MatrixToken.determineSequenceLength(
                             (ScalarToken) tokens[3 * i],
-                            (ScalarToken) tokens[(3 * i) + 1],
-                            (ScalarToken) tokens[(3 * i) + 2])) {
+                            (ScalarToken) tokens[3 * i + 1],
+                            (ScalarToken) tokens[3 * i + 2])) {
                         throw new IllegalActionException("Matrix "
                                 + "should have the same number of columns "
                                 + "for all rows.");
@@ -1022,7 +1022,7 @@ public class JavaParseTreeCodeGenerator extends AbstractParseTreeVisitor
 
                 for (int i = 0; i < node.getRowCount(); i++) {
                     ptolemy.data.Token[] newTokens = MatrixToken
-                            .createSequence(tokens[3 * i], tokens[(3 * i) + 1],
+                            .createSequence(tokens[3 * i], tokens[3 * i + 1],
                                     columnCount);
                     System.arraycopy(newTokens, 0, matrixTokens, columnCount
                             * i, columnCount);
@@ -1038,7 +1038,7 @@ public class JavaParseTreeCodeGenerator extends AbstractParseTreeVisitor
             }
         }
 
-        _evaluatedChildToken = (childToken);
+        _evaluatedChildToken = childToken;
 
         //if (node.isConstant()) {
         //    node.setToken(_evaluatedChildToken);
@@ -1062,11 +1062,11 @@ public class JavaParseTreeCodeGenerator extends AbstractParseTreeVisitor
         StringBuffer result = new StringBuffer(_childCode);
 
         // Handle indexing into a record.
-        if ((argCount == 1) && token instanceof RecordToken) {
+        if (argCount == 1 && token instanceof RecordToken) {
             RecordToken record = (RecordToken) token;
 
             if (record.labelSet().contains(node.getMethodName())) {
-                _evaluatedChildToken = (record.get(node.getMethodName()));
+                _evaluatedChildToken = record.get(node.getMethodName());
                 return;
             }
         }
@@ -1169,7 +1169,7 @@ public class JavaParseTreeCodeGenerator extends AbstractParseTreeVisitor
             result.append(")");
         }
 
-        _evaluatedChildToken = (childToken);
+        _evaluatedChildToken = childToken;
 
         //if (node.isConstant()) {
         //    node.setToken(_evaluatedChildToken);
@@ -1197,7 +1197,7 @@ public class JavaParseTreeCodeGenerator extends AbstractParseTreeVisitor
         int numChildren = node.jjtGetNumChildren();
         _assert(numChildren > 0, node,
                 "The number of child nodes must be greater than zero");
-        _assert(numChildren == (lexicalTokenList.size() + 1), node,
+        _assert(numChildren == lexicalTokenList.size() + 1, node,
                 "The number of child nodes is "
                         + "not equal to number of operators plus one");
 
@@ -1268,7 +1268,7 @@ public class JavaParseTreeCodeGenerator extends AbstractParseTreeVisitor
         //_fireCode.append(")");
         _childCode = "(" + result + ")";
 
-        _evaluatedChildToken = (childToken);
+        _evaluatedChildToken = childToken;
 
         //if (node.isConstant()) {
         //    node.setToken(_evaluatedChildToken);
@@ -1305,9 +1305,9 @@ public class JavaParseTreeCodeGenerator extends AbstractParseTreeVisitor
                 new String[numChildren]);
 
         if (node instanceof ASTPtOrderedRecordConstructNode) {
-            _evaluatedChildToken = (new OrderedRecordToken(labels, tokens));
+            _evaluatedChildToken = new OrderedRecordToken(labels, tokens);
         } else {
-            _evaluatedChildToken = (new RecordToken(labels, tokens));
+            _evaluatedChildToken = new RecordToken(labels, tokens);
         }
 
         //if (node.isConstant()) {
@@ -1508,7 +1508,7 @@ public class JavaParseTreeCodeGenerator extends AbstractParseTreeVisitor
         int numChildren = node.jjtGetNumChildren();
         _assert(numChildren > 0, node,
                 "The number of child nodes must be greater than zero");
-        _assert(numChildren == (lexicalTokenList.size() + 1), node,
+        _assert(numChildren == lexicalTokenList.size() + 1, node,
                 "The number of child nodes is "
                         + "not equal to number of operators plus one");
 
@@ -1552,7 +1552,7 @@ public class JavaParseTreeCodeGenerator extends AbstractParseTreeVisitor
 
         _childCode = "(" + result + ")";
 
-        _evaluatedChildToken = (childToken);
+        _evaluatedChildToken = childToken;
 
         //if (node.isConstant()) {
         //    node.setToken(_evaluatedChildToken);
@@ -1617,7 +1617,7 @@ public class JavaParseTreeCodeGenerator extends AbstractParseTreeVisitor
          _assert(false, node, "Unrecognized unary node");
          }
          */
-        _evaluatedChildToken = (childToken);
+        _evaluatedChildToken = childToken;
 
         //if (node.isConstant()) {
         //    node.setToken(_evaluatedChildToken);

@@ -133,7 +133,7 @@ public class DEReceiver extends AbstractReceiver {
      *  @return True if there are more tokens.
      */
     public boolean hasToken() {
-        return (!_tokens.isEmpty());
+        return !_tokens.isEmpty();
     }
 
     /** Return true if there are <i>numberOfTokens</i>
@@ -142,7 +142,7 @@ public class DEReceiver extends AbstractReceiver {
      *  @return True if there are numberOfTokens tokens available.
      */
     public boolean hasToken(int numberOfTokens) {
-        return (_tokens.size() >= numberOfTokens);
+        return _tokens.size() >= numberOfTokens;
     }
 
     /** Put a token into this receiver and post a trigger event to the director.
@@ -209,7 +209,7 @@ public class DEReceiver extends AbstractReceiver {
                 if (actor != null) {
                     Director dir;
 
-                    if (!port.isInput() && (actor instanceof CompositeActor)
+                    if (!port.isInput() && actor instanceof CompositeActor
                             && ((CompositeActor) actor).isOpaque()) {
                         dir = actor.getDirector();
                     } else {

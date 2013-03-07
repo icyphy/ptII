@@ -145,8 +145,8 @@ public class PthalesDynamicCompositeActor extends PthalesCompositeActor {
 
             int iterations = nbTokens;
 
-            for (int i = 0; i < repetitions.length; i++) {
-                iterations *= repetitions[i];
+            for (Integer repetition : repetitions) {
+                iterations *= repetition;
             }
 
             if (minIterations < 0 || minIterations > iterations) {

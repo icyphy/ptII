@@ -87,7 +87,7 @@ public class ArrayLevelCrossing extends TypedAtomicActor {
         start = new PortParameter(this, "start");
         start.setExpression("0");
         start.setTypeEquals(BaseType.INT);
-        (new SingletonParameter(start.getPort(), "_showName"))
+        new SingletonParameter(start.getPort(), "_showName")
                 .setToken(BooleanToken.TRUE);
 
         forwards = new Parameter(this, "forwards");
@@ -186,7 +186,7 @@ public class ArrayLevelCrossing extends TypedAtomicActor {
 
             int startValue = ((IntToken) start.getToken()).intValue();
 
-            if ((startValue >= inputSize) || (startValue < 0)) {
+            if (startValue >= inputSize || startValue < 0) {
                 throw new IllegalActionException(this,
                         "start is out of range: " + startValue);
             }
@@ -211,18 +211,18 @@ public class ArrayLevelCrossing extends TypedAtomicActor {
             if (scaleValue.equals("relative amplitude decibels")) {
                 if (aboveValue) {
                     thresholdValue = reference
-                            * Math.pow(10.0, (thresholdValue / 20));
+                            * Math.pow(10.0, thresholdValue / 20);
                 } else {
                     thresholdValue = reference
-                            * Math.pow(10.0, (-thresholdValue / 20));
+                            * Math.pow(10.0, -thresholdValue / 20);
                 }
             } else if (scaleValue.equals("relative power decibels")) {
                 if (aboveValue) {
                     thresholdValue = reference
-                            * Math.pow(10.0, (thresholdValue / 10));
+                            * Math.pow(10.0, thresholdValue / 10);
                 } else {
                     thresholdValue = reference
-                            * Math.pow(10.0, (-thresholdValue / 10));
+                            * Math.pow(10.0, -thresholdValue / 10);
                 }
             } else if (scaleValue.equals("relative linear")) {
                 if (aboveValue) {
@@ -235,7 +235,7 @@ public class ArrayLevelCrossing extends TypedAtomicActor {
             // Default output if we don't find a crossing.
             int bin = -1;
 
-            for (int i = startValue; (i < inputSize) && (i >= 0); i += increment) {
+            for (int i = startValue; i < inputSize && i >= 0; i += increment) {
                 double currentValue = ((DoubleToken) inputArray.getElement(i))
                         .doubleValue();
 

@@ -140,11 +140,10 @@ public class StateController extends AttributeWithIconController {
                 try {
                     TypedActor[] refinements = ((State) target).getRefinement();
 
-                    if ((refinements != null) && (refinements.length > 0)) {
-                        for (int i = 0; i < refinements.length; i++) {
+                    if (refinements != null && refinements.length > 0) {
+                        for (TypedActor refinement : refinements) {
                             // Open each refinement.
-                            _configuration
-                                    .openInstance((NamedObj) refinements[i]);
+                            _configuration.openInstance((NamedObj) refinement);
                         }
                     } else {
                         MessageHandler.error("State has no refinement.");

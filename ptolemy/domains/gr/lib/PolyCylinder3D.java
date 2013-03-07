@@ -117,8 +117,8 @@ public class PolyCylinder3D extends GRShadedShape {
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (allowRuntimeChanges != null) {
-            if (((attribute == polygon) || (attribute == thickness))
-                    && _changesAllowedNow && (_containedNode != null)) {
+            if ((attribute == polygon || attribute == thickness)
+                    && _changesAllowedNow && _containedNode != null) {
                 _containedNode.setGeometry(_getGeometry());
             }
         }
@@ -169,7 +169,7 @@ public class PolyCylinder3D extends GRShadedShape {
         stripCount[0] = numberOfVertices;
         stripCount[1] = numberOfVertices;
 
-        for (int i = 2; i < (2 + numberOfVertices); i++) {
+        for (int i = 2; i < 2 + numberOfVertices; i++) {
             stripCount[i] = 4;
         }
 
@@ -177,11 +177,11 @@ public class PolyCylinder3D extends GRShadedShape {
                 .doubleValue();
 
         data[numberOfVertices * 3] = data[0];
-        data[(numberOfVertices * 3) + 1] = data[1];
-        data[(numberOfVertices * 3) + 2] = data[2] - thicknessValue;
+        data[numberOfVertices * 3 + 1] = data[1];
+        data[numberOfVertices * 3 + 2] = data[2] - thicknessValue;
 
-        int j = (numberOfVertices * 3) - 3;
-        int k = (numberOfVertices * 3) + 3;
+        int j = numberOfVertices * 3 - 3;
+        int k = numberOfVertices * 3 + 3;
 
         for (int i = 1; i < numberOfVertices; i++) {
             data[k] = data[j];
@@ -205,7 +205,7 @@ public class PolyCylinder3D extends GRShadedShape {
 
             j = j + 3;
 
-            if (j == (numberOfVertices * 3)) {
+            if (j == numberOfVertices * 3) {
                 j = 0;
             }
 
@@ -249,7 +249,7 @@ public class PolyCylinder3D extends GRShadedShape {
      *   parameter can't be obtained.
      */
     private float[] _getPolygon() throws IllegalActionException {
-        ArrayToken polygonToken = ((ArrayToken) polygon.getToken());
+        ArrayToken polygonToken = (ArrayToken) polygon.getToken();
 
         int numberOfElements = polygonToken.length() / 2;
 
@@ -260,7 +260,7 @@ public class PolyCylinder3D extends GRShadedShape {
 
         int j = 0;
 
-        for (int i = 0; i < (numberOfElements * 2); i = i + 2) {
+        for (int i = 0; i < numberOfElements * 2; i = i + 2) {
             data[j++] = (float) ((DoubleToken) polygonToken.getElement(i))
                     .doubleValue();
             data[j++] = (float) ((DoubleToken) polygonToken.getElement(i + 1))
@@ -278,7 +278,7 @@ public class PolyCylinder3D extends GRShadedShape {
      *   be obtained
      */
     private int _getVertexCount() throws IllegalActionException {
-        ArrayToken polygonToken = ((ArrayToken) polygon.getToken());
+        ArrayToken polygonToken = (ArrayToken) polygon.getToken();
         return polygonToken.length() / 2;
     }
 

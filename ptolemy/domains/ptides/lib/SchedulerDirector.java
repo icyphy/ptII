@@ -63,7 +63,7 @@ public class SchedulerDirector extends DEDirector {
         }
         DEEvent nextEvent = _eventQueue.get();
 
-        if ((nextEvent.timeStamp().compareTo(getModelTime()) > 0)) {
+        if (nextEvent.timeStamp().compareTo(getModelTime()) > 0) {
             return null;
         }
         return super._getNextActorToFire();

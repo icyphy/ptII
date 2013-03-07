@@ -178,8 +178,9 @@ public class Pursuer extends TypedAtomicActor {
             DoubleToken time = (DoubleToken) inputToken.get("time");
             IntToken d = (IntToken) inputToken.get("depth");
 
-            if ((time.doubleValue() > _timeValue)
-                    || ((time.doubleValue() == _timeValue) && (d.intValue() < _parentDepth))) {
+            if (time.doubleValue() > _timeValue
+                    || time.doubleValue() == _timeValue
+                    && d.intValue() < _parentDepth) {
                 //the root node may have been changed
                 //or there is a shorter path.
                 ArrayToken locationArray = (ArrayToken) inputToken
@@ -236,7 +237,7 @@ public class Pursuer extends TypedAtomicActor {
     protected double[] _getSpeed() throws IllegalActionException {
         double dx = _parentLocation[0] - _myLocation[0];
         double dy = _parentLocation[1] - _myLocation[1];
-        double d = Math.sqrt((dx * dx) + (dy * dy));
+        double d = Math.sqrt(dx * dx + dy * dy);
         double[] result = new double[2];
 
         //FIXME: this check should be given by a parameter.
@@ -245,8 +246,8 @@ public class Pursuer extends TypedAtomicActor {
             result[1] = 0.0;
         } else {
             double spd = ((DoubleToken) speed.getToken()).doubleValue();
-            result[0] = (spd * dx) / d;
-            result[1] = (spd * dy) / d;
+            result[0] = spd * dx / d;
+            result[1] = spd * dy / d;
 
             /*if (!_inWorkRange(_myLocation[0] + result[0],
              _myLocation[1] + result[1])) {

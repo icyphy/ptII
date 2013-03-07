@@ -125,14 +125,14 @@ public class LongToken extends ScalarToken {
 
         int compare = TypeLattice.compare(BaseType.LONG, token);
 
-        if ((compare == CPO.LOWER) || (compare == CPO.INCOMPARABLE)) {
+        if (compare == CPO.LOWER || compare == CPO.INCOMPARABLE) {
             throw new IllegalActionException(
                     notSupportedIncomparableConversionMessage(token, "long"));
         }
 
         compare = TypeLattice.compare(BaseType.INT, token);
 
-        if ((compare == CPO.SAME) || (compare == CPO.HIGHER)) {
+        if (compare == CPO.SAME || compare == CPO.HIGHER) {
             IntToken intToken = IntToken.convert(token);
             LongToken result = new LongToken(intToken.longValue());
             if (intToken._unitCategoryExponents != null
@@ -288,7 +288,7 @@ public class LongToken extends ScalarToken {
         if (isNil()) {
             return UnsignedByteToken.NIL;
         }
-        if ((_value < 0) || (_value > 255)) {
+        if (_value < 0 || _value > 255) {
             throw new IllegalActionException("Value cannot be represented"
                     + " as an unsigned Byte");
         } else {
@@ -425,7 +425,7 @@ public class LongToken extends ScalarToken {
         long left = longValue();
         long distance = Math.round(Math.floor(epsilon));
 
-        if ((right > (left + distance)) || (right < (left - distance))) {
+        if (right > left + distance || right < left - distance) {
             return BooleanToken.FALSE;
         } else {
             return BooleanToken.TRUE;

@@ -314,9 +314,9 @@ public class GUIAction extends Attribute {
 
         boolean lsidFlag = true;
         try {
-            String lsidString = ((StringAttribute) (object
-                    .getAttribute("entityId"))).getExpression();
-            if ((lsidString == null) || (lsidString.equals(""))) {
+            String lsidString = ((StringAttribute) object
+                    .getAttribute("entityId")).getExpression();
+            if (lsidString == null || lsidString.equals("")) {
                 lsidFlag = false;
             }
         } catch (Exception eee) {

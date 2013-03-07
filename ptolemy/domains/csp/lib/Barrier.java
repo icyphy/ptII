@@ -148,8 +148,8 @@ public class Barrier extends TypedAtomicActor implements BranchActor {
         if (_debugging) {
             _debug("Input channels completed.");
             if (_VERBOSE_DEBUGGING) {
-                for (int i = 0; i < branches.length; i++) {
-                    branches[i].removeDebugListener(this);
+                for (ConditionalBranch branche : branches) {
+                    branche.removeDebugListener(this);
                 }
             }
         }
@@ -193,8 +193,8 @@ public class Barrier extends TypedAtomicActor implements BranchActor {
                 }
             }
             if (_debugging && _VERBOSE_DEBUGGING) {
-                for (int i = 0; i < branches.length; i++) {
-                    branches[i].removeDebugListener(this);
+                for (ConditionalBranch branche : branches) {
+                    branche.removeDebugListener(this);
                 }
             }
         }

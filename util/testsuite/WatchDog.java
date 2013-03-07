@@ -131,7 +131,7 @@ public class WatchDog {
      */
     public void cancel() {
         System.out.println("util.testsuite.WatchDog.cancel(): canceling "
-                + (new Date()));
+                + new Date());
 
         if (_timer == null) {
             System.out.println("util.testsuite.WatchDog.cancel(): "

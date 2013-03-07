@@ -127,20 +127,20 @@ public class MultiwayBranchController extends AbstractBranchController {
 
                 ConditionalBranch onlyBranch = null;
 
-                for (int i = 0; i < branches.length; i++) {
+                for (ConditionalBranch branche : branches) {
                     // If the guard is false, then the branch is not enabled.
-                    if (branches[i].getGuard()) {
+                    if (branche.getGuard()) {
                         // Create a thread for this enabled branch
                         //Nameable actor = (Nameable) branches[i].getController()
                         //        .getParent();
-                        String name = branches[i].getPort().getFullName()
-                                + " channel " + branches[i].getID();
+                        String name = branche.getPort().getFullName()
+                                + " channel " + branche.getID();
                         if (_debugging) {
                             _debug("** Creating branch: " + name);
                         }
-                        Thread thread = new Thread((Runnable) branches[i], name);
+                        Thread thread = new Thread((Runnable) branche, name);
                         _threadList.add(0, thread);
-                        onlyBranch = branches[i];
+                        onlyBranch = branche;
                     }
                 }
 

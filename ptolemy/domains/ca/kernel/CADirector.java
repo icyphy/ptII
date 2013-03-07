@@ -335,11 +335,11 @@ public class CADirector extends Director {
             double[][] valueMatrix = ((DoubleMatrixToken) initialMatrix
                     .getToken()).doubleMatrix();
 
-            for (int i = 0; i < valueMatrix.length; i++) {
-                if (valueMatrix[i].length == 3) {
-                    int xi = (int) valueMatrix[i][0];
-                    int yi = (int) valueMatrix[i][1];
-                    initial[yi][xi] = valueMatrix[i][2];
+            for (double[] element : valueMatrix) {
+                if (element.length == 3) {
+                    int xi = (int) element[0];
+                    int yi = (int) element[1];
+                    initial[yi][xi] = element[2];
                 }
             }
         }
@@ -354,8 +354,8 @@ public class CADirector extends Director {
             }
         }
 
-        Variable matrixVar = (Variable) (((TypedCompositeActor) getContainer())
-                .getAttribute("matrix"));
+        Variable matrixVar = (Variable) ((TypedCompositeActor) getContainer())
+                .getAttribute("matrix");
         matrixVar.setToken(new DoubleMatrixToken(_cells));
 
         _currentIteration = ((IntToken) iterations.getToken()).intValue();

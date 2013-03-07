@@ -100,11 +100,11 @@ public class ArcInteractor extends ConnectorInteractor {
 
             // Apply a couple of limiting functions to this, to avoid
             // "yoyo-ing"
-            if (((newdx > 0) && (dx < 0)) || ((newdx < 0) && (dx > 0))) {
+            if (newdx > 0 && dx < 0 || newdx < 0 && dx > 0) {
                 newdx = 0;
             }
 
-            if (((newdy > 0) && (dy < 0)) || ((newdy < 0) && (dy > 0))) {
+            if (newdy > 0 && dy < 0 || newdy < 0 && dy > 0) {
                 newdy = 0;
             }
 

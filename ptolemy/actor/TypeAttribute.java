@@ -225,7 +225,7 @@ public class TypeAttribute extends Parameter {
      */
     protected void _checkContainer(NamedObj container)
             throws IllegalActionException {
-        if ((container != null) && !(container instanceof TypedIOPort)) {
+        if (container != null && !(container instanceof TypedIOPort)) {
             // FIXME: this is a bit of hack brought on by
             // http://bugzilla.ecoinformatics.org/show_bug.cgi?id=4767
             if (!container.getClass().getName()

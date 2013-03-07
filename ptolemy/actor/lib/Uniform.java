@@ -118,10 +118,8 @@ public class Uniform extends RandomSource {
      *  @exception IllegalActionException If parameter values are incorrect.
      */
     protected void _generateRandomNumber() throws IllegalActionException {
-        double lowerValue = ((DoubleToken) (lowerBound.getToken()))
-                .doubleValue();
-        double upperValue = ((DoubleToken) (upperBound.getToken()))
-                .doubleValue();
+        double lowerValue = ((DoubleToken) lowerBound.getToken()).doubleValue();
+        double upperValue = ((DoubleToken) upperBound.getToken()).doubleValue();
 
         if (lowerValue > upperValue) {
             throw new IllegalActionException(this,
@@ -129,7 +127,7 @@ public class Uniform extends RandomSource {
         }
 
         double rawNum = _random.nextDouble();
-        _current = (rawNum * (upperValue - lowerValue)) + lowerValue;
+        _current = rawNum * (upperValue - lowerValue) + lowerValue;
     }
 
     ///////////////////////////////////////////////////////////////////

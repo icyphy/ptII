@@ -149,7 +149,7 @@ public class DoubleRangeParameter extends Parameter {
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
-        if ((attribute == max) && !_inCheck) {
+        if (attribute == max && !_inCheck) {
             try {
                 _inCheck = true;
 
@@ -162,7 +162,7 @@ public class DoubleRangeParameter extends Parameter {
             } finally {
                 _inCheck = false;
             }
-        } else if ((attribute == min) && !_inCheck) {
+        } else if (attribute == min && !_inCheck) {
             try {
                 _inCheck = true;
 
@@ -210,7 +210,7 @@ public class DoubleRangeParameter extends Parameter {
                 double maxValue = ((DoubleToken) max.getToken()).doubleValue();
                 double currentValue = ((DoubleToken) newToken).doubleValue();
 
-                if ((minValue <= currentValue) && (currentValue <= maxValue)) {
+                if (minValue <= currentValue && currentValue <= maxValue) {
                     // All is OK.
                     super._setTokenAndNotify(newToken);
                     return;

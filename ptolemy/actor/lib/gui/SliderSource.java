@@ -146,7 +146,7 @@ public class SliderSource extends Source implements ChangeListener, Placeable {
             int major = ((IntToken) majorTickSpacing.getToken()).intValue();
             int minor = ((IntToken) minorTickSpacing.getToken()).intValue();
 
-            if ((min > max)) {
+            if (min > max) {
                 throw new IllegalActionException(this, "The minimum value "
                         + "of the slider cannot be larger than the maximum "
                         + "value.");

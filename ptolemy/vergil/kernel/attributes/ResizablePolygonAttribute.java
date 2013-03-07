@@ -104,13 +104,13 @@ public class ResizablePolygonAttribute extends FilledShapeAttribute {
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
-        if ((attribute == vertices) || (attribute == width)
-                || ((attribute == height) && !_inAttributeChanged)) {
+        if (attribute == vertices || attribute == width || attribute == height
+                && !_inAttributeChanged) {
             // Check that the length of the array is even.
             ArrayToken verticesValue = (ArrayToken) vertices.getToken();
             int length = verticesValue.length();
 
-            if ((length / 2) != ((length + 1) / 2)) {
+            if (length / 2 != (length + 1) / 2) {
                 throw new IllegalActionException(this,
                         "Length of the vertices array is required to be even.");
             }
@@ -167,7 +167,7 @@ public class ResizablePolygonAttribute extends FilledShapeAttribute {
      */
     protected Shape _newShape() {
         try {
-            ArrayToken verticesValue = (ArrayToken)vertices.getToken();
+            ArrayToken verticesValue = (ArrayToken) vertices.getToken();
             int length = verticesValue.length();
 
             // Keep computations in double as long as possible.
@@ -179,11 +179,11 @@ public class ResizablePolygonAttribute extends FilledShapeAttribute {
             double yMin = Double.POSITIVE_INFINITY;
 
             // First, read vertex values and find the bounds.
-            for (int j = 0; j < (length / 2); j++) {
+            for (int j = 0; j < length / 2; j++) {
                 xPoints[j] = ((DoubleToken) verticesValue.getElement(2 * j))
                         .doubleValue();
-                yPoints[j] = ((DoubleToken) verticesValue
-                        .getElement((2 * j) + 1)).doubleValue();
+                yPoints[j] = ((DoubleToken) verticesValue.getElement(2 * j + 1))
+                        .doubleValue();
 
                 if (xPoints[j] > xMax) {
                     xMax = xPoints[j];
@@ -206,7 +206,7 @@ public class ResizablePolygonAttribute extends FilledShapeAttribute {
             double scaleX = _widthValue / (xMax - xMin);
             double scaleY = _heightValue / (yMax - yMin);
 
-            for (int j = 0; j < (length / 2); j++) {
+            for (int j = 0; j < length / 2; j++) {
                 xPoints[j] *= scaleX;
                 yPoints[j] *= scaleY;
             }
@@ -219,13 +219,13 @@ public class ResizablePolygonAttribute extends FilledShapeAttribute {
                 double xOffset = (xMin - xMax) / 2;
                 double yOffset = (yMin - yMax) / 2;
 
-                for (int i = 0; i < (length / 2); i++) {
+                for (int i = 0; i < length / 2; i++) {
                     xInt[i] = (int) Math.rint(xPoints[i] + xOffset);
                     yInt[i] = (int) Math.rint(yPoints[i] + yOffset);
                     ;
                 }
             } else {
-                for (int i = 0; i < (length / 2); i++) {
+                for (int i = 0; i < length / 2; i++) {
                     xInt[i] = (int) Math.rint(xPoints[i]);
                     yInt[i] = (int) Math.rint(yPoints[i]);
                     ;

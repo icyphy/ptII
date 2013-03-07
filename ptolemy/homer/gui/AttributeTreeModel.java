@@ -151,7 +151,7 @@ public class AttributeTreeModel extends ClassAndEntityTreeModel {
         for (Object attribute : ((NamedObj) parent)
                 .attributeList(Settable.class)) {
             if (((Settable) attribute).getVisibility().equals(Settable.FULL)) {
-                if ((_filter != null) && (_filter.length() > 0)) {
+                if (_filter != null && _filter.length() > 0) {
                     if (((Nameable) attribute).getFullName().toLowerCase()
                             .contains(_filter.toLowerCase())) {
                         children.add(attribute);

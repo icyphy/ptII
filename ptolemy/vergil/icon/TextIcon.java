@@ -150,7 +150,7 @@ public class TextIcon extends DynamicEditorIcon {
 
         Runnable doSet = new Runnable() {
             public void run() {
-                synchronized(_figures) {
+                synchronized (_figures) {
                     Iterator figures = _liveFigureIterator();
 
                     while (figures.hasNext()) {
@@ -179,7 +179,7 @@ public class TextIcon extends DynamicEditorIcon {
         // list while this method is traversing it.
         Runnable doSet = new Runnable() {
             public void run() {
-                synchronized(_figures) {
+                synchronized (_figures) {
                     Iterator figures = _liveFigureIterator();
 
                     while (figures.hasNext()) {
@@ -217,7 +217,7 @@ public class TextIcon extends DynamicEditorIcon {
         // list while this method is traversing it.
         Runnable doSet = new Runnable() {
             public void run() {
-                synchronized(_figures) {
+                synchronized (_figures) {
                     Iterator figures = _liveFigureIterator();
 
                     while (figures.hasNext()) {
@@ -245,7 +245,7 @@ public class TextIcon extends DynamicEditorIcon {
         // conflict here in adding the figure to the list of live figures.
         Runnable doSet = new Runnable() {
             public void run() {
-                synchronized(_figures) {
+                synchronized (_figures) {
                     Iterator figures = _liveFigureIterator();
 
                     while (figures.hasNext()) {

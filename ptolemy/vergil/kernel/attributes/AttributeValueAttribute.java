@@ -286,7 +286,8 @@ public class AttributeValueAttribute extends AbstractTextAttribute implements
             if (container != null) {
                 if (_attribute instanceof Variable) {
                     String value;
-                    if (!((BooleanToken)useExpression.getToken()).booleanValue()) {
+                    if (!((BooleanToken) useExpression.getToken())
+                            .booleanValue()) {
                         Token token = ((Variable) _attribute).getToken();
                         value = "absent";
                         if (token != null) {
@@ -295,7 +296,8 @@ public class AttributeValueAttribute extends AbstractTextAttribute implements
                             if (token instanceof DoubleToken) {
                                 double doubleValue = ((DoubleToken) token)
                                         .doubleValue();
-                                NumberFormat format = NumberFormat.getInstance();
+                                NumberFormat format = NumberFormat
+                                        .getInstance();
                                 format.setGroupingUsed(false);
                                 format.setMinimumFractionDigits(1);
                                 format.setRoundingMode(RoundingMode.UNNECESSARY);

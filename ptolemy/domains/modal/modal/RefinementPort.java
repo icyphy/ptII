@@ -131,7 +131,7 @@ public class RefinementPort extends TypedIOPort {
 
             int result = -1;
 
-            if (_mirrorDisable || (getContainer() == null)) {
+            if (_mirrorDisable || getContainer() == null) {
                 result = super.moveDown();
             } else {
                 _mirrorDisable = true;
@@ -186,7 +186,7 @@ public class RefinementPort extends TypedIOPort {
 
             int result = -1;
 
-            if (_mirrorDisable || (getContainer() == null)) {
+            if (_mirrorDisable || getContainer() == null) {
                 result = super.moveToFirst();
             } else {
                 _mirrorDisable = true;
@@ -243,7 +243,7 @@ public class RefinementPort extends TypedIOPort {
 
             int result = -1;
 
-            if (_mirrorDisable || (getContainer() == null)) {
+            if (_mirrorDisable || getContainer() == null) {
                 result = super.moveToIndex(index);
             } else {
                 _mirrorDisable = true;
@@ -298,7 +298,7 @@ public class RefinementPort extends TypedIOPort {
 
             int result = -1;
 
-            if (_mirrorDisable || (getContainer() == null)) {
+            if (_mirrorDisable || getContainer() == null) {
                 result = super.moveToLast();
             } else {
                 _mirrorDisable = true;
@@ -350,7 +350,7 @@ public class RefinementPort extends TypedIOPort {
 
             int result = -1;
 
-            if (_mirrorDisable || (getContainer() == null)) {
+            if (_mirrorDisable || getContainer() == null) {
                 result = super.moveUp();
             } else {
                 _mirrorDisable = true;
@@ -468,8 +468,7 @@ public class RefinementPort extends TypedIOPort {
         try {
             _workspace.getWriteAccess();
 
-            if (_mirrorDisable || (getContainer() == null)
-                    || _automaticallyInput) {
+            if (_mirrorDisable || getContainer() == null || _automaticallyInput) {
                 // Do not mirror.
                 super.setInput(isInput);
             } else {
@@ -528,7 +527,7 @@ public class RefinementPort extends TypedIOPort {
         try {
             _workspace.getWriteAccess();
 
-            if (_mirrorDisable || (getContainer() == null)) {
+            if (_mirrorDisable || getContainer() == null) {
                 // Do not mirror.
                 super.setMultiport(isMultiport);
             } else {
@@ -575,7 +574,7 @@ public class RefinementPort extends TypedIOPort {
         try {
             _workspace.getWriteAccess();
 
-            if (_mirrorDisable || (getContainer() == null)) {
+            if (_mirrorDisable || getContainer() == null) {
                 // Do not mirror.
                 super.setName(name);
             } else {
@@ -629,7 +628,7 @@ public class RefinementPort extends TypedIOPort {
         try {
             _workspace.getWriteAccess();
 
-            if (_mirrorDisable || (getContainer() == null)) {
+            if (_mirrorDisable || getContainer() == null) {
                 // Do not mirror.
                 super.setOutput(isOutput);
             } else {

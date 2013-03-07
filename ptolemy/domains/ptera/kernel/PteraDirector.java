@@ -656,7 +656,7 @@ public class PteraDirector extends Director implements ValueListener {
                 result = false;
             } else {
                 Time modelTime = getModelTime();
-                Time nextEventTime = (_eventQueue.get(0)).timeStamp;
+                Time nextEventTime = _eventQueue.get(0).timeStamp;
                 while (modelTime.compareTo(nextEventTime) > 0) {
                     _eventQueue.remove(0);
                     _notifyEventQueueDebugListeners(false, true, 0, null, null,

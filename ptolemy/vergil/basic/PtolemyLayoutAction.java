@@ -89,7 +89,7 @@ public class PtolemyLayoutAction extends Object implements IGuiAction {
             Iterator tableaux = Configuration.findEffigy(model)
                     .entityList(Tableau.class).iterator();
             while (tableaux.hasNext()) {
-                Tableau tableau = (Tableau) (tableaux.next());
+                Tableau tableau = (Tableau) tableaux.next();
                 if (tableau.getFrame() instanceof ActorGraphFrame) {
                     frame = tableau.getFrame();
                 }
@@ -172,10 +172,9 @@ public class PtolemyLayoutAction extends Object implements IGuiAction {
             // If we do not catch exceptions here, then they
             // disappear to stdout, which is bad if we launched
             // where there is no stdout visible.
-            MessageHandler.error(
-                    "Failed to layout \""
-                            + (model == null ? "name not found" : (model
-                                    .getFullName())) + "\"", ex);
+            MessageHandler.error("Failed to layout \""
+                    + (model == null ? "name not found" : model.getFullName())
+                    + "\"", ex);
         }
     }
 
@@ -239,7 +238,7 @@ public class PtolemyLayoutAction extends Object implements IGuiAction {
                 Object origTail = model.getTail(origEdge);
                 Object origHead = model.getHead(origEdge);
 
-                if ((origHead != null) && (origTail != null)) {
+                if (origHead != null && origTail != null) {
                     Figure tailFigure = (Figure) target
                             .getVisualObject(origTail);
                     Figure headFigure = (Figure) target
@@ -285,7 +284,7 @@ public class PtolemyLayoutAction extends Object implements IGuiAction {
                     Object copyTail = map.get(origTail);
                     Object copyHead = map.get(origHead);
 
-                    if ((copyHead != null) && (copyTail != null)) {
+                    if (copyHead != null && copyTail != null) {
                         Object copyEdge = local.createEdge(origEdge);
                         local.setEdgeTail(this, copyEdge, copyTail);
                         local.setEdgeHead(this, copyEdge, copyHead);
@@ -302,7 +301,7 @@ public class PtolemyLayoutAction extends Object implements IGuiAction {
         // and calculate the cost of that instead.
         private Object _getParentInGraph(GraphModel model, Object graph,
                 Object node) {
-            while ((node != null) && !model.containsNode(graph, node)) {
+            while (node != null && !model.containsNode(graph, node)) {
                 Object parent = model.getParent(node);
 
                 if (model.isNode(parent)) {
@@ -347,8 +346,8 @@ public class PtolemyLayoutAction extends Object implements IGuiAction {
                 double height = bounds.getHeight();
 
                 double borderPercentage = (1 - getLayoutPercentage()) / 2;
-                double x = (borderPercentage * width) + bounds.getX();
-                double y = (borderPercentage * height) + bounds.getY();
+                double x = borderPercentage * width + bounds.getX();
+                double y = borderPercentage * height + bounds.getY();
                 double w = getLayoutPercentage() * width;
                 double h = getLayoutPercentage() * height;
                 return new Rectangle2D.Double(x, y, w, h);

@@ -117,7 +117,7 @@ public class Tableau extends CompositeEntity {
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
-        if ((attribute == size) && (_frame != null)) {
+        if (attribute == size && _frame != null) {
             size.setSize(_frame);
         } else {
             super.attributeChanged(attribute);
@@ -156,8 +156,8 @@ public class Tableau extends CompositeEntity {
             if (!((TableauFrame) frame)._close()) {
                 return false;
             }
-        } else if ((this instanceof DialogTableau)
-                && (frame instanceof PortConfigurerDialog)) {
+        } else if (this instanceof DialogTableau
+                && frame instanceof PortConfigurerDialog) {
             if (!((PortConfigurerDialog) frame).close()) {
                 return false;
             }
@@ -254,7 +254,7 @@ public class Tableau extends CompositeEntity {
                 }
             }
 
-            if (isMaster() && (oldContainer != null)) {
+            if (isMaster() && oldContainer != null) {
                 // Window is a master.  Close the model which will close all
                 // other tableaux.
                 oldContainer.setContainer(null);
@@ -393,7 +393,7 @@ public class Tableau extends CompositeEntity {
 
             Window frame = e.getWindow();
             try {
-                (Tableau.this).setContainer(null);
+                Tableau.this.setContainer(null);
             } catch (KernelException ex) {
                 try {
                     MessageHandler.warning("Cannot remove tableau: " + ex);

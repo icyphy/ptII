@@ -121,7 +121,7 @@ public class DirectedGraph extends Graph {
         Iterator graphNodes = nodes().iterator();
 
         while (graphNodes.hasNext()) {
-            Node next = (Node) (graphNodes.next());
+            Node next = (Node) graphNodes.next();
 
             if (transitiveClosure[nodeLabel(next)][nodeLabel]) {
                 nodes.add(next);
@@ -255,7 +255,7 @@ public class DirectedGraph extends Graph {
         Iterator outputEdges = outputEdges(node1).iterator();
 
         while (outputEdges.hasNext()) {
-            if (((Edge) (outputEdges.next())).sink() == node2) {
+            if (((Edge) outputEdges.next()).sink() == node2) {
                 return true;
             }
         }
@@ -376,7 +376,7 @@ public class DirectedGraph extends Graph {
         ArrayList result = new ArrayList(inputEdgeCollection.size());
 
         while (inputEdges.hasNext()) {
-            Node source = ((Edge) (inputEdges.next())).source();
+            Node source = ((Edge) inputEdges.next()).source();
 
             if (!result.contains(source)) {
                 result.add(source);
@@ -557,10 +557,10 @@ public class DirectedGraph extends Graph {
         Iterator representatives = sortedSCCRepresentatives.iterator();
 
         for (int i = 0; i < numberOfSCCs; i++) {
-            Node sccRepresentative = (Node) (representatives.next());
+            Node sccRepresentative = (Node) representatives.next();
 
             for (int j = 0; j < numberOfSCCs; j++) {
-                ArrayList nodeList = (ArrayList) (sccNodeLists.get(j));
+                ArrayList nodeList = (ArrayList) sccNodeLists.get(j);
 
                 if (nodeList.get(0) == sccRepresentative) {
                     sortedSCCNodeLists.add(nodeList);
@@ -571,7 +571,7 @@ public class DirectedGraph extends Graph {
         DirectedGraph[] sccs = new DirectedGraph[numberOfSCCs];
 
         for (int i = 0; i < numberOfSCCs; i++) {
-            ArrayList nodeList = (ArrayList) (sortedSCCNodeLists.get(i));
+            ArrayList nodeList = (ArrayList) sortedSCCNodeLists.get(i);
             sccs[i] = (DirectedGraph) subgraph(nodeList);
         }
 
@@ -597,7 +597,7 @@ public class DirectedGraph extends Graph {
         // Thus, the number of self loop edges is simply the total number
         // of input and output edges minus the number of edges that
         // are connected to this node.
-        return (inputEdgeCount(node) + outputEdgeCount(node))
+        return inputEdgeCount(node) + outputEdgeCount(node)
                 - incidentEdgeCount(node);
     }
 
@@ -680,7 +680,7 @@ public class DirectedGraph extends Graph {
         ArrayList result = new ArrayList(outputEdgeCollection.size());
 
         while (outputEdges.hasNext()) {
-            Node sink = ((Edge) (outputEdges.next())).sink();
+            Node sink = ((Edge) outputEdges.next()).sink();
 
             if (!result.contains(sink)) {
                 result.add(sink);
@@ -734,10 +734,10 @@ public class DirectedGraph extends Graph {
         int i = 0;
 
         while (nodes.hasNext()) {
-            nodeArray[i++] = (Node) (nodes.next());
+            nodeArray[i++] = (Node) nodes.next();
         }
 
-        for (i = 0; i < (N - 1); i++) {
+        for (i = 0; i < N - 1; i++) {
             for (int j = i + 1; j < N; j++) {
                 int label1 = nodeLabel(nodeArray[i]);
                 int label2 = nodeLabel(nodeArray[j]);

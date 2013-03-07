@@ -111,11 +111,11 @@ public class ClientServerInteractionManager implements DiscoveryListener,
     public void discovered(DiscoveryEvent evt) {
         ServiceRegistrar[] serviceRegistrars = evt.getRegistrars();
 
-        for (int n = 0; n < serviceRegistrars.length; n++) {
+        for (ServiceRegistrar serviceRegistrar : serviceRegistrars) {
             try {
                 if (true) {
                     System.out.println("Found a service locator at: "
-                            + serviceRegistrars[n].getLocator());
+                            + serviceRegistrar.getLocator());
                 }
             } catch (RemoteException e) {
                 KernelException.stackTraceToString(e);
@@ -291,19 +291,18 @@ public class ClientServerInteractionManager implements DiscoveryListener,
         ServiceItem[] items = cache.lookup(null, Integer.MAX_VALUE);
         aliveServices.clear();
 
-        for (int i = 0; i < items.length; i++) {
+        for (ServiceItem item : items) {
             if (VERBOSE) {
-                System.out.print("Service: " + items[i].serviceID);
+                System.out.print("Service: " + item.serviceID);
             }
 
             try {
                 if (VERBOSE) {
                     System.out.println(" is alive in: "
-                            + ((DistributedActor) items[i].service)
-                                    .getAddress());
+                            + ((DistributedActor) item.service).getAddress());
                 }
 
-                aliveServices.add(items[i]);
+                aliveServices.add(item);
             } catch (RemoteException e) {
                 if (VERBOSE) {
                     System.out.println(" is dead.");
@@ -368,8 +367,8 @@ public class ClientServerInteractionManager implements DiscoveryListener,
                     "unicastLocators", LookupLocator[].class, null); // default
 
             if (VERBOSE) {
-                for (int i = 0; i < unicastLocators.length; i++) {
-                    System.out.println("    " + unicastLocators[i]);
+                for (LookupLocator unicastLocator : unicastLocators) {
+                    System.out.println("    " + unicastLocator);
                 }
 
                 System.out.println("Reading entries: ");
@@ -379,8 +378,8 @@ public class ClientServerInteractionManager implements DiscoveryListener,
                     Entry[].class, null); // default
 
             if (VERBOSE) {
-                for (int i = 0; i < entries.length; i++) {
-                    System.out.println("    " + entries[i]);
+                for (Entry entrie : entries) {
+                    System.out.println("    " + entrie);
                 }
 
                 System.out.println("Reading groups: ");
@@ -391,8 +390,8 @@ public class ClientServerInteractionManager implements DiscoveryListener,
 
             if (groups.length != 0) {
                 if (VERBOSE) {
-                    for (int i = 0; i < groups.length; i++) {
-                        System.out.println("    " + groups[i]);
+                    for (String group : groups) {
+                        System.out.println("    " + group);
                     }
                 }
             } else {

@@ -251,7 +251,7 @@ public class ConditionalReceive extends ConditionalBranch implements Runnable {
                             AbstractBranchController side2 = receiver
                                     ._getOtherController();
 
-                            if ((side2 != null)
+                            if (side2 != null
                                     && side2._isBranchReady(receiver
                                             ._getOtherID())) {
                                 // Convert the conditional receive to a get().
@@ -343,14 +343,14 @@ public class ConditionalReceive extends ConditionalBranch implements Runnable {
                         + "tokens only received from an input port.");
             }
 
-            if ((channel >= port.getWidth()) || (channel < 0)) {
+            if (channel >= port.getWidth() || channel < 0) {
                 throw new IllegalActionException(port, "ConditionalReceive: "
                         + "channel index out of range.");
             }
 
             receivers = port.getReceivers();
 
-            if ((receivers == null) || (receivers[channel] == null)) {
+            if (receivers == null || receivers[channel] == null) {
                 throw new IllegalActionException(port, "ConditionalReceive: "
                         + "Trying to rendezvous with a null receiver");
             }

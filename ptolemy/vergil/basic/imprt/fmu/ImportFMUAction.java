@@ -115,7 +115,8 @@ public class ImportFMUAction extends AbstractAction {
         try {
             Class basicGraphFrameClass = null;
             try {
-                basicGraphFrameClass = Class.forName("ptolemy.vergil.basic.BasicGraphFrame");
+                basicGraphFrameClass = Class
+                        .forName("ptolemy.vergil.basic.BasicGraphFrame");
             } catch (Throwable throwable) {
                 throw new InternalErrorException(null, throwable,
                         "Could not find ptolemy.vergil.basic.BasicGraphFrame?");
@@ -123,18 +124,20 @@ public class ImportFMUAction extends AbstractAction {
             if (basicGraphFrameClass == null) {
                 throw new InternalErrorException(null, null,
                         "Could not find ptolemy.vergil.basic.BasicGraphFrame!");
-            } else if (!basicGraphFrameClass.isInstance(_frame) ) {
+            } else if (!basicGraphFrameClass.isInstance(_frame)) {
                 throw new InternalErrorException("Frame " + _frame
                         + " is not a BasicGraphFrame?");
             } else {
-                BasicGraphFrame basicGraphFrame =  (BasicGraphFrame) _frame;
+                BasicGraphFrame basicGraphFrame = (BasicGraphFrame) _frame;
 
                 Query query = new Query();
                 query.setTextWidth(60);
                 // Use this file chooser so that we can read URLs or files.
-                query.addFileChooser("location", "Location (URL)", _lastLocation,
+                query.addFileChooser("location", "Location (URL)",
+                        _lastLocation,
                         /* URI base */null,
-                        /* File startingDirectory */basicGraphFrame.getLastDirectory(),
+                        /* File startingDirectory */basicGraphFrame
+                                .getLastDirectory(),
                         /* allowFiles */true,
                         /* allowDirectories */false,
                         /* Color background */
@@ -148,14 +151,14 @@ public class ImportFMUAction extends AbstractAction {
 
                     // Get the associated Ptolemy model.
                     GraphController controller = basicGraphFrame.getJGraph()
-                        .getGraphPane().getGraphController();
+                            .getGraphPane().getGraphController();
                     AbstractBasicGraphModel model = (AbstractBasicGraphModel) controller
-                        .getGraphModel();
+                            .getGraphModel();
                     NamedObj context = model.getPtolemyModel();
 
                     // Use the center of the screen as a location.
                     Rectangle2D bounds = basicGraphFrame
-                        .getVisibleCanvasRectangle();
+                            .getVisibleCanvasRectangle();
                     double x = bounds.getWidth() / 2.0;
                     double y = bounds.getHeight() / 2.0;
 
@@ -174,7 +177,8 @@ public class ImportFMUAction extends AbstractAction {
                     }
                     _fmuFileName = fmuFileName;
 
-                    long modificationTime = new File(fmuFileName).lastModified();
+                    long modificationTime = new File(fmuFileName)
+                            .lastModified();
                     if (_fmuFileModificationTime == modificationTime) {
                         return;
                     }

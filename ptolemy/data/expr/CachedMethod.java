@@ -201,8 +201,8 @@ public class CachedMethod {
         // types.
         _hashcode = methodName.hashCode();
 
-        for (int i = 0; i < argumentTypes.length; i++) {
-            _hashcode += argumentTypes[i].hashCode();
+        for (Type argumentType : argumentTypes) {
+            _hashcode += argumentType.hashCode();
         }
 
         // Determine the return type of the method, given our argument types.
@@ -274,7 +274,8 @@ public class CachedMethod {
             return false;
         }
 
-        if ((_type & (FUNCTION + METHOD)) != (cachedMethod._type & (FUNCTION + METHOD))) {
+        if ((_type & FUNCTION + METHOD) != (cachedMethod._type & FUNCTION
+                + METHOD)) {
             return false;
         }
 
@@ -606,7 +607,7 @@ public class CachedMethod {
      *  @return True if a method was found.
      */
     public boolean isValid() {
-        return (_method != null);
+        return _method != null;
     }
 
     /** Return a verbose description of the cached method being invoked.
@@ -908,7 +909,7 @@ public class CachedMethod {
                 // Check the compatibility of arguments.
                 boolean match = true;
 
-                for (int j = 0; (j < arguments.length) && match; j++) {
+                for (int j = 0; j < arguments.length && match; j++) {
                     ArgumentConversion conversion = _getConversion(
                             arguments[j], argumentTypes[j]);
 
@@ -916,7 +917,7 @@ public class CachedMethod {
                     //        + arguments[j] + " " + arguments[j].getName());
                     // System.out.println("actualType is " + argumentTypes[j]
                     //        + " " + argumentTypes[j].getClass().getName());
-                    match = match && (conversion != IMPOSSIBLE_CONVERSION);
+                    match = match && conversion != IMPOSSIBLE_CONVERSION;
                     // System.out.println("match: " + match + " conversion: " + conversion);
 
                     conversions[j] = conversion;
@@ -924,7 +925,7 @@ public class CachedMethod {
 
                 // If there was a previous match, then check to see
                 // which one is preferable.
-                if (match && (matchedMethod != null)) {
+                if (match && matchedMethod != null) {
                     // Set match to false if previously found match is
                     // preferable to this one.  matchedConversions is
                     // the set of previously found conversions.
@@ -977,7 +978,7 @@ public class CachedMethod {
         Method preferredMethod = null;
         ArgumentConversion[] preferredConversions = null;
 
-        while (allClasses.hasNext() && (cachedMethod == null)) {
+        while (allClasses.hasNext() && cachedMethod == null) {
             Class nextClass = (Class) allClasses.next();
 
             //System.out.println("Examining registered class: "
@@ -990,7 +991,7 @@ public class CachedMethod {
                     // System.out.println("Found match: " + method);
                     // Compare to previous match, if there has
                     // been one.
-                    if ((preferredMethod == null)
+                    if (preferredMethod == null
                             || _areConversionsPreferable(conversions,
                                     method.getParameterTypes(),
                                     preferredConversions,
@@ -1357,7 +1358,7 @@ public class CachedMethod {
                     if (argValues[i] instanceof ArrayToken) {
                         ArrayToken arrayToken = (ArrayToken) argValues[i];
 
-                        if ((dim != 0) && (arrayToken.length() != dim)) {
+                        if (dim != 0 && arrayToken.length() != dim) {
                             throw new IllegalActionException("Argument " + i
                                     + " is a reducible arrayToken that "
                                     + "does not have compatible length!");
@@ -1476,10 +1477,10 @@ public class CachedMethod {
                     if (argValues[i] instanceof MatrixToken) {
                         MatrixToken matrixToken = (MatrixToken) argValues[i];
 
-                        if ((xdim != 0)
-                                && (ydim != 0)
-                                && ((matrixToken.getRowCount() != ydim) || (matrixToken
-                                        .getColumnCount() != xdim))) {
+                        if (xdim != 0
+                                && ydim != 0
+                                && (matrixToken.getRowCount() != ydim || matrixToken
+                                        .getColumnCount() != xdim)) {
                             throw new IllegalActionException("Argument " + i
                                     + " is a reducible matrixToken that "
                                     + "does not have compatible size!");

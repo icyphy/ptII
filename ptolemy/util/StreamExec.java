@@ -122,8 +122,8 @@ public class StreamExec implements ExecuteCommands {
 
             if (_debug) {
                 // For debugging
-                for (int i = 0; i < _envp.length; i++) {
-                    stdout("StreamExec.appendToPath() " + _envp[i]);
+                for (String element : _envp) {
+                    stdout("StreamExec.appendToPath() " + element);
                 }
             }
         }
@@ -163,10 +163,10 @@ public class StreamExec implements ExecuteCommands {
             Map<String, String> environmentMap = System.getenv();
             return environmentMap.get(key);
         }
-        for (int i = 0; i < _envp.length; i++) {
-            if (key.regionMatches(false /*ignoreCase*/, 0, _envp[i], 0,
+        for (String element : _envp) {
+            if (key.regionMatches(false /*ignoreCase*/, 0, element, 0,
                     key.length())) {
-                return _envp[i].substring(key.length() + 1, _envp[i].length());
+                return element.substring(key.length() + 1, element.length());
             }
         }
         return null;
@@ -374,11 +374,11 @@ public class StreamExec implements ExecuteCommands {
 
                     StringBuffer commandBuffer = new StringBuffer();
                     StringBuffer statusCommand = new StringBuffer();
-                    for (int i = 0; i < commandTokens.length; i++) {
+                    for (String commandToken : commandTokens) {
                         if (commandBuffer.length() > 1) {
                             commandBuffer.append(" ");
                         }
-                        commandBuffer.append(commandTokens[i]);
+                        commandBuffer.append(commandToken);
 
                         // Accumulate the first 50 chars for use in
                         // the status buffer.
@@ -387,7 +387,7 @@ public class StreamExec implements ExecuteCommands {
                                 statusCommand.append(" ");
                             }
 
-                            statusCommand.append(commandTokens[i]);
+                            statusCommand.append(commandToken);
                         }
                     }
                     stdout("    "

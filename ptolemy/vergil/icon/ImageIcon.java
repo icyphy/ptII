@@ -255,10 +255,10 @@ public class ImageIcon extends DynamicEditorIcon implements ImageObserver {
                         // This will be handled in imageUpdate().
                         return;
                     }
-                    int newWidth = (int) Math
-                            .round((width * _scalePercentage) / 100.0);
-                    int newHeight = (int) Math
-                            .round((height * _scalePercentage) / 100.0);
+                    int newWidth = (int) Math.round(width * _scalePercentage
+                            / 100.0);
+                    int newHeight = (int) Math.round(height * _scalePercentage
+                            / 100.0);
 
                     if (newWidth != 0 && newHeight != 0) {
                         // Avoid "Exception in thread "AWT-EventQueue-0" java.lang.IllegalArgumentException: Width (0) and height (0) must be non-zero"
@@ -312,7 +312,7 @@ public class ImageIcon extends DynamicEditorIcon implements ImageObserver {
     private void _updateFigures() {
         // If the figure has been previously rendered, first update
         // the ImageFigure to use the new image.
-        synchronized(_figures) {
+        synchronized (_figures) {
             Iterator figures = _liveFigureIterator();
             while (figures.hasNext()) {
                 Object figure = figures.next();

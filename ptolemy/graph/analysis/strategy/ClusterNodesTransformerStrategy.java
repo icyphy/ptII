@@ -142,7 +142,7 @@ public class ClusterNodesTransformerStrategy extends CachedStrategy implements
         ArrayList removeList = new ArrayList();
 
         while (edges.hasNext()) {
-            Edge edge = (Edge) (edges.next());
+            Edge edge = (Edge) edges.next();
 
             if (nodesToRemove.contains(edge.source())
                     && nodesToRemove.contains(edge.sink())) {

@@ -354,8 +354,8 @@ public class HomerMainFrame extends JFrame {
             }
 
             // Get the window properties and sizing.
-            Parameter screenSize = ((Parameter) _topLevelActor
-                    .getAttribute(HomerConstants.SCREEN_SIZE));
+            Parameter screenSize = (Parameter) _topLevelActor
+                    .getAttribute(HomerConstants.SCREEN_SIZE);
             if (screenSize != null) {
                 ArrayToken token = (ArrayToken) screenSize.getToken();
                 if (token != null) {
@@ -514,10 +514,10 @@ public class HomerMainFrame extends JFrame {
      */
     public static boolean isLabelWidget(NamedObj object) {
         Attribute tab = object.getAttribute(HomerConstants.TAB_NODE);
-        if ((object instanceof Attribute)
-                && (tab instanceof Settable)
-                && (((Settable) tab).getExpression().equals(object
-                        .getContainer().getName()))) {
+        if (object instanceof Attribute
+                && tab instanceof Settable
+                && ((Settable) tab).getExpression().equals(
+                        object.getContainer().getName())) {
             return true;
         }
 

@@ -131,7 +131,7 @@ public class Slicer extends Transformer {
     public void fire() throws IllegalActionException {
         super.fire();
 
-        ComplexToken inputToken = ((ComplexToken) input.get(0));
+        ComplexToken inputToken = (ComplexToken) input.get(0);
         int index = 0;
         double distance = _computeEuclideanDistance(_table[0],
                 inputToken.complexValue());
@@ -164,7 +164,7 @@ public class Slicer extends Transformer {
         super.preinitialize();
 
         // FIXME: Handle mutations.
-        _wordLength = ((IntToken) (wordLength.getToken())).intValue();
+        _wordLength = ((IntToken) wordLength.getToken()).intValue();
         _outputRate.setToken(new IntToken(_wordLength));
 
         ArrayToken tableToken = (ArrayToken) table.getToken();

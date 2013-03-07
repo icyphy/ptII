@@ -334,7 +334,7 @@ public class ModalPort extends TypedIOPort {
 
             CompositeEntity model = (CompositeEntity) getContainer();
 
-            if ((model != null) && (container != model)) {
+            if (model != null && container != model) {
                 // The port is being removed from the current container.
                 // Remove it from the mirrored ports.
                 Iterator entities = model.entityList().iterator();
@@ -585,7 +585,7 @@ public class ModalPort extends TypedIOPort {
      */
     protected void _checkContainer(Entity container)
             throws IllegalActionException {
-        if (!(container instanceof CompositeEntity) && (container != null)) {
+        if (!(container instanceof CompositeEntity) && container != null) {
             throw new IllegalActionException(container, this,
                     "ModalPort can only be contained by CompositeEntity objects. "
                             + "The container was: " + container);

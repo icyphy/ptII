@@ -432,7 +432,7 @@ public final class Workspace implements Nameable, Serializable {
         // Go into a loop, and at each iteration check whether the current
         // thread can get read access. If not then do a wait() on the
         // workspace. Otherwise, exit the loop.
-        while ((_waitingWriteRequests != 0) || (_writer != null)) {
+        while (_waitingWriteRequests != 0 || _writer != null) {
             try {
                 wait();
             } catch (InterruptedException ex) {
@@ -515,8 +515,8 @@ public final class Workspace implements Nameable, Serializable {
         while (true) {
             if (_writer == null) {
                 // There are no writers. Are there any readers?
-                if ((_numReaders == 0)
-                        || ((_numReaders == 1) && (record.readDepth > 0))) {
+                if (_numReaders == 0 || _numReaders == 1
+                        && record.readDepth > 0) {
                     // No readers
                     // or the only reader is the current thread
                     _writer = current;
@@ -801,7 +801,7 @@ public final class Workspace implements Nameable, Serializable {
         StringBuffer result = new StringBuffer(
                 NamedObj._getIndentPrefix(indent));
 
-        if ((bracket == 1) || (bracket == 2)) {
+        if (bracket == 1 || bracket == 2) {
             result.append("{");
         }
 
@@ -814,7 +814,7 @@ public final class Workspace implements Nameable, Serializable {
         }
 
         if ((detail & NamedObj.FULLNAME) != 0) {
-            result.append(("{" + getFullName() + "}"));
+            result.append("{" + getFullName() + "}");
         }
 
         if ((detail & NamedObj.CONTENTS) != 0) {
@@ -881,7 +881,7 @@ public final class Workspace implements Nameable, Serializable {
         }
 
         if (current != _writer) {
-            if ((record != null) && (record.failedWriteAttempts > 0)) {
+            if (record != null && record.failedWriteAttempts > 0) {
                 record.failedWriteAttempts--;
             } else {
                 throw new InvalidStateException(this,
@@ -929,10 +929,10 @@ public final class Workspace implements Nameable, Serializable {
             while (records.hasNext()) {
                 AccessRecord aRecord = (AccessRecord) records.next();
 
-                if ((aRecord.failedReadAttempts == 0)
-                        && (aRecord.failedWriteAttempts == 0)
-                        && (aRecord.readDepth == 0)
-                        && (aRecord != _lastReaderRecord)) {
+                if (aRecord.failedReadAttempts == 0
+                        && aRecord.failedWriteAttempts == 0
+                        && aRecord.readDepth == 0
+                        && aRecord != _lastReaderRecord) {
                     //System.out.println("-- delete record for thread "
                     //        + aRecord.thread
                     //        + " in " + current.getName());
@@ -983,7 +983,7 @@ public final class Workspace implements Nameable, Serializable {
             record = _getAccessRecord(current, false);
         }
 
-        if ((record == null) || (count > record.failedReadAttempts)) {
+        if (record == null || count > record.failedReadAttempts) {
             throw new InvalidStateException(this, "Trying to reacquire "
                     + "read permission not in record.");
         }
@@ -996,8 +996,8 @@ public final class Workspace implements Nameable, Serializable {
         while (true) {
             // If the current thread has write permission, or if there
             // are no pending write requests, then grant read permission.
-            if ((current == _writer)
-                    || ((_waitingWriteRequests == 0) && (_writer == null))) {
+            if (current == _writer || _waitingWriteRequests == 0
+                    && _writer == null) {
                 _numReaders++;
                 record.failedReadAttempts -= count;
                 record.readDepth = count;
@@ -1032,7 +1032,7 @@ public final class Workspace implements Nameable, Serializable {
             record = _getAccessRecord(current, false);
         }
 
-        if ((record == null) || (record.readDepth == 0)) {
+        if (record == null || record.readDepth == 0) {
             // current thread is not a reader
             return 0;
         } else {

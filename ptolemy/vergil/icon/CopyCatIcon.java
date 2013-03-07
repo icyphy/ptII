@@ -135,7 +135,7 @@ public class CopyCatIcon extends XMLIcon {
         Nameable container = getContainer();
 
         if (container instanceof CompositeEntity) {
-            CompositeEntity myContainer = ((CompositeEntity) container);
+            CompositeEntity myContainer = (CompositeEntity) container;
             ComponentEntity entity = null;
             Iterator entities = myContainer.entityList().iterator();
 
@@ -191,7 +191,7 @@ public class CopyCatIcon extends XMLIcon {
                 } else {
                     // Restore the original description if we don't have
                     // one now.
-                    if ((result == null) && (_originalDescription != null)) {
+                    if (result == null && _originalDescription != null) {
                         // Restore the original icon description.
                         // Look for an icon description in my container.
                         SingletonConfigurableAttribute myDescription = (SingletonConfigurableAttribute) myContainer

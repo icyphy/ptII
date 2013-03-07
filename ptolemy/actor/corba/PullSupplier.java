@@ -242,7 +242,7 @@ public class PullSupplier extends Sink {
             NameComponent namecomp = new NameComponent(
                     ((StringToken) supplierName.getToken()).stringValue(), "");
             _debug(getName(), " register the consumer with name: ",
-                    (supplierName.getToken()).toString());
+                    supplierName.getToken().toString());
 
             NameComponent[] path = { namecomp };
             ncRef.rebind(path, _supplier);

@@ -173,7 +173,7 @@ public class PoissonClock extends RandomSource implements TimedActor {
                                 + mean);
             }
         } else if (attribute == values) {
-            ArrayToken val = (ArrayToken) (values.getToken());
+            ArrayToken val = (ArrayToken) values.getToken();
             _length = val.length();
         } else if (attribute == stopTime) {
             double newStopTimeValue = ((DoubleToken) stopTime.getToken())
@@ -240,7 +240,7 @@ public class PoissonClock extends RandomSource implements TimedActor {
         Time currentTime = director.getModelTime();
         // It is time to produce an output if the current time equals
         // or exceeds the next firing time (it should never exceed).
-        boolean timeForOutput = (currentTime.compareTo(_nextFiringTime) >= 0);
+        boolean timeForOutput = currentTime.compareTo(_nextFiringTime) >= 0;
 
         if (!timeForOutput && !triggerInputPresent) {
             // It is too early.
@@ -300,7 +300,7 @@ public class PoissonClock extends RandomSource implements TimedActor {
 
         Time currentTime = director.getModelTime();
 
-        if (!_stopTime.isInfinite() && (_stopTime.compareTo(currentTime) > 0)) {
+        if (!_stopTime.isInfinite() && _stopTime.compareTo(currentTime) > 0) {
             // NOTE: Do not throw an exception if the director ignores this
             // stop time request or returns some other value of time.
             // postfire() will return false on the next firing after time
@@ -416,7 +416,7 @@ public class PoissonClock extends RandomSource implements TimedActor {
     protected void _generateRandomNumber() throws IllegalActionException {
         double meanTimeValue = ((DoubleToken) meanTime.getToken())
                 .doubleValue();
-        _current = -Math.log((1 - _random.nextDouble())) * meanTimeValue;
+        _current = -Math.log(1 - _random.nextDouble()) * meanTimeValue;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -425,9 +425,9 @@ public class PoissonClock extends RandomSource implements TimedActor {
     /* Get the specified value, checking the form of the values parameter.
      */
     private Token _getValue(int index) throws IllegalActionException {
-        ArrayToken val = (ArrayToken) (values.getToken());
+        ArrayToken val = (ArrayToken) values.getToken();
 
-        if ((val == null) || (index >= _length)) {
+        if (val == null || index >= _length) {
             throw new IllegalActionException(this,
                     "Index out of range of the values parameter.");
         }

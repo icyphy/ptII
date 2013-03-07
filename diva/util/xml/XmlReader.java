@@ -419,7 +419,7 @@ public class XmlReader extends LoggableOp {
             // By default, the result is the System ID
             Object result = sysID;
 
-            if ((pubID != null) && pubID.equals(_document.getDTDPublicID())) {
+            if (pubID != null && pubID.equals(_document.getDTDPublicID())) {
                 String dtd = _document.getDTD();
 
                 if (dtd != null) {
@@ -427,7 +427,7 @@ public class XmlReader extends LoggableOp {
                 }
             }
 
-            if ((pubID != null) && !pubID.equals("")) {
+            if (pubID != null && !pubID.equals("")) {
                 /* To find the DTD from the public ID, create a DefaultBundle
                  * and look up the ID in that. If it is not null, then it
                  * is an input stream that the parser can use.

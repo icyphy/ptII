@@ -157,7 +157,7 @@ public class Quantizer extends Transformer {
             // Compute the quantization thresholds.
             _thresholds = new double[_levels.length - 1];
 
-            for (int j = 0; j < (_levels.length - 1); j++) {
+            for (int j = 0; j < _levels.length - 1; j++) {
                 _thresholds[j] = (_levels[j + 1] + _levels[j]) / 2.0;
             }
         } else {

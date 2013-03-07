@@ -128,9 +128,8 @@ public class ScopeExtendingAttribute extends Attribute implements ScopeExtender 
             return;
         }
 
-        for (Iterator variables = object.attributeList(Variable.class)
-                .iterator(); variables.hasNext();) {
-            Variable variable = (Variable) variables.next();
+        for (Object element : object.attributeList(Variable.class)) {
+            Variable variable = (Variable) element;
 
             if (getAttribute(variable.getName()) != null) {
                 variable.invalidate();

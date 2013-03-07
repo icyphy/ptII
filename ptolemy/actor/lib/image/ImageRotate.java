@@ -92,7 +92,7 @@ public class ImageRotate extends Transformer {
     public void fire() throws IllegalActionException {
         super.fire();
         int width = input.getWidth();
-        int rotation = ((IntToken) (rotationInDegrees.getToken())).intValue();
+        int rotation = ((IntToken) rotationInDegrees.getToken()).intValue();
 
         for (int i = 0; i < width; i++) {
             if (input.hasToken(i)) {

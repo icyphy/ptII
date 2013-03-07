@@ -175,7 +175,7 @@ public class JAIBorder extends Transformer {
             _constantValues = new double[data.length];
 
             for (int i = 0; i < data.length; i++) {
-                _constantValues[i] = ((DoubleToken) (data[i])).doubleValue();
+                _constantValues[i] = ((DoubleToken) data[i]).doubleValue();
             }
         } else {
             super.attributeChanged(attribute);

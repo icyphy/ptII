@@ -171,8 +171,8 @@ public class RaisedCosine extends FIR {
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
-        if ((attribute == excessBW) || (attribute == length)
-                || (attribute == root) || (attribute == symbolInterval)) {
+        if (attribute == excessBW || attribute == length || attribute == root
+                || attribute == symbolInterval) {
             _initialize();
         } else {
             super.attributeChanged(attribute);
@@ -182,12 +182,12 @@ public class RaisedCosine extends FIR {
     // Initialize the state of the actor based on the current state of the
     // parameters.
     private void _initialize() throws IllegalActionException {
-        double excessBWValue = ((DoubleToken) (excessBW.getToken()))
+        double excessBWValue = ((DoubleToken) excessBW.getToken())
                 .doubleValue();
-        int symbolIntervalValue = ((IntToken) (symbolInterval.getToken()))
+        int symbolIntervalValue = ((IntToken) symbolInterval.getToken())
                 .intValue();
-        int lengthValue = ((IntToken) (length.getToken())).intValue();
-        boolean sqrt = ((BooleanToken) (root.getToken())).booleanValue();
+        int lengthValue = ((IntToken) length.getToken()).intValue();
+        boolean sqrt = ((BooleanToken) root.getToken()).booleanValue();
 
         if (excessBWValue < 0.0) {
             throw new IllegalActionException(this, "Excess bandwidth was "

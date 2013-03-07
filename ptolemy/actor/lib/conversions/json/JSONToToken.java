@@ -111,7 +111,7 @@ public class JSONToToken extends Converter {
      */
     public void fire() throws IllegalActionException {
         super.fire();
-        output.send(0, _parseJSON(((StringToken) (input.get(0))).stringValue()));
+        output.send(0, _parseJSON(((StringToken) input.get(0)).stringValue()));
     }
 
     /** Return false if the input port has no token, otherwise return

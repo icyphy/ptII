@@ -213,7 +213,7 @@ public class TimedSource extends Source implements TimedActor {
             currentTime = director.getGlobalTime();
         }
 
-        if (!_stopTime.isInfinite() && (_stopTime.compareTo(currentTime) > 0)) {
+        if (!_stopTime.isInfinite() && _stopTime.compareTo(currentTime) > 0) {
             // NOTE: Do not throw an exception if the director ignores this
             // stop time request or returns some other value of time.
             // postfire() will return false on the next firing after time

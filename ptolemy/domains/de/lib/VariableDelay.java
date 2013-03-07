@@ -118,7 +118,7 @@ public class VariableDelay extends Transformer {
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == delay) {
-            double newDelay = ((DoubleToken) (delay.getToken())).doubleValue();
+            double newDelay = ((DoubleToken) delay.getToken()).doubleValue();
 
             if (newDelay < 0.0) {
                 throw new IllegalActionException(this,

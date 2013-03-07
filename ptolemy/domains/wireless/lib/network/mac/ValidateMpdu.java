@@ -160,11 +160,11 @@ public class ValidateMpdu extends MACActorBase {
 
                     if (((IntToken) msg.get("status")).intValue() == NoError) {
                         // if the received message is RTS, set RtsTimeout timer
-                        if ((((IntToken) _pdu.get("Type")).intValue() == ControlType)
-                                && (((IntToken) _pdu.get("Subtype")).intValue() == Rts)) {
-                            _dRts = (2 * _aSifsTime) + (2 * _aSlotTime)
-                                    + (_sAckCtsLng / _rxRate)
-                                    + _aPreambleLength + _aPlcpHeaderLength;
+                        if (((IntToken) _pdu.get("Type")).intValue() == ControlType
+                                && ((IntToken) _pdu.get("Subtype")).intValue() == Rts) {
+                            _dRts = 2 * _aSifsTime + 2 * _aSlotTime
+                                    + _sAckCtsLng / _rxRate + _aPreambleLength
+                                    + _aPlcpHeaderLength;
                             _timer = setTimer(RtsTimeout,
                                     currentTime.add(_dRts * 1e-6));
                         }

@@ -240,11 +240,9 @@ public class JVMTableau extends Tableau {
                 + "K Free: "
                 + freeMemory
                 + "K ("
-                + Math.round((((double) freeMemory) / ((double) totalMemory)) * 100.0)
-                + "%) Max: "
-                + maxMemory
-                + "K ("
-                + Math.round((((double) totalMemory) / ((double) maxMemory)) * 100.0)
+                + Math.round((double) freeMemory / (double) totalMemory * 100.0)
+                + "%) Max: " + maxMemory + "K ("
+                + Math.round((double) totalMemory / (double) maxMemory * 100.0)
                 + "%)");
     }
 }

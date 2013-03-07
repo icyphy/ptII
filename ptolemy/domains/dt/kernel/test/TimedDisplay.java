@@ -67,7 +67,7 @@ public class TimedDisplay extends Display implements SequenceActor {
                 textArea.append(value);
 
                 // Append a tab character.
-                if (width > (i + 1)) {
+                if (width > i + 1) {
                     textArea.append("\t");
                 }
 

@@ -430,7 +430,7 @@ public class ContinuousIntegrator extends TypedAtomicActor implements
         // The number of auxiliary variables that are used depends on
         // the solver.
         int n = solver.getIntegratorAuxVariableCount();
-        if ((_auxVariables == null) || (_auxVariables.length != n)) {
+        if (_auxVariables == null || _auxVariables.length != n) {
             _auxVariables = new double[n];
         }
     }

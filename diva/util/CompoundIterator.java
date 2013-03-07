@@ -55,10 +55,10 @@ public class CompoundIterator implements Iterator {
                 return true;
             } else {
                 _onFirst = false;
-                return (_second.hasNext());
+                return _second.hasNext();
             }
         } else {
-            return (_second.hasNext());
+            return _second.hasNext();
         }
     }
 
@@ -68,10 +68,10 @@ public class CompoundIterator implements Iterator {
                 return _first.next();
             } else {
                 _onFirst = false;
-                return (_second.next());
+                return _second.next();
             }
         } else {
-            return (_second.next());
+            return _second.next();
         }
     }
 

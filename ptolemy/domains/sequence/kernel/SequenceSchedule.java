@@ -824,8 +824,8 @@ public class SequenceSchedule extends Schedule {
                                     //for (int i = 0; i < nodes.length; i++) {
                                     //    System.out.println("Node: " + i + " is " + ((Actor) ((NamedObj) nodes[i]).getContainer()).getFullName());
                                     //}
-                                    for (int i = 0; i < nodes.length; i++) {
-                                        Actor act = (Actor) ((NamedObj) nodes[i])
+                                    for (Object node : nodes) {
+                                        Actor act = (Actor) ((NamedObj) node)
                                                 .getContainer();
 
                                         // If the actor to be fired is a MultipleFireMethodsInterface, then set the fire method name
@@ -837,9 +837,9 @@ public class SequenceSchedule extends Schedule {
                                         if (act instanceof MultipleFireMethodsInterface
                                                 && ((MultipleFireMethodsInterface) act)
                                                         .numFireMethods() > 1) {
-                                            if (nodes[i] instanceof ProcessAttribute) {
+                                            if (node instanceof ProcessAttribute) {
                                                 try {
-                                                    methodName = ((ProcessAttribute) nodes[i])
+                                                    methodName = ((ProcessAttribute) node)
                                                             .getMethodName();
                                                 } catch (IllegalActionException e) {
                                                     throw new NoSuchElementException(
@@ -849,8 +849,8 @@ public class SequenceSchedule extends Schedule {
                                                                     + " with more than one fire method has an invalid fire method setting: "
                                                                     + e.getMessage());
                                                 }
-                                            } else if (nodes[i] instanceof IOPort) {
-                                                StringAttribute methodNameAttribute = (StringAttribute) ((IOPort) nodes[i])
+                                            } else if (node instanceof IOPort) {
+                                                StringAttribute methodNameAttribute = (StringAttribute) ((IOPort) node)
                                                         .getAttribute("methodName");
                                                 if (methodNameAttribute != null) {
                                                     methodName = methodNameAttribute
@@ -859,7 +859,7 @@ public class SequenceSchedule extends Schedule {
                                                     throw new NoSuchElementException(
                                                             "Problem scheduling the next actor to fire in the sequence schedule "
                                                                     + "because the output port "
-                                                                    + ((IOPort) nodes[i])
+                                                                    + ((IOPort) node)
                                                                             .getName()
                                                                     + " for a MultipleFireMethodsInterface "
                                                                     + act.getName()

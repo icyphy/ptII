@@ -228,7 +228,7 @@ public class PtidesPlatform extends MirrorComposite {
                 PortParameter associatedParameter = associatedPort
                         .getParameter();
 
-                if ((port != null) && (port.isOutsideConnected())
+                if (port != null && port.isOutsideConnected()
                         && port.hasToken(0)) {
                     Token token = port.get(0);
                     associatedParameter.setCurrentValue(token);
@@ -281,9 +281,9 @@ public class PtidesPlatform extends MirrorComposite {
                     // If the source port belongs to me, then we want to
                     // compare its payload type to the type of the
                     // destination.
-                    if ((sourcePort.getContainer() == this &&
-                            _isAssociatedWithNetworkReceiver(sourcePort))
-                            && (destinationPort.getContainer() != this)) {
+                    if (sourcePort.getContainer() == this
+                            && _isAssociatedWithNetworkReceiver(sourcePort)
+                            && destinationPort.getContainer() != this) {
                         // The source port belongs to me, but not the
                         // destination.
 
@@ -291,9 +291,9 @@ public class PtidesPlatform extends MirrorComposite {
                                 .get("payload");
                         compare = TypeLattice.compare(srcPayloadType,
                                 destinationDeclared);
-                    } else if ((sourcePort.getContainer() != this)
-                            && (destinationPort.getContainer() == this &&
-                                    _isAssociatedWithNetworkTransmitter(destinationPort))) {
+                    } else if (sourcePort.getContainer() != this
+                            && destinationPort.getContainer() == this
+                            && _isAssociatedWithNetworkTransmitter(destinationPort)) {
                         // The destination port belongs to me, but not
                         // the source.
 
@@ -307,8 +307,7 @@ public class PtidesPlatform extends MirrorComposite {
                                 destinationDeclared);
                     }
 
-                    if ((compare == CPO.HIGHER)
-                            || (compare == CPO.INCOMPARABLE)) {
+                    if (compare == CPO.HIGHER || compare == CPO.INCOMPARABLE) {
                         Inequality inequality = new Inequality(
                                 sourcePort.getTypeTerm(),
                                 destinationPort.getTypeTerm());
@@ -350,8 +349,8 @@ public class PtidesPlatform extends MirrorComposite {
             if (srcUndeclared || destUndeclared) {
                 // At least one of the source/destination ports does
                 // not have declared type, form type constraint.
-                if ((sourcePort.getContainer() == this)
-                        && (destinationPort.getContainer() == this)) {
+                if (sourcePort.getContainer() == this
+                        && destinationPort.getContainer() == this) {
                     // Both ports belong to this, so their type must be equal.
                     // Represent this with two inequalities.
                     Inequality ineq1 = new Inequality(sourcePort.getTypeTerm(),
@@ -480,8 +479,6 @@ public class PtidesPlatform extends MirrorComposite {
         /** Label of the payload that is transmitted within the RecordToken.
          */
         private static final String payload = "payload";
-
-        private static final String sourceTimestamp = "sourceTimestamp";
 
     }
 
@@ -706,20 +703,20 @@ public class PtidesPlatform extends MirrorComposite {
 
                                 Time recordTimestamp = new Time(
                                         director,
-                                        ((DoubleToken) (record
-                                                .get(PtidesNetworkType.timestamp)))
+                                        ((DoubleToken) record
+                                                .get(PtidesNetworkType.timestamp))
                                                 .doubleValue());
 
-                                int recordMicrostep = ((IntToken) (record
-                                        .get(PtidesNetworkType.microstep)))
+                                int recordMicrostep = ((IntToken) record
+                                        .get(PtidesNetworkType.microstep))
                                         .intValue();
 
                                 Time sourceTimestamp = director.getModelTime();
-//                                    new Time(
-//                                        director,
-//                                        ((DoubleToken) (record
-//                                                .get(PtidesNetworkType.sourceTimestamp)))
-//                                                .doubleValue());
+                                //                                    new Time(
+                                //                                        director,
+                                //                                        ((DoubleToken) (record
+                                //                                                .get(PtidesNetworkType.sourceTimestamp)))
+                                //                                                .doubleValue());
 
                                 Receiver[][] farReceivers = associatedPort
                                         .deepGetReceivers();
@@ -816,7 +813,8 @@ public class PtidesPlatform extends MirrorComposite {
                                     new DoubleToken(timestamp.getDoubleValue()),
                                     new IntToken(director.getMicrostep()),
                                     t,
-                                    new DoubleToken(sourceTimestamp.getDoubleValue())};
+                                    new DoubleToken(
+                                            sourceTimestamp.getDoubleValue()) };
                             RecordToken record = new RecordToken(
                                     PtidesNetworkType.LABELS, values);
                             try {
@@ -836,14 +834,6 @@ public class PtidesPlatform extends MirrorComposite {
             }
 
             return result;
-        }
-
-        /** Override the schedule method because it does not make sense
-         *  to schedule Ptides platforms.
-         */
-        protected boolean _schedule(Actor actor, Time timestamp,
-                Time executionTime) throws IllegalActionException {
-            return true;
         }
 
         //////////////////////////////////////////////////////////////

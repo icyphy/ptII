@@ -537,22 +537,25 @@ public class Configuration extends CompositeEntity implements
                             // FIXME: what about non-NamedObjs?
                             NamedObj greaterNamedObj = (NamedObj) greaterAssociatedObject;
                             NamedObj lesserNamedObj = (NamedObj) lesserAssociatedObject;
-                            String className = greaterNamedObj.getContainer().getClass().getName();
+                            String className = greaterNamedObj.getContainer()
+                                    .getClass().getName();
                             if (greaterNamedObj != null
                                     && lesserNamedObj != null
-                                    && (greaterNamedObj.getContainer() != lesserNamedObj
-                                            .getContainer())
+                                    && greaterNamedObj.getContainer() != lesserNamedObj
+                                            .getContainer()
                                     // Ptides ErrorHandlingAction manipulates a variable
                                     // in the the container so it is ok if the container
                                     // of the output port and the container of the
                                     // variable are different.
-                                    && !(className.equals("ptolemy.domains.ptides.lib.ErrorHandlingAction") && lesserNamedObj.getName().equals("dropEvent"))
+                                    && !(className
+                                            .equals("ptolemy.domains.ptides.lib.ErrorHandlingAction") && lesserNamedObj
+                                            .getName().equals("dropEvent"))
                                     // actor.lib.qm.CompositeQM was causing false
                                     // positives because the contstraints had different
                                     // containers, but were contained within the Composite.
-                                    && (greaterNamedObj.getContainer().getContainer()
-                                            !=
-                                            lesserNamedObj.getContainer())
+                                    && greaterNamedObj.getContainer()
+                                            .getContainer() != lesserNamedObj
+                                            .getContainer()
                                     // PubSubPort that contains an
                                     // initialTokens that is used to
                                     // set the type.
@@ -610,8 +613,7 @@ public class Configuration extends CompositeEntity implements
         // We check only the public, protected and private fields
         // declared in this class, but not inherited fields.
         Field[] namedObjFields = namedObjClass.getDeclaredFields();
-        for (int i = 0; i < namedObjFields.length; i++) {
-            Field field = namedObjFields[i];
+        for (Field field : namedObjFields) {
             results.append(_checkCloneField(namedObj, namedObjClone, field));
         }
 
@@ -620,8 +622,7 @@ public class Configuration extends CompositeEntity implements
         while (clazz != NamedObj.class && clazz != null) {
             clazz = clazz.getSuperclass();
             namedObjFields = clazz.getDeclaredFields();
-            for (int i = 0; i < namedObjFields.length; i++) {
-                Field field = namedObjFields[i];
+            for (Field field : namedObjFields) {
                 field.setAccessible(true);
                 results.append(_checkCloneField(namedObj, namedObjClone, field));
             }
@@ -695,7 +696,7 @@ public class Configuration extends CompositeEntity implements
 
                 // If there are more than one of these, use the first
                 // one that agrees to open the model.
-                while (factories.hasNext() && (factory == null)) {
+                while (factories.hasNext() && factory == null) {
                     factory = (TableauFactory) factories.next();
 
                     try {
@@ -1189,7 +1190,7 @@ public class Configuration extends CompositeEntity implements
             isClass = ((InstantiableNamedObj) entity).isClassDefinition();
         }
 
-        if ((deferredTo != null) && !isClass) {
+        if (deferredTo != null && !isClass) {
             entity = deferredTo;
         }
 
@@ -1313,9 +1314,9 @@ public class Configuration extends CompositeEntity implements
 
             // If an object is equal and the default hashCode() from
             // Object is the same, then we have a problem.
-            if ((field.get(namedObj)).equals(field.get(namedObjClone))
-                    && (System.identityHashCode(field.get(namedObj)) == System
-                            .identityHashCode(field.get(namedObjClone)))) {
+            if (field.get(namedObj).equals(field.get(namedObjClone))
+                    && System.identityHashCode(field.get(namedObj)) == System
+                            .identityHashCode(field.get(namedObjClone))) {
 
                 String message = "";
                 if (Class.forName("ptolemy.kernel.util.NamedObj")
@@ -1416,7 +1417,7 @@ public class Configuration extends CompositeEntity implements
             separator = ".";
         }
 
-        return (entityName + separator + entity.getName());
+        return entityName + separator + entity.getName();
     }
 
     // Recursively search the specified composite for an instance of
@@ -1520,7 +1521,7 @@ public class Configuration extends CompositeEntity implements
 
                 // Find the first container above in the hierarchy that
                 // has an effigy.
-                while ((parent != null) && (parentEffigy == null)) {
+                while (parent != null && parentEffigy == null) {
                     parentEffigy = getEffigy(parent);
                     parent = parent.getContainer();
                 }

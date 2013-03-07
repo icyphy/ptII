@@ -127,8 +127,9 @@ public class SysMLConcurrentDirector extends ProcessDirector {
      *  @return The new PNDirector.
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        SysMLConcurrentDirector newObject = (SysMLConcurrentDirector) super.clone(workspace);
-        newObject._actorData = new ConcurrentHashMap<Actor,ActorData>();
+        SysMLConcurrentDirector newObject = (SysMLConcurrentDirector) super
+                .clone(workspace);
+        newObject._actorData = new ConcurrentHashMap<Actor, ActorData>();
         newObject._nextTime = Time.POSITIVE_INFINITY;
         newObject._winningThreads = new LinkedList<SingleQueueProcessThread>();
         return newObject;
@@ -171,13 +172,12 @@ public class SysMLConcurrentDirector extends ProcessDirector {
             throws IllegalActionException {
         ActorData actorData = _actorData.get(actor);
         if (actorData == null) {
-            throw new IllegalActionException(this, actor, "Nothing known about actor.");
+            throw new IllegalActionException(this, actor,
+                    "Nothing known about actor.");
         }
         actorData.fireAtTimes.add(time);
         if (_debugging) {
-            _debug(actor.getFullName()
-                    + " requests firing at time "
-                    + time);
+            _debug(actor.getFullName() + " requests firing at time " + time);
         }
         return time;
     }
@@ -198,11 +198,12 @@ public class SysMLConcurrentDirector extends ProcessDirector {
         // Put the container of this director into the directory
         // so that we can send data to the inside of its output
         // ports, if it has any.
-        Actor container = (Actor)getContainer();
+        Actor container = (Actor) getContainer();
         ActorData actorData = new ActorData();
         _actorData.put(container, actorData);
         // Use synchronized version.
-        actorData.inputQueue = Collections.synchronizedList(new LinkedList<Input>());
+        actorData.inputQueue = Collections
+                .synchronizedList(new LinkedList<Input>());
 
         // Initialize the count of actors that are initialized.
         // This counts the container of this director, hence we
@@ -235,8 +236,9 @@ public class SysMLConcurrentDirector extends ProcessDirector {
             // their initialize() method because the initialize() method may
             // call fireAt(), and we need to translate those calls into a
             // fireContainerAt() call, in case this director is embedded.
-            synchronized(this) {
-                while (_actorsInitialized < _actorData.size() && !_stopRequested) {
+            synchronized (this) {
+                while (_actorsInitialized < _actorData.size()
+                        && !_stopRequested) {
                     try {
                         wait();
                     } catch (InterruptedException e) {
@@ -274,13 +276,15 @@ public class SysMLConcurrentDirector extends ProcessDirector {
      */
     public void initialize(Actor actor) throws IllegalActionException {
         if (_debugging) {
-            _debug("Initializing actor: " + ((Nameable) actor).getFullName() + ".");
+            _debug("Initializing actor: " + ((Nameable) actor).getFullName()
+                    + ".");
         }
         ActorData actorData = new ActorData();
         _actorData.put(actor, actorData);
 
         // Use synchronized version.
-        actorData.inputQueue = Collections.synchronizedList(new LinkedList<Input>());
+        actorData.inputQueue = Collections
+                .synchronizedList(new LinkedList<Input>());
         // NOTE: The following does NOT initialize the actors. They initialize
         // themselves in the threads that are created by the superclass.
         // The following line will start those threads.
@@ -319,7 +323,8 @@ public class SysMLConcurrentDirector extends ProcessDirector {
             // this is embedded, in which case, just wait for the environment.
             if (!isEmbedded()) {
                 earliestFireAtTime = getModelStopTime();
-                if (earliestFireAtTime == null || earliestFireAtTime == Time.POSITIVE_INFINITY) {
+                if (earliestFireAtTime == null
+                        || earliestFireAtTime == Time.POSITIVE_INFINITY) {
                     // If the stop time is also infinity, then stop execution.
                     // FIXME: If there are actors with unpredictable events,
                     // such as FMUs, then this might not be what we want to do.
@@ -339,13 +344,15 @@ public class SysMLConcurrentDirector extends ProcessDirector {
         if (earliestFireAtTime.compareTo(getModelStopTime()) > 0) {
             // The next available time is past the stop time.
             if (_debugging) {
-                _debug("Next firing request is beyond the model stop time of " + getModelStopTime());
+                _debug("Next firing request is beyond the model stop time of "
+                        + getModelStopTime());
             }
             stop();
             return false;
         }
         if (_debugging) {
-            _debug("Next earliest fire at request is at time " + earliestFireAtTime);
+            _debug("Next earliest fire at request is at time "
+                    + earliestFireAtTime);
         }
 
         _nextTime = earliestFireAtTime;
@@ -425,7 +432,7 @@ public class SysMLConcurrentDirector extends ProcessDirector {
      *  @return True if all active threads are blocked.
      */
     protected synchronized boolean _areThreadsDeadlocked() {
-        return (_getBlockedThreadsCount() >= _getActiveThreadsCount());
+        return _getBlockedThreadsCount() >= _getActiveThreadsCount();
     }
 
     /** Clear all the input receivers for the specified actor.
@@ -439,10 +446,10 @@ public class SysMLConcurrentDirector extends ProcessDirector {
                 continue;
             }
             Receiver[][] receivers = inputPort.getReceivers();
-            for (int i = 0; i < receivers.length; i++) {
-                for (int j = 0; j < receivers[i].length; j++) {
-                    if (receivers[i][j] != null) {
-                        receivers[i][j].clear();
+            for (Receiver[] receiver : receivers) {
+                for (int j = 0; j < receiver.length; j++) {
+                    if (receiver[j] != null) {
+                        receiver[j].clear();
                     }
                 }
             }
@@ -458,7 +465,8 @@ public class SysMLConcurrentDirector extends ProcessDirector {
     protected Time _earliestNextFiringTime() {
         Time earliestFireAtTime = Time.POSITIVE_INFINITY;
         _winningThreads.clear();
-        List<Actor> actors = ((CompositeEntity)getContainer()).deepEntityList();
+        List<Actor> actors = ((CompositeEntity) getContainer())
+                .deepEntityList();
         for (Actor actor : actors) {
             ActorData actorData = _actorData.get(actor);
             if (actorData == null) {
@@ -494,37 +502,30 @@ public class SysMLConcurrentDirector extends ProcessDirector {
         }
 
         if (firingsRecordable != null) {
-            firingsRecordable
-                    .recordFiring(FiringEvent.BEFORE_PREFIRE);
+            firingsRecordable.recordFiring(FiringEvent.BEFORE_PREFIRE);
         }
         boolean result = true;
         if (actor.prefire()) {
 
             if (firingsRecordable != null) {
-                firingsRecordable
-                        .recordFiring(FiringEvent.AFTER_PREFIRE);
-                firingsRecordable
-                        .recordFiring(FiringEvent.BEFORE_FIRE);
+                firingsRecordable.recordFiring(FiringEvent.AFTER_PREFIRE);
+                firingsRecordable.recordFiring(FiringEvent.BEFORE_FIRE);
             }
 
             actor.fire();
 
             if (firingsRecordable != null) {
-                firingsRecordable
-                        .recordFiring(FiringEvent.AFTER_FIRE);
-                firingsRecordable
-                        .recordFiring(FiringEvent.BEFORE_POSTFIRE);
+                firingsRecordable.recordFiring(FiringEvent.AFTER_FIRE);
+                firingsRecordable.recordFiring(FiringEvent.BEFORE_POSTFIRE);
             }
 
             result = actor.postfire();
 
             if (firingsRecordable != null) {
-                firingsRecordable
-                        .recordFiring(FiringEvent.AFTER_POSTFIRE);
+                firingsRecordable.recordFiring(FiringEvent.AFTER_POSTFIRE);
             }
         } else if (firingsRecordable != null) {
-            firingsRecordable
-                    .recordFiring(FiringEvent.AFTER_PREFIRE);
+            firingsRecordable.recordFiring(FiringEvent.AFTER_PREFIRE);
         }
         if (!result) {
             // Postfire returned false. Remove the actor from
@@ -546,8 +547,7 @@ public class SysMLConcurrentDirector extends ProcessDirector {
      *   future, or TIME.POSITIVE_INFINITY if there is none.
      *  @exception IllegalActionException If the actor throws it.
      */
-    protected Time _runToCompletion(Actor actor)
-            throws IllegalActionException {
+    protected Time _runToCompletion(Actor actor) throws IllegalActionException {
         // First, clear all input receivers that are not marked as flow ports.
         // Record whether the actor actually has any input receivers.
         _clearReceivers(actor);
@@ -555,7 +555,8 @@ public class SysMLConcurrentDirector extends ProcessDirector {
         ActorData actorData = _actorData.get(actor);
 
         if (_debugging) {
-            _debug("******* Iterating actor " + actor.getName() + " at time " + getModelTime());
+            _debug("******* Iterating actor " + actor.getName() + " at time "
+                    + getModelTime());
             _debug("input queue: " + actorData.inputQueue);
         }
         if (actorData.inputQueue.size() == 0) {
@@ -578,15 +579,13 @@ public class SysMLConcurrentDirector extends ProcessDirector {
                 if (actorData.inputQueue.size() == 0
                         && actorData.fireAtTimes.size() == 0) {
                 */
-                    // Input queue is empty and no future firing
-                    // has been requested. Nothing more to do.
-                    if (_debugging) {
-                        _debug(actor.getFullName()
-                                + " at time "
-                                + getModelTime()
-                                + " waiting for input.");
-                    }
-                    return Time.POSITIVE_INFINITY;
+                // Input queue is empty and no future firing
+                // has been requested. Nothing more to do.
+                if (_debugging) {
+                    _debug(actor.getFullName() + " at time " + getModelTime()
+                            + " waiting for input.");
+                }
+                return Time.POSITIVE_INFINITY;
                 /*
                 }
                 */
@@ -601,8 +600,7 @@ public class SysMLConcurrentDirector extends ProcessDirector {
                 // If time has not advanced sufficiently, then we are done.
                 if (getModelTime().compareTo(targetTime) < 0) {
                     if (_debugging) {
-                        _debug(actor.getFullName()
-                                + " at time "
+                        _debug(actor.getFullName() + " at time "
                                 + getModelTime()
                                 + " waiting for time to advance to "
                                 + targetTime);
@@ -633,22 +631,16 @@ public class SysMLConcurrentDirector extends ProcessDirector {
                 if (_debugging) {
                     IOPort port = input.receiver.getContainer();
                     int channel = port.getChannelForReceiver(input.receiver);
-                    _debug(actor.getFullName()
-                            + ": Providing input to port "
-                            + port.getName()
-                            + " on channel "
-                            + channel
-                            + " with value: "
-                            + input.token);
+                    _debug(actor.getFullName() + ": Providing input to port "
+                            + port.getName() + " on channel " + channel
+                            + " with value: " + input.token);
                 }
             } else if (_debugging) {
                 IOPort port = input.receiver.getContainer();
                 int channel = port.getChannelForReceiver(input.receiver);
                 SysMLConcurrentDirector.this._debug(actor.getFullName()
-                        + ": Providing change event to port "
-                        + port.getName()
-                        + " on channel "
-                        + channel);
+                        + ": Providing change event to port " + port.getName()
+                        + " on channel " + channel);
             }
             if (!_iterateActorOnce(actor)) {
                 return Time.POSITIVE_INFINITY;
@@ -673,9 +665,10 @@ public class SysMLConcurrentDirector extends ProcessDirector {
         Attribute flowPortMarker = port.getAttribute("flow");
         if (flowPortMarker instanceof Parameter) {
             try {
-                Token flowPortMarkerValue = ((Parameter)flowPortMarker).getToken();
+                Token flowPortMarkerValue = ((Parameter) flowPortMarker)
+                        .getToken();
                 if (flowPortMarkerValue instanceof BooleanToken
-                        && (((BooleanToken)flowPortMarkerValue).booleanValue())) {
+                        && ((BooleanToken) flowPortMarkerValue).booleanValue()) {
                     isFlowPort = true;
                 }
             } catch (IllegalActionException e) {
@@ -708,7 +701,8 @@ public class SysMLConcurrentDirector extends ProcessDirector {
      *  @return True.
      *  @exception IllegalActionException Not thrown in this class.
      */
-    protected synchronized boolean _resolveDeadlock() throws IllegalActionException {
+    protected synchronized boolean _resolveDeadlock()
+            throws IllegalActionException {
         return true;
     }
 
@@ -719,7 +713,7 @@ public class SysMLConcurrentDirector extends ProcessDirector {
     private int _actorsInitialized;
 
     /** Directory of data associated with each actor. */
-    private Map<Actor,ActorData> _actorData = new ConcurrentHashMap<Actor,ActorData>();
+    private Map<Actor, ActorData> _actorData = new ConcurrentHashMap<Actor, ActorData>();
 
     /** Earliest time of a fireAt request among all actors. */
     private Time _nextTime = Time.POSITIVE_INFINITY;
@@ -747,6 +741,7 @@ public class SysMLConcurrentDirector extends ProcessDirector {
         public SysMLAReceiver receiver;
         public Token token;
         public boolean isChangeEvent;
+
         public String toString() {
             IOPort port = receiver.getContainer();
             int channel;
@@ -757,9 +752,11 @@ public class SysMLConcurrentDirector extends ProcessDirector {
                 return "[invalid receiver]";
             }
             if (isChangeEvent) {
-                return "[changeEvent for port " + port.getName() + " channel " + channel + "]";
+                return "[changeEvent for port " + port.getName() + " channel "
+                        + channel + "]";
             }
-            return "[" + token + " for port " + port.getName() + " channel " + channel + "]";
+            return "[" + token + " for port " + port.getName() + " channel "
+                    + channel + "]";
         }
     }
 
@@ -792,8 +789,7 @@ public class SysMLConcurrentDirector extends ProcessDirector {
          *   or postfire() returns true.
          *  @exception IllegalActionException If the actor throws it.
          */
-        protected boolean _iterateActor()
-                throws IllegalActionException {
+        protected boolean _iterateActor() throws IllegalActionException {
             // First, clear all input receivers that are not marked as flow ports.
             // Record whether the actor actually has any input receivers.
             _clearReceivers(_actor);
@@ -802,8 +798,12 @@ public class SysMLConcurrentDirector extends ProcessDirector {
             // a firing has been requested.
             synchronized (SysMLConcurrentDirector.this) {
                 if (SysMLConcurrentDirector.this._debugging) {
-                    SysMLConcurrentDirector.this._debug("******* Iterating actor " + _actor.getName() + " at time " + getModelTime());
-                    SysMLConcurrentDirector.this._debug("input queue: " + _myActorData.inputQueue);
+                    SysMLConcurrentDirector.this
+                            ._debug("******* Iterating actor "
+                                    + _actor.getName() + " at time "
+                                    + getModelTime());
+                    SysMLConcurrentDirector.this._debug("input queue: "
+                            + _myActorData.inputQueue);
                 }
                 while (_myActorData.inputQueue.size() == 0) {
                     // Input queue is empty.
@@ -824,8 +824,8 @@ public class SysMLConcurrentDirector extends ProcessDirector {
                                 return false;
                             }
                             if (SysMLConcurrentDirector.this._debugging) {
-                                SysMLConcurrentDirector.this._debug(
-                                        _actor.getFullName()
+                                SysMLConcurrentDirector.this._debug(_actor
+                                        .getFullName()
                                         + " blocked at time "
                                         + getModelTime()
                                         + " waiting for time to advance to "
@@ -838,9 +838,9 @@ public class SysMLConcurrentDirector extends ProcessDirector {
                                 SysMLConcurrentDirector.this.wait();
                             } catch (InterruptedException e) {
                                 if (SysMLConcurrentDirector.this._debugging) {
-                                    SysMLConcurrentDirector.this._debug(
-                                            _actor.getFullName()
-                                            + " thread interrupted. Requesting stop.");
+                                    SysMLConcurrentDirector.this
+                                            ._debug(_actor.getFullName()
+                                                    + " thread interrupted. Requesting stop.");
                                 }
                                 SysMLConcurrentDirector.this.stop();
                             }
@@ -851,11 +851,10 @@ public class SysMLConcurrentDirector extends ProcessDirector {
                         // has been requested. Block until the input
                         // queue is non-empty.
                         if (SysMLConcurrentDirector.this._debugging) {
-                            SysMLConcurrentDirector.this._debug(
-                                    _actor.getFullName()
+                            SysMLConcurrentDirector.this._debug(_actor
+                                    .getFullName()
                                     + " blocked at time "
-                                    + getModelTime()
-                                    + " waiting for input.");
+                                    + getModelTime() + " waiting for input.");
                         }
                         // Second argument indicates that no particular receiver is involved.
                         threadBlocked(this, null);
@@ -863,25 +862,21 @@ public class SysMLConcurrentDirector extends ProcessDirector {
                             SysMLConcurrentDirector.this.wait();
                         } catch (InterruptedException e) {
                             if (SysMLConcurrentDirector.this._debugging) {
-                                SysMLConcurrentDirector.this._debug(
-                                        _actor.getFullName()
-                                        + " thread interrupted. Requesting stop.");
+                                SysMLConcurrentDirector.this
+                                        ._debug(_actor.getFullName()
+                                                + " thread interrupted. Requesting stop.");
                             }
                             SysMLConcurrentDirector.this.stop();
                         }
                     }
                 } // while (inputQueue.size() == 0).
-                // Either queue is non-empty, or time has passed.
+                  // Either queue is non-empty, or time has passed.
                 if (SysMLConcurrentDirector.this._debugging) {
-                    SysMLConcurrentDirector.this._debug(
-                            _actor.getFullName()
-                            + " unblocked at time "
-                            + getModelTime()
-                            + ".");
+                    SysMLConcurrentDirector.this._debug(_actor.getFullName()
+                            + " unblocked at time " + getModelTime() + ".");
                 }
                 threadUnblocked(this, null);
             } // synchronized
-
 
             // Either the input queue is non-empty, or time has passed
             // to match a requested firing. If the former, then extract
@@ -895,28 +890,28 @@ public class SysMLConcurrentDirector extends ProcessDirector {
                     if (SysMLConcurrentDirector.this._debugging) {
                         synchronized (SysMLConcurrentDirector.this) {
                             IOPort port = input.receiver.getContainer();
-                            int channel = port.getChannelForReceiver(input.receiver);
-                            SysMLConcurrentDirector.this._debug(
-                                    _actor.getFullName()
+                            int channel = port
+                                    .getChannelForReceiver(input.receiver);
+                            SysMLConcurrentDirector.this._debug(_actor
+                                    .getFullName()
                                     + ": Providing input to port "
                                     + port.getName()
                                     + " on channel "
                                     + channel
-                                    + " with value: "
-                                    + input.token);
+                                    + " with value: " + input.token);
                         }
                     }
                 } else {
                     if (SysMLConcurrentDirector.this._debugging) {
                         synchronized (SysMLConcurrentDirector.this) {
                             IOPort port = input.receiver.getContainer();
-                            int channel = port.getChannelForReceiver(input.receiver);
-                            SysMLConcurrentDirector.this._debug(
-                                    _actor.getFullName()
-                                    + ": Providing change event to port "
-                                    + port.getName()
-                                    + " on channel "
-                                    + channel);
+                            int channel = port
+                                    .getChannelForReceiver(input.receiver);
+                            SysMLConcurrentDirector.this
+                                    ._debug(_actor.getFullName()
+                                            + ": Providing change event to port "
+                                            + port.getName() + " on channel "
+                                            + channel);
                         }
                     }
                 }
@@ -930,9 +925,8 @@ public class SysMLConcurrentDirector extends ProcessDirector {
             try {
                 if (SysMLConcurrentDirector.this._debugging) {
                     synchronized (SysMLConcurrentDirector.this) {
-                        SysMLConcurrentDirector.this._debug(
-                                _actor.getFullName()
-                                + ": Iterating.");
+                        SysMLConcurrentDirector.this._debug(_actor
+                                .getFullName() + ": Iterating.");
                     }
                 }
 
@@ -948,11 +942,11 @@ public class SysMLConcurrentDirector extends ProcessDirector {
                 if (result == false) {
                     // Postfire returned false. Remove the actor from
                     // the active actors.
-                    synchronized(SysMLConcurrentDirector.this) {
+                    synchronized (SysMLConcurrentDirector.this) {
                         if (SysMLConcurrentDirector.this._debugging) {
-                            SysMLConcurrentDirector.this._debug(
-                                    _actor.getFullName()
-                                    + " postfire() returns false. Ending thread.");
+                            SysMLConcurrentDirector.this
+                                    ._debug(_actor.getFullName()
+                                            + " postfire() returns false. Ending thread.");
                         }
                         removeThread(this);
                         _actorData.remove(_actor);
@@ -962,21 +956,22 @@ public class SysMLConcurrentDirector extends ProcessDirector {
                 return result;
             } catch (Throwable ex) {
                 // Actor threw an exception.
-                synchronized(SysMLConcurrentDirector.this) {
+                synchronized (SysMLConcurrentDirector.this) {
                     removeThread(this);
                     _actorData.remove(_actor);
                     SysMLConcurrentDirector.this.stop();
                     SysMLConcurrentDirector.this.notifyAll();
                 }
                 if (ex instanceof IllegalActionException) {
-                    throw (IllegalActionException)ex;
+                    throw (IllegalActionException) ex;
                 }
                 if (ex instanceof RuntimeException) {
-                    throw (RuntimeException)ex;
+                    throw (RuntimeException) ex;
                 }
                 return false;
             }
         }
+
         /** The actor data for this thread's actor. */
         private ActorData _myActorData;
     }
@@ -995,6 +990,7 @@ public class SysMLConcurrentDirector extends ProcessDirector {
         public SysMLAReceiver() throws IllegalActionException {
             this(null);
         }
+
         public SysMLAReceiver(IOPort container) throws IllegalActionException {
             super(container);
         }
@@ -1027,7 +1023,7 @@ public class SysMLConcurrentDirector extends ProcessDirector {
         public void put(Token token) {
             IOPort port = getContainer();
             boolean isFlowPort = _isFlowPort(port);
-            Actor actor = (Actor)port.getContainer();
+            Actor actor = (Actor) port.getContainer();
             ActorData actorData = _actorData.get(actor);
             if (actorData != null) {
                 Input input = new Input();
@@ -1035,13 +1031,15 @@ public class SysMLConcurrentDirector extends ProcessDirector {
                 input.token = token;
                 input.isChangeEvent = isFlowPort;
                 // Notify the director that this queue is not empty.
-                synchronized(SysMLConcurrentDirector.this) {
+                synchronized (SysMLConcurrentDirector.this) {
                     actorData.inputQueue.add(input);
                     if (SysMLConcurrentDirector.this._debugging) {
-                        SysMLConcurrentDirector.this._debug("Adding to queue for "
-                                + actor.getName() + " at time " + getModelTime()
-                                + ": " + input);
-                        SysMLConcurrentDirector.this._debug("input queue: " + actorData.inputQueue);
+                        SysMLConcurrentDirector.this
+                                ._debug("Adding to queue for "
+                                        + actor.getName() + " at time "
+                                        + getModelTime() + ": " + input);
+                        SysMLConcurrentDirector.this._debug("input queue: "
+                                + actorData.inputQueue);
                     }
                     threadUnblocked(actorData.thread, null);
                     SysMLConcurrentDirector.this.notifyAll();

@@ -357,8 +357,8 @@ public class HomerMenu {
                 this);
         Object result = openLayoutDialog.showDialog();
 
-        if ((result == null) || (result == JOptionPane.UNINITIALIZED_VALUE)
-                || ((Integer) result == JOptionPane.CANCEL_OPTION)) {
+        if (result == null || result == JOptionPane.UNINITIALIZED_VALUE
+                || (Integer) result == JOptionPane.CANCEL_OPTION) {
             return;
         }
 

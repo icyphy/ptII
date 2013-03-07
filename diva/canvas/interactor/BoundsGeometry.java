@@ -325,7 +325,7 @@ public class BoundsGeometry implements Geometry {
 
             case SwingConstants.NORTH:
             case SwingConstants.SOUTH:
-                return _rect.getX() + (_rect.getWidth() / 2.0);
+                return _rect.getX() + _rect.getWidth() / 2.0;
             }
 
             return 0.0;
@@ -348,7 +348,7 @@ public class BoundsGeometry implements Geometry {
 
             case SwingConstants.EAST:
             case SwingConstants.WEST:
-                return _rect.getY() + (_rect.getHeight() / 2.0);
+                return _rect.getY() + _rect.getHeight() / 2.0;
             }
 
             return 0.0;
@@ -423,8 +423,8 @@ public class BoundsGeometry implements Geometry {
             case SwingConstants.SOUTH_EAST:
             case SwingConstants.EAST:
 
-                if ((x2 < (x1 + _minSize)) || (_xOvershoot < 0)) {
-                    _xOvershoot += (x - ((x1 + _minSize) - (x2 - x)));
+                if (x2 < x1 + _minSize || _xOvershoot < 0) {
+                    _xOvershoot += x - (x1 + _minSize - (x2 - x));
                     x2 = x1 + _minSize;
                 } else {
                     _xOvershoot = 0;
@@ -436,8 +436,8 @@ public class BoundsGeometry implements Geometry {
             case SwingConstants.SOUTH_WEST:
             case SwingConstants.WEST:
 
-                if ((x1 > (x2 - _minSize)) || (_xOvershoot < 0)) {
-                    _xOvershoot += (x - ((x1 + _minSize) - (x2 - x)));
+                if (x1 > x2 - _minSize || _xOvershoot < 0) {
+                    _xOvershoot += x - (x1 + _minSize - (x2 - x));
                     x1 = x2 - _minSize;
                 } else {
                     _xOvershoot = 0;
@@ -452,8 +452,8 @@ public class BoundsGeometry implements Geometry {
             case SwingConstants.NORTH_WEST:
             case SwingConstants.NORTH:
 
-                if ((y1 > (y2 - _minSize)) || (_yOvershoot < 0)) {
-                    _yOvershoot += (y - ((y1 + _minSize) - (y2 - y)));
+                if (y1 > y2 - _minSize || _yOvershoot < 0) {
+                    _yOvershoot += y - (y1 + _minSize - (y2 - y));
                     y1 = y2 - _minSize;
                 } else {
                     _yOvershoot = 0;
@@ -465,8 +465,8 @@ public class BoundsGeometry implements Geometry {
             case SwingConstants.SOUTH_WEST:
             case SwingConstants.SOUTH:
 
-                if ((y2 < (y1 + _minSize)) || (_yOvershoot < 0)) {
-                    _yOvershoot += (y - ((y1 + _minSize) - (y2 - y)));
+                if (y2 < y1 + _minSize || _yOvershoot < 0) {
+                    _yOvershoot += y - (y1 + _minSize - (y2 - y));
                     y2 = y1 + _minSize;
                 } else {
                     _yOvershoot = 0;

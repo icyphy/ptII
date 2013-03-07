@@ -106,7 +106,7 @@ public class TypeLattice {
      *  @return An integer.
      */
     public synchronized static int compare(Token token1, Token token2) {
-        if ((token1 == null) || (token2 == null)) {
+        if (token1 == null || token2 == null) {
             throw new IllegalArgumentException(
                     "TypeLattice.compare(Token, Token): "
                             + "one or both of the argument tokens is null: "
@@ -235,8 +235,8 @@ public class TypeLattice {
                 // _lattice.compare() on ptolemy.data package performance... Run
                 // ptolemy/data/type/test/performance.xml before and after...(zk)
                 if ( /*false &&*/
-                (i1 != Type.HASH_INVALID)
-                        && (i2 != Type.HASH_INVALID)
+                i1 != Type.HASH_INVALID
+                        && i2 != Type.HASH_INVALID
                         && _getCachedTypeComparisonResult(i1, i2) != Type.HASH_INVALID) {
                     return _getCachedTypeComparisonResult(i1, i2);
                 }
@@ -312,17 +312,17 @@ public class TypeLattice {
                     // rather simple.
                     if (t1Rep.equals(t2Rep)) {
                         result = SAME;
-                    } else if ((t1Rep == BaseType.UNKNOWN)
-                            || (t2Rep == BaseType.GENERAL)) {
+                    } else if (t1Rep == BaseType.UNKNOWN
+                            || t2Rep == BaseType.GENERAL) {
                         result = LOWER;
-                    } else if ((t2Rep == BaseType.UNKNOWN)
-                            || (t1Rep == BaseType.GENERAL)) {
+                    } else if (t2Rep == BaseType.UNKNOWN
+                            || t1Rep == BaseType.GENERAL) {
                         result = HIGHER;
                     } else {
                         result = INCOMPARABLE;
                     }
                 }
-                if ((i1 != Type.HASH_INVALID) && (i2 != Type.HASH_INVALID)) {
+                if (i1 != Type.HASH_INVALID && i2 != Type.HASH_INVALID) {
                     _setCachedTypeComparisonResult(i1, i2, result);
                 }
                 return result;
@@ -447,11 +447,11 @@ public class TypeLattice {
                     // rather simple.
                     if (t1Rep.equals(t2Rep)) {
                         return t1;
-                    } else if ((t1Rep == BaseType.UNKNOWN)
-                            || (t2Rep == BaseType.GENERAL)) {
+                    } else if (t1Rep == BaseType.UNKNOWN
+                            || t2Rep == BaseType.GENERAL) {
                         return t1;
-                    } else if ((t2Rep == BaseType.UNKNOWN)
-                            || (t1Rep == BaseType.GENERAL)) {
+                    } else if (t2Rep == BaseType.UNKNOWN
+                            || t1Rep == BaseType.GENERAL) {
                         return t2;
                     } else {
                         return bottom();
@@ -505,8 +505,7 @@ public class TypeLattice {
                     for (Object o2 : subset) {
                         int result = compare(o1, o2);
 
-                        if ((result == CPO.LOWER)
-                                || (result == CPO.INCOMPARABLE)) {
+                        if (result == CPO.LOWER || result == CPO.INCOMPARABLE) {
                             isGreatest = false;
                             break;
                         }
@@ -550,8 +549,7 @@ public class TypeLattice {
                     for (Object o2 : subset) {
                         int result = compare(o1, o2);
 
-                        if ((result == CPO.HIGHER)
-                                || (result == CPO.INCOMPARABLE)) {
+                        if (result == CPO.HIGHER || result == CPO.INCOMPARABLE) {
                             isLeast = false;
                             break;
                         }
@@ -717,11 +715,11 @@ public class TypeLattice {
                     // rather simple.
                     if (t1Rep.equals(t2Rep)) {
                         return t1;
-                    } else if ((t1Rep == BaseType.UNKNOWN)
-                            || (t2Rep == BaseType.GENERAL)) {
+                    } else if (t1Rep == BaseType.UNKNOWN
+                            || t2Rep == BaseType.GENERAL) {
                         return t2;
-                    } else if ((t2Rep == BaseType.UNKNOWN)
-                            || (t1Rep == BaseType.GENERAL)) {
+                    } else if (t2Rep == BaseType.UNKNOWN
+                            || t1Rep == BaseType.GENERAL) {
                         return t1;
                     } else {
                         return top();
@@ -780,14 +778,14 @@ public class TypeLattice {
             synchronized (TypeLattice.class) {
                 _basicLattice = new DirectedAcyclicGraph();
 
-                StructuredType arrayRep = (new ArrayType(BaseType.UNKNOWN))
+                StructuredType arrayRep = new ArrayType(BaseType.UNKNOWN)
                         ._getRepresentative();
 
                 String[] labels = new String[0];
                 Type[] types = new Type[0];
-                StructuredType recordRep = (new RecordType(labels, types))
+                StructuredType recordRep = new RecordType(labels, types)
                         ._getRepresentative();
-                StructuredType unionRep = (new UnionType(labels, types))
+                StructuredType unionRep = new UnionType(labels, types)
                         ._getRepresentative();
 
                 /*StructuredType functionRep = */new ptolemy.data.type.FunctionType(

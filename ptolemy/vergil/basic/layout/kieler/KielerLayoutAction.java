@@ -103,7 +103,7 @@ public class KielerLayoutAction extends Object implements IGuiAction, Filter {
             if (effigy != null) {
                 Iterator tableaux = effigy.entityList(Tableau.class).iterator();
                 while (tableaux.hasNext()) {
-                    Tableau tableau = (Tableau) (tableaux.next());
+                    Tableau tableau = (Tableau) tableaux.next();
                     tableauxCount++;
                     if (tableau.getFrame() instanceof ActorGraphFrame
                             || tableau.getFrame() instanceof FSMGraphFrame) {
@@ -158,10 +158,9 @@ public class KielerLayoutAction extends Object implements IGuiAction, Filter {
             // If we do not catch exceptions here, then they
             // disappear to stdout, which is bad if we launched
             // where there is no stdout visible.
-            MessageHandler.error(
-                    "Failed to layout \""
-                            + (model == null ? "name not found" : (model
-                                    .getFullName())) + "\"", ex);
+            MessageHandler.error("Failed to layout \""
+                    + (model == null ? "name not found" : model.getFullName())
+                    + "\"", ex);
         }
     }
 

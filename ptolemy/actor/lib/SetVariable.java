@@ -209,7 +209,8 @@ public class SetVariable extends TypedAtomicActor implements ChangeListener,
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         SetVariable newObject = (SetVariable) super.clone(workspace);
         // Derived classes like ptides/lib/ErrorHandlingAction.java need this.
-        newObject._attribute = (Attribute)newObject.getAttribute(newObject.variableName.getName());
+        newObject._attribute = newObject.getAttribute(newObject.variableName
+                .getName());
         return newObject;
     }
 

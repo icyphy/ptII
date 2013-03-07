@@ -421,7 +421,7 @@ public abstract class ChangeRequest {
         if (_exception != null) {
             // Note the use of fillInStackTrace, so that the exception
             // appears to come from within the change request.
-            throw (Exception) (_exception.fillInStackTrace());
+            throw (Exception) _exception.fillInStackTrace();
         }
     }
 

@@ -246,9 +246,8 @@ public class Plot extends PlotBox implements PlotInterface {
             // already have a dataset with the same legend.
             String possibleLegend = getLegend(dataset);
 
-            if ((possibleLegend == null)
-                    || (possibleLegend != null && !possibleLegend
-                            .equals(legend))) {
+            if (possibleLegend == null || possibleLegend != null
+                    && !possibleLegend.equals(legend)) {
                 super.addLegend(dataset, legend);
             }
         }
@@ -598,25 +597,25 @@ public class Plot extends PlotBox implements PlotInterface {
                         // For some bizarre reason, this problem goes
                         // away when this code is executed in the event
                         // dispatch thread.
-                        addPoint(0, xvalue, 5 * Math.cos((Math.PI * i) / 20),
+                        addPoint(0, xvalue, 5 * Math.cos(Math.PI * i / 20),
                                 !first);
-                        addPoint(1, xvalue, 4.5 * Math.cos((Math.PI * i) / 25),
+                        addPoint(1, xvalue, 4.5 * Math.cos(Math.PI * i / 25),
                                 !first);
-                        addPoint(2, xvalue, 4 * Math.cos((Math.PI * i) / 30),
+                        addPoint(2, xvalue, 4 * Math.cos(Math.PI * i / 30),
                                 !first);
-                        addPoint(3, xvalue, 3.5 * Math.cos((Math.PI * i) / 35),
+                        addPoint(3, xvalue, 3.5 * Math.cos(Math.PI * i / 35),
                                 !first);
-                        addPoint(4, xvalue, 3 * Math.cos((Math.PI * i) / 40),
+                        addPoint(4, xvalue, 3 * Math.cos(Math.PI * i / 40),
                                 !first);
-                        addPoint(5, xvalue, 2.5 * Math.cos((Math.PI * i) / 45),
+                        addPoint(5, xvalue, 2.5 * Math.cos(Math.PI * i / 45),
                                 !first);
-                        addPoint(6, xvalue, 2 * Math.cos((Math.PI * i) / 50),
+                        addPoint(6, xvalue, 2 * Math.cos(Math.PI * i / 50),
                                 !first);
-                        addPoint(7, xvalue, 1.5 * Math.cos((Math.PI * i) / 55),
+                        addPoint(7, xvalue, 1.5 * Math.cos(Math.PI * i / 55),
                                 !first);
-                        addPoint(8, xvalue, 1 * Math.cos((Math.PI * i) / 60),
+                        addPoint(8, xvalue, 1 * Math.cos(Math.PI * i / 60),
                                 !first);
-                        addPoint(9, xvalue, 0.5 * Math.cos((Math.PI * i) / 65),
+                        addPoint(9, xvalue, 0.5 * Math.cos(Math.PI * i / 65),
                                 !first);
                         first = false;
                     } // for
@@ -1146,13 +1145,13 @@ public class Plot extends PlotBox implements PlotInterface {
             }
         }
 
-        if ((ypos <= _lry) && (xpos <= _lrx) && (xpos >= _ulx)) {
+        if (ypos <= _lry && xpos <= _lrx && xpos >= _ulx) {
             // left x position of bar.
-            int barlx = (int) (xpos - ((_barWidth * _xscale) / 2) + (dataset
-                    * _barOffset * _xscale));
+            int barlx = (int) (xpos - _barWidth * _xscale / 2 + dataset
+                    * _barOffset * _xscale);
 
             // right x position of bar
-            int barrx = (int) (barlx + (_barWidth * _xscale));
+            int barrx = (int) (barlx + _barWidth * _xscale);
 
             if (barlx < _ulx) {
                 barlx = _ulx;
@@ -1178,7 +1177,7 @@ public class Plot extends PlotBox implements PlotInterface {
                 zeroypos = _uly;
             }
 
-            if ((_yMin >= 0) || (ypos <= zeroypos)) {
+            if (_yMin >= 0 || ypos <= zeroypos) {
                 graphics.fillRect(barlx, (int) ypos, barrx - barlx,
                         (int) (zeroypos - ypos));
             } else {
@@ -1233,7 +1232,7 @@ public class Plot extends PlotBox implements PlotInterface {
             }
         }
 
-        if ((ypos <= _lry) && (xpos <= _lrx) && (xpos >= _ulx)) {
+        if (ypos <= _lry && xpos <= _lrx && xpos >= _ulx) {
             // The y position of the zero line.
             double zeroypos = _lry - (long) ((0 - _yMin) * _yscale);
 
@@ -1300,19 +1299,21 @@ public class Plot extends PlotBox implements PlotInterface {
 
         if (clip) {
             // Rule out impossible cases.
-            if (!(((endx <= _ulx) && (startx <= _ulx))
-                    || ((endx >= _lrx) && (startx >= _lrx))
-                    || ((endy <= _uly) && (starty <= _uly)) || ((endy >= _lry) && (starty >= _lry)))) {
+            if (!(endx <= _ulx && startx <= _ulx || endx >= _lrx
+                    && startx >= _lrx || endy <= _uly && starty <= _uly || endy >= _lry
+                    && starty >= _lry)) {
                 // If the end point is out of x range, adjust
                 // end point to boundary.
                 // The integer arithmetic has to be done with longs so as
                 // to not loose precision on extremely close zooms.
                 if (startx != endx) {
                     if (endx < _ulx) {
-                        endy = (int) (endy + (((starty - endy) * (_ulx - endx)) / (startx - endx)));
+                        endy = (int) (endy + (starty - endy) * (_ulx - endx)
+                                / (startx - endx));
                         endx = _ulx;
                     } else if (endx > _lrx) {
-                        endy = (int) (endy + (((starty - endy) * (_lrx - endx)) / (startx - endx)));
+                        endy = (int) (endy + (starty - endy) * (_lrx - endx)
+                                / (startx - endx));
                         endx = _lrx;
                     }
                 }
@@ -1321,10 +1322,12 @@ public class Plot extends PlotBox implements PlotInterface {
                 // Note that y increases downward
                 if (starty != endy) {
                     if (endy < _uly) {
-                        endx = (int) (endx + (((startx - endx) * (_uly - endy)) / (starty - endy)));
+                        endx = (int) (endx + (startx - endx) * (_uly - endy)
+                                / (starty - endy));
                         endy = _uly;
                     } else if (endy > _lry) {
-                        endx = (int) (endx + (((startx - endx) * (_lry - endy)) / (starty - endy)));
+                        endx = (int) (endx + (startx - endx) * (_lry - endy)
+                                / (starty - endy));
                         endy = _lry;
                     }
                 }
@@ -1332,29 +1335,33 @@ public class Plot extends PlotBox implements PlotInterface {
                 // Adjust current point to lie on the boundary.
                 if (startx != endx) {
                     if (startx < _ulx) {
-                        starty = (int) (starty + (((endy - starty) * (_ulx - startx)) / (endx - startx)));
+                        starty = (int) (starty + (endy - starty)
+                                * (_ulx - startx) / (endx - startx));
                         startx = _ulx;
                     } else if (startx > _lrx) {
-                        starty = (int) (starty + (((endy - starty) * (_lrx - startx)) / (endx - startx)));
+                        starty = (int) (starty + (endy - starty)
+                                * (_lrx - startx) / (endx - startx));
                         startx = _lrx;
                     }
                 }
 
                 if (starty != endy) {
                     if (starty < _uly) {
-                        startx = (int) (startx + (((endx - startx) * (_uly - starty)) / (endy - starty)));
+                        startx = (int) (startx + (endx - startx)
+                                * (_uly - starty) / (endy - starty));
                         starty = _uly;
                     } else if (starty > _lry) {
-                        startx = (int) (startx + (((endx - startx) * (_lry - starty)) / (endy - starty)));
+                        startx = (int) (startx + (endx - startx)
+                                * (_lry - starty) / (endy - starty));
                         starty = _lry;
                     }
                 }
             }
 
             // Are the new points in range?
-            if ((endx >= _ulx) && (endx <= _lrx) && (endy >= _uly)
-                    && (endy <= _lry) && (startx >= _ulx) && (startx <= _lrx)
-                    && (starty >= _uly) && (starty <= _lry)) {
+            if (endx >= _ulx && endx <= _lrx && endy >= _uly && endy <= _lry
+                    && startx >= _ulx && startx <= _lrx && starty >= _uly
+                    && starty <= _lry) {
                 graphics.drawLine((int) startx, (int) starty, (int) endx,
                         (int) endy);
             }
@@ -1541,13 +1548,13 @@ public class Plot extends PlotBox implements PlotInterface {
             String lcLine = line.toLowerCase();
 
             if (lcLine.startsWith("linestyle:")) {
-                String style = (line.substring(10)).trim();
+                String style = line.substring(10).trim();
                 setLineStyle(style, _currentdataset);
                 return true;
             } else if (lcLine.startsWith("marks:")) {
                 // If we have seen a dataset directive, then apply the
                 // request to the current dataset only.
-                String style = (line.substring(6)).trim();
+                String style = line.substring(6).trim();
 
                 if (_sawFirstDataSet) {
                     setMarksStyle(style, _currentdataset);
@@ -1568,8 +1575,8 @@ public class Plot extends PlotBox implements PlotInterface {
 
                 return true;
             } else if (lcLine.startsWith("dataset:")) {
-                if (_reuseDatasets && (lcLine.length() > 0)) {
-                    String tlegend = (line.substring(8)).trim();
+                if (_reuseDatasets && lcLine.length() > 0) {
+                    String tlegend = line.substring(8).trim();
                     _currentdataset = -1;
 
                     int i;
@@ -1593,9 +1600,9 @@ public class Plot extends PlotBox implements PlotInterface {
                 _currentdataset++;
 
                 if (lcLine.length() > 0) {
-                    String legend = (line.substring(8)).trim();
+                    String legend = line.substring(8).trim();
 
-                    if ((legend != null) && (legend.length() > 0)) {
+                    if (legend != null && legend.length() > 0) {
                         addLegend(_currentdataset, legend);
                     }
                 }
@@ -1660,10 +1667,10 @@ public class Plot extends PlotBox implements PlotInterface {
                     String baroffset = null;
 
                     if (comma > 0) {
-                        _barWidth = (line.substring(5, comma)).trim();
-                        baroffset = (line.substring(comma + 1)).trim();
+                        _barWidth = line.substring(5, comma).trim();
+                        baroffset = line.substring(comma + 1).trim();
                     } else {
-                        _barWidth = (line.substring(5)).trim();
+                        _barWidth = line.substring(5).trim();
                     }
 
                     try {
@@ -1720,8 +1727,8 @@ public class Plot extends PlotBox implements PlotInterface {
             }
 
             if (fieldsplit > 0) {
-                String x = (line.substring(0, fieldsplit)).trim();
-                String y = (line.substring(fieldsplit + 1)).trim();
+                String x = line.substring(0, fieldsplit).trim();
+                String y = line.substring(fieldsplit + 1).trim();
 
                 // Any more separators?
                 int fieldsplit2 = y.indexOf(",");
@@ -1735,8 +1742,8 @@ public class Plot extends PlotBox implements PlotInterface {
                 }
 
                 if (fieldsplit2 > 0) {
-                    line = (y.substring(fieldsplit2 + 1)).trim();
-                    y = (y.substring(0, fieldsplit2)).trim();
+                    line = y.substring(fieldsplit2 + 1).trim();
+                    y = y.substring(0, fieldsplit2).trim();
                 }
 
                 try {
@@ -1759,9 +1766,8 @@ public class Plot extends PlotBox implements PlotInterface {
                         if (fieldsplit3 > 0) {
                             // We have more numbers, assume that this is
                             // an error bar
-                            String yl = (line.substring(0, fieldsplit3)).trim();
-                            String yh = (line.substring(fieldsplit3 + 1))
-                                    .trim();
+                            String yl = line.substring(0, fieldsplit3).trim();
+                            String yh = line.substring(fieldsplit3 + 1).trim();
                             double yLowEB = Double.parseDouble(yl);
                             double yHighEB = Double.parseDouble(yh);
                             connected = _addLegendIfNecessary(connected);
@@ -2033,7 +2039,7 @@ public class Plot extends PlotBox implements PlotInterface {
     /* Add a legend if necessary, return the value of the connected flag.
      */
     private boolean _addLegendIfNecessary(boolean connected) {
-        if ((!_sawFirstDataSet || (_currentdataset < 0)) && !_reuseDatasets) {
+        if ((!_sawFirstDataSet || _currentdataset < 0) && !_reuseDatasets) {
             // We did not set a DataSet line, but
             // we did get called with -<digit> args and
             // we did not see reusedatasets: yes
@@ -2041,7 +2047,7 @@ public class Plot extends PlotBox implements PlotInterface {
             _currentdataset++;
         }
 
-        if (!_sawFirstDataSet && (getLegend(_currentdataset) == null)) {
+        if (!_sawFirstDataSet && getLegend(_currentdataset) == null) {
             // We did not see a "DataSet" string yet,
             // nor did we call addLegend().
             _firstInSet = true;
@@ -2103,7 +2109,7 @@ public class Plot extends PlotBox implements PlotInterface {
             y = Math.log(y) * _LOG10SCALE;
 
             if (errorBar) {
-                if ((yLowEB <= 0.0) || (yHighEB <= 0.0)) {
+                if (yLowEB <= 0.0 || yHighEB <= 0.0) {
                     System.err
                             .println("Can't plot non-positive Y values "
                                     + "when the logarithmic Y axis value is specified: "
@@ -2127,7 +2133,7 @@ public class Plot extends PlotBox implements PlotInterface {
             while (numToDelete < nbrOfBins) {
                 Bin old = bins.get(numToDelete);
 
-                if ((x - points.get(old.firstPointIndex()).originalx) <= _xPersistence) {
+                if (x - points.get(old.firstPointIndex()).originalx <= _xPersistence) {
                     break;
                 }
 
@@ -2160,9 +2166,9 @@ public class Plot extends PlotBox implements PlotInterface {
             double width = _wrapHigh - _wrapLow;
 
             if (x < _wrapLow) {
-                x += (width * Math.floor(1.0 + ((_wrapLow - x) / width)));
+                x += width * Math.floor(1.0 + (_wrapLow - x) / width);
             } else if (x > _wrapHigh) {
-                x -= (width * Math.floor(1.0 + ((x - _wrapHigh) / width)));
+                x -= width * Math.floor(1.0 + (x - _wrapHigh) / width);
 
                 // NOTE: Could quantization errors be a problem here?
                 if (Math.abs(x - _wrapLow) < 0.00001) {
@@ -2278,8 +2284,8 @@ public class Plot extends PlotBox implements PlotInterface {
 
         // Need to check that graphics is not null because plot may have
         // been dismissed.
-        if (_showing && (graphics != null)) {
-            if (((_pointsPersistence > 0) || (_xPersistence > 0.0))
+        if (_showing && graphics != null) {
+            if ((_pointsPersistence > 0 || _xPersistence > 0.0)
                     && isDoubleBuffered()) {
                 // NOTE: Double buffering has a bug in Java (in at least
                 // version 1.3) where there is a one pixel alignment problem
@@ -2345,7 +2351,7 @@ public class Plot extends PlotBox implements PlotInterface {
             }
         }
 
-        if (_wrap && (Math.abs(x - _wrapHigh)) < 0.00001) {
+        if (_wrap && Math.abs(x - _wrapHigh) < 0.00001) {
             // Plot a second point at the low end of the range.
             _addPoint(dataset, _wrapLow, y, yLowEB, yHighEB, false, errorBar);
         }
@@ -2586,8 +2592,8 @@ public class Plot extends PlotBox implements PlotInterface {
                     bin.maxYPos(), true, _DEFAULT_WIDTH);
         }
 
-        if ((fmt.impulsesUseDefault && _impulses)
-                || (!fmt.impulsesUseDefault && fmt.impulses)) {
+        if (fmt.impulsesUseDefault && _impulses || !fmt.impulsesUseDefault
+                && fmt.impulses) {
             long prevypos = _prevypos.get(dataset);
             long prevxpos = _prevxpos.get(dataset);
 
@@ -2610,8 +2616,8 @@ public class Plot extends PlotBox implements PlotInterface {
                 PlotPoint point = points.get(i);
 
                 // I a point is not connected, we mark it with a dot.
-                if (_marks != 0
-                        || (_markDisconnections && !(connectedFlag && point.connected))) {
+                if (_marks != 0 || _markDisconnections
+                        && !(connectedFlag && point.connected)) {
                     long ypos = _lry - (long) ((point.y - _yMin) * _yscale);
                     if (prevypos != ypos || prevxpos != xpos) {
                         int updatedMarks = marks;
@@ -2695,8 +2701,8 @@ public class Plot extends PlotBox implements PlotInterface {
         // BRDebug System.out.println("_drawPoint, " + xpos + ", " + ypos);
 
         // If the point is not out of range, draw it.
-        boolean pointinside = (ypos <= _lry) && (ypos >= _uly)
-                && (xpos <= _lrx) && (xpos >= _ulx);
+        boolean pointinside = ypos <= _lry && ypos >= _uly && xpos <= _lrx
+                && xpos >= _ulx;
 
         if (!clip || pointinside) {
             int xposi = (int) xpos;
@@ -2710,8 +2716,8 @@ public class Plot extends PlotBox implements PlotInterface {
             // no line being drawn.
             // NOTE: It is unfortunate to have to test the class of graphics,
             // but there is no easy way around this that I can think of.
-            if (!pointinside && (marks != 3) && _isConnected(dataset)
-                    && ((graphics instanceof EPSGraphics) || !_usecolor)) {
+            if (!pointinside && marks != 3 && _isConnected(dataset)
+                    && (graphics instanceof EPSGraphics || !_usecolor)) {
                 // Use our line styles.
                 _drawLine(graphics, dataset, xposi - 6, yposi, xposi + 6,
                         yposi, false, _width);
@@ -2932,7 +2938,7 @@ public class Plot extends PlotBox implements PlotInterface {
 
         // Need to check that graphics is not null because plot may have
         // been dismissed.
-        if (_showing && (graphics != null)) {
+        if (_showing && graphics != null) {
             _setColorForDrawing(graphics, dataset, false);
             //First clear bin itself
             long minYPos = bin.minYPos();
@@ -2959,8 +2965,8 @@ public class Plot extends PlotBox implements PlotInterface {
             // Draw decorations that may be specified on a per-dataset basis
             Format fmt = _formats.get(dataset);
 
-            if ((fmt.impulsesUseDefault && _impulses)
-                    || (!fmt.impulsesUseDefault && fmt.impulses)) {
+            if (fmt.impulsesUseDefault && _impulses || !fmt.impulsesUseDefault
+                    && fmt.impulses) {
                 long prevypos = _prevErasedypos.get(dataset);
                 long prevxpos = _prevErasedxpos.get(dataset);
                 for (int i = startPosition; i < endPosition; ++i) {
@@ -3009,7 +3015,7 @@ public class Plot extends PlotBox implements PlotInterface {
                     && endPosition > startPosition
                     && endPosition < points.size()) {
                 PlotPoint point = points.get(endPosition - 1);
-                if ((connectedFlag && point.connected)) {
+                if (connectedFlag && point.connected) {
 
                     // This point is not connected with the previous one.
                     // We want to put a dot each end of the at each segment.
@@ -3220,7 +3226,7 @@ public class Plot extends PlotBox implements PlotInterface {
         // Restore the color, in case the box gets redrawn.
         graphics.setColor(_foreground);
 
-        if ((_pointsPersistence > 0) || (_xPersistence > 0.0)
+        if (_pointsPersistence > 0 || _xPersistence > 0.0
                 || forceExorWithBackground) {
             // Restore paint mode in case axes get redrawn.
             graphics.setPaintMode();
@@ -3261,7 +3267,7 @@ public class Plot extends PlotBox implements PlotInterface {
      */
     private void _setColorForDrawing(Graphics graphics, int dataset,
             boolean forceExorWithBackground) {
-        if ((_pointsPersistence > 0) || (_xPersistence > 0.0)
+        if (_pointsPersistence > 0 || _xPersistence > 0.0
                 || forceExorWithBackground) {
             // To allow erasing to work by just redrawing the points.
             if (_background == null) {

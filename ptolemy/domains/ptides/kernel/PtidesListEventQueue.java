@@ -133,8 +133,8 @@ public class PtidesListEventQueue implements DEEventQueue {
         PtidesEvent ptidesEvent = (PtidesEvent) _listQueue.remove();
         // put the token of this event into the destined receiver.
         if (ptidesEvent.receiver() != null) {
-            ((PtidesReceiver) (ptidesEvent).receiver())
-                    .putToReceiver((ptidesEvent).token());
+            ((PtidesReceiver) ptidesEvent.receiver()).putToReceiver(ptidesEvent
+                    .token());
         }
         if (_debugging) {
             _debug("--- taking from queue: " + ptidesEvent);
@@ -219,7 +219,7 @@ public class PtidesListEventQueue implements DEEventQueue {
      *  @param message The message.
      */
     private final void _debug(String message) {
-        if ((_debugListeners == null) || !_debugging) {
+        if (_debugListeners == null || !_debugging) {
             return;
         } else {
             Iterator listeners = _debugListeners.iterator();

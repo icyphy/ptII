@@ -83,8 +83,7 @@ public class PortClassChanges extends MoMLFilterSimple {
             // by the portMap, find the class mapping and record the
             // name of the port.
             if (_currentlyProcessingActorWithPortClassChanges
-                    && (_portMap != null)
-                    && _portMap.containsKey(attributeValue)) {
+                    && _portMap != null && _portMap.containsKey(attributeValue)) {
                 _classMap = (HashMap) _portMap.get(attributeValue);
 
                 _portName = attributeValue;

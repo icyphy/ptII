@@ -133,8 +133,8 @@ public class JCanvas extends JComponent implements Printable {
 
         boolean match = false;
         String[] supportedFormats = ImageIO.getWriterFormatNames();
-        for (int i = 0; i < supportedFormats.length; i++) {
-            if (formatName.equalsIgnoreCase(supportedFormats[i])) {
+        for (String supportedFormat : supportedFormats) {
+            if (formatName.equalsIgnoreCase(supportedFormat)) {
                 match = true;
                 break;
             }
@@ -241,8 +241,8 @@ public class JCanvas extends JComponent implements Printable {
             clip = new Rectangle(0, 0, d.width, d.height);
         }
 
-        boolean paintAll = ((clip.x == 0) && (clip.y == 0)
-                && (clip.width == d.width) && (clip.height == d.height));
+        boolean paintAll = clip.x == 0 && clip.y == 0 && clip.width == d.width
+                && clip.height == d.height;
 
         if (!isDoubleBuffered()) {
             Graphics2D g2d = (Graphics2D) g;
@@ -266,8 +266,8 @@ public class JCanvas extends JComponent implements Printable {
             // Get a new offscreen buffer if necessary. Clear the reference
             // to the off-screen buffer, so that the memory can be freed
             // if necessary by the GC and reallocated for the new buffer.
-            if ((_offscreen == null) || (_offscreen.getWidth() != clip.width)
-                    || (_offscreen.getHeight() != clip.height)) {
+            if (_offscreen == null || _offscreen.getWidth() != clip.width
+                    || _offscreen.getHeight() != clip.height) {
                 _offscreen = null; // in case GC needs it
                 _offscreen = new BufferedImage(clip.width, clip.height,
                         BufferedImage.TYPE_INT_RGB);

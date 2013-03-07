@@ -294,9 +294,9 @@ public class VideoCamera extends Source implements ControllerListener {
         // FIXME: We want the audio track too on a separate output, maybe.
         TrackControl videoTrack = null;
 
-        for (int i = 0; i < trackControls.length; i++) {
-            if (trackControls[i].getFormat() instanceof VideoFormat) {
-                videoTrack = trackControls[i];
+        for (TrackControl trackControl : trackControls) {
+            if (trackControl.getFormat() instanceof VideoFormat) {
+                videoTrack = trackControl;
                 break;
             }
         }
@@ -361,7 +361,7 @@ public class VideoCamera extends Source implements ControllerListener {
     protected boolean _waitForState(int state) {
         synchronized (_waitSync) {
             try {
-                while ((_processor.getState() != state) && _stateTransitionOK) {
+                while (_processor.getState() != state && _stateTransitionOK) {
                     _waitSync.wait();
                 }
             } catch (Throwable throwable) {

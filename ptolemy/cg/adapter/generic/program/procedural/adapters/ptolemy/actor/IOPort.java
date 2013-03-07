@@ -274,9 +274,8 @@ public class IOPort extends NamedProgramCodeGeneratorAdapter implements
         int channelIndex = Integer.parseInt(channel);
         // FIXME: take care of the offset, and why are we getting all the
         // receivers all the time?
-        if ((remoteReceivers == null)
-                || (remoteReceivers.length <= channelIndex)
-                || (remoteReceivers[channelIndex] == null)) {
+        if (remoteReceivers == null || remoteReceivers.length <= channelIndex
+                || remoteReceivers[channelIndex] == null) {
             return "";
         }
         StringBuffer code = new StringBuffer();
@@ -338,9 +337,9 @@ public class IOPort extends NamedProgramCodeGeneratorAdapter implements
 
         Receiver[][] receivers = getReceiverAdapters();
 
-        for (int i = 0; i < receivers.length; i++) {
-            for (int j = 0; j < receivers[i].length; j++) {
-                code.append(receivers[i][j].generateInitializeCode());
+        for (Receiver[] receiver : receivers) {
+            for (int j = 0; j < receiver.length; j++) {
+                code.append(receiver[j].generateInitializeCode());
             }
         }
         return code.toString();

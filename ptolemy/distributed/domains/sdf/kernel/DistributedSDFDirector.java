@@ -224,7 +224,7 @@ public class DistributedSDFDirector extends SDFDirector {
         if (attribute == parallelExecution) {
             invalidateSchedule();
 
-            if (((BooleanToken) parallelExecution.getToken()) == BooleanToken.FALSE) {
+            if ((BooleanToken) parallelExecution.getToken() == BooleanToken.FALSE) {
                 System.out.println("equals FALSE");
                 pipelining.setToken(BooleanToken.FALSE);
             }
@@ -395,7 +395,7 @@ public class DistributedSDFDirector extends SDFDirector {
     private void bufferingPhase() throws IllegalActionException {
         System.out.println("Buffering...");
 
-        int iterationsValue = ((IntToken) (iterations.getToken())).intValue();
+        int iterationsValue = ((IntToken) iterations.getToken()).intValue();
 
         Scheduler scheduler = getScheduler();
 
@@ -561,10 +561,10 @@ public class DistributedSDFDirector extends SDFDirector {
     private HashMap createServicesReceiversMap(Receiver[][] receivers) {
         HashMap servicesReceiversMap = new HashMap();
 
-        for (int i = 0; i < receivers.length; i++) {
-            for (int j = 0; j < receivers[i].length; j++) {
-                if (receivers[i][j] != null) {
-                    IOPort port = receivers[i][j].getContainer();
+        for (Receiver[] receiver : receivers) {
+            for (int j = 0; j < receiver.length; j++) {
+                if (receiver[j] != null) {
+                    IOPort port = receiver[j].getContainer();
                     Actor actor = (Actor) port.getContainer();
 
                     if (!servicesReceiversMap
@@ -578,8 +578,7 @@ public class DistributedSDFDirector extends SDFDirector {
                     LinkedList list = (LinkedList) servicesReceiversMap
                             .get(((ClientThread) actorsThreadsMap.get(actor))
                                     .getService());
-                    Integer ID = ((DistributedSDFReceiver) receivers[i][j])
-                            .getID();
+                    Integer ID = ((DistributedSDFReceiver) receiver[j]).getID();
                     list.add(ID);
                 }
             }
@@ -864,7 +863,7 @@ public class DistributedSDFDirector extends SDFDirector {
      *  @exception IllegalActionException If port methods throw it.
      */
     private void pipelinedParallelFire() throws IllegalActionException {
-        int iterationsValue = ((IntToken) (iterations.getToken())).intValue();
+        int iterationsValue = ((IntToken) iterations.getToken()).intValue();
 
         Scheduler scheduler = getScheduler();
 

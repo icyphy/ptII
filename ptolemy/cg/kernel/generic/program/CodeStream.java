@@ -290,11 +290,11 @@ public class CodeStream {
             String[] blocks = NamedProgramCodeGeneratorAdapter
                     .getDefaultBlocks();
 
-            for (int i = 0; i < blocks.length; i++) {
+            for (String block : blocks) {
 
                 // The default blocks are automatically appended
                 // by ProgramCodeGeneratorAdapter.
-                if (_adapter != null && blockName.matches(blocks[i])) {
+                if (_adapter != null && blockName.matches(block)) {
                     throw new IllegalActionException(
                             blockName
                                     + " -- is a code block that is appended by default.");
@@ -340,8 +340,8 @@ public class CodeStream {
             _constructCodeTable(mayNotExist);
         }
 
-        Signature signature = new Signature(blockName, (arguments == null ? 0
-                : arguments.size()));
+        Signature signature = new Signature(blockName, arguments == null ? 0
+                : arguments.size());
 
         StringBuffer codeBlock = null;
         try {
@@ -429,7 +429,7 @@ public class CodeStream {
 
             List<?> parameters = _declarations.getParameters(signature);
 
-            if ((parameters != null) && (parameters.size() > 0)) {
+            if (parameters != null && parameters.size() > 0) {
                 for (int i = 0; i < parameters.size(); i++) {
                     if (i == 0) {
                         buffer.append("(" + parameters.get(i));
@@ -1004,7 +1004,7 @@ public class CodeStream {
             endIndex = codeInFile.indexOf(_BLOCKEND, scanIndex);
             startIndex = codeInFile.indexOf(_BLOCKSTART, scanIndex);
 
-            if ((startIndex < endIndex) && (startIndex != -1)) {
+            if (startIndex < endIndex && startIndex != -1) {
                 openBlock++;
                 scanIndex = startIndex + 1;
             } else {
@@ -1128,7 +1128,7 @@ public class CodeStream {
 
         int parameterIndex = codeInFile.indexOf("(", _parseIndex);
 
-        if ((parameterIndex == -1) || (parameterIndex >= endIndex)) {
+        if (parameterIndex == -1 || parameterIndex >= endIndex) {
             String name = _checkCodeBlockName(codeInFile.substring(_parseIndex,
                     endIndex));
 
@@ -1531,7 +1531,7 @@ public class CodeStream {
                                 + "().");
                     }
 
-                    String blockName = (isImplicit) ? signature.functionName
+                    String blockName = isImplicit ? signature.functionName
                             : codeBlock.substring(dotIndex + 1, openIndex)
                                     .trim();
 
@@ -1557,7 +1557,7 @@ public class CodeStream {
                                         + codeObject[0]);
                     }
 
-                    StringBuffer callCodeBlock = (!isSuper) ? getCode(
+                    StringBuffer callCodeBlock = !isSuper ? getCode(
                             callSignature, callArguments) : _getCode(
                             callSignature, callArguments,
                             scopeList.subList(1, scopeList.size()));
@@ -1619,7 +1619,7 @@ public class CodeStream {
             LinkedHashMap<Signature, Object[]> currentScope = scopeList.get(0);
 
             if (currentScope.containsKey(signature)) {
-                return (List<Object>) (currentScope.get(signature))[2];
+                return (List<Object>) currentScope.get(signature)[2];
 
             } else {
                 return _getParameters(signature,

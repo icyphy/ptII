@@ -122,9 +122,8 @@ public class TDLAction {
     public boolean equals(Object obj) {
         if (obj instanceof TDLAction) {
             TDLAction action = (TDLAction) obj;
-            if ((this.time.equals(action.time))
-                    && (this.object == action.object)
-                    && (this.actionType == action.actionType)) {
+            if (this.time.equals(action.time) && this.object == action.object
+                    && this.actionType == action.actionType) {
                 return true;
             }
         }
@@ -150,8 +149,8 @@ public class TDLAction {
     public boolean sameActionAs(TDLAction action, Time modePeriod) {
         long time1 = this.time.getLongValue() % modePeriod.getLongValue();
         long time2 = action.time.getLongValue() % modePeriod.getLongValue();
-        if (time1 == time2 && (this.object == action.object)
-                && (this.actionType == action.actionType)) {
+        if (time1 == time2 && this.object == action.object
+                && this.actionType == action.actionType) {
             return true;
         }
         return false;

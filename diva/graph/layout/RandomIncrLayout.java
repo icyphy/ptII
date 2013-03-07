@@ -81,10 +81,8 @@ public class RandomIncrLayout implements IncrementalLayout {
             Rectangle2D bounds = getLayoutTarget().getBounds(node);
 
             for (int i = 0; i < NUM_ITER; i++) {
-                double x = vp.getX()
-                        + (Math.abs(Math.random()) * vp.getWidth());
-                double y = vp.getY()
-                        + (Math.abs(Math.random()) * vp.getHeight());
+                double x = vp.getX() + Math.abs(Math.random()) * vp.getWidth();
+                double y = vp.getY() + Math.abs(Math.random()) * vp.getHeight();
 
                 LayoutUtilities.place(getLayoutTarget(), node, x, y);
                 bounds = getLayoutTarget().getBounds(node);

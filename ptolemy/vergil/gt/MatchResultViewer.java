@@ -315,7 +315,7 @@ public class MatchResultViewer extends GTFrame {
     protected class MatchResultActorController extends ActorController {
 
         protected Figure _renderNode(Object node) {
-            if ((node != null) && !_hide(node)) {
+            if (node != null && !_hide(node)) {
                 Figure nf = super._renderNode(node);
                 GraphModel model = getController().getGraphModel();
                 Object object = model.getSemanticObject(node);
@@ -358,7 +358,7 @@ public class MatchResultViewer extends GTFrame {
         private class Renderer extends PortRenderer {
 
             public Figure render(Object node) {
-                if ((node != null) && !_hide(node)) {
+                if (node != null && !_hide(node)) {
                     Figure nf = super.render(node);
                     GraphModel graphModel = getController().getGraphModel();
                     Object object = graphModel.getSemanticObject(node);
@@ -441,7 +441,7 @@ public class MatchResultViewer extends GTFrame {
     protected class MatchResultRelationController extends RelationController {
 
         protected Figure _renderNode(Object node) {
-            if ((node != null) && !_hide(node)) {
+            if (node != null && !_hide(node)) {
                 Figure nf = super._renderNode(node);
                 GraphModel model = getController().getGraphModel();
                 Object object = model.getSemanticObject(node);
@@ -461,7 +461,7 @@ public class MatchResultViewer extends GTFrame {
     protected class MatchResultStateController extends StateController {
 
         protected void _highlightNode(Object node, Figure figure) {
-            if ((node != null) && !_hide(node)) {
+            if (node != null && !_hide(node)) {
                 GraphModel model = getController().getGraphModel();
                 Object object = model.getSemanticObject(node);
                 CompositeFigure cf = _getCompositeFigure(figure);
@@ -795,7 +795,7 @@ public class MatchResultViewer extends GTFrame {
             }
             tableau.setTitle(name);
             Frame frame = tableau.getFrame();
-            if (modified && (frame instanceof TableauFrame)) {
+            if (modified && frame instanceof TableauFrame) {
                 ((TableauFrame) tableau.getFrame()).setModified(true);
             }
         } catch (Exception e) {

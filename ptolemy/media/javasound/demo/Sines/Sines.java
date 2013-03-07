@@ -83,17 +83,20 @@ public class Sines {
                 for (int j = 0; j < channels; j++) {
                     for (int i = 0; i < putSamplesSize; i++) {
                         // Generate a harmonic signal.
-                        samplesArray[j][i] = (java.lang.Math.sin(fundamental_Hz
-                                * 2 * java.lang.Math.PI * samples[j]) * 0.4)
-                                + (java.lang.Math.sin(2 * fundamental_Hz * 2
-                                        * java.lang.Math.PI * samples[j]) * 0.3)
-                                + (java.lang.Math.sin(3 * fundamental_Hz * 2
-                                        * java.lang.Math.PI * samples[j]) * 0.25)
-                                + (java.lang.Math.sin(4 * fundamental_Hz * 2
-                                        * java.lang.Math.PI * samples[j]) * 0.2);
+                        samplesArray[j][i] = java.lang.Math.sin(fundamental_Hz
+                                * 2 * java.lang.Math.PI * samples[j])
+                                * 0.4
+                                + java.lang.Math.sin(2 * fundamental_Hz * 2
+                                        * java.lang.Math.PI * samples[j])
+                                * 0.3
+                                + java.lang.Math.sin(3 * fundamental_Hz * 2
+                                        * java.lang.Math.PI * samples[j])
+                                * 0.25
+                                + java.lang.Math.sin(4 * fundamental_Hz * 2
+                                        * java.lang.Math.PI * samples[j]) * 0.2;
 
                         // Increment time.
-                        samples[j] = samples[j] + (1.0 / sampleRate);
+                        samples[j] = samples[j] + 1.0 / sampleRate;
                     }
                 }
 

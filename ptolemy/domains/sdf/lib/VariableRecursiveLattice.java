@@ -134,7 +134,7 @@ public class VariableRecursiveLattice extends RecursiveLattice implements
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == blockSize) {
-            IntToken blockSizeToken = (IntToken) (blockSize.getToken());
+            IntToken blockSizeToken = (IntToken) blockSize.getToken();
             _blockSizeValue = blockSizeToken.intValue();
 
             if (_blockSizeValue < 1) {
@@ -154,8 +154,8 @@ public class VariableRecursiveLattice extends RecursiveLattice implements
      *   an attribute that cannot be cloned.
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        VariableRecursiveLattice newObject = (VariableRecursiveLattice) (super
-                .clone(workspace));
+        VariableRecursiveLattice newObject = (VariableRecursiveLattice) super
+                .clone(workspace);
 
         newObject.newCoefficients
                 .setTypeSameAs(newObject.reflectionCoefficients);
@@ -171,7 +171,7 @@ public class VariableRecursiveLattice extends RecursiveLattice implements
      */
     public void fire() throws IllegalActionException {
         if (newCoefficients.hasToken(0)) {
-            ArrayToken coefficientsToken = (ArrayToken) (newCoefficients.get(0));
+            ArrayToken coefficientsToken = (ArrayToken) newCoefficients.get(0);
             reflectionCoefficients.setToken(coefficientsToken);
         }
 

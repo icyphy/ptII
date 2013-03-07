@@ -91,6 +91,6 @@ public final class TestUtilities {
         }
 
         // Make sure that both are the same length
-        return (p1.isDone() && p2.isDone());
+        return p1.isDone() && p2.isDone();
     }
 }

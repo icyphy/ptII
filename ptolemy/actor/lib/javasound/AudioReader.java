@@ -140,7 +140,7 @@ public class AudioReader extends Source {
             String newFileOrURL = ((StringToken) fileOrURL.getToken())
                     .stringValue();
 
-            if ((_previousFileOrURL != null)
+            if (_previousFileOrURL != null
                     && !newFileOrURL.equals(_previousFileOrURL)) {
                 _previousFileOrURL = newFileOrURL;
                 _openReader();
@@ -158,7 +158,7 @@ public class AudioReader extends Source {
     public void initialize() throws IllegalActionException {
         super.initialize();
 
-        if (_firedSinceWrapup || (_soundReader == null)) {
+        if (_firedSinceWrapup || _soundReader == null) {
             // It would be better if there were a way to reset the
             // input stream, but apparently there is not, short of
             // closing it and reopening it.
@@ -180,14 +180,14 @@ public class AudioReader extends Source {
     public boolean postfire() throws IllegalActionException {
         super.postfire();
 
-        if (_reachedEOF || (_soundReader == null)) {
+        if (_reachedEOF || _soundReader == null) {
             return false;
         }
 
         _firedSinceWrapup = true;
 
         // Check whether we need to reallocate the output token array.
-        if ((_audioSendArray == null) || (_channels > _audioSendArray.length)) {
+        if (_audioSendArray == null || _channels > _audioSendArray.length) {
             _audioSendArray = new DoubleToken[_channels];
         }
 
@@ -201,7 +201,7 @@ public class AudioReader extends Source {
         // Check whether we still have at least one sample left.
         // NOTE: This assumes that all channels have the same length
         // as the 0 channel.
-        if ((_audioIn[0].length - _sampleIndex) <= 0) {
+        if (_audioIn[0].length - _sampleIndex <= 0) {
             // We just ran out of samples.
             // Need to read more data.
             try {
@@ -241,7 +241,7 @@ public class AudioReader extends Source {
     public boolean prefire() throws IllegalActionException {
         _firedSinceWrapup = true;
 
-        if (_reachedEOF || (_soundReader == null)) {
+        if (_reachedEOF || _soundReader == null) {
             return false;
         } else {
             return super.prefire();

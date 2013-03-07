@@ -222,7 +222,7 @@ public class VQDecode extends Transformer {
             for (i = 0; i < 5; i++) {
                 size = size * 2;
 
-                if ((i % 2) == 0) {
+                if (i % 2 == 0) {
                     columns = columns * 2;
                 } else {
                     rows = rows * 2;

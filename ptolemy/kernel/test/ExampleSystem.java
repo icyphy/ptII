@@ -121,7 +121,7 @@ public class ExampleSystem implements Serializable {
 
     /** Return the results as a String. */
     public String toString() {
-        return ("----Methods of ComponentRelation----\n" + "linkedPorts:\n"
+        return "----Methods of ComponentRelation----\n" + "linkedPorts:\n"
                 + printLinkedPorts(r1) + printLinkedPorts(r2)
                 + printLinkedPorts(r3) + printLinkedPorts(r4)
                 + printLinkedPorts(r5) + printLinkedPorts(r6)
@@ -150,7 +150,8 @@ public class ExampleSystem implements Serializable {
                 + printDeepConnectedPorts(p6) + printDeepConnectedPorts(p7)
                 + printDeepConnectedPorts(p8) + printDeepConnectedPorts(p9)
                 + printDeepConnectedPorts(p10) + printDeepConnectedPorts(p11)
-                + printDeepConnectedPorts(p12) + printDeepConnectedPorts(p13) + printDeepConnectedPorts(p14));
+                + printDeepConnectedPorts(p12) + printDeepConnectedPorts(p13)
+                + printDeepConnectedPorts(p14);
     }
 
     /** Print the linked ports for a given ComponentRelation. The ports

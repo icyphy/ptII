@@ -107,11 +107,11 @@ public class DoubleToMatrix extends SDFConverter {
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
-        if ((attribute == rows) || (attribute == columns)) {
+        if (attribute == rows || attribute == columns) {
             _rows = ((IntToken) rows.getToken()).intValue();
             _columns = ((IntToken) columns.getToken()).intValue();
 
-            if ((_rows <= 0) || (_columns <= 0)) {
+            if (_rows <= 0 || _columns <= 0) {
                 throw new IllegalActionException(this,
                         "Number of rows and columns is required to be positive.");
             }

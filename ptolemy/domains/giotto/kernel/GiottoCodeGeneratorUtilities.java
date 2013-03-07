@@ -447,7 +447,7 @@ public class GiottoCodeGeneratorUtilities {
      */
     protected static boolean _initialize(TypedCompositeActor model) {
         Director director = model.getDirector();
-        return (director instanceof GiottoDirector);
+        return director instanceof GiottoDirector;
     }
 
     /** Generate code for the modes.

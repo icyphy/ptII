@@ -119,7 +119,8 @@ public class GradientAdaptiveLattice extends Lattice {
 
             // FIXME: there is a bug in either the variable naming or the
             // two lines below.
-            _oneMinusAlpha = ((timeConstantValue - 1.0) / (timeConstantValue + 1.0));
+            _oneMinusAlpha = (timeConstantValue - 1.0)
+                    / (timeConstantValue + 1.0);
             _alpha = 1.0 - _oneMinusAlpha;
         }
 
@@ -196,7 +197,7 @@ public class GradientAdaptiveLattice extends Lattice {
         // Update forward errors.
         for (int i = 0; i < _order; i++) {
             k = _reflectionCoefficients[i];
-            _forwardCache[i + 1] = (-k * _backwardCache[i]) + _forwardCache[i];
+            _forwardCache[i + 1] = -k * _backwardCache[i] + _forwardCache[i];
         }
 
         DoubleToken[] outputArray = new DoubleToken[_order];
@@ -207,7 +208,7 @@ public class GradientAdaptiveLattice extends Lattice {
         // subclasses which adapt the reflection coefficients.
         for (int i = _order; i > 0; i--) {
             k = _reflectionCoefficients[i - 1];
-            _backwardCache[i] = (-k * _forwardCache[i - 1])
+            _backwardCache[i] = -k * _forwardCache[i - 1]
                     + _backwardCache[i - 1];
 
             double fe_i = _forwardCache[i];
@@ -215,12 +216,13 @@ public class GradientAdaptiveLattice extends Lattice {
             double fe_ip = _forwardCache[i - 1];
             double be_ip = _backwardCache[i - 1];
 
-            double newError = (_estimatedErrorPower[i] * _oneMinusAlpha)
-                    + (_alpha * ((fe_ip * fe_ip) + (be_ip * be_ip)));
+            double newError = _estimatedErrorPower[i] * _oneMinusAlpha + _alpha
+                    * (fe_ip * fe_ip + be_ip * be_ip);
             double newCoefficient = _reflectionCoefficients[i - 1];
 
             if (newError != 0.0) {
-                newCoefficient += ((_alpha * ((fe_i * be_ip) + (be_i * fe_ip))) / newError);
+                newCoefficient += _alpha * (fe_i * be_ip + be_i * fe_ip)
+                        / newError;
 
                 if (newCoefficient > 1.0) {
                     newCoefficient = 1.0;

@@ -106,8 +106,8 @@ public class DataflowWithRatesActorInterpreter extends DataflowActorInterpreter 
         final ExprEvaluator eval = new ExprEvaluator(context, env);
         final Expression[] guards = action.getGuards();
 
-        for (int i = 0; i < guards.length; i++) {
-            final Object g = eval.evaluate(guards[i]);
+        for (Expression guard : guards) {
+            final Object g = eval.evaluate(guard);
 
             if (!context.booleanValue(g)) {
                 // System.out.println("guard not satisfied:" + guards[i]);
@@ -141,12 +141,12 @@ public class DataflowWithRatesActorInterpreter extends DataflowActorInterpreter 
 
         final InputPattern[] inputPatterns = action.getInputPatterns();
 
-        for (int i = 0; i < inputPatterns.length; i++) {
-            final InputPattern inputPattern = inputPatterns[i];
+        for (InputPattern inputPattern2 : inputPatterns) {
+            final InputPattern inputPattern = inputPattern2;
 
             // FIXME: handle multiports
-            final InputChannel channel = ((InputPort) (inputPortMap
-                    .get(inputPattern.getPortname()))).getChannel(0);
+            final InputChannel channel = ((InputPort) inputPortMap
+                    .get(inputPattern.getPortname())).getChannel(0);
 
             if (inputPattern.getRepeatExpr() == null) {
                 if (!channel.hasAvailable(inputPattern.getVariables().length)) {
@@ -161,7 +161,8 @@ public class DataflowWithRatesActorInterpreter extends DataflowActorInterpreter 
                         * repeatVal)) {
                     throw new InterpreterException(
                             "Not enough repeated inputs:"
-                                    + (inputPattern.getVariables().length * repeatVal));
+                                    + inputPattern.getVariables().length
+                                    * repeatVal);
                 }
             }
         }
@@ -169,8 +170,8 @@ public class DataflowWithRatesActorInterpreter extends DataflowActorInterpreter 
         final StmtEvaluator eval = new StmtEvaluator(context, env);
         final Statement[] body = action.getBody();
 
-        for (int i = 0; i < body.length; i++) {
-            eval.evaluate(body[i]);
+        for (Statement element : body) {
+            eval.evaluate(element);
         }
     }
 }

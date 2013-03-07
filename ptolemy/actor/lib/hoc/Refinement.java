@@ -100,7 +100,7 @@ public class Refinement extends TypedCompositeActor {
         try {
             _workspace.getWriteAccess();
 
-            if (_mirrorDisable || (getContainer() == null)) {
+            if (_mirrorDisable || getContainer() == null) {
                 // Have already called newPort() in the container.
                 // This time, process the request.
                 RefinementPort port = new RefinementPort(this, name);
@@ -164,7 +164,7 @@ public class Refinement extends TypedCompositeActor {
      */
     protected void _checkContainer(Entity container)
             throws IllegalActionException {
-        if (!(container instanceof MultiCompositeActor) && (container != null)) {
+        if (!(container instanceof MultiCompositeActor) && container != null) {
             throw new IllegalActionException(container, this,
                     "Refinement can only be contained by "
                             + "MultiCompositeActor objects.");

@@ -231,7 +231,7 @@ public class ProductLatticeOntologyAdapter extends LatticeOntologyAdapter {
                     .createRecordConcept(componentOntology);
             for (String field : ((RecordConcept) productLatticeConcept)
                     .keySet()) {
-                (originalOntologyRecordConcept)
+                originalOntologyRecordConcept
                         .putConcept(
                                 field,
                                 ((ProductLatticeConcept) ((RecordConcept) productLatticeConcept)

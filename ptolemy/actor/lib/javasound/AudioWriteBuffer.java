@@ -229,12 +229,11 @@ public class AudioWriteBuffer extends TypedAtomicActor {
             }
 
             // Check if we need to reallocate.
-            if ((_inArray == null) || (_channels != _inArray.length)) {
+            if (_inArray == null || _channels != _inArray.length) {
                 _inArray = new Token[_channels][];
             }
 
-            if ((_audioPutArray == null)
-                    || (_channels != _audioPutArray.length)) {
+            if (_audioPutArray == null || _channels != _audioPutArray.length) {
                 _audioPutArray = new double[_channels][];
             }
 
@@ -293,7 +292,7 @@ public class AudioWriteBuffer extends TypedAtomicActor {
                 // invalid index, so write nothing.
                 // still need to consume the data token, however.
                 data.get(0);
-            } else if (addressValue > (_audioBuffer.length - 1)) {
+            } else if (addressValue > _audioBuffer.length - 1) {
                 // invalid index. exceeds buffer length, so
                 // do nothing.
                 // still need to consume the data token, however.
@@ -353,8 +352,8 @@ public class AudioWriteBuffer extends TypedAtomicActor {
         // Close any open sound files.
         if (_soundWriter != null) {
             try {
-                for (int i = 0; i < _audioBuffer.length; i++) {
-                    _audioPutArray[0][0] = _audioBuffer[i];
+                for (double element : _audioBuffer) {
+                    _audioPutArray[0][0] = element;
                     _soundWriter.putSamples(_audioPutArray);
                 }
 

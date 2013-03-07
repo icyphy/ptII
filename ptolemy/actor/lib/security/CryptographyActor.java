@@ -133,8 +133,8 @@ abstract public class CryptographyActor extends TypedAtomicActor {
 
         Provider[] providers = Security.getProviders();
 
-        for (int i = 0; i < providers.length; i++) {
-            provider.addChoice(providers[i].getName());
+        for (Provider provider2 : providers) {
+            provider.addChoice(provider2.getName());
         }
 
         keySize = new Parameter(this, "keySize", new IntToken(1024));

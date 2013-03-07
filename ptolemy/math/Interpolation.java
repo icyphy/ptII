@@ -119,19 +119,19 @@ public class Interpolation {
 
         int largestIndex = _indexes[numRefPoints - 1];
 
-        if ((_period != 0) && (_period <= largestIndex)) {
+        if (_period != 0 && _period <= largestIndex) {
             throw new IllegalStateException("Interpolation.interpolate(): "
                     + "The period is not 0 and not " + "greater than the "
                     + "largest index.");
         }
 
-        if ((index < 0) || (index > largestIndex)) {
+        if (index < 0 || index > largestIndex) {
             if (_period == 0) {
                 return 0.0;
             } else {
                 // convert index to a value within [0, period-1]
                 if (index < 0) {
-                    index += (((-index / _period) + 1) * _period);
+                    index += (-index / _period + 1) * _period;
                 }
 
                 index %= _period;
@@ -188,7 +188,7 @@ public class Interpolation {
             vStart = _values[indexIndexStart];
         }
 
-        if (indexIndexStart == (numRefPoints - 1)) {
+        if (indexIndexStart == numRefPoints - 1) {
             iEnd = _indexes[0] + _period;
             vEnd = _values[0];
         } else {
@@ -197,8 +197,8 @@ public class Interpolation {
         }
 
         if (_order == 1) {
-            return vStart
-                    + (((index - iStart) * (vEnd - vStart)) / (iEnd - iStart));
+            return vStart + (index - iStart) * (vEnd - vStart)
+                    / (iEnd - iStart);
         }
 
         // order is 3. Need the points before Start and the point after End
@@ -228,10 +228,10 @@ public class Interpolation {
             vBeforeStart = _values[indexIndexStart - 1];
         }
 
-        if (indexIndexStart == (numRefPoints - 1)) {
+        if (indexIndexStart == numRefPoints - 1) {
             iAfterEnd = _indexes[1] + _period;
             vAfterEnd = _values[1];
-        } else if (indexIndexStart == (numRefPoints - 2)) {
+        } else if (indexIndexStart == numRefPoints - 2) {
             if (_period > 0) {
                 iAfterEnd = _indexes[0] + _period;
                 vAfterEnd = _values[0];
@@ -266,13 +266,13 @@ public class Interpolation {
     public void setIndexes(int[] indexes) {
         int prev = -1;
 
-        for (int i = 0; i < indexes.length; i++) {
-            if (indexes[i] <= prev) {
+        for (int indexe : indexes) {
+            if (indexe <= prev) {
                 throw new IllegalArgumentException("Interpolation.setIndexes"
                         + " index array is not increasing and non-negative.");
             }
 
-            prev = indexes[i];
+            prev = indexe;
         }
 
         _indexes = indexes;
@@ -284,7 +284,7 @@ public class Interpolation {
      *  @see #getOrder()
      */
     public void setOrder(int order) {
-        if ((order != 0) && (order != 1) && (order != 3)) {
+        if (order != 0 && order != 1 && order != 3) {
             throw new IllegalArgumentException("Interpolation.setOrder: "
                     + "The order " + order + " is not valid.");
         }
@@ -361,8 +361,8 @@ public class Interpolation {
 
         // compute the interpolated value
         double indexSqr = index * index;
-        return (coef[0] * indexSqr * index) + (coef[1] * indexSqr)
-                + (coef[2] * index) + coef[3];
+        return coef[0] * indexSqr * index + coef[1] * indexSqr + coef[2]
+                * index + coef[3];
     }
 
     ///////////////////////////////////////////////////////////////////

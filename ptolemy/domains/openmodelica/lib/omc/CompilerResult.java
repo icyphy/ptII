@@ -79,7 +79,6 @@ public class CompilerResult implements ICompilerResult {
         return _result[0];
     }
 
-
     /** Make the compiler result with the result and error of sendExpression("command") to OpenModelica Compiler(OMC).
      * @param result The result of calling sendExpression("command") to OMC.
      * @param error The error resulted from calling sendExpression("command") to OMC.
@@ -88,7 +87,6 @@ public class CompilerResult implements ICompilerResult {
     public static CompilerResult makeResult(String[] result, String error) {
         return new CompilerResult(result, error);
     }
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////

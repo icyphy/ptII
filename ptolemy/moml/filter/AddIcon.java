@@ -104,7 +104,7 @@ public class AddIcon extends MoMLFilterSimple {
                 _iconMoML = (String) _actorsThatShouldHaveIcons
                         .get(attributeValue);
             } else if (_currentlyProcessingActorThatMayNeedAnIcon
-                    && (container != null)
+                    && container != null
                     && !container.getFullName().equals(_currentActorFullName)
                     && !container.getFullName().startsWith(
                             _currentActorFullName)) {
@@ -150,7 +150,7 @@ public class AddIcon extends MoMLFilterSimple {
             StringBuffer currentCharData, String xmlFile, MoMLParser parser)
             throws Exception {
         if (_currentlyProcessingActorThatMayNeedAnIcon
-                && elementName.equals("entity") && (container != null)
+                && elementName.equals("entity") && container != null
                 && container.getFullName().equals(_currentActorFullName)) {
             _currentlyProcessingActorThatMayNeedAnIcon = false;
 

@@ -124,7 +124,7 @@ public class Unit implements UnitPresentation {
             Vector uTerms = factorization.getUTerms();
 
             for (int i = 0; i < uTerms.size(); i++) {
-                UnitTerm uterm = (UnitTerm) (uTerms.elementAt(i));
+                UnitTerm uterm = (UnitTerm) uTerms.elementAt(i);
 
                 if (uterm.getExponent() < 0) {
                     denominator.add(uterm.invert());
@@ -136,24 +136,24 @@ public class Unit implements UnitPresentation {
             if (numerator.size() == 0) {
                 retv = new StringBuffer("1");
             } else {
-                retv = new StringBuffer(((UnitTerm) (numerator.elementAt(0)))
+                retv = new StringBuffer(((UnitTerm) numerator.elementAt(0))
                         .getUnit().getPrimaryLabel());
 
                 for (int i = 1; i < numerator.size(); i++) {
                     retv.append(" "
-                            + ((UnitTerm) (numerator.elementAt(i))).getUnit()
+                            + ((UnitTerm) numerator.elementAt(i)).getUnit()
                                     .getPrimaryLabel());
                 }
             }
 
             if (denominator.size() > 0) {
                 retv.append("/"
-                        + ((UnitTerm) (denominator.elementAt(0))).getUnit()
+                        + ((UnitTerm) denominator.elementAt(0)).getUnit()
                                 .getPrimaryLabel());
 
                 for (int i = 1; i < denominator.size(); i++) {
                     retv.append(" "
-                            + ((UnitTerm) (denominator.elementAt(i))).getUnit()
+                            + ((UnitTerm) denominator.elementAt(i)).getUnit()
                                     .getPrimaryLabel());
                 }
             }
@@ -260,7 +260,7 @@ public class Unit implements UnitPresentation {
         Vector libraryUnits = UnitLibrary.getLibrary();
 
         for (int i = 0; i < libraryUnits.size(); i++) {
-            Unit factor = (Unit) (libraryUnits.elementAt(i));
+            Unit factor = (Unit) libraryUnits.elementAt(i);
             Unit numerator = this.multiplyBy(factor);
             Unit xx = UnitLibrary.getUnit(numerator);
 
@@ -280,11 +280,11 @@ public class Unit implements UnitPresentation {
         }
 
         for (int i = 0; i < libraryUnits.size(); i++) {
-            Unit factor = (Unit) (libraryUnits.elementAt(i));
+            Unit factor = (Unit) libraryUnits.elementAt(i);
             Unit remainder = this.divideBy(factor);
             Unit xx = UnitLibrary.getUnit(remainder);
 
-            if ((xx != null) && (xx != UnitLibrary.Identity)) {
+            if (xx != null && xx != UnitLibrary.Identity) {
                 UnitExpr retv = new UnitExpr();
                 UnitTerm uTerm = new UnitTerm(factor);
                 retv.addUnitTerm(uTerm);
@@ -312,13 +312,13 @@ public class Unit implements UnitPresentation {
         StringBuffer retv = null;
 
         if (_labels.size() > 0) {
-            retv = new StringBuffer((String) (_labels.elementAt(0)));
+            retv = new StringBuffer((String) _labels.elementAt(0));
         } else {
             return "";
         }
 
         for (int i = 1; i < _labels.size(); i++) {
-            retv.append((String) (_labels.elementAt(i)) + ",");
+            retv.append((String) _labels.elementAt(i) + ",");
         }
 
         return retv.toString();
@@ -330,7 +330,7 @@ public class Unit implements UnitPresentation {
      * @return The primary label.
      */
     public String getPrimaryLabel() {
-        return (String) (_labels.elementAt(0));
+        return (String) _labels.elementAt(0);
     }
 
     /** Get the scale.

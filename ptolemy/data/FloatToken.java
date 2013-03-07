@@ -114,14 +114,14 @@ public class FloatToken extends ScalarToken {
         }
         int compare = TypeLattice.compare(BaseType.FLOAT, token);
 
-        if ((compare == CPO.LOWER) || (compare == CPO.INCOMPARABLE)) {
+        if (compare == CPO.LOWER || compare == CPO.INCOMPARABLE) {
             throw new IllegalActionException(
                     notSupportedIncomparableConversionMessage(token, "float"));
         }
 
         compare = TypeLattice.compare(BaseType.SHORT, token);
 
-        if ((compare == CPO.SAME) || (compare == CPO.HIGHER)) {
+        if (compare == CPO.SAME || compare == CPO.HIGHER) {
             ShortToken shortToken = ShortToken.convert(token);
             FloatToken result = new FloatToken(shortToken.floatValue());
             if (shortToken._unitCategoryExponents != null
@@ -242,7 +242,7 @@ public class FloatToken extends ScalarToken {
         } else {
             float mag = Math.abs(_value);
 
-            if ((mag == 0.0f) || ((mag < 1000000) && (mag > .001))) {
+            if (mag == 0.0f || mag < 1000000 && mag > .001) {
                 return TokenUtilities.regularFormat.format(_value) + "f"
                         + unitString;
             } else {
@@ -382,7 +382,7 @@ public class FloatToken extends ScalarToken {
         double right = ((FloatToken) rightArgument).doubleValue();
         double left = doubleValue();
 
-        if ((right > (left + epsilon)) || (right < (left - epsilon))) {
+        if (right > left + epsilon || right < left - epsilon) {
             return BooleanToken.FALSE;
         } else {
             return BooleanToken.TRUE;

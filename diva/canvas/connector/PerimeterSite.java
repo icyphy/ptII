@@ -89,8 +89,8 @@ public class PerimeterSite extends AbstractSite {
         double width = bounds.getWidth();
         double height = bounds.getHeight();
 
-        double xCenter = x + (width / 2);
-        double yCenter = y + (height / 2);
+        double xCenter = x + width / 2;
+        double yCenter = y + height / 2;
 
         // Switch on the shape of the figure
         double xout = 0.0;
@@ -122,9 +122,9 @@ public class PerimeterSite extends AbstractSite {
                     dy = -ry;
                 } else {
                     double m = Math.tan(alpha);
-                    dx = (rx * ry) / (Math.sqrt((ry * ry) + (rx * rx * m * m)));
+                    dx = rx * ry / Math.sqrt(ry * ry + rx * rx * m * m);
 
-                    if ((alpha > pi2) || (alpha < -pi2)) {
+                    if (alpha > pi2 || alpha < -pi2) {
                         dx = -dx;
                     }
 
@@ -175,25 +175,25 @@ public class PerimeterSite extends AbstractSite {
                     x1 = polygon.getX(vertexPair);
                     y1 = polygon.getY(vertexPair);
 
-                    double A = ((x0 - xCenter) * (py - yCenter))
-                            - ((y0 - yCenter) * (px - xCenter));
-                    double B = ((y1 - y0) * (px - xCenter))
-                            - ((x1 - x0) * (py - yCenter));
+                    double A = (x0 - xCenter) * (py - yCenter) - (y0 - yCenter)
+                            * (px - xCenter);
+                    double B = (y1 - y0) * (px - xCenter) - (x1 - x0)
+                            * (py - yCenter);
                     double t = A / B;
 
                     // Must be between (x0,y0) and (x1,y1)
-                    if ((0 <= t) && (t <= 1)) {
-                        double tx = x0 + ((x1 - x0) * t);
-                        double ty = y0 + ((y1 - y0) * t);
-                        boolean xGood = ((tx >= xCenter) && (px >= xCenter))
-                                || ((tx < xCenter) && (px < xCenter));
-                        boolean yGood = ((ty >= yCenter) && (py >= yCenter))
-                                || ((ty < yCenter) && (py < yCenter));
+                    if (0 <= t && t <= 1) {
+                        double tx = x0 + (x1 - x0) * t;
+                        double ty = y0 + (y1 - y0) * t;
+                        boolean xGood = tx >= xCenter && px >= xCenter
+                                || tx < xCenter && px < xCenter;
+                        boolean yGood = ty >= yCenter && py >= yCenter
+                                || ty < yCenter && py < yCenter;
 
                         // Must be on (px,py) side of (xCenter, yCenter)
                         if (xGood && yGood) {
-                            double r = ((tx - xCenter) * (tx - xCenter))
-                                    + ((ty - yCenter) * (ty - yCenter));
+                            double r = (tx - xCenter) * (tx - xCenter)
+                                    + (ty - yCenter) * (ty - yCenter);
 
                             if (r > max_r) {
                                 pointx = tx;
@@ -221,22 +221,22 @@ public class PerimeterSite extends AbstractSite {
             // The angle of the top-right corner
             double t = Math.atan2(height, width);
 
-            if ((alpha < (-pi + t)) || (alpha > (pi - t))) {
+            if (alpha < -pi + t || alpha > pi - t) {
                 // on left edge
                 xout = x;
-                yout = (y + (height / 2.0)) - (width / 2.0 * Math.tan(alpha));
+                yout = y + height / 2.0 - width / 2.0 * Math.tan(alpha);
             } else if (alpha < -t) {
                 // top edge
                 yout = y;
-                xout = (x + (width / 2.0)) - (height / 2.0 * Math.tan(beta));
+                xout = x + width / 2.0 - height / 2.0 * Math.tan(beta);
             } else if (alpha < t) {
                 // right edge
                 xout = x + width;
-                yout = y + (height / 2.0) + (width / 2.0 * Math.tan(alpha));
+                yout = y + height / 2.0 + width / 2.0 * Math.tan(alpha);
             } else {
                 // on bottom edge
                 yout = y + height;
-                xout = x + (width / 2.0) + (height / 2.0 * Math.tan(beta));
+                xout = x + width / 2.0 + height / 2.0 * Math.tan(beta);
             }
         }
 

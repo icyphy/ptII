@@ -42,7 +42,6 @@
 
 package ptolemy.domains.openmodelica.lib.omc;
 
-
 /**
   Thrown when there is an error while connecting to the compiler.
 

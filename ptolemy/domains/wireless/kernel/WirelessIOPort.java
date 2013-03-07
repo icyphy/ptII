@@ -217,7 +217,7 @@ public class WirelessIOPort extends TypedIOPort {
         if (attribute == insideTransmitProperties) {
             Token value = insideTransmitProperties.getToken();
 
-            if ((value != null) && !(value instanceof RecordToken)) {
+            if (value != null && !(value instanceof RecordToken)) {
                 throw new IllegalActionException(this,
                         "Expected a record for insideTransmitProperties "
                                 + "but got: " + value);
@@ -225,13 +225,12 @@ public class WirelessIOPort extends TypedIOPort {
         } else if (attribute == outsideTransmitProperties) {
             Token value = outsideTransmitProperties.getToken();
 
-            if ((value != null) && !(value instanceof RecordToken)) {
+            if (value != null && !(value instanceof RecordToken)) {
                 throw new IllegalActionException(this,
                         "Expected a record for outsideTransmitProperties "
                                 + "but got: " + value);
             }
-        } else if ((attribute == insideChannel)
-                || (attribute == outsideChannel)) {
+        } else if (attribute == insideChannel || attribute == outsideChannel) {
             // Since the channel parameters affect connectivity, we should
             // treat changes to their values as changes to the topology.
             // To do that, we listen for changes and increment the version
@@ -286,8 +285,7 @@ public class WirelessIOPort extends TypedIOPort {
                         + channel.getName());
             }
 
-            for (int i = 0; i < tokenArray.length; i++) {
-                Token token = tokenArray[i];
+            for (Token token : tokenArray) {
                 _checkType(token);
                 channel.transmit(token, this,
                         (RecordToken) outsideTransmitProperties.getToken());
@@ -765,8 +763,7 @@ public class WirelessIOPort extends TypedIOPort {
                         + channel.getName());
             }
 
-            for (int i = 0; i < tokenArray.length; i++) {
-                Token token = tokenArray[i];
+            for (Token token : tokenArray) {
                 _checkType(token);
                 channel.transmit(token, this,
                         (RecordToken) outsideTransmitProperties.getToken());
@@ -911,7 +908,7 @@ public class WirelessIOPort extends TypedIOPort {
      */
     protected boolean _insideIsWireless() {
         try {
-            return (getInsideChannel() != null);
+            return getInsideChannel() != null;
         } catch (IllegalActionException e) {
             return false;
         }
@@ -922,7 +919,7 @@ public class WirelessIOPort extends TypedIOPort {
      */
     protected boolean _outsideIsWireless() {
         try {
-            return (getOutsideChannel() != null);
+            return getOutsideChannel() != null;
         } catch (IllegalActionException e) {
             return false;
         }

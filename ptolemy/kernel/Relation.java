@@ -159,7 +159,7 @@ public class Relation extends NamedObj {
      *   same workspace as the relation.
      */
     public void link(Relation relation) throws IllegalActionException {
-        if ((relation != null) && (_workspace != relation.workspace())) {
+        if (relation != null && _workspace != relation.workspace()) {
             throw new IllegalActionException(this, relation,
                     "Cannot link because workspaces are different.");
         }
@@ -419,7 +419,7 @@ public class Relation extends NamedObj {
      */
     protected void _checkRelation(Relation relation, boolean symmetric)
             throws IllegalActionException {
-        if ((relation != null) && symmetric) {
+        if (relation != null && symmetric) {
             // Throw an exception if this relation is not of an acceptable
             // class for the specified relation.
             relation._checkRelation(this, false);
@@ -449,7 +449,7 @@ public class Relation extends NamedObj {
 
             StringBuffer result = new StringBuffer();
 
-            if ((bracket == 1) || (bracket == 2)) {
+            if (bracket == 1 || bracket == 2) {
                 result.append(super._description(detail, indent, 1));
             } else {
                 result.append(super._description(detail, indent, 0));
@@ -471,15 +471,15 @@ public class Relation extends NamedObj {
                     Object object = links.nextElement();
 
                     if (object instanceof Port) {
-                        result.append((((Port) object)._description(detail,
-                                indent + 1, 2) + "\n"));
+                        result.append(((Port) object)._description(detail,
+                                indent + 1, 2) + "\n");
                     } else {
-                        result.append((((Relation) object)._description(detail,
-                                indent + 1, 2) + "\n"));
+                        result.append(((Relation) object)._description(detail,
+                                indent + 1, 2) + "\n");
                     }
                 }
 
-                result.append((_getIndentPrefix(indent) + "}"));
+                result.append(_getIndentPrefix(indent) + "}");
             }
 
             if (bracket == 2) {
@@ -516,7 +516,7 @@ public class Relation extends NamedObj {
         Relation candidate = ((CompositeEntity) container)
                 .getRelation(relativeName);
 
-        if ((candidate != null) && !getClass().isInstance(candidate)) {
+        if (candidate != null && !getClass().isInstance(candidate)) {
             throw new IllegalActionException(this, "Expected "
                     + candidate.getFullName() + " to be an instance of "
                     + getClass().getName() + ", but it is "

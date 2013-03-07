@@ -146,7 +146,7 @@ public class ArrayToSequence extends SDFTransformer {
      *   an attribute that cannot be cloned.
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        ArrayToSequence newObject = (ArrayToSequence) (super.clone(workspace));
+        ArrayToSequence newObject = (ArrayToSequence) super.clone(workspace);
         try {
             newObject.output.setTypeAtLeast(ArrayType
                     .elementType(newObject.input));
@@ -167,7 +167,7 @@ public class ArrayToSequence extends SDFTransformer {
         boolean enforce = ((BooleanToken) enforceArrayLength.getToken())
                 .booleanValue();
 
-        if (enforce && (token.length() != rate)) {
+        if (enforce && token.length() != rate) {
             throw new IllegalActionException(this, "The "
                     + "number of elements in the input ArrayToken ("
                     + token.length() + ") is not the same as the arrayLength "

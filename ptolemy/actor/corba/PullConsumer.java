@@ -288,8 +288,8 @@ public class PullConsumer extends Source {
             NameComponent namecomp = new NameComponent(
                     ((StringToken) remoteSupplierName.getToken()).stringValue(),
                     "");
-            _debug(getName(), " looking for name: ",
-                    (remoteSupplierName.getToken()).toString());
+            _debug(getName(), " looking for name: ", remoteSupplierName
+                    .getToken().toString());
 
             NameComponent[] path = { namecomp };
 

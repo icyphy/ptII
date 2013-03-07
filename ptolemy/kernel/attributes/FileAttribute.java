@@ -195,7 +195,7 @@ public class FileAttribute extends StringAttribute implements FileOrURLAccessor 
     public URL asURL() throws IllegalActionException {
         String name = _substituteSpecialStrings(getExpression());
 
-        if ((name == null) || name.trim().equals("")) {
+        if (name == null || name.trim().equals("")) {
             return null;
         }
 

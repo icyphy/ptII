@@ -170,7 +170,7 @@ public class ComponentEntity<T extends ComponentPort> extends Entity<T> {
     public Instantiable instantiate(NamedObj container, String name)
             throws CloneNotSupportedException, IllegalActionException,
             NameDuplicationException {
-        if ((container != null) && !(container instanceof CompositeEntity)) {
+        if (container != null && !(container instanceof CompositeEntity)) {
             throw new IllegalActionException(this,
                     "Cannot instantiate into a container that is not an "
                             + "instance of CompositeEntity: "
@@ -493,7 +493,7 @@ public class ComponentEntity<T extends ComponentPort> extends Entity<T> {
      */
     public void setContainer(CompositeEntity container)
             throws IllegalActionException, NameDuplicationException {
-        if ((container != null) && (_workspace != container.workspace())) {
+        if (container != null && _workspace != container.workspace()) {
             throw new IllegalActionException(this, container,
                     "Cannot set container because workspaces are different.");
         }
@@ -608,10 +608,10 @@ public class ComponentEntity<T extends ComponentPort> extends Entity<T> {
 
         CompositeEntity container = (CompositeEntity) getContainer();
 
-        if ((container != null)) {
+        if (container != null) {
             ComponentEntity another = container.getEntity(name);
 
-            if ((another != null) && (another != this)) {
+            if (another != null && another != this) {
                 throw new NameDuplicationException(container,
                         "Name duplication: " + name);
             }
@@ -662,9 +662,9 @@ public class ComponentEntity<T extends ComponentPort> extends Entity<T> {
         // maybe incomprehensible) identification of
         // the base class, particularly when pasting
         // an instance or subclass into a new context.
-        while ((aboveLevel < levelsToSearch)
-                && ((candidate == null) || !candidate.isClassDefinition())
-                && (context != null)) {
+        while (aboveLevel < levelsToSearch
+                && (candidate == null || !candidate.isClassDefinition())
+                && context != null) {
             context = context.getContainer();
 
             if (context instanceof CompositeEntity) {
@@ -695,7 +695,7 @@ public class ComponentEntity<T extends ComponentPort> extends Entity<T> {
      */
     protected void _checkContainer(InstantiableNamedObj container)
             throws IllegalActionException {
-        if ((container != null) && !(container instanceof CompositeEntity)) {
+        if (container != null && !(container instanceof CompositeEntity)) {
             throw new IllegalActionException(this, container,
                     "Component entity can only be contained by "
                             + "a CompositeEntity");
@@ -764,7 +764,7 @@ public class ComponentEntity<T extends ComponentPort> extends Entity<T> {
         ComponentEntity candidate = ((CompositeEntity) container)
                 .getEntity(relativeName);
 
-        if ((candidate != null) && !getClass().isInstance(candidate)) {
+        if (candidate != null && !getClass().isInstance(candidate)) {
             throw new IllegalActionException(this, "Expected "
                     + candidate.getFullName() + " to be an instance of "
                     + getClass().getName() + ", but it is "

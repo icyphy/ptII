@@ -421,8 +421,8 @@ public class HTMLAbout {
             Tableau tableau = configuration.openModel(demosURL, modelURL,
                     modelURL.toExternalForm());
 
-            if (((Effigy) tableau.getContainer()) instanceof PtolemyEffigy) {
-                PtolemyEffigy effigy = (PtolemyEffigy) (tableau.getContainer());
+            if ((Effigy) tableau.getContainer() instanceof PtolemyEffigy) {
+                PtolemyEffigy effigy = (PtolemyEffigy) tableau.getContainer();
                 CompositeActor actor = (CompositeActor) effigy.getModel();
 
                 // Create a manager if necessary.
@@ -477,7 +477,7 @@ public class HTMLAbout {
             fileWriter = new FileWriter(outputFileName);
             Iterator demos = demosSet.iterator();
             while (demos.hasNext()) {
-                String demo = (String) (demos.next());
+                String demo = (String) demos.next();
                 // Look for the value of $PTII and substitute in $CLASSPATH
                 // so that we can use FileUtilities.nameToURL() from within
                 // ptolemy.moml.filter.ActorIndex
@@ -638,7 +638,7 @@ public class HTMLAbout {
     private static URL _getDemoURL(String demosFileName) throws IOException {
         // Open the completeDemos.htm file and read the contents into
         // a String
-        if ((demosFileName == null) || (demosFileName.length() == 0)) {
+        if (demosFileName == null || demosFileName.length() == 0) {
             demosFileName = "ptolemy/configs/doc/completeDemos.htm";
         }
 
@@ -766,7 +766,7 @@ public class HTMLAbout {
                         model = demosURLParent + modelLink;
                         Exception ex1 = null;
                         try {
-                            model = (new URI(demosURLParent + modelLink))
+                            model = new URI(demosURLParent + modelLink)
                                     .normalize().getPath();
                             // Under Windows, convert /C:/foo/bar to C:/foo/bar
                             model = new File(model).toString().replace('\\',

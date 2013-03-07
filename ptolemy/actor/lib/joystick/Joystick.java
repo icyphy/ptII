@@ -153,7 +153,7 @@ public class Joystick extends TypedAtomicActor implements JoystickListener {
         }
 
         // FIXME: not sure about this, but it seems like a good idea.
-        if ((attribute == deadZone) && (_joy != null)) {
+        if (attribute == deadZone && _joy != null) {
             double deadZoneValue = ((DoubleToken) deadZone.getToken())
                     .doubleValue();
             _joy.setDeadZone(deadZoneValue);
@@ -164,14 +164,14 @@ public class Joystick extends TypedAtomicActor implements JoystickListener {
                     .booleanValue();
 
             // If necessary, add or remove this as a JoystickListener.
-            if ((_joy != null) && (_isPollingValue != oldIsPollingValue)) {
+            if (_joy != null && _isPollingValue != oldIsPollingValue) {
                 if (!_isPollingValue) {
                     _joy.addJoystickListener(this);
                 } else {
                     _joy.removeJoystickListener(this);
                 }
             }
-        } else if ((attribute == pollingInterval) && (_joy != null)) {
+        } else if (attribute == pollingInterval && _joy != null) {
             int pollingIntervalValue = ((DoubleToken) pollingInterval
                     .getToken()).intValue();
             _joy.setPollInterval(pollingIntervalValue);
@@ -250,7 +250,7 @@ public class Joystick extends TypedAtomicActor implements JoystickListener {
      *  @exception IllegalActionException Not thrown in this base class.
      */
     public void wrapup() throws IllegalActionException {
-        if ((_joy != null) && !_isPollingValue) {
+        if (_joy != null && !_isPollingValue) {
             _joy.removeJoystickListener(this);
         }
 

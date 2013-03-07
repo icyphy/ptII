@@ -477,7 +477,7 @@ public final class ShapeUtilities {
             return s;
         } else {
             AffineTransform at1 = AffineTransform.getTranslateInstance(x, y);
-            return (at1.createTransformedShape(s));
+            return at1.createTransformedShape(s);
         }
     }
 

@@ -77,7 +77,7 @@ public class ComplexToken extends ScalarToken {
     public ComplexToken(String init) throws IllegalActionException {
         PtParser parser = new PtParser();
         ASTPtRootNode tree = parser.generateParseTree(init);
-        Token token = (new ParseTreeEvaluator()).evaluateParseTree(tree);
+        Token token = new ParseTreeEvaluator().evaluateParseTree(tree);
 
         if (token instanceof ComplexToken) {
             _value = ((ComplexToken) token).complexValue();
@@ -124,14 +124,14 @@ public class ComplexToken extends ScalarToken {
 
         int compare = TypeLattice.compare(BaseType.COMPLEX, token);
 
-        if ((compare == CPO.LOWER) || (compare == CPO.INCOMPARABLE)) {
+        if (compare == CPO.LOWER || compare == CPO.INCOMPARABLE) {
             throw new IllegalActionException(
                     notSupportedIncomparableConversionMessage(token, "complex"));
         }
 
         compare = TypeLattice.compare(BaseType.DOUBLE, token);
 
-        if ((compare == CPO.SAME) || (compare == CPO.HIGHER)) {
+        if (compare == CPO.SAME || compare == CPO.HIGHER) {
             DoubleToken doubleToken = DoubleToken.convert(token);
             ComplexToken result = new ComplexToken(doubleToken.complexValue());
             if (doubleToken._unitCategoryExponents != null

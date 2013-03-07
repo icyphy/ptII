@@ -117,7 +117,7 @@ public final class Utilities {
          */
         public void propertyChange(PropertyChangeEvent evt) {
             String propertyName = evt.getPropertyName();
-            if ((propertyName == null) || propertyName.equals("lookAndFeel")) {
+            if (propertyName == null || propertyName.equals("lookAndFeel")) {
                 cachedIsLafAqua = null;
             }
         }

@@ -207,7 +207,7 @@ public class VariableDelaySwitch extends BasicSwitch {
             _packetSizeDelay = 0.0;
         }
 
-        IntToken recordPriority = ((IntToken) TCPHeader.get("options"));
+        IntToken recordPriority = (IntToken) TCPHeader.get("options");
         if (true == _allowPriority && recordPriority != null) {
             int _priority = recordPriority.intValue();
             _priorityDelay = _priority / 1000.0;

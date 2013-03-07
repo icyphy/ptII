@@ -132,15 +132,15 @@ public class DotProduct extends TypedAtomicActor {
     public void fire() throws IllegalActionException {
         super.fire();
 
-        if ((input1.getType() instanceof ArrayType)
-                && (input2.getType() instanceof ArrayType)) {
+        if (input1.getType() instanceof ArrayType
+                && input2.getType() instanceof ArrayType) {
             try {
                 _arrayFire();
             } catch (IllegalActionException e) {
                 throw e;
             }
-        } else if ((input1.getType() instanceof MatrixType)
-                && (input2.getType() instanceof MatrixType)) {
+        } else if (input1.getType() instanceof MatrixType
+                && input2.getType() instanceof MatrixType) {
             try {
                 _matrixFire();
             } catch (IllegalActionException e) {
@@ -233,7 +233,7 @@ public class DotProduct extends TypedAtomicActor {
         Token element2;
         Token sum;
 
-        if ((columnCount1 == columnCount2) && (rowCount1 == rowCount2)) {
+        if (columnCount1 == columnCount2 && rowCount1 == rowCount2) {
             sum = token1.getElementAsToken(0, 0).zero();
 
             for (int i = 0; i < rowCount1; i += 1) {
@@ -279,16 +279,15 @@ public class DotProduct extends TypedAtomicActor {
             Type type1 = _port1.getType();
             Type type2 = _port2.getType();
 
-            if ((type1 == BaseType.UNKNOWN) || (type2 == BaseType.UNKNOWN)) {
+            if (type1 == BaseType.UNKNOWN || type2 == BaseType.UNKNOWN) {
                 return BaseType.UNKNOWN;
-            } else if ((type1 instanceof ArrayType)
-                    && (type2 instanceof ArrayType)) {
+            } else if (type1 instanceof ArrayType && type2 instanceof ArrayType) {
                 Type elType1 = ((ArrayType) type1).getElementType();
                 Type elType2 = ((ArrayType) type2).getElementType();
                 CPO lattice = TypeLattice.lattice();
                 return lattice.leastUpperBound(elType1, elType2);
-            } else if ((type1 instanceof MatrixType)
-                    && (type2 instanceof MatrixType)) {
+            } else if (type1 instanceof MatrixType
+                    && type2 instanceof MatrixType) {
                 Type elType1 = ((MatrixType) type1).getElementType();
                 Type elType2 = ((MatrixType) type2).getElementType();
                 CPO lattice = TypeLattice.lattice();
@@ -311,7 +310,7 @@ public class DotProduct extends TypedAtomicActor {
             InequalityTerm term1 = _port1.getTypeTerm();
             InequalityTerm term2 = _port2.getTypeTerm();
 
-            if ((term1.isSettable()) && (term2.isSettable())) {
+            if (term1.isSettable() && term2.isSettable()) {
                 InequalityTerm[] array = { term1, term2 };
                 return array;
             } else if (term1.isSettable()) {
@@ -322,7 +321,7 @@ public class DotProduct extends TypedAtomicActor {
                 return array;
             }
 
-            return (new InequalityTerm[0]);
+            return new InequalityTerm[0];
         }
 
         ///////////////////////////////////////////////////////////////

@@ -296,7 +296,7 @@ public abstract class BaseSDFScheduler extends Scheduler {
 
                     // If we've already set the rate, then check that the
                     // rate for any other internal port is correct.
-                    if ((foundOutputPort != null) && (newRate != inferredRate)) {
+                    if (foundOutputPort != null && newRate != inferredRate) {
                         throw new NotSchedulableException(
                                 port,
                                 "External output port "

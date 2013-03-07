@@ -205,7 +205,7 @@ public class ModalModel extends TypedCompositeActor implements ChangeListener {
             Director director = getDirector();
             String className = directorClass.stringValue();
 
-            if ((director == null)
+            if (director == null
                     || !director.getClass().getName().equals(className)) {
                 // Check the class name to get immediate feedback
                 // to the user.
@@ -261,8 +261,8 @@ public class ModalModel extends TypedCompositeActor implements ChangeListener {
                                             + "\"controllerName\" attribute.");
                         }
 
-                        if ((director != null)
-                                && (director.getContainer() == ModalModel.this)) {
+                        if (director != null
+                                && director.getContainer() == ModalModel.this) {
                             // Delete the old director.
                             director.setContainer(null);
                         }
@@ -370,10 +370,10 @@ public class ModalModel extends TypedCompositeActor implements ChangeListener {
                 // FindBugs: Using pointer equality to compare _controller (a FSMActor)
                 // with actor, which is a Refinement)
                 if (!activeRefinements.contains(actor) /*&& actor != _controller*/) {
-                    if (MessageHandler.yesNoQuestion("Unused state refinement in modal model: "
-                            + actor.getFullName()
-                            + ". Remove it?")) {
-                        ((ComponentEntity)actor).setContainer(null);
+                    if (MessageHandler
+                            .yesNoQuestion("Unused state refinement in modal model: "
+                                    + actor.getFullName() + ". Remove it?")) {
+                        ((ComponentEntity) actor).setContainer(null);
                     }
                 }
             }
@@ -446,8 +446,8 @@ public class ModalModel extends TypedCompositeActor implements ChangeListener {
                         controllerCausality);
                 Actor[] refinements = currentState.getRefinement();
                 if (refinements != null) {
-                    for (int i = 0; i < refinements.length; i++) {
-                        CausalityInterface refinementCausality = refinements[i]
+                    for (Actor refinement : refinements) {
+                        CausalityInterface refinementCausality = refinement
                                 .getCausalityInterface();
                         causality.composeWith(refinementCausality);
                     }

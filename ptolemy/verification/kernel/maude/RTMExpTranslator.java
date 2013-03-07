@@ -354,7 +354,7 @@ public class RTMExpTranslator extends AbstractParseTreeVisitor {
         }
 
         int gcd = _GCD((int) f, (int) base);
-        int nn = ((int) (f * base)) / gcd, nd = ((int) base) / gcd;
+        int nn = (int) (f * base) / gcd, nd = (int) base / gcd;
 
         if (nd > 1) {
             return nn + "/" + nd;

@@ -102,7 +102,7 @@ public class LinkManhattanConnector extends ManhattanConnector {
      */
     public Site getHeadSite() {
         Site result = super.getHeadSite();
-        if ((_headPort == null) || !_headPort.isMultiport()) {
+        if (_headPort == null || !_headPort.isMultiport()) {
             return result;
         }
         if (result instanceof PortConnectSite) {
@@ -149,7 +149,7 @@ public class LinkManhattanConnector extends ManhattanConnector {
      */
     public Site getTailSite() {
         Site result = super.getTailSite();
-        if ((_tailPort == null) || !_tailPort.isMultiport()) {
+        if (_tailPort == null || !_tailPort.isMultiport()) {
             return result;
         }
         if (result instanceof PortConnectSite) {

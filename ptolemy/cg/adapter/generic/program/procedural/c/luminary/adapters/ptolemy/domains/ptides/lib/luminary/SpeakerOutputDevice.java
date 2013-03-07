@@ -88,7 +88,7 @@ public class SpeakerOutputDevice extends OutputDevice {
         PtidesPreemptiveEDFDirector adapter = (PtidesPreemptiveEDFDirector) getAdapter(actor
                 .getDirector());
 
-        args.add((adapter.actuators.get(actor)).toString());
+        args.add(adapter.actuators.get(actor).toString());
 
         _codeStream.clear();
         _codeStream.appendCodeBlock("fireBlock", args);

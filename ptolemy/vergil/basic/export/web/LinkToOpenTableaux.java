@@ -331,7 +331,8 @@ public class LinkToOpenTableaux extends DefaultIconLink {
         if (tableaux.size() > 0) {
             // The ddf IfThenElse model has a composite called +1/-1 Gain,
             // which is not a legal file name, so we sanitize it.
-            String name = StringUtilities.sanitizeName(destinationObject.getName());
+            String name = StringUtilities.sanitizeName(destinationObject
+                    .getName());
             Frame frame = tableaux.get(0).getFrame();
             // If it's a composite actor, export HTML.
             if (frame instanceof HTMLExportable) {

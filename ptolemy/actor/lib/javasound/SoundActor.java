@@ -162,7 +162,7 @@ public class SoundActor extends TypedAtomicActor {
         } else if (attribute == bytesPerSample) {
             _bytesPerSample = ((IntToken) bytesPerSample.getToken()).intValue();
             // Cache the maximum value as a double.
-            _maxSample = Math.pow(2.0, (_bytesPerSample * 8)) - 1.0;
+            _maxSample = Math.pow(2.0, _bytesPerSample * 8) - 1.0;
         }
 
         super.attributeChanged(attribute);
@@ -227,8 +227,8 @@ public class SoundActor extends TypedAtomicActor {
                 // Note: Floor instead of cast to remove deadrange at zero.
                 int intValue = (int) Math.floor(sample * _maxSample);
 
-                int base = (currSamp * _bytesPerSample * _channels)
-                        + (_bytesPerSample * currChannel);
+                int base = currSamp * _bytesPerSample * _channels
+                        + _bytesPerSample * currChannel;
                 // Create byte representation of current sample.
                 // Note: unsigned Shift right.
                 // Note: fall through from higher number cases.

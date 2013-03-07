@@ -124,8 +124,8 @@ public class REDUtility {
 
         ArrayList<FSMActor> list = new ArrayList<FSMActor>();
 
-        if ((originalCompositeActor.entityList()).size() > 0) {
-            Iterator it = (originalCompositeActor.entityList()).iterator();
+        if (originalCompositeActor.entityList().size() > 0) {
+            Iterator it = originalCompositeActor.entityList().iterator();
             while (it.hasNext()) {
                 Entity innerEntity = (Entity) it.next();
                 if (innerEntity instanceof ModalModel) {
@@ -133,7 +133,7 @@ public class REDUtility {
                     FSMActor newActor = _rewriteModalModelWithStateRefinementToFSMActor((ModalModel) innerEntity);
                     // Remove the original ModalModel from the system
                     // (we would add an equivalent FSMActor back later).
-                    (originalCompositeActor.entityList()).remove(innerEntity);
+                    originalCompositeActor.entityList().remove(innerEntity);
                     // Add the newly generated FSMActor to the list.
                     list.add(newActor);
                 }
@@ -142,7 +142,7 @@ public class REDUtility {
 
         for (int i = 0; i < list.size(); i++) {
             // Add back those previously generated new FSMActors.
-            (originalCompositeActor.entityList()).add(list.get(i));
+            originalCompositeActor.entityList().add(list.get(i));
         }
         return originalCompositeActor;
 
@@ -209,8 +209,7 @@ public class REDUtility {
 
         // Perform a search to determine the all useful synchronizers used
         // in the system.
-        for (Iterator actors = (model.entityList()).iterator(); actors
-                .hasNext();) {
+        for (Iterator actors = model.entityList().iterator(); actors.hasNext();) {
             Entity innerEntity = (Entity) actors.next();
 
             HashSet<String> setOfSynchronizes = _decideSynchronizerVariableSet(innerEntity);
@@ -234,8 +233,7 @@ public class REDUtility {
         // BoundedBufferNondeterministicDelay as BoundedBufferTimedDelay.
         //
 
-        for (Iterator actors = (model.entityList()).iterator(); actors
-                .hasNext();) {
+        for (Iterator actors = model.entityList().iterator(); actors.hasNext();) {
             Entity innerEntity = (Entity) actors.next();
             if (innerEntity instanceof FSMActor) {
 
@@ -532,8 +530,7 @@ public class REDUtility {
             }
         }
 
-        for (Iterator actors = (model.entityList()).iterator(); actors
-                .hasNext();) {
+        for (Iterator actors = model.entityList().iterator(); actors.hasNext();) {
             Entity innerEntity = (Entity) actors.next();
             if (innerEntity instanceof FSMActor) {
                 returnREDFormat.append("N_" + innerEntity.getName().trim()
@@ -678,7 +675,7 @@ public class REDUtility {
                 // of inner variables used in FmcAutomaton.
                 String guard = transition.getGuardExpression();
 
-                if ((guard != null) && !guard.trim().equals("")) {
+                if (guard != null && !guard.trim().equals("")) {
                     if (guard.trim().equalsIgnoreCase("true")) {
                         // If the guard is true, then it can be triggered by any arrival of the signal
                         for (int i = 0; i < actor.inputPortList().size(); i++) {
@@ -693,10 +690,9 @@ public class REDUtility {
                         // Separate each guard expression into substring
                         String[] guardSplitExpression = guard.split("(&&)");
                         if (guardSplitExpression.length != 0) {
-                            for (int i = 0; i < guardSplitExpression.length; i++) {
+                            for (String element : guardSplitExpression) {
 
-                                String subGuardCondition = guardSplitExpression[i]
-                                        .trim();
+                                String subGuardCondition = element.trim();
                                 // Retrieve the left value of the inequality.
                                 String[] characterOfSubGuard = subGuardCondition
                                         .split("(>=)|(<=)|(==)|(!=)|[><]");
@@ -793,16 +789,15 @@ public class REDUtility {
                     // Retrieve the guardExpression for checking the existence
                     // of inner variables used in FmcAutomaton.
                     String guard = transition.getGuardExpression();
-                    if ((guard != null) && !guard.trim().equals("")) {
+                    if (guard != null && !guard.trim().equals("")) {
                         if (hasAnnotation) {
                             // do nothing
                         } else {
                             // Separate each guard expression into substring
                             String[] guardSplitExpression = guard.split("(&&)");
                             if (guardSplitExpression.length != 0) {
-                                for (int i = 0; i < guardSplitExpression.length; i++) {
-                                    String subGuardCondition = guardSplitExpression[i]
-                                            .trim();
+                                for (String element : guardSplitExpression) {
+                                    String subGuardCondition = element.trim();
                                     // Retrieve the left value of the
                                     // inequality.
                                     String[] characterOfSubGuard = subGuardCondition
@@ -958,7 +953,7 @@ public class REDUtility {
                 // Retrieve the guardExpression for checking the existence
                 // of inner variables used in FmcAutomaton.
                 String guard = transition.getGuardExpression();
-                if ((guard != null) && !guard.trim().equals("")) {
+                if (guard != null && !guard.trim().equals("")) {
                     if (hasAnnotation) {
                         // do nothing
                     } else {
@@ -966,10 +961,9 @@ public class REDUtility {
                         // Separate each guard expression into substring
                         String[] guardSplitExpression = guard.split("(&&)");
                         if (guardSplitExpression.length != 0) {
-                            for (int i = 0; i < guardSplitExpression.length; i++) {
+                            for (String element : guardSplitExpression) {
 
-                                String subGuardCondition = guardSplitExpression[i]
-                                        .trim();
+                                String subGuardCondition = element.trim();
                                 // Retrieve the left value of the
                                 // inequality.
                                 String[] characterOfSubGuard = subGuardCondition
@@ -1052,11 +1046,11 @@ public class REDUtility {
                 }
 
                 String expression = transition.setActions.getExpression();
-                if ((expression != null) && !expression.trim().equals("")) {
+                if (expression != null && !expression.trim().equals("")) {
                     // Retrieve possible value of the variable
                     String[] splitExpression = expression.split(";");
-                    for (int i = 0; i < splitExpression.length; i++) {
-                        String[] characters = splitExpression[i].split("=");
+                    for (String element : splitExpression) {
+                        String[] characters = element.split("=");
                         if (characters.length >= 1) {
                             String lValue = characters[0].trim();
                             if (Pattern.matches("^-?\\d+$",
@@ -1156,8 +1150,8 @@ public class REDUtility {
             VariableInfo individual = _variableInfo.remove(valName);
             try {
                 if (individual != null) {
-                    if ((individual._maxValue != null)
-                            && (individual._minValue != null)) {
+                    if (individual._maxValue != null
+                            && individual._minValue != null) {
                         int lbOriginal = Integer.parseInt(individual._minValue);
                         int ubOriginal = Integer.parseInt(individual._maxValue);
                         int lbNew = lbOriginal - (ubOriginal - lbOriginal + 1)
@@ -1342,13 +1336,13 @@ public class REDUtility {
                         // as variables in precondition and should be stored in the
                         // set "variableUsedInTransitionSet".
 
-                        if ((guard != null)
+                        if (guard != null
                                 && guard.trim().equalsIgnoreCase("true")) {
                             // Special case for true; in this way, the system must listen to all incoming ports
                             // Since each incoming port is OK, it will turn to be separate transitions.
                             bean._preCondition.append("true");
                             // For this condition, no complementary edges are needed.
-                        } else if ((guard != null) && !guard.trim().equals("")) {
+                        } else if (guard != null && !guard.trim().equals("")) {
                             if (hasAnnotation) {
 
                             } else {
@@ -1356,9 +1350,9 @@ public class REDUtility {
                                         .split("(&&)");
 
                                 if (guardSplitExpression.length != 0) {
-                                    for (int i = 0; i < guardSplitExpression.length; i++) {
+                                    for (String element : guardSplitExpression) {
                                         // Trim tab/space
-                                        String subGuardCondition = guardSplitExpression[i]
+                                        String subGuardCondition = element
                                                 .trim();
 
                                         // Retrieve the left value of the
@@ -1631,14 +1625,13 @@ public class REDUtility {
                         String setActionExpression = transition.setActions
                                 .getExpression();
 
-                        if ((setActionExpression != null)
+                        if (setActionExpression != null
                                 && !setActionExpression.trim().equals("")) {
                             // Retrieve possible value of the variable
                             String[] splitExpression = setActionExpression
                                     .split(";");
-                            for (int i = 0; i < splitExpression.length; i++) {
-                                String[] characters = splitExpression[i]
-                                        .split("=");
+                            for (String element : splitExpression) {
+                                String[] characters = element.split("=");
                                 if (characters.length >= 1) {
 
                                     String lValue = characters[0].trim();
@@ -1742,13 +1735,13 @@ public class REDUtility {
                                         + signal.trim() + "Consume");
                                 newBean._signalSet.add(new String("?ND_"
                                         + signal).trim().trim());
-                                if ((guard != null)
+                                if (guard != null
                                         && guard.trim()
                                                 .equalsIgnoreCase("true")) {
                                     // Special case for true; in this way, the system must listen to all incoming ports
                                     // Since each incoming port is OK, it will turn to be separate transitions.
                                     newBean._preCondition.append("false");
-                                } else if ((guard != null)
+                                } else if (guard != null
                                         && !guard.trim().equals("")) {
                                 }
 
@@ -1757,13 +1750,13 @@ public class REDUtility {
                             }
                         }
 
-                        if ((outputAction != null)
+                        if (outputAction != null
                                 && !outputAction.trim().equals("")) {
                             String[] outputActionSplitExpression = outputAction
                                     .split("(;)");
                             if (outputActionSplitExpression.length != 0) {
-                                for (int i = 0; i < outputActionSplitExpression.length; i++) {
-                                    String[] characterOfSubOutput = outputActionSplitExpression[i]
+                                for (String element : outputActionSplitExpression) {
+                                    String[] characterOfSubOutput = element
                                             .split("=");
                                     String lValue = characterOfSubOutput[0]
                                             .trim();
@@ -1927,8 +1920,8 @@ public class REDUtility {
                     // adding component of a FSMActor.
                     State newState = (State) state.clone();
                     newState.setName(state.getName());
-                    (newState).setContainer(returnFSMActor);
-                    if ((model.getInitialState() == state)) {
+                    newState.setContainer(returnFSMActor);
+                    if (model.getInitialState() == state) {
                         newState.isInitialState.setToken("true");
                     }
                     newState.moveToFirst();
@@ -1941,8 +1934,8 @@ public class REDUtility {
                     // Interesting :)
                     State newState = (State) state.clone();
                     newState.setName(state.getName());
-                    (newState).setContainer(returnFSMActor);
-                    if ((model.getInitialState() == state)) {
+                    newState.setContainer(returnFSMActor);
+                    if (model.getInitialState() == state) {
                         newState.isInitialState.setToken("true");
                     }
                     newState.moveToFirst();
@@ -1982,7 +1975,7 @@ public class REDUtility {
                                                 + innerState.getName().trim());
 
                                         newState.setContainer(returnFSMActor);
-                                        if ((model.getInitialState() == state)
+                                        if (model.getInitialState() == state
                                                 && ((FSMActor) innerActor)
                                                         .getInitialState() == innerState) {
                                             newState.isInitialState
@@ -2119,7 +2112,7 @@ public class REDUtility {
             // transitions must be connected to the refinement initial state.
             TypedActor[] sActors = source.getRefinement();
             TypedActor[] dActors = destination.getRefinement();
-            if ((sActors == null) && (dActors == null)) {
+            if (sActors == null && dActors == null) {
 
                 // We only need to find the corresponding node in the
                 // system and set up a connection for that.
@@ -2161,7 +2154,7 @@ public class REDUtility {
                 newTransition.setName(source.getName().trim() + "-"
                         + destination.getName().trim());
 
-            } else if ((sActors == null) && (dActors != null)) {
+            } else if (sActors == null && dActors != null) {
                 // We need to retrieve the source and connect with
                 // the inner initial state of destination.
 
@@ -2219,7 +2212,7 @@ public class REDUtility {
                         + ((FSMActor) dInnerActor).getInitialState().getName()
                                 .trim());
 
-            } else if ((sActors != null) && (dActors == null)) {
+            } else if (sActors != null && dActors == null) {
                 // We need to connect every inner state in the source and
                 // with destination state. We may copy existing transitions
                 // from the upper layer and modify it.
@@ -2741,8 +2734,8 @@ public class REDUtility {
                 .doubleValue();
         String sStopTime = String.valueOf(stopTime);
 
-        if ((numberOfCycles.equalsIgnoreCase("-1"))
-                || (numberOfCycles.equalsIgnoreCase("UNBOUNDED"))) {
+        if (numberOfCycles.equalsIgnoreCase("-1")
+                || numberOfCycles.equalsIgnoreCase("UNBOUNDED")) {
             // For unbounded cases, it's easier. If the number of cycles
             // not unbounded, we need to have a counter to count the number
             // of cycles it consumes.
@@ -3142,8 +3135,8 @@ public class REDUtility {
                 String variableName = variables.next();
                 VariableInfo individual = _variableInfo.get(variableName);
                 if (individual != null) {
-                    if ((individual._maxValue != null)
-                            && (individual._minValue != null)) {
+                    if (individual._maxValue != null
+                            && individual._minValue != null) {
                         bean._declaredVariables.append("global discrete "
                                 + actor.getName().trim() + "_" + variableName
                                 + ":" + individual._minValue + ".."

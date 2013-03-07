@@ -96,8 +96,7 @@ public class UnitConstraintsDialog extends PtolemyDialog implements
                     .getUnitConstraints().getConstraints();
 
             for (int i = 0; i < _constraintExpressions.size(); i++) {
-                UnitEquation uEq = (UnitEquation) (_constraintExpressions
-                        .get(i));
+                UnitEquation uEq = (UnitEquation) _constraintExpressions.get(i);
                 String commonDesc = uEq.descriptiveForm();
                 System.out.println("_constraint " + commonDesc);
                 _constraintExpression.add(commonDesc);
@@ -163,10 +162,10 @@ public class UnitConstraintsDialog extends PtolemyDialog implements
             StringBuffer retv = new StringBuffer("");
 
             if (_unitsDataTable.size() > 0) {
-                retv.append((String) (_unitsDataTable.elementAt(0)));
+                retv.append((String) _unitsDataTable.elementAt(0));
 
                 for (int i = 1; i < _unitsDataTable.size(); i++) {
-                    retv.append(";" + (String) (_unitsDataTable.elementAt(i)));
+                    retv.append(";" + (String) _unitsDataTable.elementAt(i));
                 }
             }
 

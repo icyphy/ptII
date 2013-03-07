@@ -689,8 +689,8 @@ public class AtomicWirelessChannel extends TypedAtomicActor implements
             throws IllegalActionException {
         double[] p1 = _locationOf(port1);
         double[] p2 = _locationOf(port2);
-        return Math.sqrt(((p1[0] - p2[0]) * (p1[0] - p2[0]))
-                + ((p1[1] - p2[1]) * (p1[1] - p2[1])));
+        return Math.sqrt((p1[0] - p2[0]) * (p1[0] - p2[0]) + (p1[1] - p2[1])
+                * (p1[1] - p2[1]));
     }
 
     /** Return true if the specified destination port is in range of the
@@ -789,10 +789,10 @@ public class AtomicWirelessChannel extends TypedAtomicActor implements
         //     invalidate the cache if it changes.
         //  Use the performance.xml test to determine whether/how much
         //  this helps.
-        if ((_receiversInRangeCache != null)
+        if (_receiversInRangeCache != null
                 && _receiversInRangeCache.containsKey(sourcePort)
-                && (((Long) _receiversInRangeCacheVersion.get(sourcePort))
-                        .longValue() == workspace().getVersion())
+                && ((Long) _receiversInRangeCacheVersion.get(sourcePort))
+                        .longValue() == workspace().getVersion()
                 && _receiversInRangeCacheValid) {
             // Cached list is valid. Return that.
             return (List) _receiversInRangeCache.get(sourcePort);
@@ -812,9 +812,9 @@ public class AtomicWirelessChannel extends TypedAtomicActor implements
             if (_isInRange(sourcePort, port, properties)) {
                 Receiver[][] receivers = port.getReceivers();
 
-                for (int i = 0; i < receivers.length; i++) {
-                    for (int j = 0; j < receivers[i].length; j++) {
-                        receiversInRangeList.add(receivers[i][j]);
+                for (Receiver[] receiver : receivers) {
+                    for (int j = 0; j < receiver.length; j++) {
+                        receiversInRangeList.add(receiver[j]);
                     }
                 }
             }
@@ -828,9 +828,9 @@ public class AtomicWirelessChannel extends TypedAtomicActor implements
             if (_isInRange(sourcePort, port, properties)) {
                 Receiver[][] receivers = port.getInsideReceivers();
 
-                for (int i = 0; i < receivers.length; i++) {
-                    for (int j = 0; j < receivers[i].length; j++) {
-                        receiversInRangeList.add(receivers[i][j]);
+                for (Receiver[] receiver : receivers) {
+                    for (int j = 0; j < receiver.length; j++) {
+                        receiversInRangeList.add(receiver[j]);
                     }
                 }
             }

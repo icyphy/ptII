@@ -99,17 +99,17 @@ public class PortSite extends AbstractSite {
         } else {
             // Port is on the top or bottom side.
             int halfCount = _count / 2;
-            double offset = (bounds.getWidth() / 2.0) - (halfCount * _snap);
+            double offset = bounds.getWidth() / 2.0 - halfCount * _snap;
 
             // If there are an even number of ports, skip the middle
             // position to get symmetry.
-            boolean skipOne = ((_count / 2) * 2) == _count;
+            boolean skipOne = _count / 2 * 2 == _count;
 
-            if (skipOne && (_number >= (_count / 2))) {
+            if (skipOne && _number >= _count / 2) {
                 offset += _snap;
             }
 
-            return bounds.getX() + (_snap * _number) + offset;
+            return bounds.getX() + _snap * _number + offset;
         }
     }
 
@@ -126,16 +126,16 @@ public class PortSite extends AbstractSite {
         } else {
             // Port is on the left or right.
             int halfCount = _count / 2;
-            double offset = (bounds.getHeight() / 2.0) - (halfCount * _snap);
+            double offset = bounds.getHeight() / 2.0 - halfCount * _snap;
 
             // If there are an even number of ports, skip the middle
             // position to get symmetry.
-            boolean skipOne = ((_count / 2) * 2) == _count;
+            boolean skipOne = _count / 2 * 2 == _count;
 
-            if (skipOne && (_number >= (_count / 2))) {
+            if (skipOne && _number >= _count / 2) {
                 offset += _snap;
             }
-            return bounds.getY() + (_snap * _number) + offset;
+            return bounds.getY() + _snap * _number + offset;
         }
     }
 

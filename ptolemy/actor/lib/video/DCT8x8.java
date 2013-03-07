@@ -216,7 +216,7 @@ public class DCT8x8 extends TypedAtomicActor {
 
         for (i = 0; i < 8; i++) {
             for (j = 0; j < 8; j++) {
-                sum[i][j] = (int) (_ftemp[i][j]);
+                sum[i][j] = (int) _ftemp[i][j];
             }
         }
         _output[0] = new IntMatrixToken(sum);

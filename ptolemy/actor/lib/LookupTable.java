@@ -111,7 +111,7 @@ public class LookupTable extends Transformer {
      *   an attribute that cannot be cloned.
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        LookupTable newObject = (LookupTable) (super.clone(workspace));
+        LookupTable newObject = (LookupTable) super.clone(workspace);
 
         try {
             newObject.output.setTypeAtLeast(ArrayType
@@ -138,7 +138,7 @@ public class LookupTable extends Transformer {
             if (token != null) {
                 int indexValue = ((IntToken) input.get(0)).intValue();
 
-                if ((indexValue >= 0) && (indexValue < token.length())) {
+                if (indexValue >= 0 && indexValue < token.length()) {
                     output.broadcast(token.getElement(indexValue));
                 }
             }

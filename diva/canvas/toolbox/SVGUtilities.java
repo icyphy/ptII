@@ -85,7 +85,7 @@ public class SVGUtilities {
 
         char first = name.charAt(0);
 
-        if ((first == '#') || (first == '0')) {
+        if (first == '#' || first == '0') {
             color = Color.decode(name);
         } else {
             color = (Color) colors.get(name);

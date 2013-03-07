@@ -111,7 +111,7 @@ public class CSPSieve extends CSPActor {
             lastSeen = ((IntToken) data).intValue();
 
             //System.out.println("Sieve got data:" + data.toString());
-            if ((lastSeen % _prime) != 0) {
+            if (lastSeen % _prime != 0) {
                 // is it the next prime?
                 if (isLargestPrime) {
                     // yes - make and queue the topologyChange

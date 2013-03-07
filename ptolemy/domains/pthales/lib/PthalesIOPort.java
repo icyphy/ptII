@@ -615,8 +615,8 @@ public class PthalesIOPort {
         // Header
         if (portIn.getContainer() instanceof PthalesRemoveHeaderActor) {
             int sum = 1;
-            for (int i = 0; i < sizes.length; i++) {
-                sum *= sizes[i];
+            for (int size : sizes) {
+                sum *= size;
             }
             sum += headersize;
 
@@ -643,7 +643,7 @@ public class PthalesIOPort {
             }
             if (portIn instanceof RefinementPort
                     && portIn.getContainer() instanceof Refinement) {
-                Refinement ref = ((Refinement) portIn.getContainer());
+                Refinement ref = (Refinement) portIn.getContainer();
                 State state = ((ModalModel) ref.getContainer()).getController()
                         .currentState();
                 if (state.getName().equals(ref.getName())) {
@@ -664,8 +664,8 @@ public class PthalesIOPort {
                         IOPort port2 = port;
                         if (port2.connectedPortList().contains(portIn)) {
                             int sum = 1;
-                            for (int i = 0; i < sizes.length; i++) {
-                                sum *= sizes[i];
+                            for (int size : sizes) {
+                                sum *= size;
                             }
                             sum += headersize;
 
@@ -715,7 +715,7 @@ public class PthalesIOPort {
             }
             if (portIn instanceof RefinementPort
                     && portIn.getContainer() instanceof Refinement) {
-                Refinement ref = ((Refinement) portIn.getContainer());
+                Refinement ref = (Refinement) portIn.getContainer();
                 State state = ((ModalModel) ref.getContainer()).getController()
                         .currentState();
                 if (state.getName().equals(ref.getName())) {

@@ -77,7 +77,7 @@ public class NodeDragInteractor extends DragInteractor {
             // at either end
             // FIXME: translate edges that are connected on both ends
             // to targets?
-            if (!(model.isEdge(t.getUserObject()))) {
+            if (!model.isEdge(t.getUserObject())) {
                 // Perform an inverse transform on coordinates for
                 // composite nodes??
                 // FIXME: This isn't right for scaling canvases... so I
@@ -120,7 +120,7 @@ public class NodeDragInteractor extends DragInteractor {
         //         }
         for (Iterator edges = edgeSet.iterator(); edges.hasNext();) {
             Object edge = edges.next();
-            Connector c = (Connector) (_controller.getFigure(edge));
+            Connector c = (Connector) _controller.getFigure(edge);
 
             if (c != null) {
                 c.reroute();

@@ -244,8 +244,9 @@ public class Expression extends NamedProgramCodeGeneratorAdapter {
                 }
 
                 for (int i = 0; i < _actor.inputPortList().size(); i++) {
-                    if ((generateSimpleName((IOPort) _actor.inputPortList()
-                            .get(i))).equals(name)) {
+                    if (generateSimpleName(
+                            (IOPort) _actor.inputPortList().get(i))
+                            .equals(name)) {
                         return new ObjectToken("$get(" + name + ")");
                     }
                 }

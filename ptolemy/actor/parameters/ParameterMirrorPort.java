@@ -123,8 +123,8 @@ public class ParameterMirrorPort extends ParameterPort {
             NameDuplicationException {
         super.setContainer(container);
 
-        if ((container == null) && (_associatedPort != null)
-                && (_associatedPort.getContainer() != null)) {
+        if (container == null && _associatedPort != null
+                && _associatedPort.getContainer() != null) {
             // Use a MoML change request to ensure propagation.
             // Note that when that change request is executed,
             // this port will be the associated port, but no
@@ -146,7 +146,7 @@ public class ParameterMirrorPort extends ParameterPort {
     public void setInput(boolean isInput) throws IllegalActionException {
         super.setInput(isInput);
 
-        if ((_associatedPort != null) && (_associatedPort.isInput() != isInput)) {
+        if (_associatedPort != null && _associatedPort.isInput() != isInput) {
             // Use a MoML change request to ensure propagation.
             // Note that when that change request is executed,
             // this port will be the associated port, but no
@@ -170,8 +170,7 @@ public class ParameterMirrorPort extends ParameterPort {
             NameDuplicationException {
         super.setName(name);
 
-        if ((_associatedPort != null)
-                && !_associatedPort.getName().equals(name)) {
+        if (_associatedPort != null && !_associatedPort.getName().equals(name)) {
             // Use a MoML change request to ensure propagation.
             // Note that when that change request is executed,
             // this port will be the associated port, but no

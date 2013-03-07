@@ -288,8 +288,8 @@ public class NewComponentDialog extends JPanel {
         // sections.
         String[] outstrs = instr.split("\n");
         String outstr = "";
-        for (int i = 0; i < outstrs.length; i++) {
-            String tmp = outstrs[i].trim();
+        for (String outstr2 : outstrs) {
+            String tmp = outstr2.trim();
             outstr += tmp + (tmp.length() > 0 ? "\n" : "");
         }
         return outstr;

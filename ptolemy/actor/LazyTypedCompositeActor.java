@@ -730,12 +730,12 @@ public class LazyTypedCompositeActor extends TypedCompositeActor implements
 
                 parser.setContext(this);
 
-                if ((_configureSource != null) && !_configureSource.equals("")) {
+                if (_configureSource != null && !_configureSource.equals("")) {
                     URL xmlFile = new URL(_base, _configureSource);
                     parser.parse(xmlFile, xmlFile);
                 }
 
-                if ((_configureText != null) && !_configureText.equals("")) {
+                if (_configureText != null && !_configureText.equals("")) {
                     // NOTE: Regrettably, the XML parser we are using cannot
                     // deal with having a single processing instruction at the
                     // outer level.  Thus, we have to strip it.

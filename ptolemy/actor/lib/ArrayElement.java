@@ -149,7 +149,7 @@ public class ArrayElement extends Transformer {
         if (input.hasToken(0)) {
             ArrayToken token = (ArrayToken) input.get(0);
 
-            if ((indexValue < 0) || (indexValue >= token.length())) {
+            if (indexValue < 0 || indexValue >= token.length()) {
                 throw new IllegalActionException(this, "index " + indexValue
                         + " is out of range for the input "
                         + "array, which has length " + token.length());

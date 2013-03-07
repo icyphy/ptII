@@ -110,8 +110,8 @@ public class Memory extends CSPActor {
 
             Receiver[][] rcvrs = input.getReceivers();
 
-            for (int i = 0; i < rcvrs.length; i++) {
-                for (int j = 0; j < rcvrs[i].length; j++) {
+            for (Receiver[] rcvr : rcvrs) {
+                for (int j = 0; j < rcvr.length; j++) {
                     _numInChannels++;
                 }
             }
@@ -122,8 +122,8 @@ public class Memory extends CSPActor {
 
             Receiver[][] rcvrs = output.getRemoteReceivers();
 
-            for (int i = 0; i < rcvrs.length; i++) {
-                for (int j = 0; j < rcvrs[i].length; j++) {
+            for (Receiver[] rcvr : rcvrs) {
+                for (int j = 0; j < rcvr.length; j++) {
                     _numOutChannels++;
                 }
             }
@@ -158,10 +158,10 @@ public class Memory extends CSPActor {
                 throw new TerminateProcessException(this, "Terminated");
             }
 
-            if ((br >= 0) && (br < _numInChannels)) {
+            if (br >= 0 && br < _numInChannels) {
                 token = (StringToken) branches[br].getToken();
                 _strValue = token.toString();
-            } else if ((br >= _numInChannels) && (br < numBranches)) {
+            } else if (br >= _numInChannels && br < numBranches) {
                 _strValue = "write";
             } else if (br == -1) {
                 return;

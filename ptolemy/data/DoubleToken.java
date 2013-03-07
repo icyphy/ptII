@@ -129,14 +129,14 @@ public class DoubleToken extends ScalarToken {
         }
         int compare = TypeLattice.compare(BaseType.DOUBLE, token);
 
-        if ((compare == CPO.LOWER) || (compare == CPO.INCOMPARABLE)) {
+        if (compare == CPO.LOWER || compare == CPO.INCOMPARABLE) {
             throw new IllegalActionException(
                     notSupportedIncomparableConversionMessage(token, "double"));
         }
 
         compare = TypeLattice.compare(BaseType.FLOAT, token);
 
-        if ((compare == CPO.SAME) || (compare == CPO.HIGHER)) {
+        if (compare == CPO.SAME || compare == CPO.HIGHER) {
             FloatToken floatToken = FloatToken.convert(token);
             DoubleToken result = new DoubleToken(floatToken.doubleValue());
             if (floatToken._unitCategoryExponents != null
@@ -150,7 +150,7 @@ public class DoubleToken extends ScalarToken {
 
         compare = TypeLattice.compare(BaseType.INT, token);
 
-        if ((compare == CPO.SAME) || (compare == CPO.HIGHER)) {
+        if (compare == CPO.SAME || compare == CPO.HIGHER) {
             IntToken intToken = IntToken.convert(token);
             DoubleToken result = new DoubleToken(intToken.doubleValue());
             if (intToken._unitCategoryExponents != null
@@ -264,7 +264,7 @@ public class DoubleToken extends ScalarToken {
         } else {
             double mag = Math.abs(_value);
 
-            if ((mag == 0.0) || ((mag < 1000000) && (mag > .001))) {
+            if (mag == 0.0 || mag < 1000000 && mag > .001) {
                 return TokenUtilities.regularFormat.format(_value) + unitString;
             } else {
                 return TokenUtilities.exponentialFormat.format(_value)
@@ -407,7 +407,7 @@ public class DoubleToken extends ScalarToken {
         double right = ((DoubleToken) rightArgument).doubleValue();
         double left = doubleValue();
 
-        if ((right > (left + epsilon)) || (right < (left - epsilon))) {
+        if (right > left + epsilon || right < left - epsilon) {
             return BooleanToken.FALSE;
         } else {
             return BooleanToken.TRUE;

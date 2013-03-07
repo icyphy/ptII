@@ -127,7 +127,7 @@ public class URIAttribute extends SingletonAttribute {
         // Search up the tree for this attribute.
         URIAttribute modelURI = null;
 
-        while ((container != null) && (modelURI == null)) {
+        while (container != null && modelURI == null) {
             try {
                 modelURI = (URIAttribute) container.getAttribute("_uri",
                         URIAttribute.class);

@@ -206,8 +206,8 @@ public class MapFileStorage extends DEActor {
                 String key = ((StringToken) inputKey.get(0)).stringValue();
                 String value = ((StringToken) inputValue.get(0)).stringValue();
                 int hashCode = key.hashCode();
-                int position = (hashCode >= 0) ? (hashCode % outputs)
-                        : ((-hashCode) % outputs);
+                int position = hashCode >= 0 ? hashCode % outputs : -hashCode
+                        % outputs;
                 _keyBuffers.get(position).add(key);
                 _valueBuffers.get(position).add(value);
             }

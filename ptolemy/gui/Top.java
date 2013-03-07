@@ -63,6 +63,7 @@ import java.util.Map;
 import java.util.WeakHashMap;
 
 import javax.print.PrintService;
+import javax.print.attribute.Attribute;
 import javax.print.attribute.HashPrintRequestAttributeSet;
 import javax.print.attribute.PrintRequestAttributeSet;
 import javax.print.attribute.standard.Destination;
@@ -293,8 +294,7 @@ public abstract class Top extends JFrame {
         // Deal with file menu action listeners
         /*c =*/MemoryCleaner.removeActionListeners(_fileMenu);
         //System.out.println("_fileMenu: "+c);
-        for (int i = 0; i < _fileMenuItems.length; i++) {
-            JMenuItem menuItem = _fileMenuItems[i];
+        for (JMenuItem menuItem : _fileMenuItems) {
             /*c =*/MemoryCleaner.removeActionListeners(menuItem);
             //System.out.println("_fileMenuItems["+i+"]: "+c);
         }
@@ -303,8 +303,7 @@ public abstract class Top extends JFrame {
         // Deal with help menu action listeners
         /*c =*/MemoryCleaner.removeActionListeners(_helpMenu);
         //System.out.println("_helpMenu: "+c);
-        for (int i = 0; i < _helpMenuItems.length; i++) {
-            JMenuItem menuItem = _helpMenuItems[i];
+        for (JMenuItem menuItem : _helpMenuItems) {
             /*c =*/MemoryCleaner.removeActionListeners(menuItem);
             //System.out.println("_helpMenuItems["+i+"]: "+c);
         }
@@ -333,23 +332,23 @@ public abstract class Top extends JFrame {
         // Loop through classes up to the parent class of Top.
         while (myClass != JFrame.class) {
             Field[] fields = myClass.getDeclaredFields();
-            for (int i = 0; i < fields.length; i++) {
+            for (Field field : fields) {
                 try {
                     // Loop through the class hierarchy of each field.
                     // If the class is assignable from AbstractAction, then
                     // set it to null.
-                    Class superclass = fields[i].getType();
+                    Class superclass = field.getType();
                     while (superclass != null && superclass != Object.class) {
                         if (superclass.isAssignableFrom(AbstractAction.class)) {
                             try {
-                                fields[i].setAccessible(true);
-                                fields[i].set(this, null);
+                                field.setAccessible(true);
+                                field.set(this, null);
                             } catch (SecurityException ex) {
                                 if (!_printedSecurityExceptionMessage) {
                                     _printedSecurityExceptionMessage = true;
                                     System.out
                                             .println("Warning: Failed set "
-                                                    + fields[i]
+                                                    + field
                                                     + " accessible while disposing. "
                                                     + "(applets and -sandbox always causes this)");
                                 }
@@ -360,7 +359,7 @@ public abstract class Top extends JFrame {
                     }
                 } catch (IllegalAccessException ex) {
                     throw new RuntimeException("Failed to get or set field "
-                            + fields[i], ex);
+                            + field, ex);
                 }
             }
             myClass = myClass.getSuperclass();
@@ -608,7 +607,7 @@ public abstract class Top extends JFrame {
      */
     protected boolean _clear() {
         int result = _queryForSave();
-        return ((result == _SAVED) || (result == _DISCARDED));
+        return result == _SAVED || result == _DISCARDED;
     }
 
     /** Close the window.  Derived classes should override this to
@@ -630,7 +629,7 @@ public abstract class Top extends JFrame {
         if (isModified()) {
             int result = _queryForSave();
 
-            if ((result == _SAVED) || (result == _DISCARDED)) {
+            if (result == _SAVED || result == _DISCARDED) {
                 dispose();
                 return true;
             }
@@ -742,7 +741,7 @@ public abstract class Top extends JFrame {
         if (isModified()) {
             int result = _queryForSave();
             _exitResult = result;
-            if ((result == _SAVED) || (result == _DISCARDED)) {
+            if (result == _SAVED || result == _DISCARDED) {
                 StringUtilities.exit(0);
             }
         } else {
@@ -892,10 +891,10 @@ public abstract class Top extends JFrame {
 
         PrintService pdfPrintService = null;
         PrintService printServices[] = PrinterJob.lookupPrintServices();
-        for (int i = 0; i < printServices.length; i++) {
-            if (printServices[i].getName().indexOf("PDF") != -1) {
+        for (PrintService printService : printServices) {
+            if (printService.getName().indexOf("PDF") != -1) {
                 foundPDFPrinter = true;
-                pdfPrintService = printServices[i];
+                pdfPrintService = printService;
             }
         }
 
@@ -941,9 +940,9 @@ public abstract class Top extends JFrame {
                             + "\nUserName: "
                             + job.getUserName());
             javax.print.attribute.Attribute[] attributes = aset.toArray();
-            for (int i = 0; i < attributes.length; i++) {
-                System.out.println(attributes[i].getName() + " "
-                        + attributes[i].getCategory() + " " + attributes[i]);
+            for (Attribute attribute : attributes) {
+                System.out.println(attribute.getName() + " "
+                        + attribute.getCategory() + " " + attribute);
             }
 
             job.print(aset);
@@ -1493,7 +1492,7 @@ public abstract class Top extends JFrame {
             // cancellation with the special string pattern
             // "*** Canceled." in the message.
 
-            if ((ex.getMessage() != null)
+            if (ex.getMessage() != null
                     && !ex.getMessage().startsWith("*** Canceled.")) {
                 // No need to report a CancelException, since
                 // it results from the user clicking a
@@ -1582,7 +1581,7 @@ public abstract class Top extends JFrame {
                     // cancellation with the special string pattern
                     // "*** Canceled." in the message.
 
-                    if ((ex.getMessage() != null)
+                    if (ex.getMessage() != null
                             && !ex.getMessage().startsWith("*** Canceled.")) {
                         // No need to report a CancelException, since
                         // it results from the user clicking a
@@ -1681,19 +1680,19 @@ public abstract class Top extends JFrame {
         // so we don't want to prompt them again.
         // See "saving xml to existing file asks twice on mac"
         // http://bugzilla.ecoinformatics.org/show_bug.cgi?id=5760
-//         if (_file.exists()) {
-//             // Ask for confirmation before overwriting a file.
-//             String query = "Overwrite " + _file.getName() + "?";
-//
-//             // Show a MODAL dialog
-//             int selected = JOptionPane.showOptionDialog(this, query,
-//                     "Save Changes?", JOptionPane.YES_NO_OPTION,
-//                     JOptionPane.QUESTION_MESSAGE, null, null, null);
-//
-//             if (selected == 1) {
-//                 return false;
-//             }
-//         }
+        //         if (_file.exists()) {
+        //             // Ask for confirmation before overwriting a file.
+        //             String query = "Overwrite " + _file.getName() + "?";
+        //
+        //             // Show a MODAL dialog
+        //             int selected = JOptionPane.showOptionDialog(this, query,
+        //                     "Save Changes?", JOptionPane.YES_NO_OPTION,
+        //                     JOptionPane.QUESTION_MESSAGE, null, null, null);
+        //
+        //             if (selected == 1) {
+        //                 return false;
+        //             }
+        //         }
 
         // Truncate the name so that dialogs under Web Start on the Mac
         // work better.
@@ -1838,14 +1837,13 @@ public abstract class Top extends JFrame {
                 // and action listeners.
 
                 // Set the action command and listener for each menu item.
-                for (int i = 0; i < _fileMenuItems.length; i++) {
-                    if (_fileMenuItems[i] == null) {
+                for (JMenuItem _fileMenuItem : _fileMenuItems) {
+                    if (_fileMenuItem == null) {
                         _fileMenu.addSeparator();
                     } else {
-                        _fileMenuItems[i].setActionCommand(_fileMenuItems[i]
-                                .getText());
-                        _fileMenuItems[i].addActionListener(_fileMenuListener);
-                        _fileMenu.add(_fileMenuItems[i]);
+                        _fileMenuItem.setActionCommand(_fileMenuItem.getText());
+                        _fileMenuItem.addActionListener(_fileMenuListener);
+                        _fileMenu.add(_fileMenuItem);
                     }
                 }
 
@@ -1864,11 +1862,10 @@ public abstract class Top extends JFrame {
                 // and action listeners.
 
                 // Set the action command and listener for each menu item.
-                for (int i = 0; i < _helpMenuItems.length; i++) {
-                    _helpMenuItems[i].setActionCommand(_helpMenuItems[i]
-                            .getText());
-                    _helpMenuItems[i].addActionListener(_helpMenuListener);
-                    _helpMenu.add(_helpMenuItems[i]);
+                for (JMenuItem _helpMenuItem : _helpMenuItems) {
+                    _helpMenuItem.setActionCommand(_helpMenuItem.getText());
+                    _helpMenuItem.addActionListener(_helpMenuListener);
+                    _helpMenu.add(_helpMenuItem);
                 }
 
                 // Unfortunately, at this time, Java provides no
@@ -1948,7 +1945,7 @@ public abstract class Top extends JFrame {
         public void windowClosing(WindowEvent e) {
             if (_debugClosing) {
                 System.out.println("Top$CloseWindowAdapter.windowClosing() : "
-                        + (Top.this).getName());
+                        + Top.this.getName());
             }
 
             Window window = e.getWindow();

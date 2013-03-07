@@ -68,7 +68,7 @@ public class Coordinate {
         if (o instanceof Coordinate) {
             c = (Coordinate) o;
 
-            if ((this.X == c.X) && (this.Y == c.Y)) {
+            if (this.X == c.X && this.Y == c.Y) {
                 return true;
             } else {
                 return false;

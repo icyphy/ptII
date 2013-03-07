@@ -182,12 +182,12 @@ public class RendezvousReceiver extends AbstractReceiver implements
         } catch (IllegalActionException ex) {
         }
 
-        for (int i = 0; i < receivers.length; i++) {
-            if (receivers[i] != null) {
-                for (int j = 0; j < receivers[i].length; j++) {
-                    if (receivers[i][j] != null) {
-                        if (result.containsKey(receivers[i][j])) {
-                            return (Token) result.get(receivers[i][j]);
+        for (Receiver[] receiver : receivers) {
+            if (receiver != null) {
+                for (int j = 0; j < receiver.length; j++) {
+                    if (receiver[j] != null) {
+                        if (result.containsKey(receiver[j])) {
+                            return (Token) result.get(receiver[j]);
                         }
                     }
                 }
@@ -491,7 +491,7 @@ public class RendezvousReceiver extends AbstractReceiver implements
     public void putToAll(Token token, Receiver[] receivers,
             RendezvousDirector director) throws IllegalActionException,
             TerminateProcessException {
-        if ((token == null) || (receivers == null) || (receivers.length == 0)) {
+        if (token == null || receivers == null || receivers.length == 0) {
             return;
         }
 
@@ -637,14 +637,14 @@ public class RendezvousReceiver extends AbstractReceiver implements
 
             // If the receiver does conditional get, clear the get request on
             // all the channels.
-            if ((castReceiver._getReceivers != null)
+            if (castReceiver._getReceivers != null
                     && castReceiver._getConditional) {
                 _resetReceiversFlags(castReceiver._getReceivers, true, false);
             }
 
             // If the receiver does conditional put, clear the put request on
             // all the channels.
-            if ((castReceiver._putReceivers != null)
+            if (castReceiver._putReceivers != null
                     && castReceiver._putConditional) {
                 _resetReceiversFlags(castReceiver._putReceivers, false, true);
             }
@@ -844,8 +844,8 @@ public class RendezvousReceiver extends AbstractReceiver implements
                     // branch.
                     branchReady = false;
                     break;
-                } else if ((receiver._putWaiting == null)
-                        || (receiver._getWaiting == null)) {
+                } else if (receiver._putWaiting == null
+                        || receiver._getWaiting == null) {
                     // If not putWaiting and getWaiting at the same
                     // time, the receiver is not ready, so record this
                     // and cancel the current branch.
@@ -908,8 +908,7 @@ public class RendezvousReceiver extends AbstractReceiver implements
                 }
             }
 
-            if ((isConditional && branchReady)
-                    || (!isConditional && !branchReady)) {
+            if (isConditional && branchReady || !isConditional && !branchReady) {
                 // If either is true, no further test is needed.
                 break;
             }
@@ -1109,10 +1108,10 @@ public class RendezvousReceiver extends AbstractReceiver implements
      *  @return Whether the receivers are conditional.
      */
     private static boolean _isConditional(Receiver[][] receivers, boolean isPut) {
-        for (int i = 0; i < receivers.length; i++) {
-            if (receivers[i] != null) {
-                for (int j = 0; j < receivers[i].length; j++) {
-                    RendezvousReceiver receiver = (RendezvousReceiver) receivers[i][j];
+        for (Receiver[] receiver2 : receivers) {
+            if (receiver2 != null) {
+                for (int j = 0; j < receiver2.length; j++) {
+                    RendezvousReceiver receiver = (RendezvousReceiver) receiver2[j];
                     if (receiver != null) {
                         if (isPut) {
                             return receiver._putConditional;
@@ -1156,11 +1155,11 @@ public class RendezvousReceiver extends AbstractReceiver implements
      */
     private static void _resetReceiversFlags(Receiver[][] receivers,
             boolean clearGet, boolean clearPut) {
-        for (int i = 0; i < receivers.length; i++) {
-            if (receivers[i] != null) {
-                for (int j = 0; j < receivers[i].length; j++) {
-                    if (receivers[i][j] != null) {
-                        ((RendezvousReceiver) receivers[i][j])._resetFlags(
+        for (Receiver[] receiver : receivers) {
+            if (receiver != null) {
+                for (int j = 0; j < receiver.length; j++) {
+                    if (receiver[j] != null) {
+                        ((RendezvousReceiver) receiver[j])._resetFlags(
                                 clearGet, clearPut);
                     }
                 }
@@ -1301,10 +1300,10 @@ public class RendezvousReceiver extends AbstractReceiver implements
 
                 // Delete the out-edges.
                 if (next._getConditional) {
-                    for (int i = 0; i < putReceivers.length; i++) {
-                        if (putReceivers[i] != null) {
-                            for (int j = 0; j < putReceivers[i].length; j++) {
-                                RendezvousReceiver receiver = (RendezvousReceiver) putReceivers[i][j];
+                    for (Receiver[] putReceiver : putReceivers) {
+                        if (putReceiver != null) {
+                            for (int j = 0; j < putReceiver.length; j++) {
+                                RendezvousReceiver receiver = (RendezvousReceiver) putReceiver[j];
 
                                 if (receiver != null
                                         && _receivers.contains(receiver)) {

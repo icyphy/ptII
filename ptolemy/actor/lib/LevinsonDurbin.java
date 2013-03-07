@@ -200,7 +200,7 @@ public class LevinsonDurbin extends TypedAtomicActor {
         // For convenience, read the autocorrelation lags into a vector.
         for (int i = 0; i <= order; i++) {
             r[i] = ((DoubleToken) autocorrelationValue
-                    .getElement((autocorrelationValueLength - order + i) - 1))
+                    .getElement(autocorrelationValueLength - order + i - 1))
                     .doubleValue();
         }
 
@@ -216,8 +216,8 @@ public class LevinsonDurbin extends TypedAtomicActor {
             // Compute the new reflection coefficient.
             double deltaM = 0.0;
 
-            for (int m = 0; m < (M + 1); m++) {
-                deltaM += (a[m] * r[(M + 1) - m]);
+            for (int m = 0; m < M + 1; m++) {
+                deltaM += a[m] * r[M + 1 - m];
             }
 
             // Compute and output the reflection coefficient
@@ -230,14 +230,14 @@ public class LevinsonDurbin extends TypedAtomicActor {
 
             refl[M] = new DoubleToken(-gamma);
 
-            for (int m = 1; m < (M + 1); m++) {
-                aP[m] = a[m] + (gamma * a[(M + 1) - m]);
+            for (int m = 1; m < M + 1; m++) {
+                aP[m] = a[m] + gamma * a[M + 1 - m];
             }
 
             // Update the prediction error power.
-            P = P * (1.0 - (gamma * gamma));
+            P = P * (1.0 - gamma * gamma);
 
-            if ((P < 0.0) || SignalProcessing.close(P, 0.0)) {
+            if (P < 0.0 || SignalProcessing.close(P, 0.0)) {
                 P = 0.0;
             }
 

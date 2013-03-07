@@ -218,8 +218,7 @@ public abstract class KernelMain {
         Director topLevelDirector = toplevel.getDirector();
 
         // FIXME: nearly duplicate code in java/TestApplication.java
-        if ((topLevelDirector != null)
-                && topLevelDirector instanceof SDFDirector) {
+        if (topLevelDirector != null && topLevelDirector instanceof SDFDirector) {
             SDFDirector director = (SDFDirector) topLevelDirector;
             Parameter iterations = (Parameter) director
                     .getAttribute("iterations");

@@ -1072,7 +1072,7 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor {
 
         _assert(numChildren > 0, node,
                 "The number of child nodes must be greater than zero");
-        _assert(numChildren == (lexicalTokenList.size() + 1), node,
+        _assert(numChildren == lexicalTokenList.size() + 1, node,
                 "The number of child nodes is "
                         + "not equal to number of operators plus one");
 
@@ -1180,7 +1180,7 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor {
 
         _assert(numChildren > 0, node,
                 "The number of child nodes must be greater than zero");
-        _assert(numChildren == (lexicalTokenList.size() + 1), node,
+        _assert(numChildren == lexicalTokenList.size() + 1, node,
                 "The number of child nodes is "
                         + "not equal to number of operators plus one");
 

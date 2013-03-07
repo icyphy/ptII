@@ -263,15 +263,15 @@ public class SequenceScheduler extends Scheduler {
                         "SequenceScheduler has no director.");
             }
 
-            CompositeActor compositeActor = (CompositeActor) (director
-                    .getContainer());
+            CompositeActor compositeActor = (CompositeActor) director
+                    .getContainer();
 
             if (compositeActor == null) {
                 throw new IllegalActionException(this,
                         "Director has no container.");
             }
 
-            if (!isValid() || (_cachedGetSchedule == null)) {
+            if (!isValid() || _cachedGetSchedule == null) {
                 _cachedGetSchedule = _getSchedule(validSequence);
             }
 
@@ -376,7 +376,7 @@ public class SequenceScheduler extends Scheduler {
 
             Nameable oldContainer = getContainer();
 
-            if (oldContainer instanceof Director && (oldContainer != container)) {
+            if (oldContainer instanceof Director && oldContainer != container) {
                 // Need to remove this scheduler as the active one of the
                 // old container. Search for another scheduler contained
                 // by the composite.  If it contains more than one,
@@ -888,8 +888,9 @@ public class SequenceScheduler extends Scheduler {
 
             // If the actor is MultipleFireMethodsInterface, or it has no sequence attributes,
             // also add all its connected output ports to the graph.
-            if ((sa instanceof MultipleFireMethodsInterface && ((MultipleFireMethodsInterface) sa)
-                    .numFireMethods() > 1) || sequenceAttributes.isEmpty()) {
+            if (sa instanceof MultipleFireMethodsInterface
+                    && ((MultipleFireMethodsInterface) sa).numFireMethods() > 1
+                    || sequenceAttributes.isEmpty()) {
                 for (Object outputPort : sa.outputPortList()) {
                     if (!((Port) outputPort).connectedPortList().isEmpty()) {
                         nodeWeights.add(outputPort);
@@ -1084,7 +1085,7 @@ public class SequenceScheduler extends Scheduler {
         }
 
         LinkedList predecessors = new LinkedList();
-        Iterator inPorts = (actor).inputPortList().iterator();
+        Iterator inPorts = actor.inputPortList().iterator();
 
         while (inPorts.hasNext()) {
             IOPort port = (IOPort) inPorts.next();
@@ -1096,8 +1097,9 @@ public class SequenceScheduler extends Scheduler {
 
                 Object predecessor = null;
 
-                if ((pre instanceof MultipleFireMethodsInterface && ((MultipleFireMethodsInterface) pre)
-                        .numFireMethods() > 1)
+                if (pre instanceof MultipleFireMethodsInterface
+                        && ((MultipleFireMethodsInterface) pre)
+                                .numFireMethods() > 1
                         || ((Entity) pre)
                                 .attributeList(SequenceAttribute.class)
                                 .isEmpty()) {
@@ -1124,8 +1126,7 @@ public class SequenceScheduler extends Scheduler {
                 // NamedObj.depthInHierarchy() instead of comparing the
                 // executive directors, but its tested this way, so we
                 // leave it alone.
-                if ((actor.getExecutiveDirector() == (pre)
-                        .getExecutiveDirector())
+                if (actor.getExecutiveDirector() == pre.getExecutiveDirector()
                         && !predecessors.contains(predecessor)) {
                     predecessors.addLast(predecessor);
                 }
@@ -1328,9 +1329,10 @@ public class SequenceScheduler extends Scheduler {
                     // Beth re-arranged 11/24/08
                     // If the connected node is not a sequenced actor
                     if (nodeWeight instanceof Port
-                            && ((((Port) nodeWeight).getContainer() instanceof MultipleFireMethodsInterface && ((MultipleFireMethodsInterface) ((Port) nodeWeight)
-                                    .getContainer()).numFireMethods() > 1) || ((Entity) ((Port) nodeWeight)
-                                    .getContainer()).attributeList(
+                            && (((Port) nodeWeight).getContainer() instanceof MultipleFireMethodsInterface
+                                    && ((MultipleFireMethodsInterface) ((Port) nodeWeight)
+                                            .getContainer()).numFireMethods() > 1 || ((Entity) ((Port) nodeWeight)
+                                        .getContainer()).attributeList(
                                     SequenceAttribute.class).isEmpty())) {
                         // Check if the source node is already in the graph.  If not, add it, and
                         // process source node's connected nodes.

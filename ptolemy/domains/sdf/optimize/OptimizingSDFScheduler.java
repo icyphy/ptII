@@ -396,8 +396,8 @@ public class OptimizingSDFScheduler extends SDFScheduler {
                 if (enforce) {
                     int capacity = receiver.getCapacity();
 
-                    if ((capacity == SDFReceiver.INFINITE_CAPACITY)
-                            || (receiver._waitingTokens > capacity)) {
+                    if (capacity == SDFReceiver.INFINITE_CAPACITY
+                            || receiver._waitingTokens > capacity) {
                         receiver.setCapacity(receiver._waitingTokens);
                     }
                 }

@@ -74,7 +74,7 @@ public class SDFTestConsumer extends TypedAtomicActor {
      *   cannot be cloned.
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        SDFTestConsumer newObject = (SDFTestConsumer) (super.clone(workspace));
+        SDFTestConsumer newObject = (SDFTestConsumer) super.clone(workspace);
         newObject._history = new StringBuffer(_history.toString());
         return newObject;
     }

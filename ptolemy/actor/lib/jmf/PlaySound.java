@@ -131,7 +131,7 @@ public class PlaySound extends TypedAtomicActor implements ControllerListener {
             throws IllegalActionException {
         if (attribute == fileNameOrURL) {
             try {
-                if ((fileNameOrURL != null) && (fileNameOrURL.asURL() != null)) {
+                if (fileNameOrURL != null && fileNameOrURL.asURL() != null) {
                     if (_player != null) {
                         _player.removeControllerListener(this);
                     }
@@ -157,7 +157,7 @@ public class PlaySound extends TypedAtomicActor implements ControllerListener {
                 throw new IllegalActionException(this, ex,
                         "Exception thrown by media framework");
             }
-        } else if ((attribute == percentGain) && (_gainControl != null)) {
+        } else if (attribute == percentGain && _gainControl != null) {
             _gainControl.setLevel(0.01f * percentGain.getCurrentValue());
         } else {
             super.attributeChanged(attribute);
@@ -181,7 +181,7 @@ public class PlaySound extends TypedAtomicActor implements ControllerListener {
         // Default if there is no input is to play the sound.
         boolean playSound = true;
 
-        if ((onOff.isOutsideConnected()) && onOff.hasToken(0)) {
+        if (onOff.isOutsideConnected() && onOff.hasToken(0)) {
             playSound = ((BooleanToken) onOff.get(0)).booleanValue();
         }
 
@@ -210,7 +210,7 @@ public class PlaySound extends TypedAtomicActor implements ControllerListener {
 
             if (synch) {
                 synchronized (this) {
-                    while ((_player.getState() == Controller.Started)
+                    while (_player.getState() == Controller.Started
                             && !_stopRequested) {
                         try {
                             wait();

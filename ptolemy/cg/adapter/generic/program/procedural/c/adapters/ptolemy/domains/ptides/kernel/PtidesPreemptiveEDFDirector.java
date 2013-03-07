@@ -368,11 +368,11 @@ public class PtidesPreemptiveEDFDirector extends Director {
 
         for (Actor actor : (List<Actor>) ((CompositeActor) _director
                 .getContainer()).deepEntityList()) {
-//            if (actor instanceof OutputDevice) {
-//                code.append("void Actuation_"
-//                        + CodeGeneratorAdapter.generateName((NamedObj) actor)
-//                        + "(void);" + _eol);
-//            }
+            //            if (actor instanceof OutputDevice) {
+            //                code.append("void Actuation_"
+            //                        + CodeGeneratorAdapter.generateName((NamedObj) actor)
+            //                        + "(void);" + _eol);
+            //            }
         }
 
         return code.toString();
@@ -451,8 +451,8 @@ public class PtidesPreemptiveEDFDirector extends Director {
                 + source.channelNumber
                 + ", "
                 + offset;
-        String sourceRef = ((NamedProgramCodeGeneratorAdapter) (getCodeGenerator()
-                .getAdapter(source.port.getContainer()))).getReference(
+        String sourceRef = ((NamedProgramCodeGeneratorAdapter) getCodeGenerator()
+                .getAdapter(source.port.getContainer())).getReference(
                 sourcePortChannel, false);
 
         String sinkPortChannel = CodeGeneratorAdapter.generateName(sink.port)
@@ -465,8 +465,8 @@ public class PtidesPreemptiveEDFDirector extends Director {
                 && sink.port.isOutput()) {
             sinkPortChannel = "@" + sinkPortChannel;
         }
-        String sinkRef = ((NamedProgramCodeGeneratorAdapter) (getCodeGenerator()
-                .getAdapter(sink.port.getContainer()))).getReference(
+        String sinkRef = ((NamedProgramCodeGeneratorAdapter) getCodeGenerator()
+                .getAdapter(sink.port.getContainer())).getReference(
                 sinkPortChannel, true);
 
         // When the sink port is contained by a modal controller, it is
@@ -499,20 +499,18 @@ public class PtidesPreemptiveEDFDirector extends Director {
      */
     protected void _modelStaticAnalysis() throws IllegalActionException {
 
-        int actuatorIndex = 0;
-        int sensorIndex = 0;
         for (Actor actor : (List<Actor>) ((CompositeActor) _director
                 .getContainer()).deepEntityList()) {
             // FIXME: should I be using Interrupt/ActuationDevice or just Input/OutputDevice?
-//            if (actor instanceof ActuatorSetup) {
-//                actuators.put(actor, Integer.valueOf(actuatorIndex));
-//                actuatorIndex++;
-//            }
-//
-//            if (actor instanceof SensorHandler) {
-//                sensors.put(actor, Integer.valueOf(sensorIndex));
-//                sensorIndex++;
-//            }
+            //            if (actor instanceof ActuatorSetup) {
+            //                actuators.put(actor, Integer.valueOf(actuatorIndex));
+            //                actuatorIndex++;
+            //            }
+            //
+            //            if (actor instanceof SensorHandler) {
+            //                sensors.put(actor, Integer.valueOf(sensorIndex));
+            //                sensorIndex++;
+            //            }
         }
     }
 
@@ -534,23 +532,23 @@ public class PtidesPreemptiveEDFDirector extends Director {
             NamedProgramCodeGeneratorAdapter adapter = (NamedProgramCodeGeneratorAdapter) getCodeGenerator()
                     .getAdapter(actor);
 
-//            if (actor instanceof ActuationDevice) {
-//                code.append("void Actuation_"
-//                        + CodeGeneratorAdapter.generateName((NamedObj) actor)
-//                        + "() {" + _eol);
-//                code.append(((ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.ptides.lib.OutputDevice) adapter)
-//                        .generateActuatorActuationFuncCode());
-//                code.append("}" + _eol);
-//            }
-//
-//            if (actor instanceof SensorHandler) {
-//                code.append("void Sensing_"
-//                        + CodeGeneratorAdapter.generateName((NamedObj) actor)
-//                        + "() {" + _eol);
-//                code.append(((ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.ptides.lib.InputDevice) adapter)
-//                        .generateSensorSensingFuncCode());
-//                code.append("}" + _eol);
-//            }
+            //            if (actor instanceof ActuationDevice) {
+            //                code.append("void Actuation_"
+            //                        + CodeGeneratorAdapter.generateName((NamedObj) actor)
+            //                        + "() {" + _eol);
+            //                code.append(((ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.ptides.lib.OutputDevice) adapter)
+            //                        .generateActuatorActuationFuncCode());
+            //                code.append("}" + _eol);
+            //            }
+            //
+            //            if (actor instanceof SensorHandler) {
+            //                code.append("void Sensing_"
+            //                        + CodeGeneratorAdapter.generateName((NamedObj) actor)
+            //                        + "() {" + _eol);
+            //                code.append(((ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.ptides.lib.InputDevice) adapter)
+            //                        .generateSensorSensingFuncCode());
+            //                code.append("}" + _eol);
+            //            }
             code.append("void "
                     + CodeGeneratorAdapter.generateName((NamedObj) actor)
                     + "() " + "{" + _eol);
@@ -600,8 +598,8 @@ public class PtidesPreemptiveEDFDirector extends Director {
     protected String _generatePtrToEventHeadCodeInputs()
             throws IllegalActionException {
         StringBuffer code = new StringBuffer();
-        for (Actor actor : (List<Actor>) (((CompositeActor) _director
-                .getContainer()).deepEntityList())) {
+        for (Actor actor : (List<Actor>) ((CompositeActor) _director
+                .getContainer()).deepEntityList()) {
             // if (!(actor instanceof InputDevice)) {
             // FIXME: There exists actors that are both sensor, and also
             // receive input from the outside. For this reason, we allocate

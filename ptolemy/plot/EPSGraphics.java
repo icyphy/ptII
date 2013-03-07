@@ -193,10 +193,10 @@ public class EPSGraphics extends Graphics {
     public void drawRect(int x, int y, int width, int height) {
         Point start = _convert(x, y);
         _buffer.append("newpath " + start.x + " " + start.y + " moveto\n");
-        _buffer.append("0 " + (-height) + " rlineto\n");
+        _buffer.append("0 " + -height + " rlineto\n");
         _buffer.append("" + width + " 0 rlineto\n");
         _buffer.append("0 " + height + " rlineto\n");
-        _buffer.append("" + (-width) + " 0 rlineto\n");
+        _buffer.append("" + -width + " 0 rlineto\n");
         _buffer.append("closepath stroke\n");
     }
 
@@ -223,11 +223,11 @@ public class EPSGraphics extends Graphics {
         Point start = _convert(x, y);
         _buffer.append("" + start.x + " " + start.y + " moveto\n");
 
-        if ((str.indexOf("(") > -1) && (str.indexOf("\\(") == -1)) {
+        if (str.indexOf("(") > -1 && str.indexOf("\\(") == -1) {
             str = StringUtilities.substitute(str, "(", "\\(");
         }
 
-        if ((str.indexOf(")") > -1) && (str.indexOf("\\)") == -1)) {
+        if (str.indexOf(")") > -1 && str.indexOf("\\)") == -1) {
             str = StringUtilities.substitute(str, ")", "\\)");
         }
 
@@ -286,10 +286,10 @@ public class EPSGraphics extends Graphics {
         Point start = _convert(x, y);
         _fillPattern();
         _buffer.append("newpath " + start.x + " " + start.y + " moveto\n");
-        _buffer.append("0 " + (-height) + " rlineto\n");
+        _buffer.append("0 " + -height + " rlineto\n");
         _buffer.append("" + width + " 0 rlineto\n");
         _buffer.append("0 " + height + " rlineto\n");
-        _buffer.append("" + (-width) + " 0 rlineto\n");
+        _buffer.append("" + -width + " 0 rlineto\n");
         _buffer.append("closepath gsave fill grestore\n");
         _buffer.append("0.5 setlinewidth 0 setgray [] 0 setdash stroke\n");
 
@@ -421,14 +421,13 @@ public class EPSGraphics extends Graphics {
     ////                         private methods                   ////
     // Convert the screen coordinate system to that of postscript.
     private Point _convert(int x, int y) {
-        return new Point(x + 50, (_height + 50) - y);
+        return new Point(x + 50, _height + 50 - y);
     }
 
     // Draw a closed polygon defined by arrays of x and y coordinates.
     // Return false if arguments are misformed.
     private boolean _polygon(int[] xPoints, int[] yPoints, int nPoints) {
-        if ((nPoints < 3) || (xPoints.length < nPoints)
-                || (yPoints.length < nPoints)) {
+        if (nPoints < 3 || xPoints.length < nPoints || yPoints.length < nPoints) {
             return false;
         }
 
@@ -457,11 +456,11 @@ public class EPSGraphics extends Graphics {
         double bluescale = 0.6; // darkest
         double redscale = 0.8;
         double greenscale = 1.0; // lightest
-        double fullscale = Math.sqrt(255.0 * 255.0 * ((bluescale * bluescale)
-                + (redscale * redscale) + (greenscale * greenscale)));
-        double graylevel = Math.sqrt(((red * red * redscale * redscale)
-                + (blue * blue * bluescale * bluescale) + (green * green
-                * greenscale * greenscale)))
+        double fullscale = Math.sqrt(255.0 * 255.0 * (bluescale * bluescale
+                + redscale * redscale + greenscale * greenscale));
+        double graylevel = Math.sqrt(red * red * redscale * redscale + blue
+                * blue * bluescale * bluescale + green * green * greenscale
+                * greenscale)
                 / fullscale;
         _buffer.append("" + graylevel + " setgray\n");
 

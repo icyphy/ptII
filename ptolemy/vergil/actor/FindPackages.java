@@ -66,9 +66,9 @@ public class FindPackages {
         Iterator classFiles = classFilesSeen.iterator();
         while (classFiles.hasNext()) {
             File files[] = (File[]) classFiles.next();
-            for (int i = 0; i < files.length; i++) {
-                String fullPath = files[i].toString().replace('\\', '/');
-                String shortPath = fullPath.substring(0, files[i].toString()
+            for (File file : files) {
+                String fullPath = file.toString().replace('\\', '/');
+                String shortPath = fullPath.substring(0, file.toString()
                         .length() - 6);
                 if (shortPath.startsWith(ptIIPath)) {
                     shortPath = shortPath.substring(ptIIPath.length() + 1);

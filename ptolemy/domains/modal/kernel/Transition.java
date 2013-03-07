@@ -263,15 +263,15 @@ public class Transition extends ComponentRelation {
             _parseTreeEvaluatorVersion = -1;
         } else if (attribute == refinementName) {
             _refinementVersion = -1;
-        } else if ((attribute == outputActions) || (attribute == setActions)) {
+        } else if (attribute == outputActions || attribute == setActions) {
             _actionListsVersion = -1;
         } else {
             super.attributeChanged(attribute);
         }
 
-        if ((attribute == outputActions) && _debugging) {
+        if (attribute == outputActions && _debugging) {
             outputActions.addDebugListener(new StreamListener());
-        } else if ((attribute == setActions) && _debugging) {
+        } else if (attribute == setActions && _debugging) {
             setActions.addDebugListener(new StreamListener());
         }
     }
@@ -375,7 +375,7 @@ public class Transition extends ComponentRelation {
         }
 
         String guard = getGuardExpression();
-        if ((guard != null) && !guard.trim().equals("")) {
+        if (guard != null && !guard.trim().equals("")) {
             if (hasAnnotation) {
                 buffer.append("\n");
             }
@@ -384,14 +384,14 @@ public class Transition extends ComponentRelation {
         }
 
         String expression = outputActions.getExpression();
-        if ((expression != null) && !expression.trim().equals("")) {
+        if (expression != null && !expression.trim().equals("")) {
             buffer.append("\n");
             buffer.append("output: ");
             buffer.append(expression);
         }
 
         expression = setActions.getExpression();
-        if ((expression != null) && !expression.trim().equals("")) {
+        if (expression != null && !expression.trim().equals("")) {
             buffer.append("\n");
             buffer.append("set: ");
             buffer.append(expression);
@@ -444,7 +444,7 @@ public class Transition extends ComponentRelation {
 
             String names = refinementName.getExpression();
 
-            if ((names == null) || names.trim().equals("")) {
+            if (names == null || names.trim().equals("")) {
                 _refinementVersion = workspace().getVersion();
                 _refinement = null;
                 return null;
@@ -580,24 +580,26 @@ public class Transition extends ComponentRelation {
         // Ensure that the corrections below for older version compatibility
         // are performed only once.
         if (_historySet) {
-            return ((BooleanToken)history.getToken()).booleanValue();
+            return ((BooleanToken) history.getToken()).booleanValue();
         }
         _historySet = true;
         // History has not been explicitly set true. Should use either new
         // or old default depending on the version of Ptolemy that created the model.
         try {
-            VersionAttribute version = (VersionAttribute) toplevel().getAttribute("_createdBy", VersionAttribute.class);
+            VersionAttribute version = (VersionAttribute) toplevel()
+                    .getAttribute("_createdBy", VersionAttribute.class);
             if (version == null) {
                 // No version attribute. Return whatever the value
                 // of the history parameter is.
-                return ((BooleanToken)history.getToken()).booleanValue();
+                return ((BooleanToken) history.getToken()).booleanValue();
             }
             if (_REFERENCE_VERSION == null) {
                 _REFERENCE_VERSION = new VersionAttribute("9.0.devel");
             }
             if (version.compareTo(_REFERENCE_VERSION) <= 0) {
                 // Model was created under old defaults. Look for a reset parameter.
-                final Parameter reset = (Parameter) getAttribute("reset", Parameter.class);
+                final Parameter reset = (Parameter) getAttribute("reset",
+                        Parameter.class);
                 if (reset != null) {
                     Token resetValue = reset.getToken();
                     // Remove the reset parameter.
@@ -614,15 +616,18 @@ public class Transition extends ComponentRelation {
                     // then set the history parameter to true.
                     // Otherwise, leave the history parameter at its default.
                     if (resetValue instanceof BooleanToken) {
-                        boolean resetValueBoolean = ((BooleanToken)resetValue).booleanValue();
+                        boolean resetValueBoolean = ((BooleanToken) resetValue)
+                                .booleanValue();
                         if (!resetValueBoolean) {
                             // reset parameter exists and has value false, but if the destination
                             // state has no refinement, we nonetheless change this to make
                             // the history parameter false.
                             State destinationState = destinationState();
                             if (destinationState != null) {
-                                TypedActor[] refinements = destinationState.getRefinement();
-                                if (refinements == null || refinements.length == 0) {
+                                TypedActor[] refinements = destinationState
+                                        .getRefinement();
+                                if (refinements == null
+                                        || refinements.length == 0) {
                                     // No need to make history true. Stick with the default.
                                     return false;
                                 }
@@ -654,7 +659,8 @@ public class Transition extends ComponentRelation {
                     // if the destination state has a refinement.
                     State destinationState = destinationState();
                     if (destinationState != null) {
-                        TypedActor[] refinements = destinationState.getRefinement();
+                        TypedActor[] refinements = destinationState
+                                .getRefinement();
                         if (refinements == null || refinements.length == 0) {
                             // No need to make history true. Stick with the default.
                             return false;
@@ -669,11 +675,11 @@ public class Transition extends ComponentRelation {
                 }
             } else {
                 // Version is recent. Return the current value of the history parameter.
-                return ((BooleanToken)history.getToken()).booleanValue();
+                return ((BooleanToken) history.getToken()).booleanValue();
             }
         } catch (IllegalActionException e) {
             // Can't access version attribute. Return default.
-            return ((BooleanToken)history.getToken()).booleanValue();
+            return ((BooleanToken) history.getToken()).booleanValue();
         }
     }
 
@@ -880,7 +886,7 @@ public class Transition extends ComponentRelation {
 
         State st = (State) port.getContainer();
 
-        if ((port != st.incomingPort) && (port != st.outgoingPort)) {
+        if (port != st.incomingPort && port != st.outgoingPort) {
             throw new IllegalActionException(this, port.getContainer(),
                     "Transition can only be linked to incoming or outgoing "
                             + "port of State.");
@@ -899,8 +905,8 @@ public class Transition extends ComponentRelation {
         Port pt = (Port) ports.next();
         State s = (State) pt.getContainer();
 
-        if (((pt == s.incomingPort) && (port == st.incomingPort))
-                || ((pt == s.outgoingPort) && (port == st.outgoingPort))) {
+        if (pt == s.incomingPort && port == st.incomingPort
+                || pt == s.outgoingPort && port == st.outgoingPort) {
             throw new IllegalActionException(this,
                     "Transition can only have one source and one destination.");
         }

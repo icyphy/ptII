@@ -272,7 +272,7 @@ public final class ConstantSize implements Size, Serializable {
      * @return  a string representation of the constant size
      */
     public String toString() {
-        return (value == intValue()) ? Integer.toString(intValue())
+        return value == intValue() ? Integer.toString(intValue())
                 + unit.abbreviation() : Double.toString(value)
                 + unit.abbreviation();
     }

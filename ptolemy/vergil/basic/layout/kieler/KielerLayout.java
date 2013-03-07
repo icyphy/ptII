@@ -1369,7 +1369,7 @@ public class KielerLayout extends AbstractGlobalLayout {
             break;
         case SwingConstants.SOUTH:
             kportlayout.setProperty(LayoutOptions.PORT_SIDE, PortSide.SOUTH);
-            offset.x = (index * MULTIPORT_OFFSET);
+            offset.x = index * MULTIPORT_OFFSET;
             break;
         default:
             kportlayout.setProperty(LayoutOptions.PORT_SIDE, PortSide.WEST);

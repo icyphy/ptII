@@ -234,8 +234,8 @@ public class KeyStoreActor extends TypedAtomicActor {
 
         Provider[] providers = Security.getProviders();
 
-        for (int i = 0; i < providers.length; i++) {
-            provider.addChoice(providers[i].getName());
+        for (Provider provider2 : providers) {
+            provider.addChoice(provider2.getName());
         }
 
         storePassword = new PortParameter(this, "storePassword");
@@ -349,13 +349,13 @@ public class KeyStoreActor extends TypedAtomicActor {
                     + "(-sandbox always causes this): " + ex);
         }
 
-        if ((javaHome == null) || (javaHome.length() == 0)) {
+        if (javaHome == null || javaHome.length() == 0) {
             // Use java.home property if the ptolemy.ptII.java.home property
             // can not be read.  For example, MoMLSimpleApplication does not
             // read $PTII/lib/ptII.properties.
             javaHome = StringUtilities.getProperty("java.home");
 
-            if ((javaHome != null) && (javaHome.length() > 0)) {
+            if (javaHome != null && javaHome.length() > 0) {
                 javaHome = javaHome.replace('\\', '/');
             } else {
                 throw new InternalErrorException(this, null,
@@ -405,7 +405,7 @@ public class KeyStoreActor extends TypedAtomicActor {
         _exec(command2);
         _exec(command3);
 
-        if (!(new File(keystoreFilename)).exists()) {
+        if (!new File(keystoreFilename).exists()) {
             throw new IllegalActionException(this, "Failed to create '"
                     + keystoreFilename + "', try running\n" + command1 + "\n"
                     + command2 + "\n" + command3);
@@ -535,7 +535,7 @@ public class KeyStoreActor extends TypedAtomicActor {
                 // asURL() throws IllegalActionException and sets
                 // the cause to an IOException if the file cannot
                 // be found.
-                if ( !(ex.getCause() instanceof IOException)) {
+                if (!(ex.getCause() instanceof IOException)) {
                     throw ex;
                 }
             } catch (FileNotFoundException ex) {
@@ -833,7 +833,7 @@ public class KeyStoreActor extends TypedAtomicActor {
                 // Oddly, InputStreamReader.read() will return -1
                 // if there is no data present, but the string can still
                 // read.
-                while (((length = _inputStreamReader.read(chars, 0, 80)) != -1)
+                while ((length = _inputStreamReader.read(chars, 0, 80)) != -1
                         && !_stopRequested && !_stopFireRequested) {
                     if (_debugging) {
                         // Note that ready might be false here since

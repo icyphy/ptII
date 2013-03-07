@@ -152,7 +152,7 @@ public class HDFFSMDirector extends MultirateFSMDirector {
                     // rates. See if we can optimize this use schedule
                     // invalidation. Use brute force solution.
                     // if (getController().wasTransitionTaken()) {
-                        _setProductionConsumptionRates();
+                    _setProductionConsumptionRates();
                     // }
                 }
             };

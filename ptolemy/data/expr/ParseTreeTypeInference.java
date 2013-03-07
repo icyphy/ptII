@@ -154,7 +154,7 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
         Type type = null;
         Type baseType = null;
 
-        if ((_scope != null) && (functionName != null)) {
+        if (_scope != null && functionName != null) {
             type = _scope.getType(functionName);
             if (!(type instanceof ObjectType)) {
                 // Pretend that we cannot resolve the type if it is an
@@ -163,7 +163,7 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
             }
         }
 
-        if ((baseType != null) || (functionName == null)) {
+        if (baseType != null || functionName == null) {
             baseType = _inferChild(node, 0);
 
             // Handle as an array or matrix index into a named
@@ -214,9 +214,9 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
         // is to define fooReturnType() in data.expr.UtilityFunctions
         // so that fooReturnType() is found by CacheMethod.
         // Psuedo-temporary hack for casts....
-        if ((functionName.compareTo("cast") == 0) && (argCount == 2)) {
-            ASTPtRootNode castTypeNode = ((ASTPtRootNode) node
-                    .jjtGetChild(0 + 1));
+        if (functionName.compareTo("cast") == 0 && argCount == 2) {
+            ASTPtRootNode castTypeNode = (ASTPtRootNode) node
+                    .jjtGetChild(0 + 1);
             ParseTreeEvaluator parseTreeEvaluator = new ParseTreeEvaluator();
 
             try {
@@ -239,10 +239,10 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
 
         // A hack, because the result of the 'fix' function is
         // dependent on its arguments, which should be constant.
-        if ((functionName.compareTo("fix") == 0) && (argCount == 3)) {
-            ASTPtRootNode lengthNode = ((ASTPtRootNode) node.jjtGetChild(1 + 1));
-            ASTPtRootNode integerBitsNode = ((ASTPtRootNode) node
-                    .jjtGetChild(2 + 1));
+        if (functionName.compareTo("fix") == 0 && argCount == 3) {
+            ASTPtRootNode lengthNode = (ASTPtRootNode) node.jjtGetChild(1 + 1);
+            ASTPtRootNode integerBitsNode = (ASTPtRootNode) node
+                    .jjtGetChild(2 + 1);
             ParseTreeEvaluator parseTreeEvaluator = new ParseTreeEvaluator();
 
             try {
@@ -311,7 +311,7 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
         }
 
         if (functionName.equals("object") && argCount == 1) {
-            ASTPtRootNode classNameNode = ((ASTPtRootNode) node.jjtGetChild(1));
+            ASTPtRootNode classNameNode = (ASTPtRootNode) node.jjtGetChild(1);
             if (classNameNode instanceof ASTPtLeafNode) {
                 ptolemy.data.Token token = ((ASTPtLeafNode) classNameNode)
                         .getToken();
@@ -400,7 +400,7 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
             public Type getType(String name) throws IllegalActionException {
                 Type type = (Type) map.get(name);
 
-                if ((type == null) && (currentScope != null)) {
+                if (type == null && currentScope != null) {
                     return currentScope.getType(name);
                 } else {
                     return type;
@@ -411,7 +411,7 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
                     throws IllegalActionException {
                 Type type = (Type) map.get(name);
 
-                if ((type == null) && (currentScope != null)) {
+                if (type == null && currentScope != null) {
                     return currentScope.getTypeTerm(name);
                 } else {
                     return new TypeConstant(type);
@@ -540,7 +540,7 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
         Type[] childTypes = _inferAllChildren(node);
 
         // Handle indexing into a record.
-        if ((childTypes.length == 1) && childTypes[0] instanceof RecordType) {
+        if (childTypes.length == 1 && childTypes[0] instanceof RecordType) {
             RecordType type = (RecordType) childTypes[0];
 
             if (type.labelSet().contains(node.getMethodName())) {
@@ -818,7 +818,7 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
     protected boolean _isValidName(String name) throws IllegalActionException {
         if (_scope != null) {
             try {
-                return (_scope.getType(name) != null);
+                return _scope.getType(name) != null;
             } catch (Exception ex) {
                 return false;
             }

@@ -150,8 +150,8 @@ public class IntegerCounter extends SynchronousFixTransformer {
     public void fire() throws IllegalActionException {
         super.fire();
         if (reset.isKnown()
-                && (enable.getContainer() == null || (enable.getContainer() != null && enable
-                        .isKnown()))) {
+                && (enable.getContainer() == null || enable.getContainer() != null
+                        && enable.isKnown())) {
 
             _currentCount = _previousCount;
 
@@ -190,7 +190,7 @@ public class IntegerCounter extends SynchronousFixTransformer {
 
         } else {
 
-            (output).resend(0);
+            output.resend(0);
         }
     }
 

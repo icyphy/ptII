@@ -158,9 +158,8 @@ public class FixSequence extends FixTransformer {
             }
         }
 
-        if ((!enable.isOutsideConnected())
-                || (enable.hasToken(0) && ((BooleanToken) enable.get(0))
-                        .booleanValue())) {
+        if (!enable.isOutsideConnected() || enable.hasToken(0)
+                && ((BooleanToken) enable.get(0)).booleanValue()) {
             ArrayToken valuesArray = (ArrayToken) values.getToken();
 
             if (_currentIndex < valuesArray.length()) {

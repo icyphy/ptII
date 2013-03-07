@@ -118,7 +118,7 @@ public abstract class ScalarToken extends Token implements
     public final Token add(Token rightArgument) throws IllegalActionException {
         int typeInfo = TypeLattice.compare(getType(), rightArgument);
 
-        if (typeInfo == CPO.SAME || getClass() == (rightArgument.getClass())) {
+        if (typeInfo == CPO.SAME || getClass() == rightArgument.getClass()) {
             return _doAdd(rightArgument);
         } else if (typeInfo == CPO.HIGHER) {
             ScalarToken convertedArgument = (ScalarToken) getType().convert(
@@ -133,8 +133,8 @@ public abstract class ScalarToken extends Token implements
                 throw new IllegalActionException(null, ex, notSupportedMessage(
                         "add", this, rightArgument));
             }
-        } else if ((typeInfo == CPO.LOWER)
-                || (rightArgument instanceof MatrixToken)) {
+        } else if (typeInfo == CPO.LOWER
+                || rightArgument instanceof MatrixToken) {
             // NOTE: If the right argument is an instance of MatrixToken,
             // then we try reversing the add.
             return rightArgument.addReverse(this);
@@ -153,7 +153,7 @@ public abstract class ScalarToken extends Token implements
                 // Caution: convert() might return this again, e.g.
                 // if lubType is general.  Only proceed if the conversion
                 // returned a new type.
-                if (!(lub.getType().equals(getType()))) {
+                if (!lub.getType().equals(getType())) {
                     return lub.add(rightArgument);
                 }
             }
@@ -404,7 +404,7 @@ public abstract class ScalarToken extends Token implements
             throws IllegalActionException {
         int typeInfo = TypeLattice.compare(getType(), rightArgument);
 
-        if (typeInfo == CPO.SAME || getClass() == (rightArgument.getClass())) {
+        if (typeInfo == CPO.SAME || getClass() == rightArgument.getClass()) {
             return _doDivide(rightArgument);
         } else if (typeInfo == CPO.HIGHER) {
             ScalarToken convertedArgument = (ScalarToken) getType().convert(
@@ -436,7 +436,7 @@ public abstract class ScalarToken extends Token implements
                 // Caution: convert() might return this again, e.g.
                 // if lubType is general.  Only proceed if the conversion
                 // returned a new type.
-                if (!(lub.getType().equals(getType()))) {
+                if (!lub.getType().equals(getType())) {
                     return lub.divide(rightArgument);
                 }
             }
@@ -586,7 +586,7 @@ public abstract class ScalarToken extends Token implements
         // exceptions because of type conversion issues.
         int typeInfo = TypeLattice.compare(getType(), rightArgument);
 
-        if (typeInfo == CPO.SAME || getClass() == (rightArgument.getClass())) {
+        if (typeInfo == CPO.SAME || getClass() == rightArgument.getClass()) {
             return _doIsCloseTo(rightArgument, epsilon);
         } else if (typeInfo == CPO.HIGHER) {
             ScalarToken convertedArgument = (ScalarToken) getType().convert(
@@ -629,7 +629,7 @@ public abstract class ScalarToken extends Token implements
             throws IllegalActionException {
         int typeInfo = TypeLattice.compare(getType(), rightArgument);
 
-        if (typeInfo == CPO.SAME || getClass() == (rightArgument.getClass())) {
+        if (typeInfo == CPO.SAME || getClass() == rightArgument.getClass()) {
             return _doIsEqualTo(rightArgument);
         } else if (typeInfo == CPO.HIGHER) {
             ScalarToken convertedArgument = (ScalarToken) getType().convert(
@@ -822,7 +822,7 @@ public abstract class ScalarToken extends Token implements
             throws IllegalActionException {
         int typeInfo = TypeLattice.compare(getType(), rightArgument);
 
-        if (typeInfo == CPO.SAME || getClass() == (rightArgument.getClass())) {
+        if (typeInfo == CPO.SAME || getClass() == rightArgument.getClass()) {
             return _doModulo(rightArgument);
         } else if (typeInfo == CPO.HIGHER) {
             ScalarToken convertedArgument = (ScalarToken) getType().convert(
@@ -854,7 +854,7 @@ public abstract class ScalarToken extends Token implements
                 // Caution: convert() might return this again, e.g.
                 // if lubType is general.  Only proceed if the conversion
                 // returned a new type.
-                if (!(lub.getType().equals(getType()))) {
+                if (!lub.getType().equals(getType())) {
                     return lub.modulo(rightArgument);
                 }
             }
@@ -930,7 +930,7 @@ public abstract class ScalarToken extends Token implements
             throws IllegalActionException {
         int typeInfo = TypeLattice.compare(getType(), rightArgument);
 
-        if (typeInfo == CPO.SAME || getClass() == (rightArgument.getClass())) {
+        if (typeInfo == CPO.SAME || getClass() == rightArgument.getClass()) {
             return _doMultiply(rightArgument);
         } else if (typeInfo == CPO.HIGHER) {
             ScalarToken convertedArgument = (ScalarToken) getType().convert(
@@ -945,7 +945,7 @@ public abstract class ScalarToken extends Token implements
                 throw new IllegalActionException(null, ex, notSupportedMessage(
                         "multiply", this, rightArgument));
             }
-        } else if ((typeInfo == CPO.LOWER)
+        } else if (typeInfo == CPO.LOWER
                 || rightArgument instanceof MatrixToken) {
             // NOTE: If the right argument is an instance of MatrixToken,
             // then we try reversing the multiply.
@@ -965,7 +965,7 @@ public abstract class ScalarToken extends Token implements
                 // Caution: convert() might return this again, e.g.
                 // if lubType is general.  Only proceed if the conversion
                 // returned a new type.
-                if (!(lub.getType().equals(getType()))) {
+                if (!lub.getType().equals(getType())) {
                     return lub.multiply(rightArgument);
                 }
             }
@@ -1015,7 +1015,7 @@ public abstract class ScalarToken extends Token implements
             }
         } else if (typeInfo == CPO.SAME) {
             return ((ScalarToken) leftArgument)._doMultiply(this);
-        } else if ((typeInfo == CPO.HIGHER)
+        } else if (typeInfo == CPO.HIGHER
                 || leftArgument instanceof MatrixToken) {
             // NOTE: If the left argument is an instance of MatrixToken,
             // then we try reversing the multiply.
@@ -1035,7 +1035,7 @@ public abstract class ScalarToken extends Token implements
                 // Caution: convert() might return this again, e.g.
                 // if lubType is general.  Only proceed if the conversion
                 // returned a new type.
-                if (!(lub.getType().equals(getType()))) {
+                if (!lub.getType().equals(getType())) {
                     return lub.multiplyReverse(leftArgument);
                 }
             }
@@ -1104,7 +1104,7 @@ public abstract class ScalarToken extends Token implements
             throws IllegalActionException {
         int typeInfo = TypeLattice.compare(getType(), rightArgument);
 
-        if (typeInfo == CPO.SAME || getClass() == (rightArgument.getClass())) {
+        if (typeInfo == CPO.SAME || getClass() == rightArgument.getClass()) {
             return _doSubtract(rightArgument);
         } else if (typeInfo == CPO.HIGHER) {
             ScalarToken convertedArgument = (ScalarToken) getType().convert(
@@ -1119,8 +1119,8 @@ public abstract class ScalarToken extends Token implements
                 throw new IllegalActionException(null, ex, notSupportedMessage(
                         "subtract", this, rightArgument));
             }
-        } else if ((typeInfo == CPO.LOWER)
-                || (rightArgument instanceof MatrixToken)) {
+        } else if (typeInfo == CPO.LOWER
+                || rightArgument instanceof MatrixToken) {
             // NOTE: If the right argument is an instance of MatrixToken,
             // then we try reversing the subtract.
             return rightArgument.subtractReverse(this);
@@ -1139,7 +1139,7 @@ public abstract class ScalarToken extends Token implements
                 // Caution: convert() might return this again, e.g.
                 // if lubType is general.  Only proceed if the conversion
                 // returned a new type.
-                if (!(lub.getType().equals(getType()))) {
+                if (!lub.getType().equals(getType())) {
                     return lub.subtract(rightArgument);
                 }
             }
@@ -1622,9 +1622,9 @@ public abstract class ScalarToken extends Token implements
         ScalarToken result = _divide(convertedArgument);
 
         // compute units
-        if ((_unitCategoryExponents != null && !_isUnitless())
-                || (convertedArgument._unitCategoryExponents != null && !convertedArgument
-                        ._isUnitless())) {
+        if (_unitCategoryExponents != null && !_isUnitless()
+                || convertedArgument._unitCategoryExponents != null
+                && !convertedArgument._isUnitless()) {
             result._unitCategoryExponents = _subtractCategoryExponents(convertedArgument);
         }
         return result;
@@ -1782,9 +1782,9 @@ public abstract class ScalarToken extends Token implements
         ScalarToken result = _multiply(convertedArgument);
 
         // compute units
-        if ((_unitCategoryExponents != null && !_isUnitless())
-                || (convertedArgument._unitCategoryExponents != null && !convertedArgument
-                        ._isUnitless())) {
+        if (_unitCategoryExponents != null && !_isUnitless()
+                || convertedArgument._unitCategoryExponents != null
+                && !convertedArgument._isUnitless()) {
             result._unitCategoryExponents = _addCategoryExponents(convertedArgument);
 
         }

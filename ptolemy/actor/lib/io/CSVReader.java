@@ -281,7 +281,8 @@ public class CSVReader extends LineReader {
             try {
                 _nextLine = _reader.readLine();
             } catch (IOException ex) {
-                throw new IllegalActionException(this, ex, "initialize() failed");
+                throw new IllegalActionException(this, ex,
+                        "initialize() failed");
             }
         }
 
@@ -321,7 +322,8 @@ public class CSVReader extends LineReader {
                     }
 
                     try {
-                        fieldValues[i] = _parseTreeEvaluator.evaluateParseTree(parseTree, _scope);
+                        fieldValues[i] = _parseTreeEvaluator.evaluateParseTree(
+                                parseTree, _scope);
                     } catch (Exception ex) {
                         // If the field cannot be evaluated, then interpret
                         // the field as a string.
@@ -392,8 +394,7 @@ public class CSVReader extends LineReader {
          *  @return The attribute with the specified name in the scope.
          */
         public Token get(String name) throws IllegalActionException {
-            Variable result = getScopedVariable(null, CSVReader.this,
-                    name);
+            Variable result = getScopedVariable(null, CSVReader.this, name);
 
             if (result != null) {
                 return result.getToken();
@@ -408,8 +409,7 @@ public class CSVReader extends LineReader {
          *  @return The attribute with the specified name in the scope.
          */
         public Type getType(String name) throws IllegalActionException {
-            Variable result = getScopedVariable(null, CSVReader.this,
-                    name);
+            Variable result = getScopedVariable(null, CSVReader.this, name);
 
             if (result != null) {
                 return (Type) result.getTypeTerm().getValue();
@@ -428,8 +428,7 @@ public class CSVReader extends LineReader {
          */
         public ptolemy.graph.InequalityTerm getTypeTerm(String name)
                 throws IllegalActionException {
-            Variable result = getScopedVariable(null, CSVReader.this,
-                    name);
+            Variable result = getScopedVariable(null, CSVReader.this, name);
 
             if (result != null) {
                 return result.getTypeTerm();

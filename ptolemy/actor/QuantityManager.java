@@ -79,5 +79,4 @@ public interface QuantityManager {
 
     public void setTempPort(IOPort port);
 
-
 }

@@ -173,7 +173,7 @@ public class Effigy extends CompositeEntity {
             } else {
                 String protocol = uriValue.getScheme();
 
-                if (!(protocol.equals("file"))) {
+                if (!protocol.equals("file")) {
                     _modifiableURI = false;
                 } else {
                     // Use just the path here in case we
@@ -534,7 +534,7 @@ public class Effigy extends CompositeEntity {
      */
     protected void _checkContainer(CompositeEntity container)
             throws IllegalActionException {
-        if ((container != null) && !(container instanceof ModelDirectory)
+        if (container != null && !(container instanceof ModelDirectory)
                 && !(container instanceof Effigy)) {
             throw new IllegalActionException(this, container,
                     "The container can only be set to an "
@@ -551,7 +551,7 @@ public class Effigy extends CompositeEntity {
     protected void _removeEntity(ComponentEntity entity) {
         super._removeEntity(entity);
 
-        if ((numberOfOpenTableaux() == 0) && !isSystemEffigy()) {
+        if (numberOfOpenTableaux() == 0 && !isSystemEffigy()) {
             try {
                 setContainer(null);
             } catch (Exception ex) {

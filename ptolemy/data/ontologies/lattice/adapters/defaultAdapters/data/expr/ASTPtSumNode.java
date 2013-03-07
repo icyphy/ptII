@@ -82,17 +82,17 @@ public class ASTPtSumNode extends LatticeOntologyASTNodeAdapter {
         // Find the add and subtract concept functions that
         // are needed for the PtSumNode monotonic function.
         ConceptFunction addFunction = null;
-        ConceptFunctionDefinitionAttribute addDefinition = (ConceptFunctionDefinitionAttribute) (_solver
-                .getContainedModel())
-                .getAttribute(LatticeOntologySolver.ADD_FUNCTION_NAME);
+        ConceptFunctionDefinitionAttribute addDefinition = (ConceptFunctionDefinitionAttribute) _solver
+                .getContainedModel().getAttribute(
+                        LatticeOntologySolver.ADD_FUNCTION_NAME);
         if (addDefinition != null) {
             addFunction = addDefinition.createConceptFunction();
         }
 
         ConceptFunction subtractFunction = null;
-        ConceptFunctionDefinitionAttribute subtractDefinition = (ConceptFunctionDefinitionAttribute) (_solver
-                .getContainedModel())
-                .getAttribute(LatticeOntologySolver.SUBTRACT_FUNCTION_NAME);
+        ConceptFunctionDefinitionAttribute subtractDefinition = (ConceptFunctionDefinitionAttribute) _solver
+                .getContainedModel().getAttribute(
+                        LatticeOntologySolver.SUBTRACT_FUNCTION_NAME);
         if (subtractDefinition != null) {
             subtractFunction = subtractDefinition.createConceptFunction();
         }
@@ -100,7 +100,7 @@ public class ASTPtSumNode extends LatticeOntologyASTNodeAdapter {
         InequalityTerm[] childNodeTerms = _getChildNodeTerms();
         List<Ontology> argumentDomainOntologies = new ArrayList<Ontology>(
                 childNodeTerms.length);
-        for (int i = 0; i < childNodeTerms.length; i++) {
+        for (InequalityTerm childNodeTerm : childNodeTerms) {
             argumentDomainOntologies.add(getSolver().getOntology());
         }
 

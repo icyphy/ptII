@@ -131,14 +131,14 @@ public class ShortToken extends ScalarToken {
 
         int compare = TypeLattice.compare(BaseType.SHORT, token);
 
-        if ((compare == CPO.LOWER) || (compare == CPO.INCOMPARABLE)) {
+        if (compare == CPO.LOWER || compare == CPO.INCOMPARABLE) {
             throw new IllegalActionException(
                     notSupportedIncomparableConversionMessage(token, "short"));
         }
 
         compare = TypeLattice.compare(BaseType.UNSIGNED_BYTE, token);
 
-        if ((compare == CPO.SAME) || (compare == CPO.HIGHER)) {
+        if (compare == CPO.SAME || compare == CPO.HIGHER) {
             UnsignedByteToken unsignedByteToken = UnsignedByteToken
                     .convert(token);
             ShortToken result = new ShortToken(unsignedByteToken.shortValue());
@@ -457,7 +457,7 @@ public class ShortToken extends ScalarToken {
         double right = ((ShortToken) rightArgument).doubleValue();
         double left = doubleValue();
 
-        if ((right > (left + epsilon)) || (right < (left - epsilon))) {
+        if (right > left + epsilon || right < left - epsilon) {
             return BooleanToken.FALSE;
         } else {
             return BooleanToken.TRUE;

@@ -192,8 +192,8 @@ public class StraightTerminal extends AbstractFigure implements Terminal {
         double x1 = _attachSite.getX();
         double y1 = _attachSite.getY();
         double normal = _attachSite.getNormal();
-        double x2 = x1 + (_length * Math.cos(normal));
-        double y2 = y1 + (_length * Math.sin(normal));
+        double x2 = x1 + _length * Math.cos(normal);
+        double y2 = y1 + _length * Math.sin(normal);
 
         _line.setLine(x1, y1, x2, y2);
 

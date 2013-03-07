@@ -210,22 +210,22 @@ public class Chop extends SDFTransformer {
             _usePast = ((BooleanToken) usePastInputs.getToken()).booleanValue();
         }
 
-        if ((attribute == offset) || (attribute == usePastInputs)) {
+        if (attribute == offset || attribute == usePastInputs) {
             if (_offsetValue > 0) {
                 _pastBuffer = new Token[_offsetValue];
                 _pastNeedsInitializing = true;
             }
         }
 
-        if ((attribute == numberToRead) || (attribute == numberToWrite)
-                || (attribute == offset) || (attribute == usePastInputs)) {
+        if (attribute == numberToRead || attribute == numberToWrite
+                || attribute == offset || attribute == usePastInputs) {
             // NOTE: The following computation gets repeated when each of
             // these gets set, but it's a simple calculation, so we live
             // with it.
             // The variables _highLimit and _lowLimit indicate the range of
             // output indexes that come directly from the input block
             // that is read.
-            _highLimit = (_offsetValue + _numberToRead) - 1;
+            _highLimit = _offsetValue + _numberToRead - 1;
 
             if (_highLimit >= _numberToWrite) {
                 _highLimit = _numberToWrite - 1;
@@ -280,7 +280,7 @@ public class Chop extends SDFTransformer {
             }
         }
 
-        if (_usePast && (_offsetValue > 0)) {
+        if (_usePast && _offsetValue > 0) {
             // Copy input buffer into past buffer.  Have to be careful
             // here because the buffer might be longer than the
             // input window.

@@ -150,8 +150,8 @@ public class Solution {
         }
 
         for (int constraintNum = 0; constraintNum < _numConstraints; constraintNum++) {
-            UnitEquation constraint = (UnitEquation) (constraints
-                    .elementAt(constraintNum));
+            UnitEquation constraint = (UnitEquation) constraints
+                    .elementAt(constraintNum);
             UnitEquation canonicalEquation = constraint.canonicalize();
             Vector rightUTerms = canonicalEquation.getRhs().getUTerms();
 
@@ -160,7 +160,7 @@ public class Solution {
                         + canonicalEquation + " has nonsingular RHS");
             }
 
-            UnitTerm rhsUterm = (UnitTerm) (rightUTerms.elementAt(0));
+            UnitTerm rhsUterm = (UnitTerm) rightUTerms.elementAt(0);
 
             if (!rhsUterm.isUnit()) {
                 throw new IllegalActionException("canonicalEquation "
@@ -173,7 +173,7 @@ public class Solution {
             Vector leftUTerms = canonicalEquation.getLhs().getUTerms();
 
             for (int i = 0; i < leftUTerms.size(); i++) {
-                UnitTerm leftUTerm = (UnitTerm) (leftUTerms.elementAt(i));
+                UnitTerm leftUTerm = (UnitTerm) leftUTerms.elementAt(i);
 
                 if (leftUTerm == null) {
                     throw new IllegalActionException("canonicalEquation "
@@ -245,7 +245,7 @@ public class Solution {
             colorString = _getColorString(colorValue);
             if (source instanceof IOPort) {
                 IOPort port = (IOPort) source;
-                ComponentEntity actor = (ComponentEntity) (port.getContainer());
+                ComponentEntity actor = (ComponentEntity) port.getContainer();
                 moml.append("<entity name=\"" + actor.getName() + "\">"
                         + _momlAnnotate(port, colorString, expression)
                         + "</entity>");
@@ -407,7 +407,7 @@ public class Solution {
         Iterator allG = root._findAllG().iterator();
 
         while (allG.hasNext()) {
-            Index g = (Index) (allG.next());
+            Index g = (Index) allG.next();
             root._eliminate(g);
         }
 
@@ -429,7 +429,7 @@ public class Solution {
                 for (int i = 0; i < root._branchPoints.size(); i++) {
                     Solution s = root.copy();
                     Vector results = s._partialSolveRecursively(1,
-                            (Index) (root._branchPoints.elementAt(i)));
+                            (Index) root._branchPoints.elementAt(i));
                     solutions.addAll(results);
                 }
             } else {
@@ -440,7 +440,7 @@ public class Solution {
 
         if (_debug) {
             for (int i = 0; i < solutions.size(); i++) {
-                Solution solution = (Solution) (solutions.elementAt(i));
+                Solution solution = (Solution) solutions.elementAt(i);
                 System.out.println("A Solution\n" + solution.stateInfo());
             }
         }
@@ -533,13 +533,13 @@ public class Solution {
                     }
                 }
 
-                if ((numNonZeroP == 0)
+                if (numNonZeroP == 0
                         && !_vectorA[i].equals(UnitLibrary.Identity)) {
                     Unit factor = _vectorA[i].invert();
                     String uString = factor.descriptiveForm();
                     _constraintState[i] = _INCONSISTENT;
                     _constraintExplanations[i] = uString;
-                } else if ((numNonZeroP > 1)
+                } else if (numNonZeroP > 1
                         && _vectorA[i].equals(UnitLibrary.Identity)) {
                     _constraintState[i] = _NONUNIQUE;
                 } else {
@@ -556,7 +556,7 @@ public class Solution {
             int numNonZeroP = 0;
 
             for (int i = 0; i < _numConstraints; i++) {
-                if (_done[i] && (_arrayP[i][j] != 0)) {
+                if (_done[i] && _arrayP[i][j] != 0) {
                     Unit U = _vectorA[i].pow(1.0 / _arrayP[i][j]);
 
                     if (numNonZeroP > 0) {
@@ -663,7 +663,7 @@ public class Solution {
         int num = 0;
 
         for (int i = 0; i < _numConstraints; i++) {
-            if ((i != k) && (_arrayP[i][l] != 0)) {
+            if (i != k && _arrayP[i][l] != 0) {
                 num++;
             }
         }
@@ -672,7 +672,7 @@ public class Solution {
         int index = 0;
 
         for (int i = 0; i < _numConstraints; i++) {
-            if ((i != k) && (_arrayP[i][l] != 0)) {
+            if (i != k && _arrayP[i][l] != 0) {
                 retv[index++] = i;
             }
         }
@@ -718,7 +718,7 @@ public class Solution {
         _arrayP[k][l] = 1;
 
         for (int i = 0; i < _numConstraints; i++) {
-            if ((i != k) && !_done[i] && (_arrayP[i][l] != 0)) {
+            if (i != k && !_done[i] && _arrayP[i][l] != 0) {
                 _vectorA[i] = _vectorA[i].divideBy(U.pow(_arrayP[i][l]));
                 _arrayP[i][l] = 0;
             }
@@ -771,8 +771,7 @@ public class Solution {
     private Vector _findAllGInRows(int[] rows) {
         Vector retv = new Vector();
 
-        for (int a = 0; a < rows.length; a++) {
-            int k = rows[a];
+        for (int k : rows) {
             Index g = _findGInRow(k);
 
             if (g != null) {
@@ -808,7 +807,7 @@ public class Solution {
                 }
 
                 if (possible) {
-                    return (new Index(i, l));
+                    return new Index(i, l);
                 }
             }
         }
@@ -833,7 +832,7 @@ public class Solution {
             return null;
         }
 
-        return (new Index(k, l));
+        return new Index(k, l);
     }
 
     /** Return the string representation of the color value.
@@ -859,7 +858,7 @@ public class Solution {
         // moml.unit and actor.gui
         Attribute currentColor = entity.getAttribute("_color");
 
-        if ((currentColor != null) && (color == null)) {
+        if (currentColor != null && color == null) {
             colorProperty = "<deleteProperty _name=_color/>";
         } else if (color != null) {
             colorProperty = "<property name=\"_color\" "
@@ -885,12 +884,12 @@ public class Solution {
         _checkForInConsistency();
         _branchPoints = _findAllGInRows(rows);
 
-        if ((_solveState != _INCONSISTENT) && (_branchPoints.size() > 0)) {
+        if (_solveState != _INCONSISTENT && _branchPoints.size() > 0) {
             if (_debug) {
                 System.out.print("Branch Rows at level " + level + " for " + g);
 
-                for (int a = 0; a < rows.length; a++) {
-                    System.out.print(" " + rows[a]);
+                for (int row : rows) {
+                    System.out.print(" " + row);
                 }
 
                 System.out.print("\nRemaining BranchPoints");
@@ -905,7 +904,7 @@ public class Solution {
             for (int gi = 0; gi < _branchPoints.size(); gi++) {
                 Solution s = copy();
                 Vector results = s._partialSolveRecursively(level + 1,
-                        (Index) (_branchPoints.elementAt(gi)));
+                        (Index) _branchPoints.elementAt(gi));
 
                 if (results != null) {
                     retv.addAll(results);

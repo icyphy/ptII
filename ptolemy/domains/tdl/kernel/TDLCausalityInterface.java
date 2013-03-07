@@ -143,8 +143,8 @@ public class TDLCausalityInterface extends CausalityInterfaceForComposites {
                 }
             } else {
                 // else if port is input port of any actor in this actor
-                Collection<IOPort> equivalentPorts = (((Actor) port
-                        .getContainer()).getCausalityInterface())
+                Collection<IOPort> equivalentPorts = ((Actor) port
+                        .getContainer()).getCausalityInterface()
                         .equivalentPorts(port);
                 for (IOPort equivalentPort : equivalentPorts) {
                     if (equivalentPort.isInput()) {

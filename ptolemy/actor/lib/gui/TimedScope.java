@@ -105,10 +105,10 @@ public class TimedScope extends TimedPlotter {
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
-        if ((attribute == width) && (plot != null)) {
+        if (attribute == width && plot != null) {
             double widthValue = ((DoubleToken) width.getToken()).doubleValue();
             plot.setXRange(0.0, widthValue);
-        } else if ((attribute == persistence) && (plot != null)) {
+        } else if (attribute == persistence && plot != null) {
             double persValue = ((DoubleToken) persistence.getToken())
                     .doubleValue();
 

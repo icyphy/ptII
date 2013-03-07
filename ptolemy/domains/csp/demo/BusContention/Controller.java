@@ -148,8 +148,8 @@ public class Controller extends CSPActor {
 
             Receiver[][] rcvrs = requestInput.getReceivers();
 
-            for (int i = 0; i < rcvrs.length; i++) {
-                for (int j = 0; j < rcvrs[i].length; j++) {
+            for (Receiver[] rcvr : rcvrs) {
+                for (int j = 0; j < rcvr.length; j++) {
                     _numRequestInChannels++;
                 }
             }
@@ -210,7 +210,7 @@ public class Controller extends CSPActor {
                 br = chooseBranch(requiredBranches);
 
                 // Contention Occurred...and might happen again
-                if ((br >= 0) && (br < _numRequestInChannels)) {
+                if (br >= 0 && br < _numRequestInChannels) {
                     IntToken token = (IntToken) requiredBranches[br].getToken();
                     code = token.intValue();
 

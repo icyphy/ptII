@@ -156,7 +156,7 @@ public class UpdatedValueIcon extends AttributeValueIcon {
                     .intValue();
 
             // NOTE: Padding of 10.
-            int width = (int) ((stringBounds.getWidth() * numberOfCharacters) + 10);
+            int width = (int) (stringBounds.getWidth() * numberOfCharacters + 10);
 
             _displayString();
             label = new LabelFigure("N", _labelFont, 1.0, SwingConstants.CENTER);
@@ -201,7 +201,7 @@ public class UpdatedValueIcon extends AttributeValueIcon {
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
                 String string = _displayString();
-                synchronized(_figures) {
+                synchronized (_figures) {
                     Iterator figures = _liveFigureIterator();
 
                     while (figures.hasNext()) {

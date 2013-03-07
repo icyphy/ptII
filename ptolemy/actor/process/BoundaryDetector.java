@@ -97,7 +97,7 @@ public class BoundaryDetector {
                 connectedEntity = (ComponentEntity) connectedPort
                         .getContainer();
 
-                if ((connectedEntity == contEntity.getContainer())
+                if (connectedEntity == contEntity.getContainer()
                         && connectedPort.isInput() && connectedPort.isOpaque()) {
                     // The port container of this receiver is
                     // connected to the inside of a boundary port.
@@ -105,9 +105,9 @@ public class BoundaryDetector {
                     // connected to the boundary port.
                     Receiver[][] receivers = connectedPort.deepGetReceivers();
 
-                    for (int i = 0; i < receivers.length; i++) {
-                        for (int j = 0; j < receivers[i].length; j++) {
-                            if (_receiver == receivers[i][j]) {
+                    for (Receiver[] receiver : receivers) {
+                        for (int j = 0; j < receiver.length; j++) {
+                            if (_receiver == receiver[j]) {
                                 _connectedBoundaryCacheIsOn = true;
                                 _isConnectedBoundaryValue = true;
                                 return true;
@@ -123,9 +123,9 @@ public class BoundaryDetector {
                     // connected to the boundary port.
                     Receiver[][] receivers = connectedPort.getRemoteReceivers();
 
-                    for (int i = 0; i < receivers.length; i++) {
-                        for (int j = 0; j < receivers[i].length; j++) {
-                            if (_receiver == receivers[i][j]) {
+                    for (Receiver[] receiver : receivers) {
+                        for (int j = 0; j < receiver.length; j++) {
+                            if (_receiver == receiver[j]) {
                                 _connectedBoundaryCacheIsOn = true;
                                 _isConnectedBoundaryValue = true;
                                 return true;
@@ -176,7 +176,7 @@ public class BoundaryDetector {
                 connectedEntity = (ComponentEntity) connectedPort
                         .getContainer();
 
-                if ((connectedEntity == contEntity.getContainer())
+                if (connectedEntity == contEntity.getContainer()
                         && connectedPort.isInput() && connectedPort.isOpaque()) {
                     // The port container of this receiver is
                     // connected to the inside of a boundary port.
@@ -184,9 +184,9 @@ public class BoundaryDetector {
                     // connected to the boundary port.
                     Receiver[][] receivers = connectedPort.deepGetReceivers();
 
-                    for (int i = 0; i < receivers.length; i++) {
-                        for (int j = 0; j < receivers[i].length; j++) {
-                            if (_receiver == receivers[i][j]) {
+                    for (Receiver[] receiver : receivers) {
+                        for (int j = 0; j < receiver.length; j++) {
+                            if (_receiver == receiver[j]) {
                                 _connectedInsideOfBoundaryCacheIsOn = true;
                                 _isConnectedInsideOfBoundaryValue = true;
                                 return true;
@@ -240,9 +240,9 @@ public class BoundaryDetector {
                     // connected to the boundary port.
                     Receiver[][] receivers = connectedPort.getRemoteReceivers();
 
-                    for (int i = 0; i < receivers.length; i++) {
-                        for (int j = 0; j < receivers[i].length; j++) {
-                            if (_receiver == receivers[i][j]) {
+                    for (Receiver[] receiver : receivers) {
+                        for (int j = 0; j < receiver.length; j++) {
+                            if (_receiver == receiver[j]) {
                                 _connectedOutsideOfBoundaryCacheIsOn = true;
                                 _isConnectedOutsideOfBoundaryValue = true;
                                 return true;
@@ -282,7 +282,7 @@ public class BoundaryDetector {
             ComponentEntity innerEntity = (ComponentEntity) innerPort
                     .getContainer();
 
-            if ((innerEntity != null) && !innerEntity.isAtomic()
+            if (innerEntity != null && !innerEntity.isAtomic()
                     && innerPort.isOpaque()) {
                 // The containing receiver is contained by the port
                 // of a composite actor.
@@ -335,7 +335,7 @@ public class BoundaryDetector {
             ComponentEntity innerEntity = (ComponentEntity) innerPort
                     .getContainer();
 
-            if ((innerEntity != null) && !innerEntity.isAtomic()
+            if (innerEntity != null && !innerEntity.isAtomic()
                     && innerPort.isOpaque()) {
                 // The containing receiver is contained by the port
                 // of a composite actor.

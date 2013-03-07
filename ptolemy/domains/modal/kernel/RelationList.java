@@ -166,9 +166,9 @@ public class RelationList {
         _maximumDifferenceIndex = 0;
         ListIterator relations = _relationList.listIterator();
         while (relations.hasNext()) {
-            RelationNode relation = ((RelationNode) relations.next());
+            RelationNode relation = (RelationNode) relations.next();
             difference = Math.abs(relation.getDifference());
-            if (relation.typeChanged() && (difference > maxDifference)) {
+            if (relation.typeChanged() && difference > maxDifference) {
                 maxDifference = difference;
                 _maximumDifferenceIndex = index;
             }

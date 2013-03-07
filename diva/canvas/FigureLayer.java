@@ -259,7 +259,7 @@ public class FigureLayer extends CanvasLayer implements FigureContainer,
     public Figure getCurrentFigure() {
         LayerEvent e = _lastLayerEvent;
 
-        if ((e != null) && (e.getID() != MouseEvent.MOUSE_EXITED)) {
+        if (e != null && e.getID() != MouseEvent.MOUSE_EXITED) {
             return getFigure(e);
         } else {
             return null;
@@ -590,7 +590,7 @@ public class FigureLayer extends CanvasLayer implements FigureContainer,
         while (f != null) {
             Interactor interactor = f.getInteractor();
 
-            if ((interactor != null) && interactor.isMotionEnabled()) {
+            if (interactor != null && interactor.isMotionEnabled()) {
                 // Set the figure source
                 e.setFigureSource(f);
 

@@ -129,8 +129,10 @@ public class ColorFinder extends TypedAtomicActor {
         ColorFinder newObject = (ColorFinder) super.clone(workspace);
         newObject.YArray = new byte[newObject._frameWidth
                 * newObject._frameHeight];
-        newObject.UArray = new byte[(newObject._frameWidth / 2 * newObject._frameHeight) / 2];
-        newObject.VArray = new byte[(newObject._frameWidth / 2 * newObject._frameHeight) / 2];
+        newObject.UArray = new byte[newObject._frameWidth / 2
+                * newObject._frameHeight / 2];
+        newObject.VArray = new byte[newObject._frameWidth / 2
+                * newObject._frameHeight / 2];
         newObject._yClass = new int[newObject._histSize];
         newObject._uClass = new int[newObject._histSize];
         newObject._vClass = new int[newObject._histSize];
@@ -192,8 +194,7 @@ public class ColorFinder extends TypedAtomicActor {
 
                 if (_inCount > 0) {
                     double xLocation = (double) _sumX / _inCount;
-                    double yLocation = _frameHeight
-                            - ((double) _sumY / _inCount);
+                    double yLocation = _frameHeight - (double) _sumY / _inCount;
                     outputX.send(0, new DoubleToken(xLocation));
                     outputY.send(0, new DoubleToken(yLocation));
 
@@ -224,19 +225,19 @@ public class ColorFinder extends TypedAtomicActor {
         _vHigh = ((IntToken) vHighValue.getToken()).intValue();
 
         for (int i = 0; i < _histSize; i += 1) {
-            if ((i > _yLow) && (i < _yHigh)) {
+            if (i > _yLow && i < _yHigh) {
                 _yClass[i] = 1;
             } else {
                 _yClass[i] = 0;
             }
 
-            if ((i > _uLow) && (i < _uHigh)) {
+            if (i > _uLow && i < _uHigh) {
                 _uClass[i] = 1;
             } else {
                 _uClass[i] = 0;
             }
 
-            if ((i > _vLow) && (i < _vHigh)) {
+            if (i > _vLow && i < _vHigh) {
                 _vClass[i] = 1;
             } else {
                 _vClass[i] = 0;
@@ -259,7 +260,7 @@ public class ColorFinder extends TypedAtomicActor {
 
     /** Return the int representing the U band at this pixel*/
     private int _getUComponent(int x, int y) {
-        return _getUComponent((x >> 1) + ((y >> 1) * (_frameWidth / 2)));
+        return _getUComponent((x >> 1) + (y >> 1) * (_frameWidth / 2));
     }
 
     /** Return the int representing the V band at this pixel*/
@@ -269,7 +270,7 @@ public class ColorFinder extends TypedAtomicActor {
 
     /** Return the int representing the V band at this pixel*/
     private int _getVComponent(int x, int y) {
-        return _getVComponent((x >> 1) + ((y >> 1) * (_frameWidth / 2)));
+        return _getVComponent((x >> 1) + (y >> 1) * (_frameWidth / 2));
     }
 
     /** Return the int representing the Y band at this pixel*/
@@ -279,7 +280,7 @@ public class ColorFinder extends TypedAtomicActor {
 
     /** Return the int representing the Y band at this pixel*/
     private int _getYComponent(int x, int y) {
-        return _getYComponent(x + (_frameWidth * y));
+        return _getYComponent(x + _frameWidth * y);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -293,9 +294,9 @@ public class ColorFinder extends TypedAtomicActor {
     // FIXME This also should be moved to initialize.
     private byte[] YArray = new byte[_frameWidth * _frameHeight];
 
-    private byte[] UArray = new byte[(_frameWidth / 2 * _frameHeight) / 2];
+    private byte[] UArray = new byte[_frameWidth / 2 * _frameHeight / 2];
 
-    private byte[] VArray = new byte[(_frameWidth / 2 * _frameHeight) / 2];
+    private byte[] VArray = new byte[_frameWidth / 2 * _frameHeight / 2];
 
     private int _histSize = 256;
 

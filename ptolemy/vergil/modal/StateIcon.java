@@ -98,7 +98,7 @@ public class StateIcon extends NameIcon {
     protected Paint _getFill() {
         Parameter colorParameter;
         try {
-            colorParameter = (Parameter) (getAttribute("fill", Parameter.class));
+            colorParameter = (Parameter) getAttribute("fill", Parameter.class);
             if (colorParameter != null) {
                 ArrayToken array = (ArrayToken) colorParameter.getToken();
                 if (array.length() == 4) {
@@ -114,8 +114,8 @@ public class StateIcon extends NameIcon {
                     return color;
                 }
             }
-            ColorAttribute colorAttribute = (ColorAttribute) (getAttribute(
-                    "fill", ColorAttribute.class));
+            ColorAttribute colorAttribute = (ColorAttribute) getAttribute(
+                    "fill", ColorAttribute.class);
             if (colorAttribute != null) {
                 return colorAttribute.asColor();
             }
@@ -126,8 +126,8 @@ public class StateIcon extends NameIcon {
         NamedObj container = getContainer();
         if (container instanceof State) {
             try {
-                ColorAttribute colorAttribute = (ColorAttribute) (container
-                        .getAttribute("fill", ColorAttribute.class));
+                ColorAttribute colorAttribute = (ColorAttribute) container
+                        .getAttribute("fill", ColorAttribute.class);
                 if (colorAttribute != null) {
                     return colorAttribute.asColor();
                 }
@@ -152,8 +152,8 @@ public class StateIcon extends NameIcon {
         NamedObj container = getContainer();
         if (container instanceof State) {
             try {
-                if (((BooleanToken) (((State) container).isInitialState
-                        .getToken())).booleanValue()) {
+                if (((BooleanToken) ((State) container).isInitialState
+                        .getToken()).booleanValue()) {
                     return 2.0f;
                 }
             } catch (IllegalActionException e) {

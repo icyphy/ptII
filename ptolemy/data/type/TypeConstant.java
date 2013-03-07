@@ -92,7 +92,7 @@ public class TypeConstant implements InequalityTerm {
      * @return An array of InequalityTerm of size 0.
      */
     public InequalityTerm[] getVariables() {
-        return (new InequalityTerm[0]);
+        return new InequalityTerm[0];
     }
 
     /** Return the hashCode of the type. This ensures that if equals()

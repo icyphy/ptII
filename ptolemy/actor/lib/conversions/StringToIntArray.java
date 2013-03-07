@@ -107,7 +107,7 @@ public class StringToIntArray extends TypedAtomicActor {
      */
     public void fire() throws IllegalActionException {
         super.fire();
-        String inputValue = ((StringToken) (input.get(0))).stringValue();
+        String inputValue = ((StringToken) input.get(0)).stringValue();
 
         // DO THE CONVERSION:
         byte[] dataBytes = inputValue.getBytes(); //(Creates a new copy)

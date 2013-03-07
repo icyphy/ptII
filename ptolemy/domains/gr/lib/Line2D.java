@@ -128,16 +128,15 @@ public class Line2D extends GRActor2D {
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
-        if (((attribute == xStart) || (attribute == yStart)
-                || (attribute == xEnd) || (attribute == yEnd))
-                && (_viewScreen != null)) {
+        if ((attribute == xStart || attribute == yStart || attribute == xEnd || attribute == yEnd)
+                && _viewScreen != null) {
             _figure.setPrototypeShape(new java.awt.geom.Line2D.Double(
                     ((DoubleToken) xStart.getToken()).doubleValue(),
                     ((DoubleToken) yStart.getToken()).doubleValue(),
                     ((DoubleToken) xEnd.getToken()).doubleValue(),
                     ((DoubleToken) xEnd.getToken()).doubleValue()));
-        } else if (((attribute == rgbColor) || (attribute == lineWidth))
-                && (_viewScreen != null)) {
+        } else if ((attribute == rgbColor || attribute == lineWidth)
+                && _viewScreen != null) {
             _setAppearance(_figure);
         }
 

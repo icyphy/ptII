@@ -167,7 +167,7 @@ public class ShellTextArea extends JPanel {
                 public void run() {
                     clearJTextArea();
 
-                    if ((initialMessage != null) && !initialMessage.equals("")) {
+                    if (initialMessage != null && !initialMessage.equals("")) {
                         appendJTextArea(initialMessage + "\n" + mainPrompt);
                     } else {
                         appendJTextArea(mainPrompt);

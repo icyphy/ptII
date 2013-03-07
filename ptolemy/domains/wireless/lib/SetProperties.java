@@ -77,11 +77,11 @@ public class SetProperties extends TypedAtomicActor {
         super(container, name);
 
         payload = new TypedIOPort(this, "payload", true, false);
-        (new SingletonParameter(payload, "_showName"))
+        new SingletonParameter(payload, "_showName")
                 .setToken(BooleanToken.TRUE);
 
         properties = new TypedIOPort(this, "properties", true, false);
-        (new SingletonParameter(properties, "_showName"))
+        new SingletonParameter(properties, "_showName")
                 .setToken(BooleanToken.TRUE);
 
         // FIXME: This should be constrained to be a record token.
@@ -124,7 +124,7 @@ public class SetProperties extends TypedAtomicActor {
      *   an attribute that cannot be cloned.
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        SetProperties newObject = (SetProperties) (super.clone(workspace));
+        SetProperties newObject = (SetProperties) super.clone(workspace);
 
         // set the type constraints
         newObject.output.setTypeSameAs(newObject.payload);

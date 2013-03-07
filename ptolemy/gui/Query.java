@@ -744,7 +744,7 @@ public class Query extends JPanel {
             maximum = temp;
         }
 
-        if ((defaultValue > maximum) || (defaultValue < minimum)) {
+        if (defaultValue > maximum || defaultValue < minimum) {
             throw new IllegalArgumentException("Desired default " + "value \""
                     + defaultValue + "\" does not fall "
                     + "between the minimum and maximum.");
@@ -753,8 +753,8 @@ public class Query extends JPanel {
         JSlider slider = new JSlider(minimum, maximum, defaultValue);
 
         // Determine if minimum and maximum labels have to be created
-        if ((minLabelText == null || minLabelText.isEmpty())
-                || (maxLabelText == null || maxLabelText.isEmpty())) {
+        if (minLabelText == null || minLabelText.isEmpty()
+                || maxLabelText == null || maxLabelText.isEmpty()) {
             _addPair(name, lbl, slider, slider);
         } else {
             // Add labels to the slider and put everything into a panel
@@ -903,7 +903,7 @@ public class Query extends JPanel {
                     area.setRows(area.getRows() + 1);
                     area.revalidate();
                     Component parent = area.getParent();
-                    while ((parent != null)
+                    while (parent != null
                             && !(parent instanceof EditParametersDialog)) {
                         parent = parent.getParent();
                     }
@@ -915,8 +915,6 @@ public class Query extends JPanel {
                 }
             }
         });
-
-
 
         return textArea;
     }
@@ -1055,7 +1053,7 @@ public class Query extends JPanel {
                     + "calling getDoubleValue() on a password field is "
                     + "not permitted.  Instead, call getCharArrayValue()");
         } else if (result instanceof JTextField) {
-            return (Double.valueOf(((JTextField) result).getText()))
+            return Double.valueOf(((JTextField) result).getText())
                     .doubleValue();
         } else {
             throw new IllegalArgumentException("Item named \"" + name
@@ -1097,8 +1095,7 @@ public class Query extends JPanel {
                     + "calling getIntValue() on a password field is "
                     + "not permitted.  Instead, call getCharArrayValue()");
         } else if (result instanceof JTextField) {
-            return (Integer.valueOf(((JTextField) result).getText()))
-                    .intValue();
+            return Integer.valueOf(((JTextField) result).getText()).intValue();
         } else if (result instanceof JSlider) {
             return ((JSlider) result).getValue();
         } else if (result instanceof JComboBox) {
@@ -1190,7 +1187,7 @@ public class Query extends JPanel {
         } else if (result instanceof JSlider) {
             return "" + ((JSlider) result).getValue();
         } else if (result instanceof JComboBox) {
-            return (((JComboBox) result).getSelectedItem());
+            return ((JComboBox) result).getSelectedItem();
         } else if (result instanceof JToggleButton[]) {
             // JRadioButton and JCheckButton are subclasses of JToggleButton
             // Regrettably, ButtonGroup gives no way to determine
@@ -1198,12 +1195,12 @@ public class Query extends JPanel {
             JToggleButton[] buttons = (JToggleButton[]) result;
             StringBuffer toReturn = null;
 
-            for (int i = 0; i < buttons.length; i++) {
-                if (buttons[i].isSelected()) {
+            for (JToggleButton button : buttons) {
+                if (button.isSelected()) {
                     if (toReturn == null) {
-                        toReturn = new StringBuffer(buttons[i].getText());
+                        toReturn = new StringBuffer(button.getText());
                     } else {
-                        toReturn.append(", " + buttons[i].getText());
+                        toReturn.append(", " + button.getText());
                     }
                 }
             }
@@ -1380,11 +1377,11 @@ public class Query extends JPanel {
 
             JToggleButton[] buttons = (JToggleButton[]) result;
 
-            for (int i = 0; i < buttons.length; i++) {
-                if (selectedValues.contains(buttons[i].getText())) {
-                    buttons[i].setSelected(true);
+            for (JToggleButton button : buttons) {
+                if (selectedValues.contains(button.getText())) {
+                    button.setSelected(true);
                 } else {
-                    buttons[i].setSelected(false);
+                    button.setSelected(false);
                 }
             }
         } else if (result instanceof QueryColorChooser) {
@@ -1541,8 +1538,8 @@ public class Query extends JPanel {
         } else if (result instanceof JToggleButton[]) {
             JToggleButton[] buttons = (JToggleButton[]) result;
 
-            for (int i = 0; i < buttons.length; i++) {
-                buttons[i].setEnabled(value);
+            for (JToggleButton button : buttons) {
+                button.setEnabled(value);
             }
         }
     }
@@ -1798,7 +1795,7 @@ public class Query extends JPanel {
 
         _constraints.insets = _insets;
 
-        if ((_columns > 1) && (((_entries.size() + 1) % _columns) != 0)) {
+        if (_columns > 1 && (_entries.size() + 1) % _columns != 0) {
             _constraints.gridwidth = 1;
         } else {
             _constraints.gridwidth = GridBagConstraints.REMAINDER;
@@ -1865,7 +1862,7 @@ public class Query extends JPanel {
             textArea.setRows(textArea.getRows() + 1);
             textArea.revalidate();
             Component parent = textArea.getParent();
-            while ((parent != null) && !(parent instanceof ComponentDialog)) {
+            while (parent != null && !(parent instanceof ComponentDialog)) {
                 parent = parent.getParent();
             }
             if (parent instanceof ComponentDialog) {
@@ -1926,8 +1923,8 @@ public class Query extends JPanel {
             Enumeration listeners = _listeners.elements();
 
             while (listeners.hasMoreElements()) {
-                QueryListener queryListener = (QueryListener) (listeners
-                        .nextElement());
+                QueryListener queryListener = (QueryListener) listeners
+                        .nextElement();
                 queryListener.changed(name);
             }
         }
@@ -2056,7 +2053,7 @@ public class Query extends JPanel {
                 for (int j = 0; j < components.length; j++) {
                     string.append(components[j]);
 
-                    if (j < (components.length - 1)) {
+                    if (j < components.length - 1) {
                         string.append(",");
                     } else {
                         string.append("}");

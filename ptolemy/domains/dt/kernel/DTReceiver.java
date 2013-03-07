@@ -139,7 +139,7 @@ public class DTReceiver extends SDFReceiver {
             _outrate = ((IntToken) param.getToken()).intValue();
         }
 
-        if ((isCompositeContainer) && (_toPort.isOutput())) {
+        if (isCompositeContainer && _toPort.isOutput()) {
             _inRate = 1;
         } else {
             param = (Parameter) _toPort.getAttribute("tokenConsumptionRate");
@@ -155,8 +155,8 @@ public class DTReceiver extends SDFReceiver {
         Actor containerActor = (Actor) _toPort.getContainer();
         DTDirector localDirector;
 
-        if ((containerActor instanceof TypedCompositeActor)
-                && (!containerPort.isOutput())) {
+        if (containerActor instanceof TypedCompositeActor
+                && !containerPort.isOutput()) {
             localDirector = (DTDirector) containerActor.getExecutiveDirector();
         } else {
             localDirector = (DTDirector) containerActor.getDirector();
@@ -191,7 +191,7 @@ public class DTReceiver extends SDFReceiver {
         List listOfConnectedPorts = null;
         boolean isCompositeContainer = !((ComponentEntity) _to).isAtomic();
 
-        if (isCompositeContainer && (_toPort.isOutput())) {
+        if (isCompositeContainer && _toPort.isOutput()) {
             listOfConnectedPorts = _toPort.insidePortList();
         } else {
             listOfConnectedPorts = _toPort.connectedPortList();

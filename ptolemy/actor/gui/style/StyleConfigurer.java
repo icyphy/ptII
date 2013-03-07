@@ -147,11 +147,11 @@ public class StyleConfigurer extends Query implements QueryListener {
                 int count = 0;
 
                 // Reduce the list of parameters
-                for (int i = 0; (i < _parameterStyles.length)
-                        && (_parameterStyles[i] != null); i++) {
+                for (int i = 0; i < _parameterStyles.length
+                        && _parameterStyles[i] != null; i++) {
                     if (foundOne
-                            && (_parameterStyles[i].getClass() == foundStyle
-                                    .getClass())) {
+                            && _parameterStyles[i].getClass() == foundStyle
+                                    .getClass()) {
                         defaultIndex = count;
 
                         if (foundStyle.acceptable(param)) {
@@ -206,7 +206,7 @@ public class StyleConfigurer extends Query implements QueryListener {
             // Figure out which style is being requested.
             ParameterEditorStyle found = null;
 
-            for (int i = 0; (i < _parameterStyles.length) && (found == null); i++) {
+            for (int i = 0; i < _parameterStyles.length && found == null; i++) {
                 if (getStringValue(name).equals(_parameterStyles[i].getName())) {
                     found = _parameterStyles[i];
                 }

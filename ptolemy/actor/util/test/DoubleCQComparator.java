@@ -131,7 +131,7 @@ public class DoubleCQComparator implements CQComparator {
         int nEffSamples = 0;
 
         for (int i = 1; i < entryArray.length; ++i) {
-            if (diff[i - 1] < (2 * average)) {
+            if (diff[i - 1] < 2 * average) {
                 nEffSamples++;
                 effAverage = effAverage + diff[i - 1];
             }
@@ -139,7 +139,7 @@ public class DoubleCQComparator implements CQComparator {
 
         // To avoid returning NaN or 0.0 for the width, if this is
         // the result, leave the bin width unchanged.
-        if ((effAverage == 0.0) || (nEffSamples == 0)) {
+        if (effAverage == 0.0 || nEffSamples == 0) {
             return;
         }
 

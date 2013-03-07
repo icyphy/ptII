@@ -160,7 +160,7 @@ public class FloydWarshallAllPairShortestPathStrategy extends
      *  @return True if the graph is a directed graph.
      */
     public boolean valid() {
-        return (graph() instanceof DirectedGraph);
+        return graph() instanceof DirectedGraph;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -223,11 +223,11 @@ public class FloydWarshallAllPairShortestPathStrategy extends
         double b = Double.MAX_VALUE;
         double a = _allPairShortestPath[k][i][j];
 
-        if ((i != k) && (k != j)) {
+        if (i != k && k != j) {
             b = _allPairShortestPath[k][i][k] + _allPairShortestPath[k][k][j];
-        } else if ((i == k) && (k != j)) {
+        } else if (i == k && k != j) {
             b = _allPairShortestPath[k][k][j];
-        } else if ((i != k) && (k == j)) {
+        } else if (i != k && k == j) {
             b = _allPairShortestPath[k][i][k];
         }
 

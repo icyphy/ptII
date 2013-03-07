@@ -239,7 +239,7 @@ public class MobileModel extends TypedCompositeActor {
      *  is not opaque.
      */
     public boolean postfire() throws IllegalActionException {
-        if (!_stopRequested && (_moml != null)) {
+        if (!_stopRequested && _moml != null) {
             //remove the old model inside first, if there is one.
             if (((BooleanToken) refresh.getToken()).booleanValue()) {
                 String delete = _requestToRemoveAll(this);

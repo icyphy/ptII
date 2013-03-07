@@ -76,7 +76,7 @@ public class LayoutTableau extends Tableau {
         } catch (IllegalActionException ex) {
             // Remove this tableau from its container.
             setContainer(null);
-            throw (ex);
+            throw ex;
         }
     }
 }

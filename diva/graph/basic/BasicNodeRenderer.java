@@ -154,11 +154,11 @@ public class BasicNodeRenderer implements NodeRenderer {
      */
     public Figure render(Object node) {
         GraphModel model = _controller.getGraphModel();
-        Shape shape = (model.isComposite(node)) ? _compositeShape : _nodeShape;
+        Shape shape = model.isComposite(node) ? _compositeShape : _nodeShape;
 
         if (shape instanceof RectangularShape) {
             RectangularShape r = (RectangularShape) shape;
-            shape = (Shape) (r.clone());
+            shape = (Shape) r.clone();
         } else {
             shape = new GeneralPath(shape);
         }
@@ -194,7 +194,7 @@ public class BasicNodeRenderer implements NodeRenderer {
      * (XXX document this).
      */
     public void setCompositeScale(double scale) {
-        if ((scale <= 0) || (scale > 1)) {
+        if (scale <= 0 || scale > 1) {
             String err = "Scale must be between > 0 and <= 1.";
             throw new IllegalArgumentException(err);
         }

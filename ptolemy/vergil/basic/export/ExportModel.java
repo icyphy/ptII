@@ -131,13 +131,9 @@ public class ExportModel {
             final String outputFileOrDirectory, final boolean save,
             final boolean whiteBackground) throws Exception {
 
-        exportModel(copyJavaScriptFiles,
-                force, formatName,
-                modelFileName, run,
-                openComposites, openResults,
-                outputFileOrDirectory, save,
-                30000,
-                whiteBackground);
+        exportModel(copyJavaScriptFiles, force, formatName, modelFileName, run,
+                openComposites, openResults, outputFileOrDirectory, save,
+                30000, whiteBackground);
     }
 
     /** Export an image of a model to a file or directory.
@@ -189,8 +185,7 @@ public class ExportModel {
             final String modelFileName, final boolean run,
             final boolean openComposites, final boolean openResults,
             final String outputFileOrDirectory, final boolean save,
-            final long timeOut,
-            final boolean whiteBackground) throws Exception {
+            final long timeOut, final boolean whiteBackground) throws Exception {
         // FIXME: Maybe we should pass an ExportParameter here?
 
         // FIXME: this seem wrong:  The inner classes are in different
@@ -303,9 +298,9 @@ public class ExportModel {
                         if (manager == null) {
                             manager = new Manager(composite.workspace(),
                                     "MyManager");
-                            (composite).setManager(manager);
+                            composite.setManager(manager);
                         }
-                        (composite)
+                        composite
                                 .setModelErrorHandler(new BasicModelErrorHandler());
                         _timer = new Timer(true);
                         final Manager finalManager = manager;
@@ -343,8 +338,8 @@ public class ExportModel {
                 public void run() {
                     try {
                         System.out.println("Saving " + model[0].getFullName());
-                        ((PtolemyEffigy) (_basicGraphFrame.getTableau()
-                                .getContainer())).writeFile(new File(
+                        ((PtolemyEffigy) _basicGraphFrame.getTableau()
+                                .getContainer()).writeFile(new File(
                                 modelFileName));
                     } catch (Exception ex) {
                         ex.printStackTrace();
@@ -785,10 +780,12 @@ public class ExportModel {
                     save = true;
                 } else if (args[i].equals("-timeOut")) {
                     try {
-                        timeOut = Long.parseLong(args[i+1]);
+                        timeOut = Long.parseLong(args[i + 1]);
                     } catch (NumberFormatException ex) {
-                        System.err.println(args[i+1] + "cannot be parsed to long value for the time out."
-                                + ex);
+                        System.err
+                                .println(args[i + 1]
+                                        + "cannot be parsed to long value for the time out."
+                                        + ex);
                     }
                     i++;
                 } else if (args[i].toUpperCase().equals("GIF")
@@ -818,7 +815,7 @@ public class ExportModel {
                                         + "cannot begin with a '-', the argument was: "
                                         + args[i]);
                     }
-                    if (i < (args.length - 2)) {
+                    if (i < args.length - 2) {
                         throw new IllegalArgumentException(
                                 "The model file name "
                                         + "should be the last or second to last argument. "
@@ -836,7 +833,8 @@ public class ExportModel {
             // FIXME: Should we use ExportParameter here?
             new ExportModel().exportModel(copyJavaScriptFiles, force,
                     formatName, modelFileName, run, openComposites,
-                    openResults, outputFileOrDirectory, save, timeOut, whiteBackground);
+                    openResults, outputFileOrDirectory, save, timeOut,
+                    whiteBackground);
 
         } catch (Exception ex) {
             ex.printStackTrace();

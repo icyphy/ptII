@@ -264,7 +264,7 @@ public class PushConsumer extends Source {
             NameComponent namecomp = new NameComponent(
                     ((StringToken) consumerName.getToken()).stringValue(), "");
             _debug(getName(), " register the consumer with name: ",
-                    (consumerName.getToken()).toString());
+                    consumerName.getToken().toString());
 
             NameComponent[] path = { namecomp };
             ncRef.rebind(path, _consumer);

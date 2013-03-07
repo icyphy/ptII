@@ -63,7 +63,7 @@ public class TestSerializable {
         ExampleSystem exampleSystem = new ExampleSystem();
         String filename = "TestSerializable.data";
 
-        if ((args.length > 0) && args[0].equals("write")) {
+        if (args.length > 0 && args[0].equals("write")) {
             FileOutputStream f = null;
             ObjectOutput s = null;
 

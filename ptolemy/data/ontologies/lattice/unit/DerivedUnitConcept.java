@@ -645,11 +645,11 @@ public class DerivedUnitConcept extends UnitConcept {
             if (unit instanceof DerivedUnitConcept) {
                 DerivedUnitConcept derivedUnit = (DerivedUnitConcept) unit;
                 noUnitOffsets = noUnitOffsets
-                        && !(_anyUnitHasANonZeroOffset(derivedUnit
-                                .getComponentUnits()));
+                        && !_anyUnitHasANonZeroOffset(derivedUnit
+                                .getComponentUnits());
                 noUnitOffsets = noUnitOffsets
-                        && !(_anyUnitHasANonZeroOffset(derivedUnit
-                                .getComponentBaseUnits()));
+                        && !_anyUnitHasANonZeroOffset(derivedUnit
+                                .getComponentBaseUnits());
             }
             if (noUnitOffsets
                     && newUnitFactor.isCloseTo(unitFactor, unitFactorEpsilon)

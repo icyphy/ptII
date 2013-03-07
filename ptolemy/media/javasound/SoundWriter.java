@@ -181,8 +181,8 @@ public class SoundWriter {
                     _channels);
 
             // Add new audio data to the file buffer array.
-            for (int i = 0; i < _data.length; i++) {
-                _toFileBuffer.add(Byte.valueOf(_data[i]));
+            for (byte element : _data) {
+                _toFileBuffer.add(Byte.valueOf(element));
             }
         } else {
             throw new IllegalStateException("SoundWriter: "
@@ -371,7 +371,7 @@ public class SoundWriter {
                 if (doubleArray[currChannel][currSamp] >= maxDoubleValuedSample) {
                     l = (int) maxSample - 2;
                 } else if (doubleArray[currChannel][currSamp] <= -maxDoubleValuedSample) {
-                    l = (int) (-maxSample) + 2;
+                    l = (int) -maxSample + 2;
                 } else {
                     // signed integer representation of current sample of the
                     // current channel.
@@ -386,8 +386,8 @@ public class SoundWriter {
                 // Copy the byte representation of current sample to
                 // the linear signed pcm big endian formatted byte array.
                 for (int i = 0; i < bytesPerSample; i += 1) {
-                    byteArray[(currSamp * bytesPerSample * channels)
-                            + (bytesPerSample * currChannel) + i] = b[i];
+                    byteArray[currSamp * bytesPerSample * channels
+                            + bytesPerSample * currChannel + i] = b[i];
                 }
             }
         }

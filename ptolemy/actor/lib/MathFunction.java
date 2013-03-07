@@ -279,9 +279,9 @@ public class MathFunction extends TypedAtomicActor {
                     inArray2 = secondOperand.get(0, count);
 
                     for (int i = 0; i < count; i++) {
-                        double input1 = ((DoubleToken) (inArray1[i]))
+                        double input1 = ((DoubleToken) inArray1[i])
                                 .doubleValue();
-                        double input2 = ((DoubleToken) (inArray2[i]))
+                        double input2 = ((DoubleToken) inArray2[i])
                                 .doubleValue();
                         _resultArray[i] = new DoubleToken(_doFunction(input1,
                                 input2));
@@ -297,7 +297,7 @@ public class MathFunction extends TypedAtomicActor {
 
                 for (int i = 0; i < count; i++) {
                     // Input could be an Integer, see test/auto/Differential.xml
-                    double input1 = ((ScalarToken) (inArray1[i])).doubleValue();
+                    double input1 = ((ScalarToken) inArray1[i]).doubleValue();
                     _resultArray[i] = new DoubleToken(_doFunction(input1, 0));
                 }
 

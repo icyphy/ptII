@@ -320,7 +320,7 @@ public class MakefileWriter extends SceneTransformer implements HasPhaseOptions 
                             + generatorAttribute);
         }
 
-        if (overwrite || !(new File(_outputDirectory + "makefile")).isFile()) {
+        if (overwrite || !new File(_outputDirectory + "makefile").isFile()) {
             try {
                 System.out.println("MakefileWriter: reading '"
                         + _templateDirectory + "makefile.in'\n\t writing '"

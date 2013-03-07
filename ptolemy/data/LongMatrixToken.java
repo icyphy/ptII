@@ -165,7 +165,7 @@ public class LongMatrixToken extends MatrixToken {
     public LongMatrixToken(String init) throws IllegalActionException {
         PtParser parser = new PtParser();
         ASTPtRootNode tree = parser.generateParseTree(init);
-        Token token = (new ParseTreeEvaluator()).evaluateParseTree(tree);
+        Token token = new ParseTreeEvaluator().evaluateParseTree(tree);
 
         if (token instanceof LongMatrixToken) {
             long[][] value = ((LongMatrixToken) token).longMatrix();
@@ -244,7 +244,7 @@ public class LongMatrixToken extends MatrixToken {
 
         int compare = TypeLattice.compare(BaseType.LONG_MATRIX, token);
 
-        if ((compare == CPO.LOWER) || (compare == CPO.INCOMPARABLE)) {
+        if (compare == CPO.LOWER || compare == CPO.INCOMPARABLE) {
             throw new IllegalActionException(
                     notSupportedIncomparableConversionMessage(token, "[long]"));
         }
@@ -260,7 +260,7 @@ public class LongMatrixToken extends MatrixToken {
         // try IntMatrix
         compare = TypeLattice.compare(BaseType.INT_MATRIX, token);
 
-        if ((compare == CPO.SAME) || (compare == CPO.HIGHER)) {
+        if (compare == CPO.SAME || compare == CPO.HIGHER) {
             IntMatrixToken tem = IntMatrixToken.convert(token);
             long[][] result = tem.longMatrix();
             return new LongMatrixToken(result);
@@ -287,7 +287,7 @@ public class LongMatrixToken extends MatrixToken {
         // Check to make sure that the token is convertible to LONG.
         int compare = TypeLattice.compare(BaseType.LONG, token);
 
-        if ((compare == CPO.SAME) || (compare == CPO.HIGHER)) {
+        if (compare == CPO.SAME || compare == CPO.HIGHER) {
             if (token.isNil()) {
                 throw new IllegalActionException(
                         Token.notSupportedConversionMessage(token, "[long]"));
@@ -388,7 +388,7 @@ public class LongMatrixToken extends MatrixToken {
      */
     public Token getElementAsToken(int row, int column)
             throws ArrayIndexOutOfBoundsException {
-        return new LongToken(_value[(row * _columnCount) + column]);
+        return new LongToken(_value[row * _columnCount + column]);
     }
 
     /** Return the element of the contained matrix at the specified
@@ -400,7 +400,7 @@ public class LongMatrixToken extends MatrixToken {
      *   row or column number is outside the range of the matrix.
      */
     public long getElementAt(int row, int column) {
-        return _value[(row * _columnCount) + column];
+        return _value[row * _columnCount + column];
     }
 
     /** Return the Type of the tokens contained in this matrix token.
@@ -471,8 +471,8 @@ public class LongMatrixToken extends MatrixToken {
         // This assumes the matrices tile.
         int rows = 0;
         int columns = 0;
-        for (int i = 0; i < matrices.length; i++) {
-            rows += matrices[i][0].getRowCount();
+        for (MatrixToken[] matrice : matrices) {
+            rows += matrice[0].getRowCount();
         }
         for (int j = 0; j < matrices[0].length; j++) {
             columns += matrices[0][j].getColumnCount();
@@ -743,7 +743,7 @@ public class LongMatrixToken extends MatrixToken {
                 int ib = j;
 
                 for (int ia = i * n; ia < ta; ia++, ib += p) {
-                    sum += (A[ia] * B[ib]);
+                    sum += A[ia] * B[ib];
                 }
 
                 newMatrix[in++] = sum;

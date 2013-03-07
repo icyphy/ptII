@@ -162,7 +162,7 @@ public class DB extends Transformer {
             Token[] inArray = input.get(0, count);
 
             for (int i = 0; i < count; i++) {
-                double input = ((DoubleToken) (inArray[i])).doubleValue();
+                double input = ((DoubleToken) inArray[i]).doubleValue();
                 _resultArray[i] = _doFunction(input, minValue);
             }
 

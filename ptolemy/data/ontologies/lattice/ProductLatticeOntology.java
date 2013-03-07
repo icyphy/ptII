@@ -202,8 +202,8 @@ public class ProductLatticeOntology extends Ontology {
             List<Ontology> ontologiesList = new ArrayList<Ontology>();
             if (ontologies != null && ontologies.length() != 0) {
                 Token[] ontologiesTokenArray = ontologies.arrayValue();
-                for (int i = 0; i < ontologiesTokenArray.length; i++) {
-                    Ontology ontology = (Ontology) ((ObjectToken) ontologiesTokenArray[i])
+                for (Token element : ontologiesTokenArray) {
+                    Ontology ontology = (Ontology) ((ObjectToken) element)
                             .getValue();
                     if (ontology != null) {
                         if (ontology.isLattice()) {

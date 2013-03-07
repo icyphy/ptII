@@ -262,7 +262,7 @@ public class DECQEventQueue implements DEEventQueue {
          *  an instance of DEEvent.
          */
         public void setBinWidth(Object[] entryArray) {
-            if ((entryArray == null) || (entryArray.length < 2)) {
+            if (entryArray == null || entryArray.length < 2) {
                 // Reset to default.
                 _binWidth = 1;
                 _zeroReference = 0.0;
@@ -293,7 +293,7 @@ public class DECQEventQueue implements DEEventQueue {
                 return;
             }
 
-            for (int i = 0; i < (entryArray.length - 1); ++i) {
+            for (int i = 0; i < entryArray.length - 1; ++i) {
                 diff[i] = ((DEEvent) entryArray[i + 1]).timeStamp()
                         .subtract(((DEEvent) entryArray[i]).timeStamp())
                         .getDoubleValue();
@@ -303,7 +303,7 @@ public class DECQEventQueue implements DEEventQueue {
                 }
             }
 
-            if ((effectiveAverage == 0) || (effectiveSamples == 0)) {
+            if (effectiveAverage == 0 || effectiveSamples == 0) {
                 // To avoid setting NaN or 0.0
                 // for the width, apparently due to simultaneous events,
                 // we leave it unchanged instead.

@@ -255,7 +255,7 @@ public class SystemCommand extends TypedAtomicActor {
         Iterator inputPorts = inputPortList().iterator();
 
         while (inputPorts.hasNext()) {
-            IOPort port = (IOPort) (inputPorts.next());
+            IOPort port = (IOPort) inputPorts.next();
 
             // FIXME: Handle multiports
             if (port.isOutsideConnected()) {
@@ -363,9 +363,9 @@ public class SystemCommand extends TypedAtomicActor {
             cliPro.disposeWindow();
         }
         cliPro = new ClientProcess(this.getFullName());
-        final boolean showConsole = ((BooleanToken) (showConsoleWindow
-                .getToken())).booleanValue();
-        cliPro.showConsoleWindow(showConsole && (!isHeadless));
+        final boolean showConsole = ((BooleanToken) showConsoleWindow
+                .getToken()).booleanValue();
+        cliPro.showConsoleWindow(showConsole && !isHeadless);
     }
 
     /** Starts the simulation program.
@@ -381,8 +381,8 @@ public class SystemCommand extends TypedAtomicActor {
         // may have. Otherwise, an entry programArguments=$fileName may be parsed to
         // programArguments="$fileName" and commands such as cat $fileName may not find
         // the file on Linux.
-        for (Iterator itc = commandList.iterator(); itc.hasNext();) {
-            String comIte = (String) itc.next();
+        for (Object element : commandList) {
+            String comIte = (String) element;
             for (Map.Entry<String, Token> e : _tokenMap.entrySet()) {
                 final String fin = '$' + e.getKey();
                 while (comIte.contains(fin)) {
@@ -496,7 +496,7 @@ public class SystemCommand extends TypedAtomicActor {
         Iterator inputPorts = inputPortList().iterator();
 
         while (inputPorts.hasNext()) {
-            IOPort port = (IOPort) (inputPorts.next());
+            IOPort port = (IOPort) inputPorts.next();
 
             // FIXME: Handle multiports
             if (port.isOutsideConnected()) {

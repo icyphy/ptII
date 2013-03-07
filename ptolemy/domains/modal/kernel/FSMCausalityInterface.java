@@ -199,7 +199,7 @@ public class FSMCausalityInterface extends CausalityInterfaceForComposites {
                                 .collectFreeVariables(guardParseTree);
                         for (String freeVariable : freeVariables) {
                             // Reach into the FSMActor to get the port.
-                            IOPort port = (IOPort) actor
+                            IOPort port = actor
                                     ._getPortForIdentifier(freeVariable);
                             if (port != null && port.isInput()) {
                                 // Found a reference to an input port in the guard.
@@ -257,11 +257,11 @@ public class FSMCausalityInterface extends CausalityInterfaceForComposites {
                 for (State state : states) {
                     TypedActor[] refinements = state.getRefinement();
                     if (refinements != null && refinements.length > 0) {
-                        for (int i = 0; i < refinements.length; i++) {
-                            CausalityInterface causality = refinements[i]
+                        for (TypedActor refinement : refinements) {
+                            CausalityInterface causality = refinement
                                     .getCausalityInterface();
                             // For each output port, find the input ports that affect it.
-                            Collection<IOPort> outputs = refinements[i]
+                            Collection<IOPort> outputs = refinement
                                     .outputPortList();
                             for (IOPort refinementOutput : outputs) {
                                 Collection<IOPort> inputs = causality

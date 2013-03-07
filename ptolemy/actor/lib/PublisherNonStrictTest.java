@@ -134,7 +134,7 @@ public class PublisherNonStrictTest extends Publisher {
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == tolerance) {
-            _tolerance = ((DoubleToken) (tolerance.getToken())).doubleValue();
+            _tolerance = ((DoubleToken) tolerance.getToken()).doubleValue();
         } else {
             super.attributeChanged(attribute);
         }
@@ -283,7 +283,7 @@ public class PublisherNonStrictTest extends Publisher {
         //              return true;
         //          }
 
-        Token referenceToken = ((ArrayToken) (correctValues.getToken()))
+        Token referenceToken = ((ArrayToken) correctValues.getToken())
                 .getElement(_numberOfInputTokensSeen);
 
         for (int i = 0; i < input.getWidth(); i++) {
@@ -348,13 +348,13 @@ public class PublisherNonStrictTest extends Publisher {
                 }
             }
 
-            if (_numberOfInputTokensSeen < ((ArrayToken) (correctValues
-                    .getToken())).length()) {
+            if (_numberOfInputTokensSeen < ((ArrayToken) correctValues
+                    .getToken()).length()) {
                 String errorMessage = "The test produced only "
                         + _numberOfInputTokensSeen
                         + " tokens, yet the correctValues parameter was "
                         + "expecting "
-                        + ((ArrayToken) (correctValues.getToken())).length()
+                        + ((ArrayToken) correctValues.getToken()).length()
                         + " tokens.";
 
                 System.err.println("Warning: '" + getFullName() + "' "
@@ -366,8 +366,7 @@ public class PublisherNonStrictTest extends Publisher {
 
         // Note that wrapup() might get called by the manager before
         // we have any data...
-        if (training && (_trainingTokens != null)
-                && (_trainingTokens.size() > 0)) {
+        if (training && _trainingTokens != null && _trainingTokens.size() > 0) {
             Object[] newValues = _trainingTokens.toArray();
 
             // NOTE: Support input multiport for the benefit of derived classes.
@@ -417,7 +416,7 @@ public class PublisherNonStrictTest extends Publisher {
         }
 
         if (training
-                && ((_trainingTokens == null) || (_trainingTokens.size() == 0))) {
+                && (_trainingTokens == null || _trainingTokens.size() == 0)) {
             System.err.println("Warning: '" + getFullName()
                     + "' The test produced 0 tokens.");
         }

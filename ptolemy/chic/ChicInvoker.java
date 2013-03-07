@@ -259,8 +259,8 @@ public class ChicInvoker extends Attribute {
                                                         "(?<!(\\w|\\$|\\.))"
                                                                 + port.getName()
                                                                 + "\\.remote(?=\\.(\\w|\\$)+(\\s|$))",
-                                                        ((Actor) connectedPort
-                                                                .getContainer() == model) ? _sanitizeName(connectedPort
+                                                        (Actor) connectedPort
+                                                                .getContainer() == model ? _sanitizeName(connectedPort
                                                                 .getName()
                                                                 + ".inside")
                                                                 : _sanitizeName(connectedPort
@@ -281,8 +281,8 @@ public class ChicInvoker extends Attribute {
                                                         "(?<!(\\w|\\$|\\.))"
                                                                 + port.getFullName()
                                                                 + "\\.remote(?=\\.(\\w|\\$)+(\\s|$))",
-                                                        ((Actor) connectedPort
-                                                                .getContainer() == model) ? _sanitizeName(connectedPort
+                                                        (Actor) connectedPort
+                                                                .getContainer() == model ? _sanitizeName(connectedPort
                                                                 .getName()
                                                                 + ".inside")
                                                                 : _sanitizeName(connectedPort
@@ -309,8 +309,8 @@ public class ChicInvoker extends Attribute {
                         // Currently ports with width greater than one and
                         // ports that are both input and output ports are
                         // not supported.
-                        if ((port.isInput() && port.isOutput())
-                                || (port.getWidth() > 1)) {
+                        if (port.isInput() && port.isOutput()
+                                || port.getWidth() > 1) {
                             throw new IllegalActionException(
                                     "Ports with width greater than one or "
                                             + "that are both input and ouput are not "
@@ -337,8 +337,8 @@ public class ChicInvoker extends Attribute {
                                                             "(?<!(^|[\\n\\r]|\\w|\\$|\\.))"
                                                                     + port.getName()
                                                                     + "(?!(\\w|\\$|\\.))",
-                                                            ((Actor) sourcePort
-                                                                    .getContainer() == model) ? _sanitizeName(sourcePort
+                                                            (Actor) sourcePort
+                                                                    .getContainer() == model ? _sanitizeName(sourcePort
                                                                     .getName()
                                                                     + ".inside")
                                                                     : _sanitizeName(sourcePort
@@ -386,8 +386,8 @@ public class ChicInvoker extends Attribute {
                                                             "(?<!(^|[\\n\\r]|\\w|\\$|\\.))"
                                                                     + port.getFullName()
                                                                     + "(?!(\\w|\\$|\\.))",
-                                                            ((Actor) sourcePort
-                                                                    .getContainer() == model) ? _sanitizeName(sourcePort
+                                                            (Actor) sourcePort
+                                                                    .getContainer() == model ? _sanitizeName(sourcePort
                                                                     .getName()
                                                                     + ".inside")
                                                                     : _sanitizeName(sourcePort
@@ -450,8 +450,8 @@ public class ChicInvoker extends Attribute {
                                                 "(?<!(\\w|\\$|\\.))"
                                                         + port.getName()
                                                         + "\\.inside\\.remote(?=\\.(\\w|\\$)+(\\s|$))",
-                                                ((Actor) insidePort
-                                                        .getContainer() == model) ? _sanitizeName(insidePort
+                                                (Actor) insidePort
+                                                        .getContainer() == model ? _sanitizeName(insidePort
                                                         .getName() + ".inside")
                                                         : _sanitizeName(insidePort
                                                                 .getFullName()));
@@ -465,8 +465,8 @@ public class ChicInvoker extends Attribute {
                         // Currently ports with width greater than one and
                         // ports that are both input and output ports are
                         // not supported.
-                        if ((port.isInput() && port.isOutput())
-                                || (port.getWidthInside() > 1)) {
+                        if (port.isInput() && port.isOutput()
+                                || port.getWidthInside() > 1) {
                             throw new IllegalActionException(
                                     "Ports with width greater than one or "
                                             + "that are both input and ouput are not "
@@ -488,8 +488,8 @@ public class ChicInvoker extends Attribute {
                                                         + port.getName()
                                                         + ".inside"
                                                         + "(?!(\\w|\\$|\\.))",
-                                                ((Actor) sourcePort
-                                                        .getContainer() == model) ? _sanitizeName(sourcePort
+                                                (Actor) sourcePort
+                                                        .getContainer() == model ? _sanitizeName(sourcePort
                                                         .getName() + ".inside")
                                                         : _sanitizeName(sourcePort
                                                                 .getFullName()));

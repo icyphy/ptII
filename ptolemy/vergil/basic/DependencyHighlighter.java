@@ -268,7 +268,7 @@ public class DependencyHighlighter extends NodeControllerFactory {
                 BasicGraphFrame frame = BasicGraphFrame
                         .getBasicGraphFrame(actor.toplevel());
                 frame.report("Preinitializing");
-                long startTime = (new Date()).getTime();
+                long startTime = new Date().getTime();
                 Manager.preinitializeThenWrapup((Actor) actor);
                 frame.report("Done Preinitializing: "
                         + Manager.timeAndMemory(startTime));

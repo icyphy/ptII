@@ -319,7 +319,7 @@ public class ConnectorInteractor extends DragInteractor {
                         bounds.getCenterY());
 
                 //debug("SNAP: " + snap);
-                if ((snap != null) && (snap != current)) {
+                if (snap != null && snap != current) {
                     attach(snap);
                     fireConnectorEvent(ConnectorEvent.CONNECTOR_SNAPPED);
                 }

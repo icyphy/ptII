@@ -950,8 +950,8 @@ public abstract class AbstractPtalonEvaluator {
         if (_currentIfTree.getActiveBranch() == null) {
             return false;
         }
-        return (_currentIfTree.getActiveBranch() == _currentIfTree
-                .getCurrentBranch());
+        return _currentIfTree.getActiveBranch() == _currentIfTree
+                .getCurrentBranch();
     }
 
     public void negateObject(String name) throws PtalonRuntimeException {

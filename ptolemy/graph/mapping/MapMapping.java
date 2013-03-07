@@ -60,7 +60,7 @@ public abstract class MapMapping implements Mapping {
      *  on the same Map as this one.
      */
     public boolean equals(Object object) {
-        if ((object == null) || (object.getClass() != getClass())) {
+        if (object == null || object.getClass() != getClass()) {
             return false;
         }
 

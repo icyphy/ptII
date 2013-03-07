@@ -71,28 +71,27 @@ public class FMICoSimulationCapabilities {
         // We use reflection here so that if Capabilities attributes change,
         // and new fields are added, we don't have to update this method.
         Field fields[] = getClass().getFields();
-        for (int i = 0; i < fields.length; i++) {
+        for (Field field : fields) {
 
             // Get the public fields that are attributes with the same name.
-            if ((fields[i].getModifiers() & Modifier.PUBLIC) == Modifier.PUBLIC
-                    && element.hasAttribute(fields[i].getName())) {
+            if ((field.getModifiers() & Modifier.PUBLIC) == Modifier.PUBLIC
+                    && element.hasAttribute(field.getName())) {
                 try {
 
                     // The field is a primitive boolean, not a Boolean.
-                    if (fields[i].getType().equals(Boolean.TYPE)) {
+                    if (field.getType().equals(Boolean.TYPE)) {
                         boolean value = Boolean.valueOf(element
-                                .getAttribute(fields[i].getName()));
-                        fields[i].setBoolean(this, value);
-                    } else if (fields[i].getType().equals(Integer.TYPE)) {
-                        int value = Integer.valueOf(element
-                                .getAttribute(fields[i].getName()));
-                        fields[i].setInt(this, value);
+                                .getAttribute(field.getName()));
+                        field.setBoolean(this, value);
+                    } else if (field.getType().equals(Integer.TYPE)) {
+                        int value = Integer.valueOf(element.getAttribute(field
+                                .getName()));
+                        field.setInt(this, value);
                     }
                 } catch (IllegalAccessException ex) {
                     throw new RuntimeException("Failed to set the "
-                            + fields[i].getName() + " field to "
-                            + element.getAttribute(fields[i].getName()) + ".",
-                            ex);
+                            + field.getName() + " field to "
+                            + element.getAttribute(field.getName()) + ".", ex);
                 }
             }
         }
@@ -110,25 +109,25 @@ public class FMICoSimulationCapabilities {
         // and new fields are added, we don't have to update this method.
         StringBuffer results = new StringBuffer();
         Field fields[] = getClass().getFields();
-        for (int i = 0; i < fields.length; i++) {
+        for (Field field : fields) {
 
             // Get the public fields.
-            if ((fields[i].getModifiers() & Modifier.PUBLIC) == Modifier.PUBLIC) {
+            if ((field.getModifiers() & Modifier.PUBLIC) == Modifier.PUBLIC) {
                 String valueString = "";
                 try {
                     // The field is a primitive boolean, not a Boolean
-                    if (fields[i].getType().equals(Boolean.TYPE)) {
-                        if (fields[i].getBoolean(this)) {
+                    if (field.getType().equals(Boolean.TYPE)) {
+                        if (field.getBoolean(this)) {
                             valueString = "true";
                         }
-                    } else if (fields[i].getType().equals(Integer.TYPE)) {
-                        int value = fields[i].getInt(this);
+                    } else if (field.getType().equals(Integer.TYPE)) {
+                        int value = field.getInt(this);
                         if (value != 0) {
                             valueString = Integer.valueOf(value).toString();
                         }
                     }
                 } catch (IllegalAccessException ex) {
-                    throw new RuntimeException("Failed to get the " + fields[i]
+                    throw new RuntimeException("Failed to get the " + field
                             + " field", ex);
                 }
 
@@ -137,7 +136,7 @@ public class FMICoSimulationCapabilities {
                     if (results.length() > 0) {
                         results.append(", ");
                     }
-                    results.append(fields[i].getName() + " = " + valueString);
+                    results.append(field.getName() + " = " + valueString);
                 }
             }
         }

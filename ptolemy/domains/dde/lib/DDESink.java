@@ -117,9 +117,9 @@ public class DDESink extends TypedAtomicActor {
 
         Receiver[][] receivers = input.getReceivers();
 
-        for (int i = 0; i < receivers.length; i++) {
-            for (int j = 0; j < receivers[i].length; j++) {
-                DDEReceiver receiver = (DDEReceiver) receivers[i][j];
+        for (Receiver[] receiver2 : receivers) {
+            for (int j = 0; j < receiver2.length; j++) {
+                DDEReceiver receiver = (DDEReceiver) receiver2[j];
 
                 if (!_continue) {
                     return;

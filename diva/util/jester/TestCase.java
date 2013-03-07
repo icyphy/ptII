@@ -113,7 +113,7 @@ public abstract class TestCase {
     public int getExecutionTime() {
         int diff = (int) (_stopTime - _startTime);
 
-        if ((_startTime != 0) && (diff == 0)) {
+        if (_startTime != 0 && diff == 0) {
             return 1;
         } else {
             return diff;

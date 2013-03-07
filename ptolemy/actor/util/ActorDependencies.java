@@ -193,11 +193,11 @@ public class ActorDependencies {
                     // Can't we simplify this?
                     Receiver[][] receivers = port.getRemoteReceivers();
                     if (receivers != null) {
-                        for (int i = 0; i < receivers.length; i++) {
-                            if (receivers[i] != null) {
-                                for (int j = 0; j < receivers[i].length; j++) {
-                                    if (receivers[i][j] != null) {
-                                        IOPort remotePort = receivers[i][j]
+                        for (Receiver[] receiver : receivers) {
+                            if (receiver != null) {
+                                for (int j = 0; j < receiver.length; j++) {
+                                    if (receiver[j] != null) {
+                                        IOPort remotePort = receiver[j]
                                                 .getContainer();
                                         if (remotePort != null) {
                                             results.addAll(_prerequisites(
@@ -253,12 +253,11 @@ public class ActorDependencies {
                                 + port);
             }
             if (receivers != null) {
-                for (int i = 0; i < receivers.length; i++) {
-                    if (receivers[i] != null) {
-                        for (int j = 0; j < receivers[i].length; j++) {
-                            if (receivers[i][j] != null) {
-                                IOPort remotePort2 = receivers[i][j]
-                                        .getContainer();
+                for (Receiver[] receiver : receivers) {
+                    if (receiver != null) {
+                        for (int j = 0; j < receiver.length; j++) {
+                            if (receiver[j] != null) {
+                                IOPort remotePort2 = receiver[j].getContainer();
                                 if (remotePort2 != null) {
                                     //System.out.println("ActorDependencies._dependents: rempotePort2: " + remotePort2.getFullName());
                                     results.addAll(_dependents(remotePort2,

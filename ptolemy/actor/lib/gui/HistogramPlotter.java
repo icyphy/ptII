@@ -190,14 +190,14 @@ public class HistogramPlotter extends PlotterBase {
 
             HistogramMLParser parser = new HistogramMLParser((Histogram) plot);
 
-            if ((source != null) && !source.trim().equals("")) {
+            if (source != null && !source.trim().equals("")) {
                 URL xmlFile = new URL(base, source);
                 InputStream stream = xmlFile.openStream();
                 parser.parse(base, stream);
                 stream.close();
             }
 
-            if ((text != null) && !text.equals("")) {
+            if (text != null && !text.equals("")) {
                 // NOTE: Regrettably, the XML parser we are using cannot
                 // deal with having a single processing instruction at the
                 // outer level.  Thus, we have to strip it.
@@ -251,8 +251,8 @@ public class HistogramPlotter extends PlotterBase {
             plot.setAutomaticRescale(true);
         }
 
-        if ((_getImplementation().getFrame() == null)
-                && (_getImplementation().getPlatformContainer() == null)) {
+        if (_getImplementation().getFrame() == null
+                && _getImplementation().getPlatformContainer() == null) {
             // Need an effigy and a tableau so that menu ops work properly.
             _getImplementation().initializeEffigy();
 

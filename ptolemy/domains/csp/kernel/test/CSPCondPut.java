@@ -75,8 +75,8 @@ public class CSPCondPut extends CSPPutToken {
         int numRcvrs = 0;
         Receiver[][] rcvrs = outputPort.getRemoteReceivers();
 
-        for (int i = 0; i < rcvrs.length; i++) {
-            for (int j = 0; j < rcvrs[i].length; j++) {
+        for (Receiver[] rcvr : rcvrs) {
+            for (int j = 0; j < rcvr.length; j++) {
                 numRcvrs++;
             }
         }

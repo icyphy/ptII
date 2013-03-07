@@ -54,7 +54,7 @@ public class NullPointerAnalysis extends BranchedRefVarsAnalysis {
     public boolean isAlwaysNullBefore(Local local, Unit unit) {
         FlowSet flowSet = (FlowSet) getFlowBefore(unit);
         int info = anyRefInfo(local, flowSet);
-        return (info == kNull);
+        return info == kNull;
     }
 
     /** Return the set of other fields and locals that must reference
@@ -64,6 +64,6 @@ public class NullPointerAnalysis extends BranchedRefVarsAnalysis {
     public boolean isNeverNullBefore(Local local, Unit unit) {
         FlowSet flowSet = (FlowSet) getFlowBefore(unit);
         int info = anyRefInfo(local, flowSet);
-        return (info == kNonNull);
+        return info == kNonNull;
     }
 }

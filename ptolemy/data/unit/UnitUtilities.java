@@ -195,7 +195,7 @@ public class UnitUtilities {
      */
     public static String getBaseUnitName(int categoryIndex) {
         synchronized (_indexTable) {
-            if ((categoryIndex < 0) || (categoryIndex >= _categories)) {
+            if (categoryIndex < 0 || categoryIndex >= _categories) {
                 // FIXME: exception?
                 return "unknown";
             } else {
@@ -242,8 +242,8 @@ public class UnitUtilities {
      */
     public static boolean isUnitless(int[] exponents) {
         if (exponents != null) {
-            for (int i = 0; i < exponents.length; i++) {
-                if (exponents[i] != 0) {
+            for (int exponent : exponents) {
+                if (exponent != 0) {
                     return false;
                 }
             }

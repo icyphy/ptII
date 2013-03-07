@@ -121,7 +121,7 @@ public class SampleDelay extends SDFTransformer {
      *   an attribute that cannot be cloned.
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        SampleDelay newObject = (SampleDelay) (super.clone(workspace));
+        SampleDelay newObject = (SampleDelay) super.clone(workspace);
 
         // set the type constraints
         try {
@@ -190,8 +190,7 @@ public class SampleDelay extends SDFTransformer {
     protected Set<Inequality> _customTypeConstraints() {
         Set<Inequality> result = new HashSet<Inequality>();
         if (isBackwardTypeInferenceEnabled()) {
-            result.add(new Inequality(output
-                    .getTypeTerm(), input.getTypeTerm()));
+            result.add(new Inequality(output.getTypeTerm(), input.getTypeTerm()));
         }
         return result;
     }

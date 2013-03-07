@@ -562,10 +562,10 @@ public class DDFDirector extends Director {
      *   does not contain a legal value.
      */
     public boolean postfire() throws IllegalActionException {
-        int iterationsValue = ((IntToken) (iterations.getToken())).intValue();
+        int iterationsValue = ((IntToken) iterations.getToken()).intValue();
         _iterationCount++;
 
-        if ((iterationsValue > 0) && (_iterationCount >= iterationsValue)) {
+        if (iterationsValue > 0 && _iterationCount >= iterationsValue) {
             if (_debugging) {
                 _debug("iteration limit reached");
             }
@@ -631,7 +631,7 @@ public class DDFDirector extends Director {
 
         super.prefire();
 
-        Actor container = ((Actor) getContainer());
+        Actor container = (Actor) getContainer();
         Iterator inputPorts = container.inputPortList().iterator();
 
         while (inputPorts.hasNext()) {
@@ -646,7 +646,7 @@ public class DDFDirector extends Director {
             int[] rate = _getTokenConsumptionRate(inputPort);
 
             for (int i = 0; i < inputPort.getWidth(); i++) {
-                if ((rate[i] >= 0) && !inputPort.hasToken(i, rate[i])) {
+                if (rate[i] >= 0 && !inputPort.hasToken(i, rate[i])) {
                     if (_debugging) {
                         _debug("Channel " + i + " of port "
                                 + inputPort.getFullName()
@@ -1005,12 +1005,12 @@ public class DDFDirector extends Director {
             IOPort outputPort = (IOPort) outputPorts.next();
             Receiver[][] farReceivers = outputPort.getRemoteReceivers();
 
-            for (int i = 0; i < farReceivers.length; i++) {
-                if (farReceivers[i] == null) {
+            for (Receiver[] farReceiver2 : farReceivers) {
+                if (farReceiver2 == null) {
                     continue;
                 }
-                for (int j = 0; j < farReceivers[i].length; j++) {
-                    QueueReceiver farReceiver = (QueueReceiver) farReceivers[i][j];
+                for (int j = 0; j < farReceiver2.length; j++) {
+                    QueueReceiver farReceiver = (QueueReceiver) farReceiver2[j];
                     IOPort port = farReceiver.getContainer();
 
                     // Having a self-loop doesn't make it deferrable.
@@ -1020,8 +1020,8 @@ public class DDFDirector extends Director {
 
                     int tokenConsumptionRate = _getTokenConsumptionRate(farReceiver);
 
-                    if ((tokenConsumptionRate >= 0)
-                            && (farReceiver.size() >= tokenConsumptionRate)) {
+                    if (tokenConsumptionRate >= 0
+                            && farReceiver.size() >= tokenConsumptionRate) {
                         deferrable = true;
 
                         // Here we find the maximum of the token numbers for
@@ -1069,7 +1069,7 @@ public class DDFDirector extends Director {
             int[] rate = _getTokenConsumptionRate(inputPort);
 
             for (int i = 0; i < inputPort.getWidth(); i++) {
-                if ((rate[i] > 0) && !inputPort.hasToken(i, rate[i])) {
+                if (rate[i] > 0 && !inputPort.hasToken(i, rate[i])) {
                     return false;
                 }
             }

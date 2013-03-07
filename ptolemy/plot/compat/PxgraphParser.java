@@ -460,7 +460,7 @@ public class PxgraphParser {
         // True if we saw an - arg, which means read from stdin
         boolean sawDash = false;
 
-        while ((args != null) && (i < args.length)
+        while (args != null && i < args.length
                 && (args[i].startsWith("-") || args[i].startsWith("="))) {
             arg = args[i++];
 
@@ -652,7 +652,7 @@ public class PxgraphParser {
                     // -version is not in the original X11 pxgraph.
                     //_version();
                     continue;
-                } else if ((arg.length() > 1) && (arg.charAt(0) == '-')) {
+                } else if (arg.length() > 1 && arg.charAt(0) == '-') {
                     // Process '-<digit> <datasetname>'
                     try {
                         Integer datasetnumberint = Integer.valueOf(arg
@@ -675,9 +675,9 @@ public class PxgraphParser {
                     int plusIndex = arg.indexOf('+');
                     int minusIndex = arg.indexOf('-');
 
-                    if ((plusIndex != -1) || (minusIndex != -1)) {
+                    if (plusIndex != -1 || minusIndex != -1) {
                         // =WxH+X+Y, =WxH-X+Y, =WxH-X-Y, =WxH+X-Y
-                        if ((plusIndex != -1) && (minusIndex != -1)) {
+                        if (plusIndex != -1 && minusIndex != -1) {
                             // =WxH-X+Y or =WxH+X-Y
                             int index = minusIndex;
 
@@ -840,7 +840,7 @@ public class PxgraphParser {
                     // them in the wordChars() range of chars, since
                     // the single quote is between them and the rest of the
                     // chars. So we have to process them by hand.
-                    partialarg = ((String) argvector.lastElement()) + (char) c;
+                    partialarg = (String) argvector.lastElement() + (char) c;
                     argvector.removeElementAt(argvector.size() - 1);
                     break;
 
@@ -981,16 +981,16 @@ public class PxgraphParser {
                             if (byteSwapped) {
                                 in.readFully(input);
                                 x = Float
-                                        .intBitsToFloat(((input[3] & 0xFF) << 24)
-                                                | ((input[2] & 0xFF) << 16)
-                                                | ((input[1] & 0xFF) << 8)
-                                                | (input[0] & 0xFF));
+                                        .intBitsToFloat((input[3] & 0xFF) << 24
+                                                | (input[2] & 0xFF) << 16
+                                                | (input[1] & 0xFF) << 8
+                                                | input[0] & 0xFF);
                                 in.readFully(input);
                                 y = Float
-                                        .intBitsToFloat(((input[3] & 0xFF) << 24)
-                                                | ((input[2] & 0xFF) << 16)
-                                                | ((input[1] & 0xFF) << 8)
-                                                | (input[0] & 0xFF));
+                                        .intBitsToFloat((input[3] & 0xFF) << 24
+                                                | (input[2] & 0xFF) << 16
+                                                | (input[1] & 0xFF) << 8
+                                                | input[0] & 0xFF);
                             } else {
                                 x = in.readFloat();
                                 y = in.readFloat();
@@ -1063,7 +1063,7 @@ public class PxgraphParser {
     ////                         private methods                   ////
     // Add a legend if necessary, return the value of the connected flag.
     private boolean _addLegendIfNecessary(boolean connected) {
-        if (!_sawFirstDataset || (_currentdataset < 0)) {
+        if (!_sawFirstDataset || _currentdataset < 0) {
             // We did not set a DataSet line, but
             // we did get called with -<digit> args
             _sawFirstDataset = true;
@@ -1093,15 +1093,15 @@ public class PxgraphParser {
 
         if (comma < 0) {
             double[] result = new double[1];
-            result[0] = (Double.valueOf(spec)).doubleValue();
+            result[0] = Double.valueOf(spec).doubleValue();
             return result;
         } else {
             double[] result = new double[2];
             String spec1 = spec.substring(0, comma);
-            result[0] = (Double.valueOf(spec1)).doubleValue();
+            result[0] = Double.valueOf(spec1).doubleValue();
 
             String spec2 = spec.substring(comma + 1);
-            result[1] = (Double.valueOf(spec2)).doubleValue();
+            result[1] = Double.valueOf(spec2).doubleValue();
             return result;
         }
     }

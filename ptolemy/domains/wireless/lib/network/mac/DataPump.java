@@ -208,7 +208,7 @@ public class DataPump extends MACActorBase {
                     // in the channel module. The "channel" field are used
                     // for specifying a channel. We don't need it here. Yang
                     //channel = _inputMessage.get("channel").intValue();
-                    _pdu = (RecordToken) (_inputMessage.get("pdu"));
+                    _pdu = (RecordToken) _inputMessage.get("pdu");
                     _toBackoff(Busy);
 
                     int length = ((IntToken) _pdu.get("Length")).intValue();

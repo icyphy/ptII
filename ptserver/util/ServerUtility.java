@@ -451,7 +451,7 @@ public class ServerUtility {
         // Added a check to allow merging of top level container's attributes.
         if (source instanceof Entity
                 && targetModel.getEntity(stripFullName(source.getFullName())) == null
-                && (source.getContainer() != null)) {
+                && source.getContainer() != null) {
             return;
         }
 

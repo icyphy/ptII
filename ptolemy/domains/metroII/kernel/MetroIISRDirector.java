@@ -110,8 +110,10 @@ public class MetroIISRDirector extends SRDirector implements
      *  @return The new Attribute.
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        MetroIISRDirector newObject = (MetroIISRDirector) super.clone(workspace);
-        newObject._nameToActor = (Hashtable<String, Actor>) _nameToActor.clone();
+        MetroIISRDirector newObject = (MetroIISRDirector) super
+                .clone(workspace);
+        newObject._nameToActor = (Hashtable<String, Actor>) _nameToActor
+                .clone();
         newObject._events = (ArrayList<Builder>) _events.clone();
         return newObject;
     }

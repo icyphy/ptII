@@ -143,7 +143,7 @@ public abstract class MatrixToken extends Token {
                 // Caution: convert() might return this again, e.g.
                 // if lubType is general.  Only proceed if the conversion
                 // returned a new type.
-                if (!(lub.getType().equals(getType()))) {
+                if (!lub.getType().equals(getType())) {
                     return lub.add(rightArgument);
                 }
             }
@@ -229,7 +229,7 @@ public abstract class MatrixToken extends Token {
                 // Caution: convert() might return this again, e.g.
                 // if lubType is general.  Only proceed if the conversion
                 // returned a new type.
-                if (!(lub.getType().equals(getType()))) {
+                if (!lub.getType().equals(getType())) {
                     return lub.addReverse(leftArgument);
                 }
             }
@@ -268,11 +268,11 @@ public abstract class MatrixToken extends Token {
 
         // If a token is nil, then default to the first type that we
         // found.
-        for (int i = 0; i < tokens.length; i++) {
-            if (tokens[i].isNil()) {
+        for (Token token : tokens) {
+            if (token.isNil()) {
                 typeTerms.add(baseType);
             } else {
-                typeTerms.add(tokens[i].getType());
+                typeTerms.add(token.getType());
             }
         }
 
@@ -511,9 +511,9 @@ public abstract class MatrixToken extends Token {
 
             // UGH...  I don't see how to abstract this nicely...
             if (diff instanceof LongToken) {
-                count = ((int) diff.longValue()) + 1;
+                count = (int) diff.longValue() + 1;
             } else if (diff instanceof DoubleToken) {
-                count = ((int) diff.doubleValue()) + 1;
+                count = (int) diff.doubleValue() + 1;
             } else {
                 count = diff.intValue() + 1;
             }
@@ -603,7 +603,7 @@ public abstract class MatrixToken extends Token {
                 // Caution: convert() might return this again, e.g.
                 // if lubType is general.  Only proceed if the conversion
                 // returned a new type.
-                if (!(lub.getType().equals(getType()))) {
+                if (!lub.getType().equals(getType())) {
                     return lub.divide(rightArgument);
                 }
             }
@@ -923,7 +923,7 @@ public abstract class MatrixToken extends Token {
                 // Caution: convert() might return this again, e.g.
                 // if lubType is general.  Only proceed if the conversion
                 // returned a new type.
-                if (!(lub.getType().equals(getType()))) {
+                if (!lub.getType().equals(getType())) {
                     return lub.modulo(rightArgument);
                 }
             }
@@ -1030,7 +1030,7 @@ public abstract class MatrixToken extends Token {
                 // Caution: convert() might return this again, e.g.
                 // if lubType is general.  Only proceed if the conversion
                 // returned a new type.
-                if (!(lub.getType().equals(getType()))) {
+                if (!lub.getType().equals(getType())) {
                     return lub.multiply(rightArgument);
                 }
             }
@@ -1115,7 +1115,7 @@ public abstract class MatrixToken extends Token {
                 // Caution: convert() might return this again, e.g.
                 // if lubType is general.  Only proceed if the conversion
                 // returned a new type.
-                if (!(lub.getType().equals(getType()))) {
+                if (!lub.getType().equals(getType())) {
                     return lub.multiplyReverse(leftArgument);
                 }
             }
@@ -1269,7 +1269,7 @@ public abstract class MatrixToken extends Token {
                 // Caution: convert() might return this again, e.g.
                 // if lubType is general.  Only proceed if the conversion
                 // returned a new type.
-                if (!(lub.getType().equals(getType()))) {
+                if (!lub.getType().equals(getType())) {
                     return lub.subtract(rightArgument);
                 }
             }
@@ -1355,7 +1355,7 @@ public abstract class MatrixToken extends Token {
                 // Caution: convert() might return this again, e.g.
                 // if lubType is general.  Only proceed if the conversion
                 // returned a new type.
-                if (!(lub.getType().equals(getType()))) {
+                if (!lub.getType().equals(getType())) {
                     return lub.subtractReverse(leftArgument);
                 }
             }
@@ -1463,19 +1463,18 @@ public abstract class MatrixToken extends Token {
             for (int j = 0; j < columnCount; j++) {
                 // Handle nil token
                 if (_nils != null
-                        && _nils.contains(Integer
-                                .valueOf((i * columnCount) + j))) {
+                        && _nils.contains(Integer.valueOf(i * columnCount + j))) {
                     sb.append("nil");
                 } else {
                     sb.append(getElementAsToken(i, j).toString());
                 }
 
-                if (j < (columnCount - 1)) {
+                if (j < columnCount - 1) {
                     sb.append(", ");
                 }
             }
 
-            if (i < (rowCount - 1)) {
+            if (i < rowCount - 1) {
                 sb.append("; ");
             }
         }
@@ -1573,8 +1572,7 @@ public abstract class MatrixToken extends Token {
         int rows = getRowCount();
         int columns = getColumnCount();
 
-        if ((token.getRowCount() != rows)
-                || (token.getColumnCount() != columns)) {
+        if (token.getRowCount() != rows || token.getColumnCount() != columns) {
             return BooleanToken.FALSE;
         }
 
@@ -1747,8 +1745,8 @@ public abstract class MatrixToken extends Token {
     private Token _doAdd(Token rightArgument) throws IllegalActionException {
         MatrixToken convertedArgument = (MatrixToken) rightArgument;
 
-        if ((convertedArgument.getRowCount() != getRowCount())
-                || (convertedArgument.getColumnCount() != getColumnCount())) {
+        if (convertedArgument.getRowCount() != getRowCount()
+                || convertedArgument.getColumnCount() != getColumnCount()) {
             // Either this matrix or the argument might be a size one matrix
             // converted automatically from a scalar. Support this by
             // scalar addition.
@@ -1787,8 +1785,8 @@ public abstract class MatrixToken extends Token {
             throws IllegalActionException {
         MatrixToken convertedArgument = (MatrixToken) rightArgument;
 
-        if ((convertedArgument.getRowCount() != getRowCount())
-                || (convertedArgument.getColumnCount() != getColumnCount())) {
+        if (convertedArgument.getRowCount() != getRowCount()
+                || convertedArgument.getColumnCount() != getColumnCount()) {
             return BooleanToken.FALSE;
         }
 
@@ -1812,8 +1810,8 @@ public abstract class MatrixToken extends Token {
             throws IllegalActionException {
         MatrixToken convertedArgument = (MatrixToken) rightArgument;
 
-        if ((convertedArgument.getRowCount() != getRowCount())
-                || (convertedArgument.getColumnCount() != getColumnCount())) {
+        if (convertedArgument.getRowCount() != getRowCount()
+                || convertedArgument.getColumnCount() != getColumnCount()) {
             return BooleanToken.FALSE;
         }
 
@@ -1877,8 +1875,8 @@ public abstract class MatrixToken extends Token {
             throws IllegalActionException {
         MatrixToken convertedArgument = (MatrixToken) rightArgument;
 
-        if ((convertedArgument.getRowCount() != getRowCount())
-                || (convertedArgument.getColumnCount() != getColumnCount())) {
+        if (convertedArgument.getRowCount() != getRowCount()
+                || convertedArgument.getColumnCount() != getColumnCount()) {
             // Either this matrix or the argument might be a size one matrix
             // converted automatically from a scalar. Support this by
             // scalar multiplication.

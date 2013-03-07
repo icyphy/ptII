@@ -134,9 +134,9 @@ public class ExtensionFilenameFilter extends PtFilenameFilter {
     public ExtensionFilenameFilter(String[] filters, String description) {
         _filters = new Hashtable(filters.length);
 
-        for (int i = 0; i < filters.length; i++) {
+        for (String filter : filters) {
             // add filters one by one
-            addExtension(filters[i]);
+            addExtension(filter);
         }
 
         setDescription(description);
@@ -178,7 +178,7 @@ public class ExtensionFilenameFilter extends PtFilenameFilter {
 
             String extension = getExtension(f);
 
-            if ((extension != null) && (_filters.get(extension) != null)) {
+            if (extension != null && _filters.get(extension) != null) {
                 return true;
             }
         }
@@ -206,11 +206,11 @@ public class ExtensionFilenameFilter extends PtFilenameFilter {
         int i = name.lastIndexOf('.');
 
         String extension = "";
-        if ((i > 0) && (i < (name.length() - 1))) {
+        if (i > 0 && i < name.length() - 1) {
             extension = name.substring(i + 1).toLowerCase();
         }
 
-        if ((extension != null) && (_filters.get(extension) != null)) {
+        if (extension != null && _filters.get(extension) != null) {
             return true;
         }
         return false;
@@ -268,7 +268,7 @@ public class ExtensionFilenameFilter extends PtFilenameFilter {
      */
     public String getDescription() {
         if (_fullDescription == null) {
-            if ((_description == null) || isExtensionListInDescription()) {
+            if (_description == null || isExtensionListInDescription()) {
                 if (_description != null) {
                     _fullDescription = _description;
                 } else {
@@ -288,7 +288,7 @@ public class ExtensionFilenameFilter extends PtFilenameFilter {
                     result.append(".");
                     result.append(extension);
 
-                    if (extensionNumber < (size - 1)) {
+                    if (extensionNumber < size - 1) {
                         result.append(", ");
                     } else if (extensionNumber < size) {
                         result.append(" and ");
@@ -332,7 +332,7 @@ public class ExtensionFilenameFilter extends PtFilenameFilter {
             String filename = f.getName();
             int i = filename.lastIndexOf('.');
 
-            if ((i > 0) && (i < (filename.length() - 1))) {
+            if (i > 0 && i < filename.length() - 1) {
                 return filename.substring(i + 1).toLowerCase();
             }
         }

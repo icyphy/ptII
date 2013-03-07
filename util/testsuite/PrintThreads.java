@@ -102,8 +102,8 @@ public class PrintThreads {
                 .activeGroupCount()];
         rootGroup.enumerate(threadGroups);
 
-        for (int i = 0; i < threadGroups.length; i++) {
-            results.append(threadGroups[i].toString() + "\n");
+        for (ThreadGroup threadGroup : threadGroups) {
+            results.append(threadGroup.toString() + "\n");
         }
 
         return results.toString();
@@ -142,8 +142,7 @@ public class PrintThreads {
         Thread[] threads = new Thread[rootGroup.activeCount()];
         rootGroup.enumerate(threads);
 
-        for (int i = 0; i < threads.length; i++) {
-            Thread thread = threads[i];
+        for (Thread thread : threads) {
             results.append(toThreadDescription(thread) + "\n");
         }
 
@@ -171,8 +170,8 @@ public class PrintThreads {
                 name = thread.getName();
             }
 
-            if ((thread.getThreadGroup() != null)
-                    && (thread.getThreadGroup().getName() != null)) {
+            if (thread.getThreadGroup() != null
+                    && thread.getThreadGroup().getName() != null) {
                 group = thread.getThreadGroup().getName();
             }
 
@@ -220,7 +219,7 @@ public class PrintThreads {
         int stringLength = inputString.length();
 
         if (stringLength < length) {
-            for (int i = 0; i < (length - stringLength); i++) {
+            for (int i = 0; i < length - stringLength; i++) {
                 results.append(" ");
             }
         } else if (inputString.length() > length) {

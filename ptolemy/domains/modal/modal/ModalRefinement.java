@@ -274,8 +274,8 @@ public class ModalRefinement extends ModalModel implements DropTargetHandler,
                 // created its own port. That will result in the code
                 // above executing because it will set _mirrorPort to 1
                 // on this port before doing the call.
-                ModalRefinementPort containerPort = (container == null ? null
-                        : (ModalRefinementPort) container.getPort(name));
+                ModalRefinementPort containerPort = container == null ? null
+                        : (ModalRefinementPort) container.getPort(name);
                 if (containerPort == null) {
                     // The container does not have a mirror port.
                     // Delegate upwards.
@@ -357,7 +357,7 @@ public class ModalRefinement extends ModalModel implements DropTargetHandler,
      */
     protected void _checkContainer(Entity container)
             throws IllegalActionException {
-        if (!(container instanceof ModalModel) && (container != null)) {
+        if (!(container instanceof ModalModel) && container != null) {
             throw new IllegalActionException(container, this,
                     "ModalRefinement can only be contained by "
                             + "ModalModel objects.");
@@ -466,7 +466,7 @@ public class ModalRefinement extends ModalModel implements DropTargetHandler,
 
         String currentRefinements = state.refinementName.getExpression();
 
-        if ((currentRefinements == null) || currentRefinements.equals("")) {
+        if (currentRefinements == null || currentRefinements.equals("")) {
             currentRefinements = name;
         } else {
             currentRefinements = currentRefinements.trim() + ", " + name;

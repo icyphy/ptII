@@ -272,8 +272,8 @@ public class FractionArrayMath {
     public static final Fraction sum(Fraction[] array) {
         Fraction sum = new Fraction(0, 1);
 
-        for (int i = 0; i < array.length; i++) {
-            sum = sum.add(array[i]);
+        for (Fraction element : array) {
+            sum = sum.add(element);
         }
 
         return sum;
@@ -319,7 +319,7 @@ public class FractionArrayMath {
         for (int i = 0; i < length; i++) {
             sb.append(array[i].toString());
 
-            if (i < (length - 1)) {
+            if (i < length - 1) {
                 sb.append(elementDelimiter);
             }
         }

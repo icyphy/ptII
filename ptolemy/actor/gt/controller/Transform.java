@@ -365,7 +365,7 @@ public class Transform extends GTEvent implements ConfigurableEntity,
 
         String sourceSpec = "";
 
-        if ((_configureSource != null) && !_configureSource.trim().equals("")) {
+        if (_configureSource != null && !_configureSource.trim().equals("")) {
             sourceSpec = " source=\"" + _configureSource + "\"";
         }
 

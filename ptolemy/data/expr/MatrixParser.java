@@ -70,7 +70,7 @@ public class MatrixParser/*@bgen(jjtree)*/implements
         Vector row = null;
         try {
             jj_consume_token(13);
-            switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk) {
+            switch (jj_ntk == -1 ? jj_ntk() : jj_ntk) {
             case CONSTANT:
             case SIGN:
                 row = row();
@@ -81,7 +81,7 @@ public class MatrixParser/*@bgen(jjtree)*/implements
             }
             m.add(row);
             label_1: while (true) {
-                switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk) {
+                switch (jj_ntk == -1 ? jj_ntk() : jj_ntk) {
                 case 14:
                     ;
                     break;
@@ -146,7 +146,7 @@ public class MatrixParser/*@bgen(jjtree)*/implements
             element = element();
             row.add(new Double(element));
             label_2: while (true) {
-                switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk) {
+                switch (jj_ntk == -1 ? jj_ntk() : jj_ntk) {
                 case 16:
                     ;
                     break;
@@ -209,10 +209,10 @@ public class MatrixParser/*@bgen(jjtree)*/implements
         int sign = 1;
         double value;
         try {
-            switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk) {
+            switch (jj_ntk == -1 ? jj_ntk() : jj_ntk) {
             case SIGN:
                 s = jj_consume_token(SIGN);
-                if ((s.image).equals("-")) {
+                if (s.image.equals("-")) {
                     sign = -1 * sign;
                 }
                 break;
@@ -221,7 +221,7 @@ public class MatrixParser/*@bgen(jjtree)*/implements
                 ;
             }
             i = jj_consume_token(CONSTANT);
-            value = sign * (new Double(i.image)).doubleValue();
+            value = sign * new Double(i.image).doubleValue();
             jjtree.closeNodeScope(jjtn000, true);
             jjtc000 = false;
             {
@@ -391,9 +391,9 @@ public class MatrixParser/*@bgen(jjtree)*/implements
 
     private int jj_ntk() {
         if ((jj_nt = token.next) == null) {
-            return (jj_ntk = (token.next = token_source.getNextToken()).kind);
+            return jj_ntk = (token.next = token_source.getNextToken()).kind;
         } else {
-            return (jj_ntk = jj_nt.kind);
+            return jj_ntk = jj_nt.kind;
         }
     }
 
@@ -412,7 +412,7 @@ public class MatrixParser/*@bgen(jjtree)*/implements
         for (int i = 0; i < 4; i++) {
             if (jj_la1[i] == jj_gen) {
                 for (int j = 0; j < 32; j++) {
-                    if ((jj_la1_0[i] & (1 << j)) != 0) {
+                    if ((jj_la1_0[i] & 1 << j) != 0) {
                         la1tokens[j] = true;
                     }
                 }

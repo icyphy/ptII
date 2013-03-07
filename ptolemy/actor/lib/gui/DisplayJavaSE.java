@@ -189,8 +189,7 @@ public class DisplayJavaSE extends AbstractPlaceableJavaSE implements
                         if (containerEffigy == null) {
                             throw new IllegalActionException(
                                     "Cannot find effigy for top level: "
-                                            + (_display.toplevel())
-                                                    .getFullName());
+                                            + _display.toplevel().getFullName());
                         }
                         TextEffigy textEffigy = TextEffigy.newTextEffigy(
                                 containerEffigy, "");
@@ -328,7 +327,7 @@ public class DisplayJavaSE extends AbstractPlaceableJavaSE implements
         Runnable doIt = new Runnable() {
             public void run() {
                 if (textArea != null) {
-                    if ((_awtContainer != null) && (_scrollPane != null)) {
+                    if (_awtContainer != null && _scrollPane != null) {
                         _awtContainer.remove(_scrollPane);
                         _awtContainer.invalidate();
                         _awtContainer.repaint();

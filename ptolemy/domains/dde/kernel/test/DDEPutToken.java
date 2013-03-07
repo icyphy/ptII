@@ -77,9 +77,9 @@ public class DDEPutToken extends DDEPut {
         while (cnt < _numTokens) {
             Receiver[][] rcvrs = outputPort.getRemoteReceivers();
 
-            for (int i = 0; i < rcvrs.length; i++) {
-                for (int j = 0; j < rcvrs[i].length; j++) {
-                    DDEReceiver rcvr = (DDEReceiver) rcvrs[i][j];
+            for (Receiver[] rcvr2 : rcvrs) {
+                for (int j = 0; j < rcvr2.length; j++) {
+                    DDEReceiver rcvr = (DDEReceiver) rcvr2[j];
 
                     if (_oneArg) {
                         rcvr.put(_tokens[cnt]);

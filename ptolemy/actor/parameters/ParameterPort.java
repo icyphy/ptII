@@ -125,7 +125,7 @@ public class ParameterPort extends TypedIOPort {
 
         // If there is an associated port, and the container has changed,
         // break the association.
-        if ((_parameter != null) && (entity != previousContainer)) {
+        if (_parameter != null && entity != previousContainer) {
             _parameter._port = null;
             _parameter = null;
         }
@@ -164,7 +164,7 @@ public class ParameterPort extends TypedIOPort {
      *   contains an attribute with the proposed name.
      */
     public void setDisplayName(String name) {
-        if (_settingName || (_parameter == null)) {
+        if (_settingName || _parameter == null) {
             super.setDisplayName(name);
         } else {
             try {
@@ -188,7 +188,7 @@ public class ParameterPort extends TypedIOPort {
      */
     public void setName(String name) throws IllegalActionException,
             NameDuplicationException {
-        if (_settingName || (_parameter == null)) {
+        if (_settingName || _parameter == null) {
             super.setName(name);
         } else {
             try {

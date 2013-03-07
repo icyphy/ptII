@@ -484,9 +484,9 @@ public class NavigableEffigy extends PtolemyEffigy {
                 String aLine = "";
 
                 while ((aLine = reader.readLine()) != null) {
-                    if ((aLine.indexOf("<property") != -1)
-                            && ((aLine.indexOf("name=\"" + _tagToCheck + "\"") != -1) || (aLine
-                                    .indexOf("name='" + _tagToCheck + "'") != -1))) {
+                    if (aLine.indexOf("<property") != -1
+                            && (aLine.indexOf("name=\"" + _tagToCheck + "\"") != -1 || aLine
+                                    .indexOf("name='" + _tagToCheck + "'") != -1)) {
                         answer = true;
                         break;
                     }

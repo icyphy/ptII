@@ -672,7 +672,7 @@ public class InterfaceAutomaton extends FSMActor {
      *  @return True if this automaton does not have any input and output.
      */
     public boolean isClosed() {
-        return (portList().size() == 0);
+        return portList().size() == 0;
     }
 
     /** Return true if this automaton is empty; false otherwise.
@@ -752,8 +752,8 @@ public class InterfaceAutomaton extends FSMActor {
             if (nameDifference.contains(name)) {
                 int type = transition.getType();
 
-                if ((type == InterfaceAutomatonTransition._INPUT_TRANSITION)
-                        || (type == InterfaceAutomatonTransition._OUTPUT_TRANSITION)) {
+                if (type == InterfaceAutomatonTransition._INPUT_TRANSITION
+                        || type == InterfaceAutomatonTransition._OUTPUT_TRANSITION) {
                     transition.label.setExpression(name + ";");
                 }
             }
@@ -861,8 +861,8 @@ public class InterfaceAutomaton extends FSMActor {
 
                 int transitionType = superTransition.getType();
 
-                if ((transitionType == InterfaceAutomatonTransition._INPUT_TRANSITION)
-                        || (transitionType == InterfaceAutomatonTransition._OUTPUT_TRANSITION)) {
+                if (transitionType == InterfaceAutomatonTransition._INPUT_TRANSITION
+                        || transitionType == InterfaceAutomatonTransition._OUTPUT_TRANSITION) {
                     // check whether sub automaton has same transition
                     ComponentPort subPort = subState.outgoingPort;
                     Iterator subTransitions = subPort.linkedRelationList()
@@ -880,7 +880,7 @@ public class InterfaceAutomaton extends FSMActor {
                                     subDestination);
 
                             if (alternatingSimulation.contains(newPair)
-                                    && (!reacheableSimulation.contains(newPair))) {
+                                    && !reacheableSimulation.contains(newPair)) {
                                 reacheableSimulation.add(newPair);
                                 frontier.add(newPair);
                             }
@@ -892,7 +892,7 @@ public class InterfaceAutomaton extends FSMActor {
                             subState);
 
                     if (alternatingSimulation.contains(newPair)
-                            && (!reacheableSimulation.contains(newPair))) {
+                            && !reacheableSimulation.contains(newPair)) {
                         reacheableSimulation.add(newPair);
                         frontier.add(newPair);
                     }
@@ -909,13 +909,13 @@ public class InterfaceAutomaton extends FSMActor {
 
                 int transitionType = subTransition.getType();
 
-                if ((transitionType == InterfaceAutomatonTransition._INTERNAL_TRANSITION)) {
+                if (transitionType == InterfaceAutomatonTransition._INTERNAL_TRANSITION) {
                     State subDestination = subTransition.destinationState();
                     StatePair newPair = new StatePair(superState,
                             subDestination);
 
                     if (alternatingSimulation.contains(newPair)
-                            && (!reacheableSimulation.contains(newPair))) {
+                            && !reacheableSimulation.contains(newPair)) {
                         reacheableSimulation.add(newPair);
                         frontier.add(newPair);
                     }
@@ -1078,7 +1078,7 @@ public class InterfaceAutomaton extends FSMActor {
             if (label.endsWith("?")) {
                 IOPort port = (IOPort) getPort(name);
 
-                if ((port == null) || (port.isInput() == false)) {
+                if (port == null || port.isInput() == false) {
                     throw new IllegalActionException(
                             "InterfaceAutomaton._check: "
                                     + getFullName()
@@ -1089,7 +1089,7 @@ public class InterfaceAutomaton extends FSMActor {
             } else if (label.endsWith("!")) {
                 IOPort port = (IOPort) getPort(name);
 
-                if ((port == null) || (port.isOutput() == false)) {
+                if (port == null || port.isOutput() == false) {
                     throw new IllegalActionException(
                             "InterfaceAutomaton._check: "
                                     + getFullName()
@@ -1100,7 +1100,7 @@ public class InterfaceAutomaton extends FSMActor {
             } else if (label.endsWith(";")) {
                 Attribute attribute = getAttribute(name);
 
-                if ((attribute == null) || !(attribute instanceof Parameter)) {
+                if (attribute == null || !(attribute instanceof Parameter)) {
                     throw new IllegalActionException(
                             "InterfaceAutomaton._check: "
                                     + getFullName()
@@ -1357,8 +1357,8 @@ public class InterfaceAutomaton extends FSMActor {
 
                 boolean isStateInProductIllegal = false;
 
-                if ((!considerTransient)
-                        || ((!_isTransient(stateInThis)) && (!_isTransient(stateInArgument)))) {
+                if (!considerTransient || !_isTransient(stateInThis)
+                        && !_isTransient(stateInArgument)) {
                     // extend frontier from state in this automaton
                     ComponentPort outPort = stateInThis.outgoingPort;
                     Iterator transitions = outPort.linkedRelationList()
@@ -2013,8 +2013,8 @@ public class InterfaceAutomaton extends FSMActor {
                         .next();
                 int transitionType = transition.getType();
 
-                if ((transitionType == InterfaceAutomatonTransition._OUTPUT_TRANSITION)
-                        || (transitionType == InterfaceAutomatonTransition._INTERNAL_TRANSITION)) {
+                if (transitionType == InterfaceAutomatonTransition._OUTPUT_TRANSITION
+                        || transitionType == InterfaceAutomatonTransition._INTERNAL_TRANSITION) {
                     State sourceState = transition.sourceState();
 
                     if (!_illegalStates.contains(sourceState)) {

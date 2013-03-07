@@ -153,8 +153,7 @@ public class AudioPlayer extends LiveSoundActor {
             }
 
             // Reallocate the arrays.
-            if ((_audioPutArray == null)
-                    || (_channels != _audioPutArray.length)) {
+            if (_audioPutArray == null || _channels != _audioPutArray.length) {
                 _audioPutArray = new double[_channels][];
             }
 

@@ -222,8 +222,8 @@ public class CaseDirector extends Director {
                     for (int i = 0; i < port.getWidth(); i++) {
                         if (port.hasToken(i)) {
                             Token token = port.get(i);
-                            if ((insideReceivers != null)
-                                    && (insideReceivers[i] != null)) {
+                            if (insideReceivers != null
+                                    && insideReceivers[i] != null) {
                                 for (int j = 0; j < insideReceivers[i].length; j++) {
                                     if (insideReceivers[i][j].getContainer()
                                             .getContainer() == refinement) {
@@ -246,7 +246,7 @@ public class CaseDirector extends Director {
                                                     "transferring input from "
                                                             + port.getFullName()
                                                             + " to "
-                                                            + (insideReceivers[i][j])
+                                                            + insideReceivers[i][j]
                                                                     .getContainer()
                                                                     .getFullName());
                                         }

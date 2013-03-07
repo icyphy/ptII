@@ -158,8 +158,8 @@ public class WelcomeWindow extends HTMLViewer {
 
         Configuration configuration = getConfiguration();
 
-        _showWelcomeWindowAtStartup = ((BooleanToken) PtolemyPreferences
-                .preferenceValue(configuration, "_showWelcomeWindowAtStartup"));
+        _showWelcomeWindowAtStartup = (BooleanToken) PtolemyPreferences
+                .preferenceValue(configuration, "_showWelcomeWindowAtStartup");
 
         if (_showWelcomeWindowAtStartup != null
                 && !_showWelcomeWindowAtStartup.booleanValue()) {
@@ -183,9 +183,11 @@ public class WelcomeWindow extends HTMLViewer {
      */
     protected boolean _close() {
         Configuration configuration = getConfiguration();
-        if ((_showWelcomeWindowAtStartup == null && !_startupCheck.isSelected())
-                || (_showWelcomeWindowAtStartup != null && _showWelcomeWindowAtStartup
-                        .booleanValue() != _startupCheck.isSelected())) {
+        if (_showWelcomeWindowAtStartup == null
+                && !_startupCheck.isSelected()
+                || _showWelcomeWindowAtStartup != null
+                && _showWelcomeWindowAtStartup.booleanValue() != _startupCheck
+                        .isSelected()) {
             // Update the preferences if there is no preference and
             // the user unchecked the "Show this dialog on startup"
             // or if the value of the preference and the checkbox differ.

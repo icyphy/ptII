@@ -281,8 +281,8 @@ public class VisualModelReference extends ModelReference {
                 try {
                     // Conditionally show the model in Vergil. The openModel()
                     // method also creates the right effigy.
-                    if ((_openOnFiringValue == _OPEN_IN_VERGIL)
-                            || (_openOnFiringValue == _OPEN_IN_VERGIL_FULL_SCREEN)) {
+                    if (_openOnFiringValue == _OPEN_IN_VERGIL
+                            || _openOnFiringValue == _OPEN_IN_VERGIL_FULL_SCREEN) {
                         // NOTE: The opening must occur in the event thread.
                         // Regrettably, we cannot continue with the firing until
                         // the open is complete, so we use the very dangerous

@@ -88,11 +88,10 @@ public class FileWriter extends Sink {
         filename = new FilePortParameter(this, "filename");
         filename.setExpression("");
         filename.setTypeEquals(BaseType.STRING);
-        (new SingletonParameter(filename.getPort(), "_showName"))
+        new SingletonParameter(filename.getPort(), "_showName")
                 .setToken(BooleanToken.TRUE);
 
-        (new SingletonParameter(input, "_showName"))
-                .setToken(BooleanToken.TRUE);
+        new SingletonParameter(input, "_showName").setToken(BooleanToken.TRUE);
 
         _attachText("_iconDescription", "<svg>\n"
                 + "<rect x=\"-25\" y=\"-20\" " + "width=\"50\" height=\"40\" "
@@ -223,7 +222,7 @@ public class FileWriter extends Sink {
     private void _setWriter(java.io.Writer writer)
             throws IllegalActionException {
         try {
-            if ((_writer != null) && (_writer != _stdOut)) {
+            if (_writer != null && _writer != _stdOut) {
                 _writer.close();
             }
         } catch (IOException ex) {

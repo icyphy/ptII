@@ -72,7 +72,7 @@ public class TerminalTutorial {
         graphicsPane = (GraphicsPane) canvas.getCanvasPane();
 
         // Create a controller to do the work.
-        /*controller = */ new BasicController(graphicsPane);
+        /*controller = */new BasicController(graphicsPane);
         //defaultInteractor = controller.getSelectionInteractor();
 
         // Create the window

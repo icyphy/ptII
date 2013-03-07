@@ -41,7 +41,6 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -235,9 +234,8 @@ public class LayoutConstraintsManager {
             xml.append("               rowSpecs=\""
                     + layout.getRowSpecsString() + "\">\n");
 
-            for (Iterator componentNames = constraintMap.keySet().iterator(); componentNames
-                    .hasNext();) {
-                String componentName = (String) componentNames.next();
+            for (Object element : constraintMap.keySet()) {
+                String componentName = (String) element;
                 CellConstraints constraints = constraintMap.get(componentName);
                 xml.append("        <cellconstraints ");
                 xml.append("name=\"" + componentName + "\" ");
@@ -255,9 +253,8 @@ public class LayoutConstraintsManager {
                 xml.append("leftInset=\"" + constraints.insets.left + "\"/>\n");
             }
 
-            for (Iterator componentNames = constraintMap.keySet().iterator(); componentNames
-                    .hasNext();) {
-                String componentName = (String) componentNames.next();
+            for (Object element : constraintMap.keySet()) {
+                String componentName = (String) element;
                 Component component = layout.getComponentByName(componentName);
 
                 if (component != null) {
@@ -476,9 +473,7 @@ public class LayoutConstraintsManager {
         LayoutConstraintsManager layoutConstraintsManager = new LayoutConstraintsManager();
         Node[] containerNodes = getNodesNamed(containersNode, "container");
 
-        for (int index = 0; index < containerNodes.length; index++) {
-            Node containerNode = containerNodes[index];
-
+        for (Node containerNode : containerNodes) {
             Map<String, String> containerAttributes = getAttributeMap(containerNode);
             String containerName = containerAttributes.get("name");
             if (containerName == null) {
@@ -495,8 +490,8 @@ public class LayoutConstraintsManager {
 
             Node[] cellConstraints = getNodesNamed(containerNode,
                     "cellconstraints");
-            for (int cIndex = 0; cIndex < cellConstraints.length; cIndex++) {
-                Map<String, String> constraintAttributes = getAttributeMap(cellConstraints[cIndex]);
+            for (Node cellConstraint : cellConstraints) {
+                Map<String, String> constraintAttributes = getAttributeMap(cellConstraint);
 
                 String name = null;
                 CellConstraints.Alignment horizontalAlignment = CellConstraints.DEFAULT;
@@ -572,8 +567,7 @@ public class LayoutConstraintsManager {
             fakeDoc += "<void id=\"controller\" property=\"owner\"/>\n";
             fakeDoc += "<object idref=\"controller\">";
 
-            for (int pIndex = 0; pIndex < propertiesNodes.length; pIndex++) {
-                Node propertiesNode = propertiesNodes[pIndex];
+            for (Node propertiesNode : propertiesNodes) {
                 Map<String, String> propertyAttributes = getAttributeMap(propertiesNode);
                 String componentName = propertyAttributes.get("component");
                 if (componentName == null) {
@@ -582,8 +576,7 @@ public class LayoutConstraintsManager {
                 }
 
                 Node[] propertyNodes = getNodesNamed(propertiesNode, "property");
-                for (int propIndex = 0; propIndex < propertyNodes.length; propIndex++) {
-                    Node propertyNode = propertyNodes[propIndex];
+                for (Node propertyNode : propertyNodes) {
                     Map<String, String> voidAttributes = getAttributeMap(propertyNode);
                     String property = voidAttributes.get("name");
                     if (property == null) {

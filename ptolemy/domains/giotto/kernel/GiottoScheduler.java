@@ -175,8 +175,8 @@ public class GiottoScheduler extends Scheduler {
      */
     protected Schedule _getSchedule() throws NotSchedulableException {
         StaticSchedulingDirector director = (StaticSchedulingDirector) getContainer();
-        CompositeActor compositeActor = (CompositeActor) (director
-                .getContainer());
+        CompositeActor compositeActor = (CompositeActor) director
+                .getContainer();
         List actorList = compositeActor.deepEntityList();
         int actorCount = actorList.size();
 
@@ -255,7 +255,7 @@ public class GiottoScheduler extends Scheduler {
             for (i = 0; i < actorCount; i++) {
                 Actor actor = (Actor) actorListIterator.next();
 
-                if ((_giottoSchedulerTime % intervalArray[i]) == 0) {
+                if (_giottoSchedulerTime % intervalArray[i] == 0) {
                     fireAtSameTimeSchedule.add(new Firing(actor));
                 }
             }
@@ -285,8 +285,8 @@ public class GiottoScheduler extends Scheduler {
         int i = 0;
 
         while (true) {
-            if ((X % array[i]) == 0) {
-                if (i >= (count - 1)) {
+            if (X % array[i] == 0) {
+                if (i >= count - 1) {
                     break;
                 }
 

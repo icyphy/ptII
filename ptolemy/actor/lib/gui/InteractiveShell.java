@@ -115,8 +115,7 @@ public class InteractiveShell extends TypedAtomicActor implements Placeable,
 
         input = new TypedIOPort(this, "input", true, false);
         // Parameter to get Vergil to label the fileOrURL port.
-        new SingletonParameter(input, "_showName")
-                .setToken(BooleanToken.TRUE);
+        new SingletonParameter(input, "_showName").setToken(BooleanToken.TRUE);
 
         output = new TypedIOPort(this, "output", false, true);
         output.setTypeEquals(BaseType.STRING);
@@ -125,7 +124,6 @@ public class InteractiveShell extends TypedAtomicActor implements Placeable,
         // Parameter to get Vergil to label the fileOrURL port.
         new SingletonParameter(prompt.getPort(), "_showName")
                 .setToken(BooleanToken.TRUE);
-
 
         // Make command be a StringParameter (no surrounding double quotes).
         prompt.setTypeEquals(BaseType.STRING);
@@ -251,7 +249,7 @@ public class InteractiveShell extends TypedAtomicActor implements Placeable,
         shell.mainPrompt = ((StringToken) prompt.getToken()).stringValue();
 
         String value = "";
-        if ((input.numberOfSources() > 0) && input.hasToken(0)) {
+        if (input.numberOfSources() > 0 && input.hasToken(0)) {
             Token inputToken = input.get(0);
             if (inputToken instanceof StringToken) {
                 // To get the value without surrounding quotation marks.
@@ -292,7 +290,7 @@ public class InteractiveShell extends TypedAtomicActor implements Placeable,
         // Added synchronized again to not miss
         // notifications. Wait will release the lock and
         // retake it after it is notified.
-        while ((_outputValues.size() < 1) && !_stopRequested) {
+        while (_outputValues.size() < 1 && !_stopRequested) {
             try {
                 // NOTE: Do not call wait on this object directly!
                 // If another thread tries to get write access to the
@@ -304,9 +302,9 @@ public class InteractiveShell extends TypedAtomicActor implements Placeable,
             }
         }
         if (_stopRequested) {
-            return ("");
+            return "";
         } else {
-            return (_outputValues.remove(0));
+            return _outputValues.remove(0);
         }
     }
 
@@ -324,17 +322,20 @@ public class InteractiveShell extends TypedAtomicActor implements Placeable,
                     // No container has been specified for the shell.
                     // Place the shell in its own frame.
                     // Need an effigy and a tableau so that menu ops work properly.
-                    Effigy containerEffigy = Configuration.findEffigy(toplevel());
+                    Effigy containerEffigy = Configuration
+                            .findEffigy(toplevel());
 
                     if (containerEffigy == null) {
-                        MessageHandler.error("Cannot find effigy for top level: "
+                        MessageHandler
+                                .error("Cannot find effigy for top level: "
                                         + toplevel().getFullName());
                         return;
                     }
 
                     try {
                         ExpressionShellEffigy shellEffigy = new ExpressionShellEffigy(
-                                containerEffigy, containerEffigy.uniqueName("shell"));
+                                containerEffigy,
+                                containerEffigy.uniqueName("shell"));
 
                         // The default identifier is "Unnamed", which is no good for
                         // two reasons: Wrong title bar label, and it causes a save-as
@@ -349,8 +350,10 @@ public class InteractiveShell extends TypedAtomicActor implements Placeable,
                         // Prevent editing until the first firing.
                         shell.setEditable(false);
                     } catch (Exception ex) {
-                        MessageHandler.error("Error creating effigy and tableau "
-                                + InteractiveShell.this.getFullName(), ex);
+                        MessageHandler.error(
+                                "Error creating effigy and tableau "
+                                        + InteractiveShell.this.getFullName(),
+                                ex);
                         return;
                     }
 
@@ -455,7 +458,7 @@ public class InteractiveShell extends TypedAtomicActor implements Placeable,
         Nameable previousContainer = getContainer();
         super.setContainer(container);
 
-        if ((container != previousContainer) && (previousContainer != null)) {
+        if (container != previousContainer && previousContainer != null) {
             _remove();
         }
     }
@@ -526,7 +529,7 @@ public class InteractiveShell extends TypedAtomicActor implements Placeable,
     public void wrapup() throws IllegalActionException {
         super.wrapup();
 
-        if (_returnFalseInPostfire && (_frame != null)) {
+        if (_returnFalseInPostfire && _frame != null) {
             _frame.dispose();
             _frame = null;
             shell = null;

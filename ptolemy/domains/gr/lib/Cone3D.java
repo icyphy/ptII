@@ -133,14 +133,13 @@ public class Cone3D extends GRShadedShape {
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         // Check that a box has been previously created.
-        if (_changesAllowedNow
-                && ((attribute == radius) || (attribute == height))) {
+        if (_changesAllowedNow && (attribute == radius || attribute == height)) {
             if (_scaleTransform != null) {
-                float radiusValue = (float) (((DoubleToken) radius.getToken())
-                        .doubleValue());
+                float radiusValue = (float) ((DoubleToken) radius.getToken())
+                        .doubleValue();
 
-                float heightValue = (float) (((DoubleToken) height.getToken())
-                        .doubleValue());
+                float heightValue = (float) ((DoubleToken) height.getToken())
+                        .doubleValue();
 
                 _scaleTransform.setScale(new Vector3d(radiusValue, heightValue,
                         radiusValue));

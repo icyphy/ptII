@@ -283,7 +283,7 @@ public class GridLayer extends CanvasLayer implements VisibleComponent {
     public void setVertexPaint(Paint p) {
         _vertexPaint = p;
 
-        if ((_vertexPaint != null) && (_vertexShape == null)) {
+        if (_vertexPaint != null && _vertexShape == null) {
             double r = java.lang.Math.min(_size.getX(), _size.getY());
             _vertexShape = new Ellipse2D.Double(-r, -r, 2 * r, 2 * r);
         }

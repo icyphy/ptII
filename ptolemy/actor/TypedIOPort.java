@@ -270,8 +270,7 @@ public class TypedIOPort extends IOPort implements Typeable {
     public void broadcast(Token[] tokenArray, int vectorLength)
             throws IllegalActionException, NoRoomException {
         // Check types.
-        for (int i = 0; i < tokenArray.length; i++) {
-            Token token = tokenArray[i];
+        for (Token token : tokenArray) {
             _checkType(token);
         }
 
@@ -358,7 +357,7 @@ public class TypedIOPort extends IOPort implements Typeable {
                     TypedIOPort port = (TypedIOPort) ports.next();
 
                     // Rule out case where this port itself is listed...
-                    if ((port != this) && port.isInput()) {
+                    if (port != this && port.isInput()) {
                         portTypeSet.add(port.getType());
                     }
                 }
@@ -375,7 +374,7 @@ public class TypedIOPort extends IOPort implements Typeable {
                     TypedIOPort port = (TypedIOPort) ports.next();
 
                     // Rule out case where this port itself is listed...
-                    if ((port != this) && port.isOutput()) {
+                    if (port != this && port.isOutput()) {
                         portTypeList.add(port.getType());
                     }
                 }
@@ -732,7 +731,7 @@ public class TypedIOPort extends IOPort implements Typeable {
     protected void _checkContainer(Entity container)
             throws IllegalActionException {
         if (!(container instanceof TypedActor)
-                && !(container instanceof Librariable) && (container != null)) {
+                && !(container instanceof Librariable) && container != null) {
             throw new IllegalActionException(container, this,
                     "TypedIOPort can only be contained by objects "
                             + "implementing the TypedActor interface.");
@@ -798,7 +797,7 @@ public class TypedIOPort extends IOPort implements Typeable {
         }
         int compare = TypeLattice.compare(token.getType(), _resolvedType);
 
-        if ((compare == CPO.HIGHER) || (compare == CPO.INCOMPARABLE)) {
+        if (compare == CPO.HIGHER || compare == CPO.INCOMPARABLE) {
             throw new IllegalActionException(this,
                     "Run-time type checking failed. Token " + token
                             + " with type " + token.getType()
@@ -841,7 +840,7 @@ public class TypedIOPort extends IOPort implements Typeable {
 
             String result;
 
-            if ((bracket == 1) || (bracket == 2)) {
+            if (bracket == 1 || bracket == 2) {
                 result = super._description(detail, indent, 1);
             } else {
                 result = super._description(detail, indent, 0);
@@ -888,7 +887,7 @@ public class TypedIOPort extends IOPort implements Typeable {
             Iterator<TypeListener> listeners = _typeListeners.iterator();
 
             while (listeners.hasNext()) {
-                (listeners.next()).typeChanged(event);
+                listeners.next().typeChanged(event);
             }
         }
     }
@@ -937,7 +936,7 @@ public class TypedIOPort extends IOPort implements Typeable {
                 return variable;
             }
 
-            return (new InequalityTerm[0]);
+            return new InequalityTerm[0];
         }
 
         /** Reset the variable part of this type to the specified type.

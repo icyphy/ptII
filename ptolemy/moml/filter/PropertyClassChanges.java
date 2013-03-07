@@ -128,7 +128,7 @@ public class PropertyClassChanges extends MoMLFilterSimple {
             //                     +  attributeName + "\t" + attributeValue
             //                     + "fav0.5: lastNameSeen: " + _lastNameSeen);
             if (_currentlyProcessingActorWithPropertyClassChanges
-                    && (element != null) && element.equals("property")) {
+                    && element != null && element.equals("property")) {
                 if (_propertyMap.containsKey(attributeValue)) {
                     // We will do the above checks only if we found a
                     // class that had property class changes.
@@ -155,7 +155,7 @@ public class PropertyClassChanges extends MoMLFilterSimple {
         if (attributeName.equals("class")) {
             if (_currentlyProcessingActorWithPropertyClassChanges
                     && _foundChange) {
-                if ((container != null)
+                if (container != null
                         && !container.getFullName().equals(
                                 _currentActorFullName)
                         && !container
@@ -221,7 +221,7 @@ public class PropertyClassChanges extends MoMLFilterSimple {
                 _propertyMap = (HashMap) _actorsWithPropertyClassChanges
                         .get(attributeValue);
             } else if (_currentlyProcessingActorWithPropertyClassChanges
-                    && (container != null)
+                    && container != null
                     && !container.getFullName().equals(_currentActorFullName)
                     /*&& !container.getFullName().substring(0,
                       container.getFullName().lastIndexOf(".")).equals(_currentActorFullName)*/
@@ -437,8 +437,7 @@ public class PropertyClassChanges extends MoMLFilterSimple {
         lineReaderClassChanges.put("fileOrURL",
                 "ptolemy.actor.parameters.FilePortParameter");
 
-        _actorsWithPropertyClassChanges.put(
-                "ptolemy.actor.lib.io.LineReader",
+        _actorsWithPropertyClassChanges.put("ptolemy.actor.lib.io.LineReader",
                 lineReaderClassChanges);
 
         // CSVReader
@@ -448,8 +447,7 @@ public class PropertyClassChanges extends MoMLFilterSimple {
         csvReaderClassChanges.put("fileOrURL",
                 "ptolemy.actor.parameters.FilePortParameter");
 
-        _actorsWithPropertyClassChanges.put(
-                "ptolemy.actor.lib.io.CSVReader",
+        _actorsWithPropertyClassChanges.put("ptolemy.actor.lib.io.CSVReader",
                 csvReaderClassChanges);
 
         // ExpressionReader
@@ -678,12 +676,12 @@ public class PropertyClassChanges extends MoMLFilterSimple {
         // 'PythonActor' has a _tableauFactory that is a TextEditorTableauFactory
         // 'PythonScript' has an _editoryFactory that is a TextEditorConfigureFactory.
         // Both are actor.lib.PythonScript instances.  So, we can't filter here.
-//         HashMap PythonActorAttributeClassChanges = new HashMap();
-//         PythonActorAttributeClassChanges.put("_tableauFactory",
-//                 "ptolemy.vergil.toolbox.TextEditorConfigureFactory");
+        //         HashMap PythonActorAttributeClassChanges = new HashMap();
+        //         PythonActorAttributeClassChanges.put("_tableauFactory",
+        //                 "ptolemy.vergil.toolbox.TextEditorConfigureFactory");
 
-//         _actorsWithPropertyClassChanges.put("ptolemy.actor.lib.python.PythonScript",
-//                 PythonActorAttributeClassChanges);
+        //         _actorsWithPropertyClassChanges.put("ptolemy.actor.lib.python.PythonScript",
+        //                 PythonActorAttributeClassChanges);
 
     }
 }

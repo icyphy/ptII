@@ -125,7 +125,7 @@ public class DynamicEditorIcon extends EditorIcon {
      *  @param newFigure A newly manufactured figure.
      */
     protected void _addLiveFigure(Figure newFigure) {
-        synchronized(_figures) {
+        synchronized (_figures) {
             _figures.add(new WeakReference(newFigure));
         }
 
@@ -145,7 +145,7 @@ public class DynamicEditorIcon extends EditorIcon {
             public boolean hasNext() {
                 // Pull the next valid element out of the list of
                 // WeakReferences.
-                while ((_object == null) && iterator.hasNext()) {
+                while (_object == null && iterator.hasNext()) {
                     _object = ((WeakReference) iterator.next()).get();
 
                     if (_object == null) {
@@ -159,7 +159,7 @@ public class DynamicEditorIcon extends EditorIcon {
             public Object next() throws NoSuchElementException {
                 // Just to make sure that someone wasn't stupid
                 // and didn't call hasNext();
-                while ((_object == null) && iterator.hasNext()) {
+                while (_object == null && iterator.hasNext()) {
                     _object = ((WeakReference) iterator.next()).get();
 
                     if (_object == null) {

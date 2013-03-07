@@ -328,7 +328,7 @@ public abstract class CanvasPane implements EventAcceptor, CanvasComponent {
      * and subclasses.
      */
     public final void setCanvas(JCanvas canvas) {
-        if ((canvas != null) && (_parent != null)) {
+        if (canvas != null && _parent != null) {
             throw new IllegalArgumentException("CanvasPane " + this
                     + " is already contained in another CanvasComponent. \n"
                     + "Cannot set the parent canvas to " + canvas);
@@ -348,7 +348,7 @@ public abstract class CanvasPane implements EventAcceptor, CanvasComponent {
      * null and the canvas is not null, throw an exception.
      */
     public final void setParent(CanvasComponent parent) {
-        if ((parent != null) && (_canvas != null)) {
+        if (parent != null && _canvas != null) {
             throw new IllegalArgumentException("CanvasPane " + this
                     + " is already contained in a JCanvas. \n"
                     + "Cannot set the parent component to " + parent);
@@ -414,7 +414,7 @@ public abstract class CanvasPane implements EventAcceptor, CanvasComponent {
 
         at.translate(xcenter, ycenter);
         at.scale(xscale, yscale);
-        at.translate(-(xcenter), -(ycenter));
+        at.translate(-xcenter, -ycenter);
 
         // Preconcatenate the pane's transform with it and refresh
         _transformContext.getTransform().preConcatenate(at);
@@ -480,8 +480,8 @@ public abstract class CanvasPane implements EventAcceptor, CanvasComponent {
             _verticalRangeModel.setMinimum(-viewHeight);
             _horizontalRangeModel.setMinimum(-viewWidth);
 
-            _verticalRangeModel.setMaximum(viewY + (2 * viewHeight));
-            _horizontalRangeModel.setMaximum(viewX + (2 * viewWidth));
+            _verticalRangeModel.setMaximum(viewY + 2 * viewHeight);
+            _horizontalRangeModel.setMaximum(viewX + 2 * viewWidth);
 
             _verticalRangeModel.setExtent(visHeight);
             _horizontalRangeModel.setExtent(visWidth);

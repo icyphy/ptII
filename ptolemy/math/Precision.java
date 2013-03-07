@@ -194,7 +194,7 @@ public class Precision implements Cloneable, Serializable {
      */
     public Precision(int sign, int length, int exponent)
             throws IllegalArgumentException {
-        if ((sign != 0) && (sign != 1)) {
+        if (sign != 0 && sign != 1) {
             throw new IllegalArgumentException("Incorrect definition of "
                     + "Precision. Sign must be 0 or 1");
         }
@@ -229,8 +229,8 @@ public class Precision implements Cloneable, Serializable {
         if (object instanceof Precision) {
             Precision other = (Precision) object;
 
-            if ((other._length == _length) && (other._exponent == _exponent)
-                    && (other._sign == _sign)) {
+            if (other._length == _length && other._exponent == _exponent
+                    && other._sign == _sign) {
                 return true;
             }
         }
@@ -348,7 +348,7 @@ public class Precision implements Cloneable, Serializable {
      * @return Least significant bit position.
      */
     public int getMostSignificantBitPosition() {
-        return (_exponent + _length) - 1;
+        return _exponent + _length - 1;
     }
 
     /**
@@ -361,7 +361,7 @@ public class Precision implements Cloneable, Serializable {
      * @return Least significant bit position.
      */
     public int getMostSignificantDataBitPosition() {
-        return (_exponent + _length) - 1 - _sign;
+        return _exponent + _length - 1 - _sign;
     }
 
     /** Return the total number of bits.
@@ -417,17 +417,16 @@ public class Precision implements Cloneable, Serializable {
      */
     public static Precision union(Precision precisionA, Precision precisionB) {
 
-        int minExponent = (precisionA._exponent < precisionB._exponent) ? precisionA._exponent
+        int minExponent = precisionA._exponent < precisionB._exponent ? precisionA._exponent
                 : precisionB._exponent;
 
         int aDataMSB = precisionA.getMostSignificantDataBitPosition();
         int bDataMSB = precisionB.getMostSignificantDataBitPosition();
 
-        int maxDataMSB = (aDataMSB > bDataMSB) ? aDataMSB : bDataMSB;
+        int maxDataMSB = aDataMSB > bDataMSB ? aDataMSB : bDataMSB;
         int newLength = maxDataMSB - minExponent + 1;
 
-        int newSign = ((precisionA._sign == 1) || (precisionB._sign == 1)) ? 1
-                : 0;
+        int newSign = precisionA._sign == 1 || precisionB._sign == 1 ? 1 : 0;
         newLength += newSign;
 
         return new Precision(newSign, newLength, minExponent);
@@ -713,7 +712,7 @@ public class Precision implements Cloneable, Serializable {
         }
 
         public String printPrecisionFormat(Precision p) {
-            String sign = (p.isSigned()) ? "" : "U";
+            String sign = p.isSigned() ? "" : "U";
             return "(" + sign + p.getIntegerBitLength() + "."
                     + p.getFractionBitLength() + ")";
         }
@@ -799,7 +798,7 @@ public class Precision implements Cloneable, Serializable {
         }
 
         public String printPrecisionFormat(Precision p) {
-            String sign = (p.isSigned()) ? "" : "U";
+            String sign = p.isSigned() ? "" : "U";
             return "(" + sign + p.getNumberOfBits() + "/"
                     + p.getIntegerBitLength() + ")";
         }
@@ -888,7 +887,7 @@ public class Precision implements Cloneable, Serializable {
         }
 
         public String printPrecisionFormat(Precision p) {
-            String sign = (p.isSigned()) ? "" : "U";
+            String sign = p.isSigned() ? "" : "U";
             return "(" + sign + p.getNumberOfBits() + "e" + p.getExponent()
                     + ")";
         }
@@ -967,7 +966,7 @@ public class Precision implements Cloneable, Serializable {
         }
 
         public String printPrecisionFormat(Precision p) {
-            String sign = (p.isSigned()) ? "" : "U";
+            String sign = p.isSigned() ? "" : "U";
             return "(" + sign + p.getMostSignificantBitPosition() + ":"
                     + p.getLeastSignificantBitPosition() + ")";
         }

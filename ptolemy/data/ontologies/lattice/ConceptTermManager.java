@@ -197,7 +197,7 @@ public class ConceptTermManager implements ConceptTermFactory {
                 return variable;
             }
 
-            return (new InequalityTerm[0]);
+            return new InequalityTerm[0];
         }
 
         /**
@@ -215,7 +215,7 @@ public class ConceptTermManager implements ConceptTermFactory {
                 return constant;
             }
 
-            return (new InequalityTerm[0]);
+            return new InequalityTerm[0];
         }
 
         /** Reset the variable part of this type to the specified type.

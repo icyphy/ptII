@@ -311,7 +311,7 @@ public class GraphTransformer extends ChangeRequest {
                 // Needs to fix this in ptolemy.actor.lib.Publisher.
                 if (hostLinkedObject != null
                         && !hostLinkdList.contains(hostLinkedObject)) {
-                    Relation relation = (hostLinkedObject instanceof Relation) ? (Relation) hostLinkedObject
+                    Relation relation = hostLinkedObject instanceof Relation ? (Relation) hostLinkedObject
                             : (Relation) host;
 
                     NamedObj hostContainer = relation.getContainer();

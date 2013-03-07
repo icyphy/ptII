@@ -210,8 +210,8 @@ public class FMUFile {
                     root.getAttribute("numberOfEventIndicators")).intValue();
         }
         if (root.hasAttribute("canGetAndSetFMUstate")) {
-            fmiModelDescription.canGetAndSetFMUstate = Boolean.parseBoolean(
-                    root.getAttribute("canGetAndSetFMUstate"));
+            fmiModelDescription.canGetAndSetFMUstate = Boolean
+                    .parseBoolean(root.getAttribute("canGetAndSetFMUstate"));
         }
 
         // TypeDefinitions
@@ -245,8 +245,8 @@ public class FMUFile {
             NodeList implementation = document
                     .getElementsByTagName("CoSimulation_StandAlone");
             if (implementation.getLength() > 1) {
-                System.out.println("Warning: FMU has more than one element " +
-                        "CoSimulation_StandAlone");
+                System.out.println("Warning: FMU has more than one element "
+                        + "CoSimulation_StandAlone");
             }
             for (int i = 0; i < implementation.getLength(); i++) {
                 foundCoSimulation = true;
@@ -254,7 +254,8 @@ public class FMUFile {
                 NodeList capabilities = element
                         .getElementsByTagName("Capabilities");
                 for (int j = 0; j < capabilities.getLength(); j++) {
-                    Element capabilitiesElement = (Element) capabilities.item(j);
+                    Element capabilitiesElement = (Element) capabilities
+                            .item(j);
                     fmiModelDescription.capabilities = new FMICoSimulationCapabilities(
                             capabilitiesElement);
                 }
@@ -265,11 +266,13 @@ public class FMUFile {
             NodeList implementation = document
                     .getElementsByTagName("CoSimulation");
             if (implementation.getLength() > 1) {
-                System.out.println("Warning: FMU modelDescription provides more than one CoSimulation element");
+                System.out
+                        .println("Warning: FMU modelDescription provides more than one CoSimulation element");
             } else {
                 foundCoSimulation = true;
                 Element cosimulation = (Element) implementation.item(0);
-                fmiModelDescription.capabilities = new FMICoSimulationCapabilities(cosimulation);
+                fmiModelDescription.capabilities = new FMICoSimulationCapabilities(
+                        cosimulation);
 
                 // In FMI 2.0, the modelIdentifier is given in the CoSimulation element,
                 // not in the root element (presumably so that CoSimulation and ModelExcchange
@@ -278,7 +281,8 @@ public class FMUFile {
                     fmiModelDescription.modelIdentifier = cosimulation
                             .getAttribute("modelIdentifier");
                 } else {
-                    System.out.println("Warning: FMU CoSimulation element is missing a modelIdentifier.");
+                    System.out
+                            .println("Warning: FMU CoSimulation element is missing a modelIdentifier.");
                 }
             }
         }
@@ -287,12 +291,13 @@ public class FMUFile {
         // the FMI for co-simulation), the implementation tag is
         // optional.
         if (!fmiModelDescription.fmiVersion.equals("1.0") && !foundCoSimulation) {
-            System.out.println("Warning: FMU version "
-                    + fmiModelDescription.fmiVersion
-                    + "does not support CoSimulation.  "
-                    + "In FMI 1.0, the CoSimulation_Standalone element is optional.  "
-                    + "In FMI 2.0, there must be a CoSimulation element.  "
-                    + "Note that Model Exchange is not yet supported by Ptolemy II.");
+            System.out
+                    .println("Warning: FMU version "
+                            + fmiModelDescription.fmiVersion
+                            + "does not support CoSimulation.  "
+                            + "In FMI 1.0, the CoSimulation_Standalone element is optional.  "
+                            + "In FMI 2.0, there must be a CoSimulation element.  "
+                            + "Note that Model Exchange is not yet supported by Ptolemy II.");
         }
 
         // ModelVariables.

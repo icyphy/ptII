@@ -131,10 +131,10 @@ public class OntologyGraphFrame extends ExtendedGraphFrame implements
 
         // Set the action command and listener for each menu item in the
         // debug menu.
-        for (int i = 0; i < debugMenuItems.length; i++) {
-            debugMenuItems[i].setActionCommand(debugMenuItems[i].getText());
-            debugMenuItems[i].addActionListener(debugMenuListener);
-            _debugMenu.add(debugMenuItems[i]);
+        for (JMenuItem debugMenuItem : debugMenuItems) {
+            debugMenuItem.setActionCommand(debugMenuItem.getText());
+            debugMenuItem.addActionListener(debugMenuListener);
+            _debugMenu.add(debugMenuItem);
         }
 
         _menubar.add(_debugMenu);

@@ -373,8 +373,8 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
                                 .getGreaterTerm().getVariables();
                         boolean added = false;
 
-                        for (int i = 0; i < lesserVariables.length; i++) {
-                            InequalityTerm variable = lesserVariables[i];
+                        for (InequalityTerm lesserVariable : lesserVariables) {
+                            InequalityTerm variable = lesserVariable;
 
                             if (!variable.isValueAcceptable()) {
                                 unacceptable.add(variable);
@@ -384,8 +384,8 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
                         }
 
                         if (added == false) {
-                            for (int i = 0; i < greaterVariables.length; i++) {
-                                InequalityTerm variable = greaterVariables[i];
+                            for (InequalityTerm greaterVariable : greaterVariables) {
+                                InequalityTerm variable = greaterVariable;
 
                                 if (!variable.isValueAcceptable()) {
                                     unacceptable.add(variable);
@@ -652,8 +652,7 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
                     int compare = TypeLattice
                             .compare(srcDeclared, destDeclared);
 
-                    if ((compare == CPO.HIGHER)
-                            || (compare == CPO.INCOMPARABLE)) {
+                    if (compare == CPO.HIGHER || compare == CPO.INCOMPARABLE) {
                         Inequality inequality = new Inequality(
                                 sourcePort.getTypeTerm(),
                                 destinationPort.getTypeTerm());
@@ -796,10 +795,10 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
         List result = new LinkedList();
 
         if (receivers != null) {
-            for (int i = 0; i < receivers.length; i++) {
-                if (receivers[i] != null) {
-                    for (int j = 0; j < receivers[i].length; j++) {
-                        result.add(receivers[i][j].getContainer());
+            for (Receiver[] receiver : receivers) {
+                if (receiver != null) {
+                    for (int j = 0; j < receiver.length; j++) {
+                        result.add(receiver[j].getContainer());
                     }
                 }
             }

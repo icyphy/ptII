@@ -161,8 +161,8 @@ public class QueueControl extends TypedAtomicActor {
             int max = ((IntToken) maxMark.getToken()).intValue();
             double l = 0.0;
 
-            if ((_q1Length + _q2Length) > min) {
-                l = ((0.0 + _q1Length + _q2Length) - min) / (max - min);
+            if (_q1Length + _q2Length > min) {
+                l = (0.0 + _q1Length + _q2Length - min) / (max - min);
             }
 
             if (l > r) {

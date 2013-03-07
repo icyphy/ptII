@@ -253,7 +253,7 @@ public class ComponentDialog extends JDialog {
         setVisible(false);
         dispose();
 
-        if ((contents instanceof CloseListener) && !_doneHandleClosing) {
+        if (contents instanceof CloseListener && !_doneHandleClosing) {
             _doneHandleClosing = true;
             ((CloseListener) contents).windowClosed(this, _buttonPressed);
         }
@@ -276,7 +276,7 @@ public class ComponentDialog extends JDialog {
             // PropertyChange is an extremely non-selective listener,
             // so we have to filter...
             if (isVisible()
-                    && (e.getSource() == _optionPane)
+                    && e.getSource() == _optionPane
                     && (prop.equals(JOptionPane.VALUE_PROPERTY) || prop
                             .equals(JOptionPane.INPUT_VALUE_PROPERTY))) {
                 Object value = _optionPane.getValue();

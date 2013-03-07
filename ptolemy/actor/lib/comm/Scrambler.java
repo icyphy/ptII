@@ -246,7 +246,7 @@ public class Scrambler extends Transformer {
 
         // Calculate the parity of the masked word.
         while (masked > 0) {
-            parity = parity ^ (masked & 1);
+            parity = parity ^ masked & 1;
             masked = masked >> 1;
         }
 

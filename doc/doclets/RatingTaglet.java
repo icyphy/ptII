@@ -213,7 +213,7 @@ public class RatingTaglet implements Taglet {
         String javaSpecificationVersion = System
                 .getProperty("java.specification.version");
 
-        if ((javaSpecificationVersion != null)
+        if (javaSpecificationVersion != null
                 && javaSpecificationVersion.equals("1.4")) {
             tagletMap.put(taglet.getName(), taglet);
         } else {

@@ -89,7 +89,7 @@ public class ArrayAppend extends Transformer {
      *   an attribute that cannot be cloned.
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        ArrayAppend newObject = (ArrayAppend) (super.clone(workspace));
+        ArrayAppend newObject = (ArrayAppend) super.clone(workspace);
 
         // Set the type constraints.
         newObject.input.setTypeAtLeast(ArrayType.ARRAY_BOTTOM);

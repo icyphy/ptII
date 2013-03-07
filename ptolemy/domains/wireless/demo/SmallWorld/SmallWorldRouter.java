@@ -328,7 +328,7 @@ public class SmallWorldRouter extends TypedAtomicActor {
                         .doubleValue();
                 Time time = director.getModelTime().add(delayTime);
                 _fireAt(time);
-            } else if (getName().equals(routeTo) || (hops == 0)) {
+            } else if (getName().equals(routeTo) || hops == 0) {
                 // Change the color of the icon to green.
                 _circle2.fillColor.setToken("{0.0, 1.0, 0.0, 1.0}");
 
@@ -339,7 +339,7 @@ public class SmallWorldRouter extends TypedAtomicActor {
                 Locatable myLocation = (Locatable) this.getAttribute(
                         "_location", Locatable.class);
 
-                if ((destLocation == null) || (myLocation == null)) {
+                if (destLocation == null || myLocation == null) {
                     throw new IllegalActionException(
                             "Cannot determine location for node "
                                     + destNode.getName() + ".");
@@ -461,7 +461,7 @@ public class SmallWorldRouter extends TypedAtomicActor {
     public void initialize() throws IllegalActionException {
         super.initialize();
 
-        long seedValue = ((LongToken) (seed.getToken())).longValue();
+        long seedValue = ((LongToken) seed.getToken()).longValue();
 
         if (seedValue != 0) {
             _random.setSeed(seedValue);
@@ -495,8 +495,8 @@ public class SmallWorldRouter extends TypedAtomicActor {
             throws IllegalActionException {
         double[] p1 = location1.getLocation();
         double[] p2 = location2.getLocation();
-        return Math.sqrt(((p1[0] - p2[0]) * (p1[0] - p2[0]))
-                + ((p1[1] - p2[1]) * (p1[1] - p2[1])));
+        return Math.sqrt((p1[0] - p2[0]) * (p1[0] - p2[0]) + (p1[1] - p2[1])
+                * (p1[1] - p2[1]));
     }
 
     /** Return the list of nodes that can receive from the specified
@@ -533,7 +533,7 @@ public class SmallWorldRouter extends TypedAtomicActor {
             }
 
             // Make sure a probability of 1.0 is truly a sure loss.
-            if ((probability < 1.0) && (experiment >= probability)) {
+            if (probability < 1.0 && experiment >= probability) {
                 nodesInRangeList.add(port.getContainer());
             }
         }

@@ -177,7 +177,7 @@ public abstract class ModelScope implements ParserScope {
             if (result != null) {
                 return result;
             } else {
-                List attributes = (container)
+                List attributes = container
                         .attributeList(ContainmentExtender.class);
                 Iterator attrIterator = attributes.iterator();
                 NamedObj extendedContainer = null;
@@ -255,7 +255,7 @@ public abstract class ModelScope implements ParserScope {
                     }
                 }
                 if (lookup && result == null) {
-                    List attributes = (container)
+                    List attributes = container
                             .attributeList(ContainmentExtender.class);
                     Iterator attrIterator = attributes.iterator();
                     NamedObj extendedContainer = null;
@@ -312,7 +312,7 @@ public abstract class ModelScope implements ParserScope {
             if (result != null) {
                 return result;
             } else {
-                List attributes = (container)
+                List attributes = container
                         .attributeList(ContainmentExtender.class);
                 Iterator attrIterator = attributes.iterator();
                 NamedObj extendedContainer = null;
@@ -396,8 +396,7 @@ public abstract class ModelScope implements ParserScope {
             NamedObj container, String name) {
         Attribute result = container.getAttribute(name);
 
-        if ((result != null) && result instanceof Variable
-                && (result != exclude)) {
+        if (result != null && result instanceof Variable && result != exclude) {
             return (Variable) result;
         } else {
             Iterator extenders = container.attributeList(ScopeExtender.class)
@@ -407,8 +406,8 @@ public abstract class ModelScope implements ParserScope {
                 ScopeExtender extender = (ScopeExtender) extenders.next();
                 result = extender.getAttribute(name);
 
-                if ((result != null) && result instanceof Variable
-                        && (result != exclude)) {
+                if (result != null && result instanceof Variable
+                        && result != exclude) {
                     return (Variable) result;
                 }
             }

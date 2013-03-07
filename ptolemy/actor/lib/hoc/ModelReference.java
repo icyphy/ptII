@@ -668,7 +668,7 @@ public class ModelReference extends TypedAtomicActor implements
      *  @exception IllegalActionException Thrown if a parent class throws it.
      */
     public boolean postfire() throws IllegalActionException {
-        if ((_postfireActionValue == _STOP_EXECUTING) && (_manager != null)) {
+        if (_postfireActionValue == _STOP_EXECUTING && _manager != null) {
             if (_debugging) {
                 _debug("** Calling finish() on the Manager to request termination.");
             }
@@ -809,7 +809,7 @@ public class ModelReference extends TypedAtomicActor implements
                 continue;
             }
 
-            if ((port.isOutsideConnected()) && port.hasToken(0)) {
+            if (port.isOutsideConnected() && port.hasToken(0)) {
                 Token token = port.get(0);
 
                 if (_model != null) {

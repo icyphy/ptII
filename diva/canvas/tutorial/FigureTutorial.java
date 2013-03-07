@@ -350,8 +350,8 @@ public class FigureTutorial {
                     BasicStroke.JOIN_MITER);
             g.setStroke(s);
             g.setPaint(Color.red);
-            g.draw(new Line2D.Double(x, y + (h / 2), x + w, y + (h / 2)));
-            g.draw(new Line2D.Double(x + (w / 2), y, x + (w / 2), y + h));
+            g.draw(new Line2D.Double(x, y + h / 2, x + w, y + h / 2));
+            g.draw(new Line2D.Double(x + w / 2, y, x + w / 2, y + h));
         }
 
         /** Transform the object. There are various ways of doing this,

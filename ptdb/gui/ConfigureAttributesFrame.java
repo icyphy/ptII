@@ -40,7 +40,6 @@ import java.awt.event.MouseListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import javax.swing.JFrame;
@@ -565,8 +564,8 @@ public class ConfigureAttributesFrame extends JFrame implements PTDBBasicFrame {
 
             _attributesNames = new ArrayList<String>();
 
-            for (Iterator iterator = _attributes.iterator(); iterator.hasNext();) {
-                XMLDBAttribute attribute = (XMLDBAttribute) iterator.next();
+            for (Object element : _attributes) {
+                XMLDBAttribute attribute = (XMLDBAttribute) element;
                 _attributesNames.add(attribute.getAttributeName());
             }
 
@@ -627,10 +626,8 @@ public class ConfigureAttributesFrame extends JFrame implements PTDBBasicFrame {
                     }
 
                     if (canChange) {
-                        for (Iterator iterator = _attributes.iterator(); iterator
-                                .hasNext();) {
-                            XMLDBAttribute attribute = (XMLDBAttribute) iterator
-                                    .next();
+                        for (Object element : _attributes) {
+                            XMLDBAttribute attribute = (XMLDBAttribute) element;
                             if (attribute.getAttributeName().equals(
                                     _attributesList.getSelectedValue())) {
 
@@ -1037,9 +1034,8 @@ public class ConfigureAttributesFrame extends JFrame implements PTDBBasicFrame {
 
                 // Update the stored list in this class.
                 int index = 0;
-                for (Iterator iterator = _attributes.iterator(); iterator
-                        .hasNext();) {
-                    XMLDBAttribute attribute = (XMLDBAttribute) iterator.next();
+                for (Object element : _attributes) {
+                    XMLDBAttribute attribute = (XMLDBAttribute) element;
                     if (attribute.getAttributeId().equals(
                             _currentEditedAttribute.getAttributeId())) {
                         _attributes.set(index, _currentEditedAttribute);
@@ -1108,8 +1104,8 @@ public class ConfigureAttributesFrame extends JFrame implements PTDBBasicFrame {
 
         Utilities.checkAttributeName(_attributeNameField.getText());
 
-        for (Iterator iterator = _attributes.iterator(); iterator.hasNext();) {
-            XMLDBAttribute existingAttribute = (XMLDBAttribute) iterator.next();
+        for (Object element : _attributes) {
+            XMLDBAttribute existingAttribute = (XMLDBAttribute) element;
 
             if (existingAttribute.getAttributeName().equals(
                     _attributeNameField.getText())) {

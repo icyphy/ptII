@@ -118,13 +118,13 @@ public class DDEThread extends ProcessThread {
                     break;
                 }
 
-                for (int i = 0; i < receivers.length; i++) {
-                    for (int j = 0; j < receivers[i].length; j++) {
+                for (Receiver[] receiver : receivers) {
+                    for (int j = 0; j < receiver.length; j++) {
                         try {
-                            if (((DDEReceiver) receivers[i][j])
-                                    .getReceiverTime().getDoubleValue() != endTime) {
+                            if (((DDEReceiver) receiver[j]).getReceiverTime()
+                                    .getDoubleValue() != endTime) {
                                 try {
-                                    ((DDEReceiver) receivers[i][j]).put(null,
+                                    ((DDEReceiver) receiver[j]).put(null,
                                             new Time(getActor().getDirector(),
                                                     endTime));
                                 } catch (IllegalActionException ex) {

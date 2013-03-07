@@ -46,7 +46,6 @@ import ptolemy.data.DoubleToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
-import ptolemy.domains.de.lib.Server;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
@@ -84,7 +83,6 @@ public class PacketDropFaultGenerator extends MonitoredQuantityManager {
         super(container, name);
         _tokens = new FIFOQueue();
         _receiversAndTokensToSendTo = new HashMap();
-
 
         packetDropProbability = new Parameter(this, "Packet Drop Probability");
         packetDropProbability.setExpression("0.1");
@@ -124,10 +122,12 @@ public class PacketDropFaultGenerator extends MonitoredQuantityManager {
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == packetDropProbability) {
-            double value = ((DoubleToken) packetDropProbability.getToken()).doubleValue();
+            double value = ((DoubleToken) packetDropProbability.getToken())
+                    .doubleValue();
             if (value < 0.0 || value > 1.0) {
                 throw new IllegalActionException(this,
-                        "Cannot have a probability value outside range [0.0,1.0]: " + value);
+                        "Cannot have a probability value outside range [0.0,1.0]: "
+                                + value);
             }
             _packetDropProbabilityValue = value;
         }
@@ -148,7 +148,8 @@ public class PacketDropFaultGenerator extends MonitoredQuantityManager {
      *  @return A new Bus.
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        PacketDropFaultGenerator newObject = (PacketDropFaultGenerator) super.clone(workspace);
+        PacketDropFaultGenerator newObject = (PacketDropFaultGenerator) super
+                .clone(workspace);
         newObject._nextReceiver = null;
         newObject._nextTimeFree = null;
         newObject._receiversAndTokensToSendTo = new HashMap();
@@ -183,12 +184,11 @@ public class PacketDropFaultGenerator extends MonitoredQuantityManager {
             Token token = (Token) output[1];
 
             //biased coin toss.
-            if ( Math.random() > (1.0 - _packetDropProbabilityValue)) {
+            if (Math.random() > 1.0 - _packetDropProbabilityValue) {
                 //drop packet (do not send)
-            }
-            else {
+            } else {
 
-            _sendToReceiver(receiver, token);
+                _sendToReceiver(receiver, token);
             }
 
             if (_debugging) {
@@ -239,7 +239,7 @@ public class PacketDropFaultGenerator extends MonitoredQuantityManager {
         // only token on the queue, then request a firing at
         // the time that token should be delivered to the
         // delegated receiver.
-        if ((getDirector() instanceof FixedPointDirector)
+        if (getDirector() instanceof FixedPointDirector
                 && _receiversAndTokensToSendTo != null) {
             for (Receiver receiver : _receiversAndTokensToSendTo.keySet()) {
                 Token token = _receiversAndTokensToSendTo.get(receiver);

@@ -156,7 +156,7 @@ public class PtidesReceiver extends DEReceiver {
                 if (actor != null) {
                     Director dir;
 
-                    if (!port.isInput() && (actor instanceof CompositeActor)
+                    if (!port.isInput() && actor instanceof CompositeActor
                             && ((CompositeActor) actor).isOpaque()) {
                         dir = actor.getDirector();
                     } else {

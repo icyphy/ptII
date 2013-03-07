@@ -98,16 +98,16 @@ public class ExplicitRK23Solver extends ContinuousODESolver {
 
         switch (_roundCount) {
         case 0:
-            outputValue = xn + (h * k[0] * _B[0][0]);
+            outputValue = xn + h * k[0] * _B[0][0];
             break;
 
         case 1:
-            outputValue = xn + (h * ((k[0] * _B[1][0]) + (k[1] * _B[1][1])));
+            outputValue = xn + h * (k[0] * _B[1][0] + k[1] * _B[1][1]);
             break;
 
         case 2:
-            outputValue = xn
-                    + (h * ((k[0] * _B[2][0]) + (k[1] * _B[2][1]) + (k[2] * _B[2][2])));
+            outputValue = xn + h
+                    * (k[0] * _B[2][0] + k[1] * _B[2][1] + k[2] * _B[2][2]);
             break;
 
         case 3:
@@ -133,8 +133,8 @@ public class ExplicitRK23Solver extends ContinuousODESolver {
         double h = _director.getCurrentStepSize();
         double[] k = integrator.getAuxVariables();
         double error = h
-                * Math.abs((k[0] * _E[0]) + (k[1] * _E[1]) + (k[2] * _E[2])
-                        + (k[3] * _E[3]));
+                * Math.abs(k[0] * _E[0] + k[1] * _E[1] + k[2] * _E[2] + k[3]
+                        * _E[3]);
 
         integrator.setAuxVariables(_ERROR_INDEX, error);
         if (_isDebugging()) {
@@ -166,13 +166,13 @@ public class ExplicitRK23Solver extends ContinuousODESolver {
      *  @return The next step size suggested by the given integrator.
      */
     public double integratorSuggestedStepSize(ContinuousIntegrator integrator) {
-        double error = (integrator.getAuxVariables())[_ERROR_INDEX];
+        double error = integrator.getAuxVariables()[_ERROR_INDEX];
         double h = _director.getCurrentStepSize();
         double tolerance = _director.getErrorTolerance();
         double newh = 5.0 * h;
 
         if (error > tolerance) {
-            newh = 0.8 * Math.pow((tolerance / error), 1.0 / _ORDER);
+            newh = 0.8 * Math.pow(tolerance / error, 1.0 / _ORDER);
             if (newh > h) {
                 newh = 0.5 * h;
             }

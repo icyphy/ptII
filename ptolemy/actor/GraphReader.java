@@ -105,28 +105,28 @@ public class GraphReader {
         actors = compositeActor.deepEntityList().iterator();
 
         while (actors.hasNext()) {
-            Actor source = (Actor) (actors.next());
+            Actor source = (Actor) actors.next();
 
             // Connect the current actor to each of its sinks
             Iterator outPorts = source.outputPortList().iterator();
 
             while (outPorts.hasNext()) {
-                IOPort outPort = (IOPort) (outPorts.next());
+                IOPort outPort = (IOPort) outPorts.next();
                 Iterator inPorts = outPort.deepConnectedInPortList().iterator();
 
                 while (inPorts.hasNext()) {
-                    IOPort inPort = (IOPort) (inPorts.next());
-                    Actor sink = (Actor) (inPort.getContainer());
+                    IOPort inPort = (IOPort) inPorts.next();
+                    Actor sink = (Actor) inPort.getContainer();
 
-                    if (graph.containsNode((Node) (_actorMap.get(sink)))) {
+                    if (graph.containsNode((Node) _actorMap.get(sink))) {
                         if (_debug) {
                             System.out.println("Adding edge from " + source
                                     + " to " + sink);
                         }
 
                         Edge newEdge = graph.addEdge(
-                                (Node) (_actorMap.get(source)),
-                                (Node) (_actorMap.get(sink)),
+                                (Node) _actorMap.get(source),
+                                (Node) _actorMap.get(sink),
                                 _computeEdgeWeight(outPort, inPort));
                         _processNewEdge(graph, newEdge, outPort, inPort);
                     }

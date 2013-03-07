@@ -62,9 +62,9 @@ public class Scale extends LatticeOntologyAdapter {
             throws IllegalActionException {
         super(solver, actor, false);
 
-        _multiplyDefinition = (ConceptFunctionDefinitionAttribute) (_solver
-                .getContainedModel())
-                .getAttribute(LatticeOntologySolver.MULTIPLY_FUNCTION_NAME);
+        _multiplyDefinition = (ConceptFunctionDefinitionAttribute) _solver
+                .getContainedModel().getAttribute(
+                        LatticeOntologySolver.MULTIPLY_FUNCTION_NAME);
 
         // If a definition for a multiplication concept function cannot be
         // found, just use the default constraints.

@@ -191,10 +191,10 @@ public class RecordAssembler extends TypedAtomicActor {
      */
     public boolean prefire() throws IllegalActionException {
 
-         for (TypedIOPort port : _inputs) {
-             if (!port.hasToken(0)) {
+        for (TypedIOPort port : _inputs) {
+            if (!port.hasToken(0)) {
                 return false;
-             }
+            }
         }
 
         return true;
@@ -234,8 +234,8 @@ public class RecordAssembler extends TypedAtomicActor {
             // only include ports that have no type declared
             if (input.getTypeTerm().isSettable()) {
                 result.add(new Inequality(new ExtractFieldType(output,
-                        StringUtilities.sanitizeName(input
-                        .getName())), input.getTypeTerm()));
+                        StringUtilities.sanitizeName(input.getName())), input
+                        .getTypeTerm()));
             }
         }
 

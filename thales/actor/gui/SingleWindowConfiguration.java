@@ -111,7 +111,7 @@ public class SingleWindowConfiguration extends Configuration {
 
                 // If there are more than one of these, use the first
                 // one that agrees to open the model.
-                while (factories.hasNext() && (factory == null)) {
+                while (factories.hasNext() && factory == null) {
                     factory = (TableauFactory) factories.next();
 
                     try {
@@ -280,7 +280,7 @@ public class SingleWindowConfiguration extends Configuration {
 
                 // Find the first container above in the hierarchy that
                 // has an effigy.
-                while ((parent != null) && (parentEffigy == null)) {
+                while (parent != null && parentEffigy == null) {
                     parentEffigy = getEffigy(parent);
                     parent = parent.getContainer();
                 }

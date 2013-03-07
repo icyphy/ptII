@@ -350,7 +350,7 @@ public class AttributeListEditFrame extends JFrame implements PTDBBasicFrame {
                             + " only contain numbers and letters.", e);
         }
 
-        ArrayModelList modelList = ((ArrayModelList) _itemsJList.getModel());
+        ArrayModelList modelList = (ArrayModelList) _itemsJList.getModel();
         for (int i = 0; i < modelList.getSize(); i++) {
             if (_listItemTextField.getText().equals(modelList.getElementAt(i))) {
                 throw new IllegalNameException("Duplicated item value!");

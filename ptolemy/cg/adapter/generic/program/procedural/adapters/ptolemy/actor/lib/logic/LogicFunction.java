@@ -75,7 +75,7 @@ public class LogicFunction extends NamedProgramCodeGeneratorAdapter {
         for (int i = 0; i < actor.input.getWidth(); i++) {
             codeBuffer.append("$get(input#" + i + ")");
 
-            if (i < (actor.input.getWidth() - 1)) {
+            if (i < actor.input.getWidth() - 1) {
                 if (function.equals("and") || function.equals("nand")) {
                     codeBuffer.append(" & ");
                 } else if (function.equals("or") || function.equals("nor")) {

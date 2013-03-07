@@ -128,8 +128,8 @@ public class ActuatorSetup extends OutputDevice {
         // parameter of the director is 0.0.
         Parameter parameter = (Parameter) getDirector().getAttribute(
                 "schedulerExecutionTime");
-        if ((parameter != null)
-                && (((DoubleToken) parameter.getToken()).doubleValue() != 0.0)) {
+        if (parameter != null
+                && ((DoubleToken) parameter.getToken()).doubleValue() != 0.0) {
             boolean flag = false;
             for (TypedIOPort output : outputPortList()) {
                 for (IOPort sinkPort : output.sinkPortList()) {

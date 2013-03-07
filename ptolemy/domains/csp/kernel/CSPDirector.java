@@ -297,7 +297,8 @@ public class CSPDirector extends CompositeProcessDirector {
      *  delayed, false otherwise.
      */
     protected synchronized boolean _areThreadsDeadlocked() {
-        if (_getActiveThreadsCount() == (_getBlockedThreadsCount() + _actorsDelayed)) {
+        if (_getActiveThreadsCount() == _getBlockedThreadsCount()
+                + _actorsDelayed) {
             return true;
         }
 
@@ -309,8 +310,8 @@ public class CSPDirector extends CompositeProcessDirector {
      *  @return True if all threads are stopped.
      */
     protected synchronized boolean _areAllThreadsStopped() {
-        return (_getActiveThreadsCount() == (_getStoppedThreadsCount()
-                + _getBlockedThreadsCount() + _actorsDelayed));
+        return _getActiveThreadsCount() == _getStoppedThreadsCount()
+                + _getBlockedThreadsCount() + _actorsDelayed;
     }
 
     /** Return a string describing the status of each receiver.
@@ -327,7 +328,7 @@ public class CSPDirector extends CompositeProcessDirector {
         // may have forked connections on the inside.
         Iterator inputPorts = container.inputPortList().iterator();
         while (inputPorts.hasNext()) {
-            IOPort inputPort = (IOPort) (inputPorts.next());
+            IOPort inputPort = (IOPort) inputPorts.next();
             result.append("Send inside from " + inputPort.getFullName() + "\n");
             Receiver[][] destinations = inputPort.deepGetReceivers();
             for (int channel = 0; channel < destinations.length; channel++) {
@@ -348,7 +349,7 @@ public class CSPDirector extends CompositeProcessDirector {
             Actor actor = (Actor) actors.next();
             Iterator outputPorts = actor.outputPortList().iterator();
             while (outputPorts.hasNext()) {
-                IOPort outputPort = (IOPort) (outputPorts.next());
+                IOPort outputPort = (IOPort) outputPorts.next();
                 result.append("Send from " + outputPort.getFullName() + "\n");
                 Receiver[][] destinations = outputPort.getRemoteReceivers();
                 for (int channel = 0; channel < destinations.length; channel++) {
@@ -430,7 +431,7 @@ public class CSPDirector extends CompositeProcessDirector {
             // and wake up those at this time
             boolean done = false;
 
-            while (!done && (_delayedActorList.size() > 0)) {
+            while (!done && _delayedActorList.size() > 0) {
                 DelayListLink value = (DelayListLink) _delayedActorList.get(0);
 
                 if (value._resumeTime.compareTo(nextTime) == 0) {
@@ -491,7 +492,7 @@ public class CSPDirector extends CompositeProcessDirector {
         for (int i = 0; i < size; i++) {
             DelayListLink tmp = (DelayListLink) _delayedActorList.get(i);
 
-            if (!done && (actorTime.compareTo(tmp._resumeTime) < 0)) {
+            if (!done && actorTime.compareTo(tmp._resumeTime) < 0) {
                 _delayedActorList.add(i, newLink);
                 done = true;
             }

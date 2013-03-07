@@ -164,12 +164,12 @@ public class DragInteractor extends AbstractInteractor {
      * is "selective enabled" but not in the selection.
      */
     public void mouseDragged(LayerEvent e) {
-        if (!isEnabled()
-                || (_selectiveEnabled && !SelectionInteractor.isSelected(e))) {
+        if (!isEnabled() || _selectiveEnabled
+                && !SelectionInteractor.isSelected(e)) {
             return;
         }
 
-        if ((getMouseFilter() == null) || getMouseFilter().accept(e)) {
+        if (getMouseFilter() == null || getMouseFilter().accept(e)) {
             // Constrain the point
             Point2D p = e.getLayerPoint();
             constrainPoint(p);
@@ -180,7 +180,7 @@ public class DragInteractor extends AbstractInteractor {
             double deltaX = x - _prevX;
             double deltaY = y - _prevY;
 
-            if ((deltaX != 0) || (deltaY != 0)) {
+            if (deltaX != 0 || deltaY != 0) {
                 translate(e, deltaX, deltaY);
                 fireLayerEvent(e);
             }
@@ -203,12 +203,12 @@ public class DragInteractor extends AbstractInteractor {
      * is "selective enabled" but not in the selection.
      */
     public void mousePressed(LayerEvent e) {
-        if (!isEnabled()
-                || (_selectiveEnabled && !SelectionInteractor.isSelected(e))) {
+        if (!isEnabled() || _selectiveEnabled
+                && !SelectionInteractor.isSelected(e)) {
             return;
         }
 
-        if ((getMouseFilter() == null) || getMouseFilter().accept(e)) {
+        if (getMouseFilter() == null || getMouseFilter().accept(e)) {
             // Set up the target array if it hasn't already been
             if (_targetArray == null) {
                 _targetArray = new Object[1];
@@ -241,12 +241,12 @@ public class DragInteractor extends AbstractInteractor {
      * is "selective enabled" but not in the selection.
      */
     public void mouseReleased(LayerEvent e) {
-        if (!isEnabled()
-                || (_selectiveEnabled && !SelectionInteractor.isSelected(e))) {
+        if (!isEnabled() || _selectiveEnabled
+                && !SelectionInteractor.isSelected(e)) {
             return;
         }
 
-        if ((getMouseFilter() == null) || getMouseFilter().accept(e)) {
+        if (getMouseFilter() == null || getMouseFilter().accept(e)) {
             fireLayerEvent(e);
             _targetArray = null;
 

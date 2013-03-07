@@ -185,9 +185,8 @@ public class TypeTest extends Discard {
             ArrayList paramNames = new ArrayList();
             ArrayList paramTypes = new ArrayList();
 
-            for (Iterator params = entity.attributeList(Parameter.class)
-                    .iterator(); params.hasNext();) {
-                Parameter param = (Parameter) params.next();
+            for (Object element : entity.attributeList(Parameter.class)) {
+                Parameter param = (Parameter) element;
                 paramNames.add(param.getName());
                 paramTypes.add(new StringToken(param.getType().toString()));
             }
@@ -238,24 +237,21 @@ public class TypeTest extends Discard {
             RecordToken correctParameterTypes = (RecordToken) parameterTypes
                     .getToken();
 
-            if (((correctPortTypes == null) || (correctPortTypes.labelSet()
-                    .size() == 0))
-                    && ((correctParameterTypes == null) || (correctParameterTypes
-                            .labelSet().size() == 0))) {
+            if ((correctPortTypes == null || correctPortTypes.labelSet().size() == 0)
+                    && (correctParameterTypes == null || correctParameterTypes
+                            .labelSet().size() == 0)) {
                 throw new IllegalActionException(this,
                         "TypeTest actor has no training data.");
             }
 
             if (correctPortTypes != null) {
-                for (Iterator actorNames = correctPortTypes.labelSet()
-                        .iterator(); actorNames.hasNext();) {
-                    String actorName = (String) actorNames.next();
+                for (Object element : correctPortTypes.labelSet()) {
+                    String actorName = (String) element;
                     RecordToken assignment = (RecordToken) correctPortTypes
                             .get(actorName);
 
-                    for (Iterator names = assignment.labelSet().iterator(); names
-                            .hasNext();) {
-                        String name = (String) names.next();
+                    for (Object element2 : assignment.labelSet()) {
+                        String name = (String) element2;
                         StringToken value = (StringToken) assignment.get(name);
 
                         if (actualPortTypes.get(actorName) == null) {
@@ -285,15 +281,13 @@ public class TypeTest extends Discard {
             }
 
             if (correctParameterTypes != null) {
-                for (Iterator actorNames = correctParameterTypes.labelSet()
-                        .iterator(); actorNames.hasNext();) {
-                    String actorName = (String) actorNames.next();
+                for (Object element : correctParameterTypes.labelSet()) {
+                    String actorName = (String) element;
                     RecordToken assignment = (RecordToken) correctParameterTypes
                             .get(actorName);
 
-                    for (Iterator names = assignment.labelSet().iterator(); names
-                            .hasNext();) {
-                        String name = (String) names.next();
+                    for (Object element2 : assignment.labelSet()) {
+                        String name = (String) element2;
                         StringToken value = (StringToken) assignment.get(name);
                         StringToken actualValue = (StringToken) ((RecordToken) actualParameterTypes
                                 .get(actorName)).get(name);

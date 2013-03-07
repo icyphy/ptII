@@ -86,10 +86,9 @@ public class AFDXVlCfg extends Transformer {
         schedulerMux.setExpression("\"Scheduler multiplexor name\"");
 
         // Icon description.
-        _attachText("_iconDescription", "<svg>\n"
-                + "<rect x=\"0\" y=\"0\" "
-                + "width=\"60\" height=\"20\" "
-                + "style=\"fill:white\"/>\n" + "</svg>\n");
+        _attachText("_iconDescription", "<svg>\n" + "<rect x=\"0\" y=\"0\" "
+                + "width=\"60\" height=\"20\" " + "style=\"fill:white\"/>\n"
+                + "</svg>\n");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -118,13 +117,11 @@ public class AFDXVlCfg extends Transformer {
             throws IllegalActionException {
 
         if (attribute == vlink) {
-            String value = ((StringToken) vlink.getToken())
-                    .stringValue();
+            String value = ((StringToken) vlink.getToken()).stringValue();
             this.setDisplayName(value);
 
         } else if (attribute == bag) {
-            double value = ((DoubleToken) bag.getToken())
-                    .doubleValue();
+            double value = ((DoubleToken) bag.getToken()).doubleValue();
             if (value < 0.0) {
                 throw new IllegalActionException(this,
                         "Cannot have negative serviceTime: " + value);

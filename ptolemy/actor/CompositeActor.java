@@ -346,11 +346,11 @@ public class CompositeActor extends CompositeEntity implements Actor,
             if (castPort.isOpaque()) {
                 Manager manager = getManager();
 
-                if (castPort.isOutput() && (getDirector() != null)
-                        && (manager != null)
-                        && (manager.getState() != Manager.IDLE)
-                        && (manager.getState() != Manager.INFERING_WIDTHS)
-                        && (manager.getState() != Manager.PREINITIALIZING)) {
+                if (castPort.isOutput() && getDirector() != null
+                        && manager != null
+                        && manager.getState() != Manager.IDLE
+                        && manager.getState() != Manager.INFERING_WIDTHS
+                        && manager.getState() != Manager.PREINITIALIZING) {
                     // Note that even if castPort is opaque, we still have to
                     // check for director above.
                     try {
@@ -362,11 +362,11 @@ public class CompositeActor extends CompositeEntity implements Actor,
                     }
                 }
 
-                if (castPort.isInput() && (getExecutiveDirector() != null)
-                        && (manager != null)
-                        && (manager.getState() != Manager.IDLE)
-                        && (manager.getState() != Manager.INFERING_WIDTHS)
-                        && (manager.getState() != Manager.PREINITIALIZING)) {
+                if (castPort.isInput() && getExecutiveDirector() != null
+                        && manager != null
+                        && manager.getState() != Manager.IDLE
+                        && manager.getState() != Manager.INFERING_WIDTHS
+                        && manager.getState() != Manager.PREINITIALIZING) {
                     try {
                         castPort.createReceivers();
                     } catch (IllegalActionException ex) {
@@ -844,11 +844,9 @@ public class CompositeActor extends CompositeEntity implements Actor,
                                             + "port was '" + port + "'");
                         }
 
-                        for (int i = 0; i < receivers.length; i++) {
-                            Receiver[] receivers2 = receivers[i];
-
-                            for (int j = 0; j < receivers2.length; j++) {
-                                receivers2[j].reset();
+                        for (Receiver[] receivers2 : receivers) {
+                            for (Receiver element : receivers2) {
+                                element.reset();
                             }
                         }
                     }
@@ -865,11 +863,9 @@ public class CompositeActor extends CompositeEntity implements Actor,
                     // Clear all insideReceivers.
                     Receiver[][] receivers = port.getInsideReceivers();
 
-                    for (int i = 0; i < receivers.length; i++) {
-                        Receiver[] receivers2 = receivers[i];
-
-                        for (int j = 0; j < receivers2.length; j++) {
-                            receivers2[j].reset();
+                    for (Receiver[] receivers2 : receivers) {
+                        for (Receiver element : receivers2) {
+                            element.reset();
                         }
                     }
                 }
@@ -1077,7 +1073,7 @@ public class CompositeActor extends CompositeEntity implements Actor,
 
         int n = 0;
 
-        while ((n++ < count) && !_stopRequested) {
+        while (n++ < count && !_stopRequested) {
 
             if (_notifyingActorFiring) {
                 _actorFiring(FiringEvent.BEFORE_PREFIRE, n);
@@ -2092,7 +2088,7 @@ public class CompositeActor extends CompositeEntity implements Actor,
      *  @see #getManager()
      */
     public void setManager(Manager manager) throws IllegalActionException {
-        if ((manager != null) && (_workspace != manager.workspace())) {
+        if (manager != null && _workspace != manager.workspace()) {
             throw new IllegalActionException(this, manager,
                     "Cannot set manager because workspaces are different."
                             + "manager: " + manager.workspace() + ", "
@@ -2102,7 +2098,7 @@ public class CompositeActor extends CompositeEntity implements Actor,
         try {
             _workspace.getWriteAccess();
 
-            if ((getContainer() != null) && (manager != null)) {
+            if (getContainer() != null && manager != null) {
                 throw new IllegalActionException(this, manager,
                         "Cannot set the Manager of an actor "
                                 + "with a container.");

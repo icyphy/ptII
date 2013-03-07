@@ -117,7 +117,7 @@ public class CIReceiver extends AbstractReceiver {
      *   NoTokenException.
      */
     public synchronized boolean hasToken() {
-        return (_tokens.size() > 0);
+        return _tokens.size() > 0;
     }
 
     /** Return true if the receiver contains the specified number of tokens.
@@ -129,7 +129,7 @@ public class CIReceiver extends AbstractReceiver {
      *   will not result in a NoTokenException.
      */
     public synchronized boolean hasToken(int numberOfTokens) {
-        return (_tokens.size() >= numberOfTokens);
+        return _tokens.size() >= numberOfTokens;
     }
 
     /** Put the specified token into this receiver.

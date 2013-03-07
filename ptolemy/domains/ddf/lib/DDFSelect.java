@@ -201,7 +201,7 @@ public class DDFSelect extends TypedAtomicActor {
         } else {
             _control = ((IntToken) control.get(0)).intValue();
 
-            if ((_control >= 0) && (_control < input.getWidth())) {
+            if (_control >= 0 && _control < input.getWidth()) {
                 _isControlRead = true;
             } else {
                 // If the value of the received control token is out of

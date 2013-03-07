@@ -97,7 +97,7 @@ public class TransitionRefinement extends Refinement {
         try {
             _workspace.getWriteAccess();
 
-            if (_mirrorDisable || (getContainer() == null)) {
+            if (_mirrorDisable || getContainer() == null) {
                 // Have already called newPort() in the container.
                 // This time, process the request.
                 TransitionRefinementPort port = new TransitionRefinementPort(

@@ -183,15 +183,15 @@ public class LabelFigure extends AbstractFigure {
         // Try every anchor and if there's no overlap, use it
         Point2D location = getAnchorPoint();
 
-        for (int i = 0; i < _anchors.length; i++) {
-            Point2D pt = CanvasUtilities.getLocation(r, _anchors[i]);
-            CanvasUtilities.translate(pt, _padding, _anchors[i]);
-            r.x += (location.getX() - pt.getX());
-            r.y += (location.getY() - pt.getY());
+        for (int _anchor2 : _anchors) {
+            Point2D pt = CanvasUtilities.getLocation(r, _anchor2);
+            CanvasUtilities.translate(pt, _padding, _anchor2);
+            r.x += location.getX() - pt.getX();
+            r.y += location.getY() - pt.getY();
 
             if (!s.intersects(r)) {
                 //// System.out.println("Setting anchor to " + _anchors[i]);
-                setAnchor(_anchors[i]);
+                setAnchor(_anchor2);
                 break;
             }
         }

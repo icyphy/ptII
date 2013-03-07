@@ -165,7 +165,7 @@ public class DoubleMatrixToken extends MatrixToken {
     public DoubleMatrixToken(String init) throws IllegalActionException {
         PtParser parser = new PtParser();
         ASTPtRootNode tree = parser.generateParseTree(init);
-        Token token = (new ParseTreeEvaluator()).evaluateParseTree(tree);
+        Token token = new ParseTreeEvaluator().evaluateParseTree(tree);
 
         if (token instanceof DoubleMatrixToken) {
             double[][] value = ((DoubleMatrixToken) token).doubleMatrix();
@@ -198,7 +198,7 @@ public class DoubleMatrixToken extends MatrixToken {
                     + " array is null.");
         }
 
-        if (tokens.length != (rows * columns)) {
+        if (tokens.length != rows * columns) {
             throw new IllegalActionException("DoubleMatrixToken: The specified"
                     + " array is not of the correct length");
         }
@@ -253,7 +253,7 @@ public class DoubleMatrixToken extends MatrixToken {
 
         int compare = TypeLattice.compare(BaseType.DOUBLE_MATRIX, token);
 
-        if ((compare == CPO.LOWER) || (compare == CPO.INCOMPARABLE)) {
+        if (compare == CPO.LOWER || compare == CPO.INCOMPARABLE) {
             throw new IllegalActionException(
                     notSupportedIncomparableConversionMessage(token, "[double]"));
         }
@@ -269,7 +269,7 @@ public class DoubleMatrixToken extends MatrixToken {
         // try IntMatrix
         compare = TypeLattice.compare(BaseType.INT_MATRIX, token);
 
-        if ((compare == CPO.SAME) || (compare == CPO.HIGHER)) {
+        if (compare == CPO.SAME || compare == CPO.HIGHER) {
             IntMatrixToken intMatrix = IntMatrixToken.convert(token);
             double[][] result = intMatrix.doubleMatrix();
             return new DoubleMatrixToken(result);
@@ -371,7 +371,7 @@ public class DoubleMatrixToken extends MatrixToken {
      */
     public final Token getElementAsToken(final int row, final int column)
             throws ArrayIndexOutOfBoundsException {
-        return new DoubleToken(_value[(row * _columnCount) + column]);
+        return new DoubleToken(_value[row * _columnCount + column]);
     }
 
     /** Return the element of the contained matrix at the specified
@@ -383,7 +383,7 @@ public class DoubleMatrixToken extends MatrixToken {
      *   row or column number is outside the range of the matrix.
      */
     public final double getElementAt(final int row, final int column) {
-        return _value[(row * _columnCount) + column];
+        return _value[row * _columnCount + column];
     }
 
     /** Return the Type of the tokens contained in this matrix token.
@@ -454,8 +454,8 @@ public class DoubleMatrixToken extends MatrixToken {
         // This assumes the matrices tile.
         int rows = 0;
         int columns = 0;
-        for (int i = 0; i < matrices.length; i++) {
-            rows += matrices[i][0].getRowCount();
+        for (MatrixToken[] matrice : matrices) {
+            rows += matrice[0].getRowCount();
         }
         for (int j = 0; j < matrices[0].length; j++) {
             columns += matrices[0][j].getColumnCount();
@@ -722,7 +722,7 @@ public class DoubleMatrixToken extends MatrixToken {
                 int ib = j;
 
                 for (int ia = i * n; ia < ta; ia++, ib += p) {
-                    sum += (A[ia] * B[ib]);
+                    sum += A[ia] * B[ib];
                 }
 
                 newMatrix[in++] = sum;

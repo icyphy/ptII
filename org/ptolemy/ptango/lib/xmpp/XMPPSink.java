@@ -97,7 +97,6 @@ public class XMPPSink extends Sink implements XMPPPublisher {
         }
     }
 
-
     /**
      * FIXME: Should we use postfire() instead? @see Display
      */
@@ -148,7 +147,6 @@ public class XMPPSink extends Sink implements XMPPPublisher {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
 
     /** */
     private XMPPGateway _gateway;

@@ -89,7 +89,7 @@ public class TDLRefinement extends Refinement {
         try {
             _workspace.getWriteAccess();
 
-            if (_mirrorDisable || (getContainer() == null)) {
+            if (_mirrorDisable || getContainer() == null) {
                 // Have already called newPort() in the container.
                 // This time, process the request.
                 TDLRefinementPort port = new TDLRefinementPort(this, name);

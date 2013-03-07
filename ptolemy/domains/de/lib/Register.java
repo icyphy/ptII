@@ -131,7 +131,7 @@ public class Register extends MostRecent {
 
         // If the <i>initialValue</i> parameter was not set, or if the
         // width of the input has changed.
-        if ((_lastInputs == null) || (_lastInputs.length != inputWidth)) {
+        if (_lastInputs == null || _lastInputs.length != inputWidth) {
             _lastInputs = new Token[inputWidth];
         }
 

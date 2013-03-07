@@ -300,7 +300,7 @@ public class PlotBox extends JPanel implements Printable, PlotBoxInterface {
         // Changing legend means we need to repaint the offscreen buffer.
         _plotImage = null;
 
-        if ((legend == null) || legend.equals("")) {
+        if (legend == null || legend.equals("")) {
             return;
         }
 
@@ -487,29 +487,29 @@ public class PlotBox extends JPanel implements Printable, PlotBoxInterface {
         // Remove the buttons
         if (_printButton != null) {
             ActionListener[] listeners = _printButton.getActionListeners();
-            for (int i = 0; i < listeners.length; i++) {
-                _printButton.removeActionListener(listeners[i]);
+            for (ActionListener listener : listeners) {
+                _printButton.removeActionListener(listener);
             }
             _printButton = null;
         }
         if (_resetButton != null) {
             ActionListener[] listeners = _resetButton.getActionListeners();
-            for (int i = 0; i < listeners.length; i++) {
-                _resetButton.removeActionListener(listeners[i]);
+            for (ActionListener listener : listeners) {
+                _resetButton.removeActionListener(listener);
             }
             _resetButton = null;
         }
         if (_formatButton != null) {
             ActionListener[] listeners = _formatButton.getActionListeners();
-            for (int i = 0; i < listeners.length; i++) {
-                _formatButton.removeActionListener(listeners[i]);
+            for (ActionListener listener : listeners) {
+                _formatButton.removeActionListener(listener);
             }
             _formatButton = null;
         }
         if (_fillButton != null) {
             ActionListener[] listeners = _fillButton.getActionListeners();
-            for (int i = 0; i < listeners.length; i++) {
-                _fillButton.removeActionListener(listeners[i]);
+            for (ActionListener listener : listeners) {
+                _fillButton.removeActionListener(listener);
             }
             _fillButton = null;
         }
@@ -714,8 +714,8 @@ out.println("\\begin{document}");
         try {
             boolean match = false;
             String[] supportedFormats = ImageIO.getWriterFormatNames();
-            for (int i = 0; i < supportedFormats.length; i++) {
-                if (formatName.equalsIgnoreCase(supportedFormats[i])) {
+            for (String supportedFormat : supportedFormats) {
+                if (formatName.equalsIgnoreCase(supportedFormat)) {
                     match = true;
                     break;
                 }
@@ -815,10 +815,10 @@ out.println("\\begin{document}");
                 { "red", "ff0000" }, { "green", "00ff00" },
                 { "blue", "0000ff" } };
 
-        for (int i = 0; i < names.length; i++) {
-            if (name.equals(names[i][0])) {
+        for (String[] name2 : names) {
+            if (name.equals(name2[0])) {
                 try {
-                    Color col = new Color(Integer.parseInt(names[i][1], 16));
+                    Color col = new Color(Integer.parseInt(name2[1], 16));
                     return col;
                 } catch (NumberFormatException e) {
                 }
@@ -1000,8 +1000,8 @@ out.println("\\begin{document}");
             result[1] = _xhighgiven;
         } else {
             // Have to first correct for the padding.
-            result[0] = _xMin + ((_xMax - _xMin) * _padding);
-            result[1] = _xMax - ((_xMax - _xMin) * _padding);
+            result[0] = _xMin + (_xMax - _xMin) * _padding;
+            result[1] = _xMax - (_xMax - _xMin) * _padding;
             ;
         }
 
@@ -1075,8 +1075,8 @@ out.println("\\begin{document}");
             result[1] = _yhighgiven;
         } else {
             // Have to first correct for the padding.
-            result[0] = _yMin + ((_yMax - _yMin) * _padding);
-            result[1] = _yMax - ((_yMax - _yMin) * _padding);
+            result[0] = _yMin + (_yMax - _yMin) * _padding;
+            result[1] = _yMax - (_yMax - _yMin) * _padding;
             ;
         }
 
@@ -1159,14 +1159,14 @@ out.println("\\begin{document}");
     public synchronized void parseFile(String filespec, URL documentBase) {
         DataInputStream in = null;
 
-        if ((filespec == null) || (filespec.length() == 0)) {
+        if (filespec == null || filespec.length() == 0) {
             // Open up stdin
             in = new DataInputStream(System.in);
         } else {
             try {
                 URL url = null;
 
-                if ((documentBase == null) && (_documentBase != null)) {
+                if (documentBase == null && _documentBase != null) {
                     documentBase = _documentBase;
                 }
 
@@ -1343,7 +1343,7 @@ out.println("\\begin{document}");
         int foundIndex = -1;
         boolean found = false;
 
-        for (int i = 0; (i < len) && !found; ++i) {
+        for (int i = 0; i < len && !found; ++i) {
             if (((Integer) _legendDatasets.get(i)).intValue() == dataset) {
                 foundIndex = i;
                 found = true;
@@ -2006,7 +2006,7 @@ out.println("\\begin{document}");
                     + _yhighgiven + "\"/>");
         }
 
-        if ((_xticks != null) && (_xticks.size() > 0)) {
+        if (_xticks != null && _xticks.size() > 0) {
             output.println("<xTicks>");
 
             int last = _xticks.size() - 1;
@@ -2020,7 +2020,7 @@ out.println("\\begin{document}");
             output.println("</xTicks>");
         }
 
-        if ((_yticks != null) && (_yticks.size() > 0)) {
+        if (_yticks != null && _yticks.size() > 0) {
             output.println("<yTicks>");
 
             int last = _yticks.size() - 1;
@@ -2179,10 +2179,10 @@ out.println("\\begin{document}");
             int msgy = fheight;
             graphics.setColor(Color.black);
 
-            for (int i = 0; i < _errorMsg.length; i++) {
-                graphics.drawString(_errorMsg[i], 10, msgy);
+            for (String element : _errorMsg) {
+                graphics.drawString(element, 10, msgy);
                 msgy += fheight;
-                System.err.println(_errorMsg[i]);
+                System.err.println(element);
             }
 
             return;
@@ -2237,8 +2237,8 @@ out.println("\\begin{document}");
 
         titley = titlefontheight + _topPadding;
 
-        int captionHeight = (_captionStrings.size())
-                * (_captionFontMetrics.getHeight());
+        int captionHeight = _captionStrings.size()
+                * _captionFontMetrics.getHeight();
         if (captionHeight > 0) {
             captionHeight += 5; //extra padding
         }
@@ -2261,7 +2261,7 @@ out.println("\\begin{document}");
             _xExp = (int) Math.floor(_xtickMin);
         }
 
-        if ((_xExp != 0) && (_xticks == null)) {
+        if (_xExp != 0 && _xticks == null) {
             String superscript = Integer.toString(_xExp);
             xSPos -= _superscriptFontMetrics.stringWidth(superscript);
             graphics.setFont(_superscriptFont);
@@ -2274,12 +2274,11 @@ out.println("\\begin{document}");
             }
 
             // NOTE: 5 pixel padding on bottom
-            _bottomPadding = ((3 * labelheight) / 2) + 5;
+            _bottomPadding = 3 * labelheight / 2 + 5;
         }
 
         // NOTE: 5 pixel padding on the bottom.
-        if ((_xlabel != null)
-                && (_bottomPadding < (captionHeight + labelheight + 5))) {
+        if (_xlabel != null && _bottomPadding < captionHeight + labelheight + 5) {
             _bottomPadding = captionHeight + labelheight + 5;
         }
 
@@ -2305,7 +2304,7 @@ out.println("\\begin{document}");
         ////////////////// vertical axis
         // Number of y tick marks.
         // NOTE: subjective spacing factor.
-        int ny = 2 + (height / (labelheight + 10));
+        int ny = 2 + height / (labelheight + 10);
 
         // Compute y increment.
         double yStep = _roundUp((_ytickMax - _ytickMin) / ny);
@@ -2475,14 +2474,14 @@ out.println("\\begin{document}");
                 // colliding with x labels.
                 int offset = 0;
 
-                if ((ind > 0) && !_ylog) {
+                if (ind > 0 && !_ylog) {
                     offset = halflabelheight;
                 }
 
                 graphics.drawLine(_ulx, yCoord1, xCoord1, yCoord1);
                 graphics.drawLine(_lrx, yCoord1, xCoord2, yCoord1);
 
-                if (_grid && (yCoord1 != _uly) && (yCoord1 != _lry)) {
+                if (_grid && yCoord1 != _uly && yCoord1 != _lry) {
                     graphics.setColor(Color.lightGray);
                     graphics.drawLine(xCoord1, yCoord1, xCoord2, yCoord1);
                     graphics.setColor(_foreground);
@@ -2490,7 +2489,7 @@ out.println("\\begin{document}");
 
                 // Check to see if any of the labels printed contain
                 // the exponent.  If we don't see an exponent, then print it.
-                if (_ylog && (ylabels[ind].indexOf('e') != -1)) {
+                if (_ylog && ylabels[ind].indexOf('e') != -1) {
                     needExponent = false;
                 }
 
@@ -2507,7 +2506,7 @@ out.println("\\begin{document}");
                     // If the step is greater than 1, clamp it to 1 so that
                     // we draw the unlabeled grid lines for each
                     //integer interval.
-                    double tmpStep = (yStep > 1.0) ? 1.0 : yStep;
+                    double tmpStep = yStep > 1.0 ? 1.0 : yStep;
 
                     for (double ypos = _gridStep(unlabeledgrid, yStart,
                             tmpStep, _ylog); ypos <= _ytickMax; ypos = _gridStep(
@@ -2515,7 +2514,7 @@ out.println("\\begin{document}");
                         int yCoord1 = _lry
                                 - (int) ((ypos - _ytickMin) * _ytickscale);
 
-                        if (_grid && (yCoord1 != _uly) && (yCoord1 != _lry)) {
+                        if (_grid && yCoord1 != _uly && yCoord1 != _lry) {
                             graphics.setColor(Color.lightGray);
                             graphics.drawLine(_ulx + 1, yCoord1, _lrx - 1,
                                     yCoord1);
@@ -2548,23 +2547,23 @@ out.println("\\begin{document}");
 
             while (nl.hasMoreElements()) {
                 String label = (String) nl.nextElement();
-                double ypos = ((Double) (nt.nextElement())).doubleValue();
+                double ypos = ((Double) nt.nextElement()).doubleValue();
 
-                if ((ypos > _yMax) || (ypos < _yMin)) {
+                if (ypos > _yMax || ypos < _yMin) {
                     continue;
                 }
 
                 int yCoord1 = _lry - (int) ((ypos - _yMin) * _yscale);
                 int offset = 0;
 
-                if (ypos < (_lry - labelheight)) {
+                if (ypos < _lry - labelheight) {
                     offset = halflabelheight;
                 }
 
                 graphics.drawLine(_ulx, yCoord1, xCoord1, yCoord1);
                 graphics.drawLine(_lrx, yCoord1, xCoord2, yCoord1);
 
-                if (_grid && (yCoord1 != _uly) && (yCoord1 != _lry)) {
+                if (_grid && yCoord1 != _uly && yCoord1 != _lry) {
                     graphics.setColor(Color.lightGray);
                     graphics.drawLine(xCoord1, yCoord1, xCoord2, yCoord1);
                     graphics.setColor(_foreground);
@@ -2592,7 +2591,7 @@ out.println("\\begin{document}");
 
             if (_xlog) {
                 // X axes log labels will be at most 6 chars: -1E-02
-                nx = 2 + (width / ((charwidth * 6) + 10));
+                nx = 2 + width / (charwidth * 6 + 10);
             } else {
                 // Limit to 10 iterations
                 int count = 0;
@@ -2620,9 +2619,9 @@ out.println("\\begin{document}");
 
                     // NOTE: 10 additional pixels between labels.
                     // NOTE: Try to ensure at least two tick marks.
-                    nx = 2 + (width / (maxlabelwidth + 10));
+                    nx = 2 + width / (maxlabelwidth + 10);
 
-                    if (((nx - savenx) <= 1) || ((savenx - nx) <= 1)) {
+                    if (nx - savenx <= 1 || savenx - nx <= 1) {
                         break;
                     }
                 }
@@ -2669,14 +2668,14 @@ out.println("\\begin{document}");
                 graphics.drawLine(xCoord1, _uly, xCoord1, yCoord1);
                 graphics.drawLine(xCoord1, _lry, xCoord1, yCoord2);
 
-                if (_grid && (xCoord1 != _ulx) && (xCoord1 != _lrx)) {
+                if (_grid && xCoord1 != _ulx && xCoord1 != _lrx) {
                     graphics.setColor(Color.lightGray);
                     graphics.drawLine(xCoord1, yCoord1, xCoord1, yCoord2);
                     graphics.setColor(_foreground);
                 }
 
                 int labxpos = xCoord1
-                        - (_labelFontMetrics.stringWidth(xticklabel) / 2);
+                        - _labelFontMetrics.stringWidth(xticklabel) / 2;
 
                 // NOTE: 3 pixel spacing between axis and labels.
                 graphics.drawString(xticklabel, labxpos, _lry + 3 + labelheight);
@@ -2687,7 +2686,7 @@ out.println("\\begin{document}");
                 // If the step is greater than 1, clamp it to 1 so that
                 // we draw the unlabeled grid lines for each
                 // integer interval.
-                double tmpStep = (xStep > 1.0) ? 1.0 : xStep;
+                double tmpStep = xStep > 1.0 ? 1.0 : xStep;
 
                 // Recalculate the start using the new step.
                 xTmpStart = tmpStep * Math.ceil(_xtickMin / tmpStep);
@@ -2702,7 +2701,7 @@ out.println("\\begin{document}");
                         xCoord1 = _ulx
                                 + (int) ((xpos - _xtickMin) * _xtickscale);
 
-                        if (_grid && (xCoord1 != _ulx) && (xCoord1 != _lrx)) {
+                        if (_grid && xCoord1 != _ulx && xCoord1 != _lrx) {
                             graphics.setColor(Color.lightGray);
                             graphics.drawLine(xCoord1, _uly + 1, xCoord1,
                                     _lry - 1);
@@ -2733,10 +2732,10 @@ out.println("\\begin{document}");
 
             while (nl.hasMoreElements()) {
                 String label = (String) nl.nextElement();
-                double xpos = ((Double) (nt.nextElement())).doubleValue();
+                double xpos = ((Double) nt.nextElement()).doubleValue();
 
                 // If xpos is out of range, ignore.
-                if ((xpos > _xMax) || (xpos < _xMin)) {
+                if (xpos > _xMax || xpos < _xMin) {
                     continue;
                 }
 
@@ -2744,14 +2743,14 @@ out.println("\\begin{document}");
                 xCoord1 = _ulx + (int) ((xpos - _xMin) * _xscale);
 
                 // Find  the start position of x label.
-                int labxpos = xCoord1
-                        - (_labelFontMetrics.stringWidth(label) / 2);
+                int labxpos = xCoord1 - _labelFontMetrics.stringWidth(label)
+                        / 2;
 
                 // If the labels are not overlapped, proceed.
                 if (labxpos > preLength) {
                     // calculate the length of the label
-                    preLength = xCoord1
-                            + (_labelFontMetrics.stringWidth(label) / 2) + 10;
+                    preLength = xCoord1 + _labelFontMetrics.stringWidth(label)
+                            / 2 + 10;
 
                     // Draw the label.
                     // NOTE: 3 pixel spacing between axis and labels.
@@ -2762,7 +2761,7 @@ out.println("\\begin{document}");
                     graphics.drawLine(xCoord1, _lry, xCoord1, yCoord2);
 
                     // Draw the grid line
-                    if (_grid && (xCoord1 != _ulx) && (xCoord1 != _lrx)) {
+                    if (_grid && xCoord1 != _ulx && xCoord1 != _lrx) {
                         graphics.setColor(Color.lightGray);
                         graphics.drawLine(xCoord1, yCoord1, xCoord1, yCoord2);
                         graphics.setColor(_foreground);
@@ -2779,8 +2778,8 @@ out.println("\\begin{document}");
         if (_title != null) {
             graphics.setFont(_titleFont);
 
-            int titlex = _ulx
-                    + ((width - _titleFontMetrics.stringWidth(_title)) / 2);
+            int titlex = _ulx + (width - _titleFontMetrics.stringWidth(_title))
+                    / 2;
             graphics.drawString(_title, titlex, titley);
         }
 
@@ -2788,36 +2787,36 @@ out.println("\\begin{document}");
 
         if (_xlabel != null) {
             int labelx = _ulx
-                    + ((width - _labelFontMetrics.stringWidth(_xlabel)) / 2);
+                    + (width - _labelFontMetrics.stringWidth(_xlabel)) / 2;
             graphics.drawString(_xlabel, labelx, ySPos);
         }
 
-        int charcenter = 2 + (_labelFontMetrics.stringWidth("W") / 2);
+        int charcenter = 2 + _labelFontMetrics.stringWidth("W") / 2;
 
         if (_ylabel != null) {
             int yl = _ylabel.length();
 
             if (graphics instanceof Graphics2D) {
-                int starty = (_uly + ((_lry - _uly) / 2) + (_labelFontMetrics
-                        .stringWidth(_ylabel) / 2)) - charwidth;
+                int starty = _uly + (_lry - _uly) / 2
+                        + _labelFontMetrics.stringWidth(_ylabel) / 2
+                        - charwidth;
                 Graphics2D g2d = (Graphics2D) graphics;
 
                 // NOTE: Fudge factor so label doesn't touch axis labels.
-                int startx = (charcenter + halflabelheight) - 2;
+                int startx = charcenter + halflabelheight - 2;
                 g2d.rotate(Math.toRadians(-90), startx, starty);
                 g2d.drawString(_ylabel, startx, starty);
                 g2d.rotate(Math.toRadians(90), startx, starty);
             } else {
                 // Not graphics 2D, no support for rotation.
                 // Vertical label is fairly complex to draw.
-                int starty = (_uly + ((_lry - _uly) / 2))
-                        - (yl * halflabelheight) + labelheight;
+                int starty = _uly + (_lry - _uly) / 2 - yl * halflabelheight
+                        + labelheight;
 
                 for (int i = 0; i < yl; i++) {
                     String nchar = _ylabel.substring(i, i + 1);
                     int cwidth = _labelFontMetrics.stringWidth(nchar);
-                    graphics.drawString(nchar, charcenter - (cwidth / 2),
-                            starty);
+                    graphics.drawString(nchar, charcenter - cwidth / 2, starty);
                     starty += labelheight;
                 }
             }
@@ -2830,7 +2829,8 @@ out.println("\\begin{document}");
                 .hasMoreElements();) {
             String captionLine = (String) captions.nextElement();
             int labelx = _ulx
-                    + ((width - _captionFontMetrics.stringWidth(captionLine)) / 2);
+                    + (width - _captionFontMetrics.stringWidth(captionLine))
+                    / 2;
             graphics.drawString(captionLine, labelx, yCapPosn);
             yCapPosn += fontHt;
         }
@@ -2864,8 +2864,8 @@ out.println("\\begin{document}");
             return;
         }
 
-        boolean pointinside = (ypos <= _lry) && (ypos >= _uly)
-                && (xpos <= _lrx) && (xpos >= _ulx);
+        boolean pointinside = ypos <= _lry && ypos >= _uly && xpos <= _lrx
+                && xpos >= _ulx;
 
         if (!pointinside && clip) {
             return;
@@ -2918,24 +2918,24 @@ out.println("\\begin{document}");
             // comment character
             return true;
         } else if (lcLine.startsWith("titletext:")) {
-            setTitle((line.substring(10)).trim());
+            setTitle(line.substring(10).trim());
             return true;
         } else if (lcLine.startsWith("title:")) {
             // Tolerate alternative tag.
-            setTitle((line.substring(6)).trim());
+            setTitle(line.substring(6).trim());
             return true;
         } else if (lcLine.startsWith("xlabel:")) {
-            setXLabel((line.substring(7)).trim());
+            setXLabel(line.substring(7).trim());
             return true;
         } else if (lcLine.startsWith("ylabel:")) {
-            setYLabel((line.substring(7)).trim());
+            setYLabel(line.substring(7).trim());
             return true;
         } else if (lcLine.startsWith("xrange:")) {
             int comma = line.indexOf(",", 7);
 
             if (comma > 0) {
-                String min = (line.substring(7, comma)).trim();
-                String max = (line.substring(comma + 1)).trim();
+                String min = line.substring(7, comma).trim();
+                String max = line.substring(comma + 1).trim();
 
                 try {
                     Double dmin = Double.valueOf(min);
@@ -2951,8 +2951,8 @@ out.println("\\begin{document}");
             int comma = line.indexOf(",", 7);
 
             if (comma > 0) {
-                String min = (line.substring(7, comma)).trim();
-                String max = (line.substring(comma + 1)).trim();
+                String min = line.substring(7, comma).trim();
+                String max = line.substring(comma + 1).trim();
 
                 try {
                     Double dmin = Double.valueOf(min);
@@ -3112,7 +3112,7 @@ out.println("\\begin{document}");
             output.println("YRange: " + _ylowgiven + ", " + _yhighgiven);
         }
 
-        if ((_xticks != null) && (_xticks.size() > 0)) {
+        if (_xticks != null && _xticks.size() > 0) {
             output.print("XTicks: ");
 
             int last = _xticks.size() - 1;
@@ -3126,7 +3126,7 @@ out.println("\\begin{document}");
                     + _xticks.elementAt(last));
         }
 
-        if ((_yticks != null) && (_yticks.size() > 0)) {
+        if (_yticks != null && _yticks.size() > 0) {
             output.print("YTicks: ");
 
             int last = _yticks.size() - 1;
@@ -3450,11 +3450,11 @@ out.println("\\begin{document}");
         int exponent = (int) num;
 
         // Determine the exponent, prepending 0 or -0 if necessary.
-        if ((exponent >= 0) && (exponent < 10)) {
+        if (exponent >= 0 && exponent < 10) {
             results = "0" + exponent;
         } else {
-            if ((exponent < 0) && (exponent > -10)) {
-                results = "-0" + (-exponent);
+            if (exponent < 0 && exponent > -10) {
+                results = "-0" + -exponent;
             } else {
                 results = Integer.toString(exponent);
             }
@@ -3462,17 +3462,17 @@ out.println("\\begin{document}");
 
         // Handle the mantissa.
         if (num >= 0.0) {
-            if ((num - (int) (num)) < 0.001) {
+            if (num - (int) num < 0.001) {
                 results = "1e" + results;
             } else {
-                results = _formatNum(Math.pow(10.0, (num - (int) num)),
+                results = _formatNum(Math.pow(10.0, num - (int) num),
                         numfracdigits);
             }
         } else {
-            if ((-num - (int) (-num)) < 0.001) {
+            if (-num - (int) -num < 0.001) {
                 results = "1e" + results;
             } else {
-                results = _formatNum(Math.pow(10.0, (num - (int) num)) * 10,
+                results = _formatNum(Math.pow(10.0, num - (int) num) * 10,
                         numfracdigits);
             }
         }
@@ -3512,8 +3512,8 @@ out.println("\\begin{document}");
             fudge = -0.5;
         }
 
-        String numString = Double.toString(num
-                + (fudge * Math.pow(10.0, -numfracdigits)));
+        String numString = Double.toString(num + fudge
+                * Math.pow(10.0, -numfracdigits));
 
         // Next, find the decimal point.
         int dpt = numString.lastIndexOf(".");
@@ -3622,7 +3622,7 @@ out.println("\\begin{document}");
         int oldgridi = 0;
 
         for (int i = 0; i < ngrid; i++) {
-            double gridval = (i * 1.0) / ngrid * 10;
+            double gridval = i * 1.0 / ngrid * 10;
             double logval = _LOG10SCALE * Math.log(gridval);
 
             if (logval == Double.NEGATIVE_INFINITY) {
@@ -3632,13 +3632,12 @@ out.println("\\begin{document}");
             // If oldgrid is not null, then do not draw lines that
             // were already drawn in oldgrid.  This is necessary
             // so we avoid obliterating the tick marks on the plot borders.
-            if ((oldgrid != null) && (oldgridi < oldgrid.size())) {
+            if (oldgrid != null && oldgridi < oldgrid.size()) {
                 // Cycle through the oldgrid until we find an element
                 // that is equal to or greater than the element we are
                 // trying to add.
-                while ((oldgridi < oldgrid.size())
-                        && (((Double) oldgrid.elementAt(oldgridi))
-                                .doubleValue() < logval)) {
+                while (oldgridi < oldgrid.size()
+                        && ((Double) oldgrid.elementAt(oldgridi)).doubleValue() < logval) {
                     oldgridi++;
                 }
 
@@ -3670,9 +3669,9 @@ out.println("\\begin{document}");
 
         // Set gridCurJuke so that the value in grid is greater than
         // or equal to x.  This sets us up to process the first point.
-        for (_gridCurJuke = -1; ((_gridCurJuke + 1) < grid.size())
-                && (x >= ((Double) grid.elementAt(_gridCurJuke + 1))
-                        .doubleValue()); _gridCurJuke++) {
+        for (_gridCurJuke = -1; _gridCurJuke + 1 < grid.size()
+                && x >= ((Double) grid.elementAt(_gridCurJuke + 1))
+                        .doubleValue(); _gridCurJuke++) {
         }
 
         return grid;
@@ -3685,8 +3684,8 @@ out.println("\\begin{document}");
         double x = pos - Math.floor(pos);
         int i;
 
-        for (i = 0; (i < grid.size())
-                && (x >= ((Double) grid.elementAt(i)).doubleValue()); i++) {
+        for (i = 0; i < grid.size()
+                && x >= ((Double) grid.elementAt(i)).doubleValue(); i++) {
         }
 
         if (i >= grid.size()) {
@@ -3761,7 +3760,7 @@ out.println("\\begin{document}");
     private int _numFracDigits(double num) {
         int numdigits = 0;
 
-        while ((numdigits <= 15) && (num != Math.floor(num))) {
+        while (numdigits <= 15 && num != Math.floor(num)) {
             num *= 10.0;
             numdigits += 1;
         }
@@ -3777,7 +3776,7 @@ out.println("\\begin{document}");
     private int _numIntDigits(double num) {
         int numdigits = 0;
 
-        while ((numdigits <= 15) && ((int) num != 0.0)) {
+        while (numdigits <= 15 && (int) num != 0.0) {
             num /= 10.0;
             numdigits += 1;
         }
@@ -3811,9 +3810,9 @@ out.println("\\begin{document}");
             String pair = null;
 
             if (comma > start) {
-                pair = (line.substring(start, comma)).trim();
+                pair = line.substring(start, comma).trim();
             } else {
-                pair = (line.substring(start)).trim();
+                pair = line.substring(start).trim();
                 cont = false;
             }
 
@@ -3829,10 +3828,10 @@ out.println("\\begin{document}");
 
             if (close > 0) {
                 String label = pair.substring(open, close);
-                String index = (pair.substring(close + 1)).trim();
+                String index = pair.substring(close + 1).trim();
 
                 try {
-                    double idx = (Double.valueOf(index)).doubleValue();
+                    double idx = Double.valueOf(index).doubleValue();
 
                     if (xtick) {
                         addXTick(label, idx);
@@ -3926,8 +3925,8 @@ out.println("\\begin{document}");
         //    _xMax = max;
         //} else {
         // Pad slightly so that we don't plot points on the axes.
-        _xMin = min - ((max - min) * _padding);
-        _xMax = max + ((max - min) * _padding);
+        _xMin = min - (max - min) * _padding;
+        _xMax = max + (max - min) * _padding;
 
         //}
         // Find the exponent.
@@ -3935,7 +3934,7 @@ out.println("\\begin{document}");
         _xExp = (int) Math.floor(Math.log(largest) * _LOG10SCALE);
 
         // Use the exponent only if it's larger than 1 in magnitude.
-        if ((_xExp > 1) || (_xExp < -1)) {
+        if (_xExp > 1 || _xExp < -1) {
             double xs = 1.0 / Math.pow(10.0, _xExp);
             _xtickMin = _xMin * xs;
             _xtickMax = _xMax * xs;
@@ -3976,8 +3975,8 @@ out.println("\\begin{document}");
         //    _yMax = max;
         //} else {
         // Pad slightly so that we don't plot points on the axes.
-        _yMin = min - ((max - min) * _padding);
-        _yMax = max + ((max - min) * _padding);
+        _yMin = min - (max - min) * _padding;
+        _yMax = max + (max - min) * _padding;
 
         //}
         // Find the exponent.
@@ -3985,7 +3984,7 @@ out.println("\\begin{document}");
         _yExp = (int) Math.floor(Math.log(largest) * _LOG10SCALE);
 
         // Use the exponent only if it's larger than 1 in magnitude.
-        if ((_yExp > 1) || (_yExp < -1)) {
+        if (_yExp > 1 || _yExp < -1) {
             double ys = 1.0 / Math.pow(10.0, _yExp);
             _ytickMin = _yMin * ys;
             _ytickMax = _yMax * ys;
@@ -4020,8 +4019,8 @@ out.println("\\begin{document}");
             return;
         }
 
-        if ((_zoomin == true) && (_drawn == true)) {
-            if ((_zoomxn != -1) || (_zoomyn != -1)) {
+        if (_zoomin == true && _drawn == true) {
+            if (_zoomxn != -1 || _zoomyn != -1) {
                 // erase previous rectangle.
                 int minx = Math.min(_zoomx, _zoomxn);
                 int maxx = Math.max(_zoomx, _zoomxn);
@@ -4049,9 +4048,9 @@ out.println("\\begin{document}");
                 }
 
                 // NOTE: ignore if total drag less than 5 pixels.
-                if ((Math.abs(_zoomx - x) > 5) && (Math.abs(_zoomy - y) > 5)) {
-                    double a = _xMin + ((_zoomx - _ulx) / _xscale);
-                    double b = _xMin + ((x - _ulx) / _xscale);
+                if (Math.abs(_zoomx - x) > 5 && Math.abs(_zoomy - y) > 5) {
+                    double a = _xMin + (_zoomx - _ulx) / _xscale;
+                    double b = _xMin + (x - _ulx) / _xscale;
 
                     // NOTE: It used to be that it wasproblematic to set
                     // the X range here because it conflicted with the wrap
@@ -4065,8 +4064,8 @@ out.println("\\begin{document}");
                         setXRange(b, a);
                     }
 
-                    a = _yMax - ((_zoomy - _uly) / _yscale);
-                    b = _yMax - ((y - _uly) / _yscale);
+                    a = _yMax - (_zoomy - _uly) / _yscale;
+                    b = _yMax - (y - _uly) / _yscale;
 
                     if (a < b) {
                         setYRange(a, b);
@@ -4077,27 +4076,27 @@ out.println("\\begin{document}");
 
                 repaint();
             }
-        } else if ((_zoomout == true) && (_drawn == true)) {
+        } else if (_zoomout == true && _drawn == true) {
             // Erase previous rectangle.
             graphics.setXORMode(_boxColor);
 
             int x_diff = Math.abs(_zoomx - _zoomxn);
             int y_diff = Math.abs(_zoomy - _zoomyn);
             graphics.drawRect(_zoomx - 15 - x_diff, _zoomy - 15 - y_diff,
-                    30 + (x_diff * 2), 30 + (y_diff * 2));
+                    30 + x_diff * 2, 30 + y_diff * 2);
             graphics.setPaintMode();
 
             // Calculate zoom factor.
-            double a = (Math.abs(_zoomx - x)) / 30.0;
-            double b = (Math.abs(_zoomy - y)) / 30.0;
-            double newx1 = _xMax + ((_xMax - _xMin) * a);
-            double newx2 = _xMin - ((_xMax - _xMin) * a);
+            double a = Math.abs(_zoomx - x) / 30.0;
+            double b = Math.abs(_zoomy - y) / 30.0;
+            double newx1 = _xMax + (_xMax - _xMin) * a;
+            double newx2 = _xMin - (_xMax - _xMin) * a;
 
             // NOTE: To limit zooming out to the fill area, uncomment this...
             // if (newx1 > _xTop) newx1 = _xTop;
             // if (newx2 < _xBottom) newx2 = _xBottom;
-            double newy1 = _yMax + ((_yMax - _yMin) * b);
-            double newy2 = _yMin - ((_yMax - _yMin) * b);
+            double newy1 = _yMax + (_yMax - _yMin) * b;
+            double newy2 = _yMin - (_yMax - _yMin) * b;
 
             // NOTE: To limit zooming out to the fill area, uncomment this...
             // if (newy1 > _yTop) newy1 = _yTop;
@@ -4159,11 +4158,11 @@ out.println("\\begin{document}");
         }
 
         // erase previous rectangle, if there was one.
-        if (((_zoomx != -1) || (_zoomy != -1))) {
+        if (_zoomx != -1 || _zoomy != -1) {
             // Ability to zoom out added by William Wu.
             // If we are not already zooming, figure out whether we
             // are zooming in or out.
-            if ((_zoomin == false) && (_zoomout == false)) {
+            if (_zoomin == false && _zoomout == false) {
                 if (y < _zoomy) {
                     _zoomout = true;
 
@@ -4177,7 +4176,7 @@ out.println("\\begin{document}");
 
             if (_zoomin == true) {
                 // Erase the previous box if necessary.
-                if (((_zoomxn != -1) || (_zoomyn != -1)) && (_drawn == true)) {
+                if ((_zoomxn != -1 || _zoomyn != -1) && _drawn == true) {
                     int minx = Math.min(_zoomx, _zoomxn);
                     int maxx = Math.max(_zoomx, _zoomxn);
                     int miny = Math.min(_zoomy, _zoomyn);
@@ -4204,12 +4203,12 @@ out.println("\\begin{document}");
                 }
             } else if (_zoomout == true) {
                 // Erase previous box if necessary.
-                if (((_zoomxn != -1) || (_zoomyn != -1)) && (_drawn == true)) {
+                if ((_zoomxn != -1 || _zoomyn != -1) && _drawn == true) {
                     int x_diff = Math.abs(_zoomx - _zoomxn);
                     int y_diff = Math.abs(_zoomy - _zoomyn);
                     graphics.setXORMode(_boxColor);
                     graphics.drawRect(_zoomx - 15 - x_diff, _zoomy - 15
-                            - y_diff, 30 + (x_diff * 2), 30 + (y_diff * 2));
+                            - y_diff, 30 + x_diff * 2, 30 + y_diff * 2);
                 }
 
                 if (y < _zoomy) {
@@ -4220,7 +4219,7 @@ out.println("\\begin{document}");
                     int y_diff = Math.abs(_zoomy - _zoomyn);
                     graphics.setXORMode(_boxColor);
                     graphics.drawRect(_zoomx - 15 - x_diff, _zoomy - 15
-                            - y_diff, 30 + (x_diff * 2), 30 + (y_diff * 2));
+                            - y_diff, 30 + x_diff * 2, 30 + y_diff * 2);
                     _drawn = true;
                     return;
                 } else {
@@ -4627,9 +4626,9 @@ out.println("\\begin{document}");
             // Mac OS X 10.5: we want BUTTON1_MASK set and BUTTON3_MASK not set
             // so that when we edit a dataset we don't get the zoom box
             // https://chess.eecs.berkeley.edu/bugzilla/show_bug.cgi?id=300
-            if (((event.getModifiers() & InputEvent.BUTTON1_MASK) != 0)
-                    && ((event.getModifiers() & InputEvent.BUTTON3_MASK) == 0)
-                    || (event.getModifiers() == 0)) {
+            if ((event.getModifiers() & InputEvent.BUTTON1_MASK) != 0
+                    && (event.getModifiers() & InputEvent.BUTTON3_MASK) == 0
+                    || event.getModifiers() == 0) {
                 PlotBox.this._zoomStart(event.getX(), event.getY());
             }
             // Want to convert from mouse presses to data points?
@@ -4644,9 +4643,9 @@ out.println("\\begin{document}");
         }
 
         public void mouseReleased(MouseEvent event) {
-            if (((event.getModifiers() & InputEvent.BUTTON1_MASK) != 0)
-                    && ((event.getModifiers() & InputEvent.BUTTON3_MASK) == 0)
-                    || (event.getModifiers() == 0)) {
+            if ((event.getModifiers() & InputEvent.BUTTON1_MASK) != 0
+                    && (event.getModifiers() & InputEvent.BUTTON3_MASK) == 0
+                    || event.getModifiers() == 0) {
                 PlotBox.this._zoom(event.getX(), event.getY());
             }
         }
@@ -4659,7 +4658,7 @@ out.println("\\begin{document}");
             // methods, so those methods set a variable _zooming that
             // is used by _zoomBox to determine whether to draw a box.
             if ((event.getModifiers() & InputEvent.BUTTON1_MASK) != 0
-                    && ((event.getModifiers() & InputEvent.BUTTON3_MASK) == 0)) {
+                    && (event.getModifiers() & InputEvent.BUTTON3_MASK) == 0) {
                 PlotBox.this._zoomBox(event.getX(), event.getY());
             }
         }

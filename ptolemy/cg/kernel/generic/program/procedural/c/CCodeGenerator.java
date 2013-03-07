@@ -194,12 +194,12 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
                                 }
                             }
                         }
-                        if (j != (functions.length - 1)) {
+                        if (j != functions.length - 1) {
                             code.append(", ");
                         }
                     }
                 }
-                if (i != (types.length - 1)) {
+                if (i != types.length - 1) {
                     code.append("},");
                 } else {
                     code.append("}");
@@ -513,17 +513,17 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
             typeStreams[i].clear();
             //typeStreams[i].appendCodeBlock(typesArray[i] + "_new");
 
-            for (int j = 0; j < functionsArray.length; j++) {
+            for (String element : functionsArray) {
                 // The code block declaration has to follow this convention:
                 // /*** [function name]Block ***/
                 //     .....
                 // /**/
-                String functionName = typesArray[i] + "_" + functionsArray[j];
+                String functionName = typesArray[i] + "_" + element;
 
                 try {
                     // Boolean_isCloseTo and String_isCloseTo map to
                     // Boolean_equals and String_equals.
-                    if (functionsArray[j].equals("isCloseTo")
+                    if (element.equals("isCloseTo")
                             && (typesArray[i].equals("Boolean") || typesArray[i]
                                     .equals("String"))) {
 
@@ -577,8 +577,8 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
                         && (typesArray[i].equals("Boolean") || typesArray[i]
                                 .equals("String"))) {
                     boolean foundEquals = false;
-                    for (int k = 0; k < functionsArray.length; k++) {
-                        if (functionsArray[k].equals("equals")) {
+                    for (String element : functionsArray) {
+                        if (element.equals("equals")) {
                             foundEquals = true;
                         }
                     }
@@ -725,7 +725,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         code.append(super.generateVariableDeclaration());
 
         // Generate variable declarations for modified variables.
-        if (_modifiedVariables != null && !(_modifiedVariables.isEmpty())) {
+        if (_modifiedVariables != null && !_modifiedVariables.isEmpty()) {
             code.append(comment("Generate variable declarations for "
                     + "modified parameters"));
             Iterator<Parameter> modifiedVariables = _modifiedVariables
@@ -755,7 +755,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         code.append(super.generateVariableInitialization());
 
         // Generate variable initialization for modified variables.
-        if (_modifiedVariables != null && !(_modifiedVariables.isEmpty())) {
+        if (_modifiedVariables != null && !_modifiedVariables.isEmpty()) {
             code.append(comment(1, "Generate variable initialization for "
                     + "modified parameters"));
             Iterator<Parameter> modifiedVariables = _modifiedVariables
@@ -845,7 +845,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
             while ((line = bufferedReader.readLine()) != null) {
                 String methodName = prefix + "_" + methodNumber++;
                 body = new StringBuffer(line + _eol);
-                for (int i = 0; (i + 1) < linesPerMethod && line != null; i++) {
+                for (int i = 0; i + 1 < linesPerMethod && line != null; i++) {
                     lineNumber++;
                     line = bufferedReader.readLine();
                     if (line != null) {
@@ -889,7 +889,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         Set<String> actorIncludeDirectories = adapter.getIncludeDirectories();
         Iterator<String> includeIterator = actorIncludeDirectories.iterator();
         while (includeIterator.hasNext()) {
-            addInclude("-I\"" + (includeIterator.next()) + "\"");
+            addInclude("-I\"" + includeIterator.next() + "\"");
         }
     }
 
@@ -910,7 +910,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         Set<String> actorLibraries = adapter.getLibraries();
         Iterator<String> librariesIterator = actorLibraries.iterator();
         while (librariesIterator.hasNext()) {
-            addLibrary("-l\"" + (librariesIterator.next()) + "\"");
+            addLibrary("-l\"" + librariesIterator.next() + "\"");
         }
     }
 
@@ -985,9 +985,9 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         if (_isTopLevel()) {
             if (((BooleanToken) run.getToken()).booleanValue()) {
                 String command = codeDirectory.stringValue()
-                        + ((!codeDirectory.stringValue().endsWith("/") && !codeDirectory
-                                .stringValue().endsWith("\\")) ? "/" : "")
-                        + _sanitizedModelName;
+                        + (!codeDirectory.stringValue().endsWith("/")
+                                && !codeDirectory.stringValue().endsWith("\\") ? "/"
+                                : "") + _sanitizedModelName;
 
                 commands.add("\"" + command.replace('\\', '/') + "\"");
             }
@@ -1354,9 +1354,9 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
 
         // If necessary, add a trailing / after codeDirectory.
         String makefileOutputName = codeDirectory.stringValue()
-                + ((!codeDirectory.stringValue().endsWith("/") && !codeDirectory
-                        .stringValue().endsWith("\\")) ? "/" : "")
-                + _sanitizedModelName + ".mk";
+                + (!codeDirectory.stringValue().endsWith("/")
+                        && !codeDirectory.stringValue().endsWith("\\") ? "/"
+                        : "") + _sanitizedModelName + ".mk";
 
         BufferedReader makefileTemplateReader = null;
 
@@ -1471,7 +1471,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
             javaHome = javaHome.substring(0, javaHome.length() - 4);
         }
 
-        if (!(new File(javaHome + "/include").isDirectory())) {
+        if (!new File(javaHome + "/include").isDirectory()) {
             // It could be that we are running under WebStart
             // or otherwise in a JRE, so we should look for the JDK.
             File potentialJavaHomeParentFile = new File(javaHome)
@@ -1496,7 +1496,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
                 }
             }
         }
-        if ((new File(javaHome + "/include").isDirectory())) {
+        if (new File(javaHome + "/include").isDirectory()) {
             addInclude("-I\"" + javaHome + "/include\"");
         } else {
             // Perhaps this is Mac OS X 10.7, where Java is laid out differently?
@@ -1532,7 +1532,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
             String libjvmFileName = "libjvm.dll.a";
             String libjvmPath = libjvmAbsoluteDirectory + "/" + libjvmFileName;
 
-            if (!(new File(libjvmPath).canRead())) {
+            if (!new File(libjvmPath).canRead()) {
                 // If we are under WebStart or running from jar files, we
                 // will need to copy libjvm.dll.a from the jar file
                 // that gcc can find it.

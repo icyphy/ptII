@@ -222,23 +222,23 @@ public class KernelException extends Exception {
         // upon, but in this case, the alternatives are a very large
         // and complex if/else tree or else the creation of a bunch
         // of temporary strings with a smaller if/else tree.
-        boolean whereNullOrEmpty = ((whereString == null) || whereString
-                .equals(""));
-        boolean detailNullOrEmpty = ((detail == null) || detail.equals(""));
+        boolean whereNullOrEmpty = whereString == null
+                || whereString.equals("");
+        boolean detailNullOrEmpty = detail == null || detail.equals("");
         return
         // Do we print the detail?
         (detailNullOrEmpty ? "" : detail)
         // Do we add a \n?
-                + ((!whereNullOrEmpty && !detailNullOrEmpty) ? "\n" : "")
+                + (!whereNullOrEmpty && !detailNullOrEmpty ? "\n" : "")
                 // Do we print the whereString?
                 + (whereNullOrEmpty ? "" : whereString)
                 // Do we add a \n?
-                + (((!whereNullOrEmpty || !detailNullOrEmpty) && (cause != null)) ? "\n"
+                + ((!whereNullOrEmpty || !detailNullOrEmpty) && cause != null ? "\n"
                         : "")
                 // Do we print the cause?
-                + ((cause == null) ? ""
-                        : ("Because:\n" + ((cause.getMessage() != null) ? cause
-                                .getMessage() : cause.toString())));
+                + (cause == null ? "" : "Because:\n"
+                        + (cause.getMessage() != null ? cause.getMessage()
+                                : cause.toString()));
     }
 
     /** Get the cause of this exception.
@@ -326,7 +326,7 @@ public class KernelException extends Exception {
             String name;
             name = object.getName();
 
-            if ((name == null) || name.equals("")) {
+            if (name == null || name.equals("")) {
                 // If NamedObj.setName() throws an exception, then the
                 // nameable object might be non-null, but the name might
                 // not yet have been set and getName() might return null.

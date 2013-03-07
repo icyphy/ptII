@@ -233,7 +233,7 @@ public final class NamedList implements Cloneable, Serializable {
             append(element);
         } else {
             // name exists in list
-            _insertAt((index + 1), element);
+            _insertAt(index + 1, element);
         }
         if (_hashEnabled) {
             _hashedList.put(element.getName(), element);
@@ -289,7 +289,7 @@ public final class NamedList implements Cloneable, Serializable {
         if (index < 0) {
             // The element is not on the list.
             throw new IllegalActionException(element, "Not on the list.");
-        } else if (index < (_namedList.size() - 1)) {
+        } else if (index < _namedList.size() - 1) {
             _namedList.remove(element);
             _namedList.add(index + 1, element);
             return index;
@@ -340,7 +340,7 @@ public final class NamedList implements Cloneable, Serializable {
         if (priorIndex < 0) {
             // The element is not on the list.
             throw new IllegalActionException(element, "Not on the list.");
-        } else if ((index < 0) || (index >= _namedList.size())) {
+        } else if (index < 0 || index >= _namedList.size()) {
             throw new IllegalActionException(element, "Index out of range.");
         } else if (priorIndex != index) {
             _namedList.remove(element);
@@ -366,7 +366,7 @@ public final class NamedList implements Cloneable, Serializable {
         if (index < 0) {
             // The element is not on the list.
             throw new IllegalActionException(element, "Not on the list.");
-        } else if (index < (_namedList.size() - 1)) {
+        } else if (index < _namedList.size() - 1) {
             _namedList.remove(element);
             _namedList.add(element);
             return index;

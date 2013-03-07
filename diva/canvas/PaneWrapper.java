@@ -149,7 +149,7 @@ public class PaneWrapper extends AbstractFigure implements EventAcceptor {
         // efficient by downcasting to Rectangle2D where possible
         Shape currentClip = g.getClip();
 
-        if (isClipEnabled() && (currentClip != null)) {
+        if (isClipEnabled() && currentClip != null) {
             // Note: clip screws up down-scaled lines
             // Note: we need to take the intersection of the current
             // clip with the background figure. This is probably slow...
@@ -187,7 +187,7 @@ public class PaneWrapper extends AbstractFigure implements EventAcceptor {
         // efficient by downcasting to Rectangle2D where possible
         Shape currentClip = g.getClip();
 
-        if (isClipEnabled() && (currentClip != null)) {
+        if (isClipEnabled() && currentClip != null) {
             // Note: clip screws up down-scaled lines
             // Note: we need to take the intersection of the current
             // clip with the background figure. This is probably slow...
@@ -229,7 +229,7 @@ public class PaneWrapper extends AbstractFigure implements EventAcceptor {
         // FIXME This is only temporary
         Interactor r = getInteractor();
 
-        if ((r != null) && r instanceof SelectionInteractor) {
+        if (r != null && r instanceof SelectionInteractor) {
             if (((SelectionInteractor) r).getSelectionModel()
                     .containsSelection(this)) {
                 return;

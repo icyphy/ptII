@@ -207,7 +207,7 @@ public class DebuggerParameter extends TableauParameter implements
             if (_lineNumber + 1 != _lines.length
                     || !_lines[_lineNumber].equals("")) {
                 throw new RuntimeException("Log does not match on line "
-                        + (_lineNumber) + ".");
+                        + _lineNumber + ".");
             }
         }
     }

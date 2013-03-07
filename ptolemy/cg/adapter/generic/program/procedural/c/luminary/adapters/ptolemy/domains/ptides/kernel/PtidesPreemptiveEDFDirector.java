@@ -191,8 +191,8 @@ public class PtidesPreemptiveEDFDirector
 
         code.append(getCodeGenerator().comment("Create a task for each actor."));
 
-        for (Actor actor : (List<Actor>) (((CompositeActor) getComponent()
-                .getContainer()).deepEntityList())) {
+        for (Actor actor : (List<Actor>) ((CompositeActor) getComponent()
+                .getContainer()).deepEntityList()) {
             NamedProgramCodeGeneratorAdapter adapter = (NamedProgramCodeGeneratorAdapter) getAdapter(actor);
             code.append(adapter.generateFireCode());
         }

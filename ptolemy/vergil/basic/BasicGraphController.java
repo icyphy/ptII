@@ -147,7 +147,7 @@ public abstract class BasicGraphController extends AbstractGraphController
      */
     public void clearAnimation() {
         // Deselect previous one.
-        if ((_animated != null) && (_animationRenderer != null)) {
+        if (_animated != null && _animationRenderer != null) {
             _animationRenderer.renderDeselected(_animated);
         }
     }
@@ -287,7 +287,7 @@ public abstract class BasicGraphController extends AbstractGraphController
             _getDocumentationAction.setConfiguration(configuration);
         }
 
-        if ((_configuration != null) && (_menuFactory != null)) {
+        if (_configuration != null && _menuFactory != null) {
             // NOTE: The following requires that the configuration be
             // non-null, or it will report an error.
             _menuFactory.addMenuItemFactory(new MenuActionFactory(
@@ -365,7 +365,7 @@ public abstract class BasicGraphController extends AbstractGraphController
                         double translationY = newLocation[1]
                                 - originalUpperLeftY;
 
-                        if ((translationX != 0.0) || (translationY != 0.0)) {
+                        if (translationX != 0.0 || translationY != 0.0) {
                             // The translate method supposedly handles the required
                             // repaint.
                             figure.translate(translationX, translationY);
@@ -708,7 +708,7 @@ public abstract class BasicGraphController extends AbstractGraphController
 
                 String source = target.getSource();
 
-                if ((source != null) && !source.trim().equals("")) {
+                if (source != null && !source.trim().equals("")) {
                     // FIXME: Is there a more reasonable base directory
                     // to give for the second argument?
                     URL sourceURL = FileUtilities.nameToURL(source, null,

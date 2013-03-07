@@ -197,7 +197,7 @@ public class PlotMLApplication extends PlotApplication {
         }
         bin.reset();
 
-        if ((new String(peek)).startsWith("<?xm")) {
+        if (new String(peek).startsWith("<?xm")) {
             // file is an XML file.
             PlotBoxMLParser parser = _newParser();
 

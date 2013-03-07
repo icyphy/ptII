@@ -405,7 +405,7 @@ public class LifeCycleManager extends TypedCompositeActor {
                 continue;
             }
 
-            if ((port.isOutsideConnected()) && port.hasToken(0)) {
+            if (port.isOutsideConnected() && port.hasToken(0)) {
                 Token token = port.get(0);
                 Attribute attribute = getAttribute(port.getName());
 

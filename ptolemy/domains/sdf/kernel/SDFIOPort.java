@@ -147,7 +147,7 @@ public final class SDFIOPort extends TypedIOPort {
      *   cannot be cloned.
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        SDFIOPort newObject = (SDFIOPort) (super.clone(workspace));
+        SDFIOPort newObject = (SDFIOPort) super.clone(workspace);
         newObject.tokenConsumptionRate = (Parameter) newObject
                 .getAttribute("tokenConsumptionRate");
         newObject.tokenInitProduction = (Parameter) newObject

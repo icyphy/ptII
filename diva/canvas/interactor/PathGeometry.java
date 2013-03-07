@@ -311,7 +311,7 @@ public class PathGeometry implements Geometry {
         float[] segment = new float[6];
         PathIterator i = _path.getPathIterator(_unitTransform);
 
-        while (!(i.isDone())) {
+        while (!i.isDone()) {
             // Stretch arrays if necessary
             if (_vertexCount == _type.length) {
                 int[] temp1 = new int[_type.length * 2];
@@ -322,7 +322,7 @@ public class PathGeometry implements Geometry {
                 _index = temp2;
             }
 
-            if ((_coordCount + 6) > _coordinate.length) {
+            if (_coordCount + 6 > _coordinate.length) {
                 float[] temp = new float[_coordinate.length * 2];
                 System.arraycopy(_coordinate, 0, temp, 0, _coordCount);
                 _coordinate = temp;
@@ -475,7 +475,7 @@ public class PathGeometry implements Geometry {
                 updateGeometry();
             }
 
-            int index = (_index[_id]);
+            int index = _index[_id];
 
             // Move it.  If this vertex is not a control point, move the startpoint.
             if (_controlPoint == 0) {

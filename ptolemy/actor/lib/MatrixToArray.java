@@ -99,7 +99,7 @@ public class MatrixToArray extends Transformer {
      *   contains an attribute that cannot be cloned.
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        MatrixToArray newObject = (MatrixToArray) (super.clone(workspace));
+        MatrixToArray newObject = (MatrixToArray) super.clone(workspace);
         newObject.input.setTypeAtMost(BaseType.MATRIX);
         newObject.output.setTypeAtLeast(ArrayType.ARRAY_BOTTOM);
         return newObject;

@@ -124,7 +124,7 @@ public class NonStrictThreeBitAdder extends TypedAtomicActor {
                 if (inputBits.hasToken(i)) {
                     int value = ((IntToken) inputBits.get(i)).intValue();
 
-                    if ((value != 0) && (value != 1)) {
+                    if (value != 0 && value != 1) {
                         throw new IllegalActionException(this,
                                 "Inputs can only be 0 or 1.");
                     }
@@ -141,7 +141,7 @@ public class NonStrictThreeBitAdder extends TypedAtomicActor {
 
         // Need to know all three to know the low-order bit.
         if (numKnown == 3) {
-            if ((numOnes == 0) || (numOnes == 2)) {
+            if (numOnes == 0 || numOnes == 2) {
                 low = new IntToken(0);
             } else {
                 low = new IntToken(1);

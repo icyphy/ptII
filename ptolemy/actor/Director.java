@@ -633,7 +633,7 @@ public class Director extends Attribute implements Executable {
                     "Cannot get a global time because the top level is not an actor."
                             + " It is " + toplevel);
         }
-        return (((Actor) toplevel).getDirector()).getModelTime();
+        return ((Actor) toplevel).getDirector().getModelTime();
     }
 
     /** Return the next time of interest in the model being executed by
@@ -860,11 +860,11 @@ public class Director extends Attribute implements Executable {
         localClock.resetLocalTime(getModelStartTime());
         localClock.start();
 
-
         _resourceScheduling = false;
         _resourceSchedulers = new ArrayList<ResourceSchedulerInterface>();
         _schedulerForActor = new HashMap<Actor, ResourceSchedulerInterface>();
-        for (Object entity : getContainer().attributeList(ResourceSchedulerInterface.class)) {
+        for (Object entity : getContainer().attributeList(
+                ResourceSchedulerInterface.class)) {
             ResourceSchedulerInterface scheduler = (ResourceSchedulerInterface) entity;
             _resourceSchedulers.add(scheduler);
             Time time = scheduler.initialize();
@@ -1017,7 +1017,7 @@ public class Director extends Attribute implements Executable {
     public int iterate(int count) throws IllegalActionException {
         int n = 0;
 
-        while ((n++ < count) && !_stopRequested) {
+        while (n++ < count && !_stopRequested) {
             if (prefire()) {
                 fire();
 
@@ -1169,8 +1169,7 @@ public class Director extends Attribute implements Executable {
                 // LazyTypedCompositeActor implements ptolemy.kernel.util.LazyComposite,
                 // which has a populate() method.  We refer to the interface so
                 // as to avoid a dependency between Director and LazyTypedCompositeActor.
-                LazyComposite lazyComposite = (LazyComposite) entities
-                        .next();
+                LazyComposite lazyComposite = (LazyComposite) entities.next();
                 lazyComposite.populate();
             }
 
@@ -1191,8 +1190,10 @@ public class Director extends Attribute implements Executable {
             // completion of preinitializeAndResolveTypes() because otherwise, if there
             // are multiple directors, then the workspace version will always have changed
             // since the last run, since creatingReceivers itself changes it.
-            Manager manager = ((Actor)container).getManager();
-            if (manager == null || manager.getPreinitializeVersion() != workspace().getVersion()) {
+            Manager manager = ((Actor) container).getManager();
+            if (manager == null
+                    || manager.getPreinitializeVersion() != workspace()
+                            .getVersion()) {
                 // This increments the workspace version.
                 _createReceivers();
             }
@@ -1307,7 +1308,7 @@ public class Director extends Attribute implements Executable {
             Nameable oldContainer = getContainer();
 
             if (oldContainer instanceof CompositeActor
-                    && (oldContainer != container)) {
+                    && oldContainer != container) {
                 // Need to remove this director as the active one of the
                 // old container. Search for another director contained
                 // by the composite.  If it contains more than one,
@@ -1550,7 +1551,7 @@ public class Director extends Attribute implements Executable {
     public void transferOutputs() throws IllegalActionException {
         NamedObj container = getContainer();
         if (container instanceof Actor) {
-            List<IOPort> outports = ((Actor)container).outputPortList();
+            List<IOPort> outports = ((Actor) container).outputPortList();
             for (IOPort port : outports) {
                 transferOutputs(port);
             }
@@ -1625,8 +1626,8 @@ public class Director extends Attribute implements Executable {
      *  @return True if the actor finished execution.
      */
     protected boolean _actorFinished(Actor actor) {
-        return (_schedulerForActor.get(actor) != null && _schedulerForActor
-                .get(actor).lastScheduledActorFinished());
+        return _schedulerForActor.get(actor) != null
+                && _schedulerForActor.get(actor).lastScheduledActorFinished();
     }
 
     /** Return a description of the object.  The level of detail depends
@@ -1652,7 +1653,7 @@ public class Director extends Attribute implements Executable {
 
             String result;
 
-            if ((bracket == 1) || (bracket == 2)) {
+            if (bracket == 1 || bracket == 2) {
                 result = super._description(detail, indent, 1);
             } else {
                 result = super._description(detail, indent, 0);
@@ -1847,21 +1848,21 @@ public class Director extends Attribute implements Executable {
         }
         if (scheduler != null) {
             double deadline = _getDeadline(actor, timestamp);
-            time = (scheduler).schedule(actor, getEnvironmentTime(), deadline,
+            time = scheduler.schedule(actor, getEnvironmentTime(), deadline,
                     _getExecutionTime(actor));
             finished = _actorFinished(actor);
             if (time != null && time.getDoubleValue() > 0.0) {
-                CompositeActor container = (CompositeActor) ((Attribute)scheduler)
+                CompositeActor container = (CompositeActor) ((Attribute) scheduler)
                         .getContainer();
                 container.getDirector().fireContainerAt(
                         getEnvironmentTime().add(time));
 
             }
         } else if (isEmbedded()) {
-            return ((CompositeActor) (((CompositeActor) getContainer()))
+            return ((CompositeActor) ((CompositeActor) getContainer())
                     .getContainer()).getDirector()._schedule(actor, timestamp);
         }
-        return (time == null || finished);
+        return time == null || finished;
     }
 
     /** Find resource scheduler for actor.
@@ -1875,19 +1876,17 @@ public class Director extends Attribute implements Executable {
         Object object = _schedulerForActor.get(actor);
         if (!_schedulerForActor.containsKey(actor)) {
             if (object == null) {
-                for (Parameter parameter : ((NamedObj) actor).attributeList(Parameter.class)) {
+                for (Parameter parameter : ((NamedObj) actor)
+                        .attributeList(Parameter.class)) {
                     try {
-                        Token paramToken = ((Parameter) parameter)
-                                .getToken();
+                        Token paramToken = parameter.getToken();
                         if (paramToken instanceof ObjectToken) {
                             Object paramObject = ((ObjectToken) paramToken)
                                     .getValue();
                             if (paramObject instanceof ResourceSchedulerInterface) {
                                 ResourceSchedulerInterface scheduler = (ResourceSchedulerInterface) paramObject;
-                                if (_resourceSchedulers
-                                        .contains(scheduler)) {
-                                    _schedulerForActor.put(actor,
-                                            scheduler);
+                                if (_resourceSchedulers.contains(scheduler)) {
+                                    _schedulerForActor.put(actor, scheduler);
                                     object = scheduler;
                                     break;
                                 } else {
@@ -1984,8 +1983,7 @@ public class Director extends Attribute implements Executable {
      * @return The execution time or null if no execution time is specified.
      * @exception IllegalActionException Thrown if time objects cannot be created.
      */
-    private Time _getExecutionTime(
-            Actor actor) throws IllegalActionException {
+    private Time _getExecutionTime(Actor actor) throws IllegalActionException {
         Time executionTime = null;
         if (_executionTimes == null) {
             _executionTimes = new HashMap<Actor, Time>();
@@ -1993,9 +1991,11 @@ public class Director extends Attribute implements Executable {
         executionTime = _executionTimes.get(actor);
         if (executionTime == null) {
             Double executionTimeParam = null;
-            Parameter parameter = (Parameter) ((NamedObj) actor).getAttribute("executionTime");
+            Parameter parameter = (Parameter) ((NamedObj) actor)
+                    .getAttribute("executionTime");
             if (parameter != null && parameter.getToken() != null) {
-                executionTimeParam = Double.valueOf(((DoubleToken) parameter.getToken()).doubleValue());
+                executionTimeParam = Double.valueOf(((DoubleToken) parameter
+                        .getToken()).doubleValue());
             }
 
             if (executionTimeParam == null) {

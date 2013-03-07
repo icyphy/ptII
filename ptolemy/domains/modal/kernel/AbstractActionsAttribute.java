@@ -319,7 +319,7 @@ public abstract class AbstractActionsAttribute extends Action implements
 
         // This is important for InterfaceAutomata which extend from
         // this class.
-        if ((expression == null) || expression.trim().equals("")) {
+        if (expression == null || expression.trim().equals("")) {
             return;
         }
 
@@ -512,10 +512,8 @@ public abstract class AbstractActionsAttribute extends Action implements
                 // messages when functions are not found.
                 InequalityTerm[] terms = getVariables();
 
-                for (int i = 0; i < terms.length; i++) {
-                    InequalityTerm term = terms[i];
-
-                    if ((term != this) && (term.getValue() == BaseType.UNKNOWN)) {
+                for (InequalityTerm term : terms) {
+                    if (term != this && term.getValue() == BaseType.UNKNOWN) {
                         return BaseType.UNKNOWN;
                     }
                 }
@@ -546,7 +544,7 @@ public abstract class AbstractActionsAttribute extends Action implements
                     // of the port, which has the same type as the port
                     // itself.
                     // -- tfeng (11/26/2008)
-                            (getDestination(_name) instanceof Variable)) {
+                            getDestination(_name) instanceof Variable) {
                         // Has a number in parentheses following the name.
                         ArrayType arrayType = new ArrayType(type);
                         return arrayType;
@@ -583,7 +581,7 @@ public abstract class AbstractActionsAttribute extends Action implements
                     String name = (String) elements.next();
                     InequalityTerm term = _getParserScope().getTypeTerm(name);
 
-                    if ((term != null) && term.isSettable()) {
+                    if (term != null && term.isSettable()) {
                         termList.add(term);
                     }
                 }

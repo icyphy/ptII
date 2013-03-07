@@ -135,10 +135,10 @@ public class ComponentDef implements Comparable<Object> {
     private String doNode(Node parent, String nodeName) {
         String temp = "";
         Node[] nodes = getNodesNamed(parent, nodeName);
-        for (int i = 0; i < nodes.length; i++) {
+        for (Node node : nodes) {
             // Java 1.5 library function
             //      temp += nodes[i].getTextContent();
-            temp += getTextContent(nodes[i]);
+            temp += getTextContent(node);
         }
         return temp;
     }
@@ -152,7 +152,7 @@ public class ComponentDef implements Comparable<Object> {
         //    isContainer = Boolean.parseBoolean(attributes.get("container"));
         String str = attributes.get("container");
         if (str != null) {
-            isContainer = (str.compareToIgnoreCase("true") == 0);
+            isContainer = str.compareToIgnoreCase("true") == 0;
         }
 
         imports = doNode(componentNode, "imports");
@@ -215,8 +215,7 @@ public class ComponentDef implements Comparable<Object> {
                 Node paletteNode = dataDocument.getDocumentElement();
                 Node[] componentNodes = getNodesNamed(paletteNode, "component");
 
-                for (int index = 0; index < componentNodes.length; index++) {
-                    Node componentNode = componentNodes[index];
+                for (Node componentNode : componentNodes) {
                     components.add(new ComponentDef(componentNode));
                 }
             } catch (Exception e) {

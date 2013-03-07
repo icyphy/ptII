@@ -133,7 +133,7 @@ public class PublisherTest extends PublisherNonStrictTest {
             return;
         }
 
-        if (_numberOfInputTokensSeen >= ((ArrayToken) (correctValues.getToken()))
+        if (_numberOfInputTokensSeen >= ((ArrayToken) correctValues.getToken())
                 .length()) {
             // Consume and discard input values.  We are beyond the end
             // of the correctValues array.
@@ -149,11 +149,11 @@ public class PublisherTest extends PublisherNonStrictTest {
             return;
         }
 
-        Token referenceToken = ((ArrayToken) (correctValues.getToken()))
+        Token referenceToken = ((ArrayToken) correctValues.getToken())
                 .getElement(_numberOfInputTokensSeen);
         Token[] reference;
 
-        if ((width == 1) && !(referenceToken instanceof ArrayToken)) {
+        if (width == 1 && !(referenceToken instanceof ArrayToken)) {
             reference = new Token[1];
             reference[0] = referenceToken;
         } else {

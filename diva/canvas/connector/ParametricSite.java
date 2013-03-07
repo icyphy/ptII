@@ -99,7 +99,7 @@ public class ParametricSite extends AbstractSite {
      */
     public double getX() {
         Rectangle2D bounds = _parentFigure.getBounds();
-        double x = bounds.getX() + (_xt * bounds.getWidth());
+        double x = bounds.getX() + _xt * bounds.getWidth();
         return x;
     }
 
@@ -110,7 +110,7 @@ public class ParametricSite extends AbstractSite {
      */
     public double getY() {
         Rectangle2D bounds = _parentFigure.getBounds();
-        double y = bounds.getY() + (_yt * bounds.getHeight());
+        double y = bounds.getY() + _yt * bounds.getHeight();
         return y;
     }
 }

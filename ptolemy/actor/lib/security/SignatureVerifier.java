@@ -131,7 +131,7 @@ public class SignatureVerifier extends SignatureActor {
             _publicKey = (PublicKey) keyToken.getValue();
         }
 
-        if (input.hasToken(0) && signature.hasToken(0) && (_publicKey != null)) {
+        if (input.hasToken(0) && signature.hasToken(0) && _publicKey != null) {
             // Process the input data to generate a signature.
             byte[] signatureData = ArrayToken
                     .arrayTokenToUnsignedByteArray((ArrayToken) signature

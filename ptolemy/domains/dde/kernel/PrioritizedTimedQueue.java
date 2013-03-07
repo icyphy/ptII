@@ -264,7 +264,7 @@ public class PrioritizedTimedQueue extends AbstractReceiver {
                     "hasRoom() requires a positive argument.");
         }
 
-        return ((_queue.getCapacity() - _queue.size()) > numberOfTokens);
+        return _queue.getCapacity() - _queue.size() > numberOfTokens;
     }
 
     /** Return true if there are tokens stored on the queue. Return
@@ -289,7 +289,7 @@ public class PrioritizedTimedQueue extends AbstractReceiver {
                     "hasToken() requires a positive argument.");
         }
 
-        return (_queue.size() > numberOfTokens);
+        return _queue.size() > numberOfTokens;
     }
 
     /** Throw an exception, since this method is not used in
@@ -317,14 +317,14 @@ public class PrioritizedTimedQueue extends AbstractReceiver {
     public void put(Token token, Time time) throws NoRoomException {
         double timeValue = time.getDoubleValue();
 
-        if ((time.compareTo(_lastTime) < 0) && (timeValue != INACTIVE)
-                && (timeValue != IGNORE)) {
+        if (time.compareTo(_lastTime) < 0 && timeValue != INACTIVE
+                && timeValue != IGNORE) {
             NamedObj actor = getContainer().getContainer();
             throw new IllegalArgumentException(actor.getName()
                     + " - Attempt to set current time to the past; time = "
                     + time + ". The _lastTime was " + _lastTime);
-        } else if ((timeValue < 0.0) && (timeValue != INACTIVE)
-                && (timeValue != IGNORE)) {
+        } else if (timeValue < 0.0 && timeValue != INACTIVE
+                && timeValue != IGNORE) {
             NamedObj actor = getContainer().getContainer();
             throw new IllegalArgumentException(actor.getName()
                     + " - Attempt to set current time to a"
@@ -506,7 +506,7 @@ public class PrioritizedTimedQueue extends AbstractReceiver {
     void _setCompletionTime(Time time) {
         double timeValue = time.getDoubleValue();
 
-        if ((timeValue < 0.0) && (timeValue != PrioritizedTimedQueue.ETERNITY)) {
+        if (timeValue < 0.0 && timeValue != PrioritizedTimedQueue.ETERNITY) {
             throw new IllegalArgumentException("Attempt to set "
                     + "completion time to a negative value.");
         }

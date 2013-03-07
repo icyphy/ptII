@@ -65,7 +65,7 @@ public class ToDoubleMapMapping extends MapMapping implements ToDoubleMapping {
      *  @return True if the given object is in the domain of this Mapping.
      */
     public boolean inDomain(Object object) {
-        return ((_map.containsKey(object)) && (_map.get(object) instanceof Double));
+        return _map.containsKey(object) && _map.get(object) instanceof Double;
     }
 
     /** Return the double value that is associated with given object under
@@ -81,7 +81,7 @@ public class ToDoubleMapMapping extends MapMapping implements ToDoubleMapping {
      *  domain of the mapping.
      */
     public double toDouble(Object object) {
-        return ((Double) (_map.get(object))).doubleValue();
+        return ((Double) _map.get(object)).doubleValue();
     }
 
     /** Return the object associated with the given object.

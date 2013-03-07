@@ -162,9 +162,7 @@ public class DistributedServerRMIGeneric implements ServiceIDListener,
     public void discovered(DiscoveryEvent evt) {
         ServiceRegistrar[] registrars = evt.getRegistrars();
 
-        for (int n = 0; n < registrars.length; n++) {
-            ServiceRegistrar registrar = registrars[n];
-
+        for (ServiceRegistrar registrar : registrars) {
             try {
                 System.out.println("Found a service locator at "
                         + registrar.getLocator().getHost());
@@ -309,16 +307,16 @@ public class DistributedServerRMIGeneric implements ServiceIDListener,
             unicastLocators = (LookupLocator[]) configuration.getEntry(SERVER,
                     "unicastLocators", LookupLocator[].class, null); // default
 
-            for (int i = 0; i < unicastLocators.length; i++) {
-                System.out.println("    " + unicastLocators[i]);
+            for (LookupLocator unicastLocator : unicastLocators) {
+                System.out.println("    " + unicastLocator);
             }
 
             System.out.println("Reading entries: ");
             entries = (Entry[]) configuration.getEntry(SERVER, "entries",
                     Entry[].class, null); // default
 
-            for (int i = 0; i < entries.length; i++) {
-                System.out.println("    " + entries[i]);
+            for (Entry entrie : entries) {
+                System.out.println("    " + entrie);
             }
 
             System.out.print("Reading serviceIdFile: ");
@@ -330,8 +328,8 @@ public class DistributedServerRMIGeneric implements ServiceIDListener,
                     String[].class, null); // default
 
             if (groups.length != 0) {
-                for (int i = 0; i < groups.length; i++) {
-                    System.out.println("    " + groups[i]);
+                for (String group : groups) {
+                    System.out.println("    " + group);
                 }
             } else {
                 groups = LookupDiscovery.ALL_GROUPS;

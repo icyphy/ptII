@@ -116,9 +116,9 @@ public class BasicSelectionModel implements SelectionModel {
             //only add the last selection
             addSelection(sels[sels.length - 1]);
         } else {
-            for (int i = 0; i < sels.length; i++) {
-                _selection.add(sels[i]);
-                renderSelected(sels[i]);
+            for (Object sel : sels) {
+                _selection.add(sel);
+                renderSelected(sel);
             }
 
             _selEvent.set(sels, null, getFirstSelection());
@@ -134,8 +134,8 @@ public class BasicSelectionModel implements SelectionModel {
         Object[] removals = _selection.toArray();
         _selection.clear();
 
-        for (int i = 0; i < removals.length; i++) {
-            renderDeselected(removals[i]);
+        for (Object removal : removals) {
+            renderDeselected(removal);
         }
 
         _selEvent.set(null, removals, getFirstSelection());

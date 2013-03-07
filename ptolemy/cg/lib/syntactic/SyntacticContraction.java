@@ -99,7 +99,7 @@ public class SyntacticContraction implements SyntacticTerm {
      *  @return number of inputs or zero if no kernel.
      */
     public int sizeInputs() {
-        return _kernel == null ? 0 : (_kernel.sizeInputs() - _degree);
+        return _kernel == null ? 0 : _kernel.sizeInputs() - _degree;
     }
 
     /** Get the number of outputs from the term.
@@ -107,7 +107,7 @@ public class SyntacticContraction implements SyntacticTerm {
      *  @return number of outputs or zero if no kernel.
      */
     public int sizeOutputs() {
-        return _kernel == null ? 0 : (_kernel.sizeOutputs() - _degree);
+        return _kernel == null ? 0 : _kernel.sizeOutputs() - _degree;
     }
 
     /** Get the rank of the term.
@@ -130,7 +130,7 @@ public class SyntacticContraction implements SyntacticTerm {
             return null;
         }
         Integer index = _kernel.inputIndex(port);
-        return index == null || index < _degree ? null : (index - _degree);
+        return index == null || index < _degree ? null : index - _degree;
     }
 
     // FIXME: This is not fully implemented.

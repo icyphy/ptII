@@ -203,7 +203,7 @@ public class ImageTableau extends TokenTableau {
             int xsize = image.getWidth(null);
             int ysize = image.getHeight(null);
 
-            if ((_oldxsize != xsize) || (_oldysize != ysize)) {
+            if (_oldxsize != xsize || _oldysize != ysize) {
                 if (_debugging) {
                     _debug("Image size has changed.");
                 }

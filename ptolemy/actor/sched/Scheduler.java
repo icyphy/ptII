@@ -176,15 +176,15 @@ public class Scheduler extends Attribute {
                         "Scheduler has no director.");
             }
 
-            CompositeActor compositeActor = (CompositeActor) (director
-                    .getContainer());
+            CompositeActor compositeActor = (CompositeActor) director
+                    .getContainer();
 
             if (compositeActor == null) {
                 throw new IllegalActionException(this,
                         "Director has no container.");
             }
 
-            if (!isValid() || (_cachedGetSchedule == null)) {
+            if (!isValid() || _cachedGetSchedule == null) {
                 _cachedGetSchedule = _getSchedule();
                 _workspaceVersion = workspace().getVersion();
             }
@@ -245,7 +245,7 @@ public class Scheduler extends Attribute {
 
             Nameable oldContainer = getContainer();
 
-            if (oldContainer instanceof Director && (oldContainer != container)) {
+            if (oldContainer instanceof Director && oldContainer != container) {
                 // Need to remove this scheduler as the active one of the
                 // old container. Search for another scheduler contained
                 // by the composite.  If it contains more than one,
@@ -329,8 +329,8 @@ public class Scheduler extends Attribute {
     protected Schedule _getSchedule() throws IllegalActionException,
             NotSchedulableException {
         StaticSchedulingDirector director = (StaticSchedulingDirector) getContainer();
-        CompositeActor compositeActor = (CompositeActor) (director
-                .getContainer());
+        CompositeActor compositeActor = (CompositeActor) director
+                .getContainer();
         List actors = compositeActor.deepEntityList();
         Schedule schedule = new Schedule();
         Iterator actorIterator = actors.iterator();

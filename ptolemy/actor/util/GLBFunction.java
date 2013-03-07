@@ -98,8 +98,8 @@ public class GLBFunction extends MonotonicFunction {
 
         Set<Type> types = new HashSet<Type>();
         types.addAll(_cachedTypes);
-        for (int i = 0; i < _cachedTerms.length; i++) {
-            Type type = (Type) _cachedTerms[i].getValue();
+        for (InequalityTerm _cachedTerm : _cachedTerms) {
+            Type type = (Type) _cachedTerm.getValue();
             // if (type != BaseType.UNKNOWN)
             // enabling this will make the function non-monotonic which may
             // cause type resolution to diverge
@@ -146,12 +146,10 @@ public class GLBFunction extends MonotonicFunction {
      */
     protected void _updateArguments() {
         List<IOPort> destinations = null;
-        if (_sourcePort.getContainer().workspace().getVersion()
-                == _previousWorkspaceVersion) {
+        if (_sourcePort.getContainer().workspace().getVersion() == _previousWorkspaceVersion) {
             return;
         }
-        ArrayList<InequalityTerm> portTypeTermList =
-                new ArrayList<InequalityTerm>();
+        ArrayList<InequalityTerm> portTypeTermList = new ArrayList<InequalityTerm>();
         _cachedTypes = new HashSet<Type>();
         // Make sure to support ports that are both input and output.
         if (_sourcePort.isOutput()) {

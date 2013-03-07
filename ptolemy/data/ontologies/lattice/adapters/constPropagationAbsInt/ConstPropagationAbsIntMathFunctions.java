@@ -239,13 +239,14 @@ public class ConstPropagationAbsIntMathFunctions extends ConceptFunction {
             throw new IllegalActionException(inputConcept, "Invalid argument: "
                     + "the input concepts must be instances of "
                     + "FlatScalarTokenInfiniteConcept or the Concept Zero.");
-        } else if (!(inputConcept.equals(_zeroConcept) || (inputConcept instanceof FlatScalarTokenInfiniteConcept
+        } else if (!(inputConcept.equals(_zeroConcept) || inputConcept instanceof FlatScalarTokenInfiniteConcept
                 && (_positiveRepresentative
                         .equals(((FlatScalarTokenInfiniteConcept) inputConcept)
                                 .getRepresentative()) || _negativeRepresentative
                         .equals(((FlatScalarTokenInfiniteConcept) inputConcept)
-                                .getRepresentative())) && ((FlatScalarTokenInfiniteConcept) inputConcept)
-                    .getTokenValue() != null))) {
+                                .getRepresentative()))
+                && ((FlatScalarTokenInfiniteConcept) inputConcept)
+                        .getTokenValue() != null)) {
             throw new IllegalActionException(inputConcept,
                     "Invalid argument: "
                             + "the FlatScalarTokenInfiniteConcept "

@@ -437,7 +437,7 @@ public class PthalesDirector extends SDFDirector {
 
         boolean wasTransferred = false;
 
-        if ((((Actor) (port.getContainer())).getExecutiveDirector() instanceof PNDirector)) {
+        if (((Actor) port.getContainer()).getExecutiveDirector() instanceof PNDirector) {
             for (int i = 0; i < port.getWidth(); i++) {
                 try {
                     if (i < port.getWidthInside()) {
@@ -469,8 +469,8 @@ public class PthalesDirector extends SDFDirector {
                             if (port.getRemoteReceivers().length > 0) {
                                 port.send(i, port.get(i, rate), rate);
                             } else {
-                                CompositeActor compositeActor = ((CompositeActor) port
-                                        .getContainer());
+                                CompositeActor compositeActor = (CompositeActor) port
+                                        .getContainer();
                                 List<Actor> actors = compositeActor
                                         .deepEntityList();
 
@@ -578,7 +578,7 @@ public class PthalesDirector extends SDFDirector {
 
         boolean wasTransferred = false;
 
-        if (!(((Actor) (port.getContainer())).getExecutiveDirector() instanceof PNDirector)) {
+        if (!(((Actor) port.getContainer()).getExecutiveDirector() instanceof PNDirector)) {
             wasTransferred = super.transferOutputs(port);
         } else {
 

@@ -213,9 +213,9 @@ public class FeedBackDelay extends DDEActor {
 
         Receiver[][] receivers = output.getRemoteReceivers();
 
-        for (int i = 0; i < receivers.length; i++) {
-            for (int j = 0; j < receivers[i].length; j++) {
-                DDEReceiver receiver = (DDEReceiver) receivers[i][j];
+        for (Receiver[] receiver2 : receivers) {
+            for (int j = 0; j < receiver2.length; j++) {
+                DDEReceiver receiver = (DDEReceiver) receiver2[j];
                 receiver.put(new Token(), new Time(getDirector(),
                         PrioritizedTimedQueue.IGNORE));
             }
@@ -223,9 +223,9 @@ public class FeedBackDelay extends DDEActor {
 
         receivers = input.getReceivers();
 
-        for (int i = 0; i < receivers.length; i++) {
-            for (int j = 0; j < receivers[i].length; j++) {
-                DDEReceiver receiver = (DDEReceiver) receivers[i][j];
+        for (Receiver[] receiver2 : receivers) {
+            for (int j = 0; j < receiver2.length; j++) {
+                DDEReceiver receiver = (DDEReceiver) receiver2[j];
                 receiver._hideNullTokens(false);
             }
         }
@@ -242,9 +242,9 @@ public class FeedBackDelay extends DDEActor {
             throws IllegalActionException {
         Receiver[][] receivers = output.getRemoteReceivers();
 
-        for (int i = 0; i < receivers.length; i++) {
-            for (int j = 0; j < receivers[i].length; j++) {
-                DDEReceiver receiver = (DDEReceiver) receivers[i][j];
+        for (Receiver[] receiver2 : receivers) {
+            for (int j = 0; j < receiver2.length; j++) {
+                DDEReceiver receiver = (DDEReceiver) receiver2[j];
                 receiver.put(token, time);
             }
         }

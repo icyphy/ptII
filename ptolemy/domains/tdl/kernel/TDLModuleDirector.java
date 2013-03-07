@@ -331,7 +331,7 @@ public class TDLModuleDirector extends ModalDirector {
     public void initialize() throws IllegalActionException {
         super.initialize();
         _resetReceivers();
-        _graph = new TDLActionsGraph(((TDLModule) getContainer()),
+        _graph = new TDLActionsGraph((TDLModule) getContainer(),
                 getController());
         _graph.buildGraph(getController().currentState());
         _initializeOutputPorts();
@@ -626,13 +626,12 @@ public class TDLModuleDirector extends ModalDirector {
                 % modePeriod.getLongValue());
         Time time;
         if (node != null) {
-            Time t = (((TDLAction) node.getWeight()).time
-                    .subtract(scheduleTime));
+            Time t = ((TDLAction) node.getWeight()).time.subtract(scheduleTime);
             if (t.getDoubleValue() > 0.0) {
                 _previousAdditionalScheduleTime = t;
             }
 
-            time = (((TDLAction) node.getWeight()).time.subtract(scheduleTime))
+            time = ((TDLAction) node.getWeight()).time.subtract(scheduleTime)
                     .add(additionalTime);
             if (((TDLAction) node.getWeight()).time.getDoubleValue() == 0.0
                     && _previousAdditionalScheduleTime.getDoubleValue() > 0.0) {
@@ -749,7 +748,7 @@ public class TDLModuleDirector extends ModalDirector {
      */
     private boolean _hasGuard(NamedObj obj) {
         Parameter parameter = (Parameter) obj.getAttribute("guard");
-        return (parameter != null);
+        return parameter != null;
     }
 
     /**
@@ -770,10 +769,9 @@ public class TDLModuleDirector extends ModalDirector {
             token = new IntToken(0);
         }
         Receiver[][] channelArray = port.getRemoteReceivers();
-        for (int i = 0; i < channelArray.length; i++) {
-            Receiver[] receiverArray = channelArray[i];
-            for (int j = 0; j < receiverArray.length; j++) {
-                TDLReceiver receiver = (TDLReceiver) receiverArray[j];
+        for (Receiver[] receiverArray : channelArray) {
+            for (Receiver element : receiverArray) {
+                TDLReceiver receiver = (TDLReceiver) element;
                 receiver.init(token);
             }
         }
@@ -863,10 +861,9 @@ public class TDLModuleDirector extends ModalDirector {
      */
     private void _updateInputPort(IOPort port) {
         Receiver[][] channelArray = port.getReceivers();
-        for (int i = 0; i < channelArray.length; i++) {
-            Receiver[] receiverArray = channelArray[i];
-            for (int j = 0; j < receiverArray.length; j++) {
-                TDLReceiver receiver = (TDLReceiver) receiverArray[j];
+        for (Receiver[] receiverArray : channelArray) {
+            for (Receiver element : receiverArray) {
+                TDLReceiver receiver = (TDLReceiver) element;
                 receiver.update();
             }
         }
@@ -885,10 +882,9 @@ public class TDLModuleDirector extends ModalDirector {
         while (it.hasNext()) {
             IOPort port = (IOPort) it.next();
             Receiver[][] channelArray = port.deepGetReceivers();
-            for (int i = 0; i < channelArray.length; i++) {
-                Receiver[] receiverArray = channelArray[i];
-                for (int j = 0; j < receiverArray.length; j++) {
-                    TDLReceiver receiver = (TDLReceiver) receiverArray[j];
+            for (Receiver[] receiverArray : channelArray) {
+                for (Receiver element : receiverArray) {
+                    TDLReceiver receiver = (TDLReceiver) element;
                     receiver.update();
                 }
             }
@@ -906,11 +902,9 @@ public class TDLModuleDirector extends ModalDirector {
      */
     private void _updateOutputPort(IOPort port) throws IllegalActionException {
         Receiver[][] channelArray = port.getRemoteReceivers();
-        for (int i = 0; i < channelArray.length; i++) {
-            Receiver[] receiverArray = channelArray[i];
-
-            for (int j = 0; j < receiverArray.length; j++) {
-                TDLReceiver receiver = (TDLReceiver) receiverArray[j];
+        for (Receiver[] receiverArray : channelArray) {
+            for (Receiver element : receiverArray) {
+                TDLReceiver receiver = (TDLReceiver) element;
                 receiver.update();
             }
         }
@@ -933,10 +927,9 @@ public class TDLModuleDirector extends ModalDirector {
             IOPort port = (IOPort) it.next();
             // super.transferOutputs(port);
             Receiver[][] channelArray = port.deepGetReceivers();
-            for (int i = 0; i < channelArray.length; i++) {
-                Receiver[] receiverArray = channelArray[i];
-                for (int j = 0; j < receiverArray.length; j++) {
-                    TDLReceiver receiver = (TDLReceiver) receiverArray[j];
+            for (Receiver[] receiverArray : channelArray) {
+                for (Receiver element : receiverArray) {
+                    TDLReceiver receiver = (TDLReceiver) element;
                     receiver.update();
                 }
             }

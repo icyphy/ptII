@@ -207,7 +207,7 @@ public class RxCoordination extends MACActorBase {
                             Time currentTime = getDirector().getModelTime();
                             Time navEnd = currentTime.add(1.0);
 
-                            if ((_tNavEnd != null)
+                            if (_tNavEnd != null
                                     && _tNavEnd instanceof Variable) {
                                 Token token = ((Variable) _tNavEnd).getToken();
                                 navEnd = new Time(getDirector(),
@@ -240,8 +240,7 @@ public class RxCoordination extends MACActorBase {
 
                             // except power control messages, all others are sent
                             // to the network layer
-                            if ((payload_kind >= PCmin)
-                                    && (payload_kind <= PCmax)) {
+                            if (payload_kind >= PCmin && payload_kind <= PCmax) {
                                 toPowerControl.send(0, payload);
                             } else {
                                 SinkRequest.send(0, payload);
@@ -292,7 +291,7 @@ public class RxCoordination extends MACActorBase {
         super.initialize();
         _dSifsDly = _aSifsTime - _aRxTxTurnaroundTime;
         _dRsp = _aSifsTime + _aPreambleLength + _aPlcpHeaderLength
-                + (_sAckCtsLng / _mBrate);
+                + _sAckCtsLng / _mBrate;
         _currentState = RxC_Idle;
 
         NamedObj macComposite = getContainer().getContainer();

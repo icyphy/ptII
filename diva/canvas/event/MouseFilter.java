@@ -163,7 +163,7 @@ public class MouseFilter {
      * Test whether the given MouseEvent passes the filter.
      */
     public boolean accept(MouseEvent event) {
-        if ((_pressNumber != -1) && (event.getClickCount() != _pressNumber)) {
+        if (_pressNumber != -1 && event.getClickCount() != _pressNumber) {
             return false;
         }
 
@@ -182,8 +182,8 @@ public class MouseFilter {
         // event gets passed to the background graph,
         // which accepts it and produces the wrong
         // context menu.
-        boolean val = ((m & _buttonMask) != 0)
-                && (_modifierFlags == (m & _modifierMask));
+        boolean val = (m & _buttonMask) != 0
+                && _modifierFlags == (m & _modifierMask);
 
         // System.out.println("event = " + event);
         // System.out.println("FILTER = " + this);

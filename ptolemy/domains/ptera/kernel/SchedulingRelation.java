@@ -268,7 +268,7 @@ public class SchedulingRelation extends Transition {
         StringBuffer buffer = new StringBuffer(super.getLabel());
 
         String delayExpression = delay.getExpression();
-        if ((delayExpression != null) && !_isZero(delayExpression)) {
+        if (delayExpression != null && !_isZero(delayExpression)) {
             if (buffer.length() > 0) {
                 buffer.append("\n");
             }
@@ -294,7 +294,7 @@ public class SchedulingRelation extends Transition {
         }
 
         String priorityExpression = priority.getExpression();
-        if ((priorityExpression != null) && !_isZero(priorityExpression)) {
+        if (priorityExpression != null && !_isZero(priorityExpression)) {
             if (buffer.length() > 0) {
                 buffer.append("\n");
             }

@@ -128,11 +128,11 @@ public class GUIUtilities {
      *  {@link #ROLLOVER_SELECTED_ICON} or {@link #SELECTED_ICON}.
      */
     public static void addIcons(Action action, String[][] iconRoles) {
-        for (int i = 0; i < iconRoles.length; i++) {
-            URL img = action.getClass().getResource(iconRoles[i][0]);
+        for (String[] iconRole : iconRoles) {
+            URL img = action.getClass().getResource(iconRole[0]);
             if (img != null) {
                 ImageIcon icon = new ImageIcon(img);
-                action.putValue(iconRoles[i][1], icon);
+                action.putValue(iconRole[1], icon);
             }
         }
     }

@@ -126,7 +126,7 @@ public class Ticket implements java.io.Serializable {
     @Override
     public int hashCode() {
         final int prime = 31;
-        int result = prime + ((_ticketID == null) ? 0 : _ticketID.hashCode());
+        int result = prime + (_ticketID == null ? 0 : _ticketID.hashCode());
         return result;
     }
 

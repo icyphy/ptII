@@ -519,8 +519,7 @@ public class TableauFrame extends Top {
                 // so we enable the File->New Menu choice
             }
 
-            if ((effigyFactory != null) && (directory != null)
-                    && !disableFileNew) {
+            if (effigyFactory != null && directory != null && !disableFileNew) {
                 List factoryList = effigyFactory
                         .entityList(EffigyFactory.class);
                 Iterator factories = factoryList.iterator();
@@ -649,7 +648,7 @@ public class TableauFrame extends Top {
                     Tableau tableau = (Tableau) tableauxIterator.next();
 
                     if (!(tableau instanceof DialogTableau)
-                            && (tableau != _tableau)) {
+                            && tableau != _tableau) {
                         // NOTE: We use dispose() here rather than just hiding the
                         // window.  This ensures that derived classes can react to
                         // windowClosed events rather than overriding the
@@ -687,7 +686,7 @@ public class TableauFrame extends Top {
 
                 int reply = _queryForSave();
 
-                if ((reply == _DISCARDED) || (reply == _FAILED)) {
+                if (reply == _DISCARDED || reply == _FAILED) {
                     // If the model has children, then
                     // issue a warning that those children will
                     // persist.  Give the user the chance to cancel.
@@ -794,7 +793,7 @@ public class TableauFrame extends Top {
         // then we need to close the previous.
         // If we do save as to the same file, then we will get
         // the current effigy, and we don't want to close it.
-        if ((previousOpen != null) && (previousOpen != getEffigy())) {
+        if (previousOpen != null && previousOpen != getEffigy()) {
             // The destination file is already open.
             // NOTE: If the model being saved is a submodel of the
             // model associated with previousOpen, then we will close
@@ -811,7 +810,7 @@ public class TableauFrame extends Top {
                     NamedObj possibleContainer = ((PtolemyEffigy) previousOpen)
                             .getModel();
 
-                    if ((possibleContainer != null)
+                    if (possibleContainer != null
                             && possibleContainer.deepContains(model)) {
                         containmentError = true;
                     }
@@ -1087,8 +1086,7 @@ public class TableauFrame extends Top {
         Effigy effigy = getEffigy();
         File file = effigy.getWritableFile();
 
-        if (( /*(effigy != null) && */!effigy.isModifiable())
-                || (file == null)) {
+        if (!effigy.isModifiable() || file == null) {
             return _saveAs();
         } else {
             try {
@@ -1209,7 +1207,7 @@ public class TableauFrame extends Top {
                 // true. Will it always be true?
                 List children = ((Instantiable) model).getChildren();
 
-                if ((children != null) && (children.size() > 0)) {
+                if (children != null && children.size() > 0) {
                     StringBuffer confirm = new StringBuffer(
                             "Warning: This model defines a class, "
                                     + "and there are open models with instances\n"
@@ -1229,7 +1227,7 @@ public class TableauFrame extends Top {
 
                             int newLength = confirm.length();
 
-                            if ((newLength - length) > 50) {
+                            if (newLength - length > 50) {
                                 confirm.append("\n");
                                 length = confirm.length();
                             }
@@ -1447,7 +1445,8 @@ public class TableauFrame extends Top {
                         return null;
                     }
                 } catch (Throwable throwable) {
-                    throw new RuntimeException("Failed to confirm saving of " + file, throwable);
+                    throw new RuntimeException("Failed to confirm saving of "
+                            + file, throwable);
                 }
                 return _saveAsHelperCommon(file,
                         fileDialog.getCurrentDirectory());

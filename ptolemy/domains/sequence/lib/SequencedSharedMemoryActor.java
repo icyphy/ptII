@@ -259,7 +259,7 @@ public abstract class SequencedSharedMemoryActor extends SetVariable {
             // with superclass
             // if (output.getWidth() > 0) {
             if (output.isOutsideConnected()) {
-                output.send(0, (getVariable()).getToken());
+                output.send(0, getVariable().getToken());
             }
         }
     }
@@ -334,7 +334,7 @@ public abstract class SequencedSharedMemoryActor extends SetVariable {
         // which will assign the value "present"
         Attribute a = _checkSingleAttribute(name, container, null);
         if (a instanceof Variable) {
-            return ((Variable) a);
+            return (Variable) a;
         } else {
             throw new IllegalActionException(
                     this,
@@ -509,7 +509,7 @@ public abstract class SequencedSharedMemoryActor extends SetVariable {
             // This should always be true
             // Beth 10/24/08 - Changed to always set the initial value to the same as the parameter value
             // when new parameters are created
-            checkForAttributes((value).getToken(), (initialValue).getToken());
+            checkForAttributes(value.getToken(), initialValue.getToken());
 
             // If there are parameters to delete, then issue a change request to delete them
             // They should be in the top level container.
@@ -698,7 +698,7 @@ public abstract class SequencedSharedMemoryActor extends SetVariable {
             // If the scope is global (including imported or exported), look anywhere in
             // the hierarchy
             // If the scope is local, stop at the boundary of an opaque composite actor
-            while ((a == null) && (curContainer != null)) {
+            while (a == null && curContainer != null) {
                 // Keep track of the last (top-level) container
                 lastContainer = curContainer;
                 a = curContainer.getAttribute(name);

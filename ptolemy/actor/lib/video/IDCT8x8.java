@@ -208,8 +208,8 @@ public class IDCT8x8 extends TypedAtomicActor {
         }
         for (i = 0; i < 8; i++) {
             for (j = 0; j < 8; j++) {
-                sum[i][j] = (_ftemp[i][j] < 0 ? (int) (_ftemp[i][j] - 0.5)
-                        : (int) (_ftemp[i][j] + 0.5));
+                sum[i][j] = _ftemp[i][j] < 0 ? (int) (_ftemp[i][j] - 0.5)
+                        : (int) (_ftemp[i][j] + 0.5);
             }
         }
 

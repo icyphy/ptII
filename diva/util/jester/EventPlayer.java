@@ -57,9 +57,9 @@ public class EventPlayer {
      * the component.
      */
     public void play(InputEvent[] events) {
-        for (int i = 0; i < events.length; i++) {
+        for (InputEvent event : events) {
             //            System.out.println("Dispatching: " + events[i]);
-            _component.dispatchEvent(events[i]);
+            _component.dispatchEvent(event);
         }
     }
 }

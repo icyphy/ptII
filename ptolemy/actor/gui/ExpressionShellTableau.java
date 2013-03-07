@@ -152,7 +152,7 @@ public class ExpressionShellTableau extends Tableau implements ShellInterpreter 
         if (targetName != null) {
             Attribute attribute = model.getAttribute(targetName);
 
-            if ((attribute != null) && !(attribute instanceof Parameter)) {
+            if (attribute != null && !(attribute instanceof Parameter)) {
                 attribute.setContainer(null);
                 attribute = null;
             }

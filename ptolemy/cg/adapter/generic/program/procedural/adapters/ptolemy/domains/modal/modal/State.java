@@ -111,9 +111,9 @@ public class State extends NamedProgramCodeGeneratorAdapter {
         String str;
         Receiver rec[][] = port.getRemoteReceivers();
 
-        for (int i = 0; i < rec.length; i++) {
-            for (int j = 0; j < rec[i].length; j++) {
-                str = rec[i][j].toString();
+        for (Receiver[] element : rec) {
+            for (int j = 0; j < element.length; j++) {
+                str = element[j].toString();
                 str = str.substring(str.indexOf("{") + 2, str.lastIndexOf("."));
                 str = str.replace('.', '_');
 

@@ -393,7 +393,7 @@ public class XMLIcon extends DynamicEditorIcon implements ValueListener {
 
         result += " graphics {\n";
         result += "FIXME";
-        result += (_getIndentPrefix(indent) + "}");
+        result += _getIndentPrefix(indent) + "}";
 
         if (bracket == 2) {
             result += "}";

@@ -243,7 +243,7 @@ public class DiningApplet extends Applet implements Runnable,
     }
 
     public synchronized void philosopherChanged() {
-        if ((simulationThread != null) && simulationThread.isAlive()) {
+        if (simulationThread != null && simulationThread.isAlive()) {
             // repaint the table for the current state
             _table.repaint();
 
@@ -351,7 +351,7 @@ public class DiningApplet extends Applet implements Runnable,
                     simulationThread.start();
                 }
 
-                if (!(simulationThread.isAlive())) {
+                if (!simulationThread.isAlive()) {
                     simulationThread = new Thread(DiningApplet.this);
 
                     // start() will eventually call the run() method.
@@ -388,7 +388,7 @@ public class DiningApplet extends Applet implements Runnable,
                 double spec = 1.0;
 
                 try {
-                    spec = (Double.valueOf(timespec)).doubleValue();
+                    spec = Double.valueOf(timespec).doubleValue();
                 } catch (NumberFormatException ex) {
                     System.err.println("Invalid eating rate: "
                             + ex.getMessage() + ", defaulting to 1.0");
@@ -413,7 +413,7 @@ public class DiningApplet extends Applet implements Runnable,
                 double spec = 1.0;
 
                 try {
-                    spec = (Double.valueOf(timespec)).doubleValue();
+                    spec = Double.valueOf(timespec).doubleValue();
                 } catch (NumberFormatException ex) {
                     System.err.println("Invalid thinking rate: "
                             + ex.getMessage() + ", defaulting to 1.0");

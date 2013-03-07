@@ -175,9 +175,8 @@ public class GTTableau extends Tableau {
 
             NamedObj model = ((PtolemyEffigy) effigy).getModel();
 
-            if (model instanceof GTCompositeActor
-                    || (model != null
-                    && !model.attributeList(Factory.class).isEmpty())) {
+            if (model instanceof GTCompositeActor || model != null
+                    && !model.attributeList(Factory.class).isEmpty()) {
                 LibraryAttribute library;
                 if (model instanceof FSMMatcher) {
                     library = (LibraryAttribute) getAttribute("state",

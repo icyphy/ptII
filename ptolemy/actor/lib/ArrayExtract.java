@@ -148,7 +148,7 @@ public class ArrayExtract extends Transformer {
      *   an attribute that cannot be cloned.
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        ArrayExtract newObject = (ArrayExtract) (super.clone(workspace));
+        ArrayExtract newObject = (ArrayExtract) super.clone(workspace);
 
         // Set the type constraints.
         newObject.input.setTypeAtLeast(ArrayType.ARRAY_BOTTOM);
@@ -171,7 +171,7 @@ public class ArrayExtract extends Transformer {
         outputArrayLength.update();
 
         if (input.hasToken(0)) {
-            ArrayToken inputValue = ((ArrayToken) input.get(0));
+            ArrayToken inputValue = (ArrayToken) input.get(0);
             Type inputElementType = inputValue.getElementType();
             Token[] inputArray = inputValue.arrayValue();
             int sourcePositionValue = ((IntToken) sourcePosition.getToken())

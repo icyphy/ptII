@@ -102,7 +102,7 @@ public class AddEditorFactory extends MoMLFilterSimple {
                     _currentActorFullName = "." + _lastNameSeen;
                 }
             } else if (_currentlyProcessingActorThatMayNeedAnEditorFactory
-                    && (container != null)
+                    && container != null
                     && !container.getFullName().equals(_currentActorFullName)
                     && !container.getFullName().startsWith(
                             _currentActorFullName)) {
@@ -150,8 +150,8 @@ public class AddEditorFactory extends MoMLFilterSimple {
             throws Exception {
         if (!_currentlyProcessingActorThatMayNeedAnEditorFactory) {
             return;
-        } else if (_currentAttributeHasLocation && (elementName != null)
-                && elementName.equals("property") && (container != null)
+        } else if (_currentAttributeHasLocation && elementName != null
+                && elementName.equals("property") && container != null
                 && container.getFullName().equals(_currentActorFullName)) {
             _currentlyProcessingActorThatMayNeedAnEditorFactory = false;
             _currentAttributeHasLocation = false;

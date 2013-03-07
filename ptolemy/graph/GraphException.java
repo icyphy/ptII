@@ -117,8 +117,7 @@ public class GraphException extends RuntimeException {
      */
     static protected String _elementDump(Object element, Graph graph,
             String elementDescriptor) {
-        String elementString = (element == null) ? "<null>" : element
-                .toString();
+        String elementString = element == null ? "<null>" : element.toString();
         return "\nDumps of the offending " + elementDescriptor
                 + " and graph follow.\n" + "The offending " + elementDescriptor
                 + ":\n" + elementString + "\nThe offending graph:\n"

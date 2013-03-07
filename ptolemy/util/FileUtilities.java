@@ -91,8 +91,8 @@ public class FileUtilities {
         // If the sourceURL is not a jar URL, then check to see if we
         // have the same file.
         // FIXME: should we check for !/ and !\ everywhere?
-        if ((sourceFile.getPath().indexOf("!/") == -1)
-                && (sourceFile.getPath().indexOf("!\\") == -1)) {
+        if (sourceFile.getPath().indexOf("!/") == -1
+                && sourceFile.getPath().indexOf("!\\") == -1) {
             try {
                 if (sourceFile.getCanonicalFile().toURI().toURL()
                         .sameFile(destinationURL)) {
@@ -277,7 +277,7 @@ public class FileUtilities {
      *  @see #nameToURL(String, URI, ClassLoader)
      */
     public static File nameToFile(String name, URI base) {
-        if ((name == null) || name.trim().equals("")) {
+        if (name == null || name.trim().equals("")) {
             return null;
         }
 
@@ -349,7 +349,7 @@ public class FileUtilities {
      */
     public static URL nameToURL(String name, URI baseDirectory,
             ClassLoader classLoader) throws IOException {
-        if ((name == null) || name.trim().equals("")) {
+        if (name == null || name.trim().equals("")) {
             return null;
         }
 
@@ -392,8 +392,8 @@ public class FileUtilities {
                             + "' or '"
                             + StringUtilities.substitute(name, "%20", " ")
                             + "'"
-                            + ((possibleJarURL == null) ? "" : (" or '"
-                                    + possibleJarURL.getFile() + "")));
+                            + (possibleJarURL == null ? "" : " or '"
+                                    + possibleJarURL.getFile() + ""));
                 }
             }
 
@@ -439,8 +439,8 @@ public class FileUtilities {
 
                 try {
                     // Adding another '/' for remote execution.
-                    if ((newURI.getScheme() != null)
-                            && (newURI.getAuthority() == null)) {
+                    if (newURI.getScheme() != null
+                            && newURI.getAuthority() == null) {
                         // Change from Efrat:
                         // "I made these change to allow remote
                         // execution of a workflow from within a web
@@ -543,7 +543,7 @@ public class FileUtilities {
      */
     public static BufferedReader openForReading(String name, URI base,
             ClassLoader classLoader) throws IOException {
-        if ((name == null) || name.trim().equals("")) {
+        if (name == null || name.trim().equals("")) {
             return null;
         }
 
@@ -620,7 +620,7 @@ public class FileUtilities {
      */
     public static Writer openForWriting(String name, URI base, boolean append)
             throws IOException {
-        if ((name == null) || name.trim().equals("")) {
+        if (name == null || name.trim().equals("")) {
             return null;
         }
 

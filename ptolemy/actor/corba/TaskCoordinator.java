@@ -265,8 +265,8 @@ public class TaskCoordinator extends Transformer {
             NameComponent namecomp = new NameComponent(
                     ((StringToken) coordinatorName.getToken()).stringValue(),
                     "Multi");
-            _debug(getName(), " looking for name: ",
-                    (coordinatorName.getToken()).toString());
+            _debug(getName(), " looking for name: ", coordinatorName.getToken()
+                    .toString());
 
             NameComponent[] path = { namecomp };
             Coordinator _coordinator = new Coordinator();

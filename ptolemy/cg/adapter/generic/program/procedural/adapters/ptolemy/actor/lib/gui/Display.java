@@ -26,6 +26,7 @@
 
  */
 package ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib.gui;
+
 import java.util.ArrayList;
 
 import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;

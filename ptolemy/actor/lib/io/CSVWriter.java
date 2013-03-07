@@ -184,7 +184,7 @@ public class CSVWriter extends LineWriter {
      *  @exception IllegalActionException Not thrown in this base class.
      */
     protected void _writeToken(Token token) throws IllegalActionException {
-        RecordToken record = (RecordToken)token;
+        RecordToken record = (RecordToken) token;
         String eol = "\n";
         Token eolToken = endOfLineCharacter.getToken();
         if (eolToken != null) {
@@ -193,7 +193,7 @@ public class CSVWriter extends LineWriter {
         if (_firstFiring) {
             // Write the first line, which is determined by the input
             // resolved type.
-            RecordType inputType = (RecordType)input.getType();
+            RecordType inputType = (RecordType) input.getType();
             _fieldNames = inputType.labelSet();
             boolean first = true;
             for (String field : _fieldNames) {

@@ -173,9 +173,9 @@ public class Translate3D extends GRTransform {
         // if accumulating, add the new inputs to the accumulated values,
         // which are saved old states.
         if (_isAccumulating()) {
-            xOffset = (xOffset + _accumulatedX);
-            yOffset = (yOffset + _accumulatedY);
-            zOffset = (zOffset + _accumulatedZ);
+            xOffset = xOffset + _accumulatedX;
+            yOffset = yOffset + _accumulatedY;
+            zOffset = zOffset + _accumulatedZ;
         }
 
         // use the resutls as the new states and save them

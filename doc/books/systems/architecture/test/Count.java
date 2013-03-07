@@ -1,4 +1,3 @@
-
 /* An actor that outputs a sequence with a given step in values.
 
  Copyright (c) 1998-2013 The Regents of the University of California.
@@ -52,18 +51,18 @@ import ptolemy.kernel.util.NameDuplicationException;
  */
 public class Count extends TypedAtomicActor {
 
-      /** Construct an actor with the given container and name.
-     *  In addition to invoking the base class constructors, construct
-     *  the <i>init</i> and <i>step</i> parameter and the <i>step</i>
-     *  port. Initialize <i>init</i>
-     *  to IntToken with value 0, and <i>step</i> to IntToken with value 1.
-     *  @param container The container.
-     *  @param name The name of this actor.
-     *  @exception IllegalActionException If the actor cannot be contained
-     *   by the proposed container.
-     *  @exception NameDuplicationException If the container already has an
-     *   actor with this name.
-     */
+    /** Construct an actor with the given container and name.
+    *  In addition to invoking the base class constructors, construct
+    *  the <i>init</i> and <i>step</i> parameter and the <i>step</i>
+    *  port. Initialize <i>init</i>
+    *  to IntToken with value 0, and <i>step</i> to IntToken with value 1.
+    *  @param container The container.
+    *  @param name The name of this actor.
+    *  @exception IllegalActionException If the actor cannot be contained
+    *   by the proposed container.
+    *  @exception NameDuplicationException If the container already has an
+    *   actor with this name.
+    */
     public Count(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
@@ -73,6 +72,7 @@ public class Count extends TypedAtomicActor {
         output = new TypedIOPort(this, "output", false, true);
         output.setTypeEquals(BaseType.INT);
     }
+
     /** The trigger input port. */
     public TypedIOPort trigger;
 
@@ -85,14 +85,14 @@ public class Count extends TypedAtomicActor {
     /** Reset the count to the initial value. */
     public void initialize() throws IllegalActionException {
         super.initialize();
-        _count = ((IntToken)initial.getToken()).intValue();
+        _count = ((IntToken) initial.getToken()).intValue();
     }
 
     /** Consume the trigger input and output the incremented count. */
     public void fire() throws IllegalActionException {
         super.fire();
         if (trigger.getWidth() > 0 && trigger.hasToken(0)) {
-             trigger.get(0);
+            trigger.get(0);
         }
         output.send(0, new IntToken(_count + 1));
     }

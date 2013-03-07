@@ -80,7 +80,7 @@ public class ArrayAccumulate extends Transformer {
      *   an attribute that cannot be cloned.
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        ArrayAccumulate newObject = (ArrayAccumulate) (super.clone(workspace));
+        ArrayAccumulate newObject = (ArrayAccumulate) super.clone(workspace);
 
         // Set the type constraints.
         newObject.input.setTypeAtLeast(ArrayType.ARRAY_BOTTOM);

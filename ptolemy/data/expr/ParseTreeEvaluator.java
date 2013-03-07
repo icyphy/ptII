@@ -181,7 +181,7 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
             tokens[i] = elementType.convert(tokens[i]);
         }
 
-        _evaluatedChildToken = (new ArrayToken(elementType, tokens));
+        _evaluatedChildToken = new ArrayToken(elementType, tokens);
 
         if (node.isConstant()) {
             node.setToken(_evaluatedChildToken);
@@ -240,7 +240,7 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
             }
         }
 
-        _evaluatedChildToken = ((ptolemy.data.Token) bitwiseResult);
+        _evaluatedChildToken = (ptolemy.data.Token) bitwiseResult;
 
         if (node.isConstant()) {
             node.setToken(_evaluatedChildToken);
@@ -288,7 +288,7 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
         ptolemy.data.Token scopedValue = null;
         String functionName = node.getFunctionName();
 
-        if ((functionName != null) && (_scope != null)) {
+        if (functionName != null && _scope != null) {
             scopedValue = _scope.get(functionName);
             if (!(scopedValue instanceof ObjectToken)) {
                 // Pretend that we cannot resolve the name if it is an
@@ -313,7 +313,7 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
             argTypes[i] = token.getType();
         }
 
-        if ((value != null) || (functionName == null)) {
+        if (value != null || functionName == null) {
             // The value of the first child should be either a FunctionToken,
             // an ArrayToken, or a MatrixToken.
             ptolemy.data.Token result;
@@ -414,7 +414,7 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
                 }
             }
 
-            _evaluatedChildToken = (result);
+            _evaluatedChildToken = result;
             return;
         }
 
@@ -491,8 +491,8 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
                         Object object = ((ObjectToken) argValues[2]).getValue();
                         if (object.getClass().isArray()) {
                             Object[] array = (Object[]) object;
-                            for (int i = 0; i < array.length; i++) {
-                                Object second = array[i];
+                            for (Object element : array) {
+                                Object second = element;
                                 if (!(second instanceof ptolemy.data.Token)) {
                                     second = ConversionUtilities
                                             .convertJavaTypeToToken(second);
@@ -535,7 +535,7 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
         }
 
         if (functionName.equals("object") && argCount == 1) {
-            ASTPtRootNode classNameNode = ((ASTPtRootNode) node.jjtGetChild(1));
+            ASTPtRootNode classNameNode = (ASTPtRootNode) node.jjtGetChild(1);
             if (classNameNode instanceof ASTPtLeafNode) {
                 ptolemy.data.Token token = ((ASTPtLeafNode) classNameNode)
                         .getToken();
@@ -577,7 +577,7 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
             result = scopedValue;
         }
 
-        _evaluatedChildToken = (result);
+        _evaluatedChildToken = result;
     }
 
     /** Define a function, where the children specify the argument types
@@ -605,7 +605,7 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
         ExpressionFunction definedFunction = new ExpressionFunction(
                 node.getArgumentNameList(), node.getArgumentTypes(), cloneTree);
         FunctionToken result = new FunctionToken(definedFunction, type);
-        _evaluatedChildToken = (result);
+        _evaluatedChildToken = result;
         return;
     }
 
@@ -672,7 +672,7 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
                 type, token.getType());
 
         token = conversionType.convert(token);
-        _evaluatedChildToken = (token);
+        _evaluatedChildToken = token;
 
         if (node.isConstant()) {
             node.setToken(_evaluatedChildToken);
@@ -777,14 +777,14 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
             }
 
             if (flag != ((BooleanToken) nextToken).booleanValue()) {
-                _evaluatedChildToken = (BooleanToken.getInstance(!flag));
+                _evaluatedChildToken = BooleanToken.getInstance(!flag);
 
                 // Note short-circuit eval.
                 return;
             }
         }
 
-        _evaluatedChildToken = (BooleanToken.getInstance(flag));
+        _evaluatedChildToken = BooleanToken.getInstance(flag);
 
         if (node.isConstant()) {
             node.setToken(_evaluatedChildToken);
@@ -822,8 +822,8 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
                 for (int i = 1; i < node.getRowCount(); ++i) {
                     if (columnCount != MatrixToken.determineSequenceLength(
                             (ScalarToken) tokens[3 * i],
-                            (ScalarToken) tokens[(3 * i) + 1],
-                            (ScalarToken) tokens[(3 * i) + 2])) {
+                            (ScalarToken) tokens[3 * i + 1],
+                            (ScalarToken) tokens[3 * i + 2])) {
                         throw new IllegalActionException("Matrix "
                                 + "should have the same number of columns "
                                 + "for all rows.");
@@ -835,7 +835,7 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
 
                 for (int i = 0; i < node.getRowCount(); i++) {
                     ptolemy.data.Token[] newTokens = MatrixToken
-                            .createSequence(tokens[3 * i], tokens[(3 * i) + 1],
+                            .createSequence(tokens[3 * i], tokens[3 * i + 1],
                                     columnCount);
                     System.arraycopy(newTokens, 0, matrixTokens, columnCount
                             * i, columnCount);
@@ -851,7 +851,7 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
             }
         }
 
-        _evaluatedChildToken = (result);
+        _evaluatedChildToken = result;
 
         if (node.isConstant()) {
             node.setToken(_evaluatedChildToken);
@@ -873,11 +873,11 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
         ptolemy.data.Token[] tokens = _evaluateAllChildren(node);
 
         // Handle indexing into a record.
-        if ((argCount == 1) && tokens[0] instanceof RecordToken) {
+        if (argCount == 1 && tokens[0] instanceof RecordToken) {
             RecordToken record = (RecordToken) tokens[0];
 
             if (record.labelSet().contains(node.getMethodName())) {
-                _evaluatedChildToken = (record.get(node.getMethodName()));
+                _evaluatedChildToken = record.get(node.getMethodName());
                 return;
             }
         }
@@ -897,7 +897,7 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
         ptolemy.data.Token result = _methodCall(node.getMethodName(), argTypes,
                 argValues);
 
-        _evaluatedChildToken = (result);
+        _evaluatedChildToken = result;
     }
 
     /** Evaluate the power operator on the children of the specified node.
@@ -951,7 +951,7 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
             result = result.pow(times);
         }
 
-        _evaluatedChildToken = (result);
+        _evaluatedChildToken = result;
 
         if (node.isConstant()) {
             node.setToken(_evaluatedChildToken);
@@ -974,7 +974,7 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
         int numChildren = node.jjtGetNumChildren();
         _assert(numChildren > 0, node,
                 "The number of child nodes must be greater than zero");
-        _assert(numChildren == (lexicalTokenList.size() + 1), node,
+        _assert(numChildren == lexicalTokenList.size() + 1, node,
                 "The number of child nodes is "
                         + "not equal to number of operators plus one");
 
@@ -995,7 +995,7 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
             }
         }
 
-        _evaluatedChildToken = (result);
+        _evaluatedChildToken = result;
 
         if (node.isConstant()) {
             node.setToken(_evaluatedChildToken);
@@ -1026,9 +1026,9 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
                 new String[numChildren]);
 
         if (node instanceof ASTPtOrderedRecordConstructNode) {
-            _evaluatedChildToken = (new OrderedRecordToken(labels, tokens));
+            _evaluatedChildToken = new OrderedRecordToken(labels, tokens);
         } else {
-            _evaluatedChildToken = (new RecordToken(labels, tokens));
+            _evaluatedChildToken = new RecordToken(labels, tokens);
         }
 
         if (node.isConstant()) {
@@ -1058,7 +1058,7 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
         } else if (operator.kind == PtParserConstants.NOTEQUALS) {
             result = leftToken.isEqualTo(rightToken).not();
         } else {
-            if (!((leftToken instanceof PartiallyOrderedToken) && (rightToken instanceof PartiallyOrderedToken))) {
+            if (!(leftToken instanceof PartiallyOrderedToken && rightToken instanceof PartiallyOrderedToken)) {
                 throw new IllegalActionException("The " + operator.image
                         + " operator can only be applied on partial orders.");
             }
@@ -1084,7 +1084,7 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
             }
         }
 
-        _evaluatedChildToken = (result);
+        _evaluatedChildToken = result;
 
         if (node.isConstant()) {
             node.setToken(_evaluatedChildToken);
@@ -1146,7 +1146,7 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
                     + "the right operand to have an integer value.");
         }
 
-        _evaluatedChildToken = (result);
+        _evaluatedChildToken = result;
 
         if (node.isConstant()) {
             node.setToken(_evaluatedChildToken);
@@ -1168,7 +1168,7 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
         int numChildren = node.jjtGetNumChildren();
         _assert(numChildren > 0, node,
                 "The number of child nodes must be greater than zero");
-        _assert(numChildren == (lexicalTokenList.size() + 1), node,
+        _assert(numChildren == lexicalTokenList.size() + 1, node,
                 "The number of child nodes is "
                         + "not equal to number of operators plus one");
 
@@ -1187,7 +1187,7 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
             }
         }
 
-        _evaluatedChildToken = (result);
+        _evaluatedChildToken = result;
 
         if (node.isConstant()) {
             node.setToken(_evaluatedChildToken);
@@ -1233,7 +1233,7 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
             _assert(false, node, "Unrecognized unary node");
         }
 
-        _evaluatedChildToken = (result);
+        _evaluatedChildToken = result;
 
         if (node.isConstant()) {
             node.setToken(_evaluatedChildToken);
@@ -1269,9 +1269,9 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
         //If there is more than one members in the union, take the first
         //member value as the value of the union.
         if (labels.length > 0) {
-            _evaluatedChildToken = (new UnionToken(labels[0], tokens[0]));
+            _evaluatedChildToken = new UnionToken(labels[0], tokens[0]);
         }
-        _evaluatedChildToken = (new UnionToken(labels[0], tokens[0]));
+        _evaluatedChildToken = new UnionToken(labels[0], tokens[0]);
 
         if (node.isConstant()) {
             node.setToken(_evaluatedChildToken);

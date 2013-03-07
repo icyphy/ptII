@@ -125,7 +125,7 @@ public class RelationWidthInference {
                 }
             }
 
-            long startTime = (new Date()).getTime();
+            long startTime = new Date().getTime();
 
             try {
                 _topLevel.workspace().getWriteAccess();
@@ -218,7 +218,7 @@ public class RelationWidthInference {
                                     + " ms.");
                 }
 
-                long afterinit = (new Date()).getTime();
+                long afterinit = new Date().getTime();
 
                 boolean continueInference = true;
 
@@ -516,10 +516,9 @@ public class RelationWidthInference {
         // Special case.
         if (port instanceof SubscriptionAggregatorPort) {
             if (insideWidth != 1) {
-                throw new IllegalActionException(
-                        port,
+                throw new IllegalActionException(port,
                         "The inside width is required to be 1. Got "
-                        + insideWidth);
+                                + insideWidth);
             }
             return;
         }

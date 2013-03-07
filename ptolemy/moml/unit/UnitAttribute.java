@@ -110,7 +110,7 @@ public class UnitAttribute extends AbstractSettableAttribute {
         String value = getExpression();
         String valueTerm = "";
 
-        if ((value != null) && !value.equals("")) {
+        if (value != null && !value.equals("")) {
             valueTerm = " value=\"" + StringUtilities.escapeForXML(value)
                     + "\"";
 
@@ -199,8 +199,8 @@ public class UnitAttribute extends AbstractSettableAttribute {
                 UnitConstraints uConstraints = new UnitConstraints();
 
                 for (int i = 0; i < uEquations.size(); i++) {
-                    uConstraints.addConstraint((UnitEquation) (uEquations
-                            .elementAt(i)));
+                    uConstraints.addConstraint((UnitEquation) uEquations
+                            .elementAt(i));
                 }
 
                 setUnitConstraints(uConstraints);

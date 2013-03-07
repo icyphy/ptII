@@ -181,7 +181,7 @@ public class JTreePane extends JSplitPane {
      * @see #setIconAt
      */
     public Icon getIconAt(String title) {
-        return (_findEntry(title))._icon;
+        return _findEntry(title)._icon;
     }
 
     /**
@@ -190,7 +190,7 @@ public class JTreePane extends JSplitPane {
      * @see #setDisabledIconAt
      */
     public Icon getDisabledIconAt(String title) {
-        return (_findEntry(title))._icon;
+        return _findEntry(title)._icon;
     }
 
     /**
@@ -214,14 +214,14 @@ public class JTreePane extends JSplitPane {
      * @see #setEnabledAt
      */
     public boolean isEnabledAt(String title) {
-        return (_findEntry(title))._enabled;
+        return _findEntry(title)._enabled;
     }
 
     /**
      * Returns the component at the given index.
      */
     public JComponent getComponentAt(String title) {
-        return (_findEntry(title))._component;
+        return _findEntry(title)._component;
     }
 
     /**
@@ -265,7 +265,7 @@ public class JTreePane extends JSplitPane {
 
         Entry entry = _findEntry(_selectedTitle);
 
-        if ((entry == null) || (entry._component == null)) {
+        if (entry == null || entry._component == null) {
             setBottomComponent(_defaultPanel);
         } else {
             setBottomComponent(entry._component);
@@ -360,7 +360,7 @@ public class JTreePane extends JSplitPane {
         if (node == null) {
             return null;
         } else {
-            return (Entry) (_findNode(title).getUserObject());
+            return (Entry) _findNode(title).getUserObject();
         }
     }
 
@@ -382,7 +382,7 @@ public class JTreePane extends JSplitPane {
                     .nextElement();
             Entry entry = (Entry) node.getUserObject();
 
-            if ((entry != null) && (entry._title.equals(title))) {
+            if (entry != null && entry._title.equals(title)) {
                 return node;
             }
         }

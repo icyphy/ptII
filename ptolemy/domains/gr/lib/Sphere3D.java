@@ -111,7 +111,7 @@ public class Sphere3D extends GRShadedShape {
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
-        if ((attribute == radius) && _changesAllowedNow) {
+        if (attribute == radius && _changesAllowedNow) {
             if (_scaleTransform != null) {
                 double scale = ((DoubleToken) radius.getToken()).doubleValue();
                 _scaleTransform.setScale(new Vector3d(scale, scale, scale));
@@ -138,7 +138,7 @@ public class Sphere3D extends GRShadedShape {
         int primitiveFlags = Primitive.GENERATE_NORMALS;
         URL textureURL = texture.asURL();
 
-        if ((textureURL != null) || _changesAllowedNow) {
+        if (textureURL != null || _changesAllowedNow) {
             primitiveFlags = primitiveFlags | Primitive.GENERATE_TEXTURE_COORDS;
         }
 

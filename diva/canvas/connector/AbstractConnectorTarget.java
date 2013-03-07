@@ -45,7 +45,7 @@ public abstract class AbstractConnectorTarget implements ConnectorTarget {
      * is not attached to the same figure.
      */
     public boolean acceptHead(Connector c, Figure f) {
-        if ((c != null) && (c.getTailSite().getFigure() == f)) {
+        if (c != null && c.getTailSite().getFigure() == f) {
             return false;
         }
 
@@ -57,7 +57,7 @@ public abstract class AbstractConnectorTarget implements ConnectorTarget {
      * is not attached to the same figure.
      */
     public boolean acceptTail(Connector c, Figure f) {
-        if ((c != null) && (c.getHeadSite().getFigure() == f)) {
+        if (c != null && c.getHeadSite().getFigure() == f) {
             return false;
         }
 

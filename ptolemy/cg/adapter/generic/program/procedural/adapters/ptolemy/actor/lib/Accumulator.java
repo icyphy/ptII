@@ -86,7 +86,7 @@ public class Accumulator extends NamedProgramCodeGeneratorAdapter {
             codeStream.appendCodeBlock("ifReset");
 
             codeStream
-                    .appendCodeBlock((targetType.equals("String")) ? "StringInitSum"
+                    .appendCodeBlock(targetType.equals("String") ? "StringInitSum"
                             : "InitSum");
             codeStream.append("}");
         }
@@ -118,7 +118,7 @@ public class Accumulator extends NamedProgramCodeGeneratorAdapter {
 
         CodeStream codeStream = _templateParser.getCodeStream();
         codeStream
-                .appendCodeBlock((actor.output.getType() == BaseType.STRING) ? "StringInitSum"
+                .appendCodeBlock(actor.output.getType() == BaseType.STRING ? "StringInitSum"
                         : "InitSum");
 
         return processCode(codeStream.toString());

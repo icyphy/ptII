@@ -66,7 +66,7 @@ public class Time {
         // Create 20 clocks.
         for (int i = 1; i < 20; i++) {
             Clock clock = new Clock(toplevel, "clock" + i);
-            clock.period.setExpression("" + (i * 2));
+            clock.period.setExpression("" + i * 2);
             clock.values.setExpression("{" + i + ", " + i + "}");
             toplevel.connect(clock.output, merge.input);
         }

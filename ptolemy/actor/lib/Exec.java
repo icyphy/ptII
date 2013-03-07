@@ -148,8 +148,8 @@ public class Exec extends LimitedFiringSource {
         error.setTypeEquals(BaseType.STRING);
         new Parameter(error, "_showName", BooleanToken.TRUE);
 
-        ignoreIOExceptionReadErrors = new Parameter(this, "ignoreIOExceptionReadErrors",
-                                         BooleanToken.FALSE);
+        ignoreIOExceptionReadErrors = new Parameter(this,
+                "ignoreIOExceptionReadErrors", BooleanToken.FALSE);
         ignoreIOExceptionReadErrors.setTypeEquals(BaseType.BOOLEAN);
 
         input = new TypedIOPort(this, "input", true, false);
@@ -332,7 +332,7 @@ public class Exec extends LimitedFiringSource {
 
         _exec();
 
-        if ((input.numberOfSources() > 0) && input.hasToken(0)) {
+        if (input.numberOfSources() > 0 && input.hasToken(0)) {
             if ((line = ((StringToken) input.get(0)).stringValue()) != null) {
                 if (_debugging) {
                     _debug("Exec: Input: '" + line + "'");
@@ -533,10 +533,10 @@ public class Exec extends LimitedFiringSource {
                 environmentArray = new String[environmentTokens.length()];
 
                 for (int i = 0; i < environmentTokens.length(); i++) {
-                    StringToken nameToken = (StringToken) (((RecordToken) environmentTokens
-                            .getElement(i)).get("name"));
-                    StringToken valueToken = (StringToken) (((RecordToken) environmentTokens
-                            .getElement(i)).get("value"));
+                    StringToken nameToken = (StringToken) ((RecordToken) environmentTokens
+                            .getElement(i)).get("name");
+                    StringToken valueToken = (StringToken) ((RecordToken) environmentTokens
+                            .getElement(i)).get("value");
                     environmentArray[i] = nameToken.stringValue() + "="
                             + valueToken.stringValue();
 
@@ -544,7 +544,7 @@ public class Exec extends LimitedFiringSource {
                         _debug("  " + i + ". \"" + environmentArray[i] + "\"");
                     }
 
-                    if ((i == 0) && (environmentTokens.length() == 1)
+                    if (i == 0 && environmentTokens.length() == 1
                             && environmentArray[0].equals("=")) {
                         if (_debugging) {
                             _debug("There is only one element, "
@@ -695,7 +695,7 @@ public class Exec extends LimitedFiringSource {
                 // Oddly, InputStreamReader.read() will return -1
                 // if there is no data present, but the string can still
                 // read.
-                while (((length = _inputStreamReader.read(chars, 0, 80)) != -1)
+                while ((length = _inputStreamReader.read(chars, 0, 80)) != -1
                         && !_stopRequested && !_stopFireRequested) {
                     if (_debugging) {
                         // Note that ready might be false here since
@@ -717,19 +717,32 @@ public class Exec extends LimitedFiringSource {
                             .getToken()).booleanValue();
 
                 } catch (IllegalActionException ex) {
-                    throw new InternalErrorException(_actor, ex, getName()
-                            + ": Could not get the value of the ignoreIOExceptionReadErrors "
-                            + "parameter while trying to throw " + throwable);
+                    throw new InternalErrorException(
+                            _actor,
+                            ex,
+                            getName()
+                                    + ": Could not get the value of the ignoreIOExceptionReadErrors "
+                                    + "parameter while trying to throw "
+                                    + throwable);
                 }
-                if (ignoreIOExceptionReadErrorsValue && throwable instanceof IOException) {
-                    new Exception("Warning: " + getFullName() + " had an exception, but "
-                            + "ignoreIOExceptionReadErrors was true and the exception was an "
-                            + "IOException, so it is being skipped.", throwable).printStackTrace();
+                if (ignoreIOExceptionReadErrorsValue
+                        && throwable instanceof IOException) {
+                    new Exception(
+                            "Warning: "
+                                    + getFullName()
+                                    + " had an exception, but "
+                                    + "ignoreIOExceptionReadErrors was true and the exception was an "
+                                    + "IOException, so it is being skipped.",
+                            throwable).printStackTrace();
                 } else {
-                    throw new InternalErrorException(_actor, throwable, getName()
-                        + ": Failed while reading from " + _inputStream
-                            + ". To avoid this, try setting the ignoreIOExceptionReadErrors parameter to true."
-                            + throwable.getCause());
+                    throw new InternalErrorException(
+                            _actor,
+                            throwable,
+                            getName()
+                                    + ": Failed while reading from "
+                                    + _inputStream
+                                    + ". To avoid this, try setting the ignoreIOExceptionReadErrors parameter to true."
+                                    + throwable.getCause());
                 }
             }
         }

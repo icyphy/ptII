@@ -93,18 +93,18 @@ public class FlowThrough extends TypedAtomicActor {
             _continueIterations = false;
         }
 
-        for (int i = 0; i < _inRcvrs.length; i++) {
-            for (int j = 0; j < _inRcvrs[i].length; j++) {
-                DDEReceiver inRcvr = (DDEReceiver) _inRcvrs[i][j];
+        for (Receiver[] _inRcvr : _inRcvrs) {
+            for (int j = 0; j < _inRcvr.length; j++) {
+                DDEReceiver inRcvr = (DDEReceiver) _inRcvr[j];
 
                 if (inRcvr.hasToken()) {
                     token = inRcvr.get();
 
                     Receiver[][] outRcvrs = output.getRemoteReceivers();
 
-                    for (int k = 0; k < outRcvrs.length; k++) {
-                        for (int l = 0; l < outRcvrs[k].length; l++) {
-                            DDEReceiver outRcvr = (DDEReceiver) outRcvrs[k][l];
+                    for (Receiver[] outRcvr2 : outRcvrs) {
+                        for (int l = 0; l < outRcvr2.length; l++) {
+                            DDEReceiver outRcvr = (DDEReceiver) outRcvr2[l];
                             Thread thr = Thread.currentThread();
 
                             if (thr instanceof DDEThread) {

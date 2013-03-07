@@ -156,13 +156,13 @@ public class CachedSDFScheduler extends SDFScheduler {
             IllegalActionException {
         Schedule schedule;
 
-        if ((_inputPortList == null)
-                || (_workspaceVersion != workspace().getVersion())) {
+        if (_inputPortList == null
+                || _workspaceVersion != workspace().getVersion()) {
             _inputPortList = _getInputPortList();
         }
 
-        if ((_outputPortList == null)
-                || (_workspaceVersion != workspace().getVersion())) {
+        if (_outputPortList == null
+                || _workspaceVersion != workspace().getVersion()) {
             _outputPortList = _getOutputPortList();
         }
 

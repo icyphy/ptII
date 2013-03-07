@@ -1055,7 +1055,7 @@ public class PtalonScopeChecker extends antlr.TreeParser implements
                 if (_t == null) {
                     _t = ASTNULL;
                 }
-                if ((_t.getType() == ASSIGN)) {
+                if (_t.getType() == ASSIGN) {
                     assignment(_t);
                     _t = _retTree;
                     astFactory.addASTChild(currentAST, returnAST);
@@ -1158,7 +1158,7 @@ public class PtalonScopeChecker extends antlr.TreeParser implements
                 if (_t == null) {
                     _t = ASTNULL;
                 }
-                if ((_t.getType() == ASSIGN)) {
+                if (_t.getType() == ASSIGN) {
                     assignment(_t);
                     _t = _retTree;
                     astFactory.addASTChild(currentAST, returnAST);

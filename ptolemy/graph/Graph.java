@@ -267,7 +267,7 @@ public class Graph implements Cloneable {
         Iterator edges = edgeCollection.iterator();
 
         while (edges.hasNext()) {
-            addEdge((Edge) (edges.next()));
+            addEdge((Edge) edges.next());
         }
     }
 
@@ -283,7 +283,7 @@ public class Graph implements Cloneable {
     public boolean addGraph(Graph graph) {
         addNodes(graph.nodes());
         addEdges(graph.edges());
-        return (graph.nodeCount() + graph.edgeCount()) > 0;
+        return graph.nodeCount() + graph.edgeCount() > 0;
     }
 
     /** Add an unweighted node to this graph.
@@ -356,7 +356,7 @@ public class Graph implements Cloneable {
         Iterator nodes = nodeCollection.iterator();
 
         while (nodes.hasNext()) {
-            addNode((Node) (nodes.next()));
+            addNode((Node) nodes.next());
         }
     }
 
@@ -450,10 +450,10 @@ public class Graph implements Cloneable {
 
         while (edges.hasNext()) {
             Edge edge = (Edge) edges.next();
-            Node sourceContainer = (Node) (componentMap.get(edge.source()));
-            Node sinkContainer = (Node) (componentMap.get(edge.sink()));
-            ArrayList sourceSet = (ArrayList) (sourceContainer.getWeight());
-            ArrayList sinkSet = (ArrayList) (sinkContainer.getWeight());
+            Node sourceContainer = (Node) componentMap.get(edge.source());
+            Node sinkContainer = (Node) componentMap.get(edge.sink());
+            ArrayList sourceSet = (ArrayList) sourceContainer.getWeight();
+            ArrayList sinkSet = (ArrayList) sinkContainer.getWeight();
 
             if (sourceSet != sinkSet) {
                 // Construct the union of the two components in the source set.
@@ -490,7 +490,7 @@ public class Graph implements Cloneable {
      *  @see #hideEdge(Edge)
      */
     public boolean containsEdge(Edge edge) {
-        return _edges.contains(edge) && (!hidden(edge));
+        return _edges.contains(edge) && !hidden(edge);
     }
 
     /** Test if the specified object is an edge weight in this
@@ -553,7 +553,7 @@ public class Graph implements Cloneable {
      *  @see #edgeLabel(Edge)
      */
     public Edge edge(int label) {
-        return (Edge) (_edges.get(label));
+        return (Edge) _edges.get(label);
     }
 
     /** Return the total number of edges in this graph.  Multiple
@@ -607,7 +607,7 @@ public class Graph implements Cloneable {
      *  @see #edgeLabel(Edge)
      */
     public Object edgeWeight(int label) {
-        return ((Edge) (_edges.get(label))).getWeight();
+        return ((Edge) _edges.get(label)).getWeight();
     }
 
     /** Return all the edges in this graph in the form of a collection.
@@ -635,7 +635,7 @@ public class Graph implements Cloneable {
         Iterator edges = _edges.iterator();
 
         while (edges.hasNext()) {
-            Edge edge = (Edge) (edges.next());
+            Edge edge = (Edge) edges.next();
 
             if (!hidden(edge)) {
                 result.add(edge);
@@ -711,8 +711,8 @@ public class Graph implements Cloneable {
 
         Graph argumentGraph = (Graph) graph;
 
-        if ((argumentGraph.nodeCount() != nodeCount())
-                || (argumentGraph.edgeCount() != edgeCount())) {
+        if (argumentGraph.nodeCount() != nodeCount()
+                || argumentGraph.edgeCount() != edgeCount()) {
             return false;
         }
 
@@ -885,7 +885,7 @@ public class Graph implements Cloneable {
         ArrayList result = new ArrayList(incidentEdgeCollection.size());
 
         while (incidentEdges.hasNext()) {
-            Edge edge = (Edge) (incidentEdges.next());
+            Edge edge = (Edge) incidentEdges.next();
             Node sink = edge.sink();
             Node source = edge.source();
 
@@ -926,7 +926,7 @@ public class Graph implements Cloneable {
      *  @see #nodeLabel(Node)
      */
     public Node node(int label) {
-        return (Node) (_nodes.get(label));
+        return (Node) _nodes.get(label);
     }
 
     /** Return the total number of nodes in this graph.
@@ -978,7 +978,7 @@ public class Graph implements Cloneable {
      *  @see #nodeLabel(Node)
      */
     public Object nodeWeight(int label) {
-        return ((Node) (_nodes.get(label))).getWeight();
+        return ((Node) _nodes.get(label)).getWeight();
     }
 
     /** Return all the nodes in this graph in the form of a collection.
@@ -1074,8 +1074,8 @@ public class Graph implements Cloneable {
         Object[] incidentEdgeArray = incidentEdges(node).toArray();
         _nodes.remove(node);
 
-        for (int i = 0; i < incidentEdgeArray.length; i++) {
-            removeEdge((Edge) (incidentEdgeArray[i]));
+        for (Object element : incidentEdgeArray) {
+            removeEdge((Edge) element);
         }
 
         _incidentEdgeMap.remove(node);
@@ -1200,7 +1200,7 @@ public class Graph implements Cloneable {
             Iterator incidentEdges = incidentEdges(node).iterator();
 
             while (incidentEdges.hasNext()) {
-                Edge edge = (Edge) (incidentEdges.next());
+                Edge edge = (Edge) incidentEdges.next();
 
                 if (subgraph.containsNode(edge.source())
                         && subgraph.containsNode(edge.sink())
@@ -1234,7 +1234,7 @@ public class Graph implements Cloneable {
         Iterator nodes = nodeCollection.iterator();
 
         while (nodes.hasNext()) {
-            Node node = (Node) (nodes.next());
+            Node node = (Node) nodes.next();
 
             if (!containsNode(node)) {
                 throw new GraphElementException(node, this,
@@ -1246,7 +1246,7 @@ public class Graph implements Cloneable {
         Iterator edges = edgeCollection.iterator();
 
         while (edges.hasNext()) {
-            Edge edge = (Edge) (edges.next());
+            Edge edge = (Edge) edges.next();
 
             if (!containsEdge(edge)) {
                 throw new GraphElementException(edge, this,
@@ -1512,7 +1512,7 @@ public class Graph implements Cloneable {
 
             try {
                 for (int i = 0; i < elementCollection.size(); i++) {
-                    element = (Element) (elements.next());
+                    element = (Element) elements.next();
 
                     if (element == null) {
                         throw new NullPointerException("Null graph element "
@@ -1560,7 +1560,7 @@ public class Graph implements Cloneable {
         } else if (!containsNode(node2)) {
             throw new GraphElementException(node2, this,
                     "The specified second node is not in the graph.");
-        } else if (weighted && (weight == null)) {
+        } else if (weighted && weight == null) {
             throw new NullPointerException("Attempt to assign a null "
                     + "weight to an edge. The first node:\n" + node1
                     + "\nThe second node:\n" + node2 + "\nThe graph: \n" + this);
@@ -1671,7 +1671,7 @@ public class Graph implements Cloneable {
 
         try {
             // Kepler (jdk1.4?) requires this cast
-            graph = (getClass().newInstance());
+            graph = getClass().newInstance();
         } catch (Exception exception) {
             throw new GraphConstructionException("Could not create an "
                     + "empty graph from this one.\n" + exception + "\n"
@@ -1703,7 +1703,7 @@ public class Graph implements Cloneable {
             Iterator analyses = _analysisList.iterator();
 
             while (analyses.hasNext()) {
-                Analysis analysis = (Analysis) (analyses.next());
+                Analysis analysis = (Analysis) analyses.next();
 
                 if (analysis.analyzer() instanceof CachedStrategy) {
                     ((CachedStrategy) analysis.analyzer()).reset();
@@ -1792,11 +1792,11 @@ public class Graph implements Cloneable {
         ArrayList newEdges = new ArrayList();
 
         while (nodes1.hasNext()) {
-            Node node1 = (Node) (nodes1.next());
+            Node node1 = (Node) nodes1.next();
             Iterator nodes2 = nodes(weight2).iterator();
 
             while (nodes2.hasNext()) {
-                newEdge = _addEdge(node1, (Node) (nodes2.next()), weighted,
+                newEdge = _addEdge(node1, (Node) nodes2.next(), weighted,
                         weight);
                 newEdges.add(newEdge);
             }

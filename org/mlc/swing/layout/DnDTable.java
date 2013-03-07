@@ -403,7 +403,7 @@ class DnDTable extends JTable implements DragSourceListener,
     }
 
     public Component getControlAt(int col, int row) {
-        Component component = (row == 0 || col == 0) ? null
+        Component component = row == 0 || col == 0 ? null
                 : (Component) getModel().getValueAt(row, col);
         return component;
     }

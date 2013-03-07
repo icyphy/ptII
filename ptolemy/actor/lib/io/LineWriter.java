@@ -91,8 +91,7 @@ public class LineWriter extends Sink {
         super(container, name);
 
         input.setTypeEquals(BaseType.STRING);
-        new SingletonParameter(input, "_showName")
-                .setToken(BooleanToken.TRUE);
+        new SingletonParameter(input, "_showName").setToken(BooleanToken.TRUE);
 
         fileName = new FilePortParameter(this, "fileName");
         fileName.setExpression("System.out");
@@ -178,7 +177,7 @@ public class LineWriter extends Sink {
             String newFileName = ((StringToken) fileName.getToken())
                     .stringValue();
 
-            if ((_previousFileName != null)
+            if (_previousFileName != null
                     && !newFileName.equals(_previousFileName)) {
                 _previousFileName = newFileName;
                 fileName.close();
@@ -238,20 +237,22 @@ public class LineWriter extends Sink {
 
                         // Don't ask for confirmation in append mode, since there
                         // will be no loss of data.
-                        if (file.exists() && !appendValue && confirmOverwriteValue) {
+                        if (file.exists() && !appendValue
+                                && confirmOverwriteValue) {
                             // Query for overwrite.
                             // FIXME: This should be called in the event thread!
                             // There is a chance of deadlock since it is not.
-                            if (!MessageHandler.yesNoQuestion("OK to overwrite "
-                                    + file + "?")) {
+                            if (!MessageHandler
+                                    .yesNoQuestion("OK to overwrite " + file
+                                            + "?")) {
                                 throw new IllegalActionException(this,
                                         "Please select another file name.");
                             }
                         }
                     }
 
-                    _writer = new PrintWriter(fileName.openForWriting(appendValue),
-                            true);
+                    _writer = new PrintWriter(
+                            fileName.openForWriting(appendValue), true);
                 }
                 _writeToken(token);
             }

@@ -158,7 +158,7 @@ public class MoveAction extends FigureAction {
         boolean movedOne = false;
 
         try {
-            if ((type == TO_FIRST) || (type == UP)) {
+            if (type == TO_FIRST || type == UP) {
                 // Traverse the list in reverse order.
                 ListIterator targetIterator = targets.listIterator(targets
                         .size());
@@ -219,7 +219,7 @@ public class MoveAction extends FigureAction {
             public void execute() {
                 try {
                     // Undo has to reverse the order of the do.
-                    if ((type == TO_FIRST) || (type == UP)) {
+                    if (type == TO_FIRST || type == UP) {
                         // Traverse the list in forward order.
                         Iterator targetIterator = targets.iterator();
 

@@ -188,7 +188,7 @@ public class ModalTransitionController extends TransitionController {
             String currentRefinements = transition.refinementName
                     .getExpression();
 
-            if ((currentRefinements == null) || currentRefinements.equals("")) {
+            if (currentRefinements == null || currentRefinements.equals("")) {
                 currentRefinements = newName;
             } else {
                 currentRefinements = currentRefinements.trim() + ", " + newName;
@@ -343,7 +343,7 @@ public class ModalTransitionController extends TransitionController {
                 return;
             }
 
-            if ((refinements == null) || (refinements.length < 1)) {
+            if (refinements == null || refinements.length < 1) {
                 MessageHandler.error("No refinements to remove.");
                 return;
             }
@@ -396,7 +396,7 @@ public class ModalTransitionController extends TransitionController {
             while (transitions.hasNext()) {
                 NamedObj other = (NamedObj) transitions.next();
 
-                if ((other != transition) && other instanceof Transition) {
+                if (other != transition && other instanceof Transition) {
                     String refinementList = ((Transition) other).refinementName
                             .getExpression();
 

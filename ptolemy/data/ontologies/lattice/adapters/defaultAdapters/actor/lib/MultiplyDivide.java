@@ -64,15 +64,15 @@ public class MultiplyDivide extends LatticeOntologyAdapter {
             throws IllegalActionException {
         super(solver, actor, false);
 
-        _multiplyDefinition = (ConceptFunctionDefinitionAttribute) (_solver
-                .getContainedModel())
-                .getAttribute(LatticeOntologySolver.MULTIPLY_FUNCTION_NAME);
-        _divideDefinition = (ConceptFunctionDefinitionAttribute) (_solver
-                .getContainedModel())
-                .getAttribute(LatticeOntologySolver.DIVIDE_FUNCTION_NAME);
-        _reciprocalDefinition = (ConceptFunctionDefinitionAttribute) (_solver
-                .getContainedModel())
-                .getAttribute(LatticeOntologySolver.RECIPROCAL_FUNCTION_NAME);
+        _multiplyDefinition = (ConceptFunctionDefinitionAttribute) _solver
+                .getContainedModel().getAttribute(
+                        LatticeOntologySolver.MULTIPLY_FUNCTION_NAME);
+        _divideDefinition = (ConceptFunctionDefinitionAttribute) _solver
+                .getContainedModel().getAttribute(
+                        LatticeOntologySolver.DIVIDE_FUNCTION_NAME);
+        _reciprocalDefinition = (ConceptFunctionDefinitionAttribute) _solver
+                .getContainedModel().getAttribute(
+                        LatticeOntologySolver.RECIPROCAL_FUNCTION_NAME);
 
         // If definitions for multiplication, division, and reciprocal concept
         // functions cannot be found, just use the default constraints.

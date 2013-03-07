@@ -89,8 +89,7 @@ public class PortNameChanges extends MoMLFilterSimple {
             _lastNameSeen = attributeValue;
 
             if (_currentlyProcessingActorWithPortNameChanges
-                    && (_portMap != null)
-                    && _portMap.containsKey(attributeValue)) {
+                    && _portMap != null && _portMap.containsKey(attributeValue)) {
                 // We will do the above checks only if we found a
                 // class that had port name changes, but have not
                 // yet found the next class.
@@ -121,7 +120,7 @@ public class PortNameChanges extends MoMLFilterSimple {
                 _portMap = (HashMap) _actorsWithPortNameChanges
                         .get(attributeValue);
             } else if (_currentlyProcessingActorWithPortNameChanges
-                    && (container != null)
+                    && container != null
                     && !container.getFullName().equals(_currentActorFullName)
                     && !container.getFullName().startsWith(
                             _currentActorFullName)) {

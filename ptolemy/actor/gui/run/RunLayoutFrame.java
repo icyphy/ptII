@@ -156,9 +156,9 @@ public class RunLayoutFrame extends TableauFrame implements MultiContainerFrame 
         // Also have to remove any contained containers!
         Container container = _constraintsManager.getContainer(layout);
         Component[] components = container.getComponents();
-        for (int i = 0; i < components.length; i++) {
-            if (components[i] instanceof Container) {
-                String componentName = layout.getComponentName(components[i]);
+        for (Component component2 : components) {
+            if (component2 instanceof Container) {
+                String componentName = layout.getComponentName(component2);
                 if (hasContainer(componentName)) {
                     removeContainer(componentName);
                 }

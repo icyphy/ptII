@@ -147,7 +147,7 @@ public class InequalitySolver {
         for (Enumeration e = _Clist.keys(); e.hasMoreElements();) {
             InequalityTerm variable = (InequalityTerm) e.nextElement();
             results.append("{"
-                    + ((variable == null) ? "variable == null" : variable
+                    + (variable == null ? "variable == null" : variable
                             .toString()) + "}\n ");
         }
 
@@ -333,7 +333,7 @@ public class InequalitySolver {
                         + " try removing the type constraint and possibly"
                         + " placing it on the output.");
             }
-            ArrayList entry = (ArrayList) (_Clist.get(variables[i]));
+            ArrayList entry = (ArrayList) _Clist.get(variables[i]);
 
             if (entry == null) {
                 // variable not in Hashtable
@@ -358,7 +358,7 @@ public class InequalitySolver {
         for (Enumeration e = _Clist.keys(); e.hasMoreElements();) {
             InequalityTerm variable = (InequalityTerm) e.nextElement();
 
-            if ((value == null) || variable.getValue().equals(value)) {
+            if (value == null || variable.getValue().equals(value)) {
                 result.addLast(variable);
             }
         }
@@ -430,9 +430,9 @@ public class InequalitySolver {
         while (!allSatisfied) {
             // solve the inequalities
             while (_NS.size() > 0) {
-                int index = ((Integer) (_NS.removeFirst())).intValue();
+                int index = ((Integer) _NS.removeFirst()).intValue();
 
-                Info info = (Info) (_Ilist.get(index));
+                Info info = (Info) _Ilist.get(index);
                 info._inserted = false;
 
                 Object value = null;
@@ -464,11 +464,11 @@ public class InequalitySolver {
                 ArrayList affected = (ArrayList) _Clist.get(updateTerm);
 
                 for (int i = 0; i < affected.size(); i++) {
-                    Integer index1Wrap = (Integer) (affected.get(i));
+                    Integer index1Wrap = (Integer) affected.get(i);
                     int index1 = index1Wrap.intValue();
                     Info affectedInfo = (Info) _Ilist.get(index1);
 
-                    if ((index1 != index) && affectedInfo._inCvar) {
+                    if (index1 != index && affectedInfo._inCvar) {
                         if (affectedInfo._ineq.isSatisfied(_cpo)) { // drop
 
                             if (affectedInfo._inserted) {

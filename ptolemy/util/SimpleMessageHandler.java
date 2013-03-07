@@ -26,7 +26,6 @@
  */
 package ptolemy.util;
 
-
 ///////////////////////////////////////////////////////////////////
 //// SimpleMessageHandler
 
@@ -127,17 +126,11 @@ public class SimpleMessageHandler extends MessageHandler {
      *  @return Always return false.
      *  @exception ptolemy.util.CancelException If the user selects the third option.
      */
-    protected boolean _yesNoCancelQuestion(
-            String question, String trueOption, String falseOption, String exceptionOption)
+    protected boolean _yesNoCancelQuestion(String question, String trueOption,
+            String falseOption, String exceptionOption)
             throws ptolemy.util.CancelException {
-        System.out.print(question
-                + " ("
-                + trueOption
-                + " or "
-                + falseOption
-                + " or "
-                + exceptionOption
-                + ") ");
+        System.out.print(question + " (" + trueOption + " or " + falseOption
+                + " or " + exceptionOption + ") ");
         return false;
     }
 }

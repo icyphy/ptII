@@ -192,11 +192,10 @@ public class AtomicActor<T extends IOPort> extends ComponentEntity<T> implements
         if (port instanceof IOPort) {
             IOPort castPort = (IOPort) port;
             Manager manager = getManager();
-            if (castPort.isInput() && (getDirector() != null)
-                    && (manager != null)
-                    && (manager.getState() != Manager.IDLE)
-                    && (manager.getState() != Manager.INFERING_WIDTHS)
-                    && (manager.getState() != Manager.PREINITIALIZING)) {
+            if (castPort.isInput() && getDirector() != null && manager != null
+                    && manager.getState() != Manager.IDLE
+                    && manager.getState() != Manager.INFERING_WIDTHS
+                    && manager.getState() != Manager.PREINITIALIZING) {
                 try {
                     workspace().getWriteAccess();
                     castPort.createReceivers();
@@ -451,7 +450,7 @@ public class AtomicActor<T extends IOPort> extends ComponentEntity<T> implements
         int n = 0;
 
         try {
-            while ((n++ < count) && !_stopRequested) {
+            while (n++ < count && !_stopRequested) {
                 if (_notifyingActorFiring) {
                     _actorFiring(FiringEvent.BEFORE_PREFIRE, n);
                 }

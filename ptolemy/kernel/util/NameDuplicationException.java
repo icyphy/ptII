@@ -96,13 +96,13 @@ public class NameDuplicationException extends KernelException {
                     + getName(wouldBeContainee)
                     + "\" into a container that already contains"
                     + " an object with that name."
-                    + ((detail == null) ? "" : (" " + detail)));
+                    + (detail == null ? "" : " " + detail));
         } else {
             _setMessage("Attempt to insert object named \""
                     + getName(wouldBeContainee) + "\" into container named \""
                     + getFullName(container)
                     + "\", which already contains an object with that name."
-                    + ((detail == null) ? "" : (" " + detail)));
+                    + (detail == null ? "" : " " + detail));
         }
     }
 }

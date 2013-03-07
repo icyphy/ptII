@@ -85,9 +85,9 @@ public class BreakpointDialogFactory implements MenuItemFactory {
         // Ensure that if we have a ComponentEntity, it is opaque.
         // Also ensure that it is an actor and that it has a director.
         if (!(target instanceof ComponentEntity)
-                || !(((ComponentEntity) target).isOpaque())
+                || !((ComponentEntity) target).isOpaque()
                 || !(target instanceof Actor)
-                || (((Actor) target).getExecutiveDirector() == null)) {
+                || ((Actor) target).getExecutiveDirector() == null) {
             return null;
         }
 

@@ -345,8 +345,8 @@ public class TypedAtomicActor extends AtomicActor<TypedIOPort> implements
                     result.add(new Inequality(input.getTypeTerm(), output
                             .getTypeTerm()));
                     if (isBackwardTypeInferenceEnabled()) {
-                        result.add(new Inequality(output
-                                .getTypeTerm(), input.getTypeTerm()));
+                        result.add(new Inequality(output.getTypeTerm(), input
+                                .getTypeTerm()));
                     }
                 }
             }

@@ -121,8 +121,8 @@ public class JPanner extends JPanel {
 
         Dimension extentSize = _target.getExtentSize();
 
-        x = (int) (x / forward.getScaleX()) - (extentSize.width / 2);
-        y = (int) (y / forward.getScaleY()) - (extentSize.height / 2);
+        x = (int) (x / forward.getScaleX()) - extentSize.width / 2;
+        y = (int) (y / forward.getScaleY()) - extentSize.height / 2;
 
         int max;
 
@@ -256,8 +256,8 @@ public class JPanner extends JPanel {
     private class PanMouseListener extends MouseAdapter implements
             MouseMotionListener {
         public void mousePressed(MouseEvent evt) {
-            if ((_target != null)
-                    && ((evt.getModifiers() & InputEvent.BUTTON1_MASK) != 0)) {
+            if (_target != null
+                    && (evt.getModifiers() & InputEvent.BUTTON1_MASK) != 0) {
                 setPosition(evt.getX(), evt.getY());
             }
         }
@@ -266,8 +266,8 @@ public class JPanner extends JPanel {
         }
 
         public void mouseDragged(MouseEvent evt) {
-            if ((_target != null)
-                    && ((evt.getModifiers() & InputEvent.BUTTON1_MASK) != 0)) {
+            if (_target != null
+                    && (evt.getModifiers() & InputEvent.BUTTON1_MASK) != 0) {
                 setPosition(evt.getX(), evt.getY());
             }
         }
@@ -286,14 +286,14 @@ public class JPanner extends JPanel {
 
             // The 5.0 and 1.3 below were determined by trial and error
             // tuning.
-            if ((x > origin.getX()) && (y > origin.getY())) {
-                if ((x - origin.getX()) > (y - origin.getY())) {
+            if (x > origin.getX() && y > origin.getY()) {
+                if (x - origin.getX() > y - origin.getY()) {
                     scale = (y - origin.getY()) / 5.0;
                 } else {
                     scale = (x - origin.getX()) / 5.0;
                 }
-            } else if ((x < origin.getX()) && (y < origin.getY())) {
-                if ((origin.getX() - x) > (origin.getY() - y)) {
+            } else if (x < origin.getX() && y < origin.getY()) {
+                if (origin.getX() - x > origin.getY() - y) {
                     scale = (y - origin.getY()) / 5.0;
                 } else {
                     scale = (x - origin.getX()) / 5.0;
@@ -316,12 +316,12 @@ public class JPanner extends JPanel {
         }
 
         public void mousePressed(MouseEvent evt) {
-            if ((_target != null)
-                    && ((evt.getModifiers() & InputEvent.BUTTON3_MASK) != 0)) {
+            if (_target != null
+                    && (evt.getModifiers() & InputEvent.BUTTON3_MASK) != 0) {
                 setPosition(evt.getX(), evt.getY());
                 origin = evt.getPoint();
 
-                JCanvas canvas = ((JCanvas) _target.getView());
+                JCanvas canvas = (JCanvas) _target.getView();
                 TransformContext context = canvas.getCanvasPane()
                         .getTransformContext();
 
@@ -360,8 +360,8 @@ public class JPanner extends JPanel {
         }
 
         public void mouseDragged(MouseEvent evt) {
-            if ((_target != null)
-                    && ((evt.getModifiers() & InputEvent.BUTTON3_MASK) != 0)) {
+            if (_target != null
+                    && (evt.getModifiers() & InputEvent.BUTTON3_MASK) != 0) {
                 setScale(evt.getX(), evt.getY());
             }
         }

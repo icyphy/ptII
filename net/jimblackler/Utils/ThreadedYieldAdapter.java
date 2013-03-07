@@ -72,9 +72,10 @@ public class ThreadedYieldAdapter<T> implements YieldAdapter<T> {
                         // results.
 
                         try {
-                          returnQueue.take();
+                            returnQueue.take();
                         } catch (InterruptedException e) {
-                          throw new RuntimeException("Error with yield adapter", e);
+                            throw new RuntimeException(
+                                    "Error with yield adapter", e);
                         }
                         try {
                             try {
@@ -83,21 +84,22 @@ public class ThreadedYieldAdapter<T> implements YieldAdapter<T> {
                                     public void handleResult(T value)
                                             throws CollectionAbortedException {
                                         try {
-                                            synchronousQueue.put(new ValueMessage(value));
-                                            returnQueue.take();  // wait for permission to continue
+                                            synchronousQueue
+                                                    .put(new ValueMessage(value));
+                                            returnQueue.take(); // wait for permission to continue
                                         } catch (InterruptedException e) {
                                             // this thread has been aborted
-                                            throw new CollectionAbortedException(e);
+                                            throw new CollectionAbortedException(
+                                                    e);
                                         }
                                     }
                                 });
 
-                               synchronousQueue.put(new EndMessage());
+                                synchronousQueue.put(new EndMessage());
                                 // Signal no more results to come
 
                             } catch (CollectionAbortedException collectionAborted) {
-                                if (!(collectionAborted
-                                        .getCause() instanceof InterruptedException)) {
+                                if (!(collectionAborted.getCause() instanceof InterruptedException)) {
                                     // Collect was aborted by client
                                     // This is not sent on thread abort as there is nothing waiting
                                     // to receive it, and the thread will block.
@@ -110,22 +112,24 @@ public class ThreadedYieldAdapter<T> implements YieldAdapter<T> {
                         }
                     }
                 };
-              collectThread.start();
+                collectThread.start();
 
-              return new YieldAdapterIterator<T>() {
+                return new YieldAdapterIterator<T>() {
                     private Message messageWaiting = null;
 
                     public boolean hasNext() {
 
                         readNextMessage();
-                        return !StopMessage.class.isAssignableFrom(messageWaiting.getClass());
+                        return !StopMessage.class
+                                .isAssignableFrom(messageWaiting.getClass());
                         // instanceof cannot be used because of generics restriction
                     }
 
                     public T next() {
                         readNextMessage();
 
-                        if (StopMessage.class.isAssignableFrom(messageWaiting.getClass())) {
+                        if (StopMessage.class.isAssignableFrom(messageWaiting
+                                .getClass())) {
                             // instanceof cannot be used because of generics restriction
                             throw new NoSuchElementException();
                         }
@@ -138,8 +142,8 @@ public class ThreadedYieldAdapter<T> implements YieldAdapter<T> {
                     private void readNextMessage() {
                         if (messageWaiting == null) { // do not run if value waiting to be put
                             try {
-                              returnQueue.put(new Object()); // allow other thread to gather result
-                              messageWaiting = synchronousQueue.take();
+                                returnQueue.put(new Object()); // allow other thread to gather result
+                                messageWaiting = synchronousQueue.take();
 
                             } catch (InterruptedException e) {
                                 messageWaiting = new EndMessage();
@@ -172,4 +176,3 @@ public class ThreadedYieldAdapter<T> implements YieldAdapter<T> {
         };
     }
 }
-

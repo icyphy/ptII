@@ -89,7 +89,7 @@ public class ImageFlip extends Transformer {
      *  @exception IllegalActionException If thrown while writing to the port.
      */
     public void fire() throws IllegalActionException {
-        int flipMode = ((IntToken) (flipModeParam.getToken())).intValue();
+        int flipMode = ((IntToken) flipModeParam.getToken()).intValue();
 
         if (input.hasToken(0)) {
             ObjectToken inputToken = (ObjectToken) input.get(0);

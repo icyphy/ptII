@@ -247,8 +247,8 @@ public class TCPPacketTransmitter extends OutputDevice {
                 RecordToken TCPHeader = getTCPHeader();
                 // form the packet that is ready to be sent
                 _completePayload = new RecordToken(
-                        (_tokenLabels.toArray(new String[0])),
-                        (_tokenValues.toArray(new Token[0])));
+                        _tokenLabels.toArray(new String[0]),
+                        _tokenValues.toArray(new Token[0]));
                 String[] fullTCPlabels = new String[] { TCPlabel, tokens };
                 Token[] fullTCPvalues = new Token[] { TCPHeader,
                         _completePayload };
@@ -262,8 +262,8 @@ public class TCPPacketTransmitter extends OutputDevice {
                 _tokenLabels.clear();
                 _tokenValues.clear();
                 // set the new frame size, if possible
-                if ((_proposedFrameSize > 0)
-                        && (_proposedFrameSize < MAX_FRAME_SIZE)) {
+                if (_proposedFrameSize > 0
+                        && _proposedFrameSize < MAX_FRAME_SIZE) {
                     _frameSize = _proposedFrameSize;
                 } else {
 
@@ -323,8 +323,8 @@ public class TCPPacketTransmitter extends OutputDevice {
             RecordToken TCPHeader = getTCPHeader();
             // form the packet that is ready to be sent
             _completePayload = new RecordToken(
-                    (_tokenLabels.toArray(new String[0])),
-                    (_tokenValues.toArray(new Token[0])));
+                    _tokenLabels.toArray(new String[0]),
+                    _tokenValues.toArray(new Token[0]));
             String[] fullTCPlabels = new String[] { TCPlabel, tokens };
             Token[] fullTCPvalues = new Token[] { TCPHeader, _completePayload };
 

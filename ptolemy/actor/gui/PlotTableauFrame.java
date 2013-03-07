@@ -291,10 +291,10 @@ public class PlotTableauFrame extends TableauFrame implements Printable,
         SpecialMenuListener sml = new SpecialMenuListener();
 
         // Set the action command and listener for each menu item.
-        for (int i = 0; i < specialMenuItems.length; i++) {
-            specialMenuItems[i].setActionCommand(specialMenuItems[i].getText());
-            specialMenuItems[i].addActionListener(sml);
-            _specialMenu.add(specialMenuItems[i]);
+        for (JMenuItem specialMenuItem : specialMenuItems) {
+            specialMenuItem.setActionCommand(specialMenuItem.getText());
+            specialMenuItem.addActionListener(sml);
+            _specialMenu.add(specialMenuItem);
         }
     }
 
@@ -541,9 +541,8 @@ public class PlotTableauFrame extends TableauFrame implements Printable,
                 fileDialog.setDialogTitle("Specify a file to write to.");
                 LinkedList extensions = new LinkedList();
                 extensions.add(_formatName);
-                fileDialog
-                        .addChoosableFileFilter(new ExtensionFilenameFilter(
-                                extensions));
+                fileDialog.addChoosableFileFilter(new ExtensionFilenameFilter(
+                        extensions));
 
                 if (_directory != null) {
                     fileDialog.setCurrentDirectory(_directory);

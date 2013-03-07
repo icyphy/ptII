@@ -136,14 +136,14 @@ public final class CrossRefList implements Serializable {
      *  @return The container at the specified index.
      */
     public synchronized Object get(int index) {
-        if ((index < 0) || (index >= _size)) {
+        if (index < 0 || index >= _size) {
             return null;
         }
 
         int count = 0;
         CrossRef result = _headNode;
 
-        while ((result != null) && (count++ < index)) {
+        while (result != null && count++ < index) {
             result = result._next;
         }
 
@@ -220,14 +220,14 @@ public final class CrossRefList implements Serializable {
      *  @return A boolean indicating whether the object is referenced.
      */
     public synchronized boolean isLinked(Object obj) {
-        if ((obj == null) || (_size == 0)) {
+        if (obj == null || _size == 0) {
             return false;
         }
 
         for (CrossRef p = _headNode; p != null; p = p._next) {
             Object far = p._farContainer();
 
-            if ((far != null) && far.equals(obj)) {
+            if (far != null && far.equals(obj)) {
                 return true;
             }
         }
@@ -302,7 +302,7 @@ public final class CrossRefList implements Serializable {
         int count = 0;
         CrossRef toDelete = _headNode;
 
-        while ((toDelete != null) && (count++ < index)) {
+        while (toDelete != null && count++ < index) {
             toDelete = toDelete._next;
         }
 
@@ -319,7 +319,7 @@ public final class CrossRefList implements Serializable {
      *  @param obj The object to delete.
      */
     public synchronized void unlink(Object obj) {
-        if ((obj == null) || (_size == 0)) {
+        if (obj == null || _size == 0) {
             return;
         }
 
@@ -329,7 +329,7 @@ public final class CrossRefList implements Serializable {
             CrossRef n = p._next;
             Object far = p._farContainer();
 
-            if ((far != null) && far.equals(obj)) {
+            if (far != null && far.equals(obj)) {
                 p._dissociate();
             }
 
@@ -460,7 +460,7 @@ public final class CrossRefList implements Serializable {
                 // get us started.
                 CrossRef previous = _headNode;
 
-                if ((previous == null) && (index > 0)) {
+                if (previous == null && index > 0) {
                     // List is empty.
                     previous = new CrossRef();
                     _headNode = previous;

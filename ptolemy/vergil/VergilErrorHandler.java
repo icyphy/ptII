@@ -230,12 +230,12 @@ public class VergilErrorHandler implements ErrorHandler {
                 "Stack trace", JOptionPane.YES_NO_OPTION,
                 JOptionPane.ERROR_MESSAGE, null, options, options[0]);
 
-        if (selected == (options.length - 1)) {
+        if (selected == options.length - 1) {
             // The last button is the Cancel button.
             return CANCEL;
         }
 
-        if (skippingEnabled && (selected == 1)) {
+        if (skippingEnabled && selected == 1) {
             _skipping = true;
         }
 

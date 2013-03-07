@@ -453,7 +453,7 @@ public class SideEffectAnalysis {
         }
 
         public boolean hasUnknownSideEffects() {
-            return (_hasEffects && (_effectSet == null));
+            return _hasEffects && _effectSet == null;
         }
 
         private boolean _hasEffects;

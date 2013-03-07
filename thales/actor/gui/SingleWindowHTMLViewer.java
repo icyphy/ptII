@@ -94,9 +94,9 @@ public class SingleWindowHTMLViewer extends HTMLViewer implements
         JScrollPane _scroller = null;
         Component[] liste = getContentPane().getComponents();
 
-        for (int i = 0; i < liste.length; i++) {
-            if (liste[i] instanceof JScrollPane) {
-                _scroller = (JScrollPane) liste[i];
+        for (Component element : liste) {
+            if (element instanceof JScrollPane) {
+                _scroller = (JScrollPane) element;
             }
         }
 
@@ -257,13 +257,13 @@ public class SingleWindowHTMLViewer extends HTMLViewer implements
         Object source = e.getSource();
 
         if (source instanceof JTabbedPane) {
-            JTabbedPane tabbedPane = ((JTabbedPane) source);
+            JTabbedPane tabbedPane = (JTabbedPane) source;
             Component aComp = tabbedPane.getSelectedComponent();
 
             if (aComp != null) {
                 String name = aComp.getName();
 
-                if ((name != null) && !name.equals("Start")) {
+                if (name != null && !name.equals("Start")) {
                     Tableau tableau = findComponentTableau(name);
 
                     if (tableau != null) {
@@ -335,11 +335,11 @@ public class SingleWindowHTMLViewer extends HTMLViewer implements
             int nbTabs = _viewsTabbedPane.getComponentCount();
             boolean found = false;
 
-            for (int i = 0; (i < nbTabs) && !found; ++i) {
+            for (int i = 0; i < nbTabs && !found; ++i) {
                 Component aComp = _viewsTabbedPane.getComponent(i);
                 String compName = aComp.getName();
 
-                if ((compName != null) && compName.equals(tableauFullName)) {
+                if (compName != null && compName.equals(tableauFullName)) {
                     found = true;
                     answer = i;
                 }
@@ -392,7 +392,7 @@ public class SingleWindowHTMLViewer extends HTMLViewer implements
         boolean close = true;
         int nbTabs = _viewsTabbedPane.getComponentCount();
 
-        for (int i = 0; i < (nbTabs - 1); ++i) {
+        for (int i = 0; i < nbTabs - 1; ++i) {
             if (close) {
                 close = closeTabbedPane(_viewsTabbedPane.getComponent(1));
             }

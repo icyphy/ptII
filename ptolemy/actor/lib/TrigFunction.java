@@ -235,7 +235,7 @@ public class TrigFunction extends Transformer {
             Token[] inArray = input.get(0, count);
 
             for (int i = 0; i < count; i++) {
-                double inputValue = ((ScalarToken) (inArray[i])).doubleValue();
+                double inputValue = ((ScalarToken) inArray[i]).doubleValue();
                 _resultArray[i] = new DoubleToken(_doFunction(inputValue));
             }
 

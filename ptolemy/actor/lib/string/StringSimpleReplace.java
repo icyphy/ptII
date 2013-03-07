@@ -88,19 +88,19 @@ public class StringSimpleReplace extends TypedAtomicActor {
         pattern = new PortParameter(this, "pattern");
         pattern.setStringMode(true);
         pattern.setExpression("");
-        (new SingletonParameter(pattern.getPort(), "_showName"))
+        new SingletonParameter(pattern.getPort(), "_showName")
                 .setToken(BooleanToken.TRUE);
 
         replacement = new PortParameter(this, "replacement");
         replacement.setStringMode(true);
         replacement.setExpression("");
-        (new SingletonParameter(replacement.getPort(), "_showName"))
+        new SingletonParameter(replacement.getPort(), "_showName")
                 .setToken(BooleanToken.TRUE);
 
         stringToEdit = new PortParameter(this, "stringToEdit");
         stringToEdit.setStringMode(true);
         stringToEdit.setExpression("");
-        (new SingletonParameter(stringToEdit.getPort(), "_showName"))
+        new SingletonParameter(stringToEdit.getPort(), "_showName")
                 .setToken(BooleanToken.TRUE);
 
         output = new TypedIOPort(this, "output", false, true);

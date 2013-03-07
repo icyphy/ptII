@@ -113,8 +113,8 @@ public class PSNR extends TypedAtomicActor {
         int columns = signalToken.getColumnCount();
         int rows = signalToken.getRowCount();
 
-        if ((distortedSignalToken.getColumnCount() != columns)
-                || (distortedSignalToken.getRowCount() != rows)) {
+        if (distortedSignalToken.getColumnCount() != columns
+                || distortedSignalToken.getRowCount() != rows) {
             throw new IllegalActionException("Input token dimensions "
                     + "must match!");
         }
@@ -124,9 +124,9 @@ public class PSNR extends TypedAtomicActor {
                 element1 = signalToken.getElementAt(j, i);
                 element2 = distortedSignalToken.getElementAt(j, i);
 
-                signalPower = signalPower + (element1 * element1);
-                noisePower = noisePower
-                        + ((element1 - element2) * (element1 - element2));
+                signalPower = signalPower + element1 * element1;
+                noisePower = noisePower + (element1 - element2)
+                        * (element1 - element2);
             }
         }
 

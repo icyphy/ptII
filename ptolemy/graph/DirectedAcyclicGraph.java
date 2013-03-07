@@ -258,7 +258,7 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO<Object> {
 
         Object[] nodes = weightArray(nodes());
 
-        for (int i = 0; i < (nodes.length - 1); i++) {
+        for (int i = 0; i < nodes.length - 1; i++) {
             for (int j = i + 1; j < nodes.length; j++) {
                 if (leastUpperBound(nodes[i], nodes[j]) == null) {
                     return new NonLatticeCounterExample(BoundType.LEASTUPPER,
@@ -267,7 +267,7 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO<Object> {
             }
         }
 
-        for (int i = 0; i < (nodes.length - 1); i++) {
+        for (int i = 0; i < nodes.length - 1; i++) {
             for (int j = i + 1; j < nodes.length; j++) {
                 if (greatestLowerBound(nodes[i], nodes[j]) == null) {
                     return new NonLatticeCounterExample(
@@ -347,7 +347,7 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO<Object> {
                     Iterator outputEdges = outputEdges(node(id)).iterator();
 
                     while (outputEdges.hasNext()) {
-                        Node sink = ((Edge) (outputEdges.next())).sink();
+                        Node sink = ((Edge) outputEdges.next()).sink();
                         indeg[nodeLabel(sink)]--;
                     }
                 }
@@ -391,7 +391,7 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO<Object> {
             ids[i] = nodeLabel(weights[i]);
         }
 
-        for (int i = 0; i < (N - 1); i++) {
+        for (int i = 0; i < N - 1; i++) {
             for (int j = i + 1; j < N; j++) {
                 if (_compareNodeId(ids[i], ids[j]) == HIGHER) {
                     //swap
@@ -534,7 +534,7 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO<Object> {
             int virtualIndex = 0;
             int numberOfRemovedElements = 0;
 
-            for (i = 0; i < (virtualLength - 1);) {
+            for (i = 0; i < virtualLength - 1;) {
                 switch (_compareNodeId(ids[i++], ids[i++])) {
                 case LOWER:
                 case SAME:
@@ -559,7 +559,7 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO<Object> {
                 }
             }
 
-            if (i == (virtualLength - 1)) {
+            if (i == virtualLength - 1) {
                 ids[virtualIndex] = ids[i];
             }
 
@@ -574,7 +574,7 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO<Object> {
                 int result = _compareNodeId(ids[0],
                         ((Integer) iterator.next()).intValue());
 
-                if ((result == HIGHER) || (result == INCOMPARABLE)) {
+                if (result == HIGHER || result == INCOMPARABLE) {
                     return null;
                 }
             }
@@ -601,7 +601,7 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO<Object> {
 
             int result = _compareNodeId(i1, i2);
 
-            if ((result == LOWER) || (result == SAME)) {
+            if (result == LOWER || result == SAME) {
                 return o1;
             } else if (result == HIGHER) {
                 return o2;
@@ -628,7 +628,7 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO<Object> {
 
         int result = _compareNodeId(i1, i2);
 
-        if ((result == LOWER) || (result == SAME)) {
+        if (result == LOWER || result == SAME) {
             return e2;
         } else if (result == HIGHER) {
             return e1;
@@ -696,10 +696,10 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO<Object> {
         for (int i = 0; i < size; i++) {
             boolean isUB = true;
 
-            for (int j = 0; j < subsetId.length; j++) {
-                int compare = _compareNodeId(i, subsetId[j]);
+            for (int element : subsetId) {
+                int compare = _compareNodeId(i, element);
 
-                if ((compare == LOWER) || (compare == INCOMPARABLE)) {
+                if (compare == LOWER || compare == INCOMPARABLE) {
                     isUB = false;
                     break;
                 }

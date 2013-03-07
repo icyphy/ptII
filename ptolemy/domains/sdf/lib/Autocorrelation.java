@@ -185,8 +185,8 @@ public class Autocorrelation extends SDFTransformer {
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
-        if ((attribute == numberOfInputs) || (attribute == numberOfLags)
-                || (attribute == symmetricOutput)) {
+        if (attribute == numberOfInputs || attribute == numberOfLags
+                || attribute == symmetricOutput) {
             _numberOfInputs = ((IntToken) numberOfInputs.getToken()).intValue();
             _numberOfLags = ((IntToken) numberOfLags.getToken()).intValue();
             _symmetricOutput = ((BooleanToken) symmetricOutput.getToken())
@@ -203,12 +203,12 @@ public class Autocorrelation extends SDFTransformer {
             }
 
             if (_symmetricOutput) {
-                _lengthOfOutput = (2 * _numberOfLags) + 1;
+                _lengthOfOutput = 2 * _numberOfLags + 1;
             } else {
                 _lengthOfOutput = 2 * _numberOfLags;
             }
 
-            if ((_outputs == null) || (_lengthOfOutput != _outputs.length)) {
+            if (_outputs == null || _lengthOfOutput != _outputs.length) {
                 _outputs = new Token[_lengthOfOutput];
             }
         } else {
@@ -254,7 +254,7 @@ public class Autocorrelation extends SDFTransformer {
         for (int i = _numberOfLags; i >= 0; i--) {
             Token sum = inputValues[0].zero();
 
-            for (int j = 0; j < (_numberOfInputs - i); j++) {
+            for (int j = 0; j < _numberOfInputs - i; j++) {
                 if (complex) {
                     ComplexToken conjugate = new ComplexToken(
                             ((ComplexToken) inputValues[j]).complexValue()
@@ -266,10 +266,10 @@ public class Autocorrelation extends SDFTransformer {
             }
 
             if (biasedValue) {
-                _outputs[(i + _numberOfLags) - notSymmetric] = sum
+                _outputs[i + _numberOfLags - notSymmetric] = sum
                         .divide(numberOfInputs.getToken());
             } else {
-                _outputs[(i + _numberOfLags) - notSymmetric] = sum
+                _outputs[i + _numberOfLags - notSymmetric] = sum
                         .divide(new IntToken(_numberOfInputs - i));
             }
         }
@@ -279,12 +279,12 @@ public class Autocorrelation extends SDFTransformer {
         // the input is complex.
         for (int i = _numberOfLags - 1 - notSymmetric; i >= 0; i--) {
             if (complex) {
-                ComplexToken candidate = (ComplexToken) _outputs[(2 * (_numberOfLags - notSymmetric))
-                        - i];
+                ComplexToken candidate = (ComplexToken) _outputs[2
+                        * (_numberOfLags - notSymmetric) - i];
                 _outputs[i] = new ComplexToken(candidate.complexValue()
                         .conjugate());
             } else {
-                _outputs[i] = _outputs[(2 * (_numberOfLags - notSymmetric)) - i];
+                _outputs[i] = _outputs[2 * (_numberOfLags - notSymmetric) - i];
             }
         }
 

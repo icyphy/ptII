@@ -33,7 +33,6 @@ package ptolemy.actor;
 import ptolemy.actor.util.Time;
 import ptolemy.kernel.util.IllegalActionException;
 
-
 /** This is the interface for a resource scheduler.
 *
 * @author Patricia Derler

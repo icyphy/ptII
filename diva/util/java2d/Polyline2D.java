@@ -290,7 +290,7 @@ public abstract class Polyline2D implements Shape {
          * @exception IndexOutOfBoundsException The index is out of bounds.
          */
         public double getX(int index) {
-            if ((index < 0) || (index >= this.getVertexCount())) {
+            if (index < 0 || index >= this.getVertexCount()) {
                 throw new IndexOutOfBoundsException("Index: " + index
                         + ", Size: " + this.getVertexCount());
             }
@@ -303,12 +303,12 @@ public abstract class Polyline2D implements Shape {
          * @exception IndexOutOfBoundsException The index is out of bounds.
          */
         public double getY(int index) {
-            if ((index < 0) || (index >= this.getVertexCount())) {
+            if (index < 0 || index >= this.getVertexCount()) {
                 throw new IndexOutOfBoundsException("Index: " + index
                         + ", Size: " + this.getVertexCount());
             }
 
-            return _coords[(index * 2) + 1];
+            return _coords[index * 2 + 1];
         }
 
         /** Add a new vertex to the end of the line.
@@ -345,7 +345,7 @@ public abstract class Polyline2D implements Shape {
          * @exception IndexOutOfBoundsException The index is out of bounds.
          */
         public void setX(int index, double x) {
-            if ((index < 0) || (index >= this.getVertexCount())) {
+            if (index < 0 || index >= this.getVertexCount()) {
                 throw new IndexOutOfBoundsException("Index: " + index
                         + ", Size: " + this.getVertexCount());
             }
@@ -358,12 +358,12 @@ public abstract class Polyline2D implements Shape {
          * @exception IndexOutOfBoundsException The index is out of bounds.
          */
         public void setY(int index, double y) {
-            if ((index < 0) || (index >= this.getVertexCount())) {
+            if (index < 0 || index >= this.getVertexCount()) {
                 throw new IndexOutOfBoundsException("Index: " + index
                         + ", Size: " + this.getVertexCount());
             }
 
-            _coords[(index * 2) + 1] = (float) y;
+            _coords[index * 2 + 1] = (float) y;
         }
 
         /** Transform the polyline with the given transform.
@@ -474,7 +474,7 @@ public abstract class Polyline2D implements Shape {
          * @exception IndexOutOfBoundsException The index is out of bounds.
          */
         public double getX(int index) {
-            if ((index < 0) || (index >= this.getVertexCount())) {
+            if (index < 0 || index >= this.getVertexCount()) {
                 throw new IndexOutOfBoundsException("Index: " + index
                         + ", Size: " + this.getVertexCount());
             }
@@ -487,12 +487,12 @@ public abstract class Polyline2D implements Shape {
          * @exception IndexOutOfBoundsException The index is out of bounds.
          */
         public double getY(int index) {
-            if ((index < 0) || (index >= this.getVertexCount())) {
+            if (index < 0 || index >= this.getVertexCount()) {
                 throw new IndexOutOfBoundsException("Index: " + index
                         + ", Size: " + this.getVertexCount());
             }
 
-            return _coords[(index * 2) + 1];
+            return _coords[index * 2 + 1];
         }
 
         /** Add a new vertex to the end of the line.
@@ -529,7 +529,7 @@ public abstract class Polyline2D implements Shape {
          * @exception IndexOutOfBoundsException The index is out of bounds.
          */
         public void setX(int index, double x) {
-            if ((index < 0) || (index >= this.getVertexCount())) {
+            if (index < 0 || index >= this.getVertexCount()) {
                 throw new IndexOutOfBoundsException("Index: " + index
                         + ", Size: " + this.getVertexCount());
             }
@@ -542,12 +542,12 @@ public abstract class Polyline2D implements Shape {
          * @exception IndexOutOfBoundsException The index is out of bounds.
          */
         public void setY(int index, double y) {
-            if ((index < 0) || (index >= this.getVertexCount())) {
+            if (index < 0 || index >= this.getVertexCount()) {
                 throw new IndexOutOfBoundsException("Index: " + index
                         + ", Size: " + this.getVertexCount());
             }
 
-            _coords[(index * 2) + 1] = y;
+            _coords[index * 2 + 1] = y;
         }
 
         /** Transform the polyline with the given transform.

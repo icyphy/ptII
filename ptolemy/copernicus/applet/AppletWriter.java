@@ -639,8 +639,8 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
             //                        _outputDirectory + "/" + _sanitizedModelName
             //                                + "Vergil.htm");
             //            }
-            if (!(new File(_outputDirectory + File.separator
-                    + _sanitizedModelName + ".htm").exists())) {
+            if (!new File(_outputDirectory + File.separator
+                    + _sanitizedModelName + ".htm").exists()) {
                 CodeGeneratorUtilities.substitute(_templateDirectory
                         + "modelJnlp.htm.in", _substituteMap, _outputDirectory
                         + "/" + _sanitizedModelName + ".htm");
@@ -650,8 +650,8 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
                         + "modelJnlp.htm.in", _substituteMap, _outputDirectory
                         + "/" + _sanitizedModelName + "JNLP.htm");
             }
-            if (!(new File(_outputDirectory + File.separator
-                    + _sanitizedModelName + "Vergil.htm").exists())) {
+            if (!new File(_outputDirectory + File.separator
+                    + _sanitizedModelName + "Vergil.htm").exists()) {
                 CodeGeneratorUtilities.substitute(_templateDirectory
                         + "modelVergil.htm.in", _substituteMap,
                         _outputDirectory + "/" + _sanitizedModelName
@@ -1190,7 +1190,7 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
         }
 
         System.out.println("AppletWriter: Copying " + sourceFile + " ("
-                + (sourceFile.length() / 1024) + "K) to " + destinationFile);
+                + sourceFile.length() / 1024 + "K) to " + destinationFile);
 
         BufferedInputStream in = null;
 
@@ -2095,9 +2095,9 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
         for (int i = 0; i < ((ArrayToken) jnlpClassesToJarsToken).length(); i++) {
             ArrayToken classJarPair = (ArrayToken) ((ArrayToken) jnlpClassesToJarsToken)
                     .getElement(i);
-            String className = ((StringToken) (classJarPair.getElement(0)))
+            String className = ((StringToken) classJarPair.getElement(0))
                     .stringValue();
-            String jarName = ((StringToken) (classJarPair.getElement(1)))
+            String jarName = ((StringToken) classJarPair.getElement(1))
                     .stringValue();
             System.out.println("_userSpecifiedJars(): adding " + className
                     + " " + jarName);

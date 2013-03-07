@@ -294,7 +294,7 @@ public class DerivedDimensionRepresentativeConcept extends
             throws IllegalActionException {
         Token exponentToken = dimensionRecord.get(_exponentLabel);
         if (exponentToken instanceof IntToken) {
-            int exponentValue = (((IntToken) exponentToken).intValue());
+            int exponentValue = ((IntToken) exponentToken).intValue();
             if (exponentValue == 0) {
                 throw new IllegalActionException(this, "Dimension exponent "
                         + "cannot be zero because that means the derived "

@@ -235,14 +235,14 @@ public class UtilityFunctions {
         int nElements = 0;
 
         for (int i = 0; i < token.length(); i++) {
-            nElements += ((ArrayToken) (token.getElement(i))).length();
+            nElements += ((ArrayToken) token.getElement(i)).length();
         }
 
         Token[] result = new Token[nElements];
         int cursor = 0;
 
         for (int i = 0; i < token.length(); i++) {
-            Token[] array = ((ArrayToken) (token.getElement(i))).arrayValue();
+            Token[] array = ((ArrayToken) token.getElement(i)).arrayValue();
             System.arraycopy(array, 0, result, cursor, array.length);
             cursor += array.length;
         }
@@ -272,8 +272,8 @@ public class UtilityFunctions {
                     + secondArrayType + " is not an ArrayType?");
         } else {
             return new ArrayType(
-                    ((ArrayType) (TypeLattice.lattice().leastUpperBound(
-                            firstArrayType, secondArrayType))).getElementType(),
+                    ((ArrayType) TypeLattice.lattice().leastUpperBound(
+                            firstArrayType, secondArrayType)).getElementType(),
                     ((ArrayType) firstArrayType).length()
                             + ((ArrayType) secondArrayType).length());
         }
@@ -414,19 +414,19 @@ public class UtilityFunctions {
             Token[] elementList = { element };
             Token include = predicate.apply(elementList);
 
-            if ((include instanceof BooleanToken)
+            if (include instanceof BooleanToken
                     && ((BooleanToken) include).booleanValue()) {
                 result.add(element);
             }
 
-            if ((sizeLimitValue >= 0) && (result.size() >= sizeLimitValue)) {
+            if (sizeLimitValue >= 0 && result.size() >= sizeLimitValue) {
                 break;
             }
         }
 
         if (result.size() > 0) {
             Token[] resultArray = new Token[result.size()];
-            resultArray = (Token[]) (result.toArray(resultArray));
+            resultArray = (Token[]) result.toArray(resultArray);
             return new ArrayToken(resultArray);
         } else {
             return new ArrayToken(array.getElementType());
@@ -479,7 +479,7 @@ public class UtilityFunctions {
                 int comparison = TypeLattice.compare(
                         ((ArrayType) arrayTokenType).getElementType(), argType);
 
-                if ((comparison != CPO.LOWER) && (comparison != CPO.SAME)) {
+                if (comparison != CPO.LOWER && comparison != CPO.SAME) {
                     throw new IllegalActionException(
                             "filter(): specified array element is not "
                                     + "compatible with function argument type.");
@@ -534,7 +534,7 @@ public class UtilityFunctions {
 
         if (result.size() > 0) {
             Token[] resultArray = new Token[result.size()];
-            resultArray = (Token[]) (result.toArray(resultArray));
+            resultArray = (Token[]) result.toArray(resultArray);
 
             try {
                 return new ArrayToken(BaseType.INT, resultArray);
@@ -630,7 +630,7 @@ public class UtilityFunctions {
         }
 
         double raw = _random.nextGaussian();
-        double result = (raw * standardDeviation) + mean;
+        double result = raw * standardDeviation + mean;
         return new DoubleToken(result);
     }
 
@@ -650,7 +650,7 @@ public class UtilityFunctions {
 
         for (int i = 0; i < length; i++) {
             double raw = _random.nextGaussian();
-            result[i] = new DoubleToken((raw * standardDeviation) + mean);
+            result[i] = new DoubleToken(raw * standardDeviation + mean);
         }
 
         try {
@@ -682,7 +682,7 @@ public class UtilityFunctions {
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
                 double raw = _random.nextGaussian();
-                result[i][j] = (raw * standardDeviation) + mean;
+                result[i][j] = raw * standardDeviation + mean;
             }
         }
 
@@ -719,8 +719,8 @@ public class UtilityFunctions {
         Iterator environmentVariables = environment.entrySet().iterator();
         while (environmentVariables.hasNext()) {
             Map.Entry pairs = (Map.Entry) environmentVariables.next();
-            environmentMap.put((String) (pairs.getKey()), new StringToken(
-                    (String) (pairs.getValue())));
+            environmentMap.put((String) pairs.getKey(), new StringToken(
+                    (String) pairs.getValue()));
         }
         return new RecordToken(environmentMap);
     }
@@ -866,7 +866,7 @@ public class UtilityFunctions {
                 Type argType = castFunctionType.getArgType(0);
                 int comparison = TypeLattice.compare(initialType, argType);
 
-                if ((comparison != CPO.LOWER) && (comparison != CPO.SAME)) {
+                if (comparison != CPO.LOWER && comparison != CPO.SAME) {
                     throw new IllegalActionException(
                             "iterate(): specified initial value is not "
                                     + "compatible with function argument type.");
@@ -875,7 +875,7 @@ public class UtilityFunctions {
                 Type resultType = castFunctionType.getReturnType();
                 int comparison2 = TypeLattice.compare(resultType, argType);
 
-                if ((comparison2 != CPO.LOWER) && (comparison2 != CPO.SAME)) {
+                if (comparison2 != CPO.LOWER && comparison2 != CPO.SAME) {
                     throw new IllegalActionException(
                             "iterate(): invalid function: function return "
                                     + "type is not "
@@ -906,7 +906,7 @@ public class UtilityFunctions {
      */
     public static void loadLibrary(String library) {
         try {
-            if ((library.indexOf("/") == -1) && (library.indexOf("\\") == -1)) {
+            if (library.indexOf("/") == -1 && library.indexOf("\\") == -1) {
                 // loadLibrary does not work if the library has a \ or / in it.
                 // Unfortunately, pathnames tend to get specified with
                 // a forward slash, even under windows
@@ -1024,7 +1024,7 @@ public class UtilityFunctions {
                 int comparison = TypeLattice.compare(
                         ((ArrayType) arrayTokenType).getElementType(), argType);
 
-                if ((comparison != CPO.LOWER) && (comparison != CPO.SAME)) {
+                if (comparison != CPO.LOWER && comparison != CPO.SAME) {
                     throw new IllegalActionException(
                             "map(): specified array token is not compatible "
                                     + "with function argument type.");
@@ -1059,8 +1059,7 @@ public class UtilityFunctions {
                                 ((ArrayType) elementType).getElementType(),
                                 argType);
 
-                        if ((comparison != CPO.LOWER)
-                                && (comparison != CPO.SAME)) {
+                        if (comparison != CPO.LOWER && comparison != CPO.SAME) {
                             throw new IllegalActionException(
                                     "map(): specified array token is not "
                                             + "compatible with function "
@@ -1098,7 +1097,7 @@ public class UtilityFunctions {
      */
     public static ScalarToken max(ArrayToken array)
             throws IllegalActionException {
-        if ((array.length() == 0)
+        if (array.length() == 0
                 || !BaseType.SCALAR.isCompatible(array.getElementType())) {
             throw new IllegalActionException(
                     "max function can only be applied to arrays of scalars.");
@@ -1109,7 +1108,7 @@ public class UtilityFunctions {
         for (int i = 1; i < array.length(); i++) {
             ScalarToken element = (ScalarToken) array.getElement(i);
 
-            if ((element.isGreaterThan(result)).booleanValue()) {
+            if (element.isGreaterThan(result).booleanValue()) {
                 result = element;
             }
         }
@@ -1156,7 +1155,7 @@ public class UtilityFunctions {
      */
     public static ScalarToken min(ArrayToken array)
             throws IllegalActionException {
-        if ((array.length() == 0)
+        if (array.length() == 0
                 || !BaseType.SCALAR.isCompatible(array.getElementType())) {
             throw new IllegalActionException(
                     "min function can only be applied to arrays of scalars.");
@@ -1167,7 +1166,7 @@ public class UtilityFunctions {
         for (int i = 1; i < array.length(); i++) {
             ScalarToken element = (ScalarToken) array.getElement(i);
 
-            if ((element.isLessThan(result)).booleanValue()) {
+            if (element.isLessThan(result).booleanValue()) {
                 result = element;
             }
         }
@@ -1736,7 +1735,7 @@ public class UtilityFunctions {
      */
     public static final Token sum(ArrayToken array)
             throws IllegalActionException {
-        if ((array == null) || (array.length() < 1)) {
+        if (array == null || array.length() < 1) {
             throw new IllegalActionException(
                     "sum() function cannot be applied to an empty array");
         }
@@ -1745,15 +1744,14 @@ public class UtilityFunctions {
             int length = 0;
 
             for (int i = 0; i < array.length(); i++) {
-                length += ((StringToken) (array.getElement(i))).stringValue()
+                length += ((StringToken) array.getElement(i)).stringValue()
                         .length();
             }
 
             StringBuffer buffer = new StringBuffer(length);
 
             for (int i = 0; i < array.length(); i++) {
-                buffer.append(((StringToken) (array.getElement(i)))
-                        .stringValue());
+                buffer.append(((StringToken) array.getElement(i)).stringValue());
             }
 
             return new StringToken(buffer.toString());

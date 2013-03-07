@@ -329,7 +329,7 @@ public class TransformationAttribute extends Attribute implements Configurable,
 
         String sourceSpec = "";
 
-        if ((_configureSource != null) && !_configureSource.trim().equals("")) {
+        if (_configureSource != null && !_configureSource.trim().equals("")) {
             sourceSpec = " source=\"" + _configureSource + "\"";
         }
 

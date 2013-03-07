@@ -208,7 +208,7 @@ public class Plot extends Event implements ConfigurableEntity {
         String sourceSpec = "";
 
         String configureSource = getConfigureSource();
-        if ((configureSource != null) && !configureSource.trim().equals("")) {
+        if (configureSource != null && !configureSource.trim().equals("")) {
             sourceSpec = " source=\"" + configureSource + "\"";
         }
 

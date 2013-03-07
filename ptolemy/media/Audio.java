@@ -144,8 +144,8 @@ public class Audio {
 
         // Check the magic number, which should be 0x2E736E64, '.snd'
         // in ASCII.
-        if ((magic[0] != 0x2E) || (magic[1] != 0x73) || (magic[2] != 0x6E)
-                || (magic[3] != 0x64)) {
+        if (magic[0] != 0x2E || magic[1] != 0x73 || magic[2] != 0x6E
+                || magic[3] != 0x64) {
             throw new IllegalArgumentException(
                     "ptolemy.media.Audio: bad magic number in "
                             + "stream header.  Not an audio file?");
@@ -157,7 +157,7 @@ public class Audio {
         sampleRate = input.readInt();
         numChannels = input.readInt();
 
-        if ((offset < 0) || (offset > 10000)) {
+        if (offset < 0 || offset > 10000) {
             throw new IllegalArgumentException("ptolemy.media.Audio:"
                     + " offset value '" + offset + "' is out of range 0-10000");
         }
@@ -274,16 +274,16 @@ public class Audio {
 
         sample = sample + BIAS;
 
-        int exponent = exp_lut[(sample >> 7) & 0xFF];
-        int mantissa = (sample >> (exponent + 3)) & 0x0F;
-        int ulawbyte = (sign | (exponent << 4) | mantissa);
+        int exponent = exp_lut[sample >> 7 & 0xFF];
+        int mantissa = sample >> exponent + 3 & 0x0F;
+        int ulawbyte = sign | exponent << 4 | mantissa;
 
         // System.out.println(" sign = " + sign + " exponent = " +
         // exponent + " mantissa = " + mantissa );
         ulawbyte = ~ulawbyte;
         ulawbyte &= 0xFF;
 
-        if (_zerotrap && (ulawbyte == 0)) {
+        if (_zerotrap && ulawbyte == 0) {
             // optional CCITT trap
             ulawbyte = 0x02;
         }
@@ -320,15 +320,15 @@ public class Audio {
         int mu = b ^ 0xFF;
         int sign = (mu & 0x80) >> 7;
         int exponent = (mu & 0x70) >> 4;
-        int mantissa = (mu & 0x0F);
+        int mantissa = mu & 0x0F;
 
         // System.out.println(" sign = " + sign + " exponent = " +
         // exponent + " mantissa = " + mantissa );
-        int linear = (mantissa << (exponent + 1)) - 0x20 + (0x20 << exponent);
+        int linear = (mantissa << exponent + 1) - 0x20 + (0x20 << exponent);
 
         // Make into a 16 bit sample.
         linear <<= 2;
-        return (sign == 1) ? (-linear) : linear;
+        return sign == 1 ? -linear : linear;
     }
 
     /** Read Sun audio file (.au) format and return the audio data as an array.
@@ -393,7 +393,7 @@ public class Audio {
      */
     public int[] toLinear(int channel) {
         if (audio != null) {
-            if ((audio.length > channel) && (audio[channel] != null)) {
+            if (audio.length > channel && audio[channel] != null) {
                 int[] result = new int[audio[channel].length];
 
                 for (int i = audio[channel].length - 1; i >= 0; i--) {

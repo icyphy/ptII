@@ -628,8 +628,8 @@ public class SoundCapture {
         int lengthInSamples = byteArray.length / (bytesPerSample * channels);
 
         // Check if we need to reallocate.
-        if ((channels != _doubleArray.length)
-                || (lengthInSamples != _doubleArray[0].length)) {
+        if (channels != _doubleArray.length
+                || lengthInSamples != _doubleArray[0].length) {
             // Reallocate
             _doubleArray = new double[channels][lengthInSamples];
         }
@@ -667,11 +667,11 @@ public class SoundCapture {
             for (int currChannel = 0; currChannel < channels; currChannel++) {
                 for (int i = 0; i < bytesPerSample; i += 1) {
                     // Assume we are dealing with big endian.
-                    _b[i] = byteArray[(currSamp * bytesPerSample * channels)
-                            + (bytesPerSample * currChannel) + i];
+                    _b[i] = byteArray[currSamp * bytesPerSample * channels
+                            + bytesPerSample * currChannel + i];
                 }
 
-                int result = (_b[0] >> 7);
+                int result = _b[0] >> 7;
 
                 for (int i = 0; i < bytesPerSample; i += 1) {
                     result = (result << 8) + (_b[i] & 0xff);
@@ -704,8 +704,8 @@ public class SoundCapture {
         int lengthInSamples = byteArray.length / (bytesPerSample * channels);
 
         // Check if we need to reallocate.
-        if ((channels != _doubleArray.length)
-                || (lengthInSamples != _doubleArray[0].length)) {
+        if (channels != _doubleArray.length
+                || lengthInSamples != _doubleArray[0].length) {
             // Reallocate
             _intArray = new int[channels][lengthInSamples];
         }
@@ -722,11 +722,11 @@ public class SoundCapture {
             for (int currChannel = 0; currChannel < channels; currChannel++) {
                 for (int i = 0; i < bytesPerSample; i += 1) {
                     // Assume we are dealing with big endian.
-                    _b[i] = byteArray[(currSamp * bytesPerSample * channels)
-                            + (bytesPerSample * currChannel) + i];
+                    _b[i] = byteArray[currSamp * bytesPerSample * channels
+                            + bytesPerSample * currChannel + i];
                 }
 
-                int result = (_b[0] >> 7);
+                int result = _b[0] >> 7;
 
                 for (int i = 0; i < bytesPerSample; i += 1) {
                     result = (result << 8) + (_b[i] & 0xff);

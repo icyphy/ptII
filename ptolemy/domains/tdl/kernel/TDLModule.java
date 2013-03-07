@@ -120,7 +120,7 @@ public class TDLModule extends ModalModel {
             Director director = getDirector();
             String className = directorClass.stringValue();
 
-            if ((director == null)
+            if (director == null
                     || !director.getClass().getName().equals(className)) {
                 // Check the class name to get immediate feedback
                 // to the user.
@@ -152,8 +152,8 @@ public class TDLModule extends ModalModel {
                         newDirector.setPersistent(false);
                         newDirector.controllerName.setExpression("_Controller");
 
-                        if ((director != null)
-                                && (director.getContainer() == TDLModule.this)) {
+                        if (director != null
+                                && director.getContainer() == TDLModule.this) {
                             // Delete the old director.
                             director.setContainer(null);
                         }

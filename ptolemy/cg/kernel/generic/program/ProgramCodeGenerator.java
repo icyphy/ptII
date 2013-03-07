@@ -491,8 +491,8 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
         if (code == null) {
             return false;
         }
-        return (code.replaceAll("/\\*[^*]*\\*/", "")
-                .replaceAll("[ \t\n\r]", "").length() > 0);
+        return code.replaceAll("/\\*[^*]*\\*/", "").replaceAll("[ \t\n\r]", "")
+                .length() > 0;
     }
 
     /**
@@ -654,8 +654,8 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
             arrayName = "ports_";
             typeMap = _portTypeMap;
             typeMaxIndex = _portTypeMaxIndex;
-        } else if ((port.isMultiport() && bufferSize <= 1)
-                || (!port.isMultiport() && bufferSize > 1)) {
+        } else if (port.isMultiport() && bufferSize <= 1 || !port.isMultiport()
+                && bufferSize > 1) {
             // A 2D array is needed.
             if (_portTypeMap2 == null) {
                 // A map from String type name to a HashMap of multiport name
@@ -1298,7 +1298,7 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
         // Record the current time so that we can monitor performance of the
         // code generator by printing messages whenever any part of the code
         // generation process takes more than 10 seconds.
-        long startTime = (new Date()).getTime();
+        long startTime = new Date().getTime();
         long overallStartTime = startTime;
 
         _reset();

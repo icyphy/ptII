@@ -337,7 +337,7 @@ public final class Sizes {
                 FormLayout.Measure defaultMeasure) {
 
             FormLayout.Measure measure = this == MINIMUM ? minMeasure
-                    : (this == PREFERRED ? prefMeasure : defaultMeasure);
+                    : this == PREFERRED ? prefMeasure : defaultMeasure;
             int maximum = 0;
             for (Iterator i = components.iterator(); i.hasNext();) {
                 Component c = (Component) i.next();

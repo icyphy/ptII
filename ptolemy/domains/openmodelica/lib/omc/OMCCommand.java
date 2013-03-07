@@ -96,7 +96,8 @@ public class OMCCommand implements IOMCCommand {
         // Create a unique instance of OMCProxy.
         _omcProxy = OMCProxy.getInstance();
         CompilerResult loadFileInteractiveQualifiedResult = _omcProxy
-                .sendCommand("loadFileInteractiveQualified(\"" + fileName + "\")");
+                .sendCommand("loadFileInteractiveQualified(\"" + fileName
+                        + "\")");
         return loadFileInteractiveQualifiedResult;
     }
 

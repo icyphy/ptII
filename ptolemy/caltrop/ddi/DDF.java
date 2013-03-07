@@ -197,13 +197,12 @@ public class DDF extends DataflowWithRates {
             return false;
         }
 
-        for (Iterator iterator = _ptActor.inputPortList().iterator(); iterator
-                .hasNext();) {
-            IOPort port = (IOPort) iterator.next();
+        for (Object element : _ptActor.inputPortList()) {
+            IOPort port = (IOPort) element;
             Integer integerRate = (Integer) _currentSignature.getInputRates()
                     .get(port.getName());
 
-            if ((integerRate != null)
+            if (integerRate != null
                     && !port.hasToken(0, integerRate.intValue())) {
                 return false;
             }
@@ -228,13 +227,11 @@ public class DDF extends DataflowWithRates {
     ////                         private methods                   ////
     // Return true if any action has a guard which depends on input values.
     protected boolean _hasInputDependentGuard() {
-        for (int i = 0; i < _actions.length; i++) {
-            Action action = _actions[i];
-
+        for (Action action : _actions) {
             Expression[] guards = action.getGuards();
 
-            for (int j = 0; j < guards.length; j++) {
-                List freeVars = (List) guards[j]
+            for (Expression guard : guards) {
+                List freeVars = (List) guard
                         .getAttribute(AttributeKeys.KEYFREEVAR);
 
                 for (Iterator iterator = freeVars.iterator(); iterator

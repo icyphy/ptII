@@ -213,8 +213,8 @@ public class CorbaActorClient extends TypedAtomicActor {
                         ((StringToken) remoteActorName.getToken())
                                 .stringValue(),
                         "");
-                _debug(getName(), " looking for name: ",
-                        (remoteActorName.getToken()).toString());
+                _debug(getName(), " looking for name: ", remoteActorName
+                        .getToken().toString());
 
                 NameComponent[] path = { namecomp };
 
@@ -237,8 +237,8 @@ public class CorbaActorClient extends TypedAtomicActor {
             while (attributes.hasNext()) {
                 Attribute att = (Attribute) attributes.next();
 
-                if ((att != ORBInitProperties) && (att != remoteActorName)
-                        && (att instanceof Parameter)) {
+                if (att != ORBInitProperties && att != remoteActorName
+                        && att instanceof Parameter) {
                     _debug(getName(), " check remote parameter: ",
                             att.getName());
 
@@ -418,7 +418,7 @@ public class CorbaActorClient extends TypedAtomicActor {
         Iterator inputPorts = inputPortList().iterator();
 
         while (inputPorts.hasNext()) {
-            IOPort port = (IOPort) (inputPorts.next());
+            IOPort port = (IOPort) inputPorts.next();
             String inputName = port.getName();
 
             for (short i = 0; i < port.getWidth(); i++) {
@@ -466,7 +466,7 @@ public class CorbaActorClient extends TypedAtomicActor {
         Iterator outputPorts = outputPortList().iterator();
 
         while (outputPorts.hasNext()) {
-            IOPort port = (IOPort) (outputPorts.next());
+            IOPort port = (IOPort) outputPorts.next();
             String portName = port.getName();
 
             for (short i = 0; i < port.getWidth(); i++) {

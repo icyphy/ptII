@@ -365,7 +365,7 @@ public class ConstVariableModelAnalysis {
 
             // Under what conditions is a PortParameter not associated
             // with a port?
-            if ((port != null) && (port.isOutsideConnected())) {
+            if (port != null && port.isOutsideConnected()) {
                 _updateChangeContext(parameter,
                         (Entity) parameter.getContainer());
             }
@@ -475,7 +475,7 @@ public class ConstVariableModelAnalysis {
     // exception.  If either entity is null (corresponding to a change context
     // which doesn't exist, then return null.
     private final Entity _computeBound(Entity entity1, Entity entity2) {
-        if ((entity1 == null) || (entity2 == null)) {
+        if (entity1 == null || entity2 == null) {
             return null;
         }
         if (entity2.equals(entity1)) {

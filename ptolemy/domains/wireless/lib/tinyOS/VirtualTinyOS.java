@@ -124,8 +124,7 @@ public class VirtualTinyOS extends TypedAtomicActor {
         Director director = getDirector();
 
         //If there is a timer component, we handel the timer interupt here.
-        if (_hasTimer
-                && (director.getModelTime().compareTo(_scheduledTime) >= 0)) {
+        if (_hasTimer && director.getModelTime().compareTo(_scheduledTime) >= 0) {
             if (_debugging) {
                 _debug("Called native method to trigger the time event");
             }

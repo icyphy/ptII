@@ -235,15 +235,14 @@ public class FixTransformer extends TypedAtomicActor {
     protected void _showQuantizationParameters(boolean showPrecision,
             boolean showOverflow, boolean showRounding) {
         //throws IllegalActionException {
-        Parameter precision = ((Parameter) getAttribute("outputPrecision"));
-        precision
-                .setVisibility((showPrecision) ? Settable.FULL : Settable.NONE);
+        Parameter precision = (Parameter) getAttribute("outputPrecision");
+        precision.setVisibility(showPrecision ? Settable.FULL : Settable.NONE);
 
-        Parameter overflow = ((Parameter) getAttribute("outputOverflow"));
-        overflow.setVisibility((showOverflow) ? Settable.FULL : Settable.NONE);
+        Parameter overflow = (Parameter) getAttribute("outputOverflow");
+        overflow.setVisibility(showOverflow ? Settable.FULL : Settable.NONE);
 
-        Parameter rounding = ((Parameter) getAttribute("outputRounding"));
-        rounding.setVisibility((showRounding) ? Settable.FULL : Settable.NONE);
+        Parameter rounding = (Parameter) getAttribute("outputRounding");
+        rounding.setVisibility(showRounding ? Settable.FULL : Settable.NONE);
     }
 
     /**

@@ -357,7 +357,7 @@ public class SendMail extends TypedAtomicActor {
 
         result.append("From: " + fromValue + "\n");
 
-        if (!(replyToValue.equals(""))) {
+        if (!replyToValue.equals("")) {
             result.append("Reply-To: " + replyToValue + "\n");
         }
 
@@ -401,7 +401,7 @@ public class SendMail extends TypedAtomicActor {
             }
             mimeMessage.setFrom(new InternetAddress(fromValue));
 
-            if (!(replyToValue.equals(""))) {
+            if (!replyToValue.equals("")) {
                 ArrayList<Address> replyToAddresses = new ArrayList();
                 tokenizer = new StringTokenizer(replyToValue, ",");
                 while (tokenizer.hasMoreTokens()) {
@@ -521,7 +521,7 @@ public class SendMail extends TypedAtomicActor {
                 if (dialog.buttonPressed().equals("OK")) {
                     // Update the parameter values.
                     String newUserName = query.getStringValue("SMTPuser");
-                    if (!(username.equals(newUserName))) {
+                    if (!username.equals(newUserName)) {
                         SMTPUserName.setExpression(newUserName);
                     }
                     // The password is not stored as a parameter.

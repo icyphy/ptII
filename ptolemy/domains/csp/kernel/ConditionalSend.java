@@ -182,14 +182,14 @@ public class ConditionalSend extends ConditionalBranch implements Runnable {
                         + "tokens only sent from an output port.");
             }
 
-            if ((channel >= port.getWidth()) || (channel < 0)) {
+            if (channel >= port.getWidth() || channel < 0) {
                 throw new IllegalActionException(port, "ConditionalSend: "
                         + "channel index out of range.");
             }
 
             Receiver[][] receivers = port.getRemoteReceivers();
 
-            if ((receivers == null) || (receivers[channel] == null)) {
+            if (receivers == null || receivers[channel] == null) {
                 throw new IllegalActionException(port, "ConditionalSend: "
                         + "Trying to rendezvous with null receiver");
             }
@@ -240,10 +240,9 @@ public class ConditionalSend extends ConditionalBranch implements Runnable {
         synchronized (director) {
             try {
                 // Check that none of the receivers already has a put or conditional send waiting
-                for (int copy = 0; copy < receivers.length; copy++) {
-                    if (((CSPReceiver) receivers[copy])
-                            ._isConditionalSendWaiting()
-                            || ((CSPReceiver) receivers[copy])._isPutWaiting()) {
+                for (Receiver receiver : receivers) {
+                    if (((CSPReceiver) receiver)._isConditionalSendWaiting()
+                            || ((CSPReceiver) receiver)._isPutWaiting()) {
                         // Should never happen that a put or a ConditionalSend
                         // is already at the receiver. This would mean there
                         // was more than one output connected to input port.
@@ -263,9 +262,9 @@ public class ConditionalSend extends ConditionalBranch implements Runnable {
                             _debug("ConditionalSend: send() on channel "
                                     + _channel + ": No longer alive.");
                         }
-                        for (int copy = 0; copy < receivers.length; copy++) {
-                            ((CSPReceiver) receivers[copy])
-                                    ._setConditionalSend(false, null, -1);
+                        for (Receiver receiver : receivers) {
+                            ((CSPReceiver) receiver)._setConditionalSend(false,
+                                    null, -1);
                         }
                         controller._branchFailed(getID());
                         director.notifyAll();
@@ -307,12 +306,12 @@ public class ConditionalSend extends ConditionalBranch implements Runnable {
                             // the flag indicating their first if we don't have unanimity.
                             List markedFirst = new LinkedList();
                             boolean succeeded = true;
-                            for (int copy = 0; copy < receivers.length; copy++) {
-                                CSPReceiver receiver = (CSPReceiver) receivers[copy];
+                            for (Receiver receiver2 : receivers) {
+                                CSPReceiver receiver = (CSPReceiver) receiver2;
                                 if (receiver._isConditionalReceiveWaiting()) {
                                     AbstractBranchController side2 = receiver
                                             ._getOtherController();
-                                    if ((side2 != null)
+                                    if (side2 != null
                                             && side2._isBranchReady(receiver
                                                     ._getOtherID())) {
                                         if (_debugging) {
@@ -372,9 +371,9 @@ public class ConditionalSend extends ConditionalBranch implements Runnable {
                     // If we get here, then at least one receiver has neither a get()
                     // nor a conditional receive waiting, so we mark the receivers
                     // as having a conditional send waiting and then wait.
-                    for (int copy = 0; copy < receivers.length; copy++) {
-                        ((CSPReceiver) receivers[copy])._setConditionalSend(
-                                true, controller, getID());
+                    for (Receiver receiver : receivers) {
+                        ((CSPReceiver) receiver)._setConditionalSend(true,
+                                controller, getID());
                     }
 
                     // FIXME: Is this necessary?
@@ -396,15 +395,15 @@ public class ConditionalSend extends ConditionalBranch implements Runnable {
                 // send to a put.
 
                 // Have to reset the conditional send flag _before_ the put().
-                for (int copy = 0; copy < receivers.length; copy++) {
-                    ((CSPReceiver) receivers[copy])._setConditionalSend(false,
-                            null, -1);
+                for (Receiver receiver : receivers) {
+                    ((CSPReceiver) receiver)._setConditionalSend(false, null,
+                            -1);
                     // Reset the other side's conditional receive flag.
                     // NOTE: This used to be done after the putToAll, outside
                     // the synchronized block, but that led to unpredictable
                     // behavior.  Why?
-                    ((CSPReceiver) receivers[copy])._setConditionalReceive(
-                            false, null, -1);
+                    ((CSPReceiver) receiver)._setConditionalReceive(false,
+                            null, -1);
                 }
 
                 receivers[0].putToAll(getToken(), receivers);
@@ -420,9 +419,9 @@ public class ConditionalSend extends ConditionalBranch implements Runnable {
                 controller._branchFailed(getID());
                 // If we exited with an exception, we may not have set the
                 // state of the receiver properly.
-                for (int copy = 0; copy < receivers.length; copy++) {
-                    ((CSPReceiver) receivers[copy])._setConditionalSend(false,
-                            null, -1);
+                for (Receiver receiver : receivers) {
+                    ((CSPReceiver) receiver)._setConditionalSend(false, null,
+                            -1);
                 }
             } finally {
                 // Make sure that the current token doesn't get used

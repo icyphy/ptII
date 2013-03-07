@@ -86,7 +86,7 @@ public class Picture extends JPanel {
      *  now OK to display the new image.
      */
     public void displayImage() {
-        if ((_imageSource == null) && (_image == null)) {
+        if (_imageSource == null && _image == null) {
             _imageSource = new MemoryImageSource(_width, _height,
                     ColorModel.getRGBdefault(), _pixels, 0, _width);
             _imageSource.setAnimated(true);
@@ -133,7 +133,7 @@ public class Picture extends JPanel {
      *   match.
      */
     public void setImage(int[] pixels) throws IllegalArgumentException {
-        if (pixels.length != (_width * _height)) {
+        if (pixels.length != _width * _height) {
             throw new IllegalArgumentException(
                     "setImage: Specified image size does not"
                             + "match that of the component.");
@@ -159,7 +159,7 @@ public class Picture extends JPanel {
      *  @param intensity The value of the pixel.
      */
     public void setPixel(int row, int col, int intensity) {
-        if ((row < 0) || (row >= _height) || (col < 0) || (col >= _width)) {
+        if (row < 0 || row >= _height || col < 0 || col >= _width) {
             return;
         }
 
@@ -170,8 +170,8 @@ public class Picture extends JPanel {
         }
 
         // Alpha, red, green, blue, where alpha controls transparency.
-        _pixels[(row * _width) + col] = (255 << 24) | (intensity << 16)
-                | (intensity << 8) | intensity;
+        _pixels[row * _width + col] = 255 << 24 | intensity << 16
+                | intensity << 8 | intensity;
     }
 
     /** Set the specified pixel to the given color value, where each color
@@ -188,7 +188,7 @@ public class Picture extends JPanel {
      *  @param blue The blue value of the pixel.
      */
     public void setPixel(int row, int col, int red, int green, int blue) {
-        if ((row < 0) || (row >= _height) || (col < 0) || (col >= _width)) {
+        if (row < 0 || row >= _height || col < 0 || col >= _width) {
             return;
         }
 
@@ -211,8 +211,7 @@ public class Picture extends JPanel {
         }
 
         // Alpha, red, green, blue, where alpha controls transparency.
-        _pixels[(row * _width) + col] = (255 << 24) | (red << 16)
-                | (green << 8) | blue;
+        _pixels[row * _width + col] = 255 << 24 | red << 16 | green << 8 | blue;
     }
 
     /** Override the base class to prevent blanking, which causes flashing

@@ -127,7 +127,7 @@ public class ParkingClient extends TypedAtomicActor {
         int value = 0;
 
         for (int i = 0; i < size; i++) {
-            cdf += (1.0 / size);
+            cdf += 1.0 / size;
 
             if (randomValue <= cdf) {
                 value = i;

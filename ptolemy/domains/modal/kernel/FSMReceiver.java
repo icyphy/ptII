@@ -179,7 +179,7 @@ public class FSMReceiver extends AbstractReceiver {
             throw new InternalErrorException(getContainer(), null,
                     "Receiver status is not known.");
         }
-        return (_token != null);
+        return _token != null;
     }
 
     /** Return true if the argument is 1 and this receiver is not empty,
@@ -202,7 +202,7 @@ public class FSMReceiver extends AbstractReceiver {
         }
 
         if (numberOfTokens == 1) {
-            return (_token != null);
+            return _token != null;
         }
 
         return false;

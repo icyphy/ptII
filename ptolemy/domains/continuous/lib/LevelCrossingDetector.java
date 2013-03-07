@@ -291,14 +291,14 @@ public class LevelCrossingDetector extends TypedAtomicActor implements
             // NOTE: The code below should not set _eventMissed = false because
             // an event may be missed during any stage of speculative execution.
             // This should be set to false only in postfire.
-            if (((_lastTrigger - _level) * (_thisTrigger - _level)) < 0.0
+            if ((_lastTrigger - _level) * (_thisTrigger - _level) < 0.0
                     || _thisTrigger == _level) {
                 // Crossing has occurred. Check whether the direction is right.
                 // Note that we do not produce an output is the input is neither
                 // increasing nor decreasing. Presumably, we already produced
                 // an output in that case.
-                if ((_detectFallingCrossing && inputIsDecreasing)
-                        || (_detectRisingCrossing && inputIsIncreasing)) {
+                if (_detectFallingCrossing && inputIsDecreasing
+                        || _detectRisingCrossing && inputIsIncreasing) {
                     // If the step size is not 0.0, and the
                     // current input is not close enough, then we
                     // have missed an event and the step size will need
@@ -409,8 +409,8 @@ public class LevelCrossingDetector extends TypedAtomicActor implements
             // NOTE: we always to get a little overshoot to make sure the
             // level crossing happens. The little overshoot chosen here
             // is half of the error tolerance.
-            refinedStep = ((Math.abs(_lastTrigger - _level) + (_errorTolerance / 2)) * dir
-                    .getCurrentStepSize())
+            refinedStep = (Math.abs(_lastTrigger - _level) + _errorTolerance / 2)
+                    * dir.getCurrentStepSize()
                     / Math.abs(_thisTrigger - _lastTrigger);
 
             if (_debugging) {

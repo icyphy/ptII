@@ -394,7 +394,7 @@ public class PtParserTokenManager implements PtParserConstants {
     }
 
     private int jjMoveStringLiteralDfa2_0(long old0, long active0) {
-        if (((active0 &= old0)) == 0L) {
+        if ((active0 &= old0) == 0L) {
             return jjStartNfa_0(0, old0);
         }
         try {
@@ -418,7 +418,7 @@ public class PtParserTokenManager implements PtParserConstants {
     }
 
     private int jjMoveStringLiteralDfa3_0(long old0, long active0) {
-        if (((active0 &= old0)) == 0L) {
+        if ((active0 &= old0) == 0L) {
             return jjStartNfa_0(1, old0);
         }
         try {
@@ -437,7 +437,7 @@ public class PtParserTokenManager implements PtParserConstants {
     }
 
     private int jjMoveStringLiteralDfa4_0(long old0, long active0) {
-        if (((active0 &= old0)) == 0L) {
+        if ((active0 &= old0) == 0L) {
             return jjStartNfa_0(2, old0);
         }
         try {
@@ -456,7 +456,7 @@ public class PtParserTokenManager implements PtParserConstants {
     }
 
     private int jjMoveStringLiteralDfa5_0(long old0, long active0) {
-        if (((active0 &= old0)) == 0L) {
+        if ((active0 &= old0) == 0L) {
             return jjStartNfa_0(3, old0);
         }
         try {
@@ -475,7 +475,7 @@ public class PtParserTokenManager implements PtParserConstants {
     }
 
     private int jjMoveStringLiteralDfa6_0(long old0, long active0) {
-        if (((active0 &= old0)) == 0L) {
+        if ((active0 &= old0) == 0L) {
             return jjStartNfa_0(4, old0);
         }
         try {
@@ -494,7 +494,7 @@ public class PtParserTokenManager implements PtParserConstants {
     }
 
     private int jjMoveStringLiteralDfa7_0(long old0, long active0) {
-        if (((active0 &= old0)) == 0L) {
+        if ((active0 &= old0) == 0L) {
             return jjStartNfa_0(5, old0);
         }
         try {
@@ -1795,7 +1795,7 @@ public class PtParserTokenManager implements PtParserConstants {
         final int beginColumn;
         final int endColumn;
         String im = jjstrLiteralImages[jjmatchedKind];
-        curTokenImage = (im == null) ? input_stream.GetImage() : im;
+        curTokenImage = im == null ? input_stream.GetImage() : im;
         beginLine = input_stream.getBeginLine();
         beginColumn = input_stream.getBeginColumn();
         endLine = input_stream.getEndLine();
@@ -1836,7 +1836,7 @@ public class PtParserTokenManager implements PtParserConstants {
                 try {
                     input_stream.backup(0);
                     while (curChar <= 32
-                            && (0x100002600L & (1L << curChar)) != 0L) {
+                            && (0x100002600L & 1L << curChar) != 0L) {
                         curChar = input_stream.BeginToken();
                     }
                 } catch (java.io.IOException e1) {
@@ -1890,7 +1890,7 @@ public class PtParserTokenManager implements PtParserConstants {
                 if (jjmatchedPos + 1 < curPos) {
                     input_stream.backup(curPos - jjmatchedPos - 1);
                 }
-                if ((jjtoToken[jjmatchedKind >> 6] & (1L << (jjmatchedKind & 077))) != 0L) {
+                if ((jjtoToken[jjmatchedKind >> 6] & 1L << (jjmatchedKind & 077)) != 0L) {
                     matchedToken = jjFillToken();
                     if (jjnewLexState[jjmatchedKind] != -1) {
                         curLexState = jjnewLexState[jjmatchedKind];

@@ -186,7 +186,7 @@ public class HDFDirector extends SDFDirector {
         // making a change request, which invalidates this HDF's schedule.
         // So we need to get the schedule of this HDFDirector also in a
         // change request.
-        if (!isScheduleValid() || (getContainer() != toplevel())) {
+        if (!isScheduleValid() || getContainer() != toplevel()) {
             CompositeActor container = (CompositeActor) getContainer();
             ChangeRequest request = new ChangeRequest(this, "reschedule") {
                 protected void _execute() throws KernelException {

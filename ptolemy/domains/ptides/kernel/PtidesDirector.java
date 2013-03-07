@@ -276,9 +276,6 @@ public class PtidesDirector extends DEDirector {
         return SuperdenseDependency.OTIMES_IDENTITY;
     }
 
-
-
-
     /**
      * Before super.fire() is called, transfer all input events that are ready are
      * transferred. After super.fire() is called, transfer all output events that
@@ -371,9 +368,12 @@ public class PtidesDirector extends DEDirector {
             return time;
         }
         int newIndex = index;
-        if (_currentLogicalTime != null && _currentLogicalTime.compareTo(time) == 0 && index <= getIndex()) {
-            if (!(actor instanceof CompositeActor) ||
-                    ((CompositeActor)actor).getDirector().scheduleContainedActors()) {
+        if (_currentLogicalTime != null
+                && _currentLogicalTime.compareTo(time) == 0
+                && index <= getIndex()) {
+            if (!(actor instanceof CompositeActor)
+                    || ((CompositeActor) actor).getDirector()
+                            .scheduleContainedActors()) {
                 newIndex = Math.max(getIndex(), index) + 1;
             }
         }
@@ -607,9 +607,8 @@ public class PtidesDirector extends DEDirector {
             Receiver receiver) throws IllegalActionException {
         Actor actor = (Actor) ioPort.getContainer();
 
-        if ((_eventQueue == null)
-                || ((_disabledActors != null) && _disabledActors
-                        .contains(actor))) {
+        if (_eventQueue == null || _disabledActors != null
+                && _disabledActors.contains(actor)) {
             return;
         }
         int depth = _getDepthOfIOPort(ioPort);
@@ -697,8 +696,8 @@ public class PtidesDirector extends DEDirector {
         for (int i = 0; i < actor.outputPortList().size(); i++) {
             for (int j = 0; j < ((IOPort) actor.outputPortList().get(i))
                     .sinkPortList().size(); j++) {
-                double newRelativeDeadline = _getRelativeDeadline(((TypedIOPort) ((IOPort) actor
-                        .outputPortList().get(i)).sinkPortList().get(j)));
+                double newRelativeDeadline = _getRelativeDeadline((TypedIOPort) ((IOPort) actor
+                        .outputPortList().get(i)).sinkPortList().get(j));
                 if (newRelativeDeadline < Double.MAX_VALUE
                         && newRelativeDeadline < relativeDeadline
                                 .getDoubleValue()) {
@@ -839,7 +838,7 @@ public class PtidesDirector extends DEDirector {
             double delayOffset = Double.POSITIVE_INFINITY;
             for (TypedIOPort inputPort : _inputPorts) {
                 // Only allow SensorPort and NetworkReceiverPort.
-                if (!((inputPort instanceof PtidesPort) && (((PtidesPort) inputPort)
+                if (!(inputPort instanceof PtidesPort && (((PtidesPort) inputPort)
                         .isSensorPort() || ((PtidesPort) inputPort)
                         .isNetworkReceiverPort()))) {
                     continue;
@@ -869,12 +868,13 @@ public class PtidesDirector extends DEDirector {
 
                 Double timePrecision = null;
                 try {
-                    timePrecision = PtidesDirector._getDoubleParameterValue(port.getContainer(), "timePrecision");
+                    timePrecision = PtidesDirector._getDoubleParameterValue(
+                            port.getContainer(), "timePrecision");
                 } catch (IllegalActionException e) {
                     // In this case timePrecision is set to 0.0 in the next lines.
                 }
                 if (timePrecision != null) {
-                    if ((-1 * timePrecision) < delayOffset) {
+                    if (-1 * timePrecision < delayOffset) {
                         delayOffset = -1 * timePrecision;
                     }
                 }
@@ -888,7 +888,9 @@ public class PtidesDirector extends DEDirector {
 
         // Calculate delayOffset to each actor
         for (Object entity : ((CompositeActor) getContainer()).entityList()) {
-            if (entity instanceof TimeDelay && (((TimeDelay)entity).delay.getPort().isOutsideConnected())) {
+            if (entity instanceof TimeDelay
+                    && ((TimeDelay) entity).delay.getPort()
+                            .isOutsideConnected()) {
                 _setDelayOffset((NamedObj) entity,
                         ((DoubleToken) ((TimeDelay) entity).minimumDelay
                                 .getToken()).doubleValue());
@@ -920,7 +922,7 @@ public class PtidesDirector extends DEDirector {
             double relativeDeadline = Double.POSITIVE_INFINITY;
             for (TypedIOPort outputPort : _inputPorts) {
                 // Only allow ActuatorPort and NetworkTransmitterPort.
-                if (!((outputPort instanceof PtidesPort) && (((PtidesPort) outputPort)
+                if (!(outputPort instanceof PtidesPort && (((PtidesPort) outputPort)
                         .isActuatorPort() || ((PtidesPort) outputPort)
                         .isNetworkTransmitterPort()))) {
                     continue;
@@ -1010,8 +1012,7 @@ public class PtidesDirector extends DEDirector {
             if (((PtidesPort) port).isSensorPort()
                     || ((PtidesPort) port).isNetworkReceiverPort()) {
 
-                for (IOPort connectedPort : (List<IOPort>) (port
-                        .insideSinkPortList())) {
+                for (IOPort connectedPort : port.insideSinkPortList()) {
                     _putSuperdenseDependencyPair(port,
                             (TypedIOPort) connectedPort,
                             SuperdenseDependency.OTIMES_IDENTITY);
@@ -1028,8 +1029,8 @@ public class PtidesDirector extends DEDirector {
 
             CausalityInterface actorCausality = actor.getCausalityInterface();
 
-            for (TypedIOPort inputPort : (List<TypedIOPort>) (actor
-                    .inputPortList())) {
+            for (TypedIOPort inputPort : (List<TypedIOPort>) actor
+                    .inputPortList()) {
 
                 // Ignore input if it's not connected to anything.
                 if (!inputPort.isOutsideConnected()) {
@@ -1038,8 +1039,8 @@ public class PtidesDirector extends DEDirector {
 
                 _addInputPort(inputPort);
 
-                for (TypedIOPort outputPort : (List<TypedIOPort>) (actor
-                        .outputPortList())) {
+                for (TypedIOPort outputPort : (List<TypedIOPort>) actor
+                        .outputPortList()) {
                     // Get superdense dependency between input port and output
                     // port of current actor.
                     SuperdenseDependency minDelay = (SuperdenseDependency) actorCausality
@@ -1057,8 +1058,7 @@ public class PtidesDirector extends DEDirector {
                                         new HashSet<TypedIOPort>());
                             }
                             _inputPortsForPureEvent.get(inputPort).addAll(
-                                    (List<TypedIOPort>) outputPort
-                                            .deepConnectedPortList());
+                                    outputPort.deepConnectedPortList());
                         }
                         for (TypedIOPort connectedPort : (List<TypedIOPort>) outputPort
                                 .deepConnectedPortList()) {
@@ -1066,8 +1066,8 @@ public class PtidesDirector extends DEDirector {
                                     connectedPort, minDelay);
                         }
                         // Find input port group.
-                        for (TypedIOPort inPort : (List<TypedIOPort>) (actor
-                                .inputPortList())) {
+                        for (TypedIOPort inPort : (List<TypedIOPort>) actor
+                                .inputPortList()) {
                             minDelay = (SuperdenseDependency) actorCausality
                                     .getDependency(inPort, outputPort);
                             if (!minDelay
@@ -1091,7 +1091,7 @@ public class PtidesDirector extends DEDirector {
                     ik = _getSuperdenseDependencyPair(i, k);
                     kj = _getSuperdenseDependencyPair(k, j);
                     // Check if i->k->j is better than i->j.
-                    if (ij.compareTo(ik.oTimes(kj)) == SuperdenseDependency.GREATER_THAN) {
+                    if (ij.compareTo(ik.oTimes(kj)) == Dependency.GREATER_THAN) {
                         _putSuperdenseDependencyPair(i, j,
                                 (SuperdenseDependency) ik.oTimes(kj));
                     }
@@ -1139,7 +1139,7 @@ public class PtidesDirector extends DEDirector {
         Object[] eventArray = queue.toArray();
         for (Object event : eventArray) {
             if (_isSafeToProcess((PtidesEvent) event)) {
-                PtidesEvent ptidesEvent = ((PtidesEvent) event);
+                PtidesEvent ptidesEvent = (PtidesEvent) event;
 
                 // Check if actor can be fired by putting token into receiver
                 // and accling prefire.
@@ -1182,11 +1182,13 @@ public class PtidesDirector extends DEDirector {
                 }
 
                 if (prefire
-                        && (!_resourceScheduling || (
-                                (queue != _pureEvents && ptidesEvent.actor() instanceof TimeDelay) ||
-                                _schedule(ptidesEvent.actor(), ptidesEvent.timeStamp())))) {
-                    if (!(ptidesEvent.actor() instanceof CompositeActor) ||
-                            ((CompositeActor)ptidesEvent.actor()).getDirector().scheduleContainedActors()) {
+                        && (!_resourceScheduling || queue != _pureEvents
+                                && ptidesEvent.actor() instanceof TimeDelay || _schedule(
+                                    ptidesEvent.actor(),
+                                    ptidesEvent.timeStamp()))) {
+                    if (!(ptidesEvent.actor() instanceof CompositeActor)
+                            || ((CompositeActor) ptidesEvent.actor())
+                                    .getDirector().scheduleContainedActors()) {
                         _currentLogicalTime = ptidesEvent.timeStamp();
                         _currentLogicalIndex = ptidesEvent.microstep();
                         _currentSourceTimestamp = ptidesEvent.sourceTimestamp();
@@ -1223,15 +1225,6 @@ public class PtidesDirector extends DEDirector {
             }
         }
         return maxEvents;
-    }
-
-    private IOPort _getPort(CompositeActor actor, String name) {
-        for (Object object : actor.portList()) {
-            if (((IOPort) object).getName().equals(name)) {
-                return (IOPort) object;
-            }
-        }
-        return null;
     }
 
     /** Return the value of the 'relativeDeadline' parameter for an input
@@ -1296,18 +1289,16 @@ public class PtidesDirector extends DEDirector {
                                     "missed" + port.getName())) {
 
                         int index = 1;
-                        ((CompositeActor) errorHandler).getDirector()
-                                .setModelTime(getModelTime());
-                        ((DEDirector) ((CompositeActor) errorHandler)
-                                .getDirector()).setIndex(index);
+                        errorHandler.getDirector().setModelTime(getModelTime());
+                        ((DEDirector) errorHandler.getDirector())
+                                .setIndex(index);
                         ((Const) errorHandlerEntity).fire();
 
-                        Time time = errorHandler.getDirector()
-                                .getModelNextIterationTime();
+                        errorHandler.getDirector().getModelNextIterationTime();
 
-                        ((CompositeActor) errorHandler).prefire();
-                        ((CompositeActor) errorHandler).fire();
-                        ((CompositeActor) errorHandler).postfire();
+                        errorHandler.prefire();
+                        errorHandler.fire();
+                        errorHandler.postfire();
 
                         List attributes = errorHandler.attributeList();
                         for (int k = 0; k < attributes.size(); k++) {
@@ -1435,7 +1426,7 @@ public class PtidesDirector extends DEDirector {
         IOPort port = event.ioPort();
         Double delayOffset = null;
 
-     // A local source can have a maximum future events parameter.
+        // A local source can have a maximum future events parameter.
         Integer maxFutureEvents = _getIntParameterValue(
                 (NamedObj) event.actor(), "maxFutureEvents");
         if (maxFutureEvents != null) {
@@ -1451,10 +1442,12 @@ public class PtidesDirector extends DEDirector {
             Actor actor = (Actor) port.getContainer();
             for (Object ioPort : actor.inputPortList()) {
                 //if (ioPort != port) {
-                    Double ioPortDelayOffset = _getDoubleParameterValue((NamedObj) ioPort, "delayOffset");
-                    if (ioPortDelayOffset != null && (delayOffset == null || ioPortDelayOffset < delayOffset)) {
-                        delayOffset = ioPortDelayOffset;
-                    }
+                Double ioPortDelayOffset = _getDoubleParameterValue(
+                        (NamedObj) ioPort, "delayOffset");
+                if (ioPortDelayOffset != null
+                        && (delayOffset == null || ioPortDelayOffset < delayOffset)) {
+                    delayOffset = ioPortDelayOffset;
+                }
                 //}
             }
         } else {
@@ -1462,8 +1455,9 @@ public class PtidesDirector extends DEDirector {
             delayOffset = _getDoubleParameterValue((NamedObj) event.actor(),
                     "delayOffset");
         }
-        if (delayOffset == null || localClock.getLocalTime().compareTo(
-                eventTimestamp.subtract(delayOffset)) >= 0) {
+        if (delayOffset == null
+                || localClock.getLocalTime().compareTo(
+                        eventTimestamp.subtract(delayOffset)) >= 0) {
             return true;
         }
 
@@ -1578,8 +1572,6 @@ public class PtidesDirector extends DEDirector {
     private Time _currentLogicalTime;
     private Time _currentSourceTimestamp;
     private int _currentLogicalIndex;
-
-
 
     private HashMap<Time, List<PtidesEvent>> _inputEventQueue;
 

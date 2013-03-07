@@ -82,7 +82,6 @@ public interface ContinuousStepSizeController {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-
     /** Implementations of this method should return
      *  true if the current integration step size
      *  is sufficiently small for this actor to give accurate

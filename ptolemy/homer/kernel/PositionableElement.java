@@ -101,8 +101,8 @@ public abstract class PositionableElement {
      *  @see #setTab(String)
      */
     public String getTab() {
-        Settable tag = ((Settable) _element
-                .getAttribute(HomerConstants.TAB_NODE));
+        Settable tag = (Settable) _element
+                .getAttribute(HomerConstants.TAB_NODE);
 
         // If the tab is not set, return default
         if (tag == null) {

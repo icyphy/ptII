@@ -56,7 +56,7 @@ public final class GraphUtilities {
             for (Iterator j = model.outEdges(node); j.hasNext();) {
                 Object edge = j.next();
 
-                if ((edge == null) || (model.getHead(edge) == null)) {
+                if (edge == null || model.getHead(edge) == null) {
                     return false;
                 }
             }
@@ -64,7 +64,7 @@ public final class GraphUtilities {
             for (Iterator j = model.inEdges(node); j.hasNext();) {
                 Object edge = j.next();
 
-                if ((edge == null) || (model.getTail(edge) == null)) {
+                if (edge == null || model.getTail(edge) == null) {
                     return false;
                 }
             }
@@ -155,7 +155,7 @@ public final class GraphUtilities {
             boolean isOK = false;
             Object parent = model.getParent(node);
 
-            while (!isOK && (parent != null)) {
+            while (!isOK && parent != null) {
                 if (parent == composite) {
                     isOK = true;
                 } else if (model.isNode(node)) {
@@ -206,7 +206,7 @@ public final class GraphUtilities {
             Object head = model.getHead(edge);
             Object tail = model.getTail(edge);
 
-            if ((head == null) || (tail == null)) {
+            if (head == null || tail == null) {
                 return false;
             }
 

@@ -80,8 +80,8 @@ public class Dataflow extends AbstractDDI {
     private Map createPortMap(PortDecl[] ports, boolean isInput) {
         Map portMap = new HashMap();
 
-        for (int i = 0; i < ports.length; i++) {
-            String name = ports[i].getName();
+        for (PortDecl port2 : ports) {
+            String name = port2.getName();
             TypedIOPort port = (TypedIOPort) _ptActor.getPort(name);
 
             if (isInput) {
@@ -318,7 +318,7 @@ public class Dataflow extends AbstractDDI {
     private boolean isEligibleAction(Action a) {
         QID tag = a.getTag();
 
-        if ((tag != null) && (_currentStateSet != null)) {
+        if (tag != null && _currentStateSet != null) {
             int length = _currentTransitions.length;
 
             for (int i = 0; i < length; i++) {
@@ -341,7 +341,7 @@ public class Dataflow extends AbstractDDI {
             return;
         }
 
-        if ((a == null) || (a.getTag() == null)) {
+        if (a == null || a.getTag() == null) {
             // No change
             return;
         }
@@ -370,9 +370,7 @@ public class Dataflow extends AbstractDDI {
         ArrayList nt = new ArrayList();
         Transition[] ts = _actor.getScheduleFSM().getTransitions();
 
-        for (int i = 0; i < ts.length; i++) {
-            Transition t = ts[i];
-
+        for (Transition t : ts) {
             if (_currentStateSet.contains(t.getSourceState())) {
                 nt.add(t);
             }
@@ -383,8 +381,8 @@ public class Dataflow extends AbstractDDI {
     }
 
     private static boolean isPrefixedByTagList(QID tag, QID[] tags) {
-        for (int j = 0; j < tags.length; j++) {
-            if (tags[j].isPrefixOf(tag)) {
+        for (QID tag2 : tags) {
+            if (tag2.isPrefixOf(tag)) {
                 return true;
             }
         }

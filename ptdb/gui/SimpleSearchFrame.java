@@ -340,8 +340,8 @@ public class SimpleSearchFrame extends JFrame implements PTDBBasicFrame {
     public boolean isModified() {
 
         if (_patternMatchframe != null) {
-            return (_attributesListPanel.isModified() || _patternMatchframe
-                    .isModified());
+            return _attributesListPanel.isModified()
+                    || _patternMatchframe.isModified();
         } else {
             return _attributesListPanel.isModified();
         }
@@ -854,12 +854,13 @@ public class SimpleSearchFrame extends JFrame implements PTDBBasicFrame {
         if ((searchCriteria.getAttributes() == null || searchCriteria
                 .getAttributes().size() == 0)
 
-                && (searchCriteria.getDBGraphSearchCriteria() == null || ((searchCriteria
+                && (searchCriteria.getDBGraphSearchCriteria() == null || (searchCriteria
                         .getDBGraphSearchCriteria().getPortsList() == null || searchCriteria
-                        .getDBGraphSearchCriteria().getPortsList().isEmpty()) && (searchCriteria
-                        .getDBGraphSearchCriteria().getComponentEntitiesList() == null || searchCriteria
-                        .getDBGraphSearchCriteria().getComponentEntitiesList()
-                        .isEmpty())))
+                        .getDBGraphSearchCriteria().getPortsList().isEmpty())
+                        && (searchCriteria.getDBGraphSearchCriteria()
+                                .getComponentEntitiesList() == null || searchCriteria
+                                .getDBGraphSearchCriteria()
+                                .getComponentEntitiesList().isEmpty()))
 
                 && (searchCriteria.getModelName() == null || searchCriteria
                         .getModelName().trim().isEmpty())) {
