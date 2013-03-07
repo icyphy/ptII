@@ -119,7 +119,7 @@ public class SysMLConcurrentDirector extends ProcessDirector {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
+
     /** Clone the director into the specified workspace.
      *  @param workspace The workspace for the cloned object.
      *  @exception CloneNotSupportedException If one of the attributes
@@ -133,7 +133,7 @@ public class SysMLConcurrentDirector extends ProcessDirector {
         newObject._winningThreads = new LinkedList<SingleQueueProcessThread>();
         return newObject;
     }
-    
+
     /** Start a new iteration (at a new time, presumably) and
      *  wait until a deadlock is detected.
      *  Then deal with the deadlock
@@ -194,7 +194,7 @@ public class SysMLConcurrentDirector extends ProcessDirector {
         _actorData.clear();
         _nextTime = Time.POSITIVE_INFINITY;
         _winningThreads.clear();
-        
+
         // Put the container of this director into the directory
         // so that we can send data to the inside of its output
         // ports, if it has any.
@@ -203,7 +203,7 @@ public class SysMLConcurrentDirector extends ProcessDirector {
         _actorData.put(container, actorData);
         // Use synchronized version.
         actorData.inputQueue = Collections.synchronizedList(new LinkedList<Input>());
-        
+
         // Initialize the count of actors that are initialized.
         // This counts the container of this director, hence we
         // initialize to 1.
@@ -213,7 +213,7 @@ public class SysMLConcurrentDirector extends ProcessDirector {
         // create the threads and start them.
         // It also initializes the _queueDirectory structure.
         super.initialize();
-        
+
         // Start threads for actors created since the last invocation
         // of the prefire() or initialize() method. I'm not sure why
         // the base class postpones starting threads until prefire(),
@@ -227,7 +227,7 @@ public class SysMLConcurrentDirector extends ProcessDirector {
         }
 
         _newActorThreadList.clear();
-        
+
         // Actors may have called fireAt() when initialized.
         // If so, we need to delegate the fireAt() up the hierarchy.
         if (isEmbedded()) {
@@ -278,7 +278,7 @@ public class SysMLConcurrentDirector extends ProcessDirector {
         }
         ActorData actorData = new ActorData();
         _actorData.put(actor, actorData);
-        
+
         // Use synchronized version.
         actorData.inputQueue = Collections.synchronizedList(new LinkedList<Input>());
         // NOTE: The following does NOT initialize the actors. They initialize
@@ -310,7 +310,7 @@ public class SysMLConcurrentDirector extends ProcessDirector {
      */
     public boolean postfire() throws IllegalActionException {
         super.postfire();
-        
+
         // Determine the earliest time at which an actor wants to be fired next.
         Time earliestFireAtTime = _earliestNextFiringTime();
         if (earliestFireAtTime == Time.POSITIVE_INFINITY) {
@@ -347,9 +347,9 @@ public class SysMLConcurrentDirector extends ProcessDirector {
         if (_debugging) {
             _debug("Next earliest fire at request is at time " + earliestFireAtTime);
         }
-        
+
         _nextTime = earliestFireAtTime;
-        
+
         if (_nextTime.compareTo(Time.POSITIVE_INFINITY) < 0) {
             if (_nextTime.compareTo(getModelStopTime()) > 0) {
                 return false;
@@ -391,7 +391,7 @@ public class SysMLConcurrentDirector extends ProcessDirector {
 
     /** Transfer at most one token from an input
      *  port of the container to the ports
-     *  it is connected to on the inside. 
+     *  it is connected to on the inside.
      *  @param port The port.
      *  @return True if tokens were transferred.
      *  @exception IllegalActionException If transfer fails.
@@ -551,16 +551,16 @@ public class SysMLConcurrentDirector extends ProcessDirector {
         // First, clear all input receivers that are not marked as flow ports.
         // Record whether the actor actually has any input receivers.
         _clearReceivers(actor);
-        
+
         ActorData actorData = _actorData.get(actor);
-        
+
         if (_debugging) {
             _debug("******* Iterating actor " + actor.getName() + " at time " + getModelTime());
             _debug("input queue: " + actorData.inputQueue);
         }
         if (actorData.inputQueue.size() == 0) {
             // Input queue is empty.
-            
+
             if (actorData.fireAtTimes.size() == 0) {
                 // NOTE: Tried out a semantics where every actors fires at least
                 // once at every time step. Does Rhapsody do this?
@@ -591,13 +591,13 @@ public class SysMLConcurrentDirector extends ProcessDirector {
                 }
                 */
             }
-            
+
             // If this actor has requested a future firing,
             // then continue as long as that time has been reached.
             while (actorData.fireAtTimes.size() > 0 && !_stopRequested) {
                 // Actor has requested a firing. Get the time for the request.
                 Time targetTime = actorData.fireAtTimes.peek();
-                    
+
                 // If time has not advanced sufficiently, then we are done.
                 if (getModelTime().compareTo(targetTime) < 0) {
                     if (_debugging) {
@@ -711,22 +711,22 @@ public class SysMLConcurrentDirector extends ProcessDirector {
     protected synchronized boolean _resolveDeadlock() throws IllegalActionException {
         return true;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-        
+
     /** Count of actors whose threads have completed their initialize method. */
     private int _actorsInitialized;
-    
+
     /** Directory of data associated with each actor. */
     private Map<Actor,ActorData> _actorData = new ConcurrentHashMap<Actor,ActorData>();
-    
+
     /** Earliest time of a fireAt request among all actors. */
     private Time _nextTime = Time.POSITIVE_INFINITY;
-    
+
     /** Threads waiting for the next advance of time. */
     private List<SingleQueueProcessThread> _winningThreads = new LinkedList<SingleQueueProcessThread>();
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
 
@@ -737,11 +737,11 @@ public class SysMLConcurrentDirector extends ProcessDirector {
 
         /** Input queues indexed by actor. */
         public List<Input> inputQueue = null;
-            
+
         /** Directory of queues by actor. Used only if activeObjects is true. */
         public SingleQueueProcessThread thread = null;
     }
-    
+
     /** Data structure for storing inputs in an actor's queue. */
     private class Input {
         public SysMLAReceiver receiver;
@@ -762,7 +762,7 @@ public class SysMLConcurrentDirector extends ProcessDirector {
             return "[" + token + " for port " + port.getName() + " channel " + channel + "]";
         }
     }
-    
+
     /** A process thread that clears all input receivers, extracts one
      *  input from the input queue (if there is one), deposits that one
      *  input into the corresponding receiver, and iterates the actor.
@@ -775,7 +775,7 @@ public class SysMLConcurrentDirector extends ProcessDirector {
             _myActorData = _actorData.get(actor);
             _myActorData.thread = this;
         }
-        
+
         /** Notify that the actor has been initialized. This base class
          *  does nothing.
          */
@@ -817,7 +817,7 @@ public class SysMLConcurrentDirector extends ProcessDirector {
                         Time targetTime = _myActorData.fireAtTimes.peek();
                         // Indicate to delete the time from the queue upon unblocking.
                         deleteTimeAfterIterating = true;
-                        
+
                         // Wait for time to advance.
                         while (getModelTime().compareTo(targetTime) < 0) {
                             if (_stopRequested) {
@@ -921,7 +921,7 @@ public class SysMLConcurrentDirector extends ProcessDirector {
                     }
                 }
             }
-            
+
             // Now, finally, actually iterate the actor.
             // Note that actor may have an empty input queue now,
             // and also the input ports may not have any data.
@@ -937,7 +937,7 @@ public class SysMLConcurrentDirector extends ProcessDirector {
                 }
 
                 boolean result = super._iterateActor();
-                
+
                 if (deleteTimeAfterIterating) {
                     // After iterating the actor, if in fact the input queue
                     // was empty and this firing was caused by time advancing to
@@ -980,7 +980,7 @@ public class SysMLConcurrentDirector extends ProcessDirector {
         /** The actor data for this thread's actor. */
         private ActorData _myActorData;
     }
-    
+
     /** Variant of a Mailbox that overrides the put() method to
      *  divert the input to the queue associated with the actor
      *  and then provides a method to really put a token into
@@ -998,7 +998,7 @@ public class SysMLConcurrentDirector extends ProcessDirector {
         public SysMLAReceiver(IOPort container) throws IllegalActionException {
             super(container);
         }
-        
+
         /** Get the contained Token.  If there is none, throw an exception.
          *  The token is removed.
          *  @return The token contained by this mailbox.
@@ -1059,7 +1059,7 @@ public class SysMLConcurrentDirector extends ProcessDirector {
                 _token = token;
             }
         }
-        
+
         /** Put a token into the mailbox.
          *  @param token The token to be put into the mailbox.
          *  @exception NoRoomException If this mailbox is not empty.

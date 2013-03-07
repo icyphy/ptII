@@ -170,7 +170,7 @@ public class ExportParameters {
      *  the resource handler is mapped to http://hostname:port/servicename/files.
      */
     public String HTMLPathForFiles;
-    
+
     /** The image format to use, which can be one of "gif" (the default),
      *  "png", or "jpg".
      */

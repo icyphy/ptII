@@ -341,7 +341,7 @@ public class Transition extends ComponentRelation {
 
         return _destinationState;
     }
-    
+
     /** Return the guard expression. The guard expression should evaluate
      *  to a boolean value.
      *  @return The guard expression.
@@ -573,7 +573,7 @@ public class Transition extends ComponentRelation {
      *  and return that value.
      *  If there is no such parameter, then we have to assume the default
      *  behavior that prevailed before 9.1.devel, and set history to true.
-     *  @throws IllegalActionException If the value of the history parameter
+     *  @exception IllegalActionException If the value of the history parameter
      *   cannot be read.
      */
     public boolean isHistory() throws IllegalActionException {
@@ -907,7 +907,7 @@ public class Transition extends ComponentRelation {
 
         return;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
@@ -992,12 +992,12 @@ public class Transition extends ComponentRelation {
         exitAngle.setVisibility(Settable.NONE);
         exitAngle.setExpression("PI/5.0");
         exitAngle.setTypeEquals(BaseType.DOUBLE);
-        
+
         gamma = new Parameter(this, "gamma");
         gamma.setVisibility(Settable.NONE);
         gamma.setExpression("0.0");
         gamma.setTypeEquals(BaseType.DOUBLE);
-        
+
         // default attributes.
         defaultTransition = new Parameter(this, "defaultTransition");
         defaultTransition.setTypeEquals(BaseType.BOOLEAN);
@@ -1026,7 +1026,7 @@ public class Transition extends ComponentRelation {
         history = new Parameter(this, "history");
         history.setTypeEquals(BaseType.BOOLEAN);
         history.setToken(BooleanToken.FALSE);
-        
+
         error = new Parameter(this, "error");
         error.setTypeEquals(BaseType.BOOLEAN);
         error.setToken(BooleanToken.FALSE);
@@ -1107,7 +1107,7 @@ public class Transition extends ComponentRelation {
 
     // Version of the cached parse tree evaluator
     private long _parseTreeEvaluatorVersion = -1;
-    
+
     // Latest version before default history behavior changed.
     private static VersionAttribute _REFERENCE_VERSION;
 

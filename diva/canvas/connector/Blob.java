@@ -65,7 +65,7 @@ public class Blob implements ConnectorEnd {
     /** Specify a star style
      */
     public final static int STAR = BLOB_CIRCLE_DIAMOND + 1;
-    
+
     /** Arrow, circle, H style.
      */
     public final static int ARROW_CIRCLE_H = STAR + 1;
@@ -186,7 +186,7 @@ public class Blob implements ConnectorEnd {
         case BLOB_DIAMOND:
             p.setLocation(_originX + (3 * _unit), _originY);
             break;
-            
+
         case BLOB_CIRCLE_DIAMOND:
             p.setLocation(_originX + (4 * _unit), _originY);
             break;
@@ -194,11 +194,11 @@ public class Blob implements ConnectorEnd {
         case ARROW_CIRCLE_H:
             p.setLocation(_originX + (4 * _unit), _originY);
             break;
-            
+
         case TRIANGLE:
             p.setLocation(_originX + (2 * _unit), _originY);
             break;
-            
+
         case ERROR:
             p.setLocation(_originX + (2 * _unit), _originY);
             break;
@@ -361,7 +361,7 @@ public class Blob implements ConnectorEnd {
                     _originX, _originY + 1.3 * _unit,
                     _originX + 2 * _unit, _originY + 1.3 * _unit,
                     _originX + 2 * _unit, _originY);
-            
+
             // H part.
             double halfHeight = 0.60 * _unit;
             arrow.moveTo(_originX + 0.6 * _unit, _originY - halfHeight);
@@ -372,7 +372,7 @@ public class Blob implements ConnectorEnd {
             arrow.lineTo(_originX + 1.4 * _unit, _originY + halfHeight);
             _shape = arrow;
             break;
-            
+
         case TRIANGLE:
             Path2D triangle = new Path2D.Float();
             triangle.moveTo(_originX, _originY);
@@ -382,7 +382,7 @@ public class Blob implements ConnectorEnd {
             triangle.closePath();
             _shape = triangle;
             break;
-            
+
         case ERROR:
             Path2D error = new Path2D.Float();
             error.moveTo(_originX, _originY);
@@ -394,7 +394,7 @@ public class Blob implements ConnectorEnd {
             error.moveTo(_originX + 1.6 * _unit, _originY - 0.75 * _unit);
             error.lineTo(_originX + 0.4 * _unit, _originY + 0.75 * _unit);
             _shape = error;
-            break; 
+            break;
         }
 
         _shape = at.createTransformedShape(_shape);

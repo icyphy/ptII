@@ -45,7 +45,7 @@ import ptolemy.kernel.util.NamedObj;
 //// Console
 
 /**
- * A tableau that displays Console messgaes.. The standard output is redirected 
+ * A tableau that displays Console messgaes.. The standard output is redirected
  * to here.
  *
  * @author Liangpeng Guo
@@ -98,61 +98,61 @@ public class Console extends Tableau {
             component.setLayout(new BoxLayout(component, BoxLayout.Y_AXIS));
 
             // updateMemoryStatistics(memoryArea);
-            
+
             // Display total memory and free memory.
             final JTextArea textArea = new JTextArea("", 20, 80);
 
             ByteArrayOutputStream baos = new MyByteArrayOutputStream(textArea, tableau);
             System.setOut(new PrintStream(baos));
-            
-            textArea.setText("Standard output is redirected to here."); 
+
+            textArea.setText("Standard output is redirected to here.");
             textArea.setEditable(false);
 
-            ((DefaultCaret) textArea.getCaret()).setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE); 
+            ((DefaultCaret) textArea.getCaret()).setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
             JScrollPane scrollPane = new JScrollPane(textArea);
-            
-            add(scrollPane); 
+
+            add(scrollPane);
         }
-        
+
         /**
          * Redirect the standard output back when closing the frame
          */
         @Override
         protected boolean _close() {
-            System.setOut(new PrintStream(new FileOutputStream(FileDescriptor.out))); 
-            System.out.println("Standard output is back."); 
-            return super._close(); 
+            System.setOut(new PrintStream(new FileOutputStream(FileDescriptor.out)));
+            System.out.println("Standard output is back.");
+            return super._close();
         }
-        
+
         ///////////////////////////////////////////////////////////////////
         ////                         inner classes                     ////
 
         /**
-         * Customized ByteArrayOutputStream. Refresh the frame whenever new 
-         * print-outs come in. 
-         * 
+         * Customized ByteArrayOutputStream. Refresh the frame whenever new
+         * print-outs come in.
+         *
          */
         public class MyByteArrayOutputStream extends ByteArrayOutputStream {
             public MyByteArrayOutputStream(JTextArea c, Tableau t) {
-                super(); 
-                textArea = c; 
-                tab = t; 
+                super();
+                textArea = c;
+                tab = t;
             }
             @Override
             public void write(int b)  {
-                super.write(b); 
-                textArea.setText(this.toString()); 
+                super.write(b);
+                textArea.setText(this.toString());
                 tab.show();
             }
             @Override
             public void write(byte[] b, int off, int len)  {
-                super.write(b, off, len); 
-                textArea.setText(this.toString()); 
-                tab.show(); 
+                super.write(b, off, len);
+                textArea.setText(this.toString());
+                tab.show();
             }
-            private JTextArea textArea;             
-            private Tableau tab; 
-            
+            private JTextArea textArea;
+            private Tableau tab;
+
         }
     }
 

@@ -42,18 +42,18 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
 /** Error handling action for timing errors on Ptides Ports.
- * 
+ *
  *  This actor extends the SetVariable actor with a set of
  *  string values that represent error handling actions. E.g.
  *  drop event, execute event, fix timestamp, ...
- *  
- *  Upon choosing one specific error handling action, the 
+ *
+ *  Upon choosing one specific error handling action, the
  *  string value is set as the variableName and, if it does
  *  not exist already, a parameter with that name is added
- *  to the container. 
- *  
- *  This actor is used in ErrorHandler actors which are 
- *  CompositeActors with the name ErrorHandler. 
+ *  to the container.
+ *
+ *  This actor is used in ErrorHandler actors which are
+ *  CompositeActors with the name ErrorHandler.
  *
  *  @author Patricia Derler
  *  @version $Id$
@@ -62,7 +62,7 @@ import ptolemy.kernel.util.Workspace;
  *  @Pt.ProposedRating Red (derler)
  *  @Pt.AcceptedRating Red (derler)
  */
-public class ErrorHandlingAction extends SetVariable { 
+public class ErrorHandlingAction extends SetVariable {
 
     /** Construct an actor in the specified workspace with an empty
      *  string as a name. You can then change the name with setName().
@@ -78,7 +78,7 @@ public class ErrorHandlingAction extends SetVariable {
         _init();
     }
 
-    /** Construct an ErrorHandlingAction in the container with 
+    /** Construct an ErrorHandlingAction in the container with
      *  a specified name.
      *  @param container The container for this actor.
      *  @param name The name of this actor.
@@ -88,7 +88,7 @@ public class ErrorHandlingAction extends SetVariable {
     public ErrorHandlingAction(CompositeEntity container, String name)
         throws NameDuplicationException, IllegalActionException {
         super(container, name);
-        
+
         _init();
     }
 
@@ -96,38 +96,38 @@ public class ErrorHandlingAction extends SetVariable {
      *  several choices. See ErrorHandlingActionString.
      */
     public Parameter action;
-    
+
     /** Drop the event.
      */
     public static String DropEvent = "dropEvent";
-    
+
     /** Execute the event unmodified.
      */
     public static String ExecuteEvent = "executeEvent";
-    
+
     /** Execute the event but fix the timestamp to a valid timestamp.
      */
     public static String FixTimestamp = "fixTimestamp";
-    
+
     /** Clear all events in the event queue.
      */
     public static String ClearAllEvents = "clearAllEvents";
-    
+
     /** Clear all events in the event queue with earlier timestamps.
      */
     public static String ClearEarlierEvents = "clearEarlierEvents";
-    
-    /** Clear all events that should have taken the new event into 
+
+    /** Clear all events that should have taken the new event into
      *  account.
      */
     public static String ClearCorruptEvents = "clearCorruptEvents";
-    
+
     /** The possible error handling action strings.
      */
     public static enum ErrorHandlingActionString{
         DropEvent, ExecuteEvent, FixTimestamp, ClearAllEvents, ClearEarlierEvents, ClearCorruptEvents
     }
-    
+
     /** Upon choosing an error handling action, set the variableName
      *  of this actor and make sure the corresponding parameter is
      *  in the container.
@@ -137,31 +137,31 @@ public class ErrorHandlingAction extends SetVariable {
         if (attribute == action) {
             String string = ((StringToken)action.getToken()).stringValue();
             variableName.setExpression(string);
-            
+
             if (getContainer() instanceof CompositeActor) {
                 CompositeActor container = (CompositeActor)getContainer();
                 while (!container.getName().equals("ErrorHandler")) {
-                    if (container == container.toplevel()) { 
+                    if (container == container.toplevel()) {
                         return;
                         // do nothing
                     }
                     container = (CompositeActor)container.getContainer();
                 }
                 if (container.getAttribute(string) == null) {
-                    try { 
+                    try {
                         Parameter parameter = new Parameter(container, string);
-                        parameter.setExpression("false"); 
+                        parameter.setExpression("false");
                     } catch (NameDuplicationException e) {
                         // caught by checking earlier, cannot
                         // get here.
                     }
-                    
+
                 }
             } // else it is in the library.
         }
         super.attributeChanged(attribute);
     }
-    
+
     /** clone() is not supported, call clone(Workspace workspace)
      *  instead.  Usually it is a mistake for an actor to have a
      *  clone() method and call super.clone(), instead the actor
@@ -173,10 +173,10 @@ public class ErrorHandlingAction extends SetVariable {
 //        ErrorHandlingAction newObject = (ErrorHandlingAction) super.clone(workspace);
 //        return newObject;
 //    }
-    
+
     /** Initialize parameters.
      * @exception NameDuplicationException If parameter name is already used.
-     * @exception IllegalActionException If parameter cannot be created or type cannot 
+     * @exception IllegalActionException If parameter cannot be created or type cannot
      * be assigned.
      */
     private void _init() throws IllegalActionException, NameDuplicationException {
@@ -189,8 +189,8 @@ public class ErrorHandlingAction extends SetVariable {
         action.addChoice("\"" + ClearEarlierEvents + "\"");
         action.addChoice("\"" + ClearCorruptEvents + "\"");
         action.setExpression("\"" + DropEvent + "\"");
-        
+
         delayed.setExpression("false");
     }
-    
+
 }

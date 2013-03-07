@@ -203,7 +203,7 @@ public class FMIScalarVariable {
             }
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -515,7 +515,7 @@ public class FMIScalarVariable {
      *  This is used for error messages.
      */
     private static Set<String> _errorElements = new HashSet<String>();
-    
+
     /** The FMI .c function that gets the value of this variable.
      *  The name of the function depends on the value of the
      *  fmiModelDescription.modelIdentifer field and the
@@ -531,7 +531,7 @@ public class FMIScalarVariable {
      *  example might be "bouncingBall_fmiSetDouble".
      */
     private Function _fmiSetFunction;
-    
+
     /** The name of the type of this variable. */
     private String _typeName;
 }

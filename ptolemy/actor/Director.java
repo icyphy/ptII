@@ -229,7 +229,7 @@ public class Director extends Attribute implements Executable {
             } else {
                 _stopTime = null;
             }
-        } 
+        }
 
         super.attributeChanged(attribute);
     }
@@ -551,12 +551,12 @@ public class Director extends Attribute implements Executable {
         }
         return localClock.getLocalTime();
     }
-    
+
     /** Return true if the next actor in the model governed by this director
      *  can be scheduled. The base class always returns true, but derived
      *  classes might override this.
      * @return True if next actor to be fired can be scheduled.
-     * @throws IllegalActionException not thrown here.
+     * @exception IllegalActionException not thrown here.
      */
     public boolean scheduleContainedActors() throws IllegalActionException {
         return true;
@@ -855,22 +855,22 @@ public class Director extends Attribute implements Executable {
         _actorsFinishedExecution = new HashSet();
 
         // Reset the flag that causes postfire() to return false.
-        _finishRequested = false; 
+        _finishRequested = false;
 
         localClock.resetLocalTime(getModelStartTime());
         localClock.start();
-        
+
 
         _resourceScheduling = false;
         _resourceSchedulers = new ArrayList<ResourceSchedulerInterface>();
         _schedulerForActor = new HashMap<Actor, ResourceSchedulerInterface>();
-        for (Object entity : getContainer().attributeList(ResourceSchedulerInterface.class)) { 
+        for (Object entity : getContainer().attributeList(ResourceSchedulerInterface.class)) {
             ResourceSchedulerInterface scheduler = (ResourceSchedulerInterface) entity;
             _resourceSchedulers.add(scheduler);
             Time time = scheduler.initialize();
             if (time != null) {
                 fireContainerAt(time);
-            } 
+            }
         }
 
         // Initialize the contained actors.
@@ -1185,7 +1185,7 @@ public class Director extends Attribute implements Executable {
                 }
                 preinitialize(actor);
             }
-            
+
             // Don't need to create receivers if the workspace hasn't changed since the last run.
             // Note that we have to use the version recorded by the Manager on the last
             // completion of preinitializeAndResolveTypes() because otherwise, if there
@@ -1818,19 +1818,19 @@ public class Director extends Attribute implements Executable {
 
     /** Compute the deadline for an actor that requests a firing at time
      *  <i>timestamp</i>. This base class just returns the maximum value.
-     *  @param actor The actor that requests firing. 
+     *  @param actor The actor that requests firing.
      *  @param timestamp The time when the actor wants to be fired.
      *  @return The deadline for the actor.
-     *  @throws IllegalActionException If time objects cannot be created. 
+     *  @exception IllegalActionException If time objects cannot be created.
      */
     protected double _getDeadline(Actor actor, Time timestamp)
             throws IllegalActionException {
         return Double.MAX_VALUE;
     }
-    
+
     /** Schedule an actor for execution on a ResourceScheduler. If the actor can
-     *  execute this method returns true. If resources are not available this 
-     *  method returns false. 
+     *  execute this method returns true. If resources are not available this
+     *  method returns false.
      *  @param actor The actor.
      *  @param timestamp The time the actor requests to be scheduled.
      *  @return True if actor was scheduled and can be fired.
@@ -1838,7 +1838,7 @@ public class Director extends Attribute implements Executable {
      *   scheduled or container cannot be fired at future time.
      */
     protected boolean _schedule(Actor actor, Time timestamp)
-            throws IllegalActionException { 
+            throws IllegalActionException {
         ResourceSchedulerInterface scheduler = _getScheduler(actor);
         Time time = null;
         Boolean finished = true;
@@ -1850,7 +1850,7 @@ public class Director extends Attribute implements Executable {
             time = (scheduler).schedule(actor, getEnvironmentTime(), deadline,
                     _getExecutionTime(actor));
             finished = _actorFinished(actor);
-            if (time != null && time.getDoubleValue() > 0.0) { 
+            if (time != null && time.getDoubleValue() > 0.0) {
                 CompositeActor container = (CompositeActor) ((Attribute)scheduler)
                         .getContainer();
                 container.getDirector().fireContainerAt(
@@ -1860,12 +1860,12 @@ public class Director extends Attribute implements Executable {
         } else if (isEmbedded()) {
             return ((CompositeActor) (((CompositeActor) getContainer()))
                     .getContainer()).getDirector()._schedule(actor, timestamp);
-        } 
+        }
         return (time == null || finished);
     }
 
-    /** Find resource scheduler for actor. 
-     *  @param actor The actor to be scheduled.  
+    /** Find resource scheduler for actor.
+     *  @param actor The actor to be scheduled.
      *  @return the resource scheduler.
      */
     protected ResourceSchedulerInterface _getScheduler(Actor actor) {
@@ -1874,7 +1874,7 @@ public class Director extends Attribute implements Executable {
         }
         Object object = _schedulerForActor.get(actor);
         if (!_schedulerForActor.containsKey(actor)) {
-            if (object == null) {  
+            if (object == null) {
                 for (Parameter parameter : ((NamedObj) actor).attributeList(Parameter.class)) {
                     try {
                         Token paramToken = ((Parameter) parameter)
@@ -1907,13 +1907,13 @@ public class Director extends Attribute implements Executable {
                     } catch (IllegalActionException ex) {
                         // Do nothing, the resource scheduler might
                         // have been deleted.
-                    } 
-                
+                    }
+
                     if (!_schedulerForActor.containsKey(actor)) {
                         _schedulerForActor.put(actor, null);
                     }
-                    
-                } 
+
+                }
             }
         }
         if (object != null) {
@@ -1927,7 +1927,7 @@ public class Director extends Attribute implements Executable {
      *  indicating that they do not wish to be iterated again.
      */
     protected Set _actorsFinishedExecution;
-    
+
     /** The director's default microstep. */
     protected int _defaultMicrostep;
 
@@ -1941,7 +1941,7 @@ public class Director extends Attribute implements Executable {
 
     /** True if any of the directed actors specifies a ResourceScheduler
      *  in the parameters and this ResourceScheduler exists on this or
-     *  a hierarchy level above (i.e. has not been deleted). 
+     *  a hierarchy level above (i.e. has not been deleted).
      */
     protected boolean _resourceScheduling;
 
@@ -1979,7 +1979,7 @@ public class Director extends Attribute implements Executable {
     }
 
     /** Return the value of the executionTime parameter of an actor, if
-     *  specified. Otherwise, return null. 
+     *  specified. Otherwise, return null.
      * @param actor The actor.
      * @return The execution time or null if no execution time is specified.
      * @exception IllegalActionException Thrown if time objects cannot be created.
@@ -1996,8 +1996,8 @@ public class Director extends Attribute implements Executable {
             Parameter parameter = (Parameter) ((NamedObj) actor).getAttribute("executionTime");
             if (parameter != null && parameter.getToken() != null) {
                 executionTimeParam = Double.valueOf(((DoubleToken) parameter.getToken()).doubleValue());
-            } 
-            
+            }
+
             if (executionTimeParam == null) {
                 executionTime = new Time(this, 0.0);
             } else {
@@ -2021,15 +2021,15 @@ public class Director extends Attribute implements Executable {
 
         stopTime = new Parameter(this, "stopTime");
         stopTime.setTypeEquals(BaseType.DOUBLE);
-        
+
         _defaultMicrostep = 0;
         _executionTimes = new HashMap<Actor, Time>();
-        
+
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
+
     /** The execution times of actors.
      */
     private HashMap<Actor, Time> _executionTimes;
@@ -2038,7 +2038,7 @@ public class Director extends Attribute implements Executable {
      *  as if it were at the top level.
      */
     private transient boolean _notEmbeddedForced = false;
-    
+
     /** Contains a map of actors and the ResourceScheduler that is specified for the actor. */
     private HashMap<Actor, ResourceSchedulerInterface> _schedulerForActor;
 
@@ -2046,6 +2046,6 @@ public class Director extends Attribute implements Executable {
     private transient Time _startTime;
 
     /** Stop time. */
-    private transient Time _stopTime; 
+    private transient Time _stopTime;
 
 }

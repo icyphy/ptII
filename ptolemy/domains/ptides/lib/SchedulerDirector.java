@@ -52,7 +52,7 @@ public class SchedulerDirector extends DEDirector {
     public SchedulerDirector(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        
+
         _resourceScheduling = false;
     }
 

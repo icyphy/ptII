@@ -57,72 +57,72 @@ import ptolemy.kernel.util.Workspace;
  * simplified MetroII semantics. </p>
  *
  * <p>
- * The MetroIIActorInterface has to be implemented for each actor 
+ * The MetroIIActorInterface has to be implemented for each actor
  * governed by MetroIIDirector. Each actor can be seen as a process.
  * FIXME:
- * The process could pause with MetroII events 
- * (@see ptolemy.domains.metroII.kernel.util.ProtoBuf.Event) 
- * returned (to this director). We say the actor is proposing MetroII events. 
- * The MetroII events are then modified by the MetroIIDirector, 
- * which delegates events to a constraint solver (@see ConstraintSolver). 
- * When the process is resumed, the continued execution depends on the updated MetroII 
- * events. 
+ * The process could pause with MetroII events
+ * (@see ptolemy.domains.metroII.kernel.util.ProtoBuf.Event)
+ * returned (to this director). We say the actor is proposing MetroII events.
+ * The MetroII events are then modified by the MetroIIDirector,
+ * which delegates events to a constraint solver (@see ConstraintSolver).
+ * When the process is resumed, the continued execution depends on the updated MetroII
+ * events.
  * </p>
- * 
+ *
  * <p>
- * Each iteration of the MetroIIDirector has two phases. In Phase 1, MetroIIDirector 
- * calls each actor (no particular order should be presumed. See 
- * Note 1). Each actor runs until it wants to propose MetroII 
- * events; The actor saves the state and returns MetroII events. 
- * In Phase 2, MetroIIDirector calls the MappingConstraintSolver, 
+ * Each iteration of the MetroIIDirector has two phases. In Phase 1, MetroIIDirector
+ * calls each actor (no particular order should be presumed. See
+ * Note 1). Each actor runs until it wants to propose MetroII
+ * events; The actor saves the state and returns MetroII events.
+ * In Phase 2, MetroIIDirector calls the MappingConstraintSolver,
  * which updates the MetroII events based on the Constraint solver
- * (@see ConstraintSolver).   
+ * (@see ConstraintSolver).
  * </p>
  * <p>
- * Note 1: In MetroII (complete version), the order of actors being 
- * called is determined by the SystemC scheduler.  
+ * Note 1: In MetroII (complete version), the order of actors being
+ * called is determined by the SystemC scheduler.
  * </p>
- * 
- * <p> A simple way to implement the MetroIIActorInterface is to have 
+ *
+ * <p> A simple way to implement the MetroIIActorInterface is to have
  * each actor wrapped by one of the following wrappers:
  * <ol>
  * <li> MetroIIActorBasicWrapper @see MetroIIActorBasicWrapper</li>
  * <li> MetroIIActorGeneralWrapper @see MetroIIActorGeneralWrapper</li>
  * <ol>
- * MetroIIActorBasicWrapper is used for wrapping a Ptolemy actor 
- * that implements prefire(), fire(), and postfire(). Wrapped by 
- * MetroIIActorBasicWrapper, the actor will be blocked at three 
- * occasions: 
+ * MetroIIActorBasicWrapper is used for wrapping a Ptolemy actor
+ * that implements prefire(), fire(), and postfire(). Wrapped by
+ * MetroIIActorBasicWrapper, the actor will be blocked at three
+ * occasions:
  * <ol>
- * <li> Before prefire() </li> 
+ * <li> Before prefire() </li>
  * <li> After prefire() and before fire() </li>
  * <li> After fire() and before postfire() </li>
- * </ol>  
- * A MetroII event will be proposed (return to this MetroIIDirector) at 
+ * </ol>
+ * A MetroII event will be proposed (return to this MetroIIDirector) at
  * each occasion. The actor is blocked until the event is notified.
  * </p>
  * <p>
- * MetroIIActorGeneralWrapper is used for wrapping a Ptolemy actor 
- * which implements MetroIIEventHandler (@see MetroIIEventHandler), i.e. an actor that 
- * implements prefire(), getfire(), and postfire() (e.g. MetroIICompositeActor 
+ * MetroIIActorGeneralWrapper is used for wrapping a Ptolemy actor
+ * which implements MetroIIEventHandler (@see MetroIIEventHandler), i.e. an actor that
+ * implements prefire(), getfire(), and postfire() (e.g. MetroIICompositeActor
  * that contains MetroIIPNDirector). In addition to proposing events
- * before prefire(), after prefire() and before fire(), after fire() 
- * and before postfire(), as MetroIIActorBasicWrapper does, 
- * MetroIIActorGeneralWrapper allows events to be proposed during 
- * getfire().  
+ * before prefire(), after prefire() and before fire(), after fire()
+ * and before postfire(), as MetroIIActorBasicWrapper does,
+ * MetroIIActorGeneralWrapper allows events to be proposed during
+ * getfire().
  * </p>
- * 
- * <p> 
- * An example of a constraint solver is MappingConstraintSolver (@see MappingConstraintSolver). 
- * MappingConstraintSolver updates the MetroII event status based 
- * on the given mapping constraints. A MetroII event is in one of the 
- * three statuses: PROPOSED, WAITING, NOTIFIED. A mapping constraint 
+ *
+ * <p>
+ * An example of a constraint solver is MappingConstraintSolver (@see MappingConstraintSolver).
+ * MappingConstraintSolver updates the MetroII event status based
+ * on the given mapping constraints. A MetroII event is in one of the
+ * three statuses: PROPOSED, WAITING, NOTIFIED. A mapping constraint
  * is a rendezvous constraint that requires all the
- * specified events are present when resolving. If an event 
+ * specified events are present when resolving. If an event
  * satisfies all the constraints, the status will be updated to
  * NOTIFIED, otherwise the status is updated to WAITING.
  * </p>
- * 
+ *
  * <p> Known issues:
  * <ol>
  * <li> the execution may not stop properly. </li>
@@ -179,7 +179,7 @@ public class MetroIIDirector extends Director {
     /** A Parameter representing the number of times that postfire may be
      *  called before it returns false.  If the value is less than or
      *  equal to zero, then the execution will never return false in postfire,
-     *  and thus the execution can continue forever. 
+     *  and thus the execution can continue forever.
      *
      */
     public Parameter iterations;
@@ -227,14 +227,14 @@ public class MetroIIDirector extends Director {
         }
     }
 
-    /** Initialize the model controlled by this director. Call the 
-     *  initialize() of super class and then wrap each actor that 
+    /** Initialize the model controlled by this director. Call the
+     *  initialize() of super class and then wrap each actor that
      *  is controlled by this director.
      *
      *  This method should typically be invoked once per execution, after the
      *  preinitialization phase, but before any iteration. It may be
      *  invoked in the middle of an execution, if reinitialization is
-     *  desired. 
+     *  desired.
      *
      *  This method is <i>not</i> synchronized on the workspace,
      *  so the caller should be.
@@ -266,12 +266,12 @@ public class MetroIIDirector extends Director {
     }
 
     /**
-    * Each iteration has two phases. In Phase 1, MetroIIDirector 
-    * calls each actor (no particular order should be presumed. See 
-    * Note 1). Each actor runs until it wants to propose MetroII 
-    * events: the actor saves the state and returns with MetroII events. 
-    * In Phase 2, MetroIIDirector calls the MappingConstraintSolver, 
-    * which updates the MetroII events based on the mapping constraints.  
+    * Each iteration has two phases. In Phase 1, MetroIIDirector
+    * calls each actor (no particular order should be presumed. See
+    * Note 1). Each actor runs until it wants to propose MetroII
+    * events: the actor saves the state and returns with MetroII events.
+    * In Phase 2, MetroIIDirector calls the MappingConstraintSolver,
+    * which updates the MetroII events based on the mapping constraints.
     */
     public void fire() throws IllegalActionException {
 
@@ -314,16 +314,16 @@ public class MetroIIDirector extends Director {
         MetroIIDirector newObject = (MetroIIDirector) super.clone(workspace);
         newObject._mappingConstraintSolver = new MappingConstraintSolver(
                 _maxEvent);
-        newObject._actorList = (LinkedList) _actorList.clone(); 
+        newObject._actorList = (LinkedList) _actorList.clone();
         return newObject;
     }
 
     /**
-     * The postfire() counts the number of iterations and returns false when 
-     * the number of iteration exceeds the parameter iterations. 
-     * 
-     * postfire() will always return true if the parameter iterations is less 
-     * or equal to 0. 
+     * The postfire() counts the number of iterations and returns false when
+     * the number of iteration exceeds the parameter iterations.
+     *
+     * postfire() will always return true if the parameter iterations is less
+     * or equal to 0.
      */
     public boolean postfire() throws IllegalActionException {
         _iterationCount++;
@@ -339,7 +339,7 @@ public class MetroIIDirector extends Director {
         return true;
     }
 
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
@@ -369,7 +369,7 @@ public class MetroIIDirector extends Director {
      *
      */
     private MappingConstraintSolver _mappingConstraintSolver;
-    
+
     /**
      * The list of actors governed by MetroIIDirector
      */

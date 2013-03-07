@@ -98,7 +98,7 @@ public class WebExportParameters extends Attribute {
         copyJavaScriptFiles = new Parameter(this, "copyJavaScriptFiles");
         copyJavaScriptFiles.setTypeEquals(BaseType.BOOLEAN);
         copyJavaScriptFiles.setExpression("false");
-        
+
         imageFormat = new StringParameter(this, "imageFormat");
         imageFormat.setExpression("gif");
         imageFormat.addChoice("gif");
@@ -136,7 +136,7 @@ public class WebExportParameters extends Attribute {
      *  where the model that contains this attribute is stored.
      */
     public FileParameter directoryToExportTo;
-    
+
     /** The image format to use, which can be one of "gif" (the default),
      *  "png", or "jpg".
      */

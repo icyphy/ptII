@@ -124,7 +124,7 @@ int checkFMU(
  *  @return fmiDiscard if the FMU rejects the step size, otherwise fmiOK.
  */
 fmiStatus fmiDoStep(fmiComponent c, fmiReal currentCommunicationPoint,
-    	fmiReal communicationStepSize, fmiBoolean noSetFMUStatePriorToCurrentPoint) {
+            fmiReal communicationStepSize, fmiBoolean noSetFMUStatePriorToCurrentPoint) {
     ModelInstance* component = (ModelInstance *) c;
     // FIXME: Remove printfs. Replace with logger calls.
     printf("%s: Invoked fmiDoStep: %g, %g, noSetFMUStatePriorToCurrentPoint: %s\n", component->instanceName,
@@ -199,7 +199,7 @@ fmiStatus fmiFreeFMUstate (fmiComponent c, fmiFMUstate* FMUstate) {
     if (snapshot != NULL) {
         component->functions->freeMemory(snapshot);
         *FMUstate = NULL;
-    }    
+    }
     return fmiOK;
 }
 
@@ -312,7 +312,7 @@ fmiComponent fmiInstantiateSlave(
                                  fmiBoolean visible,
                                  fmiBoolean loggingOn)  {
     ModelInstance* component;
-    
+
     // Perform checks.
     if (!checkFMU(instanceName, GUID, MODEL_GUID, fmuResourceLocation, functions, visible, loggingOn)) {
         return NULL;
@@ -324,10 +324,10 @@ fmiComponent fmiInstantiateSlave(
     component->atBreakpoint = fmiFalse;
     component->functions = functions;
     component->instanceName = instanceName;
-    
+
     functions->logger(component, instanceName, fmiOK, "message",
                       "Invoked fmiInstantiateSlave for instance %s.", instanceName);
-    
+
     return component;
 }
 
@@ -396,7 +396,7 @@ fmiStatus fmiSetReal(fmiComponent c, const fmiValueReference vr[], size_t nvr, c
 fmiStatus fmiSetFMUstate (fmiComponent c, fmiFMUstate FMUstate) {
     ModelInstance* component = (ModelInstance *) c;
     ModelInstance* snapshot = (ModelInstance *) FMUstate;
-    
+
     component->currentCount = snapshot->currentCount;
     component->period = snapshot->period;
     component->lastSuccessfulTime = snapshot->lastSuccessfulTime;
@@ -404,7 +404,7 @@ fmiStatus fmiSetFMUstate (fmiComponent c, fmiFMUstate FMUstate) {
     component->relativeTolerance = snapshot->relativeTolerance;
     component->functions = snapshot->functions;
     component->instanceName = snapshot->instanceName;
-    
+
     return fmiOK;
 }
 

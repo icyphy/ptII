@@ -112,7 +112,7 @@ public abstract class ResourceScheduler extends MoMLModelAttribute implements
      */
     public DecoratedAttributes createDecoratedAttributes(NamedObj target)
             throws IllegalActionException, NameDuplicationException {
-        DecoratedAttributesImplementation decoratedAttributes = 
+        DecoratedAttributesImplementation decoratedAttributes =
             new DecoratedAttributesImplementation(
                 target, this);
         if (target.getAttribute("scheduler") == null) {
@@ -223,11 +223,11 @@ public abstract class ResourceScheduler extends MoMLModelAttribute implements
                 ExecutionEventType.START);
         event(this, currentPlatformTime.getDoubleValue(),
                 ExecutionEventType.STOP);
-        
+
         return null;
     }
-    
-   
+
+
 
     /** Return a new time object using the enclosing director.
      *  @param time Double value of the new time object.
@@ -237,14 +237,14 @@ public abstract class ResourceScheduler extends MoMLModelAttribute implements
     public Time getTime(double time) throws IllegalActionException {
         return new Time(((CompositeActor) getContainer()).getDirector(), time);
     }
-    
+
     /** Return whether last actor that was scheduled finished execution.
      *  @return True if last actor finished execution.
      */
     public boolean lastActorFinished() {
         return _lastActorFinished;
     }
-    
+
     /** Return remaining time actor needs to finish.
      *  @param actor The actor.
      *  @return The time the actor still needs.
@@ -324,11 +324,11 @@ public abstract class ResourceScheduler extends MoMLModelAttribute implements
         for (Object entity : compositeActor.entityList()) {
             Parameter schedulerAttribute = (Parameter)((NamedObj)entity).getAttribute("scheduler");
             if (schedulerAttribute != null && schedulerAttribute.getToken() != null &&
-                    schedulerAttribute.getToken() instanceof ObjectToken && 
-                    ((ObjectToken) schedulerAttribute.getToken()).getValue() instanceof ResourceScheduler) {   
+                    schedulerAttribute.getToken() instanceof ObjectToken &&
+                    ((ObjectToken) schedulerAttribute.getToken()).getValue() instanceof ResourceScheduler) {
                 ResourceScheduler scheduler = (ResourceScheduler) ((ObjectToken) schedulerAttribute.getToken()).getValue();
                 if (scheduler == this
-                        || (/*scheduler instanceof DynamicCoreAssignmentScheduler &&*/ 
+                        || (/*scheduler instanceof DynamicCoreAssignmentScheduler &&*/
                                 !(entity instanceof ResourceScheduler))) {
                     Double executionTime = ResourceScheduler
                             ._getDoubleParameterValue(
@@ -343,7 +343,7 @@ public abstract class ResourceScheduler extends MoMLModelAttribute implements
                 }
             } else if (entity instanceof CompositeActor) {
                 _getActorsToSchedule((CompositeActor) entity);
-            } 
+            }
         }
     }
 
@@ -417,7 +417,7 @@ public abstract class ResourceScheduler extends MoMLModelAttribute implements
                         if (paramObject instanceof ResourceScheduler) {
                             ResourceScheduler scheduler = (ResourceScheduler) paramObject;
                             if (scheduler == this
-                                    || (/*scheduler instanceof DynamicCoreAssignmentScheduler &&*/ 
+                                    || (/*scheduler instanceof DynamicCoreAssignmentScheduler &&*/
                                     !(actor instanceof ResourceScheduler))) {
                                 Double executionTime = ResourceScheduler
                                         ._getDoubleParameterValue(

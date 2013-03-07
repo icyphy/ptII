@@ -822,14 +822,14 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
     public void setContainer(NamedObj container) throws IllegalActionException,
             NameDuplicationException {
         Nameable previousContainer = getContainer();
-        
+
         // Warn if there are variables that depend on this one.
         if (container != previousContainer
                 && previousContainer != null
                 && _valueListeners != null
                 && _valueListeners.size() > 0) {
             // In the short term, print out a stack trace if we get to here.
-            new IllegalActionException(this, "Warning: in Variable.setContainer, one or more variables depend on " 
+            new IllegalActionException(this, "Warning: in Variable.setContainer, one or more variables depend on "
                     + getName() + ", which \" has " + _valueListeners.size() + " listener(s): " + ": " + _valueListeners.get(0)).printStackTrace();
 //             if (!MessageHandler.yesNoQuestion("WARNING: There are variables depending on " + getName() + ". Continue?")) {
 //                 // Cancel.
@@ -871,7 +871,7 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
                     validate();
                 } else {
                     // The following will mark the listeners to this variable as
-                    // needing evaluation. When that evaluation occurs, an exception 
+                    // needing evaluation. When that evaluation occurs, an exception
                     // will be thrown. NOTE: The error will only be detected later,
                     // but this seems better than the alternatives. Note the warning
                     // issued above.
@@ -1785,9 +1785,9 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
                         if (!handleModelError(this, ex)) {
                             // In the short term, warn about errors opening models.
                             // There are a bunch of things that need to be fixed, but there are also
-                            // legitimate models such as ptolemy/actor/parameters/test/auto/ParameterSetTest.xml 
+                            // legitimate models such as ptolemy/actor/parameters/test/auto/ParameterSetTest.xml
                             // that refer to parameter not present when the model is parsed.
-                            new IllegalActionException(this, ex, "Warning:, there was a problem propagating \"" + getName() 
+                            new IllegalActionException(this, ex, "Warning:, there was a problem propagating \"" + getName()
                                     + "\".").printStackTrace();
                             //result = new LinkedList();
                             //result.add(ex);

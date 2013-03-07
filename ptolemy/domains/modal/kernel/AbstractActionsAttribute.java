@@ -221,11 +221,11 @@ public abstract class AbstractActionsAttribute extends Action implements
     public NamedObj getDestination(String name) throws IllegalActionException {
         return _getDestination(name);
     }
-    
+
     /** Return the list of destinations of assignements in this action.
      *  @return A list of IOPort for output actions, and a list of parameters
      *   for set actions.
-     *  @throws IllegalActionException If the destination list cannot be
+     *  @exception IllegalActionException If the destination list cannot be
      *   constructed.
      */
     public List getDestinations() throws IllegalActionException {
@@ -366,7 +366,7 @@ public abstract class AbstractActionsAttribute extends Action implements
             _parseTrees.add(node.getExpressionTree());
         }
     }
-    
+
     /** Give a descriptive string.
      *  @return The expression.
      */

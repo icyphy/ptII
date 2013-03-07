@@ -112,7 +112,7 @@ public class MetroIISRDirector extends SRDirector implements
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         MetroIISRDirector newObject = (MetroIISRDirector) super.clone(workspace);
         newObject._nameToActor = (Hashtable<String, Actor>) _nameToActor.clone();
-        newObject._events = (ArrayList<Builder>) _events.clone(); 
+        newObject._events = (ArrayList<Builder>) _events.clone();
         return newObject;
     }
 
@@ -120,7 +120,7 @@ public class MetroIISRDirector extends SRDirector implements
     ////                         public methods                    ////
 
     /**
-     * YieldAdapter interface 
+     * YieldAdapter interface
      */
     public YieldAdapterIterable<Iterable<Event.Builder>> adapter() {
         return new ThreadedYieldAdapter<Iterable<Event.Builder>>()
@@ -214,7 +214,7 @@ public class MetroIISRDirector extends SRDirector implements
     ////                         private methods                   ////
 
     /**
-     * Initialize the object. 
+     * Initialize the object.
      */
     public void _init() {
         _nameToActor = new Hashtable();

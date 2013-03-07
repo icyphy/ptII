@@ -256,34 +256,34 @@ public class IOPort extends ComponentPort {
             Token parameterToken = ((Parameter) attribute).getToken();
             if (parameterToken != null) {
                 if (parameterToken instanceof ObjectToken &&
-                        ((ObjectToken)parameterToken).getValue() 
+                        ((ObjectToken)parameterToken).getValue()
                         instanceof QuantityManager) {
                     // Invalidate list of quantity managers.
-                    _qmListValid = false;  
+                    _qmListValid = false;
                 }
             }
         }
         super.attributeChanged(attribute);
     }
-    
-    /** React to the deletion of an attribute. If the attribute is 
+
+    /** React to the deletion of an attribute. If the attribute is
      *  a {@see QuantityManager}, invalidate the local variable state
-     *  information about QuantityManagers on this port. This causes 
+     *  information about QuantityManagers on this port. This causes
      *  the port to update QuantityManager information and receivers.
      *  @param attribute The attribute that was deleted.
-     *  @throws IllegalActionException If the deletion is not acceptable
+     *  @exception IllegalActionException If the deletion is not acceptable
      *    to this container (not thrown in this base class).
      */
-    public void attributeDeleted(Attribute attribute) 
-            throws IllegalActionException {  
+    public void attributeDeleted(Attribute attribute)
+            throws IllegalActionException {
         if (attribute instanceof Parameter) {
             Token parameterToken = ((Parameter) attribute).getToken();
             if (parameterToken != null) {
                 if (parameterToken instanceof ObjectToken &&
-                        ((ObjectToken)parameterToken).getValue() 
+                        ((ObjectToken)parameterToken).getValue()
                         instanceof QuantityManager) {
                     // Invalidate list of quantity managers.
-                    _qmListValid = false;  
+                    _qmListValid = false;
                 }
             }
         }
@@ -1376,14 +1376,14 @@ public class IOPort extends ComponentPort {
      *      containing the quantity manager object cannot be retrieved.
      */
     public List<QuantityManager> getQuantityManagers() throws IllegalActionException {
-        if (_qmListValid == false) { 
+        if (_qmListValid == false) {
 
             _qmList = new ArrayList<QuantityManager>();
             if (attributeList().size() > 0) {
                 for (int i = 0; i < attributeList().size(); i++) {
                     Object attr = attributeList().get(i);
                     if (attr instanceof Parameter) {
-                        Token paramToken = ((Parameter) attr).getToken(); 
+                        Token paramToken = ((Parameter) attr).getToken();
                         if (paramToken instanceof ObjectToken) {
                             Object paramObject = ((ObjectToken) paramToken)
                                     .getValue();
@@ -4344,7 +4344,7 @@ public class IOPort extends ComponentPort {
         List<QuantityManager> qmList = getQuantityManagers();
         if (isInput()) {
             for (int i = qmList.size() - 1; i >= 0; i--) {
-                QuantityManager quantityManager = qmList.get(i); 
+                QuantityManager quantityManager = qmList.get(i);
                 result = quantityManager.createIntermediateReceiver(result);
             }
             if (result instanceof IntermediateReceiver) {
@@ -4354,8 +4354,8 @@ public class IOPort extends ComponentPort {
             }
         } else {
             for (int i = 0; i < qmList.size(); i++) {
-                QuantityManager quantityManager = qmList.get(i);  
-                result = quantityManager.createIntermediateReceiver(result); 
+                QuantityManager quantityManager = qmList.get(i);
+                result = quantityManager.createIntermediateReceiver(result);
             }
         }
         // FIXME what if isInput && isOutput??

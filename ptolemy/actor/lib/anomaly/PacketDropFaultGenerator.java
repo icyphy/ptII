@@ -41,7 +41,7 @@ import ptolemy.actor.lib.qm.MonitoredQuantityManager;
 import ptolemy.actor.lib.qm.QuantityManagerListener.EventType;
 import ptolemy.actor.sched.FixedPointDirector;
 import ptolemy.actor.util.FIFOQueue;
-import ptolemy.actor.util.Time; 
+import ptolemy.actor.util.Time;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
@@ -84,7 +84,7 @@ public class PacketDropFaultGenerator extends MonitoredQuantityManager {
         super(container, name);
         _tokens = new FIFOQueue();
         _receiversAndTokensToSendTo = new HashMap();
-         
+
 
         packetDropProbability = new Parameter(this, "Packet Drop Probability");
         packetDropProbability.setExpression("0.1");
@@ -152,7 +152,7 @@ public class PacketDropFaultGenerator extends MonitoredQuantityManager {
         newObject._nextReceiver = null;
         newObject._nextTimeFree = null;
         newObject._receiversAndTokensToSendTo = new HashMap();
-         
+
         newObject._tokens = new FIFOQueue();
         return newObject;
     }
@@ -163,9 +163,9 @@ public class PacketDropFaultGenerator extends MonitoredQuantityManager {
     public void initialize() throws IllegalActionException {
         super.initialize();
         _receiversAndTokensToSendTo.clear();
-       
+
         _tokens.clear();
-        
+
         _nextTimeFree = null;
     }
 
@@ -181,13 +181,13 @@ public class PacketDropFaultGenerator extends MonitoredQuantityManager {
             //current receiver being processed
             Receiver receiver = (Receiver) output[0];
             Token token = (Token) output[1];
-            
+
             //biased coin toss.
-            if ( Math.random() > (1.0 - _packetDropProbabilityValue)){
+            if ( Math.random() > (1.0 - _packetDropProbabilityValue)) {
                 //drop packet (do not send)
             }
-            else{
-            
+            else {
+
             _sendToReceiver(receiver, token);
             }
 
@@ -281,7 +281,7 @@ public class PacketDropFaultGenerator extends MonitoredQuantityManager {
      */
     public void sendToken(Receiver source, Receiver receiver, Token token)
             throws IllegalActionException {
-        if( getDirector() == null){
+        if (getDirector() == null) {
             return;
         }
         Time currentTime = getDirector().getModelTime();
@@ -386,8 +386,8 @@ public class PacketDropFaultGenerator extends MonitoredQuantityManager {
 
     /** Map of receivers and the last-received token from that receiver
      *  be sent to.
-     */    
-    
+     */
+
     /** Fault probability per token. */
     private double _packetDropProbabilityValue;
 

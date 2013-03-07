@@ -512,7 +512,7 @@ public class RelationWidthInference {
         // different results depending on where we start in the graph.
         int insideWidth = port._getInsideWidth(null);
         int outsideWidth = port._getOutsideWidth(null);
-        
+
         // Special case.
         if (port instanceof SubscriptionAggregatorPort) {
             if (insideWidth != 1) {

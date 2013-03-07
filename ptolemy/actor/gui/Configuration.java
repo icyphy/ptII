@@ -544,9 +544,9 @@ public class Configuration extends CompositeEntity implements
                                             .getContainer())
                                     // Ptides ErrorHandlingAction manipulates a variable
                                     // in the the container so it is ok if the container
-                                    // of the output port and the container of the 
+                                    // of the output port and the container of the
                                     // variable are different.
-                                    && !(className.equals("ptolemy.domains.ptides.lib.ErrorHandlingAction") && lesserNamedObj.getName().equals("dropEvent")) 
+                                    && !(className.equals("ptolemy.domains.ptides.lib.ErrorHandlingAction") && lesserNamedObj.getName().equals("dropEvent"))
                                     // actor.lib.qm.CompositeQM was causing false
                                     // positives because the contstraints had different
                                     // containers, but were contained within the Composite.

@@ -117,8 +117,8 @@ public class PtidesPort extends MirrorPort {
     /** Device delay bound parameter that defaults to the double value 0.0. */
     public Parameter deviceDelayBound;
 
-    /** Flag that is true if the port is a network receiver or transmitter. 
-     *  The flag defaults to false. 
+    /** Flag that is true if the port is a network receiver or transmitter.
+     *  The flag defaults to false.
      */
     public Parameter isNetworkPort;
 
@@ -132,7 +132,7 @@ public class PtidesPort extends MirrorPort {
     public Parameter sourcePlatformDelayBound;
 
     /** Return true if actuation should happen at event timestamp and false if
-     *  actuation can happen sooner. 
+     *  actuation can happen sooner.
      *  @return whether actuation should be done at the event timestamp.
      */
     public boolean actuateAtEventTimestamp() {
@@ -177,7 +177,7 @@ public class PtidesPort extends MirrorPort {
         return times;
     }
 
-    /** 
+    /**
      *  @return True if port is an actuator port.
      */
     public boolean isActuatorPort() {
@@ -312,7 +312,7 @@ public class PtidesPort extends MirrorPort {
     private boolean _isNetworkPort;
 
     private HashMap<Token, Object[]> _transmittedTokenTimestamps;
-    
+
     private HashMap<Token, Integer> _transmittedTokenCnt;
 
 }

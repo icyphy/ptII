@@ -1,4 +1,4 @@
-/* This actor implements a quantity manager which manages all end-systems 
+/* This actor implements a quantity manager which manages all end-systems
    for an AFDX network.
 
 @Copyright (c) 2010-2011 The Regents of the University of California.
@@ -57,14 +57,14 @@ import ptolemy.kernel.util.Workspace;
 
 /** This actor is an {@link QuantityManager} that simulates an AFDX End-systems component
  *  When its {@link #sendToken(Receiver, Receiver, Token)} method is called,
- *  the delivery of the specified token to the specified receiver is delayed according 
+ *  the delivery of the specified token to the specified receiver is delayed according
  *  to the AFDX end-system protocol and behavior. Only one actor of this kind is required
  *  to manage all end-systems of one AFDX network.
- *  <p> 
- *  For more information please refer to: 
+ *  <p>
+ *  For more information please refer to:
  *      <i>AFDX network simulation in PtolemyII</i>.
  *      <i>AFDX standard document</i>.
- *       
+ *
  *  @author Gilles Lasnier
  *  @version $Id$
  *  @since Ptolemy II 0.2
@@ -111,8 +111,8 @@ public class AFDXESs extends MonitoredQuantityManager {
     ///////////////////////////////////////////////////////////////////
     //                          public variables                     //
 
-    /** 
-     * The bit rate of the bus. This is a double with default value to 100 
+    /**
+     * The bit rate of the bus. This is a double with default value to 100
      * Mbits/s. It is required to be positive.
      */
     public Parameter bitRate;
@@ -166,10 +166,10 @@ public class AFDXESs extends MonitoredQuantityManager {
         return newObject;
     }
 
-    /** Fire the actor. 
+    /** Fire the actor.
      *  Typically, the fire() method performs the computation associated
-     *  with an actor. 
-     *  Here, it delivers (if required) the intended token to the intended receiver(s).  
+     *  with an actor.
+     *  Here, it delivers (if required) the intended token to the intended receiver(s).
      *
      *  @exception IllegalActionException If firing is not permitted.
      */
@@ -179,8 +179,8 @@ public class AFDXESs extends MonitoredQuantityManager {
         boolean multicast = false;
 
         // Send events from virtual links to the corresponding scheduler multiplexor
-        for(Entry<String, LinkedList<TimedEvent>> entry : _afdxVLinksQueue.entrySet()) {
-            
+        for (Entry<String, LinkedList<TimedEvent>> entry : _afdxVLinksQueue.entrySet()) {
+
             if (entry.getValue().size() > 0) {
                 TimedEvent e = entry.getValue().getFirst();
 
@@ -193,16 +193,16 @@ public class AFDXESs extends MonitoredQuantityManager {
                         Object[] last = (Object[]) _afdxSchedMuxsQueue
                                 .get(vl.getSchedulerMux()).getLast().contents;
                         Object[] output = (Object[]) e.contents;
-                        
+
                         if ( ((AFDXVlink) output[2]).getSource()
-                                .equals(((AFDXVlink) last[2]).getSource()) 
+                                .equals(((AFDXVlink) last[2]).getSource())
                                 && ((Time) output[3]).compareTo((Time) last[3]) == 0) {
                             multicast = true;
                         }
-                        
+
                         lastTimeStamp = _afdxSchedMuxsQueue
                                 .get(vl.getSchedulerMux()).getLast().timeStamp;
-                    } 
+                    }
 
                     if (multicast) {
                         computedTimeStamp = lastTimeStamp;
@@ -212,7 +212,7 @@ public class AFDXESs extends MonitoredQuantityManager {
                                 .add(vl.getTrameSize() / (_bitRate*1000000));
                     }
                     _afdxSchedMuxsQueue.get(vl.getSchedulerMux())
-                    .add(new TimedEvent(computedTimeStamp, e.contents));  
+                    .add(new TimedEvent(computedTimeStamp, e.contents));
 
                     entry.getValue().remove(e);
                 }
@@ -236,12 +236,12 @@ public class AFDXESs extends MonitoredQuantityManager {
                         if (receiver instanceof IntermediateReceiver) {
                             String[] labels = new String[] { timestamp, vlink, payload };
                             Token[] values = new Token[] {
-                                    new DoubleToken(e.timeStamp.getDoubleValue()), 
+                                    new DoubleToken(e.timeStamp.getDoubleValue()),
                                     new ObjectToken (output[2]),
                                     (Token) output[1] };
                             RecordToken record = new RecordToken(labels, values);
                             _sendToReceiver((Receiver) output[0], record);
-                        } else { 
+                        } else {
                             // case: the receiver is an actor
                             Token token = (Token) output[1];
                             _sendToReceiver(receiver, token);
@@ -250,9 +250,9 @@ public class AFDXESs extends MonitoredQuantityManager {
                         entry.getValue().remove(e);
 
                         if (_debugging) {
-                            _debug("Send from end-system:" + entry.getKey() 
+                            _debug("Send from end-system:" + entry.getKey()
                                     +" at time: " + currentTime);
-                        }                      
+                        }
                     }
                 }
             }
@@ -317,10 +317,10 @@ public class AFDXESs extends MonitoredQuantityManager {
                 _debug("timestamp: " + e.timeStamp + " | value=" + output[1].toString());
             }
             _debug("}");
-        } 
+        }
         _debug("-- Stop printing SchedulerMultiplexor Queue");
     }
-    
+
     /** Print all elements of the different VL queues.
      */
     public void printVlinksQueue() {
@@ -331,10 +331,10 @@ public class AFDXESs extends MonitoredQuantityManager {
 
             for (TimedEvent e : entry.getValue()) {
                 Object[] output = (Object[]) e.contents;
-                _debug("timestamp: " + e.timeStamp + " | value=" + output[1].toString()); 
+                _debug("timestamp: " + e.timeStamp + " | value=" + output[1].toString());
             }
             _debug("}");
-        } 
+        }
         _debug("-- Stop printing the VLinksQueue");
     }
 
@@ -346,9 +346,9 @@ public class AFDXESs extends MonitoredQuantityManager {
     }
 
     /** Initiate a send of the specified token to the specified
-     *  receiver. This method will schedule a refiring of this actor 
+     *  receiver. This method will schedule a refiring of this actor
      *  according to the requirements of the AFDX protocol.
-     *  
+     *
      *  @param source Sender of the token.
      *  @param receiver The receiver to send to.
      *  @param token The token to send.
@@ -356,14 +356,14 @@ public class AFDXESs extends MonitoredQuantityManager {
      */
     public void sendToken(Receiver source, Receiver receiver, Token token)
             throws IllegalActionException {
-        Time currentTime = getDirector().getModelTime();   
+        Time currentTime = getDirector().getModelTime();
         Time lastTimeStamp = null;
         boolean multicast = false;
 
         AFDXVlink vl = new AFDXVlink (source);
 
         if (!_lastEmissionTable.containsKey(vl.getName())) {
-            _lastEmissionTable.put(vl.getName(), 
+            _lastEmissionTable.put(vl.getName(),
                     new Time(getDirector(), currentTime.getDoubleValue()));
         }
 
@@ -376,8 +376,8 @@ public class AFDXESs extends MonitoredQuantityManager {
                     new LinkedList<TimedEvent>());
         }
 
-        if (!_afdxVLinksQueue.containsKey(vl.getName())) { 
-            _afdxVLinksQueue.put(vl.getName(), new LinkedList()); 
+        if (!_afdxVLinksQueue.containsKey(vl.getName())) {
+            _afdxVLinksQueue.put(vl.getName(), new LinkedList());
         }
 
         // last emission timestamp and multicast (factorization)
@@ -386,10 +386,10 @@ public class AFDXESs extends MonitoredQuantityManager {
 
             Object[] output = (Object[]) _afdxVLinksQueue.get(vl.getName()).getLast().contents;
             if (((AFDXVlink) output[2]).getSource().equals(
-                    ((IntermediateReceiver) source).source) 
+                    ((IntermediateReceiver) source).source)
                     && ((Time) output[3]).compareTo(currentTime) == 0) {
                 multicast = true;
-            } 
+            }
         } else {
             lastTimeStamp = _lastEmissionTable.get(vl.getName());
         }
@@ -401,7 +401,7 @@ public class AFDXESs extends MonitoredQuantityManager {
         }
         else {
             // Compute the delay according to the AFDX bag emission policy
-            if (lastTimeStamp.compareTo(currentTime) == 0 
+            if (lastTimeStamp.compareTo(currentTime) == 0
                     && _afdxVLinksQueue.get(vl.getName()).size() < 1) {
                 _delay = 0.0;
             } else if (lastTimeStamp.add(vl.getBag()).compareTo(currentTime) < 0) {
@@ -457,14 +457,14 @@ public class AFDXESs extends MonitoredQuantityManager {
         for (Entry<String, LinkedList<TimedEvent>> entry : _afdxSchedMuxsQueue.entrySet()) {
             _nextFireTime = _getNextFireTime(_nextFireTime, entry.getValue());
         }
-        
+
         _fireAt(_nextFireTime);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
-    /** Tokens received as input to the AFDX traffic regulator 
+    /** Tokens received as input to the AFDX traffic regulator
      * (aka Lissor or Shaper).
      */
     protected HashMap<String, LinkedList<TimedEvent>> _afdxVLinksQueue;
@@ -481,7 +481,7 @@ public class AFDXESs extends MonitoredQuantityManager {
      */
     protected HashMap<String, LinkedList<TimedEvent>> _afdxSchedMuxsQueue;
 
-    /** Next time a token is sent and the next token can be processed. 
+    /** Next time a token is sent and the next token can be processed.
      */
     protected Time _nextFireTime;
 

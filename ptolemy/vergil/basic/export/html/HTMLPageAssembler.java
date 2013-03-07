@@ -60,31 +60,31 @@ import ptolemy.kernel.util.NameDuplicationException;
 
 /**
 <p>
-HTMLPageAssembler reads contents from its ports and appends them into the 
-corresponding parts in the template file that must satisfy the following 
-requirement: for each port, there must be a corresponding DOM object whose ID is 
-the same as the port name in the template file, or in the content provided to 
+HTMLPageAssembler reads contents from its ports and appends them into the
+corresponding parts in the template file that must satisfy the following
+requirement: for each port, there must be a corresponding DOM object whose ID is
+the same as the port name in the template file, or in the content provided to
 another port that is created before this port.
 </p>
 <p>
-HTMLPageAssembler processes the ports in the order that they are added to it. 
+HTMLPageAssembler processes the ports in the order that they are added to it.
 Each port can consists of a single or multiple channels. In the latter case,
-contents from multiple channels are appended in the order that they are 
+contents from multiple channels are appended in the order that they are
 connected to this port.
 </p>
 <p>
-The content for a channel can be a string or an array of strings. HTML scripts, 
-such as JavaScript, can also be part of the content. For a long content, it is 
+The content for a channel can be a string or an array of strings. HTML scripts,
+such as JavaScript, can also be part of the content. For a long content, it is
 better to first store the content in a separated file, then read this file using
-the FileReader actor to provide the content to the port. A demo is available at 
-$ptII\ptolemy\vergil\basic\export\html\demo\PageAssembler. If the content is 
+the FileReader actor to provide the content to the port. A demo is available at
+$ptII\ptolemy\vergil\basic\export\html\demo\PageAssembler. If the content is
 provided through a StringConst actor, only the tags defined in the standard Java
-library (javax.swing.text.html.HTML.Tag) can be supported. If the content is 
+library (javax.swing.text.html.HTML.Tag) can be supported. If the content is
 read from a file, then all valid HTML tags can be supported. Unknown tags are
 ignored without throwing any exceptions.
 </p>
 <p>
-The content of the final HTML page is broadcasted to the output port, and saved 
+The content of the final HTML page is broadcasted to the output port, and saved
 to a file if specified.
 </p>
 <p>
@@ -154,8 +154,8 @@ public class HTMLPageAssembler extends TypedAtomicActor {
      */
     public FileParameter outputFile;
 
-    /** 
-     * Specify whether the content of the generated page should be save to a 
+    /**
+     * Specify whether the content of the generated page should be save to a
      * separated file.  The default value is a boolean with the value false.
      */
     public Parameter saveToFile;
@@ -181,7 +181,7 @@ public class HTMLPageAssembler extends TypedAtomicActor {
 
             /*
              * Insert the content from each port to its corresponding div.
-             * If the name of a port doesn't match any DOM object in the 
+             * If the name of a port doesn't match any DOM object in the
              * template file, or in the extra div list, throw an exception.
              */
 
@@ -235,9 +235,9 @@ public class HTMLPageAssembler extends TypedAtomicActor {
             StringWriter stringWriter = new StringWriter();
             // Manually add the DOCTYPE tag.  HTMLEditorKit removes this.
             stringWriter.write("<!DOCTYPE html>");
-            // FIXME:  HTMLEditorKit appears to be replacing tags with color 
+            // FIXME:  HTMLEditorKit appears to be replacing tags with color
             // styling, such as <b style="color:blue">, with <font> tags
-            // The <font> tag is not supported in HTML5 
+            // The <font> tag is not supported in HTML5
             // Is HTMLEditorKit the best here?  Is there another editor that
             // is up to date with HTML5?
             _htmlKit.write(stringWriter, _htmlDoc, 0, _htmlDoc.getLength());
@@ -247,8 +247,8 @@ public class HTMLPageAssembler extends TypedAtomicActor {
              *  the comment marks.
              */
             // FIXME:  Which script was commented out?  Why?
-            // This code uncomments ALL comments, meaning that any comments in 
-            // the source HTML file will be uncommented and will be visible 
+            // This code uncomments ALL comments, meaning that any comments in
+            // the source HTML file will be uncommented and will be visible
             // as text on the response page
             String content = stringWriter.toString();
             content = content.replaceAll("<!--", "").replaceAll("-->", "");
@@ -272,7 +272,7 @@ public class HTMLPageAssembler extends TypedAtomicActor {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                        private variables                  ////
+    ////                         private variables                 ////
 
     private HTMLDocument _htmlDoc;
     private HTMLEditorKit _htmlKit;

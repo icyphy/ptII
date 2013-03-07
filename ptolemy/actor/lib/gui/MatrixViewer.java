@@ -335,10 +335,10 @@ public class MatrixViewer extends AbstractPlaceableActor {
      */
     @Override
     public void setFrame(JFrame frame) {
-        
+
         super.setFrame(frame);
-        
-        if(frame == null && _tableau != null) {
+
+        if (frame == null && _tableau != null) {
             try {
                 _tableau.setContainer(null);
             } catch (KernelException ex) {

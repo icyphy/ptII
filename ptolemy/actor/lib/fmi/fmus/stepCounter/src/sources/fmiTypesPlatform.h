@@ -96,7 +96,7 @@
    typedef void*        fmiComponent;               /* Pointer to FMU instance       */
    typedef void*        fmiComponentEnvironment;    /* Pointer to FMU environment    */
    typedef void*        fmiFMUstate;                /* Pointer to internal FMU state */
-   typedef size_t		fmiValueReference;
+   typedef size_t                fmiValueReference;
    typedef double       fmiReal   ;
    typedef int          fmiInteger;
    typedef int          fmiBoolean;

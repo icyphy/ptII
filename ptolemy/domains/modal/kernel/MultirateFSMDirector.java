@@ -162,13 +162,13 @@ public class MultirateFSMDirector extends FSMDirector {
         // initial state, or to states reached from that
         // by immediate transitions.
         super.initialize();
-        
+
         // Set the production and consumption rates of the ports
         // according to the current refinement.
         // This has to be after initialize because the initial
         // immediate transitions may affect the rates.
         _setProductionConsumptionRates();
-        
+
         invalidateSchedule();
     }
 
@@ -206,7 +206,7 @@ public class MultirateFSMDirector extends FSMDirector {
         _getEnclosingDomainActor();
 
         super.preinitialize();
-        
+
         // Note that the following is done again initialize().
         // But it seems to be necessary to do it here the first time
         // to cause the schedule to be computed. I.e, we might get
@@ -433,11 +433,11 @@ public class MultirateFSMDirector extends FSMDirector {
     protected boolean _doPostfire() throws IllegalActionException {
         // Note: This is a protected method so that HDFFSMDirector can defer
         // the actual work of postfire to occur between iterations.
-        
+
         // Commit the transition. This will postfire the refinement
         // director.
         boolean superPostfire = super.postfire();
-        
+
         if (getController().wasTransitionTaken()) {
             _setProductionConsumptionRates();
         }
@@ -508,12 +508,12 @@ public class MultirateFSMDirector extends FSMDirector {
 
         return list;
     }
-    
+
     /** Set the production and consumption rates based on the
      *  refinement of the current state, after descending through a hierarchy of
      *  state machines.
-     *  @throws IllegalActionException If the initial state does not
-     *   have exactly one refinement. 
+     *  @exception IllegalActionException If the initial state does not
+     *   have exactly one refinement.
      */
     protected void _setProductionConsumptionRates()
             throws IllegalActionException {
@@ -547,7 +547,7 @@ public class MultirateFSMDirector extends FSMDirector {
             currentRefinement = (TypedCompositeActor) (currentRefinements[0]);
             refinementDir = currentRefinement.getDirector();
         }
-        
+
         if (refinementDir instanceof StaticSchedulingDirector && refinementDir != this) {
             // Force the schedule to be computed, if necessary.
             // Update the refinement's production and consumption rates.

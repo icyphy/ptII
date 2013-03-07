@@ -49,7 +49,7 @@ import ptolemy.kernel.util.IllegalActionException;
  If the port type is <code>BaseType.GENERAL</code>, then return <code>
  BaseType.GENERAL</code>, or if the type is <code>BaseType.UNKNOWN</code>,
  then return <code>BaseType.UNKNOWN</code>.
- If the port type is <code>AssociateType</code> but it has no 
+ If the port type is <code>AssociateType</code> but it has no
  corresponding field, then return <code>BaseType.GENERAL</code>.
  Otherwise, the getValue() method throws an exception, which makes the
  function partial.
@@ -77,10 +77,10 @@ public class ExtractFieldType extends MonotonicFunction {
     /** Return the current value of this monotonic function.
      *  Specifically, this is a function of one variable, the type variable
      *  of the given port. If the port type is <code>BaseType.GENERAL</code>,
-     *  then return <code>BaseType.GENERAL</code>, or if the type is 
-     *  <code>BaseType.UNKNOWN</code>, then return 
-     *  <code>BaseType.UNKNOWN</code>. If the port type is 
-     *  <code>AssociateType</code> but it has no corresponding field, 
+     *  then return <code>BaseType.GENERAL</code>, or if the type is
+     *  <code>BaseType.UNKNOWN</code>, then return
+     *  <code>BaseType.UNKNOWN</code>. If the port type is
+     *  <code>AssociateType</code> but it has no corresponding field,
      *  then return <code>BaseType.GENERAL</code>.
      *  Otherwise, throw an exception.
      *  @return A Type.

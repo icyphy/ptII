@@ -105,7 +105,7 @@ public class StringReplace extends TypedAtomicActor {
     public StringReplace(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
-        
+
         // Create new parameters and ports.
         // Set default values of the parameters and type constraints.
         pattern = new PortParameter(this, "pattern");
@@ -132,7 +132,7 @@ public class StringReplace extends TypedAtomicActor {
         replaceAll = new Parameter(this, "replaceAll");
         replaceAll.setExpression("true");
         replaceAll.setTypeEquals(BaseType.BOOLEAN);
-        
+
         regularExpression = new Parameter(this, "regularExpression");
         regularExpression.setExpression("true");
         regularExpression.setTypeEquals(BaseType.BOOLEAN);
@@ -166,7 +166,7 @@ public class StringReplace extends TypedAtomicActor {
      *  pattern, and when false, replace the first instance.
      */
     public Parameter replaceAll;
-    
+
     /** If true, interpret the pattern as a regular expression. Otherwise,
      *  interpret it as the literal string to replace. This is a boolean
      *  that defaults to true.
@@ -214,7 +214,7 @@ public class StringReplace extends TypedAtomicActor {
         }
         return newObject;
     }
-    
+
     /** Perform pattern matching and substring replacement, and output
      *  the modified string. If no match is found, output the
      *  unmodified stringToEdit string.
@@ -238,7 +238,7 @@ public class StringReplace extends TypedAtomicActor {
                 .booleanValue();
         boolean regularExpressionValue = ((BooleanToken) regularExpression.getToken())
                 .booleanValue();
-        
+
         if (regularExpressionValue) {
             if (_pattern == null) {
                 try {
@@ -286,7 +286,7 @@ public class StringReplace extends TypedAtomicActor {
 
     // The compiled regular expression.
     private Pattern _pattern;
-    
+
     // The replacement string.
     private String _patternValue;
 }

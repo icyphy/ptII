@@ -46,7 +46,7 @@ public class MetroIIDEDirector extends DEDirector implements
         newObject._events = (ArrayList<Builder>) _events.clone();
         return newObject;
     }
-    
+
     @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
@@ -387,21 +387,21 @@ public class MetroIIDEDirector extends DEDirector implements
                 //                for (Actor actor : actorList) {
                 //                    StartOrResumable metroActor = _actorDictionary.get(actor.getFullName());
                 //                    LinkedList<Event.Builder> metroIIEventList = new LinkedList<Event.Builder>();
-                //                    metroActor.startOrResume(metroIIEventList); 
+                //                    metroActor.startOrResume(metroIIEventList);
 
                 //                    if (builder.getStatus() == Event.Status.NOTIFIED) {
                 //                        Actor actor = _nameToActor.get(builder.getName());
-                //                        actor.fire(); 
+                //                        actor.fire();
                 //                        if (!actor.postfire()) {
                 //                            // This actor requests not to be fired again.
                 //                            _disableActor(actor);
                 //                        }
                 //                    }
                 //                    else {
-                //                        tmp_events.add(builder); 
+                //                        tmp_events.add(builder);
                 //                    }
                 //                }
-                //                events = tmp_events; 
+                //                events = tmp_events;
 
             } while (actorList.size() > 0);
             // Since we are now actually stopping the firing, we can set this false.
@@ -423,10 +423,10 @@ public class MetroIIDEDirector extends DEDirector implements
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                  private methods                          ////
+    ////                         private methods                   ////
 
     /**
-     * Create a MetroII event with the given name and type. 
+     * Create a MetroII event with the given name and type.
      * @param name Name of the MetroII event
      * @param t Type of the MetroII event
      * @return newly created MetroII event

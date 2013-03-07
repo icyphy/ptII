@@ -356,7 +356,7 @@ public class LineReader extends Source {
 
     /** First firing indicator. */
     protected boolean _firstFiring;
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
 

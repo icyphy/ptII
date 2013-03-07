@@ -141,9 +141,9 @@ public final class Workspace implements Nameable, Serializable {
     // Note that Nameable extends ModelErrorHandler, so this class
     // need not declare that it directly implements ModelErrorHandler.
 
-    // NOTE: it would make sense to have Workspace extend Observable 
+    // NOTE: it would make sense to have Workspace extend Observable
     // in order to notify observers of changes (marten 29-10-2012).
-    
+
     /** Create a workspace with an empty string as its name.
      */
     public Workspace() {

@@ -72,7 +72,7 @@ public class RunningMaximum extends Transformer {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
+
     /** Clone this actor into the specified workspace. The new actor is
      *  <i>not</i> added to the directory of that workspace (you must do this
      *  yourself if you want it there).
@@ -147,8 +147,8 @@ public class RunningMaximum extends Transformer {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                      protected methods                    ////    
-    
+    ////                         protected methods                 ////
+
     /** Eliminate default constraints.
      *  @return null
      */
@@ -172,15 +172,15 @@ public class RunningMaximum extends Transformer {
         /* input >= output if backward type inference is enabled */
         if (isBackwardTypeInferenceEnabled()
                 && input.getTypeTerm().isSettable()) {
-            result.add(new Inequality(output.getTypeTerm(), 
+            result.add(new Inequality(output.getTypeTerm(),
                     input.getTypeTerm()));
         }
         return result;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
-    ////                       private variables                   ////
-    
+    ////                         private variables                 ////
+
     // The maximum value observed so far.
     private ScalarToken _maximum;
 

@@ -32,7 +32,7 @@ package ptolemy.actor;
 
 /**
  Classes that implement this interface are assumed to be in the actor library.
- 
+
  <p>This marker interface is necessary so that we can avoid dependencies
  between the actor and moml packages.  Typically, ptolemy.moml.EntityLibrary
  implements this interface and classes in actor check to see if an

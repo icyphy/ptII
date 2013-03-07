@@ -58,16 +58,16 @@ import com.sun.jna.NativeLibrary;
  * @Pt.AcceptedRating Red (cxh)
  */
 public class FMIModelDescription {
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public fields                     ////
-    
+
     /** For FMI 2.0 and greater, the XML file may specify that the FMU
      *  supports getting and setting its state. This defaults to false
-     *  if not present in the XML file. 
+     *  if not present in the XML file.
      */
     public boolean canGetAndSetFMUstate = false;
-    
+
     /** The list of files that were extracted from the .fmu file. */
     public List<File> files;
 
@@ -112,13 +112,13 @@ public class FMIModelDescription {
     /** The capabilities for co-simulation.
      */
     public FMICoSimulationCapabilities capabilities;
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
     /** Get the native library of C functions for the current platform.
      *  @return The library of functions for the current platform.
-     *  @throws IOException If the FMU file does not contain binaries
+     *  @exception IOException If the FMU file does not contain binaries
      *   for the current platform.
      */
     public NativeLibrary getNativeLibrary() throws IOException {
@@ -134,7 +134,7 @@ public class FMIModelDescription {
 
         // Get the name of the shared library file for the current platform.
         String sharedLibrary = FMUFile.fmuSharedLibrary(this);
-        
+
         // Load the shared library
         try {
             _nativeLibrary = NativeLibrary.getInstance(sharedLibrary);
@@ -151,40 +151,40 @@ public class FMIModelDescription {
                     + "The fmu file contains the "
                     + "following files with 'binaries' in the path:\n"
                     + binariesFiles;
-	    File sharedLibraryFile = new File(sharedLibrary);
-	    if (!sharedLibraryFile.exists()) {
+            File sharedLibraryFile = new File(sharedLibrary);
+            if (!sharedLibraryFile.exists()) {
                 FMUBuilder builder = new FMUBuilder();
                 boolean isBuildOK = false;
                 try {
                     isBuildOK = builder.build(sharedLibraryFile);
                     System.out.println("FMU Builder messages:\n" + builder.buffer);
                 } catch (Throwable throwable2) {
-                    throw new IOException("Failed to build \"" 
+                    throw new IOException("Failed to build \""
                             + sharedLibraryFile + "\".\nThe build was:\n"
                             + builder.buffer + "\n" + message
                             + "\nThe initial exception was: " + throwable,
                             throwable2);
                 }
                 if (!isBuildOK) {
-		    throw new IOException("It was not possible to build \""
+                    throw new IOException("It was not possible to build \""
                             + sharedLibraryFile + "\": "
                             + builder.buffer + "\n" + message,
                             throwable);
-		} else {
-		    try {
-			_nativeLibrary = NativeLibrary.getInstance(sharedLibrary);		    
-		    } catch (Throwable throwable3) {
-			throw new IOException("Attempted to build shared "
-					      + "library for the current "
-					      + "platform because "
-					      + sharedLibrary
-					      + " was not found.  "
-					      + "However, loading the library failed?\n"
-					      + "The original error was: "
-					      + message + "\n" + throwable, throwable3);
-		    }
-		} 
-	    }
+                } else {
+                    try {
+                        _nativeLibrary = NativeLibrary.getInstance(sharedLibrary);
+                    } catch (Throwable throwable3) {
+                        throw new IOException("Attempted to build shared "
+                                              + "library for the current "
+                                              + "platform because "
+                                              + sharedLibrary
+                                              + " was not found.  "
+                                              + "However, loading the library failed?\n"
+                                              + "The original error was: "
+                                              + message + "\n" + throwable, throwable3);
+                    }
+                }
+            }
         }
         return _nativeLibrary;
     }
@@ -195,7 +195,7 @@ public class FMIModelDescription {
     public String toString() {
         return modelName;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private fields                    ////
 

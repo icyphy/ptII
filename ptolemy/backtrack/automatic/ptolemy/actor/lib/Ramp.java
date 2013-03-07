@@ -47,7 +47,7 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
-/** 
+/**
  * Produce an output token on each firing with a value that is
  * incremented by the specified step each iteration. The
  * first output is given by the <i>init</i> parameter, and the
@@ -78,7 +78,7 @@ public class Ramp extends SequenceSource implements Rollbackable {
     // Show the firingCountLimit parameter last.
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
-    /**     
+    /**
      * The value produced by the ramp on its first iteration.
      * If this value is changed during execution, then the new
      * value will be the output on the next iteration.
@@ -86,7 +86,7 @@ public class Ramp extends SequenceSource implements Rollbackable {
      */
     public PortParameter init;
 
-    /**     
+    /**
      * The amount by which the ramp output is incremented on each iteration.
      * The default value of this parameter is the integer 1.
      */
@@ -110,7 +110,7 @@ public class Ramp extends SequenceSource implements Rollbackable {
 
     private Token[] _resultArray;
 
-    /**     
+    /**
      * Construct an actor with the given container and name.
      * In addition to invoking the base class constructors, construct
      * the <i>init</i> and <i>step</i> parameter and the <i>step</i>
@@ -138,7 +138,7 @@ public class Ramp extends SequenceSource implements Rollbackable {
         firingCountLimit.moveToLast();
     }
 
-    /**     
+    /**
      * If the argument is the <i>init</i> parameter, then reset the
      * state to the specified value.
      * @param attribute The attribute that changed.
@@ -160,7 +160,7 @@ public class Ramp extends SequenceSource implements Rollbackable {
         }
     }
 
-    /**     
+    /**
      * Clone the actor into the specified workspace. This calls the
      * base class and then sets the <code>init</code> and <code>step</code>
      * public members to the parameters of the new actor.
@@ -177,7 +177,7 @@ public class Ramp extends SequenceSource implements Rollbackable {
         return newObject;
     }
 
-    /**     
+    /**
      * Send the current value of the state of this actor to the output.
      * @exception IllegalActionException If calling send() or super.fire()
      * throws it.
@@ -188,7 +188,7 @@ public class Ramp extends SequenceSource implements Rollbackable {
         output.send(0, _stateToken);
     }
 
-    /**     
+    /**
      * Set the state to equal the value of the <i>init</i> parameter.
      * The state is incremented by the value of the <i>step</i>
      * parameter on each iteration (in the postfire() method).
@@ -199,7 +199,7 @@ public class Ramp extends SequenceSource implements Rollbackable {
         $ASSIGN$_stateToken(output.getType().convert(init.getToken()));
     }
 
-    /**     
+    /**
      * Invoke a specified number of iterations of this actor. Each
      * iteration updates the state of the actor by adding the
      * value of the <i>step</i> parameter to the state and sending
@@ -248,7 +248,7 @@ public class Ramp extends SequenceSource implements Rollbackable {
         return COMPLETED;
     }
 
-    /**     
+    /**
      * Update the state of the actor by adding the value of the
      * <i>step</i> parameter to the state.  Also, increment the
      * iteration count, and if the result is equal to

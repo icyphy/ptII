@@ -152,7 +152,7 @@ public class StaticSchedulingDirector extends Director {
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
-        
+
         _savedSchedule = null;
         _savedSchedulePosition = -1;
         _savedIterationCount = 0;
@@ -180,7 +180,7 @@ public class StaticSchedulingDirector extends Director {
         // Don't call "super.fire();" here because if you do then
         // everything happens twice.
         Iterator firings = null;
- 
+
         Scheduler scheduler = getScheduler();
 
         if (scheduler == null) {
@@ -223,7 +223,7 @@ public class StaticSchedulingDirector extends Director {
                 _debug(new FiringEvent(this, actor, FiringEvent.AFTER_ITERATE,
                         iterationCount));
             }
-        } 
+        }
     }
 
     /** Return the scheduler that is responsible for scheduling the
@@ -282,7 +282,7 @@ public class StaticSchedulingDirector extends Director {
     public boolean postfire() throws IllegalActionException {
         return super.postfire() && _postfireReturns;
     }
-    
+
 
     /** Return true if the director is ready to fire. This method is
      *  called by the container of this director to determine whether
@@ -335,7 +335,7 @@ public class StaticSchedulingDirector extends Director {
                     _prefire = false;
                     return false;
                 }
- 
+
                 if (_savedIterationCount == 0) {
                     _savedIterationCount = firing.getIterationCount();
                 }
@@ -427,9 +427,9 @@ public class StaticSchedulingDirector extends Director {
     ////                         private variables                 ////
 
     protected boolean _prefire = false;
-    
-    /** Computed schedule that has not been fully executed because this 
-     *  director is waiting for resources. 
+
+    /** Computed schedule that has not been fully executed because this
+     *  director is waiting for resources.
      */
     private Schedule _savedSchedule;
 

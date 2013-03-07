@@ -1,5 +1,5 @@
 /* Fetch the results and errors of calling sendExpression() to OpenModelica Compiler(OMC) server.
- * 
+ *
  * Copyright (c) 2012-2013,
  * Programming Environment Laboratory (PELAB),
  * Department of Computer and getInformation Science (IDA),
@@ -44,8 +44,8 @@ package ptolemy.domains.openmodelica.lib.omc;
 
 /**
   It gets the first and multiple result from calling sendExpression("command") to OpenModelica Compiler(OMC).
-  It also fetches the error resulted from calling sendExpression("command") to OMC as well as trimming the result. 
-  
+  It also fetches the error resulted from calling sendExpression("command") to OMC as well as trimming the result.
+
   @author Andreas Remar
   @version $Id$
   @since Ptolemy II 9.1
@@ -83,7 +83,7 @@ public class CompilerResult implements ICompilerResult {
     /** Make the compiler result with the result and error of sendExpression("command") to OpenModelica Compiler(OMC).
      * @param result The result of calling sendExpression("command") to OMC.
      * @param error The error resulted from calling sendExpression("command") to OMC.
-     * @return The compiler result along with errors if there is any.  
+     * @return The compiler result along with errors if there is any.
      */
     public static CompilerResult makeResult(String[] result, String error) {
         return new CompilerResult(result, error);

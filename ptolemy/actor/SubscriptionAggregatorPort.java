@@ -98,7 +98,7 @@ public class SubscriptionAggregatorPort extends SubscriberPort {
         operation.addChoice("add");
         operation.addChoice("multiply");
         operation.setExpression("add");
-        
+
         setMultiport(true);
     }
 
@@ -276,7 +276,7 @@ public class SubscriptionAggregatorPort extends SubscriberPort {
         }
         return result;
     }
-    
+
     /** Return the inside width of this port, which in this class is
      *  always 1.
      *  @return The width of the inside of the port.

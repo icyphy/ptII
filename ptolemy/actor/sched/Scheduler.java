@@ -353,7 +353,7 @@ public class Scheduler extends Attribute {
 
     // The flag that indicate whether the current schedule is valid.
     private boolean _valid = false;
-    
+
     // Workspace version when the last schedule was constructed.
     private long _workspaceVersion = -1L;
 }

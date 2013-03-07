@@ -1,5 +1,5 @@
 /* This class saves the log result in the log file in the temporary folder.
- * 
+ *
  * Copyright (c) 2012-2013,
  * Programming Environments Laboratory (PELAB),
  * Department of Computer and getInformation Science (IDA),
@@ -66,11 +66,11 @@ public class OMCLogger {
      *  It creates the log file in the temporary folder and sets the format
      *  of the log to show date and time first.
      *  This private Constructor prevents other class from instantiating.
-     * @throws IllegalActionException 
+     * @exception IllegalActionException
      */
     private OMCLogger() throws IllegalActionException {
 
-        // The path of the directory which contains the result files. 
+        // The path of the directory which contains the result files.
         String logPath = createDirectoryForResult();
 
         String logFileName = logPath + "omcLog.txt";
@@ -106,7 +106,7 @@ public class OMCLogger {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         public variables                 ////
+    ////                         public variables                  ////
 
     /** Logger name of OpenModelica Compiler(OMC).*/
     public String loggerName = "omcLogger";
@@ -115,7 +115,7 @@ public class OMCLogger {
     public Logger omcLogger = Logger.getLogger("omcLogger");
 
     ///////////////////////////////////////////////////////////////////
-    ////                          public methods                  ////
+    ////                         public methods                    ////
 
     /** Create the directory for saving the simulation result files
      *  and also the log file.
@@ -152,8 +152,8 @@ public class OMCLogger {
         return logPath;
     }
 
-    /** Get the Info LogLevel and info message will be written in the log file. 
-     *  @param infoMessage The info message. 
+    /** Get the Info LogLevel and info message will be written in the log file.
+     *  @param infoMessage The info message.
      */
     public void getInfo(String infoMessage) {
         omcLogger.info(infoMessage);

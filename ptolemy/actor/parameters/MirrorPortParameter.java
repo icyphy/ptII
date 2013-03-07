@@ -93,5 +93,5 @@ public class MirrorPortParameter extends PortParameter {
             NameDuplicationException {
         super(container, name, token);
     }
-    
+
 }

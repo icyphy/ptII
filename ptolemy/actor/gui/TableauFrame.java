@@ -1439,16 +1439,16 @@ public class TableauFrame extends Top {
                     // if the user has not given the file an extension, add it
                     file = new File(file.getAbsolutePath() + extension);
                 }
-		
-		try {
-		    // FileDialog asks about overwriting a file, FileChooser
-		    // does not.
-		    if (!_confirmFile(null, file)) {
-			return null;
-		    }
-		} catch (Throwable throwable) {
-		    throw new RuntimeException("Failed to confirm saving of " + file, throwable);
-		}
+
+                try {
+                    // FileDialog asks about overwriting a file, FileChooser
+                    // does not.
+                    if (!_confirmFile(null, file)) {
+                        return null;
+                    }
+                } catch (Throwable throwable) {
+                    throw new RuntimeException("Failed to confirm saving of " + file, throwable);
+                }
                 return _saveAsHelperCommon(file,
                         fileDialog.getCurrentDirectory());
             }

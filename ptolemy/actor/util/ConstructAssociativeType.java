@@ -62,9 +62,9 @@ public class ConstructAssociativeType extends MonotonicFunction {
      */
     public ConstructAssociativeType(List<TypedIOPort> ports,
             Class<? extends AssociativeType> type) {
-        
+
         _ports = new LinkedList<TypedIOPort>();
-        
+
         for (TypedIOPort port : ports) {
             // only consider ports that are connected
             if (port.isOutput() && port.numberOfSinks() > 0) {
@@ -74,7 +74,7 @@ public class ConstructAssociativeType extends MonotonicFunction {
                 _ports.add(port);
             }
         }
-        
+
         _type = type;
     }
 

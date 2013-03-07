@@ -586,7 +586,7 @@ public class Manager extends NamedObj implements Runnable {
     public long getPreinitializeVersion() {
         return _preinitializeVersion;
     }
-    
+
     /** Return the current state of execution of the manager.
      *  @return The state of execution.
      */

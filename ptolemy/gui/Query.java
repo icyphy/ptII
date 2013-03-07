@@ -886,18 +886,18 @@ public class Query extends JPanel {
         QueryScrollPane textPane = new QueryScrollPane(textArea);
         _addPair(name, lbl, textPane, textPane);
         textArea.addFocusListener(new QueryFocusListener(this, name));
-        
+
         textArea.setFocusTraversalKeys(
                 KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS, null);
         textArea.setFocusTraversalKeys(
                 KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS, null);
-        
+
         textArea.getInputMap().put(KeyStroke.getKeyStroke("shift ENTER"),
                 "TRANSFER_TEXT");
         final JTextArea area = textArea;
         textArea.getActionMap().put("TRANSFER_TEXT", new AbstractAction() {
             @Override
-            public void actionPerformed(ActionEvent e) { 
+            public void actionPerformed(ActionEvent e) {
                 area.insert("\n", area.getCaretPosition());
                 if (area.getRows() < 4) {
                     area.setRows(area.getRows() + 1);
@@ -915,9 +915,9 @@ public class Query extends JPanel {
                 }
             }
         });
-        
-        
-        
+
+
+
         return textArea;
     }
 
@@ -2092,7 +2092,7 @@ public class Query extends JPanel {
         }
 
         private JButton _button;
-        
+
         private JTextField _entryBox;
 
         private String _name;
@@ -2205,7 +2205,7 @@ public class Query extends JPanel {
         public String getSelectedFileName() {
             return _entryBox.getText();
         }
-        
+
         /** Specify whether the entry is editable or not.
          *  @param enabled False to disable changing the value.
          */
@@ -2475,7 +2475,7 @@ public class Query extends JPanel {
         private Query _owner;
 
         private URI _base;
-        
+
         private JButton _button;
 
         private JTextField _entryBox;

@@ -1,4 +1,4 @@
-/* An interface for actors that subscribe to an XMPP XEP-0060 node 
+/* An interface for actors that subscribe to an XMPP XEP-0060 node
 
  Copyright (c) 2012 The Regents of the University of California.
  All rights reserved.
@@ -35,7 +35,7 @@ import org.jivesoftware.smackx.pubsub.listener.ItemEventListener;
 //// XMPPSubscriber
 
 /** An interface for actors that subscribe to an XMPP XEP-0060 node.
- * 
+ *
  *  @see XMPPGateway
  *  @author Marten Lohstroh
  *  @version $Id: XMPPSubscriber.java 64744 2012-10-24 22:51:43Z marten $
@@ -52,13 +52,13 @@ public interface XMPPSubscriber extends ItemEventListener<Item> {
      *  @return A string representing the node to subscribe to.
      */
     public String getNodeId();
-    
-    /** Set the subscription id returned by 
+
+    /** Set the subscription id returned by
      *  SmackPubSubAccess.subscribeToNode(). // FIXME out-dated
      *  @param subId A string identifying this subscriber.
      */
     public void setSubId(String subId);
-    
+
     public String getSubId();
 
     /** Register the gateway to the subscriber, so that if

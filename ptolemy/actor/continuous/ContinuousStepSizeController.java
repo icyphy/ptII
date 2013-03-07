@@ -81,7 +81,7 @@ public interface ContinuousStepSizeController {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-   
+
 
     /** Implementations of this method should return
      *  true if the current integration step size

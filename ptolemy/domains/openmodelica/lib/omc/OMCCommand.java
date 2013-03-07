@@ -36,16 +36,16 @@
  * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
  * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
- * 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
  */
 
 package ptolemy.domains.openmodelica.lib.omc;
 
-/**    
-    <p> It invokes OpenModelica Compiler(OMC) by sending command to the 
-    OMC server with different purposes such as building Modelica model by 
-    sending buildModel(), loading Modelica model by sending loadModel(Modelica) and 
+/**
+    <p> It invokes OpenModelica Compiler(OMC) by sending command to the
+    OMC server with different purposes such as building Modelica model by
+    sending buildModel(), loading Modelica model by sending loadModel(Modelica) and
     loading file by sending loadFile().
     It fetches the string result of invocation as well. </p>
 
@@ -58,7 +58,7 @@ package ptolemy.domains.openmodelica.lib.omc;
 public class OMCCommand implements IOMCCommand {
 
     ///////////////////////////////////////////////////////////////////
-    ////                         public methods                   ////
+    ////                         public methods                    ////
 
     /**  Build the Modelica model by sending buildModel("command") to the OMC server.
      *   @param command The command which is sent to the OMC server.
@@ -116,7 +116,7 @@ public class OMCCommand implements IOMCCommand {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    // OMCProxy Object for accessing a unique source of instance. 
+    // OMCProxy Object for accessing a unique source of instance.
     private static OMCCommand _omcCommandInstance = null;
 
     // OMCProxy Object for accessing a unique source of instance.

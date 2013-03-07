@@ -189,9 +189,9 @@ public abstract class FilledShapeAttribute extends ShapeAttribute {
         FilledShapeAttribute newObject = (FilledShapeAttribute) super
                 .clone(workspace);
         newObject._inAttributeChanged = false;
-        
+
         newObject._icon.setCentered(newObject._centeredValue);
-        
+
         return newObject;
     }
 

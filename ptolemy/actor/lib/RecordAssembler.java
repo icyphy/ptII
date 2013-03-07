@@ -51,9 +51,9 @@ import ptolemy.util.StringUtilities;
 //// RecordAssembler
 
 /**
- On each firing, read one token from each connected input port and assemble 
- them into a RecordToken. Disconnected input ports are ignored. The labels for 
- the RecordToken much match the names of the input ports. This is achieved 
+ On each firing, read one token from each connected input port and assemble
+ them into a RecordToken. Disconnected input ports are ignored. The labels for
+ the RecordToken much match the names of the input ports. This is achieved
  using two type constraints:
 
  <ul>
@@ -113,9 +113,9 @@ public class RecordAssembler extends TypedAtomicActor {
         super(container, name);
 
         output = new TypedIOPort(this, "output", false, true);
-        
+
         _inputs = new LinkedList<TypedIOPort>();
-        
+
         _attachText("_iconDescription", "<svg>\n"
                 + "<rect x=\"0\" y=\"0\" width=\"6\" "
                 + "height=\"40\" style=\"fill:red\"/>\n" + "</svg>\n");
@@ -143,14 +143,14 @@ public class RecordAssembler extends TypedAtomicActor {
 
         return newObject;
     }
-    
+
     /** Read one token from each input port, assemble them into a RecordToken,
      *  and send the RecordToken to the output.
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
         super.fire();
-        
+
         Object[] portArray = _inputs.toArray();
         int size = portArray.length;
 
@@ -168,8 +168,8 @@ public class RecordAssembler extends TypedAtomicActor {
 
         output.send(0, result);
     }
-    
-    /** Generate a list of all connected input ports. 
+
+    /** Generate a list of all connected input ports.
      */
     @Override
     public void preinitialize() throws IllegalActionException {
@@ -182,7 +182,7 @@ public class RecordAssembler extends TypedAtomicActor {
         super.preinitialize();
     }
 
-    /** Return true if all connected input ports have tokens, false if some 
+    /** Return true if all connected input ports have tokens, false if some
      *  connected input ports do not have a token.
      *  @return True if all connected input ports have tokens.
      *  @exception IllegalActionException If the hasToken() call to the
@@ -190,8 +190,8 @@ public class RecordAssembler extends TypedAtomicActor {
      *  @see ptolemy.actor.IOPort#hasToken(int)
      */
     public boolean prefire() throws IllegalActionException {
-        
-         for(TypedIOPort port : _inputs){
+
+         for (TypedIOPort port : _inputs) {
              if (!port.hasToken(0)) {
                 return false;
              }
@@ -228,7 +228,7 @@ public class RecordAssembler extends TypedAtomicActor {
     protected Set<Inequality> _customTypeConstraints() {
         Set<Inequality> result = new HashSet<Inequality>();
 
-        // constrain the type of every input to be greater than or equal to 
+        // constrain the type of every input to be greater than or equal to
         // the resolved type of the corresponding field in the output record
         for (TypedIOPort input : _inputs) {
             // only include ports that have no type declared
@@ -255,10 +255,10 @@ public class RecordAssembler extends TypedAtomicActor {
     protected Set<Inequality> _defaultTypeConstraints() {
         return null;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
-    ////                      private variables                    ////
- 
+    ////                         private variables                 ////
+
     /** The connected input ports. */
     private List<TypedIOPort> _inputs;
 }

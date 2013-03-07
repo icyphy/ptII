@@ -2202,7 +2202,7 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
             }
         } // close the loop: LOOPLABEL::GetNextEvent
 
-        
+
         if (actorToFire != null &&
                 _resourceScheduling &&
                 !_schedule(actorToFire, getModelTime())) {

@@ -100,14 +100,14 @@ public class StuckAtFaultGenerator extends MonitoredQuantityManager {
      */
     public IntermediateReceiver getReceiver(Receiver receiver) {
         IntermediateReceiver intermediateReceiver;
-        if(_wrappedReceivers.get(receiver) == null){
+        if (_wrappedReceivers.get(receiver) == null) {
              intermediateReceiver = new IntermediateReceiver(
                     this, receiver);
             _wrappedReceivers.put(receiver, intermediateReceiver);
-        } else{
+        } else {
              intermediateReceiver = (IntermediateReceiver)(_wrappedReceivers.get(receiver));
         }
-        
+
         return intermediateReceiver;
     }
 
@@ -160,7 +160,7 @@ public class StuckAtFaultGenerator extends MonitoredQuantityManager {
         newObject._nextTimeFree = null;
         newObject._receiversAndTokensToSendTo = new HashMap();
         newObject._isStuck = new HashMap();
-        newObject._lastKnownHealthyTokens = new HashMap(); 
+        newObject._lastKnownHealthyTokens = new HashMap();
         newObject._tokens = new FIFOQueue();
         newObject._wrappedReceivers = new HashMap();
         return newObject;
@@ -176,15 +176,15 @@ public class StuckAtFaultGenerator extends MonitoredQuantityManager {
         _lastKnownHealthyTokens.clear();
         _tokens.clear();
         _wrappedReceivers.clear();
-        
+
         _nextTimeFree = null;
     }
 
     /** Send first token in the queue to the target receiver.
      */
     public void fire() throws IllegalActionException {
-        
-        //if(getContainer() == null){
+
+        //if (getContainer() == null) {
         //    return;
         //}
         //Time currentTime = getDirector().getModelTime();
@@ -195,39 +195,39 @@ public class StuckAtFaultGenerator extends MonitoredQuantityManager {
             //current receiver being processed
             Receiver receiver = (Receiver) output[0];
             Token token = (Token) output[1];
-            
+
             // if the particular receiver is new (no stuckAt status)
-            if( null == _isStuck.get(receiver) || false ){
+            if (null == _isStuck.get(receiver) || false ) {
                 boolean decideOnHealth = false;
-                //FIXME: Math.random() is seeded from the current time, use 
+                //FIXME: Math.random() is seeded from the current time, use
                 // the Ptolemy version here instead that allows to set the seed
-                if ( Math.random() > (1.0 - _stuckAtFaultProbabilityValue)){
+                if ( Math.random() > (1.0 - _stuckAtFaultProbabilityValue)) {
                     decideOnHealth = true;
                 }
-                   
+
                 _isStuck.put(receiver, new BooleanToken(decideOnHealth));
             }
-            else if(_isStuck.get(receiver).booleanValue() == true){
+            else if (_isStuck.get(receiver).booleanValue() == true) {
                 // the receiver is stuck, send the last known healthy token value
-                if(_lastKnownHealthyTokens.get(receiver) == null ){
+                if (_lastKnownHealthyTokens.get(receiver) == null ) {
                     _lastKnownHealthyTokens.put(receiver, token);
                 }
-                else{
+                else {
                     token = _lastKnownHealthyTokens.get(receiver);
                 }
             }
-            else{ 
+            else {
                 //roll the dice
                 boolean decideOnHealth = false;
-                if ( Math.random() > 1.0 - _stuckAtFaultProbabilityValue){
+                if ( Math.random() > 1.0 - _stuckAtFaultProbabilityValue) {
                     decideOnHealth = true;
-                    
+
                 }
                 _isStuck.put(receiver, new BooleanToken(decideOnHealth));
             }
-            
-                
-            
+
+
+
             _sendToReceiver(receiver, token);
             //            }
 
@@ -424,19 +424,19 @@ public class StuckAtFaultGenerator extends MonitoredQuantityManager {
 
     /** Map of receivers and the last-received token from that receiver
      *  be sent to.
-     */    
+     */
     private HashMap<Receiver, Token> _lastKnownHealthyTokens;
-    
+
     private HashMap<Receiver, BooleanToken> _isStuck;
-    
-    
+
+
 
     /** Fault probability per token. */
     private double _stuckAtFaultProbabilityValue;
 
     /** Tokens stored for processing. */
     private FIFOQueue _tokens;
-    
+
     /** Hold the receivers tied to this quantity manager in an array, to avoid duplicates */
     private HashMap<Receiver, Receiver> _wrappedReceivers;
 

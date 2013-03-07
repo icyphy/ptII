@@ -135,7 +135,7 @@ public class ProcessThread extends PtolemyThread {
         try {
             // Initialize the actor.
             _actor.initialize();
-            
+
             _actorInitialized();
 
             // While postfire() returns true and stop() is not called.
@@ -302,8 +302,8 @@ public class ProcessThread extends PtolemyThread {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         protected methods               ////
-    
+    ////                         protected methods                 ////
+
     /** Notify that the actor has been initialized. This base class
      *  does nothing.
      */
@@ -313,7 +313,7 @@ public class ProcessThread extends PtolemyThread {
     /** Iterate the actor associate with this thread.
      *  @return True if either prefire() returns false
      *   or postfire returns true.
-     *  @throws IllegalActionException If the actor throws it.
+     *  @exception IllegalActionException If the actor throws it.
      */
     protected boolean _iterateActor()
             throws IllegalActionException {

@@ -441,9 +441,9 @@ public class IOPortController extends AttributeController {
 
             // Handle quantity managers.
             try {
-                if (port instanceof IOPort) { 
+                if (port instanceof IOPort) {
                     List qmList = ((IOPort) port).getQuantityManagers();
-                    if (qmList != null && qmList.size() > 0) {  
+                    if (qmList != null && qmList.size() > 0) {
                         Object object = null;
                         if (((IOPort) port).isOutput()) {
                             object = qmList.get(0);
@@ -452,10 +452,10 @@ public class IOPortController extends AttributeController {
                         }
                         ColorAttribute color = null;
                         if (object instanceof MonitoredQuantityManager) {
-                            color = ((MonitoredQuantityManager)object).color; 
+                            color = ((MonitoredQuantityManager)object).color;
                         } else if (object instanceof CompositeQM) {
                             color = ((CompositeQM) object).color;
-                        } 
+                        }
                         fill = color.asColor();
 
                         StringAttribute info = (StringAttribute) port

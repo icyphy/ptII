@@ -358,7 +358,7 @@ public class PteraController extends ModalController {
         _setCurrentConnectionMap();
         super.readInputs();
     }
-    
+
     /** Stop execution by invoking stop() of the director.
      */
     public void stop() {
@@ -448,7 +448,7 @@ public class PteraController extends ModalController {
 
     /** The Ptera director contained by this controller. */
     public PteraDirector director;
-    
+
     /** Return a map from the classes of the entities to be dropped into a state
      *  and the class names of the refinements that can be used to contain those
      *  entities.

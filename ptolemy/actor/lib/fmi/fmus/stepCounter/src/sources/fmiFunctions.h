@@ -24,9 +24,9 @@
 
    Revisions:
    - July 13, 2012: Portability improvements:
-				-	DllExport changed into FMIAPI
-				-	FUNCTION_PREFIX into FMIAPI_FUNCTION_PREFIX
-				-	Allow for undefined FMIAPI_FUNCTION_PREFIX
+                                -        DllExport changed into FMIAPI
+                                -        FUNCTION_PREFIX into FMIAPI_FUNCTION_PREFIX
+                                -        Allow for undefined FMIAPI_FUNCTION_PREFIX
    - Nov. 14, 2011: Adapted to FMI 2.0:
                        o Split into two files (fmiFunctions.h, fmiTypes.h) in order
                          that code that dynamically loads an FMU can directly
@@ -121,14 +121,14 @@ extern "C" {
 
 
 /* 
-	Export FMI API functions on Windows and under GCC.
-	If custom linking is desired then the FMIAPI must be 
-	defined before including this file.	For instance, 
-	it may be set to __declspec(dllimport).
+        Export FMI API functions on Windows and under GCC.
+        If custom linking is desired then the FMIAPI must be 
+        defined before including this file.        For instance, 
+        it may be set to __declspec(dllimport).
 */
 #if !defined(FMIAPI) && !defined(FMIAPI_FUNCTION_PREFIX)
  #if defined _WIN32 || defined __CYGWIN__
-	/* Note: both gcc & MSVC on Windows support this syntax. */
+        /* Note: both gcc & MSVC on Windows support this syntax. */
       #define FMIAPI __declspec(dllexport) 
  #else
   #if __GNUC__ >= 4
@@ -142,11 +142,11 @@ extern "C" {
 /* Macros to construct the real function name
    (prepend function name by FMIAPI_FUNCTION_PREFIX) */
 #if defined(FMIAPI_FUNCTION_PREFIX)
-	#define fmiPaste(a,b)     a ## b
-	#define fmiPasteB(a,b)    fmiPaste(a,b)
-	#define fmiFullName(name) fmiPasteB(FMIAPI_FUNCTION_PREFIX, name)
+        #define fmiPaste(a,b)     a ## b
+        #define fmiPasteB(a,b)    fmiPaste(a,b)
+        #define fmiFullName(name) fmiPasteB(FMIAPI_FUNCTION_PREFIX, name)
 #else
-	#define fmiFullName(name) name
+        #define fmiFullName(name) name
 #endif
 
 /***************************************************
@@ -169,7 +169,7 @@ Common Functions
 #define fmiSerializedFMUstateSize   fmiFullName(fmiSerializedFMUstateSize)
 #define fmiSerializeFMUstate        fmiFullName(fmiSerializeFMUstate)
 #define fmiDeSerializeFMUstate      fmiFullName(fmiDeSerializeFMUstate)
-/*	Removed: #define fmiGetPartialDerivatives    fmiFullName(fmiGetPartialDerivatives) */
+/*        Removed: #define fmiGetPartialDerivatives    fmiFullName(fmiGetPartialDerivatives) */
 #define fmiGetDirectionalDerivative fmiFullName(fmiGetDirectionalDerivative)
 
 
@@ -243,8 +243,8 @@ Common Functions
    FMIAPI fmiDeSerializeFMUstateTYPE    fmiDeSerializeFMUstate;
 
 /* Getting partial derivatives */
-/*	Removed: FMIAPI fmiGetPartialDerivativesTYPE fmiGetPartialDerivatives */
-	FMIAPI fmiGetDirectionalDerivativeTYPE fmiGetDirectionalDerivative;
+/*        Removed: FMIAPI fmiGetPartialDerivativesTYPE fmiGetPartialDerivatives */
+        FMIAPI fmiGetDirectionalDerivativeTYPE fmiGetDirectionalDerivative;
 
 /***************************************************
 Functions for FMI for Model Exchange

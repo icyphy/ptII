@@ -90,7 +90,7 @@ public class AttributeValueAttribute extends AbstractTextAttribute implements
         displayWidth = new Parameter(this, "displayWidth");
         displayWidth.setExpression("6");
         displayWidth.setTypeEquals(BaseType.INT);
-        
+
         useExpression = new Parameter(this, "useExpression");
         useExpression.setExpression("false");
         useExpression.setTypeEquals(BaseType.BOOLEAN);
@@ -107,7 +107,7 @@ public class AttributeValueAttribute extends AbstractTextAttribute implements
      *  default value 6.
      */
     public Parameter displayWidth;
-    
+
     /** If true, display the expression rather than the value.
      *  This is a boolean that defaults to false.
      */

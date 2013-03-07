@@ -292,10 +292,10 @@ public class ConceptRelationController extends BasicEdgeController {
                     double gamma = ((DoubleToken) (transition.gamma.getToken()))
                             .doubleValue();
                     c.setGamma(gamma);
-                    
+
                     // Set the color.
                     c.setStrokePaint(transition.color.asColor());
-                    
+
                     // Set dashed, if appropriate.
                     if (((BooleanToken)transition.dashed.getToken()).booleanValue()) {
                         float[] dashvalues = new float[2];

@@ -349,7 +349,7 @@ public class State extends ComponentEntity implements ConfigurableEntity,
      *  this state.
      *  @return The list of outgoing error transitions from
      *   this state.
-     *  @throws IllegalActionException If the parameters giving transition
+     *  @exception IllegalActionException If the parameters giving transition
      *   properties cannot be evaluated.
      */
     public List errorTransitionList() throws IllegalActionException {
@@ -527,7 +527,7 @@ public class State extends ComponentEntity implements ConfigurableEntity,
     /** Return the list of outgoing transitions from
      *  this state that are neither error nor termination transitions.
      *  @return A list of outgoing transitions from this state.
-     *  @throws IllegalActionException If the parameters giving transition
+     *  @exception IllegalActionException If the parameters giving transition
      *   properties cannot be evaluated.
      */
     public List nonErrorNonTerminationTransitionList() throws IllegalActionException {
@@ -542,7 +542,7 @@ public class State extends ComponentEntity implements ConfigurableEntity,
      *  and does include termination transitions.
      *  @return The list of non-preemptive outgoing transitions from
      *   this state.
-     *  @throws IllegalActionException If the parameters giving transition
+     *  @exception IllegalActionException If the parameters giving transition
      *   properties cannot be evaluated.
      */
     public List nonpreemptiveTransitionList() throws IllegalActionException {
@@ -557,7 +557,7 @@ public class State extends ComponentEntity implements ConfigurableEntity,
      *  this state.
      *  @return The list of preemptive outgoing transitions from
      *   this state. This will be an empty list if there aren't any.
-     *  @throws IllegalActionException If the parameters giving transition
+     *  @exception IllegalActionException If the parameters giving transition
      *   properties cannot be evaluated.
      */
     public List preemptiveTransitionList() throws IllegalActionException {
@@ -571,7 +571,7 @@ public class State extends ComponentEntity implements ConfigurableEntity,
      *  this state.
      *  @return The list of termination transitions from
      *   this state. This will be an empty list if there aren't any.
-     *  @throws IllegalActionException If the parameters giving transition
+     *  @exception IllegalActionException If the parameters giving transition
      *   properties cannot be evaluated.
      */
     public List terminationTransitionList() throws IllegalActionException {
@@ -720,7 +720,7 @@ public class State extends ComponentEntity implements ConfigurableEntity,
 
     /** Update the cached transition lists. This method is read-synchronized on
      *  the workspace.
-     *  @throws IllegalActionException If the parameters giving transition
+     *  @exception IllegalActionException If the parameters giving transition
      *   properties cannot be evaluated.
      */
     private void _updateTransitionLists() throws IllegalActionException {
@@ -731,7 +731,7 @@ public class State extends ComponentEntity implements ConfigurableEntity,
             _errorTransitionList.clear();
             _terminationTransitionList.clear();
             _nonErrorNonTerminationTransitionList.clear();
-            
+
             // If this state is final, it should not have any outgoing
             // transitions.
             if (((BooleanToken)isFinalState.getToken()).booleanValue()) {
@@ -742,7 +742,7 @@ public class State extends ComponentEntity implements ConfigurableEntity,
             }
 
             Iterator transitions = outgoingPort.linkedRelationList().iterator();
-            
+
             while (transitions.hasNext()) {
                 Transition transition = (Transition) transitions.next();
 
@@ -828,9 +828,9 @@ public class State extends ComponentEntity implements ConfigurableEntity,
 
     // Version of the cached reference to the refinement.
     private long _refinementVersion = -1;
-    
+
     // Cached list of termination transitions from this state.
-    private List _terminationTransitionList = new LinkedList();    
+    private List _terminationTransitionList = new LinkedList();
 
     // Version of cached transition lists.
     private long _transitionListVersion = -1;

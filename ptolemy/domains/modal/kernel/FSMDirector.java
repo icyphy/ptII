@@ -1349,7 +1349,7 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
         }
     }
 
-    /** Reset the output receivers, which are the inside receivers of 
+    /** Reset the output receivers, which are the inside receivers of
      *  the output ports of the container.
      *  @exception IllegalActionException If getting the receivers fails.
      */

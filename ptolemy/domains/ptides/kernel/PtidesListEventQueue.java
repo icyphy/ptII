@@ -163,7 +163,7 @@ public class PtidesListEventQueue implements DEEventQueue {
             if (ptidesEvent.receiver() instanceof PtidesReceiver) {
                 ((PtidesReceiver) ptidesEvent.receiver())
                         .putToReceiver(ptidesEvent.token());
-            } 
+            }
         }
         if (_debugging) {
             _debug("--- taking " + index + "th element from queue: "

@@ -150,17 +150,17 @@ public class RecordToken extends AbstractNotConvertibleToken {
      */
     public RecordToken(Map<String, Token> fieldMap) throws IllegalActionException {
         _initializeStorage();
-        
-        // iterate through map and put values under sanitized key in local map 
+
+        // iterate through map and put values under sanitized key in local map
         for (Map.Entry<String, Token> entry : fieldMap.entrySet()) {
             String key = entry.getKey();
             Token val = entry.getValue();
-            
+
             if (key == null || val == null) {
                 throw new IllegalActionException("RecordToken: given "
                         + "map contains either null keys " + "or null values.");
             }
-            
+
             _fields.put(StringUtilities.sanitizeName(key), val);
         }
     }

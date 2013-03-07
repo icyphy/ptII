@@ -167,7 +167,7 @@ public class CSVReader extends LineReader {
         // will want to resolve to general, which is fine. I.e., resolving
         // to anything above record types is also OK.
         // output.setTypeAtMost(RecordType.EMPTY_RECORD);
-        
+
         _attachText("_iconDescription", "<svg>\n"
                 + "<rect x=\"-25\" y=\"-20\" " + "width=\"50\" height=\"40\" "
                 + "style=\"fill:white\"/>\n"
@@ -250,11 +250,11 @@ public class CSVReader extends LineReader {
                 trigger.get(i);
             }
         }
-        
+
         if (_firstFiring) {
             _openAndReadFirstTwoLines();
             _firstFiring = false;
-            
+
             if (_currentLine == null) {
                 throw new IllegalActionException("File has no data.");
             }
@@ -354,7 +354,7 @@ public class CSVReader extends LineReader {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                       protected methods                   ////
+    ////                         protected methods                 ////
 
     /** Override the default to eliminate the default type constraints/.
      *  @return An empty set of type constraints
@@ -363,7 +363,7 @@ public class CSVReader extends LineReader {
     protected Set<Inequality> _defaultTypeConstraints() {
         return new HashSet<Inequality>();
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
 
@@ -372,19 +372,19 @@ public class CSVReader extends LineReader {
 
     /** Field names for the output record. */
     private String[] _fieldNames;
-    
+
     /** The parse tree evaluator to use. */
     private ParseTreeEvaluator _parseTreeEvaluator = null;
 
     /** The parser to use. */
     private PtParser _parser = null;
-    
+
     /** The scope for the parser. */
     private ParserScope _scope = null;
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
-    
+
     // FIXME: This is copied from ExpressionToToken. Some way to share?
     private class ExpressionScope extends ModelScope {
         /** Look up and return the attribute with the specified name in the

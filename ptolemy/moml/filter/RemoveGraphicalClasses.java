@@ -378,7 +378,7 @@ public class RemoveGraphicalClasses extends MoMLFilterSimple {
                 "ptolemy.actor.lib.Discard");
         _graphicalClasses.put("ptolemy.actor.lib.gui.MatrixViewer",
                 "ptolemy.actor.lib.Discard");
-        
+
         //note: kepler display related actors should not be added here.
         //if the actor supports '-redirectgui', it should be put into file: $Kepler/common/configs/ptolemy/configs/kepler/KeplerDisplayActorWithRedirect.xml.
         //if the actor does not support '-redirectgui', it should be put into file: $Kepler/common/configs/ptolemy/configs/kepler/KeplerDisplayActorNoRedirect.xml.

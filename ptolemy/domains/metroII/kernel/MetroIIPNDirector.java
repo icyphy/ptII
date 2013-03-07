@@ -59,24 +59,24 @@ import ptolemy.kernel.util.Workspace;
 //// MetroIIPNDirector
 
 /**
- * <p> MetroIIPNDirector extends PNDirector and implements the 
- * MetroIIEventHandler interface. In addition to being blocked on 
- * read or write, the actors governed by MetroIIPNDirector may 
- * be blocked by MetroII events: 'Get.End' or 'Put.Begin'. 'Get.End' 
- * is PROPOSED after a token is successfully obtained from the 
+ * <p> MetroIIPNDirector extends PNDirector and implements the
+ * MetroIIEventHandler interface. In addition to being blocked on
+ * read or write, the actors governed by MetroIIPNDirector may
+ * be blocked by MetroII events: 'Get.End' or 'Put.Begin'. 'Get.End'
+ * is PROPOSED after a token is successfully obtained from the
  * receiver. And the actor is blocked until 'Get.End' is NOTIFIED.
- * 'Put.Begin' is PROPOSED before trying to put a token into the 
- * receiver. Similarly, the actor is blocked until 'Put.Begin' is 
+ * 'Put.Begin' is PROPOSED before trying to put a token into the
+ * receiver. Similarly, the actor is blocked until 'Put.Begin' is
  * NOTIFIED. </p>
- * 
- * Known issue: threads created by Yieldadapter correctly stop but 
- * the ones created by ProcessDirector do not. It seems stop() is 
- * called for each thread in ProcessDirector.stop() but no effect 
- * can be observed. Don't know why.  
- * BTW, stop() is a deprecated function in java. 
- * 
- * 
- * 
+ *
+ * Known issue: threads created by Yieldadapter correctly stop but
+ * the ones created by ProcessDirector do not. It seems stop() is
+ * called for each thread in ProcessDirector.stop() but no effect
+ * can be observed. Don't know why.
+ * BTW, stop() is a deprecated function in java.
+ *
+ *
+ *
  * @author Liangpeng Guo
  * @version $Id$
  * @since Ptolemy II 9.1
@@ -127,8 +127,8 @@ public class MetroIIPNDirector extends PNDirector implements
     }
 
     /**
-     * The same as super class except replacing the PNQueueReceiver 
-     * by MetroIIPNQueueReceiver. 
+     * The same as super class except replacing the PNQueueReceiver
+     * by MetroIIPNQueueReceiver.
      */
     public Receiver newReceiver() {
         MetroIIPNQueueReceiver receiver = new MetroIIPNQueueReceiver();
@@ -148,7 +148,7 @@ public class MetroIIPNDirector extends PNDirector implements
     }
 
     /**
-     * Add a proposed MetroII event into the director's event list. 
+     * Add a proposed MetroII event into the director's event list.
      * @param e
      */
     public synchronized void addProposedMetroIIEvent(Event.Builder e) {
@@ -156,7 +156,7 @@ public class MetroIIPNDirector extends PNDirector implements
     }
 
     /**
-     * Implement YieldAdapter interface. 
+     * Implement YieldAdapter interface.
      */
     @Override
     public YieldAdapterIterable<Iterable<Builder>> adapter() {
@@ -171,13 +171,13 @@ public class MetroIIPNDirector extends PNDirector implements
     }
 
     /**
-     * Implement fire() with MetroII event handling. 
-     * In each iteration, getfire() waits until all other threads are blocked 
-     * and yield returns MetroII events. When getfire() continues, notify the 
-     * threads blocked on MetroII events based on the event status. A thread 
-     * blocked on MetroII event is not notified until the blocking MetroII 
-     * event is NOTIFIED. 
-     * 
+     * Implement fire() with MetroII event handling.
+     * In each iteration, getfire() waits until all other threads are blocked
+     * and yield returns MetroII events. When getfire() continues, notify the
+     * threads blocked on MetroII events based on the event status. A thread
+     * blocked on MetroII event is not notified until the blocking MetroII
+     * event is NOTIFIED.
+     *
      * The rest of the function is copied from fire() of ProcessDirector
      */
     @Override
@@ -325,11 +325,11 @@ public class MetroIIPNDirector extends PNDirector implements
 
     /**
      * Create a MetroII event with the name: thread.getName()+suffix
-     * Add the MetroII event into the director's event list. 
+     * Add the MetroII event into the director's event list.
      * Block the thread calling proposeMetroIIEvent().
-     * 
+     *
      * @param suffix The suffix of MetroII event name
-     * @throws InterruptedException
+     * @exception InterruptedException
      */
     public void proposeMetroIIEvent(String suffix) throws InterruptedException {
         // Actor actor = (Actor) getContainer().getContainer();
@@ -348,11 +348,11 @@ public class MetroIIPNDirector extends PNDirector implements
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                  protected methods                        ////
+    ////                         protected methods                 ////
 
-    /** Return the number of threads that are currently blocked on 
-     *  a MetroII event. 
-     *  @return Return the number of threads that are currently blocked 
+    /** Return the number of threads that are currently blocked on
+     *  a MetroII event.
+     *  @return Return the number of threads that are currently blocked
      *  on a MetroII event.
      */
     protected final synchronized int _getMetroIIEventBlockedThreadsCount() {
@@ -367,8 +367,8 @@ public class MetroIIPNDirector extends PNDirector implements
             .synchronizedSet(new HashSet());
 
     /**
-     * Notify all the threads blocked on MetroII events. 
-     * Request finish on all the receivers. 
+     * Notify all the threads blocked on MetroII events.
+     * Request finish on all the receivers.
      */
     @Override
     protected void _requestFinishOnReceivers() {
@@ -383,10 +383,10 @@ public class MetroIIPNDirector extends PNDirector implements
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                  private methods                          ////
+    ////                         private methods                   ////
 
     /**
-     * Create a MetroII event with the given name and type. 
+     * Create a MetroII event with the given name and type.
      * @param name Name of the MetroII event
      * @param t Type of the MetroII event
      * @return newly created MetroII event
@@ -401,10 +401,10 @@ public class MetroIIPNDirector extends PNDirector implements
     }
 
     /**
-     * Look up the ID of given MetroII event in the dictionary _eventNameID. 
-     * If not found, add the MetroII event into _eventNameID with a new ID. 
-     *  
-     * @param event_name The name of the event being looked up 
+     * Look up the ID of given MetroII event in the dictionary _eventNameID.
+     * If not found, add the MetroII event into _eventNameID with a new ID.
+     *
+     * @param event_name The name of the event being looked up
      * @return The ID of the event
      */
     private synchronized int _eventName2Id(String event_name) {
@@ -424,13 +424,13 @@ public class MetroIIPNDirector extends PNDirector implements
     private Hashtable<String, Integer> _eventNameID = new Hashtable<String, Integer>();
 
     /**
-     * The list of MetroII events being proposed by threads. 
+     * The list of MetroII events being proposed by threads.
      */
     private List _proposedMetroIIEventList = Collections
             .synchronizedList(new ArrayList<Event.Builder>());
 
     /**
-     * The list of locks for each thread. 
+     * The list of locks for each thread.
      */
     private List _eventLock = Collections
             .synchronizedList(new ArrayList<Object>());;

@@ -332,7 +332,7 @@ public class VisualModelReference extends ModelReference {
                         };
 
                         try {
-                            if (!SwingUtilities.isEventDispatchThread()) { 
+                            if (!SwingUtilities.isEventDispatchThread()) {
                                 SwingUtilities.invokeAndWait(doOpen);
                             } else {
                                 // Exporting HTML for ptolemy/actor/lib/hoc/demo/ModelReference/ModelReference.xml

@@ -1,5 +1,5 @@
 /* Super type of all exceptions.
- * 
+ *
  * Copyright (c) 2012-2013,
  * Programming Environment Laboratory (PELAB),
  * Department of Computer and getInformation Science (IDA),
@@ -45,7 +45,7 @@ package ptolemy.domains.openmodelica.lib.omc;
 /**
   Super type of all exceptions that can be encountered while communicating
   with the Modelica compiler.
- 
+
   @author Andreas Remar
   @version $Id$
   @since Ptolemy II 9.1

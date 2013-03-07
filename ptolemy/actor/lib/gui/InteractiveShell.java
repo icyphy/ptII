@@ -369,7 +369,7 @@ public class InteractiveShell extends TypedAtomicActor implements Placeable,
             }
         };
         try {
-            if (!SwingUtilities.isEventDispatchThread()) { 
+            if (!SwingUtilities.isEventDispatchThread()) {
                 SwingUtilities.invokeAndWait(doInitialize);
             } else {
                 // Exporting HTML for

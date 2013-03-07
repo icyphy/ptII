@@ -131,7 +131,7 @@ import ptolemy.util.MessageHandler;
  */
 public class SetVariable extends TypedAtomicActor implements ChangeListener,
         ExplicitChangeContext {
-    
+
     /** Construct an actor in the specified workspace with an empty
      *  string as a name. You can then change the name with setName().
      *  If the workspace argument is null, then use the default workspace.
@@ -140,9 +140,9 @@ public class SetVariable extends TypedAtomicActor implements ChangeListener,
      *  @param workspace The workspace that will list the entity.
      */
     public SetVariable(Workspace workspace) {
-        super(workspace); 
+        super(workspace);
     }
-    
+
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.

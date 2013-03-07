@@ -4228,7 +4228,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                         // to edit the UserLibrary.
                         boolean derivedIsNotWithinEntityLibrary = true;
                         CompositeEntity derivedContainer = derived;
-                        while (derivedContainer != null 
+                        while (derivedContainer != null
                                 && (derivedIsNotWithinEntityLibrary = !(derivedContainer instanceof EntityLibrary))) {
                             derivedContainer = (CompositeEntity)derivedContainer.getContainer();
                         }
@@ -5724,7 +5724,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                                 // to edit the UserLibrary.
                                 boolean derivedIsNotWithinEntityLibrary = true;
                                 NamedObj derivedContainer = derived;
-                                while (derivedContainer != null 
+                                while (derivedContainer != null
                                         && (derivedIsNotWithinEntityLibrary = !(derivedContainer instanceof EntityLibrary))) {
                                     derivedContainer = derivedContainer.getContainer();
                                 }

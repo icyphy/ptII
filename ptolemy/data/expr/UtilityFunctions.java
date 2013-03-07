@@ -1825,7 +1825,7 @@ public class UtilityFunctions {
             double distance) throws IllegalActionException {
         return token1.isCloseTo(token2, distance);
     }
-    
+
     /** Query the user for a yes-no answer and return a boolean.
      *  This function will open a dialog if a GUI is available,
      *  and otherwise will use standard input and output.

@@ -785,16 +785,16 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable,
             // In HTML5, can omit "type" attributes for scripts and stylesheets
             // NOTE: Due to a bug somewhere (browser, Javascript, etc.), can't end this with />. Have to use </script>.
             printWriter
-                    .println("<script src=\"" + jsLibrary + "javascript/" 
+                    .println("<script src=\"" + jsLibrary + "javascript/"
                             + FILENAMES[0] + "\"></script>");
             printWriter
-                    .println("<script src=\"" + jsLibrary + "javascript/" 
+                    .println("<script src=\"" + jsLibrary + "javascript/"
                             + FILENAMES[1] + "\"></script>");
 
             // FILENAMES[2] is a stylesheet <link, so it goes in the head, see above.
 
             printWriter
-                    .println("<script src=\"" + jsLibrary + "javascript/" 
+                    .println("<script src=\"" + jsLibrary + "javascript/"
                             + FILENAMES[3] + "\"></script>");
             // Could alternatively use a CDS (Content Delivery Service) for the JavaScript library for jquery.
             // index.println("<script type=\"text/javascript\" src=\"http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js\"></script>");
@@ -828,7 +828,7 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable,
                     JCanvas canvas = _basicGraphFrame.getJGraph().getGraphPane().getCanvas();
                     background = canvas.getBackground();
                 }
-                String color = "#" 
+                String color = "#"
                         + String.format("%02x", background.getRed())
                         + String.format("%02x", background.getGreen())
                         + String.format("%02x", background.getBlue());
@@ -1000,7 +1000,7 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable,
             String title = "Actor"; // Default in case there is no title key.
             HashMap<String, String> areaAttributes = _areaAttributes
                     .get(location.object);
-            // If areaAttributes is null, omit the entry, since an HTML area 
+            // If areaAttributes is null, omit the entry, since an HTML area
             // element is required to have an href attribute
             if (areaAttributes != null) {
                 for (Map.Entry<String, String> entry : areaAttributes
@@ -1019,7 +1019,7 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable,
                         attributeString.append("\" ");
                     }
                 }
-                
+
                 // Write the name of the actor followed by the table.
                 result.append("<area shape=\"rect\" coords=\""
                         + (int) location.topLeftX + "," + (int) location.topLeftY

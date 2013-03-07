@@ -117,7 +117,7 @@ public class ExportModel {
      *  @param outputFileOrDirectory If non-null, then the file or directory
      *  in which to generate the file(s).
      *
-     *  @param save True if the model should be saved after being run. 
+     *  @param save True if the model should be saved after being run.
      *
      *  @param whiteBackground True if the model background should be set to white.
      *
@@ -175,7 +175,7 @@ public class ExportModel {
      *  @param outputFileOrDirectory If non-null, then the file or directory
      *  in which to generate the file(s).
      *
-     *  @param save True if the model should be saved after being run. 
+     *  @param save True if the model should be saved after being run.
      *
      *  @param timeOut Time out in milliseconds.  30000 is a good value.
      *

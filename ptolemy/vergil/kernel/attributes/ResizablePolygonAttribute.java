@@ -239,7 +239,7 @@ public class ResizablePolygonAttribute extends FilledShapeAttribute {
             throw new InternalErrorException(e);
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     private boolean _inAttributeChanged = false;

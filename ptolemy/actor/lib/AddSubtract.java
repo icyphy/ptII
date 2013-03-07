@@ -207,10 +207,10 @@ public class AddSubtract extends TypedAtomicActor {
     protected Set<Inequality> _customTypeConstraints() {
         Set<Inequality> result = new HashSet<Inequality>();
         if (isBackwardTypeInferenceEnabled()) {
-            result.add(new Inequality(output.getTypeTerm(), 
+            result.add(new Inequality(output.getTypeTerm(),
                     plus.getTypeTerm()));
         }
         return result;
     }
-   
+
 }

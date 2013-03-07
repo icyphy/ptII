@@ -45,7 +45,7 @@ package ptolemy.domains.openmodelica.lib.omc;
 /**
  <p>The interface to the Modelica command that should be implemented by OMCCommand.</p>
 
-    @author Mana Mirzaei 
+    @author Mana Mirzaei
     @version $Id$
     @since Ptolemy II 9.1
     @Pt.ProposedRating Red (cxh)

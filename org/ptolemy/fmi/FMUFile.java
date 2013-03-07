@@ -270,7 +270,7 @@ public class FMUFile {
                 foundCoSimulation = true;
                 Element cosimulation = (Element) implementation.item(0);
                 fmiModelDescription.capabilities = new FMICoSimulationCapabilities(cosimulation);
-                
+
                 // In FMI 2.0, the modelIdentifier is given in the CoSimulation element,
                 // not in the root element (presumably so that CoSimulation and ModelExcchange
                 // can use non-conflicting names and hence divergent C implementations.
@@ -291,10 +291,10 @@ public class FMUFile {
                     + fmiModelDescription.fmiVersion
                     + "does not support CoSimulation.  "
                     + "In FMI 1.0, the CoSimulation_Standalone element is optional.  "
-                    + "In FMI 2.0, there must be a CoSimulation element.  " 
+                    + "In FMI 2.0, there must be a CoSimulation element.  "
                     + "Note that Model Exchange is not yet supported by Ptolemy II.");
         }
-                
+
         // ModelVariables.
         // This has to be done after the native libraries have been loaded.
         // NodeList is not a list, it only has getLength() and item(). #fail.

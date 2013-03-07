@@ -43,12 +43,12 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
-/** This actor is a {@link ptolemy.actor.lib.Transformer} designed for use with 
- * the {@link AFDXESs}. This actor comes with parameters that configure one 
+/** This actor is a {@link ptolemy.actor.lib.Transformer} designed for use with
+ * the {@link AFDXESs}. This actor comes with parameters that configure one
  * virtual link which belong to one AFDX End-system.
  * To improve visibility this parameter is made visible using a BoxedValueIcon.
  * For more information see: <i>AFDX network simulation in PtolemyII</i>.
- *       
+ *
  *  @author G. Lasnier
  *  @version $Id$
    @since Ptolemy II 0.2
@@ -68,21 +68,21 @@ public class AFDXVlCfg extends Transformer {
         super(container, name);
 
         vlink = new Parameter(this, "vlink");
-        vlink.setTypeEquals(BaseType.STRING);       
+        vlink.setTypeEquals(BaseType.STRING);
         vlink.setExpression("\"VL\"");
 
         bag = new Parameter(this, "bag");
         bag.setDisplayName("bag (ms)");
-        bag.setTypeEquals(BaseType.DOUBLE);       
+        bag.setTypeEquals(BaseType.DOUBLE);
         bag.setExpression("0.0");
 
         trameSize = new Parameter(this, "trameSize");
         trameSize.setDisplayName("trameSize (bytes)");
-        trameSize.setTypeEquals(BaseType.INT);       
+        trameSize.setTypeEquals(BaseType.INT);
         trameSize.setExpression("0");
 
         schedulerMux = new Parameter(this, "schedulerMux");
-        schedulerMux.setTypeEquals(BaseType.STRING);       
+        schedulerMux.setTypeEquals(BaseType.STRING);
         schedulerMux.setExpression("\"Scheduler multiplexor name\"");
 
         // Icon description.
@@ -156,7 +156,7 @@ public class AFDXVlCfg extends Transformer {
      */
     public void fire() throws IllegalActionException {
         super.fire();
-        if (input.hasToken(0)) {         
+        if (input.hasToken(0)) {
             output.send(0, input.get(0));
         }
     }

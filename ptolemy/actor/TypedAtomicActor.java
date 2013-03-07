@@ -199,7 +199,7 @@ public class TypedAtomicActor extends AtomicActor<TypedIOPort> implements
      *  @return The new port.
      *  @exception NameDuplicationException If the actor already has a port
      *   with the specified name.
-     */ 
+     */
     public Port newPort(String name) throws NameDuplicationException {
         try {
             _workspace.getWriteAccess();
@@ -312,14 +312,14 @@ public class TypedAtomicActor extends AtomicActor<TypedIOPort> implements
         return result;
     }
 
-    /** Return the default type constraints. These constraints involve only 
+    /** Return the default type constraints. These constraints involve only
      *  undeclared ports and require outputs to be greater than or equal to
-     *  inputs. 
-     * 
-     *  In addition, if backward type inference is enabled, then also 
-     *  establish constraint that require inputs to be greater than or equal 
-     *  to outputs. With backward type inference, the types of undeclared 
-     *  inputs and outputs are unified.  
+     *  inputs.
+     *
+     *  In addition, if backward type inference is enabled, then also
+     *  establish constraint that require inputs to be greater than or equal
+     *  to outputs. With backward type inference, the types of undeclared
+     *  inputs and outputs are unified.
      *
      *  Override this method to eliminate the default type constraints, or to
      *  specify different ones.
@@ -344,7 +344,7 @@ public class TypedAtomicActor extends AtomicActor<TypedIOPort> implements
                 if (inPortConstraints.isEmpty() && outPortConstraints.isEmpty()) {
                     result.add(new Inequality(input.getTypeTerm(), output
                             .getTypeTerm()));
-                    if(isBackwardTypeInferenceEnabled()) {
+                    if (isBackwardTypeInferenceEnabled()) {
                         result.add(new Inequality(output
                                 .getTypeTerm(), input.getTypeTerm()));
                     }

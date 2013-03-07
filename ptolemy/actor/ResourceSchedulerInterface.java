@@ -53,12 +53,12 @@ public interface ResourceSchedulerInterface {
      *   scheduled by this scheduler cannot be retrieved.
      */
     public Time initialize() throws IllegalActionException;
-    
+
     /** Clean up.
      *  @exception IllegalActionException Thrown by super class.
      */
     public void wrapup() throws IllegalActionException;
-    
+
     /** Schedule a new actor for execution and return the next time
      *  this scheduler has to perform a reschedule. Derived classes
      *  must implement this method to actually schedule actors, this
@@ -75,7 +75,7 @@ public interface ResourceSchedulerInterface {
      */
     public Time schedule(Actor actor, Time currentPlatformTime,
             Double deadline, Time executionTime) throws IllegalActionException;
-    
+
     /** If the last actor that was scheduled finished execution
      *  then this method returns true.
      *  @return True if last actor that was scheduled finished

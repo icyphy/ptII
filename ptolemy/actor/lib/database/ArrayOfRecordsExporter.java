@@ -68,7 +68,7 @@ public class ArrayOfRecordsExporter extends LineWriter {
     public ArrayOfRecordsExporter(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
-        
+
         // Clear type constraint set by base class.
         input.setTypeEquals(BaseType.UNKNOWN);
         input.setMultiport(false);

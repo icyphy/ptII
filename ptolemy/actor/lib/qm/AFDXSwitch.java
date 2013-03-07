@@ -81,7 +81,7 @@ import ptolemy.kernel.util.Workspace;
  *  @author Gilles Lasnier, Based on BasiSwitch.java by Patricia Derler
  *  @version $Id$
  *  @since Ptolemy II 8.0
- *  @Pt.ProposedRating 
+ *  @Pt.ProposedRating
  *  @Pt.AcceptedRating
  */
 public class AFDXSwitch extends MonitoredQuantityManager {
@@ -327,10 +327,10 @@ public class AFDXSwitch extends MonitoredQuantityManager {
                 if (_inputTokens.get(i).size() > 0) {
                     event = _inputTokens.get(i).getFirst();
                     if (event.timeStamp.compareTo(currentTime) == 0) {
-                        Time lastTimeStamp = currentTime;                  
+                        Time lastTimeStamp = currentTime;
                         if (_switchFabricQueue.size() > 0) {
                             Object[] last = (Object[]) _switchFabricQueue.getLast().contents;
-                            Object[] eObj = (Object[]) event.contents;                        
+                            Object[] eObj = (Object[]) event.contents;
                             if ( ((AFDXVlink) last[2]).getSource().equals(((AFDXVlink) eObj[2]).getSource())
                                     && ((Time) last[3]).compareTo(eObj[3]) == 0 ) {
                                 multicast = true;
@@ -350,7 +350,7 @@ public class AFDXSwitch extends MonitoredQuantityManager {
                                     .add(_technologicalDelay);
                         }
                         _switchFabricQueue.add(new TimedEvent(computedTimeStamp, event.contents));
-                        
+
                         _inputTokens.get(i).remove(event);
                     }
                 }
@@ -361,7 +361,7 @@ public class AFDXSwitch extends MonitoredQuantityManager {
             if (_switchFabricQueue.size() > 0) {
                 computedTimeStamp = null;
                 multicast = false;
-                
+
                 event = _switchFabricQueue.getFirst();
                 if (event.timeStamp.compareTo(currentTime) == 0) {
                     Object[] output = (Object[]) event.contents;
@@ -407,18 +407,18 @@ public class AFDXSwitch extends MonitoredQuantityManager {
                     if (event.timeStamp.compareTo(currentTime) == 0) {
                         Object[] output = (Object[]) event.contents;
 
-                        // The receiver is an AFDXSwitch (qm). 
+                        // The receiver is an AFDXSwitch (qm).
                         Receiver receiver = (Receiver) output[0];
                         if (receiver instanceof IntermediateReceiver) {
                             String[] labels = new String[] { timestamp, vlink, payload };
-                            Token[] values = new Token[] {new DoubleToken(event.timeStamp.getDoubleValue()), 
+                            Token[] values = new Token[] {new DoubleToken(event.timeStamp.getDoubleValue()),
                                     new ObjectToken (output[2]),
                                     (Token) output[1] };
                             RecordToken record = new RecordToken(labels, values);
                             _sendToReceiver((Receiver) output[0], record);
                         } else { // Else the receiver is an actor.
                             Token token = (Token) output[1];
-                            _sendToReceiver((Receiver) output[0], token);                            
+                            _sendToReceiver((Receiver) output[0], token);
                         }
                         _outputTokens.get(i).remove(event);
                     }
@@ -479,13 +479,13 @@ public class AFDXSwitch extends MonitoredQuantityManager {
         Time lastTimeStamp = currentTime;
         if (_inputTokens.get(actorPortId).size() > 0) {
             if (currentTime.compareTo(
-                    (Time) ((Object[]) _inputTokens.get(actorPortId).getLast().contents)[3]) 
+                    (Time) ((Object[]) _inputTokens.get(actorPortId).getLast().contents)[3])
                         == 0) {
                 multicast = true;
             }
 
             lastTimeStamp = _inputTokens.get(actorPortId).getLast().timeStamp;
-        }        
+        }
 
         if (multicast) {
             computedTimeStamp = lastTimeStamp;
@@ -493,7 +493,7 @@ public class AFDXSwitch extends MonitoredQuantityManager {
         } else {
             computedTimeStamp = lastTimeStamp.add(_inputBufferDelay);
         }
-        
+
         _inputTokens.get(actorPortId).add(
                 new TimedEvent(computedTimeStamp,
                                new Object[] {receiver, tok , vl , currentTime}));
@@ -573,7 +573,7 @@ public class AFDXSwitch extends MonitoredQuantityManager {
     protected void _scheduleRefire() throws IllegalActionException {
         _nextFireTime = Time.POSITIVE_INFINITY;
         for (int i = 0; i < _numberOfPorts; i++) {
-            _nextFireTime = _getNextFireTime(_nextFireTime, 
+            _nextFireTime = _getNextFireTime(_nextFireTime,
                     _inputTokens.get(i));
             _nextFireTime = _getNextFireTime(_nextFireTime,
                     _outputTokens.get(i));

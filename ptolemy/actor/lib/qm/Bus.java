@@ -36,7 +36,7 @@ import ptolemy.actor.Actor;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.IntermediateReceiver;
 import ptolemy.actor.QuantityManager;
-import ptolemy.actor.Receiver; 
+import ptolemy.actor.Receiver;
 import ptolemy.actor.lib.qm.QuantityManagerListener.EventType;
 import ptolemy.actor.sched.FixedPointDirector;
 import ptolemy.actor.util.FIFOQueue;
@@ -111,7 +111,7 @@ public class Bus extends MonitoredQuantityManager {
 
     ///////////////////////////////////////////////////////////////////
     //                          public variables                     //
-    
+
     /** The service time. This is a double with default 0.1.
      *  It is required to be positive.
      */
@@ -175,10 +175,10 @@ public class Bus extends MonitoredQuantityManager {
         newObject._tokens = new FIFOQueue();
         newObject._receiversAndTokensToSendTo = new Hashtable<Receiver, Token>();
         newObject._messageLengths = new Hashtable<IOPort, Double>();
-        
+
         newObject._nextReceiver = null;
         newObject._nextTimeFree = null;
-        
+
         newObject._serviceTimeValue = 0.1;
         return newObject;
     }
@@ -193,8 +193,8 @@ public class Bus extends MonitoredQuantityManager {
                 && currentTime.compareTo(_nextTimeFree) == 0) {
             Object[] output = (Object[]) _tokens.get(0);
             Receiver receiver = (Receiver) output[0];
-            Token token = (Token) output[1]; 
-    
+            Token token = (Token) output[1];
+
             // FIXME: See the FIXME's below. The commented
             // out code below is an attempt to address it, but a
             // questionable one.
@@ -218,7 +218,7 @@ public class Bus extends MonitoredQuantityManager {
             // but there is no assurance that the director's
             // container will fire to handle that token.
             // We handle this by requesting a firing of the composite.
-    
+
             //            if (!(receiver instanceof IntermediateReceiver)) {
             //                Actor container = (Actor) receiver.getContainer()
             //                        .getContainer();
@@ -248,7 +248,7 @@ public class Bus extends MonitoredQuantityManager {
             //            } else {
             _sendToReceiver(receiver, token);
             //            }
-    
+
             if (_debugging) {
                 _debug("At time " + currentTime + ", completing send to "
                         + receiver.getContainer().getFullName() + ": " + token);
@@ -398,7 +398,7 @@ public class Bus extends MonitoredQuantityManager {
                     _scheduleRefire();
                 }
             }
-        } 
+        }
 
         if (_debugging) {
             _debug("At time " + getDirector().getModelTime()
@@ -406,25 +406,25 @@ public class Bus extends MonitoredQuantityManager {
                     + receiver.getContainer().getFullName() + ": " + token);
         }
     }
-    
-    /** Set the messageLength for messages from a specific port. The port 
+
+    /** Set the messageLength for messages from a specific port. The port
      *  specifies this by a function call in the QuantityManager parameter.
      *  "Bus.setParameters(1.1)"
      *  @param messageLength The length of the message. The message is then delayed
      *    by serviceTime * messageLength.
      *  @return This.
-     *  @throws IllegalActionException Not thrown here.
+     *  @exception IllegalActionException Not thrown here.
      */
-    public Bus setParameters(double messageLength) throws IllegalActionException { 
+    public Bus setParameters(double messageLength) throws IllegalActionException {
         // The port is stored in _tempPort by IOPort in getQuantityManagers().
         // if the _tempPort is null this method might still be called because the
-        // attribute is validated. In that case, just return "this", which then is 
-        // used to 
+        // attribute is validated. In that case, just return "this", which then is
+        // used to
         if (_tempPort != null) {
             _messageLengths.put(_tempPort, (Double) messageLength);
         }
         return this;
-    } 
+    }
 
     /**
      * Reset the quantity manager and clear the tokens.
@@ -443,12 +443,12 @@ public class Bus extends MonitoredQuantityManager {
         Time currentTime = getDirector().getModelTime();
         _nextReceiver = (Receiver) ((Object[]) _tokens.get(0))[0];
         IOPort port = _nextReceiver.getContainer();
-        
+
         Double messageLength = _messageLengths.get(port);
         if (messageLength == null) {
-            messageLength = 1.0; 
+            messageLength = 1.0;
         }
-        
+
         _nextTimeFree = currentTime.add(_serviceTimeValue * messageLength);
         _fireAt(_nextTimeFree);
     }
@@ -464,7 +464,7 @@ public class Bus extends MonitoredQuantityManager {
     /** Next time a token is sent and the next token can be processed. */
     private Time _nextTimeFree;
 
-    /** Map of receivers and tokens to which the token provided via 
+    /** Map of receivers and tokens to which the token provided via
      *  sendToken() should be sent to. This is used with FixedPointDirectors.
      */
     private Hashtable<Receiver, Token> _receiversAndTokensToSendTo;

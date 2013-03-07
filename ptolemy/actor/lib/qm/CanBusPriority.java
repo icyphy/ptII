@@ -43,9 +43,9 @@ import ptolemy.kernel.util.Workspace;
 /** This actor is a {@link ptolemy.actor.lib.Transformer} designed for use with the {@link CanBus}.
  * This actor comes with a parameter <i>CanId</i> that sets the priority of the output port that it 'covers'.
  * To improve visibility this parameter is made visible using a BoxedValueIcon.
- * 
+ *
  * For more information see: <i>CAN bus simulator using Quantity Manager</i>.
- *       
+ *
  *  @author D. Marciano, P. Derler
  *  @version $Id$
    @since Ptolemy II 0.2
@@ -54,7 +54,7 @@ import ptolemy.kernel.util.Workspace;
    @Pt.AcceptedRating Red (derler)
  */
 public class CanBusPriority extends Transformer {
-    
+
    /** Construct an actor with the given container and name.
     *  @param container The container.
     *  @param name The name of this actor.
@@ -66,10 +66,10 @@ public class CanBusPriority extends Transformer {
    public CanBusPriority(CompositeEntity container, String name)
            throws NameDuplicationException, IllegalActionException {
        super(container, name);
-       
+
        value = new Parameter(this, "value");
        value.setExpression("1");
-       value.setTypeEquals(BaseType.INT);       
+       value.setTypeEquals(BaseType.INT);
 
        // icon description
        _attachText("_iconDescription", "<svg>\n"
@@ -77,15 +77,15 @@ public class CanBusPriority extends Transformer {
                + "width=\"60\" height=\"20\" "
                + "style=\"fill:white\"/>\n" + "</svg>\n");
    }
-   
+
    ///////////////////////////////////////////////////////////////////
    ////                     ports and parameters                  ////
 
-   /** 
+   /**
     *  Value of the CanId parameter.
     */
    public Parameter value;
-   
+
    ///////////////////////////////////////////////////////////////////
    ////                         public methods                    ////
 
@@ -105,7 +105,7 @@ public class CanBusPriority extends Transformer {
        }
        super.attributeChanged(attribute);
    }
-   
+
    /** Clone the actor into the specified workspace. This calls the
     *  base class and then sets the type constraints.
     *  @param workspace The workspace for the new object.
@@ -118,13 +118,13 @@ public class CanBusPriority extends Transformer {
        return newObject;
    }
 
-   /** 
+   /**
     * Take the input (if there is such one) and put it in the output.
     *  @exception IllegalActionException If there is no director.
     */
    public void fire() throws IllegalActionException {
        super.fire();
-       if (input.hasToken(0)) {         
+       if (input.hasToken(0)) {
            output.send(0, input.get(0));
        }
    }

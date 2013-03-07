@@ -1,5 +1,5 @@
 /* The interface to the compiler result.
- * 
+ *
  * Copyright (c) 2012-2013,
  * Programming Environment Laboratory (PELAB),
  * Department of Computer and getInformation Science (IDA),
@@ -43,8 +43,8 @@
 package ptolemy.domains.openmodelica.lib.omc;
 
 /**
- The interface to the compiler result that should be implemented by CompilerResult. 
- 
+ The interface to the compiler result that should be implemented by CompilerResult.
+
  @author Adrian Pop
  @version $Id$
  @since Ptolemy II 9.1

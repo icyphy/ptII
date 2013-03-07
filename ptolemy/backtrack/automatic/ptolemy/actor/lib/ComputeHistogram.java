@@ -52,7 +52,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
 
-/** 
+/**
  * Compute a histogram.
  * <p>
  * The output array consists of a set of vertical bars, each representing
@@ -85,41 +85,41 @@ public class ComputeHistogram extends TypedAtomicActor implements Rollbackable {
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
-    /**     
+    /**
      * The lowest value that will be recorded in the histogram.
      * This parameter has type double, with default value 0.0.
      */
     public Parameter minimumValue;
 
-    /**     
+    /**
      * The highest value that will be recorded in the histogram.
      * This parameter has type double, with default value 1.0.
      */
     public Parameter maximumValue;
 
-    /**     
+    /**
      * The number of bins.
      * This parameter has type int, with default value 10.
      */
     public Parameter numberOfBins;
 
-    /**     
+    /**
      * The number of tokens to compute the histogram for.
      */
     public PortParameter inputCount;
 
-    /**     
+    /**
      * The parameter that determines the consumption rate of the input.
      */
     public Parameter input_tokenConsumptionRate;
 
-    /**     
-     * The input port of type double. 
+    /**
+     * The input port of type double.
      */
     public TypedIOPort input;
 
-    /**     
-     * The input port of type array of integer. 
+    /**
+     * The input port of type array of integer.
      */
     public TypedIOPort output;
 
@@ -141,7 +141,7 @@ public class ComputeHistogram extends TypedAtomicActor implements Rollbackable {
 
     private int _numberOfBins;
 
-    /**     
+    /**
      * Construct an actor with the given container and name.
      * @param container The container.
      * @param name The name of this actor.
@@ -175,7 +175,7 @@ public class ComputeHistogram extends TypedAtomicActor implements Rollbackable {
         input_tokenConsumptionRate.setPersistent(false);
     }
 
-    /**     
+    /**
      * If the parameter is <i>binWidth</i> or <i>binOffset</i>, then
      * configure the histogram with the specified bin width or offset.
      * @param attribute The attribute that changed.
@@ -197,7 +197,7 @@ public class ComputeHistogram extends TypedAtomicActor implements Rollbackable {
         }
     }
 
-    /**     
+    /**
      * Clone the actor into the specified workspace.
      * @param workspace The workspace for the new object.
      * @return A new actor.
@@ -213,7 +213,7 @@ public class ComputeHistogram extends TypedAtomicActor implements Rollbackable {
         return newObject;
     }
 
-    /**     
+    /**
      * Read at most one input token from each input channel
      * and update the histogram.
      * @exception IllegalActionException If there is no director.
@@ -237,7 +237,7 @@ public class ComputeHistogram extends TypedAtomicActor implements Rollbackable {
         output.send(0, new ArrayToken(BaseType.INT, values));
     }
 
-    /**     
+    /**
      * Return false if the input does not have enough tokens to fire.
      * Otherwise, return true.
      * @return False if the number of input tokens available is not at least

@@ -249,30 +249,30 @@ public class EntityTreeModel implements TreeModel {
                     NamedObj locality = change.getLocality();
 
                     if (locality == null) {
-			if (root != null) {
-			    path.add(0, root);
-			} else {
-			    // BasicGraphFrame.dispose() calls setRoot(null),
-			    // so root might be null.
+                        if (root != null) {
+                            path.add(0, root);
+                        } else {
+                            // BasicGraphFrame.dispose() calls setRoot(null),
+                            // so root might be null.
 
-			    // Exporting gt models to html in a
-			    // headless environment with Xvfb results
-			    // in root being null.  However, this is
-			    // not always reproducible.
+                            // Exporting gt models to html in a
+                            // headless environment with Xvfb results
+                            // in root being null.  However, this is
+                            // not always reproducible.
 
-			    // To replicate on sisyphus (RHEL 6) as
-			    // the hudson user:
+                            // To replicate on sisyphus (RHEL 6) as
+                            // the hudson user:
 
-			    // Xvfb :2 -screen 0 1024x768x24 &
-			    // export DISPLAY=localhost:2.0
-			    // ant test.single -Dtest.name=ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTest -Djunit.formatter=plain
-			    // The error is
-			    //    java.lang.IllegalArgumentException: Last path component must be non-null
-			    //    at javax.swing.tree.TreePath.<init>(TreePath.java:105)
+                            // Xvfb :2 -screen 0 1024x768x24 &
+                            // export DISPLAY=localhost:2.0
+                            // ant test.single -Dtest.name=ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTest -Djunit.formatter=plain
+                            // The error is
+                            //    java.lang.IllegalArgumentException: Last path component must be non-null
+                            //    at javax.swing.tree.TreePath.<init>(TreePath.java:105)
 
-			    // Just return, our work here is done.
-			    return;
-			}
+                            // Just return, our work here is done.
+                            return;
+                        }
                     } else {
                         // The change has a declared locality.
                         // Construct a path to that locality.
@@ -293,20 +293,20 @@ public class EntityTreeModel implements TreeModel {
                         }
                     }
 
-		    try {
-			valueForPathChanged(new TreePath(path.toArray()),
-					    locality);
-		    } catch (IllegalArgumentException ex) {
-			throw new RuntimeException(
+                    try {
+                        valueForPathChanged(new TreePath(path.toArray()),
+                                            locality);
+                    } catch (IllegalArgumentException ex) {
+                        throw new RuntimeException(
                                 "Failed to instantiate a TreePath, path was "
                                 + Arrays.toString(path.toArray()) + " locality was "
-				+ locality
-				+ " root was: " + root
-				+ " changeRequest was: " + change
-				+ " changeRequest description: " + change.getDescription()
-				+ " changeRequest source: " + change.getSource()
-				+ " changeRequest class: " + change.getClass().getName(), ex);
-		    }
+                                + locality
+                                + " root was: " + root
+                                + " changeRequest was: " + change
+                                + " changeRequest description: " + change.getDescription()
+                                + " changeRequest source: " + change.getSource()
+                                + " changeRequest class: " + change.getClass().getName(), ex);
+                    }
                 }
             });
         }

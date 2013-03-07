@@ -46,7 +46,7 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
-/** 
+/**
  * This actor reads tokens from its input port, and for each token read
  * outputs an array that contains the current token as the first token,
  * followed by some number of previously read tokens.  The length of the
@@ -71,7 +71,7 @@ public class DelayLine extends SDFTransformer implements Rollbackable {
     // be the corresponding token type.
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
-    /**     
+    /**
      * The initial values of the delay line.
      * This parameter must contain an ArrayToken.
      * The default value is an array that contains 4 integer tokens.
@@ -88,12 +88,12 @@ public class DelayLine extends SDFTransformer implements Rollbackable {
     // output the output token.
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    /**     
-     * The delay line. 
+    /**
+     * The delay line.
      */
     private Token[] _delayLine = null;
 
-    /**     
+    /**
      * Construct an actor with the given container and name.
      * @param container The container.
      * @param name The name of this actor.
@@ -110,7 +110,7 @@ public class DelayLine extends SDFTransformer implements Rollbackable {
         output.setTypeAtLeast(initialValues);
     }
 
-    /**     
+    /**
      * Override the base class to allow type changes on
      * <i>initialValues</i>.
      * @exception IllegalActionException If type changes are not
@@ -124,7 +124,7 @@ public class DelayLine extends SDFTransformer implements Rollbackable {
         }
     }
 
-    /**     
+    /**
      * Clone the actor into the specified workspace. This overrides the
      * base class to handle type constraints.
      * @param workspace The workspace for the new object.
@@ -143,7 +143,7 @@ public class DelayLine extends SDFTransformer implements Rollbackable {
         return newObject;
     }
 
-    /**     
+    /**
      * Consume a token from the input, push it onto the delay line
      * and produce the output ArrayToken containing the current state of
      * the delay line.
@@ -156,7 +156,7 @@ public class DelayLine extends SDFTransformer implements Rollbackable {
         output.send(0, new ArrayToken($BACKUP$_delayLine()));
     }
 
-    /**     
+    /**
      * Initialize this actor by reading the value of <i>initialValues</i>.
      */
     public void initialize() throws IllegalActionException  {

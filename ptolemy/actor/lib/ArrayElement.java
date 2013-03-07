@@ -160,7 +160,7 @@ public class ArrayElement extends Transformer {
     }
 
     /** A monotonic function that returns an array type of which the
-     *  fields have the same type as the provided argument. 
+     *  fields have the same type as the provided argument.
      *  @author Marten Lohstroh
      */
     private class ArrayTypeFunction extends MonotonicFunction {

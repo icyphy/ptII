@@ -181,9 +181,9 @@ public abstract class MonitoredQuantityManager extends TypedAtomicActor
         }
         super.attributeChanged(attribute);
     }
-    
+
     protected IOPort _tempPort = null;
-    
+
     public void setTempPort(IOPort port) {
         _tempPort = port;
     }

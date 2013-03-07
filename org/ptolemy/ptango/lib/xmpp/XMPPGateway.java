@@ -68,11 +68,11 @@ import ptolemy.kernel.util.NamedObj;
 ///////////////////////////////////////////////////////////////////
 //// XMPPGateway
 
-/** 
- *  This attribute manages the connection between the Ptolemy model 
+/**
+ *  This attribute manages the connection between the Ptolemy model
  *  with an XMPP server, using <a href="http://www.igniterealtime.org/projects/smack/">Smack</a>
  *  library.
- * 
+ *
  *  FIXME: complete class description
  *  FIXME: add XMPP icon
  *  @see XMPPGateway
@@ -102,8 +102,8 @@ public class XMPPGateway extends AbstractInitializableAttribute implements
         port.setExpression("5222");
 
         userName = new StringParameter(this, "userName");
-        userName.setExpression("ptolemy"); 
-        
+        userName.setExpression("ptolemy");
+
         passwordFile = new FileParameter(this, "passwordFile");
         passwordFile.setExpression("");
 
@@ -114,7 +114,7 @@ public class XMPPGateway extends AbstractInitializableAttribute implements
 
     ///////////////////////////////////////////////////////////////////
     ////                         parameters                        ////
- 
+
     /** The file that contains the password.  If this parameter is
      *  non-empty, then it is assumed to refer to a file that contains
      *  the password.  If this parameter is empty, or names a file
@@ -141,17 +141,17 @@ public class XMPPGateway extends AbstractInitializableAttribute implements
      */
     public Parameter userName;
 
-    /** The flag indicates whether or not to enable the smack library debug 
+    /** The flag indicates whether or not to enable the smack library debug
      *  If this is true, the raw XML stream will be shown for debug use.
      *  defaults to BooleanToken false
      */
     public Parameter debugEnable;
-    
+
     ///////////////////////////////////////////////////////////////////
-    ////                       public methods                      ////
+    ////                         public methods                    ////
 
     /** Update the local variable associated with the changed attribute
-     *  and disconnect from the server. 
+     *  and disconnect from the server.
      *  @param attribute The changed attribute.
      */
     public void attributeChanged(Attribute attribute)
@@ -180,24 +180,24 @@ public class XMPPGateway extends AbstractInitializableAttribute implements
         return;
     }
 
-    /** Attempt to connect to the server and login. Discover subscribers 
-     *  and establish a subscriptions by registering the actors as listeners. 
+    /** Attempt to connect to the server and login. Discover subscribers
+     *  and establish a subscriptions by registering the actors as listeners.
      *  If a subscriber wants to subscribe to a non-existent node, create it.
      *  Also discover publishers and give them a reference to this attribute.
      *  This might change in the future, as changes to running models require
      *  actors to register themselves instead of being discovered.
-     *  @throws IllegalActionException If unable to login, create a node, 
+     *  @exception IllegalActionException If unable to login, create a node,
      *  find a node, or subscribe to a node.
-     * 
+     *
      */
     public void initialize() throws IllegalActionException {
-        // FIXME: if the server runs on localhost, it doesn't accept 'localhost', 
+        // FIXME: if the server runs on localhost, it doesn't accept 'localhost',
         // but requires 127.0.0.1, look into this
         String jid = _userName + '@' + _serverName;
 
         boolean debugEnableValue = ((BooleanToken) debugEnable.getToken())
                 .booleanValue();
-        
+
         System.setProperty("smack.debugEnabled", String.valueOf(debugEnableValue));
         XMPPConnection.DEBUG_ENABLED = debugEnableValue;
 
@@ -219,7 +219,7 @@ public class XMPPGateway extends AbstractInitializableAttribute implements
                     // FIXME: get rid of duplicate subscriptions here
                 } catch (Exception e) {
                     try {
-                        /* ConfigureForm form = new ConfigureForm(FormType.submit); 
+                        /* ConfigureForm form = new ConfigureForm(FormType.submit);
                          // FIXME: figure out configuration options
                          form.setAccessModel(AccessModel.open);
                          form.setDeliverPayloads(false);
@@ -307,7 +307,7 @@ public class XMPPGateway extends AbstractInitializableAttribute implements
     /** Publish a value to a node. The value is wrapped into a message stanza.
      *  @param nodeId The node to publish to.
      *  @param value The value to publish.
-     *  @throws IllegalActionException If publishing failed.
+     *  @exception IllegalActionException If publishing failed.
      */
     public void publish(String nodeId, String value)
             throws IllegalActionException {
@@ -338,9 +338,9 @@ public class XMPPGateway extends AbstractInitializableAttribute implements
         ln.publish(item);
     }
 
-    /** Remove a node from the server configuration. 
+    /** Remove a node from the server configuration.
      *  @param nodeId The node to remove.
-     *  @throws IllegalActionException If unable to remove the node.
+     *  @exception IllegalActionException If unable to remove the node.
      */
     public void removeNode(String nodeId) throws IllegalActionException {
         try {
@@ -377,10 +377,10 @@ public class XMPPGateway extends AbstractInitializableAttribute implements
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                      private methods                      ////
+    ////                         private methods                   ////
 
-    /** Disconnect and leave old connection for the garbage collector. 
-     *  Note that once disconnected, a Connection cannot be 
+    /** Disconnect and leave old connection for the garbage collector.
+     *  Note that once disconnected, a Connection cannot be
      *  reused immediately, therefore it is discarded. A new Connection
      *  object shall be instantiated for reconnecting.
      *  @see Connection
@@ -394,7 +394,7 @@ public class XMPPGateway extends AbstractInitializableAttribute implements
     }
 
     /** Connect to the server and login using the provided credentials.
-     *  @throws IllegalActionException If connection or authentication 
+     *  @exception IllegalActionException If connection or authentication
      *  process fails.
      */
     private void _connectAndLogin() throws IllegalActionException {
@@ -428,7 +428,7 @@ public class XMPPGateway extends AbstractInitializableAttribute implements
             // login to the server
             if (!_connection.isAuthenticated()) {
                 if (_password == null) {
-                    if(passwordFile.stringValue().length() > 0) {
+                    if (passwordFile.stringValue().length() > 0) {
                         // Read the password from a file
                         BufferedReader reader = null;
                         try {
@@ -456,7 +456,7 @@ public class XMPPGateway extends AbstractInitializableAttribute implements
                                 }
                             }
                         }
-                    } // if(passwordFile.stringValue().length() > 0)
+                    } // if (passwordFile.stringValue().length() > 0)
                     if (_password == null) {
                         // Open a dialog to get the password.
                         Effigy effigy = Configuration.findEffigy(toplevel());
@@ -467,7 +467,7 @@ public class XMPPGateway extends AbstractInitializableAttribute implements
                                 frame = tableau.getFrame();
                             }
                         }
-                        
+
                         // Next construct a query for user name and password.
                         Query query = new Query();
                         query.setTextWidth(60);
@@ -494,7 +494,7 @@ public class XMPPGateway extends AbstractInitializableAttribute implements
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                      private variables                    ////
+    ////                         private variables                 ////
 
     /** Maintains the connection to the server. */
     private Connection _connection;
@@ -502,7 +502,7 @@ public class XMPPGateway extends AbstractInitializableAttribute implements
     /** Manager responsible for brokering publications and subscriptions. */
     private PubSubManager _manager;
 
-    /** The password last entered. Use a char array instead of a String for 
+    /** The password last entered. Use a char array instead of a String for
      * security since a char array can be explictly cleared, whereas a String
      * is immutable and persists in memory until garbage collection.  See
      * http://stackoverflow.com/questions/8881291/why-is-char-preferred-over-string-for-passwords */

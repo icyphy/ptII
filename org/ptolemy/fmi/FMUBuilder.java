@@ -45,7 +45,7 @@ import java.io.InputStreamReader;
  * @Pt.AcceptedRating Red (cxh)
  */
 public class FMUBuilder {
-    
+
     /** Create a FMUBuilder.  As the commands are executed,
      *  output is appended to the StringBuffer - no output will appear
      *  on stderr and stdout.
@@ -80,10 +80,10 @@ public class FMUBuilder {
 
     /** Build the specified shared library inside the FMU.
      *  <p>A typicaly value is
-     *  <code>/tmp/FMUFile12345/binaries/linux64/stepCounter.dylib</code>.	
+     *  <code>/tmp/FMUFile12345/binaries/linux64/stepCounter.dylib</code>.
      *
      *  <p>Typically the sharedLibrary is inside a temporary directory
-     *  that was created when the fmu file was unzipped.  The 
+     *  that was created when the fmu file was unzipped.  The
      *  directory names the platform for which the binary is to be
      *  built.  This directory resides inside a directory named
      *  <code>binaries/</code>.  Adjacent to the <code>binaries/</code>
@@ -91,63 +91,63 @@ public class FMUBuilder {
      *
      *  @param sharedLibraryFile  The shared library that should be built.
      *  @return true if the sharedLibraryFile was built.
-     *  @throws IOException If the FMU contains a makefile but
+     *  @exception IOException If the FMU contains a makefile but
      *  there was a problem building the shared library.
      */
     public boolean build(File sharedLibraryFile) throws IOException {
-	stdout(_eol + "Attempting to build " + sharedLibraryFile + _eol);
-	// The architecture, typically one of darwin64, linux32, linux64, win32, win64
-	String architecture = sharedLibraryFile.getParentFile().getName();
+        stdout(_eol + "Attempting to build " + sharedLibraryFile + _eol);
+        // The architecture, typically one of darwin64, linux32, linux64, win32, win64
+        String architecture = sharedLibraryFile.getParentFile().getName();
 
-	File sourcesDirectory = new File(sharedLibraryFile.getParentFile().getParentFile().getParentFile(), "sources");
+        File sourcesDirectory = new File(sharedLibraryFile.getParentFile().getParentFile().getParentFile(), "sources");
 
-	if (!sourcesDirectory.exists()) {
-	    stderr("The source directory \"" + sourcesDirectory  + "\" does not exist." + _eol);
-	    return false;
-	}
+        if (!sourcesDirectory.exists()) {
+            stderr("The source directory \"" + sourcesDirectory  + "\" does not exist." + _eol);
+            return false;
+        }
 
-	// FIXME: eventually, we should not use make.
-	File makefile = new File(sourcesDirectory, "makefile");
+        // FIXME: eventually, we should not use make.
+        File makefile = new File(sourcesDirectory, "makefile");
 
-	if (!makefile.exists()) {
-	    stderr("The makefile \"" + makefile  + "\" does not exist." + _eol);
-	    return false;
-	}
-	
-	ProcessBuilder builder = new ProcessBuilder("make", architecture);
-	builder.directory(sourcesDirectory);
+        if (!makefile.exists()) {
+            stderr("The makefile \"" + makefile  + "\" does not exist." + _eol);
+            return false;
+        }
 
-	// Eventually, redirect to the buffer and return the results.
-	Process process = builder.start();
+        ProcessBuilder builder = new ProcessBuilder("make", architecture);
+        builder.directory(sourcesDirectory);
 
-	// Set up a Thread to read in any error messages
-	_StreamReaderThread errorGobbler = new _StreamReaderThread(
+        // Eventually, redirect to the buffer and return the results.
+        Process process = builder.start();
+
+        // Set up a Thread to read in any error messages
+        _StreamReaderThread errorGobbler = new _StreamReaderThread(
                             process.getErrorStream(), this);
-	
-	// Set up a Thread to read in any output messages
-	_StreamReaderThread outputGobbler = new _StreamReaderThread(
+
+        // Set up a Thread to read in any output messages
+        _StreamReaderThread outputGobbler = new _StreamReaderThread(
                             process.getInputStream(), this);
 
-	// Start up the Threads
-	errorGobbler.start();
-	outputGobbler.start();
+        // Start up the Threads
+        errorGobbler.start();
+        outputGobbler.start();
 
-	try {
-	    process.waitFor();
-	} catch (InterruptedException ex) {
-	    process.destroy();
-	    throw new IOException("The process building " + sharedLibraryFile + " was interrupted.", ex);
-	}
+        try {
+            process.waitFor();
+        } catch (InterruptedException ex) {
+            process.destroy();
+            throw new IOException("The process building " + sharedLibraryFile + " was interrupted.", ex);
+        }
 
-	int exitValue = process.exitValue();
-	if (exitValue != 0) {
-	    stderr("The exit value of the process building " + sharedLibraryFile + " was non-zero: " + exitValue);
-	}
-	if (!sharedLibraryFile.exists()) {
-	    stderr("Failed to created " + sharedLibraryFile + "?");
-	    return false;
-	}
-	return true;
+        int exitValue = process.exitValue();
+        if (exitValue != 0) {
+            stderr("The exit value of the process building " + sharedLibraryFile + " was non-zero: " + exitValue);
+        }
+        if (!sharedLibraryFile.exists()) {
+            stderr("Failed to created " + sharedLibraryFile + "?");
+            return false;
+        }
+        return true;
     }
 
     /** Append the text message to the StringBuffer.  The output
@@ -158,8 +158,8 @@ public class FMUBuilder {
      */
     public void stderr(final String text) {
         if (_appendToStderrAndStdout) {
-	    System.err.println(text);
-	    System.err.flush();
+            System.err.println(text);
+            System.err.flush();
         }
         _appendToBuffer(text);
     }
@@ -171,9 +171,9 @@ public class FMUBuilder {
      */
     public void stdout(final String text) {
         if (_appendToStderrAndStdout) {
-	    System.out.println(text);
-	    System.out.flush();
-	}
+            System.out.println(text);
+            System.out.flush();
+        }
         _appendToBuffer(text);
     }
 

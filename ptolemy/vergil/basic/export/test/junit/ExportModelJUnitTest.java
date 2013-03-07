@@ -117,17 +117,17 @@ public class ExportModelJUnitTest {
                 + " -whiteBackground " + modelPath + " $PTII/" + modelDirectory
                 + "/" + modelName);
 
-	if (!openComposites) {
-	    System.out.println("Warning: not opening composites for "
-			       + modelPath 
-			       + ". See ptolemy/vergil/basic/export/test/junit/ExportModelJUnitTest.java");
-	}
+        if (!openComposites) {
+            System.out.println("Warning: not opening composites for "
+                               + modelPath
+                               + ". See ptolemy/vergil/basic/export/test/junit/ExportModelJUnitTest.java");
+        }
 
-	if (!run) {
-	    System.out.println("Warning: not running "
-			       + modelPath 
-			       + ". See ptolemy/vergil/basic/export/test/junit/ExportModelJUnitTest.java");
-	}
+        if (!run) {
+            System.out.println("Warning: not running "
+                               + modelPath
+                               + ". See ptolemy/vergil/basic/export/test/junit/ExportModelJUnitTest.java");
+        }
         // ExportModel.exportModel() calls System.exit() unless we set this property.
         System.setProperty("ptolemy.ptII.doNotExit", "true");
 
@@ -137,7 +137,7 @@ public class ExportModelJUnitTest {
             exportModel.exportModel(false /* copyJavaScriptFiles */,
                     true /* force */, "htm", fullModelPath, run,
                     openComposites, false /* open results */, outputDirectory,
-                    false /* save */, 
+                    false /* save */,
                     timeOut,
                     true /* whitebackground */);
             System.out.println(Manager.timeAndMemory(startTime));
@@ -245,7 +245,7 @@ public class ExportModelJUnitTest {
                 "ptalon/gt/demo/Adder/Adder.xml", // gt does not have a run button: "Channel index 0 is out of range, because width is only 0."
                 // CRoom, MatlabRoom, SystemCommand
                 "lbnl/demo/", // FIXME: hangs, probably because the log window is not closed.
-		"gt/demo/BouncingBallX2/BouncingBallX2/index.html", 
+                "gt/demo/BouncingBallX2/BouncingBallX2/index.html",
                 "distributed/demo/Sleep/Sleep.xml", // Requires jini.
                 "de/demo/Clock/Clock.xml", // "Audio Device Unavailable"
                 //"domains/gr", // FIXME: need to close ViewScreen3D by adding a ViewScreen3D Tableau.
@@ -280,7 +280,7 @@ public class ExportModelJUnitTest {
     }
 
     /** Return the time out in milliseconds.
-     *  The timeout for most demos is 30 seconds.   
+     *  The timeout for most demos is 30 seconds.
      *  Some demos run longer.
      */
     private long _timeOut(String modelPath) {

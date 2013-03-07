@@ -404,7 +404,7 @@ public class PtolemyQuery extends Query implements QueryListener,
                                 preferredBackgroundColor(attribute),
                                 preferredForegroundColor(attribute),
                                 heightValue, widthValue);
-                        
+
                         attachParameter(attribute, name);
                         foundStyle = true;
                         _addSubmitAction(component, attribute.getName(),
@@ -466,9 +466,9 @@ public class PtolemyQuery extends Query implements QueryListener,
                         preferredBackgroundColor(attribute),
                         preferredForegroundColor(attribute), 1,
                         DEFAULT_ENTRY_WIDTH);
-                area.setRows(Math.min(5, area.getLineCount())); 
+                area.setRows(Math.min(5, area.getLineCount()));
 
-                
+
                 _addSubmitAction(area, attribute.getName(), attribute);
 
                 // The style itself does this, so we don't need to do it again.

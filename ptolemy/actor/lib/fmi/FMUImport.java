@@ -165,20 +165,20 @@ public class FMUImport extends TypedAtomicActor implements
         fmuFile.setExpression("fmuImport.fmu");
         // The value of this parameter cannot be edited once the FMU has been imported.
         fmuFile.setVisibility(Settable.NOT_EDITABLE);
-        
+
         fmiVersion = new StringParameter(this, "fmiVersion");
         fmiVersion.setExpression("1.0");
         fmiVersion.setVisibility(Settable.NOT_EDITABLE);
-        
+
         suppressWarnings = new Parameter(this, "suppressWarnings");
         suppressWarnings.setTypeEquals(BaseType.BOOLEAN);
         suppressWarnings.setExpression("false");
-        
+
         visible = new Parameter(this, "visible");
         visible.setTypeEquals(BaseType.BOOLEAN);
         visible.setExpression("false");
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         parameters                        ////
 
@@ -195,7 +195,7 @@ public class FMUImport extends TypedAtomicActor implements
      *  default value is "fmuImport.fmu".
      */
     public FileParameter fmuFile;
-    
+
     /** If true, suppress warnings about the FMU not being able to roll
      *  back. It is reasonable to set this to true if you know that the
      *  FMU can be executed at an earlier time than it was previously
@@ -215,7 +215,7 @@ public class FMUImport extends TypedAtomicActor implements
 
     /** Advance to the specified time.
      *  @return True if advancement to the specified time succeeds.
-     *  @throws IllegalActionException If an error occurs advancing time.
+     *  @exception IllegalActionException If an error occurs advancing time.
      */
     public boolean advance(Time time, int microstep) throws IllegalActionException {
         double refinedStepSize = _advanceToTime(time, microstep);
@@ -296,7 +296,7 @@ public class FMUImport extends TypedAtomicActor implements
      *  @exception IllegalActionException If FMU indicates a failure.
      */
     public void fire() throws IllegalActionException {
-        
+
         /* Martin Arnold <martin.arnold@mathematik.uni-halle.de> explains rollback as follows:
 
         FMI v2.0 beta 4 supports this re-set mechanism by the fmiGetFMUState()/fmiSetFMUState()
@@ -309,15 +309,15 @@ public class FMUImport extends TypedAtomicActor implements
         way to re-set them to a previous state. This is obviously a strong restriction from
         the classical ODE/DAE time integration viewpoint since step rejections are quite normal
         in this field. On the other hand, most co-simulation slaves in industrial application
-        are today not designed "to go back in time", i.e., to be re-set to some previous state. 
+        are today not designed "to go back in time", i.e., to be re-set to some previous state.
         These two facts motivate the definition of a capability flag canGetAndSetFMUstate.
 
-        Slaves that DO support fmiGetFMUState()/fmiSetFMUState() may in principle be called 
-        with non-monotone sequences of communication points if the co-simulation master takes 
-        care of getting and re-setting the slave FMU state in a reasonable way. I.e., the slave 
-        FMU is not expected to save and to re-set its state autonomously but only via the calls 
-        of fmiGetFMUState()/fmiSetFMUState() by the co-simulation master. This strategy is 
-        obviously independent of the number of slave FMUs in a co-simulation environment 
+        Slaves that DO support fmiGetFMUState()/fmiSetFMUState() may in principle be called
+        with non-monotone sequences of communication points if the co-simulation master takes
+        care of getting and re-setting the slave FMU state in a reasonable way. I.e., the slave
+        FMU is not expected to save and to re-set its state autonomously but only via the calls
+        of fmiGetFMUState()/fmiSetFMUState() by the co-simulation master. This strategy is
+        obviously independent of the number of slave FMUs in a co-simulation environment
         and supports nested co-simulation environments as well.
 
         Slave FMUs that support fmiGetFMUState()/fmiSetFMUState() may generate a large amount
@@ -332,12 +332,12 @@ public class FMUImport extends TypedAtomicActor implements
         flush some result buffers and write simulation data to file etc. Alternatively,
         the slave FMU may simply ignore this parameter.
          */
-         
+
         super.fire();
         if (_debugging) {
             _debugToStdOut("FMUImport.fire()");
         }
-        
+
         ////////////////
         // If time has changed since the last call to fire(), invoke
         // fmiDoStep() with the current data before updating the inputs
@@ -541,7 +541,7 @@ public class FMUImport extends TypedAtomicActor implements
         Director director = getDirector();
         Time startTime = director.getModelStartTime();
         Time stopTime = director.getModelStopTime();
-            
+
         int fmiFlag;
         if (_fmiVersion < 2.0) {
             fmiFlag  = ((Integer) function.invoke(Integer.class, new Object[] {
@@ -561,8 +561,8 @@ public class FMUImport extends TypedAtomicActor implements
                 relativeTolerance = ((ContinuousStatefulDirector)director).getErrorTolerance();
             }
             fmiFlag  = ((Integer) function.invoke(Integer.class, new Object[] {
-                _fmiComponent, 
-                relativeTolerance, 
+                _fmiComponent,
+                relativeTolerance,
                 startTime.getDoubleValue(),
                 (byte) 1, // fmiBoolean stopTimeDefined
                 stopTime.getDoubleValue() })).intValue();
@@ -589,7 +589,7 @@ public class FMUImport extends TypedAtomicActor implements
         _refinedStepSize = -1.0;
         _suggestZeroStepSize = false;
         _firstFire = true;
-        
+
         if (_debugging) {
             _debugToStdOut("FMIImport.initialize() END");
         }
@@ -788,14 +788,14 @@ public class FMUImport extends TypedAtomicActor implements
         if (_debugging) {
             _debugToStdOut("FMUImport.preinitialize()");
         }
-        
+
         try {
             _nativeLibrary = _fmiModelDescription.getNativeLibrary();
         } catch (IOException e1) {
-            // Be sure to throw the cause here because if the 
+            // Be sure to throw the cause here because if the
             // shared library refers to other libraries that are
-            // not found, then the exception should reflect the 
-            // fact that the library was found but the 
+            // not found, then the exception should reflect the
+            // fact that the library was found but the
             // load failed.  Under Windows, we may get
             // "The specified module could not be found."
             throw new IllegalActionException(this, e1, "Current platform not supported by this FMU");
@@ -1039,12 +1039,12 @@ fmiStatus fmiFreeFMUstate(fmiComponent c, fmiFMUstate* FMUstate);
      *  @param newMicrostep The microstep to advance to.
      *  @return A revised suggested step size, or -1.0 if the step size was accepted
      *   by the FMU.
-     *  @throws IllegalActionException If fmiDoStep() returns anything other than
+     *  @exception IllegalActionException If fmiDoStep() returns anything other than
      *   fmiDiscard or fmiOK.
      */
     protected double _advanceToTime(Time newTime, int newMicrostep) throws IllegalActionException {
         String modelIdentifier = _fmiModelDescription.modelIdentifier;
-        
+
         // By default, the FMU does not suggest a refined step size,
         // something we indicate with a -1.0.
         double result = -1.0;
@@ -1056,13 +1056,13 @@ fmiStatus fmiFreeFMUstate(fmiComponent c, fmiFMUstate* FMUstate);
             // Even if only the microstep has advanced, we should still call
             // fmiDoStep() because the FMU may require it for zero-step-size iterations
             // (the standard is not clear about this).
-            // 
+            //
             // When calling fmiDoStep(), the time argument is the _start_
             // of the integration interval, which is not the current time, in general.
             // We are calling fmiDoStep() to advance to current time, which is therefore
             // the _end_ of the integration interval.
             double time = _lastFireTime.getDoubleValue();
-            
+
             // Compute the step size.
             // Subtlety here: The step size computed below may not match the current
             // step size of the enclosing continuous director. In particular, at
@@ -1078,8 +1078,8 @@ fmiStatus fmiFreeFMUstate(fmiComponent c, fmiFMUstate* FMUstate);
             // of the next interval. Ugh. This makes it really hard to write
             // FMUs that control step sizes.
             double stepSize = newTime.subtract(_lastFireTime).getDoubleValue();
-            
-            /* It would be nice to do the following sanity check, but 
+
+            /* It would be nice to do the following sanity check, but
              * unfortunately the ContinuousDirector completes the rounds
              * before checking to see whether any component was happy with the
              * step size, so it is like to re-invoke this FMU with a step
@@ -1101,7 +1101,7 @@ fmiStatus fmiFreeFMUstate(fmiComponent c, fmiFMUstate* FMUstate);
             // if the start of the interval given to fmiDoStep coincides with
             // the last commit time (the time at which initialize() or postfire()
             // was last invoked).
-            
+
             // For FMI 1.0, there is not really a good solution. There are two
             // flawed possibilities, described below.  We implement the first
             // flawed possibility.
@@ -1161,7 +1161,7 @@ of the limitations of newStep.
                 stepSize = newTime.subtract(_lastCommitTime).getDoubleValue();
                 lastArg = 0;
             }
-            
+
             if (_fmiVersion >= 2.0) {
                 if (_firstFire) {
                     lastArg = 1;
@@ -1179,7 +1179,7 @@ of the limitations of newStep.
                         + "_fmiDoStep(Component, /* time */ " + time
                         + ", /* stepSize */" + stepSize + lastArgDescription + lastArg + ")");
             }
-            
+
             // Invoke fmiDoStep.
             // NOTE: As of FMI 2.0, there is a proposal on the table for "Exact event
             // handling" that will add two additional arguments to fmiDoStep,
@@ -1188,9 +1188,9 @@ of the limitations of newStep.
             // second will provide the time of the fireAt().
             int fmiFlag = ((Integer) _fmiDoStep.invokeInt(new Object[] {
                     _fmiComponent, time, stepSize, lastArg })).intValue();
-            
+
             // If the FMU discarded the step, handle this.
-            if (fmiFlag == FMILibrary.FMIStatus.fmiDiscard) {                
+            if (fmiFlag == FMILibrary.FMIStatus.fmiDiscard) {
                 if (_debugging) {
                     _debugToStdOut("Rejected step size of " + stepSize + " at time " + time);
                 }
@@ -1263,7 +1263,7 @@ of the limitations of newStep.
         }
         return result;
     }
-    
+
     /** Print the debug message to stdout and flush stdout.
      *  This is useful for tracking down segfault problems.
      *  To use this, right click on the FMUImport actor
@@ -1304,7 +1304,7 @@ of the limitations of newStep.
         }
         return stepSize;
     }
-    
+
     /** Return a string describing the specified fmiStatus.
      *  @param fmiStatus The status returned by an FMI procedure.
      */
@@ -1335,7 +1335,7 @@ of the limitations of newStep.
      *  @exception IllegalActionException If the scalar is of a type
      *  that is not handled.
      */
-    protected void _setParameter(Parameter parameter, FMIScalarVariable scalar) 
+    protected void _setParameter(Parameter parameter, FMIScalarVariable scalar)
             throws IllegalActionException {
         // FIXME: What about arrays?
         if (scalar.type instanceof FMIBooleanType) {
@@ -1420,13 +1420,13 @@ of the limitations of newStep.
 
     /** The fmiDoStep() function. */
     protected Function _fmiDoStep;
-    
+
     /** Function to free memory allocated to store the state of the FMU. */
     protected Function _fmiFreeFMUstate;
-    
+
     /** Function to retrieve the current state of the FMU. */
     protected Function _fmiGetFMUstate;
-    
+
     /** The fmiGetRealStatus() function. */
     protected Function _fmiGetRealStatus;
 
@@ -1483,7 +1483,7 @@ of the limitations of newStep.
 
             } catch (IOException ex) {
                 sharedLibrary = "the shared library could not be obtained from the fmu: " + ex;
-            } 
+            }
             List<String> binariesFiles = new LinkedList<String>();
             // Get the list pathnames that contain the string "binaries"
             for (File file : _fmiModelDescription.files) {
@@ -1541,7 +1541,7 @@ of the limitations of newStep.
         if (workspace().getVersion() == _outputsVersion) {
             return _outputs;
         }
-        
+
         // The _outputs variable is out of date. Reconstruct it.
         _outputs = new LinkedList<Output>();
         for (FMIScalarVariable scalarVariable : _fmiModelDescription.modelVariables) {
@@ -1656,7 +1656,7 @@ of the limitations of newStep.
             // a model that references an FMU even if the FMU does not
             // support the current platform.
             _fmiModelDescription = FMUFile.parseFMUFile(fmuFileName);
-            
+
             if (_fmiModelDescription.fmiVersion != null) {
                 fmiVersion.setExpression(_fmiModelDescription.fmiVersion);
                 // Mysteriously, nondeterministically, the above doesn't always
@@ -1678,12 +1678,12 @@ of the limitations of newStep.
 
     ///////////////////////////////////////////////////////////////////
     ////                     private fields                        ////
-    
+
     /** Flag identifying the first invocation of fire() after each
      *  invocation of initialize() or postfire().
      */
     private boolean _firstFire;
-    
+
     /** The name of the fmuFile.
      *  The _fmuFileName field is set the first time we read
      *  the file named by the <i>fmuFile</i> parameter.  The
@@ -1700,7 +1700,7 @@ of the limitations of newStep.
 
     /** The _fmiInstantiateSlave function. */
     private Function _fmiInstantiateSlave;
-    
+
     /** The time at which the last commit occurred (initialize or postfire). */
     private Time _lastCommitTime;
 
@@ -1709,7 +1709,7 @@ of the limitations of newStep.
 
     /** The microstep at which the last fire occurred. */
     private int _lastFireMicrostep;
-    
+
     /** The library of native binaries for the FMU C functions. */
     private NativeLibrary _nativeLibrary;
 
@@ -1722,17 +1722,17 @@ of the limitations of newStep.
 
     /** The workspace version at which the _outputs variable was last updated. */
     private long _outputsVersion = -1;
-    
+
     /** Refined step size suggested by the FMU if doStep failed,
      *  or -1.0 if there is no suggestion.
      */
     private double _refinedStepSize = -1.0;
-    
+
     /** Indicator that the proposed step size provided to the fire method
      *  has been rejected by the FMU.
      */
     private boolean _stepSizeRejected;
-    
+
     /** Indicator that we have had iteration with a rejected step size,
      *  so the next suggested step size should be zero.
      */

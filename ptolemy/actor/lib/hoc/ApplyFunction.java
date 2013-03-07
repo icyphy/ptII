@@ -98,7 +98,7 @@ public class ApplyFunction extends TypedAtomicActor {
         super(container, name);
         output = new TypedIOPort(this, "output", false, true);
         function = new PortParameter(this, "function");
-        
+
         output.setTypeAtLeast(new ReturnTypeFunction());
     }
 
@@ -186,7 +186,7 @@ public class ApplyFunction extends TypedAtomicActor {
 
         return true;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
 

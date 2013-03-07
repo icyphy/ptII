@@ -34,12 +34,12 @@ import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event;
 //// ConstraintSolver
 
 /** <p> The constraint solver is used to enforce the user defined
-*  constraints on scheduling via updating the MetroII event passed to 
-*  resolve() method. An MetroII event status is updated to NOTIFIED 
-*  when it satisfies all the constraints. Otherwise the event status 
+*  constraints on scheduling via updating the MetroII event passed to
+*  resolve() method. An MetroII event status is updated to NOTIFIED
+*  when it satisfies all the constraints. Otherwise the event status
 *  should be updated to WAITING. </p>
 *
-*  
+*
 * @author Liangpeng Guo
 * @version $Id$
 * @since Ptolemy II 9.1

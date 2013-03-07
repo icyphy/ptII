@@ -92,7 +92,7 @@ public class CSVWriter extends LineWriter {
         separator.addChoice("comma");
         separator.addChoice("tab");
         separator.addChoice("semicolon");
-        
+
         // Clear type constraint set by base class.
         input.setTypeEquals(BaseType.UNKNOWN);
         // Force the input type to be a record.
@@ -174,7 +174,7 @@ public class CSVWriter extends LineWriter {
         super.initialize();
         _firstFiring = true;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
@@ -229,7 +229,7 @@ public class CSVWriter extends LineWriter {
 
     /** Field names determined from input data type. */
     private Set<String> _fieldNames;
-    
+
     /** Indicator for first firing. */
     private boolean _firstFiring;
 }

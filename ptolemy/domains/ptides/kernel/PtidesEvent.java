@@ -229,9 +229,9 @@ public class PtidesEvent extends DEEvent {
                 .hashCode()) >>> _receiver.hashCode());
         return primitiveFieldHash >>> objectFieldHash;
     }
-    
+
     @Override
-    public boolean hasTheSameTagAs(DEEvent event) { 
+    public boolean hasTheSameTagAs(DEEvent event) {
         Actor actor = event.actor();
         if (actor == null) {
             actor = (Actor) event.ioPort().getContainer();
@@ -244,11 +244,11 @@ public class PtidesEvent extends DEEvent {
         }
         if (timePrecision == null) {
             timePrecision = 0.0;
-        } 
-        
+        }
+
         return ((_timestamp.compareTo(event.timeStamp()) == 0 && _microstep == event.microstep()) ||
                 _timestamp.compareTo(event.timeStamp()) <= 0 ||
-                (_timestamp.subtract(timePrecision).compareTo(event.timeStamp()) <= 0 &&        
+                (_timestamp.subtract(timePrecision).compareTo(event.timeStamp()) <= 0 &&
                 _timestamp.add(timePrecision).compareTo(event.timeStamp()) >= 0)
                 );
     }
@@ -271,7 +271,7 @@ public class PtidesEvent extends DEEvent {
         }
         return _receiver;
     }
-    
+
     public final Time sourceTimestamp() {
         return _sourceTimestamp;
     }
@@ -346,7 +346,7 @@ public class PtidesEvent extends DEEvent {
 
     /** The token associated with this event. */
     private Token _token;
-    
+
     /** The timestamp this or the source for this event was created by a sensor. */
     private Time _sourceTimestamp;
 }

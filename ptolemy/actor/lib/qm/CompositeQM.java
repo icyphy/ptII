@@ -51,7 +51,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
 /** This class implements functionality of a composite quantity manager.
-* 
+*
 *  <p>
 *  When an intermediate receiver sends a token to an input port of this
 *  quantity manager, the original receiver and the token are encoded in a
@@ -59,7 +59,7 @@ import ptolemy.kernel.util.Workspace;
 *  is extracted and sent to the original receiver.
 *  <p>
 *  A color parameter is used to perform highlighting on the ports that use this
-*  quantity manager. 
+*  quantity manager.
 *
 *  @author Patricia Derler
 *  @version $Id$
@@ -87,11 +87,11 @@ public class CompositeQM extends TypedCompositeActor implements QuantityManager 
         super(workspace);
         _initialize();
     }
-    
+
     @Override
     public void setTempPort(IOPort port) {
         // TODO Auto-generated method stub
-        
+
     }
 
     /** Construct a CompositeQM with a name and a container.
@@ -138,7 +138,7 @@ public class CompositeQM extends TypedCompositeActor implements QuantityManager 
         super.attributeChanged(attribute);
     }
 
-    /** Clone the actor into the specified workspace. 
+    /** Clone the actor into the specified workspace.
      *
      *  @param workspace The workspace for the cloned object.
      *  @exception CloneNotSupportedException Not thrown here.

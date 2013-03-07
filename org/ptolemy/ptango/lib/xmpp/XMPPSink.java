@@ -42,16 +42,16 @@ import ptolemy.kernel.util.NameDuplicationException;
 ///////////////////////////////////////////////////////////////////
 //// XMPPSink
 
-/** Publish incoming tokens to an XMPPGateway attribute, if present. 
- *  The input is allowed to be of arbitrary width and tokens that 
+/** Publish incoming tokens to an XMPPGateway attribute, if present.
+ *  The input is allowed to be of arbitrary width and tokens that
  *  arrive in parallel are sequentially published during a single firing.
- *  If no XMPPGateway is present in the model, all tokens are consumed 
+ *  If no XMPPGateway is present in the model, all tokens are consumed
  *  but no further action is taken. The XMPP publish-subscribe mechanism
  *  works with end-points called nodes. This actor publishes to the node
- *  identified by the parameter NodeId. If no NodeId is specified, 
+ *  identified by the parameter NodeId. If no NodeId is specified,
  *  nothing is published and this actor silently consumes all input
  *  tokens.
- * 
+ *
  *  @see XMPPGateway
  *  @author Marten Lohstroh
  *  @version $Id: XMPPSink.java 64744 2012-10-24 22:51:43Z marten $
@@ -60,7 +60,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  *  @Pt.AcceptedRating Red (marten)
  */
 public class XMPPSink extends Sink implements XMPPPublisher {
-    
+
     /** Construct an actor with an input multiport.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -77,17 +77,17 @@ public class XMPPSink extends Sink implements XMPPPublisher {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                     public variables                      ////
-    
-    /** The id of the node to publish to, if left undefined 
+    ////                         public variables                  ////
+
+    /** The id of the node to publish to, if left undefined
      * nothing will be published. */
     public Parameter nodeId;
-    
+
     ///////////////////////////////////////////////////////////////////
-    ////                      public methods                       ////
-    
+    ////                         public methods                    ////
+
     /**
-     * Update the node id if its corresponding parameter has changed. 
+     * Update the node id if its corresponding parameter has changed.
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
@@ -97,35 +97,35 @@ public class XMPPSink extends Sink implements XMPPPublisher {
         }
     }
 
-    
+
     /**
      * FIXME: Should we use postfire() instead? @see Display
      */
     public void fire() throws IllegalActionException {
         super.fire();
-        
+
         int width = input.getWidth();
 
         for (int i = 0; i < width; i++) {
             String value = _getInputString(i);
             if (_gateway != null && value != null) {
-                _gateway.publish(_nodeId, value);        
+                _gateway.publish(_nodeId, value);
             }
         }
     }
 
     /**
-     * Set the 
+     * Set the
      */
     @Override
     public void setGateway(XMPPGateway gateway) {
         _gateway = gateway;
-        
+
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                     protected methods                     ////
-    
+    ////                         protected methods                 ////
+
     /** Return a string describing the input on channel i.
      *  This is a protected method to allow subclasses to override
      *  how inputs are observed.
@@ -145,14 +145,14 @@ public class XMPPSink extends Sink implements XMPPPublisher {
         }
         return null;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
-    ////                    private variables                      ////
-    
-    
+    ////                         private variables                 ////
+
+
     /** */
     private XMPPGateway _gateway;
-    
+
     /** */
     private String _nodeId;
 

@@ -41,7 +41,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 ///////////////////////////////////////////////////////////////////
 //// Ramp
 
-/** 
+/**
  An actor that outputs the number of times fire has been called.
 
  @author Edward A. Lee

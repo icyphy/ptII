@@ -144,12 +144,12 @@ public class SchedulerModel extends ResourceScheduler {
                         mappedActor);
             }
         }
-        
+
         _fireModel(currentPlatformTime);
-        
+
         Parameter parameter = (Parameter)((CompositeActor)_model).getAttribute("resume" + actor.getName());
         if (parameter == null || parameter.getToken() == null) {
-            throw new IllegalActionException(this, "Tried to schedule actor " + actor + 
+            throw new IllegalActionException(this, "Tried to schedule actor " + actor +
                     " but no parameter " + "resume" + actor.getName() + " was found!");
         }
         finished = ((BooleanToken)parameter.getToken()).booleanValue();
@@ -182,10 +182,10 @@ public class SchedulerModel extends ResourceScheduler {
         Time time = ((CompositeActor)_model).getDirector().getModelNextIterationTime();
         int index = 1;
         while (time.compareTo(currentPlatformTime) <= 0) {
-            ((CompositeActor)_model).getDirector().setModelTime(time); 
+            ((CompositeActor)_model).getDirector().setModelTime(time);
             ((DEDirector)((CompositeActor)_model).getDirector()).setIndex(index);
-            ((CompositeActor)_model).prefire(); 
-            ((CompositeActor)_model).fire(); 
+            ((CompositeActor)_model).prefire();
+            ((CompositeActor)_model).fire();
             ((CompositeActor)_model).postfire();
             Time previousTime = time;
             time = ((CompositeActor)_model).getDirector().getModelNextIterationTime();

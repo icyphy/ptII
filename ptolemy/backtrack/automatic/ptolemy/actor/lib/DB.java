@@ -45,7 +45,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
-/** 
+/**
  * Produce a token that is the value of the input in decibels.
  * That is, if the input is <i>z</i>, then the output is
  * <i>k</i>*log<sub>10</sub>(<em>z</em>).
@@ -73,13 +73,13 @@ public class DB extends Transformer implements Rollbackable {
 
     ///////////////////////////////////////////////////////////////////
     ////                         ports and parameters              ////
-    /**     
+    /**
      * If the input is proportional to power, then set this to true.
      * This must be a boolean, and defaults to false.
      */
     public Parameter inputIsPower;
 
-    /**     
+    /**
      * The minimum value of the output.  This is a double,
      * and defaults to -100.0.
      */
@@ -96,7 +96,7 @@ public class DB extends Transformer implements Rollbackable {
     ////                         private variables                 ////
     private DoubleToken[] _resultArray = new DoubleToken[1];
 
-    /**     
+    /**
      * Construct an actor in the specified container with the specified
      * name.
      * @param container The container.
@@ -116,7 +116,7 @@ public class DB extends Transformer implements Rollbackable {
         min.setTypeEquals(BaseType.DOUBLE);
     }
 
-    /**     
+    /**
      * Clone the actor into the specified workspace.
      * @param workspace The workspace for the new object.
      * @return A new actor.
@@ -130,7 +130,7 @@ public class DB extends Transformer implements Rollbackable {
         return newObject;
     }
 
-    /**     
+    /**
      * Read a token from the input and convert its value into a
      * decibel representation. If the input does not contain any tokens,
      * do nothing.
@@ -146,7 +146,7 @@ public class DB extends Transformer implements Rollbackable {
         }
     }
 
-    /**     
+    /**
      * Invoke a specified number of iterations of this actor. Each
      * iteration converts a single token to decibels. An invocation
      * of this method therefore applies the conversion to <i>count</i>
@@ -181,7 +181,7 @@ public class DB extends Transformer implements Rollbackable {
         }
     }
 
-    /**     
+    /**
      * Return the specified number in decibels,
      * but no less than <i>minValue</i>.
      */

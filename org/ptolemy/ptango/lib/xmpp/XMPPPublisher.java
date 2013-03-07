@@ -1,4 +1,4 @@
-/* An interface for actors that publish to an XMPP XEP-0060 node 
+/* An interface for actors that publish to an XMPP XEP-0060 node
 
  Copyright (c) 2012 The Regents of the University of California.
  All rights reserved.
@@ -33,7 +33,7 @@ package org.ptolemy.ptango.lib.xmpp;
 //// XMPPSubscriber
 
 /** An interface for actors that publish to an XMPP XEP-0060 node.
- * 
+ *
  *  @see XMPPGateway
  *  @author Marten Lohstroh
  *  @version $Id: XMPPPublisher.java 64744 2012-10-24 22:51:43Z marten $

@@ -69,7 +69,7 @@ public class ThrowException extends Sink {
 
         message = new StringAttribute(this, "message");
         message.setExpression("Model triggered an exception.");
-        
+
         throwInPostfire = new Parameter(this, "throwInPostfire");
         throwInPostfire.setTypeEquals(BaseType.BOOLEAN);
         throwInPostfire.setExpression("false");

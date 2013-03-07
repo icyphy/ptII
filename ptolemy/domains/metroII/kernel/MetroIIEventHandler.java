@@ -34,20 +34,20 @@ import net.jimblackler.Utils.YieldAdapterIterable;
 import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event;
 
 /**
- * Yieldadapter interface for getfire(), Any class implementing 
+ * Yieldadapter interface for getfire(), Any class implementing
  * this interface has the ability to 'yield return' in getfire()
  * by calling 'resultHandler.handleResult(events)'.
- * 
- * Instead of calling getfire() directly, the caller function 
- * should obtain an YieldAdapterIterable from adapter(). Every 
- * time YieldAdapterIterable.next() is called, getfire() 
- * starts or resumes from the last execution and runs until the 
- * next 'yield return' or 'return'. YieldAdapterIterable.next() 
- * returns an iterable<Event.Builder>, which is the list of 
- * events passed by 'resultHandler.handleResult(events)'. If 
- * YieldAdapterIterable.hasNext() returns false, it means 
- * getfire() has reached 'return' and terminated. 
- * 
+ *
+ * Instead of calling getfire() directly, the caller function
+ * should obtain an YieldAdapterIterable from adapter(). Every
+ * time YieldAdapterIterable.next() is called, getfire()
+ * starts or resumes from the last execution and runs until the
+ * next 'yield return' or 'return'. YieldAdapterIterable.next()
+ * returns an iterable<Event.Builder>, which is the list of
+ * events passed by 'resultHandler.handleResult(events)'. If
+ * YieldAdapterIterable.hasNext() returns false, it means
+ * getfire() has reached 'return' and terminated.
+ *
  * @author Liangpeng Guo
  * @version $Id$
  * @since Ptolemy II 9.1
@@ -58,18 +58,18 @@ import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event;
 public interface MetroIIEventHandler {
 
     /**
-     * Return the iterator for the caller function of getfire(). 
-     * 
+     * Return the iterator for the caller function of getfire().
+     *
      * @return iterator
      */
     public YieldAdapterIterable<Iterable<Event.Builder>> adapter();
 
     /**
-     * An implementation of getfire() has the ability to 'yield return' 
+     * An implementation of getfire() has the ability to 'yield return'
      * in getfire() by calling 'resultHandler.handleResult(events)'.
-     * 
+     *
      * @param resultHandler Iterable of events 'yield returned'
-     * @throws CollectionAbortedException
+     * @exception CollectionAbortedException
      */
     public void getfire(ResultHandler<Iterable<Event.Builder>> resultHandler)
             throws CollectionAbortedException;

@@ -40,46 +40,46 @@ import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
 
-/** This java obejct implements a virtual-link which belongs to the end-system 
+/** This java obejct implements a virtual-link which belongs to the end-system
  *  of an AFDX Network.
- *  For more information please refer to: 
+ *  For more information please refer to:
  *      <i>AFDX network simulation using PtolemyII</i>.
- *       
+ *
  *  @author G. Lasnier
  *  @version $Id$
    @since Ptolemy II 0.2
  */
 public class AFDXVlink {
-    
+
     /** Constructor.
      * @param source
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      */
     public AFDXVlink (Receiver source) throws IllegalActionException {
         // 'vlink' parameter and value.
         Parameter vlParam = (Parameter) ((NamedObj) ((IntermediateReceiver) source).source)
                 .getAttribute("vlink");
         this._name = ((StringToken) vlParam.getToken()).stringValue();
-        
+
         // 'bag' parameter and value.
         Parameter bagParam = (Parameter) ((NamedObj) ((IntermediateReceiver) source).source)
                 .getAttribute("bag");
         this._bag = ((DoubleToken) bagParam.getToken()).doubleValue() / 1000;
-        
+
         // 'trameSize' parameter and value.
         Parameter tsParam = (Parameter) ((NamedObj) ((IntermediateReceiver) source).source)
                 .getAttribute("trameSize");
         this._trameSize = ((IntToken) tsParam.getToken()).intValue();
-        
+
         // 'schedulerMux' parameter and value.
         Parameter smParam = (Parameter) ((NamedObj) ((IntermediateReceiver) source).source)
                 .getAttribute("schedulerMux");
         this._schedulerMux = ((StringToken) smParam.getToken()).stringValue();
-        
-        // 'source' connected to the vlink. 
+
+        // 'source' connected to the vlink.
         this._source = ((IntermediateReceiver) source).source;
     }
-    
+
     /** Constructor.
      * @param nm The name of the virtual-link.
      * @param b The value of the bag.
@@ -94,24 +94,24 @@ public class AFDXVlink {
         this._source = src;
         this._schedulerMux = sched;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
     /* The followings methods are classics getter/setter. */
-    
+
     public String getName() {
         return _name;
     }
-    
+
     public Double getBag() {
         return _bag;
     }
-    
+
     public int getTrameSize() {
         return _trameSize;
     }
-    
+
     public Actor getSource() {
         return _source;
     }
@@ -119,24 +119,24 @@ public class AFDXVlink {
     public String getSchedulerMux() {
         return _schedulerMux;
     }
-    
+
     public String toString() {
         return "Object AFDXVlink {"
-                + "vl_name=" + _name + " bag=" + _bag.toString() 
+                + "vl_name=" + _name + " bag=" + _bag.toString()
                 + " trameSize=" + _trameSize
                 + " schedulerMux=" + _schedulerMux
                 + " source=" + _source
                 + "}";
     }
-    
+
     /** The name of the virtual-link
      */
     private String _name;
-    
+
     /** The bag of the virtual-link
      */
     private Double _bag;
-    
+
     /** The size of the trame for the virtual-link
      */
     private int _trameSize;
@@ -144,9 +144,9 @@ public class AFDXVlink {
     /** The name of the virtual-link scheduler multiplexor
      */
     private String _schedulerMux;
-    
+
     /** The source actor connected to the virtual-link
      */
     private Actor _source;
-    
+
 }

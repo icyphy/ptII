@@ -2592,7 +2592,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
         // If we don't have a library, we might be trying to only show
         // models
         // FIXME: should we be checking for _library instead?
-        if (configuration != null && 
+        if (configuration != null &&
                 (CompositeEntity) configuration.getEntity("actor library") != null) {
             // Create the panner.
             _graphPanner = new JCanvasPanner(getJGraph());
@@ -3416,7 +3416,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
 
     /** Action to undo the last MoML change. */
     private Action _undoAction = new UndoAction();
-    
+
     private static double _ZOOM_FIT_PADDING = 5.0;
 
     ///////////////////////////////////////////////////////////////////

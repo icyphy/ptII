@@ -35,11 +35,11 @@ import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event;
 import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event.Builder;
 import ptolemy.kernel.util.IllegalActionException;
 
-/** 
- * MetroIIActorBasicWrapper is a basic wrapper for Ptolemy actor 
- * to work with a MetroIIDirector. It provides a basic implementation of 
+/**
+ * MetroIIActorBasicWrapper is a basic wrapper for Ptolemy actor
+ * to work with a MetroIIDirector. It provides a basic implementation of
  * MetroIIActorInterface. @see MetroIIActorBasicWrapper#startOrResume
- * 
+ *
  * @author Liangpeng Guo
  * @version $Id$
  * @since Ptolemy II 9.1
@@ -50,19 +50,19 @@ import ptolemy.kernel.util.IllegalActionException;
 public class MetroIIActorBasicWrapper implements StartOrResumable {
 
     /** Construct a basic wrapper.
-     * 
+     *
      * @param actor The actor
      */
     public MetroIIActorBasicWrapper(Actor actor) {
         this._actor = actor;
-        reset(); 
+        reset();
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
     /**
-     * Dispose the current execution. 
+     * Dispose the current execution.
      */
     public void reset() {
         _state = State.PREFIRE_BEGIN;
@@ -70,23 +70,23 @@ public class MetroIIActorBasicWrapper implements StartOrResumable {
     }
 
     /**
-    * The functions prefire(), fire() and postfire() 
-    * are wrapped in startOrResume() as follows: 
+    * The functions prefire(), fire() and postfire()
+    * are wrapped in startOrResume() as follows:
     * <ol>
-    * <li> Propose MetroII event POSTFIRE_END_PREFIRE_BEGIN and wait for 
+    * <li> Propose MetroII event POSTFIRE_END_PREFIRE_BEGIN and wait for
     * the event being notified</li>
     * <li> prefire() </li>
-    * <li> Propose MetroII event PREFIRE_END_FIRE_BEGIN and wait for the 
+    * <li> Propose MetroII event PREFIRE_END_FIRE_BEGIN and wait for the
     * event being notified</li>
     * <li> fire() </li>
-    * <li> Propose MetroII event FIRE_END_POSTFIRE_BEGIN and wait for the 
+    * <li> Propose MetroII event FIRE_END_POSTFIRE_BEGIN and wait for the
     * the event being notified</li>
     * <li> postfire() </li>
     * </ol>
-    * where 'wait' means checking the status of MetroII event. If notified, 
+    * where 'wait' means checking the status of MetroII event. If notified,
     * continue execution, otherwise proposing the same event again.
-    * 
-    * @param metroIIEventList A list of MetroII events. 
+    *
+    * @param metroIIEventList A list of MetroII events.
     */
     @Override
     public void startOrResume(LinkedList<Builder> metroIIEventList)
@@ -126,27 +126,27 @@ public class MetroIIActorBasicWrapper implements StartOrResumable {
         } else if (_state == State.POSTFIRE_END) {
             assert _currentStateEvent.getName().contains("POSTFIRE_END");
             if (_currentStateEvent.getStatus() == Event.Status.NOTIFIED) {
-                _state = State.PREFIRE_BEGIN; 
+                _state = State.PREFIRE_BEGIN;
                 _currentStateEvent = _createMetroIIEvent("PREFIRE_BEGIN");
             }
             metroIIEventList.add(_currentStateEvent);
         }
-        
+
     }
 
-    
-    /** Actor state 
+
+    /** Actor state
      */
     public enum State {
         PREFIRE_BEGIN, PREFIRE_END_FIRE_BEGIN, FIRING, FIRE_END_POSTFIRE_BEGIN, POSTFIRE_END
     }
 
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                    protected fields                       ////
 
     /** Create a MetroII event
-     * 
+     *
      */
     protected Builder _createMetroIIEvent(String name) {
         Event.Builder builder = Event.newBuilder();
@@ -158,17 +158,17 @@ public class MetroIIActorBasicWrapper implements StartOrResumable {
     }
 
     /** Current state event
-     * 
+     *
      */
     protected Builder _currentStateEvent;
 
     /** Actor state
-     * 
+     *
      */
     protected State _state;
 
-    /** Actor which is being fired 
-     * 
+    /** Actor which is being fired
+     *
      */
     protected Actor _actor;
 

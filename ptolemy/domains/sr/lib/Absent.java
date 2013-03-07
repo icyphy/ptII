@@ -60,7 +60,7 @@ public class Absent extends Undefined {
     public Absent(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        
+
         new Parameter(trigger, "_hide", BooleanToken.TRUE);
     }
 

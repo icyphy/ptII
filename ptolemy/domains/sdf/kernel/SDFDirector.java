@@ -219,7 +219,7 @@ public class SDFDirector extends StaticSchedulingDirector implements
 
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         parameters                        ////
 
@@ -315,24 +315,24 @@ public class SDFDirector extends StaticSchedulingDirector implements
      */
     public Parameter vectorizationFactor;
 
-    
+
     /** The value used to signify special behavior for the
      *  iterations parameter.
      */
     public static final IntToken AUTO_INTTOKEN = new IntToken(-1);
-    
+
     /** The name of the AUTO iterations parameter choice: "AUTO". */
-    public static final String AUTO_NAME = "AUTO"; 
-    
+    public static final String AUTO_NAME = "AUTO";
+
     /** The UNBOUNDED iterations choice is equivalent to IntToken.ZERO. */
     public static final IntToken UNBOUNDED_INTTOKEN = IntToken.ZERO;
-    
+
     /** The name of the UNBOUNDED iterations parameter choice: "UNBOUNDED". */
-    public static final String UNBOUNDED_NAME = "UNBOUNDED"; 
-    
+    public static final String UNBOUNDED_NAME = "UNBOUNDED";
+
     /** The name of the iterations parameter: "iterations". */
     public static final String ITERATIONS_NAME = "iterations";
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -483,12 +483,12 @@ public class SDFDirector extends StaticSchedulingDirector implements
             throw new InternalErrorException(exception);
         }
     }
-    
-    /** Call super.fire() and reset the _prefire flag. 
+
+    /** Call super.fire() and reset the _prefire flag.
      *  @exception IllegalActionException Thrown by super class.
      */
     @Override
-    public void fire() throws IllegalActionException { 
+    public void fire() throws IllegalActionException {
         _prefire = false;
         super.fire();
     }
@@ -608,9 +608,9 @@ public class SDFDirector extends StaticSchedulingDirector implements
      */
     public boolean prefire() throws IllegalActionException {
         // Set current time based on the enclosing model.
-        
+
         // If prefire returns true and prefire is called again
-        // without calling fire in between, 
+        // without calling fire in between,
         // which can happen when resourceScheduling is enabled,
         // then return true again. Otherwise check prefire
         // conditions.
@@ -618,7 +618,7 @@ public class SDFDirector extends StaticSchedulingDirector implements
             return true;
         }
         _prefire = super.prefire();
-        
+
         if (!_prefire) {
             return false;
         }
@@ -1024,7 +1024,7 @@ public class SDFDirector extends StaticSchedulingDirector implements
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
+
     /** The real time at which the model begins executing. */
     private long _realStartTime = 0L;
 

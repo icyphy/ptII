@@ -119,7 +119,7 @@ public class ParserAttribute extends SingletonAttribute {
 
         while (container != null) {
             // We used to just get the ParserAttribute from the object.
-            // However, this is wrong, we should get it from the 
+            // However, this is wrong, we should get it from the
             // container.
             // In r51962 the comment was "Bugfix" and the change was
             // made.

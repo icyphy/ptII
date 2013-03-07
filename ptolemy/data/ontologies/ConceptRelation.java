@@ -106,7 +106,7 @@ public class ConceptRelation extends ComponentRelation {
      *  variables in scope using the notation $name.
      */
     public StringParameter annotation;
-    
+
     /** Color in which to render this transition.
      *  The default color is black.
      */

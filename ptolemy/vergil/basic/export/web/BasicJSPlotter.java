@@ -1,5 +1,5 @@
-/* Attribute for generating the HTML file with JavaScript to plot simulation 
-   results. This base class cannot be instanced. 
+/* Attribute for generating the HTML file with JavaScript to plot simulation
+   results. This base class cannot be instanced.
 
  Copyright (c) 2012 The Regents of the University of California.
  All rights reserved.
@@ -43,12 +43,12 @@ import ptolemy.kernel.util.NamedObj;
 ///////////////////////////////////////////////////////////////////
 ////BasicJSPlotter
 /**
- * Base class for attributes generating the HTML file with JavaScript to plot 
- * simulation results for "Export to Web". This class provides parameters that 
- * control how the figure should be plot. The generated HTML page consists of 
- * three parts: the head, the body and the JavaScript in the head. Methods are 
- * provided to modify the contents of these parts. 
- * 
+ * Base class for attributes generating the HTML file with JavaScript to plot
+ * simulation results for "Export to Web". This class provides parameters that
+ * control how the figure should be plot. The generated HTML page consists of
+ * three parts: the head, the body and the JavaScript in the head. Methods are
+ * provided to modify the contents of these parts.
+ *
  * @author Baobing (Brian) Wang
  * @version $Id$
  * @since Ptolemy II 9
@@ -199,7 +199,7 @@ public abstract class BasicJSPlotter extends WebContent implements
     ///////////////////////////////////////////////////////////////////
     ////                         parameters                        ////
 
-    /** Parameter specifying if the figure should be auto-resized based on the 
+    /** Parameter specifying if the figure should be auto-resized based on the
      *  window size. This is a boolean that defaults to true.
      */
     public Parameter autoResize;
@@ -214,7 +214,7 @@ public abstract class BasicJSPlotter extends WebContent implements
      */
     public StringParameter dataJSON;
 
-    /** Parameter specifying if the horizontal grid line should be drawn. 
+    /** Parameter specifying if the horizontal grid line should be drawn.
      *  This is a boolean that defaults to true.
      */
     public Parameter drawHorizontalGridLine;
@@ -298,7 +298,7 @@ public abstract class BasicJSPlotter extends WebContent implements
      */
     public StringParameter outputHTMLFile;
 
-    /** Parameter specifying if the data and event traces should be saved in a 
+    /** Parameter specifying if the data and event traces should be saved in a
      *  separated file. This is a boolean that defaults to false.
      */
     public Parameter saveDataToFile;
@@ -346,7 +346,7 @@ public abstract class BasicJSPlotter extends WebContent implements
     }
 
     /** Get the parameter values from the GUI input.
-     *  @return The hash map containing the values of all parameters 
+     *  @return The hash map containing the values of all parameters
      *  @exception IllegalActionException
      */
     public HashMap<String, String> getBasicConfig()
@@ -456,13 +456,13 @@ public abstract class BasicJSPlotter extends WebContent implements
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                      protected methods                    ////
+    ////                         protected methods                 ////
 
     /** Provide content to the specified web exporter to be
      *  included in a web page for the container of this object.
      *  This class defines an href attribute to associate with
      *  the area of the image map corresponding to its container.
-     *  
+     *
      *  @param exporter  The web exporter to write content to
      *  @exception IllegalActionException If evaluating the value
      *   of this parameter fails, or creating a web attribute fails.
@@ -479,7 +479,7 @@ public abstract class BasicJSPlotter extends WebContent implements
         if (container != null) {
             // Last argument specifies to overwrite any previous value defined.
             if (!outputHTMLFile.stringValue().trim().equals("")) {
-                // Create link attribute and add to exporter.  
+                // Create link attribute and add to exporter.
                 // Content should only be added once (onceOnly -> true).
                 webAttribute = WebAttribute.createWebAttribute(container,
                         "hrefWebAttribute", "href");
@@ -493,7 +493,7 @@ public abstract class BasicJSPlotter extends WebContent implements
                     // Strangely, the class has to be "iframe".
                     // I don't understand why it can't be "lightbox".
 
-                    // Create class attribute and add to exporter.  
+                    // Create class attribute and add to exporter.
                     // Content should only be added once (onceOnly -> true).
                     webAttribute = WebAttribute.createWebAttribute(container,
                             "classWebAttribute", "class");
@@ -501,7 +501,7 @@ public abstract class BasicJSPlotter extends WebContent implements
                     exporter.defineAttribute(webAttribute, true);
                 } else {
 
-                    // Create target attribute and add to exporter.  
+                    // Create target attribute and add to exporter.
                     // Content should only be added once (onceOnly -> true).
                     webAttribute = WebAttribute.createWebAttribute(
                             getContainer(), "targetWebAttribute", "target");
@@ -513,7 +513,7 @@ public abstract class BasicJSPlotter extends WebContent implements
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                      private variables                    ////
+    ////                         private variables                 ////
 
     // String buffer storing the body content
     private StringBuffer _bodyContent;

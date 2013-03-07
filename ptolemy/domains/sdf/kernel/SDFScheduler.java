@@ -1568,7 +1568,7 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
                 while (inputPorts.hasNext()) {
                     IOPort inputPort = (IOPort) inputPorts.next();
                     int count = DFUtilities.getTokenInitConsumption(inputPort);
-                    
+
                     // If the port is an input port that sends initial tokens
                     // to the inside, then those tokens are represented by
                     // an init _production_ parameter. This needs to be taken
@@ -1593,7 +1593,7 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
                     .hasNext();) {
                 IOPort port = (IOPort) inputPorts.next();
                 int count = ((Integer) externalRates.get(port)).intValue();
-                
+
                 // The input port may have initial tokens (SubcriberPort supports this).
                 count += DFUtilities.getTokenInitProduction(port);
 
@@ -1602,7 +1602,7 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
                             readyToScheduleActorList);
                 }
             }
-            
+
             // Simulate a number of tokens initially present on each
             // external output port. An output port may have initial
             // tokens on its inside receiver ready to be transported
@@ -1610,7 +1610,7 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
             // port with initial tokens.
             for (Iterator outputPorts = container.outputPortList().iterator(); outputPorts
                     .hasNext();) {
-                IOPort port = (IOPort) outputPorts.next();                
+                IOPort port = (IOPort) outputPorts.next();
                 int count = DFUtilities.getTokenInitProduction(port);
                 if (count > 0) {
                     _simulateInitialOutputTokens(port, count);
@@ -1855,11 +1855,11 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
                 IOPort connectedPort = receivers[channel][copy].getContainer();
                 ComponentEntity connectedActor = (ComponentEntity) connectedPort
                         .getContainer();
-                
+
                 // If the connected port has an initial tokens for consumption,
                 // those need to be added to the count.
                 count += DFUtilities.getTokenInitConsumption(connectedPort);
-                
+
                 receiver._waitingTokens = count;
 
                 // Update the buffer size, if necessary.

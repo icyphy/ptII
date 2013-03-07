@@ -1,4 +1,4 @@
-/* GMetroIIActorGeneralWrapper is used to wrap any MetroII compatible actor with MetroIIActorInterface. 
+/* GMetroIIActorGeneralWrapper is used to wrap any MetroII compatible actor with MetroIIActorInterface.
 
  Copyright (c) 2012-2013 The Regents of the University of California.
  All rights reserved.
@@ -40,11 +40,11 @@ import ptolemy.kernel.util.IllegalActionException;
 ///////////////////////////////////////////////////////////////////
 //// MetroIIActorGeneralWrapper
 
-/** <p> 
- * MetroIIActorGeneralWrapper is used to wrap any MetroII 
- * compatible actor with MetroIIActorInterface. 
- * </p> 
- * 
+/** <p>
+ * MetroIIActorGeneralWrapper is used to wrap any MetroII
+ * compatible actor with MetroIIActorInterface.
+ * </p>
+ *
  * @author Liangpeng Guo
  * @version $Id$
  * @since Ptolemy II 9.1
@@ -54,7 +54,7 @@ import ptolemy.kernel.util.IllegalActionException;
  */
 public class MetroIIActorGeneralWrapper extends MetroIIActorBasicWrapper {
     /** Construct a Actor-Thread pair.
-     * 
+     *
      * @param actor The actor
      */
     public MetroIIActorGeneralWrapper(Actor actor) {
@@ -65,21 +65,21 @@ public class MetroIIActorGeneralWrapper extends MetroIIActorBasicWrapper {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Start or resume the execution of an actor. The execution means 
-     * calling prefire(), getfire(), and postfire(). The 
-     * execution of getfire() is encapsulated in a thread (implemented 
-     * in YieldAdapter @see net.jimblackler.Utils.YieldAdapter). 
-     * The thread pauses when getfire() yield-returns a list of MetroII 
-     * events. 
-     * 
-     * @param metroIIEventList the list of MetroII events getfire() 
-     * returns. 
+    /** Start or resume the execution of an actor. The execution means
+     * calling prefire(), getfire(), and postfire(). The
+     * execution of getfire() is encapsulated in a thread (implemented
+     * in YieldAdapter @see net.jimblackler.Utils.YieldAdapter).
+     * The thread pauses when getfire() yield-returns a list of MetroII
+     * events.
+     *
+     * @param metroIIEventList the list of MetroII events getfire()
+     * returns.
      */
     @Override
     public void startOrResume(LinkedList<Builder> metroIIEventList)
             throws IllegalActionException {
         /**
-         * Start executing the wrapped actor in the thread. 
+         * Start executing the wrapped actor in the thread.
          */
         if (_state == State.PREFIRE_BEGIN) {
             assert _currentStateEvent.getName().contains("PREFIRE_BEGIN");
@@ -109,9 +109,9 @@ public class MetroIIActorGeneralWrapper extends MetroIIActorBasicWrapper {
          * Resume executing the wrapped actor with states saved in the thread.
          */
         else if (_state == State.FIRING) {
-            /* Every time hasNext() is called, the thread runs until the next event 
-             * is proposed. If any event is proposed, hasNext() returns true. 
-             * The proposed event is returned by next().  
+            /* Every time hasNext() is called, the thread runs until the next event
+             * is proposed. If any event is proposed, hasNext() returns true.
+             * The proposed event is returned by next().
              * If the getfire() terminates without proposing event, hasNext()
              * returns false.
              */
@@ -139,17 +139,17 @@ public class MetroIIActorGeneralWrapper extends MetroIIActorBasicWrapper {
             }
             metroIIEventList.add(_currentStateEvent);
         } else if (_state == State.POSTFIRE_END) {
-            assert _currentStateEvent.getName().contains("POSTFIRE_END"); 
+            assert _currentStateEvent.getName().contains("POSTFIRE_END");
             if (_currentStateEvent.getStatus() == Event.Status.NOTIFIED) {
-                _state = State.PREFIRE_BEGIN; 
-                _currentStateEvent = _createMetroIIEvent("PREFIRE_BEGIN"); 
+                _state = State.PREFIRE_BEGIN;
+                _currentStateEvent = _createMetroIIEvent("PREFIRE_BEGIN");
             }
             metroIIEventList.add(_currentStateEvent);
         }
     }
 
     /**
-     * Stop and dispose any associated thread. 
+     * Stop and dispose any associated thread.
      */
     @Override
     public void reset() {
@@ -157,7 +157,7 @@ public class MetroIIActorGeneralWrapper extends MetroIIActorBasicWrapper {
             _eventIterator.dispose();
             _actor.stop();
         }
-        super.reset(); 
+        super.reset();
     }
 
     ///////////////////////////////////////////////////////////////////

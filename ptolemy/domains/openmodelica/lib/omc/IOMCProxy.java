@@ -48,8 +48,8 @@ import ptolemy.kernel.util.IllegalActionException;
 
 /**
    The interface to the Modelica compiler that should be implemented by OMCProxy.
-   
-   @author Mana Mirzaei 
+
+   @author Mana Mirzaei
    @version $Id$
    @since Ptolemy II 9.1
    @Pt.ProposedRating Red (cxh)
@@ -57,11 +57,11 @@ import ptolemy.kernel.util.IllegalActionException;
  */
 public interface IOMCProxy {
 
-    /** Return the variables in the simulation file. 
+    /** Return the variables in the simulation file.
      *  Read a result file and return a matrix corresponding to the variables and given size.
      *  @param fileName The executable result file of simulation in CSV format.
-     *  @throws ConnectException If commands couldn't
-     *   be sent to the (OpenModelica Compiler)OMC. 
+     *  @exception ConnectException If commands couldn't
+     *   be sent to the (OpenModelica Compiler)OMC.
      */
     /*public void displaySimulationResult(String fileName)
             throws ConnectException;*/
@@ -85,21 +85,21 @@ public interface IOMCProxy {
      *  @param inputPort The input port of OpenModelica actor which reads init value of the Ramp actor.
      *  @param fileName File which the model should be loaded from.
      *  @param modelName Name of the model which should be built.
-     *  @throws IllegalActionException 
-     *  @throws ConnectException If commands couldn't
-     *   be sent to the (OpenModelica Compiler)OMC. 
+     *  @exception IllegalActionException
+     *  @exception ConnectException If commands couldn't
+     *   be sent to the (OpenModelica Compiler)OMC.
      */
    /* public void modifyVariables(String modelicaScript, TypedIOPort inputPort,
             String fileName, String modelName) throws IllegalActionException,
             ConnectException;*/
-    
+
     /** Plot the plt file by calling PxgraphApplication.main(dcmotor_res.plt).
      *  @param fileNamePrefix User preferable name for the result file.
      *  @param modelName Name of the model which should be built.
-     *  @throws ConnectException If commands could not be sent to the OMC.
+     *  @exception ConnectException If commands could not be sent to the OMC.
      */
     public void plotPltFile(String fileNamePrefix,String modelName) throws ConnectException;
-    
+
     /** Leave and quit OpenModelica environment.
      *  @exception ConnectException If quit command couldn't
      *  be sent to OMC.
@@ -121,11 +121,11 @@ public interface IOMCProxy {
      *  @param variableFilter Filter for variables that should be stored in the result file.
      *  @param cflags Any standard C language flags.
      *  @param simflags Simulation flags.
-     *  @throws ConnectException If commands couldn't
+     *  @exception ConnectException If commands couldn't
      *   be sent to the (OpenModelica Compiler)OMC.
-     *  @throws IOException If the executable result of buildModel()
+     *  @exception IOException If the executable result of buildModel()
      *   couldn't be executed.
-     *  @throws IllegalActionException 
+     *  @exception IllegalActionException
      */
     public void simulateModel(String fileName, String modelName,
             String fileNamePrefix, String startTime, String stopTime,

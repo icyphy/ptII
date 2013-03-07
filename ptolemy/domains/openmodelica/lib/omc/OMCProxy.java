@@ -36,8 +36,8 @@
  * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
  * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
- * 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
  */
 
 package ptolemy.domains.openmodelica.lib.omc;
@@ -65,11 +65,11 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.plot.compat.PxgraphApplication;
 import ptolemy.util.StringUtilities;
 
-/**    
+/**
   <p> OMCProxy is the glue between the OpenModelica Compiler(OMC) server and Ptolemy II.
-      The OMCProxy object acts as a stand-in for the OMC server object 
+      The OMCProxy object acts as a stand-in for the OMC server object
       that calls the server by sending a command to the OMC server and fetches the result.</p>
-  
+
   @author Mana Mirzaei, Based on OMCProxy by Adrian Pop, Elmir Jagudin, Andreas Remar
   @version $Id$
   @since Ptolemy II 9.1
@@ -78,8 +78,8 @@ import ptolemy.util.StringUtilities;
  */
 public class OMCProxy implements IOMCProxy {
     /** Construct an OpenModelica Compiler(OMC) proxy.
-     *  This constructor has no parameter. 
-     *  This private Constructor prevents other class from instantiating. 
+     *  This constructor has no parameter.
+     *  This private Constructor prevents other class from instantiating.
      */
     private OMCProxy() {
 
@@ -107,7 +107,7 @@ public class OMCProxy implements IOMCProxy {
     /** The copy of workingDirectory for having public access.*/
     public static File workDir = null;
 
-    /** 
+    /**
      *  OpenModelica Compiler(OMC) thread runs the OMC binary file by taking environmental variables
      *  OPENMODELICAHOME,OPENMODELICALIBRARY and working directory.
      */
@@ -240,13 +240,13 @@ public class OMCProxy implements IOMCProxy {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         public methods                   ////
+    ////                         public methods                    ////
 
-    /** Return the variables in the simulation file. 
+    /** Return the variables in the simulation file.
      *  Read a result file and return a matrix corresponding to the variables and size given.
      *  @param fileName The executable result file of simulation in CSV format.
-     *  @throws ConnectException If commands couldn't
-     *   be sent to the (OpenModelica Compiler)OMC. 
+     *  @exception ConnectException If commands couldn't
+     *   be sent to the (OpenModelica Compiler)OMC.
      */
     /*
     public void displaySimulationResult(String fileName)
@@ -258,7 +258,7 @@ public class OMCProxy implements IOMCProxy {
 
         String variableList = readSimulationResultVars.getFirstResult();
 
-        // Delete the first and last "{". 
+        // Delete the first and last "{".
         StringBuffer variableBuffer = new StringBuffer(variableList);
         variableBuffer.deleteCharAt(0);
         variableList = variableBuffer.deleteCharAt(variableBuffer.length() - 1)
@@ -279,7 +279,7 @@ public class OMCProxy implements IOMCProxy {
             CompilerResult readSimulationResult = sendCommand("readSimulationResult(\""
                     + fileName + "_res.csv\",{" + variableList + "}," + 2 + ")");
 
-            // The matrix of the variable's values which is read from the simulation result file. 
+            // The matrix of the variable's values which is read from the simulation result file.
             System.out.println("Simulation Result of variable " + variableList
                     + " is: " + readSimulationResult.getFirstResult());
         }
@@ -297,7 +297,7 @@ public class OMCProxy implements IOMCProxy {
     }
 
     /** Fetch the type of Operating System(OS).
-     *  @return osType The name of the operating system(OS). 
+     *  @return osType The name of the operating system(OS).
      */
     public static osType getOs() {
         String osName = System.getProperty("os.name");
@@ -315,7 +315,7 @@ public class OMCProxy implements IOMCProxy {
     /** Initialize the communication with the OpenModelica compiler(OMC) server.
      *  @exception ConnectException If we're unable to start communicating with
      *  the server.
-     *  @throws InterruptedException 
+     *  @exception InterruptedException
      */
     public synchronized void initServer() throws ConnectException {
 
@@ -328,7 +328,7 @@ public class OMCProxy implements IOMCProxy {
         strDate = timeFormat.format(date);
         _corbaSessionName = strDate;
 
-        // Check if an OMC server is already started. 
+        // Check if an OMC server is already started.
         File f = new File(_getPathToObject());
         String stringifiedObjectReference = null;
         if (!f.exists()) {
@@ -371,9 +371,9 @@ public class OMCProxy implements IOMCProxy {
      *  @param inputPort The input port of OpenModelica actor which reads init value of the Ramp actor.
      *  @param fileName File which the model should be loaded from.
      *  @param modelName Name of the model which should be built.
-     *  @throws IllegalActionException 
-     *  @throws ConnectException If commands couldn't
-     *   be sent to the (OpenModelica Compiler)OMC. 
+     *  @exception IllegalActionException
+     *  @exception ConnectException If commands couldn't
+     *   be sent to the (OpenModelica Compiler)OMC.
      */
     /*
     public void modifyVariables(String modelicaScript, TypedIOPort inputPort,
@@ -555,11 +555,11 @@ public class OMCProxy implements IOMCProxy {
     /** Plot the plt file by calling PxgraphApplication.main(dcmotor_res.plt).
      *  @param fileNamePrefix User preferable name for the result file.
      *  @param modelName Name of the model which should be built.
-     *  @throws ConnectException If commands could not be sent to the OMC.
+     *  @exception ConnectException If commands could not be sent to the OMC.
      */
     public void plotPltFile(String fileNamePrefix,String modelName) throws ConnectException {
 
-        // Array for saving the file path.  
+        // Array for saving the file path.
         String[] _pltPath = new String[1];
 
         //Send cd() command to the (OpenModelica Compiler)OMC and fetch working directory of OMC as a result.
@@ -580,8 +580,8 @@ public class OMCProxy implements IOMCProxy {
         PxgraphApplication.main(_pltPath);
     }
 
-    
-    
+
+
     /** Leave and quit OpenModelica environment.
      *  Deallocate OMCProxy and OMCLogger objects.
      *  @exception ConnectException If quit command couldn't
@@ -624,7 +624,7 @@ public class OMCProxy implements IOMCProxy {
 
         try {
 
-            // Fetch the error string from OpenModelica Compiler(OMC). 
+            // Fetch the error string from OpenModelica Compiler(OMC).
             // This should be called after an "Error"
             // is received or whenever the queue of errors are emptied.
 
@@ -657,8 +657,8 @@ public class OMCProxy implements IOMCProxy {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         public methods                   ////
-    
+    ////                         public methods                    ////
+
     /** Build the model. Then, run the simulation executable result of
      *  buildModel() in order to generate the simulation result.
      *  @param fileName File which the model should be loaded from.
@@ -673,11 +673,11 @@ public class OMCProxy implements IOMCProxy {
      *  @param variableFilter Filter for variables that should be stored in the result file.
      *  @param cflags Any standard C language flags.
      *  @param simflags Simulation flags.
-     *  @throws ConnectException If commands couldn't
+     *  @exception ConnectException If commands couldn't
      *   be sent to the (OpenModelic Compiler)OMC.
-     *  @throws IOException If the executable result of buildModel()
+     *  @exception IOException If the executable result of buildModel()
      *   couldn't be executed.
-     *  @throws IllegalActionException 
+     *  @exception IllegalActionException
      */
     public void simulateModel(String fileName, String modelName,
             String fileNamePrefix, String startTime, String stopTime,
@@ -685,7 +685,7 @@ public class OMCProxy implements IOMCProxy {
             String outputFormat, String variableFilter, String cflags,
             String simflags) throws ConnectException, IOException,
             IllegalActionException {
-        
+
         _testFilePath = _systemPath
                 + "/ptolemy/domains/openmodelica/demo/OpenModelica/" + fileName;
 
@@ -793,7 +793,7 @@ public class OMCProxy implements IOMCProxy {
                 break;
             }
 
-            // Run the executable result file of buildModel("command"). 
+            // Run the executable result file of buildModel("command").
             Runtime.getRuntime().exec(command, OMCProxy.environmentalVariables,
                     OMCProxy.workDir);
 
@@ -803,7 +803,7 @@ public class OMCProxy implements IOMCProxy {
                 loggerInfo = "Simulation of " + modelName
                         + " is done successfuly.";
                 _omcLogger.getInfo(loggerInfo);
-            } else if (fileNamePrefix.compareTo("") < 0 || fileNamePrefix.compareTo("") > 0){
+            } else if (fileNamePrefix.compareTo("") < 0 || fileNamePrefix.compareTo("") > 0) {
                 // When users select File Name Prefix as the name of executable result file.
                 loggerInfo = "Simulation of " + fileNamePrefix
                         + " is done successfuly.";
@@ -853,7 +853,7 @@ public class OMCProxy implements IOMCProxy {
      *  such factors as: OS type, environmental Variables settings,
      *  where the first matching binary found.
      *  @return full path to the OMC binary and the working folder.
-     *  @exception ConnectException If OPENMODELICAHOME is not set 
+     *  @exception ConnectException If OPENMODELICAHOME is not set
      *  and we could not find binary file in the path.
      */
     private File[] _getOmcBinaryPaths() throws ConnectException {
@@ -874,7 +874,7 @@ public class OMCProxy implements IOMCProxy {
         _omcLogger.getInfo(loggerInfo);
 
         // Standard path to (OpenModelica Compiler)OMC binary is encoded in OPENMODELICAHOME
-        // variable. 
+        // variable.
         String openModelicaHome = System.getenv("OPENMODELICAHOME");
         if (openModelicaHome == null) {
             loggerInfo = "OPENMODELICAHOME environmental variable is NULL, trying the PATH variable";
@@ -897,7 +897,7 @@ public class OMCProxy implements IOMCProxy {
 
         openModelicaHomeDirectory = new File(openModelicaHome);
 
-        // The subdirectories where (OpenModelica Compiler)OMC binary is located. 
+        // The subdirectories where (OpenModelica Compiler)OMC binary is located.
         // adrpo 2012-06-12 It does not support the old ways! "/omc" and "Compiler/omc".
         String[] subdirs = { "bin" };
 
@@ -1066,11 +1066,11 @@ public class OMCProxy implements IOMCProxy {
         orb = ORB.init(args, null);
 
         try {
-            // Convert string to CORBA object. 
+            // Convert string to CORBA object.
             org.omg.CORBA.Object obj = orb
                     .string_to_object(stringifiedObjectReference);
 
-            // Convert object to OmcCommunication object. 
+            // Convert object to OmcCommunication object.
             omcc = OmcCommunicationHelper.narrow(obj);
         } catch (Throwable throwable) {
             throw new RuntimeException("Failed to convert string \""
@@ -1080,7 +1080,7 @@ public class OMCProxy implements IOMCProxy {
     }
 
     /** Start the (OpenModelica Compiler)OMC server by starting OMCThread.
-     *  @exception ConnectException If OPENMODELICAHOME is not set 
+     *  @exception ConnectException If OPENMODELICAHOME is not set
      *  and we could not find binary file in the path.
      */
     private synchronized void _startServer() throws ConnectException {
@@ -1114,13 +1114,13 @@ public class OMCProxy implements IOMCProxy {
     // Initialize _corbaSession.
     private String _corbaSessionName = null;
 
-    // Indicate if we give up on running OpenModelica Compiler(OMC) as it is unable to start. 
+    // Indicate if we give up on running OpenModelica Compiler(OMC) as it is unable to start.
     private boolean _couldNotStartOMC = false;
 
-    // This object is used for starting OpenModelica Compiler(OMC)'s thread. 
+    // This object is used for starting OpenModelica Compiler(OMC)'s thread.
     private OMCThread _fOMCThread = null;
 
-    // Flag which indicates whether the server should start or not. 
+    // Flag which indicates whether the server should start or not.
     private boolean _fOMCThreadHasBeenScheduled = false;
 
     // OMCCommand Object for accessing a unique source of instance.
@@ -1129,29 +1129,29 @@ public class OMCProxy implements IOMCProxy {
     // OMCLogger Object for accessing a unique source of instance.
     private OMCLogger _omcLogger;
 
-    // OMCProxy Object for accessing a unique source of instance. 
+    // OMCProxy Object for accessing a unique source of instance.
     private static OMCProxy _omcProxyInstance = null;
 
     // The return result from invoking sendExpression("cd()") to (OpenModelica Compiler)OMC.
     // The return result is the working directory of OMC.
-    private String _openModelicaWorkingDirectory = null; 
-    
+    private String _openModelicaWorkingDirectory = null;
+
     // The (Operating System)OS we are running on.
     private osType _os;
-      
+
     // Initialization of the number of errors.
     private int _numberOfErrors = 0;
-    
+
     // Indicates if the Modelica model component is variable or parameter.
     private String _parameterOrVariable = null;
 
-    // Maximum number of compiler errors to display. 
+    // Maximum number of compiler errors to display.
     private int _showMaxErrors = 10;
 
-    // Initialize the system path of PTII. 
+    // Initialize the system path of PTII.
     private String _systemPath = StringUtilities
             .getProperty("ptolemy.ptII.dir");
-    
+
     // Set file parameter to the path of the testmodel(dcmotor.mo).
     private String _testFilePath = null;
 

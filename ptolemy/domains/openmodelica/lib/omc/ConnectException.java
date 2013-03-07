@@ -45,7 +45,7 @@ package ptolemy.domains.openmodelica.lib.omc;
 
 /**
   Thrown when there is an error while connecting to the compiler.
-  
+
   @author Andreas Remar
   @version $Id$
   @since Ptolemy II 9.1

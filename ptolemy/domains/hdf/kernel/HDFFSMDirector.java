@@ -141,7 +141,7 @@ public class HDFFSMDirector extends MultirateFSMDirector {
 
                     // FIXME: What if the refinement postfire returns false?
                     _doPostfire();
-                    
+
                     // The above only conditionally sets production and
                     // consumption rates, based on its read of the last
                     // chosen transitions. But they will have been cleared

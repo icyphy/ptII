@@ -79,7 +79,7 @@ public class ThrowModelError extends Sink {
 
         message = new StringAttribute(this, "message");
         message.setExpression("A model error.");
-        
+
         throwInPostfire = new Parameter(this, "throwInPostfire");
         throwInPostfire.setTypeEquals(BaseType.BOOLEAN);
         throwInPostfire.setExpression("false");
@@ -90,7 +90,7 @@ public class ThrowModelError extends Sink {
 
     /** The message reported in the exception. */
     public StringAttribute message;
-    
+
     /** True to throw the model error in the postfire method.
      *  False to throw in fire. This is a boolean that defaults
      *  to false.

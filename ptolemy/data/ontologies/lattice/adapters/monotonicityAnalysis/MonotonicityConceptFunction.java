@@ -90,7 +90,7 @@ public abstract class MonotonicityConceptFunction extends ConceptFunction {
         // FIXME: this is so wrong.
         // The problem is that we are updating the Constants Hashtable
         // that is shared between runs.  See
-        // OntologySolverBase.cleanConstants() for what we 
+        // OntologySolverBase.cleanConstants() for what we
         // need to do to remove the Constants that are added here.
         for (Object entity : domainOntology.allAtomicEntityList()) {
             if (entity instanceof Concept) {
