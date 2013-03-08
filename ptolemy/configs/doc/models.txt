@@ -350,6 +350,9 @@ $CLASSPATH/ptolemy/domains/wireless/demo/Zigbee/Zigbee.xml
 $CLASSPATH/ptolemy/matlab/demo/MatlabContinuous/MatlabContinuous.xml
 $CLASSPATH/ptolemy/matlab/demo/MatlabExpression/MatlabExpression.xml
 $CLASSPATH/ptolemy/moml/demo/Networked/Networked.xml
+$CLASSPATH/ptolemy/vergil/basic/imprt/g4ltl/demo/Arbitor/Arbitor.xml
+$CLASSPATH/ptolemy/vergil/basic/imprt/g4ltl/demo/Numerical/Numerical.xml
+$CLASSPATH/ptolemy/vergil/basic/imprt/g4ltl/demo/PriorityArbitor/PriorityArbitor.xml
 $CLASSPATH/ptolemy/vergil/kernel/attributes/demo/AnimateVergil/AnimateVergil.xml
 $CLASSPATH/ptolemy/verification/demo/iRobotHillClimbing/iRobotCreateVerification.xml
 $CLASSPATH/ptolemy/verification/demo/RailroadControl/RailroadControl.xml
