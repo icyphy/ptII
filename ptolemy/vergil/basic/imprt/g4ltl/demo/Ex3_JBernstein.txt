@@ -1,0 +1,33 @@
+## FORALL x0, x1\in[0,4]:  x0+x1>3 -> x0^2+x1^2>=4
+
+## Specify to use one variables x0
+VAR 2
+
+## Specify the NUMBER of conjunctions
+## Usage: "CONJUNCTION NUMBER"
+CONJUNCTION 1
+
+## Specify the NUMBER of assumptions in the INDEX-th conjunction element
+## Usage: "ASSUMP INDEX NUMBER"
+ASSUMP 0 1
+
+## Specify the coefficient of the polynomial (assumption) x+y>3  
+## E.g., A1_0 means the 1st assumption (indexed 0) in the 2nd conjunction (indexed 1)
+## First assumption
+COEF A0_0 (1,0) 1
+COEF A0_0 (0,1) 1
+
+SIGN A0_0 GT
+VALUE A0_0 3
+
+## Specify the coefficient of the polynomial (guarantee)
+## x0^2+x1^2>=4
+COEF G0 (2,0) 1
+COEF G0 (0,2) 1 
+
+SIGN G0 GE
+VALUE G0  4
+
+## Specify the bound for each variable
+BOUND x0 [0, 4]
+BOUND x1 [0, 4]

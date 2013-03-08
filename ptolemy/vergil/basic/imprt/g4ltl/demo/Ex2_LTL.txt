@@ -1,0 +1,14 @@
+## Simple arbitor for 3 clients, with urgency guarantee for client 1
+
+ALWAYS (req1 -> ( grant1 || NEXT grant1))
+ALWAYS (req2 -> EVENTUALLY grant2)
+ALWAYS (req3 -> EVENTUALLY grant3)
+ALWAYS !(grant1 && grant2)
+ALWAYS !(grant2 && grant3)
+ALWAYS !(grant1 && grant3)
+
+INPUT req1, req2, req3
+OUTPUT grant1, grant2, grant3
+
+
+

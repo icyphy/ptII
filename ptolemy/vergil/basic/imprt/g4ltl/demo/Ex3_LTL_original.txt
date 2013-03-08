@@ -1,0 +1,11 @@
+## Simple arbitor for two clients
+
+ALWAYS (req1 -> NEXT (grant1))
+ALWAYS (req2 -> NEXT (grant2))
+ALWAYS (!(grant1 && grant2))
+
+INPUT req1, req2
+OUTPUT grant1, grant2
+
+
+
