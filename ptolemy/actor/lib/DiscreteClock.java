@@ -569,7 +569,8 @@ public class DiscreteClock extends TimedSource {
 
     /** Skip the current firing phase and request a refiring at the
      *  time of the next one.
-     *  @exception IllegalActionException If the period cannot be evaluated.
+     *  @exception IllegalActionException If the period cannot be evaluated, or
+     *   if an offset is encountered that is greater than the period.
      */
     protected void _skipToNextPhase() throws IllegalActionException {
         _phase++;
@@ -578,6 +579,11 @@ public class DiscreteClock extends TimedSource {
                     .doubleValue();
             _phase = 0;
             _cycleStartTime = _cycleStartTime.add(periodValue);
+        }
+        double periodValue = ((DoubleToken)period.getToken()).doubleValue();
+        if (_offsets[_phase] > periodValue) {
+            throw new IllegalActionException(this,
+                    "Offset of " + _offsets[_phase] + " is greater than the period " + periodValue);
         }
         Time nextOutputTime = _cycleStartTime.add(_offsets[_phase]);
         if (_nextOutputTime.equals(nextOutputTime)) {
