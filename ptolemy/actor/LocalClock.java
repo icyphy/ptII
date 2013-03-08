@@ -494,7 +494,11 @@ public class LocalClock extends AbstractSettableAttribute {
         if (_localTime != Time.NEGATIVE_INFINITY) {
             Time environmentTime = ((Director) getContainer())
                     .getEnvironmentTime();
-            _offset = environmentTime.subtract(_localTime);
+            if (environmentTime == null) {
+                _offset = ((Director) getContainer())._zeroTime;
+            } else {
+                _offset = environmentTime.subtract(_localTime);
+            }
             _lastCommitEnvironmentTime = environmentTime;
             _lastCommitLocalTime = _localTime;
         }
