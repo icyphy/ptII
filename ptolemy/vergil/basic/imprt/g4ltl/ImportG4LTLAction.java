@@ -35,8 +35,6 @@ import g4ltl.utility.SynthesisEngine;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
-import java.awt.geom.Rectangle2D;
-
 import java.io.File;
 import java.util.Iterator;
 
@@ -45,21 +43,15 @@ import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
-import ptolemy.actor.gui.PtolemyQuery;
-import ptolemy.gui.ComponentDialog;
 import ptolemy.gui.JFileChooserBugFix;
 import ptolemy.gui.PtFileChooser;
-import ptolemy.gui.Query;
 import ptolemy.gui.Top;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.moml.MoMLParser;
-import ptolemy.util.MessageHandler;
-import ptolemy.vergil.basic.AbstractBasicGraphModel;
 import ptolemy.vergil.basic.BasicGraphFrame;
-import diva.graph.GraphController;
 
 ///////////////////////////////////////////////////////////////////
 //// ImportG4LTLAction
@@ -90,7 +82,7 @@ import diva.graph.GraphController;
    already has this parameter.  The ptiny configuration does <b>not</b> have
    this parameter so that we have a smaller download.</p>
 
-   @author Patrick Cheng (Fortiss), Christopher Brooks. Based on ExportPDFAction by Edward A. Lee
+   @author Chihhong (Patrick) Cheng (Fortiss), Christopher Brooks. Based on ExportPDFAction by Edward A. Lee
    @version $Id: ExportPDFAction.java 62609 2011-12-19 18:35:47Z bldmastr $
    @since Ptolemy II 8.0
    @Pt.ProposedRating Red (cxh)
@@ -124,7 +116,7 @@ public class ImportG4LTLAction extends AbstractAction {
         JFileChooserBugFix jFileChooserBugFix = new JFileChooserBugFix();
         Color background = null;
         PtFileChooser ptFileChooser = null;
-        ImageIcon icon = new ImageIcon("lib/G4LTL.gif");
+        ImageIcon icon = new ImageIcon("ptolemy/vergil/basic/imprt/g4ltl/G4LTL.gif");
 
         try {
             Class basicGraphFrameClass = null;
@@ -195,9 +187,29 @@ public class ImportG4LTLAction extends AbstractAction {
 
                     result = solver.synthesizeFromFile(file,
                             optionTechnique, unrollSteps,
-                            SynthesisEngine.OUTPUT_FSM_ACTOR_PTOLEMY);
-
+                            SynthesisEngine.OUTPUT_FSM_ACTOR_PTOLEMY, true);
+                    
                     if (result.trim().startsWith("<") == false) {
+                        // Try to see if a counter-strategy exists
+                        
+                        Object[] options = {"Yes",
+                                            "No"};
+                        int option = JOptionPane.showOptionDialog(null,
+                            "G4LTL unable to find strategy.\n" +
+                            "Perform counter-strategy finding?",
+                            "G4LTL@Ptolemy II",
+                            JOptionPane.YES_NO_OPTION,
+                            JOptionPane.PLAIN_MESSAGE,
+                            icon,
+                            options,
+                            options[0]);
+                        
+                        if(option == 0){
+                            result = solver.synthesizeFromFile(file,
+                                    optionTechnique, unrollSteps,
+                                    SynthesisEngine.OUTPUT_FSM_ACTOR_PTOLEMY, false);
+                        }
+                        
                         JOptionPane.showMessageDialog(null, result,
                                 "G4LTL@Ptolemy II",
                                 JOptionPane.DEFAULT_OPTION, icon);
