@@ -35,10 +35,12 @@ import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
+import ptolemy.data.StringToken;
 import ptolemy.data.expr.FileParameter;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.data.type.BaseType;
+import ptolemy.domains.openmodelica.lib.omc.ConnectException;
 import ptolemy.domains.openmodelica.lib.omc.OMCProxy;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
@@ -73,12 +75,15 @@ public class OpenModelica extends TypedAtomicActor {
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
-        inputPort = new TypedIOPort(this, "input", true, false);
-        inputPort.setMultiport(true);
+        input = new TypedIOPort(this, "input", true, false);
+        input.setMultiport(true);
+
+        output = new TypedIOPort(this, "output", false, true);
+        output.setMultiport(true);
 
         modelicaScript = new StringParameter(this, "modelicaScript");
         modelicaScript.setDisplayName("Write OpenModelica Command");
-        modelicaScript.setExpression("loadModel(Modelica)");
+        modelicaScript.setExpression("Modelica");
 
         fileName = new FileParameter(this, "fileName");
         fileName.setDisplayName("File name");
@@ -161,7 +166,7 @@ public class OpenModelica extends TypedAtomicActor {
     public StringParameter fileNamePrefix;
 
     /** Input port, which receives an integer number from Ramp. */
-    public TypedIOPort inputPort;
+    public TypedIOPort input;
 
     /** Integration method used for simulation.  
      *  The default value of this parameter is the string "dassl".
@@ -169,7 +174,7 @@ public class OpenModelica extends TypedAtomicActor {
     public StringParameter method;
 
     /** The Modelica command.  
-     *  The default value of this parameter is the string "loadModel(Modelica)".
+     *  The default value of this parameter is the string "Modelica".
      */
     public StringParameter modelicaScript;
 
@@ -187,6 +192,9 @@ public class OpenModelica extends TypedAtomicActor {
      *  The default value of this parameter is the string "mat".
      */
     public static StringParameter outputFormat;
+
+    /** Output port which sends simulation result to the Display actor. */
+    public TypedIOPort output;
 
     /** Type of processing for running the executable result file of building the Modelica model.
      *  The default value of this parameter is the string "batch".
@@ -250,24 +258,36 @@ public class OpenModelica extends TypedAtomicActor {
         // Create a unique instance of OMCCommand.
         _omcProxy = OMCProxy.getInstance();
 
-        //FIXME
         if (_debugging) {
             _debug("OpenModelica Actor Called fire().");
         }
 
-        /* try {
-            // Return the components which the model is composed of and modify the value of parameters/variables.
-            _omcProxy.modifyVariables(modelicaScript.getExpression(),
-                    inputPort, fileName.getExpression(),
-                    modelName.getExpression());
-        } catch (ConnectException e) {
-            throw new IllegalActionException(
-                    "Unable to modify parameters/variables value.");
-        }*/
+        if (input.getWidth() > 0) {
+            // Read the value of input port which reads init value of the Ramp.
+            IntToken inputPortValue = (IntToken) input.get(0);
 
+            // load the Modelica file and library.
+            try {
+                _omcProxy.loadFile(fileName.getExpression(),
+                        modelName.getExpression());
+            } catch (ConnectException e) {
+                throw new IllegalActionException(
+                        "Unable to load the Modelica file/library.");
+            }
+
+            // Return the components which the model is composed of and modify the value of parameters/variables before running the simulation.
+            try {
+                System.out.println("---Variables/parameters modification before simulation---");
+                _omcProxy.modifyVariables(inputPortValue,
+                        modelName.getExpression());
+            } catch (ConnectException e) {
+                throw new IllegalActionException(
+                        "Unable to modify parameters/variables value before running the simulation.");
+            }
+        }
+        // Build the Modelica model and run the executable result file in both interactive
+        // and non-interactive processing mode.
         try {
-
-            //  Simulate the Modelica model with the selected parameters.
             _omcProxy.simulateModel(fileName.getExpression(),
                     modelName.getExpression(), fileNamePrefix.getExpression(),
                     simulationStartTime.getExpression(),
@@ -277,18 +297,39 @@ public class OpenModelica extends TypedAtomicActor {
                     outputFormat.getExpression(),
                     variableFilter.getExpression(), cflags.getExpression(),
                     simflags.getExpression(), processingType.getExpression());
-
-            // Read a result file, returning a matrix corresponding to the variables and given size.
-            //_omcProxy.displaySimulationResult(modelName.getExpression());
-
-            // Plot plt format file.
-            if (outputFormat.getExpression().compareTo("plt") == 0)
-                _omcProxy.plotPltFile(fileNamePrefix.getExpression(),
-                        modelName.getExpression());
         } catch (Throwable throwable) {
             throw new IllegalActionException(this, throwable,
-                    "Unable to simulate the model!");
+                    "Unable to simulate the " + modelName.getExpression()
+                            + " model.");
         }
+
+        String simulationResult = null;
+        // Read a result file, returning a matrix corresponding to the variables and given size.
+        try {
+            System.out.println("---Value of variables/parameters in the simulation result file---");
+            simulationResult = _omcProxy.displaySimulationResult(modelName
+                    .getExpression());
+        } catch (ConnectException e) {
+            throw new IllegalActionException(
+                    "Unable to display variables/parameters in the simulation result file of "
+                            + modelName.getExpression() + " .");
+        }
+
+        // Plot the plt format file.
+        if (outputFormat.getExpression().compareTo("plt") == 0)
+            try {
+                _omcProxy.plotPltFile(fileNamePrefix.getExpression(),
+                        modelName.getExpression());
+            } catch (ConnectException e) {
+                throw new IllegalActionException(
+                        "Unable to plot the plt format of "
+                                + modelName.getExpression()
+                                + " simulation result file.");
+            }
+
+        // FIXME simulationResult is not sent to the Display.
+        // Send the value of variables/parameters to the output port of the OpenModelica actor.
+        output.send(0, new StringToken(simulationResult));
     }
 
     ///////////////////////////////////////////////////////////////////

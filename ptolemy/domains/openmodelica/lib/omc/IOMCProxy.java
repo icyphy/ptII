@@ -44,6 +44,7 @@ package ptolemy.domains.openmodelica.lib.omc;
 
 import java.io.IOException;
 
+import ptolemy.data.IntToken;
 import ptolemy.kernel.util.IllegalActionException;
 
 /**
@@ -63,8 +64,8 @@ public interface IOMCProxy {
      *  @throws ConnectException If commands couldn't
      *   be sent to the (OpenModelica Compiler)OMC. 
      */
-    /*public void displaySimulationResult(String fileName)
-            throws ConnectException;*/
+    public String displaySimulationResult(String fileName)
+            throws ConnectException;
 
     /** Initialize the communication with the (OpenModelica compiler)OMC.
      *  @exception ConnectException If we're unable to start communicating with
@@ -79,19 +80,25 @@ public interface IOMCProxy {
      */
     public boolean isError(String retval);
 
-    /** Load the model from the file in the first step and load Modelica model.
-     *  Return the components which the model is composed of and modify the value of parameters/variables.
-     *  @param modelicaScript The Modelica command.
-     *  @param inputPort The input port of OpenModelica actor which reads init value of the Ramp actor.
+    /** load the Modelica file and library.  
      *  @param fileName File which the model should be loaded from.
      *  @param modelName Name of the model which should be built.
+     *  @throws ConnectException If commands couldn't
+     *   be sent to the (OpenModelic Compiler)OMC.
      *  @throws IllegalActionException 
+     */
+    public void loadFile(String fileName, String modelName)
+            throws ConnectException, IllegalActionException;
+
+    /** Return the components which the model is composed of and modify the value of parameters/variables.
+     *  @param inputPortValue The value of OpenModelica actor input port which reads init value of the Ramp actor.
+     *  @param modelName Name of the model which should be built.
      *  @throws ConnectException If commands couldn't
      *   be sent to the (OpenModelica Compiler)OMC. 
+     *  @throws IllegalActionException 
      */
-    /* public void modifyVariables(String modelicaScript, TypedIOPort inputPort,
-             String fileName, String modelName) throws IllegalActionException,
-             ConnectException;*/
+    public void modifyVariables(IntToken inputPortValue, String modelName)
+            throws IllegalActionException, ConnectException;
 
     /** Plot the plt file by calling PxgraphApplication.main(dcmotor_res.plt).
      *  @param fileNamePrefix User preferable name for the result file.
@@ -107,9 +114,10 @@ public interface IOMCProxy {
      */
     public void quitServer() throws ConnectException;
 
-    /** Load the model from the file in the first step. Then, build the
-     *  model. Finally, run the simulation executable result of
-     *  buildModel() in order to generate the simulation result.
+    /** load the Modelica file and library.  
+     *  Build the Modelica model. Then, run the executable result file of
+     *  buildModel() in both interactive and non-interactive processing mode
+     *  in order to generate the simulation result file.
      *  @param fileName File which the model should be loaded from.
      *  @param modelName Name of the model which should be built.
      *  @param fileNamePrefix User preferable name for the result file.
@@ -124,7 +132,7 @@ public interface IOMCProxy {
      *  @param simflags Simulation flags.
      *  @param processingType Type of processing for running the executable result file of building the Modelica model.
      *  @throws ConnectException If commands couldn't
-     *   be sent to the OMC.
+     *   be sent to the (OpenModelic Compiler)OMC.
      *  @throws IOException If the executable result file of buildModel()
      *   couldn't be executed.
      *  @throws IllegalActionException 

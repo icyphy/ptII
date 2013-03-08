@@ -59,6 +59,7 @@ import java.util.Set;
 
 import org.omg.CORBA.ORB;
 
+import ptolemy.data.IntToken;
 import ptolemy.domains.openmodelica.lib.omc.corba.OmcCommunication;
 import ptolemy.domains.openmodelica.lib.omc.corba.OmcCommunicationHelper;
 import ptolemy.kernel.util.IllegalActionException;
@@ -183,7 +184,6 @@ public class OMCProxy implements IOMCProxy {
                 proc = Runtime.getRuntime().exec(cmd, _environmentalVariables,
                         workingDirectory);
 
-                // Copy the content of workingDirectory.
                 _workDir = workingDirectory;
             } catch (IOException e) {
                 loggerInfo = "Failed to run command: " + fullCMD;
@@ -237,8 +237,7 @@ public class OMCProxy implements IOMCProxy {
      *  @throws ConnectException If commands couldn't
      *   be sent to the (OpenModelica Compiler)OMC. 
      */
-    /*
-    public void displaySimulationResult(String fileName)
+    public String displaySimulationResult(String fileName)
             throws ConnectException {
 
         // Return the variables in the simulation result file.
@@ -255,6 +254,8 @@ public class OMCProxy implements IOMCProxy {
 
         // Split the result by "," in order to have access to each variable.
         String[] variables = variableList.split(",");
+        CompilerResult readSimulationResult = null;
+        String simulationResult = null;
 
         for (String variable : variables) {
 
@@ -264,16 +265,27 @@ public class OMCProxy implements IOMCProxy {
             variableList = variableBuffer.deleteCharAt(
                     variableBuffer.length() - 1).toString();
 
+            if (variableList.compareTo("time\"") == 0)
+                variableList = variableBuffer.deleteCharAt(
+                        variableBuffer.length() - 1).toString();
+
             // Read a result file and return a matrix corresponding to the variables and given size.
-            CompilerResult readSimulationResult = sendCommand("readSimulationResult(\""
+            readSimulationResult = sendCommand("readSimulationResult(\""
                     + fileName + "_res.csv\",{" + variableList + "}," + 2 + ")");
 
-            // The matrix of the variable's values which is read from the simulation result file. 
-            System.out.println("Simulation Result of variable " + variableList
-                    + " is: " + readSimulationResult.getFirstResult());
+            if (simulationResult == null)
+                simulationResult = "Value of " + variableList + " is: "
+                        + readSimulationResult.getFirstResult();
+            else
+                simulationResult += "Value of " + variableList + " is: "
+                        + readSimulationResult.getFirstResult();
         }
+
+        // The matrix of the variable's values which is read from the simulation result file. 
+        System.out.println(simulationResult);
+
+        return simulationResult;
     }
-    */
 
     /** Create an instance of OMCProxy object in order to provide a global point of access to the instance.
      *  It provides a unique source of OMCProxy instance.
@@ -355,35 +367,22 @@ public class OMCProxy implements IOMCProxy {
         return retval.toLowerCase().contains("error");
     }
 
-    /** Load the model from the file in the first step and load Modelica model.
-     *  Return the components which the model is composed of and modify the value of parameters/variables.
-     *  @param modelicaScript The Modelica command.
-     *  @param inputPort The input port of OpenModelica actor which reads init value of the Ramp actor.
+    /** load the Modelica file and library.  
      *  @param fileName File which the model should be loaded from.
      *  @param modelName Name of the model which should be built.
-     *  @throws IllegalActionException 
      *  @throws ConnectException If commands couldn't
-     *   be sent to the (OpenModelica Compiler)OMC. 
+     *   be sent to the (OpenModelic Compiler)OMC.
+     *  @throws IllegalActionException 
      */
-    /*
-    public void modifyVariables(String modelicaScript, TypedIOPort inputPort,
-            String fileName, String modelName) throws IllegalActionException,
-            ConnectException {
-
-        String[] componentList = null;
-        String ComponentNames = null;
-        String[] individualComponent = null;
-        String[] variableList = null;
-        String parameterNames = null;
+    public void loadFile(String fileName, String modelName)
+            throws ConnectException, IllegalActionException {
+        String loggerInfo = null;
 
         _testFilePath = _systemPath
                 + "/ptolemy/domains/openmodelica/demo/OpenModelica/" + fileName;
 
-        // The testing model which includes both parameters and variables.
-        //_testFilePath = _systemPath
-        // + "/ptolemy/domains/openmodelica/demo/OpenModelica/BouncingBall.mo";
+        File file = new File(_testFilePath.toString());
 
-        File file = new File(_testFilePath);
         if (file.exists()) {
             if (_omcLogger == null) {
                 throw new IllegalActionException(
@@ -391,7 +390,7 @@ public class OMCProxy implements IOMCProxy {
                                 + "a OpenModelicaDirector because "
                                 + "the actor requires a OMCLogger.");
             }
-            String loggerInfo = "Using model at '" + _testFilePath + "'";
+            loggerInfo = "Using " + modelName + " model at " + _testFilePath;
             _omcLogger.getInfo(loggerInfo);
 
             // Load the model from the file.
@@ -400,41 +399,55 @@ public class OMCProxy implements IOMCProxy {
             // Check if an error exists in the result of loadFile("command").
             if (loadFileResult.getFirstResult().compareTo("") != 0
                     && loadFileResult.getError().compareTo("") == 0) {
-                loggerInfo = "Model is loaded from " + _testFilePath
-                        + " successfully.";
+                loggerInfo = modelName + " model is loaded from "
+                        + _testFilePath + " successfully.";
                 _omcLogger.getInfo(loggerInfo);
             }
 
             if (loadFileResult.getError().compareTo("") != 0) {
-                loggerInfo = "There is an error in loading the model!";
+                loggerInfo = "Error in loading " + modelName + " model!";
                 _omcLogger.getInfo(loggerInfo);
                 throw new ConnectException(loggerInfo);
             }
+            // Load the Modelica model by sending loadModel(Modelica) to the OMC server.
+            loadFileResult = _omcCommand.loadModel("Modelica");
 
-            // Load Modelica model by sending loadModel(Modelica) to the OMC server.
-            loadFileResult = _omcCommand.loadModelicaModel(modelicaScript);
-
-            // Check if an error exists in the result of the loadModel("command").
+            // Check if an error exists in the result of the loadModel(Modelica).
             if (loadFileResult.getFirstResult().compareTo("true\n") == 0) {
-                loggerInfo = "Modelica model is loaded successfully.";
+                loggerInfo = "Modelica library is loaded successfully.";
                 _omcLogger.getInfo(loggerInfo);
             }
             if (loadFileResult.getError().compareTo("") != 0) {
-                loggerInfo = "There is an error in loading Modelica model!";
+                loggerInfo = "Error in loading Modelica library!";
                 _omcLogger.getInfo(loggerInfo);
                 throw new ConnectException(loggerInfo);
             }
 
-        } else {
-            String loggerInfo = "No file found at: [" + _testFilePath
-                    + "]. Select the file for simulation!";
+        } else if (!file.exists()) {
+            loggerInfo = "No file found at: " + _testFilePath
+                    + " .Select the file for simulation!";
             _omcLogger.getInfo(loggerInfo);
-            throw new ConnectException("No file found at: [" + _testFilePath
-                    + "]. Select the file for simulation!");
+            throw new ConnectException("No file found at: " + _testFilePath
+                    + " .Select the file for simulation!");
         }
 
-        // Read the value of input port.
-        IntToken inputPortValue = (IntToken) inputPort.get(0);
+    }
+
+    /** Return the components which the model is composed of and modify the value of parameters/variables.
+     *  @param inputPortValue The value of OpenModelica actor input port which reads init value of the Ramp actor.
+     *  @param modelName Name of the model which should be built. 
+     *  @throws ConnectException If commands couldn't
+     *   be sent to the (OpenModelica Compiler)OMC. 
+     *  @throws IllegalActionException 
+     */
+    public void modifyVariables(IntToken inputPortValue, String modelName)
+            throws IllegalActionException, ConnectException {
+
+        String[] componentList = null;
+        String ComponentNames = null;
+        String[] individualComponent = null;
+        String[] variableList = null;
+        String parameterNames = null;
 
         try {
 
@@ -475,6 +488,7 @@ public class OMCProxy implements IOMCProxy {
                 _parameterOrVariable = componentsBuffer.deleteCharAt(
                         componentsBuffer.length() - 1).toString();
 
+                //FIXME unspecified or variable ?
                 if (_parameterOrVariable.compareTo("unspecified") == 0) {
 
                     // Return list of parameters.
@@ -541,7 +555,6 @@ public class OMCProxy implements IOMCProxy {
                     "Unable to modify parameters/variables value due to connection problem with OMC");
         }
     }
-    */
 
     /** Plot the plt file by calling PxgraphApplication.main(dcmotor_res.plt).
      *  @param fileNamePrefix User preferable name for the result file.
@@ -646,8 +659,10 @@ public class OMCProxy implements IOMCProxy {
 
     }
 
-    /** Build the model. Then, run the simulation executable result of
-     *  buildModel() in order to generate the simulation result.
+    /** load the Modelica file and library.  
+     *  Build the Modelica model. Then, run the executable result file of
+     *  buildModel() in both interactive and non-interactive processing mode
+     *  in order to generate the simulation result file.
      *  @param fileName File which the model should be loaded from.
      *  @param modelName Name of the model which should be built.
      *  @param fileNamePrefix User preferable name for the result file.
@@ -674,190 +689,142 @@ public class OMCProxy implements IOMCProxy {
             String simflags, String processingType) throws ConnectException,
             IOException, IllegalActionException {
 
+        //FIXME loadFile function is redundant here. Calling loadFile once should be enough.
+        loadFile(fileName, modelName);
+
         // Command which is sent to the OMC for building the model.
         String commands = null;
-         
+
         String loggerInfo = null;
 
-        _testFilePath = _systemPath
-                + "/ptolemy/domains/openmodelica/demo/OpenModelica/" + fileName;
+        // Set command of buildModel("command") with Model Name as the name of executable result file.
+        if (fileNamePrefix.compareTo("") == 0) {
+            commands = modelName + ",startTime="
+                    + Float.valueOf(startTime).floatValue() + ",stopTime="
+                    + Float.valueOf(stopTime).floatValue()
+                    + ",numberOfIntervals=" + numberOfIntervals + ",tolerance="
+                    + Float.valueOf(tolerance).floatValue() + ",method=\""
+                    + method + "\",outputFormat=\"" + outputFormat
+                    + "\",variableFilter=\"" + variableFilter + "\",cflags=\""
+                    + cflags + "\",simflags=\"" + simflags + "\"";
 
-        File file = new File(_testFilePath.toString());
+            loggerInfo = "Building "
+                    + modelName
+                    + " model without the preferable name for the executable result file.";
+            _omcLogger.getInfo(loggerInfo);
+        }
 
-        if (file.exists()) {
-            if (_omcLogger == null) {
-                throw new IllegalActionException(
-                        "The OpenModelica actor only works within "
-                                + "a OpenModelicaDirector because "
-                                + "the actor requires a OMCLogger.");
-            }
-            loggerInfo = "Using " + modelName + " model at " + _testFilePath ;
+        // Set command of buildModel("command") with the preferable name for the executable result file.
+        else {
+            commands = modelName + ",startTime="
+                    + Float.valueOf(startTime).floatValue() + ",stopTime="
+                    + Float.valueOf(stopTime).floatValue()
+                    + ",numberOfIntervals=" + numberOfIntervals + ",tolerance="
+                    + Float.valueOf(tolerance).floatValue() + ",method=\""
+                    + method + "\",fileNamePrefix=\"" + fileNamePrefix
+                    + "\",outputFormat=\"" + outputFormat
+                    + "\",variableFilter=\"" + variableFilter + "\",cflags=\""
+                    + cflags + "\",simflags=\"" + simflags + "\"";
+
+            loggerInfo = "Building "
+                    + modelName
+                    + " model with the preferable name for the executable result file.";
+            _omcLogger.getInfo(loggerInfo);
+        }
+
+        // Build the Modelica model by sending buildModel() to the OMC server.
+        CompilerResult buildModelResult = _omcCommand.buildModel(commands);
+
+        // Check if an error exists in the result of buildModel("command").
+        if (buildModelResult.getFirstResult().compareTo("") != 0
+                && buildModelResult.getError().compareTo("") == 0) {
+            loggerInfo = modelName + " model is built successfully.";
+            _omcLogger.getInfo(loggerInfo);
+        }
+        if (buildModelResult.getError().compareTo("") != 0) {
+            loggerInfo = "Error in building " + modelName + " model.";
+            _omcLogger.getInfo(loggerInfo);
+            throw new ConnectException(loggerInfo);
+        }
+
+        if (processingType.compareTo("batch") == 0) {
+
+            loggerInfo = "Running non-interactive simulation.";
             _omcLogger.getInfo(loggerInfo);
 
-            // Load the model from the file.
-            CompilerResult loadFileResult = _omcCommand.loadFile(_testFilePath);
-
-            // Check if an error exists in the result of loadFile("command").
-            if (loadFileResult.getFirstResult().compareTo("") != 0
-                    && loadFileResult.getError().compareTo("") == 0) {
-                loggerInfo = modelName + " model is loaded from " + _testFilePath
-                        + " successfully.";
-                _omcLogger.getInfo(loggerInfo);
+            switch (getOs()) {
+            case WINDOWS:
+                commands = _temp + _username + "/OpenModelica/" + modelName
+                        + ".exe";
+                break;
+            case UNIX:
+                commands = _temp + "/" + _username + "/OpenModelica/"
+                        + modelName;
+                break;
+            case MAC:
+                commands = _temp + _username + "/OpenModelica/" + modelName;
+                break;
             }
 
-            if (loadFileResult.getError().compareTo("") != 0) {
-                loggerInfo = "Error in loading " + modelName + " model!";
-                _omcLogger.getInfo(loggerInfo);
-                throw new ConnectException(loggerInfo);
-            }
-            // Load the Modelica model by sending loadModel(Modelica) to the OMC server.
-            loadFileResult = _omcCommand.loadModel("Modelica");
+            //FIXME 
+            System.out.println("COMMAND " + commands);
 
-            // Check if an error exists in the result of the loadModel(Modelica).
-            if (loadFileResult.getFirstResult().compareTo("true\n") == 0) {
-                loggerInfo = "Modelica library is loaded successfully.";
-                _omcLogger.getInfo(loggerInfo);
-            }
-            if (loadFileResult.getError().compareTo("") != 0) {
-                loggerInfo = "Error in loading Modelica library!";
-                _omcLogger.getInfo(loggerInfo);
-                throw new ConnectException(loggerInfo);
-            }
+            // Run the executable result file of buildModel("command"). 
+            Runtime.getRuntime().exec(commands, _environmentalVariables,
+                    _workDir);
 
-            // Set command of buildModel("command") with Model Name as the name of executable result file.
+            // When users do not select File Name Prefix as the name of executable result file
+            // and Model Name is set as the name of executable result file.
             if (fileNamePrefix.compareTo("") == 0) {
-                commands = modelName + ",startTime="
-                        + Float.valueOf(startTime).floatValue() + ",stopTime="
-                        + Float.valueOf(stopTime).floatValue()
-                        + ",numberOfIntervals=" + numberOfIntervals
-                        + ",tolerance=" + Float.valueOf(tolerance).floatValue()
-                        + ",method=\"" + method + "\",outputFormat=\""
-                        + outputFormat + "\",variableFilter=\""
-                        + variableFilter + "\",cflags=\"" + cflags
-                        + "\",simflags=\"" + simflags + "\"";
-
-                loggerInfo = "Building " + modelName +  " model without the preferable name for the executable result file.";
+                loggerInfo = "Non-interactive simulation of " + modelName
+                        + " is done successfuly.";
+                _omcLogger.getInfo(loggerInfo);
+            } else if (fileNamePrefix.compareTo("") < 0
+                    || fileNamePrefix.compareTo("") > 0) {
+                // When users select File Name Prefix as the name of executable result file.
+                loggerInfo = "Non-interactive simulation of " + fileNamePrefix
+                        + " is done successfuly.";
                 _omcLogger.getInfo(loggerInfo);
             }
 
-            // Set command of buildModel("command") with the preferable name for the executable result file.
-            else {
-                commands = modelName + ",startTime="
-                        + Float.valueOf(startTime).floatValue() + ",stopTime="
-                        + Float.valueOf(stopTime).floatValue()
-                        + ",numberOfIntervals=" + numberOfIntervals
-                        + ",tolerance=" + Float.valueOf(tolerance).floatValue()
-                        + ",method=\"" + method + "\",fileNamePrefix=\""
-                        + fileNamePrefix + "\",outputFormat=\"" + outputFormat
-                        + "\",variableFilter=\"" + variableFilter
-                        + "\",cflags=\"" + cflags + "\",simflags=\"" + simflags
-                        + "\"";
+        } else {
 
-                loggerInfo = "Building " + modelName +  " model with the preferable name for the executable result file.";
-                _omcLogger.getInfo(loggerInfo);
+            loggerInfo = "Running interactive simulation.";
+            _omcLogger.getInfo(loggerInfo);
+
+            switch (getOs()) {
+            case WINDOWS:
+                commands = _temp + _username + "/OpenModelica/" + modelName
+                        + ".exe";
+                break;
+            case UNIX:
+                commands = _temp + "/" + _username + "/OpenModelica/"
+                        + modelName;
+                break;
+            case MAC:
+                commands = _temp + _username + "/OpenModelica/" + modelName;
+                break;
             }
 
-            // Build the Modelica model by sending buildModel() to the OMC server.
-            CompilerResult buildModelResult = _omcCommand.buildModel(commands);
+            // BuildModel("modelName") results in an executable file
+            // that is run by -interactive flag.
 
-            // Check if an error exists in the result of buildModel("command").
-            if (buildModelResult.getFirstResult().compareTo("") != 0
-                    && buildModelResult.getError().compareTo("") == 0) {
-                loggerInfo = modelName + " model is built successfully.";
+            commands = commands + " -interactive";
+
+            try {
+                loggerInfo = "Command " + commands + " is running!";
                 _omcLogger.getInfo(loggerInfo);
-            }
-            if (buildModelResult.getError().compareTo("") != 0) {
-                loggerInfo = "Error in building " + modelName + " model.";
-                _omcLogger.getInfo(loggerInfo);
-                throw new ConnectException(loggerInfo);
-            }
-            
-           
-            if (processingType.compareTo("batch") == 0) {
-
-                loggerInfo = "Running non-interactive simulation.";
-                _omcLogger.getInfo(loggerInfo);
-
-                switch (getOs()) {
-                case WINDOWS:
-                    commands = _temp + _username + "/OpenModelica/" + modelName
-                            + ".exe";
-                    break;
-                case UNIX:
-                    commands = _temp + "/" + _username + "/OpenModelica/"
-                            + modelName;
-                    break;
-                case MAC:
-                    commands = _temp + _username + "/OpenModelica/" + modelName;
-                    break;
-                }
-
-                //FIXME 
-                System.out.println("COMMAND " + commands);
-
-                // Run the executable result file of buildModel("command"). 
                 Runtime.getRuntime().exec(commands, _environmentalVariables,
                         _workDir);
-
-                // When users do not select File Name Prefix as the name of executable result file
-                // and Model Name is set as the name of executable result file.
-                if (fileNamePrefix.compareTo("") == 0) {
-                    loggerInfo = "Non-interactive simulation of " + modelName
-                            + " is done successfuly.";
-                    _omcLogger.getInfo(loggerInfo);
-                } else if (fileNamePrefix.compareTo("") < 0
-                        || fileNamePrefix.compareTo("") > 0) {
-                    // When users select File Name Prefix as the name of executable result file.
-                    loggerInfo = "Non-interactive simulation of "
-                            + fileNamePrefix + " is done successfuly.";
-                    _omcLogger.getInfo(loggerInfo);
-                }
-
-            } else {
-
-                loggerInfo = "Running interactive simulation.";
+            } catch (IOException e) {
+                loggerInfo = "Failed to run command: " + commands;
                 _omcLogger.getInfo(loggerInfo);
-
-                switch (getOs()) {
-                case WINDOWS:
-                    commands = _temp + _username + "/OpenModelica/" + modelName
-                            + ".exe";
-                    break;
-                case UNIX:
-                    commands = _temp + "/" + _username + "/OpenModelica/"
-                            + modelName;
-                    break;
-                case MAC:
-                    commands = _temp + _username + "/OpenModelica/" + modelName;
-                    break;
-                }
-
-                // BuildModel("modelName") results in an executable file
-                // that is run by -interactive flag.
-
-                commands = commands + " -interactive";
-
-                try {
-                    loggerInfo = "Command " + commands + " is running!";
-                    _omcLogger.getInfo(loggerInfo);
-                    Runtime.getRuntime().exec(commands, _environmentalVariables,
-                            _workDir);
-                } catch (IOException e) {
-                    loggerInfo = "Failed to run command: " + commands;
-                    _omcLogger.getInfo(loggerInfo);
-                    hasInitialized = false;
-                    return;
-                }
-
-                loggerInfo = "Command " + commands + " run successfully!";
-                _omcLogger.getInfo(loggerInfo);
+                hasInitialized = false;
+                return;
             }
-        } else if (!file.exists()) {
-            loggerInfo = "No file found at: " + _testFilePath
-                    + " .Select the file for simulation!";
+
+            loggerInfo = "Command " + commands + " run successfully!";
             _omcLogger.getInfo(loggerInfo);
-            throw new ConnectException("No file found at: " + _testFilePath
-                    + " .Select the file for simulation!");
         }
     }
 
@@ -1170,7 +1137,7 @@ public class OMCProxy implements IOMCProxy {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     // The name of the Modelica model component.
-    // private String _componentName = null;
+    private String _componentName = null;
 
     // Initialize _corbaSession.
     private String _corbaSessionName = null;
@@ -1211,7 +1178,7 @@ public class OMCProxy implements IOMCProxy {
     private int _numberOfErrors = 0;
 
     // Indicates if the Modelica model component is variable or parameter.
-    // private String _parameterOrVariable = null;
+    private String _parameterOrVariable = null;
 
     // Maximum number of compiler errors to display. 
     private int _showMaxErrors = 10;
