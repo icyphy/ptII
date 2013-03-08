@@ -1,3 +1,0 @@
-$Id$
-See package.html
-
