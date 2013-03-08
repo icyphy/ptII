@@ -53,7 +53,8 @@ OTHER_FILES_TO_BE_JARED = \
 	$(JSRCS) \
 	Bus.xml \
 	2Bus.xml \
-	BusConfigureParams.xml
+	BusConfigureParamsContinuous.xml \
+	BusConfigureParamsDE.xml
 
 
 EXTRA_SRCS = \

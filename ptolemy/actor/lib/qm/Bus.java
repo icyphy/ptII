@@ -30,10 +30,8 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.actor.lib.qm;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Hashtable;
-import java.util.List;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.IOPort;
@@ -48,6 +46,7 @@ import ptolemy.data.DoubleToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
+import ptolemy.domains.de.kernel.DEDirector;
 import ptolemy.domains.de.lib.Server;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
@@ -107,6 +106,7 @@ public class Bus extends MonitoredQuantityManager {
         super(container, name);
         _tokens = new FIFOQueue();
         _receiversAndTokensToSendTo = new HashMap<Receiver, Token>();
+        _tempReceiverQueue = new FIFOQueue();
         _messageLengths = new Hashtable<IOPort, Double>();
 
         serviceTimeMultiplicationFactor = new Parameter(this, "serviceTime");
@@ -159,8 +159,7 @@ public class Bus extends MonitoredQuantityManager {
                             + " container as the Bus.");
         }
         IntermediateReceiver intermediateReceiver = new IntermediateReceiver(
-                this, receiver);
-        _receivers.add(receiver);
+                this, receiver); 
         return intermediateReceiver;
     }
 
@@ -181,6 +180,7 @@ public class Bus extends MonitoredQuantityManager {
         Bus newObject = (Bus) super.clone(workspace);
         newObject._tokens = new FIFOQueue();
         newObject._receiversAndTokensToSendTo = new HashMap<Receiver, Token>();
+        newObject._tempReceiverQueue = new FIFOQueue();
         newObject._messageLengths = new Hashtable<IOPort, Double>();
 
         newObject._nextReceiver = null;
@@ -207,11 +207,7 @@ public class Bus extends MonitoredQuantityManager {
                 _debug("At time " + currentTime + ", completing send to "
                         + receiver.getContainer().getFullName() + ": " + token);
             }
-        } else {
-            for (Receiver receiver : _receivers) {
-                receiver.put(null);
-            }
-        }
+        } 
     }
 
     /** Initialize the actor.
@@ -220,7 +216,10 @@ public class Bus extends MonitoredQuantityManager {
     public void initialize() throws IllegalActionException {
         super.initialize();
         _receiversAndTokensToSendTo.clear();
+        _tempReceiverQueue.clear();
         _tokens.clear();
+        _tokenCount = 0;
+        _nextReceiver = null;
         _nextTimeFree = null;
     }
 
@@ -241,24 +240,9 @@ public class Bus extends MonitoredQuantityManager {
                 && currentTime.compareTo(_nextTimeFree) == 0) {
             // Discard the token that was sent to the output in fire().
             _tokens.take();
-
-            //            if (_tokens.size() > 0) {
-            //                _scheduleRefire();
-            //                refiringScheduled = true;
-            //                // FIXME:
-            //                // Not only does this bus need to be fired
-            //                // at the _nextTimeFree, but so does the destination
-            //                // actor. In particular, that actor may be under
-            //                // the control of a _different director_ than the
-            //                // bus, and the order in which that actor is fired
-            //                // vs. this Bus is important. How to control this?
-            //                // Maybe global scope of a QuantityManager is not
-            //                // a good idea, but we really do want to be able
-            //                // to share a QuantityManager across modes of a
-            //                // modal model. How to fix???
-            //            } else {
-            //                refiringScheduled = false;
-            //            }
+            _tokenCount--;
+            sendQMTokenEvent(null,
+                    0, _tokenCount, EventType.RECEIVED);
         }
         // If sendToken() was called in the current iteration,
         // then append the token to the queue. If this is the
@@ -267,31 +251,22 @@ public class Bus extends MonitoredQuantityManager {
         // delegated receiver.
         if ((getDirector() instanceof FixedPointDirector)
                 && _receiversAndTokensToSendTo != null) {
-            for (Receiver receiver : _receiversAndTokensToSendTo.keySet()) {
+            while (_tempReceiverQueue.size() > 0) {
+                Receiver receiver = (Receiver) _tempReceiverQueue.take();
                 Token token = _receiversAndTokensToSendTo.get(receiver);
                 if (token != null) {
                     _tokens.put(new Object[] { receiver, token });
+                    _tokenCount++;
+                    sendQMTokenEvent((Actor) receiver.getContainer().getContainer(),
+                            0, _tokenCount, EventType.RECEIVED);
                 }
             }
-            _receiversAndTokensToSendTo.clear();
+            _receiversAndTokensToSendTo.clear(); 
         }
-        // if there was no token in the queue, schedule a refiring.
-        // FIXME: wrong, more than one token can be received at a time instant! if (_tokens.size() == 1) {
         if (_tokens.size() > 0
                 && (_nextTimeFree == null || currentTime
                         .compareTo(_nextTimeFree) >= 0)) {
             _scheduleRefire();
-            // FIXME:
-            // Not only does this bus need to be fired
-            // at the _nextTimeFree, but so does the destination
-            // actor. In particular, that actor may be under
-            // the control of a _different director_ than the
-            // bus, and the order in which that actor is fired
-            // vs. this Bus is important. How to control this?
-            // Maybe global scope of a QuantityManager is not
-            // a good idea, but we really do want to be able
-            // to share a QuantityManager across modes of a
-            // modal model. How to fix???
         }
 
         return super.postfire();
@@ -311,7 +286,7 @@ public class Bus extends MonitoredQuantityManager {
         // something to send. Do not take up bus resources for this.
         // FIXME: Is this the right thing to do?
         // Presumably, this is an issue with the Continuous domain.
-        if (token == null) {
+        if (getDirector() instanceof DEDirector && token == null) {
             return;
         }
         Time currentTime = getDirector().getModelTime();
@@ -344,16 +319,19 @@ public class Bus extends MonitoredQuantityManager {
             }
         } else {
             // In the Continuous domain, this actor gets fired whether tokens are available
-            // or not. In the DE domain we need to schedule a refiring.
-            if (getDirector() instanceof FixedPointDirector) {
+            // or not. In the DE domain we need to schedule a refiring.  
+            if (token != null) {
                 _receiversAndTokensToSendTo.put(receiver, token);
-            } else {
-                _tokens.put(new Object[] { receiver, token });
-                _tokenCount++;
-                sendQMTokenEvent((Actor) source.getContainer().getContainer(),
-                        0, _tokenCount, EventType.RECEIVED);
-                if (_tokens.size() == 1) { // no refiring has been scheduled
-                    _scheduleRefire();
+                _tempReceiverQueue.put(receiver);
+                
+                if (!(getDirector() instanceof FixedPointDirector)) {
+                    _tokens.put(new Object[] { receiver, token });
+                    _tokenCount++;
+                    sendQMTokenEvent((Actor) source.getContainer().getContainer(),
+                            0, _tokenCount, EventType.RECEIVED); 
+                    if (_tokens.size() == 1) { // no refiring has been scheduled
+                        _scheduleRefire();
+                    } 
                 }
             }
         }
@@ -385,10 +363,9 @@ public class Bus extends MonitoredQuantityManager {
     }
 
     /**
-     * Reset the quantity manager and clear the tokens.
+     * Nothing to do.
      */
-    public void reset() {
-        _tokens.clear();
+    public void reset() { 
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -430,8 +407,11 @@ public class Bus extends MonitoredQuantityManager {
      *  sendToken() should be sent to. This is used with FixedPointDirectors.
      */
     private HashMap<Receiver, Token> _receiversAndTokensToSendTo;
-
-    private List<Receiver> _receivers = new ArrayList();
+    
+    /** During the fix point iteration keep track of the order of tokens sent to
+     *  receivers. The tokens are stored in _receiversAndTokensToSendTo.
+     */
+    private FIFOQueue _tempReceiverQueue;
 
     /** The double value of the serviceTimeMultiplicationFactor parameter. */
     private double _serviceTimeMultiplicationFactorValue;
