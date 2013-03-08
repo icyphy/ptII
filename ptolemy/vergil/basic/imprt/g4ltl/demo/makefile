@@ -1,10 +1,9 @@
-# Makefile for to import an FSMActor using LTL synthesis (G4LTL).
+# Makefile for PtolemyII Linear Temporal Logic (LTL) demos
 #
-# @Authors: Christopher Brooks, based on a file by Thomas M. Parks
+# @Version: $Id: makefile 64744 2012-10-01 22:51:43Z cxh $
+# @Author: Christopher Brooks (makefile only)
 #
-# @Version: $Id: makefile 62315 2011-10-26 05:48:14Z cxh $
-#
-# @Copyright (c) 2012 The Regents of the University of California.
+# @Copyright (c) 2013 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -29,53 +28,45 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
+ME =		ptolemy/vergil/basic/imprt/g4ltl/html/demo
 
-ME =		ptolemy/vergil/basic/imprt/g4ltl
+# Keep these alphabetical please.
+DIRS = 	 	Arbitor	Numerical PriorityArbitor
 
-DIRS =	demo
-
-# Root of the Java directory
-ROOT =		../../../../..
-
-# PTG4LTL_JAR is set by configure
-CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(PTG4LTL_JAR)
+# Root of Ptolemy II directory
+ROOT =		../../../../../..
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	g4ltl
-PTCLASSJAR =	$(PTPACKAGE).jar
+PTPACKAGE = 	demo
+PTCLASSJAR =
 
-PTAUXALLJAR =	g4ltlFull.jar
-
-#PTCLASSALLJAR = 
 # Include the .class files from these jars in PTCLASSALLJAR
-#PTCLASSALLJARS =
+PTCLASSALLJARS = \
+	Arbitor/Arbitor.jar \
+	Numerical/Numerical.jar \
+	PriorityArbitor/PriorityArbitor.jar
 
-JSRCS = \
-	ImportG4LTLAction.java
-
-OTHER_FILES_TO_BE_JARED =
-
-EXTRA_SRCS = \
-	$(JSRCS) \
-	$(OTHER_FILES_TO_BE_JARED)
+PTCLASSALLJAR = $(PTPACKAGE).jar
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES =	$(DIRS)
+MISC_FILES = 	$(DIRS)
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	$(PTCLASSJAR)
-
-JCLASS = $(JSRCS:%.java=%.class)
+	doc
 
 all: jclass
+	@echo "To run all the demos, run 'make demo'"
+
 install: jclass jars
+
+demo: subdemo
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

@@ -1,10 +1,10 @@
-# Makefile for to import an FSMActor using LTL synthesis (G4LTL).
+# Makefile for Ptolemy II LTL PriorityArbitor demo
 #
-# @Authors: Christopher Brooks, based on a file by Thomas M. Parks
+# @Authors: Christopher Brooks (makefile only)
 #
-# @Version: $Id: makefile 62315 2011-10-26 05:48:14Z cxh $
+# @Version: $Id: makefile 62535 2011-12-10 00:04:14Z cxh $
 #
-# @Copyright (c) 2012 The Regents of the University of California.
+# @Copyright (c) 2013 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -29,35 +29,26 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-
-ME =		ptolemy/vergil/basic/imprt/g4ltl
-
-DIRS =	demo
+ME =		ptolemy/vergil/basic/imprt/g4ltl/demo/PriorityArbitor
 
 # Root of the Java directory
-ROOT =		../../../../..
+ROOT =		../../../../../../..
 
-# PTG4LTL_JAR is set by configure
-CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(PTG4LTL_JAR)
+CLASSPATH =	$(ROOT)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	g4ltl
-PTCLASSJAR =	$(PTPACKAGE).jar
+PTPACKAGE = 	PriorityArbitor
+PTCLASSJAR = 	$(PTPACKAGE).jar
 
-PTAUXALLJAR =	g4ltlFull.jar
+JSRCS =
 
-#PTCLASSALLJAR = 
-# Include the .class files from these jars in PTCLASSALLJAR
-#PTCLASSALLJARS =
-
-JSRCS = \
-	ImportG4LTLAction.java
-
-OTHER_FILES_TO_BE_JARED =
+OTHER_FILES_TO_BE_JARED = \
+	PriorityArbitor.xml \
+	PriorityArbitorLTL.txt
 
 EXTRA_SRCS = \
 	$(JSRCS) \
@@ -65,17 +56,26 @@ EXTRA_SRCS = \
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES =	$(DIRS)
+MISC_FILES =
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make realclean removes OPTIONAL_FILES
-OPTIONAL_FILES = \
-	$(PTCLASSJAR)
+OPTIONAL_FILES =
 
 JCLASS = $(JSRCS:%.java=%.class)
 
-all: jclass
-install: jclass jars
+# Don't include all or install rules here, we want the user
+# to run 'make demos' to run the tests.
+all: jclass $(PTCLASSJAR)
+	@echo "To run all the demos, run 'make demo'"
+
+install: all
+
+# Run the demo
+demo: demo_vergil
+
+demo_vergil:
+	"$(PTII)/bin/vergil" $(OTHER_FILES_TO_BE_JARED)
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
