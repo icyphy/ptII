@@ -1,10 +1,10 @@
-# Makefile for to import an FSMActor using LTL synthesis (G4LTL).
+# Makefile for the JUnit tests of g4ltl
 #
-# @Authors: Christopher Brooks, based on a file by Thomas M. Parks
+# @Authors: Christopher Brooks
 #
-# @Version: $Id: makefile 62315 2011-10-26 05:48:14Z cxh $
+# @Version: $Id: makefile 62936 2012-02-07 02:53:27Z cxh $
 #
-# @Copyright (c) 2012 The Regents of the University of California.
+# @Copyright (c) 2013 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -29,53 +29,49 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
+# Location of this directory, relative to the Ptolemy II directory
+ME =		ptolemy/vergil/basic/imprt/g4ltl/test/junit
 
-ME =		ptolemy/vergil/basic/imprt/g4ltl
+# Root of the Ptolemy II directory
+ROOT =		../../../../../../..
 
-DIRS =	demo test
-
-# Root of the Java directory
-ROOT =		../../../../..
-
-# PTG4LTL_JAR is set by configure
-CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(PTG4LTL_JAR)
+# JUNIT_JAR is searched for by $PTII/configure and set in $PTII/mk/ptII.mk
+CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(JUNIT_JARS)$(CLASSPATHSEPARATOR)$(PTJACL_JAR)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
-# Used to build jar files
-PTPACKAGE = 	g4ltl
-PTCLASSJAR =	$(PTPACKAGE).jar
-
-PTAUXALLJAR =	g4ltlFull.jar
-
-#PTCLASSALLJAR = 
-# Include the .class files from these jars in PTCLASSALLJAR
-#PTCLASSALLJARS =
-
 JSRCS = \
-	ImportG4LTLAction.java
+	JUnitTclTest.java
 
-OTHER_FILES_TO_BE_JARED =
-
-EXTRA_SRCS = \
-	$(JSRCS) \
-	$(OTHER_FILES_TO_BE_JARED)
+EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES =	test
+MISC_FILES =
 
 # make checkjunk will not report OPTIONAL_FILES as trash
-# make realclean removes OPTIONAL_FILES
-OPTIONAL_FILES = \
-	$(PTCLASSJAR)
+# make distclean removes OPTIONAL_FILES
+OPTIONAL_FILES =
 
-JCLASS = $(JSRCS:%.java=%.class)
+JCLASS =	$(JSRCS:%.java=%.class)
 
-all: jclass
-install: jclass jars
+# Don't include all or install rules here, we want the user
+# to run 'make tests' to run the tests.
+
+# JUNIT_JAVA_ARGS is set in $PTII/mk/ptII.mk
+tests:: $(EXTRA_SRCS) jclass test_java ../../../../../VergilInitializer.class #test_jsimple
+	CLASSPATH="$(CLASSPATH)" "$(JAVA)" $(JUNIT_JAVA_ARGS) org.junit.runner.JUnitCore ptolemy.vergil.basic.imprt.g4ltl.test.junit.ExportToWebJUnitTest
+
+test_java: jclass
+
+# PtolemyII-wide test definitions.
+KERNEL_TESTDEFS = $(ROOT)/util/testsuite/testDefs.tcl
+
+# These tests do not require a graphics terminal, but do use Jacl and Java
+test_jsimple: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) alljtests.tcl
+	$(JTCLSH) alljtests.tcl
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

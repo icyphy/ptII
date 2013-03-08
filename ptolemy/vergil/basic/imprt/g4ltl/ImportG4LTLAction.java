@@ -183,8 +183,6 @@ public class ImportG4LTLAction extends AbstractAction {
                         }
                     }
 
-                        
-
                     result = solver.synthesizeFromFile(file,
                             optionTechnique, unrollSteps,
                             SynthesisEngine.OUTPUT_FSM_ACTOR_PTOLEMY, true);
@@ -204,7 +202,7 @@ public class ImportG4LTLAction extends AbstractAction {
                             options,
                             options[0]);
                         
-                        if(option == 0){
+                        if (option == 0){
                             result = solver.synthesizeFromFile(file,
                                     optionTechnique, unrollSteps,
                                     SynthesisEngine.OUTPUT_FSM_ACTOR_PTOLEMY, false);
@@ -216,21 +214,19 @@ public class ImportG4LTLAction extends AbstractAction {
                         return;
                     }
 
-                    // Step 2: If strategy exists, use MoMLParser to open the model                                                
+                    // Step 2: If strategy exists, use MoMLParser to open the model.
                     MoMLParser parser = new MoMLParser();
                     model = parser.parse(result);
-
                 } catch (Exception ex) {
                     basicGraphFrame.report(new IllegalActionException(basicGraphFrame.getModel(), ex,
                                     "Error reading input file \"" + file + "\"."));
                 }
                 if (model != null) {
-
                     // Change the name of the output module to an unused name.                        
                     String moml = model.exportMoMLPlain();
                     String moduleName = "model";
                     int i = 1;
-                    Iterator<NamedObj> iter = basicGraphFrame.getModel().containedObjectsIterator();                    
+                    Iterator<NamedObj> iter = basicGraphFrame.getModel().containedObjectsIterator();
                     while (iter.hasNext()) {                              
                         if (iter.next().getName()
                                 .equals(moduleName + String.valueOf(i))) {                               
@@ -239,12 +235,11 @@ public class ImportG4LTLAction extends AbstractAction {
                         }
                     }
                     // Change the module to the updated name, and commit changes
-                    moml = moml.replaceFirst(moduleName, moduleName + String.valueOf(i));                        
+                    moml = moml.replaceFirst(moduleName, moduleName + String.valueOf(i));
                     NamedObj context = basicGraphFrame.getModel();
                     MoMLChangeRequest request = new MoMLChangeRequest(this,
                             context, moml);
                     context.requestChange(request);
-                        
                 }
             }
         } finally {
@@ -257,5 +252,4 @@ public class ImportG4LTLAction extends AbstractAction {
 
     /** The top-level window of the contents to be exported. */
     Top _frame;
-
 }
