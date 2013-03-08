@@ -585,6 +585,12 @@ See $PTII/doc/coding/maven.htm
     </dependency>
 
 
+    <dependency> <!-- $PTII/lib/g4ltl.jar -->
+      <groupId>g4ltl</groupId>
+      <artifactId>g4ltl</artifactId>
+      <version>ptII</version>
+    </dependency>
+
     <dependency> <!-- $PTII/lib/kieler.jar -->
       <groupId>kieler</groupId>
       <artifactId>kieler</artifactId>
