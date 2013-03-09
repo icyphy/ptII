@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!-- GUID generated at http://guid.us -->
+<fmiModelDescription
+  fmiVersion="2.0"
+  modelName="onOffSupervisor"
+  guid="{7081763b-e37f-404a-967a-9f6fe0fc6072}"
+  description="On-Off Supervisor with Fault Management">
+    
+  <CoSimulation
+    modelIdentifier="onOffSupervisor"
+    canHandleVariableCommunicationStepSize="true"
+    canHandleEvents="true"/>
+    
+<ModelVariables>
+  <ScalarVariable
+     name="output"
+     valueReference="0"
+     description="output on-off command"
+     causality="output">
+    <Boolean/>
+  </ScalarVariable>
+  <ScalarVariable
+     name="onOff"
+     valueReference="1"
+     description="input on-off command"
+     causality="input">
+    <Boolean/>
+  </ScalarVariable>
+  <ScalarVariable
+     name="fault"
+     valueReference="2"
+     description="input fault indicator"
+     causality="input">
+    <Boolean/>
+  </ScalarVariable>
+</ModelVariables>
+</fmiModelDescription>

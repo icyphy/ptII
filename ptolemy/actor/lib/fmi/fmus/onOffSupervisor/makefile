@@ -1,8 +1,8 @@
-# Makefile for Java Ptolemy II Functional Mock-up Interface (FMI) FMU files
+# Makefile for Java Ptolemy II Functional Mock-up Unit (FMU) onOffSupervisor
 #
 # @Author: Christopher Brooks (makefile only)
 #
-# @Version: $Id: makefile 64744 2012-10-01 22:51:43Z cxh $
+# @Version: $Id$
 #
 # @Copyright (c) 2013 The Regents of the University of California.
 # All rights reserved.
@@ -29,12 +29,12 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/actor/lib/fmi/fmus
+ME =		ptolemy/actor/lib/fmi/fmus/onOffSupervisor
 
-DIRS =		stepCounter onOffSupervisor
+DIRS =
 
 # Root of the Ptolemy II directory
-ROOT =		../../../../..
+ROOT =		../../../../../..
 
 CLASSPATH =	$(ROOT)
 
@@ -43,46 +43,55 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	fmus
-# PTCLASSJAR =
+PTPACKAGE = 	onOffSupervisor
+PTCLASSJAR =	$(PTPACKAGE).jar
 
 # Include the .class files from these jars in PTCLASSALLJAR
-PTCLASSALLJARS = \
-	stepCounter/stepCounter.jar \
-    onOffSupervisor/onOffSupervisor.jar
-
-PTCLASSALLJAR = $(PTPACKAGE).jar
+# PTCLASSALLJARS =
+# PTCLASSALLJAR = $(PTPACKAGE).jar
 
 # Keep this list alphabetized.
 JSRCS =
 
-EXTRA_SRCS =	$(JSRCS)
+OTHER_FILES_TO_BE_JARED = \
+	onOffSupervisor.fmu
+
+EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
+
+KRUFT = onOffSupervisor.fmu
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
 MISC_FILES =	$(DIRS)
 
+
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	doc
+	doc \
+	src
 
 JCLASS = $(JSRCS:%.java=%.class)
 
-all: suball 
-install: subinstall jars
-update:
-	@if [ "x$(DIRS)" != "x" ]; then \
-		set $(DIRS); \
-		for x do \
-		    if [ -w $$x ] ; then \
-			( cd $$x ; \
-			echo making update in $(ME)/$$x ; \
-			$(MAKE) $(MFLAGS) $(MAKEVARS) update ;\
-			) \
-		    fi ; \
-		done ; \
-	fi
+FMU_SRCS = \
+	src/documentation/* \
+	src/modelDescription.xml \
+	src/model.png \
+	src/sources/* \
+
+all: jclass onOffSupervisor.fmu
+
+
+install: jclass onOffSupervisor.fmu jars
+	@echo "Optionally run 'make update' to update the test/auto directory."
+
+onOffSupervisor.fmu: $(FMU_SRCS)
+	(cd src/sources; $(MAKE))
+
+# We don't check in onOffSupervisor.fmu because it will be different on each platform
+# Instead, run make update to update the test directory.
+update: onOffSupervisor.fmu
+	cp onOffSupervisor.fmu ../../test/auto/onOffSupervisor2.fmu 
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
