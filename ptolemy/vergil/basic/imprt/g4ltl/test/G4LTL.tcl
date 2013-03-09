@@ -58,6 +58,21 @@ proc synthesizeFromFile {ltlFileName {optionTechnique 0} {unrollSteps 1} {findSt
 
 set parser [java::new ptolemy.moml.MoMLParser]
 
+
+## HOW TO ADD A TEST for G4LTL
+## The g4ltl facility adds a FSM actor to the model. 
+## 1. Open the model in vergil, import the ltl file.
+## 2. Replace the Display actors with Test actors
+## 3. Connect up the FSM actor to the Test actors
+## 4. Train the model by setting the training parameter in a Test actor, running the model
+## and then unsetting the training parameter.
+## 5. Save a version with the FSM Actor in it.
+## 6. Delete the FSM Actor
+## 7. Save the model in this directory.  I suggest adding "Test" to the name: FooTest.xml
+## 8. Diff the version with the FSMActor and the version without.  The portion that adds relations
+## and links relations and ports goes inside the test. 
+## See G4LTL-2.1 as an example.
+
 ######################################################################
 ####
 #
@@ -84,8 +99,8 @@ test G4LTL-1.1 {Synthesize from ArbitorLTL.txt} {
 ######################################################################
 ####
 #
-test G4LTL-2.1 {Synthesize from ArbitorLTL.txt and merge it into the Arbitor.xml} {
-    $parser reset
+test G4LTL-2.1 {Synthesize from ArbitorLTL.txt and merge it into the ArbitorTest.xml} {
+    $parser resetAll
     set toplevel [java::cast ptolemy.actor.TypedCompositeActor [$parser parseFile ArbitorTest.xml]]
     set result [generateMoML $PTII/ptolemy/vergil/basic/imprt/g4ltl/demo/Arbitor/ArbitorLTL.txt $toplevel]
 
