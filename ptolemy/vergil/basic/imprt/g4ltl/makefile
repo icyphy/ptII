@@ -55,7 +55,9 @@ PTAUXALLJAR =	g4ltlFull.jar
 #PTCLASSALLJARS =
 
 JSRCS = \
+	G4LTL.java \
 	ImportG4LTLAction.java
+
 
 OTHER_FILES_TO_BE_JARED =
 

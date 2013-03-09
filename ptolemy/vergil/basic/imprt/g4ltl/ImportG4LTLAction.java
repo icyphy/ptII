@@ -213,33 +213,10 @@ public class ImportG4LTLAction extends AbstractAction {
                                 JOptionPane.DEFAULT_OPTION, icon);
                         return;
                     }
-
-                    // Step 2: If strategy exists, use MoMLParser to open the model.
-                    MoMLParser parser = new MoMLParser();
-                    model = parser.parse(result);
+                    G4LTL.updateModel(result, basicGraphFrame.getModel());
                 } catch (Exception ex) {
                     basicGraphFrame.report(new IllegalActionException(basicGraphFrame.getModel(), ex,
                                     "Error reading input file \"" + file + "\"."));
-                }
-                if (model != null) {
-                    // Change the name of the output module to an unused name.                        
-                    String moml = model.exportMoMLPlain();
-                    String moduleName = "model";
-                    int i = 1;
-                    Iterator<NamedObj> iter = basicGraphFrame.getModel().containedObjectsIterator();
-                    while (iter.hasNext()) {                              
-                        if (iter.next().getName()
-                                .equals(moduleName + String.valueOf(i))) {                               
-                            iter = basicGraphFrame.getModel().containedObjectsIterator();
-                            i++;
-                        }
-                    }
-                    // Change the module to the updated name, and commit changes
-                    moml = moml.replaceFirst(moduleName, moduleName + String.valueOf(i));
-                    NamedObj context = basicGraphFrame.getModel();
-                    MoMLChangeRequest request = new MoMLChangeRequest(this,
-                            context, moml);
-                    context.requestChange(request);
                 }
             }
         } finally {

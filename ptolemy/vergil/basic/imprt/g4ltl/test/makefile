@@ -38,7 +38,8 @@ DIRS =		$(PTJUNIT_DIR)
 # Root of the Ptolemy II directory
 ROOT =		../../../../../..
 
-CLASSPATH =	$(ROOT)
+# PTG4LTL_JAR is set by configure
+CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(PTG4LTL_JAR)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
