@@ -123,5 +123,8 @@ test G4LTL-2.1 {Synthesize from ArbitorLTL.txt and merge it into the ArbitorTest
     set manager [java::new ptolemy.actor.Manager [$toplevel workspace] myManager]
     $toplevel setManager $manager
     [$toplevel getManager] execute
+    # This should not fail
+    [$toplevel getManager] execute
+    [$toplevel getManager] execute
 } {}
 
