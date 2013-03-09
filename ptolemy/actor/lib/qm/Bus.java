@@ -108,7 +108,7 @@ public class Bus extends MonitoredQuantityManager {
         _tempReceiverQueue = new FIFOQueue();
         _messageLengths = new Hashtable<IOPort, Double>();
 
-        serviceTimeMultiplicationFactor = new Parameter(this, "serviceTime");
+        serviceTimeMultiplicationFactor = new Parameter(this, "serviceTimeMultiplicationFactor");
         serviceTimeMultiplicationFactor.setExpression("0.1");
         serviceTimeMultiplicationFactor.setTypeEquals(BaseType.DOUBLE);
     }
