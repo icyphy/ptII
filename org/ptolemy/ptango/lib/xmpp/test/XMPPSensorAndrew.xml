@@ -15,7 +15,7 @@
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
-        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="20.0">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="10.0">
         </property>
         <property name="stopWhenQueueIsEmpty" class="ptolemy.data.expr.Parameter" value="false">
         </property>
@@ -23,7 +23,7 @@
         </property>
         <property name="enforceMicrostepSemantics" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[140.0, 55.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{140.0, 55.0}">
         </property>
     </property>
     <property name="XMPPGateway" class="org.ptolemy.ptango.lib.xmpp.XMPPGateway">
@@ -33,23 +33,202 @@
         </property>
         <property name="passwordFile" class="ptolemy.data.expr.FileParameter" value="$HOME/.ptSensorAndrewPassword.txt">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{330.0, 245.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[850.0, 155.0]">
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model reads data from a Sensor Andrew node using the XMPP protocol&#10;&#10;The XMPPSource actor will request a firing every time new data is published &#10;to the specified Sensor Andrew node, including one firing for the initial data&#10;&#10;The SensorAndrewDataExtractor class extracts the data for the &#10;&lt;transducerValue&gt; node where the &quot;id&quot; attribute equals the value&#10;of the &quot;id&quot; parameter.&#10;&#10;The model extracts the voltage, analog temperature, &#10;and y and z acceleration from the XML data&#10;from the Sensor Andrew node specified in actor XMPPSource.&#10;&#10;The format of the output is completely flexible!  This is defined in the XSL script.&#10;Currently, the ouput text is formatted like a Ptolemy record.&#10;&#10;For another XSLT example, please see:&#10;$PTII/ptolemy/actor/lib/xslt/demo/MoMLFileTransformation/MOMLFileTransformation.xml">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[585.0, 260.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[635.0, 225.0]">
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="&#10;DE director parameters are set as follows:&#10;stopWhenQueueIsEmpty:  false, so the model will continue waiting for new events&#10;&#10;stopTime:  20.0, twenty seconds, so the model terminates for regression testing.&#10;Please change this value to have the model execute longer or indefinitely.&#10;&#10;synchronizeToRealTime:  true, so that we can stop the model after stopTime real seconds">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="&#10;DE director parameters are set as follows:&#10;stopWhenQueueIsEmpty:  false, so the model will continue waiting for new events&#10;&#10;stopTime:  10.0, ten seconds, so the model terminates for regression testing.&#10;Please change this value to have the model execute longer or indefinitely&#10;Note that if an event with a time later than ten seconds is enqueued, &#10;the director will continue execution until that later time, &#10;even though the event will not be fired.&#10;&#10;synchronizeToRealTime:  true, so that we can stop the model after stopTime real seconds">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[300.0, 35.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[210.0, 10.0]">
+        </property>
+    </property>
+    <property name="LatticeOntologySolver" class="ptolemy.data.ontologies.lattice.LatticeOntologySolver">
+        <property name="solverStrategy" class="ptolemy.data.expr.StringParameter" value="backward">
+        </property>
+        <property name="_trainedConceptRecordArray" class="ptolemy.data.expr.Parameter">
+        </property>
+        <property name="DisplayActions" class="ptolemy.data.ontologies.gui.OntologyDisplayActions">
+        </property>
+        <property name="_controllerFactory" class="ptolemy.vergil.toolbox.MoMLModelAttributeControllerFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{870.0, 65.0}">
+        </property>
+        <configure>
+            <entity name="" class="ptolemy.data.ontologies.OntologySolverModel">
+                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={219, 75, 928, 617}, maximized=false}">
+                </property>
+                <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 500]">
+                </property>
+                <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+                </property>
+                <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{368.0, 258.71875}">
+                </property>
+                <property name="StringToXMLActorConstraints" class="ptolemy.data.ontologies.lattice.ActorConstraintsDefinitionAttribute">
+                    <property name="actorClassName" class="ptolemy.data.expr.StringParameter" value="ptolemy.actor.lib.conversions.StringToXML">
+                    </property>
+                    <property name="foundActorClassName" class="ptolemy.data.expr.StringParameter" value="ptolemy.actor.lib.conversions.StringToXML">
+                    </property>
+                    <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                        <configure><svg>
+<rect x="-30" y="-20" width="60" height="40" style="fill:white"></rect>
+<polygon points="-20,-10 20,0 -20,10" style="fill:blue"></polygon>
+</svg>
+</configure>
+                    </property>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[220.0, 55.0]">
+                    </property>
+                    <property name="inputPortTerm" class="ptolemy.data.expr.StringParameter" value="NO_CONSTRAINTS">
+                    </property>
+                    <property name="outputPortTerm" class="ptolemy.data.expr.StringParameter" value="NO_CONSTRAINTS">
+                    </property>
+                </property>
+                <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+                    <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Since StringToXML outputs a whole chunk of XML,&#10;which may contain elements of various kinds, &#10;instruct the solver not to set up constraints&#10;between the input and output ports.">
+                    </property>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[130.0, 95.0]">
+                    </property>
+                </property>
+                <entity name="SensorAndrewOntology" class="ptolemy.data.ontologies.Ontology">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="{55.0, 70.0}">
+                    </property>
+                    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+                        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Specify an ontology containing a concept&#10;for each type of unit to find in the data feed.&#10;&#10;Here, name-matching is used for a first demo.&#10;&#10;A better implementation would use the meta-data&#10;for the sensor feed and a standard ontology of units&#10;(starting with SI Base Dimensions and SI Derived Dimensions;&#10;can be extended to e.g. a community standard sensor ontology).&#10;The meta-data can be queried to ascertain which data feed&#10;elements supply data of a certain concept.  For example, &#10;for the Sensor Andrew data feed, asking which elements&#10;supply voltage would return id=&quot;voltage&quot;,&#10;asking which supply acceleration would return &#10;id=&quot;acc_y&quot;, id=&quot;acc_z&quot;.&#10;&#10;Please see $PTII/data/ontologies/test/DerivedUnitConceptTestCase.xml&#10;for an example of the SI units ontology.&#10;">
+                        </property>
+                        <property name="_location" class="ptolemy.kernel.util.Location" value="[260.0, 15.0]">
+                        </property>
+                    </property>
+                    <entity name="Conflict" class="ptolemy.data.ontologies.FiniteConcept">
+                        <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="false">
+                        </property>
+                        <property name="solutionColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.0,1.0}">
+                        </property>
+                        <property name="LatticeElementIcon" class="ptolemy.vergil.ontologies.ConceptIcon">
+                        </property>
+                        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                        </property>
+                        <property name="_location" class="ptolemy.kernel.util.Location" value="[110.0, 25.0]">
+                        </property>
+                    </entity>
+                    <entity name="Unknown" class="ptolemy.data.ontologies.FiniteConcept">
+                        <property name="solutionColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
+                        </property>
+                        <property name="LatticeElementIcon" class="ptolemy.vergil.ontologies.ConceptIcon">
+                        </property>
+                        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                        </property>
+                        <property name="_location" class="ptolemy.kernel.util.Location" value="[115.0, 140.0]">
+                        </property>
+                    </entity>
+                    <entity name="voltage" class="ptolemy.data.ontologies.FiniteConcept">
+                        <property name="solutionColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,1.0,0.6,1.0}">
+                        </property>
+                        <property name="LatticeElementIcon" class="ptolemy.vergil.ontologies.ConceptIcon">
+                        </property>
+                        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                        </property>
+                        <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 80.0]">
+                        </property>
+                    </entity>
+                    <entity name="analog_temp" class="ptolemy.data.ontologies.FiniteConcept">
+                        <property name="solutionColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.2,0.8,1.0,1.0}">
+                        </property>
+                        <property name="LatticeElementIcon" class="ptolemy.vergil.ontologies.ConceptIcon">
+                        </property>
+                        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                        </property>
+                        <property name="_location" class="ptolemy.kernel.util.Location" value="[175.0, 80.0]">
+                        </property>
+                    </entity>
+                    <relation name="relation" class="ptolemy.data.ontologies.ConceptRelation">
+                        <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.0031447373909807737">
+                        </property>
+                        <property name="gamma" class="ptolemy.data.expr.Parameter" value="-2.3553414965458157">
+                        </property>
+                    </relation>
+                    <relation name="relation2" class="ptolemy.data.ontologies.ConceptRelation">
+                        <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.0031447373909807737">
+                        </property>
+                        <property name="gamma" class="ptolemy.data.expr.Parameter" value="-0.7843992354384254">
+                        </property>
+                    </relation>
+                    <relation name="relation3" class="ptolemy.data.ontologies.ConceptRelation">
+                        <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.0031447373909807737">
+                        </property>
+                        <property name="gamma" class="ptolemy.data.expr.Parameter" value="-0.6428188355906636">
+                        </property>
+                    </relation>
+                    <relation name="relation4" class="ptolemy.data.ontologies.ConceptRelation">
+                        <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.0031447373909807737">
+                        </property>
+                        <property name="gamma" class="ptolemy.data.expr.Parameter" value="-2.566557281392589">
+                        </property>
+                    </relation>
+                    <link port="Conflict.belowPort" relation="relation2"/>
+                    <link port="Conflict.belowPort" relation="relation4"/>
+                    <link port="Unknown.abovePort" relation="relation"/>
+                    <link port="Unknown.abovePort" relation="relation3"/>
+                    <link port="voltage.belowPort" relation="relation"/>
+                    <link port="voltage.abovePort" relation="relation2"/>
+                    <link port="analog_temp.belowPort" relation="relation3"/>
+                    <link port="analog_temp.abovePort" relation="relation4"/>
+                </entity>
+            </entity>
+        </configure>
+    </property>
+    <property name="LatticeOntologySolver::constraint" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="DisplayTheVoltage.input &gt;= voltage">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure><svg><text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text></svg></configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[645.0, 590.0]">
+        </property>
+    </property>
+    <property name="LatticeOntologySolver::constraint2" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="DisplayTheTemperature.input &gt;= analog_temp">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure><svg><text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text></svg></configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[645.0, 660.0]">
+        </property>
+    </property>
+    <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="14">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="SensorAndrewDataExtractor 1-4&#10;Type in the element id you would like!&#10;(Double-click, enter the id, e.g. &quot;voltage&quot;)&#10;">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 345.0]">
+        </property>
+    </property>
+    <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="14">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="SensorAndrewDataExtractor 5-6&#10;Let the ontology solver find the data &#10;for you based on the sink's type.&#10;&#10;We added a manual constraint for each &#10;Display to indicate the type of data desired.&#10;&#10;Then, we use the inferred concept on &#10;SensorAndrewDataExtractor's output port&#10;as the element id to search for.&#10;(Double-click, see the expression &#10;for the id parameter)&#10;This expression could be made part of the&#10;class definition for easy cut and paste.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 435.0]">
         </property>
     </property>
     <class name="SensorAndrewDataExtractorClass" extends="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[340.0, 650.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1000.0, 65.0]">
         </property>
         <property name="id" class="ptolemy.data.expr.Parameter" value="&quot;&quot;">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -78,190 +257,534 @@
         </property>
         <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{357.0, 259.0}">
         </property>
-        <port name="XML" class="ptolemy.actor.TypedIOPort">
+        <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 95.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{30.0, 95.0}">
             </property>
         </port>
-        <port name="dataValue" class="ptolemy.actor.TypedIOPort">
+        <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[415.0, 105.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, 105.0]">
             </property>
         </port>
         <entity name="XSLTransformer" class="ptolemy.actor.lib.xslt.XSLTransformer">
-            <property name="styleSheetParameters" class="ptolemy.actor.parameters.PortParameter" value="{elementID = &quot;$elementID&quot;}">
+            <property name="styleSheetParameters" class="ptolemy.actor.parameters.PortParameter" value="{idParameter = id}">
             </property>
             <property name="styleSheetFile" class="ptolemy.data.expr.FileParameter" value="SensorAndrewXMLtoText.xsl">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[300.0, 105.0]">
-            </property>
-        </entity>
-        <entity name="RecordAssembler" class="ptolemy.actor.lib.RecordAssembler">
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[210.0, 155.0]">
-            </property>
-            <port name="idParameter" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-                </property>
-            </port>
-        </entity>
-        <entity name="Const" class="ptolemy.actor.lib.Const">
-            <property name="value" class="ptolemy.data.expr.Parameter" value="id">
-            </property>
-            <doc>Create a constant sequence.</doc>
-            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
-                </property>
-                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
-                </property>
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[125.0, 175.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[155.0, 105.0]">
             </property>
         </entity>
         <relation name="relation" class="ptolemy.actor.TypedIORelation">
         </relation>
-        <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        <relation name="relation2" class="ptolemy.actor.TypedIORelation">
         </relation>
-        <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-        </relation>
-        <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex1" value="[70.0, 95.0]">
-            </vertex>
-        </relation>
-        <link port="XML" relation="relation5"/>
-        <link port="dataValue" relation="relation"/>
-        <link port="XSLTransformer.input" relation="relation5"/>
+        <link port="input" relation="relation2"/>
+        <link port="output" relation="relation"/>
+        <link port="XSLTransformer.input" relation="relation2"/>
         <link port="XSLTransformer.output" relation="relation"/>
-        <link port="XSLTransformer.styleSheetParameters" relation="relation4"/>
-        <link port="RecordAssembler.output" relation="relation4"/>
-        <link port="RecordAssembler.idParameter" relation="relation3"/>
-        <link port="Const.output" relation="relation3"/>
-        <link port="Const.trigger" relation="relation5"/>
     </class>
     <entity name="XMPPSource" class="org.ptolemy.ptango.lib.xmpp.XMPPSource">
         <property name="nodeId" class="ptolemy.data.expr.StringParameter" value="18554da7a16b3625f7a04d017a3abd45_data">
+            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
+            </property>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Unknown">
+            </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[115.0, 245.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[115.0, 290.0]">
         </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
+            </property>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Unknown">
+            </property>
+        </port>
     </entity>
-    <entity name="Display" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={235, 428, 342, 246}, maximized=false}">
+    <entity name="DisplayXML" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={114, 295, 454, 246}, maximized=false}">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[326, 186]">
         </property>
         <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="10">
+            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
+            </property>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Unknown">
+            </property>
         </property>
         <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="40">
+            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
+            </property>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Unknown">
+            </property>
         </property>
         <property name="suppressBlankLines" class="ptolemy.data.expr.Parameter" value="false">
+            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
+            </property>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Unknown">
+            </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[245.0, 245.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[590.0, 255.0]">
         </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
+            </property>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Unknown">
+            </property>
+        </port>
     </entity>
     <entity name="StringToXML" class="ptolemy.actor.lib.conversions.StringToXML">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[225.0, 350.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[230.0, 305.0]">
         </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
+            </property>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Unknown">
+            </property>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="multiport"/>
+            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.0,1.0}">
+            </property>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Conflict">
+            </property>
+        </port>
     </entity>
-    <entity name="Display2" class="ptolemy.actor.lib.gui.Display">
+    <entity name="DisplayAll" class="ptolemy.actor.lib.gui.Display">
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={624, 426, 342, 246}, maximized=false}">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[326, 186]">
         </property>
         <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="10">
+            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
+            </property>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Unknown">
+            </property>
         </property>
         <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="40">
+            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
+            </property>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Unknown">
+            </property>
         </property>
         <property name="suppressBlankLines" class="ptolemy.data.expr.Parameter" value="false">
+            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
+            </property>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Unknown">
+            </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[515.0, 335.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[585.0, 320.0]">
         </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
+            </property>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Unknown">
+            </property>
+        </port>
     </entity>
     <entity name="SensorAndrewDataExtractor1" class="SensorAndrewDataExtractorClass">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{340.0, 320.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[395.0, 305.0]">
         </property>
         <property name="id" class="ptolemy.data.expr.Parameter" value="&quot;voltage&quot;">
+            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
+            </property>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Unknown">
+            </property>
         </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
+            </property>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Unknown">
+            </property>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
+            </property>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Unknown">
+            </property>
+        </port>
         <entity name="XSLTransformer" class="ptolemy.actor.lib.xslt.XSLTransformer">
             <property name="styleSheetParameters" class="ptolemy.actor.parameters.PortParameter" value="{idParameter = &quot;voltage&quot;}">
-            </property>
-        </entity>
-        <entity name="Const" class="ptolemy.actor.lib.Const">
-            <property name="value" class="ptolemy.data.expr.Parameter" value="id">
-            </property>
-            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+                <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
                 </property>
-                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Unknown">
                 </property>
             </property>
+            <port name="input" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
+                </property>
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Unknown">
+                </property>
+            </port>
+            <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+                <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
+                </property>
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Unknown">
+                </property>
+            </port>
+            <port name="styleSheetParameters" class="ptolemy.actor.parameters.ParameterPort">
+                <property name="input"/>
+                <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
+                </property>
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Unknown">
+                </property>
+            </port>
         </entity>
     </entity>
     <entity name="SensorAndrewDataExtractor2" class="SensorAndrewDataExtractorClass">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[340.0, 395.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[391.4844512939453, 364.5051574707031]">
         </property>
         <property name="id" class="ptolemy.data.expr.Parameter" value="&quot;analog_temp&quot;">
+            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
+            </property>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Unknown">
+            </property>
         </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
+            </property>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Unknown">
+            </property>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
+            </property>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Unknown">
+            </property>
+        </port>
         <entity name="XSLTransformer" class="ptolemy.actor.lib.xslt.XSLTransformer">
             <property name="styleSheetParameters" class="ptolemy.actor.parameters.PortParameter" value="{idParameter = &quot;analog_temp&quot;}">
-            </property>
-        </entity>
-        <entity name="Const" class="ptolemy.actor.lib.Const">
-            <property name="value" class="ptolemy.data.expr.Parameter" value="id">
-            </property>
-            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+                <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
                 </property>
-                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Unknown">
                 </property>
             </property>
+            <port name="input" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
+                </property>
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Unknown">
+                </property>
+            </port>
+            <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+                <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
+                </property>
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Unknown">
+                </property>
+            </port>
+            <port name="styleSheetParameters" class="ptolemy.actor.parameters.ParameterPort">
+                <property name="input"/>
+                <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
+                </property>
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Unknown">
+                </property>
+            </port>
         </entity>
     </entity>
     <entity name="SensorAndrewDataExtractor3" class="SensorAndrewDataExtractorClass">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[340.0, 475.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[391.4844512939453, 444.5051574707031]">
         </property>
         <property name="id" class="ptolemy.data.expr.Parameter" value="&quot;acc_y&quot;">
+            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
+            </property>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Unknown">
+            </property>
         </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
+            </property>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Unknown">
+            </property>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
+            </property>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Unknown">
+            </property>
+        </port>
         <entity name="XSLTransformer" class="ptolemy.actor.lib.xslt.XSLTransformer">
             <property name="styleSheetParameters" class="ptolemy.actor.parameters.PortParameter" value="{idParameter = &quot;acc_y&quot;}">
-            </property>
-        </entity>
-        <entity name="Const" class="ptolemy.actor.lib.Const">
-            <property name="value" class="ptolemy.data.expr.Parameter" value="id">
-            </property>
-            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+                <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
                 </property>
-                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Unknown">
                 </property>
             </property>
+            <port name="input" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
+                </property>
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Unknown">
+                </property>
+            </port>
+            <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+                <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
+                </property>
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Unknown">
+                </property>
+            </port>
+            <port name="styleSheetParameters" class="ptolemy.actor.parameters.ParameterPort">
+                <property name="input"/>
+                <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
+                </property>
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Unknown">
+                </property>
+            </port>
         </entity>
     </entity>
     <entity name="SensorAndrewDataExtractor4" class="SensorAndrewDataExtractorClass">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[340.0, 540.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[391.4844512939453, 509.5051574707031]">
         </property>
         <property name="id" class="ptolemy.data.expr.Parameter" value="&quot;acc_z&quot;">
+            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
+            </property>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Unknown">
+            </property>
         </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
+            </property>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Unknown">
+            </property>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
+            </property>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Unknown">
+            </property>
+        </port>
         <entity name="XSLTransformer" class="ptolemy.actor.lib.xslt.XSLTransformer">
             <property name="styleSheetParameters" class="ptolemy.actor.parameters.PortParameter" value="{idParameter = &quot;acc_z&quot;}">
+                <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
+                </property>
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Unknown">
+                </property>
             </property>
+            <port name="input" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
+                </property>
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Unknown">
+                </property>
+            </port>
+            <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+                <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
+                </property>
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Unknown">
+                </property>
+            </port>
+            <port name="styleSheetParameters" class="ptolemy.actor.parameters.ParameterPort">
+                <property name="input"/>
+                <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
+                </property>
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Unknown">
+                </property>
+            </port>
         </entity>
-        <entity name="Const" class="ptolemy.actor.lib.Const">
-            <property name="value" class="ptolemy.data.expr.Parameter" value="id">
+    </entity>
+    <entity name="DisplayTheVoltage" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={857, 302, 423, 246}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[407, 186]">
+        </property>
+        <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="10">
+            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
             </property>
-            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Unknown">
+            </property>
+        </property>
+        <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="40">
+            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
+            </property>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Unknown">
+            </property>
+        </property>
+        <property name="suppressBlankLines" class="ptolemy.data.expr.Parameter" value="false">
+            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
+            </property>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Unknown">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[590.0, 585.0]">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,1.0,0.6,1.0}">
+            </property>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="voltage">
+            </property>
+        </port>
+    </entity>
+    <entity name="SensorAndrewDataExtractor5" class="SensorAndrewDataExtractorClass">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[390.0, 585.0]">
+        </property>
+        <property name="id" class="ptolemy.data.expr.Parameter" value="output.getAttribute(&quot;_showInfo&quot;).stringValue()">
+            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
+            </property>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Unknown">
+            </property>
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,1.0,0.6,1.0}">
+            </property>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="voltage">
+            </property>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="false">
+            </property>
+            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,1.0,0.6,1.0}">
+            </property>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="voltage">
+            </property>
+        </port>
+        <entity name="XSLTransformer" class="ptolemy.actor.lib.xslt.XSLTransformer">
+            <property name="styleSheetParameters" class="ptolemy.actor.parameters.PortParameter" value="{idParameter = id}">
+                <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
                 </property>
-                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Unknown">
                 </property>
             </property>
+            <port name="input" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,1.0,0.6,1.0}">
+                </property>
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="voltage">
+                </property>
+            </port>
+            <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+                <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,1.0,0.6,1.0}">
+                </property>
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="voltage">
+                </property>
+            </port>
+            <port name="styleSheetParameters" class="ptolemy.actor.parameters.ParameterPort">
+                <property name="input"/>
+                <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,1.0,0.6,1.0}">
+                </property>
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="voltage">
+                </property>
+            </port>
+        </entity>
+    </entity>
+    <entity name="DisplayTheTemperature" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={356, 190, 459, 246}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[443, 186]">
+        </property>
+        <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="10">
+            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
+            </property>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Unknown">
+            </property>
+        </property>
+        <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="40">
+            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
+            </property>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Unknown">
+            </property>
+        </property>
+        <property name="suppressBlankLines" class="ptolemy.data.expr.Parameter" value="false">
+            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
+            </property>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Unknown">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[590.0, 660.0]">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.2,0.8,1.0,1.0}">
+            </property>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="analog_temp">
+            </property>
+        </port>
+    </entity>
+    <entity name="SensorAndrewDataExtractor6" class="SensorAndrewDataExtractorClass">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[390.0, 660.0]">
+        </property>
+        <property name="id" class="ptolemy.data.expr.Parameter" value="output.getAttribute(&quot;_showInfo&quot;).stringValue()">
+            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
+            </property>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Unknown">
+            </property>
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.2,0.8,1.0,1.0}">
+            </property>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="analog_temp">
+            </property>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.2,0.8,1.0,1.0}">
+            </property>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="analog_temp">
+            </property>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="false">
+            </property>
+        </port>
+        <entity name="XSLTransformer" class="ptolemy.actor.lib.xslt.XSLTransformer">
+            <property name="styleSheetParameters" class="ptolemy.actor.parameters.PortParameter" value="{idParameter = id}">
+                <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
+                </property>
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Unknown">
+                </property>
+            </property>
+            <port name="input" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.2,0.8,1.0,1.0}">
+                </property>
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="analog_temp">
+                </property>
+            </port>
+            <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+                <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.2,0.8,1.0,1.0}">
+                </property>
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="analog_temp">
+                </property>
+            </port>
+            <port name="styleSheetParameters" class="ptolemy.actor.parameters.ParameterPort">
+                <property name="input"/>
+                <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.2,0.8,1.0,1.0}">
+                </property>
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="analog_temp">
+                </property>
+            </port>
         </entity>
     </entity>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[185.0, 245.0]">
+        <vertex name="vertex1" value="[185.0, 255.0]">
         </vertex>
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[280.0, 350.0]">
+        <vertex name="vertex1" value="[310.0, 395.0]">
         </vertex>
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
@@ -272,20 +795,30 @@
     </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
     </relation>
+    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+    </relation>
     <link port="XMPPSource.output" relation="relation2"/>
-    <link port="Display.input" relation="relation2"/>
+    <link port="DisplayXML.input" relation="relation2"/>
     <link port="StringToXML.input" relation="relation2"/>
     <link port="StringToXML.output" relation="relation5"/>
-    <link port="Display2.input" relation="relation"/>
-    <link port="Display2.input" relation="relation3"/>
-    <link port="Display2.input" relation="relation4"/>
-    <link port="Display2.input" relation="relation6"/>
-    <link port="SensorAndrewDataExtractor1.XML" relation="relation5"/>
-    <link port="SensorAndrewDataExtractor1.dataValue" relation="relation"/>
-    <link port="SensorAndrewDataExtractor2.XML" relation="relation5"/>
-    <link port="SensorAndrewDataExtractor2.dataValue" relation="relation3"/>
-    <link port="SensorAndrewDataExtractor3.XML" relation="relation5"/>
-    <link port="SensorAndrewDataExtractor3.dataValue" relation="relation4"/>
-    <link port="SensorAndrewDataExtractor4.XML" relation="relation5"/>
-    <link port="SensorAndrewDataExtractor4.dataValue" relation="relation6"/>
+    <link port="DisplayAll.input" relation="relation"/>
+    <link port="DisplayAll.input" relation="relation3"/>
+    <link port="DisplayAll.input" relation="relation4"/>
+    <link port="DisplayAll.input" relation="relation6"/>
+    <link port="SensorAndrewDataExtractor1.input" relation="relation5"/>
+    <link port="SensorAndrewDataExtractor1.output" relation="relation"/>
+    <link port="SensorAndrewDataExtractor2.input" relation="relation5"/>
+    <link port="SensorAndrewDataExtractor2.output" relation="relation3"/>
+    <link port="SensorAndrewDataExtractor3.input" relation="relation5"/>
+    <link port="SensorAndrewDataExtractor3.output" relation="relation4"/>
+    <link port="SensorAndrewDataExtractor4.input" relation="relation5"/>
+    <link port="SensorAndrewDataExtractor4.output" relation="relation6"/>
+    <link port="DisplayTheVoltage.input" relation="relation7"/>
+    <link port="SensorAndrewDataExtractor5.input" relation="relation5"/>
+    <link port="SensorAndrewDataExtractor5.output" relation="relation7"/>
+    <link port="DisplayTheTemperature.input" relation="relation8"/>
+    <link port="SensorAndrewDataExtractor6.input" relation="relation5"/>
+    <link port="SensorAndrewDataExtractor6.output" relation="relation8"/>
 </entity>

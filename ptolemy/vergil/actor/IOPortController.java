@@ -53,9 +53,11 @@ import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
+import ptolemy.data.expr.StringParameter;
 import ptolemy.data.type.Typeable;
 import ptolemy.kernel.InstantiableNamedObj;
 import ptolemy.kernel.Port;
+import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
@@ -473,9 +475,20 @@ public class IOPortController extends AttributeController {
                         }
                         info.setExpression("QM: " + qmStringBuffer.toString());
                     } else {
-                        StringAttribute info = (StringAttribute) port
+
+                        // Use Attribute here instead of StringAttribute since
+                        // the attribute could be e.g. a StringParameter, which 
+                        // is an Attribute but not a StringAttribute                   
+                        Attribute info = (Attribute) port
                                 .getAttribute("_showInfo");
-                        port.removeAttribute(info);
+                        if (! (info instanceof StringParameter)) {
+                            // The ontologies package uses a _showInfo 
+                            // StringParameter for port annotations.  
+                            // Leave these annotations on the model.  
+                            // Other annotations are removed. 
+                            // (Not sure of original reason why?)
+                            port.removeAttribute(info);
+                        }
                     }
                 }
             } catch (IllegalActionException e1) {
