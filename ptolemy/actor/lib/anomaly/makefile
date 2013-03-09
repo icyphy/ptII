@@ -48,7 +48,6 @@ PTPACKAGE =     anomaly
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 OTHER_FILES_TO_BE_JARED = \
-	anomaly.xml \
 	PacketDropFaultGenerator.java \
 	StuckAtFaultGenerator.java
 
