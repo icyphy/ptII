@@ -27,8 +27,6 @@
 
 package ptolemy.vergil.basic.imprt.g4ltl;
 
-import diva.gui.GUIUtilities;
-
 import g4ltl.SolverUtility;
 import g4ltl.utility.SynthesisEngine;
 
@@ -36,7 +34,6 @@ import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.io.File;
-import java.util.Iterator;
 
 import javax.swing.AbstractAction;
 import javax.swing.ImageIcon;
@@ -48,10 +45,8 @@ import ptolemy.gui.PtFileChooser;
 import ptolemy.gui.Top;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
-import ptolemy.kernel.util.NamedObj;
-import ptolemy.moml.MoMLChangeRequest;
-import ptolemy.moml.MoMLParser;
 import ptolemy.vergil.basic.BasicGraphFrame;
+import diva.gui.GUIUtilities;
 
 ///////////////////////////////////////////////////////////////////
 //// ImportG4LTLAction
@@ -95,8 +90,7 @@ public class ImportG4LTLAction extends AbstractAction {
     public ImportG4LTLAction(Top frame) {
         super("Import FSMActor using synthesis");
         _frame = frame;
-        putValue("tooltip",
-                "Import an FSMActor using LTL synthesis (G4LTL)");
+        putValue("tooltip", "Import an FSMActor using LTL synthesis (G4LTL)");
         putValue(GUIUtilities.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_M));
     }
 
@@ -116,7 +110,8 @@ public class ImportG4LTLAction extends AbstractAction {
         JFileChooserBugFix jFileChooserBugFix = new JFileChooserBugFix();
         Color background = null;
         PtFileChooser ptFileChooser = null;
-        ImageIcon icon = new ImageIcon("ptolemy/vergil/basic/imprt/g4ltl/G4LTL.gif");
+        ImageIcon icon = new ImageIcon(
+                "ptolemy/vergil/basic/imprt/g4ltl/G4LTL.gif");
 
         try {
             Class basicGraphFrameClass = null;
@@ -142,19 +137,19 @@ public class ImportG4LTLAction extends AbstractAction {
                     "Select a design specification file.",
                     JFileChooser.OPEN_DIALOG);
 
-            ptFileChooser.setCurrentDirectory(basicGraphFrame.getLastDirectory());
+            ptFileChooser.setCurrentDirectory(basicGraphFrame
+                    .getLastDirectory());
 
             int returnVal = ptFileChooser.showDialog(null, "Import");
 
             if (returnVal == JFileChooser.APPROVE_OPTION) {
-                basicGraphFrame.setLastDirectory(ptFileChooser.getCurrentDirectory());
+                basicGraphFrame.setLastDirectory(ptFileChooser
+                        .getCurrentDirectory());
 
-                NamedObj model = null;
                 File file = null;
                 String result = null;
                 try {
-                    file = ptFileChooser.getSelectedFile()
-                        .getCanonicalFile();
+                    file = ptFileChooser.getSelectedFile().getCanonicalFile();
 
                     // Step 1: Invoke the synthesis engine to generate a string in MoML format.
 
@@ -162,61 +157,56 @@ public class ImportG4LTLAction extends AbstractAction {
 
                     Object[] optionsTechnique = { "CoBuechi", "Buechi" };
 
-                    int optionTechnique = JOptionPane.showOptionDialog(
-                            null, "Specify synthesis techniques",
-                            "G4LTL@Ptolemy II",
+                    int optionTechnique = JOptionPane.showOptionDialog(null,
+                            "Specify synthesis techniques", "G4LTL@Ptolemy II",
                             JOptionPane.YES_NO_CANCEL_OPTION,
                             JOptionPane.QUESTION_MESSAGE, icon,
                             optionsTechnique, optionsTechnique[0]);
 
                     int unrollSteps = 0;
                     if (optionTechnique == 0) {
-                        Object[] possibilities = { "1", "2", "3", "4", "5",
-                                                   "6" };
-                        String s = (String) JOptionPane.showInputDialog(
-                                null, "Enter the number of unroll steps",
-                                "G4LTL@Ptolemy II",
-                                JOptionPane.PLAIN_MESSAGE, icon,
-                                possibilities, "1");
-                        if ((s != null) && (s.length() > 0)) {
+                        Object[] possibilities = { "1", "2", "3", "4", "5", "6" };
+                        String s = (String) JOptionPane.showInputDialog(null,
+                                "Enter the number of unroll steps",
+                                "G4LTL@Ptolemy II", JOptionPane.PLAIN_MESSAGE,
+                                icon, possibilities, "1");
+                        if (s != null && s.length() > 0) {
                             unrollSteps = Integer.parseInt(s);
                         }
                     }
 
-                    result = solver.synthesizeFromFile(file,
-                            optionTechnique, unrollSteps,
+                    result = solver.synthesizeFromFile(file, optionTechnique,
+                            unrollSteps,
                             SynthesisEngine.OUTPUT_FSM_ACTOR_PTOLEMY, true);
-                    
+
                     if (result.trim().startsWith("<") == false) {
                         // Try to see if a counter-strategy exists
-                        
-                        Object[] options = {"Yes",
-                                            "No"};
+
+                        Object[] options = { "Yes", "No" };
                         int option = JOptionPane.showOptionDialog(null,
-                            "G4LTL unable to find strategy.\n" +
-                            "Perform counter-strategy finding?",
-                            "G4LTL@Ptolemy II",
-                            JOptionPane.YES_NO_OPTION,
-                            JOptionPane.PLAIN_MESSAGE,
-                            icon,
-                            options,
-                            options[0]);
-                        
-                        if (option == 0){
+                                "G4LTL unable to find strategy.\n"
+                                        + "Perform counter-strategy finding?",
+                                "G4LTL@Ptolemy II", JOptionPane.YES_NO_OPTION,
+                                JOptionPane.PLAIN_MESSAGE, icon, options,
+                                options[0]);
+
+                        if (option == 0) {
                             result = solver.synthesizeFromFile(file,
                                     optionTechnique, unrollSteps,
-                                    SynthesisEngine.OUTPUT_FSM_ACTOR_PTOLEMY, false);
+                                    SynthesisEngine.OUTPUT_FSM_ACTOR_PTOLEMY,
+                                    false);
                         }
-                        
+
                         JOptionPane.showMessageDialog(null, result,
-                                "G4LTL@Ptolemy II",
-                                JOptionPane.DEFAULT_OPTION, icon);
+                                "G4LTL@Ptolemy II", JOptionPane.DEFAULT_OPTION,
+                                icon);
                         return;
                     }
                     G4LTL.updateModel(result, basicGraphFrame.getModel());
                 } catch (Exception ex) {
-                    basicGraphFrame.report(new IllegalActionException(basicGraphFrame.getModel(), ex,
-                                    "Error reading input file \"" + file + "\"."));
+                    basicGraphFrame.report(new IllegalActionException(
+                            basicGraphFrame.getModel(), ex,
+                            "Error reading input file \"" + file + "\"."));
                 }
             }
         } finally {

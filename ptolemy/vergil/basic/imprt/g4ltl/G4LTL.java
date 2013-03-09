@@ -27,31 +27,15 @@
 
 package ptolemy.vergil.basic.imprt.g4ltl;
 
-import diva.gui.GUIUtilities;
-
 import g4ltl.SolverUtility;
 import g4ltl.utility.SynthesisEngine;
 
-import java.awt.Color;
-import java.awt.event.ActionEvent;
-import java.awt.event.KeyEvent;
 import java.io.File;
 import java.util.Iterator;
 
-import javax.swing.AbstractAction;
-import javax.swing.ImageIcon;
-import javax.swing.JFileChooser;
-import javax.swing.JOptionPane;
-
-import ptolemy.gui.JFileChooserBugFix;
-import ptolemy.gui.PtFileChooser;
-import ptolemy.gui.Top;
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.moml.MoMLParser;
-import ptolemy.vergil.basic.BasicGraphFrame;
 
 ///////////////////////////////////////////////////////////////////
 //// G4LTL
@@ -93,9 +77,9 @@ public class G4LTL {
     public static String synthesizeFromFile(SolverUtility solver, File ltlFile,
             int optionTechnique, int unrollSteps, boolean findStrategy)
             throws Exception {
-        String result = solver.synthesizeFromFile(ltlFile,
-                            optionTechnique, unrollSteps,
-                            SynthesisEngine.OUTPUT_FSM_ACTOR_PTOLEMY, findStrategy);
+        String result = solver.synthesizeFromFile(ltlFile, optionTechnique,
+                unrollSteps, SynthesisEngine.OUTPUT_FSM_ACTOR_PTOLEMY,
+                findStrategy);
         return result;
     }
 
@@ -116,17 +100,17 @@ public class G4LTL {
      * @return The name of the state machine that was created.
      * @exception Exception If thrown while synthesizing.
      */
-    public static String generateMoML(File ltlFile,
-            int optionTechnique, int unrollSteps, boolean findStrategy, NamedObj context)
+    public static String generateMoML(File ltlFile, int optionTechnique,
+            int unrollSteps, boolean findStrategy, NamedObj context)
             throws Exception {
         SolverUtility solver = new SolverUtility();
-        String result = solver.synthesizeFromFile(ltlFile,
-                optionTechnique, unrollSteps,
-                SynthesisEngine.OUTPUT_FSM_ACTOR_PTOLEMY, findStrategy);
+        String result = solver.synthesizeFromFile(ltlFile, optionTechnique,
+                unrollSteps, SynthesisEngine.OUTPUT_FSM_ACTOR_PTOLEMY,
+                findStrategy);
         if (findStrategy && result.trim().startsWith("<") == false) {
-            result = solver.synthesizeFromFile(ltlFile,
-                            optionTechnique, unrollSteps,
-                SynthesisEngine.OUTPUT_FSM_ACTOR_PTOLEMY, false);
+            result = solver.synthesizeFromFile(ltlFile, optionTechnique,
+                    unrollSteps, SynthesisEngine.OUTPUT_FSM_ACTOR_PTOLEMY,
+                    false);
         }
         String name = updateModel(result, context);
         return name;
@@ -140,7 +124,7 @@ public class G4LTL {
      * @return The name of the state machine that was created.
      * @exception Exception If thrown while synthesizing.
      */
-    public static String updateModel(String updatedMoML, NamedObj context) 
+    public static String updateModel(String updatedMoML, NamedObj context)
             throws Exception {
         // FIXME: instantiating a new parser each time could be a
         // mistake.  What about leaks?  What about initialization of
@@ -154,10 +138,11 @@ public class G4LTL {
             moml = model.exportMoMLPlain();
             String moduleName = "model";
             int i = 1;
-            Iterator<NamedObj> containedObjects = context.containedObjectsIterator();
-            while (containedObjects.hasNext()) {                              
+            Iterator<NamedObj> containedObjects = context
+                    .containedObjectsIterator();
+            while (containedObjects.hasNext()) {
                 if (containedObjects.next().getName()
-                        .equals(moduleName + String.valueOf(i))) {                               
+                        .equals(moduleName + String.valueOf(i))) {
                     containedObjects = context.containedObjectsIterator();
                     i++;
                 }
@@ -165,8 +150,8 @@ public class G4LTL {
             // Change the module to the updated name, and commit changes
             updatedName = moduleName + String.valueOf(i);
             moml = moml.replaceFirst(moduleName, updatedName);
-            MoMLChangeRequest request = new MoMLChangeRequest(context,
-                    context, moml);
+            MoMLChangeRequest request = new MoMLChangeRequest(context, context,
+                    moml);
             context.requestChange(request);
         }
         return updatedName;
