@@ -78,8 +78,7 @@ import ptolemy.kernel.util.Workspace;
  *  as a parameter (e.g. Bus.set(2) ).
  *  That name will resolve to an ObjectToken referring to this instance.
  *  <p>
- *  FIXME: This receiver behaves differently for Continuous and DE. Allowing
- *  the use of this actor across hierarchies might therefore be problematic.
+ *  This actor is tested in continuous and DE. 
  *  @author Patricia Derler, Edward A. Lee
  *  @version $Id$
  *  @since Ptolemy II 8.0
@@ -308,7 +307,10 @@ public class Bus extends MonitoredQuantityManager {
         // same value. Thus, this Bus can be used only in domains
         // that either call fire() at most once per iteration,
         // or domains that have a fixed-point semantics.
-        Token tokenToSend = _receiversAndTokensToSendTo.get(receiver);
+        Token tokenToSend = null;
+        if (getDirector() instanceof FixedPointDirector) {
+            tokenToSend = _receiversAndTokensToSendTo.get(receiver);
+        }
         if (tokenToSend != null) {
             if (!tokenToSend.equals(token)) {
                 throw new IllegalActionException(this, receiver.getContainer(),
