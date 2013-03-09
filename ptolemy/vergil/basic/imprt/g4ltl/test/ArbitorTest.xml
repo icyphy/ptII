@@ -99,7 +99,7 @@
         </property>
     </entity>
     <entity name="Grant1" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{true, true, false, true, true}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{true, false, true, false, false}">
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
@@ -107,7 +107,7 @@
         </property>
     </entity>
     <entity name="Grant2" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{false, false, true, false, false}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{false, true, false, true, true}">
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
