@@ -259,15 +259,14 @@ public class Bus extends MonitoredQuantityManager {
                     sendQMTokenEvent((Actor) receiver.getContainer().getContainer(),
                             0, _tokenCount, EventType.RECEIVED);
                 }
-            }
-            _receiversAndTokensToSendTo.clear(); 
+            } 
         }
         if (_tokens.size() > 0
                 && (_nextTimeFree == null || currentTime
                         .compareTo(_nextTimeFree) >= 0)) {
             _scheduleRefire();
         }
-
+        _receiversAndTokensToSendTo.clear(); 
         return super.postfire();
     }
 
@@ -307,10 +306,7 @@ public class Bus extends MonitoredQuantityManager {
         // same value. Thus, this Bus can be used only in domains
         // that either call fire() at most once per iteration,
         // or domains that have a fixed-point semantics.
-        Token tokenToSend = null;
-        if (getDirector() instanceof FixedPointDirector) {
-            tokenToSend = _receiversAndTokensToSendTo.get(receiver);
-        }
+        Token tokenToSend = _receiversAndTokensToSendTo.get(receiver); 
         if (tokenToSend != null) {
             if (!tokenToSend.equals(token)) {
                 throw new IllegalActionException(this, receiver.getContainer(),
