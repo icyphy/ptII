@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="GeneratorRegulatorProtector" class="ptolemy.actor.TypedCompositeActor">
+<entity name="GeneratorRegulatorProtectorWithBus" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
     </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={52, 223, 1150, 714}, maximized=false}">
@@ -43,31 +43,6 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 60.0]">
         </property>
     </property>
-    <property name="Annotation5" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="See also the GeneratorRegulator model.">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[425.0, 380.0]">
-        </property>
-        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$PTII/ptolemy/demo/ElectricPowerSystem/GeneratorRegulator.xml">
-            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-            </property>
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
-                </property>
-            </property>
-            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-                <configure>
-      <svg>
-        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">LL</text>
-      </svg>
-    </configure>
-            </property>
-            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{395, 280}">
-            </property>
-        </property>
-    </property>
     <property name="overVoltageThreshold" class="ptolemy.data.expr.Parameter" value="115.0">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
@@ -98,7 +73,7 @@
     <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="See also the GeneratorRegulatorFMUProtector model.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[425.0, 405.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[385.0, 395.0]">
         </property>
         <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$PTII/ptolemy/demo/ElectricPowerSystem/GeneratorRegulatorFMUProtector.xml">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -134,8 +109,8 @@
 <title>Voltage over time</title>
 <xLabel>time (seconds)</xLabel>
 <yLabel>voltage</yLabel>
-<xRange min="0.0" max="30.0"/>
-<yRange min="0.0" max="235.57977211625584"/>
+<xRange min="0.0" max="1.0"/>
+<yRange min="0.0" max="39.518644114152075"/>
 <default connected="no" stems="yes"/>
 </plot>?>
         </configure>
@@ -177,6 +152,13 @@
         <doc>Discrete proportional, integral, and derivative controller.</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[735.0, 210.0]">
         </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="qm" class="ptolemy.data.expr.Parameter" value="Bus.set(2.0)">
+            </property>
+            <property name="_showInfo" class="ptolemy.kernel.util.StringAttribute" value="QM: Bus">
+            </property>
+        </port>
     </entity>
     <entity name="SingleEvent" class="ptolemy.actor.lib.SingleEvent">
         <property name="time" class="ptolemy.data.expr.Parameter" value="15.0">
@@ -347,6 +329,10 @@
     </entity>
     <entity name="MicrostepDelay" class="ptolemy.actor.lib.MicrostepDelay">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[245.0, 220.0]">
+        </property>
+    </entity>
+    <entity name="Bus" class="ptolemy.actor.lib.qm.Bus">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{705, 335}">
         </property>
     </entity>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
