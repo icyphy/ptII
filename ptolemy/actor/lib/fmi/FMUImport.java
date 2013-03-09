@@ -177,6 +177,12 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
         visible = new Parameter(this, "visible");
         visible.setTypeEquals(BaseType.BOOLEAN);
         visible.setExpression("false");
+        
+        _attachText("_iconDescription", "<svg>\n"
+                + "<rect x=\"-30\" y=\"-20\" " + "width=\"60\" height=\"40\" "
+                + "style=\"fill:white\"/>\n"
+                + "<text x=\"-25\" y=\"7\" " + "style=\"font-size:24\">\n"
+                + "FMU" + "</text>\n" + "</svg>\n");
     }
 
     ///////////////////////////////////////////////////////////////////
