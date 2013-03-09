@@ -25,6 +25,8 @@
         </property>
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 50.0]">
         </property>
     </property>
