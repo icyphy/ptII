@@ -64,7 +64,7 @@ ME =		ptolemy/actor/lib
 # $PTII/configure looks for Open Computer Vision and sets PTOPENCV_DIR in
 # $PTII/mk/ptII.mk if it was found.  Otherwise, PTOPENCV_DIR is empty.
 #
-DIRS = 		conversions gui logic hoc image test \
+DIRS = 		anomaly conversions gui logic hoc image test \
 		javasound jopio net io xslt \
 		test comm qm security string tutorial vhdl video \
 		$(PTCOLT_DIR) $(PTDATABASE_DIR) $(PTFMI_DIR) \
