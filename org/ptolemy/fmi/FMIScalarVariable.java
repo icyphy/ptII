@@ -234,7 +234,7 @@ public class FMIScalarVariable {
     public boolean getBoolean(Pointer fmiComponent) {
         ByteBuffer valueBuffer = ByteBuffer.allocate(1);
         _getValue(fmiComponent, valueBuffer, FMIBooleanType.class);
-        return valueBuffer.get(0) == 0;
+        return valueBuffer.get(0) != 0;
     }
 
     /** Return the value of this variable as a double.
