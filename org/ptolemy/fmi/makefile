@@ -238,7 +238,7 @@ fixtmpdist:
 		$(PTTMPDIR)/$(PTDIST)/README.txt
 	echo "one of six research centers funded under the Focus Center Research Program,"  >> \
 		$(PTTMPDIR)/$(PTDIST)/README.txt
-	echo "a Semiconductor Research Corporation program, and Thales:"  >> \
+	echo "a Semiconductor Research Corporation program, and Thales."  >> \
 		$(PTTMPDIR)/$(PTDIST)/README.txt
 	echo ""  >> \
 		$(PTTMPDIR)/$(PTDIST)/README.txt
