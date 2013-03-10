@@ -4,7 +4,7 @@
 #
 # @Version: $Id: makefile 62315 2011-10-26 05:48:14Z cxh $
 #
-# @Copyright (c) 2012 The Regents of the University of California.
+# @Copyright (c) 2013 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -58,8 +58,9 @@ JSRCS = \
 	G4LTL.java \
 	ImportG4LTLAction.java
 
-
-OTHER_FILES_TO_BE_JARED =
+OTHER_FILES_TO_BE_JARED = \
+	G4LTL.gif \
+	README.html
 
 EXTRA_SRCS = \
 	$(JSRCS) \
@@ -72,7 +73,8 @@ MISC_FILES =	test
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	$(PTCLASSJAR)
+	$(PTCLASSJAR) \
+	demo
 
 JCLASS = $(JSRCS:%.java=%.class)
 

@@ -54,8 +54,8 @@ PTAUXALLJAR = imprtFull.jar
 
 # Include the .class files from these jars in PTAUXALLJARS
 PTAUXALLJARS = \
-		fmu/fmu.jar
-
+		fmu/fmu.jar \
+		g4ltl/g4ltl.jar
 JSRCS =
 
 EXTRA_SRCS =	$(JSRCS)
