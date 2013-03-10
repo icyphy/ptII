@@ -44,7 +44,7 @@ include $(CONFIG)
 
 # Variables and rules used to create source file distributions
 PTPACKAGE = 	fmi
-PTVERSION =	1.0
+PTVERSION =	1.0.1
 PTDIST =	jfmi$(PTVERSION)
 PTCLASSJAR =
 
@@ -184,7 +184,7 @@ fixtmpdist:
 		$(PTTMPDIR)/$(PTDIST)/README.txt
 	echo "  cd org/ptolemy/fmi" >> \
 		$(PTTMPDIR)/$(PTDIST)/README.txt
-	echo "  java -classpath ../../../lib/jna.jar:../.. \\"  >> \
+	echo "  java -classpath ../../../lib/jna.jar:../../.. \\"  >> \
 		$(PTTMPDIR)/$(PTDIST)/README.txt
 	echo "     org.ptolemy.fmi.driver.FMUCoSimulation \\"  >> \
 		$(PTTMPDIR)/$(PTDIST)/README.txt
@@ -202,6 +202,16 @@ fixtmpdist:
 		$(PTTMPDIR)/$(PTDIST)/README.txt
 	echo "" >> \
 		$(PTTMPDIR)/$(PTDIST)/README.txt
+	echo "This work was supported in part by the TerraSwarm Research Center," >> \
+		$(PTTMPDIR)/$(PTDIST)/README.txt
+	echo "one of six centers supported by the STARnet phase of the " >> \
+		$(PTTMPDIR)/$(PTDIST)/README.txt
+	echo "Focus Center Research Program (FCRP) a Semiconductor Research Corporation program " >> \
+		$(PTTMPDIR)/$(PTDIST)/README.txt
+	echo "sponsored by MARCO and DARPA." >> \
+		$(PTTMPDIR)/$(PTDIST)/README.txt
+	echo "" >> \
+		$(PTTMPDIR)/$(PTDIST)/README.txt
 	echo "Additional support was provided by Ptolemy II, which is supported " >> \
 		$(PTTMPDIR)/$(PTDIST)/README.txt
 	echo "by the following organizations:" >> \
@@ -210,9 +220,17 @@ fixtmpdist:
 		$(PTTMPDIR)/$(PTDIST)/README.txt
 	echo "at UC Berkeley, which receives support from the" >> \
 		$(PTTMPDIR)/$(PTDIST)/README.txt
-	echo "National Science Foundation (NSF awards #0720882 (CSR-EHS: PRET),"  >> \
+	echo "National Science Foundation (NSF awards #0720882 (CSR-EHS: PRET)," >> \
 		$(PTTMPDIR)/$(PTDIST)/README.txt
-	echo "#1035672 (CPS: PTIDES), and #0931843 (ActionWebs)),"  >> \
+	echo "#0931843 (CPS: Large: ActionWebs), and #1035672 (CPS: Medium: Ptides))," >> \
+		$(PTTMPDIR)/$(PTDIST)/README.txt
+	echo "the Naval Research Laboratory (NRL #N0013-12-1-G015)," >> \
+		$(PTTMPDIR)/$(PTDIST)/README.txt
+	echo "and the following companies: Bosch, National Instruments, and Toyota." >> \
+		$(PTTMPDIR)/$(PTDIST)/README.txt
+	echo "" >> \
+		$(PTTMPDIR)/$(PTDIST)/README.txt
+	echo "Previous versions of JFMI were supported by " >> \
 		$(PTTMPDIR)/$(PTDIST)/README.txt
 	echo "the U. S. Army Research Laboratory (ARL #W911NF-11-2-0038),"  >> \
 		$(PTTMPDIR)/$(PTDIST)/README.txt
@@ -220,9 +238,7 @@ fixtmpdist:
 		$(PTTMPDIR)/$(PTDIST)/README.txt
 	echo "one of six research centers funded under the Focus Center Research Program,"  >> \
 		$(PTTMPDIR)/$(PTDIST)/README.txt
-	echo "a Semiconductor Research Corporation program, and the following companies:"  >> \
-		$(PTTMPDIR)/$(PTDIST)/README.txt
-	echo "Bosch, National Instruments, Thales, and Toyota."  >> \
+	echo "a Semiconductor Research Corporation program, and Thales:"  >> \
 		$(PTTMPDIR)/$(PTDIST)/README.txt
 	echo ""  >> \
 		$(PTTMPDIR)/$(PTDIST)/README.txt
@@ -247,7 +263,7 @@ fixtmpdist:
 	echo "at https://groups.google.com/group/bcvtb maybe be used for questions." >> \
 		$(PTTMPDIR)/$(PTDIST)/README.txt
 	# Update copyright
-	sed  -e 's/1995-//' -e 's/Ptolemy II system/JFMI distribution/' \
+	sed  -e 's/1995-/2012-/' -e 's/Ptolemy II system/JFMI distribution/' \
 		$(PTTMPDIR)/$(PTDIST)/copyright.txt | \
 		grep -v "Ptolemy II includes the work of others, to see those copyrights" | \
 		grep -v "the copyright link on the splash page or see copyright.htm." > \
