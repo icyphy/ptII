@@ -266,7 +266,7 @@ public class IOPort extends ComponentPort {
     }
 
     /** React to the deletion of an attribute. If the attribute is
-     *  a {@see QuantityManager}, invalidate the local variable state
+     *  a {@link QuantityManager}, invalidate the local variable state
      *  information about QuantityManagers on this port. This causes
      *  the port to update QuantityManager information and receivers.
      *  @param attribute The attribute that was deleted.
@@ -4149,7 +4149,7 @@ public class IOPort extends ComponentPort {
      *  on the workspace, so the caller should be.
      *  <p>
      *  The returned receiver is either the new receiver, or another
-     *  receiver wrapping it as specified in {@link #_wrapReceiver(Receiver)}.
+     *  receiver wrapping it as specified in {@link #_wrapReceiver(Receiver, channel)}.
      *  @return A new receiver.
      *  @exception IllegalActionException If the port has no container,
      *   or the container is unable to return a new receiver (for example
@@ -4170,7 +4170,7 @@ public class IOPort extends ComponentPort {
      *  on the workspace, so the caller should be.
      *  <p>
      *  The returned receiver is either the new receiver, or another
-     *  receiver wrapping it as specified in {@link #_wrapReceiver(Receiver)}.
+     *  receiver wrapping it as specified in {@link #_wrapReceiver(Receiver, channel)}.
      *  @param channel Used to determine source port.
      *  @return A new receiver.
      *  @exception IllegalActionException If the port has no container,
@@ -4208,7 +4208,7 @@ public class IOPort extends ComponentPort {
      *  on the workspace, so the caller should be.
      *  <p>
      *  The returned receiver is either the new receiver, or another
-     *  receiver wrapping it as specified in {@link #_wrapReceiver(Receiver)}.
+     *  receiver wrapping it as specified in {@link #_wrapReceiver(Receiver, channel)}.
      *  @return A new receiver.
      *  @exception IllegalActionException If the port has no container,
      *   or the container is unable to return a new receiver (for example
@@ -4229,7 +4229,7 @@ public class IOPort extends ComponentPort {
      *  on the workspace, so the caller should be.
      *  <p>
      *  The returned receiver is either the new receiver, or another
-     *  receiver wrapping it as specified in {@link #_wrapReceiver(Receiver)}.
+     *  receiver wrapping it as specified in {@link #_wrapReceiver(Receiver, channel)}.
      *  @param channel Channel id used to determine the source port.
      *  @return A new receiver.
      *  @exception IllegalActionException If the port has no container,
