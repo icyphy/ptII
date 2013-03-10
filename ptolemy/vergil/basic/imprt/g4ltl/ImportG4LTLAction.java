@@ -179,6 +179,8 @@ public class ImportG4LTLAction extends AbstractAction {
                             unrollSteps,
                             SynthesisEngine.OUTPUT_FSM_ACTOR_PTOLEMY, true);
 
+                    // System.out.println(result);
+                    
                     if (result.trim().startsWith("<") == false) {
                         // Try to see if a counter-strategy exists
 

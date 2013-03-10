@@ -127,7 +127,7 @@ public class G4LTL {
     public static String updateModel(String updatedMoML, NamedObj context)
             throws Exception {
         // FIXME: instantiating a new parser each time could be a
-        // mistake.  What about leaks?  What about initialization of
+        // mistake. What about leaks?  What about initialization of
         // the filters?
         MoMLParser parser = new MoMLParser();
         NamedObj model = parser.parse(updatedMoML);

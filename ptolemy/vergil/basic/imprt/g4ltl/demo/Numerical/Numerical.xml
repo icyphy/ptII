@@ -1,16 +1,16 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="Ex3_PTII_numerical" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
+<entity name="Numerical" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.1">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 0, 1384, 752}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 0, 1373, 748}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1154, 623]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1148, 623]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.8944046986339822">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{183.8908990110114, 219.81103515624997}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{183.8908990110114, 219.8110351562498}">
     </property>
     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
@@ -23,17 +23,15 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This SDF model illustrates the use of numerical synthesis for fast prototyping. In this model, we hope to create an FSMActor as a &#10;controller that can, based on the requirement of clients, grant the resource. However, it is forbidden that the controller grants &#10;two clients simultaneously. The overall requirement can be concretized by the following specification. Also, whether Client1 wants &#10;the resource is based on comparing values produced from two sensors.&#10;&#10;ALWAYS (X+Y&gt;3 -&gt; NEXT (grant1))&#10;ALWAYS (X^2+Y^2&lt;4 -&gt; NEXT (grant2))&#10;ALWAYS (!(grant1 &amp;&amp; grant2))&#10;&#10;INPUT req1, req2&#10;OUTPUT grant1, grant2&#10;&#10;In this example, when we take X+Y&gt;3 and X^2+Y^2&lt;4 as two independent boolean input variables req1 and req2, we are unable to find a &#10;controller, as it is possible to have (req1, req2) = (true, true).&#10;&#10;However, we can check the invalidty of this counter strategy using JBernstein (http://www6.in.tum.de/~chengch/efsmt/jbernstein.html)&#10;\forall x, y \in [0, 4]: !(X+Y&gt;3 &amp;&amp; X^2+Y^2&lt;4), which is equivalent to &#10;\forall x, y \in [0, 4]: X+Y&gt;3 -&gt; X^2+Y^2&gt;=4, a format that can be checked by JBernstein&#10;JBernstein returns true.&#10;&#10;Therefore, this counter strategy is impossible to be realized. We can add the following to the specification, based on the proporgated &#10;result from the theory: &quot;ASSUME (ALWAYS !(req1 &amp;&amp; req2))&quot;. When we rerun the synthesis engine, we can have a controller.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="[-455.0, 250.0]">
-        </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
         </property>
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.0,1.0}">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Follow the instructions to synthesize the FSMActor automatically:&#10;(1) Save the specification as a separate text file.&#10;(2) On the menu bar, choose &quot;Import -&gt; Import FSMActor using synthesis&quot;.&#10;      A file selection dialog will appear. Select the text file in step 1.&#10;(3) Select either Co-Buechi or Buechi solver. For Co-Buechi solver, select &#10;      unroll step to be 1.&#10;&#10;Specification:   &#10;Ex3_LTL_original.txt is the abstract spec. Ex3_LTL_refined.txt is the &#10;refined spec by considering the spurious counter-strategy. &#10;Ex3_JBernstein.txt is the file to be checked by JBernstein">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Follow the instructions to synthesize the FSMActor automatically:&#10;(1) Save the specification as a separate text file.&#10;(2) On the menu bar, choose &quot;Import -&gt; Import FSMActor using synthesis&quot;.&#10;      A file selection dialog will appear. Select the text file in step 1.&#10;(3) Select either Co-Buechi or Buechi solver. For Co-Buechi solver, select &#10;      unroll step to be 1.&#10;&#10;Specification:   &#10;NumericalLTLOriginal.txt is the abstract spec. NumericalLTLRefined.txt is the &#10;refined spec by considering the spurious counter-strategy. &#10;NumericalJBernstein.txt is the file to be checked by JBernstein">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[200.0, 215.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{215.0, 215.0}">
         </property>
     </property>
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -49,7 +47,23 @@
     <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Numerical LTL synthesis for cyber-physical systems">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-455.0, 225.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-450.0, 210.0]">
+        </property>
+    </property>
+    <property name="Annotation5" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="11">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This SDF model illustrates the use of numerical synthesis for fast prototyping. In this model, we hope to create an FSMActor as a&#10;controller that can, based on the requirement of clients, grant the resource. However, it is forbidden that the controller grants&#10;two clients simultaneously. The overall requirement can be concretized by the following specification. Also, whether Client1 wants&#10;the resource is based on comparing values produced from two sensors.&#10;&#10;ALWAYS (X+Y&gt;3 -&gt; NEXT (grant1))&#10;ALWAYS (X^2+Y^2&lt;4 -&gt; NEXT (grant2))&#10;ALWAYS (! (grant1 &amp;&amp; grant2))">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-450.0, 235.0]">
+        </property>
+    </property>
+    <property name="Annotation6" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="11">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="In this example, when we take X+Y &gt; 3 and X^2+Y^2 &lt;4 as two independent boolean input variables req1 and req2, &#10;we are unable to find a controller, as it is possible to have (req1, req2) = (true, true).&#10;&#10;However, we can check the invalidty of this counter strategy using JBernstein (http://www6.in.tum.de/~chengch/efsmt/jbernstein.html)&#10;\forall x, y \in [0, 4]: !(X+Y &gt; 3 &amp;&amp; X^2+Y^2 &lt; 4), which is equivalent to &#10;\forall x, y \in [0, 4]: X+Y&gt;3 =&gt; X^2+Y^2&gt;=4, a format that can be checked by JBernstein&#10;&#10;JBernstein returns true.Therefore, this counter strategy is impossible to be realized. We can add the following to the specification, &#10;based on the proporgated result from the theory:&#10;&#10;ASSUME (ALWAYS !(req1 &amp;&amp; req2))&#10;&#10;When we rerun the synthesis engine, we can have a controller.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-450.0, 355.0]">
         </property>
     </property>
     <entity name="Pulse" class="ptolemy.actor.lib.Pulse">
@@ -59,7 +73,7 @@
         </property>
     </entity>
     <entity name="Req2" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={352, 396, 460, 253}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={352, 396, 460, 250}, maximized=false}">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[442, 182]">
         </property>
@@ -67,7 +81,7 @@
         </property>
     </entity>
     <entity name="Grant1" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={784, 94, 460, 253}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={784, 94, 460, 250}, maximized=false}">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[442, 182]">
         </property>
@@ -75,7 +89,7 @@
         </property>
     </entity>
     <entity name="Grant2" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={790, 394, 460, 253}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={790, 394, 460, 250}, maximized=false}">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[442, 182]">
         </property>
@@ -83,7 +97,7 @@
         </property>
     </entity>
     <entity name="Req1" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={325, 95, 460, 253}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={325, 95, 460, 250}, maximized=false}">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[442, 182]">
         </property>
@@ -465,7 +479,7 @@
         </property>
     </entity>
     <entity name="Vis1" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={21, 97, 460, 253}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={21, 97, 460, 250}, maximized=false}">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[442, 182]">
         </property>
@@ -473,7 +487,7 @@
         </property>
     </entity>
     <entity name="Vis2" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={32, 396, 460, 253}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={32, 396, 460, 250}, maximized=false}">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[442, 182]">
         </property>
@@ -482,225 +496,35 @@
     </entity>
     <entity name="Req1and2" class="ptolemy.actor.lib.gui.Display">
         <display name="Req1&amp;&amp;Req2"/>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={867, 239, 460, 253}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={867, 239, 460, 250}, maximized=false}">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[442, 182]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[640.0, 165.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[640.0, 160.0]">
         </property>
     </entity>
-    <entity name="LogicGate" class="ptolemy.actor.lib.logic.LogicGate">
-        <property name="LogicGate_Icon" class="ptolemy.vergil.icon.EditorIcon">
-            <property name="polygon" class="ptolemy.vergil.kernel.attributes.ResizablePolygonAttribute">
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[9.0, 0.0]">
+    <entity name="LogicFunction" class="ptolemy.actor.lib.logic.LogicFunction">
+        <property name="function" class="ptolemy.kernel.util.StringAttribute" value="and">
+            <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+                <property name="and" class="ptolemy.kernel.util.StringAttribute" value="and">
                 </property>
-                <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 0.0}">
+                <property name="or" class="ptolemy.kernel.util.StringAttribute" value="or">
                 </property>
-                <property name="width" class="ptolemy.data.expr.Parameter" value="(logic == &quot;and&quot; || logic == &quot;nand&quot;) ? 0 : 35">
+                <property name="xor" class="ptolemy.kernel.util.StringAttribute" value="xor">
                 </property>
-                <property name="height" class="ptolemy.data.expr.Parameter" value="(logic == &quot;and&quot; || logic == &quot;nand&quot;) ? 0 : 41">
+                <property name="nand" class="ptolemy.kernel.util.StringAttribute" value="nand">
                 </property>
-                <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
+                <property name="nor" class="ptolemy.kernel.util.StringAttribute" value="nor">
                 </property>
-                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 1.0, 1.0, 1.0}">
-                </property>
-                <property name="vertices" class="ptolemy.data.expr.Parameter" value="{0.0, 0.0, 35.0, 20.0, 0.0, 40.0}">
-                </property>
-                <property name="_renderFirst" class="ptolemy.kernel.util.SingletonAttribute">
-                </property>
-            </property>
-            <property name="rectangle" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[-24.0, -20.0]">
-                </property>
-                <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 0.0}">
-                </property>
-                <property name="width" class="ptolemy.data.expr.Parameter" value="(logic == &quot;and&quot; || logic == &quot;nand&quot;) ? 30 : 16">
-                </property>
-                <property name="height" class="ptolemy.data.expr.Parameter" value="40">
-                </property>
-                <property name="centered" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
-                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 1.0, 1.0, 1.0}">
-                </property>
-            </property>
-            <property name="arc" class="ptolemy.vergil.kernel.attributes.ArcAttribute">
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[-14.0, -20.0]">
-                </property>
-                <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="(logic == &quot;and&quot; || logic == &quot;nand&quot;) ? {0.0, 0.0, 0.0, 1.0} : {0.0, 0.0, 0.0, 0.0}">
-                </property>
-                <property name="width" class="ptolemy.data.expr.Parameter" value="(logic == &quot;and&quot; || logic == &quot;nand&quot;) ? 40 : 0">
-                </property>
-                <property name="height" class="ptolemy.data.expr.Parameter" value="(logic == &quot;and&quot; || logic == &quot;nand&quot;) ? 40 : 0">
-                </property>
-                <property name="centered" class="ptolemy.data.expr.Parameter" value="false">
-                    <property name="style" class="ptolemy.actor.gui.style.TextStyle">
-                        <property name="height" class="ptolemy.data.expr.Parameter" value="10">
-                        </property>
-                        <property name="width" class="ptolemy.data.expr.Parameter" value="30">
-                        </property>
-                    </property>
-                </property>
-                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 1.0, 1.0, 1.0}">
-                </property>
-                <property name="type" class="ptolemy.data.expr.StringParameter" value="open">
-                </property>
-                <property name="start" class="ptolemy.data.expr.Parameter" value="90.0">
-                </property>
-                <property name="extent" class="ptolemy.data.expr.Parameter" value="(logic == &quot;and&quot; || logic == &quot;nand&quot;) ? -180.0 : -60.0">
-                </property>
-            </property>
-            <property name="arc2" class="ptolemy.vergil.kernel.attributes.ArcAttribute">
-                <property name="_location" class="ptolemy.kernel.util.Location" value="{9.0, -10.0}">
-                </property>
-                <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="(logic == &quot;and&quot; || logic == &quot;nand&quot;) ? {0.0, 0.0, 0.0, 0.0} : {0.0, 0.0, 0.0, 1.0}">
-                </property>
-                <property name="width" class="ptolemy.data.expr.Parameter" value="(logic == &quot;and&quot; || logic == &quot;nand&quot;) ? 0 : 80">
-                </property>
-                <property name="height" class="ptolemy.data.expr.Parameter" value="(logic == &quot;and&quot; || logic == &quot;nand&quot;) ? 0 : 80">
-                </property>
-                <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
-                    <property name="style" class="ptolemy.actor.gui.style.TextStyle">
-                        <property name="height" class="ptolemy.data.expr.Parameter" value="10">
-                        </property>
-                        <property name="width" class="ptolemy.data.expr.Parameter" value="30">
-                        </property>
-                    </property>
-                </property>
-                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 1.0, 1.0, 1.0}">
-                </property>
-                <property name="type" class="ptolemy.data.expr.StringParameter" value="open">
-                </property>
-                <property name="start" class="ptolemy.data.expr.Parameter" value="90.0">
-                </property>
-                <property name="extent" class="ptolemy.data.expr.Parameter" value="-60.0">
-                </property>
-            </property>
-            <property name="arc3" class="ptolemy.vergil.kernel.attributes.ArcAttribute">
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[9.0, 10.0]">
-                </property>
-                <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="(logic == &quot;and&quot; || logic == &quot;nand&quot;) ? {0.0, 0.0, 0.0, 0.0} : {0.0, 0.0, 0.0, 1.0}">
-                </property>
-                <property name="width" class="ptolemy.data.expr.Parameter" value="(logic == &quot;and&quot; || logic == &quot;nand&quot;) ? 0 : 80">
-                </property>
-                <property name="height" class="ptolemy.data.expr.Parameter" value="(logic == &quot;and&quot; || logic == &quot;nand&quot;) ? 0 : 80">
-                </property>
-                <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
-                    <property name="style" class="ptolemy.actor.gui.style.TextStyle">
-                        <property name="height" class="ptolemy.data.expr.Parameter" value="10">
-                        </property>
-                        <property name="width" class="ptolemy.data.expr.Parameter" value="30">
-                        </property>
-                    </property>
-                </property>
-                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 1.0, 1.0, 1.0}">
-                </property>
-                <property name="type" class="ptolemy.data.expr.StringParameter" value="open">
-                </property>
-                <property name="start" class="ptolemy.data.expr.Parameter" value="-90.0">
-                </property>
-                <property name="extent" class="ptolemy.data.expr.Parameter" value="60.0">
-                </property>
-            </property>
-            <property name="arc6" class="ptolemy.vergil.kernel.attributes.ArcAttribute">
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[33.0, 0.0]">
-                </property>
-                <property name="width" class="ptolemy.data.expr.Parameter" value="14">
-                </property>
-                <property name="height" class="ptolemy.data.expr.Parameter" value="14">
-                </property>
-                <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
-                </property>
-                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 1.0, 1.0, 1.0}">
-                </property>
-                <property name="type" class="ptolemy.data.expr.StringParameter" value="chord">
-                </property>
-                <property name="start" class="ptolemy.data.expr.Parameter" value="-180.0">
-                </property>
-                <property name="extent" class="ptolemy.data.expr.Parameter" value="(logic == &quot;nor&quot; || logic == &quot;nand&quot; || logic == &quot;xnor&quot;) ? 360.0 : 0.0">
-                </property>
-            </property>
-            <property name="line" class="ptolemy.vergil.kernel.attributes.LineAttribute">
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[-24.0, -20.0]">
-                </property>
-                <property name="x" class="ptolemy.data.expr.Parameter" value="(logic == &quot;and&quot; || logic == &quot;nand&quot;) ? 30 : 16">
-                </property>
-                <property name="y" class="ptolemy.data.expr.Parameter" value="0.0">
-                </property>
-            </property>
-            <property name="line2" class="ptolemy.vergil.kernel.attributes.LineAttribute">
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[-24.0, 20.0]">
-                </property>
-                <property name="x" class="ptolemy.data.expr.Parameter" value="(logic == &quot;and&quot; || logic == &quot;nand&quot;) ? 30 : 16">
-                </property>
-                <property name="y" class="ptolemy.data.expr.Parameter" value="0.0">
-                </property>
-            </property>
-            <property name="line3" class="ptolemy.vergil.kernel.attributes.LineAttribute">
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[-24.0, -20.0]">
-                </property>
-                <property name="x" class="ptolemy.data.expr.Parameter" value="0.0">
-                </property>
-                <property name="y" class="ptolemy.data.expr.Parameter" value="(logic == &quot;and&quot; || logic == &quot;nand&quot;) ? 40 : 0">
-                </property>
-            </property>
-            <property name="arc4" class="ptolemy.vergil.kernel.attributes.ArcAttribute">
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[-20.0, 0.0]">
-                </property>
-                <property name="width" class="ptolemy.data.expr.Parameter" value="30">
-                </property>
-                <property name="height" class="ptolemy.data.expr.Parameter" value="45">
-                </property>
-                <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
-                </property>
-                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 1.0, 1.0, 1.0}">
-                </property>
-                <property name="type" class="ptolemy.data.expr.StringParameter" value="open">
-                </property>
-                <property name="start" class="ptolemy.data.expr.Parameter" value="-60.0">
-                </property>
-                <property name="extent" class="ptolemy.data.expr.Parameter" value="(logic == &quot;and&quot; || logic == &quot;nand&quot;) ? 0 : 120.0">
-                </property>
-            </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={130, 353, 934, 634}, maximized=false}">
-            </property>
-            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
-            </property>
-            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="4.0">
-            </property>
-            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{12.5, 9.25}">
-            </property>
-            <property name="arc5" class="ptolemy.vergil.kernel.attributes.ArcAttribute">
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[-25.0, 0.0]">
-                </property>
-                <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="(logic == &quot;xnor&quot; || logic == &quot;xor&quot;) ? {0.0, 0.0, 0.0, 1.0} : {0.0, 0.0, 0.0, 0.0}">
-                </property>
-                <property name="width" class="ptolemy.data.expr.Parameter" value="30">
-                </property>
-                <property name="height" class="ptolemy.data.expr.Parameter" value="45">
-                </property>
-                <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
-                </property>
-                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 1.0, 1.0, 0.0}">
-                </property>
-                <property name="type" class="ptolemy.data.expr.StringParameter" value="open">
-                </property>
-                <property name="start" class="ptolemy.data.expr.Parameter" value="-60.0">
-                </property>
-                <property name="extent" class="ptolemy.data.expr.Parameter" value="(logic == &quot;xnor&quot; || logic == &quot;xor&quot;) ? 120.0 : 0">
-                </property>
-            </property>
-            <property name="ParameterValue" class="ptolemy.vergil.kernel.attributes.AttributeExpressionAttribute">
-                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="logic">
-                </property>
-                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
-                </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[-18.0, -9.0]">
-                </property>
-                <property name="_renderLast" class="ptolemy.kernel.util.SingletonAttribute">
+                <property name="xnor" class="ptolemy.kernel.util.StringAttribute" value="xnor">
                 </property>
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[650.0, 40.0]">
+        <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="function">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[630.0, 40.0]">
         </property>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
@@ -755,8 +579,6 @@
         <vertex name="vertex1" value="{165.0, -45.0}">
         </vertex>
     </relation>
-    <relation name="relation19" class="ptolemy.actor.TypedIORelation">
-    </relation>
     <relation name="relation21" class="ptolemy.actor.TypedIORelation">
         <vertex name="vertex1" value="[580.0, 170.0]">
         </vertex>
@@ -768,6 +590,8 @@
     <relation name="relation22" class="ptolemy.actor.TypedIORelation">
         <vertex name="vertex1" value="[575.0, -65.0]">
         </vertex>
+    </relation>
+    <relation name="relation19" class="ptolemy.actor.TypedIORelation">
     </relation>
     <link port="Pulse.output" relation="relation3"/>
     <link port="Req2.input" relation="relation"/>
@@ -813,9 +637,9 @@
     <link port="Vis1.input" relation="relation11"/>
     <link port="Vis2.input" relation="relation9"/>
     <link port="Req1and2.input" relation="relation19"/>
-    <link port="LogicGate.input" relation="relation21"/>
-    <link port="LogicGate.input" relation="relation22"/>
-    <link port="LogicGate.output" relation="relation19"/>
+    <link port="LogicFunction.input" relation="relation22"/>
+    <link port="LogicFunction.input" relation="relation21"/>
+    <link port="LogicFunction.output" relation="relation19"/>
     <link relation1="relation" relation2="relation21"/>
     <link relation1="relation2" relation2="relation20"/>
     <link relation1="relation6" relation2="relation7"/>
