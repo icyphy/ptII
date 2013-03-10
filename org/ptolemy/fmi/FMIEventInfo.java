@@ -30,6 +30,9 @@ package org.ptolemy.fmi;
 
 import com.sun.jna.Structure;
 
+import java.util.Arrays;
+import java.util.List;
+
 /**
  * Functional Mock-up Interface (FMI) event information.
  *
@@ -55,7 +58,8 @@ public class FMIEventInfo extends Structure {
      */
     public FMIEventInfo() {
         super();
-        initFieldOrder();
+        // Don't call initFieldOrder with JNA later than jna-3.5.0
+        //initFieldOrder();
     }
 
     /** Instantiate a Java structure that that represents the C
@@ -78,7 +82,9 @@ public class FMIEventInfo extends Structure {
         this.terminateSimulation = terminateSimulation;
         this.upcomingTimeEvent = upcomingTimeEvent;
         this.nextEventTime = nextEventTime;
-        initFieldOrder();
+
+        // Don't call initFieldOrder with JNA later than jna-3.5.0
+        //initFieldOrder();
     }
 
     /** Access the structure by value.
@@ -114,8 +120,19 @@ public class FMIEventInfo extends Structure {
     /** C type: fmiReal. */
     public double nextEventTime;
 
+    /** Return the field names in the proper order.
+     *  <p>This is new in jna-3.5.0.   
+     *  @return a list of strings that name the fields in order.
+     */
+    protected List getFieldOrder() {
+        return Arrays.asList(new String[] { "iterationConverged",
+                "stateValueReferencesChanged", "stateValuesChanged",
+                "terminateSimulation", "upcomingTimeEvent", "nextEventTime" });
+    }
+
     /** Set the initialization order of the fields so that the order
      * matches the order of the C structure.
+     * @deprecated As of jna-3.5.0, use getFieldOrder() instead.
      */
     protected void initFieldOrder() {
         // Note that the name of this method does not have a leading

@@ -35,6 +35,9 @@ import org.ptolemy.fmi.FMILibrary.FMIStepFinished;
 
 import com.sun.jna.Structure;
 
+import java.util.Arrays;
+import java.util.List;
+
 /**
  * Functional Mock-up Interface (FMI) callback functions needed by
  * Java Native Access (JNA) so that a FMU * can perform functions like
@@ -72,7 +75,8 @@ public class FMICallbackFunctions extends Structure {
      */
     public FMICallbackFunctions() {
         super();
-        initFieldOrder();
+        // Don't call initFieldOrder with JNA later than jna-3.5.0
+        //initFieldOrder();
     }
 
     /** Instantiate a Java representation of the C structure that
@@ -98,7 +102,9 @@ public class FMICallbackFunctions extends Structure {
         // See
         // http://today.java.net/article/2009/11/11/simplify-native-code-access-jna
         setAlignType(Structure.ALIGN_GNUC);
-        initFieldOrder();
+
+        // Don't call initFieldOrder with JNA later than jna-3.5.0
+        //initFieldOrder();
     }
 
     /**
@@ -170,8 +176,18 @@ public class FMICallbackFunctions extends Structure {
     /** C type: fiStepFinished. */
     public FMIStepFinished stepFinished;
 
+    /** Return the field names in the proper order.
+     *  <p>This is new in jna-3.5.0.   
+     *  @return a list of strings that name the fields in order.
+     */
+    protected List getFieldOrder() {
+        return Arrays.asList(new String[] { "logger", "allocateMemory", "freeMemory",
+                "stepFinished" });
+    }
+
     /** Set the initialization order of the fields so that the order
      * matches the order of the C structure.
+     * @deprecated As of jna-3.5.0, use getFieldOrder() instead.
      */
     protected void initFieldOrder() {
         // Note that the name of this method does not have a leading
