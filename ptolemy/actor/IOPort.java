@@ -1367,8 +1367,10 @@ public class IOPort extends ComponentPort {
         }
     }
 
-    /** Return previously computed list of quantity managers or compute
-     *  new if the list has been invalidated.
+    /** Return the list of quantity managers in this port.
+     *  A quantity manager is a {@link Parameter} whose value is an
+     *  {@link ObjectToken} that references an object that implements
+     *  the {@link QuantityManager} interface.
      *  @return The list of quantity managers.
      *  @exception IllegalActionException Thrown if the token of the parameter
      *      containing the quantity manager object cannot be retrieved.
@@ -1387,9 +1389,23 @@ public class IOPort extends ComponentPort {
                             Object paramObject = ((ObjectToken) paramToken)
                                     .getValue();
                             if (paramObject instanceof QuantityManager) {
+                                // The parameter expression may be of the form
+                                // qm.set(...), where qm is a quantity manager in
+                                // scope, and the set() method is specifying parameters
+                                // for this port's use of the quantity manager. The
+                                // set() method will need to know what port this is.
+                                // Rather than pass that in as an argument, which would
+                                // clutter the user interface, we instead set a variable
+                                // in the quantity manager before evaluating the set()
+                                // method.
                                 ((QuantityManager) paramObject)
                                         .setTempPort(this);
+                                // Force evaluation of the parameter so that if there is
+                                // a call to set(), it gets done now.
                                 ((Parameter) attr).validate();
+                                // Reset the port to null so that future evaluations of the
+                                // set() method of the quantity manager do not result
+                                // in setting parameters for this port.
                                 ((QuantityManager) paramObject)
                                         .setTempPort(null);
                                 _qmList.add((QuantityManager) paramObject);
