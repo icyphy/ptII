@@ -54,18 +54,18 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
-/** This actor is an {@link QuantityManager} that, when its
+/** This actor is a {@link QuantityManager} that, when its
  *  {@link #sendToken(Receiver, Receiver, Token)} method is called, delays
  *  the delivery of the specified token to the specified receiver
  *  according to a service rule. Specifically, if the actor is
  *  not currently servicing a previous token, then it delivers
  *  the token with a delay given by the <i>serviceTimeMultiplicationFactor</i> 
- *  parameter multiplied by the messageLength parameter specified in the port.
+ *  parameter multiplied by the <i>messageLength</i> parameter specified in the port.
  *  If the actor is currently servicing a previous token, then it waits
  *  until it has finished servicing that token (and any other pending
- *  tokens), and then delays for an additional amount given by <i>serviceTime</i> *
- *  <i> messageLength </i>.
- *  In the default case of the messageLength = 1, the behavior is similar to 
+ *  tokens), and then delays for an additional amount given by 
+ *  <i>serviceTimeMultiplicationFactor</i> * <i>messageLength</i>.
+ *  In the default case of the <i>messageLength</i> = 1, the behavior is similar to 
  *  the {@link Server} actor.
  *  Tokens are processed in FIFO order.
  *  <p>
@@ -241,7 +241,7 @@ public class Bus extends MonitoredQuantityManager {
             _tokens.take();
             _tokenCount--;
             sendQMTokenEvent(null,
-                    0, _tokenCount, EventType.RECEIVED);
+                    0, _tokenCount, EventType.SENT);
         }
         // If sendToken() was called in the current iteration,
         // then append the token to the queue. If this is the

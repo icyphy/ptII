@@ -9,6 +9,9 @@
 
   <entity name="Bus" class="ptolemy.actor.lib.qm.Bus"> 
   </entity>
+
+  <entity name="QuantityManagerMonitor" class="ptolemy.actor.lib.qm.QuantityManagerMonitor"> 
+  </entity>
   
   <entity name="TTESwitch" class="ptolemy.actor.lib.qm.TTESwitch"> 
   </entity>

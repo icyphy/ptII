@@ -199,10 +199,7 @@ public abstract class MonitoredQuantityManager extends TypedAtomicActor
         if (receiver instanceof IntermediateReceiver) {
             ((IntermediateReceiver) receiver).source = this;
         }
-        receiver.put(token);
-        _tokenCount--;
-        sendQMTokenEvent((Actor) receiver.getContainer().getContainer(), 0,
-                _tokenCount, EventType.SENT);
+        receiver.put(token); 
     }
 
     /** Listeners registered to receive events from this object. */
