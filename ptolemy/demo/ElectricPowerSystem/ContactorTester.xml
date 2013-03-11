@@ -12,7 +12,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 45.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={33, 235, 934, 634}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={56, 236, 934, 634}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
     </property>
@@ -68,7 +68,7 @@
     <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="See also the GeneratorRegulator model.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[350.0, 195.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[345.0, 195.0]">
         </property>
         <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$PTII/ptolemy/demo/ElectricPowerSystem/GeneratorRegulator.xml">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">

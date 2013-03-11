@@ -32,7 +32,7 @@
         <property name="_showParameters" class="ptolemy.data.expr.StringParameter" value="Overridden parameters only">
             <display name="Show parameters"/>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-20.0, 460.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-30.0, 525.0]">
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -73,7 +73,7 @@
     <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="See also the GeneratorRegulatorProtector model.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[355.0, 385.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{355.0, 365.0}">
         </property>
         <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$PTII/ptolemy/demo/ElectricPowerSystem/GeneratorRegulatorProtector.xml">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -108,11 +108,11 @@
         </property>
     </property>
     <property name="Annotation6" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="See also the GeneratorRegulatorProtectorWithFMU model.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="See also the GeneratorRegulatorProtectorWithBus model.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[355.0, 410.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[355.0, 390.0]">
         </property>
-        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$PTII/ptolemy/demo/ElectricPowerSystem/GeneratorRegulatorProtector.xml">
+        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$PTII/ptolemy/demo/ElectricPowerSystem/GeneratorRegulatorProtectorWithBus.xml">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -132,6 +132,14 @@
             </property>
         </property>
     </property>
+    <property name="Annotation7" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.0,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Note that the behavior here is not exactly the same as the GeneratorRegulatorProtector model&#10;because the MostRecent actor remembers the single event at time 15 to turn on the load, so this&#10;model turns the load back on as soon as the voltage drops below threshold.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-90.0, 430.0]">
+        </property>
+    </property>
     <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={883, 134, 639, 456}, maximized=false}">
         </property>
@@ -147,7 +155,7 @@
 <xLabel>time (seconds)</xLabel>
 <yLabel>voltage</yLabel>
 <xRange min="0.0" max="30.0"/>
-<yRange min="0.0" max="224.75766569114384"/>
+<yRange min="0.0" max="235.57977211625584"/>
 <default connected="no" stems="yes"/>
 </plot>?>
         </configure>
@@ -258,29 +266,12 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[265.0, 85.0]">
         </property>
     </entity>
-    <entity name="TimedPlotter2" class="ptolemy.actor.lib.gui.TimedPlotter">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1003, 22, 639, 456}, maximized=false}">
-        </property>
-        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[639, 412]">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[395.0, 90.0]">
-        </property>
-        <configure>
-<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
-"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
-<plot>
-<title>Input and Output of Supervisor</title>
-<caption>The output should be initially 0.0 until time 15.</caption>
-<xLabel>time (seconds)</xLabel>
-<yLabel>voltage</yLabel>
-<xRange min="0.0" max="30.0"/>
-<yRange min="0.0" max="1.0"/>
-<default connected="no" stems="yes"/>
-</plot>?>
-        </configure>
-    </entity>
     <entity name="BooleanToAnything2" class="ptolemy.actor.lib.conversions.BooleanToAnything">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[150.1077880859375, 134.81219482421875]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[150.0, 150.0]">
+        </property>
+    </entity>
+    <entity name="BooleanToAnything3" class="ptolemy.actor.lib.conversions.BooleanToAnything">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[225.0, 270.0]">
         </property>
     </entity>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
@@ -313,15 +304,11 @@
         <vertex name="vertex1" value="{205.0, 220.0}">
         </vertex>
     </relation>
-    <relation name="relation8" class="ptolemy.actor.TypedIORelation">
-    </relation>
     <relation name="relation11" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
         <vertex name="vertex1" value="[105.0, 220.0]">
         </vertex>
-    </relation>
-    <relation name="relation9" class="ptolemy.actor.TypedIORelation">
     </relation>
     <link port="TimedPlotter.input" relation="relation2"/>
     <link port="GeneratorContactorLoad.drive" relation="relation4"/>
@@ -346,9 +333,6 @@
     <link port="MostRecent.output" relation="relation11"/>
     <link port="MostRecent.trigger" relation="relation10"/>
     <link port="BooleanToAnything.input" relation="relation7"/>
-    <link port="BooleanToAnything.output" relation="relation8"/>
-    <link port="TimedPlotter2.input" relation="relation8"/>
-    <link port="TimedPlotter2.input" relation="relation9"/>
     <link port="BooleanToAnything2.input" relation="relation11"/>
-    <link port="BooleanToAnything2.output" relation="relation9"/>
+    <link port="BooleanToAnything3.input" relation="relation10"/>
 </entity>
