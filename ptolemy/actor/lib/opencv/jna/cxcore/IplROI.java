@@ -30,6 +30,9 @@ package ptolemy.actor.lib.opencv.jna.cxcore;
 
 import com.sun.jna.Structure;
 
+import java.util.Arrays;
+import java.util.List;
+
 public class IplROI extends Structure {
     public int coi;
     public int xOffset;
@@ -43,5 +46,18 @@ public class IplROI extends Structure {
 
     public static class ByReference extends IplROI implements
             Structure.ByReference {
+    }
+    /** Return the field names in the proper order.
+     *  <p>This is new in jna-3.5.0.   
+     *  @return a list of strings that name the fields in order.
+     */
+    protected List getFieldOrder() {
+        return Arrays.asList(new String[] {
+                    "coi",
+                    "xOffset",
+                    "yOffset",
+                    "width",
+                    "height"
+                });
     }
 }

@@ -34,6 +34,9 @@ import com.sun.jna.Pointer;
 import com.sun.jna.Structure;
 import com.sun.jna.ptr.PointerByReference;
 
+import java.util.Arrays;
+import java.util.List;
+
 public class IplImage extends Structure {
     public int nSize;
     public int ID;
@@ -79,4 +82,37 @@ public class IplImage extends Structure {
     public PointerByReference getPointerByReference() {
         return new PointerByReference(this.getPointer());
     };
+
+    /** Return the field names in the proper order.
+     *  <p>This is new in jna-3.5.0.   
+     *  @return a list of strings that name the fields in order.
+     */
+    protected List getFieldOrder() {
+        return Arrays.asList(new String[] {
+                    "nSize",
+                    "ID",
+                    "nChannels",
+                    "alphaChannel",
+                    "depth",
+                    "colorModel",
+                    "channelSeq",
+                    "dataOrder",
+                    "origin",
+                    "align",
+                    "width",
+                    "height",
+                    //public IplROI.ByReference roi
+                    //public IplImage maskROI
+                    "roi",
+                    "maskROI",
+                    "imageId",
+                    "tileInfo",
+                    "imageSize",
+                    "imageData",
+                    "widthStep",
+                    "BorderMode",
+                    "BorderConst",
+                    "ImageDataOrigin"
+                });
+    }
 }

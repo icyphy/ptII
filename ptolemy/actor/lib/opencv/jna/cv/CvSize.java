@@ -30,6 +30,9 @@ package ptolemy.actor.lib.opencv.jna.cv;
 
 import com.sun.jna.Structure;
 
+import java.util.Arrays;
+import java.util.List;
+
 public class CvSize extends Structure {
     public int width;
     public int height;
@@ -42,5 +45,13 @@ public class CvSize extends Structure {
         super();
         width = w;
         height = h;
+    }
+
+    /** Return the field names in the proper order.
+     *  <p>This is new in jna-3.5.0.   
+     *  @return a list of strings that name the fields in order.
+     */
+    protected List getFieldOrder() {
+        return Arrays.asList(new String[] { "width", "height"});
     }
 }
