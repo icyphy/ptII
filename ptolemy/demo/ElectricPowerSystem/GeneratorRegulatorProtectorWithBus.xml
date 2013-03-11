@@ -43,7 +43,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 60.0]">
         </property>
     </property>
-    <property name="overVoltageThreshold" class="ptolemy.data.expr.Parameter" value="115.0">
+    <property name="overVoltageThreshold" class="ptolemy.data.expr.Parameter" value="119.0">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -65,9 +65,9 @@
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Change this to 120 or larger and the&#10;overvoltage protection does not kick in.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="At 119, if the Bus is used to communicate&#10;to the PID controller, the overvoltage &#10;protection kicks in.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 105.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{15.0, 105.0}">
         </property>
     </property>
     <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -109,8 +109,8 @@
 <title>Voltage over time</title>
 <xLabel>time (seconds)</xLabel>
 <yLabel>voltage</yLabel>
-<xRange min="0.0" max="1.0"/>
-<yRange min="0.0" max="39.518644114152075"/>
+<xRange min="0.0" max="30.0"/>
+<yRange min="0.0" max="124.83989703421025"/>
 <default connected="no" stems="yes"/>
 </plot>?>
         </configure>
@@ -152,13 +152,6 @@
         <doc>Discrete proportional, integral, and derivative controller.</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[735.0, 210.0]">
         </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="qm" class="ptolemy.data.expr.Parameter" value="Bus.set(2.0)">
-            </property>
-            <property name="_showInfo" class="ptolemy.kernel.util.StringAttribute" value="QM: Bus">
-            </property>
-        </port>
     </entity>
     <entity name="SingleEvent" class="ptolemy.actor.lib.SingleEvent">
         <property name="time" class="ptolemy.data.expr.Parameter" value="15.0">
