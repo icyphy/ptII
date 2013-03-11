@@ -9,6 +9,8 @@
 
 
 
+
+  
   
   
   
@@ -22,6 +24,8 @@
 
 
 
+
+  
   
   
   
@@ -40,7 +44,9 @@
 
 
 
+
 <h1><img style="width: 45px; height: 44px;" alt="G4LTL" src="G4LTL.gif">&nbsp; FSMActor synthesis from&nbsp;specifications</h1>
+
 
 
 
@@ -52,64 +58,118 @@ This is an attempt that tries to equip Ptolemy II with novel abilities to
 automatically synthesize controllers from high-level specifications.
 The underlying synthesis engine is based on a modified (without GUI) version of <a href="http://www6.in.tum.de/%7Echengch/g4ltl">G4LTL</a>.
 <h2>Methodology</h2>
-The synthesis methodology follows the concept within (1) signals and
+
+The synthesis methodology follows concepts within (1) signals and
 systems and (2) actor-oriented programming, where a controller takes
 input tokens and produces subsequently output tokens. The synthesized
 controller is a <span style="font-style: italic;">Mealy machine</span>.<br>
+
 <br>
+
 <table style="text-align: left; width: 752px; height: 422px;" border="1" cellpadding="2" cellspacing="2">
+
   <tbody>
+
     <tr>
-      <td style="width: 489px;">Explanation</td>
+
+      <td style="width: 489px;">Instructions</td>
+
       <td style="width: 213px;">Example</td>
+
     </tr>
+
     <tr>
-      <td style="width: 489px;"><small>Specify input and output variables.</small></td>
+
+      <td style="width: 489px;"><small>Specify input and output variables.&nbsp;</small></td>
+
       <td style="width: 213px;"><small>## Use two inputs and two outputs<br>
+
       <span style="font-style: italic; font-weight: bold;">INPUT req1, req2</span><br style="font-style: italic; font-weight: bold;">
+
       <span style="font-style: italic; font-weight: bold;">OUTPUT grant1, grant2</span></small></td>
+
     </tr>
+
     <tr>
+
       <td style="width: 489px;"><small>1. Specify the desired
 behavior of the controller as a formula using logical operators, temporal operators,
-and connect with appropriate parathesis.</small><br>
+and connect subformulas with appropriate parentheses.</small><br>
+
+      
       <ul>
+
         <li><small>Logical operators: use "||", "&amp;&amp;", "!" ,&nbsp; "-&gt;" for logical or, and, not, and imply.</small></li>
+
         <li><small>Temporal operators (let A, B be subformulas):</small></li>
+
+        
         <ul>
+
           <li><small>Use "ALWAYS (A)" to specify that the scenario A always holds</small></li>
+
           <li><small>Use "EVENTUALLY (A)" to specify that the scenario A eventually holds</small></li>
+
           <li><small>Use "NEXT (A)" to specify that in the next round, scenario A holds</small></li>
+
           <li><small>Use "A UNTIL B" to specify that A holds until B holds</small></li>
+
+        
         </ul>
+
+      
       </ul>
+
       <small>2. Every line in the specification is connected with &amp;&amp; implicitly.<br>
+
       <br>
+
       </small><small>3. A&nbsp;line starting with ASSUME means the
 assumptions posed on the environment. Originally, in the synthesis
-framework, we allow arbitary combination of the input behavior. Using
-ASSUME allows to constrain un-reasonable scenarios that the environment
+framework, the input is uncontrollable. Using
+ASSUME allows to constrain unreasonable scenarios that the environment
 never produces.<br>
+
       </small></td>
+
       <td style="width: 213px;"><small>## whenever the received input req1 is true, the produced token of grant1 should be true<br>
+
       </small><small><br>
+
       <span style="font-weight: bold; font-style: italic;">ALWAYS (req1 -&gt;&nbsp; grant1)</span><br>
+
       <br>
+
       </small><small>## whenever req1 is true, the next produced token of grant1 should be true<br>
+
       </small><small><br>
+
       <span style="font-weight: bold; font-style: italic;">ALWAYS (req1 -&gt;&nbsp; NEXT grant1)</span><br>
+
       <br>
+
       </small><small>## whenever req1 is true, eventually the controller should produce grant1 that is also true<br>
+
       <br>
+
       <span style="font-weight: bold; font-style: italic;">ALWAYS (req1 -&gt; EVENTUALLY grant1)</span></small></td>
+
     </tr>
+
     <tr>
-      <td style="width: 489px;"><small>Invoke the synthesis engine to generate a correct controller.</small></td>
+
+      <td style="width: 489px;"><small>Invoke the synthesis engine to generate a correct controller.&nbsp;</small></td>
+
       <td style="width: 213px;"><small></small></td>
+
     </tr>
+
+  
   </tbody>
 </table>
+
 <h2>Demonstrations</h2>
+
 
 
 
@@ -125,7 +185,9 @@ never produces.<br>
 
 
 
+
   <li> <a href="#Demo_1">Demo 1: Simple arbitor</a></li>
+
 
 
 
@@ -142,8 +204,10 @@ guaranteed service for a super client</a></li>
 
 
 
+
   <li> <a href="#Demo_3">Demo 3: Controllers with numerical
 conditions</a></li>
+
 
 
 
@@ -159,7 +223,9 @@ conditions</a></li>
 
 
 
+
 <h2><a name="Demo_1"> Demo 1: Simple arbitor</a></h2>
+
 
 
 
@@ -176,6 +242,7 @@ conditions</a></li>
 
 
 
+
   <li> Open <a href="demo/Arbitor/Arbitor.xml">$PTII/ptolemy/vergil/basic/imprt/g4ltl/demo/Arbitor/Arbitor.xml</a>
   </li>
 
@@ -185,7 +252,9 @@ conditions</a></li>
 
 
 
+
   <li>On the menu bar, select "File -&gt; Import -&gt; Import FSMActor using synthesis" </li>
+
 
 
 
@@ -204,6 +273,7 @@ at <a href="demo/Arbitor/ArbitorLTL.txt">$PTII/ptolemy/vergil/basic/imprt/g4ltl/
 
 
 
+
   <li> One can select synthesis techniques
 between&nbsp;Co-Buechi and Buechi solvers. Here we try Co-Buchi (both
 solvers work). Select the unroll depth to be "<span style="font-weight: bold;">1"</span>.
@@ -211,29 +281,39 @@ Higher unroll depth enables to explore more possibilities in strategy
 finding. However the synthesis&nbsp; time will also take longer.&nbsp;</li>
 
 
+
   <li>The synthesized FSMActor named "<span style="font-weight: bold; font-style: italic;">model</span>" now appears on the screen. To perform simulation, create links between ports.</li>
 
 
+
+  
   
   
   <ul>
 
 
+
     <li>[Feed input to FSMActor] Link the output of <span style="font-weight: bold; font-style: italic;">Client1</span> to the port <span style="font-weight: bold; font-style: italic;">req1</span> in <span style="font-weight: bold; font-style: italic;">model</span>, and similarly, link the output of <span style="font-weight: bold; font-style: italic;">Client2</span> to the port <span style="font-weight: bold; font-style: italic;">req2</span> in <span style="font-weight: bold; font-style: italic;">model</span>.</li>
+
 
 
     <li>[Produce output from FSMActor] Link model.<span style="font-style: italic; font-weight: bold;">grant1</span> to the output screen <span style="font-style: italic; font-weight: bold;">Grant1</span>, and model.<span style="font-style: italic; font-weight: bold;">grant2</span> to the output screen <span style="font-weight: bold; font-style: italic;">Grant2</span>.</li>
 
 
+
+  
   
   
   </ul>
 
 
+
   <li>The model is fully connected and can be executed with simulation.&nbsp;</li>
 
 
+
 </ol>
+
 
 
 
@@ -250,7 +330,9 @@ with guaranteed service for a super-client</h2>
 
 
 
+
 <p> In this demo, we illustrate how to automatically create an arbitor which set explicit guarantees for the super-client. </p>
+
 
 
 
@@ -266,10 +348,13 @@ with guaranteed service for a super-client</h2>
 
 
 
+
   <li> Open&nbsp;<a href="demo/PriorityArbitor/PriorityArbitor.xml">$PTII/ptolemy/vergil/basic/imprt/g4ltl/demo/PriorityArbitor/PriorityArbitor.xml</a></li>
 
 
+
   <li>On the menu bar, select "File -&gt; Import -&gt; Import FSMActor using synthesis" </li>
+
 
 
   <li>
@@ -278,32 +363,42 @@ specification describes "what" should a controller do without detailing
 how such controller is implemented. It is located at <a href="demo/PriorityArbitor/PriorityArbitorLTL.txt">$PTII/ptolemy/vergil/basic/imprt/g4ltl/demo/PriorityArbitor/PriorityArbitorLTL.txt</a></li>
 
 
+
   <li>
 One can select synthesis techniques between&nbsp;Co-Buechi and Buechi
 solvers. Here we try Co-Buchi (both solvers work). Select the unroll
 depth to be <span style="font-weight: bold;">"3"</span>. In this example, using unroll depth 1 is not sufficient to find a controller.</li>
 
 
+
   <li>The synthesized FSMActor named "<span style="font-weight: bold; font-style: italic;">model</span>" now appears on the screen. To perform simulation, create links between ports.</li>
 
 
+
+  
   
   
   <ul>
 
 
+
     <li>[Feed input to FSMActor] Link the output of <span style="font-weight: bold; font-style: italic;">ImportantClient1</span> to the port <span style="font-weight: bold; font-style: italic;">req1</span> in <span style="font-weight: bold; font-style: italic;">model</span>, and similarly, link the output of <span style="font-weight: bold; font-style: italic;">Client2 / Client3</span> to the port <span style="font-weight: bold; font-style: italic;">req2 / req3</span> in <span style="font-weight: bold; font-style: italic;">model</span>.</li>
+
 
 
     <li>[Produce output from FSMActor] Link port&nbsp;<span style="font-style: italic;"><span style="font-weight: bold;"></span></span><span style="font-weight: bold; font-style: italic;">grant1 / grant2 / grant3</span> to the output screen <span style="font-style: italic; font-weight: bold;">Grant1 / Grant2 / Grant3</span>.</li>
 
 
+
+  
   
   
   </ul>
 
 
+
   <li>The model is fully connected and can be executed with simulation.&nbsp;</li>
+
 
 
 </ol>
@@ -314,8 +409,10 @@ depth to be <span style="font-weight: bold;">"3"</span>. In this example, using 
 
 
 
+
 <h2><a name="Demo_3"> </a>Demo 3: Numerical
 conditions&nbsp;</h2>
+
 
 
 
@@ -333,7 +430,9 @@ model <a href="demo/Numerical/Numerical.xml">$PTII/ptolemy/vergil/basic/imprt/g4
 
 
 
+
 <ol>
+
 
 
 </ol>
@@ -343,7 +442,9 @@ model <a href="demo/Numerical/Numerical.xml">$PTII/ptolemy/vergil/basic/imprt/g4
 
 
 
+
 <br>
+
 
 
 
