@@ -8,9 +8,9 @@
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[916, 604]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0232678639020902">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{350.0, 262.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{341.6993321890783, 262.42822265625}">
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
@@ -141,7 +141,7 @@
         </property>
     </property>
     <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={883, 134, 639, 456}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={983, 590, 639, 456}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[639, 412]">
         </property>
@@ -262,18 +262,6 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{50.0, 220.0}">
         </property>
     </entity>
-    <entity name="BooleanToAnything" class="ptolemy.actor.lib.conversions.BooleanToAnything">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[265.0, 85.0]">
-        </property>
-    </entity>
-    <entity name="BooleanToAnything2" class="ptolemy.actor.lib.conversions.BooleanToAnything">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[150.0, 150.0]">
-        </property>
-    </entity>
-    <entity name="BooleanToAnything3" class="ptolemy.actor.lib.conversions.BooleanToAnything">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[225.0, 270.0]">
-        </property>
-    </entity>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
@@ -332,7 +320,4 @@
     <link port="MostRecent.input" relation="relation5"/>
     <link port="MostRecent.output" relation="relation11"/>
     <link port="MostRecent.trigger" relation="relation10"/>
-    <link port="BooleanToAnything.input" relation="relation7"/>
-    <link port="BooleanToAnything2.input" relation="relation11"/>
-    <link port="BooleanToAnything3.input" relation="relation10"/>
 </entity>
