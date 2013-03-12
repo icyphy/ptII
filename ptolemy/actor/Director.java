@@ -1989,7 +1989,8 @@ public class Director extends Attribute implements Executable {
             _executionTimes = new HashMap<Actor, Time>();
         }
         executionTime = _executionTimes.get(actor);
-        if (executionTime == null) {
+        // TODO: figure out when to cache execution time and when it needs to be read.
+//        if (executionTime == null) {
             Double executionTimeParam = null;
             Parameter parameter = (Parameter) ((NamedObj) actor)
                     .getAttribute("executionTime");
@@ -2004,7 +2005,7 @@ public class Director extends Attribute implements Executable {
                 executionTime = new Time(this, executionTimeParam);
             }
             _executionTimes.put(actor, executionTime);
-        }
+//        }
         return executionTime;
     }
 
