@@ -136,8 +136,12 @@ public class FMUBuilder {
             process.waitFor();
         } catch (InterruptedException ex) {
             process.destroy();
-            throw new IOException("The process building " + sharedLibraryFile
-                    + " was interrupted.", ex);
+	    // Java 1.5 does not support IOException(String, Throwable).
+	    // We sometimes compile this with gcj, which is Java 1.5
+            IOException exception =  new IOException("The process building " + sharedLibraryFile
+						     + " was interrupted.");
+	    exception.initCause(ex);
+	    throw exception;
         }
 
         int exitValue = process.exitValue();

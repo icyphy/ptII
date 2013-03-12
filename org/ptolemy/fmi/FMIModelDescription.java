@@ -159,28 +159,42 @@ public class FMIModelDescription {
                     System.out.println("FMU Builder messages:\n"
                             + builder.buffer);
                 } catch (Throwable throwable2) {
-                    throw new IOException("Failed to build \""
+		    // Java 1.5 does not support IOException(String, Throwable).
+		    // We sometimes compile this with gcj, which is Java 1.5
+                    IOException exception = new IOException("Failed to build \""
                             + sharedLibraryFile + "\".\nThe build was:\n"
                             + builder.buffer + "\n" + message
-                            + "\nThe initial exception was: " + throwable,
-                            throwable2);
+			    + "\nThe initial exception was: " + throwable);
+		    exception.initCause(throwable2);
+		    throw exception;
+
                 }
                 if (!isBuildOK) {
-                    throw new IOException("It was not possible to build \""
+		    // Java 1.5 does not support IOException(String, Throwable).
+		    // We sometimes compile this with gcj, which is Java 1.5
+                    IOException exception = new IOException("It was not possible to build \""
                             + sharedLibraryFile + "\": " + builder.buffer
-                            + "\n" + message, throwable);
+                            + "\n" + message);
+		    exception.initCause(throwable);
+		    throw exception;
                 } else {
                     try {
                         _nativeLibrary = NativeLibrary
                                 .getInstance(sharedLibrary);
                     } catch (Throwable throwable3) {
-                        throw new IOException("Attempted to build shared "
+			// Java 1.5 does not support
+			// IOException(String, Throwable).  We
+			// sometimes compile this with gcj, which is
+			// Java 1.5
+                        IOException exception = new IOException("Attempted to build shared "
                                 + "library for the current "
                                 + "platform because " + sharedLibrary
                                 + " was not found.  "
                                 + "However, loading the library failed?\n"
                                 + "The original error was: " + message + "\n"
-                                + throwable, throwable3);
+							      + throwable);
+			exception.initCause(throwable3);
+			throw exception;
                     }
                 }
             }

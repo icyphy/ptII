@@ -147,8 +147,11 @@ public class FMUFile {
         try {
             files = _unzip(fmuFileName);
         } catch (IOException ex) {
-            throw new IOException("Failed to unzip \"" + fmuFileName + "\".",
-                    ex);
+	    // Java 1.5 does not support IOException(String, Throwable).
+	    // We sometimes compile this with gcj, which is Java 1.5
+            IOException exception = new IOException("Failed to unzip \"" + fmuFileName + "\".");
+	    exception.initCause(ex);
+	    throw exception;
         }
 
         // Find the modelDescription.xml file.
@@ -175,8 +178,12 @@ public class FMUFile {
             // Parse using builder to get DOM representation of the XML file.
             document = db.parse(modelDescriptionFile.getCanonicalPath());
         } catch (Throwable throwable) {
-            throw new IOException("Failed to parse \"" + modelDescriptionFile
-                    + "\".", throwable);
+	    // Java 1.5 does not support IOException(String, Throwable).
+	    // We sometimes compile this with gcj, which is Java 1.5
+            IOException exception = new IOException("Failed to parse \"" + modelDescriptionFile
+						    + "\".");
+	    exception.initCause(throwable);
+	    throw exception;
         }
 
         Element root = document.getDocumentElement();
@@ -323,7 +330,7 @@ public class FMUFile {
         // FIXME: it is difficult to detect if we are under a
         // 64bit JVM. See
         // http://forums.sun.com/thread.jspa?threadID=5306174
-        if (dataModelProperty.indexOf("64") != -1) {
+        if (dataModelProperty == null || dataModelProperty.indexOf("64") != -1) {
             return false;
         } else {
             String javaVmNameProperty = System.getProperty("java.vm.name");

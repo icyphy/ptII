@@ -234,7 +234,9 @@ public class FMUModelExchange extends FMUDriver {
         File outputFile = new File(outputFileName);
         PrintStream file = null;
         try {
-            file = new PrintStream(outputFile);
+	    // gcj does not have this constructor
+            //file = new PrintStream(outputFile);
+            file = new PrintStream(outputFileName);
             if (enableLogging) {
                 System.out.println("FMUModelExchange: about to write header");
             }

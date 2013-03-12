@@ -343,3 +343,14 @@ update_ftp:
 	#scp doc/download/index.htm bennett:$(DIST_DIR)/org/ptolemy/fmi/doc/download
 	scp $(PTDIST).tar.gz bennett:$(DIST_DIR)/org/ptolemy/fmi
 	scp $(PTDIST).zip bennett:$(DIST_DIR)/org/ptolemy/fmi
+
+
+# Experimental support for compiling with gcj.
+GCJ=/usr/local/gcc-4.7.2/bin/gcj
+# To build jna using gcj, download the sources and edit WString.java and NativeString.java and comment out the CharSequence in the implements line and comment out the subSequence() method
+jna.o: jna.jar
+	$(GCJ) -fjni -c jna.jar -o jna.o
+gcj: jna.o
+	$(GCJ) -C *.java */*.java --classpath=$(PTII):jna.jar
+	$(GCJ) -fjni *.class */*.class --classpath=$(PTII):jna.jar jna.o --main=org.ptolemy.fmi.driver.FMUCoSimulation  -lefence
+	./a.out fmu/cs/values.fmu 1.0 0.1 true c foo.csv
