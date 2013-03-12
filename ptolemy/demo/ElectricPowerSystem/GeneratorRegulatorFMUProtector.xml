@@ -25,6 +25,8 @@
         </property>
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="60.0">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-30.0, 0.0]">
         </property>
     </property>
@@ -40,7 +42,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model disconnects a connected load if the measured voltage exceeds a specified threshold.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-80.0, 25.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 10.0]">
         </property>
     </property>
     <property name="overVoltageThreshold" class="ptolemy.data.expr.Parameter" value="115.0">
@@ -65,7 +67,7 @@
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Change this to 120 or larger and the&#10;overvoltage protection does not kick in.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Change this to 119 or larger and the&#10;overvoltage protection does not kick in.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-75.0, 70.0]">
         </property>
@@ -135,28 +137,30 @@
     <property name="Annotation7" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.0,1.0}">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Note that the behavior here is not exactly the same as the GeneratorRegulatorProtector model&#10;because the MostRecent actor remembers the single event at time 15 to turn on the load, so this&#10;model turns the load back on as soon as the voltage drops below threshold.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Note that the behavior here is not exactly the same as the GeneratorRegulatorProtector model&#10;because the MostRecent actor remembers the single event at time 15 to turn on the load, so this&#10;model turns the load back on as soon as the voltage drops below threshold. Thus, switching to&#10;an FMI implementation of the supervisor with subtly different behavior introduced a potential&#10;bug, where the load will be turned on and off repeatedly.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-90.0, 430.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-90.0, 425.0]">
         </property>
     </property>
     <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
+        <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="Voltage, Drive">
+        </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={983, 590, 639, 456}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[639, 412]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[570.0, 265.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[570.0, 300.0]">
         </property>
         <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
-<title>Voltage over time</title>
+<title>Voltage and Drive over time</title>
 <xLabel>time (seconds)</xLabel>
-<yLabel>voltage</yLabel>
-<xRange min="0.0" max="30.0"/>
-<yRange min="0.0" max="235.57977211625584"/>
-<default connected="no" stems="yes"/>
+<yLabel>voltage, drive</yLabel>
+<xRange min="0.0" max="60.0"/>
+<yRange min="-72.59478582959035" max="285.5815607552148"/>
+<default connected="no" marks="various" stems="yes"/>
 </plot>?>
         </configure>
     </entity>
@@ -271,7 +275,7 @@
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[330.0, 120.0]">
+        <vertex name="vertex1" value="[330.0, 80.0]">
         </vertex>
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
@@ -299,6 +303,7 @@
         </vertex>
     </relation>
     <link port="TimedPlotter.input" relation="relation2"/>
+    <link port="TimedPlotter.input" relation="relation4"/>
     <link port="GeneratorContactorLoad.drive" relation="relation4"/>
     <link port="GeneratorContactorLoad.voltage" relation="relation2"/>
     <link port="GeneratorContactorLoad.contactor" relation="relation6"/>

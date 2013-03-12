@@ -53,18 +53,38 @@
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
+        </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Simple model of a generator with a first order continuous dynamics&#10;with the specified time constant. The output voltage will match the&#10;drive input if either the outputImpedance is zero or the load is absent&#10;or Infinity. This is a continuous-time model.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 5.0]">
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
+        </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="If the load is absent, we interpret that&#10;as a load impedance of infinity.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 340.0]">
         </property>
     </property>
     <property name="enableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="false">
+    </property>
+    <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Model here is a simple voltage divider.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 250.0]">
+        </property>
+    </property>
+    <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.0,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Note that this model could be easily eloborated with higher-order linear or nonlinear dynamics.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-5.0, 400.0]">
+        </property>
     </property>
     <port name="drive" class="ptolemy.actor.TypedIOPort">
         <property name="input"/>

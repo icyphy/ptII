@@ -9,21 +9,13 @@
     <property name="Continuous Director" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
         <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
-        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="30.0">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 45.0]">
         </property>
     </property>
     <property name="Title" class="ptolemy.vergil.basic.export.web.Title" value="Plant Model with Generator, Load, and Contactor">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[150.0, 25.0]">
-        </property>
-    </property>
-    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
-        </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Discrete input controlling&#10;the Generator.">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[17.695159912109375, 235.69015502929688]">
         </property>
     </property>
     <property name="loadImpedance" class="ptolemy.data.expr.Parameter" value="10.0">
@@ -64,15 +56,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 100.0]">
         </property>
     </property>
-    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
-        </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Discrete input driving&#10;the Contactor.">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[17.695159912109375, 390.6901550292969]">
-        </property>
-    </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={563, 22, 1056, 641}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 1056, 641}, maximized=true}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[822, 531]">
     </property>
@@ -85,7 +69,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Discrete output giving&#10;voltage measurements.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[417.6951599121094, 245.69015502929688]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[500.0, 245.0]">
         </property>
     </property>
     <property name="generatorTimeConstant" class="ptolemy.data.expr.Parameter" value="1.0">
@@ -126,31 +110,75 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 140.0]">
         </property>
     </property>
+    <property name="Annotation5" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Limit the drive input&#10;so it can't drop below zero">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="[-15.0, -85.0]">
+            <property name="relativeTo" class="ptolemy.kernel.util.StringAttribute" value="Limiter">
+            </property>
+            <property name="relativeToElementName" class="ptolemy.kernel.util.StringAttribute" value="entity">
+            </property>
+        </property>
+    </property>
+    <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Discrete input controlling&#10;the Generator.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="[-125.0, 40.0]">
+            <property name="relativeTo" class="ptolemy.kernel.util.StringAttribute" value="ZeroOrderHold">
+            </property>
+            <property name="relativeToElementName" class="ptolemy.kernel.util.StringAttribute" value="entity">
+            </property>
+        </property>
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Discrete input driving&#10;the Contactor.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="[-122.30484008789062, 35.690155029296875]">
+            <property name="relativeTo" class="ptolemy.kernel.util.StringAttribute" value="ZeroOrderHold2">
+            </property>
+            <property name="relativeToElementName" class="ptolemy.kernel.util.StringAttribute" value="entity">
+            </property>
+        </property>
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This is a model of generator with a load with a digital interface.&#10;The inputs are discrete events, and the output is a periodically&#10;sampled measurement of the voltage.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[210.0, 55.0]">
+        </property>
+    </property>
     <port name="drive" class="ptolemy.actor.TypedIOPort">
         <property name="input"/>
         <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[27.695159912109375, 205.69015502929688]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 205.0]">
         </property>
     </port>
     <port name="voltage" class="ptolemy.actor.TypedIOPort">
         <property name="output"/>
         <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[592.6951599121094, 215.69015502929688]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[675.0, 215.0]">
         </property>
     </port>
     <port name="contactor" class="ptolemy.actor.TypedIOPort">
         <property name="input"/>
         <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 365.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{25.0, 390.0}">
         </property>
         <property name="_type" class="ptolemy.actor.TypeAttribute" value="boolean">
         </property>
     </port>
     <entity name="Generator" class="ptolemy.demo.ElectricPowerSystem.Generator">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[322.6951599121094, 215.69015502929688]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[405.0, 215.0]">
         </property>
         <property name="timeConstant" class="ptolemy.data.expr.Parameter" value="generatorTimeConstant">
         </property>
@@ -162,7 +190,7 @@
         </entity>
     </entity>
     <entity name="Contactor" class="ptolemy.demo.ElectricPowerSystem.Contactor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[230.0, 305.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[232.30484008789062, 329.3098449707031]">
         </property>
     </entity>
     <entity name="Load" class="ptolemy.actor.lib.Const">
@@ -175,21 +203,27 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[105.0, 305.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[107.30484008789062, 329.3098449707031]">
         </property>
     </entity>
     <entity name="ZeroOrderHold" class="ptolemy.domains.continuous.lib.ZeroOrderHold">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[127.69515991210938, 205.69015502929688]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{130.0, 205.0}">
         </property>
     </entity>
     <entity name="ZeroOrderHold2" class="ptolemy.domains.continuous.lib.ZeroOrderHold">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[135.0, 365.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[130.0, 390.0]">
         </property>
     </entity>
     <entity name="PeriodicSampler" class="ptolemy.domains.continuous.lib.PeriodicSampler">
         <property name="samplePeriod" class="ptolemy.data.expr.Parameter" value="voltageSamplePeriod">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[482.6951599121094, 215.69015502929688]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[565.0, 215.0]">
+        </property>
+    </entity>
+    <entity name="Limiter" class="ptolemy.actor.lib.Limiter">
+        <property name="top" class="ptolemy.data.expr.Parameter" value="Infinity">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[260.0, 205.0]">
         </property>
     </entity>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
@@ -198,8 +232,6 @@
     </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation" class="ptolemy.actor.TypedIORelation">
-    </relation>
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
@@ -207,6 +239,10 @@
     <relation name="relation8" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
     <link port="drive" relation="relation6"/>
     <link port="voltage" relation="relation3"/>
@@ -219,9 +255,11 @@
     <link port="Contactor.control" relation="relation4"/>
     <link port="Load.output" relation="relation5"/>
     <link port="ZeroOrderHold.input" relation="relation6"/>
-    <link port="ZeroOrderHold.output" relation="relation"/>
+    <link port="ZeroOrderHold.output" relation="relation9"/>
     <link port="ZeroOrderHold2.input" relation="relation7"/>
     <link port="ZeroOrderHold2.output" relation="relation4"/>
     <link port="PeriodicSampler.input" relation="relation8"/>
     <link port="PeriodicSampler.output" relation="relation3"/>
+    <link port="Limiter.input" relation="relation9"/>
+    <link port="Limiter.output" relation="relation"/>
 </class>

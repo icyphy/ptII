@@ -41,9 +41,9 @@
         </property>
     </property>
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="See also the GeneratorTester model.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="See also the GeneratorTester model, which&#10;should have the same behavior.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{350.0, 170.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[345.0, 170.0]">
         </property>
         <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$PTII/ptolemy/demo/ElectricPowerSystem/GeneratorTester.xml">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -68,7 +68,7 @@
     <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="See also the GeneratorRegulator model.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[345.0, 195.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[345.0, 215.0]">
         </property>
         <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$PTII/ptolemy/demo/ElectricPowerSystem/GeneratorRegulator.xml">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">

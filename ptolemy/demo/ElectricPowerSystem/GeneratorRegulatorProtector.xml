@@ -17,7 +17,11 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="At time 15, turn&#10;on a load.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, 265.0]">
+        <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="[-30.0, 60.0]">
+            <property name="relativeTo" class="ptolemy.kernel.util.StringAttribute" value="SingleEvent">
+            </property>
+            <property name="relativeToElementName" class="ptolemy.kernel.util.StringAttribute" value="entity">
+            </property>
         </property>
     </property>
     <property name="Title" class="ptolemy.vergil.basic.export.web.Title" value="Generator Regulator with Overvoltage Protection">
@@ -25,6 +29,8 @@
         </property>
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="60.0">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 35.0]">
         </property>
     </property>
@@ -40,13 +46,13 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model disconnects a connected load if the measured voltage exceeds a specified threshold.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 60.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[120.0, 45.0]">
         </property>
     </property>
     <property name="Annotation5" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="See also the GeneratorRegulator model.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[425.0, 380.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, 385.0]">
         </property>
         <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$PTII/ptolemy/demo/ElectricPowerSystem/GeneratorRegulator.xml">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -98,7 +104,7 @@
     <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="See also the GeneratorRegulatorFMUProtector model.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[425.0, 405.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, 410.0]">
         </property>
         <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$PTII/ptolemy/demo/ElectricPowerSystem/GeneratorRegulatorFMUProtector.xml">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -121,22 +127,24 @@
         </property>
     </property>
     <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={883, 134, 639, 456}, maximized=false}">
+        <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="Voltage, Drive">
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1016, 589, 639, 456}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[639, 412]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[570.0, 265.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[555.0, 295.0]">
         </property>
         <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
-<title>Voltage over time</title>
+<title>Voltage and Drive over time</title>
 <xLabel>time (seconds)</xLabel>
-<yLabel>voltage</yLabel>
-<xRange min="0.0" max="30.0"/>
-<yRange min="0.0" max="235.57977211625584"/>
-<default connected="no" stems="yes"/>
+<yLabel>voltage, drive</yLabel>
+<xRange min="0.0" max="60.0"/>
+<yRange min="-72.59478582959035" max="285.5815607552148"/>
+<default connected="no" marks="various" stems="yes"/>
 </plot>?>
         </configure>
     </entity>
@@ -358,7 +366,7 @@
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[330.0, 120.0]">
+        <vertex name="vertex1" value="[330.0, 95.0]">
         </vertex>
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
@@ -372,6 +380,7 @@
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
     </relation>
     <link port="TimedPlotter.input" relation="relation2"/>
+    <link port="TimedPlotter.input" relation="relation4"/>
     <link port="GeneratorContactorLoad.drive" relation="relation4"/>
     <link port="GeneratorContactorLoad.voltage" relation="relation2"/>
     <link port="GeneratorContactorLoad.contactor" relation="relation6"/>
