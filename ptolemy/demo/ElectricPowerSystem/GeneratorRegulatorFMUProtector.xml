@@ -268,7 +268,7 @@
         </property>
     </entity>
     <entity name="onOffSupervisorFMU" class="ptolemy.actor.lib.fmi.FMUImport">
-        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="/ptII/ptolemy/actor/lib/fmi/fmus/onOffSupervisor/onOffSupervisor.fmu">
+        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="$PTII/ptolemy/actor/lib/fmi/fmus/onOffSupervisor/onOffSupervisor.fmu">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[155.0, 220.0]">
         </property>

@@ -1,9 +1,9 @@
-# Makefile for Ptolemy model that executes a suite of other Ptolemy II models.
+# Makefile for Ptolemy model that simulates a ElectricPowerSystem.
 #
-# @Version: $Id$
+# @Version: $Id: makefile 64744 2012-10-01 22:51:43Z cxh $
 # @Author: Christopher Brooks (makefile only)
 #
-# @Copyright (c) 2005-2013 The Regents of the University of California.
+# @Copyright (c) 2011-2012 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -29,41 +29,55 @@
 # 						COPYRIGHTENDKEY
 ##########################################################################
 
-ME =		ptolemy/demo
+ME =		ptolemy/demo/ElectricPowerSystem
 
-DIRS = 		Brewery ElectricPowerSystem ExecDemos FuelSystem test
+DIRS =
 
 # Root of Ptolemy II directory
-ROOT =		../..
+ROOT =		../../..
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	demo
-PTCLASSJAR =
+PTPACKAGE = 	ElectricPowerSystem
+PTCLASSJAR =	$(PTPACKAGE).jar
 
-# Include these jars in PTAUXALLJAR
-# plotmlapplet pulls in the com/microstar/xml and util/ classes
-PTAUXALLJARS = \
-	Brewery/Brewery.jar \
-	ElectricPowerSystem/ElectricPowerSystem.jar
-	ExecDemos/ExecDemos.jar \
-	FuelSystem/FuelSystem.jar
 
-PTAUXALLJAR = $(PTPACKAGE).jar
+EXAMPLE_MODELS = \
+	ContactorTester.xml \
+	ElectricPowerSystem.xml \
+	GeneratorContactorLoad.xml \
+	GeneratorRegulator.xml \
+	GeneratorRegulatorFMUProtector.xml \
+	GeneratorRegulatorProtector.xml \
+	GeneratorRegulatorProtectorWithBus.xml \
+	GeneratorTester.xml \
+	ElectricPowerSystem.xml \
+	ElectricPowerSystemWireless.xml
 
-OTHER_FILES_TO_BE_JARED =
+OTHER_FILES_TO_BE_JARED = \
+	$(EXAMPLE_MODELS) \
+	Contactor.xml \
+	ContactorIcon.xml \
+	Generator.xml
+
+EXAMPLE_MODEL_HTML = $(EXAMPLE_MODELS:%.xml=%.htm)
 
 EXTRA_SRCS = \
-	$(OTHER_FILES_TO_BE_JARED)
+	$(OTHER_FILES_TO_BE_JARED) \
+
+#	$(EXAMPLE_MODEL_HTML) \
+#	index.htm \
+#	toc.htm
+
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES = $(DIRS)
+MISC_FILES =
 
-OPTIONAL_FILES = \
+OPTIONAL_FILES =
 
 # Files to remove with 'make clean'
 KRUFT = \
@@ -71,6 +85,14 @@ KRUFT = \
 
 all: suball $(EXTRA_SRCS)
 install: subinstall jars
+
+jnlps:
+	cd $(ROOT); \
+	set $(EXAMPLE_MODELS); \
+	for x do \
+		echo "Creating applet for $(ME)/$$x" ; \
+		$(MAKE) JNLP_MODEL_DIRECTORY=$(ME) JNLP_MODEL=`basename $$x .xml` book_dist_update; \
+	done
 
 # Include rules for directories that contain only subdirectories.
 include $(ROOT)/mk/ptcommon.mk
