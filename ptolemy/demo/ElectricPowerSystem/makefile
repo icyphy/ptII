@@ -61,7 +61,8 @@ OTHER_FILES_TO_BE_JARED = \
 	$(EXAMPLE_MODELS) \
 	Contactor.xml \
 	ContactorIcon.xml \
-	Generator.xml
+	Generator.xml \
+	index.html
 
 EXAMPLE_MODEL_HTML = $(EXAMPLE_MODELS:%.xml=%.htm)
 

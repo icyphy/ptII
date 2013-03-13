@@ -12,20 +12,20 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 45.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={199, 342, 934, 634}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={199, 342, 1018, 661}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[784, 551]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.2624838521100175">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{350.0, 262.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{333.19482421875, 231.15469746749838}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Load starts absent, and&#10;switches to 10 ohms at 15&#10;seconds.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[280.0, 265.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[125.0, 320.0]">
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -37,13 +37,13 @@
         </property>
     </property>
     <property name="Title" class="ptolemy.vergil.basic.export.web.Title" value="Test Model for the Contactor Class">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 25.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, 30.0]">
         </property>
     </property>
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="See also the GeneratorTester model, which&#10;should have the same behavior.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[345.0, 170.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[345.0, 250.0]">
         </property>
         <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$PTII/ptolemy/demo/ElectricPowerSystem/GeneratorTester.xml">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -74,7 +74,7 @@
     <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="See also the GeneratorRegulator model.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[345.0, 215.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[345.0, 295.0]">
         </property>
         <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$PTII/ptolemy/demo/ElectricPowerSystem/GeneratorRegulator.xml">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -108,8 +108,6 @@
             </property>
             <property name="allowDirectories" class="ptolemy.data.expr.Parameter" value="true">
             </property>
-        </property>
-        <property name="backgroundColor" class="ptolemy.actor.gui.ColorAttribute">
         </property>
         <property name="openCompositesBeforeExport" class="ptolemy.data.expr.Parameter" value="true">
         </property>
@@ -147,11 +145,13 @@
         </property>
     </entity>
     <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={642, 386, 500, 344}, maximized=false}">
+        <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="drive, voltage">
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1039, 388, 500, 344}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[520.0, 110.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[570.0, 105.0]">
         </property>
         <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
@@ -161,12 +161,12 @@
 <xLabel>time (seconds)</xLabel>
 <yLabel>voltage</yLabel>
 <xRange min="0.0" max="30.0"/>
-<yRange min="0.0" max="219.25891295933835"/>
+<yRange min="0.0" max="220.0"/>
 </plot>?>
         </configure>
     </entity>
     <entity name="Generator" class="ptolemy.demo.ElectricPowerSystem.Generator">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[380.0, 110.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[375.0, 150.0]">
         </property>
         <entity name="Default" class="ptolemy.domains.sr.lib.Default">
             <property name="_location" class="ptolemy.kernel.util.Location" value="[300.0, 220.0]">
@@ -190,21 +190,26 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{80, 245}">
         </property>
     </entity>
-    <relation name="relation" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-    </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <link port="DriveModel.output" relation="relation"/>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="[310.0, 100.0]">
+        </vertex>
+    </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="DriveModel.output" relation="relation3"/>
     <link port="LoadModel.output" relation="relation4"/>
     <link port="TimedPlotter.input" relation="relation3"/>
-    <link port="Generator.drive" relation="relation"/>
-    <link port="Generator.outputVoltage" relation="relation3"/>
+    <link port="TimedPlotter.input" relation="relation"/>
+    <link port="Generator.drive" relation="relation3"/>
+    <link port="Generator.outputVoltage" relation="relation"/>
     <link port="Generator.load" relation="relation2"/>
     <link port="Contactor.input" relation="relation5"/>
     <link port="Contactor.output" relation="relation2"/>
