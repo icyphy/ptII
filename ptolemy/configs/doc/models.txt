@@ -95,6 +95,14 @@ $CLASSPATH/ptolemy/data/ontologies/demo/MonotonicityAnalysis/MonotonicityAnalysi
 $CLASSPATH/ptolemy/data/type/demo/Objects/Objects.xml
 $CLASSPATH/ptolemy/data/type/demo/Router/Router.xml
 $CLASSPATH/ptolemy/data/unit/demo/StaticUnits/StaticUnits.xml
+$CLASSPATH/ptolemy/demo/ElectricPowerSystem/ContactorTester.xml
+$CLASSPATH/ptolemy/demo/ElectricPowerSystem/ElectricPowerSystem.xml
+$CLASSPATH/ptolemy/demo/ElectricPowerSystem/GeneratorContactorLoad.xml
+$CLASSPATH/ptolemy/demo/ElectricPowerSystem/GeneratorRegulator.xml
+$CLASSPATH/ptolemy/demo/ElectricPowerSystem/GeneratorRegulatorFMUProtector.xml
+$CLASSPATH/ptolemy/demo/ElectricPowerSystem/GeneratorRegulatorProtector.xml
+$CLASSPATH/ptolemy/demo/ElectricPowerSystem/GeneratorRegulatorProtectorWithBus.xml
+$CLASSPATH/ptolemy/demo/ElectricPowerSystem/GeneratorTester.xml
 $CLASSPATH/ptolemy/demo/ExecDemos/Demos/BouncingBall.xml
 $CLASSPATH/ptolemy/demo/ExecDemos/Demos/Collisions.xml
 $CLASSPATH/ptolemy/demo/ExecDemos/Demos/Controllers.xml
