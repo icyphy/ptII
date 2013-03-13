@@ -59,6 +59,7 @@ EXAMPLE_MODELS = \
 
 OTHER_FILES_TO_BE_JARED = \
 	$(EXAMPLE_MODELS) \
+	onOffSupervisor.fmu \
 	Contactor.xml \
 	ContactorIcon.xml \
 	Generator.xml \
