@@ -66,7 +66,7 @@ public class AttributeSearcher extends AbstractSearcher implements
         if (searchCriteria.getAttributes() != null
                 && searchCriteria.getAttributes().size() > 0) {
 
-            // Get the attribute list from the search criteria’s attributes list.
+            // Get the attribute list from the search criteria's attributes list.
 
             HashMap<String, PTDBGenericAttribute> attributesMap = new HashMap<String, PTDBGenericAttribute>();
 
