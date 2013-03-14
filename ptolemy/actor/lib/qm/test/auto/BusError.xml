@@ -12,7 +12,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-500.0, -425.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={11, 299, 1031, 634}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={11, 132, 1031, 634}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[797, 524]">
     </property>
@@ -261,7 +261,7 @@
         <entity name="Clocks" class="ptolemy.actor.lib.gui.TimedPlotter">
             <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="sync, sync2, reply">
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={857, 68, 667, 252}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={613, 68, 667, 252}, maximized=false}">
             </property>
             <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[667, 208]">
             </property>
@@ -276,8 +276,8 @@
 <title>Inside A</title>
 <xLabel>Environment time in seconds</xLabel>
 <yLabel>Time difference</yLabel>
-<xRange min="0.0" max="6.0"/>
-<yRange min="0.0" max="6.0"/>
+<xRange min="0.0" max="4.0"/>
+<yRange min="0.0" max="4.0"/>
 <default marks="dots" stems="yes"/>
 </plot>?>
             </configure>
@@ -431,7 +431,7 @@
         <entity name="Clocks" class="ptolemy.actor.lib.gui.TimedPlotter">
             <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="sync, reply, sync2">
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={867, 612, 667, 252}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={613, 514, 667, 252}, maximized=false}">
             </property>
             <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[667, 208]">
             </property>
@@ -446,8 +446,8 @@
 <title>Inside B</title>
 <xLabel>Environment time in seconds</xLabel>
 <yLabel>Time difference</yLabel>
-<xRange min="2.0" max="2.0"/>
-<yRange min="0.0" max="2.0"/>
+<xRange min="2.0" max="6.0"/>
+<yRange min="0.0" max="4.0"/>
 <default marks="dots" stems="yes"/>
 </plot>?>
             </configure>
@@ -496,7 +496,7 @@
         </port>
     </entity>
     <entity name="Bus" class="ptolemy.actor.lib.qm.Bus">
-        <property name="serviceTime" class="ptolemy.data.expr.Parameter" value="2.0">
+        <property name="serviceTimeMultiplicationFactor" class="ptolemy.data.expr.Parameter" value="2.0">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{-185, -435}">
         </property>
@@ -504,7 +504,7 @@
     <entity name="Clocks2" class="ptolemy.actor.lib.gui.TimedPlotter">
         <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="sync, back, reply">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={862, 319, 667, 252}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={613, 319, 667, 252}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[667, 208]">
         </property>
@@ -517,8 +517,8 @@
 <title>Outside</title>
 <xLabel>Environment time in seconds</xLabel>
 <yLabel>Time difference</yLabel>
-<xRange min="0.0" max="6.0"/>
-<yRange min="0.0" max="6.0"/>
+<xRange min="0.0" max="4.0"/>
+<yRange min="0.0" max="4.0"/>
 <default marks="dots" stems="yes"/>
 </plot>?>
         </configure>
