@@ -168,7 +168,7 @@
     <entity name="LineFaultGenerator" class="ptolemy.actor.TypedCompositeActor">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-520.0, -275.0]">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={228, 87, 577, 318}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={228, 87, 592, 634}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[343, 208]">
         </property>
@@ -241,7 +241,7 @@
             </property>
             <property name="period" class="ptolemy.actor.parameters.PortParameter" value="2">
             </property>
-            <property name="offsets" class="ptolemy.data.expr.Parameter" value="{300}">
+            <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0}">
             </property>
             <property name="values" class="ptolemy.data.expr.Parameter" value="{true}">
             </property>
@@ -265,6 +265,12 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[-90.0, 105.0]">
             </property>
         </entity>
+        <entity name="SingleEvent" class="ptolemy.actor.lib.SingleEvent">
+            <property name="time" class="ptolemy.data.expr.Parameter" value="300.0">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{-260, 135}">
+            </property>
+        </entity>
         <relation name="relation" class="ptolemy.actor.TypedIORelation">
         </relation>
         <relation name="relation2" class="ptolemy.actor.TypedIORelation">
@@ -275,13 +281,17 @@
             <vertex name="vertex1" value="[-135.0, 70.0]">
             </vertex>
         </relation>
+        <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        </relation>
         <link port="port3" relation="relation"/>
         <link port="port4" relation="relation2"/>
         <link port="FaultEvents.output" relation="relation4"/>
+        <link port="FaultEvents.start" relation="relation3"/>
         <link port="delayA.input" relation="relation4"/>
         <link port="delayA.output" relation="relation"/>
         <link port="delayB.input" relation="relation4"/>
         <link port="delayB.output" relation="relation2"/>
+        <link port="SingleEvent.output" relation="relation3"/>
     </entity>
     <entity name="SubstationA" class="ptolemy.actor.TypedCompositeActor">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-355.0, -355.0]">
@@ -1008,6 +1018,8 @@
                 <property name="output"/>
             </port>
             <entity name="_Controller" class="ptolemy.domains.modal.modal.ModalController">
+                <property name="errorCause" class="ptolemy.data.expr.Parameter">
+                </property>
                 <property name="annotation" class="ptolemy.kernel.util.Attribute">
                     <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                     </property>

@@ -2,12 +2,12 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="FuelSystemQuantityManager" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
     </property>
     <property name="Continuous Director" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
-        <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
-        </property>
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="10.0">
+        </property>
+        <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="maxStepSize" class="ptolemy.data.expr.Parameter" value="0.1">
         </property>
@@ -33,7 +33,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[125.0, 5.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={327, 76, 851, 640}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={327, 76, 872, 640}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[638, 530]">
     </property>
@@ -92,6 +92,8 @@
             </property>
         </port>
         <entity name="_Controller" class="ptolemy.domains.modal.modal.ModalController">
+            <property name="errorCause" class="ptolemy.data.expr.Parameter">
+            </property>
             <property name="_library" class="ptolemy.moml.LibraryAttribute">
                 <configure>
       <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.modal.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory"></property></entity></entity>
@@ -150,6 +152,8 @@
                 </property>
                 <property name="gamma" class="ptolemy.data.expr.Parameter" value="1.6894309144768234">
                 </property>
+                <property name="history" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
             </relation>
             <relation name="relation2" class="ptolemy.domains.modal.kernel.Transition">
                 <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="tank1Full_isPresent">
@@ -157,6 +161,8 @@
                 <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.6283185307179586">
                 </property>
                 <property name="gamma" class="ptolemy.data.expr.Parameter" value="-1.4837772553293984">
+                </property>
+                <property name="history" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
             </relation>
             <link port="idle.incomingPort" relation="relation2"/>
@@ -320,6 +326,24 @@
         </property>
         <property name="actualLevel" class="ptolemy.data.expr.Parameter" value="-5.0E-5">
         </property>
+        <entity name="ModalModel_1_2" class="ptolemy.domains.modal.modal.ModalModel">
+            <entity name="_Controller" class="ptolemy.domains.modal.modal.ModalController">
+                <property name="errorCause" class="ptolemy.data.expr.Parameter">
+                </property>
+                <relation name="relation2" class="ptolemy.domains.modal.kernel.Transition">
+                    <property name="history" class="ptolemy.data.expr.Parameter" value="true">
+                    </property>
+                </relation>
+                <relation name="relation3" class="ptolemy.domains.modal.kernel.Transition">
+                    <property name="history" class="ptolemy.data.expr.Parameter" value="true">
+                    </property>
+                </relation>
+                <relation name="relation" class="ptolemy.domains.modal.kernel.Transition">
+                    <property name="history" class="ptolemy.data.expr.Parameter" value="true">
+                    </property>
+                </relation>
+            </entity>
+        </entity>
     </entity>
     <entity name="Tank2" class="ptolemy.demo.FuelSystem.ModalTank">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[145.0, 305.500000004]">
@@ -328,9 +352,21 @@
         </property>
         <property name="initialLevel" class="ptolemy.data.expr.Parameter" value="4.0">
         </property>
+        <property name="actualLevel" class="ptolemy.data.expr.Parameter" value="-4.999999999999449E-5">
+        </property>
+        <entity name="ModalModel_1_2" class="ptolemy.domains.modal.modal.ModalModel">
+            <entity name="_Controller" class="ptolemy.domains.modal.modal.ModalController">
+                <property name="errorCause" class="ptolemy.data.expr.Parameter">
+                </property>
+                <relation name="relation" class="ptolemy.domains.modal.kernel.Transition">
+                    <property name="history" class="ptolemy.data.expr.Parameter" value="true">
+                    </property>
+                </relation>
+            </entity>
+        </entity>
     </entity>
     <entity name="Bus" class="ptolemy.actor.lib.qm.Bus">
-        <property name="serviceTime" class="ptolemy.data.expr.Parameter" value="0.05">
+        <property name="serviceTimeMultiplicationFactor" class="ptolemy.data.expr.Parameter" value="0.05">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[268.40087890625, 17.25]">
         </property>
