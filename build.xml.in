@@ -67,7 +67,7 @@
   <property name="timeout.long" value="4000000" />
 
   <!-- The timeout in seconds for longest running junit tests. -->
-  <property name="timeout.longest" value="12100000" />
+  <property name="timeout.longest" value="14000000" />
 
 
   <!-- Ant paths. Alphabetize, please -->
