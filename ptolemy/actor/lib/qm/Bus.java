@@ -30,8 +30,10 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.actor.lib.qm;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Hashtable;
+import java.util.List;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.IOPort;
@@ -43,12 +45,15 @@ import ptolemy.actor.sched.FixedPointDirector;
 import ptolemy.actor.util.FIFOQueue;
 import ptolemy.actor.util.Time;
 import ptolemy.data.DoubleToken;
+import ptolemy.data.IntToken;
+import ptolemy.data.ScalarToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.domains.de.kernel.DEDirector;
 import ptolemy.domains.de.lib.Server;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.Port;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -107,6 +112,7 @@ public class Bus extends MonitoredQuantityManager {
         _receiversAndTokensToSendTo = new HashMap<Receiver, Token>();
         _tempReceiverQueue = new FIFOQueue();
         _messageLengths = new Hashtable<IOPort, Double>();
+        _parameters = new HashMap<IOPort, List<Attribute>>();
 
         serviceTimeMultiplicationFactor = new Parameter(this, "serviceTimeMultiplicationFactor");
         serviceTimeMultiplicationFactor.setExpression("0.1");
@@ -181,6 +187,7 @@ public class Bus extends MonitoredQuantityManager {
         newObject._receiversAndTokensToSendTo = new HashMap<Receiver, Token>();
         newObject._tempReceiverQueue = new FIFOQueue();
         newObject._messageLengths = new Hashtable<IOPort, Double>();
+        newObject._parameters = new HashMap<IOPort, List<Attribute>>();
 
         newObject._nextReceiver = null;
         newObject._nextTimeFree = null;
@@ -208,7 +215,40 @@ public class Bus extends MonitoredQuantityManager {
             }
         } 
     }
-
+    
+    /** Return the list of Attributes that can be specified per port with default
+     *  values for the specified port.
+     *  @param container The container parameter.
+     *  @param The port.
+     *  @return List of attributes.
+     *  @exception IllegalActionException Thrown if attributeList could not be created.
+     */
+    public List<Attribute> getPortAttributeList(Parameter container, Port port) throws IllegalActionException {
+        List<Attribute> list = _parameters.get(port);
+        if (list == null) {
+            list = new ArrayList<Attribute>();
+            try {
+                Parameter messageLengthParameter = new Parameter(container, "messageLength", new IntToken(1));
+                list.add(messageLengthParameter);
+            } catch (NameDuplicationException ex) {
+                // This cannot happen.
+            }
+        } 
+        return list;
+    }
+    
+    /** Set an attribute for a given port.
+     *  @param port The port. 
+     *  @param attribute The new attribute or the attribute containing a new value.
+     *  @exception IllegalActionException Thrown if attribute could not be updated.
+     */
+    public void setPortAttribute(Port port, Attribute attribute) throws IllegalActionException {
+        super.setPortAttribute(port, attribute);
+        if (attribute.getName().equals("messageLength")) {
+            _messageLengths.put((IOPort)port, ((ScalarToken)((Parameter)attribute).getToken()).doubleValue());
+        }
+    }
+    
     /** Initialize the actor.
      *  @exception IllegalActionException If the superclass throws it.
      */
@@ -339,25 +379,6 @@ public class Bus extends MonitoredQuantityManager {
                     + ", initiating send to "
                     + receiver.getContainer().getFullName() + ": " + token);
         }
-    }
-
-    /** Set the messageLength for messages from a specific port. The port 
-     *  specifies this by a function call in the QuantityManager parameter.
-     *  "Bus.setParameters(1.1)"
-     *  @param messageLength The length of the message. The message is then delayed
-     *    by serviceTime * messageLength.
-     *  @return This.
-     *  @throws IllegalActionException Not thrown here.
-     */
-    public Bus set(double messageLength) throws IllegalActionException {
-        // The port is stored in _tempPort by IOPort in getQuantityManagers().
-        // if the _tempPort is null this method might still be called because the
-        // attribute is validated. In that case, just return "this", which then is 
-        // used to 
-        if (_tempPort != null) {
-            _messageLengths.put(_tempPort, (Double) messageLength);
-        }
-        return this;
     }
 
     /**

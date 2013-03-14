@@ -34,6 +34,7 @@ import java.util.List;
 import javax.swing.SwingUtilities;
 
 import ptolemy.actor.gui.style.StyleConfigurer;
+import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.gui.ComponentDialog;
 import ptolemy.gui.Query;
@@ -43,6 +44,7 @@ import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
+import ptolemy.kernel.util.StringAttribute;
 import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.util.CancelException;
 import ptolemy.util.MessageHandler;
@@ -322,13 +324,22 @@ public class EditParametersDialog extends ComponentDialog implements
         if (message != null) {
             _query.setMessage(message);
         }
+ 
+        _query.addChoice("class", "Class", new String[]{
+                "ptolemy.data.expr.Parameter",
+                "ptolemy.kernel.util.StringAttribute",
+                "ptolemy.actor.gui.ColorAttribute",
+                "ptolemy.actor.lib.qm.QuantityManagerAttribute"
+                }, "ptolemy.data.expr.Parameter", true);
+        
 
         _query.addLine("name", "Name", name);
         _query.addLine("default", "Default value", defValue);
-        _query.addLine("class", "Class", className);
-
+        
         ComponentDialog dialog = new ComponentDialog(_owner,
                 "Add a new parameter to " + _target.getFullName(), _query, null);
+        
+        String parameterClass = _query.getStringValue("class");
 
         // If the OK button was pressed, then queue a mutation
         // to create the parameter.
@@ -342,7 +353,7 @@ public class EditParametersDialog extends ComponentDialog implements
         if (dialog.buttonPressed().equals("OK") && !newName.equals("")) {
             String moml = "<property name=\"" + newName + "\" value=\""
                     + newDefValue + "\" class=\""
-                    + _query.getStringValue("class") + "\"/>";
+                    + parameterClass + "\"/>";
             _target.addChangeListener(this);
 
             MoMLChangeRequest request = new MoMLChangeRequest(this, _target,
@@ -350,8 +361,8 @@ public class EditParametersDialog extends ComponentDialog implements
             request.setUndoable(true);
             _target.requestChange(request);
         }
-
         return dialog;
+        
     }
 
     ///////////////////////////////////////////////////////////////////

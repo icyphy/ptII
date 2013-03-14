@@ -45,6 +45,7 @@ import ptolemy.actor.lib.Const;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.Port;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -86,12 +87,6 @@ public class CompositeQM extends TypedCompositeActor implements QuantityManager 
             NameDuplicationException {
         super(workspace);
         _initialize();
-    }
-
-    @Override
-    public void setTempPort(IOPort port) {
-        // TODO Auto-generated method stub
-
     }
 
     /** Construct a CompositeQM with a name and a container.
@@ -160,7 +155,29 @@ public class CompositeQM extends TypedCompositeActor implements QuantityManager 
                 this, receiver);
         return intermediateReceiver;
     }
+    
+    /** Return the list of Attributes that can be specified per port with default
+     *  values for the specified port. This class returns null.
+     *  @param container The container parameter.
+     *  @param The port.
+     *  @return List of attributes.
+     *  @exception IllegalActionException Thrown if attributeList could not be created.
+     */
+    public List<Attribute> getPortAttributeList(Parameter container, Port port)
+            throws IllegalActionException {
+        // TODO Auto-generated method stub
+        return null;
+    }
 
+    /** Set an attribute for a given port.
+     *  @param port The port. 
+     *  @param attribute The new attribute or the attribute containing a new value.
+     *  @exception IllegalActionException Thrown if attribute could not be updated.
+     */
+    public void setPortAttribute(Port container, Attribute attribute) throws IllegalActionException {
+        // Not implemented yet.
+    }
+    
     /** Nothing to do here. FIXME: should be deleted.
      */
     public Receiver getReceiver(Receiver receiver, IOPort port)
@@ -313,4 +330,5 @@ public class CompositeQM extends TypedCompositeActor implements QuantityManager 
     private HashMap<Const, Token> _tokens;
 
     private HashMap<Receiver, Const> _mappedConsts;
+    
 }

@@ -124,7 +124,7 @@ public class QuantityManagerMonitor extends TypedAtomicActor implements
         }
 
         double x = time;
-        double y = _quantityManagers.indexOf(qm);
+        double y = 0;//_quantityManagers.indexOf(qm);
         int actorDataset = _quantityManagers.indexOf(qm);
         if (event == null) {
             plot.addPoint(actorDataset, x, y, false);
@@ -163,7 +163,7 @@ public class QuantityManagerMonitor extends TypedAtomicActor implements
             for (QuantityManager qm : _quantityManagers) {
                 int idx = _quantityManagers.indexOf(qm);
                 plot.addLegend(idx, ((NamedObj) qm).getName());
-                plot.addPoint(idx, 0.0, idx, false);
+                plot.addPoint(idx, 0.0, /*idx*/0, false);
                 colors[idx] = ((MonitoredQuantityManager) qm).color.asColor();
             }
 

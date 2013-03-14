@@ -1,4 +1,4 @@
-/* This actor implements a Network Bus.
+/* This actor implements a MonitoredQuantityManager.
 
 @Copyright (c) 2010-2013 The Regents of the University of California.
 All rights reserved.
@@ -31,7 +31,9 @@ ENHANCEMENTS, OR MODIFICATIONS.
 package ptolemy.actor.lib.qm;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.IOPort;
@@ -43,7 +45,9 @@ import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.gui.ColorAttribute;
 import ptolemy.actor.lib.qm.QuantityManagerListener.EventType;
 import ptolemy.data.Token;
+import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.Port;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -97,7 +101,7 @@ public abstract class MonitoredQuantityManager extends TypedAtomicActor
         color = new ColorAttribute(this, "_color");
         color.setExpression("{1.0,0.0,0.0,1.0}");
         _listeners = new ArrayList();
-    }
+    } 
 
     /** Clone the object into the specified workspace.
      *  @param workspace The workspace for the new object.
@@ -124,6 +128,38 @@ public abstract class MonitoredQuantityManager extends TypedAtomicActor
         return intermediateReceiver;
     }
 
+    /** Return the list of Attributes that can be specified per port with default
+     *  values for the specified port. This base class returns null.
+     *  @param container The container parameter.
+     *  @param The port.
+     *  @return List of attributes.
+     *  @exception IllegalActionException Thrown if attributeList could not be created.
+     */
+    public List<Attribute> getPortAttributeList(Parameter container, Port port)
+            throws IllegalActionException {
+        // TODO Auto-generated method stub
+        return null;
+    }
+    
+    /** Set an attribute for a given port.
+     *  @param port The port. 
+     *  @param attribute The new attribute or the attribute containing a new value.
+     *  @exception IllegalActionException Thrown if attribute could not be updated.
+     */
+    public void setPortAttribute(Port container, Attribute attribute) throws IllegalActionException {
+        List<Attribute> list = _parameters.get(container);
+        if (list == null) {
+            list = new ArrayList<Attribute>();
+        }
+        
+        for (Attribute attr : list) {
+            if (attr.getName().equals(attribute.getName())) {
+                ((Parameter)attr).setToken(((Parameter)attribute).getToken());
+                break;
+            }
+        }
+    }
+    
     /** Add a quantity manager monitor to the list of listeners.
      *  @param monitor The quantity manager monitor.
      */
@@ -182,11 +218,9 @@ public abstract class MonitoredQuantityManager extends TypedAtomicActor
         super.attributeChanged(attribute);
     }
 
-    protected IOPort _tempPort = null;
-
-    public void setTempPort(IOPort port) {
-        _tempPort = port;
-    }
+    /** List of parameters per port.
+     */
+    protected HashMap<IOPort, List<Attribute>> _parameters;  
 
     /** Send token to receiver.
      *  @param receiver The receiver.

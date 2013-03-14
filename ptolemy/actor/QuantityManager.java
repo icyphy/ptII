@@ -29,7 +29,12 @@ ENHANCEMENTS, OR MODIFICATIONS.
  */
 package ptolemy.actor;
 
+import java.util.List;
+ 
 import ptolemy.data.Token;
+import ptolemy.data.expr.Parameter;
+import ptolemy.kernel.Port;
+import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 
 /** An interface for objects that can intervene in communication between actors.
@@ -59,6 +64,15 @@ public interface QuantityManager {
      */
     public abstract Receiver createIntermediateReceiver(Receiver receiver)
             throws IllegalActionException;
+    
+    /** Return the list of Attributes that can be specified per port with default
+     *  values for the specified port.
+     *  @param container The container parameter.
+     *  @param The port.
+     *  @return List of attributes.
+     *  @exception IllegalActionException Thrown if attributeList could not be created.
+     */
+    public List<Attribute> getPortAttributeList(Parameter container, Port port) throws IllegalActionException;
 
     /** Reset the QuantityManager.
      */
@@ -75,8 +89,13 @@ public interface QuantityManager {
      *  @exception IllegalActionException If the token cannot be sent.
      */
     public void sendToken(Receiver source, Receiver receiver, Token token)
-            throws IllegalActionException;
+            throws IllegalActionException; 
 
-    public void setTempPort(IOPort port);
+    /** Set an attribute for a given port.
+     *  @param port The port. 
+     *  @param attribute The new attribute or the attribute containing a new value.
+     *  @exception IllegalActionException Thrown if attribute could not be updated.
+     */
+    public void setPortAttribute(Port port, Attribute attribute) throws IllegalActionException;
 
 }
