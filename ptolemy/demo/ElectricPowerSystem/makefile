@@ -54,8 +54,7 @@ EXAMPLE_MODELS = \
 	GeneratorRegulatorProtector.xml \
 	GeneratorRegulatorProtectorWithBus.xml \
 	GeneratorTester.xml \
-	ElectricPowerSystem.xml \
-	ElectricPowerSystemWireless.xml
+	ElectricPowerSystem.xml
 
 OTHER_FILES_TO_BE_JARED = \
 	$(EXAMPLE_MODELS) \
