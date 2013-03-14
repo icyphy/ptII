@@ -1142,7 +1142,7 @@ public class PtidesDirector extends DEDirector {
                 PtidesEvent ptidesEvent = (PtidesEvent) event;
 
                 // Check if actor can be fired by putting token into receiver
-                // and accling prefire.
+                // and calling prefire.
 
                 List<PtidesEvent> sameTagEvents = new ArrayList<PtidesEvent>();
                 int i = 0;
