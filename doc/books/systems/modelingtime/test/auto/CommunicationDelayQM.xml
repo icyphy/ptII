@@ -19,7 +19,9 @@
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{351.15625, 274.181640625}">
     </property>
     <entity name="Bus" class="ptolemy.actor.lib.qm.Bus">
-        <property name="serviceTime" class="ptolemy.data.expr.Parameter" value="0.01">
+        <property name="serviceTimeMultiplicationFactor" class="ptolemy.data.expr.Parameter" value="0.01">
+        </property>
+        <property name="serviceTime" class="ptolemy.data.expr.Parameter" value="">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[343.0, 70.0]">
         </property>
