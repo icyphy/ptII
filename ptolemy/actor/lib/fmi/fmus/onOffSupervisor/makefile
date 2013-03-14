@@ -58,7 +58,8 @@ OTHER_FILES_TO_BE_JARED = \
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
-KRUFT = onOffSupervisor.fmu
+FMU = $(PTPACKAGE).fmu
+KRUFT = $(FMU)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
@@ -79,19 +80,33 @@ FMU_SRCS = \
 	src/model.png \
 	src/sources/* \
 
-all: jclass onOffSupervisor.fmu
+all: jclass $(FMU)
 
 
-install: jclass onOffSupervisor.fmu jars
-	@echo "Optionally run 'make update' to update the test/auto directory."
+FMU_DESTINATION = $(ROOT)/ptolemy/demo/ElectricPowerSystem/$(FMU)
+install: jclass $(FMU) jars
+	@echo "Optionally run 'make update' to update $(FMU_DESTINATION)."
 
-onOffSupervisor.fmu: $(FMU_SRCS)
+$(FMU): $(FMU_SRCS)
 	(cd src/sources; $(MAKE))
 
-# We don't check in onOffSupervisor.fmu because it will be different on each platform
-# Instead, run make update to update the test directory.
-update: onOffSupervisor.fmu
-	cp onOffSupervisor.fmu ../../test/auto/onOffSupervisor2.fmu 
+# We don't check in $(FMU) because it will be different
+# on each platform Instead, run make update to update the test
+# directory.
+rebuild: copy update
+
+update: $(FMU)
+	cp $(FMU) $(FMU_DESTINATION)
+
+# Copy the fmu to this directory and update it
+copy:
+	if [ -f "$(FMU_DESTINATION)" ]; then \
+		echo "Copying $(FMU_DESTINATION) to the current diretory"; \
+		cp $(FMU_DESTINATION) . ; \
+		echo "Updating the fmu for the current platform"; \
+		(cd src/sources; $(MAKE)) ; \
+	fi
+
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
