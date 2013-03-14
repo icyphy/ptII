@@ -48,7 +48,7 @@ PTCLASSJAR =
 # plotmlapplet pulls in the com/microstar/xml and util/ classes
 PTAUXALLJARS = \
 	Brewery/Brewery.jar \
-	ElectricPowerSystem/ElectricPowerSystem.jar
+	ElectricPowerSystem/ElectricPowerSystem.jar \
 	ExecDemos/ExecDemos.jar \
 	FuelSystem/FuelSystem.jar
 
