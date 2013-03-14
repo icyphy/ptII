@@ -172,6 +172,7 @@ public class JCanvas extends JComponent implements Printable {
         format.setPaper(paper);
         print(graphics, format, 0);
         ImageIO.write(bufferedImage, formatName, out);
+        out.close();
         graphics.dispose();
     }
 
