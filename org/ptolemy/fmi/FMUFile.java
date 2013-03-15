@@ -119,7 +119,16 @@ public class FMUFile {
                 library = topDirectory + File.separator + "binaries"
                         + File.separator + osName + bitWidth + File.separator
                         + fmiModelDescription.modelIdentifier + extension;
-                canonicalFile = new File(library).getCanonicalFile();
+                File canonicalFile2 = new File(library).getCanonicalFile();
+                if (canonicalFile2.exists()) {
+                    System.out.println("Could not find " + canonicalFile
+                            + " but " + canonicalFile2 + "exists.  "
+                            + "This is probably OpenModelica 1.8.1, which uses dwarwin-x86_64");
+                    canonicalFile = canonicalFile2;
+                } else {
+                    System.out.println(canonicalFile + " does not exist"
+                            + " also tried " + canonicalFile2 + " for OpenModelica 1.8.1");
+                }
             }
         }
         String canonicalPath = canonicalFile.getCanonicalPath();
