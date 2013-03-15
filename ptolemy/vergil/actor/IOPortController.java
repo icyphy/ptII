@@ -473,21 +473,27 @@ public class IOPortController extends AttributeController {
                             qmStringBuffer.append(((NamedObj) qmList.get(j))
                                     .getName());
                         }
-                        info.setExpression("QM: " + qmStringBuffer.toString());
+                        info.setExpression("QM = {" + qmStringBuffer.toString() + "}");
                     } else {
-
+                        // No QuantityManager in use anymore, clean up _showInfo
+                        // string.
+                        
                         // Use Attribute here instead of StringAttribute since
                         // the attribute could be e.g. a StringParameter, which 
                         // is an Attribute but not a StringAttribute                   
                         Attribute info = (Attribute) port
-                                .getAttribute("_showInfo");
-                        if (! (info instanceof StringParameter)) {
-                            // The ontologies package uses a _showInfo 
-                            // StringParameter for port annotations.  
-                            // Leave these annotations on the model.  
-                            // Other annotations are removed. 
-                            // (Not sure of original reason why?)
-                            port.removeAttribute(info);
+                                .getAttribute("_showInfo"); 
+                        if (info != null && 
+                                info instanceof StringAttribute) {
+                            String infoString = ((StringAttribute)info).getValueAsString();
+                            if (infoString.contains("QM = {")) {
+                                int start = infoString.indexOf("QM = {");
+                                int end = infoString.indexOf("}", start);
+                                String qmInfo = infoString.substring(start, end + 1);
+                                infoString = infoString.replace(qmInfo, "");
+                                infoString = infoString.trim();
+                                ((StringAttribute)info).setExpression(infoString);
+                            }
                         }
                     }
                 }
