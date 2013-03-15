@@ -65,6 +65,7 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.ValueListener;
 import ptolemy.kernel.util.Workspace;
+import ptolemy.util.MessageHandler;
 
 ///////////////////////////////////////////////////////////////////
 //// Variable
@@ -636,6 +637,8 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
         String tokenString;
         if (value == null) {
             tokenString = "null";
+        } else if (isStringMode()){
+            tokenString = ((StringToken)value).stringValue();
         } else {
             tokenString = value.toString();
         }
@@ -826,18 +829,10 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
         // Warn if there are variables that depend on this one.
         if (container != previousContainer && previousContainer != null
                 && _valueListeners != null && _valueListeners.size() > 0) {
-            // In the short term, print out a stack trace if we get to here.
-            new IllegalActionException(this,
-                    "Warning: in Variable.setContainer, one or more variables depend on "
-                            + getName() + ", which \" has "
-                            + _valueListeners.size() + " listener(s): " + ": "
-                            + _valueListeners.get(0)).printStackTrace();
-            //             if (!MessageHandler.yesNoQuestion("WARNING: There are variables depending on " + getName() + ". Continue?")) {
-            //                 // Cancel.
-            //                 // Throw an exception that includes the name of the variable and the first listener.
-            //                 throw new IllegalActionException(this, "Cancelled change of container because the variable \""
-            //                         + getName() + "\" has " + _valueListeners.size() + " listener(s): " + ": " + _valueListeners.get(0));
-            //             }
+            if (!MessageHandler.yesNoQuestion("WARNING: There are variables depending on " + getName() + ". Continue?")) {
+                // Cancel.
+                throw new IllegalActionException(this, "Cancelled change of container.");
+            }
         }
 
         super.setContainer(container);
@@ -1658,10 +1653,12 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
         // to itself.
         if (_dependencyLoop && _needsEvaluation) {
             _dependencyLoop = false;
+            /** FIXME
             throw new IllegalActionException("There is a dependency loop"
                     + " where " + getFullName() + " directly or indirectly"
                     + " refers to itself in its expression: "
                     + _currentExpression);
+                    */
         }
 
         _dependencyLoop = true;
@@ -1776,7 +1773,7 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
                         // method will simply return false. This is probably reasonable
                         // since it allows opening models even if they have error
                         // conditions.
-                        //handleModelError(this, ex);
+                        // handleModelError(this, ex);
                         // Thinking that this was the wrong behavior, I tried the
                         // following. However, this resulted in an exception being
                         // thrown when deleting a parameter that references another
@@ -1784,16 +1781,8 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
                         // there is no error handler, so the above line correctly
                         // ignores the error in evaluation.
                         if (!handleModelError(this, ex)) {
-                            // In the short term, warn about errors opening models.
-                            // There are a bunch of things that need to be fixed, but there are also
-                            // legitimate models such as ptolemy/actor/parameters/test/auto/ParameterSetTest.xml
-                            // that refer to parameter not present when the model is parsed.
-                            new IllegalActionException(this, ex,
-                                    "Warning:, there was a problem propagating \""
-                                            + getName() + "\".")
-                                    .printStackTrace();
-                            //result = new LinkedList();
-                            //result.add(ex);
+                            result = new LinkedList();
+                            result.add(ex);
                         }
                     } catch (IllegalActionException ex2) {
                         result = new LinkedList();
@@ -1841,7 +1830,21 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
                 // Avoid doing this more than once if the the value
                 // dependent appears more than once.  This also has
                 // the advantage of stopping circular reference looping.
+                // Also, remove the listener from the _valueListeners list
+                // if it is no longer in scope.
                 if (listener instanceof Variable) {
+                    try {
+                        if (((Variable)listener).getVariable(getName()) != this) {
+                            // This variable is no longer in the scope of the listener.
+                            listeners.remove();
+                            continue;
+                        }
+                    } catch (IllegalActionException e) {
+                        // This variable is no longer in the scope of the listener,
+                        // and whatever has replaced it can't be evaluated.
+                        listeners.remove();
+                        continue;
+                    }
                     if (((Variable) listener)._needsEvaluation) {
                         List additionalErrors = ((Variable) listener)
                                 ._propagate();
