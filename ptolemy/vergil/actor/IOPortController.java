@@ -1,6 +1,6 @@
 /* The node controller for ports contained in entities.
 
- Copyright (c) 1998-2013 The Regents of the University of California.
+ Copyright (c) 1998-2012 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -34,6 +34,7 @@ import java.awt.geom.Ellipse2D;
 import java.awt.geom.Line2D;
 import java.awt.geom.Path2D;
 import java.awt.geom.Rectangle2D;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.SwingConstants;
@@ -44,7 +45,7 @@ import ptolemy.actor.PublisherPort;
 import ptolemy.actor.SubscriberPort;
 import ptolemy.actor.gui.ColorAttribute;
 import ptolemy.actor.gui.PtolemyPreferences;
-import ptolemy.actor.lib.qm.CompositeQM;
+import ptolemy.actor.lib.qm.CompositeQM; 
 import ptolemy.actor.lib.qm.MonitoredQuantityManager;
 import ptolemy.actor.parameters.ParameterPort;
 import ptolemy.data.ArrayToken;
@@ -212,7 +213,7 @@ public class IOPortController extends AttributeController {
 
         // Ensure that the port rotation is one of
         // {-270, -180, -90, 0, 90, 180, 270}.
-        portRotation = 90 * (portRotation / 90 % 4);
+        portRotation = 90 * ((portRotation / 90) % 4);
 
         // Finally, check for horizontal or vertical flipping.
         try {
@@ -334,6 +335,8 @@ public class IOPortController extends AttributeController {
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
 
+    List<MonitoredQuantityManager> _qmList;
+
     /**
      * Render the ports of components as triangles. Multiports are rendered
      * hollow, while single ports are rendered filled in black. ParameterPort
@@ -441,41 +444,50 @@ public class IOPortController extends AttributeController {
             // Handle quantity managers.
             try {
                 if (port instanceof IOPort) {
-                    List qmList = ((IOPort) port).getQuantityManagers();
-                    if (qmList != null && qmList.size() > 0) {
-                        Object object = null;
-                        if (((IOPort) port).isOutput()) {
-                            object = qmList.get(0);
-                        } else {
-                            object = qmList.get(qmList.size() - 1);
-                        }
-                        ColorAttribute color = null;
-                        if (object instanceof MonitoredQuantityManager) {
-                            color = ((MonitoredQuantityManager) object).color;
-                        } else if (object instanceof CompositeQM) {
-                            color = ((CompositeQM) object).color;
-                        }
-                        fill = color.asColor();
 
-                        StringAttribute info = (StringAttribute) port
-                                .getAttribute("_showInfo");
-                        if (info == null) {
-                            info = new StringAttribute(port, "_showInfo");
-                        }
+                    List qmList;
+                    //port.workspace().getReadAccess();
+                    List list = ((IOPort) port).getQuantityManagers();
+                    if (list != null) {
+                        qmList = new ArrayList(list);
+                        //port.workspace().doneReading();
 
-                        StringBuffer qmStringBuffer = new StringBuffer();
-                        for (int j = 0; j < qmList.size(); j++) {
-                            if (qmStringBuffer.length() > 0) {
-                                qmStringBuffer.append(", ");
+                        if (qmList != _qmList && qmList.size() > 0) {
+
+                            _qmList = qmList;
+
+                            Object object = null;
+                            if (((IOPort) port).isOutput()) {
+                                object = qmList.get(0);
+                            } else {
+                                object = qmList.get(qmList.size() - 1);
                             }
-                            qmStringBuffer.append(((NamedObj) qmList.get(j))
-                                    .getName());
+                            ColorAttribute color = null;
+                            if (object instanceof MonitoredQuantityManager) {
+                                color = ((MonitoredQuantityManager)object).color; 
+                            } else if (object instanceof CompositeQM) {
+                                color = ((CompositeQM) object).color;
+                            } 
+                            fill = color.asColor();
+
+                            StringAttribute info = (StringAttribute) port
+                                    .getAttribute("_showInfo");
+                            if (info == null) {
+                                info = new StringAttribute(port, "_showInfo");
+                            }
+
+                            StringBuffer qmStringBuffer = new StringBuffer();
+                            for (int j = 0; j < qmList.size(); j++) {
+                                if (qmStringBuffer.length() > 0) {
+                                    qmStringBuffer.append(", ");
+                                }
+                                qmStringBuffer
+                                        .append(((NamedObj) qmList.get(j))
+                                                .getName());
+                            }
+                            info.setExpression("QM: "
+                                    + qmStringBuffer.toString());
                         }
-                        info.setExpression("QM: " + qmStringBuffer.toString());
-                    } else {
-                        StringAttribute info = (StringAttribute) port
-                                .getAttribute("_showInfo");
-                        port.removeAttribute(info);
                     }
                 }
             } catch (IllegalActionException e1) {
@@ -485,13 +497,12 @@ public class IOPortController extends AttributeController {
                 // Ignore. This exception should be thrown because before adding the
                 // new ColorAttribute any previous attribute with the same name is
                 // removed.
-                e.printStackTrace();
             }
 
             ColorAttribute colorAttribute;
             try {
-                colorAttribute = (ColorAttribute) port.getAttribute("_color",
-                        ColorAttribute.class);
+                colorAttribute = (ColorAttribute) (port.getAttribute("_color",
+                        ColorAttribute.class));
                 if (colorAttribute != null) {
                     Color color = colorAttribute.asColor();
                     fill = color;
@@ -512,8 +523,8 @@ public class IOPortController extends AttributeController {
             //ActorGraphModel model = (ActorGraphModel) getController()
             //        .getGraphModel();
 
-            int portRotation = getCardinality(port);
-            int direction = getDirection(portRotation);
+            int portRotation = _getCardinality(port);
+            int direction = _getDirection(portRotation);
 
             // Transform the port shape so it is facing the right way.
             double rotation = portRotation;
@@ -533,8 +544,8 @@ public class IOPortController extends AttributeController {
                     if (!tipText.equals(displayName)) {
                         tipText = displayName + " (" + tipText + ")";
                     }
-                    StringAttribute _explAttr = (StringAttribute) port
-                            .getAttribute("_explanation");
+                    StringAttribute _explAttr = (StringAttribute) (port
+                            .getAttribute("_explanation"));
 
                     if (_explAttr != null) {
                         tipText = _explAttr.getExpression();
@@ -583,8 +594,8 @@ public class IOPortController extends AttributeController {
                                     tipText = displayName + " (" + tipText
                                             + ")";
                                 }
-                                StringAttribute _explAttr = (StringAttribute) port
-                                        .getAttribute("_explanation");
+                                StringAttribute _explAttr = (StringAttribute) (port
+                                        .getAttribute("_explanation"));
 
                                 if (_explAttr != null) {
                                     tipText = _explAttr.getExpression();
@@ -620,32 +631,32 @@ public class IOPortController extends AttributeController {
 
                         if (direction == SwingConstants.EAST) {
                             startX = x + width;
-                            startY = y + height / 2;
-                            endX = startX + extent
-                                    * MULTIPORT_CONNECTION_SPACING;
-                            endY = startY + extent
-                                    * MULTIPORT_CONNECTION_SPACING;
+                            startY = y + (height / 2);
+                            endX = startX
+                                    + (extent * MULTIPORT_CONNECTION_SPACING);
+                            endY = startY
+                                    + (extent * MULTIPORT_CONNECTION_SPACING);
                         } else if (direction == SwingConstants.WEST) {
                             startX = x;
-                            startY = y + height / 2;
-                            endX = startX - extent
-                                    * MULTIPORT_CONNECTION_SPACING;
-                            endY = startY - extent
-                                    * MULTIPORT_CONNECTION_SPACING;
+                            startY = y + (height / 2);
+                            endX = startX
+                                    - (extent * MULTIPORT_CONNECTION_SPACING);
+                            endY = startY
+                                    - (extent * MULTIPORT_CONNECTION_SPACING);
                         } else if (direction == SwingConstants.NORTH) {
-                            startX = x + width / 2;
+                            startX = x + (width / 2);
                             startY = y;
-                            endX = startX - extent
-                                    * MULTIPORT_CONNECTION_SPACING;
-                            endY = startY - extent
-                                    * MULTIPORT_CONNECTION_SPACING;
+                            endX = startX
+                                    - (extent * MULTIPORT_CONNECTION_SPACING);
+                            endY = startY
+                                    - (extent * MULTIPORT_CONNECTION_SPACING);
                         } else {
-                            startX = x + width / 2;
+                            startX = x + (width / 2);
                             startY = y + height;
-                            endX = startX + extent
-                                    * MULTIPORT_CONNECTION_SPACING;
-                            endY = startY + extent
-                                    * MULTIPORT_CONNECTION_SPACING;
+                            endX = startX
+                                    + (extent * MULTIPORT_CONNECTION_SPACING);
+                            endY = startY
+                                    + (extent * MULTIPORT_CONNECTION_SPACING);
                         }
 
                         Line2D line = new Line2D.Double(startX, startY, endX,
