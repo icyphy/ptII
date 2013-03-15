@@ -32,7 +32,9 @@ bits=64
 case "`uname -m`" in
      *64)      bits=64;;
      *32)      bits=32;;
-     *i[3-6]86) bits=32;;
+     *i[3-6]86) if [ "$arch" != "darwin" ]; then
+                    bits=32
+                fi ;;
 esac
 
 # Uncomment the next line to force building 32-bit
