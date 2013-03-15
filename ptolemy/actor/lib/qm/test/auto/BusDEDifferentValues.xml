@@ -4,7 +4,7 @@
 <entity name="BusDEDifferentValues" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={314, 42, 934, 634}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={79, 150, 934, 634}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
     </property>
@@ -27,7 +27,7 @@
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="3">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 50.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{43.0, 50.0}">
         </property>
     </property>
     <entity name="DiscreteClock" class="ptolemy.actor.lib.DiscreteClock">
@@ -42,9 +42,11 @@
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
-            <property name="_showInfo" class="ptolemy.kernel.util.StringAttribute" value="QM: Bus">
+            <property name="qm" class="ptolemy.actor.lib.qm.QuantityManagerAttribute" value="Bus">
+                <property name="messageLength" class="ptolemy.data.expr.Parameter" value="0.1">
+                </property>
             </property>
-            <property name="qm" class="ptolemy.data.expr.Parameter" value="Bus.set(0.1)">
+            <property name="_showInfo" class="ptolemy.kernel.util.StringAttribute" value="QM: Bus">
             </property>
         </port>
     </entity>
@@ -66,9 +68,11 @@
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
-            <property name="_showInfo" class="ptolemy.kernel.util.StringAttribute" value="QM: Bus">
+            <property name="qm" class="ptolemy.actor.lib.qm.QuantityManagerAttribute" value="Bus">
+                <property name="messageLength" class="ptolemy.data.expr.Parameter" value="2">
+                </property>
             </property>
-            <property name="qm" class="ptolemy.data.expr.Parameter" value="Bus.set(2.0)">
+            <property name="_showInfo" class="ptolemy.kernel.util.StringAttribute" value="QM: Bus">
             </property>
         </port>
     </entity>
@@ -156,7 +160,9 @@
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="qm" class="ptolemy.data.expr.Parameter" value="Bus">
+            <property name="qm" class="ptolemy.actor.lib.qm.QuantityManagerAttribute" value="Bus">
+                <property name="messageLength" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
             </property>
             <property name="_showInfo" class="ptolemy.kernel.util.StringAttribute" value="QM: Bus">
             </property>
@@ -171,7 +177,9 @@
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="qm" class="ptolemy.data.expr.Parameter" value="Bus">
+            <property name="qm" class="ptolemy.actor.lib.qm.QuantityManagerAttribute" value="Bus">
+                <property name="messageLength" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
             </property>
             <property name="_showInfo" class="ptolemy.kernel.util.StringAttribute" value="QM: Bus">
             </property>
