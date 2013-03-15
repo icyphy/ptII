@@ -278,9 +278,8 @@ public class MetroIIDirector extends Director {
         if (!_stopRequested) {
             LinkedList<Event.Builder> globalMetroIIEventList = new LinkedList<Event.Builder>();
 
-            System.out.println("============================== Iteration "
-                    + Integer.toString(_iterationCount)
-                    + " ==============================");
+            System.out.println("==== ==== ==== ==== ==== ==== ==== Iteration "
+                    + Integer.toString(_iterationCount));
             // Phase 1: base model execution
             System.out.println("Phase 1:");
             for (StartOrResumable actor : _actorList) {

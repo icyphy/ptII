@@ -35,6 +35,7 @@ import net.jimblackler.Utils.Collector;
 import net.jimblackler.Utils.ResultHandler;
 import net.jimblackler.Utils.ThreadedYieldAdapter;
 import net.jimblackler.Utils.YieldAdapterIterable;
+import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedCompositeActor;
@@ -104,19 +105,8 @@ public class MetroIICompositeActor extends TypedCompositeActor implements
                             "Cannot fire a non-opaque actor.");
                 }
 
-                // Need to read from port parameters
-                // first because in some domains (e.g. SDF)
-                // the behavior of the schedule might depend on rate variables
-                // set from ParameterPorts.
-                for (Iterator<?> inputPorts = inputPortList().iterator(); inputPorts
-                        .hasNext() && !_stopRequested;) {
-                    IOPort p = (IOPort) inputPorts.next();
-
-                    if (p instanceof ParameterPort) {
-                        ((ParameterPort) p).getParameter().update();
-                    }
-                }
-
+                _transferPortParameterInputs();
+                
                 Director _director = getDirector();
                 // Use the local director to transfer inputs from
                 // everything that is not a port parameter.
@@ -147,12 +137,7 @@ public class MetroIICompositeActor extends TypedCompositeActor implements
                 }
 
                 // Use the local director to transfer outputs.
-                Iterator<?> outports = outputPortList().iterator();
-
-                while (outports.hasNext() && !_stopRequested) {
-                    IOPort p = (IOPort) outports.next();
-                    _director.transferOutputs(p);
-                }
+                _director.transferOutputs();
             } finally {
                 _workspace.doneReading();
             }

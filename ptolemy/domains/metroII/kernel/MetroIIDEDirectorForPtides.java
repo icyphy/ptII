@@ -43,6 +43,7 @@ import ptolemy.actor.FiringEvent;
 import ptolemy.domains.de.kernel.DEDirector;
 import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event;
 import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event.Builder;
+import ptolemy.domains.ptides.kernel.PtidesEvent;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -50,14 +51,13 @@ import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
 
-public class MetroIIDEDirector extends DEDirector implements
+public class MetroIIDEDirectorForPtides extends DEDirector implements
         MetroIIEventHandler {
 
-    public MetroIIDEDirector(CompositeEntity container, String name)
+    public MetroIIDEDirectorForPtides(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         // TODO Auto-generated constructor stub
-        setEmbedded(false);
     }
 
     /** Clone the object into the specified workspace. The new object
@@ -69,7 +69,7 @@ public class MetroIIDEDirector extends DEDirector implements
      *  @return The new Attribute.
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        MetroIIDEDirector newObject = (MetroIIDEDirector) super
+        MetroIIDEDirectorForPtides newObject = (MetroIIDEDirectorForPtides) super
                 .clone(workspace);
         newObject._nameToActor = (Hashtable<String, Actor>) _nameToActor
                 .clone();
@@ -130,10 +130,16 @@ public class MetroIIDEDirector extends DEDirector implements
         }
     }
 
-    protected Pair<Actor, Integer> _checkNextActorToFire()
+    protected Pair<PtidesEvent, Integer> _checkNextEventToFire()
             throws IllegalActionException {
         // Find the next actor to be fired.
-        Actor actorToFire = _getNextActorToFire();
+        PtidesEvent ptidesEvent = _getNextEventToFire();
+        Actor actorToFire;
+        if (ptidesEvent != null) {
+            actorToFire = ptidesEvent.actor();
+        } else {
+            actorToFire = null;
+        }
 
         // Check whether the actor to be fired is null.
         // -- If the actor to be fired is null,
@@ -175,7 +181,7 @@ public class MetroIIDEDirector extends DEDirector implements
             // Simply return.
             // Since we are now actually stopping the firing, we can set this false.
             _stopFireRequested = false;
-            return new Pair(actorToFire, -1);
+            return new Pair(ptidesEvent, -1);
         }
 
         // NOTE: Here we used to check to see whether
@@ -195,7 +201,7 @@ public class MetroIIDEDirector extends DEDirector implements
             _stopFireRequested = false;
             return;
              */
-            return new Pair(actorToFire, 1);
+            return new Pair(ptidesEvent, 1);
         }
 
         if (_debugging) {
@@ -238,7 +244,7 @@ public class MetroIIDEDirector extends DEDirector implements
 
             _debug(new FiringEvent(this, actorToFire, FiringEvent.BEFORE_FIRE));
 
-            return new Pair(actorToFire, 0);
+            return new Pair(ptidesEvent, 0);
 
             //                if (actorToFire instanceof MetroIIEventHandler) {
             //                    ((MetroIIEventHandler) actorToFire).getfire(resultHandler);
@@ -280,7 +286,7 @@ public class MetroIIDEDirector extends DEDirector implements
                 return new Pair(null, 0);
             }
 
-            return new Pair(actorToFire, 0);
+            return new Pair(ptidesEvent, 0);
             //                Event.Builder eb = _makeEventBuilder(actorToFire.getFullName(),
             //                        Event.Type.BEGIN);
             //                events.add(eb);
@@ -360,77 +366,92 @@ public class MetroIIDEDirector extends DEDirector implements
                         + getModelTime() + "  with microstep as " + _microstep);
             }
 
-            ArrayList<Actor> actorList = new ArrayList<Actor>();
+            ArrayList<PtidesEvent> eventList = new ArrayList<PtidesEvent>();
 
             // NOTE: This fire method does not call super.fire()
             // because this method is very different from that of the super class.
             // A BIG while loop that handles all events with the same tag.
-            while (true) {
-                Pair<Actor, Integer> actorAndState = _checkNextActorToFire();
-                int result = actorAndState.second;
+            do {
+                System.out.println("========= " + this.getModelTime()
+                        + ": new iteration of " + this.getName() + " director");
 
-                assert result <= 1 && result >= -1;
-                if (result == 1) {
-                    continue;
-                } else if (result == -1) {
-                    _noActorToFire();
-                    break;
-                    // return;
-                } // else if 0, keep executing
-                  //if (!actorList.contains(actorAndState.first)) {
-                actorList.add(actorAndState.first);
-                do {
-                    ArrayList<Actor> firingActorList = new ArrayList<Actor>();
-                    _events.clear();
-                    for (Actor actor : actorList) {
-                        StartOrResumable metroActor = _actorDictionary.get(actor
-                                .getFullName());
-                        LinkedList<Event.Builder> metroIIEventList = new LinkedList<Event.Builder>();
-                        metroActor.startOrResume(metroIIEventList);
-                        
-                        // Check if the actor has reached the end of postfire()
-                        if (metroIIEventList.size() == 1
-                                && metroIIEventList.get(0).getName()
-                                        .contains("POSTFIRE_END")) {
-                            // The actor has reached the end of postfire()
-                            //FIXME: the debugging info is late 
-                            if (_debugging) {
-                                _debug(new FiringEvent(this, actor,
-                                        FiringEvent.AFTER_FIRE));
+                while (true) {
+                    Pair<PtidesEvent, Integer> eventAndState = _checkNextEventToFire();
 
-                                _debug(new FiringEvent(this, actor,
-                                        FiringEvent.BEFORE_POSTFIRE));
+                    int result = eventAndState.second;
 
-                                _debug(new FiringEvent(this, actor,
-                                        FiringEvent.AFTER_POSTFIRE));
-                            }
+                    assert result <= 1 && result >= -1;
+                    if (result == 1) {
+                        continue;
+                    } else if (result == -1) {
+                        _noActorToFire();
+                        break;
+                        // return;
+                    } // else if 0, keep executing
+                      //if (!actorList.contains(actorAndState.first)) {
+                    eventList.add(eventAndState.first);
+                    System.out.println("Added: "
+                            + eventAndState.first.actor().getName());
+                    System.out.println("Time: " + getModelTime());
+                    //}
+                    // after actor firing, the subclass may wish to perform some book keeping
+                    // procedures. However in this class the following method does nothing.
+                    _actorFired();
 
-                            metroIIEventList.get(0)
-                                    .setStatus(Event.Status.NOTIFIED);
-                            metroActor.startOrResume(metroIIEventList);
-                            
-                            assert metroIIEventList.size() == 1
-                                    && metroIIEventList.get(0).getName()
-                                            .contains("PREFIRE_BEGIN");
-                        } else {
-                            firingActorList.add(actor);
-                            _events.addAll(metroIIEventList);
+                    if (!_checkForNextEvent()) {
+                        break;
+                    } // else keep executing in the current iteration
+                } // Close the BIG while loop.
+
+                System.out.println("========= Actors ready to fire: ");
+                for (PtidesEvent ptidesEvent : eventList) {
+                    System.out.println(ptidesEvent.actor().getName());
+                }
+
+                ArrayList<PtidesEvent> firingEventList = new ArrayList<PtidesEvent>();
+                _events.clear();
+                for (PtidesEvent ptidesEvent : eventList) {
+                    Actor actor = ptidesEvent.actor();
+
+                    _setLogicalTime(ptidesEvent);
+
+                    StartOrResumable metroActor = _actorDictionary.get(actor
+                            .getFullName());
+                    LinkedList<Event.Builder> metroIIEventList = new LinkedList<Event.Builder>();
+                    metroActor.startOrResume(metroIIEventList);
+
+                    if (metroIIEventList.size() == 1
+                            && metroIIEventList.get(0).getName()
+                                    .contains("POSTFIRE_END")) {
+                        if (_debugging) {
+                            _debug(new FiringEvent(this, actor,
+                                    FiringEvent.AFTER_FIRE));
+
+                            _debug(new FiringEvent(this, actor,
+                                    FiringEvent.BEFORE_POSTFIRE));
+
+                            _debug(new FiringEvent(this, actor,
+                                    FiringEvent.AFTER_POSTFIRE));
                         }
+
+                        metroIIEventList.get(0)
+                                .setStatus(Event.Status.NOTIFIED);
+                        metroActor.startOrResume(metroIIEventList);
+
+                        assert metroIIEventList.size() == 1
+                                && metroIIEventList.get(0).getName()
+                                        .contains("PREFIRE_BEGIN");
+                    } else {
+                        firingEventList.add(ptidesEvent);
+                        _events.addAll(metroIIEventList);
                     }
-                    actorList = firingActorList;
-                    resultHandler.handleResult(_events);
+                    
+                    _resetLogicalTime(); 
+                }
+                eventList = firingEventList;
+                resultHandler.handleResult(_events);
 
-                } while (actorList.size() > 0);
-                //}
-                // after actor firing, the subclass may wish to perform some book keeping
-                // procedures. However in this class the following method does nothing.
-                _actorFired();
-
-                if (!_checkForNextEvent()) {
-                    break;
-                } // else keep executing in the current iteration
-            } // Close the BIG while loop.
-
+            } while (eventList.size() > 0);
             // Since we are now actually stopping the firing, we can set this false.
             _stopFireRequested = false;
 
@@ -448,6 +469,22 @@ public class MetroIIDEDirector extends DEDirector implements
         // TODO Auto-generated method stub
         return null;
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                       protected methods                   ////
+
+    protected PtidesEvent _getNextEventToFire() throws IllegalActionException {
+        assert false;
+        return null;
+    }
+
+    protected void _setLogicalTime(PtidesEvent ptidesEvent) {
+        assert false;
+    }
+
+    protected void _resetLogicalTime() {
+    }
+
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
