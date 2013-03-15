@@ -35,7 +35,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
-/**
+/** 
    This director executes OpenModelica actor in its own threads.
    Creating and starting the threads are at the same time with
    starting the OpenModelica Compiler(OMC) which occurred in the
@@ -67,7 +67,7 @@ public class OpenModelicaDirector extends ContinuousDirector {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////
+    ////                         public methods                ////
 
     /** Clone the object into the specified workspace. The new object is
      *  <i>not</i> added to the directory of that workspace (you must do this
@@ -129,7 +129,7 @@ public class OpenModelicaDirector extends ContinuousDirector {
         }
     }
 
-    /** Invoke the wrapup() of the super class.
+    /** Invoke the wrapup() of the super class. 
      *  Leave and quit OpenModelica environment.
      *  @exception IllegalActionException If the wrapup() of
      *  OpenModelica actor throws it.
@@ -141,7 +141,6 @@ public class OpenModelicaDirector extends ContinuousDirector {
         } catch (ConnectException ex) {
             String loggerInfo = "OpenModelica Server quited!";
             _omcLogger.getInfo(loggerInfo);
-            throw new IllegalActionException(loggerInfo);
         }
     }
 

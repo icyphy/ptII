@@ -234,15 +234,23 @@ public class OMCProxy implements IOMCProxy {
     /** Return the variables in the simulation file. 
      *  Read a result file and return a matrix corresponding to the variables and size given.
      *  @param fileName The executable result file of simulation in CSV format.
+     *  @param modelName Name of the model which should be built.
      *  @throws ConnectException If commands couldn't
      *   be sent to the (OpenModelica Compiler)OMC. 
+     * @throws IllegalActionException 
      */
-    public String displaySimulationResult(String fileName)
-            throws ConnectException {
+    public String displaySimulationResult(String fileName, String modelName)
+            throws ConnectException, IllegalActionException {
+
+        //FIXME loadFile function is redundant here. Calling loadFile and loadModel once should be enough.
+        loadFile(fileName, modelName);
+
+        System.out
+                .println("---Value of variables/parameters in the simulation result file---");
 
         // Return the variables in the simulation result file.
         CompilerResult readSimulationResultVars = sendCommand("readSimulationResultVars(\""
-                + fileName + "_res.csv\")");
+                + modelName + "_res.csv\")");
 
         String variableList = readSimulationResultVars.getFirstResult();
 
@@ -271,7 +279,8 @@ public class OMCProxy implements IOMCProxy {
 
             // Read a result file and return a matrix corresponding to the variables and given size.
             readSimulationResult = sendCommand("readSimulationResult(\""
-                    + fileName + "_res.csv\",{" + variableList + "}," + 2 + ")");
+                    + modelName + "_res.csv\",{" + variableList + "}," + 2
+                    + ")");
 
             if (simulationResult == null)
                 simulationResult = "Value of " + variableList + " is: "
@@ -574,13 +583,12 @@ public class OMCProxy implements IOMCProxy {
                 '"', ' ').trim();
 
         // Save file path in the string array for invoking main() of PxgraphApplication.
-        if (fileNamePrefix.compareTo("") == 0) {
+        if (fileNamePrefix.compareTo("") == 0)
             _pltPath[0] = _openModelicaWorkingDirectory + "/" + modelName
                     + "_res.plt";
-        } else {
+        else
             _pltPath[0] = _openModelicaWorkingDirectory + "/" + fileNamePrefix
                     + "_res.plt";
-        }
 
         PxgraphApplication.main(_pltPath);
     }
@@ -747,85 +755,153 @@ public class OMCProxy implements IOMCProxy {
             throw new ConnectException(loggerInfo);
         }
 
-        if (processingType.compareTo("batch") == 0) {
+        if (!outputFormat.equals("empty")) {
 
-            loggerInfo = "Running non-interactive simulation.";
-            _omcLogger.getInfo(loggerInfo);
+            if (processingType.compareTo("batch") == 0) {
 
-            switch (getOs()) {
-            case WINDOWS:
-                commands = _temp + _username + "/OpenModelica/" + modelName
-                        + ".exe";
-                break;
-            case UNIX:
-                commands = _temp + "/" + _username + "/OpenModelica/"
-                        + modelName;
-                break;
-            case MAC:
-                commands = _temp + _username + "/OpenModelica/" + modelName;
-                break;
-            }
-
-            //FIXME 
-            System.out.println("COMMAND " + commands);
-
-            // Run the executable result file of buildModel("command"). 
-            Runtime.getRuntime().exec(commands, _environmentalVariables,
-                    _workDir);
-
-            // When users do not select File Name Prefix as the name of executable result file
-            // and Model Name is set as the name of executable result file.
-            if (fileNamePrefix.compareTo("") == 0) {
-                loggerInfo = "Non-interactive simulation of " + modelName
-                        + " is done successfuly.";
+                loggerInfo = "Running non-interactive simulation.";
                 _omcLogger.getInfo(loggerInfo);
-            } else if (fileNamePrefix.compareTo("") < 0
-                    || fileNamePrefix.compareTo("") > 0) {
-                // When users select File Name Prefix as the name of executable result file.
-                loggerInfo = "Non-interactive simulation of " + fileNamePrefix
-                        + " is done successfuly.";
+
+                if (fileNamePrefix.compareTo("") == 0) {
+                    switch (getOs()) {
+                    case WINDOWS:
+                        commands = _temp + _username + "/OpenModelica/"
+                                + modelName + ".exe";
+                        break;
+                    case UNIX:
+                        commands = _temp + "/" + _username + "/OpenModelica/"
+                                + modelName;
+                        break;
+                    case MAC:
+                        commands = _temp + _username + "/OpenModelica/"
+                                + modelName;
+                        break;
+                    }
+                } else {
+                    switch (getOs()) {
+                    case WINDOWS:
+                        commands = _temp + _username + "/OpenModelica/"
+                                + fileNamePrefix + ".exe";
+                        break;
+                    case UNIX:
+                        commands = _temp + "/" + _username + "/OpenModelica/"
+                                + fileNamePrefix;
+                        break;
+                    case MAC:
+                        commands = _temp + _username + "/OpenModelica/"
+                                + fileNamePrefix;
+                        break;
+                    }
+                }
+
+                //FIXME 
+                //System.out.println("COMMAND " + commands);
+
+                // Run the executable result file of buildModel("command").
+                try {
+                    Runtime.getRuntime().exec(commands,
+                            _environmentalVariables, _workDir);
+                } catch (IOException e) {
+                    loggerInfo = "Failed to run command: " + commands;
+                    _omcLogger.getInfo(loggerInfo);
+                    hasInitialized = false;
+                    return;
+                }
+
+                loggerInfo = "The executable file is run successfully in a non-interactive mode!";
+                _omcLogger.getInfo(loggerInfo);
+
+                if (fileNamePrefix.compareTo("") == 0) {
+                    // When users do not select File Name Prefix as the name of executable result file.
+                    switch (getOs()) {
+                    case WINDOWS:
+                        loggerInfo = modelName + "_res." + outputFormat
+                                + " is generated in " + _temp + _username
+                                + "/OpenModelica/";
+                        _omcLogger.getInfo(loggerInfo);
+                        break;
+                    case UNIX:
+                        loggerInfo = modelName + "_res." + outputFormat
+                                + " is generated in " + _temp + "/" + _username
+                                + "/OpenModelica/";
+                        _omcLogger.getInfo(loggerInfo);
+                        break;
+                    case MAC:
+                        loggerInfo = modelName + "_res." + outputFormat
+                                + " is generated in " + _temp + _username
+                                + "/OpenModelica/";
+                        _omcLogger.getInfo(loggerInfo);
+                        break;
+                    }
+                } else if (fileNamePrefix.length() != 0) {
+                    // When users select File Name Prefix as the name of executable result file.
+                    switch (getOs()) {
+                    case WINDOWS:
+                        loggerInfo = fileNamePrefix + "_res." + outputFormat
+                                + " is generated in " + _temp + _username
+                                + "/OpenModelica/";
+                        _omcLogger.getInfo(loggerInfo);
+                        break;
+                    case UNIX:
+                        loggerInfo = fileNamePrefix + "_res." + outputFormat
+                                + " is generated in " + _temp + "/" + _username
+                                + "/OpenModelica/";
+                        _omcLogger.getInfo(loggerInfo);
+                        break;
+                    case MAC:
+                        loggerInfo = fileNamePrefix + "_res." + outputFormat
+                                + " is generated in " + _temp + _username
+                                + "/OpenModelica/";
+                        _omcLogger.getInfo(loggerInfo);
+                        break;
+                    }
+                }
+            } else {
+
+                loggerInfo = "Running interactive simulation.";
+                _omcLogger.getInfo(loggerInfo);
+
+                switch (getOs()) {
+                case WINDOWS:
+                    commands = _temp + _username + "/OpenModelica/" + modelName
+                            + ".exe";
+                    break;
+                case UNIX:
+                    commands = _temp + "/" + _username + "/OpenModelica/"
+                            + modelName;
+                    break;
+                case MAC:
+                    commands = _temp + _username + "/OpenModelica/" + modelName;
+                    break;
+                }
+
+                // BuildModel("modelName") results in an executable file
+                // that is run by -interactive flag.
+
+                commands = commands + " -interactive";
+
+                try {
+                    loggerInfo = "Command " + commands + " is running!";
+                    _omcLogger.getInfo(loggerInfo);
+                    Runtime.getRuntime().exec(commands,
+                            _environmentalVariables, _workDir);
+                } catch (IOException e) {
+                    loggerInfo = "Failed to run command: " + commands;
+                    _omcLogger.getInfo(loggerInfo);
+                    hasInitialized = false;
+                    return;
+                }
+
+                loggerInfo = "The executable file is run successfully in an interactive mode!";
                 _omcLogger.getInfo(loggerInfo);
             }
-
         } else {
-
-            loggerInfo = "Running interactive simulation.";
+            loggerInfo = modelName
+                    + " model is built without generating any result files!";
             _omcLogger.getInfo(loggerInfo);
 
-            switch (getOs()) {
-            case WINDOWS:
-                commands = _temp + _username + "/OpenModelica/" + modelName
-                        + ".exe";
-                break;
-            case UNIX:
-                commands = _temp + "/" + _username + "/OpenModelica/"
-                        + modelName;
-                break;
-            case MAC:
-                commands = _temp + _username + "/OpenModelica/" + modelName;
-                break;
-            }
-
-            // BuildModel("modelName") results in an executable file
-            // that is run by -interactive flag.
-
-            commands = commands + " -interactive";
-
-            try {
-                loggerInfo = "Command " + commands + " is running!";
-                _omcLogger.getInfo(loggerInfo);
-                Runtime.getRuntime().exec(commands, _environmentalVariables,
-                        _workDir);
-            } catch (IOException e) {
-                loggerInfo = "Failed to run command: " + commands;
-                _omcLogger.getInfo(loggerInfo);
-                hasInitialized = false;
-                return;
-            }
-
-            loggerInfo = "Command " + commands + " run successfully!";
-            _omcLogger.getInfo(loggerInfo);
         }
+
     }
 
     ///////////////////////////////////////////////////////////////////

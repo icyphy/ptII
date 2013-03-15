@@ -61,11 +61,12 @@ public interface IOMCProxy {
     /** Return the variables in the simulation file. 
      *  Read a result file and return a matrix corresponding to the variables and given size.
      *  @param fileName The executable result file of simulation in CSV format.
+     *  @param modelName Name of the model which should be built.
+     * @throws IllegalActionException 
      *  @throws ConnectException If commands couldn't
      *   be sent to the (OpenModelica Compiler)OMC. 
      */
-    public String displaySimulationResult(String fileName)
-            throws ConnectException;
+    public String displaySimulationResult(String fileName, String modelName) throws ConnectException, IllegalActionException;
 
     /** Initialize the communication with the (OpenModelica compiler)OMC.
      *  @exception ConnectException If we're unable to start communicating with
@@ -110,7 +111,7 @@ public interface IOMCProxy {
 
     /** Leave and quit OpenModelica environment.
      *  @exception ConnectException If quit command couldn't
-     *  be sent to OMC.
+     *  be sent to the OMC.
      */
     public void quitServer() throws ConnectException;
 

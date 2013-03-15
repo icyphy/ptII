@@ -55,7 +55,9 @@
         </property>
     </property>
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="OpenModelica actor input port reads the output of Ramp, &#10;the init value. The value of all parameters/variables of the &#10;Modelica model is modified by this value. &#10;Then, the values of parameters/variables in the &#10;simulation result file are sent to Display. ">
+        <property name="bold" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="OpenModelica actor input port reads the output of Ramp, &#10;the init value. The value of all parameters/variables of the &#10;Modelica model is modified by this value. &#10;In case &quot;batch&quot; processing type is selected&#10;and the selected output format is &quot;CSV&quot;, &#10;the values of parameters/variables in the &#10;simulation result file (modelName_res.csv) &#10;which is generated in the temp are sent to the Display actor. &#10;&#10;">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-120.0, 220.0]">
         </property>
@@ -79,10 +81,13 @@
         <property name="modelicaScript" class="ptolemy.data.expr.StringParameter" value="Modelica">
             <display name="Write OpenModelica Command"/>
         </property>
-        <property name="fileName" class="ptolemy.data.expr.FileParameter" value="dcmotor.mo">
+        <property name="fileName" class="ptolemy.data.expr.FileParameter" value="BouncingBall.mo">
             <display name="File name"/>
         </property>
-        <property name="modelName" class="ptolemy.data.expr.StringParameter" value="dcmotor">
+        <property name="processingType" class="ptolemy.data.expr.StringParameter" value="batch">
+            <display name="Select interactive or batch processing"/>
+        </property>
+        <property name="modelName" class="ptolemy.data.expr.StringParameter" value="BouncingBall">
             <display name="Model name"/>
         </property>
         <property name="outputFormat" class="ptolemy.data.expr.StringParameter" value="csv">
@@ -94,12 +99,14 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[130.0, 140.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{130.0, 140.0}">
         </property>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
         </property>
+        <vertex name="vertex1" value="[275.0, 200.0]">
+        </vertex>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
     </relation>
