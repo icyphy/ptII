@@ -4,7 +4,7 @@
 <entity name="EPlus70Actuator" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-8, -8, 1382, 744}, maximized=true}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 1388, 737}, maximized=true}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1154, 627]">
     </property>
@@ -345,6 +345,8 @@
     </property>
     <property name="TestExceptionAttribute" class="ptolemy.actor.lib.TestExceptionAttribute">
         <property name="correctExceptionMessage" class="ptolemy.data.expr.StringParameter" value="Error: Simulation process did not start.&#13;&#10;Error when starting external process.&#13;&#10;Error message           : Cannot run program &quot;RunEPlus.bat&quot; (in directory &quot;C:\workspace\ptII\org\ptolemy\ptango\demo\EPlus70Actuator\.&quot;): CreateProcess error=2, The system cannot find the file specified&#13;&#10;Current directory       : C:\workspace\ptII\org\ptolemy\ptango\demo\EPlus70Actuator\.&#13;&#10;ProcessBuilder arguments: [RunEPlus.bat, EMSWindowShadeControl, USA_IL_Chicago-OHare.Intl.AP.725300_TMY3]&#13;&#10;Check configuration of '.EPlus70Actuator.EPlusSimulator.Simulator'.&#10;  in .EPlus70Actuator.EPlusSimulator.Simulator">
+        </property>
+        <property name="matchPrefixOfLength" class="ptolemy.data.expr.Parameter" value="30">
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
