@@ -98,7 +98,7 @@
         </property>
     </entity>
     <entity name="Test2" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1.5, 3.5, 4.5, 5.5, 6.5, 7.5, 8.5, 9.5}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1.5, 2.5, 3.5, 4.5, 5.5, 6.5, 7.5, 8.5, 9.5}">
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
         </property>
