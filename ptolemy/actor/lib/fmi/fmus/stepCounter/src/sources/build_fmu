@@ -44,5 +44,6 @@ if [ $arch = linux -a $bits = 32 ]; then
 fi
 
 set -x
+echo `pwd`; \
 make dirclean; \
 make ARCH=${arch}${bits} CBITSFLAGS=${CBITSFLAGS} INCLUDE="${include}" PIC=${pic} SHARED_LIBRARY_SUFFIX=${sharedLibrarySuffix} $fmuBaseName.fmu

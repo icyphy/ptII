@@ -36,7 +36,11 @@
 
 // Used by FMI 2.0.  See FMIFuctions.h
 #define FMIAPI_FUNCTION_PREFIX onOffSupervisor_
+#ifdef _MSC_VER
+#define FMIAPI __declspec( dllexport )
+#else
 #define FMIAPI
+#endif
 
 // include fmu header files, typedefs and macros
 #include "fmiFunctions.h"
@@ -167,11 +171,11 @@ fmiStatus fmiGetBoolean(fmiComponent c, const fmiValueReference vr[], size_t nvr
                                              "fmiGetBoolean: Value reference out of range: %u.", nvr);
             return fmiError;
         }
-        printf("%s: Invoked fmiGetBoolean on index %d, which has value %d\n",
-               component->instanceName,
-               valueReference,
-               value[i]);
-               // (value[i])?"true":"false");
+        /* printf("%s: Invoked fmiGetBoolean on index %d, which has value %d\n", */
+        /*        component->instanceName, */
+        /*        valueReference, */
+        /*        value[i]); */
+        /*        // (value[i])?"true":"false"); */
         fflush(stdout);
     }
     return fmiOK;
@@ -254,8 +258,8 @@ fmiStatus fmiSetBoolean(fmiComponent c, const fmiValueReference vr[], size_t nvr
     for (i = 0; i < nvr; i++) {
         valueReference = vr[i];
 
-        printf("%s: Setting boolean value with index %d and value %s.\n", component->instanceName,
-               valueReference, (value[i])?"true":"false");
+        /* printf("%s: Setting boolean value with index %d and value %s.\n", component->instanceName, */
+        /*        valueReference, (value[i])?"true":"false"); */
         fflush(stdout);
 
         if (valueReference == ONOFF) {

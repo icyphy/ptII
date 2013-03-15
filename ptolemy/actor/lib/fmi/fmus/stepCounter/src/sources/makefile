@@ -76,6 +76,13 @@ win64:
 	fi
 	$(CC) $(CBITSFLAGS) -shared -Wl,-soname,$@ -o $(ARCHDIR)$@ $<
 
+%.dll: %.c
+	@if [ ! -d $(ARCH_DIR) ]; then \
+		echo "Creating $(ARCH_DIR)"; \
+		mkdir -p $(ARCH_DIR); \
+	fi
+	cl /LD /wd04090 /nologo $< 
+
 %.dylib: %.o
 	@if [ ! -d $(ARCH_DIR) ]; then \
 		echo "Creating $(ARCH_DIR)"; \
@@ -84,6 +91,7 @@ win64:
 	$(CC) -dynamiclib -o $(ARCH_DIR)$@ $<
 
 FMUDIR=../../src
+
 %.fmu: %.$(SHARED_LIBRARY_SUFFIX)
 	# Remove files that should not be included in the .fmu file.
 	(cd $(FMUDIR); rm -rf *.o */*.o *~)
