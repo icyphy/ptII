@@ -1781,8 +1781,16 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
                         // there is no error handler, so the above line correctly
                         // ignores the error in evaluation.
                         if (!handleModelError(this, ex)) {
-                            result = new LinkedList();
-                            result.add(ex);
+                            // In the short term, warn about errors opening models.
+                            // There are a bunch of things that need to be fixed, but there are also
+                            // legitimate models such as ptolemy/actor/parameters/test/auto/ParameterSetTest.xml
+                            // that refer to parameter not present when the model is parsed.
+                            new IllegalActionException(this, ex,
+                                    "Warning:, there was a problem propagating \""
+                                            + getName() + "\".")
+                                    .printStackTrace();
+                            //result = new LinkedList();
+                            //result.add(ex);
                         }
                     } catch (IllegalActionException ex2) {
                         result = new LinkedList();
