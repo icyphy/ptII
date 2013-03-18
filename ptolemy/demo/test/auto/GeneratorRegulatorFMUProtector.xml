@@ -294,13 +294,55 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[645.0, 305.0]">
         </property>
     </entity>
+    <entity name="Test3" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, true, true, true, true, true, true, true, true, false, false, false, false, false, true, true, true, true, true, true, true, true, true, true, false, false, false, false, false, true, true, true, true, true, true, true, true, true, true, false, false, false, false, false, true, true, true}">
+        </property>
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="3.987924652463377E-8">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[275.0, 115.0]">
+        </property>
+    </entity>
+    <entity name="Test4" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true}">
+        </property>
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="3.987924652463377E-8">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, 140.0]">
+        </property>
+    </entity>
+    <entity name="Test5" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{false, false, false, false, true, true, true, true, true, true, false, false, false, false, false, false, false, false, false, false, false, false, false, true, true, true, true, true, false, false, false, false, false, false, false, false, false, false, true, true, true, true, true, false, false, false, false, false, false, false, false, false, false, true, true, true, true, true, false, false, false}">
+        </property>
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="3.987924652463377E-8">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[210.0, 385.0]">
+        </property>
+    </entity>
+    <entity name="Test6" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{110.0, 70.1207534753663, 35.6029748784329, 10.274003977805, -5.4389162433793, -13.0452526940962, -14.8398970342103, -13.1312387725694, -9.8166082469318, -6.2246299002023, -3.1321057565917, -0.873276222789, 0.5202103482119, 1.1879079057797, 1.3376915498088, 1.1771148381437, 55.4379662060993, 42.9132018216426, 30.472136137915, 19.2158097947118, 9.7886114747686, 2.4647336782243, -2.7592445123997, -6.0759824950852, -125.5797721162558, -82.8763911687958, -47.9138222951499, -19.2888938908067, 4.1472137108692, 66.6675372184883, 60.4438174195165, 50.7160896678384, 39.477569060112, 28.226110633898, 17.985590550392, 9.3634636211517, 2.6278045663435, -2.2093302572959, -5.3117811074084, -123.8972742047922, -81.4988784800069, -46.7860103704839, -18.3655196469461, 4.9032085497052, 66.9770153093851, 60.4147706806878, 50.4585380198436, 39.0873422263142, 27.7806640794193, 17.5428140387524, 8.9626410526349, 2.2919556711333, -2.4703769634877, -5.4980945935065, -124.1340757565009, -81.6927551796338, -46.9447431760207, -18.4954790675577, 4.7968067826062, 66.9334581128829, 60.4726322322977}">
+        </property>
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="3.987924652463377E-8">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[755.0, 35.0]">
+        </property>
+    </entity>
+    <entity name="Test7" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{true}">
+        </property>
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="3.987924652463377E-8">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 145.0]">
+        </property>
+    </entity>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
         <vertex name="vertex1" value="[510.0, 210.0]">
         </vertex>
-    </relation>
-    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
         <vertex name="vertex1" value="[330.0, 80.0]">
@@ -309,8 +351,6 @@
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation10" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
@@ -330,6 +370,18 @@
         <vertex name="vertex1" value="[105.0, 220.0]">
         </vertex>
     </relation>
+    <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="{685.0, 205.0}">
+        </vertex>
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="{-5.0, 220.0}">
+        </vertex>
+    </relation>
     <link port="GeneratorContactorLoad.drive" relation="relation4"/>
     <link port="GeneratorContactorLoad.voltage" relation="relation2"/>
     <link port="GeneratorContactorLoad.contactor" relation="relation6"/>
@@ -337,10 +389,10 @@
     <link port="DesiredVoltage.trigger" relation="relation2"/>
     <link port="AddSubtract.plus" relation="relation"/>
     <link port="AddSubtract.minus" relation="relation2"/>
-    <link port="AddSubtract.output" relation="relation3"/>
-    <link port="PID.input" relation="relation3"/>
+    <link port="AddSubtract.output" relation="relation8"/>
+    <link port="PID.input" relation="relation8"/>
     <link port="PID.output" relation="relation4"/>
-    <link port="SingleEvent.output" relation="relation5"/>
+    <link port="SingleEvent.output" relation="relation3"/>
     <link port="Expression.output" relation="relation10"/>
     <link port="Expression.voltage" relation="relation2"/>
     <link port="MicrostepDelay.input" relation="relation7"/>
@@ -348,9 +400,14 @@
     <link port="onOffSupervisorFMU.output" relation="relation7"/>
     <link port="onOffSupervisorFMU.onOff" relation="relation11"/>
     <link port="onOffSupervisorFMU.fault" relation="relation10"/>
-    <link port="MostRecent.input" relation="relation5"/>
+    <link port="MostRecent.input" relation="relation3"/>
     <link port="MostRecent.output" relation="relation11"/>
     <link port="MostRecent.trigger" relation="relation10"/>
     <link port="Test.input" relation="relation2"/>
     <link port="Test2.input" relation="relation4"/>
+    <link port="Test3.input" relation="relation7"/>
+    <link port="Test4.input" relation="relation11"/>
+    <link port="Test5.input" relation="relation10"/>
+    <link port="Test6.input" relation="relation8"/>
+    <link port="Test7.input" relation="relation3"/>
 </entity>
