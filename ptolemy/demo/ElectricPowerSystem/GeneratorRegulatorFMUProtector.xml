@@ -161,8 +161,6 @@
             <property name="allowDirectories" class="ptolemy.data.expr.Parameter" value="true">
             </property>
         </property>
-        <property name="backgroundColor" class="ptolemy.actor.gui.ColorAttribute">
-        </property>
         <property name="openCompositesBeforeExport" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <property name="runBeforeExport" class="ptolemy.data.expr.Parameter" value="true">
@@ -268,7 +266,7 @@
         </property>
     </entity>
     <entity name="onOffSupervisorFMU" class="ptolemy.actor.lib.fmi.FMUImport">
-        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="$PTII/ptolemy/actor/lib/fmi/fmus/onOffSupervisor/onOffSupervisor.fmu">
+        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="$PTII/ptolemy/demo/ElectricPowerSystem/onOffSupervisor.fmu">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[155.0, 220.0]">
         </property>
@@ -330,11 +328,7 @@
         <vertex name="vertex1" value="{205.0, 220.0}">
         </vertex>
     </relation>
-    <relation name="relation11" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
-        </property>
-        <vertex name="vertex1" value="[105.0, 220.0]">
-        </vertex>
+    <relation name="relation8" class="ptolemy.actor.TypedIORelation">
     </relation>
     <link port="TimedPlotter.input" relation="relation2"/>
     <link port="TimedPlotter.input" relation="relation4"/>
@@ -354,9 +348,9 @@
     <link port="MicrostepDelay.input" relation="relation7"/>
     <link port="MicrostepDelay.output" relation="relation6"/>
     <link port="onOffSupervisorFMU.output" relation="relation7"/>
-    <link port="onOffSupervisorFMU.onOff" relation="relation11"/>
+    <link port="onOffSupervisorFMU.onOff" relation="relation8"/>
     <link port="onOffSupervisorFMU.fault" relation="relation10"/>
     <link port="MostRecent.input" relation="relation5"/>
-    <link port="MostRecent.output" relation="relation11"/>
+    <link port="MostRecent.output" relation="relation8"/>
     <link port="MostRecent.trigger" relation="relation10"/>
 </entity>

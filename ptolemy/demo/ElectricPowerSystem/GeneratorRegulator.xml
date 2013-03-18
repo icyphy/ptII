@@ -4,7 +4,7 @@
 <entity name="GeneratorRegulator" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={96, 373, 934, 634}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={96, 380, 934, 634}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
     </property>
@@ -92,7 +92,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="{395, 280}">
             </property>
         </property>
-        <property name="IconLink" class="ptolemy.vergil.basic.export.web.IconLink" value="http://icyphy.org/models/ContactorRegulatorProtector/index.html">
+        <property name="IconLink" class="ptolemy.vergil.basic.export.web.IconLink" value="http://icyphy.org/models/GeneratorRegulatorProtector/index.html">
             <property name="linkTarget" class="ptolemy.vergil.basic.export.web.LinkTarget" value="_blank">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{465, 435}">
@@ -129,8 +129,6 @@
             </property>
             <property name="allowDirectories" class="ptolemy.data.expr.Parameter" value="true">
             </property>
-        </property>
-        <property name="backgroundColor" class="ptolemy.actor.gui.ColorAttribute">
         </property>
         <property name="openCompositesBeforeExport" class="ptolemy.data.expr.Parameter" value="true">
         </property>

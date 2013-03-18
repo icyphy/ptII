@@ -81,7 +81,7 @@
     <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.0,1.0}">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Note that this model could be easily eloborated with higher-order linear or nonlinear dynamics.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Note that this model could be easily elaborated with higher-order linear or nonlinear dynamics.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-40.0, 395.0]">
         </property>

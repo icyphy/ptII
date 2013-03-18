@@ -12,9 +12,9 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{50.0, 15.0}">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={2, 22, 989, 627}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={2, 22, 989, 634}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[755, 517]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[755, 524]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.3846319782598973">
     </property>
@@ -157,8 +157,6 @@
         </property>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;TimedPlotter.input&quot;,x=415.0,y=130.0,index=2}, tail={id=&quot;Generator.outputVoltage&quot;,x=265.0,y=260.0}, points={370.0,130.0,370.0,260.0} } }">
-        </property>
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>

@@ -142,6 +142,28 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[210.0, 55.0]">
         </property>
     </property>
+    <property name="_defaultWebExportParameters" class="ptolemy.vergil.basic.export.web.WebExportParameters">
+        <property name="directoryToExportTo" class="ptolemy.data.expr.FileParameter" value="/Users/eal/Projects/iCyPhy/icyphywww/models/GeneratorContactorLoad">
+            <property name="allowFiles" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="allowDirectories" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+        </property>
+        <property name="backgroundColor" class="ptolemy.actor.gui.ColorAttribute">
+        </property>
+        <property name="openCompositesBeforeExport" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="runBeforeExport" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="showInBrowser" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="copyJavaScriptFiles" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="imageFormat" class="ptolemy.data.expr.StringParameter" value="gif">
+        </property>
+        <property name="usePtWebsite" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+    </property>
     <port name="drive" class="ptolemy.actor.TypedIOPort">
         <property name="input"/>
         <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
