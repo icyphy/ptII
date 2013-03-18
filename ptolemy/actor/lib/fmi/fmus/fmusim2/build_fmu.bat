@@ -1,7 +1,6 @@
-rem @echo off 
+@echo off 
 rem ------------------------------------------------------------
-rem This batch builds an FMU of the FMU SDK
-rem Usage: build_fmu  <fmu_dir_name> 
+rem Build fmusim2 under Windows
 rem Based on (c) 2011 QTronic GmbH
 
 rem FMU SDK license 
@@ -47,63 +46,21 @@ if defined VS90COMNTOOLS (call "%VS90COMNTOOLS%\vsvars32.bat") else ^
 if defined VS80COMNTOOLS (call "%VS80COMNTOOLS%\vsvars32.bat") else ^
 goto noCompiler
 
-rem create the %1.dll in the temp dir
-if not exist temp mkdir temp 
-pushd temp
-if exist *.dll del /Q *.dll
 
 rem /wd4090 disables warnings about different 'const' qualifiers
+cl /wd4090 /nologo /DFMI_COSIMULATION /DFMI_VERSION=2 main.c sim_support.c stack.c xml_parser.c /Fefmusim2.exe /link libexpatMT.lib
+goto cleanup
 
-rem cl /LD /wd4090 /nologo "/DFMIAPI=__declspec(dllexport)" ..\%1.c /I ..\.
-cl /LD /wd4090 /nologo ..\%1.c /I ..\.
-dumpbin /exports %1.dll
-if not exist %1.dll goto compileError
-
-rem create FMU dir structure with root 'fmu'
-set BIN_DIR=fmu\binaries\win32
-set SRC_DIR=fmu\sources
-set DOC_DIR=fmu\documentation
-if not exist %BIN_DIR% mkdir %BIN_DIR%
-if not exist %SRC_DIR% mkdir %SRC_DIR%
-if not exist %DOC_DIR% mkdir %DOC_DIR%
-move /Y %1.dll %BIN_DIR%
-if exist ..\%1\*~ del /Q ..\%1\*~
-type ..\..\modelDescription.xml > fmu\modelDescription.xml
-copy ..\..\model.png fmu
-copy ..\*.c %SRC_DIR%
-copy ..\*.h %SRC_DIR%
-copy ..\build_fmu.bat %SRC_DIR%
-copy ..\build_fmu %SRC_DIR%
-copy ..\makefile %SRC_DIR%
-copy ..\..\documentation\*.html %DOC_DIR%
-copy ..\..\documentation\*.png  %DOC_DIR%
-rem del %DOC_DIR%\model.png 
-
-rem If the 7z.exe binary is found, then
-rem zip the directory tree and move to fmu directory 
-for %%X in (7z.exe) do (set FOUND=%%~$PATH:X)
-if defined FOUND (
-  cd fmu
-  set FMU_FILE=..\..\..\..\%1.fmu
-  if exist %ZIP_FILE% del %FMU_FILE%
-  7z.exe a -tzip -xr!.svn %FMU_FILE% ^
-  modelDescription.xml model.png binaries sources documentation
-  goto cleanup
-) else (
-  echo Warning: Not building the .fmu file because 7z.exe is not found
-  echo 7z.exe is available as part of the fmusdk or %PTII%\ptolemy\actor\lib\fmu\fmus\win32\7z.exe
-)
 
 :noCompiler
 echo No Microsoft Visual C compiler found
 exit
 
+
 :compileError
 echo build of %1 failed
 
 :cleanup
-popd
-if exist temp rmdir /S /Q temp
 
 rem undo variable settings performed by vsvars32.bat
 set PATH=%PREV_PATH%

@@ -43,17 +43,17 @@ int unzip(const char *zipPath, const char *outPath) {
     }
         
 
-    // change to %FMUSDK_HOME%\bin to find 7z.dll and 7z.exe
-    if (!GetEnvironmentVariable("FMUSDK_HOME", binPath, BUFSIZE)) {
+    // change to %PTII%\ptolemy\actor\lib\fmi\fmus\win32 to find 7z.dll and 7z.exe
+    if (!GetEnvironmentVariable("PTII", binPath, BUFSIZE)) {
         if (GetLastError() == ERROR_ENVVAR_NOT_FOUND) {
-            printf ("error: Environment variable FMUSDK_HOME not defined\n");
+            printf ("error: Environment variable PTII is not defined, 7z.exe could not be found.\n");
         }
         else {
-            printf ("error: Could not get value of FMUSDK_HOME\n");
+            printf ("error: Could not get value of PTII\n");
         }
         return 0; // error       
     }
-    strcat(binPath, "\\bin");
+    strcat(binPath, "\\ptolemy\\actor\\lib\\fmi\\fmus\\win32");
     if (!SetCurrentDirectory(binPath)) {
         printf ("error: could not change to directory '%s'\n", binPath); 
         return 0; // error        
