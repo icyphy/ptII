@@ -52,7 +52,7 @@ import ptolemy.kernel.util.IllegalActionException;
     A simple simulation program written in Java to illustrate how to implement a client.
     OpenModelica Compiler(OMC) which is coupled to Ptolemy II is called to initialize the
     OMC server and simulate the Modelica model. The generated simulation runtime file which
-    is located in the "tmp" folder in the user directory of the openmodelica is run by this flag "-interactive –port 10500".  
+    is located in the "tmp" folder in the user directory of the openmodelica is run by this flag "-interactive -port 10500".  
     The simulation runtime will be waiting until a UI client in Ptolemy II has been connected to its port.
     After starting the simulation the keyboard entries and the results will be displayed in the same console as you are typing
     the command. For exchanging data with the OMC server the BSD socket is utilized.   
