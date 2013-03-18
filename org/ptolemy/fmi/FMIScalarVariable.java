@@ -232,7 +232,7 @@ public class FMIScalarVariable {
      *  @see #setBoolean(Pointer, boolean)
      */
     public boolean getBoolean(Pointer fmiComponent) {
-        ByteBuffer valueBuffer = ByteBuffer.allocate(1);
+        IntBuffer valueBuffer = IntBuffer.allocate(1);
         _getValue(fmiComponent, valueBuffer, FMIBooleanType.class);
         return valueBuffer.get(0) != 0;
     }
@@ -302,7 +302,7 @@ public class FMIScalarVariable {
      *  @see #getBoolean(Pointer fmiComponent)
      */
     public void setBoolean(Pointer fmiComponent, boolean value) {
-        ByteBuffer valueBuffer = ByteBuffer.allocate(1).put(0,
+        IntBuffer valueBuffer = IntBuffer.allocate(1).put(0,
                 value ? (byte) 1 : (byte) 0);
         _setValue(fmiComponent, valueBuffer, FMIBooleanType.class);
     }
