@@ -49,7 +49,6 @@
  * Data structure for an instance of this FMU.
  */
 typedef struct {
-    // Pointer to the state of this FMU, which is an int.
     fmiBoolean state;       // The current state (false for off, true for on).
     fmiBoolean onOff;       // The current onOff input.
     fmiBoolean fault;       // The current fault input.
@@ -93,7 +92,7 @@ int checkFMU(
     // Functions to allocate and free memory are required.
     if (!functions->allocateMemory || !functions->freeMemory) {
         functions->logger(NULL, instanceName, fmiError, "error",
-                          "fmiInstantiateSlave: Missing callback function: freeMemory");
+                          "fmiInstantiateSlave: Missing callback function: allocateMemory or freeMemory");
         return 0;
     }
     if (!instanceName || strlen(instanceName)==0) {
@@ -111,7 +110,8 @@ int checkFMU(
 
 /*****************************************************************************************
  *  Advance the state of this FMU from the current communication point to that point plus
- *  the specified step size. This doesn't need to do anything, so it just returns fmiOK.
+ *  the specified step size. This state machine has no timed behavior; it just reacts to the
+ *  current inputs. So this procedure uses the current inputs to set the new state.
  *  @param c The FMU.
  *  @param currentCommunicationPoint The time at the start of the step interval.
  *  @param communicationStepSize The width of the step interval.
@@ -119,10 +119,29 @@ int checkFMU(
  *   restore the state of this FMU or call fmiDoStep with a communication point less than the
  *   current one. An FMU may use this to determine that it is safe to take actions that have side
  *   effects, such as printing outputs.
- *  @return fmiDiscard if the FMU rejects the step size, otherwise fmiOK.
+ *  @return fmiOK.
  */
 fmiStatus fmiDoStep(fmiComponent c, fmiReal currentCommunicationPoint,
             fmiReal communicationStepSize, fmiBoolean noSetFMUStatePriorToCurrentPoint) {
+    ModelInstance* component = (ModelInstance *) c;
+    if (component->state) {
+        // Current state is "on".
+        if (component->fault || !component->onOff) {
+            component->state = fmiFalse;
+        }
+    } else {
+        // Current state is "off".
+        if (!component->fault && component->onOff) {
+            component->state = fmiTrue;
+        }
+    }
+    /*
+    printf("%s: Invoked fmiDoStep and updated state to %d\n",
+           component->instanceName,
+           component->state);
+    fflush(stdout);
+    */
+
     return fmiOK;
 }
 
@@ -150,18 +169,33 @@ fmiStatus fmiGetBoolean(fmiComponent c, const fmiValueReference vr[], size_t nvr
     for (i = 0; i < nvr; i++) {
         valueReference = vr[i];
         if (valueReference == OUTPUT) {
-            // Upon retrieving the output, this is when we take transitions.
+            // The request is for the current value of the output.
+            // Note that it is important that this code not change the
+            // state of the state machine so that this FMU will work in
+            // a continuous or synchronous-reactive model of computation
+            // without having to provide procedures to get and set state
+            // (supporting rollback). Note that the logic here duplicates
+            // that realized in fmiDoStep(), but that duplication is
+            // unavoidable to avoid having to provide rollback.
             if (component->state) {
                 // Current state is "on".
                 if (component->fault || !component->onOff) {
-                    component->state = fmiFalse;
+                    // A state transition is enabled and will be taken in fmiDoStep.
+                    value[i] = fmiFalse;
+                } else {
+                    // A state transition is not enabled.
+                    value[i] = fmiTrue;
                 }
             } else {
+                // Current state is "off".
                 if (!component->fault && component->onOff) {
-                    component->state = fmiTrue;
+                    // A state transition is enabled and will be taken in fmiDoStep.
+                    value[i] = fmiTrue;
+                } else {
+                    // A state transition is not enabled.
+                    value[i] = fmiFalse;
                 }
             }
-            value[i] = component->state;
         } else if (valueReference == ONOFF) {
             value[i] = component->onOff;
         } else if (valueReference == FAULT) {
@@ -171,12 +205,14 @@ fmiStatus fmiGetBoolean(fmiComponent c, const fmiValueReference vr[], size_t nvr
                                              "fmiGetBoolean: Value reference out of range: %u.", nvr);
             return fmiError;
         }
-        /* printf("%s: Invoked fmiGetBoolean on index %d, which has value %d\n", */
-        /*        component->instanceName, */
-        /*        valueReference, */
-        /*        value[i]); */
-        /*        // (value[i])?"true":"false"); */
+        /*
+        printf("%s: Invoked fmiGetBoolean on index %d, which has value %d\n",
+                component->instanceName,
+                valueReference,
+                value[i]);
+                // (value[i])?"true":"false");
         fflush(stdout);
+        */
     }
     return fmiOK;
 }
@@ -258,9 +294,11 @@ fmiStatus fmiSetBoolean(fmiComponent c, const fmiValueReference vr[], size_t nvr
     for (i = 0; i < nvr; i++) {
         valueReference = vr[i];
 
-        /* printf("%s: Setting boolean value with index %d and value %s.\n", component->instanceName, */
-        /*        valueReference, (value[i])?"true":"false"); */
+        /*
+        printf("%s: Setting boolean value with index %d and value %s.\n", component->instanceName,
+                valueReference, (value[i])?"true":"false");
         fflush(stdout);
+        */
 
         if (valueReference == ONOFF) {
             component->onOff = value[i];
