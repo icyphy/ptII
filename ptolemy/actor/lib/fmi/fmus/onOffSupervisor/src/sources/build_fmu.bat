@@ -56,8 +56,14 @@ rem /wd4090 disables warnings about different 'const' qualifiers
 
 rem cl /LD /wd4090 /nologo "/DFMIAPI=__declspec(dllexport)" ..\%1.c /I ..\.
 cl /LD /wd4090 /nologo ..\%1.c /I ..\.
-dumpbin /exports %1.dll
 if not exist %1.dll goto compileError
+
+rem dumpbin /exports %1.dll
+
+rem Copy the dll to binaries/win32
+if not exist ..\..\binaries mkdir ..\..\binaries
+if not exist ..\..\binarries\win32 mkdir ..\..\binaries\win32
+cp %1.dll ..\..\binaries\win32
 
 rem create FMU dir structure with root 'fmu'
 set BIN_DIR=fmu\binaries\win32
