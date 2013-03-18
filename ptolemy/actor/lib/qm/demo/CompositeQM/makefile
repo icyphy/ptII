@@ -51,7 +51,8 @@ JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
 	$(JSRCS) \
-	CompositeQM.xml 
+	CompositeQM.xml \
+	CompositeQM_same_behavior_simpler.xml
 
 
 EXTRA_SRCS = \
