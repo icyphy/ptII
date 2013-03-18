@@ -4,7 +4,7 @@
 #
 # @Version: $Id: makefile 61820 2011-08-16 01:09:58Z cxh $
 #
-# @Copyright (c) 2012 The Regents of the University of California.
+# @Copyright (c) 2012-2013 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -35,7 +35,8 @@ ME =		ptolemy/domains/sysml/test
 # Root of the Ptolemy II directory
 ROOT =		../../../..
 
-CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)
+# JNA_JAR is set by configure in $PTII/mk/ptII.mk
+CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(JNA_JAR)$(CLASSPATHSEPARATOR)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
