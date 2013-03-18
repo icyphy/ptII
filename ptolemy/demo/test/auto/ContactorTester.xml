@@ -1,0 +1,216 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="ContactorTester" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
+    </property>
+    <property name="Continuous Director" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
+        <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="30.0">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 45.0]">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={199, 342, 1018, 661}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[784, 551]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.073160537376178">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{387.27331195998875, 268.9537438085968}">
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Load starts absent, and&#10;switches to 10 ohms at 15&#10;seconds.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[125.0, 320.0]">
+        </property>
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Drive starts at 110 volts,&#10;and switches to 220 volts&#10;at 10 seconds, and back to&#10;110 volts at 20 seconds.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 125.0]">
+        </property>
+    </property>
+    <property name="Title" class="ptolemy.vergil.basic.export.web.Title" value="Test Model for the Contactor Class">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, 30.0]">
+        </property>
+    </property>
+    <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="See also the GeneratorTester model, which&#10;should have the same behavior.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[345.0, 250.0]">
+        </property>
+        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$PTII/ptolemy/demo/ElectricPowerSystem/GeneratorTester.xml">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">LL</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{395, 280}">
+            </property>
+        </property>
+        <property name="IconLink" class="ptolemy.vergil.basic.export.web.IconLink" value="http://icyphy.org/models/GeneratorTester/index.html">
+            <property name="linkTarget" class="ptolemy.vergil.basic.export.web.LinkTarget" value="_blank">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{450, 180}">
+            </property>
+        </property>
+    </property>
+    <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="See also the GeneratorRegulator model.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[345.0, 295.0]">
+        </property>
+        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$PTII/ptolemy/demo/ElectricPowerSystem/GeneratorRegulator.xml">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">LL</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{395, 280}">
+            </property>
+        </property>
+        <property name="IconLink" class="ptolemy.vergil.basic.export.web.IconLink" value="http://icyphy.org/models/GeneratorRegulator/index.html">
+            <property name="linkTarget" class="ptolemy.vergil.basic.export.web.LinkTarget" value="_blank">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{470, 230}">
+            </property>
+        </property>
+    </property>
+    <property name="_defaultWebExportParameters" class="ptolemy.vergil.basic.export.web.WebExportParameters">
+        <property name="directoryToExportTo" class="ptolemy.data.expr.FileParameter" value="/Users/eal/Projects/iCyPhy/icyphywww/models/ContactorTester">
+            <property name="allowFiles" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="allowDirectories" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+        </property>
+        <property name="openCompositesBeforeExport" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="runBeforeExport" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="showInBrowser" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="copyJavaScriptFiles" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="imageFormat" class="ptolemy.data.expr.StringParameter" value="gif">
+        </property>
+        <property name="usePtWebsite" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+    </property>
+    <entity name="DriveModel" class="ptolemy.domains.continuous.lib.ContinuousClock">
+        <property name="period" class="ptolemy.data.expr.Parameter" value="30.0">
+        </property>
+        <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0.0, 10.0, 20.0}">
+        </property>
+        <property name="values" class="ptolemy.data.expr.Parameter" value="{110.0, 220.0, 110.0}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 100.0]">
+        </property>
+    </entity>
+    <entity name="LoadModel" class="ptolemy.domains.continuous.lib.ContinuousClock">
+        <property name="period" class="ptolemy.data.expr.Parameter" value="30.0">
+        </property>
+        <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0.0, 15.0}">
+        </property>
+        <property name="values" class="ptolemy.data.expr.Parameter" value="{false, true}">
+        </property>
+        <property name="defaultValue" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 310.0]">
+        </property>
+    </entity>
+    <entity name="Generator" class="ptolemy.demo.ElectricPowerSystem.Generator">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[375.0, 150.0]">
+        </property>
+        <entity name="Default" class="ptolemy.domains.sr.lib.Default">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[300.0, 220.0]">
+            </property>
+        </entity>
+    </entity>
+    <entity name="Contactor" class="ptolemy.demo.ElectricPowerSystem.Contactor">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[230.0, 245.0]">
+        </property>
+    </entity>
+    <entity name="Load" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="10.0">
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{80, 245}">
+        </property>
+    </entity>
+    <entity name="PeriodicSampler" class="ptolemy.domains.continuous.lib.PeriodicSampler">
+        <property name="samplePeriod" class="ptolemy.data.expr.Parameter" value="1.0">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{573.9899832949775, 100.85600119105298}">
+        </property>
+    </entity>
+    <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, 69.533324627794, 95.1132026341759, 104.5235304554167, 107.9853711087555, 109.2589142628641, 109.7274684575328, 109.8998826446418, 109.9632208266493, 109.986542333262, 109.995075778558, 179.5315131107889, 205.1125362170232, 214.5232852977007, 217.9852809225848, 219.2588810876798, 199.7522329613466, 199.9089801480212, 199.9665628910962, 199.9877652098371, 199.9955232346564, 136.7862397946429, 113.5328462898535, 104.9783857962661, 101.831398819124, 100.6736841458786, 100.247744856245, 100.0910117030356, 100.0334341153031, 100.0122336947908, 100.004476364542}">
+        </property>
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="0.0001">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{693.9899832949775, 100.85600119105298}">
+        </property>
+    </entity>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="[310.0, 100.0]">
+        </vertex>
+    </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="DriveModel.output" relation="relation3"/>
+    <link port="LoadModel.output" relation="relation4"/>
+    <link port="Generator.drive" relation="relation3"/>
+    <link port="Generator.outputVoltage" relation="relation"/>
+    <link port="Generator.load" relation="relation2"/>
+    <link port="Contactor.input" relation="relation5"/>
+    <link port="Contactor.output" relation="relation2"/>
+    <link port="Contactor.control" relation="relation4"/>
+    <link port="Load.output" relation="relation5"/>
+    <link port="PeriodicSampler.input" relation="relation"/>
+    <link port="PeriodicSampler.output" relation="relation6"/>
+    <link port="NonStrictTest.input" relation="relation6"/>
+</entity>

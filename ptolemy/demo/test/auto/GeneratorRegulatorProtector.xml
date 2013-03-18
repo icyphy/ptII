@@ -1,0 +1,431 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="GeneratorRegulatorProtector" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={52, 223, 1150, 714}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[916, 604]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.14484707508345">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{397.68603515625006, 266.60493519764077}">
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="At time 15, turn&#10;on a load.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="[-30.0, 60.0]">
+            <property name="relativeTo" class="ptolemy.kernel.util.StringAttribute" value="SingleEvent">
+            </property>
+            <property name="relativeToElementName" class="ptolemy.kernel.util.StringAttribute" value="entity">
+            </property>
+        </property>
+    </property>
+    <property name="Title" class="ptolemy.vergil.basic.export.web.Title" value="Generator Regulator with Overvoltage Protection">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[120.0, 15.0]">
+        </property>
+    </property>
+    <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="60.0">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 35.0]">
+        </property>
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model disconnects a connected load if the measured voltage exceeds a specified threshold.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[120.0, 45.0]">
+        </property>
+    </property>
+    <property name="Annotation5" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="See also the GeneratorRegulator model.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, 385.0]">
+        </property>
+        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$PTII/ptolemy/demo/ElectricPowerSystem/GeneratorRegulator.xml">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">LL</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{395, 280}">
+            </property>
+        </property>
+        <property name="IconLink" class="ptolemy.vergil.basic.export.web.IconLink" value="http://icyphy.org/models/GeneratorRegulator/index.html">
+            <property name="linkTarget" class="ptolemy.vergil.basic.export.web.LinkTarget" value="_blank">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{340, 390}">
+            </property>
+        </property>
+    </property>
+    <property name="overVoltageThreshold" class="ptolemy.data.expr.Parameter" value="115.0">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 95.0]">
+        </property>
+    </property>
+    <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Change this to 120 or larger and the&#10;overvoltage protection does not kick in.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 105.0]">
+        </property>
+    </property>
+    <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="See also the GeneratorRegulatorFMUProtector model.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, 410.0]">
+        </property>
+        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$PTII/ptolemy/demo/ElectricPowerSystem/GeneratorRegulatorFMUProtector.xml">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">LL</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{395, 280}">
+            </property>
+        </property>
+        <property name="IconLink" class="ptolemy.vergil.basic.export.web.IconLink" value="http://icyphy.org/models/GeneratorRegulatorFMUProtector/index.html">
+            <property name="linkTarget" class="ptolemy.vergil.basic.export.web.LinkTarget" value="_blank">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{375, 420}">
+            </property>
+        </property>
+    </property>
+    <property name="_defaultWebExportParameters" class="ptolemy.vergil.basic.export.web.WebExportParameters">
+        <property name="directoryToExportTo" class="ptolemy.data.expr.FileParameter" value="/Users/eal/Projects/iCyPhy/icyphywww/models/GeneratorRegulatorProtector">
+            <property name="allowFiles" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="allowDirectories" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+        </property>
+        <property name="openCompositesBeforeExport" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="runBeforeExport" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="showInBrowser" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="copyJavaScriptFiles" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="imageFormat" class="ptolemy.data.expr.StringParameter" value="gif">
+        </property>
+        <property name="usePtWebsite" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+    </property>
+    <property name="Annotation6" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.0,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Notice the voltage spike when the load is disconnected.&#10;Also notice that the PID controller tries to take the drive&#10;negative, but the generator model clips the drive input&#10;to be non-negative.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 455.0]">
+        </property>
+    </property>
+    <entity name="GeneratorContactorLoad" class="ptolemy.demo.ElectricPowerSystem.GeneratorContactorLoad">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[390.0, 210.0]">
+        </property>
+        <property name="loadImpedance" class="ptolemy.data.expr.Parameter" value="1.0">
+        </property>
+        <property name="voltageSamplePeriod" class="ptolemy.data.expr.Parameter" value="1.0">
+        </property>
+        <property name="generatorTimeConstant" class="ptolemy.data.expr.Parameter" value="5.0">
+        </property>
+        <property name="generatorOutputImpedance" class="ptolemy.data.expr.Parameter" value="1.0">
+        </property>
+    </entity>
+    <entity name="DesiredVoltage" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="110.0">
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[550.0, 160.0]">
+        </property>
+    </entity>
+    <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[635.0, 200.0]">
+        </property>
+    </entity>
+    <entity name="PID" class="ptolemy.domains.de.lib.PID">
+        <property name="Kp" class="ptolemy.data.expr.Parameter" value="2.0">
+        </property>
+        <property name="Ki" class="ptolemy.data.expr.Parameter" value="1.0">
+        </property>
+        <doc>Discrete proportional, integral, and derivative controller.</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[735.0, 210.0]">
+        </property>
+    </entity>
+    <entity name="SingleEvent" class="ptolemy.actor.lib.SingleEvent">
+        <property name="time" class="ptolemy.data.expr.Parameter" value="15.0">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{35.0, 220.0}">
+        </property>
+    </entity>
+    <entity name="Expression" class="ptolemy.actor.lib.Expression">
+        <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="voltage &gt;= overVoltageThreshold">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+            <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[300.0, 325.0]">
+        </property>
+        <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <port name="voltage" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+    </entity>
+    <entity name="Supervisor" class="ptolemy.domains.modal.modal.ModalModel">
+        <property name="_tableauFactory" class="ptolemy.vergil.modal.modal.ModalTableauFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[140.0, 220.0]">
+        </property>
+        <port name="onOff" class="ptolemy.domains.modal.modal.ModalPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <port name="fault" class="ptolemy.domains.modal.modal.ModalPort">
+            <property name="input"/>
+            <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="SOUTH">
+            </property>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <port name="contactor" class="ptolemy.domains.modal.modal.ModalPort">
+            <property name="output"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <entity name="_Controller" class="ptolemy.domains.modal.modal.ModalController">
+            <property name="errorCause" class="ptolemy.data.expr.Parameter">
+            </property>
+            <property name="_library" class="ptolemy.moml.LibraryAttribute">
+                <configure>
+      <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.modal.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory"></property></entity></entity>
+    </configure>
+            </property>
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={373, 207, 934, 635}, maximized=false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
+            </property>
+            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.1875217441725618">
+            </property>
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{291.52099609375, 242.70110931396482}">
+            </property>
+            <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+                <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This state machine switches from off to on when onOff is present and true.&#10;If in the same reaction, fault is also present, it transitions immediately back to off.&#10;When it is in the on state, it transitions back to off if either fault is present and true,&#10;or onOff is present and false.">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, 225.0]">
+                </property>
+            </property>
+            <port name="onOff" class="ptolemy.domains.modal.modal.RefinementPort">
+                <property name="input"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 95.0]">
+                </property>
+            </port>
+            <port name="fault" class="ptolemy.domains.modal.modal.RefinementPort">
+                <property name="input"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 135.0]">
+                </property>
+            </port>
+            <port name="contactor" class="ptolemy.domains.modal.modal.RefinementPort">
+                <property name="input"/>
+                <property name="output"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[440.0, 110.0]">
+                </property>
+            </port>
+            <entity name="off" class="ptolemy.domains.modal.kernel.State">
+                <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+                <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[145.0, 90.0]">
+                </property>
+            </entity>
+            <entity name="on" class="ptolemy.domains.modal.kernel.State">
+                <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+                <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[295.0, 90.0]">
+                </property>
+            </entity>
+            <relation name="relation" class="ptolemy.domains.modal.kernel.Transition">
+                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="onOff">
+                </property>
+                <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="contactor = true">
+                </property>
+                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.7753071309291377">
+                </property>
+                <property name="gamma" class="ptolemy.data.expr.Parameter" value="-0.04770267934836719">
+                </property>
+            </relation>
+            <relation name="relation2" class="ptolemy.domains.modal.kernel.Transition">
+                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="fault">
+                </property>
+                <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="contactor = false">
+                </property>
+                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.6474117189486365">
+                </property>
+                <property name="gamma" class="ptolemy.data.expr.Parameter" value="3.0587577909881927">
+                </property>
+                <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="immediate" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+            </relation>
+            <relation name="relation3" class="ptolemy.domains.modal.kernel.Transition">
+                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="!onOff">
+                </property>
+                <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="contactor = false">
+                </property>
+                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-1.6222167676222667">
+                </property>
+                <property name="gamma" class="ptolemy.data.expr.Parameter" value="3.046288368636289">
+                </property>
+                <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+            </relation>
+            <link port="off.incomingPort" relation="relation2"/>
+            <link port="off.incomingPort" relation="relation3"/>
+            <link port="off.outgoingPort" relation="relation"/>
+            <link port="on.incomingPort" relation="relation"/>
+            <link port="on.outgoingPort" relation="relation2"/>
+            <link port="on.outgoingPort" relation="relation3"/>
+        </entity>
+        <relation name="onOffRelation" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
+            </property>
+        </relation>
+        <relation name="faultRelation" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
+            </property>
+        </relation>
+        <relation name="contactorRelation" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
+            </property>
+        </relation>
+        <link port="onOff" relation="onOffRelation"/>
+        <link port="fault" relation="faultRelation"/>
+        <link port="contactor" relation="contactorRelation"/>
+        <link port="_Controller.onOff" relation="onOffRelation"/>
+        <link port="_Controller.fault" relation="faultRelation"/>
+        <link port="_Controller.contactor" relation="contactorRelation"/>
+    </entity>
+    <entity name="MicrostepDelay" class="ptolemy.actor.lib.MicrostepDelay">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[245.0, 220.0]">
+        </property>
+    </entity>
+    <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, 39.8792465246338, 74.3970251215671, 99.725996022195, 115.4389162433793, 123.0452526940962, 124.8398970342102, 123.1312387725694, 119.8166082469318, 116.2246299002023, 113.1321057565917, 110.873276222789, 109.4797896517881, 108.8120920942203, 108.6623084501912, 108.8228851618563, 54.5620337939007, 67.0867981783574, 79.527863862085, 90.7841902052882, 100.2113885252314, 107.5352663217757, 112.7592445123997, 116.0759824950852, 235.5797721162558, 192.8763911687958, 157.9138222951499, 129.2888938908068, 105.8527862891308, 86.6649255630235, 79.4752519134281, 81.0769458720438, 87.1956568089888, 94.6752589699256, 101.5432105820399, 106.8317465185125, 110.2979665037503, 112.1393761121294, 112.7585049173359, 112.597028844037, 112.0379678018034, 111.3628372706448, 110.7466172791768, 110.2743129142864, 109.9663197456305, 109.8040060402421, 109.7507762535687, 109.7668453972895, 109.817896207011, 109.8788219825882, 109.9341036807557, 109.9762781715886, 110.0036403503797, 110.0179428377441, 110.0225113346606, 110.0209288970248, 110.0162698112415, 110.0107728811987, 110.0058142201816, 110.0020487520866, 109.999618317567}">
+        </property>
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="2.435290817429426E-7">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[595.0, 280.0]">
+        </property>
+    </entity>
+    <entity name="NonStrictTest2" class="ptolemy.actor.lib.NonStrictTest">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{220.0, 230.3018836884156, 214.1281906714485, 186.4087382983118, 157.400441723156, 132.9456843529845, 115.4138208086031, 104.8455694284948, 100.0009069700196, 99.1642445899115, 100.6709250487356, 103.1858931266507, 105.796333331364, 107.9857875734954, 109.5481545893479, 110.4844043599939, 247.3136476180265, 271.4397028629841, 283.2502404753076, 285.5815607552148, 281.2293747500685, 272.7082917334765, 262.1130799351407, 251.0619904660272, -53.7734660819846, -72.5947858295904, -68.0647548142714, -44.4162560985634, -5.1148809851804, 47.0019845409572, 88.3112431019222, 114.8317562919549, 128.4580330775485, 132.5633708662178, 130.7182328660064, 125.9536824427849, 120.456385961178, 115.55489543648, 111.8676973113344, 109.5128825772458, 108.3135063387928, 107.963364864886, 108.1410775729111, 108.5752212059603, 109.0708912133136, 109.5103557311542, 109.8394241575956, 110.0484750447248, 110.1540026231317, 110.1837919771777, 110.1667657491707, 110.1272258413327, 110.0825422227663, 110.0431456539757, 110.0137815739405, 109.9952263333692, 109.9859451508027, 109.9834176646682, 109.9850414360122, 109.988640886068, 109.9926682202806}">
+        </property>
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="0.0001">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[405.0, 140.0]">
+        </property>
+    </entity>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="[510.0, 210.0]">
+        </vertex>
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="[330.0, 95.0]">
+        </vertex>
+    </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="GeneratorContactorLoad.drive" relation="relation4"/>
+    <link port="GeneratorContactorLoad.voltage" relation="relation2"/>
+    <link port="GeneratorContactorLoad.contactor" relation="relation6"/>
+    <link port="DesiredVoltage.output" relation="relation"/>
+    <link port="DesiredVoltage.trigger" relation="relation2"/>
+    <link port="AddSubtract.plus" relation="relation"/>
+    <link port="AddSubtract.minus" relation="relation2"/>
+    <link port="AddSubtract.output" relation="relation3"/>
+    <link port="PID.input" relation="relation3"/>
+    <link port="PID.output" relation="relation4"/>
+    <link port="SingleEvent.output" relation="relation7"/>
+    <link port="Expression.output" relation="relation5"/>
+    <link port="Expression.voltage" relation="relation2"/>
+    <link port="Supervisor.onOff" relation="relation7"/>
+    <link port="Supervisor.fault" relation="relation5"/>
+    <link port="Supervisor.contactor" relation="relation8"/>
+    <link port="MicrostepDelay.input" relation="relation8"/>
+    <link port="MicrostepDelay.output" relation="relation6"/>
+    <link port="NonStrictTest.input" relation="relation2"/>
+    <link port="NonStrictTest2.input" relation="relation4"/>
+</entity>
