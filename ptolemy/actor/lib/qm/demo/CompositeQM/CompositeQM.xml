@@ -10,7 +10,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[125.0, -97.5]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={320, 55, 794, 634}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={79, 69, 794, 634}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[560, 524]">
     </property>
@@ -19,6 +19,8 @@
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{344.0, 243.5}">
     </property>
     <property name="qm" class="ptolemy.data.expr.Parameter" value="C">
+    </property>
+    <property name="enableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="false">
     </property>
     <entity name="A" class="ptolemy.actor.TypedCompositeActor">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[130.0, -30.0]">
@@ -41,9 +43,7 @@
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
-            <property name="qm" class="ptolemy.data.expr.Parameter" value="C">
-            </property>
-            <property name="_showInfo" class="ptolemy.kernel.util.StringAttribute" value="QM: C">
+            <property name="_showInfo" class="ptolemy.kernel.util.StringAttribute">
             </property>
         </port>
         <port name="port" class="ptolemy.actor.TypedIOPort">
@@ -80,7 +80,7 @@
         <link port="Ramp.trigger" relation="relation"/>
     </entity>
     <entity name="B" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[315.0, -32.5]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{315.0, -30.0}">
         </property>
         <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
             <property name="_location" class="ptolemy.kernel.util.Location" value="{55, 50}">
@@ -100,7 +100,7 @@
             </property>
             <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.0,1.0}">
             </property>
-            <property name="_showInfo" class="ptolemy.kernel.util.StringAttribute" value="QM: C">
+            <property name="_showInfo" class="ptolemy.kernel.util.StringAttribute" value="QM = {C}">
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
@@ -146,19 +146,19 @@
 <xLabel></xLabel>
 <yLabel></yLabel>
 <xRange min="0.0" max="5.0"/>
-<yRange min="-5.0" max="6.0"/>
+<yRange min="-5.0" max="5.0"/>
 <default stems="yes"/>
 </plot>?>
         </configure>
     </entity>
     <entity name="C" class="ptolemy.actor.lib.qm.CompositeQM">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[225.0, 27.5]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{225.0, 25.0}">
         </property>
         <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
             <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 25.0]">
             </property>
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={168, 132, 934, 634}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={131, 132, 934, 634}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
         </property>
@@ -204,8 +204,8 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[545.0, 220.0]">
             </property>
         </property>
-        <entity name="A_p" class="ptolemy.actor.lib.Const">
-            <property name="value" class="ptolemy.data.expr.Parameter" value="5.0">
+        <entity name="B_q" class="ptolemy.actor.lib.Const">
+            <property name="value" class="ptolemy.data.expr.Parameter" value="{receiver = object, token = 5.0}">
             </property>
             <doc>Create a constant sequence.</doc>
             <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
@@ -214,8 +214,13 @@
                 <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
                 </property>
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 110.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{-120.0, 110.0}">
             </property>
+            <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+                <property name="_type" class="ptolemy.actor.TypeAttribute" value="{receiver=object, token=scalar}">
+                </property>
+            </port>
         </entity>
         <entity name="SetVariable" class="ptolemy.actor.lib.SetVariable">
             <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="sendTo_B_q">
@@ -237,8 +242,8 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[325.0, 145.0]">
             </property>
         </entity>
-        <entity name="X_p" class="ptolemy.actor.lib.Const">
-            <property name="value" class="ptolemy.data.expr.Parameter" value="-5.0">
+        <entity name="Y_q" class="ptolemy.actor.lib.Const">
+            <property name="value" class="ptolemy.data.expr.Parameter" value="{receiver = object, token = 5.0}">
             </property>
             <doc>Create a constant sequence.</doc>
             <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
@@ -247,8 +252,13 @@
                 <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
                 </property>
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 170.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[-120.0, 170.0]">
             </property>
+            <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+                <property name="_type" class="ptolemy.actor.TypeAttribute" value="{receiver=object, token=scalar}">
+                </property>
+            </port>
         </entity>
         <entity name="SetVariable2" class="ptolemy.actor.lib.SetVariable">
             <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="sendTo_Y_q">
@@ -358,11 +368,11 @@
         </relation>
         <relation name="relation5" class="ptolemy.actor.TypedIORelation">
         </relation>
-        <link port="A_p.output" relation="relation10"/>
+        <link port="B_q.output" relation="relation10"/>
         <link port="SetVariable.input" relation="relation"/>
         <link port="Server.input" relation="relation8"/>
         <link port="Server.output" relation="relation3"/>
-        <link port="X_p.output" relation="relation13"/>
+        <link port="Y_q.output" relation="relation13"/>
         <link port="SetVariable2.input" relation="relation2"/>
         <link port="RecordAssembler.output" relation="relation6"/>
         <link port="RecordAssembler.id" relation="relation10"/>
@@ -406,9 +416,7 @@
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
-            <property name="qm" class="ptolemy.data.expr.Parameter" value="C">
-            </property>
-            <property name="_showInfo" class="ptolemy.kernel.util.StringAttribute" value="QM: C">
+            <property name="_showInfo" class="ptolemy.kernel.util.StringAttribute">
             </property>
         </port>
         <port name="port" class="ptolemy.actor.TypedIOPort">
@@ -469,7 +477,7 @@
             </property>
             <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.0,1.0}">
             </property>
-            <property name="_showInfo" class="ptolemy.kernel.util.StringAttribute" value="QM: C">
+            <property name="_showInfo" class="ptolemy.kernel.util.StringAttribute" value="QM = {C}">
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
@@ -503,8 +511,12 @@
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <property name="color" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.0,1.0}">
+        </property>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <property name="color" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.0,1.0}">
+        </property>
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
     </relation>

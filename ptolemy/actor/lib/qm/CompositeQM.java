@@ -42,6 +42,8 @@ import ptolemy.actor.Receiver;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.gui.ColorAttribute;
 import ptolemy.actor.lib.Const;
+import ptolemy.data.ObjectToken;
+import ptolemy.data.RecordToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.CompositeEntity;
@@ -177,13 +179,6 @@ public class CompositeQM extends TypedCompositeActor implements QuantityManager 
     public void setPortAttribute(Port container, Attribute attribute) throws IllegalActionException {
         // Not implemented yet.
     }
-    
-    /** Nothing to do here. FIXME: should be deleted.
-     */
-    public Receiver getReceiver(Receiver receiver, IOPort port)
-            throws IllegalActionException {
-        return null;
-    }
 
     /** Override the fire and change the transferring tokens
      * from and to input/output placeholders.
@@ -228,26 +223,30 @@ public class CompositeQM extends TypedCompositeActor implements QuantityManager 
                     String parameterName = ((Parameter) attribute).getName();
                     if (parameterName.startsWith("sendTo_")) {
                         if (((Parameter) attribute).getToken() != null) {
-                            String actorName = parameterName.substring(
-                                    parameterName.indexOf("_") + 1,
-                                    parameterName.indexOf("_",
-                                            parameterName.indexOf("_") + 1));
-                            String portName = parameterName
-                                    .substring(parameterName.indexOf("_",
-                                            parameterName.indexOf("_") + 1) + 1);
-                            Actor actor = (Actor) ((CompositeActor) getContainer())
-                                    .getEntity(actorName);
-                            for (Object object : actor.inputPortList()) {
-                                IOPort port = (IOPort) object;
-                                if (port.getName().equals(portName)) {
-                                    ((IntermediateReceiver) port.getReceivers()[0][0])._receiver
-                                            .put(((Parameter) attribute)
-                                                    .getToken());
-                                    ((CompositeActor) actor.getContainer())
-                                            .getDirector().fireAtCurrentTime(
-                                                    actor);
-                                }
-                            }
+//                            String actorName = parameterName.substring(
+//                                    parameterName.indexOf("_") + 1,
+//                                    parameterName.indexOf("_",
+//                                            parameterName.indexOf("_") + 1));
+//                            String portName = parameterName
+//                                    .substring(parameterName.indexOf("_",
+//                                            parameterName.indexOf("_") + 1) + 1);
+//                            Actor actor = (Actor) ((CompositeActor) getContainer())
+//                                    .getEntity(actorName);
+//                            for (Object object : actor.inputPortList()) {
+//                                IOPort port = (IOPort) object;
+//                                if (port.getName().equals(portName)) {
+                            RecordToken recordToken = (RecordToken) ((Parameter) attribute).getToken();
+                            Receiver receiver = (Receiver) ((ObjectToken) recordToken.get("receiver")).getValue();
+                            Token token = recordToken.get("token");
+                            receiver.put(token);
+//                                    ((IntermediateReceiver) port.getReceivers()[0][0])._receiver
+//                                            .put(((Parameter) attribute)
+//                                                    .getToken());
+//                                    ((CompositeActor) actor.getContainer())
+//                                            .getDirector().fireAtCurrentTime(
+//                                                    actor);
+//                                }
+//                            }
                             ((Parameter) attribute).reset();
                         }
                     }
@@ -303,7 +302,10 @@ public class CompositeQM extends TypedCompositeActor implements QuantityManager 
         if (_tokens == null) {
             _tokens = new HashMap<Const, Token>();
         }
-        _tokens.put(mappedConst, token);
+        RecordToken recordToken = new RecordToken(
+                new String[]{"receiver", "token"}, 
+                new Token[]{new ObjectToken(receiver), token});
+        _tokens.put(mappedConst, recordToken);
 
         ((CompositeActor) getContainer()).getDirector().fireAtCurrentTime(this);
 

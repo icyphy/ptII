@@ -62,7 +62,7 @@ public interface QuantityManager {
      *  @return A new receiver.
      *  @exception IllegalActionException If the receiver cannot be created.
      */
-    public abstract Receiver createIntermediateReceiver(Receiver receiver)
+    public Receiver createIntermediateReceiver(Receiver receiver)
             throws IllegalActionException;
     
     /** Return the list of Attributes that can be specified per port with default
