@@ -62,7 +62,7 @@ OTHER_FILES_TO_BE_JARED = \
 	Contactor.xml \
 	ContactorIcon.xml \
 	Generator.xml \
-	index.html
+	ElectricPowerSystem.htm
 
 EXAMPLE_MODEL_HTML = $(EXAMPLE_MODELS:%.xml=%.htm)
 
