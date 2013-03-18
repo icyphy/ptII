@@ -4,7 +4,7 @@
 #
 # @Version: $Id$
 #
-# @Copyright (c) 1997-2011 The Regents of the University of California.
+# @Copyright (c) 1997-2013 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -35,7 +35,7 @@ ME =		ptolemy/demo/test
 # Root of the Ptolemy II directory
 ROOT =		../../..
 
-CLASSPATH = $(ROOT)
+CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(JNA_JAR)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
