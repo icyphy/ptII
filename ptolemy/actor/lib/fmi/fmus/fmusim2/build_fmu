@@ -9,12 +9,6 @@ fi
 
 fmuBaseName=$1
 
-# Error checking
-if [ ! -f $fmuBaseName.c ]; then
-   echo "$0: $fmuBaseName.c does not exist"
-   exit 4
-fi
-
 include="-DFMI_COSIMULATION -I../../co_simulation/include"
 
 case "`uname -s`" in

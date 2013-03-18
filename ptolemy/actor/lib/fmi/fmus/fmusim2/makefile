@@ -95,5 +95,6 @@ fmusim2: main.o stack.o sim_support.o xml_parser.o
 run: fmusim2
 	./fmusim2 ../onOffSupervisor/onOffSupervisor.fmu 
 
+clean: dirclean
 dirclean:
 	rm -rf *.so *.dylib *.o *.fmu *~ fmu fmuTmp* fmusim2 result.csv

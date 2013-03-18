@@ -279,14 +279,14 @@ static void printModelDescription(ModelDescription* md){
     }
 
 #if FMI_VERSION >= 2
-    e = md->cosimulation;
+    //e = md->cosimulation;
 #else
     e = md->cosimulation->capabilities;
-#endif // FMI_VERSION
     printf("%s\n", elmNames[e->type]);
     for (i=0; i<e->n; i+=2) {
         printf("  %s=%s\n", e->attributes[i], e->attributes[i+1]);
     }
+#endif // FMI_VERSION
 #endif // FMI_COSIMULATION  
 }
 
@@ -476,7 +476,7 @@ static void replaceRefsInMessage(const char* msg, char* buffer, int nBuffer, FMU
             else {
                 char type = msg[i+1]; // one of ribs
                 fmiValueReference vr;
-                int nvr = sscanf(msg+i+2, "%u", &vr);
+                int nvr = sscanf(msg+i+2, "%u", (unsigned int *) &vr);
                 if (nvr==1) {
                     // vr of type detected, e.g. #r12#
                     ScalarVariable* sv = getSV(fmu, type, vr);

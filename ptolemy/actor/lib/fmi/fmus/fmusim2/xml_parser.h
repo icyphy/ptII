@@ -108,7 +108,9 @@ typedef struct {
 // AST node for element CoSimulation_StandAlone and CoSimulation_Tool
 typedef struct {
 #if FMI_VERSION >= 2
+    Elm type; // elm_CoSimulation
     const char** attributes; // null or n attribute value strings
+    int n;                   // size of attributes, even number
 #else
     Elm type; // one of elm_CoSimulation_StandAlone and elm_CoSimulation_Tool
     const char** attributes; // null or n attribute value strings

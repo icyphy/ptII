@@ -809,10 +809,10 @@ void freeElement(void* element){
             freeElement(((Type*)e)->typeSpec);
             break;
         case astCoSimulation: {
-            CoSimulation* cs = (CoSimulation*)e;
 #if FMI_VERSION >= 2
-            freeElement(cs->attributes);
+            //freeElement(cs->attributes);
 #else
+            CoSimulation* cs = (CoSimulation*)e;
             freeElement(cs->capabilities);
             freeElement(cs->model);
 #endif
