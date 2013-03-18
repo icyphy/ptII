@@ -106,15 +106,38 @@ public class FMUBuilder {
             return false;
         }
 
+        boolean isWindows = architecture.startsWith("win");
+
         // FIXME: eventually, we should not use make.
         File makefile = new File(sourcesDirectory, "makefile");
 
-        if (!makefile.exists()) {
+        if (!isWindows && !makefile.exists()) {
             stderr("The makefile \"" + makefile + "\" does not exist." + _eol);
             return false;
         }
 
-        ProcessBuilder builder = new ProcessBuilder("make", architecture);
+        String command = "make";
+        String target = architecture;
+        if (isWindows) {
+            File batchCommand = new File(sourcesDirectory, "build_fmu.bat");
+            if (! batchCommand.exists()) {
+                stderr("The DOS batch file \"" + batchCommand
+                        + "\" does not exist." + _eol);
+                return false;
+            }
+            command = batchCommand.getCanonicalPath();
+
+            String sharedLibraryFileName = sharedLibraryFile.getName();
+            target = sharedLibraryFileName.substring(0,
+                    sharedLibraryFileName.length() - 4);
+        } 
+
+        ProcessBuilder builder = new ProcessBuilder(command, target);
+
+        stdout("architecture: " + architecture + " isWindows: " + isWindows + "  command: " + command + " target: " + target);
+
+
+
         builder.directory(sourcesDirectory);
 
         // Eventually, redirect to the buffer and return the results.
