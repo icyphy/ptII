@@ -1,4 +1,4 @@
-rem @echo off 
+@echo off 
 rem ------------------------------------------------------------
 rem This batch builds an FMU of the FMU SDK
 rem Usage: build_fmu  <fmu_dir_name> 
@@ -81,11 +81,14 @@ rem del %DOC_DIR%\model.png
 
 rem If the 7z.exe binary is found, then
 rem zip the directory tree and move to fmu directory 
-for %%X in (7z.exe) do (set FOUND=%%~$PATH:X)
+echo checking for 7z
+set PATH=%PTII%\ptolemy\actor\lib\fmi\fmus\win32;%PATH%
+for %%X in (7z.exe) do if not [%%~$PATH:x]==[] set FOUND=1
 if defined FOUND (
+  echo 7z found
   cd fmu
   set FMU_FILE=..\..\..\..\%1.fmu
-  if exist %ZIP_FILE% del %FMU_FILE%
+  if exist %FMU_FILE% ( del %FMU_FILE% )
   7z.exe a -tzip -xr!.svn %FMU_FILE% ^
   modelDescription.xml model.png binaries sources documentation
   goto cleanup
@@ -96,7 +99,7 @@ if defined FOUND (
 
 :noCompiler
 echo No Microsoft Visual C compiler found
-exit
+rem exit
 
 :compileError
 echo build of %1 failed
