@@ -109,6 +109,25 @@ public class MessageHandler {
         return _handler;
     }
 
+    /** If the trainingMode parameter is true and the
+     *  model is being run as part of the test suite, then return true.
+     *  This method merely checks to see if
+     *  "ptolemy.ptII.isRunningNightlyBuild" property exists and is not empty.
+     *  To run the test suite in the Nightly Build mode, use
+     *  <pre>
+     *  make nightly
+     *  </pre>
+     *  @return True if the nightly build is running.
+     */
+    public static boolean isRunningNightlyBuild() {
+        if (StringUtilities.getProperty("ptolemy.ptII.isRunningNightlyBuild")
+                .length() > 0) {
+            return true;
+        }
+
+        return false;
+    }
+
     /** Defer to the set message handler to show the specified
      *  message.
      *  @param info The message.
@@ -177,15 +196,20 @@ public class MessageHandler {
     }
 
     /** Ask the user a yes/no question, and return true if the answer
-     *  is yes.
-     *
+     *  is yes. This method returns true without asking the user if
+     *  the property "ptolemy.ptII.isRunningNightlyBuild" is set.
+     *  In the regression tests, there is no user to answer the question.
      *  @param question The yes/no question.
      *  @return True if the answer is yes.
      */
     public static boolean yesNoQuestion(String question) {
-        return _handler._yesNoQuestion(question);
+        if (!isRunningNightlyBuild()) {
+            return _handler._yesNoQuestion(question);
+        } else {
+            return true;
+        }
     }
-
+    
     /** Ask the user a yes/no/cancel question, and return true if the
      *  answer is yes.  If the user clicks on the "Cancel" button,
      *  then throw an exception.
