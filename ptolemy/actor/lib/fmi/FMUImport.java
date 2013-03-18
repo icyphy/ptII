@@ -875,7 +875,8 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
 
         // FIXME: We should send logging messages to the debug listener.
         byte loggingOn = _debugging ? (byte) 1 : (byte) 0;
-        loggingOn = 1;
+        System.out.println("FMUImport: FIXME: Disabling logging because of errors");
+        loggingOn = 0;
         if (_debugging) {
             _debugToStdOut("FMUCoSimulation: about to call " + modelIdentifier
                     + "_fmiInstantiateSlave");
