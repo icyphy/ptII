@@ -41,6 +41,7 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.util.FileUtilities;
 import ptolemy.util.StringUtilities;
+import ptolemy.vergil.basic.BasicGraphFrame;
 import ptolemy.vergil.basic.ExportParameters;
 
 ///////////////////////////////////////////////////////////////////
@@ -180,7 +181,11 @@ public class WebExportParameters extends Attribute {
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == backgroundColor) {
-            _parameters.backgroundColor = backgroundColor.asColor();
+            if (!backgroundColor.getExpression().trim().equals("")) {
+                _parameters.backgroundColor = backgroundColor.asColor();
+            } else {
+                _parameters.backgroundColor = BasicGraphFrame.BACKGROUND_COLOR;
+            }
         } else if (attribute == copyJavaScriptFiles) {
             _parameters.copyJavaScriptFiles = ((BooleanToken) copyJavaScriptFiles
                     .getToken()).booleanValue();
@@ -212,6 +217,7 @@ public class WebExportParameters extends Attribute {
      */
     public ExportParameters getExportParameters() {
         if (_parameters.directoryToExportTo == null) {
+            // FIXME: This next line seems to sometimes put quotation marks around the file name!
             _parameters.directoryToExportTo = FileUtilities.nameToFile(
                     StringUtilities.sanitizeName(getContainer().getName()),
                     directoryToExportTo.getBaseDirectory());
