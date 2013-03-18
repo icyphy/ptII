@@ -42,6 +42,9 @@
 #define FMIAPI
 #endif
 
+// FIXME: Don't use the logger, it causes the JVM to exit.
+#define USE_LOGGER 0
+
 // include fmu header files, typedefs and macros
 #include "fmiFunctions.h"
 
@@ -91,18 +94,33 @@ int checkFMU(
     }
     // Functions to allocate and free memory are required.
     if (!functions->allocateMemory || !functions->freeMemory) {
+#if USE_LOGGER
         functions->logger(NULL, instanceName, fmiError, "error",
-                          "fmiInstantiateSlave: Missing callback function: allocateMemory or freeMemory");
+                          "fmiInstantiateSlave: Missing callback function: allocateMemory or freeMemory.");
+#else
+        fprintf(stderr, "fmiInstantiateSlave: Missing callback function: allocateMemory or freeMemory.\n");
+        fflush(stderr);
+#endif
         return 0;
     }
     if (!instanceName || strlen(instanceName)==0) {
+#if USE_LOGGER        
         functions->logger(NULL, instanceName, fmiError, "error",
-                          "fmiInstantiateSlave: Missing instance name.");
+#else
+        fprintf(stderr, "fmiInstantiateSlave: Missing instance name.\n");
+        fflush(stderr);
+#endif
         return 0;
     }
     if (strcmp(GUID, MODEL_GUID)) {
+#if USE_LOGGER        
         functions->logger(NULL, instanceName, fmiError, "error",
                           "fmiInstantiateSlave: Wrong GUID %s. Expected %s.", GUID, MODEL_GUID);
+#else
+        fprintf(stderr, "fmiInstantiateSlave: Wrong GUID\n");
+        fflush(stderr);
+#endif
+
         return 0;
     }
     return 1;
@@ -201,8 +219,13 @@ fmiStatus fmiGetBoolean(fmiComponent c, const fmiValueReference vr[], size_t nvr
         } else if (valueReference == FAULT) {
             value[i] = component->fault;
         } else {
+#if USE_LOGGER
             component->functions->logger(component, component->instanceName, fmiError, "error",
                                              "fmiGetBoolean: Value reference out of range: %u.", nvr);
+#else
+            fprintf(stderr, "fmiGetBoolean: Value referenced out of range.\n");
+            fflush(stderr);
+#endif
             return fmiError;
         }
         /*
@@ -249,8 +272,15 @@ fmiComponent fmiInstantiateSlave(
     component->functions = functions;
     component->instanceName = instanceName;
 
-    functions->logger(component, instanceName, fmiOK, "message",
+    if (loggingOn) {
+#if USE_LOGGER
+        functions->logger(component, instanceName, fmiOK, "message",
                       "Invoked fmiInstantiateSlave for instance %s.", instanceName);
+#else
+        fprintf(stderr, "Invoked fmiInstantiateSlave.\n");
+        fflush(stderr);
+#endif
+    }
 
     return component;
 }
@@ -271,9 +301,16 @@ fmiStatus fmiInitializeSlave(fmiComponent c,
                              fmiBoolean stopTimeDefined,
                              fmiReal tStop) {
     ModelInstance* component = (ModelInstance *) c;
+
+#if USE_LOGGER
     component->functions->logger(c, component->instanceName, fmiOK, "message",
                                  "Invoked fmiIntializeSlave: start: %g, StopTimeDefined: %d, tStop: %g.",
                                  tStart, stopTimeDefined, tStop);
+#else
+    fprintf(stderr, "Invoked fmiInitializeSlave.\n");
+    fflush(stderr);
+#endif
+
     component->state = fmiFalse;
     component->onOff = fmiFalse;
     component->fault = fmiFalse;
@@ -305,8 +342,13 @@ fmiStatus fmiSetBoolean(fmiComponent c, const fmiValueReference vr[], size_t nvr
         } else if (valueReference == FAULT) {
             component->fault = value[i];
         } else {
+#if USE_LOGGER
             component->functions->logger(component, component->instanceName, fmiError, "error",
                         "fmiGetBoolean: Value reference out of range: %u.", valueReference);
+#else
+            fprintf(stderr, "fmiGetBoolean: Value reference out of range\n");
+            fflush(stderr);
+#endif
             return fmiError;
         }
     }
