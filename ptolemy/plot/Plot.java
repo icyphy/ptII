@@ -2615,8 +2615,8 @@ public class Plot extends PlotBox implements PlotInterface {
             for (int i = startPosition; i < endPosition; ++i) {
                 PlotPoint point = points.get(i);
 
-                // I a point is not connected, we mark it with a dot.
-                if (_marks != 0 || _markDisconnections
+                // If a point is not connected, we mark it with a dot.
+                if (marks != 0 || _markDisconnections
                         && !(connectedFlag && point.connected)) {
                     long ypos = _lry - (long) ((point.y - _yMin) * _yscale);
                     if (prevypos != ypos || prevxpos != xpos) {
