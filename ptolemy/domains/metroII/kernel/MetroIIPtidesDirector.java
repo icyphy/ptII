@@ -60,6 +60,7 @@ import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.Token;
+import ptolemy.data.expr.FileParameter;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.domains.de.kernel.DEEventQueue;
@@ -135,7 +136,7 @@ public class MetroIIPtidesDirector extends MetroIIDEDirectorForPtides {
      *  platforms.
      */
     public SharedParameter clockSynchronizationErrorBound;
-
+    
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -389,7 +390,7 @@ public class MetroIIPtidesDirector extends MetroIIDEDirectorForPtides {
                         _currentLogicalTime = null;
                     }
                 }
-                System.out.println(getModelTime()); 
+                // System.out.println(getModelTime()); 
                 _inputEventQueue.remove(getModelTime());
             }
 
@@ -1590,6 +1591,8 @@ public class MetroIIPtidesDirector extends MetroIIDEDirectorForPtides {
             parameter.setToken(token);
         }
     }
+    
+
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////

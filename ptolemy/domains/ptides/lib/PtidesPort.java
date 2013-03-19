@@ -243,6 +243,11 @@ public class PtidesPort extends MirrorPort {
         super.send(channelIndex, token);
     }
 
+    protected HashMap<Token, Object[]> _transmittedTokenTimestamps;
+
+    protected HashMap<Token, Integer> _transmittedTokenCnt;
+
+
     /** Change visibility of parameters depending on the type of
      *  port. FIXME: change icon!
      *  @exception IllegalActionException Thrown if icon cannot be changed.
@@ -312,9 +317,5 @@ public class PtidesPort extends MirrorPort {
     private SingletonConfigurableAttribute _iconDescription;
 
     private boolean _isNetworkPort;
-
-    private HashMap<Token, Object[]> _transmittedTokenTimestamps;
-
-    private HashMap<Token, Integer> _transmittedTokenCnt;
 
 }

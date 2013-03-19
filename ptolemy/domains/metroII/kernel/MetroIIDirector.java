@@ -36,6 +36,7 @@ import java.util.LinkedList;
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
+import ptolemy.data.BooleanToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.expr.FileParameter;
@@ -184,6 +185,8 @@ public class MetroIIDirector extends Director {
      */
     public Parameter iterations;
 
+    public Parameter printTrace;
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -278,25 +281,42 @@ public class MetroIIDirector extends Director {
         if (!_stopRequested) {
             LinkedList<Event.Builder> globalMetroIIEventList = new LinkedList<Event.Builder>();
 
-            System.out.println("==== ==== ==== ==== ==== ==== ==== Iteration "
-                    + Integer.toString(_iterationCount));
+            //Debug.Out.println(this.getFullName() + ": " + "Iteration "
+            //        + Integer.toString(_iterationCount));
+
             // Phase 1: base model execution
-            System.out.println("Phase 1:");
+            //Debug.Out.println(this.getFullName() + ": " + "Phase 1");
+
             for (StartOrResumable actor : _actorList) {
                 LinkedList<Event.Builder> metroIIEventList = new LinkedList<Event.Builder>();
                 actor.startOrResume(metroIIEventList);
                 globalMetroIIEventList.addAll(metroIIEventList);
             }
-            for (Event.Builder builder : globalMetroIIEventList) {
-                System.out.format("%-50s %-10s\n", builder.getName(),
-                        builder.getStatus());
+
+            if (((BooleanToken) printTrace.getToken()).booleanValue()) {
+                for (Event.Builder builder : globalMetroIIEventList) {
+                    // System.out.format("%-50s %-10s\n", builder.getName(),
+                    //        builder.getStatus());
+                    System.out.println(this.getFullName() + ": " + "Iteration "
+                            + Integer.toString(_iterationCount) + " "
+                            + "Phase 1" + " " + builder.getStatus() + " "
+                            + builder.getName());
+                }
             }
             // Phase 2: constraint resolution
-            System.out.println("Phase 2:");
+            //Debug.Out.println(this.getFullName() + ": " + "Phase 2");
+
             _mappingConstraintSolver.resolve(globalMetroIIEventList);
-            for (Event.Builder builder : globalMetroIIEventList) {
-                System.out.format("%-50s %-10s\n", builder.getName(),
-                        builder.getStatus());
+
+            if (((BooleanToken) printTrace.getToken()).booleanValue()) {
+                for (Event.Builder builder : globalMetroIIEventList) {
+                    // System.out.format("%-50s %-10s\n", builder.getName(),
+                    //         builder.getStatus());
+                    System.out.println(this.getFullName() + ": " + "Iteration "
+                            + Integer.toString(_iterationCount) + " "
+                            + "Phase 2" + " " + builder.getStatus() + " "
+                            + builder.getName());
+                }
             }
         }
     }
@@ -351,6 +371,9 @@ public class MetroIIDirector extends Director {
         iterations = new Parameter(this, "iterations");
         iterations.setTypeEquals(BaseType.INT);
         iterations.setExpression("-1");
+        printTrace = new Parameter(this, "printTrace");
+        printTrace.setTypeEquals(BaseType.BOOLEAN);
+        printTrace.setExpression("true");
     }
 
     ///////////////////////////////////////////////////////////////////

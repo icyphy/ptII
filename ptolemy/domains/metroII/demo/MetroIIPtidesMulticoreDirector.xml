@@ -4,7 +4,7 @@
 <entity name="MetroIIPtidesMulticoreDirector" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={429, 295, 885, 616}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={393, 166, 885, 616}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[671, 525]">
     </property>
@@ -21,7 +21,9 @@
         </property>
         <property name="mappingFileName" class="ptolemy.data.expr.FileParameter" value="">
         </property>
-        <property name="iterations" class="ptolemy.data.expr.Parameter" value="100">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="50">
+        </property>
+        <property name="printTrace" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[155.0, 240.0]">
         </property>
@@ -35,7 +37,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="{370.0, -84.0}">
             </property>
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={165, 1183, 914, 607}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={167, 321, 914, 607}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 516]">
         </property>
@@ -296,10 +298,12 @@
             </port>
             <entity name="PtidesPlatformContents" class="ptolemy.domains.metroII.kernel.MetroIIPtidesPlatform$PtidesPlatformContents">
                 <property name="MetroIIPtidesDirector" class="ptolemy.domains.metroII.kernel.MetroIIPtidesDirector">
+                    <property name="printTrace" class="ptolemy.data.expr.Parameter" value="true">
+                    </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[125.0, 125.0]">
                     </property>
                 </property>
-                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={466, 1293, 914, 615}, maximized=false}">
+                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={468, 313, 914, 615}, maximized=false}">
                 </property>
                 <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
                 </property>

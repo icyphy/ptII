@@ -40,6 +40,9 @@ import net.jimblackler.Utils.YieldAdapterIterable;
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.FiringEvent;
+import ptolemy.data.BooleanToken;
+import ptolemy.data.expr.Parameter;
+import ptolemy.data.type.BaseType;
 import ptolemy.domains.de.kernel.DEDirector;
 import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event;
 import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event.Builder;
@@ -58,6 +61,7 @@ public class MetroIIDEDirectorForPtides extends DEDirector implements
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         // TODO Auto-generated constructor stub
+        _initializeParameters();
     }
 
     /** Clone the object into the specified workspace. The new object
@@ -372,8 +376,11 @@ public class MetroIIDEDirectorForPtides extends DEDirector implements
             // because this method is very different from that of the super class.
             // A BIG while loop that handles all events with the same tag.
             do {
-                System.out.println("========= " + this.getModelTime()
-                        + ": new iteration of " + this.getName() + " director");
+
+                if (((BooleanToken) printTrace.getToken()).booleanValue()) {
+                    System.out.println(this.getFullName() + ": " + "Time "
+                            + this.getModelTime());
+                }
 
                 while (true) {
                     Pair<PtidesEvent, Integer> eventAndState = _checkNextEventToFire();
@@ -390,9 +397,12 @@ public class MetroIIDEDirectorForPtides extends DEDirector implements
                     } // else if 0, keep executing
                       //if (!actorList.contains(actorAndState.first)) {
                     eventList.add(eventAndState.first);
-                    System.out.println("Added: "
-                            + eventAndState.first.actor().getName());
-                    System.out.println("Time: " + getModelTime());
+                    
+                    if (((BooleanToken) printTrace.getToken()).booleanValue()) {
+                        System.out.println(this.getFullName() + ": " + "Time "
+                                + getModelTime() + " " + "READY "
+                                + eventAndState.first.actor().getName());
+                    }
                     //}
                     // after actor firing, the subclass may wish to perform some book keeping
                     // procedures. However in this class the following method does nothing.
@@ -402,11 +412,6 @@ public class MetroIIDEDirectorForPtides extends DEDirector implements
                         break;
                     } // else keep executing in the current iteration
                 } // Close the BIG while loop.
-
-                System.out.println("========= Actors ready to fire: ");
-                for (PtidesEvent ptidesEvent : eventList) {
-                    System.out.println(ptidesEvent.actor().getName());
-                }
 
                 ArrayList<PtidesEvent> firingEventList = new ArrayList<PtidesEvent>();
                 _events.clear();
@@ -445,8 +450,8 @@ public class MetroIIDEDirectorForPtides extends DEDirector implements
                         firingEventList.add(ptidesEvent);
                         _events.addAll(metroIIEventList);
                     }
-                    
-                    _resetLogicalTime(); 
+
+                    _resetLogicalTime();
                 }
                 eventList = firingEventList;
                 resultHandler.handleResult(_events);
@@ -470,6 +475,8 @@ public class MetroIIDEDirectorForPtides extends DEDirector implements
         return null;
     }
 
+    public Parameter printTrace;
+
     ///////////////////////////////////////////////////////////////////
     ////                       protected methods                   ////
 
@@ -485,9 +492,19 @@ public class MetroIIDEDirectorForPtides extends DEDirector implements
     protected void _resetLogicalTime() {
     }
 
-
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
+
+    /** Initialize parameters. This is called by the constructor.
+     *  @exception IllegalActionException
+     *  @exception NameDuplicationException
+     */
+    private void _initializeParameters() throws IllegalActionException,
+            NameDuplicationException {
+        printTrace = new Parameter(this, "printTrace");
+        printTrace.setTypeEquals(BaseType.BOOLEAN);
+        printTrace.setExpression("true");
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////

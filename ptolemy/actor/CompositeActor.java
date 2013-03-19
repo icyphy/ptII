@@ -2920,11 +2920,11 @@ public class CompositeActor extends CompositeEntity implements Actor,
      * These are only filled in if this actor is a opaque composite actor.*/
     private transient Set<Executable> _derivedPiggybacks;
 
-    // The director for this composite actor.
-    private Director _director;
-
     // Indicator that we are in the connectionsChanged method.
     private boolean _inConnectionsChanged = false;
+
+    // The director for this composite actor.
+    private Director _director;
 
     // The manager for this composite actor.
     private Manager _manager;
