@@ -64,6 +64,7 @@ import ptolemy.data.expr.FileParameter;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.domains.de.kernel.DEEventQueue;
+import ptolemy.domains.metroII.kernel.StartOrResumable.State;
 import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event;
 import ptolemy.domains.ptides.kernel.PtidesEvent;
 import ptolemy.domains.metroII.kernel.MetroIIPtidesListEventQueue;
@@ -136,7 +137,7 @@ public class MetroIIPtidesDirector extends MetroIIDEDirectorForPtides {
      *  platforms.
      */
     public SharedParameter clockSynchronizationErrorBound;
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -262,7 +263,8 @@ public class MetroIIPtidesDirector extends MetroIIDEDirectorForPtides {
                     ptidesOutputPortList.add(newEvent);
 
                     _ptidesOutputPortEventQueue.put(
-                            (MetroIIPtidesPort) event.ioPort(), ptidesOutputPortList);
+                            (MetroIIPtidesPort) event.ioPort(),
+                            ptidesOutputPortList);
                 }
                 _currentLogicalTime = null;
             }
@@ -510,7 +512,8 @@ public class MetroIIPtidesDirector extends MetroIIDEDirectorForPtides {
             TreeSet<Time> set = new TreeSet<Time>(deliveryTimes);
             for (PtidesEvent event : _outputEventQueue.get(set.first())) {
                 if (event.ioPort() instanceof MetroIIPtidesPort
-                        && ((MetroIIPtidesPort) event.ioPort()).isActuatorPort()
+                        && ((MetroIIPtidesPort) event.ioPort())
+                                .isActuatorPort()
                         && getEnvironmentTime().compareTo(event.timeStamp()) > 0) {
                     handleModelError(event.ioPort(),
                             new IllegalActionException(event.ioPort(),
@@ -786,7 +789,7 @@ public class MetroIIPtidesDirector extends MetroIIDEDirectorForPtides {
         _currentLogicalIndex = ptidesEvent.microstep();
         _currentSourceTimestamp = ptidesEvent.sourceTimestamp();
     }
-    
+
     protected void _resetLogicalTime() {
         _currentLogicalTime = null;
     }
@@ -1297,8 +1300,8 @@ public class MetroIIPtidesDirector extends MetroIIDEDirectorForPtides {
      * @return A new PtidesEvent that can be safely processed or null if no event should be processed.
      * @exception IllegalActionException If error handling actor throws this.
      */
-    private PtidesEvent _handleTimingError(MetroIIPtidesPort port, PtidesEvent event,
-            String message) throws IllegalActionException {
+    private PtidesEvent _handleTimingError(MetroIIPtidesPort port,
+            PtidesEvent event, String message) throws IllegalActionException {
         List list = ((CompositeActor) getContainer()).entityList();
         for (int i = 0; i < list.size(); i++) {
             Object entity = list.get(i);
@@ -1452,6 +1455,13 @@ public class MetroIIPtidesDirector extends MetroIIDEDirectorForPtides {
         IOPort port = event.ioPort();
         Double delayOffset = null;
 
+        StartOrResumable metroActor = _actorDictionary.get(event.actor()
+                .getFullName());
+        
+        if (metroActor.getState() != State.PREFIRE_BEGIN) {
+            return false;
+        }
+        
         // A local source can have a maximum future events parameter.
         Integer maxFutureEvents = _getIntParameterValue(
                 (NamedObj) event.actor(), "maxFutureEvents");
@@ -1591,8 +1601,6 @@ public class MetroIIPtidesDirector extends MetroIIDEDirectorForPtides {
             parameter.setToken(token);
         }
     }
-    
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////

@@ -377,10 +377,10 @@ public class MetroIIDEDirectorForPtides extends DEDirector implements
             // A BIG while loop that handles all events with the same tag.
             do {
 
-                if (((BooleanToken) printTrace.getToken()).booleanValue()) {
-                    System.out.println(this.getFullName() + ": " + "Time "
-                            + this.getModelTime());
-                }
+                //if (((BooleanToken) printTrace.getToken()).booleanValue()) {
+                //    System.out.println(this.getFullName() + ": " + "Time "
+                //            + this.getModelTime());
+                //}
 
                 while (true) {
                     Pair<PtidesEvent, Integer> eventAndState = _checkNextEventToFire();
@@ -399,7 +399,7 @@ public class MetroIIDEDirectorForPtides extends DEDirector implements
                     eventList.add(eventAndState.first);
                     
                     if (((BooleanToken) printTrace.getToken()).booleanValue()) {
-                        System.out.println(this.getFullName() + ": " + "Time "
+                        System.out.println(this.getFullName() + ": " + "Logical Time "
                                 + getModelTime() + " " + "READY "
                                 + eventAndState.first.actor().getName());
                     }
@@ -423,6 +423,13 @@ public class MetroIIDEDirectorForPtides extends DEDirector implements
                     StartOrResumable metroActor = _actorDictionary.get(actor
                             .getFullName());
                     LinkedList<Event.Builder> metroIIEventList = new LinkedList<Event.Builder>();
+
+                    if (((BooleanToken) printTrace.getToken()).booleanValue()) {
+                        System.out.println(this.getFullName() + ": " + "Logical Time "
+                                + getModelTime() + " " + "EXEC "
+                                + actor.getName());
+                    }
+                    
                     metroActor.startOrResume(metroIIEventList);
 
                     if (metroIIEventList.size() == 1
@@ -493,6 +500,14 @@ public class MetroIIDEDirectorForPtides extends DEDirector implements
     }
 
     ///////////////////////////////////////////////////////////////////
+    ////                       protected variables                 ////
+
+    /**
+     * The list of actors governed by MetroIIDEDirector
+     */
+    protected Hashtable<String, StartOrResumable> _actorDictionary = new Hashtable<String, StartOrResumable>();
+
+    ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
     /** Initialize parameters. This is called by the constructor.
@@ -514,10 +529,6 @@ public class MetroIIDEDirectorForPtides extends DEDirector implements
      */
     private Hashtable<String, Actor> _nameToActor = new Hashtable<String, Actor>();
 
-    /**
-     * The list of actors governed by MetroIIDEDirector
-     */
-    private Hashtable<String, StartOrResumable> _actorDictionary = new Hashtable<String, StartOrResumable>();
 
     private ArrayList<Event.Builder> _events = new ArrayList<Event.Builder>();
 }
