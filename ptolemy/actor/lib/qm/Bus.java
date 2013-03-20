@@ -140,9 +140,9 @@ public class Bus extends MonitoredQuantityManager {
         if (attribute == serviceTimeMultiplicationFactor) {
             double value = ((DoubleToken) serviceTimeMultiplicationFactor
                     .getToken()).doubleValue();
-            if (value <= 0.0) {
+            if (value < 0.0) {
                 throw new IllegalActionException(this,
-                        "Cannot have negative or zero serviceTime: " + value);
+                        "Cannot have negative serviceTime: " + value);
             }
             _serviceTimeMultiplicationFactorValue = value;
         }
