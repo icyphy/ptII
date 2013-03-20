@@ -249,6 +249,7 @@ public class ExportModelJUnitTest {
                 //"domains/gr", // FIXME: need to close ViewScreen3D by adding a ViewScreen3D Tableau.
                 //"GravitationWithCollisionDetection.xml", // "Cannot render to more than 32 Canvas3Ds."
                 //"demo/ExecDemo/Demos/BouncingBall.xml", // "Cannot render to more than 32 Canvas3Ds."
+                "ElectricPowerSystem.xml", // Just has links to other demos.
                 "ExecDemos", // hangs
                 "HierarchyFlattening.xml", // gt
                 "actor/lib/io", // Don't run the demos in actor/lib/io, some read from stdin and never exit.
