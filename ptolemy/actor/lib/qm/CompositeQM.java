@@ -33,9 +33,7 @@ package ptolemy.actor.lib.qm;
 import java.util.HashMap;
 import java.util.List;
 
-import ptolemy.actor.Actor;
-import ptolemy.actor.CompositeActor;
-import ptolemy.actor.IOPort;
+import ptolemy.actor.CompositeActor; 
 import ptolemy.actor.IntermediateReceiver;
 import ptolemy.actor.QuantityManager;
 import ptolemy.actor.Receiver;
@@ -212,46 +210,18 @@ public class CompositeQM extends TypedCompositeActor implements QuantityManager 
 
             if (_stopRequested) {
                 return;
-            }
-
-            // No output ports.
-
-            List attributes = this.attributeList();
-            for (int k = 0; k < attributes.size(); k++) {
-                Attribute attribute = (Attribute) attributes.get(k);
-                if (attribute instanceof Parameter) {
-                    String parameterName = ((Parameter) attribute).getName();
-                    if (parameterName.startsWith("sendTo_")) {
-                        if (((Parameter) attribute).getToken() != null) {
-//                            String actorName = parameterName.substring(
-//                                    parameterName.indexOf("_") + 1,
-//                                    parameterName.indexOf("_",
-//                                            parameterName.indexOf("_") + 1));
-//                            String portName = parameterName
-//                                    .substring(parameterName.indexOf("_",
-//                                            parameterName.indexOf("_") + 1) + 1);
-//                            Actor actor = (Actor) ((CompositeActor) getContainer())
-//                                    .getEntity(actorName);
-//                            for (Object object : actor.inputPortList()) {
-//                                IOPort port = (IOPort) object;
-//                                if (port.getName().equals(portName)) {
-                            RecordToken recordToken = (RecordToken) ((Parameter) attribute).getToken();
-                            Receiver receiver = (Receiver) ((ObjectToken) recordToken.get("receiver")).getValue();
-                            Token token = recordToken.get("token");
-                            receiver.put(token);
-//                                    ((IntermediateReceiver) port.getReceivers()[0][0])._receiver
-//                                            .put(((Parameter) attribute)
-//                                                    .getToken());
-//                                    ((CompositeActor) actor.getContainer())
-//                                            .getDirector().fireAtCurrentTime(
-//                                                    actor);
-//                                }
-//                            }
-                            ((Parameter) attribute).reset();
-                        }
+            } 
+            for (Object entity : entityList()) {
+                if (entity instanceof CQMOutputPort) {
+                    CQMOutputPort outputPort = ((CQMOutputPort)entity);
+                    if (outputPort.hasToken()) {
+                        RecordToken recordToken = (RecordToken) outputPort.takeToken();
+                        Receiver receiver = (Receiver) ((ObjectToken) recordToken.get("receiver")).getValue();
+                        Token token = recordToken.get("token");
+                        receiver.put(token);
                     }
                 }
-            }
+            } 
         } finally {
             _workspace.doneReading();
         }
