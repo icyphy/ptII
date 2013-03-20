@@ -222,7 +222,7 @@ public abstract class AbstractActionsAttribute extends Action implements
         return _getDestination(name);
     }
 
-    /** Return the list of destinations of assignements in this action.
+    /** Return the list of destinations of assignments in this action.
      *  @return A list of IOPort for output actions, and a list of parameters
      *   for set actions.
      *  @exception IllegalActionException If the destination list cannot be
