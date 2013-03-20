@@ -646,7 +646,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         // Third to last argument ensures that we look only at preemptive transitions.
         // The following has the side effect of putting the chosen
         // transitions into the _lastChosenTransitions map of the controller.
-        _chooseTransitions(transitionList, true, false, false);
+        _chooseTransitions(transitionList, true, false, false, false);
 
         // If there is an enabled preemptive transition, then we know
         // that the current refinements cannot generate outputs, so we
@@ -816,13 +816,13 @@ public class FSMActor extends CompositeEntity implements TypedActor,
                     // non-preemptive transitions.
                     _chooseTransitions(
                             _currentState.nonpreemptiveTransitionList(), false,
-                            false, false);
+                            false, false, false);
                 } else {
                     // The second to last argument ensures that we look at all transitions
                     // not just those that are marked immediate.
                     // The third from last ensures that we look only at
                     // non-preemptive transitions.
-                    _chooseTransitions(transitionList, false, false, false);
+                    _chooseTransitions(transitionList, false, false, false, false);
                 }
             }
         }
@@ -1195,14 +1195,14 @@ public class FSMActor extends CompositeEntity implements TypedActor,
             if (_debugging) {
                 _debug("** Checking immediate preemptive transitions.");
             }
-            _chooseTransitions(transitionList, true, true, true);
+            _chooseTransitions(transitionList, true, true, true, false);
             if (_lastChosenTransitions.size() > 0) {
                 _transitionTaken = true;
             } else {
                 if (_debugging) {
                     _debug("** Checking immediate non-preemptive transitions.");
                 }
-                _chooseTransitions(transitionList, false, true, true);
+                _chooseTransitions(transitionList, false, true, true, false);
                 if (_lastChosenTransitions.size() > 0) {
                     _transitionTaken = true;
                 } else {
@@ -1515,7 +1515,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
                 // Third from last argument ensures that we look only at non-preemptive transitions.
                 // The following has the side effect of putting the chosen
                 // transitions into the _lastChosenTransitions map of the controller.
-                _chooseTransitions(transitionList, false, false, false);
+                _chooseTransitions(transitionList, false, false, false, false);
             }
         }
 
@@ -1626,12 +1626,12 @@ public class FSMActor extends CompositeEntity implements TypedActor,
             if (_debugging) {
                 _debug("** Checking immediate preemptive transitions.");
             }
-            _chooseTransitions(transitionList, true, true, true);
+            _chooseTransitions(transitionList, true, true, true, true);
             if (_lastChosenTransitions.size() == 0) {
                 if (_debugging) {
                     _debug("** Checking immediate non-preemptive transitions.");
                 }
-                _chooseTransitions(transitionList, false, true, true);
+                _chooseTransitions(transitionList, false, true, true, true);
             }
             // NOTE: Have to be very careful here. This needs
             // to be an incomplete commit in that it cannot
@@ -2002,13 +2002,17 @@ public class FSMActor extends CompositeEntity implements TypedActor,
      *   This could be important if, for example, the refinement
      *   produces an output during initialize in a domain where
      *   outputs are consumed, such as SDF.
+     *  @param inPreinitilize True if this is being called in
+     *   preinitialize. Outputs must not be produced in preinitialize,
+     *   so we don't execute output actions if this argument is true.
      *  @exception IllegalActionException If something goes wrong.
      */
     protected void _chooseTransitions(List<Transition> transitionList,
-            boolean preemptive, boolean immediateOnly, boolean inInitialize)
+            boolean preemptive, boolean immediateOnly,
+            boolean inInitialize, boolean inPreinitialize)
             throws IllegalActionException {
         Transition chosenTransition = _chooseTransition(_currentState,
-                transitionList, preemptive, immediateOnly, inInitialize);
+                transitionList, preemptive, immediateOnly, inInitialize, inPreinitialize);
 
         // A self-loop that is immediate is not allowed, because if it is enabled,
         // it implied an infinite number of traversals.
@@ -2045,12 +2049,12 @@ public class FSMActor extends CompositeEntity implements TypedActor,
             }
             // Try preemptive transitions first, then non-preemptive.
             chosenTransition = _chooseTransition(nextState, transitionList,
-                    true, true, inInitialize);
+                    true, true, inInitialize, inPreinitialize);
             if (chosenTransition == null) {
                 // Only try non-preemptive transitions if no preemptive transition
                 // is enabled.
                 chosenTransition = _chooseTransition(nextState, transitionList,
-                        false, true, inInitialize);
+                        false, true, inInitialize, inPreinitialize);
             }
         }
     }
@@ -2914,7 +2918,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
 
                 // It makes no sense for error transitions to be preemptive,
                 // so we look only at non-preemptive error transitions.
-                _chooseTransitions(errorTransitionList, false, false, false);
+                _chooseTransitions(errorTransitionList, false, false, false, false);
             }
         }
     }
@@ -2951,13 +2955,17 @@ public class FSMActor extends CompositeEntity implements TypedActor,
      *   This could be important if, for example, the refinement
      *   produces an output during initialize in a domain where
      *   outputs are consumed, such as SDF.
+     *  @param inPreinitilize True if this is being called in
+     *   preinitialize. Outputs must not be produced in preinitialize,
+     *   so we don't execute output actions if this argument is true.
      *  @return An enabled transition, or null if none is enabled.
      *  @exception IllegalActionException If there is more than one
      *   transition enabled and not all of them are nondeterministic.
      */
     private Transition _chooseTransition(State currentState,
             List transitionList, boolean preemptive, boolean immediateOnly,
-            boolean inInitialize) throws IllegalActionException {
+            boolean inInitialize, boolean inPreinitialize)
+            throws IllegalActionException {
 
         // Get the transitions enabled from the current state.
         List<Transition> enabledTransitions = enabledTransitions(
@@ -3085,13 +3093,18 @@ public class FSMActor extends CompositeEntity implements TypedActor,
             }
 
             // Execute the choice actions.
-            Iterator actions = chosenTransition.choiceActionList().iterator();
-            while (actions.hasNext()) {
-                Action action = (Action) actions.next();
-                // Produce output tokens here
-                action.execute();
-                if (_debugging) {
-                    _debug("--- Transition action executed: " + action);
+            // This should not be done in preinitialize, but is OK in initialize.
+            // Outputs cannot be produced in preinitialize because type resolution has not occurred
+            // and receivers have not been created.
+            if (!inPreinitialize) {
+                Iterator actions = chosenTransition.choiceActionList().iterator();
+                while (actions.hasNext()) {
+                    Action action = (Action) actions.next();
+                    // Produce output tokens here
+                    action.execute();
+                    if (_debugging) {
+                        _debug("--- Transition action executed: " + action);
+                    }
                 }
             }
 
