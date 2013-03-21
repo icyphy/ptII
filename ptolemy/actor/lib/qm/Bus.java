@@ -112,7 +112,6 @@ public class Bus extends MonitoredQuantityManager {
         _receiversAndTokensToSendTo = new HashMap<Receiver, Token>();
         _tempReceiverQueue = new FIFOQueue();
         _messageLengths = new Hashtable<IOPort, Double>();
-        _parameters = new HashMap<IOPort, List<Attribute>>();
 
         serviceTimeMultiplicationFactor = new Parameter(this, "serviceTimeMultiplicationFactor");
         serviceTimeMultiplicationFactor.setExpression("0.1");
@@ -219,7 +218,7 @@ public class Bus extends MonitoredQuantityManager {
     /** Return the list of Attributes that can be specified per port with default
      *  values for the specified port.
      *  @param container The container parameter.
-     *  @param The port.
+     *  @param port The port.
      *  @return List of attributes.
      *  @exception IllegalActionException Thrown if attributeList could not be created.
      */
