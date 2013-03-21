@@ -4,7 +4,7 @@
 #
 # @Version: $Id$
 #
-# @Copyright (c) 2000-2012 The Regents of the University of California.
+# @Copyright (c) 2000-2013 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -188,8 +188,11 @@ test InterfaceAutomaton-7.3 {test setting internal transition} {
 ####
 #
 test InterfaceAutomaton-8.1 {test generating moml} {
-    $ia exportMoML
-} {<entity name="ia" class="ptolemy.domains.modal.kernel.ia.InterfaceAutomaton">
+    set moml [$ia exportMoML]
+    regsub {ProbabilityFunction@[^"]*"} $moml {ProbabilityFunction@XXXXX"} result
+    # "
+    list $result
+} {{<entity name="ia" class="ptolemy.domains.modal.kernel.ia.InterfaceAutomaton">
     <property name="stateDependentCausality" class="ptolemy.data.expr.Parameter" value="false">
     </property>
     <property name="errorClass" class="ptolemy.data.expr.StringParameter" value="">
@@ -203,6 +206,12 @@ test InterfaceAutomaton-8.1 {test generating moml} {
     <property name="finalStateNames" class="ptolemy.kernel.util.StringAttribute">
     </property>
     <property name="timeout" class="ptolemy.data.expr.Parameter" value="function(t:double):boolean">
+    </property>
+    <property name="probability" class="ptolemy.data.expr.Parameter" value="ptolemy.domains.modal.kernel.FSMActor$ProbabilityFunction@XXXXX">
+    </property>
+    <property name="seed" class="ptolemy.actor.parameters.SharedParameter" value="0L">
+    </property>
+    <property name="resetSeedOnEachRun" class="ptolemy.actor.parameters.SharedParameter" value="false">
     </property>
     <property name="c" class="ptolemy.data.expr.Parameter">
     </property>
@@ -270,5 +279,5 @@ test InterfaceAutomaton-8.1 {test generating moml} {
     <link port="s0.outgoingPort" relation="t0"/>
     <link port="s1.incomingPort" relation="t0"/>
 </entity>
-}
+}}
 

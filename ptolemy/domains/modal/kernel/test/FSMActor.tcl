@@ -266,7 +266,9 @@ test FSMActor-6.2 {test typeConstraints} {
     set constraints [$fsm typeConstraints]
     set l [lsort [listToStrings $constraints]]
     join $l "\n"
-} {(TypeConstant, (function(a0:double) boolean)) <= (variable ..fsm.timeout: (function(a0:double) boolean))
+} {(TypeConstant, (function(a0:double) boolean)) <= (variable ..fsm.probability: (function(a0:double) boolean))
+(TypeConstant, (function(a0:double) boolean)) <= (variable ..fsm.timeout: (function(a0:double) boolean))
+(TypeConstant, boolean) <= (variable ..fsm.resetSeedOnEachRun: boolean)
 (TypeConstant, boolean) <= (variable ..fsm.stateDependentCausality: boolean)
 (TypeConstant, boolean) <= (variable ..fsm.t0.defaultTransition: boolean)
 (TypeConstant, boolean) <= (variable ..fsm.t0.error: boolean)
@@ -277,6 +279,7 @@ test FSMActor-6.2 {test typeConstraints} {
 (TypeConstant, boolean) <= (variable ..fsm.t0.termination: boolean)
 (TypeConstant, double) <= (variable ..fsm.t0.exitAngle: double)
 (TypeConstant, double) <= (variable ..fsm.t0.gamma: double)
+(TypeConstant, long) <= (variable ..fsm.seed: long)
 (TypeConstant, string) <= (variable ..fsm.errorClass: string)
 (TypeConstant, string) <= (variable ..fsm.errorMessage: string)
 (TypeConstant, string) <= (variable ..fsm.t0.annotation: string)
