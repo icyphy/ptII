@@ -43,6 +43,10 @@ if {[string compare jdkCaptureErr [info procs jdkCaptureErr]] == 1} then {
 # set VERBOSE 1
 
 
+# If we are running in the nightly build, we still want to be able
+# to test the MessageHandler method return values.
+java::call System setProperty ptolemy.ptII.testingMessageHandler true
+
 ######################################################################
 ####
 #

@@ -42,6 +42,7 @@ import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.util.MessageHandler;
 
 ///////////////////////////////////////////////////////////////////
 //// TypeTest
@@ -212,7 +213,7 @@ public class TypeTest extends Discard {
                         .toArray(new Token[parameterAssignments.size()]));
 
         if (((BooleanToken) trainingMode.getToken()).booleanValue()) {
-            if (NonStrictTest.isRunningNightlyBuild()) {
+            if (MessageHandler.isRunningNightlyBuild()) {
                 throw new IllegalActionException(this,
                         NonStrictTest.TRAINING_MODE_ERROR_MESSAGE);
             } else {

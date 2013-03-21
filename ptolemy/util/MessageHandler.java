@@ -109,11 +109,13 @@ public class MessageHandler {
         return _handler;
     }
 
-    /** If the trainingMode parameter is true and the
-     *  model is being run as part of the test suite, then return true.
-     *  This method merely checks to see if
-     *  "ptolemy.ptII.isRunningNightlyBuild" property exists and is not empty.
-     *  To run the test suite in the Nightly Build mode, use
+    /** If the nightly build is running, then return true.
+     *   
+     *  <p>This method merely checks to see if
+     *  "ptolemy.ptII.isRunningNightlyBuild" property exists and is not empty
+     *  and the property "ptolemyII.ptII.testingMessageHandler" is not set.
+     *
+     *  <p>To run the test suite in the Nightly Build mode, use></p>
      *  <pre>
      *  make nightly
      *  </pre>
@@ -121,7 +123,8 @@ public class MessageHandler {
      */
     public static boolean isRunningNightlyBuild() {
         if (StringUtilities.getProperty("ptolemy.ptII.isRunningNightlyBuild")
-                .length() > 0) {
+                .length() > 0
+                && StringUtilities.getProperty("ptolemy.ptII.testingMessageHandler").length() == 0) {
             return true;
         }
 

@@ -49,6 +49,7 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
+import ptolemy.util.MessageHandler;
 import ptolemy.util.StringUtilities;
 
 ///////////////////////////////////////////////////////////////////
@@ -228,7 +229,7 @@ public class NonStrictTest extends Sink {
      *  @exception IllegalActionException If the base class throws it or
      *  if we are running under the test suite and the trainingMode
      *  parameter is set to true.
-     *  @see #isRunningNightlyBuild()
+     *  @see ptolemy.util.MessageHandler#isRunningNightlyBuild()
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
@@ -239,7 +240,7 @@ public class NonStrictTest extends Sink {
         _initialized = true;
 
         if (((BooleanToken) trainingMode.getToken()).booleanValue()) {
-            if (isRunningNightlyBuild()) {
+            if (MessageHandler.isRunningNightlyBuild()) {
                 throw new IllegalActionException(this,
                         TRAINING_MODE_ERROR_MESSAGE);
             } else {
@@ -248,25 +249,6 @@ public class NonStrictTest extends Sink {
                         + "parameter to false before checking in");
             }
         }
-    }
-
-    /** If the trainingMode parameter is true and the
-     *  model is being run as part of the test suite, then return true.
-     *  This method merely checks to see if
-     *  "ptolemy.ptII.isRunningNightlyBuild" property exists and is not empty.
-     *  To run the test suite in the Nightly Build mode, use
-     *  <pre>
-     *  make nightly
-     *  </pre>
-     *  @return True if the nightly build is running.
-     */
-    public static boolean isRunningNightlyBuild() {
-        if (StringUtilities.getProperty("ptolemy.ptII.isRunningNightlyBuild")
-                .length() > 0) {
-            return true;
-        }
-
-        return false;
     }
 
     /** Read one token from each input channel and compare against

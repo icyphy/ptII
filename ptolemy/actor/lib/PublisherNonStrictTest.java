@@ -42,6 +42,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.util.MessageHandler;
 import ptolemy.util.StringUtilities;
 
 ///////////////////////////////////////////////////////////////////
@@ -208,7 +209,7 @@ public class PublisherNonStrictTest extends Publisher {
      *  @exception IllegalActionException If the base class throws it or
      *  if we are running under the test suite and the trainingMode
      *  parameter is set to true.
-     *  @see ptolemy.actor.lib.NonStrictTest#isRunningNightlyBuild()
+     *  @see ptolemy.util.MessageHandler#isRunningNightlyBuild()
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
@@ -219,7 +220,7 @@ public class PublisherNonStrictTest extends Publisher {
         _initialized = true;
 
         if (((BooleanToken) trainingMode.getToken()).booleanValue()) {
-            if (NonStrictTest.isRunningNightlyBuild()) {
+            if (MessageHandler.isRunningNightlyBuild()) {
                 throw new IllegalActionException(this,
                         NonStrictTest.TRAINING_MODE_ERROR_MESSAGE);
             } else {

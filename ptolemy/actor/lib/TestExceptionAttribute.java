@@ -39,6 +39,7 @@ import ptolemy.kernel.util.ExceptionHandler;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.util.MessageHandler;
 import ptolemy.util.StringUtilities;
 
 ///////////////////////////////////////////////////////////////////
@@ -187,25 +188,6 @@ public class TestExceptionAttribute extends AbstractInitializableAttribute
         return true;
     }
 
-    /** If the trainingMode parameter is true and the
-     *  model is being run as part of the test suite, then return true.
-     *  This method merely checks to see if
-     *  "ptolemy.ptII.isRunningNightlyBuild" property exists and is not empty.
-     *  To run the test suite in the Nightly Build mode, use
-     *  <pre>
-     *  make nightly
-     *  </pre>
-     *  @return True if the nightly build is running.
-     */
-    public static boolean isRunningNightlyBuild() {
-        if (StringUtilities.getProperty("ptolemy.ptII.isRunningNightlyBuild")
-                .length() > 0) {
-            return true;
-        }
-
-        return false;
-    }
-
     /** Call the super.wrapup() method. Check whether this actor has
      *  been invoked to handle exceptions. If not, throw an exception.
      *  Otherwise, do nothing.
@@ -215,7 +197,7 @@ public class TestExceptionAttribute extends AbstractInitializableAttribute
     public void wrapup() throws IllegalActionException {
         super.wrapup();
         if (((BooleanToken) trainingMode.getToken()).booleanValue()) {
-            if (isRunningNightlyBuild()) {
+            if (MessageHandler.isRunningNightlyBuild()) {
                 throw new IllegalActionException(this,
                         TRAINING_MODE_ERROR_MESSAGE);
             } else {
