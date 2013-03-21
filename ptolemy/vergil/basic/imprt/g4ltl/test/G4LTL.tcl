@@ -41,6 +41,9 @@ if {[string compare test [info procs jdkCaptureErr]] == 1} then {
    source [file join $PTII util testsuite jdktools.tcl]
 } {}
 
+
+# Generate MoML for a model. optionTechnique == 0  for CoBeuchi, 1 for Buechi.  
+# Typically, unrollSteps is 1 for CoBeuchi and 0 for Beuchi.
 proc generateMoML {ltlFileName context {optionTechnique 0} {unrollSteps 1} {findStrategy true} } {
     set ltlFile [java::new java.io.File $ltlFileName]
     set results [java::call ptolemy.vergil.basic.imprt.g4ltl.G4LTL generateMoML \
@@ -57,7 +60,6 @@ proc synthesizeFromFile {ltlFileName {optionTechnique 0} {unrollSteps 1} {findSt
 }
 
 set parser [java::new ptolemy.moml.MoMLParser]
-
 
 ## HOW TO ADD A TEST for G4LTL
 ## The g4ltl facility adds a FSM actor to the model. 
@@ -95,6 +97,8 @@ test G4LTL-1.1 {Synthesize from ArbitorLTL.txt} {
 
 ******}}
 
+$parser resetAll
+
 
 ######################################################################
 ####
@@ -102,7 +106,8 @@ test G4LTL-1.1 {Synthesize from ArbitorLTL.txt} {
 test G4LTL-2.1 {Synthesize from ArbitorLTL.txt and merge it into the ArbitorTest.xml} {
     $parser resetAll
     set toplevel [java::cast ptolemy.actor.TypedCompositeActor [$parser parseFile ArbitorTest.xml]]
-    set result [generateMoML $PTII/ptolemy/vergil/basic/imprt/g4ltl/demo/Arbitor/ArbitorLTL.txt $toplevel]
+    # Import using Beuchi with unrollstep == 0
+    set result [generateMoML $PTII/ptolemy/vergil/basic/imprt/g4ltl/demo/Arbitor/ArbitorLTL.txt $toplevel 1 0]
 
     set request [java::new ptolemy.moml.MoMLChangeRequest $toplevel $toplevel {
       <entity name=".ArbitorTest" class="ptolemy.actor.TypedCompositeActor">

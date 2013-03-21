@@ -77,6 +77,7 @@ public class G4LTL {
     public static String synthesizeFromFile(SolverUtility solver, File ltlFile,
             int optionTechnique, int unrollSteps, boolean findStrategy)
             throws Exception {
+        //System.out.println("G4LTL.synthesizeFromFile(): " + ltlFile + " " + optionTechnique + " " + unrollSteps + " " + findStrategy);
         String result = solver.synthesizeFromFile(ltlFile, optionTechnique,
                 unrollSteps, SynthesisEngine.OUTPUT_FSM_ACTOR_PTOLEMY,
                 findStrategy);
@@ -104,8 +105,8 @@ public class G4LTL {
             int unrollSteps, boolean findStrategy, NamedObj context)
             throws Exception {
         SolverUtility solver = new SolverUtility();
-        String result = solver.synthesizeFromFile(ltlFile, optionTechnique,
-                unrollSteps, SynthesisEngine.OUTPUT_FSM_ACTOR_PTOLEMY,
+        String result = G4LTL.synthesizeFromFile(solver, ltlFile, optionTechnique,
+                unrollSteps, /*SynthesisEngine.OUTPUT_FSM_ACTOR_PTOLEMY,*/
                 findStrategy);
         if (findStrategy && result.trim().startsWith("<") == false) {
             result = solver.synthesizeFromFile(ltlFile, optionTechnique,

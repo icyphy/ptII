@@ -175,9 +175,9 @@ public class ImportG4LTLAction extends AbstractAction {
                         }
                     }
 
-                    result = solver.synthesizeFromFile(file, optionTechnique,
+                    result = G4LTL.synthesizeFromFile(solver, file, optionTechnique,
                             unrollSteps,
-                            SynthesisEngine.OUTPUT_FSM_ACTOR_PTOLEMY, true);
+                            /*SynthesisEngine.OUTPUT_FSM_ACTOR_PTOLEMY,*/ true);
 
                     // System.out.println(result);
                     
@@ -193,9 +193,9 @@ public class ImportG4LTLAction extends AbstractAction {
                                 options[0]);
 
                         if (option == 0) {
-                            result = solver.synthesizeFromFile(file,
+                            result = G4LTL.synthesizeFromFile(solver, file,
                                     optionTechnique, unrollSteps,
-                                    SynthesisEngine.OUTPUT_FSM_ACTOR_PTOLEMY,
+                                    /* SynthesisEngine.OUTPUT_FSM_ACTOR_PTOLEMY,*/
                                     false);
                         }
 
