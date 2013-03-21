@@ -30,7 +30,9 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.actor.lib.qm;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.TreeSet;
 
 import ptolemy.actor.Actor;
@@ -39,19 +41,23 @@ import ptolemy.actor.IntermediateReceiver;
 import ptolemy.actor.QuantityManager;
 import ptolemy.actor.Receiver;
 import ptolemy.actor.lib.qm.QuantityManagerListener.EventType;
+import ptolemy.actor.sched.FixedPointDirector;
 import ptolemy.actor.util.Time;
 import ptolemy.actor.util.TimedEvent;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.ObjectToken;
+import ptolemy.data.ScalarToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.domains.de.kernel.DEDirector;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.Port;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
 
 /** A {@link QuantityManager} actor that, when its
@@ -102,10 +108,11 @@ public class BasicSwitch extends MonitoredQuantityManager {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
-        _inputTokens = new HashMap();
-        _outputTokens = new HashMap();
-        _switchFabricQueue = new TreeSet();
-        _actorPorts = new HashMap<Actor, Integer>();
+        _inputTokens = new HashMap<Integer, TreeSet<TimedEvent>>();
+        _outputTokens = new HashMap<Integer, TreeSet<TimedEvent>>();
+        _switchFabricQueue = new TreeSet<TimedEvent>();
+        _ioPortToSwitchInPort = new HashMap<Port, Integer>();
+        _ioPortToSwitchOutPort = new HashMap<Port, Integer>();
         _tokenCount = 0;
 
         inputBufferDelay = new Parameter(this, "inputBufferDelay");
@@ -236,12 +243,13 @@ public class BasicSwitch extends MonitoredQuantityManager {
      *  @return A new Bus.
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        BasicSwitch newObject = (BasicSwitch) super.clone(workspace);
-        newObject._actorPorts = new HashMap();
+        BasicSwitch newObject = (BasicSwitch) super.clone(workspace); 
+        _ioPortToSwitchInPort = new HashMap<Port, Integer>();
+        _ioPortToSwitchOutPort = new HashMap<Port, Integer>();
         newObject._nextFireTime = null;
-        newObject._inputTokens = new HashMap();
-        newObject._outputTokens = new HashMap();
-        newObject._switchFabricQueue = new TreeSet();
+        newObject._inputTokens = new HashMap<Integer, TreeSet<TimedEvent>>();
+        newObject._outputTokens = new HashMap<Integer, TreeSet<TimedEvent>>();
+        newObject._switchFabricQueue = new TreeSet<TimedEvent>();
         return newObject;
     }
 
@@ -257,25 +265,6 @@ public class BasicSwitch extends MonitoredQuantityManager {
             _outputTokens.put(i, new TreeSet());
         }
 
-        // read the switching table from the parameters
-        for (int i = 0; i < attributeList().size(); i++) {
-            Attribute attribute = (Attribute) attributeList().get(i);
-            try {
-                int portNumber = Integer.parseInt(attribute.getName());
-                Parameter param = (Parameter) attribute;
-                Token token = param.getToken();
-                Actor actor = (Actor) ((ObjectToken) token).getValue();
-                _actorPorts.put(actor, portNumber);
-            } catch (NumberFormatException ex) {
-                // Parameter was not a number and therefore not a part of
-                // the routing table.
-            } catch (Exception ex) {
-                ex.printStackTrace();
-                throw new IllegalActionException(this, "There was an error"
-                        + "in the routing table information for "
-                        + this.getName());
-            }
-        }
         for (int i = 0; i < _numberOfPorts; i++) {
             _inputTokens.put(i, new TreeSet());
             _outputTokens.put(i, new TreeSet());
@@ -328,12 +317,12 @@ public class BasicSwitch extends MonitoredQuantityManager {
                     } else {
                         actor = (Actor) receiver.getContainer().getContainer();
                     }
-                    int actorPort = _actorPorts.get(actor);
+                    int outputPortID = _getPortID(receiver, false);
                     Time lastTimeStamp = currentTime;
-                    if (_outputTokens.get(actorPort).size() > 0) {
-                        lastTimeStamp = _outputTokens.get(actorPort).last().timeStamp;
+                    if (_outputTokens.get(outputPortID).size() > 0) {
+                        lastTimeStamp = _outputTokens.get(outputPortID).last().timeStamp;
                     }
-                    _outputTokens.get(actorPort).add(
+                    _outputTokens.get(outputPortID).add(
                             new TimedEvent(lastTimeStamp
                                     .add(_outputBufferDelay), event.contents));
                     _switchFabricQueue.remove(event);
@@ -350,6 +339,9 @@ public class BasicSwitch extends MonitoredQuantityManager {
                         Receiver receiver = (Receiver) output[0];
                         Token token = (Token) output[1];
                         _sendToReceiver(receiver, token);
+                        _tokenCount--;
+                        sendQMTokenEvent(this, 0,
+                                _tokenCount, EventType.RECEIVED);
                         _outputTokens.get(i).remove(event);
                     }
                 }
@@ -370,6 +362,20 @@ public class BasicSwitch extends MonitoredQuantityManager {
         _scheduleRefire();
         return super.postfire();
     }
+    
+    protected int _getPortID(Receiver receiver, boolean input) {
+        NamedObj containerPort = receiver.getContainer();
+        while (!(receiver.getContainer() instanceof Port)) {
+            containerPort = containerPort.getContainer();
+        }
+        Port port = (Port) containerPort;
+        
+        if (input) {
+            return _ioPortToSwitchInPort.get(port);
+        } else {
+            return _ioPortToSwitchOutPort.get(port);
+        }
+    }
 
     /** Initiate a send of the specified token to the specified
      *  receiver. This method will schedule a refiring of this actor
@@ -380,31 +386,30 @@ public class BasicSwitch extends MonitoredQuantityManager {
      *  @exception IllegalActionException If the refiring request fails.
      */
     public void sendToken(Receiver source, Receiver receiver, Token token)
-            throws IllegalActionException {
+            throws IllegalActionException { 
+
+        // If the token is null, then this means there is not actually
+        // something to send. Do not take up bus resources for this.
+        // FIXME: Is this the right thing to do?
+        // Presumably, this is an issue with the Continuous domain.
+        if (getDirector() instanceof DEDirector && token == null) {
+            return;
+        }
         Time currentTime = getDirector().getModelTime();
-        // FIXME add Continuous support.
-
-        IntermediateReceiver ir = (IntermediateReceiver) source;
-
-        int actorPortId = 0;
-        if (ir.source != null) {
-            Actor sender = ir.source;
-            actorPortId = _actorPorts.get(sender);
-        } else {
-            throw new IllegalActionException(this, "The receiver " + receiver
-                    + "does not have a source");
-        }
-
+        
+        int inputPortID = _getPortID(receiver, true);
+        
         Time lastTimeStamp = currentTime;
-        if (_inputTokens.get(actorPortId).size() > 0) {
-            lastTimeStamp = _inputTokens.get(actorPortId).last().timeStamp;
+        if (_inputTokens.get(inputPortID).size() > 0) {
+            lastTimeStamp = _inputTokens.get(inputPortID).last().timeStamp;
         }
-        _inputTokens.get(actorPortId).add(
+        _inputTokens.get(inputPortID).add(
                 new TimedEvent(lastTimeStamp.add(_inputBufferDelay),
                         new Object[] { receiver, token }));
         _tokenCount++;
         sendQMTokenEvent((Actor) source.getContainer().getContainer(), 0,
                 _tokenCount, EventType.RECEIVED);
+        
         _scheduleRefire();
 
         if (_debugging) {
@@ -413,6 +418,48 @@ public class BasicSwitch extends MonitoredQuantityManager {
                     + receiver.getContainer().getFullName() + ": " + token);
         }
     }
+    
+    /** Return the list of Attributes that can be specified per port with default
+     *  values for the specified port.
+     *  @param container The container parameter.
+     *  @param The port.
+     *  @return List of attributes.
+     *  @exception IllegalActionException Thrown if attributeList could not be created.
+     */
+    public List<Attribute> getPortAttributeList(Parameter container, Port port) throws IllegalActionException {
+        List<Attribute> list = _parameters.get(port);
+        if (list == null) {
+            list = new ArrayList<Attribute>();
+            try {
+                Parameter portIn = new Parameter(container, "portIn", new IntToken(0));
+                Parameter portOut = new Parameter(container, "portOut", new IntToken(1));
+                _ioPortToSwitchInPort.put(port, 0);
+                _ioPortToSwitchOutPort.put(port, 1);
+                list.add(portIn);
+                list.add(portOut);
+            } catch (NameDuplicationException ex) {
+                // This cannot happen.
+            }
+        } 
+        return list;
+    }
+    
+    /** Set an attribute for a given port.
+     *  @param port The port. 
+     *  @param attribute The new attribute or the attribute containing a new value.
+     *  @exception IllegalActionException Thrown if attribute could not be updated.
+     */
+    public void setPortAttribute(Port port, Attribute attribute) throws IllegalActionException {
+        super.setPortAttribute(port, attribute);
+        if (attribute.getName().equals("portIn")) {
+            _ioPortToSwitchInPort.put((IOPort)port, ((IntToken)((Parameter)attribute).getToken()).intValue());
+        } else if (attribute.getName().equals("portOut")) {
+            _ioPortToSwitchOutPort.put((IOPort)port, ((IntToken)((Parameter)attribute).getToken()).intValue());
+        }
+    } 
+    
+    protected HashMap<Port, Integer> _ioPortToSwitchInPort;
+    protected HashMap<Port, Integer> _ioPortToSwitchOutPort;
 
     /** Reset the quantity manager and clear the tokens.
      */
@@ -491,9 +538,6 @@ public class BasicSwitch extends MonitoredQuantityManager {
 
     /** Time it takes for a token to be processed by the switch fabric. */
     protected double _switchFabricDelay;
-
-    /** Mapping of actors to switch ports. */
-    protected HashMap<Actor, Integer> _actorPorts;
 
     /** Next time a token is sent and the next token can be processed. */
     protected Time _nextFireTime;

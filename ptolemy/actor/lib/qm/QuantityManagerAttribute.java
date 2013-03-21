@@ -44,6 +44,7 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.Workspace;
 
 
 /** This attribute is used to specify that a given Port is mediated by
@@ -109,13 +110,29 @@ public class QuantityManagerAttribute extends Parameter {
     @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
-        if (_quantityMananger == null) {
-            _quantityMananger = (QuantityManager) ((ObjectToken)getToken()).getValue();
-        }
-        _quantityMananger.setPortAttribute((Port) getContainer(), attribute);
-
+        if (getContainer() instanceof Port) {
+            if (_quantityMananger == null) {
+                _quantityMananger = (QuantityManager) ((ObjectToken)getToken()).getValue();
+            }
+            _quantityMananger.setPortAttribute((Port) getContainer(), attribute);
+            }
         super.attributeChanged(attribute);
     } 
+    
+    /** Clone the object into the specified workspace.
+     *  @param workspace The workspace for the new object.
+     *  @return A new NamedObj.
+     *  @exception CloneNotSupportedException If any of the attributes
+     *   cannot be cloned.
+     */
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        QuantityManagerAttribute newObject = (QuantityManagerAttribute) super.clone(workspace); 
+        newObject._quantityMananger = null; 
+        return newObject;
+        
+    }
+    
+    
     
     /** Update attributeList.
      *  @exception IllegalActionException Thrown by super class.
@@ -134,8 +151,10 @@ public class QuantityManagerAttribute extends Parameter {
         try { 
             if (getToken() != null) {
                 _quantityMananger = (QuantityManager)((ObjectToken)getToken()).getValue();
-                Port port = (IOPort) getContainer();
-                return _quantityMananger.getPortAttributeList(this, port);
+                if (getContainer() instanceof IOPort) {
+                    Port port = (IOPort) getContainer();
+                    return _quantityMananger.getPortAttributeList(this, port);
+                }
             }
         } catch (IllegalActionException e) {
             // FIXME when does this happen?

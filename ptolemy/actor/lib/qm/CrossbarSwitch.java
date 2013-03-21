@@ -132,7 +132,7 @@ public class CrossbarSwitch extends BasicSwitch {
                 if (event != null) {
                     Object[] output = (Object[]) event.contents;
                     Receiver receiver = (Receiver) output[0];
-                    int actorPort = _getActorPortId(receiver);
+                    int actorPort = _ioPortToSwitchInPort.get(receiver);
                     boolean free = true;
                     for (int j = 0; j < _numberOfPorts; j++) {
                         free = free & _crossbarSwitchStates[j][actorPort]
@@ -159,7 +159,7 @@ public class CrossbarSwitch extends BasicSwitch {
                             .get(i).get(0);
                     Receiver receiver = (Receiver) output[0];
 
-                    int actorPort = _getActorPortId(receiver);
+                    int actorPort = _ioPortToSwitchInPort.get(receiver);
                     Time lastTimeStamp = currentTime;
                     boolean free = true;
                     for (int j = 0; j < _numberOfPorts; j++) {
@@ -251,7 +251,7 @@ public class CrossbarSwitch extends BasicSwitch {
                         .get(0);
                 Receiver receiver = (Receiver) output[0];
 
-                int actorPort = _getActorPortId(receiver);
+                int actorPort = _ioPortToSwitchOutPort.get(receiver);
                 boolean free = true;
                 for (int j = 0; j < _numberOfPorts; j++) {
                     free = free & _crossbarSwitchStates[j][actorPort]
@@ -289,22 +289,6 @@ public class CrossbarSwitch extends BasicSwitch {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-
-    /** Return the actor that contains this receiver. If the receiver is an
-     *  IntermediateReceiver the actor is the quantity manager which manages
-     *  this receiver, otherwise it is the actor containing this receiver.
-     *  @param receiver The receiver.
-     *  @return The actor containing the receiver.
-     */
-    private int _getActorPortId(Receiver receiver) {
-        Actor actor;
-        if (receiver instanceof IntermediateReceiver) {
-            actor = (Actor) ((IntermediateReceiver) receiver).quantityManager;
-        } else {
-            actor = (Actor) receiver.getContainer().getContainer();
-        }
-        return _actorPorts.get(actor);
-    }
 
     /** Return the event in a set of TimedEvents which should be processed at
      *  the current time, i.e. where the time stamp of the TimedEvent equals

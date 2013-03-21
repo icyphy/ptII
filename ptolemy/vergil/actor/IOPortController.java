@@ -504,6 +504,14 @@ public class IOPortController extends AttributeController {
                                 ((StringAttribute)info).setExpression(infoString);
                             }
                         }
+                        List relations = port.linkedRelationList();
+                        for (Object relation : relations) {
+                            ColorAttribute relationColor = (ColorAttribute) ((IORelation)relation).getAttribute("color");
+                            if (relationColor == null) {
+                                relationColor = new ColorAttribute((IORelation)relation, "color");
+                            }
+                            relationColor.reset();
+                        }
                     }
                 }
             } catch (IllegalActionException e1) {

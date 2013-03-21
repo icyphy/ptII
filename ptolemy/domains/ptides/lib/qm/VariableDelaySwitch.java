@@ -160,18 +160,11 @@ public class VariableDelaySwitch extends BasicSwitch {
 
         IntermediateReceiver ir = (IntermediateReceiver) source;
 
-        int actorPortId = 0;
-        if (ir.source != null) {
-            Actor sender = ir.source;
-            actorPortId = _actorPorts.get(sender);
-        } else {
-            throw new IllegalActionException(this, "The receiver " + receiver
-                    + "does not have a source");
-        }
+        int inputPortID = _getPortID(receiver, true);
 
         Time lastTimeStamp = currentTime;
-        if (_inputTokens.get(actorPortId).size() > 0) {
-            lastTimeStamp = _inputTokens.get(actorPortId).last().timeStamp;
+        if (_inputTokens.get(inputPortID).size() > 0) {
+            lastTimeStamp = _inputTokens.get(inputPortID).last().timeStamp;
         }
 
         /* calculate and add input buffer delays */
@@ -217,7 +210,7 @@ public class VariableDelaySwitch extends BasicSwitch {
         }
 
         // in addition to the static _inputBufferDelay, packet-specific delays calculated and added
-        _inputTokens.get(actorPortId).add(
+        _inputTokens.get(inputPortID).add(
                 new TimedEvent(lastTimeStamp.add(_inputBufferDelay
                         + _priorityDelay + _packetSizeDelay), new Object[] {
                         receiver, token }));
