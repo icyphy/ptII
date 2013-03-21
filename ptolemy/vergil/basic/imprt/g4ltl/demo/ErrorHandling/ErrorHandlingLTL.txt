@@ -1,0 +1,15 @@
+## An arbitor considering failure operations
+
+## Assume that the operator will always come once for a while
+ASSUME ALWAYS (EVENTUALLY (operator))
+
+## Whenever the error sign is raised, stop the process until the operator comes
+ALWAYS (error -> (stop UNTIL operator))
+ALWAYS (stop -> (!grant1 && !grant2) )
+ALWAYS (req1 -> EVENTUALLY grant1)
+ALWAYS (req2 -> EVENTUALLY grant2)
+ALWAYS !(grant1 && grant2)
+
+INPUT error, operator, req1, req2
+OUTPUT stop, grant1, grant2
+

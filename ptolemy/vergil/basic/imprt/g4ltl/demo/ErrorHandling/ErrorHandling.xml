@@ -1,0 +1,278 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="ErrorHandling" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.1">
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={25, 0, 1301, 752}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1076, 627]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.241656070733016">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{143.2654081619732, 128.4428710937499}">
+    </property>
+    <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-225.0, -80.0]">
+        </property>
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="9">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This SDF model illustrates the use of synthesis for fast prototyping. &#10;In this model, we hope to create an FSMActor as a controller that can, &#10;based on the requirement of clients, grant the resource. In addition,&#10;error can appear and the system must suspend its supply until the &#10;operator comes. We have an assumption that the operator will visit and&#10;check the operation infinitely often.&#10;&#10;ASSUME ALWAYS (EVENTUALLY (operator))&#10;ALWAYS (error -&gt; (stop UNTIL operator))&#10;ALWAYS (stop -&gt; (!grant1 &amp;&amp; !grant2) )&#10;ALWAYS (req1 -&gt; EVENTUALLY grant1)&#10;ALWAYS (req2 -&gt; EVENTUALLY grant2)&#10;ALWAYS !(grant1 &amp;&amp; grant2)&#10;&#10;INPUT error, operator, req1, req2&#10;OUTPUT stop, grant1, grant2&#10;&#10;">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-290.0, 185.0]">
+        </property>
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="9">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.0,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Follow the instructions to synthesize the FSMActor automatically:&#10;(1) Save the specification as a separate text file. &#10;(2) On the menu bar, choose &quot;Import -&gt; Import FSMActor using synthesis&quot;.&#10;      A file selection dialog will appear. Select the text file in step 1.&#10;(3) Select either Co-Buechi or Buechi solver. For Co-Buechi solver, select &#10;      unroll step to be 3.&#10;   ">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 230.0]">
+        </property>
+    </property>
+    <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="11">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.0,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Chih-Hong Cheng">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[195.0, 310.0]">
+        </property>
+    </property>
+    <entity name="Client2" class="ptolemy.actor.lib.DiscreteRandomSource">
+        <property name="resetOnEachRun" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="values" class="ptolemy.data.expr.Parameter" value="{true, false}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-60.0, 150.0]">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="boolean">
+            </property>
+        </port>
+    </entity>
+    <entity name="Client1" class="ptolemy.actor.lib.DiscreteRandomSource">
+        <property name="values" class="ptolemy.data.expr.Parameter" value="{true, false}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-60.0, -65.0]">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="boolean">
+            </property>
+        </port>
+    </entity>
+    <entity name="Pulse" class="ptolemy.actor.lib.Pulse">
+        <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-210.0, 40.0]">
+        </property>
+    </entity>
+    <entity name="Req2" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={87, 203, 460, 253}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[442, 182]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 195.0]">
+        </property>
+    </entity>
+    <entity name="Grant1" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={620, 231, 460, 253}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[442, 182]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[235.0, 45.0]">
+        </property>
+    </entity>
+    <entity name="Grant2" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={625, 464, 460, 253}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[442, 182]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[235.0, 105.0]">
+        </property>
+    </entity>
+    <entity name="Req1" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={84, 32, 460, 222}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[442, 151]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, -90.0]">
+        </property>
+    </entity>
+    <entity name="Error" class="ptolemy.actor.lib.DiscreteRandomSource">
+        <property name="resetOnEachRun" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="values" class="ptolemy.data.expr.Parameter" value="{true, false}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-60.0, 5.0]">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="boolean">
+            </property>
+        </port>
+    </entity>
+    <entity name="Operator" class="ptolemy.domains.modal.kernel.FSMActor">
+        <property name="errorCause" class="ptolemy.data.expr.Parameter">
+        </property>
+        <property name="_library" class="ptolemy.moml.LibraryAttribute">
+            <configure>
+    <entity name="StateLibrary" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="State" class="ptolemy.domains.modal.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property></entity></entity>
+  </configure>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-60.0, 75.0]">
+        </property>
+        <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This operator only goes and checks the operation once in a while.&#10;Here for testing purposes, we need to model it as a deterministic automaton.&#10;Be free to modify it.">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 320.0]">
+            </property>
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={270, 121, 825, 525}, maximized=false}">
+        </property>
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+        </property>
+        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+        </property>
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
+        </property>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{20.0, 200.0}">
+            </property>
+        </port>
+        <port name="check" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="boolean">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{580.0, 200.0}">
+            </property>
+        </port>
+        <entity name="state" class="ptolemy.domains.modal.kernel.State">
+            <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, 125.0]">
+            </property>
+        </entity>
+        <entity name="state2" class="ptolemy.domains.modal.kernel.State">
+            <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[345.0, 125.0]">
+            </property>
+        </entity>
+        <entity name="state3" class="ptolemy.domains.modal.kernel.State">
+            <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[260.0, 235.0]">
+            </property>
+        </entity>
+        <relation name="relation" class="ptolemy.domains.modal.kernel.Transition">
+            <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="trigger_isPresent">
+            </property>
+            <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="check = true">
+            </property>
+            <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.007890168756558673">
+                <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+                </property>
+            </property>
+            <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.025870692558085405">
+            </property>
+        </relation>
+        <relation name="relation2" class="ptolemy.domains.modal.kernel.Transition">
+            <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="trigger_isPresent">
+            </property>
+            <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="check = true">
+            </property>
+            <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.37266585887101966">
+            </property>
+            <property name="gamma" class="ptolemy.data.expr.Parameter" value="2.346171678748563">
+            </property>
+            <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+        </relation>
+        <relation name="relation3" class="ptolemy.domains.modal.kernel.Transition">
+            <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="trigger_isPresent">
+            </property>
+            <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="check = false">
+            </property>
+            <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.5545903885888109">
+            </property>
+            <property name="gamma" class="ptolemy.data.expr.Parameter" value="-2.2798279745818864">
+            </property>
+        </relation>
+        <link port="state.incomingPort" relation="relation3"/>
+        <link port="state.outgoingPort" relation="relation"/>
+        <link port="state2.incomingPort" relation="relation"/>
+        <link port="state2.outgoingPort" relation="relation2"/>
+        <link port="state3.incomingPort" relation="relation2"/>
+        <link port="state3.outgoingPort" relation="relation3"/>
+    </entity>
+    <entity name="Stop" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={630, 53, 460, 253}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[442, 182]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[235.0, -15.0]">
+        </property>
+    </entity>
+    <entity name="ErrorAppeared" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={86, 364, 460, 253}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[442, 182]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[135.0, -65.0]">
+        </property>
+    </entity>
+    <entity name="OperatorAppeared" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={87, 516, 460, 253}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[442, 182]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[145.0, 160.0]">
+        </property>
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="[15.0, 150.0]">
+        </vertex>
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="[15.0, -65.0]">
+        </vertex>
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="[-135.0, 40.0]">
+        </vertex>
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="[-5.0, 5.0]">
+        </vertex>
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="[-5.0, 75.0]">
+        </vertex>
+    </relation>
+    <link port="Client2.output" relation="relation"/>
+    <link port="Client2.trigger" relation="relation3"/>
+    <link port="Client1.output" relation="relation2"/>
+    <link port="Client1.trigger" relation="relation3"/>
+    <link port="Pulse.output" relation="relation3"/>
+    <link port="Req2.input" relation="relation"/>
+    <link port="Req1.input" relation="relation2"/>
+    <link port="Error.output" relation="relation4"/>
+    <link port="Error.trigger" relation="relation3"/>
+    <link port="Operator.trigger" relation="relation3"/>
+    <link port="Operator.check" relation="relation5"/>
+    <link port="ErrorAppeared.input" relation="relation4"/>
+    <link port="OperatorAppeared.input" relation="relation5"/>
+</entity>
