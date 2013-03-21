@@ -2090,7 +2090,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         // so we should also choose transitions on the destination state.
         // The following set is used
         // to detect cycles of immediate transitions.
-        // NOTE: cmot, should the visitedStates not be part of the fire function and resetted
+        // NOTE: cmot, should the visitedStates not be part of the fire function and reset
         // once a normal transition is taken? Maybe a fire method is called twice and that
         // would hide an immediate cycle (because visitedStates is reset for the second call). Both
         // calls and consecutive ones may happen in the same fixed point iteration.
@@ -2104,6 +2104,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
                         "Cycle of immediate transitions found.");
             }
             visitedStates.add(nextState);
+            
             transitionList = nextState.outgoingPort.linkedRelationList();
             // The last argument ensures that we look only at transitions
             // that are marked immediate.
@@ -2111,6 +2112,8 @@ public class FSMActor extends CompositeEntity implements TypedActor,
                 _debug("** Checking for immediate transitions out of the next state: "
                         + nextState.getName());
             }
+            
+            
             // Try preemptive transitions first, then non-preemptive.
             chosenTransition = _chooseTransition(nextState, transitionList,
                     true, true, inInitialize, inPreinitialize);
@@ -2183,6 +2186,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
                 return destinationState;
             }
             nextTransition = _lastChosenTransitions.get(newDestinationState);
+         
         }
         return destinationState;
     }
@@ -3126,6 +3130,12 @@ public class FSMActor extends CompositeEntity implements TypedActor,
             // state refinement.
             if (!chosenTransition.isPreemptive()
                     && chosenTransition.isImmediate()) {
+                if(chosenTransition.destinationState() != _currentState){
+                    // reset probability threshold and generate new random 
+                    // in case there is an immediate transition.
+                    _oldThreshold = 0.0;
+                    _randomValue = _randomToken.nextDouble();
+                }
                 // Check for initial state with a refinement and an immediate transition,
                 // which is not allowed because we can't fire the refinement in initialize.
                 if (inInitialize) {
@@ -3324,6 +3334,12 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         boolean stateChanged = _currentState != currentTransition
                 .destinationState();
         _currentState = nextState;
+        if(stateChanged){
+            // reset threshold for probabilistic transitions
+            _oldThreshold = 0.0;
+        }
+        
+        
         if (_debugging) {
             _debug(new StateEvent(this, _currentState));
         }
@@ -4257,12 +4273,12 @@ public class FSMActor extends CompositeEntity implements TypedActor,
                     _guardProbability = ((DoubleToken)arguments[0]).doubleValue();
                 }
                     
-                 
+                
                  
                  // First, check if the transition has already been evaluated. If so, return the result. If not,
                  // change threshold and evaluate.
                  
-                 if(_transitionEvaluatedTo.get(_transitionBeingTested) != null){
+                 if(_transitionEvaluatedTo.get(_transitionBeingTested) != null){ 
                      // means we have already evaluated this transition,
                      return (BooleanToken)_transitionEvaluatedTo.get(_transitionBeingTested);
                  }
@@ -4272,7 +4288,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
                      if(_guardProbability + _oldThreshold > 1.0 || (_guardProbability > 1.0)){
                          throw new IllegalActionException("Probability range exceeds [0.0,1.0]");
                      }
-                     else if((_oldThreshold <= _randomValue) && _randomValue < (_oldThreshold + _guardProbability))
+                     else if((_oldThreshold <= _randomValue) && _randomValue <= (_oldThreshold + _guardProbability))
                      {
                          _oldThreshold += _guardProbability;
                          _transitionEvaluatedTo.put(_transitionBeingTested, BooleanToken.TRUE);
