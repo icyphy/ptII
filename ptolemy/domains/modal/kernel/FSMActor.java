@@ -879,7 +879,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
      *  call this method to see whether there were guard expressions
      *  in the specified list that could not be evaluated. After
      *  calling
-     *  {@link #_chooseTransitions(List, boolean, boolean, boolean)},
+     *  {@link #_chooseTransitions(List, boolean, boolean, boolean, boolean)},
      *  call this to determine whether any guard expressions or output
      *  value expressions on a transition whose guard evaluates to
      *  true were found in the specified transition list that referred
@@ -2066,7 +2066,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
      *   This could be important if, for example, the refinement
      *   produces an output during initialize in a domain where
      *   outputs are consumed, such as SDF.
-     *  @param inPreinitilize True if this is being called in
+     *  @param inPreinitialize True if this is being called in
      *   preinitialize. Outputs must not be produced in preinitialize,
      *   so we don't execute output actions if this argument is true.
      *  @exception IllegalActionException If something goes wrong.
@@ -3023,7 +3023,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
      *   This could be important if, for example, the refinement
      *   produces an output during initialize in a domain where
      *   outputs are consumed, such as SDF.
-     *  @param inPreinitilize True if this is being called in
+     *  @param inPreinitialize True if this is being called in
      *   preinitialize. Outputs must not be produced in preinitialize,
      *   so we don't execute output actions if this argument is true.
      *  @return An enabled transition, or null if none is enabled.
