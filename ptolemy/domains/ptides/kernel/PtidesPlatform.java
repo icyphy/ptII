@@ -422,7 +422,7 @@ public class PtidesPlatform extends MirrorComposite {
         setClassName("ptolemy.domains.ptides.kernel.PtidesPlatform");
 
         // Create the PtidesPlatformDirector in the proper workspace.
-        PtidesPlatformDirector platformDirector = this.new PtidesPlatformDirector(
+        PtidesPlatformDirector platformDirector = new PtidesPlatformDirector(
                 workspace());
         platformDirector.setContainer(this);
         platformDirector.setName(uniqueName("PtidesPlatformDirector"));
