@@ -114,6 +114,7 @@ public abstract class MonitoredQuantityManager extends TypedAtomicActor
         MonitoredQuantityManager newObject = (MonitoredQuantityManager) super
                 .clone(workspace);
         newObject._listeners = null;
+        newObject._parameters = null;
         return newObject;
     }
 
