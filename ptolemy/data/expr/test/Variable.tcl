@@ -43,6 +43,8 @@ if {[string compare test [info procs test]] == 1} then {
 # 
 #
 
+# MessageHandler tends to pop up messages about dependencies
+java::call System setProperty ptolemy.ptII.batchMode true
 
 ######################################################################
 ####
@@ -425,19 +427,16 @@ test Variable-10.0 {Check setContainer} {
     catch {set r2 [[$p2 getToken] toString]} r2
     catch {$p2 setContainer $e2} msg2
     catch {set r3 [[$p2 getToken] toString]} r3
+    # msg1 changed because of:
+    # r65682: "/trunk/ptolemy/data/expr/Variable.java: Flag dependency
+    # loop only if the variable is marked as still needing evaluation"
+
     list $r1 $msg1 $r2 $msg2 $r3
-} {{"a"} {ptolemy.kernel.util.IllegalActionException: Error evaluating expression: P1
-  in .E1.P2
-Because:
-The ID P1 is undefined.
-Because:
-Error evaluating expression: P1
-  in .E1.P2
-Because:
-The ID P1 is undefined.} {ptolemy.kernel.util.IllegalActionException: Error evaluating expression: P1
+} {{"a"} {} {ptolemy.kernel.util.IllegalActionException: Error evaluating expression: P1
   in .E1.P2
 Because:
 The ID P1 is undefined.} {} {"a"}}
+
 
 #################################
 ####
