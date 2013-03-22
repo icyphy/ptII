@@ -111,8 +111,9 @@ public class MessageHandler {
 
     /** If the nightly build is running, then return true.
      *   
-     *  <p>This method merely checks to see if
+     *  <p>This method merely checks to see if the
      *  "ptolemy.ptII.isRunningNightlyBuild" property exists and is not empty
+     *  or if the "ptolemy.ptII.batchMode" property exists and is not empty 
      *  and the property "ptolemyII.ptII.testingMessageHandler" is not set.
      *
      *  <p>To run the test suite in the Nightly Build mode, use></p>
@@ -122,8 +123,10 @@ public class MessageHandler {
      *  @return True if the nightly build is running.
      */
     public static boolean isRunningNightlyBuild() {
-        if (StringUtilities.getProperty("ptolemy.ptII.isRunningNightlyBuild")
-                .length() > 0
+        if ((StringUtilities.getProperty("ptolemy.ptII.isRunningNightlyBuild")
+                        .length() > 0
+                        || StringUtilities.getProperty("ptolemy.ptII.batchMode")
+                        .length() > 0)
                 && StringUtilities.getProperty("ptolemy.ptII.testingMessageHandler").length() == 0) {
             return true;
         }

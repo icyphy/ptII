@@ -297,6 +297,8 @@ For example:
       </classpath>
       <formatter type="${junit.formatter}" usefile="false"/>
       <jvmarg value="-Dptolemy.ptII.dir=${basedir}" />
+      <!-- ptolemy.ptII.batchMode is checked in MessageHandler -->
+      <jvmarg value="-Dptolemy.ptII.batchMode=true" />
       <test  name="adm.test.junit.JUnitTclTest" />
     </junit>
   </target>
@@ -546,6 +548,7 @@ For example:
 	</fileset>
       </batchtest>
       <jvmarg value="-Dptolemy.ptII.dir=${basedir}" />
+      <jvmarg value="-Dptolemy.ptII.batchMode=true" />
       <sysproperty key="net.sourceforge.cobertura.datafile" file="${basedir}/cobertura.ser" />
     </junit>
 
@@ -574,6 +577,7 @@ For example:
 	</fileset>
       </batchtest>
       <jvmarg value="-Dptolemy.ptII.dir=${basedir}" />
+      <jvmarg value="-Dptolemy.ptII.batchMode=true" />
       <sysproperty key="net.sourceforge.cobertura.datafile" file="${basedir}/cobertura.ser" />
     </junit>
 
@@ -603,6 +607,7 @@ For example:
 	</fileset>
       </batchtest>
       <jvmarg value="-Dptolemy.ptII.dir=${basedir}" />
+      <jvmarg value="-Dptolemy.ptII.batchMode=true" />
       <sysproperty key="net.sourceforge.cobertura.datafile" file="${basedir}/cobertura.ser" />
     </junit>
 
@@ -695,6 +700,7 @@ For example:
 	</fileset>
       </batchtest>
       <jvmarg value="-Dptolemy.ptII.dir=${basedir}" />
+      <jvmarg value="-Dptolemy.ptII.batchMode=true" />
       <sysproperty key="net.sourceforge.cobertura.datafile" file="${basedir}/cobertura.ser" />
     </junit>
 
@@ -784,6 +790,7 @@ For example:
       </classpath>
       <formatter type="${junit.single.formatter}" />
       <jvmarg value="-Dptolemy.ptII.dir=${basedir}" />
+      <jvmarg value="-Dptolemy.ptII.batchMode=true" />
       <test  name="${test.name}" />
       <sysproperty key="net.sourceforge.cobertura.datafile" file="${basedir}/cobertura.ser" />
     </junit>
@@ -810,6 +817,7 @@ For example:
       </classpath>
       <formatter type="${junit.formatter}" usefile="true"/>
       <jvmarg value="-Dptolemy.ptII.dir=${basedir}" />
+      <jvmarg value="-Dptolemy.ptII.batchMode=true" />
       <test  name="adm.test.junit.JUnitTclTest" 
 	     todir="${junit.output.dir}"
 	     />
@@ -859,6 +867,7 @@ For example:
       </batchtest>
       <formatter type="plain" usefile="off" />
       <jvmarg value="-Dptolemy.ptII.dir=${basedir}" />
+      <jvmarg value="-Dptolemy.ptII.batchMode=true" />
     </junit>
   </target>
 
@@ -904,6 +913,7 @@ For example:
       </batchtest>
       <formatter type="plain" usefile="off" />
       <jvmarg value="-Dptolemy.ptII.dir=${basedir}" />
+      <jvmarg value="-Dptolemy.ptII.batchMode=true" />
     </junit>
   </target>
 
@@ -943,6 +953,7 @@ For example:
       </batchtest>
       <formatter type="${junit.formatter}" />
       <jvmarg value="-Dptolemy.ptII.dir=${basedir}" />
+      <jvmarg value="-Dptolemy.ptII.batchMode=true" />
     </junit>
   </target>
 
@@ -998,6 +1009,7 @@ For example:
       </batchtest>
       <formatter type="plain" usefile="off" />
       <jvmarg value="-Dptolemy.ptII.dir=${basedir}" />
+      <jvmarg value="-Dptolemy.ptII.batchMode=true" />
     </junit>
   </target>
 
@@ -1036,6 +1048,7 @@ For example:
       </classpath>
       <formatter type="${junit.single.formatter}" usefile="false"/>
       <jvmarg value="-Dptolemy.ptII.dir=${basedir}" />
+      <jvmarg value="-Dptolemy.ptII.batchMode=true" />
       <test  name="${test.name}" />
     </junit>
   </target>
