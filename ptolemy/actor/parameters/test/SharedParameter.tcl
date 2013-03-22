@@ -42,6 +42,9 @@ if {[string compare test [info procs test]] == 1} then {
 ####
 #
 
+# MessageHandler tends to pop up messages about dependencies
+java::call System setProperty ptolemy.ptII.batchMode true
+
 ######################################################################
 ####
 # 
@@ -395,26 +398,16 @@ test SharedParameter-14.0 {Test the mechanism for extending scope} {
 
     set r3 [$p4 getToken]
 
+    # As of r65682: "/trunk/ptolemy/data/expr/Variable.java: Flag dependency
+    #  loop only if the variable is marked as still needing evaluation"
+    # this no longer fails
     catch {$ext1 setContainer [java::null]} msg1
 
     catch {$p4 getToken} msg2
 
     # With regular parameters, we would have 5 0 5
     list [$r1 toString] [$r2 toString] [$r3 toString] $msg1 $msg2
-} {0 0 0 {ptolemy.kernel.util.IllegalActionException: Error evaluating expression: p
-  in .<Unnamed Object>.p3
-Because:
-The ID p is undefined.
--------------- and --------------
-Error evaluating expression: p
-  in .<Unnamed Object>.e2.p4
-Because:
-The ID p is undefined.
-Because:
-Error evaluating expression: p
-  in .<Unnamed Object>.e2.p4
-Because:
-The ID p is undefined.} {ptolemy.kernel.util.IllegalActionException: Error evaluating expression: p
+} {0 0 0 {} {ptolemy.kernel.util.IllegalActionException: Error evaluating expression: p
   in .<Unnamed Object>.e2.p4
 Because:
 The ID p is undefined.}}
@@ -563,14 +556,14 @@ test SharedParameter-15.5 {Changing container of parameter depends on scope.} {
 
     catch {$p3 setContainer [java::null]} msg2
 
+    # As of r65682: "/trunk/ptolemy/data/expr/Variable.java: Flag dependency
+    #  loop only if the variable is marked as still needing evaluation"
+    # this no longer fails
     catch {set msg3 [[$p3 getToken] toString]} msg3
     
     # With a regular parameter, msg1 would be 5 
     list $msg1 $msg2 $msg3
-} {7 {} {ptolemy.kernel.util.IllegalActionException: Error evaluating expression: p
-  in .p3
-Because:
-The ID p is undefined.}}
+} {7 {} 7}
 
 test SharedParameter-15.6 {Changing container of container of parameter that depends on outside scope from valid scope to valid scope} {
     set e1 [java::new ptolemy.kernel.CompositeEntity]
@@ -627,18 +620,13 @@ test SharedParameter-15.7 {Removing parameter invalidate dependants.} {
 
     catch {$p1 setContainer [java::null]} msg2
 
+    # Error message improved with
+    # r65682: "/trunk/ptolemy/data/expr/Variable.java: Flag dependency
+    # loop only if the variable is marked as still needing evaluation"
     catch {set msg3 [[$p3 getToken] toString]} msg3
 
     list $msg1 $msg2 $msg3
-} {5 {ptolemy.kernel.util.IllegalActionException: Error evaluating expression: p
-  in .<Unnamed Object>.p3
-Because:
-The ID p is undefined.
-Because:
-Error evaluating expression: p
-  in .<Unnamed Object>.p3
-Because:
-The ID p is undefined.} {ptolemy.kernel.util.IllegalActionException: Error evaluating expression: p
+} {5 {} {ptolemy.kernel.util.IllegalActionException: Error evaluating expression: p
   in .<Unnamed Object>.p3
 Because:
 The ID p is undefined.}}
@@ -693,13 +681,13 @@ test SharedParameter-15.9 {Changing container of container of parameter that dep
 
     catch {$p3 setContainer [java::null]} msg2
 
+    # r65682: "/trunk/ptolemy/data/expr/Variable.java: Flag dependency
+    # loop only if the variable is marked as still needing evaluation"
+    # means that this no longer fails.
     catch {set msg3 [[$p3 getToken] toString]} msg3
 
     list $msg1 $msg2 $msg3
-} {7 {} {ptolemy.kernel.util.IllegalActionException: Error evaluating expression: p
-  in .p3
-Because:
-The ID p is undefined.}}
+} {7 {} 7}
 
 ######################################################################
 ####
