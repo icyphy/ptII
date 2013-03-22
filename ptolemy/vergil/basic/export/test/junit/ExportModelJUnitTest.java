@@ -251,6 +251,7 @@ public class ExportModelJUnitTest {
                 //"demo/ExecDemo/Demos/BouncingBall.xml", // "Cannot render to more than 32 Canvas3Ds."
                 "ElectricPowerSystem.xml", // Just has links to other demos.
                 "ExecDemos", // hangs
+                "GeneratorContactorLoad.xml", // The GeneratorContactorLoad file is a component used inElectricPowerSystem models.
                 "HierarchyFlattening.xml", // gt
                 "actor/lib/io", // Don't run the demos in actor/lib/io, some read from stdin and never exit.
                 "iRobotCreateVerification.xml", // Annotation says that it does not simulate.
