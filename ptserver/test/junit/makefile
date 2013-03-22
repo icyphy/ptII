@@ -92,8 +92,9 @@ JCLASS =	$(JSRCS:%.java=%.class)
 # to run 'make tests' to run the tests.
 
 # JUNIT_JAVA_ARGS is set in $PTII/mk/ptII.mk
+# Set ptolemy.ptII.isRunningNightlyBuild because MessageHandler will hang waiting for IO otherwise.
 tests:: $(EXTRA_SRCS) jclass test_java ../../PtolemyServerConfig.properties #test_jsimple
-	CLASSPATH="$(CLASSPATH)" "$(JAVA)" $(JUNIT_JAVA_ARGS) org.junit.runner.JUnitCore ptserver.test.junit.AllTests
+	CLASSPATH="$(CLASSPATH)" "$(JAVA)" -Dptolemy.ptII.isRunningNightlyBuild=true $(JUNIT_JAVA_ARGS) org.junit.runner.JUnitCore ptserver.test.junit.AllTests
 
 test_java: jclass
 
