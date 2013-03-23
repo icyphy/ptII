@@ -462,6 +462,13 @@ public class ModalModel extends TypedCompositeActor implements ChangeListener {
         }
     }
 
+    /** Get the FSM controller.
+     *  @return The FSM controller.
+     */
+    public FSMActor getController() {
+        return _controller;
+    }
+
     /** Handle a model error.
      *  @param context The object in which the error occurred.
      *  @param exception An exception that represents the error.
@@ -483,12 +490,25 @@ public class ModalModel extends TypedCompositeActor implements ChangeListener {
         }
         return true;
     }
-
-    /** Get the FSM controller.
-     *  @return The FSM controller.
+    
+    /** Initialize the mode controller and all the refinements by
+     * calling the initialize() method in the super class. Build the
+     * local maps for receivers. Suspend all the refinements of states
+     * that are not the current state.
+     *
+     * @exception IllegalActionException If thrown by the initialize()
+     *                method of the super class, or can not find mode
+     *                controller, or can not find refinement of the
+     *                current state.
      */
-    public FSMActor getController() {
-        return _controller;
+    public void initialize() throws IllegalActionException {
+        // Reset local receivers here before the initialize method
+        // of the director so that any initial outputs that
+        // the FSM controller or refinements might produce in their initialize methods
+        // are the only outputs produced by initialize.
+        FSMDirector director = (FSMDirector)getDirector();
+        director.resetOutputReceivers();
+        super.initialize();
     }
 
     /** Create a new port with the specified name in this entity, the
