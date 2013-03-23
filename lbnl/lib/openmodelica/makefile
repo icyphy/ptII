@@ -42,10 +42,10 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE =   lib
-#PTCLASSJAR =	$(PTPACKAGE).jar
+PTPACKAGE =   openmodelica
+PTCLASSJAR =	$(PTPACKAGE).jar
 
-PTCLASSALLJAR = $(PTPACKAGE).jar
+#PTCLASSALLJAR = $(PTPACKAGE).jar
 
 JSRCS = \
 	IUtilSocket.java UtilSocket.java
