@@ -4,7 +4,7 @@
 #
 # @Version: $Id$
 #
-# @Copyright (c) 1997-2012 The Regents of the University of California.
+# @Copyright (c) 1997-2013 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -124,6 +124,7 @@ test AttributeValueAttribute-6.2 {Test description} {
     {ptolemy.data.expr.StringParameter {.N.C.anchor} "northwest"}
     {ptolemy.kernel.util.StringAttribute {.N.C.attributeName}}
     {ptolemy.data.expr.Parameter {.N.C.displayWidth} 6}
+    {ptolemy.data.expr.Parameter {.N.C.useExpression} false}
 }} {ptolemy.kernel.util.NamedObj {.N} attributes {
     {ptolemy.vergil.kernel.attributes.AttributeValueAttribute {.N.C}}
 }}}
@@ -281,6 +282,7 @@ test AttributeValueAttribute-8.1 {setContainer} {
     {ptolemy.kernel.util.StringAttribute {.N.C.A.attributeName} attributes {
     }}
     {ptolemy.data.expr.Parameter {.N.C.A.displayWidth} 6}
+    {ptolemy.data.expr.Parameter {.N.C.A.useExpression} false}
 }}
 
 test AttributeValueAttribute-8.2 {setContainer, different workspace} {
@@ -312,6 +314,7 @@ test AttributeValueAttribute-8.3 {setContainer, then setContainer again} {
     {ptolemy.kernel.util.StringAttribute {.N.D.A.attributeName} attributes {
     }}
     {ptolemy.data.expr.Parameter {.N.D.A.displayWidth} 6}
+    {ptolemy.data.expr.Parameter {.N.D.A.useExpression} false}
 }}
 
 test AttributeValueAttribute-8.4 {Construct an AttributeValueAttribute in an unnamed NamedObj} {
