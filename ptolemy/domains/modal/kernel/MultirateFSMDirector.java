@@ -156,20 +156,25 @@ public class MultirateFSMDirector extends FSMDirector {
      *   associated actors throws it.
      */
     public void initialize() throws IllegalActionException {
-        // Initialize all the refinements in the sub-layer
-        // FSMDirectors and recompute the schedule.
-        // Note that this will set the state to the
-        // initial state, or to states reached from that
-        // by immediate transitions.
-        super.initialize();
+        try {
+            _inInitialize = true;
+            // Initialize all the refinements in the sub-layer
+            // FSMDirectors and recompute the schedule.
+            // Note that this will set the state to the
+            // initial state, or to states reached from that
+            // by immediate transitions.
+            super.initialize();
 
-        // Set the production and consumption rates of the ports
-        // according to the current refinement.
-        // This has to be after initialize because the initial
-        // immediate transitions may affect the rates.
-        _setProductionConsumptionRates();
+            // Set the production and consumption rates of the ports
+            // according to the current refinement.
+            // This has to be after initialize because the initial
+            // immediate transitions may affect the rates.
+            _setProductionConsumptionRates();
 
-        invalidateSchedule();
+            invalidateSchedule();
+        } finally {
+            _inInitialize = false;
+        }
     }
 
     /** Return a new receiver of a type compatible with this director.
@@ -317,10 +322,14 @@ public class MultirateFSMDirector extends FSMDirector {
                         Token token = port.getInside(i);
                         port.send(i, token);
                     } catch (NoTokenException ex) {
-                        throw new InternalErrorException(
-                                "Director.transferOutputs: "
-                                        + "Not enough tokens for port "
-                                        + port.getName() + " " + ex);
+                        // Do not throw an exception if we are in initialize
+                        // because in that case, these are initial tokens.
+                        if (!_inInitialize) {
+                            throw new InternalErrorException(
+                                    "Director.transferOutputs: "
+                                            + "Not enough tokens for port "
+                                            + port.getName() + " " + ex);
+                        }
                     }
                 }
             }
@@ -754,4 +763,10 @@ public class MultirateFSMDirector extends FSMDirector {
 
         return outputRateChanged;
     }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
+    /** Indicator that we are in initialize. */
+    private boolean _inInitialize;
 }
