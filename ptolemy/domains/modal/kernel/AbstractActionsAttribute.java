@@ -460,10 +460,9 @@ public abstract class AbstractActionsAttribute extends Action implements
     private void _updateDestinations() throws IllegalActionException {
         try {
             workspace().getReadAccess();
+            _destinations = new LinkedList();
 
             if (_destinationNames != null) {
-                _destinations = new LinkedList();
-
                 Iterator destinationNames = _destinationNames.iterator();
                 while (destinationNames.hasNext()) {
                     String destinationName = (String) destinationNames.next();

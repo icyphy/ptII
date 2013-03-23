@@ -26,6 +26,8 @@
  */
 package ptolemy.domains.modal.kernel;
 
+import java.util.List;
+
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
@@ -102,6 +104,14 @@ public abstract class Action extends StringAttribute {
      *   successfully completed.
      */
     abstract public void execute() throws IllegalActionException;
+
+    /** Return the list of destinations of assignments in this action.
+     *  @return A list of IOPort for output actions, and a list of parameters
+     *   for set actions.
+     *  @exception IllegalActionException If the destination list cannot be
+     *   constructed.
+     */
+    abstract public List getDestinations() throws IllegalActionException;
 
     /** Set the container of this action. The proposed container must
      *  be an instance of Transition or Event or null, otherwise an

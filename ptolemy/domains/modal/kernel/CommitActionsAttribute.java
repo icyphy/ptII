@@ -151,7 +151,7 @@ public class CommitActionsAttribute extends AbstractActionsAttribute implements
     public void execute() throws IllegalActionException {
         super.execute();
 
-        if (_destinations != null) {
+        if (_destinations != null && _destinations.size() > 0) {
             Iterator destinations = _destinations.iterator();
             Iterator channels = getChannelNumberList().iterator();
             Iterator parseTrees = _parseTrees.iterator();
