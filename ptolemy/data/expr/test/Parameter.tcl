@@ -43,6 +43,8 @@ if {[string compare test [info procs test]] == 1} then {
 # 
 #
 
+# MessageHandler tends to pop up messages about dependencies
+java::call System setProperty ptolemy.ptII.batchMode true
 
 ######################################################################
 ####
@@ -391,25 +393,15 @@ test Parameter-14.0 {Test the mechanism for extending scope} {
 
     set r3 [$p4 getToken]
 
+    # r65682: "/trunk/ptolemy/data/expr/Variable.java: Flag dependency
+    # loop only if the variable is marked as still needing evaluation"
+    # means that setContainer null no longer throws an exception.
     catch {$ext1 setContainer [java::null]} msg1
 
     catch {$p4 getToken} msg2
 
     list [$r1 toString] [$r2 toString] [$r3 toString] $msg1 $msg2
-} {5 0 5 {ptolemy.kernel.util.IllegalActionException: Error evaluating expression: p
-  in .<Unnamed Object>.p3
-Because:
-The ID p is undefined.
--------------- and --------------
-Error evaluating expression: p
-  in .<Unnamed Object>.e2.p4
-Because:
-The ID p is undefined.
-Because:
-Error evaluating expression: p
-  in .<Unnamed Object>.e2.p4
-Because:
-The ID p is undefined.} {ptolemy.kernel.util.IllegalActionException: Error evaluating expression: p
+} {5 0 5 {} {ptolemy.kernel.util.IllegalActionException: Error evaluating expression: p
   in .<Unnamed Object>.e2.p4
 Because:
 The ID p is undefined.}}
@@ -556,13 +548,13 @@ test Parameter-15.5 {Changing container of parameter depends on scope.} {
 
     catch {$p3 setContainer [java::null]} msg2
 
+    # r65682: "/trunk/ptolemy/data/expr/Variable.java: Flag dependency
+    # loop only if the variable is marked as still needing evaluation"
+    # means that setContainer null no longer throws an exception.
     catch {set msg3 [[$p3 getToken] toString]} msg3
     
     list $msg1 $msg2 $msg3
-} {5 {} {ptolemy.kernel.util.IllegalActionException: Error evaluating expression: p
-  in .p3
-Because:
-The ID p is undefined.}}
+} {5 {} 5}
 
 test Parameter-15.6 {Changing container of container of parameter that depends on outside scope from valid scope to valid scope} {
     set e1 [java::new ptolemy.kernel.CompositeEntity]
@@ -605,15 +597,7 @@ test Parameter-15.7 {Removing parameter invalidate dependants.} {
     catch {set msg3 [[$p3 getToken] toString]} msg3
 
     list $msg1 $msg2 $msg3
-} {5 {ptolemy.kernel.util.IllegalActionException: Error evaluating expression: p
-  in .<Unnamed Object>.p3
-Because:
-The ID p is undefined.
-Because:
-Error evaluating expression: p
-  in .<Unnamed Object>.p3
-Because:
-The ID p is undefined.} {ptolemy.kernel.util.IllegalActionException: Error evaluating expression: p
+} {5 {} {ptolemy.kernel.util.IllegalActionException: Error evaluating expression: p
   in .<Unnamed Object>.p3
 Because:
 The ID p is undefined.}}
@@ -669,14 +653,13 @@ test Parameter-15.9 {Changing container of container of parameter that depends o
 
     catch {$p3 setContainer [java::null]} msg2
 
+    # r65682: "/trunk/ptolemy/data/expr/Variable.java: Flag dependency
+    # loop only if the variable is marked as still needing evaluation"
+    # means that setContainer null no longer throws an exception.
     catch {set msg3 [[$p3 getToken] toString]} msg3
 
     list $msg1 $msg2 $msg3
-} {7 {} {ptolemy.kernel.util.IllegalActionException: Error evaluating expression: p
-  in .p3
-Because:
-The ID p is undefined.}}
-
+} {7 {} 7}
 ######################################################################
 ####
 #
@@ -754,99 +737,3 @@ test Parameter-17.6 {String mode parameters} {
     [java::cast ptolemy.data.StringToken $t] stringValue
 } {a a a a a a $a}
 
-######################################################################
-#### Renaming tests
-#
-# see http://bugzilla.ecoinformatics.org/show_bug.cgi?id=5723
-#
-test Parameter-18.1 {Renaming a parameter} {
-    set e1 [java::new ptolemy.kernel.Entity]
-    set p1 [java::new ptolemy.data.expr.Parameter $e1 "p1"]
-    set p2 [java::new ptolemy.data.expr.Parameter $e1 "p2"]
-    $p1 setExpression {p2}
-    $p1 validate
-    set change "<property name=\"p2\">
-<rename name=\"p3\"/>
-</property>"
-    $e1 requestChange [java::new ptolemy.moml.MoMLChangeRequest $e1 $e1 $change]
-    $p1 getExpression
-} {p3}
-
-test Parameter-18.2 {Renaming a referenced parameter in quotes} {
-    
-    # See " references to parameter are not always renamed"
-    # http://bugzilla.ecoinformatics.org/show_bug.cgi?id=5723
-    
-    # This tests parameter substituion inside double quotes.
-    # The currently documented behavior is likely that 
-    # parameter substitution does not occur within double quotes.
-
-    set e1 [java::new ptolemy.kernel.Entity]
-    set p1 [java::new ptolemy.data.expr.Parameter $e1 "p1"]
-    set p2 [java::new ptolemy.data.expr.Parameter $e1 "p2"]
-    $p1 setExpression {"$p2"}
-    $p1 validate
-    set r1 [$p1 getExpression]
-    set change "<property name=\"p2\">
-<rename name=\"p3\"/>
-</property>"
-    $e1 requestChange [java::new ptolemy.moml.MoMLChangeRequest $e1 $e1 $change]
-    set r2 [$p1 getExpression]
-    list $r1 $r2
-} {{"$p2"} {"$p3"}}
-
-test Parameter-18.3 {Renaming a parameter referenced by a parameter in string mode} {
-
-    # See " references to parameter are not always renamed"
-    # http://bugzilla.ecoinformatics.org/show_bug.cgi?id=5723
-
-    # This tests parameter substitution in string mode
-    # The currently documented behavior of string mode in Variable.java: 
-
-    #  "If the variable is in string mode, then when setting the value
-    # of this variable, the string that you pass to
-    # setExpression(String) is taken to be literally the value of the
-    # instance of StringToken that represents the value of this
-    # parameter. It is not necessary"
-
-    set e1 [java::new ptolemy.kernel.Entity]
-    set p1 [java::new ptolemy.data.expr.Parameter $e1 "p1"]
-    set p2 [java::new ptolemy.data.expr.Parameter $e1 "p2"]
-    $p1 setStringMode true
-    $p1 setExpression {$p2}
-    $p1 validate
-    set r1 [$p1 getExpression]
-    set change "<property name=\"p2\">
-<rename name=\"p3\"/>
-</property>"
-    $e1 requestChange [java::new ptolemy.moml.MoMLChangeRequest $e1 $e1 $change]
-    set r2 [$p1 getExpression]
-    list $r1 $r2
-} {{$p2} {$p3}}
-
-test Parameter-18.4 {Renaming a parameter in quotes referenced by a parameter in string mode} {
-    # See " references to parameter are not always renamed"
-    # http://bugzilla.ecoinformatics.org/show_bug.cgi?id=5723
-
-    # This tests parameter substitution in string mode
-    # The currently documented behavior of string mode in Variable.java: 
-
-    #  "If the variable is in string mode, then when setting the value
-    # of this variable, the string that you pass to
-    # setExpression(String) is taken to be literally the value of the
-    # instance of StringToken that represents the value of this
-    # parameter. It is not necessary"
-
-    set e1 [java::new ptolemy.kernel.Entity]
-    set p1 [java::new ptolemy.data.expr.Parameter $e1 "p1"]
-    set p2 [java::new ptolemy.data.expr.Parameter $e1 "p2"]
-    $p1 setStringMode true
-    $p1 setExpression {"$p2"}
-    $p1 validate
-    set r1 [$p1 getExpression]
-    set change "<property name=\"p2\">
-<rename name=\"p3\"/>
-</property>"
-    $e1 requestChange [java::new ptolemy.moml.MoMLChangeRequest $e1 $e1 $change]
-    list $r1 [$p1 getExpression]
-} {{"$p2"} {"$p3"}}
