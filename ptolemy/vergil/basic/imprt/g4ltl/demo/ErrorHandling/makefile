@@ -48,7 +48,8 @@ JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
 	ErrorHandling.xml \
-	ErrorHandlingLTL.txt
+	ErrorHandlingLTL.txt \
+	ErrorHandlingSynthesized.xml
 
 EXTRA_SRCS = \
 	$(JSRCS) \
