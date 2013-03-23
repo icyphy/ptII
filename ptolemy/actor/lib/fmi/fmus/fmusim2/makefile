@@ -36,6 +36,11 @@ all:
 	-chmod a+x build_fmu
 	./build_fmu onOffSupervisor
 
+fast: all
+
+jars:
+	@echo "Nothing to do in fmusim2 for 'make jars'."
+
 #####
 # The rules below build for a specific architecture.  These rules are
 # called by Ptolemy if a shared library is missing.
