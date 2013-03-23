@@ -103,14 +103,20 @@ $parser resetAll
 ######################################################################
 ####
 #
-test G4LTL-2.1 {Synthesize from ArbitorLTL.txt and merge it into the ArbitorTest.xml} {
+test G4LTL-2.1 {Synthesize from ArbitorLTL.txt using CoBuechi and unrollSteps 1 and merge it into the ArbitorTest.xml} {
     $parser resetAll
     set toplevel [java::cast ptolemy.actor.TypedCompositeActor [$parser parseFile ArbitorTest.xml]]
     # Import using Beuchi with unrollstep == 0
-    set result [generateMoML $PTII/ptolemy/vergil/basic/imprt/g4ltl/demo/Arbitor/ArbitorLTL.txt $toplevel 1 0]
+    set result [generateMoML $PTII/ptolemy/vergil/basic/imprt/g4ltl/demo/Arbitor/ArbitorLTL.txt $toplevel 0 1]
 
     set request [java::new ptolemy.moml.MoMLChangeRequest $toplevel $toplevel {
       <entity name=".ArbitorTest" class="ptolemy.actor.TypedCompositeActor">
+	<entity name="model1" class="ptolemy.domains.modal.kernel.FSMActor">
+           <property name="seed" class="ptolemy.actor.parameters.SharedParameter" value="1L">
+           </property>
+           <property name="resetSeedOnEachRun" class="ptolemy.actor.parameters.SharedParameter" value="true">
+           </property>
+        </entity>
 	<relation name="relation4" class="ptolemy.actor.TypedIORelation">
 	</relation>
 	<relation name="relation5" class="ptolemy.actor.TypedIORelation">
@@ -123,13 +129,14 @@ test G4LTL-2.1 {Synthesize from ArbitorLTL.txt and merge it into the ArbitorTest
 	<link port="Grant2.input" relation="relation5"/>
       </entity>
     }]
-    $toplevel requestChange $request
-    createBasicModelErrorHandler $toplevel
     set manager [java::new ptolemy.actor.Manager [$toplevel workspace] myManager]
     $toplevel setManager $manager
-    [$toplevel getManager] execute
+    $manager requestChange $request
+    #puts [$toplevel exportMoML]
+    createBasicModelErrorHandler $toplevel
+    $manager execute
     # This should not fail
-    [$toplevel getManager] execute
-    [$toplevel getManager] execute
+    $manager execute
+    $manager execute
 } {}
 
