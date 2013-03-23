@@ -51,7 +51,7 @@ test DefaultModelAttribute-2.0 {Check constructor} {
     
     set name4 [$param4 getFullName]
     list $name4 [$param4 getExpression] [$param4 getValueAsString]
-} {.toplevel.pattern1.id1 {} {""}}
+} {.toplevel.pattern1.id1 {} {}}
 
 ######################################################################
 ####
