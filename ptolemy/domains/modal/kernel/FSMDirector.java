@@ -694,8 +694,11 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
-        _buildLocalReceiverMaps();
-        _resetOutputReceivers();
+        // Transitions may produce initial outputs that need to be transferred
+        // to the outside. Make sure to do this before resetting receivers.
+        transferOutputs();
+
+        resetOutputReceivers();
 
         // Suspend the refinements of all non-initial states at the start time.
         // NOTE: Perhaps this could be avoided by doing a suspend in the loop
@@ -825,6 +828,12 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
         }
         super.prefire();
         return getController().prefire();
+    }
+    
+    /** Rebuild the output receivers map and reset the output receivers. */
+    public void resetOutputReceivers() throws IllegalActionException {
+        _buildLocalReceiverMaps();
+        _resetOutputReceivers();
     }
 
     /**

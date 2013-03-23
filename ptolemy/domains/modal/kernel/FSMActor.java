@@ -3167,19 +3167,36 @@ public class FSMActor extends CompositeEntity implements TypedActor,
             }
 
             // Execute the choice actions.
-            // This should not be done in preinitialize, but is OK in initialize.
-            // Outputs cannot be produced in preinitialize because type resolution has not occurred
-            // and receivers have not been created.
-            if (!inPreinitialize) {
-                Iterator actions = chosenTransition.choiceActionList().iterator();
-                while (actions.hasNext()) {
-                    Action action = (Action) actions.next();
-                    // Produce output tokens here
+            Iterator actions = chosenTransition.choiceActionList().iterator();
+            while (actions.hasNext()) {
+                Action action = (Action) actions.next();
+                if (!inPreinitialize) {
+                    // Produce output tokens here.
+                    // This should not be done in preinitialize, but is OK in initialize.
+                    // Outputs cannot be produced in preinitialize because type resolution has not occurred
+                    // and receivers have not been created.
                     action.execute();
                     if (_debugging) {
                         _debug("--- Transition action executed: " + action);
                     }
-                }
+                } else {
+                    // For the benefit of SDF, if there is an output action writing to an
+                    // output port, then set the tokenInitProduction parameter of that port.
+                    List<NamedObj> destinations = action.getDestinations();
+                    for (NamedObj destination : destinations) {
+                        if (destination instanceof IOPort) {
+                            // This sets the parameter only for this FSMActor. If this actor
+                            // is contained by a ModalModel, we need to set it for that port too.
+                            DFUtilities.setTokenInitProduction((IOPort)destination, 1);
+                            if (getContainer() instanceof ModalModel) {
+                                IOPort port = (IOPort)((ModalModel) getContainer()).getPort(destination.getName());
+                                if (port != null) {
+                                    DFUtilities.setTokenInitProduction(port, 1);
+                                }
+                            }
+                        }
+                    }
+                }   
             }
 
             // Execute the refinements of the transition.
