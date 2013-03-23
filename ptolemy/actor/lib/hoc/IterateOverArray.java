@@ -525,7 +525,7 @@ public class IterateOverArray extends MirrorComposite {
         setClassName("ptolemy.actor.lib.hoc.IterateOverArray");
 
         // Create the IterateDirector in the proper workspace.
-        IterateDirector iterateDirector = this.new IterateDirector(workspace());
+        IterateDirector iterateDirector = new IterateDirector(workspace());
         iterateDirector.setContainer(this);
         iterateDirector.setName(uniqueName("IterateDirector"));
 

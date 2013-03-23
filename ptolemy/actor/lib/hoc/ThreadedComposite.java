@@ -235,7 +235,7 @@ public class ThreadedComposite extends MirrorComposite {
         setClassName("ptolemy.actor.lib.hoc.ThreadedComposite");
 
         // Create the ThreadedDirector in the proper workspace.
-        ThreadedDirector threadedDirector = this.new ThreadedDirector(
+        ThreadedDirector threadedDirector = new ThreadedDirector(
                 workspace());
         threadedDirector.setContainer(this);
         threadedDirector.setName(uniqueName("ThreadedDirector"));
