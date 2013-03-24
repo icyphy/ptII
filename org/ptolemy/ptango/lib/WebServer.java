@@ -33,22 +33,11 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 
-import org.eclipse.jetty.server.Connector;
-import org.eclipse.jetty.server.Handler;
-import org.eclipse.jetty.server.Server;
-import org.eclipse.jetty.server.handler.ContextHandler;
-import org.eclipse.jetty.server.handler.HandlerList;
-import org.eclipse.jetty.server.handler.ResourceHandler;
-import org.eclipse.jetty.server.nio.SelectChannelConnector;
-import org.eclipse.jetty.servlet.ServletContextHandler;
-import org.eclipse.jetty.servlet.ServletHolder;
 import org.eclipse.jetty.util.resource.FileResource;
-import org.eclipse.jetty.util.resource.ResourceCollection;
 
 import ptolemy.actor.AbstractInitializableAttribute;
 import ptolemy.data.IntToken;
@@ -99,12 +88,6 @@ public class WebServer extends AbstractInitializableAttribute {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
-        /*
-        public WebServer(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
-        super(container, name);
-        */
-
         port = new Parameter(this, "port");
         port.setTypeEquals(BaseType.INT);
         port.setExpression("8080");
@@ -149,7 +132,7 @@ public class WebServer extends AbstractInitializableAttribute {
         }
         resourceLocation.setExpression(path);
 
-        temporaryFileLocation = new FileParameter(this, "temporaryFileLocation");
+        temporaryFileLocation = new FileParameter(this,"temporaryFileLocation");
         temporaryFileLocation.setExpression("$TMPDIR");
     }
 
@@ -191,8 +174,10 @@ public class WebServer extends AbstractInitializableAttribute {
      */
     public Parameter port;
 
-    /** The URL prefix which web services (e.g. an HTML page) will use to
-     *  refer to resources (files, such as images).
+    /** The URL prefix which other web services will use to request resources 
+     *  from this web service.  For example, an HTML page requesting an image 
+     *  file.
+     *  
      *  Used by the ResourceHandler. For example,
      *  a web page may refer to such a resource by an absolute URL
      *  such as
@@ -213,7 +198,7 @@ public class WebServer extends AbstractInitializableAttribute {
      *  <pre>
      *  /files/PtolemyIcon.gif
      *  </pre>
-     *  from within the application (e.g., a web page served by URL
+     *  from within the application; e.g., a web page served by URL
      *  <pre>
      *  protocol://hostname:portname/applicationPath/
      *  </pre>
@@ -277,43 +262,18 @@ public class WebServer extends AbstractInitializableAttribute {
      *  @exception IllegalActionException If the change is not acceptable
      *   to this container (not thrown in this base class).
      */
-    // FIXME:  Add checks for changes to applicationPath and resourcePath
-    // Make sure resourcePath is not / and that the user did not specify
-    // overlapping URLs (e.g. /files for both the applicationPath and
-    // the resourcePath, or common prefixes like /files and /files/images)
 
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
-        if (attribute instanceof FileParameter) {
-            // Resource handlers are being changed. If the
-            // server is running, reset the resource handler.
-            if (_server != null && _server.isRunning()) {
-                // FIXME:  Test this.  I think calling _setHandler() on the
-                // server, as _setResourceHandlers() does, will throw an
-                // exception if the server is running.  Therefore the server
-                // needs to be stopped and restarted.  Test to see if it
-                // restarts properly.
-                try {
-                    _server.stop();
-                    // FIXME: Does this need to be synchronized on the server?
-                    // Sadly, Jetty is undocumented.
-                    _createResourceHandler();
-                    _server.start();
-                } catch (Exception e) {
-                    try {
-                        _server.stop();
-                    } catch (Exception e2) {
-                        throw new IllegalActionException(this,
-                                "Can't update resource handlers of the WebServer.");
-                    }
-                    throw new IllegalActionException(this,
-                            "Can't update resource handlers of the WebServer.  "
-                                    + "Stopping the server.");
-                }
-                ;
 
-            }
-        } else if (attribute == port) {
+        // Changes to attributes are not currently propagated to the 
+        // web server directly.  They will take effect the next time 
+        // initialize() is called.  
+        
+        // In the future, changes could be propagated immediately to the 
+        // web server.
+        
+        if (attribute == port) {
             _portNumber = ((IntToken) port.getToken()).intValue();
         } else {
             super.attributeChanged(attribute);
@@ -328,8 +288,11 @@ public class WebServer extends AbstractInitializableAttribute {
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         WebServer newObject = (WebServer) super.clone(workspace);
-        newObject._server = null;
-        newObject._serverThread = null;
+        // _appInfo is set in initialize()
+        newObject._appInfo = null;
+        newObject._portNumber = _portNumber;
+        newObject._serverManager = WebServerManager.getInstance();
+
         return newObject;
     }
 
@@ -354,101 +317,63 @@ public class WebServer extends AbstractInitializableAttribute {
      *  @exception IllegalActionException Not thrown in this base class.
      */
     public void initialize() throws IllegalActionException {
-        // Create the server here rather than in the constructor
-        // so that it is not created by an instance of this actor in the library.
-        if (_server == null) {
-            // Create a Jetty server and set its properties
-            _server = new Server();
-            SelectChannelConnector connector = new SelectChannelConnector();
-            connector.setPort(_portNumber);
-            connector.setMaxIdleTime(_maxIdleTime);
-            _server.setConnectors(new Connector[] { connector });
+        
+        // Get the web server manager to register this application with
+        if (_serverManager == null) {
+            _serverManager = WebServerManager.getInstance();
         }
+            
+        // Get the model name, application path and temporary file location
+        String modelName = "";
+        if (toplevel() != null) {
+            modelName = toplevel().getFullName();
+        }
+        
+        String applicationPathString = "/";
+        if (applicationPath != null) {
+            applicationPathString = applicationPath.getExpression();
+        }        
+        
+        // Assemble info about this model into a WebApplicationInfo object
+        // Throw an exception if the model does not have a name
+        try {
+            _appInfo = new WebApplicationInfo(modelName, applicationPathString, 
+                temporaryFileLocation);
+        }catch(Exception e) {
+            throw new IllegalActionException(this, e.getMessage());
+        }
+        
+        // Collect requested servlet mappings from all model objects 
+        // implementing HttpService.  Check for duplicates.
+        NamedObj topLevel = toplevel();
+        Iterator objects = topLevel.containedObjectsIterator();
+        while (objects.hasNext()) {
+            NamedObj object = (NamedObj) objects.next();
+            if (object instanceof HttpService) {
+                HttpService service = (HttpService) object;
+                // Tell the HttpService that this is its WebServer,
+                // so that it can get, for example, critical information such
+                // as resourcePath.
+                service.setWebServer(this);
 
-        // Create a handler to map incoming requests to servlets registered by
-        // other actors in this model (for example, HttpActor)
-        ContextHandler servletHandler = _createServletHandler();
-
-        // Create a handler to serve files such as images, audio, etc.,
-        // from parameters of type FileParameter contained by this WebServer.
-        ContextHandler fileHandler = _createResourceHandler();
-
-        // Enable aliases so that we can use $TMPDIR under Mac OS X
-        // because $TMPDIR is in /var, which is a symbolic link.
-        // FIXME: this opens up a series of security holes.
-        fileHandler.setAliases(true);
-
-        // Assign the newly created handlers to the server
-        // The server passes requests to handlers in the same order as the array
-        // in setHandlers()
-        // Therefore, make sure fileHandler is first so that any request for a
-        // file (e.g. an image file) is handled by the fileHandler
-        // FIXME:  Reference for this?  I read it somewhere on the internet...
-        HandlerList handlers = new HandlerList();
-        handlers.setHandlers(new Handler[] { fileHandler, servletHandler });
-        _server.setHandler(handlers);
-
-        //Start the server in a new thread with our handlers
-        _serverThread = new Thread(new RunnableServer());
-        _serverThread.start();
-    }
-
-    /** Instruct the thread running the web server to the stop the server and
-     *  terminate itself.
-     */
-    public void wrapup() throws IllegalActionException {
-        _serverThread.interrupt();
-        _serverThread = null;
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected methods                 ////
-
-    /** Create a resource handler to serve files such as images, audio, etc.,
-     *  from parameters of type FileParameter contained by this WebServer.
-     *  This will also set the _actorContextHandler (for servlets)
-     *  that is set up in initialize().  Note that this method is called
-     *  in initialize() and may be called again during execution to change
-     *  the resource handler.
-     *
-     *  @return A ContextHandler containing the created ResourceHandler
-     *  @exception IllegalActionException If a FileParameter is found that is
-     *   not a valid URI or references a resource that cannot be found.
-     */
-    protected ContextHandler _createResourceHandler()
-            throws IllegalActionException {
-        // Create a resource handler to serve files such as images, audio, ...
-        // See also http://restlet-discuss.1400322.n2.nabble.com/Jetty-Webapp-td7313234.html
-        ContextHandler fileHandler = new ContextHandler();
-
-        // Set the path which other web applications (e.g. an HTML page) would
-        // use to request resources (files). This path needs to be a prefix
-        // of any relative reference to a file such as an image.
-        // Please see comments for resourcePath parameter and example
-        // $PTII/org/ptolemy/ptango/demo/WebServerDE/WebServerDE.xml
-        // It is not clear why or whether both of these are needed.
-        fileHandler.setContextPath(resourcePath.stringValue());
-        // Think this is not needed since we create a ContextHandler
-        // fileHandler, set up our resourceHandler, then call
-        // fileHandler.setHandler(resourceHandler)
-        // I think this is only needed if we directly add resourceHandler to
-        // the server's handler list, since resourceHandler does not have
-        // a setContextPath() method
-        fileHandler.setResourceBase(resourcePath.stringValue());
-
-        ResourceHandler resourceHandler = new ResourceHandler();
-        // Do not support listing of directories in the local resource locations.
-        // FIXME: This should probably be a parameter of the server.
-        resourceHandler.setDirectoriesListed(false);
-
+                // Add this path to the list of servlet paths
+                URI path = service.getRelativePath();
+                try {
+                    _appInfo.addServletInfo(path, service.getServlet()); 
+                }catch(Exception e) {
+                    throw new IllegalActionException(this, "Actor " + 
+                    object.getName() + " requested the web service URL " 
+                    + path + " , but this URL has already been claimed " 
+                    + "by another actor or by a resource in this WebServer." 
+                    + "  Please specify a unique URL.");
+                }
+            }
+        }
+               
         // Specify directories or URLs in which to look for resources.
         // These are given by all instances of FileParameter in this
         // WebServer.
-        // ResourceHandler example:
-        // http://cxf.547215.n5.nabble.com/serve-static-content-through-jetty-td5467064.html
-        // ResourceCollection example:
-        // http://stackoverflow.com/questions/2405038/multiple-webroot-folders-with-jetty
-        ArrayList<FileResource> resources = new ArrayList<FileResource>();
+        HashSet<FileResource> resourceLocations = new HashSet<FileResource>();
         List<FileParameter> bases = attributeList(FileParameter.class);
         // To prevent duplicates, keep track of bases added.
         HashSet<URL> seen = new HashSet<URL>();
@@ -461,7 +386,7 @@ public class WebServer extends AbstractInitializableAttribute {
                         continue;
                     }
                     seen.add(baseAsURL);
-                    resources.add(new FileResource(baseAsURL));
+                    resourceLocations.add(new FileResource(baseAsURL));
                 }
             } catch (URISyntaxException e2) {
                 throw new IllegalActionException(this,
@@ -473,111 +398,52 @@ public class WebServer extends AbstractInitializableAttribute {
             }
             ;
         }
-        resourceHandler.setBaseResource(new ResourceCollection(resources
-                .toArray(new FileResource[resources.size()])));
-
-        fileHandler.setHandler(resourceHandler);
-        return fileHandler;
-    }
-
-    /** Create a ContextHandler to find and store all of the servlets
-     *  registered by other actors (e.g. HttpCompositeActor).
-     *
-     *  @return A ContextHandler containing servlets from the WebServer's
-     *  containing model
-     */
-
-    protected ContextHandler _createServletHandler() {
-
-        // Create a new handler to hold servlets from the actors
-        ServletContextHandler servletHandler = new ServletContextHandler(
-                ServletContextHandler.SESSIONS);
-
-        servletHandler.setContextPath(applicationPath.getExpression());
-
-        // Collect servlets from all model objects implementing HttpService
-        // FIXME:  Check for overlapping URLs
-        NamedObj topLevel = toplevel();
-        Iterator objects = topLevel.containedObjectsIterator();
-        while (objects.hasNext()) {
-            Object object = objects.next();
-            if (object instanceof HttpService) {
-                HttpService service = (HttpService) object;
-                // Tell the HttpService that this is its WebServer,
-                // so that it can get, for example, critical information such
-                // as resourcePath.
-                service.setWebServer(this);
-
-                // Add the servlet to the handler with the required relative path.
-                String path = service.getRelativePath().getPath();
-                servletHandler.addServlet(
-                        new ServletHolder(service.getServlet()), path);
-            }
+        
+        // Throw an exception if resource path is not a valid URI or if a 
+        // duplicate path is requested
+        try {
+            _appInfo.addResourceInfo(new URI(resourcePath.getExpression()), 
+                resourceLocations);
+        } catch(URISyntaxException e) {
+            throw new IllegalActionException(this, "Resource path is not a " +
+            		"valid URI.");
+        } catch(Exception e2) {
+            throw new IllegalActionException(this, e2.getMessage());
         }
-
-        return servletHandler;
+        
+        try {
+            _serverManager.register(_appInfo, _portNumber);
+        } catch(Exception e){
+            throw new IllegalActionException(this, "Web server cannot be " +
+            		"instantiated. " + e.getMessage());
+        }      
     }
+
+    
+    /** Unregister this application with the web server manager. 
+     * 
+     * @exception IllegalActionException if there is a problem unregistering
+     * the application */
+    public void wrapup() throws IllegalActionException {
+        try {
+            _serverManager.unregister(_appInfo, _portNumber);
+        } catch (Exception e) {
+            throw new IllegalActionException(this, e.getMessage());
+        }
+    }    
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    /** The maximum idle time for a connection.
+    /** Info about the web application defined by the model. 
      */
-    private int _maxIdleTime = 30000;
+    private WebApplicationInfo _appInfo;   
 
     /** The port number the server receives requests on.
      */
     private int _portNumber = 8080;
+    
+    /** The manager for this web application. */
+    private WebServerManager _serverManager;
 
-    /** The Jetty web server. */
-    private Server _server;
-
-    /** The thread that runs the web server. */
-    private Thread _serverThread;
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
-
-    /** A Runnable class to run a Jetty web server in a separate thread.
-     */
-    private class RunnableServer implements Runnable {
-
-        /** Run the Jetty web server.  Stop the server if this thread is
-         *  interrupted (for example, when the model is finished executing,
-         *  WebServer's wrapup() will interrupt this thread) or if an
-         *  exception occurs.
-         */
-        public void run() {
-
-            while (!Thread.interrupted()) {
-
-                // Start the server.  The .join() method blocks the thread until the
-                // server terminates.
-                try {
-                    _server.start();
-                    _server.join();
-
-                } catch (Exception e) {
-                    // Notify thread users and terminate the server and this thread
-                    // if an exception occurs
-                    try {
-                        _server.stop();
-                    } catch (Exception e2) {
-                        Thread.currentThread().interrupt();
-                        return;
-                    }
-                    Thread.currentThread().interrupt();
-                    return;
-                }
-                ;
-            }
-            try {
-                _server.stop();
-            } catch (Exception e) {
-                // Nothing to do here since the thread will terminate next
-            }
-            return;
-        }
-
-    }
 }
