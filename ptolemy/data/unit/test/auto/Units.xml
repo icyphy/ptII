@@ -2,18 +2,16 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="Units" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
     </property>
     <property name="Continuous Director" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
-        <property name="timeResolution" class="ptolemy.actor.parameters.SharedParameter" value="1.0E-10">
-        </property>
         <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="3.0">
         </property>
-        <property name="initStepSize" class="ptolemy.data.expr.Parameter" value="0.1">
+        <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="minStepSize" class="ptolemy.data.expr.Parameter" value="1.0E-5">
+        <property name="initStepSize" class="ptolemy.data.expr.Parameter" value="0.1">
         </property>
         <property name="maxStepSize" class="ptolemy.data.expr.Parameter" value="1.0">
         </property>
@@ -21,9 +19,9 @@
         </property>
         <property name="errorTolerance" class="ptolemy.data.expr.Parameter" value="1.0E-4">
         </property>
-        <property name="valueResolution" class="ptolemy.data.expr.Parameter" value="1.0E-6">
+        <property name="minStepSize" class="ptolemy.data.expr.Parameter" value="1.0E-5">
         </property>
-        <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
+        <property name="valueResolution" class="ptolemy.data.expr.Parameter" value="1.0E-6">
         </property>
         <property name="runAheadLength" class="ptolemy.data.expr.Parameter" value="0.1">
         </property>
@@ -109,7 +107,7 @@
     </property>
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[-4, 8]">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 978, 743}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 999, 743}, maximized=false}">
     </property>
     <property name="annotation4" class="ptolemy.kernel.util.Attribute">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -234,18 +232,6 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="275.0, 505.0">
         </property>
     </entity>
-    <entity name="DisplayVoltage" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={724, 60, 330, 237}, maximized=false}">
-        </property>
-        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
-        </property>
-        <property name="suppressBlankLines" class="ptolemy.data.expr.Parameter" value="true">
-        </property>
-        <property name="title" class="ptolemy.data.expr.StringParameter" value="Voltage">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="635.0, 375.0">
-        </property>
-    </entity>
     <entity name="Scale3" class="ptolemy.actor.lib.Scale">
         <property name="factor" class="ptolemy.data.expr.Parameter" value="-1.0 / ( 1.0e-3 * farad )">
         </property>
@@ -266,18 +252,6 @@
             </property>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[585.0, 495.0]">
-        </property>
-    </entity>
-    <entity name="DisplayCurrent" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={724, 297, 330, 237}, maximized=false}">
-        </property>
-        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
-        </property>
-        <property name="suppressBlankLines" class="ptolemy.data.expr.Parameter" value="true">
-        </property>
-        <property name="title" class="ptolemy.data.expr.StringParameter" value="Current">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="635.0, 435.0">
         </property>
     </entity>
     <entity name="MultiplyDivide" class="ptolemy.actor.lib.MultiplyDivide">
@@ -330,59 +304,83 @@
             </property>
         </port>
     </entity>
-    <entity name="DisplayCurrentInAmps" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={723, 533, 330, 237}, maximized=false}">
-        </property>
-        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
-        </property>
-        <property name="suppressBlankLines" class="ptolemy.data.expr.Parameter" value="true">
-        </property>
-        <property name="title" class="ptolemy.data.expr.StringParameter" value="Current in units of Amps">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[660.0, 495.0]">
-        </property>
-    </entity>
     <entity name="Integrator" class="ptolemy.domains.continuous.lib.Integrator">
-        <property name="initialState" class="ptolemy.data.expr.Parameter" value="5.0">
+        <property name="initialState" class="ptolemy.actor.parameters.PortParameter" value="5.0">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="175.0, 395.0">
+        </property>
+    </entity>
+    <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{5.0 * volt, 3.0325773722976 * volt, 1.8393051037943 * volt, 1.1155317864225 * volt, 0.6765659291392 * volt, 0.4102918878634 * volt, 0.24881452937 * volt}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{700, 340}">
+        </property>
+    </entity>
+    <entity name="NonStrictTest2" class="ptolemy.actor.lib.NonStrictTest">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.005 * ampere, 0.0030325773723 * ampere, 0.0018393051038 * ampere, 0.0011155317864 * ampere, 6.765659291391735E-4 * ampere, 4.102918878634344E-4 * ampere, 2.488145293700011E-4 * ampere}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[690.0, 400.0]">
+        </property>
+    </entity>
+    <entity name="NonStrictTest3" class="ptolemy.actor.lib.NonStrictTest">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.005, 0.0030325773723, 0.0018393051038, 0.0011155317864, 6.765659291391735E-4, 4.102918878634344E-4, 2.488145293700011E-4}">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[682.625, 474.921875]">
         </property>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
         <vertex name="vertex1" value="335.0, 375.0">
         </vertex>
-    </relation>
-    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+        </property>
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
         <vertex name="vertex1" value="455.0, 445.0">
         </vertex>
+        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+        </property>
     </relation>
     <relation name="relation12" class="ptolemy.actor.TypedIORelation">
         <vertex name="vertex1" value="605.0, 595.0">
         </vertex>
+        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+        </property>
     </relation>
     <relation name="relation15" class="ptolemy.actor.TypedIORelation">
         <vertex name="vertex1" value="[555.0, 435.0]">
         </vertex>
+        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+        </property>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+        </property>
     </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+        </property>
     </relation>
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+        </property>
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+        </property>
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+        </property>
     </relation>
     <link port="Scale2.input" relation="relation6"/>
     <link port="Scale2.output" relation="relation"/>
     <link port="Const.output" relation="relation2"/>
-    <link port="DisplayVoltage.input" relation="relation3"/>
     <link port="Scale3.input" relation="relation5"/>
     <link port="Scale3.output" relation="relation12"/>
     <link port="InUnitsOf.input" relation="relation15"/>
     <link port="InUnitsOf.output" relation="relation4"/>
-    <link port="DisplayCurrent.input" relation="relation15"/>
     <link port="MultiplyDivide.multiply" relation="relation"/>
     <link port="MultiplyDivide.divide" relation="relation2"/>
     <link port="MultiplyDivide.output" relation="relation5"/>
@@ -392,7 +390,9 @@
     <link port="PeriodicSampler2.output" relation="relation15"/>
     <link port="PeriodicSampler.input" relation="relation"/>
     <link port="PeriodicSampler.output" relation="relation3"/>
-    <link port="DisplayCurrentInAmps.input" relation="relation4"/>
     <link port="Integrator.derivative" relation="relation7"/>
     <link port="Integrator.state" relation="relation6"/>
+    <link port="NonStrictTest.input" relation="relation3"/>
+    <link port="NonStrictTest2.input" relation="relation15"/>
+    <link port="NonStrictTest3.input" relation="relation4"/>
 </entity>
