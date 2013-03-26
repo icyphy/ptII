@@ -118,7 +118,7 @@ public class ActionsAttribute extends AbstractActionsAttribute {
     public void execute() throws IllegalActionException {
         super.execute();
 
-        if (_destinations != null) {
+        if (_destinations != null && _destinations.size() > 0) {
             Iterator<?> destinations = _destinations.iterator();
             Iterator<Integer> channels = getChannelNumberList().iterator();
             Iterator<?> parseTrees = _parseTrees.iterator();
