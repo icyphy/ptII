@@ -157,6 +157,21 @@ models.txt: $(ROOT)/ptolemy/actor/gui/HTMLAbout.class completeDemos.htm
 	LC_ALL=C sort -f models.txt | uniq > /tmp/models.txt
 	mv /tmp/models.txt models.txt
 
+demosModels.txt: $(ROOT)/ptolemy/actor/gui/HTMLAbout.class demos.htm models.txt
+	"$(JAVA)" "-Dptolemy.ptII.dir=$(PTII)" \
+		-classpath "$(CLASSPATH)$(CLASSPATHSEPARATOR)$(AUXCLASSPATH)" \
+		ptolemy.actor.gui.HTMLAbout demos.htm demosModels.txt
+	# Include the models in the ExecDemos directory.
+	ls -1 $(PTII)/ptolemy/demo/ExecDemos/Demos/*.xml | sed "s@$(PTII)@\$$CLASSPATH@" >> demosModels.txt
+	LC_ALL=C sort -f demosModels.txt | uniq > /tmp/demosModels.txt
+	mv /tmp/demosModels.txt demosModels.txt
+
+# Check for models in demos.htm that are not in completeDemos.htm
+missingDemos: demosModels.txt models.txt
+	@sort demosModels.txt > /tmp/demosModels.txt
+	@sort models.txt > /tmp/models.txt
+	@comm -13 /tmp/models.txt /tmp/demosModels.txt
+
 update: $(DERIVED_FILES)
 	svn commit -m "Master files changed" $(DERIVED_FILES)
 	rm -f doc.jar
