@@ -57,11 +57,6 @@ import ptolemy.kernel.util.Workspace;
  *  @Pt.AcceptedRating Red (derler)
  */
 public class QuantityManagerAttribute extends Parameter {
-  
-    public QuantityManagerAttribute()
-            throws IllegalActionException, NameDuplicationException {
-        super(); 
-    }
     
     /** Construct a parameter with the given name contained by the specified
      *  entity. The container argument must not be null, or a
@@ -81,6 +76,7 @@ public class QuantityManagerAttribute extends Parameter {
     public QuantityManagerAttribute(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name); 
+        setPersistent(false);
     }
 
     /** Construct a Parameter with the given container, name, and Token.
@@ -104,6 +100,7 @@ public class QuantityManagerAttribute extends Parameter {
     public QuantityManagerAttribute(NamedObj container, String name, ptolemy.data.Token token)
             throws IllegalActionException, NameDuplicationException {
         super(container, name, token);
+        setPersistent(false);
         //setTypeEquals(new ArrayType(BaseType.DOUBLE));
     }
     
