@@ -1,6 +1,6 @@
 # Build the .fmu files for both co-simulation and model-exchange.
 #
-# The build_fmu script calls make with the appropriate makefile variables set.
+# The build_fmusim2 script calls make with the appropriate makefile variables set.
 
 # The architecture: linux32, linux64, darwin32, darwin64
 ARCH = darwin64
@@ -22,7 +22,7 @@ PIC =
 # Build an individual FMUs.
 
 # Note that there is directory named onOffSupervisor, so we add a .PHONY
-# target so that 'make helloWorld' always runs the build_fmu script.  See
+# target so that 'make helloWorld' always runs the build_fmusim2 script.  See
 # https://www.gnu.org/software/make/manual/html_node/Phony-Targets.html
 
 .PHONY : onOffSupervisor
@@ -31,10 +31,10 @@ PIC =
 # This is the main entry point of the makefile.  Typically, we execute
 # a script that determines platform-specific values.
 
-# build_fmu might not be executable if we extracted the sources from a jar file.
+# build_fmusim2 might not be executable if we extracted the sources from a jar file.
 all:
 	-chmod a+x build_fmu
-	./build_fmu onOffSupervisor
+	./build_fmusim2
 
 fast: all
 

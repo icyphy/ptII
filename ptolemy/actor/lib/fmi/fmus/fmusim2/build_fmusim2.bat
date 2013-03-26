@@ -31,7 +31,7 @@ rem This license is also present in org/ptolemy/fmi/driver/fmusdk-license.htm
 rem ------------------------------------------------------------
 
 echo -----------------------------------------------------------
-echo building FMU %1 - FMI for Co-Simulation 1.0
+echo building fmusim2 - a FMU-2.0 Co-Simulation driver.
 
 rem save env variable settings
 set PREV_PATH=%PATH%
@@ -58,7 +58,7 @@ exit
 
 
 :compileError
-echo build of %1 failed
+echo build of fmusim2 failed
 
 :cleanup
 

@@ -1,15 +1,8 @@
 #!/bin/sh
-# Build a model exchange or co-simulation fmu
-# Usage: build_fmu fmuBaseName
+# Build a co-simulation fmu-2.0 driver.
+# Usage: build_fmusim2
 
-if [ $# -ne 1 ]; then
-   echo "Usage: $0 fmuBaseName"
-   exit 2
-fi
-
-fmuBaseName=$1
-
-include="-DFMI_COSIMULATION -I../../co_simulation/include"
+include="-DFMI_COSIMULATION"
 
 case "`uname -s`" in
      CYGWIN*) arch=win
