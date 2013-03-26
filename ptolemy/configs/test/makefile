@@ -4,7 +4,7 @@
 #
 # @Version: $Id$
 #
-# @Copyright (c) 1997-2012 The Regents of the University of California.
+# @Copyright (c) 1997-2013 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -58,6 +58,7 @@ JSRCS = \
 JSIMPLE_TESTS = \
 	allConfigs.tcl \
 	allDemos.tcl \
+	missingDemos.tcl \
 	validDemos.tcl
 
 # Graphical Java tests that use Tcl.
