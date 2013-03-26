@@ -46,10 +46,12 @@ if {[string compare test [info procs jdkCapture]] == 1} then {
 # set VERBOSE 1
 
 test missingDemos-1.0 {Look for demos listed in configs/doc/demos.html that are not in models.txt} {
+    # Run it once to build any missing files.
+    exec make -C ../doc missingDemos
     jdkCaptureOutAndErr {
 	exec make -C ../doc missingDemos
     } out err
     regsub -all {make: [^']*'} $err {} err2
     list $out $err2
-} {}
+} {{} {}}
 
