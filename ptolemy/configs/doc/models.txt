@@ -26,6 +26,7 @@ $CLASSPATH/ptolemy/actor/gt/demo/ModelGeneration/ModelGeneration.xml
 $CLASSPATH/ptolemy/actor/gt/demo/ModelGeneration/ModelGenerationDE.xml
 $CLASSPATH/ptolemy/actor/gt/demo/PublisherTest/PublisherTest.xml
 $CLASSPATH/ptolemy/actor/gt/demo/RegressionTest/RegressionTest.xml
+$CLASSPATH/ptolemy/actor/gt/demo/SinewaveOptimization/Sinewave.xml
 $CLASSPATH/ptolemy/actor/gt/demo/SinewaveOptimization/SinewaveOptimization.xml
 $CLASSPATH/ptolemy/actor/lib/colt/demo/ColtRandom/ColtRandom.xml
 $CLASSPATH/ptolemy/actor/lib/comm/demo/ConvolutionalCoder/ConvolutionalCoder.xml
@@ -95,6 +96,7 @@ $CLASSPATH/ptolemy/data/ontologies/demo/MonotonicityAnalysis/MonotonicityAnalysi
 $CLASSPATH/ptolemy/data/type/demo/Objects/Objects.xml
 $CLASSPATH/ptolemy/data/type/demo/Router/Router.xml
 $CLASSPATH/ptolemy/data/unit/demo/StaticUnits/StaticUnits.xml
+$CLASSPATH/ptolemy/data/unit/demo/Units/Units.xml
 $CLASSPATH/ptolemy/demo/ElectricPowerSystem/ContactorTester.xml
 $CLASSPATH/ptolemy/demo/ElectricPowerSystem/ElectricPowerSystem.xml
 $CLASSPATH/ptolemy/demo/ElectricPowerSystem/GeneratorContactorLoad.xml
