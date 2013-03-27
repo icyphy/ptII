@@ -1,0 +1,166 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="PriorityArbitor" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 0, 1306, 756}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1076, 627]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.2628078030060763">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{47.019626215559185, 172.56250000000003}">
+    </property>
+    <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-285.0, -20.0]">
+        </property>
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="11">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.0,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Follow the instructions to synthesize the FSMActor automatically:&#10;(1) Save the specification as a separate text file.&#10;(2) On the menu bar, choose &quot;Import -&gt; Import FSMActor using synthesis&quot;.&#10;      A file selection dialog will appear. Select the text file in step 1.&#10;(3) Select either Co-Buechi or Buechi solver. For Co-Buechi solver, select &#10;      unroll step to be 3.&#10;   ">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 280.0]">
+        </property>
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="9">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This SDF model illustrates the use of synthesis for fast prototyping. In this model, &#10;we hope to create an FSMActor as a controller that can, based on the requirement of &#10;clients, grant the resource. However, it is forbidden that the controller grants two&#10;clients simultaneously. Also,we have a super-client (ImportantClient1) that needs to &#10;be served quickly. Whenever a request is issued by client 1, the resource needs to &#10;be granted either immediately or in the next cycle. The overall requirement can be &#10;concretized by the following specification.&#10;&#10;ALWAYS (req1 -&gt; ( grant1 || NEXT grant1))&#10;ALWAYS (req2 -&gt; EVENTUALLY grant2)&#10;ALWAYS (req3 -&gt; EVENTUALLY grant3)&#10;ALWAYS !(grant1 &amp;&amp; grant2)&#10;ALWAYS !(grant2 &amp;&amp; grant3)&#10;ALWAYS !(grant1 &amp;&amp; grant3)&#10;&#10;INPUT req1, req2, req3&#10;OUTPUT grant1, grant2, grant3&#10;">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{-345.0, 200.0}">
+        </property>
+    </property>
+    <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="11">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.0,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Chih-Hong Cheng">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[225.0, 395.0]">
+        </property>
+    </property>
+    <entity name="Client2" class="ptolemy.actor.lib.DiscreteRandomSource">
+        <property name="resetOnEachRun" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="values" class="ptolemy.data.expr.Parameter" value="{true, false}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-45.0, 100.0]">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="boolean">
+            </property>
+        </port>
+    </entity>
+    <entity name="Client3" class="ptolemy.actor.lib.DiscreteRandomSource">
+        <property name="values" class="ptolemy.data.expr.Parameter" value="{true, false}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-45.0, 170.0]">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="boolean">
+            </property>
+        </port>
+    </entity>
+    <entity name="Pulse" class="ptolemy.actor.lib.Pulse">
+        <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="5">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-305.0, 100.0]">
+        </property>
+    </entity>
+    <entity name="Req1" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={109, 117, 460, 253}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[442, 182]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[310.0, 35.0]">
+        </property>
+    </entity>
+    <entity name="Req2" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={111, 418, 460, 253}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[442, 182]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[310.0, 100.0]">
+        </property>
+    </entity>
+    <entity name="Grant1" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={619, 126, 460, 253}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[442, 182]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[145.0, 240.0]">
+        </property>
+    </entity>
+    <entity name="Grant2" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={627, 423, 460, 253}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[442, 182]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[235.0, 240.0]">
+        </property>
+    </entity>
+    <entity name="ImportantClient1" class="ptolemy.actor.lib.DiscreteRandomSource">
+        <property name="resetOnEachRun" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="values" class="ptolemy.data.expr.Parameter" value="{true, false}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-45.0, 35.0]">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="boolean">
+            </property>
+        </port>
+    </entity>
+    <entity name="Req3" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={111, 418, 460, 253}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[442, 182]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[310.0, 170.0]">
+        </property>
+    </entity>
+    <entity name="Grant3" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={627, 423, 460, 253}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[442, 182]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[315.0, 240.0]">
+        </property>
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="[80.0, 100.0]">
+        </vertex>
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="[155.0, 170.0]">
+        </vertex>
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="[-140.0, 100.0]">
+        </vertex>
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="[45.0, 35.0]">
+        </vertex>
+    </relation>
+    <link port="Client2.output" relation="relation"/>
+    <link port="Client2.trigger" relation="relation3"/>
+    <link port="Client3.output" relation="relation2"/>
+    <link port="Client3.trigger" relation="relation3"/>
+    <link port="Pulse.output" relation="relation3"/>
+    <link port="Req1.input" relation="relation4"/>
+    <link port="Req2.input" relation="relation"/>
+    <link port="ImportantClient1.output" relation="relation4"/>
+    <link port="ImportantClient1.trigger" relation="relation3"/>
+    <link port="Req3.input" relation="relation2"/>
+</entity>
