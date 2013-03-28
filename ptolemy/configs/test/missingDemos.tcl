@@ -49,8 +49,9 @@ test missingDemos-1.0 {Look for demos listed in configs/doc/demos.html that are 
     # Run it once to build any missing files.
     exec make -C ../doc missingDemos
     jdkCaptureOutAndErr {
-	exec make -C ../doc missingDemos
+	exec make -C ../doc --no-print-directory missingDemos
     } out err
+    puts "Stderr for 'make -C ../doc missingDemos' was\n--start--\n$err\n--end--"
     regsub -all {make: [^']*'} $err {} err2
     list $out $err2
 } {{} {}}
