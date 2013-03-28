@@ -215,3 +215,5 @@ test MessageHandler-8.3 {yesNoCancelQuestion(String), answer is cancel} {
     java::call System setIn $stdin
     list $answer $results
 } {{ptolemy.util.CancelException: Cancelled: Is this test working?} {Is this test working? (Yes or No or Cancel) }}
+
+java::call System setProperty ptolemy.ptII.testingMessageHandler {}
