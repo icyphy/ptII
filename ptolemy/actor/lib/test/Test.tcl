@@ -48,6 +48,8 @@ set oldIsRunningNightlyBuild \
      "ptolemy.ptII.isRunningNightlyBuild"]
 java::call System setProperty "ptolemy.ptII.isRunningNightlyBuild" ""
 
+java::call System setProperty ptolemy.ptII.testingMessageHandler ""
+
 ######################################################################
 #### Test the Test actor in an SDF model
 #
