@@ -38,8 +38,8 @@ all:
 
 fast: all
 
-jars:
-	@echo "Nothing to do in fmusim2 for 'make jars'."
+install jars tests:
+	@echo "Nothing to do in fmusim2 for 'make $@'."
 
 #####
 # The rules below build for a specific architecture.  These rules are
