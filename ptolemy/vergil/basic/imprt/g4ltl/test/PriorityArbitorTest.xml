@@ -1,10 +1,10 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="PriorityArbitor" class="ptolemy.actor.TypedCompositeActor">
+<entity name="PriorityArbitorTest" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 0, 1306, 756}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 0, 1296, 734}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1076, 627]">
     </property>
@@ -47,7 +47,9 @@
         </property>
     </property>
     <entity name="Client2" class="ptolemy.actor.lib.DiscreteRandomSource">
-        <property name="resetOnEachRun" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        <property name="privateSeed" class="ptolemy.data.expr.Parameter" value="2L">
+        </property>
+        <property name="resetOnEachRun" class="ptolemy.actor.parameters.SharedParameter" value="true">
         </property>
         <property name="values" class="ptolemy.data.expr.Parameter" value="{true, false}">
         </property>
@@ -60,9 +62,11 @@
         </port>
     </entity>
     <entity name="Client3" class="ptolemy.actor.lib.DiscreteRandomSource">
+        <property name="privateSeed" class="ptolemy.data.expr.Parameter" value="3L">
+        </property>
         <property name="values" class="ptolemy.data.expr.Parameter" value="{true, false}">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-45.0, 170.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{-45.0, 170.0}">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -76,40 +80,12 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-305.0, 100.0]">
         </property>
     </entity>
-    <entity name="Req1" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={109, 117, 460, 253}, maximized=false}">
-        </property>
-        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[442, 182]">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[310.0, 35.0]">
-        </property>
-    </entity>
-    <entity name="Req2" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={111, 418, 460, 253}, maximized=false}">
-        </property>
-        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[442, 182]">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[310.0, 100.0]">
-        </property>
-    </entity>
-    <entity name="Grant1" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={619, 126, 460, 253}, maximized=false}">
-        </property>
-        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[442, 182]">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[145.0, 240.0]">
-        </property>
-    </entity>
-    <entity name="Grant2" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={627, 423, 460, 253}, maximized=false}">
-        </property>
-        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[442, 182]">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[235.0, 240.0]">
-        </property>
-    </entity>
     <entity name="ImportantClient1" class="ptolemy.actor.lib.DiscreteRandomSource">
-        <property name="resetOnEachRun" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        <property name="seed" class="ptolemy.actor.parameters.SharedParameter" value="1L">
+        </property>
+        <property name="privateSeed" class="ptolemy.data.expr.Parameter" value="1L">
+        </property>
+        <property name="resetOnEachRun" class="ptolemy.actor.parameters.SharedParameter" value="true">
         </property>
         <property name="values" class="ptolemy.data.expr.Parameter" value="{true, false}">
         </property>
@@ -121,46 +97,99 @@
             </property>
         </port>
     </entity>
-    <entity name="Req3" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={111, 418, 460, 253}, maximized=false}">
+    <entity name="Test" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{false, true, true, true, false}">
         </property>
-        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[442, 182]">
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[310.0, 170.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{390, -25}">
         </property>
     </entity>
-    <entity name="Grant3" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={627, 423, 460, 253}, maximized=false}">
+    <entity name="Test2" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{false, false, true, false, false}">
         </property>
-        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[442, 182]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[395.0, 45.0]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[315.0, 240.0]">
+    </entity>
+    <entity name="Test3" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{false, true, true, false, true}">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[400.0, 115.0]">
+        </property>
+    </entity>
+    <entity name="Test4" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{false, true, false, true, false}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[130.0, 270.0]">
+        </property>
+    </entity>
+    <entity name="Test5" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{true, false, false, false, true}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{405.0, 235.0}">
+        </property>
+    </entity>
+    <entity name="Test6" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{false, false, true, false, false}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[415.0, 290.0]">
         </property>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
         <vertex name="vertex1" value="[80.0, 100.0]">
         </vertex>
+        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+        </property>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
         <vertex name="vertex1" value="[155.0, 170.0]">
         </vertex>
+        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+        </property>
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
         <vertex name="vertex1" value="[-140.0, 100.0]">
         </vertex>
+        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+        </property>
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
         <vertex name="vertex1" value="[45.0, 35.0]">
         </vertex>
+        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+        </property>
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="[50.0, 205.0]">
+        </vertex>
+        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+        </property>
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="[185.0, 205.0]">
+        </vertex>
+        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+        </property>
+    </relation>
+    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="[265.0, 205.0]">
+        </vertex>
+        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+        </property>
     </relation>
     <link port="Client2.output" relation="relation"/>
     <link port="Client2.trigger" relation="relation3"/>
     <link port="Client3.output" relation="relation2"/>
     <link port="Client3.trigger" relation="relation3"/>
     <link port="Pulse.output" relation="relation3"/>
-    <link port="Req1.input" relation="relation4"/>
-    <link port="Req2.input" relation="relation"/>
     <link port="ImportantClient1.output" relation="relation4"/>
     <link port="ImportantClient1.trigger" relation="relation3"/>
-    <link port="Req3.input" relation="relation2"/>
+    <link port="Test.input" relation="relation4"/>
+    <link port="Test2.input" relation="relation"/>
+    <link port="Test3.input" relation="relation2"/>
+    <link port="Test4.input" relation="relation5"/>
+    <link port="Test5.input" relation="relation6"/>
+    <link port="Test6.input" relation="relation7"/>
 </entity>

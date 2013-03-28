@@ -93,7 +93,7 @@ test G4LTL-1.1 {Synthesize from ArbitorLTL.txt} {
     set grant1 [[$model getPort grant1] getName]
     set grant2 [[$model getPort grant2] getName]
     list $req1 $req2 $grant1 $grant2 [string range $outputMsg 1 195]
-} {req1 req2 grant1 grant2 {rewritten as       : ( ( true ) U ( ( ( "req1" ) /\ ( ( false ) V ( ! ( "grant1" ) ) ) ) \/ ( ( ( "grant1" ) /\ ( "grant2" ) ) \/ ( ( "req2" ) /\ ( ( false ) V ( ! ( "grant2" ) ) ) ) ) ) )
+} {req1 req2 grant1 grant2 {ewritten as       : ( ( true ) U ( ( ( "req1" ) /\ ( ( false ) V ( ! ( "grant1" ) ) ) ) \/ ( ( ( "grant1" ) /\ ( "grant2" ) ) \/ ( ( "req2" ) /\ ( ( false ) V ( ! ( "grant2" ) ) ) ) ) ) )
 
 ******}}
 
@@ -145,7 +145,7 @@ test G4LTL-2.1 {Synthesize from ArbitorLTL.txt using CoBuechi and unrollSteps 1 
 #
 test G4LTL-2.2 {Synthesize from PriorityArbitorLTL.txt using CoBuechi and unrollSteps 3 and merge it into the PriorityArbitorTest.xml} {
     $parser resetAll
-    set toplevel [java::cast ptolemy.actor.TypedCompositeActor [$parser parseFile ArbitorTest.xml]]
+    set toplevel [java::cast ptolemy.actor.TypedCompositeActor [$parser parseFile PriorityArbitorTest.xml]]
     # Import using CoBuechi with unrollstep == 3
     set result [generateMoML $PTII/ptolemy/vergil/basic/imprt/g4ltl/demo/PriorityArbitor/PriorityArbitorLTL.txt $toplevel 0 3]
 
@@ -168,10 +168,7 @@ test G4LTL-2.2 {Synthesize from PriorityArbitorLTL.txt using CoBuechi and unroll
 	<link port="model1.req3" relation="relation2"/>
 	<link port="model1.grant1" relation="relation5"/>
 	<link port="model1.grant2" relation="relation6"/>
-	<link port="model1.grant2" relation="relation7"/>
-	<link port="Grant1.input" relation="relation5"/>
-	<link port="Grant2.input" relation="relation6"/>
-	<link port="Grant2.input" relation="relation7"/>
+	<link port="model1.grant3" relation="relation7"/>
       </entity>
     }]
     set manager [java::new ptolemy.actor.Manager [$toplevel workspace] myManager]
@@ -195,41 +192,32 @@ test G4LTL-2.3 {Synthesize from ErrorHandlingLTL.txt using CoBuechi and unrollSt
     set result [generateMoML $PTII/ptolemy/vergil/basic/imprt/g4ltl/demo/ErrorHandling/ErrorHandlingLTL.txt $toplevel 0 3]
 
     set request [java::new ptolemy.moml.MoMLChangeRequest $toplevel $toplevel {
-      <entity name=".ArbitorTest" class="ptolemy.actor.TypedCompositeActor">
+      <entity name=".ErrorHandlingTest" class="ptolemy.actor.TypedCompositeActor">
 	<entity name="model1" class="ptolemy.domains.modal.kernel.FSMActor">
            <property name="seed" class="ptolemy.actor.parameters.SharedParameter" value="1L">
            </property>
            <property name="resetSeedOnEachRun" class="ptolemy.actor.parameters.SharedParameter" value="true">
            </property>
         </entity>        
-    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+    <relation name="relation16" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+    <relation name="relation17" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+    <relation name="relation18" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+    <relation name="relation19" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation10" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation11" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation12" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <link port="SetVariable.output" relation="relation6"/>
-    <link port="SetVariable2.output" relation="relation7"/>
-    <link port="SetVariable7.output" relation="relation8"/>  
-    <link port="SetVariable6.output" relation="relation9"/>
-    <link port="SetVariable3.input" relation="relation10"/>
-    <link port="SetVariable4.input" relation="relation11"/>
-    <link port="SetVariable5.input" relation="relation12"/>  
-    <link port="model1.error" relation="relation6"/>
-    <link port="model1.operator" relation="relation7"/>
-    <link port="model1.req1" relation="relation8"/>
-    <link port="model1.req2" relation="relation9"/>
-    <link port="model1.stop" relation="relation10"/>
-    <link port="model1.grant1" relation="relation11"/>
-    <link port="model1.grant2" relation="relation12"/>
+    <link port="SetVariable.output" relation="relation16"/>
+    <link port="SetVariable2.output" relation="relation17"/>
+    <link port="SetVariable7.output" relation="relation18"/>  
+    <link port="SetVariable6.output" relation="relation19"/>
+    <link port="model1.error" relation="relation16"/>
+    <link port="model1.operator" relation="relation17"/>
+    <link port="model1.req1" relation="relation18"/>
+    <link port="model1.req2" relation="relation19"/>
+    <link port="model1.stop" relation="relation13"/>
+    <link port="model1.grant1" relation="relation9"/>
+    <link port="model1.grant2" relation="relation10"/>
       </entity>
     }]
     set manager [java::new ptolemy.actor.Manager [$toplevel workspace] myManager]

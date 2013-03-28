@@ -1,10 +1,10 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="ErrorHandling" class="ptolemy.actor.TypedCompositeActor">
+<entity name="ErrorHandlingTest" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={178, 223, 1088, 737}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={191, 135, 1074, 734}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[854, 627]">
     </property>
@@ -59,7 +59,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[305.0, 305.0]">
         </property>
     </property>
-    <property name="V_oper" class="ptolemy.data.expr.Parameter" value="false">
+    <property name="V_oper" class="ptolemy.data.expr.Parameter" value="true">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -187,7 +187,7 @@
         <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="(V_grant1 == true) ? {0.0, 1.0, 0.0, 1.0} : {1.0, 1.0, 1.0, 1.0}">
         </property>
     </property>
-    <property name="V_grant1" class="ptolemy.data.expr.Parameter" value="false">
+    <property name="V_grant1" class="ptolemy.data.expr.Parameter" value="true">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -342,9 +342,15 @@
         </property>
     </property>
     <property name="SR Director" class="ptolemy.domains.sr.kernel.SRDirector">
-        <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="true">
+        <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="period" class="ptolemy.data.expr.Parameter" value="2.0">
+        </property>
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="10.0">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-210.0, -85.0]">
         </property>
@@ -400,7 +406,9 @@
         </property>
     </property>
     <entity name="Client2" class="ptolemy.actor.lib.DiscreteRandomSource">
-        <property name="resetOnEachRun" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        <property name="privateSeed" class="ptolemy.data.expr.Parameter" value="3L">
+        </property>
+        <property name="resetOnEachRun" class="ptolemy.actor.parameters.SharedParameter" value="true">
         </property>
         <property name="values" class="ptolemy.data.expr.Parameter" value="{true, false}">
         </property>
@@ -413,9 +421,11 @@
         </port>
     </entity>
     <entity name="Client1" class="ptolemy.actor.lib.DiscreteRandomSource">
+        <property name="privateSeed" class="ptolemy.data.expr.Parameter" value="2L">
+        </property>
         <property name="values" class="ptolemy.data.expr.Parameter" value="{true, false}">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-70.0, 70.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{-70.0, 70.0}">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -424,7 +434,9 @@
         </port>
     </entity>
     <entity name="Error" class="ptolemy.actor.lib.DiscreteRandomSource">
-        <property name="resetOnEachRun" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        <property name="privateSeed" class="ptolemy.data.expr.Parameter" value="1L">
+        </property>
+        <property name="resetOnEachRun" class="ptolemy.actor.parameters.SharedParameter" value="true">
         </property>
         <property name="values" class="ptolemy.data.expr.Parameter" value="{true, false}">
         </property>
@@ -437,6 +449,8 @@
         </port>
     </entity>
     <entity name="Operator" class="ptolemy.domains.modal.kernel.FSMActor">
+        <property name="errorCause" class="ptolemy.data.expr.Parameter">
+        </property>
         <property name="_library" class="ptolemy.moml.LibraryAttribute">
             <configure>
     <entity name="StateLibrary" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="State" class="ptolemy.domains.modal.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property></entity></entity>
@@ -704,6 +718,26 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-215.0, 40.0]">
         </property>
     </entity>
+    <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{false, false, true, false, false, true, false, false, false, false}">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{240.0, -90.0}">
+        </property>
+    </entity>
+    <entity name="NonStrictTest2" class="ptolemy.actor.lib.NonStrictTest">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{true, false, false, true, false, false, true, true, false, true}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[340.0, -5.0]">
+        </property>
+    </entity>
+    <entity name="NonStrictTest3" class="ptolemy.actor.lib.NonStrictTest">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{false, true, false, false, true, false, false, false, true, false}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[385.0, 65.0]">
+        </property>
+    </entity>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
         <vertex name="vertex1" value="[-135.0, 40.0]">
         </vertex>
@@ -726,6 +760,30 @@
         <property name="color" class="ptolemy.actor.gui.ColorAttribute">
         </property>
     </relation>
+    <relation name="relation13" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="{180.0, -5.0}">
+        </vertex>
+        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+        </property>
+    </relation>
+    <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="{185.0, 20.0}">
+        </vertex>
+        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+        </property>
+    </relation>
+    <relation name="relation10" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="{185.0, 50.0}">
+        </vertex>
+        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+        </property>
+    </relation>
     <link port="Client2.output" relation="relation2"/>
     <link port="Client2.trigger" relation="relation3"/>
     <link port="Client1.output" relation="relation"/>
@@ -736,7 +794,13 @@
     <link port="Operator.check" relation="relation5"/>
     <link port="SetVariable.input" relation="relation4"/>
     <link port="SetVariable2.input" relation="relation5"/>
+    <link port="SetVariable3.input" relation="relation13"/>
+    <link port="SetVariable4.input" relation="relation9"/>
+    <link port="SetVariable5.input" relation="relation10"/>
     <link port="SetVariable6.input" relation="relation2"/>
     <link port="SetVariable7.input" relation="relation"/>
     <link port="Sec.output" relation="relation3"/>
+    <link port="NonStrictTest.input" relation="relation13"/>
+    <link port="NonStrictTest2.input" relation="relation9"/>
+    <link port="NonStrictTest3.input" relation="relation10"/>
 </entity>
