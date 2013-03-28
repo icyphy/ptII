@@ -40,6 +40,10 @@ import net.jimblackler.Utils.YieldAdapterIterable;
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.FiringEvent;
+import ptolemy.data.BooleanToken;
+import ptolemy.data.expr.FileParameter;
+import ptolemy.data.expr.Parameter;
+import ptolemy.data.type.BaseType;
 import ptolemy.domains.de.kernel.DEDirector;
 import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event;
 import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event.Builder;
@@ -58,6 +62,7 @@ public class MetroIIDEDirector extends DEDirector implements
         super(container, name);
         // TODO Auto-generated constructor stub
         setEmbedded(false);
+        _initializeParameters(); 
     }
 
     /** Clone the object into the specified workspace. The new object
@@ -103,6 +108,9 @@ public class MetroIIDEDirector extends DEDirector implements
         }
 
     }
+
+    public Parameter printTrace;
+
 
     public class Pair<F, S> {
         private F first; //first member of pair
@@ -359,14 +367,23 @@ public class MetroIIDEDirector extends DEDirector implements
                 _debug("========= " + this.getName() + " director fires at "
                         + getModelTime() + "  with microstep as " + _microstep);
             }
-
+            if (((BooleanToken) printTrace.getToken()).booleanValue()) {
+                System.out.println("========= " + this.getName() + " director fires at "
+                        + getModelTime() + "  with microstep as " + _microstep);
+            }
             ArrayList<Actor> actorList = new ArrayList<Actor>();
 
             // NOTE: This fire method does not call super.fire()
             // because this method is very different from that of the super class.
             // A BIG while loop that handles all events with the same tag.
             while (true) {
+                if (((BooleanToken) printTrace.getToken()).booleanValue()) {
+                    System.out.println("Before checking actor Time: "+this.getModelTime()); 
+                }
                 Pair<Actor, Integer> actorAndState = _checkNextActorToFire();
+                if (((BooleanToken) printTrace.getToken()).booleanValue()) {
+                    System.out.println("After checking actor Time: "+this.getModelTime()); 
+                }
                 int result = actorAndState.second;
 
                 assert result <= 1 && result >= -1;
@@ -379,6 +396,14 @@ public class MetroIIDEDirector extends DEDirector implements
                 } // else if 0, keep executing
                   //if (!actorList.contains(actorAndState.first)) {
                 actorList.add(actorAndState.first);
+                
+                if (((BooleanToken) printTrace.getToken()).booleanValue()) {
+                    System.out.println(actorAndState.first.getFullName()+" is added"); 
+                }
+                
+                if (((BooleanToken) printTrace.getToken()).booleanValue()) {
+                    System.out.println("Before firing Time: "+this.getModelTime()); 
+                }
                 do {
                     ArrayList<Actor> firingActorList = new ArrayList<Actor>();
                     _events.clear();
@@ -425,6 +450,9 @@ public class MetroIIDEDirector extends DEDirector implements
                 // after actor firing, the subclass may wish to perform some book keeping
                 // procedures. However in this class the following method does nothing.
                 _actorFired();
+                if (((BooleanToken) printTrace.getToken()).booleanValue()) {
+                    System.out.println("After firing Time: "+this.getModelTime()); 
+                }
 
                 if (!_checkForNextEvent()) {
                     break;
@@ -451,6 +479,17 @@ public class MetroIIDEDirector extends DEDirector implements
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
+
+    /** Initialize parameters. This is called by the constructor.
+     *  @exception IllegalActionException
+     *  @exception NameDuplicationException
+     */
+    private void _initializeParameters() throws IllegalActionException,
+            NameDuplicationException {
+        printTrace = new Parameter(this, "printTrace");
+        printTrace.setTypeEquals(BaseType.BOOLEAN);
+        printTrace.setExpression("true");
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
