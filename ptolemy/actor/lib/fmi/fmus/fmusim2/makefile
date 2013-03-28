@@ -33,7 +33,7 @@ PIC =
 
 # build_fmusim2 might not be executable if we extracted the sources from a jar file.
 all:
-	-chmod a+x build_fmu
+	-chmod a+x build_fmusim2
 	./build_fmusim2
 
 fast: all
