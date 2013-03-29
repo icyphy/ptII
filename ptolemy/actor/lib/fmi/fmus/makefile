@@ -31,7 +31,7 @@
 
 ME =		ptolemy/actor/lib/fmi/fmus
 
-DIRS =		fmusim2 xstepCounter onOffSupervisor
+DIRS =		fmusim2 stepCounter onOffSupervisor
 
 # Root of the Ptolemy II directory
 ROOT =		../../../../..
