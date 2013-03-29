@@ -29,6 +29,7 @@ package org.ptolemy.fmi.driver;
 
 import java.io.File;
 import java.io.PrintStream;
+import java.util.HashSet;
 
 import org.ptolemy.fmi.FMICallbackFunctions;
 import org.ptolemy.fmi.FMILibrary;
@@ -173,9 +174,12 @@ public class FMUCoSimulation extends FMUDriver {
         byte visible = 0;
         // Run the simulator without user interaction.
         byte interactive = 0;
+
+	_fmuAllocateMemory = new FMULibrary.FMUAllocateMemory();
+
         // Callbacks
         FMICallbackFunctions.ByValue callbacks = new FMICallbackFunctions.ByValue(
-                new FMULibrary.FMULogger(), new FMULibrary.FMUAllocateMemory(),
+		new FMULibrary.FMULogger(), _fmuAllocateMemory,
                 new FMULibrary.FMUFreeMemory(),
                 new FMULibrary.FMUStepFinished());
         // Logging tends to cause segfaults because of vararg callbacks.
@@ -246,6 +250,9 @@ public class FMUCoSimulation extends FMUDriver {
             if (file != null) {
                 file.close();
             }
+	    if (_fmuAllocateMemory != null) {
+		_fmuAllocateMemory.pointers = new HashSet<Pointer>();
+	    }
 	    if (_nativeLibrary != null) {
 		_nativeLibrary.dispose();
 	    }

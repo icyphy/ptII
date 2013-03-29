@@ -29,6 +29,7 @@
 package org.ptolemy.fmi.driver;
 
 import org.ptolemy.fmi.FMILibrary;
+import org.ptolemy.fmi.FMULibrary.FMUAllocateMemory;
 
 import com.sun.jna.Function;
 import com.sun.jna.NativeLibrary;
@@ -207,6 +208,11 @@ public abstract class FMUDriver {
      *  The initial default is 1.0.
      */
     static double _endTime = 1.0;
+
+    /** Memory allocator callback.  At the end, call dispose() to free
+     * memory.
+     */
+    FMUAllocateMemory _fmuAllocateMemory;
 
     /** The name of the .fmu file.
      *  The initial default is the empty string.
