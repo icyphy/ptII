@@ -161,11 +161,11 @@ public class MetroIIActorGeneralWrapper extends MetroIIActorBasicWrapper {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                    private fields                         ////
+    ////                   protected fields                        ////
 
     /**
      * Thread that is firing the actor
      */
-    private YieldAdapterIterator<Iterable<Event.Builder>> _eventIterator;
+    protected YieldAdapterIterator<Iterable<Event.Builder>> _eventIterator;
 
 }
