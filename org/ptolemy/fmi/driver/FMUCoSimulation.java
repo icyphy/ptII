@@ -230,28 +230,31 @@ public class FMUCoSimulation extends FMUDriver {
                 OutputRow.outputRow(_nativeLibrary, fmiModelDescription,
                         fmiComponent, time, file, csvSeparator, Boolean.FALSE);
             }
+	    invoke("_fmiTerminateSlave", new Object[] { fmiComponent },
+		   "Could not terminate slave: ");
+
+	    // Don't throw an exception while freeing a slave.  Some
+	    // fmiTerminateSlave calls free the slave for us.
+	    Function freeSlave = getFunction("_fmiFreeSlaveInstance");
+	    int fmiFlag = ((Integer) freeSlave.invoke(Integer.class,
+						      new Object[] { fmiComponent })).intValue();
+	    if (fmiFlag >= FMILibrary.FMIStatus.fmiWarning) {
+		new Exception("Warning: Could not free slave instance: " + fmiFlag)
+                    .printStackTrace();
+	    }
         } finally {
             if (file != null) {
                 file.close();
             }
-        }
-
-        invoke("_fmiTerminateSlave", new Object[] { fmiComponent },
-                "Could not terminate slave: ");
-
-        // Don't throw an exception while freeing a slave.  Some
-        // fmiTerminateSlave calls free the slave for us.
-        Function freeSlave = getFunction("_fmiFreeSlaveInstance");
-        int fmiFlag = ((Integer) freeSlave.invoke(Integer.class,
-                new Object[] { fmiComponent })).intValue();
-        if (fmiFlag >= FMILibrary.FMIStatus.fmiWarning) {
-            new Exception("Warning: Could not free slave instance: " + fmiFlag)
-                    .printStackTrace();
+	    if (_nativeLibrary != null) {
+		_nativeLibrary.dispose();
+	    }
         }
 
         if (enableLogging) {
             System.out.println("Results are in "
                     + outputFile.getCanonicalPath());
+	    System.out.flush();
         }
     }
 }

@@ -346,7 +346,7 @@ update_ftp:
 
 
 # Experimental support for compiling with gcj.
-GCJ=/usr/local/gcc-4.7.2/bin/gcj
+GCJ=/usr/local/gcc-4.8.0/bin/gcj
 # To build jna using gcj, download the sources and edit WString.java and NativeString.java and comment out the CharSequence in the implements line and comment out the subSequence() method
 jna.o: jna.jar
 	$(GCJ) -fjni -c jna.jar -o jna.o

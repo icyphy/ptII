@@ -96,29 +96,29 @@ public class FMUJUnitTest {
                 + testName + ".csv");
     }
 
-    // /** Run the bouncing ball co-simulation functional mock-up unit test.
-    //  *  @exception Exception If there is a problem reading or running the test.
-    //  */
-    //  @org.junit.Test
-    //  public void cosimulateBouncingBall() throws Exception {
-    //      cosimulate("bouncingBall");
-    //  }
+    /** Run the bouncing ball co-simulation functional mock-up unit test.
+     *  @exception Exception If there is a problem reading or running the test.
+     */
+     @org.junit.Test
+     public void cosimulateBouncingBall() throws Exception {
+         cosimulate("bouncingBall");
+     }
 
-    // /** Run the dq co-simulation functional mock-up unit test.
-    //  *  @exception Exception If there is a problem reading or running the test.
-    //  */
-    // @org.junit.Test
-    // public void cosimulateDq() throws Exception {
-    //     cosimulate("dq");
-    // }
+    /** Run the dq co-simulation functional mock-up unit test.
+     *  @exception Exception If there is a problem reading or running the test.
+     */
+    @org.junit.Test
+    public void cosimulateDq() throws Exception {
+        cosimulate("dq");
+    }
 
-    // /** Run the inc co-simulation functional mock-up unit test.
-    //  *  @exception Exception If there is a problem reading or running the test.
-    //  */
-    // @org.junit.Test
-    // public void cosimulateInc() throws Exception {
-    //    cosimulate("inc");
-    // }
+    /** Run the inc co-simulation functional mock-up unit test.
+     *  @exception Exception If there is a problem reading or running the test.
+     */
+    @org.junit.Test
+    public void cosimulateInc() throws Exception {
+       cosimulate("inc");
+    }
 
     /** Run the values co-simulation functional mock-up unit test.
      *  @exception Exception If there is a problem reading or running the test.

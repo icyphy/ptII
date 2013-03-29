@@ -381,6 +381,9 @@ public class FMUModelExchange extends FMUDriver {
             if (file != null) {
                 file.close();
             }
+	    if (_nativeLibrary != null) {
+		_nativeLibrary.dispose();
+	    }
         }
 
         System.out.println("Simulation from " + startTime + " to " + endTime
@@ -390,5 +393,6 @@ public class FMUModelExchange extends FMUDriver {
         System.out.println("  stateEvents: " + numberOfStateEvents);
         System.out.println("  stepEvents: " + numberOfStepEvents);
         System.out.println("  timeEvents: " + numberOfTimeEvents);
+	System.out.flush();
     }
 }

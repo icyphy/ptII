@@ -338,8 +338,15 @@ public class FMIScalarVariable {
      */
     public void setString(Pointer fmiComponent, String value) {
         PointerByReference pointerByReference = new PointerByReference();
+	// We use FMUAllocateMemory so that we can retain a reference
+	// to the allocated memory and the memory does not get gc'd.
+	if (_fmuAllocateMemory == null) {
+	    _fmuAllocateMemory = new FMULibrary.FMUAllocateMemory();
+	}
         // Include the trailing null character.
-        Pointer reference = new Memory(value.length() + 1).share(0);
+	Pointer reference = _fmuAllocateMemory
+	    .apply(new NativeSizeT(value.length() + 1),
+		   new NativeSizeT(1));
         reference.setString(0, value);
         pointerByReference.setValue(reference);
 
@@ -531,6 +538,11 @@ public class FMIScalarVariable {
 
     ///////////////////////////////////////////////////////////////////
     ////             private fields                                ////
+
+    /** A class that allocates memory, but retains a reference
+     *  so that the memory does not get gc'd.
+     */
+    private FMULibrary.FMUAllocateMemory _fmuAllocateMemory;
 
     /** The set of elements that we don't yet handle.
      *  This is used for error messages.
