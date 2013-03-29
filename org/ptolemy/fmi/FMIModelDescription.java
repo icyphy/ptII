@@ -30,11 +30,13 @@ package org.ptolemy.fmi;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
 import com.sun.jna.NativeLibrary;
+import com.sun.jna.Pointer;
 
 ///////////////////////////////////////////////////////////////////
 //// FMUModelDescription
@@ -115,6 +117,29 @@ public class FMIModelDescription {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** Unload the native library and free up any Java references
+     *  to memory allocated by the allocate memory callback.
+     */	
+    public void dispose() {
+	if (_fmuAllocateMemory != null) {
+	    _fmuAllocateMemory.pointers = new HashSet<Pointer>();
+	}
+	if (_nativeLibrary != null) {
+	    _nativeLibrary.dispose();
+	}
+    }
+
+    /** A class that allocates memory, but retains a reference
+     *  so that the memory does not get gc'd.
+     */
+    public FMULibrary.FMUAllocateMemory getFMUAllocateMemory() {
+	if (_fmuAllocateMemory == null) {
+	    _fmuAllocateMemory = new FMULibrary.FMUAllocateMemory();
+	}
+	return _fmuAllocateMemory;
+    }
+
 
     /** Get the native library of C functions for the current platform.
      *  @return The library of functions for the current platform.
@@ -216,4 +241,9 @@ public class FMIModelDescription {
      * shared library in the .fmu file.
      */
     private NativeLibrary _nativeLibrary;
+
+    /** A class that allocates memory, but retains a reference
+     *  so that the memory does not get gc'd.
+     */
+    private FMULibrary.FMUAllocateMemory _fmuAllocateMemory;
 }

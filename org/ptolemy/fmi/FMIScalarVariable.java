@@ -331,6 +331,8 @@ public class FMIScalarVariable {
     }
 
     /** Set the value of this variable as a String.
+     *  This method allocates memory, the caller should eventually
+     *  call FMIModelDescription.dispose().
      *  @param fmiComponent The Functional Mock-up Interface (FMI)
      *  component that contains a reference to the variable.
      *  @param value The value of this variable.
@@ -340,11 +342,9 @@ public class FMIScalarVariable {
         PointerByReference pointerByReference = new PointerByReference();
 	// We use FMUAllocateMemory so that we can retain a reference
 	// to the allocated memory and the memory does not get gc'd.
-	if (_fmuAllocateMemory == null) {
-	    _fmuAllocateMemory = new FMULibrary.FMUAllocateMemory();
-	}
+
         // Include the trailing null character.
-	Pointer reference = _fmuAllocateMemory
+	Pointer reference = fmiModelDescription.getFMUAllocateMemory()
 	    .apply(new NativeSizeT(value.length() + 1),
 		   new NativeSizeT(1));
         reference.setString(0, value);
@@ -538,11 +538,6 @@ public class FMIScalarVariable {
 
     ///////////////////////////////////////////////////////////////////
     ////             private fields                                ////
-
-    /** A class that allocates memory, but retains a reference
-     *  so that the memory does not get gc'd.
-     */
-    private FMULibrary.FMUAllocateMemory _fmuAllocateMemory;
 
     /** The set of elements that we don't yet handle.
      *  This is used for error messages.

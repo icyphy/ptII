@@ -175,11 +175,9 @@ public class FMUCoSimulation extends FMUDriver {
         // Run the simulator without user interaction.
         byte interactive = 0;
 
-	_fmuAllocateMemory = new FMULibrary.FMUAllocateMemory();
-
         // Callbacks
         FMICallbackFunctions.ByValue callbacks = new FMICallbackFunctions.ByValue(
-		new FMULibrary.FMULogger(), _fmuAllocateMemory,
+		new FMULibrary.FMULogger(), fmiModelDescription.getFMUAllocateMemory(),
                 new FMULibrary.FMUFreeMemory(),
                 new FMULibrary.FMUStepFinished());
         // Logging tends to cause segfaults because of vararg callbacks.
@@ -250,13 +248,10 @@ public class FMUCoSimulation extends FMUDriver {
             if (file != null) {
                 file.close();
             }
-	    if (_fmuAllocateMemory != null) {
-		_fmuAllocateMemory.pointers = new HashSet<Pointer>();
+	    if (fmiModelDescription != null) {
+		fmiModelDescription.dispose();
 	    }
-	    if (_nativeLibrary != null) {
-		_nativeLibrary.dispose();
-	    }
-        }
+	}
 
         if (enableLogging) {
             System.out.println("Results are in "
