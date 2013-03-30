@@ -293,6 +293,9 @@ public class PtidesDirector extends DEDirector {
                     _currentLogicalIndex = event.microstep();
                     event.receiver().put(event.token());
                     _currentLogicalTime = null;
+                    if (_debugging) {
+                        _debug("iiiiiiii - transfer inputs from " + event.ioPort());
+                    }
                 }
             }
             _inputEventQueue.remove(getModelTime());
@@ -1143,6 +1146,19 @@ public class PtidesDirector extends DEDirector {
 
                 // Check if actor can be fired by putting token into receiver
                 // and calling prefire.
+                
+                // if this is a pure event but there is an event in the 
+                // trigger events with a smaller timestamp, pick that one
+                
+                if (queue == _pureEvents) {
+                    for (Object triggeredEventObject : _eventQueue.toArray()) {
+                        PtidesEvent triggeredEvent = (PtidesEvent) triggeredEventObject;
+                        if (triggeredEvent.actor() == ptidesEvent.actor() && 
+                                triggeredEvent.timeStamp().compareTo(ptidesEvent.timeStamp()) < 0) {
+                            ptidesEvent = triggeredEvent;
+                        }
+                    }
+                }
 
                 List<PtidesEvent> sameTagEvents = new ArrayList<PtidesEvent>();
                 int i = 0;
@@ -1193,6 +1209,15 @@ public class PtidesDirector extends DEDirector {
                         _currentLogicalIndex = ptidesEvent.microstep();
                         _currentSourceTimestamp = ptidesEvent.sourceTimestamp();
                         _removeEventsFromQueue(queue, ptidesEvent);
+                        // also remove same timestamp events from other queue
+                        if (queue == _pureEvents) {
+                            _removeEventsFromQueue(_eventQueue, ptidesEvent);
+                        } else if (queue == _eventQueue) {
+                            _removeEventsFromQueue(_pureEvents, ptidesEvent);
+                        }
+                        if (_debugging) {
+                            _debug(">>> next actor: " + ptidesEvent.actor() + " @ " + ptidesEvent.timeStamp());
+                        }
                         return ptidesEvent.actor();
                     }
                 }
