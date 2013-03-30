@@ -77,7 +77,7 @@ public class MetroIIDEDirectorForPtides extends DEDirector implements
                 .clone(workspace);
         newObject._nameToActor = (Hashtable<String, Actor>) _nameToActor
                 .clone();
-        newObject._actorDictionary = (Hashtable<String, StartOrResumable>) _actorDictionary
+        newObject._actorDictionary = (Hashtable<String, MetroIIAtomicFireActor>) _actorDictionary
                 .clone();
         newObject._events = (ArrayList<Builder>) _events.clone();
         return newObject;
@@ -98,10 +98,10 @@ public class MetroIIDEDirectorForPtides extends DEDirector implements
                 Actor actor = (Actor) actors.next();
                 if (actor instanceof MetroIIEventHandler) {
                     _actorDictionary.put(actor.getFullName(),
-                            new MetroIIActorGeneralWrapper(actor));
+                            new MetroIIActorFireWrapper(actor));
                 } else {
                     _actorDictionary.put(actor.getFullName(),
-                            new MetroIIActorBasicWrapper(actor));
+                            new MetroIIAtomicFireActor(actor));
                 }
             }
         }
@@ -396,12 +396,16 @@ public class MetroIIDEDirectorForPtides extends DEDirector implements
                         // return;
                     } // else if 0, keep executing
                       //if (!actorList.contains(actorAndState.first)) {
-                    eventList.add(eventAndState.first);
-                    
-                    if (((BooleanToken) printTrace.getToken()).booleanValue()) {
-                        System.out.println(this.getFullName() + ": " + "Logical Time "
-                                + getModelTime() + " " + "READY "
-                                + eventAndState.first.actor().getName());
+                    if (eventAndState.first != null) {
+                        eventList.add(eventAndState.first);
+
+                        if (((BooleanToken) printTrace.getToken())
+                                .booleanValue()) {
+                            System.out.println(this.getFullName() + ": "
+                                    + "Logical Time " + getModelTime() + " "
+                                    + "READY "
+                                    + eventAndState.first.actor().getName());
+                        }
                     }
                     //}
                     // after actor firing, the subclass may wish to perform some book keeping
@@ -420,39 +424,34 @@ public class MetroIIDEDirectorForPtides extends DEDirector implements
 
                     _setLogicalTime(ptidesEvent);
 
-                    StartOrResumable metroActor = _actorDictionary.get(actor
-                            .getFullName());
+                    MetroIIAtomicFireActor metroActor = _actorDictionary
+                            .get(actor.getFullName());
                     LinkedList<Event.Builder> metroIIEventList = new LinkedList<Event.Builder>();
 
                     if (((BooleanToken) printTrace.getToken()).booleanValue()) {
-                        System.out.println(this.getFullName() + ": " + "Logical Time "
-                                + getModelTime() + " " + "EXEC "
-                                + actor.getName());
+                        System.out.println(this.getFullName() + ": "
+                                + "Logical Time " + getModelTime() + " "
+                                + "EXEC " + actor.getName());
                     }
-                    
+
                     metroActor.startOrResume(metroIIEventList);
 
-                    if (metroIIEventList.size() == 1
-                            && metroIIEventList.get(0).getName()
-                                    .contains("POSTFIRE_END")) {
+                    if (metroActor.getState() == StartOrResumable.State.FINAL) {
                         if (_debugging) {
                             _debug(new FiringEvent(this, actor,
                                     FiringEvent.AFTER_FIRE));
-
+                        }
+                        if (_debugging) {
                             _debug(new FiringEvent(this, actor,
                                     FiringEvent.BEFORE_POSTFIRE));
+                        }
 
+                        metroActor.postfire();
+
+                        if (_debugging) {
                             _debug(new FiringEvent(this, actor,
                                     FiringEvent.AFTER_POSTFIRE));
                         }
-
-                        metroIIEventList.get(0)
-                                .setStatus(Event.Status.NOTIFIED);
-                        metroActor.startOrResume(metroIIEventList);
-
-                        assert metroIIEventList.size() == 1
-                                && metroIIEventList.get(0).getName()
-                                        .contains("PREFIRE_BEGIN");
                     } else {
                         firingEventList.add(ptidesEvent);
                         _events.addAll(metroIIEventList);
@@ -505,7 +504,7 @@ public class MetroIIDEDirectorForPtides extends DEDirector implements
     /**
      * The list of actors governed by MetroIIDEDirector
      */
-    protected Hashtable<String, StartOrResumable> _actorDictionary = new Hashtable<String, StartOrResumable>();
+    protected Hashtable<String, MetroIIAtomicFireActor> _actorDictionary = new Hashtable<String, MetroIIAtomicFireActor>();
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
@@ -528,7 +527,6 @@ public class MetroIIDEDirectorForPtides extends DEDirector implements
      * Lookup table for actor by MetroII event name
      */
     private Hashtable<String, Actor> _nameToActor = new Hashtable<String, Actor>();
-
 
     private ArrayList<Event.Builder> _events = new ArrayList<Event.Builder>();
 }

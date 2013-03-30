@@ -1458,7 +1458,9 @@ public class MetroIIPtidesDirector extends MetroIIDEDirectorForPtides {
         StartOrResumable metroActor = _actorDictionary.get(event.actor()
                 .getFullName());
         
-        if (metroActor.getState() != State.PREFIRE_BEGIN) {
+        if (metroActor.getState() != State.START) {
+            System.out.println(metroActor.getState()); 
+            System.out.println(State.START); 
             return false;
         }
         
