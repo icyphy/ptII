@@ -31,7 +31,7 @@ import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
 import ptolemy.actor.Manager;
-import ptolemy.actor.SuperdenseTimeDirector;
+import ptolemy.actor.SuperdenseTimeDirector; 
 import ptolemy.kernel.util.IllegalActionException;
 
 ///////////////////////////////////////////////////////////////////
@@ -260,6 +260,19 @@ public class PeriodicDirectorHelper {
                     return true;
                 }
             } else if (comparison > 0) {
+                 
+                // If the enclosing director is one that has a model time different
+                // from the local clock's time, such as in the PtidesDirector, 
+                // prefire should not return false.
+                CompositeActor container = (CompositeActor) _director.getContainer();
+                while (container.getContainer() != null) {
+                    container = (CompositeActor) container.getContainer();
+                    if (container.getDirector().localClock.getLocalTime()
+                            .compareTo(container.getDirector().getModelTime()) != 0) {
+                        return true;
+                    }
+                }
+                
                 // Enclosing time has not yet reached our expected firing time.
                 // No need to call fireAt(), since presumably we already
                 // did that in postfire().
