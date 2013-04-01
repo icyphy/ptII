@@ -58,6 +58,7 @@ JSRCS = \
 MODELS = \
 	AmorphousExample.xml \
 	InconsistentModel.xml \
+	LatestTokenPNModel.xml \
 	LeftRightModel.xml \
 	NondogmaticPNModel.xml \
 	NondogmaticPNModelSimpler.xml \
