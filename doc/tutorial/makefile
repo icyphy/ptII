@@ -51,6 +51,7 @@ PTPACKAGE = 	tutorial
 PTCLASSJAR =
 
 JSRCS = \
+	Precocious.java \
 	TutorialApplet1.java \
 	TutorialApplet2.java \
 	TutorialApplet3.java
