@@ -2,11 +2,11 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="NondogmaticPNModel" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={47, 174, 813, 510}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={54, 343, 928, 648}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[694, 538]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
@@ -15,16 +15,22 @@
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Illustration of the NondogmaticPNDirector. This model&#10;is nondeterminate, because the AddSubtract actor adds whatever&#10;tokens are available at its inputs when it fires, and the director&#10;fires it repeatedly in its own thread.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[130.0, 25.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, 25.0]">
         </property>
     </property>
-    <property name="TruthfulPNDirector" class="TruthfulPNDirector">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 50.0]">
+    <property name="NondogmaticPNDirector" class="doc.tutorial.domains.NondogmaticPNDirector">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 50.0]">
         </property>
     </property>
     <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
         <property name="_location" class="ptolemy.kernel.util.Location" value="{245.0, 180.0}">
         </property>
+        <port name="plus" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+            <property name="tellTheTruth" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+        </port>
     </entity>
     <entity name="SequencePlotter" class="ptolemy.actor.lib.gui.SequencePlotter">
         <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="false">
@@ -46,7 +52,7 @@
         </configure>
     </entity>
     <entity name="SensorModel" class="doc.tutorial.domains.SensorModel">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 145.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 165.0]">
         </property>
         <property name="frequency" class="ptolemy.data.expr.Parameter" value="0.2">
         </property>
@@ -64,10 +70,16 @@
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
         </property>
+        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+        </property>
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+        </property>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+        </property>
     </relation>
     <link port="AddSubtract.plus" relation="relation"/>
     <link port="AddSubtract.plus" relation="relation2"/>
