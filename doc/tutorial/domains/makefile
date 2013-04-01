@@ -51,6 +51,7 @@ PTCLASSJAR =
 
 JSRCS = \
 	AmorphousDirector.java \
+	LatestTokenPNDirector.java \
 	LeftRightDirector.java \
 	NondogmaticPNDirector.java
 
