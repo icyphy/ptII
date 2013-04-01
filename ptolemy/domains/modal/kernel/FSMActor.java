@@ -476,6 +476,9 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         newObject._tokenListArrays = null;
         newObject._transitionsPreviouslyChosenInIteration = new HashSet<Transition>();
         newObject._transitionRefinementsToPostfire = new LinkedList<Actor>();
+        newObject._transitionEvaluatedTo = new HashMap<Transition, BooleanToken>();
+        newObject._oldThreshold = 0.0;
+        newObject._randomToken = null;
 
         return newObject;
     }
@@ -1793,6 +1796,10 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         // Clear the list of refinements whose postfire() methods
         // have returned false.
         _disabledRefinements.clear();
+        
+        _transitionEvaluatedTo.clear();
+        _oldThreshold = 0.0;
+        
     }
     
 
@@ -4290,7 +4297,9 @@ public class FSMActor extends CompositeEntity implements TypedActor,
                     _guardProbability = ((DoubleToken)arguments[0]).doubleValue();
                 }
                     
-                
+                if(_transitionBeingTested == null){
+                    return BooleanToken.FALSE;
+                }
                  
                  // First, check if the transition has already been evaluated. If so, return the result. If not,
                  // change threshold and evaluate.
