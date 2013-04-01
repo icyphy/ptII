@@ -15,8 +15,53 @@ import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+///////////////////////////////////////////////////////////////////
+//// Precocious
+
+/**
+This actor adaptively establishes connections by searching for an
+unused input port in the model and connecting to it. If the output
+is connected to something (the width of the output port is greater
+than zero), then the actor sends an integer on the output port and
+requests a refiring at a time in the future determined by the
+<i>firingPeriod</i> parameter. The value of the output is simply
+the count of the firing, starting at 1.
+<p>
+If the output is not connected to anything, then the actor will
+attempt to connect it. It does this by issuing a change request
+that, when executed, will search for an unused input port (any
+unused input port) in and actor in the same container as this actor,
+and then will connect to it.
+<p>
+Note that getWidth() is used rather than numberOfSinks() to determine
+whether the output is connected. This way, this actors search for an
+input port can be silenced by just connecting it to a relation.
+<p>
+This actor is an illustration of the capability actors can have to affect
+their environment, to detect faults (in this case, missing connections),
+and to repair the model.  It is designed to be used in the DE domain,
+or any domain that respects fireAt() calls.
+
+@author Edward A. Lee
+@see IOPort#getWidth()
+@version $Id$
+@since Ptolemy II 4.0
+@Pt.ProposedRating Yellow (eal)
+@Pt.AcceptedRating Red (eal)
+*/
 public class Precocious extends TypedAtomicActor {
 
+    /** Create a new actor in the specified container with the specified
+     *  name.  The name must be unique within the container or an exception
+     *  is thrown. The container argument must not be null, or a
+     *  NullPointerException will be thrown.
+     *  @param container The container.
+     *  @param name The name of this actor within the container.
+     *  @exception IllegalActionException If this actor cannot be contained
+     *   by the proposed container (see the setContainer() method).
+     *  @exception NameDuplicationException If the name coincides with
+     *   an entity already in the container.
+     */
     public Precocious(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
@@ -29,15 +74,26 @@ public class Precocious extends TypedAtomicActor {
         firingPeriod.setExpression("0.1");
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         ports and parameters              ////
+
+    /** The output port, which has type int. */
     public TypedIOPort output;
+    
+    /** The period at which this actor will execute.  This is a double
+     *  with a default value of 0.1.
+     */
     public Parameter firingPeriod;
-    
-    public void initialize() throws IllegalActionException {
-        super.initialize();
-        _count = 0;
-        getDirector().fireAtCurrentTime(this);
-    }
-    
+        
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+
+    /** If the output port is connected, then send a count of the firing
+     *  to the output; otherwise, issue a change request that will search
+     *  for an input port to connect to.
+     *  @exception IllegalActionException If there is no director or if
+     *   producing the output causes an exception.
+     */
     public void fire() throws IllegalActionException {
         super.fire();
         _count++;
@@ -68,5 +124,19 @@ public class Precocious extends TypedAtomicActor {
         getDirector().fireAt(this, getDirector().getModelTime().add(period));
     }
     
+    /** Initialize this actor, which in this case requests a firing at
+     *  the current time.
+     *  @exception IllegalActionException If a derived class throws it.
+     */
+    public void initialize() throws IllegalActionException {
+        super.initialize();
+        _count = 0;
+        getDirector().fireAtCurrentTime(this);
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private members                   ////
+
+    /** Count of the number of firings. */
     private int _count;
 }
