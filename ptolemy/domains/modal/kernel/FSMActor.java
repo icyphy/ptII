@@ -476,6 +476,14 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         newObject._tokenListArrays = null;
         newObject._transitionsPreviouslyChosenInIteration = new HashSet<Transition>();
         newObject._transitionRefinementsToPostfire = new LinkedList<Actor>();
+        
+        try {
+            newObject.probability.setToken(newObject.new ProbabilityFunctionToken());
+            newObject.timeout.setToken(newObject.new TimeoutFunctionToken());
+        } catch (IllegalActionException e) {
+            // Should not occur, because it didn't occur in the object being cloned.
+            throw new CloneNotSupportedException(e.getMessage());
+        }
         newObject._transitionEvaluatedTo = new HashMap<Transition, BooleanToken>();
         newObject._oldThreshold = 0.0;
         newObject._randomToken = null;
