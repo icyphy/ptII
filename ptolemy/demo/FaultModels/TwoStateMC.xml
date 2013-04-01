@@ -12,6 +12,8 @@
         <property name="output"/>
     </port>
     <entity name="_Controller" class="ptolemy.domains.modal.modal.ModalController">
+        <property name="errorCause" class="ptolemy.data.expr.Parameter">
+        </property>
         <property name="seed" class="ptolemy.actor.parameters.SharedParameter" value="0L">
         </property>
         <property name="resetSeedOnEachRun" class="ptolemy.actor.parameters.SharedParameter" value="false">
@@ -24,7 +26,7 @@
        	
 P = [p00   p01;  = [ 0.8 0.2;
 
-       p10   p11]        0.7 0.3]
+       p10   p11]        0.6 0.4]
 
 with the steady-state probability distribution: [p(S0) p(S1)] = [0.75 0.25]
 The chain  has a uniform initial distribution, i.e., the initial state can be
@@ -43,7 +45,7 @@ the init state)</text></svg></configure>
       <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.modal.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory"></property></entity></entity>
     </configure>
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={360, 23, 720, 823}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={360, 22, 720, 823}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[486, 712]">
         </property>
@@ -57,8 +59,6 @@ the init state)</text></svg></configure>
                 </property>
                 <property name="allowDirectories" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
-            </property>
-            <property name="backgroundColor" class="ptolemy.actor.gui.ColorAttribute">
             </property>
             <property name="openCompositesBeforeExport" class="ptolemy.data.expr.Parameter" value="true">
             </property>
