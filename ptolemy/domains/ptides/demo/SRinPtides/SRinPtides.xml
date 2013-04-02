@@ -7,32 +7,118 @@
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="7">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 105.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 210.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={40, 22, 944, 698}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-33, 22, 1193, 698}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[710, 588]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[959, 588]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{340.0, 252.0}">
     </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="source&#10;">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="[430.0, 110.0]">
+            <property name="relativeTo" class="ptolemy.kernel.util.StringAttribute">
+            </property>
+            <property name="relativeToElementName" class="ptolemy.kernel.util.StringAttribute">
+            </property>
+        </property>
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="2 delays">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="[385.0, 160.0]">
+            <property name="relativeTo" class="ptolemy.kernel.util.StringAttribute">
+            </property>
+            <property name="relativeToElementName" class="ptolemy.kernel.util.StringAttribute" value="entity">
+            </property>
+        </property>
+    </property>
+    <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="delayOffset = 0, &#10;actuate at event &#10;timestamp">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="[255.0, -5.0]">
+            <property name="relativeTo" class="ptolemy.kernel.util.StringAttribute" value="d0+a">
+            </property>
+            <property name="relativeToElementName" class="ptolemy.kernel.util.StringAttribute" value="entity">
+            </property>
+        </property>
+    </property>
+    <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="delayOffset = 2, &#10;actuate at event &#10;timestamp">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="[255.0, 25.0]">
+            <property name="relativeTo" class="ptolemy.kernel.util.StringAttribute" value="d2+a">
+            </property>
+            <property name="relativeToElementName" class="ptolemy.kernel.util.StringAttribute" value="entity">
+            </property>
+        </property>
+    </property>
+    <property name="Annotation5" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="delayOffset = 2, actuate &#10;before or at event timestamp">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="[-290.0, -20.0]">
+            <property name="relativeTo" class="ptolemy.kernel.util.StringAttribute">
+            </property>
+            <property name="relativeToElementName" class="ptolemy.kernel.util.StringAttribute">
+            </property>
+        </property>
+    </property>
+    <property name="Annotation6" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="distributed SR app, &#10;1 delay in each platform">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="[-290.0, -25.0]">
+            <property name="relativeTo" class="ptolemy.kernel.util.StringAttribute" value="dist1_a">
+            </property>
+            <property name="relativeToElementName" class="ptolemy.kernel.util.StringAttribute" value="entity">
+            </property>
+        </property>
+    </property>
+    <property name="Annotation7" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="distributed SR app, &#10;2 delays in first platform">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="[-285.0, -25.0]">
+            <property name="relativeTo" class="ptolemy.kernel.util.StringAttribute" value="dist2_a">
+            </property>
+            <property name="relativeToElementName" class="ptolemy.kernel.util.StringAttribute" value="entity">
+            </property>
+        </property>
+    </property>
+    <property name="Annotation8" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="delayOffset = 2, actuate &#10;before or at event timestamp">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="[-290.0, -20.0]">
+            <property name="relativeTo" class="ptolemy.kernel.util.StringAttribute" value="d2+na">
+            </property>
+            <property name="relativeToElementName" class="ptolemy.kernel.util.StringAttribute" value="entity">
+            </property>
+        </property>
+    </property>
+    <property name="Annotation9" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Run SR in Ptides: Simple SR application with 2 delays.&#10;In Ptides, use delayOffset on SR composites to determine how much ahead of time the &#10;SR model can be. This value depends on the topology, delays and inputs. The SR model &#10;can be executed x time units into the future, if inputs during the next x time units do&#10;not influence outputs.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, -20.0]">
+        </property>
+    </property>
     <entity name="DiscreteClock" class="ptolemy.actor.lib.DiscreteClock">
         <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0.5}">
         </property>
         <doc>Create periodic timed events.</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 5.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 125.0]">
         </property>
     </entity>
     <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
-        <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="source, sr, d0+a, d1+a, d1+na, dist">
+        <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="source, sr, d0+a, d1+a, d1+na, dist1, dist2">
         </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={843, 22, 433, 344}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[433, 300]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[620.0, 45.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[630.0, 165.0]">
         </property>
         <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
@@ -42,13 +128,13 @@
 <xLabel></xLabel>
 <yLabel></yLabel>
 <xRange min="0.5" max="7.0"/>
-<yRange min="0.0" max="7.2"/>
+<yRange min="0.0" max="8.399999999999999"/>
 <default marks="various" stems="yes"/>
 </plot>?>
         </configure>
     </entity>
     <entity name="SR App" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[330.0, 70.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[340.0, 190.0]">
         </property>
         <property name="SR Director" class="ptolemy.domains.sr.kernel.SRDirector">
             <property name="period" class="ptolemy.data.expr.Parameter" value="1.0">
@@ -121,12 +207,12 @@
         <link port="NonStrictDelay2.input" relation="relation2"/>
         <link port="NonStrictDelay2.output" relation="relation4"/>
     </entity>
-    <entity name="PtidesPlatform2" class="ptolemy.domains.ptides.kernel.PtidesPlatform">
+    <entity name="d0+a" class="ptolemy.domains.ptides.kernel.PtidesPlatform">
         <property name="_configurer" class="ptolemy.actor.gui.InsideEntityEditorPaneFactory">
         </property>
         <property name="_tableauFactory" class="ptolemy.actor.gui.LevelSkippingTableauFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[330.0, 125.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[340.0, 245.0]">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
             <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={195, 129, 934, 634}, maximized=false}">
@@ -463,12 +549,12 @@
             <link port="SR App.port2" relation="relation2"/>
         </entity>
     </entity>
-    <entity name="PtidesPlatform3" class="ptolemy.domains.ptides.kernel.PtidesPlatform">
+    <entity name="d2+a" class="ptolemy.domains.ptides.kernel.PtidesPlatform">
         <property name="_configurer" class="ptolemy.actor.gui.InsideEntityEditorPaneFactory">
         </property>
         <property name="_tableauFactory" class="ptolemy.actor.gui.LevelSkippingTableauFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[330.0, 180.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[340.0, 300.0]">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
             <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={195, 129, 934, 634}, maximized=false}">
@@ -809,7 +895,7 @@
         <property name="init" class="ptolemy.actor.parameters.PortParameter" value="0">
         </property>
         <doc>Create a sequence of tokens with increasing value</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[140.0, 15.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[150.0, 135.0]">
         </property>
     </entity>
     <entity name="Scale" class="ptolemy.actor.lib.Scale">
@@ -819,26 +905,26 @@
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[415.0, 15.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[390.0, 135.0]">
         </property>
     </entity>
     <entity name="DiscreteClock2" class="ptolemy.actor.lib.DiscreteClock">
         <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0.0}">
         </property>
         <doc>Create periodic timed events.</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[150.0, 185.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[110.0, 275.0]">
         </property>
     </entity>
     <entity name="MostRecent" class="ptolemy.domains.de.lib.MostRecent">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[235.0, 125.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[245.0, 245.0]">
         </property>
     </entity>
-    <entity name="PtidesPlatform" class="ptolemy.domains.ptides.kernel.PtidesPlatform">
+    <entity name="d2+na" class="ptolemy.domains.ptides.kernel.PtidesPlatform">
         <property name="_configurer" class="ptolemy.actor.gui.InsideEntityEditorPaneFactory">
         </property>
         <property name="_tableauFactory" class="ptolemy.actor.gui.LevelSkippingTableauFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[330.0, 235.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[345.0, 355.0]">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
             <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={195, 129, 934, 634}, maximized=false}">
@@ -1092,7 +1178,7 @@
                     <property name="_location" class="ptolemy.kernel.util.Location" value="{70, 55}">
                     </property>
                 </property>
-                <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="1.0">
+                <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="2.0">
                 </property>
                 <port name="port" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -1175,12 +1261,12 @@
             <link port="SRApp.port2" relation="relation2"/>
         </entity>
     </entity>
-    <entity name="PtidesPlatform4" class="ptolemy.domains.ptides.kernel.PtidesPlatform">
+    <entity name="dist1_a" class="ptolemy.domains.ptides.kernel.PtidesPlatform">
         <property name="_configurer" class="ptolemy.actor.gui.InsideEntityEditorPaneFactory">
         </property>
         <property name="_tableauFactory" class="ptolemy.actor.gui.LevelSkippingTableauFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[330.0, 290.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[340.0, 415.0]">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
             <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={195, 129, 934, 634}, maximized=false}">
@@ -1459,7 +1545,7 @@
                     </property>
                 </entity>
                 <entity name="Scale" class="ptolemy.actor.lib.Scale">
-                    <property name="factor" class="ptolemy.data.expr.Parameter" value="1.8">
+                    <property name="factor" class="ptolemy.data.expr.Parameter" value="1.5">
                     </property>
                     <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
                         <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
@@ -1501,12 +1587,12 @@
             <link port="SRApp.port2" relation="relation2"/>
         </entity>
     </entity>
-    <entity name="PtidesPlatform5" class="ptolemy.domains.ptides.kernel.PtidesPlatform">
+    <entity name="dist1_b" class="ptolemy.domains.ptides.kernel.PtidesPlatform">
         <property name="_configurer" class="ptolemy.actor.gui.InsideEntityEditorPaneFactory">
         </property>
         <property name="_tableauFactory" class="ptolemy.actor.gui.LevelSkippingTableauFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[515.0, 290.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[525.0, 415.0]">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
             <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={195, 129, 934, 634}, maximized=false}">
@@ -1830,15 +1916,15 @@
     <entity name="TimeDelay" class="ptolemy.actor.lib.TimeDelay">
         <property name="delay" class="ptolemy.actor.parameters.PortParameter" value="1.1">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[430.0, 290.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[440.0, 415.0]">
         </property>
     </entity>
-    <entity name="PtidesPlatform6" class="ptolemy.domains.ptides.kernel.PtidesPlatform">
+    <entity name="dist2_a" class="ptolemy.domains.ptides.kernel.PtidesPlatform">
         <property name="_configurer" class="ptolemy.actor.gui.InsideEntityEditorPaneFactory">
         </property>
         <property name="_tableauFactory" class="ptolemy.actor.gui.LevelSkippingTableauFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[330.0, 350.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[340.0, 475.0]">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
             <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={195, 129, 934, 634}, maximized=false}">
@@ -2117,7 +2203,7 @@
                     </property>
                 </entity>
                 <entity name="Scale" class="ptolemy.actor.lib.Scale">
-                    <property name="factor" class="ptolemy.data.expr.Parameter" value="1.8">
+                    <property name="factor" class="ptolemy.data.expr.Parameter" value="1.6">
                     </property>
                     <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
                         <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
@@ -2175,8 +2261,8 @@
             <link port="SRApp.port2" relation="relation2"/>
         </entity>
     </entity>
-    <entity name="PtidesPlatform7" class="ptolemy.domains.ptides.kernel.PtidesPlatform">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[515.0, 350.0]">
+    <entity name="dist2_b" class="ptolemy.domains.ptides.kernel.PtidesPlatform">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[525.0, 475.0]">
         </property>
         <property name="_configurer" class="ptolemy.actor.gui.InsideEntityEditorPaneFactory">
         </property>
@@ -2488,13 +2574,13 @@
     <entity name="TimeDelay2" class="ptolemy.actor.lib.TimeDelay">
         <property name="delay" class="ptolemy.actor.parameters.PortParameter" value="1.1">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[430.0, 350.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[440.0, 475.0]">
         </property>
     </entity>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="[190.0, 15.0]">
+        <vertex name="vertex1" value="[200.0, 135.0]">
         </vertex>
         <property name="color" class="ptolemy.actor.gui.ColorAttribute">
         </property>
@@ -2510,7 +2596,7 @@
     <relation name="relation8" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="[280.0, 125.0]">
+        <vertex name="vertex1" value="[290.0, 245.0]">
         </vertex>
         <property name="color" class="ptolemy.actor.gui.ColorAttribute">
         </property>
@@ -2518,7 +2604,7 @@
     <relation name="relation11" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="[380.0, 290.0]">
+        <vertex name="vertex1" value="[390.0, 415.0]">
         </vertex>
         <property name="color" class="ptolemy.actor.gui.ColorAttribute">
         </property>
@@ -2534,7 +2620,7 @@
     <relation name="relation13" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="[505.0, 180.0]">
+        <vertex name="vertex1" value="[515.0, 300.0]">
         </vertex>
         <property name="color" class="ptolemy.actor.gui.ColorAttribute">
         </property>
@@ -2542,7 +2628,7 @@
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="[515.0, 235.0]">
+        <vertex name="vertex1" value="[525.0, 355.0]">
         </vertex>
         <property name="color" class="ptolemy.actor.gui.ColorAttribute">
         </property>
@@ -2550,7 +2636,7 @@
     <relation name="relation9" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="[380.0, 350.0]">
+        <vertex name="vertex1" value="[390.0, 475.0]">
         </vertex>
         <property name="color" class="ptolemy.actor.gui.ColorAttribute">
         </property>
@@ -2562,7 +2648,7 @@
     <relation name="relation16" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="[495.0, 125.0]">
+        <vertex name="vertex1" value="[505.0, 245.0]">
         </vertex>
         <property name="color" class="ptolemy.actor.gui.ColorAttribute">
         </property>
@@ -2570,7 +2656,7 @@
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="[560.0, 290.0]">
+        <vertex name="vertex1" value="[570.0, 410.0]">
         </vertex>
         <property name="color" class="ptolemy.actor.gui.ColorAttribute">
         </property>
@@ -2578,7 +2664,7 @@
     <relation name="relation10" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="[570.0, 350.0]">
+        <vertex name="vertex1" value="[580.0, 470.0]">
         </vertex>
         <property name="color" class="ptolemy.actor.gui.ColorAttribute">
         </property>
@@ -2586,7 +2672,7 @@
     <relation name="relation17" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="[395.0, 70.0]">
+        <vertex name="vertex1" value="[405.0, 190.0]">
         </vertex>
         <property name="color" class="ptolemy.actor.gui.ColorAttribute">
         </property>
@@ -2601,10 +2687,10 @@
     <link port="TimedPlotter.input" relation="relation10"/>
     <link port="SR App.port" relation="relation2"/>
     <link port="SR App.port2" relation="relation17"/>
-    <link port="PtidesPlatform2.port" relation="relation8"/>
-    <link port="PtidesPlatform2.port2" relation="relation16"/>
-    <link port="PtidesPlatform3.port" relation="relation8"/>
-    <link port="PtidesPlatform3.port2" relation="relation13"/>
+    <link port="d0+a.port" relation="relation8"/>
+    <link port="d0+a.port2" relation="relation16"/>
+    <link port="d2+a.port" relation="relation8"/>
+    <link port="d2+a.port2" relation="relation13"/>
     <link port="Ramp.output" relation="relation2"/>
     <link port="Ramp.trigger" relation="relation3"/>
     <link port="Scale.input" relation="relation2"/>
@@ -2613,18 +2699,18 @@
     <link port="MostRecent.input" relation="relation2"/>
     <link port="MostRecent.output" relation="relation8"/>
     <link port="MostRecent.trigger" relation="relation4"/>
-    <link port="PtidesPlatform.port" relation="relation8"/>
-    <link port="PtidesPlatform.port2" relation="relation7"/>
-    <link port="PtidesPlatform4.port" relation="relation8"/>
-    <link port="PtidesPlatform4.port2" relation="relation11"/>
-    <link port="PtidesPlatform5.port" relation="relation12"/>
-    <link port="PtidesPlatform5.port2" relation="relation6"/>
+    <link port="d2+na.port" relation="relation8"/>
+    <link port="d2+na.port2" relation="relation7"/>
+    <link port="dist1_a.port" relation="relation8"/>
+    <link port="dist1_a.port2" relation="relation11"/>
+    <link port="dist1_b.port" relation="relation12"/>
+    <link port="dist1_b.port2" relation="relation6"/>
     <link port="TimeDelay.input" relation="relation11"/>
     <link port="TimeDelay.output" relation="relation12"/>
-    <link port="PtidesPlatform6.port" relation="relation8"/>
-    <link port="PtidesPlatform6.port2" relation="relation9"/>
-    <link port="PtidesPlatform7.port" relation="relation14"/>
-    <link port="PtidesPlatform7.port2" relation="relation10"/>
+    <link port="dist2_a.port" relation="relation8"/>
+    <link port="dist2_a.port2" relation="relation9"/>
+    <link port="dist2_b.port" relation="relation14"/>
+    <link port="dist2_b.port2" relation="relation10"/>
     <link port="TimeDelay2.input" relation="relation9"/>
     <link port="TimeDelay2.output" relation="relation14"/>
 </entity>
