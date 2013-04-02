@@ -1450,6 +1450,10 @@ public class MetroIIPtidesDirector extends MetroIIDEDirectorForPtides {
      */
     private boolean _isSafeToProcess(PtidesEvent event)
             throws IllegalActionException {
+        if (getFiringEventSize()>0 && event.depth()>getCurrentEventDepth()) {
+            return false; 
+        }
+        
         Time eventTimestamp = event.timeStamp();
 
         IOPort port = event.ioPort();

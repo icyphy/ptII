@@ -362,6 +362,14 @@ public class MetroIIDEDirectorForPtides extends DEDirector implements
 
     }
 
+    public int getCurrentEventDepth() {
+        return _currentEventDepth; 
+    }
+    
+    public int getFiringEventSize() {
+        return _eventList.size(); 
+    }
+    
     public void getfire(ResultHandler<Iterable<Event.Builder>> resultHandler)
             throws CollectionAbortedException {
         try {
@@ -370,12 +378,15 @@ public class MetroIIDEDirectorForPtides extends DEDirector implements
                         + getModelTime() + "  with microstep as " + _microstep);
             }
 
-            ArrayList<PtidesEvent> eventList = new ArrayList<PtidesEvent>();
-
+            
+            _eventList = new ArrayList<PtidesEvent>();
+            boolean stable = true;
+            _currentEventDepth = 0; 
             // NOTE: This fire method does not call super.fire()
             // because this method is very different from that of the super class.
             // A BIG while loop that handles all events with the same tag.
             do {
+                stable = true; 
 
                 //if (((BooleanToken) printTrace.getToken()).booleanValue()) {
                 //    System.out.println(this.getFullName() + ": " + "Time "
@@ -397,13 +408,18 @@ public class MetroIIDEDirectorForPtides extends DEDirector implements
                     } // else if 0, keep executing
                       //if (!actorList.contains(actorAndState.first)) {
                     if (eventAndState.first != null) {
-                        eventList.add(eventAndState.first);
+                        if (eventAndState.first.depth()>_currentEventDepth) {
+                            _currentEventDepth = eventAndState.first.depth(); 
+                        }
+                        _eventList.add(eventAndState.first);
+                        stable = false; 
 
                         if (((BooleanToken) printTrace.getToken())
                                 .booleanValue()) {
                             System.out.println(this.getFullName() + ": "
                                     + "Logical Time " + getModelTime() + " "
-                                    + "READY "
+                                    + "Depth: "
+                                    + eventAndState.first.depth() + " READY "
                                     + eventAndState.first.actor().getName());
                         }
                     }
@@ -412,14 +428,18 @@ public class MetroIIDEDirectorForPtides extends DEDirector implements
                     // procedures. However in this class the following method does nothing.
                     _actorFired();
 
-                    if (!_checkForNextEvent()) {
-                        break;
-                    } // else keep executing in the current iteration
+                    /*
+                     * _checkForNextEvent() of Ptides always returns true.
+                     */
+                    
+                    // if (!_checkForNextEvent()) {
+                    //    break;
+                    // } // else keep executing in the current iteration
                 } // Close the BIG while loop.
 
                 ArrayList<PtidesEvent> firingEventList = new ArrayList<PtidesEvent>();
                 _events.clear();
-                for (PtidesEvent ptidesEvent : eventList) {
+                for (PtidesEvent ptidesEvent : _eventList) {
                     Actor actor = ptidesEvent.actor();
 
                     _setLogicalTime(ptidesEvent);
@@ -435,12 +455,9 @@ public class MetroIIDEDirectorForPtides extends DEDirector implements
                     }
 
                     metroActor.startOrResume(metroIIEventList);
+                    stable = false; 
 
                     if (metroActor.getState() == StartOrResumable.State.FINAL) {
-                        if (_debugging) {
-                            _debug(new FiringEvent(this, actor,
-                                    FiringEvent.AFTER_FIRE));
-                        }
                         if (_debugging) {
                             _debug(new FiringEvent(this, actor,
                                     FiringEvent.BEFORE_POSTFIRE));
@@ -453,16 +470,23 @@ public class MetroIIDEDirectorForPtides extends DEDirector implements
                                     FiringEvent.AFTER_POSTFIRE));
                         }
                     } else {
+                        if (metroActor.getState() == StartOrResumable.State.END) {
+                            if (_debugging) {
+                                _debug(new FiringEvent(this, actor,
+                                        FiringEvent.AFTER_FIRE));
+                            }
+                        }
                         firingEventList.add(ptidesEvent);
                         _events.addAll(metroIIEventList);
                     }
 
                     _resetLogicalTime();
                 }
-                eventList = firingEventList;
+                _eventList = firingEventList;
                 resultHandler.handleResult(_events);
 
-            } while (eventList.size() > 0);
+                // FIXME: break the loop only when no more actors can be fired and no event is being fired.
+            } while (!stable);
             // Since we are now actually stopping the firing, we can set this false.
             _stopFireRequested = false;
 
@@ -529,4 +553,11 @@ public class MetroIIDEDirectorForPtides extends DEDirector implements
     private Hashtable<String, Actor> _nameToActor = new Hashtable<String, Actor>();
 
     private ArrayList<Event.Builder> _events = new ArrayList<Event.Builder>();
+
+    /**
+     * Current depth of Ptides events being fired. 
+     */
+    private int _currentEventDepth = 0;
+    
+    private ArrayList<PtidesEvent> _eventList = new ArrayList<PtidesEvent>(); 
 }
