@@ -30,18 +30,23 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.actor.lib.qm;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 import ptolemy.actor.CompositeActor; 
+import ptolemy.actor.IOPort;
 import ptolemy.actor.IntermediateReceiver;
 import ptolemy.actor.QuantityManager;
 import ptolemy.actor.Receiver;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.gui.ColorAttribute;
 import ptolemy.actor.lib.Const;
+import ptolemy.data.IntToken;
 import ptolemy.data.ObjectToken;
 import ptolemy.data.RecordToken;
+import ptolemy.data.ScalarToken;
+import ptolemy.data.StringToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.CompositeEntity;
@@ -141,6 +146,7 @@ public class CompositeQM extends TypedCompositeActor implements QuantityManager 
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         CompositeQM newObject = (CompositeQM) super.clone(workspace);
+        newObject._parameters = new HashMap<IOPort, List<Attribute>>();
         return newObject;
     }
 
@@ -157,7 +163,9 @@ public class CompositeQM extends TypedCompositeActor implements QuantityManager 
     }
     
     /** Return the list of Attributes that can be specified per port with default
-     *  values for the specified port. This class returns null.
+     *  values for the specified port. The parameter returned here is the name
+     *  of the input port in the CQM that this actor port in the functional model 
+     *  is mapped to.
      *  @param container The container parameter.
      *  @param port The port.
      *  @return List of attributes.
@@ -165,17 +173,48 @@ public class CompositeQM extends TypedCompositeActor implements QuantityManager 
      */
     public List<Attribute> getPortAttributeList(Parameter container, Port port)
             throws IllegalActionException {
-        // TODO Auto-generated method stub
-        return null;
+        List<Attribute> list = _parameters.get(port);
+        if (list == null) {
+            list = new ArrayList<Attribute>();
+            try {
+                Parameter messageLengthParameter = new Parameter(container, "inputPort", new StringToken());
+                list.add(messageLengthParameter);
+            } catch (NameDuplicationException ex) {
+                // This cannot happen.
+            }
+        } 
+        return list;
     }
 
-    /** Set an attribute for a given port.
+    
+    /** Set an attribute for a given port. In case the attribute is the name of the
+     *  input port in the CQM that this actor port is mapped to, store the mapping
+     *  and, if necessary, create the CQMInputPort.
      *  @param port The port. 
      *  @param attribute The new attribute or the attribute containing a new value.
      *  @exception IllegalActionException Thrown if attribute could not be updated.
      */
-    public void setPortAttribute(Port container, Attribute attribute) throws IllegalActionException {
-        // Not implemented yet.
+    public void setPortAttribute(Port port, Attribute attribute) throws IllegalActionException {
+        if (attribute.getName().equals("inputPort")) {
+            String inputPortName = ((StringToken)((Parameter)attribute).getToken()).stringValue();
+            for (Object entity : entityList()) {
+                if (entity instanceof CQMInputPort) {
+                    if (((CQMInputPort)entity).getName().equals(inputPortName)) {
+                        if (_mappedConsts == null) {
+                            _mappedConsts = new HashMap<Port, CQMInputPort>();
+                        }
+                        _mappedConsts.put(port, (CQMInputPort) entity);
+                        return;
+                    }
+                }
+            }
+            // no CQMInputPort was found, create one.
+            try {
+                CQMInputPort cqmInputPort = new CQMInputPort(this, inputPortName);
+            } catch (NameDuplicationException e) { 
+                e.printStackTrace();
+            }
+        }
     }
 
     /** Override the fire and change the transferring tokens
@@ -243,26 +282,7 @@ public class CompositeQM extends TypedCompositeActor implements QuantityManager 
      */
     public void sendToken(Receiver source, Receiver receiver, Token token)
             throws IllegalActionException {
-        if (_mappedConsts == null) {
-            _mappedConsts = new HashMap<Receiver, Const>();
-        }
-        Const mappedConst = _mappedConsts.get(receiver);
-        if (mappedConst == null) {
-            List entities = this.entityList();
-            for (int j = 0; j < entities.size(); j++) {
-                Object object = entities.get(j);
-                if (object instanceof Const
-                        && ((Const) object).getName().equals(
-                                receiver.getContainer().getContainer()
-                                        .getName()
-                                        + "_"
-                                        + receiver.getContainer().getName())) {
-                    mappedConst = (Const) object;
-                    _mappedConsts.put(receiver, mappedConst);
-                    break;
-                }
-            }
-        }
+        Const mappedConst = _mappedConsts.get(receiver.getContainer());
         if (mappedConst == null) {
             throw new IllegalActionException(this, "No mapping constant in "
                     + this.getName() + " for "
@@ -286,6 +306,10 @@ public class CompositeQM extends TypedCompositeActor implements QuantityManager 
         }
     }
 
+    /** List of parameters per port.
+     */
+    protected HashMap<IOPort, List<Attribute>> _parameters;
+
     /** Initialize color and private lists.
      * @exception IllegalActionException If color attribute cannot be initialized.
      * @exception NameDuplicationException If color attribute cannot be initialized.
@@ -294,6 +318,8 @@ public class CompositeQM extends TypedCompositeActor implements QuantityManager 
             NameDuplicationException {
         color = new ColorAttribute(this, "_color");
         color.setExpression("{1.0,0.0,0.0,1.0}");
+        
+        _parameters = new HashMap<IOPort, List<Attribute>>();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -301,6 +327,6 @@ public class CompositeQM extends TypedCompositeActor implements QuantityManager 
 
     private HashMap<Const, Token> _tokens;
 
-    private HashMap<Receiver, Const> _mappedConsts;
+    private HashMap<Port, CQMInputPort> _mappedConsts;
     
 }

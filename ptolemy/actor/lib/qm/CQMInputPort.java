@@ -96,6 +96,7 @@ public class CQMInputPort extends Const {
             // When loading this model again after saving, the DEReceiver
             // might not have been instantiated and therefore creating
             // the RecordToken will cause errors. 
+            value.setExpression("{receiver=object, token=general}");
         } else {
             super.attributeChanged(attribute);
         }
@@ -110,6 +111,7 @@ public class CQMInputPort extends Const {
      */
     public void initialize() throws IllegalActionException { 
         super.initialize(); 
+        value.setExpression("{receiver=object, token=general}");
         _beforeInitialization = false;
     }
     

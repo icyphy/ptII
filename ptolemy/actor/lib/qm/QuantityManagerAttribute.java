@@ -76,7 +76,7 @@ public class QuantityManagerAttribute extends Parameter {
     public QuantityManagerAttribute(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name); 
-        setPersistent(false);
+        //setPersistent(false);
     }
 
     /** Construct a Parameter with the given container, name, and Token.
@@ -100,7 +100,7 @@ public class QuantityManagerAttribute extends Parameter {
     public QuantityManagerAttribute(NamedObj container, String name, ptolemy.data.Token token)
             throws IllegalActionException, NameDuplicationException {
         super(container, name, token);
-        setPersistent(false);
+        //setPersistent(false);
         //setTypeEquals(new ArrayType(BaseType.DOUBLE));
     }
     
