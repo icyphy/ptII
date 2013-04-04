@@ -31,6 +31,8 @@ ENHANCEMENTS, OR MODIFICATIONS.
 package ptolemy.domains.metroII.kernel;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -374,6 +376,100 @@ public class MetroIIPtidesDirector extends MetroIIDEDirectorForPtides {
             return _currentLogicalIndex;
         }
         return super.getMicrostep();
+    }
+
+    public double minDelayBetween(Collection<IOPort> ports1, Collection<IOPort> ports2) {
+        double minDelay = Time.POSITIVE_INFINITY.getDoubleValue();
+        for (IOPort p1 : ports1) {
+            for (IOPort p2 : ports2) {
+                double t = _getSuperdenseDependencyPair(p1,
+                        p2).timeValue();
+                if (t < minDelay) {
+                    minDelay = t;
+                }
+            }
+        }
+        return minDelay; 
+    }
+    
+    public boolean causallyAffect(PtidesEvent e1, PtidesEvent e2)
+            throws IllegalActionException {
+
+        ArrayList<IOPort> ports1 = new ArrayList<IOPort>(); 
+        if (e1.isPureEvent()) {
+            for (IOPort outputPort : (List<IOPort>) e1.actor().outputPortList()) {
+                ports1.addAll(outputPort.deepConnectedInPortList()); 
+            }
+        }
+        else {
+            ports1.add(e1.ioPort()); 
+        }
+        
+        ArrayList<IOPort> ports2 = new ArrayList<IOPort>();
+        if (e2.isPureEvent()) {
+            ports2.addAll((List<IOPort>) e2.actor().inputPortList()); 
+        }
+        else {
+            Actor actor = e2.actor();
+            CausalityInterface causality = actor.getCausalityInterface();
+            Collection<IOPort> equivalentPorts = causality
+                    .equivalentPorts(e2.ioPort());
+            ports2.addAll(equivalentPorts); 
+        }
+        double minDelay = minDelayBetween(ports1, ports2); 
+        
+        if (e1.ioPort() != null && e2.ioPort() != null) {
+            System.out
+                    .println(e1.ioPort().getName()
+                            + " "
+                            + e2.ioPort().getName()
+                            + " "
+                            + e1.timeStamp()
+                            + " "
+                            + e2.timeStamp()
+                            + " "
+                            + minDelay
+                            + " "
+                            + (e1.timeStamp().add(minDelay)
+                                    .compareTo(e2.timeStamp()) <= 0));
+        }
+        if (e1.timeStamp().add(minDelay).compareTo(e2.timeStamp()) <= 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public boolean isCausallyAffected(Collection<PtidesEvent> eventArray,
+            PtidesEvent event) throws IllegalActionException {
+        for (PtidesEvent e : eventArray) {
+            if (causallyAffect(e, event)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean isFiringEventCausallyAffect(PtidesEvent event)
+            throws IllegalActionException {
+        return isCausallyAffected(_eventList, event);
+    }
+
+    public boolean isPendingEventCausallyAffect(PtidesEvent event)
+            throws IllegalActionException {
+        ArrayList<PtidesEvent> eventArray = new ArrayList<PtidesEvent>(
+                (List<PtidesEvent>) (List<?>) Arrays.asList(_pureEvents
+                        .toArray()));
+        eventArray.addAll((List<PtidesEvent>) (List<?>) Arrays
+                .asList(_eventQueue.toArray()));
+
+        int eventId = 0;
+        for (eventId = 0; eventId < eventArray.size(); eventId++) {
+            if (event == eventArray.get(eventId)) {
+                break;
+            }
+        }
+        return isCausallyAffected(eventArray.subList(0, eventId), event);
     }
 
     public void getfire(ResultHandler<Iterable<Event.Builder>> resultHandler)
@@ -813,7 +909,7 @@ public class MetroIIPtidesDirector extends MetroIIDEDirectorForPtides {
      * value, where the destination input port can be used as a key to return
      * the superdense dependency.
      */
-    protected Map<TypedIOPort, Map<TypedIOPort, SuperdenseDependency>> _superdenseDependencyPair;
+    protected Map<IOPort, Map<IOPort, SuperdenseDependency>> _superdenseDependencyPair;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
@@ -825,7 +921,7 @@ public class MetroIIPtidesDirector extends MetroIIDEDirectorForPtides {
 
         // Initialize nested HashMaps.
         _superdenseDependencyPair.put(inputPort,
-                new HashMap<TypedIOPort, SuperdenseDependency>());
+                new HashMap<IOPort, SuperdenseDependency>());
 
         // Add input port to list.
         _inputPorts.add(inputPort);
@@ -1010,7 +1106,7 @@ public class MetroIIPtidesDirector extends MetroIIDEDirectorForPtides {
 
         // Initialize HashMaps. These will end up being identical if parameter
         // 'considerTriggerPorts' is false.
-        _superdenseDependencyPair = new HashMap<TypedIOPort, Map<TypedIOPort, SuperdenseDependency>>();
+        _superdenseDependencyPair = new HashMap<IOPort, Map<IOPort, SuperdenseDependency>>();
 
         // Create a list for all input ports. A List is needed since Set does
         // not make any guarantees on iteration order.
@@ -1279,8 +1375,8 @@ public class MetroIIPtidesDirector extends MetroIIDEDirectorForPtides {
      * @param destination Destination input port.
      * @return The Superdense dependency.
      */
-    private SuperdenseDependency _getSuperdenseDependencyPair(
-            TypedIOPort source, TypedIOPort destination) {
+    private SuperdenseDependency _getSuperdenseDependencyPair(IOPort source,
+            IOPort destination) {
         if (_superdenseDependencyPair.containsKey(source)
                 && _superdenseDependencyPair.get(source).containsKey(
                         destination)) {
@@ -1450,24 +1546,26 @@ public class MetroIIPtidesDirector extends MetroIIDEDirectorForPtides {
      */
     private boolean _isSafeToProcess(PtidesEvent event)
             throws IllegalActionException {
-        if (getFiringEventSize()>0 && event.depth()>getCurrentEventDepth()) {
-            return false; 
-        }
-        
+
         Time eventTimestamp = event.timeStamp();
 
         IOPort port = event.ioPort();
         Double delayOffset = null;
 
-        StartOrResumable metroActor = _actorDictionary.get(event.actor()
-                .getFullName());
-        
-        if (metroActor.getState() != State.START) {
-            System.out.println(metroActor.getState()); 
-            System.out.println(State.START); 
+        if (isFiringEventCausallyAffect(event)
+                || isPendingEventCausallyAffect(event)) {
             return false;
         }
-        
+
+        StartOrResumable metroActor = _actorDictionary.get(event.actor()
+                .getFullName());
+
+        if (metroActor.getState() != State.START) {
+            System.out.println(metroActor.getState());
+            System.out.println(State.START);
+            return false;
+        }
+
         // A local source can have a maximum future events parameter.
         Integer maxFutureEvents = _getIntParameterValue(
                 (NamedObj) event.actor(), "maxFutureEvents");

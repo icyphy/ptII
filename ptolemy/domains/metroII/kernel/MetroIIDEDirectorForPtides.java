@@ -30,9 +30,14 @@ the copyright link on the splash page or see copyright.htm.
 package ptolemy.domains.metroII.kernel;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import net.jimblackler.Utils.CollectionAbortedException;
 import net.jimblackler.Utils.ResultHandler;
@@ -40,6 +45,8 @@ import net.jimblackler.Utils.YieldAdapterIterable;
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.FiringEvent;
+import ptolemy.actor.IOPort;
+import ptolemy.actor.util.CausalityInterface;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
@@ -49,6 +56,7 @@ import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event.Builder;
 import ptolemy.domains.ptides.kernel.PtidesEvent;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NamedObj;
@@ -362,14 +370,13 @@ public class MetroIIDEDirectorForPtides extends DEDirector implements
 
     }
 
-    public int getCurrentEventDepth() {
-        return _currentEventDepth; 
-    }
-    
-    public int getFiringEventSize() {
-        return _eventList.size(); 
-    }
-    
+
+
+
+    //    public int getFiringEventSize() {
+    //        return _eventList.size(); 
+    //    }
+
     public void getfire(ResultHandler<Iterable<Event.Builder>> resultHandler)
             throws CollectionAbortedException {
         try {
@@ -378,15 +385,13 @@ public class MetroIIDEDirectorForPtides extends DEDirector implements
                         + getModelTime() + "  with microstep as " + _microstep);
             }
 
-            
             _eventList = new ArrayList<PtidesEvent>();
             boolean stable = true;
-            _currentEventDepth = 0; 
             // NOTE: This fire method does not call super.fire()
             // because this method is very different from that of the super class.
             // A BIG while loop that handles all events with the same tag.
             do {
-                stable = true; 
+                stable = true;
 
                 //if (((BooleanToken) printTrace.getToken()).booleanValue()) {
                 //    System.out.println(this.getFullName() + ": " + "Time "
@@ -408,18 +413,15 @@ public class MetroIIDEDirectorForPtides extends DEDirector implements
                     } // else if 0, keep executing
                       //if (!actorList.contains(actorAndState.first)) {
                     if (eventAndState.first != null) {
-                        if (eventAndState.first.depth()>_currentEventDepth) {
-                            _currentEventDepth = eventAndState.first.depth(); 
-                        }
+
                         _eventList.add(eventAndState.first);
-                        stable = false; 
+                        stable = false;
 
                         if (((BooleanToken) printTrace.getToken())
                                 .booleanValue()) {
                             System.out.println(this.getFullName() + ": "
                                     + "Logical Time " + getModelTime() + " "
-                                    + "Depth: "
-                                    + eventAndState.first.depth() + " READY "
+                                    + "READY "
                                     + eventAndState.first.actor().getName());
                         }
                     }
@@ -431,7 +433,7 @@ public class MetroIIDEDirectorForPtides extends DEDirector implements
                     /*
                      * _checkForNextEvent() of Ptides always returns true.
                      */
-                    
+
                     // if (!_checkForNextEvent()) {
                     //    break;
                     // } // else keep executing in the current iteration
@@ -455,7 +457,7 @@ public class MetroIIDEDirectorForPtides extends DEDirector implements
                     }
 
                     metroActor.startOrResume(metroIIEventList);
-                    stable = false; 
+                    stable = false;
 
                     if (metroActor.getState() == StartOrResumable.State.FINAL) {
                         if (_debugging) {
@@ -554,10 +556,7 @@ public class MetroIIDEDirectorForPtides extends DEDirector implements
 
     private ArrayList<Event.Builder> _events = new ArrayList<Event.Builder>();
 
-    /**
-     * Current depth of Ptides events being fired. 
-     */
-    private int _currentEventDepth = 0;
-    
-    private ArrayList<PtidesEvent> _eventList = new ArrayList<PtidesEvent>(); 
+    protected ArrayList<PtidesEvent> _eventList = new ArrayList<PtidesEvent>();
+
+    // private Map<IOPort, Map<IOPort, Boolean>> _causalityPortTable = new HashMap<IOPort, Map<IOPort, Boolean>>();
 }
