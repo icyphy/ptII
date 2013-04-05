@@ -439,7 +439,7 @@ public class OMCProxy implements IOMCProxy {
 
     }
 
-    /** Return the components which the model is composed of and modify the value of parameters/variables.
+    /** Return the components which the model is composed of and modify the value of simulation variables.
      *  @param inputPortValue The value of OpenModelica actor input port which reads init value of the Ramp actor.
      *  @param modelName Name of the model which should be built. 
      *  @throws ConnectException If commands couldn't
@@ -482,8 +482,7 @@ public class OMCProxy implements IOMCProxy {
                 // The second element is the name of the component.
                 _componentName = individualComponent[1];
 
-                // The 9th element indicates Whether the component is variable or parameter.
-                // FIXME ADD THE COMMENT ABOUT VARIABLES - "parameter" indicates that this component is parameter.
+                // The 9th element indicates whether the component is variable or simulation parameter.
                 _parameterOrVariable = individualComponent[8];
 
                 // Delete the first space and quotation.
@@ -494,10 +493,13 @@ public class OMCProxy implements IOMCProxy {
                 _parameterOrVariable = componentsBuffer.deleteCharAt(
                         componentsBuffer.length() - 1).toString();
 
-                //FIXME 
-                if (_parameterOrVariable.compareTo("variable") == 0) {
-                    
-                    // Return list of parameters.
+                // In Modelica variables store results of computations performed when solving the equations
+                // of a class together with equations from other classes. During solution of timedependent problems,
+                // the variables store results of the solution process at the current time instance.
+                // "unspecified" indicates that this component is variable.
+                if (_parameterOrVariable.compareTo("unspecified") == 0) {
+
+                    // Return list of simulation parameters.
                     CompilerResult getComponentModifierNames = sendCommand("getComponentModifierNames("
                             + modelName + "," + individualComponent[1] + ")");
 
@@ -505,13 +507,12 @@ public class OMCProxy implements IOMCProxy {
                             + getComponentModifierNames.getFirstResult().trim()
                             + ")");
 
-                    // Delete the first and last "{".
-                    componentsBuffer = new StringBuffer(
-                            getComponentModifierNames.getFirstResult());
+                    // FIXME There is a need to check if the component is constant or not.
+                    // Constant variable never changes and can be substituted by its value.
 
                     if (getComponentModifierNames.getFirstResult().trim()
                             .compareTo("{}") == 0) {
-                        
+
                         sendCommand("setComponentModifierValue(" + modelName
                                 + ", " + _componentName + ", $Code(="
                                 + inputPortValue + "))");
@@ -521,16 +522,20 @@ public class OMCProxy implements IOMCProxy {
                                 + ", $Code(=" + inputPortValue + "))");
 
                     } else {
+
+                        componentsBuffer = new StringBuffer(
+                                getComponentModifierNames.getFirstResult());
+
+                        // Delete the first and last "{".
                         componentsBuffer.deleteCharAt(0);
                         parameterNames = componentsBuffer.deleteCharAt(
                                 componentsBuffer.length() - 2).toString();
 
-                        // Split the result by "," in order to have access to each parameter's value.
+                        // Split the result by "," in order to have access to each simulation parameter's value.
                         variableList = parameterNames.split(",");
 
                         for (String variable : variableList) {
-                            
-                            // Set value for variables.
+
                             individualComponent[1] = individualComponent[1]
                                     .trim();
 
@@ -546,9 +551,16 @@ public class OMCProxy implements IOMCProxy {
                         }
 
                     }
+
+                    //  The keyword parameter specifies that the variable is constant during a simulation run,
+                    //  but can have its value initialized before a run, or between runs. 
+                    //  This means that parameter is a special kind of constant,
+                    //  which is implemented as a static variable that is initialized once and 
+                    //  never changes its value during a specific execution. A parameter is a constant variable that makes 
+                    //  it simple for a user to modify the behavior of a model.
+                    //  "parameter" indicates that this component is simulation parameter. 
                 } else if (_parameterOrVariable.compareTo("parameter") == 0) {
 
-                    // Set value for parameters.
                     sendCommand("setParameterValue(" + modelName + ","
                             + _componentName + "," + inputPortValue + ")");
 
@@ -558,7 +570,7 @@ public class OMCProxy implements IOMCProxy {
             }
         } catch (ConnectException e) {
             throw new ConnectException(
-                    "Unable to modify parameters/variables value due to connection problem with OMC");
+                    "Unable to modify variables value due to connection problem with OMC!");
         }
     }
 
@@ -1250,7 +1262,7 @@ public class OMCProxy implements IOMCProxy {
     // Initialization of the number of errors.
     private int _numberOfErrors = 0;
 
-    // Indicates if the Modelica model component is variable or parameter.
+    // Indicates if the component is variable or parameter.
     private String _parameterOrVariable = null;
 
     // Maximum number of compiler errors to display. 
