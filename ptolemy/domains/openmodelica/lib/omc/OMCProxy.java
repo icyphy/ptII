@@ -231,10 +231,10 @@ public class OMCProxy implements IOMCProxy {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                   ////
 
-    /** Return the variables in the simulation file. 
-     *  Read a result file and return a matrix corresponding to the variables and size given.
+    /** Read a result file and return a matrix corresponding to the variables and size given.
      *  @param fileName The executable result file of simulation in CSV format.
      *  @param modelName Name of the model which should be built.
+     *  @return The value of the variables in the simulation file.
      *  @throws ConnectException If commands couldn't
      *   be sent to the (OpenModelica Compiler)OMC. 
      * @throws IllegalActionException 
@@ -244,9 +244,6 @@ public class OMCProxy implements IOMCProxy {
 
         //FIXME loadFile function is redundant here. Calling loadFile and loadModel once should be enough.
         loadFile(fileName, modelName);
-
-        System.out
-                .println("---Value of variables/parameters in the simulation result file---");
 
         // Return the variables in the simulation result file.
         CompilerResult readSimulationResultVars = sendCommand("readSimulationResultVars(\""
@@ -486,7 +483,7 @@ public class OMCProxy implements IOMCProxy {
                 _componentName = individualComponent[1];
 
                 // The 9th element indicates Whether the component is variable or parameter.
-                // "unspecified" indicates that this component is variable and "parameter" indicates that this component is parameter.
+                // FIXME ADD THE COMMENT ABOUT VARIABLES - "parameter" indicates that this component is parameter.
                 _parameterOrVariable = individualComponent[8];
 
                 // Delete the first space and quotation.
@@ -497,9 +494,9 @@ public class OMCProxy implements IOMCProxy {
                 _parameterOrVariable = componentsBuffer.deleteCharAt(
                         componentsBuffer.length() - 1).toString();
 
-                //FIXME unspecified or variable ?
-                if (_parameterOrVariable.compareTo("unspecified") == 0) {
-
+                //FIXME 
+                if (_parameterOrVariable.compareTo("variable") == 0) {
+                    
                     // Return list of parameters.
                     CompilerResult getComponentModifierNames = sendCommand("getComponentModifierNames("
                             + modelName + "," + individualComponent[1] + ")");
@@ -514,7 +511,7 @@ public class OMCProxy implements IOMCProxy {
 
                     if (getComponentModifierNames.getFirstResult().trim()
                             .compareTo("{}") == 0) {
-
+                        
                         sendCommand("setComponentModifierValue(" + modelName
                                 + ", " + _componentName + ", $Code(="
                                 + inputPortValue + "))");
@@ -532,7 +529,7 @@ public class OMCProxy implements IOMCProxy {
                         variableList = parameterNames.split(",");
 
                         for (String variable : variableList) {
-
+                            
                             // Set value for variables.
                             individualComponent[1] = individualComponent[1]
                                     .trim();

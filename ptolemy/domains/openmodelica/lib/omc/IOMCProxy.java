@@ -58,11 +58,11 @@ import ptolemy.kernel.util.IllegalActionException;
  */
 public interface IOMCProxy {
 
-    /** Return the variables in the simulation file. 
-     *  Read a result file and return a matrix corresponding to the variables and given size.
+    /** Read a result file and return a matrix corresponding to the variables and given size.
      *  @param fileName The executable result file of simulation in CSV format.
      *  @param modelName Name of the model which should be built.
-     * @throws IllegalActionException 
+     *  @return The value of the variables in the simulation file. 
+     *  @throws IllegalActionException 
      *  @throws ConnectException If commands couldn't
      *   be sent to the (OpenModelica Compiler)OMC. 
      */
