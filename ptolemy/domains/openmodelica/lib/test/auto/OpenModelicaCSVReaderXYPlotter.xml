@@ -6,7 +6,7 @@
     </property>
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 1388, 738}, maximized=true}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-8, -8, 1382, 744}, maximized=true}">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
@@ -35,13 +35,13 @@
         </property>
         <property name="italic" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model tests simulation and plotting of CSV output format.&#10;">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model verifies plotting when the output format is set to the csv.&#10;">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[230.0, 40.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[140.0, 40.0]">
         </property>
     </property>
     <property name="OpenModelica Director" class="ptolemy.domains.openmodelica.kernel.OpenModelicaDirector">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-25.0, 65.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-65.0, 95.0]">
         </property>
     </property>
     <property name="_expertMode" class="ptolemy.kernel.util.SingletonAttribute">
@@ -53,19 +53,19 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model requires that OpenModelica be installed (see http://www.openmodelica.org).&#10;In addition,  the OPENMODELICAHOME environment variable must be set and the&#10;PATH must be set to include the OPENMODELICAHOME/bin directory.&#10;&#10;Under Mac OS X:&#10;export OPENMODELICAHOME=/opt/openmodelica&#10;export PATH=${OPENMODELICAHOME}/bin:${PATH}">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[310.0, 385.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[330.0, 405.0]">
         </property>
     </property>
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The OpenModelica actor creates&#10;a CSV temporary file in the&#10;directory named by the&#10;java.io.tmpdir property.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The output format should be set to the csv.&#10;The processing mode should be set to the batch.&#10;After running the model, the OpenModelica actor &#10;generates the simulation result file in the csv format &#10;in the OpenModelica dir of the user dir which is located in the dir&#10;named by the java.io.tmpdir property.&#10;">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-120.0, 220.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{-80.0, 165.0}">
         </property>
     </property>
     <property name="Annotation5" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This actor is composed of CSVReader, Display, &#10;RecordDisassembler and XYPlotter actors.&#10;The CSV result file is read by using CSVReader and&#10;then XYPlotter takes _time_ and _inductor1_i_&#10;as inputs and plots the values.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This composite actor is composed of CSVReader, Display, &#10;RecordDisassembler and XYPlotter actors.&#10;The csv result file is read through CSVReader,&#10;then XYPlotter takes _time_ and _inductor1_i_&#10;as inputs and plots the result through these two&#10;variables.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[225.0, 230.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[495.0, 135.0]">
         </property>
     </property>
     <entity name="OpenModelica" class="ptolemy.domains.openmodelica.lib.OpenModelica">
@@ -93,7 +93,7 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-25.0, 195.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-100.0, 170.0]">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -105,7 +105,7 @@
     <entity name="RunCompositeActor" class="ptolemy.actor.lib.hoc.RunCompositeActor">
         <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[255.0, 190.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[455.0, 155.0]">
         </property>
         <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
             <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The CSV Actor requires that Backward Type Inference be enabled.&#10;To see that Backward Type Inference is enabled, right click on the&#10;background and check that the backwardTypeInference property&#10;is set.">

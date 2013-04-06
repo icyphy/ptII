@@ -33,13 +33,13 @@
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textSize" class="ptolemy.data.expr.Parameter" value="14">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model only tests the simulation of the Modelica model.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model verifies the complete simulation process of the Modelica model.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[305.0, 55.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[105.0, 35.0]">
         </property>
     </property>
     <property name="OpenModelica Director" class="ptolemy.domains.openmodelica.kernel.OpenModelicaDirector">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-55.0, 80.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-55.0, 105.0]">
         </property>
     </property>
     <property name="_expertMode" class="ptolemy.kernel.util.SingletonAttribute">
@@ -51,35 +51,23 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model requires that OpenModelica be installed (see http://www.openmodelica.org).&#10;In addition,  the OPENMODELICAHOME environment variable must be set and the&#10;PATH must be set to include the OPENMODELICAHOME/bin directory.&#10;&#10;Under Mac OS X:&#10;export OPENMODELICAHOME=/opt/openmodelica&#10;export PATH=${OPENMODELICAHOME}/bin:${PATH}">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[310.0, 385.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[290.0, 405.0]">
         </property>
     </property>
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textSize" class="ptolemy.data.expr.Parameter" value="14">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The OpenModelica actor creates&#10;an executable result file according to &#10;the selected output format in&#10;the temporary file in the&#10;directory named by the&#10;java.io.tmpdir property.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The processing mode should be set to the batch.&#10;Run the model with all the output formats one by one.&#10;After running the model,the simulation result file &#10;is generated in the csv, plt or mat format &#10;according to the selected output format in the&#10;OpenModelica dir of the user dir which is located in the dir&#10;named by the java.io.tmpdir property.&#10;&#10;">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-85.0, 200.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-10.0, 165.0]">
         </property>
     </property>
     <entity name="OpenModelica" class="ptolemy.domains.openmodelica.lib.OpenModelica">
-        <property name="fileName" class="ptolemy.data.expr.FileParameter" value="dcmotor.mo">
+        <property name="fileName" class="ptolemy.data.expr.FileParameter" value="BouncingBall.mo">
             <display name="File name"/>
         </property>
-        <property name="modelName" class="ptolemy.data.expr.StringParameter" value="dcmotor">
+        <property name="modelName" class="ptolemy.data.expr.StringParameter" value="BouncingBall">
             <display name="Model name"/>
-        </property>
-        <property name="simulationStopTime" class="ptolemy.data.expr.Parameter" value="0.4">
-            <display name="Simulation stop time"/>
-        </property>
-        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="0.0001">
-            <display name="Tolerance"/>
-        </property>
-        <property name="method" class="ptolemy.data.expr.StringParameter" value="dassl">
-            <display name="Method"/>
-        </property>
-        <property name="outputFormat" class="ptolemy.data.expr.StringParameter" value="csv">
-            <display name="Output format"/>
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
@@ -87,13 +75,7 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 165.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-35.0, 170.0]">
         </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-            <property name="_hide" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-        </port>
     </entity>
 </entity>
