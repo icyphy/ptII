@@ -6,7 +6,7 @@
     </property>
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-8, -8, 1382, 744}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 0, 1382, 744}, maximized=false}">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
@@ -61,7 +61,7 @@
         </property>
         <property name="anchor" class="ptolemy.data.expr.StringParameter" value="northwest">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The output format should be set to the plt.&#10;The processing mode should be set to the batch.&#10;After running the model, the simulation result file &#10;is generated in the plt format &#10;in the OpenModelica dir of the user dir which is located in the dir&#10;named by the java.io.tmpdir property.&#10;Finally, the result is plotted by PxgraphApplication.&#10;&#10;">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The output format should be set to the plt.&#10;The processing mode should be set to the batch.&#10;After running the model, the simulation result file &#10;is generated in $TMPDIR/$USERNAME/OpenModelica/modelName_res.plt.&#10;Finally, the result is plotted by PxgraphApplication.&#10;&#10;">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, 180.0]">
         </property>

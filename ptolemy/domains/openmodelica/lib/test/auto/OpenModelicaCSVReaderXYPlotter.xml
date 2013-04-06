@@ -57,7 +57,7 @@
         </property>
     </property>
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The output format should be set to the csv.&#10;The processing mode should be set to the batch.&#10;After running the model, the OpenModelica actor &#10;generates the simulation result file in the csv format &#10;in the OpenModelica dir of the user dir which is located in the dir&#10;named by the java.io.tmpdir property.&#10;">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The output format should be set to the csv.&#10;The processing mode should be set to the batch.&#10;After running the model,the simulation result file &#10;is generated in $TMPDIR/$USERNAME/OpenModelica/modelName_res.csv.&#10;">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{-80.0, 165.0}">
         </property>

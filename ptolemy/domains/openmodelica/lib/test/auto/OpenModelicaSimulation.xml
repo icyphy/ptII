@@ -57,7 +57,7 @@
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textSize" class="ptolemy.data.expr.Parameter" value="14">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The processing mode should be set to the batch.&#10;Run the model with all the output formats one by one.&#10;After running the model,the simulation result file &#10;is generated in the csv, plt or mat format &#10;according to the selected output format in the&#10;OpenModelica dir of the user dir which is located in the dir&#10;named by the java.io.tmpdir property.&#10;&#10;">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The processing mode should be set to the batch.&#10;Run the model with all the output formats one by one.&#10;After running the model,the simulation result file &#10;is generated in the csv, plt or mat format &#10;in the $TMPDIR/$USERNAME/OpenModelica/.&#10;&#10;">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-10.0, 165.0]">
         </property>
