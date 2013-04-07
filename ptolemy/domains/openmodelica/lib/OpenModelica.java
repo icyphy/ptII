@@ -258,15 +258,35 @@ public class OpenModelica extends TypedAtomicActor {
         // Create a unique instance of OMCCommand.
         _omcProxy = OMCProxy.getInstance();
 
-        if (_debugging) {
-            _debug("OpenModelica Actor Called fire().");
+        // load the Modelica library and file.
+        try {
+            _omcProxy.loadFile(fileName.getExpression(),
+                    modelName.getExpression());
+        } catch (ConnectException e) {
+            throw new IllegalActionException(
+                    "Unable to load the Modelica file/library.");
         }
 
         if (input.getWidth() > 0) {
             // Read the value of input port which reads init value of the Ramp.
             IntToken inputPortValue = (IntToken) input.get(0);
 
-            // load the Modelica file and library.
+            // Return the components which the model is composed of and modify the value of parameters/variables before running the simulation.
+            try {
+                System.out.println("------Variable Modification-------");
+                _omcProxy.modifyVariables(inputPortValue,
+                        modelName.getExpression());
+            } catch (ConnectException e) {
+                throw new IllegalActionException(
+                        "Unable to modify variables value before running the simulation.");
+            }
+        }
+
+        // Build the Modelica model and run the executable result file in both interactive
+        // and non-interactive processing mode.
+        try {
+
+            //FIXME problem with singelton pattern, file should be loaded once. redundant code.
             try {
                 _omcProxy.loadFile(fileName.getExpression(),
                         modelName.getExpression());
@@ -275,20 +295,6 @@ public class OpenModelica extends TypedAtomicActor {
                         "Unable to load the Modelica file/library.");
             }
 
-            // Return the components which the model is composed of and modify the value of parameters/variables before running the simulation.
-            try {
-                System.out
-                        .println("---Variables/parameters modification before simulation---");
-                _omcProxy.modifyVariables(inputPortValue,
-                        modelName.getExpression());
-            } catch (ConnectException e) {
-                throw new IllegalActionException(
-                        "Unable to modify parameters/variables value before running the simulation.");
-            }
-        }
-        // Build the Modelica model and run the executable result file in both interactive
-        // and non-interactive processing mode.
-        try {
             _omcProxy.simulateModel(fileName.getExpression(),
                     modelName.getExpression(), fileNamePrefix.getExpression(),
                     simulationStartTime.getExpression(),
@@ -308,6 +314,16 @@ public class OpenModelica extends TypedAtomicActor {
                 && (outputFormat.getExpression().compareTo("csv") == 0)) {
             String simulationResult = null;
             // Read a result file, returning a matrix corresponding to the variables and given size.
+
+            //FIXME problem with singelton pattern, file should be loaded once. redundant code.
+            try {
+                _omcProxy.loadFile(fileName.getExpression(),
+                        modelName.getExpression());
+            } catch (ConnectException e) {
+                throw new IllegalActionException(
+                        "Unable to load the Modelica file/library.");
+            }
+
             try {
                 simulationResult = _omcProxy.displaySimulationResult(
                         fileName.getExpression(), modelName.getExpression());
@@ -339,5 +355,4 @@ public class OpenModelica extends TypedAtomicActor {
     ////                         private variables                 ////
     // OMCProxy Object for accessing a unique source of instance.
     private OMCProxy _omcProxy;
-
 }

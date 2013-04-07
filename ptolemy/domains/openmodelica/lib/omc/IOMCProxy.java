@@ -58,6 +58,14 @@ import ptolemy.kernel.util.IllegalActionException;
  */
 public interface IOMCProxy {
 
+    /**  Build the Modelica model by sending buildModel(className) to the OMC.
+     *   @param modelName The Name of the model which should be built.
+     *   @return CompilerResult The result of sending buildModel(className) command to the OMC.
+     *   @exception ConnectException If buildModel command couldn't
+     *   be sent to the OMC.
+     */
+    public CompilerResult buildModel(String modelName) throws ConnectException;
+    
     /** Read a result file and return a matrix corresponding to the variables and given size.
      *  @param fileName The executable result file of simulation in CSV format.
      *  @param modelName Name of the model which should be built.
@@ -115,8 +123,7 @@ public interface IOMCProxy {
      */
     public void quitServer() throws ConnectException;
 
-    /** load the Modelica file and library.  
-     *  Build the Modelica model. Then, run the executable result file of
+    /** Build the Modelica model. Then, run the executable result file of
      *  buildModel() in both interactive and non-interactive processing mode
      *  in order to generate the simulation result file.
      *  @param fileName File which the model should be loaded from.
