@@ -599,9 +599,6 @@ ALLPACKAGES = \
 	ptolemy.domains.modal.kernel.fmv \
 	ptolemy.domains.openmodelica.kernel \
 	ptolemy.domains.openmodelica.lib \
-	ptolemy.domains.openmodelica.lib.compiler \
-	ptolemy.domains.openmodelica.lib.core \
-	ptolemy.domains.openmodelica.lib.core.compiler \
 	ptolemy.domains.openmodelica.lib.omc \
 	ptolemy.domains.openmodelica.lib.omc.corba \
 	ptolemy.domains.petrinet.kernel \
