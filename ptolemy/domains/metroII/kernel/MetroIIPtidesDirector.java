@@ -65,6 +65,7 @@ import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.domains.de.kernel.DEEventQueue;
+import ptolemy.domains.metroII.kernel.FireMachine.Status;
 import ptolemy.domains.metroII.kernel.StartOrResumable.State;
 import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event;
 import ptolemy.domains.ptides.kernel.PtidesEvent;
@@ -1554,12 +1555,12 @@ public class MetroIIPtidesDirector extends MetroIIDEDirectorForPtides {
             return false;
         }
 
-        StartOrResumable metroActor = _actorDictionary.get(event.actor()
+        FireMachine metroActor = _actorDictionary.get(event.actor()
                 .getFullName());
 
-        if (metroActor.getState() != State.START) {
-            System.out.println(metroActor.getState());
-            System.out.println(State.START);
+        if (metroActor.getStatus() != Status.START) {
+            System.out.println(metroActor.getStatus());
+            System.out.println(Status.START);
             return false;
         }
 

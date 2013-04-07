@@ -77,7 +77,7 @@ public class MetroIIDEDirector extends DEDirector implements
                 .clone(workspace);
         newObject._nameToActor = (Hashtable<String, Actor>) _nameToActor
                 .clone();
-        newObject._actorDictionary = (Hashtable<String, MetroIIAtomicFireActor>) _actorDictionary
+        newObject._actorDictionary = (Hashtable<String, FireMachine>) _actorDictionary
                 .clone();
         newObject._events = (ArrayList<Builder>) _events.clone();
         return newObject;
@@ -98,10 +98,10 @@ public class MetroIIDEDirector extends DEDirector implements
                 Actor actor = (Actor) actors.next();
                 if (actor instanceof MetroIIEventHandler) {
                     _actorDictionary.put(actor.getFullName(),
-                            new MetroIIActorFireWrapper(actor));
+                            new ResumableFire(actor));
                 } else {
                     _actorDictionary.put(actor.getFullName(),
-                            new MetroIIAtomicFireActor(actor));
+                            new NonBlockingFire(actor));
                 }
             }
         }
@@ -412,13 +412,13 @@ public class MetroIIDEDirector extends DEDirector implements
                         ArrayList<Actor> firingActorList = new ArrayList<Actor>();
                         _events.clear();
                         for (Actor actor : actorList) {
-                            MetroIIAtomicFireActor metroActor = _actorDictionary
+                            FireMachine firing = _actorDictionary
                                     .get(actor.getFullName());
                             LinkedList<Event.Builder> metroIIEventList = new LinkedList<Event.Builder>();
-                            metroActor.startOrResume(metroIIEventList);
+                            firing.startOrResume(metroIIEventList);
 
                             // Check if the actor has reached the end of postfire()
-                            if (metroActor.getState() == StartOrResumable.State.FINAL) {
+                            if (firing.getStatus() == FireMachine.Status.FINAL) {
                                 // The actor has reached the end of postfire()
                                 //FIXME: the debugging info is late 
                                 if (_debugging) {
@@ -430,7 +430,8 @@ public class MetroIIDEDirector extends DEDirector implements
                                             FiringEvent.BEFORE_POSTFIRE));
                                 }
 
-                                metroActor.postfire();
+                                firing.actor().postfire();
+                                firing.reset(); 
 
                                 if (_debugging) {
                                     _debug(new FiringEvent(this, actor,
@@ -505,7 +506,7 @@ public class MetroIIDEDirector extends DEDirector implements
     /**
      * The list of actors governed by MetroIIDEDirector
      */
-    private Hashtable<String, MetroIIAtomicFireActor> _actorDictionary = new Hashtable<String, MetroIIAtomicFireActor>();
+    private Hashtable<String, FireMachine> _actorDictionary = new Hashtable<String, FireMachine>();
 
     private ArrayList<Event.Builder> _events = new ArrayList<Event.Builder>();
 }

@@ -51,7 +51,7 @@ public interface StartOrResumable {
     /** Actor state
      */
     public enum State {
-        PREFIRE_BEGIN, PREFIRE_END_FIRE_BEGIN, FIRING, FIRE_END_POSTFIRE_BEGIN, POSTFIRE_END, START, BEGIN, PROCESS, END, FINAL
+        PREFIRE_BEGIN, PREFIRE_END_FIRE_BEGIN, FIRING, FIRE_END_POSTFIRE_BEGIN, POSTFIRE_END
     }
 
     ///////////////////////////////////////////////////////////////////

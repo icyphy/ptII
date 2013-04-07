@@ -7,27 +7,19 @@ import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event;
 import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event.Builder;
 import ptolemy.kernel.util.IllegalActionException;
 
-public class MetroIIAtomicFireActor implements StartOrResumable {
+public class BlockingFire extends FireMachine {
 
     /** Construct a basic wrapper.
     *
     * @param actor The actor
     */
-    public MetroIIAtomicFireActor(Actor actor) {
-        this._actor = actor;
-        reset();
+    public BlockingFire(Actor actor) {
+        super(actor);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /**
-     * Dispose the current execution.
-     */
-    public void reset() {
-        _state = State.START;
-        _currentStateEvent = null;
-    }
 
     /**
     * The functions prefire(), fire() and postfire()
@@ -53,29 +45,29 @@ public class MetroIIAtomicFireActor implements StartOrResumable {
             throws IllegalActionException {
         assert metroIIEventList != null;
 
-        if (getState() == State.START) {
+        if (getStatus() == Status.START) {
             _currentStateEvent = _createMetroIIEvent("FIRE_BEGIN");
             metroIIEventList.add(_currentStateEvent);
-            setState(State.BEGIN);
-        } else if (getState() == State.BEGIN) {
+            setStatus(Status.BEGIN);
+        } else if (getStatus() == Status.BEGIN) {
             assert _currentStateEvent.getName().contains("FIRE_BEGIN");
             if (_currentStateEvent.getStatus() == Event.Status.NOTIFIED) {
-                _actor.fire();
-                setState(State.END);
+                actor().fire();
+                setStatus(Status.END);
                 _currentStateEvent = _createMetroIIEvent("FIRE_END");
                 metroIIEventList.add(_currentStateEvent);
             } else {
                 metroIIEventList.add(_currentStateEvent);
             }
-        } else if (getState() == State.END) {
+        } else if (getStatus() == Status.END) {
             assert _currentStateEvent.getName().contains("FIRE_END");
             if (_currentStateEvent.getStatus() == Event.Status.NOTIFIED) {
                 _currentStateEvent = null; 
-                setState(State.FINAL);
+                setStatus(Status.FINAL);
             } else {
                 metroIIEventList.add(_currentStateEvent);
             }
-        } else if (getState() == State.FINAL) {
+        } else if (getStatus() == Status.FINAL) {
             // do nothing
         } else {
             // unknown state; 
@@ -84,55 +76,13 @@ public class MetroIIAtomicFireActor implements StartOrResumable {
         
     }
     
-    public boolean prefire() throws IllegalActionException {
-        return _actor.prefire();
-    }
 
-    public boolean postfire() throws IllegalActionException {
-        reset(); 
-        return _actor.postfire();
-    }
-
-
-    /**
-     * Get the current state
-     */
+    @Override
     public State getState() {
-        return _state;
+        // TODO Auto-generated method stub
+        assert false; 
+        return null;
     }
 
-    ///////////////////////////////////////////////////////////////////
-    ////                    protected fields                       ////
-
-    /** Create a MetroII event
-     *
-     */
-    protected Builder _createMetroIIEvent(String name) {
-        Event.Builder builder = Event.newBuilder();
-        builder.setName(_actor.getFullName() + "." + name);
-        builder.setOwner(_actor.getFullName());
-        builder.setStatus(Event.Status.PROPOSED);
-        builder.setType(Event.Type.GENERIC);
-        return builder;
-    }
-
-    protected void setState(State s) {
-        _state = s;
-    }
-
-    /** Current state event
-     *
-     */
-    protected Builder _currentStateEvent;
-
-    /** Actor state
-     *
-     */
-    protected State _state;
-
-    /** Actor which is being fired
-     *
-     */
-    protected Actor _actor;
 
 }

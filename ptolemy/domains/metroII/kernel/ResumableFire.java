@@ -4,14 +4,15 @@ import java.util.LinkedList;
 
 import net.jimblackler.Utils.YieldAdapterIterable;
 import net.jimblackler.Utils.YieldAdapterIterator;
+
 import ptolemy.actor.Actor;
 import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event;
 import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event.Builder;
 import ptolemy.kernel.util.IllegalActionException;
 
-public class MetroIIActorFireWrapper extends MetroIIAtomicFireActor {
+public class ResumableFire extends FireMachine {
 
-    public MetroIIActorFireWrapper(Actor actor) {
+    public ResumableFire(Actor actor) {
         super(actor);
         // TODO Auto-generated constructor stub
     }
@@ -19,24 +20,24 @@ public class MetroIIActorFireWrapper extends MetroIIAtomicFireActor {
     @Override
     public void startOrResume(LinkedList<Builder> metroIIEventList)
             throws IllegalActionException {
-        if (getState() == State.START) {
+        if (getStatus() == Status.START) {
             _currentStateEvent = _createMetroIIEvent("FIRE_BEGIN");
             metroIIEventList.add(_currentStateEvent);
-            setState(State.BEGIN);
+            setStatus(Status.BEGIN);
         /**
          * Start executing the wrapped actor in the thread.
          */
-        } else if (_state == State.BEGIN) {
+        } else if (getStatus() == Status.BEGIN) {
             assert _currentStateEvent.getName().contains("FIRE_BEGIN");
             if (_currentStateEvent.getStatus() == Event.Status.NOTIFIED) {
                 /* The getfire() of each Metropolis actor is invoked by a separate thread.
                  * Each thread is encapsulated by a YieldAdapterIterable, which is used to iterate
                  * the events proposed by the thread.
                  */
-                final YieldAdapterIterable<Iterable<Event.Builder>> results = ((MetroIIEventHandler) _actor)
+                final YieldAdapterIterable<Iterable<Event.Builder>> results = ((MetroIIEventHandler) actor())
                         .adapter();
                 _eventIterator = results.iterator();
-                _state = State.PROCESS;
+                setStatus(Status.PROCESS);
             } else {
                 metroIIEventList.add(_currentStateEvent);
             }
@@ -44,7 +45,7 @@ public class MetroIIActorFireWrapper extends MetroIIAtomicFireActor {
         /**
          * Resume executing the wrapped actor with states saved in the thread.
          */
-        else if (_state == State.PROCESS) {
+        else if (getStatus() == Status.PROCESS) {
             /* Every time hasNext() is called, the thread runs until the next event
              * is proposed. If any event is proposed, hasNext() returns true.
              * The proposed event is returned by next().
@@ -59,19 +60,19 @@ public class MetroIIActorFireWrapper extends MetroIIAtomicFireActor {
                     metroIIEventList.add(eventBuilder);
                 }
             } else {
-                _state = State.END;
+                setStatus(Status.END);
                 _currentStateEvent = _createMetroIIEvent("FIRE_END");
                 // metroIIEventList.add(_currentStateEvent);
             }
-        } else if (getState() == State.END) {
+        } else if (getStatus() == Status.END) {
             assert _currentStateEvent.getName().contains("FIRE_END");
             if (_currentStateEvent.getStatus() == Event.Status.NOTIFIED) {
                 _currentStateEvent = null; 
-                setState(State.FINAL);
+                setStatus(Status.FINAL);
             } else {
                 metroIIEventList.add(_currentStateEvent);
             }
-        } else if (getState() == State.FINAL) {
+        } else if (getStatus() == Status.FINAL) {
             // do nothing
         } else {
             // unknown state; 
@@ -84,9 +85,9 @@ public class MetroIIActorFireWrapper extends MetroIIAtomicFireActor {
      */
     @Override
     public void reset() {
-        if (_state == State.PROCESS) {
+        if (getStatus() == Status.PROCESS) {
             _eventIterator.dispose();
-            _actor.stop();
+            actor().stop();
         }
         super.reset(); 
     }
@@ -98,5 +99,12 @@ public class MetroIIActorFireWrapper extends MetroIIAtomicFireActor {
      * Thread that is firing the actor
      */
     protected YieldAdapterIterator<Iterable<Event.Builder>> _eventIterator;
+
+    @Override
+    public State getState() {
+        // TODO Auto-generated method stub
+        assert false; 
+        return null;
+    }
 
 }

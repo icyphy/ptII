@@ -77,7 +77,7 @@ public class MetroIIDEDirectorForPtides extends DEDirector implements
                 .clone(workspace);
         newObject._nameToActor = (Hashtable<String, Actor>) _nameToActor
                 .clone();
-        newObject._actorDictionary = (Hashtable<String, MetroIIAtomicFireActor>) _actorDictionary
+        newObject._actorDictionary = (Hashtable<String, FireMachine>) _actorDictionary
                 .clone();
         newObject._events = (ArrayList<Builder>) _events.clone();
         return newObject;
@@ -98,10 +98,10 @@ public class MetroIIDEDirectorForPtides extends DEDirector implements
                 Actor actor = (Actor) actors.next();
                 if (actor instanceof MetroIIEventHandler) {
                     _actorDictionary.put(actor.getFullName(),
-                            new MetroIIActorFireWrapper(actor));
+                            new ResumableFire(actor));
                 } else {
                     _actorDictionary.put(actor.getFullName(),
-                            new MetroIIAtomicFireActor(actor));
+                            new BlockingFire(actor));
                 }
             }
         }
@@ -438,7 +438,7 @@ public class MetroIIDEDirectorForPtides extends DEDirector implements
 
                     _setLogicalTime(ptidesEvent);
 
-                    MetroIIAtomicFireActor metroActor = _actorDictionary
+                    FireMachine firing = _actorDictionary
                             .get(actor.getFullName());
                     LinkedList<Event.Builder> metroIIEventList = new LinkedList<Event.Builder>();
 
@@ -448,23 +448,24 @@ public class MetroIIDEDirectorForPtides extends DEDirector implements
                                 + "EXEC " + actor.getName());
                     }
 
-                    metroActor.startOrResume(metroIIEventList);
+                    firing.startOrResume(metroIIEventList);
                     stable = false;
 
-                    if (metroActor.getState() == StartOrResumable.State.FINAL) {
+                    if (firing.getStatus() == FireMachine.Status.FINAL) {
                         if (_debugging) {
                             _debug(new FiringEvent(this, actor,
                                     FiringEvent.BEFORE_POSTFIRE));
                         }
 
-                        metroActor.postfire();
+                        firing.actor().postfire();
+                        firing.reset(); 
 
                         if (_debugging) {
                             _debug(new FiringEvent(this, actor,
                                     FiringEvent.AFTER_POSTFIRE));
                         }
                     } else {
-                        if (metroActor.getState() == StartOrResumable.State.END) {
+                        if (firing.getStatus() == FireMachine.Status.END) {
                             if (_debugging) {
                                 _debug(new FiringEvent(this, actor,
                                         FiringEvent.AFTER_FIRE));
@@ -522,7 +523,7 @@ public class MetroIIDEDirectorForPtides extends DEDirector implements
     /**
      * The list of actors governed by MetroIIDEDirector
      */
-    protected Hashtable<String, MetroIIAtomicFireActor> _actorDictionary = new Hashtable<String, MetroIIAtomicFireActor>();
+    protected Hashtable<String, FireMachine> _actorDictionary = new Hashtable<String, FireMachine>();
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
