@@ -83,9 +83,6 @@ public class OMCProxy implements IOMCProxy {
      *  This private Constructor prevents other class from instantiating. 
      */
     private OMCProxy() {
-
-        // Create a unique instance of OMCLogger.
-        _omcLogger = OMCLogger.getInstance();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -306,7 +303,7 @@ public class OMCProxy implements IOMCProxy {
      *  It provides a unique source of OMCProxy instance.
      *  @return An OMCProxy object representing the instance value.
      */
-    public static OMCProxy getInstance() {
+    public static synchronized OMCProxy getInstance() {
         return _omcProxyInstance;
     }
 
@@ -620,7 +617,7 @@ public class OMCProxy implements IOMCProxy {
         if (hasInitialized = true) {
             sendCommand("quit()");
             _omcLogger = null;
-            _omcProxyInstance = null;
+            // _omcProxyInstance = null;
         }
     }
 
@@ -1233,10 +1230,10 @@ public class OMCProxy implements IOMCProxy {
     private boolean _fOMCThreadHasBeenScheduled = false;
 
     // OMCLogger Object for accessing a unique source of instance.
-    private OMCLogger _omcLogger;
+    private OMCLogger _omcLogger = OMCLogger.getInstance();
 
     // OMCProxy Object for accessing a unique source of instance. 
-    private static OMCProxy _omcProxyInstance = new OMCProxy();;
+    private static OMCProxy _omcProxyInstance = new OMCProxy();
 
     // The working directory of the OMC is fetched from sending cd() command to the OMC.
     private String _openModelicaWorkingDirectory = null;
