@@ -35,11 +35,11 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model illustrates the integration of OPENMODELICA with Ptolemy II.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[300.0, 20.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 30.0]">
         </property>
     </property>
     <property name="OpenModelica Director" class="ptolemy.domains.openmodelica.kernel.OpenModelicaDirector">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{25, 50}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-60.0, 70.0]">
         </property>
     </property>
     <property name="_expertMode" class="ptolemy.kernel.util.SingletonAttribute">
@@ -51,22 +51,22 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model requires that OpenModelica be installed (see http://www.openmodelica.org).&#10;In addition,  the OPENMODELICAHOME environment variable must be set and the&#10;PATH must be set to include the OPENMODELICAHOME/bin directory.&#10;&#10;Under Mac OS X:&#10;export OPENMODELICAHOME=/opt/openmodelica&#10;export PATH=${OPENMODELICAHOME}/bin:${PATH}">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[310.0, 385.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[310.0, 410.0]">
         </property>
     </property>
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="bold" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="OpenModelica actor input port reads the output of Ramp, &#10;the init value. The value of all parameters/variables of the &#10;Modelica model is modified by this value. &#10;In case &quot;batch&quot; processing type is selected&#10;and the selected output format is &quot;CSV&quot;, &#10;the values of parameters/variables in the &#10;simulation result file (modelName_res.csv) &#10;which is generated in the temp are sent to the Display actor. &#10;&#10;">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Processing mode should be set to the batch&#10;and the selected output format should be set to csv.&#10;OpenModelica actor input port reads the output of Ramp- &#10;the init value. The value of all variables of the &#10;Modelica model is modified by this value. &#10;The values of variables in the &#10;simulation result file which is generated &#10;in $TMPDIR/$USERNAME/OpenModelica/modelName_res.csv&#10;are sent to the Display actor. &#10;&#10;">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-120.0, 220.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-80.0, 205.0]">
         </property>
     </property>
     <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
         <property name="init" class="ptolemy.actor.parameters.PortParameter" value="9">
         </property>
         <doc>Create a sequence of tokens with increasing value</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-50.0, 140.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-50.0, 155.0]">
         </property>
     </entity>
     <entity name="Display" class="ptolemy.actor.lib.gui.Display">
@@ -74,20 +74,20 @@
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[350.0, 145.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[345.0, 155.0]">
         </property>
     </entity>
     <entity name="OpenModelica" class="ptolemy.domains.openmodelica.lib.OpenModelica">
         <property name="modelicaScript" class="ptolemy.data.expr.StringParameter" value="Modelica">
             <display name="Write OpenModelica Command"/>
         </property>
-        <property name="fileName" class="ptolemy.data.expr.FileParameter" value="BouncingBall.mo">
+        <property name="fileName" class="ptolemy.data.expr.FileParameter" value="dcmotor.mo">
             <display name="File name"/>
         </property>
         <property name="processingType" class="ptolemy.data.expr.StringParameter" value="batch">
             <display name="Select interactive or batch processing"/>
         </property>
-        <property name="modelName" class="ptolemy.data.expr.StringParameter" value="BouncingBall">
+        <property name="modelName" class="ptolemy.data.expr.StringParameter" value="dcmotor">
             <display name="Model name"/>
         </property>
         <property name="outputFormat" class="ptolemy.data.expr.StringParameter" value="csv">
@@ -99,16 +99,20 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{130.0, 140.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 155.0]">
         </property>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <vertex name="vertex1" value="[275.0, 200.0]">
+        <vertex name="vertex1" value="[215.0, 155.0]">
         </vertex>
+        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+        </property>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+        </property>
     </relation>
     <link port="Ramp.output" relation="relation2"/>
     <link port="Display.input" relation="relation"/>

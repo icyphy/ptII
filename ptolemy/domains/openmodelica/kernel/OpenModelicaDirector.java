@@ -39,7 +39,7 @@ import ptolemy.kernel.util.Workspace;
    This director executes OpenModelica actor in its own threads.
    Creating and starting the threads are at the same time with
    starting the OpenModelica Compiler(OMC) which occurred in the
-   preinitialize() method.  This threads finish in the wrapup()
+   initialize() method.  This threads finish in the wrapup()
    method, at the same time with quiting the OMC.
 
    @author Mana Mirzaei, Based on ContinuousDirector by Edward A. Lee
@@ -102,7 +102,7 @@ public class OpenModelicaDirector extends ContinuousDirector {
             // Create a unique instance of OMCLogger and OMCProxy.
             _omcLogger = OMCLogger.getInstance();
             _omcProxy = OMCProxy.getInstance();
-
+            
             _omcProxy.initServer();
 
         } catch (ConnectException ex) {
@@ -119,7 +119,11 @@ public class OpenModelicaDirector extends ContinuousDirector {
     public boolean postfire() throws IllegalActionException {
 
         Time stopTime = getModelStopTime();
-
+        
+        if (_debugging) {
+            _debug("OpenModelicaDirector: Called postfire().");
+        }
+        
         // If the stop time is infinite, then stop execution.
         if (stopTime == Time.POSITIVE_INFINITY) {
             stop();
@@ -127,6 +131,8 @@ public class OpenModelicaDirector extends ContinuousDirector {
         } else {
             return true;
         }
+        
+        
     }
 
     /** Invoke the wrapup() of the super class. 
@@ -136,6 +142,7 @@ public class OpenModelicaDirector extends ContinuousDirector {
      */
     public void wrapup() throws IllegalActionException {
         super.wrapup();
+        
         try {
             _omcProxy.quitServer();
         } catch (ConnectException ex) {
