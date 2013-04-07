@@ -53,7 +53,7 @@ import ptolemy.kernel.util.IllegalActionException;
     A simple simulation program to illustrate how to implement a client.
     OpenModelica Compiler(OMC) which is coupled to Ptolemy II is called to initialize the
     OMC server and simulate the Modelica model. The generated simulation runtime file which
-    is located in the "tmp" folder in the user directory of the openmodelica is run by this flag "-interactive -port 10500".  
+    is located in $TMPDIR/$USERNAME/OpenModelica is run by this flag "-interactive -port 10500".  
     The simulation runtime will be waiting until a UI client in Ptolemy II has been connected to its port.
     After starting the simulation the keyboard entries and the results will be displayed in the same console as you are typing
     the command. For exchanging data with the OMC server the BSD socket is utilized.   
@@ -87,6 +87,7 @@ public class OMCClient {
         // Build the Modelica model and run the executable result file in an interactive processing mode.
 
         try {
+            _omcProxy.loadFile("BouncingBall.mo","BouncingBall");
             _omcProxy.simulateModel("BouncingBall.mo", "BouncingBall",
                     "InteractiveBouncingBall", "0.0", "0.1", 500, "0.0001",
                     "dassl", "csv", ".*", " ", " ", "interactive");
@@ -107,11 +108,11 @@ public class OMCClient {
         // Close the server and stop the server-to-user thread.
         _utilSocket.closesocket();
 
-        // Stop the OMC server.
+        // Quit the OMC server.
         try {
             _omcProxy.quitServer();
         } catch (ConnectException ex) {
-            // FIXME
+            //FIXME
         }
     }
 

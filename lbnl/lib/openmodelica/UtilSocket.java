@@ -69,24 +69,31 @@ public class UtilSocket implements IUtilSocket {
     ///////////////////////////////////////////////////////////////////
     ////                        public methods                    ////
 
+    /** Close the socket and 
+     *  the server-to-user thread is stopped.
+     *  @throws IOException
+     */
+    public void closesocket() throws IOException {
+        _clientSocket.close();
+        System.exit(0);
+    }
+    
     /** Establish the client socket.
      *  @throws IOException 
      */
     public void establishclientsocket() throws IOException {
 
         // Get the socket port number.
-
-        System.out.println("Getting socket port number: "  + _portNo);
-
         // Create the communication BSD socket.
 
         try {
+            System.out.println("Getting socket port number: " + _portNo);
             _clientSocket = new Socket(_hostName, _portNo);
         } catch (IOException e) {
             throw new IOException("Unable to create socket.");
         }
-        
-        System.out.println("Socket is opened.");
+
+        System.out.println("Socket is created.");
     }
 
     /** Exchange data through the BSD socket.
@@ -100,7 +107,7 @@ public class UtilSocket implements IUtilSocket {
         _clientSocket = server.accept();
 
         // Set up streams for reading from and writing to the server.
-        
+
         final BufferedReader from_server = new BufferedReader(
                 new InputStreamReader(_clientSocket.getInputStream()));
 
@@ -157,28 +164,19 @@ public class UtilSocket implements IUtilSocket {
 
     /** Create an instance of UtilSocket object in order to provide a global point of access to the instance.
      *  It provides a unique source of the UtilSocket instance.
-     *  @return The UtilSocket object representing the instance value.
+     *  @return _utilSocket The UtilSocket object representing the instance value.
      */
     public static UtilSocket getInstance() {
-        if (_utilSocket == null)
-            _utilSocket = new UtilSocket();
         return _utilSocket;
     }
 
-    /** Close the socket and 
-     *  the server-to-user thread is stopped.
-     *  @throws IOException
-     */
-    public void closesocket() throws IOException {
-        _clientSocket.close();
-        System.exit(0);
-    }
+
 
     ///////////////////////////////////////////////////////////////////
     ////                     private variables                    ////
     // The name of the socket for establishing the connection.
     private Socket _clientSocket = null;
-    
+
     // The name of the host.
     private String _hostName = "localhost";
 
@@ -186,5 +184,5 @@ public class UtilSocket implements IUtilSocket {
     private int _portNo = 10500;
 
     // UtilSocket Object for accessing a unique source of instance.
-    private static UtilSocket _utilSocket = null;
+    private static UtilSocket _utilSocket = new UtilSocket();
 }
