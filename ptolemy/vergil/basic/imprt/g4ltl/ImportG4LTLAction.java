@@ -28,7 +28,6 @@
 package ptolemy.vergil.basic.imprt.g4ltl;
 
 import g4ltl.SolverUtility;
-import g4ltl.utility.SynthesisEngine;
 
 import java.awt.Color;
 import java.awt.event.ActionEvent;

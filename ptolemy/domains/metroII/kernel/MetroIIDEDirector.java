@@ -41,7 +41,6 @@ import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.FiringEvent;
 import ptolemy.data.BooleanToken;
-import ptolemy.data.expr.FileParameter;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.domains.de.kernel.DEDirector;

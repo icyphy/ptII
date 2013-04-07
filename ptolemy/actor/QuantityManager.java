@@ -30,7 +30,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 package ptolemy.actor;
 
 import java.util.List;
- 
+
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.Port;

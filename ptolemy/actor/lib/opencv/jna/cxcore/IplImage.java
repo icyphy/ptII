@@ -28,14 +28,14 @@ the copyright link on the splash page or see copyright.htm.
 */
 package ptolemy.actor.lib.opencv.jna.cxcore;
 
+import java.util.Arrays;
+import java.util.List;
+
 import ptolemy.actor.lib.opencv.jna.cxcore.CxcoreLib.IplTileInfo;
 
 import com.sun.jna.Pointer;
 import com.sun.jna.Structure;
 import com.sun.jna.ptr.PointerByReference;
-
-import java.util.Arrays;
-import java.util.List;
 
 public class IplImage extends Structure {
     public int nSize;

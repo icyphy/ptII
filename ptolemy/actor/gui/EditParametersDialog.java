@@ -34,7 +34,6 @@ import java.util.List;
 import javax.swing.SwingUtilities;
 
 import ptolemy.actor.gui.style.StyleConfigurer;
-import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.gui.ComponentDialog;
 import ptolemy.gui.Query;
@@ -44,7 +43,6 @@ import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
-import ptolemy.kernel.util.StringAttribute;
 import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.util.CancelException;
 import ptolemy.util.MessageHandler;

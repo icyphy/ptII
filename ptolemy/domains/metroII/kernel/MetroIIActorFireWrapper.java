@@ -4,7 +4,6 @@ import java.util.LinkedList;
 
 import net.jimblackler.Utils.YieldAdapterIterable;
 import net.jimblackler.Utils.YieldAdapterIterator;
-
 import ptolemy.actor.Actor;
 import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event;
 import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event.Builder;

@@ -30,14 +30,9 @@ the copyright link on the splash page or see copyright.htm.
 package ptolemy.domains.metroII.kernel;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 import net.jimblackler.Utils.CollectionAbortedException;
 import net.jimblackler.Utils.ResultHandler;
@@ -45,8 +40,6 @@ import net.jimblackler.Utils.YieldAdapterIterable;
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.FiringEvent;
-import ptolemy.actor.IOPort;
-import ptolemy.actor.util.CausalityInterface;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
@@ -56,7 +49,6 @@ import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event.Builder;
 import ptolemy.domains.ptides.kernel.PtidesEvent;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NamedObj;

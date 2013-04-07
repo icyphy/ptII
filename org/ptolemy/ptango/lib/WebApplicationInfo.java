@@ -37,9 +37,7 @@ import javax.servlet.Servlet;
 
 import org.eclipse.jetty.util.resource.FileResource;
 
-import ptolemy.data.StringToken;
 import ptolemy.data.expr.FileParameter;
-import ptolemy.kernel.util.IllegalActionException;
 
 
 ///////////////////////////////////////////////////////////////////

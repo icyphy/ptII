@@ -28,7 +28,6 @@
 package org.ptolemy.fmi;
 
 import java.io.IOException;
-import java.nio.ByteBuffer;
 import java.nio.DoubleBuffer;
 import java.nio.IntBuffer;
 import java.util.HashSet;
@@ -44,7 +43,6 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import com.sun.jna.Function;
-import com.sun.jna.Memory;
 import com.sun.jna.NativeLibrary;
 import com.sun.jna.Pointer;
 import com.sun.jna.ptr.PointerByReference;

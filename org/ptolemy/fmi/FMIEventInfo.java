@@ -28,10 +28,10 @@
 
 package org.ptolemy.fmi;
 
-import com.sun.jna.Structure;
-
 import java.util.Arrays;
 import java.util.List;
+
+import com.sun.jna.Structure;
 
 /**
  * Functional Mock-up Interface (FMI) event information.

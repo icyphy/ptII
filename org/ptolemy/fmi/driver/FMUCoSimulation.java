@@ -29,7 +29,6 @@ package org.ptolemy.fmi.driver;
 
 import java.io.File;
 import java.io.PrintStream;
-import java.util.HashSet;
 
 import org.ptolemy.fmi.FMICallbackFunctions;
 import org.ptolemy.fmi.FMILibrary;

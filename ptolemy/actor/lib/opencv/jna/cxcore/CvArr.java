@@ -28,11 +28,11 @@ the copyright link on the splash page or see copyright.htm.
 */
 package ptolemy.actor.lib.opencv.jna.cxcore;
 
-import com.sun.jna.Pointer;
-import com.sun.jna.Structure;
-
 import java.util.Arrays;
 import java.util.List;
+
+import com.sun.jna.Pointer;
+import com.sun.jna.Structure;
 
 public class CvArr extends Structure {
     public CvArr() {

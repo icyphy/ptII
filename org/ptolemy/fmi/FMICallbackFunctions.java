@@ -28,15 +28,15 @@
 
 package org.ptolemy.fmi;
 
+import java.util.Arrays;
+import java.util.List;
+
 import org.ptolemy.fmi.FMILibrary.FMICallbackAllocateMemory;
 import org.ptolemy.fmi.FMILibrary.FMICallbackFreeMemory;
 import org.ptolemy.fmi.FMILibrary.FMICallbackLogger;
 import org.ptolemy.fmi.FMILibrary.FMIStepFinished;
 
 import com.sun.jna.Structure;
-
-import java.util.Arrays;
-import java.util.List;
 
 /**
  * Functional Mock-up Interface (FMI) callback functions needed by

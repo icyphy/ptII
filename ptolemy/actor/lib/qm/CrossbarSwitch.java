@@ -33,8 +33,6 @@ package ptolemy.actor.lib.qm;
 import java.util.HashMap;
 import java.util.TreeSet;
 
-import ptolemy.actor.Actor;
-import ptolemy.actor.IntermediateReceiver;
 import ptolemy.actor.QuantityManager;
 import ptolemy.actor.Receiver;
 import ptolemy.actor.util.FIFOQueue;

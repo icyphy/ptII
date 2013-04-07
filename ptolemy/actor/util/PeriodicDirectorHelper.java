@@ -32,7 +32,6 @@ import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
 import ptolemy.actor.Manager;
 import ptolemy.actor.SuperdenseTimeDirector;
-import ptolemy.domains.ptides.kernel.PtidesDirector;
 import ptolemy.kernel.util.IllegalActionException;
 
 ///////////////////////////////////////////////////////////////////

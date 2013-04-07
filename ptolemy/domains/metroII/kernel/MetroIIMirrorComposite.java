@@ -34,7 +34,6 @@ import java.util.LinkedList;
 import java.util.List;
 
 import ptolemy.actor.IOPort;
-import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.lib.hoc.MirrorPort;
 import ptolemy.actor.parameters.MirrorPortParameter;
 import ptolemy.actor.parameters.ParameterMirrorPort;

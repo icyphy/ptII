@@ -40,7 +40,6 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.util.MessageHandler;
-import ptolemy.util.StringUtilities;
 
 ///////////////////////////////////////////////////////////////////
 //// TestExceptionAttribute

@@ -29,7 +29,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
  */
 package ptolemy.actor.lib.qm;
 
-import ptolemy.actor.TypedCompositeActor; 
+import ptolemy.actor.TypedCompositeActor;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.CompositeEntity;
