@@ -51,22 +51,32 @@ PTCLASSALLJARS = \
 	util/util.jar
 
 JSRCS = \
-	ConstraintSolver.java \
-	MappingConstraintSolver.java \
-	MetroIIActorBasicWrapper.java \
-	MetroIIActorGeneralWrapper.java \
-	MetroIICompositeActor.java \
-	MetroIIDEDirector.java \
-	MetroIIDirector.java \
-	MetroIIEventHandler.java \
-	MetroIIFSMDirector.java \
-	MetroIIModalModel.java \
-	MetroIIPtidesDirector.java \
-	MetroIIPNDirector.java \
-	MetroIIPNQueueReceiver.java \
-	MetroIISRDirector.java \
-	MetroIISystemCDirector.java \
-	StartOrResumable.java
+    BlockingFire.java \
+    MetroIIActorGeneralWrapper.java \
+    MetroIIEventHandler.java \
+    MetroIIPNQueueReceiver.java \
+    MetroIIPtidesReceiver.java \
+    StartOrResumable.java \
+    ConstraintSolver.java \
+    MetroIICompositeActor.java \
+    MetroIIFSMDirector.java \
+    MetroIIPtidesDirector.java \
+    MetroIISRDirector.java \
+    FireMachine.java \
+    MetroIIDEDirectorForPtides.java \
+    MetroIIMirrorComposite.java \
+    MetroIIPtidesListEventQueue.java \
+    MetroIISystemCDirector.java \
+    MappingConstraintSolver.java \
+    MetroIIDEDirector.java \
+    MetroIIModalModel.java \
+    MetroIIPtidesPlatform.java \
+    NonBlockingFire.java \
+    MetroIIActorBasicWrapper.java \
+    MetroIIDirector.java \
+    MetroIIPNDirector.java \
+    MetroIIPtidesPort.java \
+    ResumableFire.java
 
 OTHER_FILES_TO_BE_JARED =
 
@@ -80,16 +90,54 @@ MISC_FILES =	$(DIRS) test
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	doc \
-	'MetroIIActorBasicWrapper$$State.class' \
-	'MetroIIActorThread$$State.class' \
-	'MetroIIActorThread$$Type.class' \
-	'MetroIIDEDirector$$Pair.class' \
-	'MetroIIPNDirector$$1.class' \
-	'MetroIICompositeActor$$1.class' \
-	'MetroIIFSMDirector$$1.class' \
-	'MetroIIModalModel$$1.class' \
-	'MetroIISRDirector$$1.class' \
-	'MetroIISystemCDirector$$1.class'
+    'BlockingFire.class' \
+    'ConstraintSolver.class' \
+    'FireMachine.class' \
+    'FireMachine$Status.class' \
+    'MappingConstraintSolver.class' \
+    'MetroIIActorBasicWrapper.class' \
+    'MetroIIActorGeneralWrapper.class' \
+    'MetroIICompositeActor$1.class' \
+    'MetroIICompositeActor.class' \
+    'MetroIIDEDirector.class' \
+    'MetroIIDEDirectorForPtides.class' \
+    'MetroIIDEDirectorForPtides$Pair.class' \
+    'MetroIIDEDirector$Pair.class' \
+    'MetroIIDirector.class' \
+    'MetroIIEventHandler.class' \
+    'MetroIIFSMDirector$1.class' \
+    'MetroIIFSMDirector.class' \
+    'MetroIIMirrorComposite$1.class' \
+    'MetroIIMirrorComposite$2.class' \
+    'MetroIIMirrorComposite.class' \
+    'MetroIIMirrorComposite$MetroIIMirrorCompositeContents$1.class' \
+    'MetroIIMirrorComposite$MetroIIMirrorCompositeContents.class' \
+    'MetroIIModalModel$1.class' \
+    'MetroIIModalModel.class' \
+    'MetroIIPNDirector$1.class' \
+    'MetroIIPNDirector.class' \
+    'MetroIIPNQueueReceiver.class' \
+    'MetroIIPtidesDirector.class' \
+    'MetroIIPtidesListEventQueue.class' \
+    'MetroIIPtidesPlatform.class' \
+    'MetroIIPtidesPlatform$PtidesMirrorPort.class' \
+    'MetroIIPtidesPlatform$PtidesNetworkType.class' \
+    'MetroIIPtidesPlatform$PtidesPlatformContents.class' \
+    'MetroIIPtidesPlatform$PtidesPlatformDirector.class' \
+    'MetroIIPtidesPort.class' \
+    'MetroIIPtidesReceiver.class' \
+    'MetroIIPtidesReceiver$Event.class' \
+    'MetroIIPtidesReceiver$TagComparator.class' \
+    'MetroIISRDirector$1.class' \
+    'MetroIISRDirector.class' \
+    'MetroIISystemCDirector$1.class' \
+    'MetroIISystemCDirector.class' \
+    'NonBlockingFire.class' \
+    'ResumableFire.class' \
+    'StartOrResumable.class' \
+    'StartOrResumable$State.class' \
+
+
 
 JCLASS = $(JSRCS:%.java=%.class)
 
