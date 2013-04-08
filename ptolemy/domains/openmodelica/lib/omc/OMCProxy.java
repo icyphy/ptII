@@ -82,8 +82,9 @@ public class OMCProxy implements IOMCProxy {
      *  This constructor has no parameter. 
      *  This private Constructor prevents other class from instantiating. 
      */
-    private OMCProxy() {
-    }
+    private OMCProxy() {}
+    
+    
 
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
@@ -112,6 +113,7 @@ public class OMCProxy implements IOMCProxy {
             try {
                 tmp = _getOmcBinaryPaths();
             } catch (ConnectException e) {
+
                 _omcLogger
                         .getSever("Unable to get the omc binary path! Server quit.");
                 hasInitialized = false;
@@ -304,7 +306,11 @@ public class OMCProxy implements IOMCProxy {
      *  @return An OMCProxy object representing the instance value.
      */
     public static synchronized OMCProxy getInstance() {
-        return _omcProxyInstance;
+        
+        if(_omcProxyInstance == null)
+            _omcProxyInstance = new OMCProxy();            
+        
+            return _omcProxyInstance;
     }
 
     /** Fetch the type of Operating System(OS).
@@ -329,7 +335,7 @@ public class OMCProxy implements IOMCProxy {
      *  @throws InterruptedException 
      */
     public synchronized void initServer() throws ConnectException {
-
+        
         _os = getOs();
 
         // Set time as _corbaSession.
@@ -342,7 +348,9 @@ public class OMCProxy implements IOMCProxy {
         // Check if an OMC server is already started. 
         File f = new File(_getPathToObject());
         String stringifiedObjectReference = null;
-        if (!f.exists()) {
+       
+        
+        if (!f.exists()) {    
             String loggerInfo = "No OMC object reference found, starting server.";
             // If a server is not already started, start it.
             _omcLogger.getInfo(loggerInfo);
@@ -617,7 +625,7 @@ public class OMCProxy implements IOMCProxy {
         if (hasInitialized = true) {
             sendCommand("quit()");
             _omcLogger = null;
-            // _omcProxyInstance = null;
+            _omcProxyInstance = null;
         }
     }
 
@@ -1105,6 +1113,12 @@ public class OMCProxy implements IOMCProxy {
             }
             break;
         }
+        
+        if (_omcLogger == null) {
+            new Exception("Warning, _omcLogger was null?").printStackTrace();
+            _omcLogger = OMCLogger.getInstance();
+        }
+        
         String loggerInfo = "Will look for OMC object reference in '"
                 + fileName + "'.";
         _omcLogger.getInfo(loggerInfo);
@@ -1233,7 +1247,7 @@ public class OMCProxy implements IOMCProxy {
     private OMCLogger _omcLogger = OMCLogger.getInstance();
 
     // OMCProxy Object for accessing a unique source of instance. 
-    private static OMCProxy _omcProxyInstance = new OMCProxy();
+    private static OMCProxy _omcProxyInstance = null;
 
     // The working directory of the OMC is fetched from sending cd() command to the OMC.
     private String _openModelicaWorkingDirectory = null;

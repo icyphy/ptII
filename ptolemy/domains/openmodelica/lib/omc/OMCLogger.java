@@ -1,5 +1,5 @@
 /* This class saves the log result in the log file in the temporary folder.
- *
+ * 
  * Copyright (c) 2012-2013,
  * Programming Environments Laboratory (PELAB),
  * Department of Computer and getInformation Science (IDA),
@@ -66,11 +66,11 @@ public class OMCLogger {
      *  It creates the log file in the temporary folder and sets the format
      *  of the log to show date and time first.
      *  This private Constructor prevents other class from instantiating.
-     * @exception IllegalActionException
+     * @throws IllegalActionException 
      */
     private OMCLogger() throws IllegalActionException {
 
-        // The path of the directory which contains the result files.
+        // The path of the directory which contains the result files. 
         String logPath = createDirectoryForResult();
 
         String logFileName = logPath + "omcLog.txt";
@@ -106,7 +106,7 @@ public class OMCLogger {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         public variables                  ////
+    ////                         public variables                 ////
 
     /** Logger name of OpenModelica Compiler(OMC).*/
     public String loggerName = "omcLogger";
@@ -115,7 +115,7 @@ public class OMCLogger {
     public Logger omcLogger = Logger.getLogger("omcLogger");
 
     ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////
+    ////                          public methods                  ////
 
     /** Create the directory for saving the simulation result files
      *  and also the log file.
@@ -128,8 +128,7 @@ public class OMCLogger {
         String temp = System.getProperty("java.io.tmpdir");
 
         if (username == null) {
-            System.err
-                    .println("Could not get user.name property?  Using 'nobody'.");
+            System.err.println("Could not get user.name property?  Using 'nobody'.");
             logPath = temp + "/nobody/OpenModelica/";
         } else {
             logPath = temp + "/" + username + "/OpenModelica/";
@@ -153,11 +152,28 @@ public class OMCLogger {
         return logPath;
     }
 
-    /** Get the Info LogLevel and info message will be written in the log file.
-     *  @param infoMessage The info message.
+    /** Get the Info LogLevel and info message will be written in the log file. 
+     *  @param infoMessage The info message. 
      */
     public void getInfo(String infoMessage) {
         omcLogger.info(infoMessage);
+    }
+
+
+    /** Create an instance of OMCLogger object in order to provide a global point of access to the instance.
+     *  It provides a unique source of OMCLogger instance.
+     *  @return An OMCLogger object representing the instance value.
+     */
+    public static OMCLogger getInstance() {
+    
+        if (_omcLoggerInstance == null) {
+            try {
+                _omcLoggerInstance = new OMCLogger();
+            } catch (IllegalActionException e) {
+                new Exception("Unable to get instance of OMCLogger.").printStackTrace();
+            }
+        }
+        return _omcLoggerInstance;
     }
 
     /** Get the Sever LogLevel and sever message will be written in the log file.
@@ -165,24 +181,6 @@ public class OMCLogger {
      */
     public void getSever(String severMessage) {
         omcLogger.severe(severMessage);
-    }
-
-    /** Create an instance of OMCLogger object in order to provide a global point of access to the instance.
-     *  It provides a unique source of OMCLogger instance.
-     *  @return An OMCLogger object representing the instance value.
-     */
-    public static OMCLogger getInstance() {
-
-        if (_omcLoggerInstance == null) {
-            try {
-                _omcLoggerInstance = new OMCLogger();
-            } catch (IllegalActionException e) {
-                String message = "Unable to get instance of OMCLogger.";
-                _omcLoggerInstance.getSever(message);
-                //FIXME throw exception
-            }
-        }
-        return _omcLoggerInstance;
     }
 
     ///////////////////////////////////////////////////////////////////
