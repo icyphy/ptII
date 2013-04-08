@@ -81,7 +81,7 @@ public class WebApplicationInfo {
         _modelName = modelName;
         
         // Assign a default application path of "/" if none is given
-        if (applicationPath == null || applicationPath.toString().isEmpty()) {
+        if (applicationPath == null || applicationPath.isEmpty()) {
             _applicationPath = new URI("/");
         } else {
             _applicationPath = new URI(applicationPath);
@@ -242,7 +242,7 @@ public class WebApplicationInfo {
         }
         
         // Check for a match to the application path
-        if (path.toString().equalsIgnoreCase(appPath)) {
+        if (path.equalsIgnoreCase(appPath)) {
             return true;
         }
         
