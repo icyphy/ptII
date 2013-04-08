@@ -72,6 +72,6 @@ public class ObjectTokenSource extends Source {
      */
     public void fire() throws IllegalActionException {
         super.fire();
-        output.send(0, new ObjectToken(new Double(42.0)));
+        output.send(0, new ObjectToken(Double.valueOf(42.0)));
     }
 }

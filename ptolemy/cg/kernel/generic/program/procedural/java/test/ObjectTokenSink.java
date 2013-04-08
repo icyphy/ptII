@@ -76,7 +76,7 @@ public class ObjectTokenSink extends Sink {
             ObjectToken token = (ObjectToken) input.get(0);
             if (token.getValue() instanceof Double) {
                 Double value = (Double) token.getValue();
-                if (value.compareTo(new Double(42.0)) != 0) {
+                if (value.compareTo(Double.valueOf(42.0)) != 0) {
                     throw new IllegalActionException("Input was " + value
                             + ", expected 42.0");
                 }

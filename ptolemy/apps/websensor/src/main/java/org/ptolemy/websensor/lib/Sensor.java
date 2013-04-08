@@ -49,8 +49,8 @@ public class Sensor {
         _interval = "undefined";
         _readings = new ArrayList<Double>();
         // TODO:  Here's a value for testing.  Delete this line in the future
-        _readings.add(new Double(3.14));
-        _readings.add(new Double(1.23));
+        _readings.add(Double.valueOf(3.14));
+        _readings.add(Double.valueOf(1.23));
     }
     
     /** Create a sensor with the given type, units of measurement, and 
