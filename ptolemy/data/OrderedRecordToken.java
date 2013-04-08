@@ -124,6 +124,58 @@ public class OrderedRecordToken extends RecordToken {
         super(labels, values);
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+
+    /** Return true if the class of the argument is RecordToken, and
+     *  the argument has the same set of labels as this token and the
+     *  corresponding fields are equal, as determined by the equals
+     *  method of the contained tokens. Order matters
+     *  @param object An instance of Object.
+     *  @return True if the argument is equal to this token.
+     *  @see #hashCode()
+     */
+    public boolean equals(Object object) {
+        if (object == null) {
+            return false;
+        }
+        // This test rules out instances of a subclass.
+        if (object.getClass() != getClass()) {
+            return false;
+        }
+
+        RecordToken recordToken = (RecordToken) object;
+
+        try {
+            if (_isEqualTo(recordToken) == BooleanToken.TRUE) {
+                return true;
+            }
+        } catch (IllegalActionException ex) {
+            return false;
+        }
+
+        return false;
+    }
+
+    /** Return a hash code value for this token. This method returns the xor
+     *  of the hash codes of the labels and the element tokens.
+     *  @return A hash code value for this token.
+     */
+    public int hashCode() {
+        int code = 0;
+        Set labelSet = _fields.keySet();
+        Iterator iterator = labelSet.iterator();
+
+        while (iterator.hasNext()) {
+            String label = (String) iterator.next();
+            Token token = get(label);
+            code ^= label.hashCode();
+            code ^= token.hashCode();
+        }
+
+        return code;
+    }
+
     /** Return the value of this token as a string.
      *  The syntax is similar to that of a record, but using square braces
      *  instead of curly braces,
@@ -160,56 +212,6 @@ public class OrderedRecordToken extends RecordToken {
         }
 
         return stringRepresentation.toString() + "]";
-    }
-
-    /** Return true if the class of the argument is RecordToken, and
-     *  the argument has the same set of labels as this token and the
-     *  corresponding fields are equal, as determined by the equals
-     *  method of the contained tokens. Order matters
-     *  @param object An instance of Object.
-     *  @return True if the argument is equal to this token.
-     *  @see #hashCode()
-     */
-    public boolean equals(Object object) {
-        if (object == null) {
-            return false;
-        }
-        // This test rules out instances of a subclass.
-        if (object.getClass() != getClass()) {
-            return false;
-        }
-
-        RecordToken recordToken = (RecordToken) object;
-
-        Set myLabelSet = _fields.keySet();
-        Set argLabelSet = recordToken._fields.keySet();
-
-        if (!myLabelSet.equals(argLabelSet)) {
-            return false;
-        }
-
-        Iterator iterator = myLabelSet.iterator();
-        Iterator argIterator = argLabelSet.iterator();
-
-        while (iterator.hasNext()) {
-            String label = (String) iterator.next();
-            String argLabel = (String) argIterator.next();
-
-            // labels match
-            if (!label.equals(argLabel)) {
-                return false;
-            }
-
-            Token token1 = get(label);
-            Token token2 = recordToken.get(argLabel);
-
-            // tokens match
-            if (!token1.equals(token2)) {
-                return false;
-            }
-        }
-
-        return true;
     }
 
     ///////////////////////////////////////////////////////////////////
