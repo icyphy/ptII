@@ -74,6 +74,32 @@ public abstract class MapTypeInfiniteConcept<C extends Concept> extends
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Return true if the class of the argument is RecordToken, and
+     *  the argument has the same set of labels as this token and the
+     *  corresponding fields are equal, as determined by the equals
+     *  method of the contained tokens.
+     *  @param object An instance of Object.
+     *  @return True if the argument is equal to this token.
+     *  @see #hashCode()
+     */
+    public boolean equals(Object object) {
+        if (object == null) {
+            return false;
+        }
+        // This test rules out instances of a subclass.
+        if (object.getClass() != getClass()) {
+            return false;
+        }
+
+        MapTypeInfiniteConcept concept = (MapTypeInfiniteConcept) object;
+        if (getOntology().equals(concept.getOntology())
+                && keySet().equals(concept.keySet())
+                && _values().equals(concept._values())) {
+            return true;
+        }
+        return false;
+    }
+
     /** Get the concept contained by at the given key in this map concept,
      *  or the default value if the key is not contained in this map concept.
      *  @param key The key whose concept value we are querying.
@@ -172,6 +198,15 @@ public abstract class MapTypeInfiniteConcept<C extends Concept> extends
         allKeys.addAll(theseKeys);
         allKeys.addAll(otherKeys);
         return allKeys;
+    }
+
+    /** Get the set of all entries referred to by this map concept.
+     *
+     *  @return A set of all the entries which map to a concept.
+     */
+    public Set<C> _values() {
+        // Used by equals()
+        return (Set<C>)_keyToConcept.values();
     }
 
     ///////////////////////////////////////////////////////////////////

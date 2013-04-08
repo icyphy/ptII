@@ -128,6 +128,33 @@ public class FlatTokenInfiniteConcept extends InfiniteConcept {
         }
     }
 
+    /** Return true if the class of the argument is RecordToken, and
+     *  the argument has the same set of labels as this token and the
+     *  corresponding fields are equal, as determined by the equals
+     *  method of the contained tokens.
+     *  @param object An instance of Object.
+     *  @return True if the argument is equal to this token.
+     *  @see #hashCode()
+     */
+    public boolean equals(Object object) {
+        if (object == null) {
+            return false;
+        }
+        // This test rules out instances of a subclass.
+        if (object.getClass() != getClass()) {
+            return false;
+        }
+
+        FlatTokenInfiniteConcept concept = (FlatTokenInfiniteConcept) object;
+        //if (compare(concept) == CPO.SAME) {
+        if (getOntology().equals(concept.getOntology())
+                && getRepresentative().equals(concept.getRepresentative())
+                && getTokenValue().equals(concept.getTokenValue())) {
+            return true;
+        }
+        return false;
+    }
+
     /** Return the color attribute associated with this FlatTokenInfiniteConcept.
      *  This will be the color to be the color of the
      *  FlatTokenRepresentativeConcept representative which is a finite concept
