@@ -779,17 +779,17 @@ public class ActorGraphDBFrame extends ActorGraphFrame {
             return historyList;
         }
         FileReader fileReader = null;
+        BufferedReader bufferedReader = null;
         try {
             fileReader = new FileReader(historyFileName);
-            // FindBugs flags, but FileReader is closed below.
-            BufferedReader bufferedReader = new BufferedReader(fileReader);
+            bufferedReader = new BufferedReader(fileReader);
             String line;
             while ((line = bufferedReader.readLine()) != null) {
                 historyList.add(line);
             }
         } finally {
-            if (fileReader != null) {
-                fileReader.close();
+            if (bufferedReader != null) {
+                bufferedReader.close();
             }
         }
 

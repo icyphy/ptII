@@ -94,16 +94,22 @@ public class ImageWriter extends TypedAtomicActor {
         CompositeEntity container = (CompositeEntity) this.getContainer();
         ProxySource source = (ProxySource) container.getEntity("Video_remote");
         source.getProxySourceData().getTokenQueue().clear();
+        FileOutputStream fileOutputStream = null;
         try {
             File temp = File.createTempFile("predator", ".jpg");
             temp.deleteOnExit();
             System.out.println(temp.getAbsolutePath());
-            FileOutputStream f = new FileOutputStream(temp);
-            int val;
-            while ((val = stream.read()) != -1) {
-                f.write(val);
+            try {
+                fileOutputStream = new FileOutputStream(temp);
+                int val;
+                while ((val = stream.read()) != -1) {
+                    fileOutputStream.write(val);
+                }
+            } finally {
+                if (fileOutputStream != null) {
+                    fileOutputStream.close();
+                }
             }
-            f.close();
             output.send(0, new StringToken(temp.getAbsolutePath()));
         } catch (IOException e) {
             throw new IllegalActionException(this, e,

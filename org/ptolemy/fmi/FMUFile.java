@@ -398,15 +398,21 @@ public class FMUFile {
                 // If the entry is not a directory, then write the file.
                 if (!entry.isDirectory()) {
                     // Write the files to the disk.
-                    FileOutputStream fos = new FileOutputStream(destinationFile);
-                    destination = new BufferedOutputStream(fos, BUFFER);
-                    int count;
-                    while ((count = zipInputStream.read(data, 0, BUFFER)) != -1) {
-                        destination.write(data, 0, count);
+                    try {
+                        FileOutputStream fos = new FileOutputStream(destinationFile);
+                        destination = new BufferedOutputStream(fos, BUFFER);
+                        int count;
+                        while ((count = zipInputStream.read(data, 0, BUFFER)) != -1) {
+                            destination.write(data, 0, count);
+                        }
+                        files.add(destinationFile);
+                    } finally {
+                        if (destination != null) {
+                            // Is the flush() really necessary?
+                            destination.flush();
+                            destination.close();
+                        }
                     }
-                    destination.flush();
-                    destination.close();
-                    files.add(destinationFile);
                 }
             }
         } finally {
