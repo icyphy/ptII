@@ -826,8 +826,34 @@ public class SysMLSequentialDirector extends Director implements
             return result;
         }
 
+
+        /** Return true if the argument is an instance of RefireRequest
+         *  and compares as the same value.   
+         *  @param object An instance of Object.
+         *  @return True if the argument is a RefireRequest.
+         */
+        public boolean equals(Object object) {
+            // See http://www.technofundo.com/tech/java/equalhash.html
+            if (object == this) {
+                return true;
+            }
+            if (object == null) {
+                return false;
+            }
+            // This test rules out subclasses.
+            if (object.getClass() != getClass()) {
+                return false;
+            }
+
+            if (compareTo(object) == 0) {
+                return true;
+            }
+            return false;
+        }
+
         @Override
         public int hashCode() {
+            // FIXME: Shouldn't the hashCode take into account the microstep?
             return time.hashCode();
         }
     }
