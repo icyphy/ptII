@@ -132,7 +132,7 @@ public class FMICoSimulationCapabilities {
                 }
 
                 // Optionally append a comma.
-                if (valueString != "") {
+                if (valueString.length() > 0) {
                     if (results.length() > 0) {
                         results.append(", ");
                     }

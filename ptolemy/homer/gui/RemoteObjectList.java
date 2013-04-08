@@ -269,7 +269,7 @@ public class RemoteObjectList extends JPanel implements ActionListener {
             }
         }
 
-        if (e.getActionCommand() == "clear") {
+        if (e.getActionCommand().equals("clear")) {
             _listModel.clear();
         }
     }
