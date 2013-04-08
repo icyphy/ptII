@@ -102,7 +102,7 @@ public class ControlExitToken extends ControlToken {
 
     public static class ExitLocation implements Location {
         public ExitLocation(String name) {
-            this.name = new String(name);
+            this.name = name;
         }
 
         public String toString() {

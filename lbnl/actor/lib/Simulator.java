@@ -664,7 +664,7 @@ public class Simulator extends SDFTransformer {
         if (new File(dir).isAbsolute()) {
             return dir;
         }
-        String chi = new String(dir);
+        String chi = dir;
         if (chi.length() == 0) {
             chi = ".";
         }

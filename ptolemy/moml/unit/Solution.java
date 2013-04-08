@@ -845,8 +845,8 @@ public class Solution {
             return "";
         } else {
             float[] colorArray = colorValue.getRGBComponents(null);
-            return new String("{ " + colorArray[0] + ", " + colorArray[1]
-                    + ", " + colorArray[2] + ", " + colorArray[3] + " }");
+            return "{ " + colorArray[0] + ", " + colorArray[1]
+                    + ", " + colorArray[2] + ", " + colorArray[3] + " }";
         }
     }
 

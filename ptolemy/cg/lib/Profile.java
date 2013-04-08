@@ -132,7 +132,7 @@ abstract public class Profile {
 
         public ProfileActor(String name, boolean original)
                 throws IllegalActionException {
-            _name = new String(name);
+            _name = name;
             _isOriginal = original;
         }
 

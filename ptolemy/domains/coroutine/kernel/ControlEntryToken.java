@@ -102,7 +102,7 @@ public class ControlEntryToken extends ControlToken {
 
     public static class EntryLocation implements Location {
         public EntryLocation(String name) {
-            this.name = new String(name);
+            this.name = name;
         }
 
         public String toString() {
