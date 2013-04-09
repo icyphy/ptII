@@ -117,7 +117,7 @@ public class Console extends Tableau {
         }
 
         /**
-         * Redirect the standard output back when closing the frame
+         * Redirect the standard output back when closing the frame.
          */
         @Override
         protected boolean _close() {
@@ -133,31 +133,34 @@ public class Console extends Tableau {
         /**
          * Customized ByteArrayOutputStream. Refresh the frame whenever new
          * print-outs come in.
-         *
          */
         public class MyByteArrayOutputStream extends ByteArrayOutputStream {
-            public MyByteArrayOutputStream(JTextArea c, Tableau t) {
+            /** Create an output stream.
+             *  @param textArea The textarea that gets updated.
+             *  @param tableau The tableau containing the text area.
+             */
+            public MyByteArrayOutputStream(JTextArea textArea, Tableau tableau) {
                 super();
-                textArea = c;
-                tab = t;
+                _textArea = textArea;
+                _tableau = tableau;
             }
 
             @Override
             public void write(int b) {
                 super.write(b);
-                textArea.setText(this.toString());
-                tab.show();
+                _textArea.setText(this.toString());
+                _tableau.show();
             }
 
             @Override
             public void write(byte[] b, int off, int len) {
                 super.write(b, off, len);
-                textArea.setText(this.toString());
-                tab.show();
+                _textArea.setText(this.toString());
+                _tableau.show();
             }
 
-            private JTextArea textArea;
-            private Tableau tab;
+            private JTextArea _textArea;
+            private Tableau _tableau;
 
         }
     }

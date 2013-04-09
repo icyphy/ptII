@@ -86,7 +86,9 @@ import diva.gui.GUIUtilities;
 public class ImportG4LTLAction extends AbstractAction {
     // This package is called "imprt" because "import" is a Java keyword.
 
-    /** Create a new action to import an FSMActor from LTL synthesis. */
+    /** Create a new action to import an FSMActor from LTL synthesis.
+     *  @param frame  The frame to which the import action is to be added.
+     */
     public ImportG4LTLAction(Top frame) {
         super("Import FSMActor using synthesis");
         _frame = frame;
@@ -103,6 +105,9 @@ public class ImportG4LTLAction extends AbstractAction {
     public void actionPerformed(ActionEvent e) {
         _importFromLTLSynthesis();
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                    private methods                        ////
 
     /** Import the design by invoking LTL synthesis via G4LTL.
      */

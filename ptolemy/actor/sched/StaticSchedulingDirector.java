@@ -425,6 +425,7 @@ public class StaticSchedulingDirector extends Director {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
+    /** The value returned by the prefire() method. */
     protected boolean _prefire = false;
 
     /** Computed schedule that has not been fully executed because this

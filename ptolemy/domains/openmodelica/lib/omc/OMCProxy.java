@@ -1121,6 +1121,10 @@ public class OMCProxy implements IOMCProxy {
         
         String loggerInfo = "Will look for OMC object reference in '"
                 + fileName + "'.";
+        if (_omcLogger == null) {
+            new Exception("Warning, _omcLogger was null?").printStackTrace();
+            _omcLogger = OMCLogger.getInstance();
+        }
         _omcLogger.getInfo(loggerInfo);
 
         return fileName;

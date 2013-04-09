@@ -761,6 +761,7 @@ public class FixedPointDirector extends StaticSchedulingDirector implements
 
     /** Fire an actor. Call its prefire() method, and
      *  if that returns true, call its fire() method.
+     *  @param actor The actor to be fired.
      *  @exception IllegalActionException If the prefire() method
      *   returns false having previously returned true in the same
      *   iteration, or if the prefire() or fire() method of the actor
@@ -864,6 +865,7 @@ public class FixedPointDirector extends StaticSchedulingDirector implements
     /** Return true if this iteration has converged.  The iteration has
      *  converged if both the number of known receivers
      *  has not changed since the previous invocation of this method.
+     *  @return true if this iteration has converged.
      */
     protected boolean _hasIterationConverged() {
         if (_debugging) {
@@ -914,6 +916,11 @@ public class FixedPointDirector extends StaticSchedulingDirector implements
      *  and either it is strict and all inputs are known or it is nonstrict.
      *  Note that this ignores whether the actor has previously returned
      *  false in postfire().
+     *  @param actor The actor that is checked for being ready to fire.
+     *  @return true if the actor is ready to fire.
+     *  @exception IllegalActionException If thrown while determining
+     *  if actors are finished firing, or while determining if the actor is
+     *  strict, or while determining if all the inputs are known.
      */
     protected boolean _isReadyToFire(Actor actor) throws IllegalActionException {
         return !_actorsFinishedFiring.contains(actor)
@@ -937,6 +944,9 @@ public class FixedPointDirector extends StaticSchedulingDirector implements
     /** Call the send(index, null) method of each output port with
      *  unknown status of the specified actor
      *  @param actor The actor.
+     *  @exception IllegalActionException If thrown while getting
+     *  the width of a port, determining if a port is known
+     *  or while sending data.
      */
     protected void _sendAbsentToAllUnknownOutputsOf(Actor actor)
             throws IllegalActionException {

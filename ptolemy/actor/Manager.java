@@ -582,6 +582,8 @@ public class Manager extends NamedObj implements Runnable {
      *  preinitializeAndResolveTypes(). This can be used to optimize
      *  away actions on repeated runs when the workspace hasn't changed
      *  between runs.
+     *  @return the workspace version on the last completion of
+     *  {@link #preinitializeAndResolveTypes()}.
      */
     public long getPreinitializeVersion() {
         return _preinitializeVersion;

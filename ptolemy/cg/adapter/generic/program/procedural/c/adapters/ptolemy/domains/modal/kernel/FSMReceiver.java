@@ -33,7 +33,7 @@ import ptolemy.kernel.util.IllegalActionException;
 //// FSMReceiver
 
 /**
- Code generator helper for FSMRecever
+ Code generator helper for FSMRecever.
 
  @author Gang Zhou, with modifications by Shanna-Shaye Forbes
  @version $Id: ModalController.java 64753 2012-10-02 02:05:53Z cxh $
@@ -48,6 +48,8 @@ public class FSMReceiver
     /** Construct the code generator helper associated
      *  with the given FSMReceiver.
      *  @param component The associated component.
+     *  @exception IllegalActionException If thrown by the parent
+     *  class.
      */
     public FSMReceiver(ptolemy.domains.modal.kernel.FSMReceiver component)
             throws IllegalActionException {

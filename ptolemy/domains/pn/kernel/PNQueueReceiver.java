@@ -528,5 +528,8 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
     /** Flag indicating whether finish has been requested. */
     protected boolean _terminate = false;
 
+    /** A BoundaryDetector determines the topological relationship of
+     *  a Receiver with respect to boundary ports.
+     */
     protected BoundaryDetector _boundaryDetector;
 }

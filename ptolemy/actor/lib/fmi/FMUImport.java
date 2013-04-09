@@ -220,6 +220,8 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
     ////                         public methods                    ////
 
     /** Advance to the specified time.
+     *  @param time The time to advance.
+     *  @param microstep The microstep to advance.
      *  @return True if advancement to the specified time succeeds.
      *  @exception IllegalActionException If an error occurs advancing time.
      */
@@ -1472,7 +1474,7 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
     protected FMIModelDescription _fmiModelDescription;
 
     /** Function to restore the current state of the FMU to a
-     *  previously retrieved version
+     *  previously retrieved version.
      */
     protected Function _fmiSetFMUstate;
 

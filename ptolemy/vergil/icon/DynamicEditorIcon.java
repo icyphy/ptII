@@ -204,6 +204,7 @@ public class DynamicEditorIcon extends EditorIcon {
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
-    // A list of weak references to figures that this has created.
+
+    /** A list of weak references to figures that this has created. */
     protected List _figures = new LinkedList();
 }

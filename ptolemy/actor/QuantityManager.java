@@ -68,7 +68,7 @@ public interface QuantityManager {
     /** Return the list of Attributes that can be specified per port with default
      *  values for the specified port.
      *  @param container The container parameter.
-     *  @param The port.
+     *  @param port The port.
      *  @return List of attributes.
      *  @exception IllegalActionException Thrown if attributeList could not be created.
      */

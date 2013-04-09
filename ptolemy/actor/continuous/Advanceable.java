@@ -94,6 +94,8 @@ public interface Advanceable extends ContinuousStepSizeController {
     ////                         public methods                    ////
 
     /** Advance to the specified time.
+     *  @param time The time to advance.
+     *  @param microstep The microstep to advance.
      *  @return True if advancement to the specified time succeeds.
      *  @exception IllegalActionException If an error occurs advancing time.
      */
