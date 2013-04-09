@@ -28,6 +28,7 @@
 package ptolemy.vergil.basic.imprt.g4ltl;
 
 import g4ltl.SolverUtility;
+import g4ltl.Version;
 
 import java.awt.Color;
 import java.awt.event.ActionEvent;
@@ -175,10 +176,9 @@ public class ImportG4LTLAction extends AbstractAction {
                     }
 
                     result = G4LTL.synthesizeFromFile(solver, file, optionTechnique,
-                            unrollSteps,
-                            /*SynthesisEngine.OUTPUT_FSM_ACTOR_PTOLEMY,*/ true);
+                            unrollSteps, true);
 
-                    // System.out.println(result);
+                   
                     
                     if (result.trim().startsWith("<") == false) {
                         // Try to see if a counter-strategy exists
@@ -202,6 +202,13 @@ public class ImportG4LTLAction extends AbstractAction {
                                 "G4LTL@Ptolemy II", JOptionPane.DEFAULT_OPTION,
                                 icon);
                         return;
+                    } else {
+                        if(!Version.BSD_VERSION){
+                            if(!solver.getOutputMultiplexer().trim().equals("")){
+                                // Generate the multiplexer
+                                G4LTL.updateModel(solver.getOutputMultiplexer(), basicGraphFrame.getModel());
+                            }
+                        }
                     }
                     G4LTL.updateModel(result, basicGraphFrame.getModel());
                 } catch (Exception ex) {

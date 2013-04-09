@@ -13,6 +13,10 @@
 
 
 
+
+
+  
+  
   
   
   
@@ -34,6 +38,10 @@
 
 
 
+
+
+  
+  
   
   
   
@@ -60,7 +68,11 @@
 
 
 
+
+
 <h1><img style="width: 45px; height: 44px;" alt="G4LTL" src="G4LTL.gif">&nbsp; FSMActor synthesis from&nbsp;specifications</h1>
+
+
 
 
 
@@ -74,8 +86,10 @@
 
 This is an attempt that tries to equip Ptolemy II with novel abilities to
 automatically synthesize controllers from high-level specifications.
-The underlying synthesis engine is based on a modified (without GUI) version of <a href="http://www6.in.tum.de/%7Echengch/g4ltl">G4LTL</a>.
+The underlying synthesis engine is based on a modified (without GUI) version of <a href="http://sourceforge.net/projects/g4ltl/">G4LTL</a>, a research tool developed by <a href="http://www.fortiss.org/en/home/">fortiss GmbH (An-Institut Technische Universit&auml;t M&uuml;nchen)</a>.
 <h2>Methodology</h2>
+
+
 
 
 
@@ -88,7 +102,11 @@ controller is a <span style="font-style: italic;">Mealy machine</span>.<br>
 
 
 
+
+
 <br>
+
+
 
 
 
@@ -98,12 +116,18 @@ controller is a <span style="font-style: italic;">Mealy machine</span>.<br>
 
 
 
+
+
   <tbody>
 
 
 
 
+
+
     <tr>
+
+
 
 
 
@@ -113,7 +137,11 @@ controller is a <span style="font-style: italic;">Mealy machine</span>.<br>
 
 
 
+
+
       <td style="width: 213px;">Example</td>
+
+
 
 
 
@@ -123,7 +151,11 @@ controller is a <span style="font-style: italic;">Mealy machine</span>.<br>
 
 
 
+
+
     <tr>
+
+
 
 
 
@@ -133,7 +165,11 @@ controller is a <span style="font-style: italic;">Mealy machine</span>.<br>
 
 
 
+
+
       <td style="width: 213px;"><small>## Use two inputs and two outputs<br>
+
+
 
 
 
@@ -143,7 +179,11 @@ controller is a <span style="font-style: italic;">Mealy machine</span>.<br>
 
 
 
+
+
       <span style="font-style: italic; font-weight: bold;">OUTPUT grant1, grant2</span></small></td>
+
+
 
 
 
@@ -153,7 +193,11 @@ controller is a <span style="font-style: italic;">Mealy machine</span>.<br>
 
 
 
+
+
     <tr>
+
+
 
 
 
@@ -165,6 +209,10 @@ and connect subformulas with appropriate parentheses.</small><br>
 
 
 
+
+
+      
+      
       
       
       
@@ -174,7 +222,11 @@ and connect subformulas with appropriate parentheses.</small><br>
 
 
 
+
+
         <li><small>Logical operators: use "||", "&amp;&amp;", "!" ,&nbsp; "-&gt;" for logical or, and, not, and imply.</small></li>
+
+
 
 
 
@@ -184,6 +236,10 @@ and connect subformulas with appropriate parentheses.</small><br>
 
 
 
+
+
+        
+        
         
         
         
@@ -193,7 +249,11 @@ and connect subformulas with appropriate parentheses.</small><br>
 
 
 
+
+
           <li><small>Use "ALWAYS (A)" to specify that the scenario A always holds</small></li>
+
+
 
 
 
@@ -203,7 +263,11 @@ and connect subformulas with appropriate parentheses.</small><br>
 
 
 
+
+
           <li><small>Use "NEXT (A)" to specify that in the next round, scenario A holds</small></li>
+
+
 
 
 
@@ -213,6 +277,10 @@ and connect subformulas with appropriate parentheses.</small><br>
 
 
 
+
+
+        
+        
         
         
         
@@ -222,6 +290,10 @@ and connect subformulas with appropriate parentheses.</small><br>
 
 
 
+
+
+      
+      
       
       
       
@@ -231,12 +303,18 @@ and connect subformulas with appropriate parentheses.</small><br>
 
 
 
+
+
       <small>2. Every line in the specification is connected with &amp;&amp; implicitly.<br>
 
 
 
 
+
+
       <br>
+
+
 
 
 
@@ -250,7 +328,11 @@ never produces.<br>
 
 
 
+
+
       </small></td>
+
+
 
 
 
@@ -260,7 +342,11 @@ never produces.<br>
 
 
 
+
+
       </small><small><br>
+
+
 
 
 
@@ -270,7 +356,11 @@ never produces.<br>
 
 
 
+
+
       <br>
+
+
 
 
 
@@ -280,7 +370,11 @@ never produces.<br>
 
 
 
+
+
       </small><small><br>
+
+
 
 
 
@@ -290,7 +384,11 @@ never produces.<br>
 
 
 
+
+
       <br>
+
+
 
 
 
@@ -300,7 +398,11 @@ never produces.<br>
 
 
 
+
+
       <br>
+
+
 
 
 
@@ -310,7 +412,11 @@ never produces.<br>
 
 
 
+
+
     </tr>
+
+
 
 
 
@@ -320,7 +426,11 @@ never produces.<br>
 
 
 
+
+
       <td style="width: 489px;"><small>Invoke the synthesis engine to generate a correct controller.&nbsp;</small></td>
+
+
 
 
 
@@ -330,11 +440,17 @@ never produces.<br>
 
 
 
+
+
     </tr>
 
 
 
 
+
+
+  
+  
   
   
   
@@ -345,7 +461,11 @@ never produces.<br>
 
 
 
+
+
 <h2>Demonstrations</h2>
+
+
 
 
 
@@ -369,7 +489,11 @@ never produces.<br>
 
 
 
+
+
   <li> <a href="#Demo_1">Demo 1: Simple arbitor</a></li>
+
+
 
 
 
@@ -385,7 +509,11 @@ never produces.<br>
 guaranteed service for a super client</a></li>
 
 
-  <li>Demo 3: Controller with error handling</li>
+
+
+  <li><a href="#Demo_3">Demo 3: Controller with error handling</a></li>
+
+
 
 
 
@@ -410,6 +538,8 @@ conditions</a></li>
 
 
 
+
+
 </ul>
 
 
@@ -422,7 +552,11 @@ conditions</a></li>
 
 
 
+
+
 <h2><a name="Demo_1"> Demo 1: Simple arbitor</a></h2>
+
+
 
 
 
@@ -447,6 +581,8 @@ conditions</a></li>
 
 
 
+
+
   <li> Open <a href="demo/Arbitor/Arbitor.xml">$PTII/ptolemy/vergil/basic/imprt/g4ltl/demo/Arbitor/Arbitor.xml</a>
   </li>
 
@@ -460,7 +596,11 @@ conditions</a></li>
 
 
 
+
+
   <li>On the menu bar, select "File -&gt; Import -&gt; Import FSMActor using synthesis" </li>
+
+
 
 
 
@@ -487,11 +627,15 @@ at <a href="demo/Arbitor/ArbitorLTL.txt">$PTII/ptolemy/vergil/basic/imprt/g4ltl/
 
 
 
+
+
   <li> One can select synthesis techniques
 between&nbsp;Co-Buechi and Buechi solvers. Here we try Co-Buchi (both
 solvers work). Select the unroll depth to be "<span style="font-weight: bold;">1"</span>.
 Higher unroll depth enables to explore more possibilities in strategy
 finding. However the synthesis&nbsp; time will also take longer.&nbsp;</li>
+
+
 
 
 
@@ -505,6 +649,10 @@ finding. However the synthesis&nbsp; time will also take longer.&nbsp;</li>
 
 
 
+
+
+  
+  
   
   
   
@@ -518,7 +666,11 @@ finding. However the synthesis&nbsp; time will also take longer.&nbsp;</li>
 
 
 
+
+
     <li>[Feed input to FSMActor] Link the output of <span style="font-weight: bold; font-style: italic;">Client1</span> to the port <span style="font-weight: bold; font-style: italic;">req1</span> in <span style="font-weight: bold; font-style: italic;">model</span>, and similarly, link the output of <span style="font-weight: bold; font-style: italic;">Client2</span> to the port <span style="font-weight: bold; font-style: italic;">req2</span> in <span style="font-weight: bold; font-style: italic;">model</span>.</li>
+
+
 
 
 
@@ -532,6 +684,10 @@ finding. However the synthesis&nbsp; time will also take longer.&nbsp;</li>
 
 
 
+
+
+  
+  
   
   
   
@@ -545,6 +701,8 @@ finding. However the synthesis&nbsp; time will also take longer.&nbsp;</li>
 
 
 
+
+
   <li>The model is fully connected and can be executed with simulation.&nbsp;</li>
 
 
@@ -552,7 +710,11 @@ finding. However the synthesis&nbsp; time will also take longer.&nbsp;</li>
 
 
 
+
+
 </ol>
+
+
 
 
 
@@ -577,7 +739,11 @@ with guaranteed service for a super-client</h2>
 
 
 
+
+
 <p> In this demo, we illustrate how to automatically create an arbitor which set explicit guarantees for the super-client. </p>
+
+
 
 
 
@@ -601,6 +767,8 @@ with guaranteed service for a super-client</h2>
 
 
 
+
+
   <li> Open&nbsp;<a href="demo/PriorityArbitor/PriorityArbitor.xml">$PTII/ptolemy/vergil/basic/imprt/g4ltl/demo/PriorityArbitor/PriorityArbitor.xml</a></li>
 
 
@@ -608,7 +776,11 @@ with guaranteed service for a super-client</h2>
 
 
 
+
+
   <li>On the menu bar, select "File -&gt; Import -&gt; Import FSMActor using synthesis" </li>
+
+
 
 
 
@@ -625,10 +797,14 @@ how such controller is implemented. It is located at <a href="demo/PriorityArbit
 
 
 
+
+
   <li>
 One can select synthesis techniques between&nbsp;Co-Buechi and Buechi
 solvers. Here we try Co-Buchi (both solvers work). Select the unroll
 depth to be <span style="font-weight: bold;">"3"</span>. In this example, using unroll depth 1 is not sufficient to find a controller.</li>
+
+
 
 
 
@@ -642,6 +818,10 @@ depth to be <span style="font-weight: bold;">"3"</span>. In this example, using 
 
 
 
+
+
+  
+  
   
   
   
@@ -655,7 +835,11 @@ depth to be <span style="font-weight: bold;">"3"</span>. In this example, using 
 
 
 
+
+
     <li>[Feed input to FSMActor] Link the output of <span style="font-weight: bold; font-style: italic;">ImportantClient1</span> to the port <span style="font-weight: bold; font-style: italic;">req1</span> in <span style="font-weight: bold; font-style: italic;">model</span>, and similarly, link the output of <span style="font-weight: bold; font-style: italic;">Client2 / Client3</span> to the port <span style="font-weight: bold; font-style: italic;">req2 / req3</span> in <span style="font-weight: bold; font-style: italic;">model</span>.</li>
+
+
 
 
 
@@ -669,6 +853,10 @@ depth to be <span style="font-weight: bold;">"3"</span>. In this example, using 
 
 
 
+
+
+  
+  
   
   
   
@@ -682,6 +870,8 @@ depth to be <span style="font-weight: bold;">"3"</span>. In this example, using 
 
 
 
+
+
   <li>The model is fully connected and can be executed with simulation.&nbsp;</li>
 
 
@@ -689,7 +879,11 @@ depth to be <span style="font-weight: bold;">"3"</span>. In this example, using 
 
 
 
+
+
 </ol>
+
+
 
 
 
@@ -713,17 +907,27 @@ depth to be <span style="font-weight: bold;">"3"</span>. In this example, using 
 
 
 
+
+
 <p> In this example, we illustrate&nbsp;how to automatically create an
 arbitor that allows to suspend itself when encountering errors.&nbsp;</p>
+
+
 
 
 <ol>
 
 
+
+
   <li>Open&nbsp;<a href="demo/ErrorHandling/ErrorHandling.xml">$PTII/ptolemy/vergil/basic/imprt/g4ltl/demo/ErrorHandling/ErrorHandling.xml</a></li>
 
 
+
+
   <li>On the menu bar, select "File -&gt; Import -&gt; Import FSMActor using synthesis" </li>
+
+
 
 
   <li>
@@ -732,35 +936,57 @@ specification describes "what" should a controller do without detailing
 how such controller is implemented. It is located at&nbsp;<a href="demo/ErrorHandling/ErrorHandlingLTL.txt">$PTII/ptolemy/vergil/basic/imprt/g4ltl/demo/ErrorHandling/ErrorHandlingLTL.txt</a></li>
 
 
+
+
   <li>
 One can select synthesis techniques between&nbsp;Co-Buechi and Buechi
 solvers. Here we try Co-Buchi (both solvers work). Select the unroll
 depth to be <span style="font-weight: bold;">"3"</span>. In this example, using unroll depth 1 is not sufficient to find a controller.</li>
 
 
+
+
   <li>The synthesized FSMActor named "<span style="font-weight: bold; font-style: italic;">model</span>" now appears on the screen. To perform simulation, create links between ports.</li>
 
 
+
+
+  
+  
   
   
   <ul>
 
 
+
+
     <li>[Feed input to FSMActor] Link the output of <span style="font-weight: bold;">SetVariable(V_err) /</span><span style="font-weight: bold;"> SetVariable2(V_oper) /</span><span style="font-weight: bold;"> SetVariable7(V_req1) /</span><span style="font-weight: bold;"> SetVariable6(V_req2)</span> to the port <span style="font-weight: bold; font-style: italic;">error/operator/req1/req2</span> in <span style="font-weight: bold; font-style: italic;">model</span><span style="font-weight: bold; font-style: italic;"></span>.</li>
+
+
 
 
     <li>[Produce output from FSMActor] Link port&nbsp;<span style="font-style: italic;"><span style="font-weight: bold;"></span></span><span style="font-weight: bold; font-style: italic;">grant1 / grant2 / stop </span>to the input of &nbsp;<span style="font-weight: bold;">SetVariable3</span><span style="font-style: italic; font-weight: bold;"> /&nbsp;</span><span style="font-weight: bold;">SetVariable4</span><span style="font-style: italic; font-weight: bold;"> /&nbsp;</span><span style="font-weight: bold;">SetVariable5.</span></li>
 
 
+
+
+  
+  
   
   
   </ul>
 
 
+
+
   <li>The model is fully connected and can be executed with simulation.&nbsp;</li>
 
 
+
+
 </ol>
+
+
 
 
 
@@ -780,7 +1006,11 @@ depth to be <span style="font-weight: bold;">"3"</span>. In this example, using 
 
 
 
+
+
 </ol>
+
+
 
 
 
@@ -804,9 +1034,13 @@ conditions&nbsp;</h2>
 
 
 
+
+
 <p> In this example, we illustrate how can FSMActor synthesis be
 extended with non-Boolean inputs. Please follow the instruction in the
 model <a href="demo/Numerical/Numerical.xml">$PTII/ptolemy/vergil/basic/imprt/g4ltl/demo/Numerical/Numerical.xml</a> </p>
+
+
 
 
 
