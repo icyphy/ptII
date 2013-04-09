@@ -156,6 +156,7 @@ public class MetroIIDirector extends Director {
         super(container, name);
         _actorList = new LinkedList<StartOrResumable>();
         _mappingConstraintSolver = new MappingConstraintSolver(_maxEvent);
+        _timeScheduler = new TimeScheduler(); 
 
         _initializeParameters();
         initialize();
