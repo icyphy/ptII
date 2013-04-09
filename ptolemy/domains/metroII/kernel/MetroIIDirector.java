@@ -307,6 +307,7 @@ public class MetroIIDirector extends Director {
             //Debug.Out.println(this.getFullName() + ": " + "Phase 2");
 
             _mappingConstraintSolver.resolve(globalMetroIIEventList);
+            _timeScheduler.resolve(globalMetroIIEventList); 
 
             if (((BooleanToken) printTrace.getToken()).booleanValue()) {
                 for (Event.Builder builder : globalMetroIIEventList) {
@@ -390,6 +391,11 @@ public class MetroIIDirector extends Director {
      *
      */
     private MappingConstraintSolver _mappingConstraintSolver;
+    
+    /**
+     * The time scheduler
+     */
+    private TimeScheduler _timeScheduler; 
 
     /**
      * The list of actors governed by MetroIIDirector

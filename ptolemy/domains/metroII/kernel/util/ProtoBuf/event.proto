@@ -1,6 +1,5 @@
 // See README.txt for information and build instructions.
 
-option java_package = "util.metroII";
 option java_outer_classname = "metroIIcomm";
 
 message Event {
@@ -23,6 +22,7 @@ message Event {
 
   required Type type = 4;
   required Status status = 5; 
+  optional int64 time = 6;
 }
 
 message EventVector {

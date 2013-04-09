@@ -44,6 +44,8 @@ import ptolemy.data.BooleanToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.domains.de.kernel.DEDirector;
+import ptolemy.domains.de.kernel.DEEvent;
+import ptolemy.domains.metroII.kernel.FireMachine.Status;
 import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event;
 import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event.Builder;
 import ptolemy.kernel.CompositeEntity;
@@ -372,96 +374,114 @@ public class MetroIIDEDirector extends DEDirector implements
             }
             ArrayList<Actor> actorList = new ArrayList<Actor>();
 
-            // NOTE: This fire method does not call super.fire()
-            // because this method is very different from that of the super class.
-            // A BIG while loop that handles all events with the same tag.
-            while (true) {
-                if (((BooleanToken) printTrace.getToken()).booleanValue()) {
-                    System.out.println("Before checking actor Time: "
-                            + this.getModelTime());
-                }
-                Pair<Actor, Integer> actorAndState = _checkNextActorToFire();
-                if (((BooleanToken) printTrace.getToken()).booleanValue()) {
-                    System.out.println("After checking actor Time: "
-                            + this.getModelTime());
-                }
-                int result = actorAndState.second;
-
-                assert result <= 1 && result >= -1;
-                if (result == 1) {
-                    continue;
-                } else if (result == -1) {
-                    _noActorToFire();
-                    break;
-                    // return;
-                } // else if 0, keep executing
-                  //if (!actorList.contains(actorAndState.first)) {
-                if (actorAndState.first != null) {
-                    actorList.add(actorAndState.first);
-
+            do {
+                // NOTE: This fire method does not call super.fire()
+                // because this method is very different from that of the super class.
+                // A BIG while loop that handles all events with the same tag.
+                while (_checkForNextEvent()) {
                     if (((BooleanToken) printTrace.getToken()).booleanValue()) {
-                        System.out.println(actorAndState.first.getFullName()
-                                + " is added");
-                    }
-
-                    if (((BooleanToken) printTrace.getToken()).booleanValue()) {
-                        System.out.println("Before firing Time: "
+                        System.out.println("Before checking actor Time: "
                                 + this.getModelTime());
                     }
-                    do {
-                        ArrayList<Actor> firingActorList = new ArrayList<Actor>();
-                        _events.clear();
-                        for (Actor actor : actorList) {
-                            FireMachine firing = _actorDictionary
-                                    .get(actor.getFullName());
-                            LinkedList<Event.Builder> metroIIEventList = new LinkedList<Event.Builder>();
-                            firing.startOrResume(metroIIEventList);
+                    Pair<Actor, Integer> actorAndState = _checkNextActorToFire();
+                    if (((BooleanToken) printTrace.getToken()).booleanValue()) {
+                        System.out.println("After checking actor Time: "
+                                + this.getModelTime());
+                    }
+                    int result = actorAndState.second;
 
-                            // Check if the actor has reached the end of postfire()
-                            if (firing.getStatus() == FireMachine.Status.FINAL) {
-                                // The actor has reached the end of postfire()
-                                //FIXME: the debugging info is late 
-                                if (_debugging) {
-                                    _debug(new FiringEvent(this, actor,
-                                            FiringEvent.AFTER_FIRE));
-                                }
-                                if (_debugging) {
-                                    _debug(new FiringEvent(this, actor,
-                                            FiringEvent.BEFORE_POSTFIRE));
-                                }
+                    assert result <= 1 && result >= -1;
+                    if (result == 1) {
+                        continue;
+                    } else if (result == -1) {
+                        _noActorToFire();
+                        break;
+                        // return;
+                    } // else if 0, keep executing
+                      //if (!actorList.contains(actorAndState.first)) {
+                    if (actorAndState.first != null) {
+                        Actor actor = actorAndState.first;
+                        FireMachine firing = _actorDictionary.get(actor
+                                .getFullName());
+                        if (firing.getStatus() != Status.START) {
+                            firing.addIteration(); 
+                        } else {
+                            actorList.add(actorAndState.first);
 
-                                firing.actor().postfire();
-                                firing.reset(); 
+                            if (((BooleanToken) printTrace.getToken())
+                                    .booleanValue()) {
+                                System.out.println(actorAndState.first
+                                        .getFullName() + " is added");
+                            }
 
-                                if (_debugging) {
-                                    _debug(new FiringEvent(this, actor,
-                                            FiringEvent.AFTER_POSTFIRE));
-                                }
-
-                            } else {
-                                firingActorList.add(actor);
-                                _events.addAll(metroIIEventList);
+                            if (((BooleanToken) printTrace.getToken())
+                                    .booleanValue()) {
+                                System.out.println("Before firing Time: "
+                                        + this.getModelTime());
                             }
                         }
-                        actorList = firingActorList;
-                        resultHandler.handleResult(_events);
+                    }
+                    //}
+                    // after actor firing, the subclass may wish to perform some book keeping
+                    // procedures. However in this class the following method does nothing.
+                    _actorFired();
+                    if (((BooleanToken) printTrace.getToken()).booleanValue()) {
+                        System.out.println("After firing Time: "
+                                + this.getModelTime());
+                    }
 
-                    } while (actorList.size() > 0);
-
+                } // Close the BIG while loop.
+                
+                _events.clear();
+                if (!_eventQueue.isEmpty()) {
+                    DEEvent next = _eventQueue.get();
+                    if (next.timeStamp().isPositive()) {
+                        Event.Builder builder = Event.newBuilder();
+                        builder.setName(getFullName() + ".Idle");
+                        builder.setOwner(getFullName());
+                        builder.setStatus(Event.Status.PROPOSED);
+                        builder.setType(Event.Type.GENERIC);
+                        _events.add(builder); 
+                    }
                 }
-                //}
-                // after actor firing, the subclass may wish to perform some book keeping
-                // procedures. However in this class the following method does nothing.
-                _actorFired();
-                if (((BooleanToken) printTrace.getToken()).booleanValue()) {
-                    System.out.println("After firing Time: "
-                            + this.getModelTime());
-                }
+                
+                ArrayList<Actor> firingActorList = new ArrayList<Actor>();
+                for (Actor actor : actorList) {
+                    FireMachine firing = _actorDictionary.get(actor
+                            .getFullName());
+                    LinkedList<Event.Builder> metroIIEventList = new LinkedList<Event.Builder>();
+                    firing.startOrResume(metroIIEventList);
 
-                if (!_checkForNextEvent()) {
-                    break;
-                } // else keep executing in the current iteration
-            } // Close the BIG while loop.
+                    // Check if the actor has reached the end of postfire()
+                    if (firing.getStatus() == FireMachine.Status.FINAL) {
+                        // The actor has reached the end of postfire()
+                        //FIXME: the debugging info is late 
+                        if (_debugging) {
+                            _debug(new FiringEvent(this, actor,
+                                    FiringEvent.AFTER_FIRE));
+                        }
+                        if (_debugging) {
+                            _debug(new FiringEvent(this, actor,
+                                    FiringEvent.BEFORE_POSTFIRE));
+                        }
+
+                        firing.actor().postfire();
+                        firing.reset();
+
+                        if (_debugging) {
+                            _debug(new FiringEvent(this, actor,
+                                    FiringEvent.AFTER_POSTFIRE));
+                        }
+
+                    } else {
+                        firingActorList.add(actor);
+                        _events.addAll(metroIIEventList);
+                    }
+                }
+                actorList = firingActorList;
+                resultHandler.handleResult(_events);
+
+            } while (_events.get(0).getStatus() != Event.Status.NOTIFIED);
 
             // Since we are now actually stopping the firing, we can set this false.
             _stopFireRequested = false;
@@ -509,4 +529,5 @@ public class MetroIIDEDirector extends DEDirector implements
     private Hashtable<String, FireMachine> _actorDictionary = new Hashtable<String, FireMachine>();
 
     private ArrayList<Event.Builder> _events = new ArrayList<Event.Builder>();
+
 }
