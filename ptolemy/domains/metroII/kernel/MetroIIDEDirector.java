@@ -82,6 +82,9 @@ public class MetroIIDEDirector extends DEDirector implements
         newObject._actorDictionary = (Hashtable<String, FireMachine>) _actorDictionary
                 .clone();
         newObject._events = (ArrayList<Builder>) _events.clone();
+        
+        newObject.actorList = (ArrayList<Actor>) actorList.clone();
+        
         return newObject;
     }
 
@@ -96,6 +99,7 @@ public class MetroIIDEDirector extends DEDirector implements
                     .iterator();
 
             _actorDictionary.clear();
+            _pendingIteration.clear(); 
             while (actors.hasNext()) {
                 Actor actor = (Actor) actors.next();
                 if (actor instanceof MetroIIEventHandler) {
@@ -105,9 +109,14 @@ public class MetroIIDEDirector extends DEDirector implements
                     _actorDictionary.put(actor.getFullName(),
                             new NonBlockingFire(actor));
                 }
+                _pendingIteration.put(actor.getFullName(), 0);
             }
         }
 
+        _events = new ArrayList<Event.Builder>();
+
+        actorList = new ArrayList<Actor>();
+        
     }
 
     public Parameter printTrace;
@@ -372,21 +381,21 @@ public class MetroIIDEDirector extends DEDirector implements
                         + " director fires at " + getModelTime()
                         + "  with microstep as " + _microstep);
             }
-            ArrayList<Actor> actorList = new ArrayList<Actor>();
 
             do {
+
                 // NOTE: This fire method does not call super.fire()
                 // because this method is very different from that of the super class.
                 // A BIG while loop that handles all events with the same tag.
-                while (_checkForNextEvent()) {
+                while (_checkForNextEvent()) { // Close the BIG while loop.
                     if (((BooleanToken) printTrace.getToken()).booleanValue()) {
                         System.out.println("Before checking actor Time: "
-                                + this.getModelTime());
+                                + this.getModelTime()+this.getMicrostep());
                     }
                     Pair<Actor, Integer> actorAndState = _checkNextActorToFire();
                     if (((BooleanToken) printTrace.getToken()).booleanValue()) {
                         System.out.println("After checking actor Time: "
-                                + this.getModelTime());
+                                + this.getModelTime()+this.getMicrostep());
                     }
                     int result = actorAndState.second;
 
@@ -400,11 +409,12 @@ public class MetroIIDEDirector extends DEDirector implements
                     } // else if 0, keep executing
                       //if (!actorList.contains(actorAndState.first)) {
                     if (actorAndState.first != null) {
+                        // System.out.println(_eventQueue);
                         Actor actor = actorAndState.first;
                         FireMachine firing = _actorDictionary.get(actor
                                 .getFullName());
                         if (firing.getStatus() != Status.START) {
-                            firing.addIteration(); 
+                            _pendingIteration.put(actor.getFullName(), _pendingIteration.get(actor.getFullName())+1);
                         } else {
                             actorList.add(actorAndState.first);
 
@@ -417,7 +427,7 @@ public class MetroIIDEDirector extends DEDirector implements
                             if (((BooleanToken) printTrace.getToken())
                                     .booleanValue()) {
                                 System.out.println("Before firing Time: "
-                                        + this.getModelTime());
+                                        + this.getModelTime()+this.getMicrostep());
                             }
                         }
                     }
@@ -427,24 +437,32 @@ public class MetroIIDEDirector extends DEDirector implements
                     _actorFired();
                     if (((BooleanToken) printTrace.getToken()).booleanValue()) {
                         System.out.println("After firing Time: "
-                                + this.getModelTime());
+                                + this.getModelTime()+this.getMicrostep());
                     }
 
-                } // Close the BIG while loop.
-                
+                } 
+
                 _events.clear();
-                if (!_eventQueue.isEmpty()) {
-                    DEEvent next = _eventQueue.get();
-                    if (next.timeStamp().isPositive()) {
-                        Event.Builder builder = Event.newBuilder();
-                        builder.setName(getFullName() + ".Idle");
-                        builder.setOwner(getFullName());
-                        builder.setStatus(Event.Status.PROPOSED);
-                        builder.setType(Event.Type.GENERIC);
-                        _events.add(builder); 
-                    }
+                if (!_eventQueue.isEmpty()
+                        && !_eventQueue.get().timeStamp().isNegative()) {
+                    Event.Builder builder = Event.newBuilder();
+                    builder.setName(getFullName() + ".Idle");
+                    builder.setOwner(getFullName());
+                    builder.setStatus(Event.Status.PROPOSED);
+                    builder.setType(Event.Type.GENERIC);
+                    builder.setTime(_eventQueue.get().timeStamp()
+                            .getLongValue());
+                    _events.add(builder);
+                } else {
+                    Event.Builder builder = Event.newBuilder();
+                    builder.setName(getFullName() + ".Idle");
+                    builder.setOwner(getFullName());
+                    builder.setStatus(Event.Status.PROPOSED);
+                    builder.setType(Event.Type.GENERIC);
+                    builder.setTime(Long.MAX_VALUE);
+                    _events.add(builder);
                 }
-                
+
                 ArrayList<Actor> firingActorList = new ArrayList<Actor>();
                 for (Actor actor : actorList) {
                     FireMachine firing = _actorDictionary.get(actor
@@ -472,6 +490,13 @@ public class MetroIIDEDirector extends DEDirector implements
                             _debug(new FiringEvent(this, actor,
                                     FiringEvent.AFTER_POSTFIRE));
                         }
+                        
+                        if (_pendingIteration.get(actor.getFullName())>0) {
+                            firing.startOrResume(metroIIEventList);
+                            firingActorList.add(actor);
+                            _events.addAll(metroIIEventList);
+                            _pendingIteration.put(actor.getFullName(), _pendingIteration.get(actor.getFullName())-1);
+                        }
 
                     } else {
                         firingActorList.add(actor);
@@ -480,6 +505,13 @@ public class MetroIIDEDirector extends DEDirector implements
                 }
                 actorList = firingActorList;
                 resultHandler.handleResult(_events);
+                
+                if (_events.get(0).getStatus() == Event.Status.NOTIFIED) {
+                    this.setModelTime(_eventQueue.get().timeStamp()); 
+                    this.setIndex(_eventQueue.get().microstep()); 
+                    
+                    // System.out.println(_eventQueue);
+                }
 
             } while (_events.get(0).getStatus() != Event.Status.NOTIFIED);
 
@@ -530,4 +562,7 @@ public class MetroIIDEDirector extends DEDirector implements
 
     private ArrayList<Event.Builder> _events = new ArrayList<Event.Builder>();
 
+    private ArrayList<Actor> actorList = new ArrayList<Actor>();
+    
+    private Hashtable<String, Integer> _pendingIteration = new Hashtable<String, Integer>(); 
 }

@@ -11,7 +11,6 @@ public abstract class FireMachine implements StartOrResumable {
 
     public FireMachine(Actor actor) {
         _actor = actor;
-        _iteration = 0;
         reset();
     }
 
@@ -30,17 +29,11 @@ public abstract class FireMachine implements StartOrResumable {
         if (_iteration > 0) {
             setStatus(Status.BEGIN);
             _currentStateEvent = _createMetroIIEvent("FIRE_BEGIN");
-            _iteration--; 
         }
         else {
             setStatus(Status.START);
             _currentStateEvent = null; 
-            _iteration = 0;
         }
-    }
-
-    public void addIteration() {
-        _iteration++;
     }
 
     /** Create a MetroII event

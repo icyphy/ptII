@@ -10,26 +10,39 @@ public class TimeScheduler implements ConstraintSolver {
 
     @Override
     public void resolve(Iterable<Builder> metroIIEventList) {
-        long time = Long.MAX_VALUE; 
+        long time = Long.MAX_VALUE;
+        boolean hasEventWithoutTime = false;
         for (Builder event : metroIIEventList) {
             if (event.getStatus() == Status.NOTIFIED) {
                 if (event.hasTime()) {
-                    if (event.getTime() < time ) {
-                        time = event.getTime(); 
+                    if (event.getTime() < time) {
+                        time = event.getTime();
+                    }
+                } else {
+                    hasEventWithoutTime = true;
+                }
+            }
+        }
+        if (hasEventWithoutTime) {
+            for (Builder event : metroIIEventList) {
+                if (event.getStatus() == Status.NOTIFIED) {
+                    if (event.hasTime()) {
+                        event.setStatus(Status.WAITING);
+                    }
+                }
+            }
+        } else {
+            for (Builder event : metroIIEventList) {
+                if (event.getStatus() == Status.NOTIFIED) {
+                    if (event.hasTime()) {
+                        if (event.getTime() > time) {
+                            event.setStatus(Status.WAITING);
+                        }
                     }
                 }
             }
         }
-        for (Builder event : metroIIEventList) {
-            if (event.getStatus() == Status.NOTIFIED) {
-                if (event.hasTime()) {
-                    if (event.getTime() > time ) {
-                        event.setStatus(Status.WAITING); 
-                    }
-                }
-            }
-        }
-        
+
     }
-    
+
 }

@@ -37,6 +37,8 @@ public class ResumableFire extends FireMachine {
                 final YieldAdapterIterable<Iterable<Event.Builder>> results = ((MetroIIEventHandler) actor())
                         .adapter();
                 _eventIterator = results.iterator();
+                _currentStateEvent = _createMetroIIEvent("PROCESS");
+                metroIIEventList.add(_currentStateEvent);
                 setStatus(Status.PROCESS);
             } else {
                 metroIIEventList.add(_currentStateEvent);
@@ -54,6 +56,8 @@ public class ResumableFire extends FireMachine {
              */
             if (_eventIterator.hasNext()) {
                 Iterable<Event.Builder> result = _eventIterator.next();
+                _currentStateEvent = _createMetroIIEvent("PROCESS");
+                metroIIEventList.add(_currentStateEvent);
                 for (Builder eventBuilder : result) {
                     // Event.Builder eventBuilder = builder;
                     eventBuilder.setStatus(Event.Status.PROPOSED);
@@ -62,7 +66,7 @@ public class ResumableFire extends FireMachine {
             } else {
                 setStatus(Status.END);
                 _currentStateEvent = _createMetroIIEvent("FIRE_END");
-                // metroIIEventList.add(_currentStateEvent);
+                metroIIEventList.add(_currentStateEvent);
             }
         } else if (getStatus() == Status.END) {
             assert _currentStateEvent.getName().contains("FIRE_END");
