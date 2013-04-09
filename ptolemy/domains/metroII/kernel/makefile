@@ -76,7 +76,8 @@ JSRCS = \
     MetroIIDirector.java \
     MetroIIPNDirector.java \
     MetroIIPtidesPort.java \
-    ResumableFire.java
+    ResumableFire.java \
+    TimeScheduler.java
 
 OTHER_FILES_TO_BE_JARED =
 
