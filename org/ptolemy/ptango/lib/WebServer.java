@@ -90,7 +90,7 @@ public class WebServer extends AbstractInitializableAttribute {
 
         port = new Parameter(this, "port");
         port.setTypeEquals(BaseType.INT);
-        port.setExpression("8080");
+        port.setExpression(Integer.toString(_portNumber));
 
         applicationPath = new StringParameter(this, "applicationPath");
         applicationPath.setExpression("/");
@@ -142,17 +142,17 @@ public class WebServer extends AbstractInitializableAttribute {
     /** The URL prefix to map this application to.  This defaults to "/",
      *  which will cause the model to receive all URLs directed to this
      *  server. For example, if this WebServer is handling requests on
-     *  {@link #port} 8080 of localhost, then with value "/", this
+     *  {@link #port} 8078 of localhost, then with value "/", this
      *  WebServer will handle all requests to
      *  <pre>
-     *  http://localhost:8080/
+     *  http://localhost:8078/
      *  </pre>
      *  Individual servlets (actors or attributes in a model that implement
      *  {@link HttpService}) will be mapped to URLs relative to this context path.
      *  For example, if the model contains a servlet with relative path "myService",
      *  then this WebServer will delegate to it requests of the form
      *  <pre>
-     *  http://localhost:8080/myService
+     *  http://localhost:8078/myService
      *  </pre>
      * <p>
      * Other choices besides "/" are possible.  For example, for web applications, it's
@@ -170,7 +170,7 @@ public class WebServer extends AbstractInitializableAttribute {
     public StringParameter applicationPath;
 
     /** The port number to respond to. This is a integer that
-     *  defaults to 8080.
+     *  defaults to 8078.
      */
     public Parameter port;
 
@@ -186,12 +186,12 @@ public class WebServer extends AbstractInitializableAttribute {
      *  </pre>
      *  e.g.
      *  <pre>
-     *  http://localhost:8080/myAppName/files/PtolemyIcon.gif
+     *  http://localhost:8078/myAppName/files/PtolemyIcon.gif
      *  </pre>
      *  for an {@link #applicationPath} of "/myAppName" and a resourcePath of "/files"
      *  or
      *  <pre>
-     *  http://localhost:8080/files/PtolemyIcon.gif
+     *  http://localhost:8078/files/PtolemyIcon.gif
      *  </pre>
      *  for an {@link #applicationPath} of "/" and a resourcePath of "/files".
      *  The resource may also be referenced by the relative path
@@ -209,7 +209,7 @@ public class WebServer extends AbstractInitializableAttribute {
      *  (see #resourceLocation).
      *  </p>
      *  Note that ResourceHandler supports subdirectories, for example
-     *  http://localhost:8080/myAppName/files/img/PtolemyIcon.gif
+     *  http://localhost:8078/myAppName/files/img/PtolemyIcon.gif
      *  and a resourceLocation of $PTII/org/ptolemy/ptango/demo
      *  will tell the ResourceHandler to get the file at
      *  $PTII/org/ptolemy/ptango/demo/img/PtolemyIcon.gif
@@ -441,7 +441,7 @@ public class WebServer extends AbstractInitializableAttribute {
 
     /** The port number the server receives requests on.
      */
-    private int _portNumber = 8080;
+    private int _portNumber = 8078;
     
     /** The manager for this web application. */
     private WebServerManager _serverManager;

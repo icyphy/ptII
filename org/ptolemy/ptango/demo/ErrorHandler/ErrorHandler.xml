@@ -2,20 +2,20 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="ErrorHandler" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={25, 34, 1016, 732}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-8, -8, 1382, 744}, maximized=true}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[788, 616]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1154, 627]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.4011468033763688">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0633910945382758">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{272.1982292294934, 286.8291015625}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{564.9018151815183, 302.37525783828386}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model launches a web server and provides a service&#10;available at http://localhost:8080/UCBPower.&#10;Run the model and navigate to that location&#10;(or double click on this comment).">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model launches a web server and provides a service&#10;available at http://localhost:8078/UCBPower.&#10;Run the model and navigate to that location&#10;(or double click on this comment).">
         </property>
-        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="http://localhost:8080/UCBPower#in_browser">
+        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="http://localhost:8078/UCBPower#in_browser">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -46,6 +46,8 @@
         </property>
     </property>
     <property name="WebServer" class="org.ptolemy.ptango.lib.WebServer">
+        <property name="port" class="ptolemy.data.expr.Parameter" value="8078">
+        </property>
         <property name="resourcePath" class="ptolemy.data.expr.StringParameter" value="/">
         </property>
         <property name="resourceLocation" class="ptolemy.data.expr.FileParameter" value="$PTII/org/ptolemy/ptango/demo/UCBPower">
@@ -60,15 +62,23 @@
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.4,0.4,0.4,1.0}">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Authors: Roxana Gheorghiu, Elizabeth Latronico, and Edward A. Lee">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Authors: Dai Bui, Roxana Gheorghiu, Elizabeth Latronico, and Edward A. Lee">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 565.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 385.0]">
         </property>
     </property>
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="FIXME: Absolute file&#10;reference.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[400.0, 225.0]">
+        </property>
+    </property>
+    <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="22">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Port 8078">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[445.0, 155.0]">
         </property>
     </property>
     <entity name="ModalModel" class="ptolemy.domains.modal.modal.ModalModel">
@@ -89,6 +99,8 @@
             <property name="output"/>
         </port>
         <entity name="_Controller" class="ptolemy.domains.modal.modal.ModalController">
+            <property name="errorCause" class="ptolemy.data.expr.Parameter">
+            </property>
             <property name="annotation" class="ptolemy.kernel.util.Attribute">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
@@ -114,7 +126,7 @@ Then delete this annotation.</text>
       <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.modal.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory"></property></entity></entity>
     </configure>
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={483, 299, 934, 635}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={219, 63, 928, 641}, maximized=false}">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
             </property>
@@ -163,6 +175,8 @@ Then delete this annotation.</text>
                 </property>
                 <property name="gamma" class="ptolemy.data.expr.Parameter" value="-1.9912377427130092">
                 </property>
+                <property name="history" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
                 <property name="errorTransition" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
             </relation>
@@ -174,7 +188,7 @@ Then delete this annotation.</text>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[415.0, 245.0]">
                 </property>
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={557, 313, 934, 634}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={264, 64, 928, 641}, maximized=false}">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
             </property>
@@ -220,7 +234,7 @@ Then delete this annotation.</text>
                 </property>
             </entity>
             <entity name="StringConst" class="ptolemy.actor.lib.StringConst">
-                <property name="value" class="ptolemy.data.expr.Parameter" value="&lt;h1&gt;Hello&lt;/h1&gt;&#10;&lt;form name=&quot;input&quot; action=&quot;http://localhost:8080/UCBPower&quot; method=&quot;post&quot;&gt;&#10;Username: &lt;input type=&quot;text&quot; name=&quot;user&quot; /&gt;&#10;&lt;input type=&quot;submit&quot; value=&quot;Submit&quot; /&gt;&#10;&lt;/form&gt;&#10;">
+                <property name="value" class="ptolemy.data.expr.Parameter" value="&lt;h1&gt;Hello&lt;/h1&gt;&#10;&lt;form name=&quot;input&quot; action=&quot;http://localhost:8078/UCBPower&quot; method=&quot;post&quot;&gt;&#10;Username: &lt;input type=&quot;text&quot; name=&quot;user&quot; /&gt;&#10;&lt;input type=&quot;submit&quot; value=&quot;Submit&quot; /&gt;&#10;&lt;/form&gt;&#10;">
                     <property name="style" class="ptolemy.actor.gui.style.TextStyle">
                         <property name="height" class="ptolemy.data.expr.Parameter" value="10">
                         </property>
@@ -241,12 +255,20 @@ Then delete this annotation.</text>
                 </property>
             </entity>
             <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+                <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+                </property>
             </relation>
             <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+                <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+                </property>
             </relation>
             <relation name="relation" class="ptolemy.actor.TypedIORelation">
+                <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+                </property>
             </relation>
             <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+                <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+                </property>
             </relation>
             <link port="getRequest" relation="relation"/>
             <link port="postRequest" relation="relation3"/>
@@ -372,18 +394,32 @@ Then delete this annotation.</text>
         </property>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+        </property>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+        </property>
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+        </property>
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+        </property>
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+        </property>
     </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+        </property>
     </relation>
     <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+        </property>
     </relation>
     <link port="ModalModel.getRequest" relation="relation"/>
     <link port="ModalModel.postRequest" relation="relation2"/>
