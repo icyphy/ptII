@@ -48,10 +48,9 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 
 OTHER_FILES_TO_BE_JARED = \
 	BouncingBall.mo \
-	OpenModelica.xml \
 	OpenModelicaComposite.xml \
-	OpenModelicaRecord.xml \
-	OpenModelicaCSVReader.xml \
+	OpenModelicaCSVReaderXYPlotter.xml \
+	OpenModelica.xml \
 	dcmotor.mo
 
 EXTRA_SRCS = \
