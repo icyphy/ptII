@@ -108,6 +108,8 @@ public class FlatTokenInfiniteConcept extends InfiniteConcept {
                     "Attempt to compare elements from two distinct ontologies");
         }
 
+        // Note that this is different from how equals rules out subclasses
+        // with object.getClass() != getClass().
         if (!(concept instanceof FlatTokenInfiniteConcept)) {
             return getOntology().getConceptGraph().compare(_representative,
                     concept);
@@ -145,12 +147,19 @@ public class FlatTokenInfiniteConcept extends InfiniteConcept {
             return false;
         }
 
+        // We don't use the compare() method here.  This means this method
+        // could be more restrictive than compare().  Note that compare()
+        // is not compareTo(), but compareTo() would be a subset of compare().
+        // See http://findbugs.sourceforge.net/bugDescriptions.html#EQ_COMPARETO_USE_OBJECT_EQUALS
+        // "Eq: Class defines compareTo(...) and uses Object.equals() (EQ_COMPARETO_USE_OBJECT_EQUALS)"
         FlatTokenInfiniteConcept concept = (FlatTokenInfiniteConcept) object;
-        //if (compare(concept) == CPO.SAME) {
-        if (getOntology().equals(concept.getOntology())
-                && getRepresentative().equals(concept.getRepresentative())
-                && getTokenValue().equals(concept.getTokenValue())) {
-            return true;
+        Ontology ontology = getOntology();
+        if (ontology != null && ontology.equals(concept.getOntology())) {
+            if (getRepresentative().equals(concept.getRepresentative())) {
+                if (getTokenValue().equals(concept.getTokenValue())) {
+                    return true;
+                }
+            }
         }
         return false;
     }

@@ -21,6 +21,7 @@
  */
 package ptolemy.data.ontologies;
 
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.SortedMap;
@@ -92,10 +93,13 @@ public abstract class MapTypeInfiniteConcept<C extends Concept> extends
         }
 
         MapTypeInfiniteConcept concept = (MapTypeInfiniteConcept) object;
-        if (getOntology().equals(concept.getOntology())
-                && keySet().equals(concept.keySet())
-                && _values().equals(concept._values())) {
-            return true;
+        Ontology ontology = getOntology();
+        if (ontology != null && ontology.equals(concept.getOntology())) {
+            if (keySet().equals(concept.keySet())) { 
+                if (_values().equals(concept._values())) {
+                    return true;
+                }
+            }
         }
         return false;
     }
@@ -153,14 +157,16 @@ public abstract class MapTypeInfiniteConcept<C extends Concept> extends
     public String toString() {
         StringBuffer result = new StringBuffer("{");
         boolean firstIteration = true;
-        for (String key : _keyToConcept.keySet()) {
-            if (!firstIteration) {
-                result.append(", ");
+        if (_keyToConcept != null) {
+            for (String key : _keyToConcept.keySet()) {
+                if (!firstIteration) {
+                    result.append(", ");
+                }
+                result.append(key);
+                result.append(" = ");
+                result.append(getConcept(key));
+                firstIteration = false;
             }
-            result.append(key);
-            result.append(" = ");
-            result.append(getConcept(key));
-            firstIteration = false;
         }
         result.append("}");
         return result.toString();
@@ -204,9 +210,9 @@ public abstract class MapTypeInfiniteConcept<C extends Concept> extends
      *
      *  @return A set of all the entries which map to a concept.
      */
-    public Set<C> _values() {
+    protected Collection<C> _values() {
         // Used by equals()
-        return (Set<C>)_keyToConcept.values();
+        return _keyToConcept.values();
     }
 
     ///////////////////////////////////////////////////////////////////
