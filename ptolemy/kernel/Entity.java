@@ -557,7 +557,8 @@ public class Entity<T extends Port> extends InstantiableNamedObj {
      *  @param indent The amount of indenting.
      *  @param bracket The number of surrounding brackets (0, 1, or 2).
      *  @return A description of the object.
-     * @exception IllegalActionException
+     *  @exception IllegalActionException If there is a problem
+     *  accessing subcomponents of this object.
      */
     protected String _description(int detail, int indent, int bracket)
             throws IllegalActionException {

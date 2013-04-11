@@ -667,7 +667,9 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
      *  by calling the description method with an argument for full detail.
      *  This method read-synchronizes on the workspace.
      *  @return A description of the object.
-     * @exception IllegalActionException
+     *  @exception IllegalActionException Not thrown in this base class,
+     *  but derived classes could throw an exception if there is a problem
+     *  accessing subcomponents of this object.
      *  @see #exportMoML(Writer, int, String)
      */
     public String description() throws IllegalActionException {
@@ -681,7 +683,9 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
      *  It read-synchronizes on the workspace.
      *  @param detail The level of detail.
      *  @return A description of the object.
-     * @exception IllegalActionException
+     *  @exception IllegalActionException Not thrown in this base class,
+     *  but derived classes could throw an exception if there is a problem
+     *  accessing subcomponents of this object.
      *  @see #exportMoML(Writer, int, String)
      */
     public String description(int detail) throws IllegalActionException {
@@ -2447,7 +2451,9 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
      *  @param indent The amount of indenting.
      *  @param bracket The number of surrounding brackets (0, 1, or 2).
      *  @return A description of the object.
-     * @exception IllegalActionException
+     *  @exception IllegalActionException Not thrown in this base class,
+     *  but derived classes could throw an exception if there is a problem
+     *  accessing subcomponents of this object.
      */
     protected String _description(int detail, int indent, int bracket)
             throws IllegalActionException {

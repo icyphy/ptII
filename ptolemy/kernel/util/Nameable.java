@@ -61,12 +61,13 @@ public interface Nameable {
      *  extensible, but the following are in use: links, ports, entities,
      *  relations, attributes, and inside links, at least.
      *  @return A description of this object.
-     * @exception IllegalActionException
+     *  @exception IllegalActionException If there is a problem accessing
+     *  subcomponents of the object.
      */
     public String description() throws IllegalActionException;
 
     /** Return the container.
-     *  @return The contain.er
+     *  @return The container.
      */
     public NamedObj getContainer();
 
