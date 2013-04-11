@@ -56,7 +56,8 @@ import ptolemy.kernel.util.IllegalActionException;
     is located in $TMPDIR/$USERNAME/OpenModelica is run by this flag "-interactive -port 10500".  
     The simulation runtime will be waiting until a UI client in Ptolemy II has been connected to its port.
     After starting the simulation the keyboard entries and the results will be displayed in the same console as you are typing
-    the command. For exchanging data with the OMC server the BSD socket is utilized.   
+    the command. For exchanging data with the OMC server the BSD socket is utilized.
+    TODO COMPLETE THE DESCRIPTION    
     
     @author Mana Mirzaei 
     @version $Id$
@@ -70,8 +71,9 @@ public class OMCClient {
      *  OMC server and simulate the Modelica model, then exchange data via BSD socket.
      *  TODO it should be detailed.
      */
-    public static void main() throws IllegalActionException, IOException {
-
+    public static void main(String[] args) throws IllegalActionException, IOException {
+        
+        
         try {
             // Create a unique instance of OMCProxy.
             _omcProxy = OMCProxy.getInstance();
@@ -87,9 +89,9 @@ public class OMCClient {
         // Build the Modelica model and run the executable result file in an interactive processing mode.
 
         try {
-            _omcProxy.loadFile("BouncingBall.mo","BouncingBall");
-            _omcProxy.simulateModel("BouncingBall.mo", "BouncingBall",
-                    "InteractiveBouncingBall", "0.0", "0.1", 500, "0.0001",
+            _omcProxy.loadFile("dcmotor.mo","dcmotor");
+            _omcProxy.simulateModel("dcmotor.mo", "dcmotor",
+                    "dcmotor", "0.0", "0.1", 500, "0.0001",
                     "dassl", "csv", ".*", " ", " ", "interactive");
         } catch (Throwable throwable) {
             throw new IllegalActionException(
@@ -105,14 +107,14 @@ public class OMCClient {
         // Use the BSD socket to exchange data with the OMC server.     
         _utilSocket.exchangewithsocket();
         
-        // Close the server and stop the server-to-user thread.
+        // Close the server.
         _utilSocket.closesocket();
 
         // Quit the OMC server.
         try {
             _omcProxy.quitServer();
         } catch (ConnectException ex) {
-            //FIXME
+            new Exception("SeverError: Server is unable to quit.").printStackTrace();
         }
     }
 
@@ -122,5 +124,5 @@ public class OMCClient {
     private static OMCProxy _omcProxy;
     
     // UtilSocket object for accessing a unique source of instance.
-    private static UtilSocket _utilSocket;
+    private static UtilSocket _utilSocket = null;
 }

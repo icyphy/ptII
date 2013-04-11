@@ -56,20 +56,21 @@ import java.io.IOException;
 */
 public interface IUtilSocket {
 
-    /** Close the socket and 
-     *  the server-to-user thread is stopped.
+    /** Close the input and output stream prior to closing the socket.
      *  @throws IOException
      */
-    public void closesocket() throws IOException;
+   public void closesocket() throws IOException;
     
-    /** Establish the client socket.
-     *  @throws IOException 
-     */
+   /** Establish the client socket.
+    *  Creating an output stream to send information to the server socket besides
+    *  creating an input stream to receive response from the server socket.
+    *  @throws IOException 
+    */
     public void establishclientsocket() throws IOException;
 
     /** Exchange data through the BSD socket.
      *  @throws IOException 
      */
-    public void exchangewithsocket() throws IOException;
+   public void exchangewithsocket() throws IOException;
 
 }
