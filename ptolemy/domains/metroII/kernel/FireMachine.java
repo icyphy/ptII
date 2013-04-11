@@ -3,39 +3,48 @@ package ptolemy.domains.metroII.kernel;
 import ptolemy.actor.Actor;
 import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event;
 import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event.Builder;
+import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event.Status;
 
 public abstract class FireMachine implements StartOrResumable {
-    public enum Status {
+
+    public enum State {
         START, BEGIN, PROCESS, END, FINAL
     }
-
+    
     public FireMachine(Actor actor) {
         _actor = actor;
+        _BeginEvent = _createMetroIIEvent("FIRE_BEGIN"); 
+        _ProcessEvent = _createMetroIIEvent("PROCESS"); 
+        _EndEvent = _createMetroIIEvent("FIRE_END"); 
         reset();
-    }
-
-    public Status getStatus() {
-        return _status;
-    }
-
-    public void setStatus(Status status) {
-        _status = status;
     }
 
     /**
      * Dispose the current execution.
      */
     public void reset() {
-        if (_iteration > 0) {
-            setStatus(Status.BEGIN);
-            _currentStateEvent = _createMetroIIEvent("FIRE_BEGIN");
-        }
-        else {
-            setStatus(Status.START);
-            _currentStateEvent = null; 
+        setState(State.START);
+    }
+    
+    public Builder getCurrentStateEvent() {
+        switch (getCurrentState()) {
+        case BEGIN: 
+            return _BeginEvent; 
+        case PROCESS:
+            return _ProcessEvent;
+        case END:
+            return _EndEvent;
+        default:
+            return null; 
         }
     }
-
+    
+    public Builder proposeCurrentStateEvent() {
+        Builder event = getCurrentStateEvent(); 
+        event.setStatus(Status.PROPOSED); 
+        return event; 
+    }
+        
     /** Create a MetroII event
     *
     */
@@ -52,14 +61,24 @@ public abstract class FireMachine implements StartOrResumable {
         return _actor;
     }
 
+    public void setState(State state) {
+        _state = state; 
+    }
+    
+    public State getCurrentState() {
+        return _state; 
+    }
+    
     /** Current state event
     *
     */
-    protected Builder _currentStateEvent;
-
-    private Status _status;
+    final private Builder _BeginEvent;
+    
+    final private Builder _ProcessEvent;
+    
+    final private Builder _EndEvent;
 
     private Actor _actor;
 
-    private int _iteration;
+    private State _state; 
 }

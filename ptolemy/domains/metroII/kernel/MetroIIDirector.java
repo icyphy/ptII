@@ -336,6 +336,7 @@ public class MetroIIDirector extends Director {
         newObject._mappingConstraintSolver = new MappingConstraintSolver(
                 _maxEvent);
         newObject._actorList = (LinkedList) _actorList.clone();
+        newObject._timeScheduler = (TimeScheduler) _timeScheduler.clone(); 
         return newObject;
     }
 

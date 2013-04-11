@@ -43,31 +43,27 @@ public class BlockingFire extends FireMachine {
     @Override
     public void startOrResume(LinkedList<Builder> metroIIEventList)
             throws IllegalActionException {
-        assert metroIIEventList != null;
-
-        if (getStatus() == Status.START) {
-            _currentStateEvent = _createMetroIIEvent("FIRE_BEGIN");
-            metroIIEventList.add(_currentStateEvent);
-            setStatus(Status.BEGIN);
-        } else if (getStatus() == Status.BEGIN) {
-            assert _currentStateEvent.getName().contains("FIRE_BEGIN");
-            if (_currentStateEvent.getStatus() == Event.Status.NOTIFIED) {
+        assert metroIIEventList != null;        
+        if (getCurrentState() == State.START) {
+            setState(State.BEGIN);
+            metroIIEventList.add(proposeCurrentStateEvent());
+        } else if (getCurrentState() == State.BEGIN) {
+            assert getCurrentStateEvent().getName().contains("FIRE_BEGIN");
+            if (getCurrentStateEvent().getStatus() == Event.Status.NOTIFIED) {
                 actor().fire();
-                setStatus(Status.END);
-                _currentStateEvent = _createMetroIIEvent("FIRE_END");
-                metroIIEventList.add(_currentStateEvent);
+                setState(State.END);
+                metroIIEventList.add(proposeCurrentStateEvent());
             } else {
-                metroIIEventList.add(_currentStateEvent);
+                metroIIEventList.add(getCurrentStateEvent());
             }
-        } else if (getStatus() == Status.END) {
-            assert _currentStateEvent.getName().contains("FIRE_END");
-            if (_currentStateEvent.getStatus() == Event.Status.NOTIFIED) {
-                _currentStateEvent = null; 
-                setStatus(Status.FINAL);
+        } else if (getCurrentState() == State.END) {
+            assert getCurrentStateEvent().getName().contains("FIRE_END");
+            if (getCurrentStateEvent().getStatus() == Event.Status.NOTIFIED) {
+                setState(State.FINAL);
             } else {
-                metroIIEventList.add(_currentStateEvent);
+                metroIIEventList.add(getCurrentStateEvent());
             }
-        } else if (getStatus() == Status.FINAL) {
+        } else if (getCurrentState() == State.FINAL) {
             // do nothing
         } else {
             // unknown state; 
@@ -78,11 +74,10 @@ public class BlockingFire extends FireMachine {
     
 
     @Override
-    public State getState() {
+    public ProcessState getProcessState() {
         // TODO Auto-generated method stub
         assert false; 
         return null;
     }
-
-
+    
 }

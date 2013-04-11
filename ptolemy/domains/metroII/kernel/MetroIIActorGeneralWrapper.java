@@ -81,16 +81,16 @@ public class MetroIIActorGeneralWrapper extends MetroIIActorBasicWrapper {
         /**
          * Start executing the wrapped actor in the thread.
          */
-        if (_state == State.PREFIRE_BEGIN) {
+        if (_state == ProcessState.PREFIRE_BEGIN) {
             assert _currentStateEvent.getName().contains("PREFIRE_BEGIN");
             if (_currentStateEvent.getStatus() == Event.Status.NOTIFIED) {
                 if (_actor.prefire()) {
-                    _state = State.PREFIRE_END_FIRE_BEGIN;
+                    _state = ProcessState.PREFIRE_END_FIRE_BEGIN;
                     _currentStateEvent = _createMetroIIEvent("FIRE_BEGIN");
                 }
             }
             metroIIEventList.add(_currentStateEvent);
-        } else if (_state == State.PREFIRE_END_FIRE_BEGIN) {
+        } else if (_state == ProcessState.PREFIRE_END_FIRE_BEGIN) {
             assert _currentStateEvent.getName().contains("FIRE_BEGIN");
             if (_currentStateEvent.getStatus() == Event.Status.NOTIFIED) {
                 /* The getfire() of each Metropolis actor is invoked by a separate thread.
@@ -100,7 +100,7 @@ public class MetroIIActorGeneralWrapper extends MetroIIActorBasicWrapper {
                 final YieldAdapterIterable<Iterable<Event.Builder>> results = ((MetroIIEventHandler) _actor)
                         .adapter();
                 _eventIterator = results.iterator();
-                _state = State.FIRING;
+                _state = ProcessState.FIRING;
                 _currentStateEvent = _createMetroIIEvent("FIRING");
             }
             metroIIEventList.add(_currentStateEvent);
@@ -108,7 +108,7 @@ public class MetroIIActorGeneralWrapper extends MetroIIActorBasicWrapper {
         /**
          * Resume executing the wrapped actor with states saved in the thread.
          */
-        else if (_state == State.FIRING) {
+        else if (_state == ProcessState.FIRING) {
             /* Every time hasNext() is called, the thread runs until the next event
              * is proposed. If any event is proposed, hasNext() returns true.
              * The proposed event is returned by next().
@@ -123,25 +123,25 @@ public class MetroIIActorGeneralWrapper extends MetroIIActorBasicWrapper {
                     metroIIEventList.add(eventBuilder);
                 }
             } else {
-                _state = State.FIRE_END_POSTFIRE_BEGIN;
+                _state = ProcessState.FIRE_END_POSTFIRE_BEGIN;
                 _currentStateEvent = _createMetroIIEvent("POSTFIRE_BEGIN");
                 metroIIEventList.add(_currentStateEvent);
             }
-        } else if (_state == State.FIRE_END_POSTFIRE_BEGIN) {
+        } else if (_state == ProcessState.FIRE_END_POSTFIRE_BEGIN) {
             assert _currentStateEvent.getName().contains("POSTFIRE_BEGIN");
             if (_currentStateEvent.getStatus() == Event.Status.NOTIFIED) {
                 if (_actor.postfire()) {
-                    _state = State.POSTFIRE_END;
+                    _state = ProcessState.POSTFIRE_END;
                     _currentStateEvent = _createMetroIIEvent("POSTFIRE_END");
                 } else {
                     // FIXME: handle the request that the actor wants to halt
                 }
             }
             metroIIEventList.add(_currentStateEvent);
-        } else if (_state == State.POSTFIRE_END) {
+        } else if (_state == ProcessState.POSTFIRE_END) {
             assert _currentStateEvent.getName().contains("POSTFIRE_END");
             if (_currentStateEvent.getStatus() == Event.Status.NOTIFIED) {
-                _state = State.PREFIRE_BEGIN;
+                _state = ProcessState.PREFIRE_BEGIN;
                 _currentStateEvent = _createMetroIIEvent("PREFIRE_BEGIN");
             }
             metroIIEventList.add(_currentStateEvent);
@@ -153,7 +153,7 @@ public class MetroIIActorGeneralWrapper extends MetroIIActorBasicWrapper {
      */
     @Override
     public void reset() {
-        if (_state == State.FIRING) {
+        if (_state == ProcessState.FIRING) {
             _eventIterator.dispose();
             _actor.stop();
         }

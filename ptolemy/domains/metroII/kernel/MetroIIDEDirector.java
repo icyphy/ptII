@@ -44,8 +44,6 @@ import ptolemy.data.BooleanToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.domains.de.kernel.DEDirector;
-import ptolemy.domains.de.kernel.DEEvent;
-import ptolemy.domains.metroII.kernel.FireMachine.Status;
 import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event;
 import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event.Builder;
 import ptolemy.kernel.CompositeEntity;
@@ -84,6 +82,8 @@ public class MetroIIDEDirector extends DEDirector implements
         newObject._events = (ArrayList<Builder>) _events.clone();
         
         newObject.actorList = (ArrayList<Actor>) actorList.clone();
+        
+        newObject._pendingIteration = (Hashtable<String, Integer>) _pendingIteration.clone(); 
         
         return newObject;
     }
@@ -413,7 +413,7 @@ public class MetroIIDEDirector extends DEDirector implements
                         Actor actor = actorAndState.first;
                         FireMachine firing = _actorDictionary.get(actor
                                 .getFullName());
-                        if (firing.getStatus() != Status.START) {
+                        if (firing.getCurrentState() != FireMachine.State.START) {
                             _pendingIteration.put(actor.getFullName(), _pendingIteration.get(actor.getFullName())+1);
                         } else {
                             actorList.add(actorAndState.first);
@@ -471,7 +471,7 @@ public class MetroIIDEDirector extends DEDirector implements
                     firing.startOrResume(metroIIEventList);
 
                     // Check if the actor has reached the end of postfire()
-                    if (firing.getStatus() == FireMachine.Status.FINAL) {
+                    if (firing.getCurrentState() == FireMachine.State.FINAL) {
                         // The actor has reached the end of postfire()
                         //FIXME: the debugging info is late 
                         if (_debugging) {

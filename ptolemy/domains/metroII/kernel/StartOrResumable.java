@@ -50,7 +50,7 @@ import ptolemy.kernel.util.IllegalActionException;
 public interface StartOrResumable {
     /** Actor state
      */
-    public enum State {
+    public enum ProcessState {
         PREFIRE_BEGIN, PREFIRE_END_FIRE_BEGIN, FIRING, FIRE_END_POSTFIRE_BEGIN, POSTFIRE_END
     }
 
@@ -86,5 +86,5 @@ public interface StartOrResumable {
     /**
      * Get the state of startOrResumable
      */
-    public State getState();
+    public ProcessState getProcessState();
 }

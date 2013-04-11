@@ -65,7 +65,7 @@ public class MetroIIActorBasicWrapper implements StartOrResumable {
      * Dispose the current execution.
      */
     public void reset() {
-        _state = State.PREFIRE_BEGIN;
+        _state = ProcessState.PREFIRE_BEGIN;
         _currentStateEvent = _createMetroIIEvent("PREFIRE_BEGIN");
     }
 
@@ -91,28 +91,28 @@ public class MetroIIActorBasicWrapper implements StartOrResumable {
     @Override
     public void startOrResume(LinkedList<Builder> metroIIEventList)
             throws IllegalActionException {
-        if (_state == State.PREFIRE_BEGIN) {
+        if (_state == ProcessState.PREFIRE_BEGIN) {
             assert _currentStateEvent.getName().contains("PREFIRE_BEGIN");
             if (_currentStateEvent.getStatus() == Event.Status.NOTIFIED) {
                 if (_actor.prefire()) {
-                    _state = State.PREFIRE_END_FIRE_BEGIN;
+                    _state = ProcessState.PREFIRE_END_FIRE_BEGIN;
                     _currentStateEvent = _createMetroIIEvent("FIRE_BEGIN");
                 }
             }
             metroIIEventList.add(_currentStateEvent);
-        } else if (_state == State.PREFIRE_END_FIRE_BEGIN) {
+        } else if (_state == ProcessState.PREFIRE_END_FIRE_BEGIN) {
             assert _currentStateEvent.getName().contains("FIRE_BEGIN");
             if (_currentStateEvent.getStatus() == Event.Status.NOTIFIED) {
                 _actor.fire();
-                _state = State.FIRE_END_POSTFIRE_BEGIN;
+                _state = ProcessState.FIRE_END_POSTFIRE_BEGIN;
                 _currentStateEvent = _createMetroIIEvent("POSTFIRE_BEGIN");
             }
             metroIIEventList.add(_currentStateEvent);
-        } else if (_state == State.FIRE_END_POSTFIRE_BEGIN) {
+        } else if (_state == ProcessState.FIRE_END_POSTFIRE_BEGIN) {
             assert _currentStateEvent.getName().contains("POSTFIRE_BEGIN");
             if (_currentStateEvent.getStatus() == Event.Status.NOTIFIED) {
                 if (_actor.postfire()) {
-                    _state = State.POSTFIRE_END;
+                    _state = ProcessState.POSTFIRE_END;
                     _currentStateEvent = _createMetroIIEvent("POSTFIRE_END");
                 } else {
                     // FIXME: handle the request that the actor wants to halt
@@ -123,10 +123,10 @@ public class MetroIIActorBasicWrapper implements StartOrResumable {
                 }
             }
             metroIIEventList.add(_currentStateEvent);
-        } else if (_state == State.POSTFIRE_END) {
+        } else if (_state == ProcessState.POSTFIRE_END) {
             assert _currentStateEvent.getName().contains("POSTFIRE_END");
             if (_currentStateEvent.getStatus() == Event.Status.NOTIFIED) {
-                _state = State.PREFIRE_BEGIN;
+                _state = ProcessState.PREFIRE_BEGIN;
                 _currentStateEvent = _createMetroIIEvent("PREFIRE_BEGIN");
             }
             metroIIEventList.add(_currentStateEvent);
@@ -137,7 +137,7 @@ public class MetroIIActorBasicWrapper implements StartOrResumable {
     /**
      * Get the current state
      */
-    public State getState() {
+    public ProcessState getProcessState() {
         return _state; 
     }
 
@@ -165,7 +165,7 @@ public class MetroIIActorBasicWrapper implements StartOrResumable {
     /** Actor state
      *
      */
-    protected State _state;
+    protected ProcessState _state;
 
     /** Actor which is being fired
      *

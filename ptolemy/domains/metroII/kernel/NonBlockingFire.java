@@ -15,9 +15,9 @@ public class NonBlockingFire extends FireMachine {
     @Override
     public void startOrResume(LinkedList<Builder> metroIIEventList)
             throws IllegalActionException {
-        if (getStatus() == Status.START) {
+        if (getCurrentState() == State.START) {
             actor().fire();
-            setStatus(Status.FINAL);
+            setState(State.FINAL);
         } 
         else {
             // invalid state; 
@@ -26,7 +26,7 @@ public class NonBlockingFire extends FireMachine {
     }
     
     @Override
-    public State getState() {
+    public ProcessState getProcessState() {
         // TODO Auto-generated method stub
         assert false; 
         return null;
