@@ -28,6 +28,7 @@
 package ptolemy.vergil.basic.imprt.g4ltl;
 
 import g4ltl.SolverUtility;
+import g4ltl.utility.ResultLTLSynthesis;
 import g4ltl.utility.SynthesisEngine;
 
 import java.io.File;
@@ -46,7 +47,7 @@ import ptolemy.moml.MoMLParser;
    <p>"G4LTL is a standalone tool and a Java library for automatically
    generating controllers realizing linear temporal logic (LTL).</p>
  
-   <p>See <a href="http://www6.in.tum.de/~chengch/g4ltl/#in_browser">http://www6.in.tum.de/~chengch/g4ltl/</a></p>
+   <p>See <a href="http://sourceforge.net/projects/g4ltl/#in_browser">http://sourceforge.net/projects/g4ltl/</a></p>
  
    <p>This class uses classes defined in $PTII/lib/g4ltl.jar.  See
    $PTII/lib/g4ltl-license.htm.</p>
@@ -74,11 +75,11 @@ public class G4LTL {
      * @return The moml of a state machine that represents the LTL file.
      * @exception Exception If thrown while synthesizing.
      */
-    public static String synthesizeFromFile(SolverUtility solver, File ltlFile,
+    public static ResultLTLSynthesis synthesizeFromFile(SolverUtility solver, File ltlFile,
             int optionTechnique, int unrollSteps, boolean findStrategy)
             throws Exception {
         //System.out.println("G4LTL.synthesizeFromFile(): " + ltlFile + " " + optionTechnique + " " + unrollSteps + " " + findStrategy);
-        String result = solver.synthesizeFromFile(ltlFile, optionTechnique,
+        ResultLTLSynthesis result = solver.synthesizeFromFile(ltlFile, optionTechnique,
                 unrollSteps, SynthesisEngine.OUTPUT_FSM_ACTOR_PTOLEMY,
                 findStrategy);
         return result;
@@ -105,15 +106,15 @@ public class G4LTL {
             int unrollSteps, boolean findStrategy, NamedObj context)
             throws Exception {
         SolverUtility solver = new SolverUtility();
-        String result = G4LTL.synthesizeFromFile(solver, ltlFile, optionTechnique,
+        ResultLTLSynthesis result = G4LTL.synthesizeFromFile(solver, ltlFile, optionTechnique,
                 unrollSteps, /*SynthesisEngine.OUTPUT_FSM_ACTOR_PTOLEMY,*/
                 findStrategy);
-        if (findStrategy && result.trim().startsWith("<") == false) {
+        if (findStrategy && result.getMessage1().startsWith("<") == false) {
             result = solver.synthesizeFromFile(ltlFile, optionTechnique,
                     unrollSteps, SynthesisEngine.OUTPUT_FSM_ACTOR_PTOLEMY,
                     false);
         }
-        String name = updateModel(result, context);
+        String name = updateModel(result.getMessage1(), context);
         return name;
     }
 

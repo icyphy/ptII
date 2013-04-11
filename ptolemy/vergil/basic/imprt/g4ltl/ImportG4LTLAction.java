@@ -29,6 +29,7 @@ package ptolemy.vergil.basic.imprt.g4ltl;
 
 import g4ltl.SolverUtility;
 import g4ltl.Version;
+import g4ltl.utility.ResultLTLSynthesis;
 
 import java.awt.Color;
 import java.awt.event.ActionEvent;
@@ -152,7 +153,7 @@ public class ImportG4LTLAction extends AbstractAction {
                         .getCurrentDirectory());
 
                 File file = null;
-                String result = null;
+                ResultLTLSynthesis result = null;
                 try {
                     file = ptFileChooser.getSelectedFile().getCanonicalFile();
 
@@ -185,7 +186,7 @@ public class ImportG4LTLAction extends AbstractAction {
 
                    
                     
-                    if (result.trim().startsWith("<") == false) {
+                    if (result.isStrategyFound() == false) {
                         // Try to see if a counter-strategy exists
 
                         Object[] options = { "Yes", "No" };
@@ -198,24 +199,23 @@ public class ImportG4LTLAction extends AbstractAction {
 
                         if (option == 0) {
                             result = G4LTL.synthesizeFromFile(solver, file,
-                                    optionTechnique, unrollSteps,
-                                    /* SynthesisEngine.OUTPUT_FSM_ACTOR_PTOLEMY,*/
+                                    optionTechnique, unrollSteps,                                    
                                     false);
                         }
 
-                        JOptionPane.showMessageDialog(null, result,
+                        JOptionPane.showMessageDialog(null, result.getMessage1(),
                                 "G4LTL@Ptolemy II", JOptionPane.DEFAULT_OPTION,
                                 icon);
                         return;
                     } else {
                         if(!Version.BSD_VERSION){
-                            if(!solver.getOutputMultiplexer().trim().equals("")){
+                            if(!result.getMessage2().equals("")){
                                 // Generate the multiplexer
-                                G4LTL.updateModel(solver.getOutputMultiplexer(), basicGraphFrame.getModel());
+                                G4LTL.updateModel(result.getMessage2(), basicGraphFrame.getModel());
                             }
                         }
                     }
-                    G4LTL.updateModel(result, basicGraphFrame.getModel());
+                    G4LTL.updateModel(result.getMessage1(), basicGraphFrame.getModel());
                 } catch (Exception ex) {
                     basicGraphFrame.report(new IllegalActionException(
                             basicGraphFrame.getModel(), ex,
