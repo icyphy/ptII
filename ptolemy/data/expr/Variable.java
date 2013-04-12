@@ -1653,12 +1653,10 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
         // to itself.
         if (_dependencyLoop && _needsEvaluation) {
             _dependencyLoop = false;
-            /** FIXME
-            throw new IllegalActionException("There is a dependency loop"
+            throw new CircularDependencyError(this, "There is a dependency loop"
                     + " where " + getFullName() + " directly or indirectly"
                     + " refers to itself in its expression: "
                     + _currentExpression);
-                    */
         }
 
         _dependencyLoop = true;
@@ -1685,8 +1683,12 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
             // This is because one may want to define a class that
             // contains default expressions that can only be evaluated
             // in the context of the instances.
+            // The same is true of a dependency loop error, since the circular
+            // dependency could be due to referencing a variable with the same
+            // name that does not yet exist.
             if (!_isWithinClassDefinition()
-                    || !(ex instanceof UndefinedConstantOrIdentifierException)) {
+                    || (!(ex instanceof UndefinedConstantOrIdentifierException))
+                    && !(ex instanceof CircularDependencyError)) {
                 throw new IllegalActionException(this, ex,
                         "Error evaluating expression: " + _currentExpression);
             }
@@ -1781,7 +1783,7 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
                         // there is no error handler, so the above line correctly
                         // ignores the error in evaluation.
                         if (!handleModelError(this, ex)) {
-                            // In the short term, warn about errors opening models.
+                            // FIXME: In the short term, warn about errors opening models.
                             // There are a bunch of things that need to be fixed, but there are also
                             // legitimate models such as ptolemy/actor/parameters/test/auto/ParameterSetTest.xml
                             // that refer to parameter not present when the model is parsed.
@@ -2414,6 +2416,16 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
+    
+    /** Subclass of IllegalActionException for use in reporting
+     *  circular dependency errors.
+     */
+    public class CircularDependencyError extends IllegalActionException {
+        public CircularDependencyError(Nameable object, String detail) {
+            super(object, detail);
+        }
+    }
+    
     private class TypeTerm implements InequalityTerm {
         ///////////////////////////////////////////////////////////////
         ////                       public inner methods            ////
