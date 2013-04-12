@@ -1557,8 +1557,8 @@ public class MetroIIPtidesDirector extends MetroIIDEDirectorForPtides {
         FireMachine metroActor = _actorDictionary.get(event.actor()
                 .getFullName());
 
-        if (metroActor.getCurrentState() != FireMachine.State.START) {
-            System.out.println(metroActor.getCurrentState());
+        if (metroActor.getState() != FireMachine.State.START) {
+            System.out.println(metroActor.getState());
             System.out.println(FireMachine.State.START);
             return false;
         }

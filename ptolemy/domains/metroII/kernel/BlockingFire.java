@@ -44,26 +44,26 @@ public class BlockingFire extends FireMachine {
     public void startOrResume(LinkedList<Builder> metroIIEventList)
             throws IllegalActionException {
         assert metroIIEventList != null;        
-        if (getCurrentState() == State.START) {
+        if (getState() == State.START) {
             setState(State.BEGIN);
-            metroIIEventList.add(proposeCurrentStateEvent());
-        } else if (getCurrentState() == State.BEGIN) {
-            assert getCurrentStateEvent().getName().contains("FIRE_BEGIN");
-            if (getCurrentStateEvent().getStatus() == Event.Status.NOTIFIED) {
+            metroIIEventList.add(proposeStateEvent());
+        } else if (getState() == State.BEGIN) {
+            assert getStateEvent().getName().contains("FIRE_BEGIN");
+            if (getStateEvent().getStatus() == Event.Status.NOTIFIED) {
                 actor().fire();
                 setState(State.END);
-                metroIIEventList.add(proposeCurrentStateEvent());
+                metroIIEventList.add(proposeStateEvent());
             } else {
-                metroIIEventList.add(getCurrentStateEvent());
+                metroIIEventList.add(getStateEvent());
             }
-        } else if (getCurrentState() == State.END) {
-            assert getCurrentStateEvent().getName().contains("FIRE_END");
-            if (getCurrentStateEvent().getStatus() == Event.Status.NOTIFIED) {
+        } else if (getState() == State.END) {
+            assert getStateEvent().getName().contains("FIRE_END");
+            if (getStateEvent().getStatus() == Event.Status.NOTIFIED) {
                 setState(State.FINAL);
             } else {
-                metroIIEventList.add(getCurrentStateEvent());
+                metroIIEventList.add(getStateEvent());
             }
-        } else if (getCurrentState() == State.FINAL) {
+        } else if (getState() == State.FINAL) {
             // do nothing
         } else {
             // unknown state; 
@@ -71,13 +71,5 @@ public class BlockingFire extends FireMachine {
         }
         
     }
-    
-
-    @Override
-    public ProcessState getProcessState() {
-        // TODO Auto-generated method stub
-        assert false; 
-        return null;
-    }
-    
+        
 }

@@ -260,9 +260,9 @@ public class MetroIIDirector extends Director {
             while (actors.hasNext()) {
                 Actor actor = (Actor) actors.next();
                 if (actor instanceof MetroIIEventHandler) {
-                    _actorList.add(new MetroIIActorGeneralWrapper(actor));
+                    _actorList.add(new ResumableActor(actor));
                 } else {
-                    _actorList.add(new MetroIIActorBasicWrapper(actor));
+                    _actorList.add(new BlockingActor(actor));
                 }
             }
         }

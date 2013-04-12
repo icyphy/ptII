@@ -413,7 +413,7 @@ public class MetroIIDEDirector extends DEDirector implements
                         Actor actor = actorAndState.first;
                         FireMachine firing = _actorDictionary.get(actor
                                 .getFullName());
-                        if (firing.getCurrentState() != FireMachine.State.START) {
+                        if (firing.getState() != FireMachine.State.START) {
                             _pendingIteration.put(actor.getFullName(), _pendingIteration.get(actor.getFullName())+1);
                         } else {
                             actorList.add(actorAndState.first);
@@ -471,7 +471,7 @@ public class MetroIIDEDirector extends DEDirector implements
                     firing.startOrResume(metroIIEventList);
 
                     // Check if the actor has reached the end of postfire()
-                    if (firing.getCurrentState() == FireMachine.State.FINAL) {
+                    if (firing.getState() == FireMachine.State.FINAL) {
                         // The actor has reached the end of postfire()
                         //FIXME: the debugging info is late 
                         if (_debugging) {

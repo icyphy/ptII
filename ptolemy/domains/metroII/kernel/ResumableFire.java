@@ -20,15 +20,15 @@ public class ResumableFire extends FireMachine {
     @Override
     public void startOrResume(LinkedList<Builder> metroIIEventList)
             throws IllegalActionException {
-        if (getCurrentState() == State.START) {
+        if (getState() == State.START) {
             setState(State.BEGIN);
-            metroIIEventList.add(proposeCurrentStateEvent());
+            metroIIEventList.add(proposeStateEvent());
         /**
          * Start executing the wrapped actor in the thread.
          */
-        } else if (getCurrentState() == State.BEGIN) {
-            assert getCurrentStateEvent().getName().contains("FIRE_BEGIN");
-            if (getCurrentStateEvent().getStatus() == Event.Status.NOTIFIED) {
+        } else if (getState() == State.BEGIN) {
+            assert getStateEvent().getName().contains("FIRE_BEGIN");
+            if (getStateEvent().getStatus() == Event.Status.NOTIFIED) {
                 /* The getfire() of each Metropolis actor is invoked by a separate thread.
                  * Each thread is encapsulated by a YieldAdapterIterable, which is used to iterate
                  * the events proposed by the thread.
@@ -37,15 +37,15 @@ public class ResumableFire extends FireMachine {
                         .adapter();
                 _eventIterator = results.iterator();
                 setState(State.PROCESS);
-                metroIIEventList.add(proposeCurrentStateEvent());
+                metroIIEventList.add(proposeStateEvent());
             } else {
-                metroIIEventList.add(getCurrentStateEvent());
+                metroIIEventList.add(proposeStateEvent());
             }
         }
         /**
          * Resume executing the wrapped actor with states saved in the thread.
          */
-        else if (getCurrentState() == State.PROCESS) {
+        else if (getState() == State.PROCESS) {
             /* Every time hasNext() is called, the thread runs until the next event
              * is proposed. If any event is proposed, hasNext() returns true.
              * The proposed event is returned by next().
@@ -59,19 +59,19 @@ public class ResumableFire extends FireMachine {
                     eventBuilder.setStatus(Event.Status.PROPOSED);
                     metroIIEventList.add(eventBuilder);
                 }
-                metroIIEventList.add(proposeCurrentStateEvent());
+                metroIIEventList.add(proposeStateEvent());
             } else {
                 setState(State.END);
-                metroIIEventList.add(proposeCurrentStateEvent());
+                metroIIEventList.add(proposeStateEvent());
             }
-        } else if (getCurrentState() == State.END) {
-            assert getCurrentStateEvent().getName().contains("FIRE_END");
-            if (getCurrentStateEvent().getStatus() == Event.Status.NOTIFIED) {
+        } else if (getState() == State.END) {
+            assert getStateEvent().getName().contains("FIRE_END");
+            if (getStateEvent().getStatus() == Event.Status.NOTIFIED) {
                 setState(State.FINAL);
             } else {
-                metroIIEventList.add(getCurrentStateEvent());
+                metroIIEventList.add(proposeStateEvent());
             }
-        } else if (getCurrentState() == State.FINAL) {
+        } else if (getState() == State.FINAL) {
             // do nothing
         } else {
             // unknown state; 
@@ -84,7 +84,7 @@ public class ResumableFire extends FireMachine {
      */
     @Override
     public void reset() {
-        if (getCurrentState() == State.PROCESS) {
+        if (getState() == State.PROCESS) {
             _eventIterator.dispose();
             actor().stop();
         }
@@ -98,12 +98,5 @@ public class ResumableFire extends FireMachine {
      * Thread that is firing the actor
      */
     protected YieldAdapterIterator<Iterable<Event.Builder>> _eventIterator;
-
-    @Override
-    public ProcessState getProcessState() {
-        // TODO Auto-generated method stub
-        assert false; 
-        return null;
-    }
 
 }

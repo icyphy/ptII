@@ -451,7 +451,7 @@ public class MetroIIDEDirectorForPtides extends DEDirector implements
                     firing.startOrResume(metroIIEventList);
                     stable = false;
 
-                    if (firing.getCurrentState() == FireMachine.State.FINAL) {
+                    if (firing.getState() == FireMachine.State.FINAL) {
                         if (_debugging) {
                             _debug(new FiringEvent(this, actor,
                                     FiringEvent.BEFORE_POSTFIRE));
@@ -465,7 +465,7 @@ public class MetroIIDEDirectorForPtides extends DEDirector implements
                                     FiringEvent.AFTER_POSTFIRE));
                         }
                     } else {
-                        if (firing.getCurrentState() == FireMachine.State.END) {
+                        if (firing.getState() == FireMachine.State.END) {
                             if (_debugging) {
                                 _debug(new FiringEvent(this, actor,
                                         FiringEvent.AFTER_FIRE));
