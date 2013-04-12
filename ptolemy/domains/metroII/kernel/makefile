@@ -51,32 +51,33 @@ PTCLASSALLJARS = \
 	util/util.jar
 
 JSRCS = \
+    ActMachine.java \
+    BlockingActor.java \
     BlockingFire.java \
-    MetroIIActorGeneralWrapper.java \
-    MetroIIEventHandler.java \
-    MetroIIPNQueueReceiver.java \
-    MetroIIPtidesReceiver.java \
-    StartOrResumable.java \
     ConstraintSolver.java \
-    MetroIICompositeActor.java \
-    MetroIIFSMDirector.java \
-    MetroIIPtidesDirector.java \
-    MetroIISRDirector.java \
     FireMachine.java \
-    MetroIIDEDirectorForPtides.java \
-    MetroIIMirrorComposite.java \
-    MetroIIPtidesListEventQueue.java \
-    MetroIISystemCDirector.java \
     MappingConstraintSolver.java \
+    MetroIICompositeActor.java \
     MetroIIDEDirector.java \
-    MetroIIModalModel.java \
-    MetroIIPtidesPlatform.java \
-    NonBlockingFire.java \
-    MetroIIActorBasicWrapper.java \
+    MetroIIDEDirectorForPtides.java \
     MetroIIDirector.java \
+    MetroIIEventHandler.java \
+    MetroIIFSMDirector.java \
+    MetroIIMirrorComposite.java \
+    MetroIIModalModel.java \
     MetroIIPNDirector.java \
+    MetroIIPNQueueReceiver.java \
+    MetroIIPtidesDirector.java \
+    MetroIIPtidesListEventQueue.java \
+    MetroIIPtidesPlatform.java \
     MetroIIPtidesPort.java \
+    MetroIIPtidesReceiver.java \
+    MetroIISRDirector.java \
+    MetroIISystemCDirector.java \
+    NonBlockingFire.java \
+    ResumableActor.java \
     ResumableFire.java \
+    StartOrResumable.java \
     TimeScheduler.java
 
 OTHER_FILES_TO_BE_JARED =
@@ -91,13 +92,14 @@ MISC_FILES =	$(DIRS) test
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	doc \
+	'ActMachine.class' \
+	'ActMachine$State.class' \
+	'BlockingActor.class' \
     'BlockingFire.class' \
     'ConstraintSolver.class' \
     'FireMachine.class' \
-    'FireMachine$Status.class' \
+    'FireMachine$State.class' \
     'MappingConstraintSolver.class' \
-    'MetroIIActorBasicWrapper.class' \
-    'MetroIIActorGeneralWrapper.class' \
     'MetroIICompositeActor$1.class' \
     'MetroIICompositeActor.class' \
     'MetroIIDEDirector.class' \
@@ -136,8 +138,7 @@ OPTIONAL_FILES = \
     'NonBlockingFire.class' \
     'ResumableFire.class' \
     'StartOrResumable.class' \
-    'StartOrResumable$State.class' \
-
+	'TimeScheduler.class' 
 
 
 JCLASS = $(JSRCS:%.java=%.class)
