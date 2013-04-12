@@ -1,4 +1,4 @@
-/* Ptides port.
+/* A specialized port for Ptides platforms.
 
 @Copyright (c) 2008-2013 The Regents of the University of California.
 All rights reserved.
@@ -49,7 +49,42 @@ import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.SingletonConfigurableAttribute;
 
 /** A specialized port for Ptides platform I/O implementing
- *  functionality for sensors, actuators and network ports.
+ *  functionality for sensors, actuators and network receiver and
+ *  transmitter ports.
+ *  
+ *  When creating a port in vergil, a sensor or actuator port is
+ *  created. To create a network port, the parameter <i>
+ *  isNetworkPort</i> is changed. Upon changing the type of the port,
+ *  the icon is changed as well. 
+ *  
+ *  PtidesPorts are configured by parameters where some parameters
+ *  are the same for all types of ports and others are specific 
+ *  to the type. Every PtidesPort can be configured with a 
+ *  deviceDelay and a deviceDelayBound. The deviceDelay is the amount
+ *  of platform time passing between the port receiving the event and 
+ *  the platform time the event is put on the event queue (for input
+ *  ports) or the time the event is released to the environment (for
+ *  output ports).  The deviceDelayBound is the maximum of this value
+ *  and it is used in the safe-to-process analysis. 
+ *  
+ *  Actuators additionally have a parameter actuateAtEventTimestamp
+ *  which is used to specify whether the actuator can output events
+ *  before the event timestamp or only at the event timestamp.
+ *  
+ *  A network transmitter has a parameter platformDelayBound 
+ *  which is configured to represent the maximum difference between
+ *  platform time and the event timestamp if platform time is 
+ *  ahead of the event timestamp. This is used for the safe-to-process
+ *  analysis.
+ *  
+ *  A network receiver has a parameter sourcePlatformDelayBound 
+ *  which can be used to match the parameter platformDelayBound
+ *  on the sending platform. Again, this parameter is used for 
+ *  the safe-to-process analysis. 
+ *  
+ *  Network receivers have an additional parameter networkDelayBound
+ *  which describes the maximum physical time input events spent on 
+ *  the network after being sent by the another PtidesPlatform.
  *
  *  @author Patricia Derler
  *  @version $Id$

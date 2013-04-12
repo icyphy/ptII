@@ -64,6 +64,7 @@ import ptolemy.domains.de.kernel.DEDirector;
 import ptolemy.domains.de.kernel.DEEventQueue;
 import ptolemy.domains.ptides.lib.ErrorHandlingAction;
 import ptolemy.domains.ptides.lib.PtidesPort;
+import ptolemy.domains.sr.kernel.SRDirector;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
@@ -898,6 +899,10 @@ public class PtidesDirector extends DEDirector {
                         ((DoubleToken) ((TimeDelay) entity).minimumDelay
                                 .getToken()).doubleValue());
             }
+            if (entity instanceof CompositeActor && 
+                    ((CompositeActor) entity).getDirector() instanceof SRDirector) {
+                // TODO calculate delayOffset
+            }
         }
     }
 
@@ -1482,7 +1487,7 @@ public class PtidesDirector extends DEDirector {
         }
         if (delayOffset == null
                 || localClock.getLocalTime().compareTo(
-                        eventTimestamp.subtract(delayOffset)) >= 0) {
+                        eventTimestamp.subtract(delayOffset).subtract(_clockSynchronizationErrorBound)) >= 0) {
             return true;
         }
 

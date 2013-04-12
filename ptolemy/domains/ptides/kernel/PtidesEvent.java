@@ -237,23 +237,23 @@ public class PtidesEvent extends DEEvent {
         if (actor == null) {
             actor = (Actor) event.ioPort().getContainer();
         }
-        Double timePrecision = null;
+        Double clockSyncBound = null;
         try {
-            timePrecision = PtidesDirector._getDoubleParameterValue(
-                    (NamedObj) actor, "timePrecision");
+            clockSyncBound = PtidesDirector._getDoubleParameterValue(
+                    (NamedObj) actor, "_clockSynchronizationBound");
         } catch (IllegalActionException e) {
             // In this case timePrecision is set to 0.0 in the next lines.
         }
-        if (timePrecision == null) {
-            timePrecision = 0.0;
+        if (clockSyncBound == null) {
+            clockSyncBound = 0.0;
         }
 
         return _timestamp.compareTo(event.timeStamp()) == 0
                 && _microstep == event.microstep()
                 || _timestamp.compareTo(event.timeStamp()) <= 0
-                || _timestamp.subtract(timePrecision).compareTo(
+                || _timestamp.subtract(clockSyncBound).compareTo(
                         event.timeStamp()) <= 0
-                && _timestamp.add(timePrecision).compareTo(event.timeStamp()) >= 0;
+                && _timestamp.add(clockSyncBound).compareTo(event.timeStamp()) >= 0;
     }
 
     /** Return true if this event is a pure event.
