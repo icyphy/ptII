@@ -444,15 +444,20 @@ test Complex-15.1.1 {static isInfinite(Complex)} {
 ####################################################################
 test Complex-16.1 {roots} {
     set c2 [java::new ptolemy.math.Complex 2.0 -3.0]
-    set c11 [$c1 roots 2] 
-    $c11 length
-    epsilonDiff [[$c11 get 0] toString] {4.329780281177466E-17 + 0.7071067811865475i}
+    set c22 [$c2 roots 2] 
+    epsilonDiff [[$c22 get 0] toString] {1.6741492280355401 - 0.895977476129838i}
 } {}
 
 ####################################################################
 test Complex-16.1.1 {roots} {
     # Uses 16.1 above
-    epsilonDiff [[$c11 get 1] toString] {4.329780281177466E-17 + 0.7071067811865475i}
+    epsilonDiff [[$c22 get 1] toString] {-1.6741492280355401 + 0.895977476129838i}
+} {}
+
+####################################################################
+test Complex-16.1.2 {roots} {
+    set c11 [$c1 roots 2] 
+    epsilonDiff [[$c11 get 0] toString] {4.329780281177466E-17 + 0.7071067811865475i}
 } {}
 
 ####################################################################
