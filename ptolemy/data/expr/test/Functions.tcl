@@ -223,10 +223,12 @@ test Function-cos {Test cos} {
      } {1 1 1 1}
 
 test Function-cos-2 {Test cos} {
-    list [evaluate {cos(1+i)}] \
-         [evaluate {cos({1+i, 1-i})}] \
-         [evaluate {cos([1+i, 1-i])}]
-} {{0.8337300251311491 - 0.9888977057628653i} {{0.8337300251311491 - 0.9888977057628653i, 0.8337300251311491 + 0.9888977057628653i}} {[0.8337300251311491 - 0.9888977057628653i, 0.8337300251311491 + 0.9888977057628653i]}}
+    # Between Java 1.7.0_17 and 1.8.0-ea-b84, the values for pow(0.25,0.25) changed.
+    set epsilon 0.000000000000001
+    epsilonDiff [evaluate {cos(1+i)}]  {0.8337300251311491 - 0.9888977057628653i} $epsilon
+    epsilonDiff [evaluate {cos({1+i, 1-i})}] {{0.8337300251311491 - 0.9888977057628653i, 0.8337300251311491 + 0.9888977057628653i}} $epsilon
+    epsilonDiff [evaluate {cos([1+i, 1-i])}]] {[0.8337300251311491 - 0.9888977057628653i, 0.8337300251311491 + 0.9888977057628653i]} $epsilon
+} {}
 
 test Functions-cos-3 {test cos} {
     list [evaluate {cos(identityMatrixDouble(2))}] \
@@ -245,11 +247,13 @@ test Function-cosh {Test cosh} {
          [evaluatePtClose {cosh(0.0+0.0i)} {1.0 + 0.0i}] \
      } {1 1 1 1}
 
- test Function-cosh-2 {Test cosh} {
-    list [evaluate {cosh(1+i)}] \
-         [evaluate {cosh({1+i, 1-i})}] \
-         [evaluate {cosh([1+i, 1-i])}]
- } {{0.8337300251311491 + 0.9888977057628653i} {{0.8337300251311491 + 0.9888977057628653i, 0.8337300251311491 - 0.9888977057628653i}} {[0.8337300251311491 + 0.9888977057628653i, 0.8337300251311491 - 0.9888977057628653i]}}
+test Function-cosh-2 {Test cosh} {
+    epsilonDiff [evaluate {cosh(1+i)}] {0.8337300251311491 + 0.9888977057628653i} $epsilon
+    epsilonDiff [evaluate {cosh({1+i, 1-i})}] {{0.8337300251311491 + 0.9888977057628653i, 0.8337300251311491 - 0.9888977057628653i}} $epsilon
+    epsilonDiff [evaluate {cosh([1+i, 1-i])}] {[0.8337300251311491 + 0.9888977057628653i, 0.8337300251311491 - 0.9888977057628653i]} $epsilon
+} {}
+     
+     
 
 ####################################################################
 # sin
@@ -262,10 +266,10 @@ test Function-sin {Test sin} {
      } {1 1 1 1}
 
 test Function-sin-2 {Test sin} {
-    list [evaluate {sin(1+i)}] \
-         [evaluate {sin({1+i, 1-i})}] \
-         [evaluate {sin([1+i, 1-i])}]
-} {{1.2984575814159776 + 0.6349639147847362i} {{1.2984575814159776 + 0.6349639147847362i, 1.2984575814159776 - 0.6349639147847362i}} {[1.2984575814159776 + 0.6349639147847362i, 1.2984575814159776 - 0.6349639147847362i]}}
+    epsilonDiff [evaluate {sin(1+i)}] {1.2984575814159776 + 0.6349639147847362i} $epsilon
+    epsilonDiff [evaluate {sin({1+i, 1-i})}] {{1.2984575814159776 + 0.6349639147847362i, 1.2984575814159776 - 0.6349639147847362i}} $epsilon
+    epsilonDiff [evaluate {sin([1+i, 1-i])}] {[1.2984575814159776 + 0.6349639147847362i, 1.2984575814159776 - 0.6349639147847362i]} $epsilon
+} {}
 
 test Functions-sin-3 {test sinVector} {
     list [evaluate {sin(10.0*[0.0:PI/100:1.0]).toArray()}]
@@ -283,11 +287,13 @@ test Function-sinh {Test sinh} {
          [evaluatePtClose {sinh(0.0+0.0i)} {0.0 + 0.0i}] \
      } {1 1 1 1}
 
- test Function-sinh-2 {Test sinh} {
-    list [evaluate {sinh(1+i)}] \
-         [evaluate {sinh({1+i, 1-i})}] \
-         [evaluate {sinh([1+i, 1-i])}]
- } {{0.6349639147847362 + 1.2984575814159776i} {{0.6349639147847362 + 1.2984575814159776i, 0.6349639147847362 - 1.2984575814159776i}} {[0.6349639147847362 + 1.2984575814159776i, 0.6349639147847362 - 1.2984575814159776i]}}
+test Function-sinh-2 {Test sinh} {
+    epsilonDiff [evaluate {sinh(1+i)}] {0.6349639147847362 + 1.2984575814159776i} $epsilon
+    epsilonDiff [evaluate {sinh({1+i, 1-i})}] {{0.6349639147847362 + 1.2984575814159776i, 0.6349639147847362 - 1.2984575814159776i}} $epsilon
+    epsilonDiff [evaluate {sinh([1+i, 1-i])}] {[0.6349639147847362 + 1.2984575814159776i, 0.6349639147847362 - 1.2984575814159776i]} $epsilon
+}  {}
+ 
+
 
 ####################################################################
 # tan
@@ -300,11 +306,11 @@ test Function-tan {Test tan} {
          [evaluatePtClose {tan(0.0+0.0i)} {0.0 + 0.0i}] \
      } {1 1 1 1 1}
 
- test Function-tan-2 {Test tan} {
-    list [evaluate {tan(1+i)}] \
-         [evaluate {tan({1+i, 1-i})}] \
-         [evaluate {tan([1+i, 1-i])}]
- } {{0.27175258531951163 + 1.0839233273386946i} {{0.27175258531951163 + 1.0839233273386946i, 0.27175258531951163 - 1.0839233273386946i}} {[0.27175258531951163 + 1.0839233273386946i, 0.27175258531951163 - 1.0839233273386946i]}}
+test Function-tan-2 {Test tan} {
+    epsilonDiff [evaluate {tan(1+i)}] {0.27175258531951163 + 1.0839233273386946i} $epsilon
+    epsilonDiff [evaluate {tan({1+i, 1-i})}] {{0.27175258531951163 + 1.0839233273386946i, 0.27175258531951163 - 1.0839233273386946i}} $epsilon
+    epsilonDiff [evaluate {tan([1+i, 1-i])}] {[0.27175258531951163 + 1.0839233273386946i, 0.27175258531951163 - 1.0839233273386946i]} $epsilon
+} {}
 
 ####################################################################
 # tanh
@@ -316,11 +322,11 @@ test Function-tanh {Test tanh} {
          [evaluatePtClose {tanh(0.0+0.0i)} {0.0 + 0.0i}] \
      } {1 1 1 1}
 
- test Function-tanh {Test tanh} {
-    list [evaluate {tanh(1+i)}] \
-         [evaluate {tanh({1+i, 1-i})}] \
-         [evaluate {tanh([1+i, 1-i])}]
- } {{1.0839233273386946 + 0.27175258531951163i} {{1.0839233273386946 + 0.27175258531951163i, 1.0839233273386946 - 0.27175258531951163i}} {[1.0839233273386946 + 0.27175258531951163i, 1.0839233273386946 - 0.27175258531951163i]}}
+test Function-tanh-2 {Test tanh} {
+    epsilonDiff [evaluate {tanh(1+i)}] {1.0839233273386946 + 0.27175258531951163i} $epsilon
+    epsilonDiff [evaluate {tanh({1+i, 1-i})}] {{1.0839233273386946 + 0.27175258531951163i, 1.0839233273386946 - 0.27175258531951163i}} $epsilon
+    epsilonDiff [evaluate {tanh([1+i, 1-i])}] {[1.0839233273386946 + 0.27175258531951163i, 1.0839233273386946 - 0.27175258531951163i]} $epsilon
+} {}
 
 ####################################################################
 ####################################################################
@@ -731,14 +737,14 @@ test Function-pow2 {Test pow on complex} {
      } {1 1 1}
 
 test Functions-pow-3 {test pow} {
-    list [evaluate {pow(2.0*identityMatrixDouble(2), -identityMatrixDouble(2))}] \
-        [evaluate {pow(-1.0, 2.0)}] \
-        [evaluate {pow({-1.0, 0.5}, {-1.0, 0.5})}] \
-        [evaluate {pow(e, pi* i)}] \
-        [evaluate {pow(i, 2.0)}] \
-        [evaluate {pow(i, 2.0+ 0.0i)}] \
-        [evaluate {pow({-1.0, 0.5}, {-1.0+0.0*i, 0.5+0.0i})}]
-} {{[0.5, 1.0; 1.0, 0.5]} 1.0 {{-1.0, 0.7071067811865}} {-1.0 + 1.2246467991473532E-16i} {-1.0 + 1.2246467991473532E-16i} {-1.0 + 1.2246467991473532E-16i} {{-1.0 - 1.2246467991473532E-16i, 0.7071067811865475 + 0.0i}}}
+    epsilonDiff [evaluate {pow(2.0*identityMatrixDouble(2), -identityMatrixDouble(2))}] {[0.5, 1.0; 1.0, 0.5]}
+    epsilonDiff [evaluate {pow(-1.0, 2.0)}] 1.0
+    epsilonDiff [evaluate {pow({-1.0, 0.5}, {-1.0, 0.5})}] {{-1.0, 0.7071067811865}}
+    epsilonDiff [evaluate {pow(e, pi* i)}] {-1.0 + 1.2246467991473532E-16i}
+    epsilonDiff [evaluate {pow(i, 2.0)}] {-1.0 + 1.2246467991473532E-16i}
+    epsilonDiff [evaluate {pow(i, 2.0+ 0.0i)}] {-1.0 + 1.2246467991473532E-16i}
+    epsilonDiff [evaluate {pow({-1.0, 0.5}, {-1.0+0.0*i, 0.5+0.0i})}] {{-1.0 - 1.2246467991473532E-16i, 0.7071067811865475 + 0.0i}}
+} {}
 
 
 ####################################################################
