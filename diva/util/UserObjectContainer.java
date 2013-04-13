@@ -34,13 +34,13 @@ package diva.util;
  * @version $Id$
  */
 public interface UserObjectContainer {
-    /**
-     * Return the user object.
+    /** Return the user object.
+     *  @return The user object.
      */
     public Object getUserObject();
 
-    /**
-     * Set the user object.
+    /** Set the user object.
+     *  @param The user object.	
      */
     public void setUserObject(Object o);
 }

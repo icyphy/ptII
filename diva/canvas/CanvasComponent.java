@@ -38,12 +38,14 @@ package diva.canvas;
 public interface CanvasComponent {
     /** Return the parent of this component. Return null if the component
      *  does not have a parent.
+     *  @return The parent of this component.
      */
     public CanvasComponent getParent();
 
     /** Return the transform context of the component. If the component
-     * has its own transform context, this method should return it,
-     * otherwise it should return the transform context of its parent.
+     *  has its own transform context, this method should return it,
+     *  otherwise it should return the transform context of its parent.
+     *  @return  The transform contect of this component.
      */
     public TransformContext getTransformContext();
 
@@ -53,9 +55,10 @@ public interface CanvasComponent {
     public void repaint();
 
     /** Accept notification that a repaint has occurred somewhere
-     * in the tree below this component. The component must
-     * clear any cached data that depends on its children and
-     * forward the notification upwards.
+     *  in the tree below this component. The component must
+     *  clear any cached data that depends on its children and
+     *  forward the notification upwards.
+     *  @param damageRegion The region where a repaint has occurred.
      */
-    public void repaint(DamageRegion d);
+    public void repaint(DamageRegion damageRegion);
 }

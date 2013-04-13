@@ -43,25 +43,32 @@ public interface VisibleComponent extends CanvasComponent {
     /** Test the visibility flag of this object. Note that this flag
      *  does not indicate whether the object is actually visible on
      *  the screen, as one of its ancestors may not be visible.
+     *  @return true if the object is visible.
      */
     public boolean isVisible();
 
     /** Paint this object onto a 2D graphics object. Implementors
-     * should first test if the visibility flag is set, and
-     * paint the object if it is.
+     *  should first test if the visibility flag is set, and
+     *  paint the object if it is.
+     *  @param graphics2D The 2D graphics object that this object
+     *  it to be painted upon.
      */
-    public void paint(Graphics2D g2d);
+    public void paint(Graphics2D graphics2D);
 
     /** Paint this object onto a 2D graphics object, within the given
-     * region.  Implementors should first test if the visibility flag is
-     * set, and paint the object if it is. The provided region can be
-     * used to optimize the paint, but implementors can assume that the
-     * clip region is correctly set beforehand.
+     *  region.  Implementors should first test if the visibility flag is
+     *  set, and paint the object if it is. The provided region can be
+     *  used to optimize the paint, but implementors can assume that the
+     *  clip region is correctly set beforehand.
+     *  @param graphics2D The 2D graphics object that this object
+     *  it to be painted upon.
+     *  @param region The region.
      */
-    public void paint(Graphics2D g, Rectangle2D region);
+    public void paint(Graphics2D graphics2D, Rectangle2D region);
 
     /** Set the visibility flag of this object. If the flag is false,
-     * then the object will not be painted on the screen.
+     *  then the object will not be painted on the screen.
+     *  @param flag True if this object is to be visible.
      */
     public void setVisible(boolean flag);
 }
