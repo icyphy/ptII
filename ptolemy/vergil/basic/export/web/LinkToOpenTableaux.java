@@ -384,6 +384,9 @@ public class LinkToOpenTableaux extends DefaultIconLink {
             } else if (frame instanceof ImageExportable) {
                 gifFile = new File(parameters.directoryToExportTo, name
                         + ".gif");
+                if (parameters.deleteFilesOnExit) {
+                    gifFile.deleteOnExit();
+                }
                 OutputStream gifOut = new FileOutputStream(gifFile);
                 try {
                     ((ImageExportable) frame).writeImage(gifOut, "gif");

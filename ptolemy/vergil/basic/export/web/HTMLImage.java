@@ -152,7 +152,6 @@ public class HTMLImage extends WebContent {
             openEffigies.put(effigy.getModel(), effigy);
         }
 
-        // Beth updated
         // Get the effigy that goes with this attribute's container
         PtolemyEffigy effigy = openEffigies.get(getContainer());
 
@@ -199,6 +198,9 @@ public class HTMLImage extends WebContent {
 
                 gifFile = new File(parameters.directoryToExportTo, name
                         + ".gif");
+                if (parameters.deleteFilesOnExit) {
+                    gifFile.deleteOnExit();
+                }
                 OutputStream gifOut = new FileOutputStream(gifFile);
                 try {
                     ((ImageExportable) frame).writeImage(gifOut, "gif");

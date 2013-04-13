@@ -233,6 +233,7 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable,
                                 + jsBackupDirectory + "\"");
                     }
                 }
+                
                 if (!jsTargetDirectory.exists() && !jsTargetDirectory.mkdir()) {
                     try {
                         MessageHandler
@@ -247,13 +248,26 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable,
                     }
                     parameters.copyJavaScriptFiles = false;
                 } else {
+                    // If deleteFilesOnExit is selected, mark the new
+                    // Javscript directory for deletion.  Mark it first so 
+                    // that it will be deleted after its contained files have 
+                    // been deleted.  Files/directories are deleted in the 
+                    // reverse order that they are registered.
+                    if (parameters.deleteFilesOnExit) {
+                        jsTargetDirectory.deleteOnExit();
+                    }
+                    
                     // Copy css, JavaScript, and image files.
                     for (String filename : FILENAMES) {
-                        try {
+                        try { 
                             URL lightboxFile = FileUtilities.nameToURL(
                                     jsDirectoryName + filename, null, null);
+                            File file = new File(jsTargetDirectory, filename);
+                            if (parameters.deleteFilesOnExit) {
+                                file.deleteOnExit();
+                            }
                             FileUtilities.binaryCopyURLToFile(lightboxFile,
-                                    new File(jsTargetDirectory, filename));
+                                    file);                      
                         } catch (IOException e) {
                             try {
                                 MessageHandler
@@ -659,6 +673,9 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable,
             _sanitizedModelName = StringUtilities.sanitizeName(model.getName());
             File imageFile = new File(parameters.directoryToExportTo,
                     _sanitizedModelName + "." + _parameters.imageFormat);
+            if (parameters.deleteFilesOnExit) {
+                imageFile.deleteOnExit();
+            }
             OutputStream out = new FileOutputStream(imageFile);
             try {
                 _basicGraphFrame.writeImage(out, _parameters.imageFormat,
@@ -718,6 +735,9 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable,
             if (writer == null) {
                 indexFile = new File(parameters.directoryToExportTo,
                         "index.html");
+                if (parameters.deleteFilesOnExit){
+                    indexFile.deleteOnExit();
+                }
                 Writer indexWriter = new FileWriter(indexFile);
                 printWriter = new PrintWriter(indexWriter);
             } else {
@@ -904,8 +924,12 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable,
                     // but it does seem to do that, so I assume that's what it does.
                     Writer fileWriter = null;
                     try {
-                        fileWriter = new FileWriter(new File(
-                                parameters.directoryToExportTo, key));
+                        File file = 
+                                new File(parameters.directoryToExportTo, key);
+                        if (parameters.deleteFilesOnExit) {
+                            file.deleteOnExit();
+                        }
+                        fileWriter = new FileWriter(file);
                     } catch (IOException ex) {
                         throw new IllegalActionException(model, ex,
                                 "Could not open a FileWriter "

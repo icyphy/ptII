@@ -106,6 +106,10 @@ public class HTMLModelExporter extends VisualModelReference {
         runBeforeExport = new Parameter(this, "runBeforeExport");
         runBeforeExport.setTypeEquals(BaseType.BOOLEAN);
         runBeforeExport.setExpression("false");
+        
+        deleteFilesOnExit = new Parameter(this, "deleteFilesOnExit");
+        deleteFilesOnExit.setTypeEquals(BaseType.BOOLEAN);
+        deleteFilesOnExit.setExpression("true");
 
         copyJavaScriptFiles = new Parameter(this, "copyJavaScriptFiles");
         copyJavaScriptFiles.setTypeEquals(BaseType.BOOLEAN);
@@ -160,6 +164,10 @@ public class HTMLModelExporter extends VisualModelReference {
      *  This is a boolean that defaults to false.
      */
     public Parameter copyJavaScriptFiles;
+    
+    /** If true, deleted generated files when the JVM exits. 
+     */
+    public Parameter deleteFilesOnExit;
 
     /** The directory to export files that the output HTML
      *  references, such as image files. If a relative name is given,
@@ -258,6 +266,9 @@ public class HTMLModelExporter extends VisualModelReference {
             }
         } else if (attribute == copyJavaScriptFiles) {
             _parameters.copyJavaScriptFiles = ((BooleanToken) copyJavaScriptFiles
+                    .getToken()).booleanValue();
+        } else if (attribute == deleteFilesOnExit) {
+            _parameters.deleteFilesOnExit = ((BooleanToken) deleteFilesOnExit
                     .getToken()).booleanValue();
         } else if (attribute == directoryToExportTo) {
             _parameters.directoryToExportTo = directoryToExportTo.asFile();

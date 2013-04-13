@@ -69,6 +69,7 @@ public class ExportParameters {
      *  default values, which are
      *  null for backgroundColor,
      *  false for copyJavaScriptFiles,
+     *  false for deleteFilesOnExit,
      *  false for openCompositesBeforeExport,
      *  false for runBeforeExport,
      *  true for showInBrowser,
@@ -78,6 +79,7 @@ public class ExportParameters {
     public ExportParameters(File directoryToExportTo) {
         this.directoryToExportTo = directoryToExportTo;
         backgroundColor = null;
+        deleteFilesOnExit = false;
         imageFormat = "gif";
         openCompositesBeforeExport = false;
         runBeforeExport = false;
@@ -96,6 +98,7 @@ public class ExportParameters {
     public ExportParameters(File directoryToExportTo, ExportParameters template) {
         this.directoryToExportTo = directoryToExportTo;
         backgroundColor = template.backgroundColor;
+        deleteFilesOnExit = template.deleteFilesOnExit;
         imageFormat = template.imageFormat;
         openCompositesBeforeExport = template.openCompositesBeforeExport;
         runBeforeExport = template.runBeforeExport;
@@ -153,6 +156,10 @@ public class ExportParameters {
      *  This is a boolean that defaults to false.
      */
     public boolean copyJavaScriptFiles;
+    
+    /** If true, files generated will be deleted when the JVM terminates. 
+     */
+    public boolean deleteFilesOnExit;
 
     /** The directory to export to.
      */

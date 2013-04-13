@@ -81,12 +81,14 @@ grant {
    permission java.io.FilePermission "${ptolemy.ptII.dir}${/}org${/}ptolemy${/}ptango${/}demo${/}*", "read";
 	
    // Grant read permission to the tmp directory and read, write and delete 
-   // permission to temp directory files 
+   // permission to temp directory files and subdirectories (subdirectories 
+   // are created if the user chooses to copy Javascript files in actor
+   // HTMLModelExporter)
    // For some reason, permission statements for both the directory and 
    // the files in it seem to be needed.  An exception is thrown otherwise.
    // Required by org.ptolemy.ptango.lib.WebServer, calls java.io.File
    permission java.io.FilePermission "${java.io.tmpdir}${/}", "read";
-   permission java.io.FilePermission "${java.io.tmpdir}${/}*", "read,write,delete";
+   permission java.io.FilePermission "${java.io.tmpdir}${/}-", "read,write,delete";
 
    // Required by SelectChannelConnector, called by java.lang.Thread
    permission java.lang.RuntimePermission "setContextClassLoader";
@@ -131,6 +133,15 @@ grant {
 	// Uncomment the following to allow write permission to all Ptolemy
 	// subdirectories
 	// permission java.io.FilePermission "${ptolemy.ptII.dir}${/}-", "read, write";
+	
+	// Required by the Simulator actor.  Uncomment if your model uses this actor.
+	// Unfortunately this also allows the web server to start on any port 1024 
+	// and above.
+    // Write and delete permissions are required to the directory and 
+    // subdirectories containing the model (here, assumes ptango demo)
+    // Read permission is granted previously
+    // permission java.net.SocketPermission "localhost:1024-", "listen, resolve";
+    // permission java.io.FilePermission "${ptolemy.ptII.dir}${/}org${/}ptolemy${/}ptango${/}demo${/}-","write, delete";
 };
 
 // Permissions granted to Jetty classes, from http://wiki.eclipse.org/Jetty/Tutorial/Jetty-Policy
