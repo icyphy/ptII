@@ -8,11 +8,6 @@ public class TimeScheduler implements ConstraintSolver {
     public TimeScheduler() {
     }
     
-    public Object clone() throws CloneNotSupportedException {
-        TimeScheduler newObject = (TimeScheduler) super.clone(); 
-        return newObject; 
-    }
-
     @Override
     public void resolve(Iterable<Builder> metroIIEventList) {
         long time = Long.MAX_VALUE;
