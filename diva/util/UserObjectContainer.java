@@ -40,7 +40,7 @@ public interface UserObjectContainer {
     public Object getUserObject();
 
     /** Set the user object.
-     *  @param The user object.	
+     *  @param object The user object.	
      */
-    public void setUserObject(Object o);
+    public void setUserObject(Object object);
 }
