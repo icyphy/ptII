@@ -594,7 +594,6 @@ ALLPACKAGES = \
 	ptolemy.domains.dt.kernel \
 	ptolemy.domains.giotto.cgc \
 	ptolemy.domains.giotto.kernel \
-	ptolemy.domains.giotto.lib \
 	ptolemy.domains.hdf.kernel \
 	ptolemy.domains.modal.kernel.fmv \
 	ptolemy.domains.openmodelica.kernel \
