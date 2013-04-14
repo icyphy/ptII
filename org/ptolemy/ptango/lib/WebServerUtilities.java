@@ -1,6 +1,6 @@
  /* A web server and information about the applications registered to it.
 
- Copyright (c) 1997-2012 The Regents of the University of California.
+ Copyright (c) 2013 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -420,13 +420,13 @@ public class WebServerUtilities {
     ////                         protected methods                 ////
     
     /** Create a ContextHandler to store all of the servlets defined in the 
-     * given application (e.g. a Ptolemy model).  Add this handler to the 
-     * collection of handlers for this web server.
+     *  given application (e.g. a Ptolemy model).  Add this handler to the 
+     *  collection of handlers for this web server.
      *
+     *  @param appInfo Information about the web application.
      *  @return A ContextHandler containing servlets for the given application
      *  (e.g. a Ptolemy model)
      */
-
     protected void _createServletHandler(WebApplicationInfo appInfo) 
             throws Exception{
         // Create a new handler to hold servlets from the actors

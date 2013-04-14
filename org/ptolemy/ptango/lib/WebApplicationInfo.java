@@ -1,6 +1,6 @@
 /* Information for a web application running on a web server.
 
- Copyright (c) 1997-2012 The Regents of the University of California.
+ Copyright (c) 2013 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -266,9 +266,9 @@ public class WebApplicationInfo {
     }
     
     /** Returns true if the web application has already mapped a handler to the
-     * given URL; returns false otherwise.  See {@link hasPath(String path)}
+     * given URL; returns false otherwise.  See {@link #hasPath(String path)}
      * 
-     * @param The URL to check for existing mappings
+     * @param path The URL to check for existing mappings
      */
     public boolean hasPath(URI path) {
         return hasPath(path.toString());

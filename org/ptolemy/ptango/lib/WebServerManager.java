@@ -1,6 +1,6 @@
 /* A manager for creating and managing instances of a Jetty web server.
 
- Copyright (c) 1997-2012 The Regents of the University of California.
+ Copyright (c) 2013 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -185,8 +185,6 @@ public final class WebServerManager {
      * @exception Exception if there is no server associated with this port,
      * the application is not running on the server associated with this port,
      * or the application cannot be stopped.
-     * @return true if the application was successfully unregistered; false 
-     * otherwise
      */
     public void unregister(WebApplicationInfo appInfo, int portNumber) 
             throws Exception{

@@ -144,7 +144,7 @@ public abstract class MonitoredQuantityManager extends TypedAtomicActor
     }
     
     /** Set an attribute for a given port.
-     *  @param port The port. 
+     *  @param container The port.
      *  @param attribute The new attribute or the attribute containing a new value.
      *  @exception IllegalActionException Thrown if attribute could not be updated.
      */
