@@ -40,7 +40,7 @@ import java.util.HashSet;
  *  no more models are using them.  
  *  
  *   @author Elizabeth Latronico and Edward A. Lee
- *   @version $Id: WebServerFactory.java 65547 2013-01-27 02:28:20Z cxh $
+ *   @version $Id$
  *   @since Ptolemy II 9.0
  *   @Pt.ProposedRating Red (ltrnc)
  *   @Pt.AcceptedRating Red (ltrnc)

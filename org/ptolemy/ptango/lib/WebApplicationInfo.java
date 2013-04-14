@@ -48,7 +48,7 @@ import ptolemy.data.expr.FileParameter;
  * {@link org.ptolemy.ptango.lib.WebServerUtilities}
  * 
  *   @author Elizabeth Latronico and Edward A. Lee
- *   @version $Id: WebServerInfo.java 65547 2013-01-27 02:28:20Z cxh $
+ *   @version $Id$
  *   @since Ptolemy II 9.0
  *   @Pt.ProposedRating Red (ltrnc)
  *   @Pt.AcceptedRating Red (ltrnc)
