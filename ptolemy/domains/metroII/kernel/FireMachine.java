@@ -95,9 +95,10 @@ public abstract class FireMachine implements StartOrResumable {
     }
 
     /**
-     * Get the state of the wrapped actor
+     * Get the state of the wrapped actor.
      * 
-     * @return
+     * @return the state.
+     * @see #setState(State)
      */
     public State getState() {
         return _state; 
@@ -105,7 +106,7 @@ public abstract class FireMachine implements StartOrResumable {
 
     
     /**
-     * Reset the state to be PREFIRE_BEGIN
+     * Reset the state to be PREFIRE_BEGIN.
      */
     @Override
     public void reset() {
@@ -137,9 +138,10 @@ public abstract class FireMachine implements StartOrResumable {
     }
         
     /**
-     * Set the state of the wrapped actor
+     * Set the state of the wrapped actor.
      * 
      * @param state
+     * @see #getState()
      */
     protected void setState(State state) {
         _state = state; 

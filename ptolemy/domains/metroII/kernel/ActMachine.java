@@ -103,7 +103,7 @@ public abstract class ActMachine implements StartOrResumable {
     /**
      * Get the state of the wrapped actor
      * 
-     * @return
+     * @return The state.
      */
     public State getState() {
         return _state;
