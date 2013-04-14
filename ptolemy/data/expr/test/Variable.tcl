@@ -155,13 +155,15 @@ Because:
 Error evaluating expression: P1 + P2
   in .E.P3
 Because:
-There is a dependency loop where .E.P1 directly or indirectly refers to itself in its expression: P3} {ptolemy.kernel.util.IllegalActionException: Error evaluating expression: P1 + P2
+There is a dependency loop where .E.P1 directly or indirectly refers to itself in its expression: P3
+  in .E.P1} {ptolemy.kernel.util.IllegalActionException: Error evaluating expression: P1 + P2
   in .E.P3
 Because:
 Error evaluating expression: P3
   in .E.P1
 Because:
-There is a dependency loop where .E.P3 directly or indirectly refers to itself in its expression: P1 + P2}}
+There is a dependency loop where .E.P3 directly or indirectly refers to itself in its expression: P1 + P2
+  in .E.P3}}
 
 #################################
 ####
