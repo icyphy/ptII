@@ -32,7 +32,7 @@
 ME =		homer
 
 # kernel first because it imports classes from ptserver which require mqtt
-DIRS =		kernel events gui images widgets
+DIRS =		kernel events gui images widgets test
 
 # Root of Ptolemy II directory
 ROOT =		../..

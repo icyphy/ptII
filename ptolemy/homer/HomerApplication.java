@@ -71,8 +71,8 @@ public class HomerApplication extends MoMLApplication {
         super("ptolemy/configs", args);
         MoMLParser.setErrorHandler(new VergilErrorHandler());
 
-        HomerMainFrame frame = new HomerMainFrame(this);
-        frame.setVisible(true);
+        _frame = new HomerMainFrame(this);
+        _frame.setVisible(true);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -104,6 +104,13 @@ public class HomerApplication extends MoMLApplication {
      */
     public Configuration getConfiguration() {
         return _configuration;
+    }
+
+    /** Return the HomerMainFrame.
+     *  @return The HomerMainFrame.
+     */
+    public HomerMainFrame getHomerMainFrame() {
+        return _frame;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -139,4 +146,10 @@ public class HomerApplication extends MoMLApplication {
     protected Configuration _createEmptyConfiguration() throws Exception {
         return _createDefaultConfiguration();
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private fields                    ////
+
+    /** The frame that is created by this class. */
+    HomerMainFrame _frame;
 }
