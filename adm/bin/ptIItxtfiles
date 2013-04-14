@@ -32,12 +32,15 @@ $PTII/adm/bin/ptIIfiles | egrep -v '\.#' |egrep -v '\.au$' \
 	| egrep -v '.keystore$' \
 	| egrep -v 'JavaApplicationStub$' \
 	| egrep -v '\.lib$'  \
-	| egrep -v '\.m$'  |egrep -v '\.mat$' \
+	| egrep -v '\.m$' \
+	| egrep -v '\.MF$' \
+        | egrep -v '\.mat$' \
 	| egrep -v '\.mdl$' |egrep -v '\.mexmaci$' \
 	| egrep -v '\.mov$' \
 	| egrep -v '\.mtl$' \
         | egrep -v '\.ncb$' \
 	| egrep -v '\.nqc$' \
+        | egrep -v '\.o$' \
         | egrep -v '\.opt$' \
 	| egrep -v '\.png$' \
 	| egrep -v '\.pdf$' |egrep -v '\.plt$' \
