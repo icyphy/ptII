@@ -696,9 +696,9 @@
         </property>
     </entity>
     <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;new powerV: 0&quot;, &quot;new powerV: 10&quot;, &quot;Entered stateA1.&quot;, &quot;Entered stateA2&quot;, &quot;powerV set to: 20&quot;, &quot;new powerV: 30&quot;, &quot;Entered stateA1.&quot;, &quot;Entered stateA2&quot;, &quot;powerV set to: 40&quot;, &quot;new powerV: 50&quot;, &quot;Entered stateA1.&quot;, &quot;Entered stateA2&quot;, &quot;powerV set to: 60&quot;, &quot;new powerV: 70&quot;, &quot;Entered stateA1.&quot;, &quot;Entered stateA2&quot;, &quot;powerV set to: 80&quot;}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;new powerV: 0&quot;, &quot;new powerV: 10&quot;, &quot;Entered stateA1.&quot;, &quot;Entered stateA2&quot;, &quot;powerV set to: 20&quot;, &quot;new powerV: 30&quot;, &quot;Entered stateA1.&quot;, &quot;Entered stateA2&quot;, &quot;powerV set to: 40&quot;, &quot;new powerV: 50&quot;, &quot;Entered stateA1.&quot;, &quot;Entered stateA2&quot;, &quot;powerV set to: 60&quot;, &quot;new powerV: 70&quot;, &quot;Entered stateA1.&quot;, &quot;Entered stateA2&quot;, &quot;powerV set to: 80&quot;, &quot;new powerV: 90&quot;, &quot;Entered stateA1.&quot;, &quot;Entered stateA2&quot;}">
         </property>
-        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="true">
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[485.0, 155.0]">
         </property>
@@ -725,41 +725,53 @@
 <title>TimedPlotter</title>
 <xLabel></xLabel>
 <yLabel></yLabel>
-<xRange min="100.0" max="900.0"/>
-<yRange min="0.0" max="80.0"/>
+<xRange min="100.0" max="1000.0"/>
+<yRange min="0.0" max="90.0"/>
 <default marks="dots" stems="yes"/>
 </plot>?>
         </configure>
     </entity>
     <entity name="NonStrictTest2" class="ptolemy.actor.lib.NonStrictTest">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{100.0, 200.0, 200.0, 200.0, 300.0, 400.0, 400.0, 400.0, 500.0, 600.0, 600.0, 600.0, 700.0, 800.0, 800.0, 800.0, 900.0}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{100.0, 200.0, 200.0, 200.0, 300.0, 400.0, 400.0, 400.0, 500.0, 600.0, 600.0, 600.0, 700.0, 800.0, 800.0, 800.0, 900.0, 1000.0, 1000.0, 1000.0}">
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-7">
         </property>
-        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="true">
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[535.0, 230.0]">
         </property>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+        </property>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+        </property>
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+        </property>
     </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
         <vertex name="vertex1" value="{385.0, 155.0}">
         </vertex>
+        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+        </property>
     </relation>
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
         <vertex name="vertex1" value="[300.0, 290.0]">
         </vertex>
+        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+        </property>
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+        </property>
     </relation>
     <link port="ModalModel A.pA2" relation="relation"/>
     <link port="ModalModel A.pA1" relation="relation2"/>
