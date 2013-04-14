@@ -27,6 +27,7 @@ $PTII/adm/bin/ptIIfiles | egrep -v '\.#' |egrep -v '\.au$' \
         | egrep -v '\.isj$' \
 	| egrep -v '\.jar$' |egrep -v '\.jnilib$' \
         | egrep -v '\.jpg$' \
+        | egrep -v '\.JPG$' \
 	| egrep -v '\.kar$' \
 	| egrep -v 'Keystore$' \
 	| egrep -v '.keystore$' \
@@ -36,6 +37,7 @@ $PTII/adm/bin/ptIIfiles | egrep -v '\.#' |egrep -v '\.au$' \
 	| egrep -v '\.MF$' \
         | egrep -v '\.mat$' \
 	| egrep -v '\.mdl$' |egrep -v '\.mexmaci$' \
+	| egrep -v '\.mexa64$' \
 	| egrep -v '\.mov$' \
 	| egrep -v '\.mtl$' \
         | egrep -v '\.ncb$' \
@@ -43,15 +45,19 @@ $PTII/adm/bin/ptIIfiles | egrep -v '\.#' |egrep -v '\.au$' \
         | egrep -v '\.o$' \
         | egrep -v '\.opt$' \
 	| egrep -v '\.png$' \
+	| egrep -v '\.pom$' \
 	| egrep -v '\.pdf$' |egrep -v '\.plt$' \
         | egrep -v '\.pnproj$' | egrep -v '\.pnps$' \
         | egrep -v '\.psd$' |egrep -v '\.ppt$' \
-	| egrep -v '\.qcf$' | egrep -v '\.so$' \
+	| egrep -v '\.qcf$' \
+        | egrep -v '\.ser$' \
+        | egrep -v '\.so$' \
         | egrep -v '\.so\.[0-9]*$' \
         | egrep -v '\.tif$' \
         | egrep -v '\.tiff$' \
         | egrep -v '\.vbs$' \
         | egrep -v '\.vsd$' \
 	| egrep -v '\.wav$' \
-	| egrep -v '\.zargo$'
-
+	| egrep -v '\.xls$' \
+	| egrep -v '\.zargo$' \
+	| egrep -v '\.zip$'
