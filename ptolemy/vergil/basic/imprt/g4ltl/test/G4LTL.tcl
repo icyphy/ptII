@@ -56,7 +56,7 @@ proc synthesizeFromFile {ltlFileName {optionTechnique 0} {unrollSteps 1} {findSt
     set ltlFile [java::new java.io.File $ltlFileName]
     set results [java::call ptolemy.vergil.basic.imprt.g4ltl.G4LTL synthesizeFromFile \
 		 $solver $ltlFile $optionTechnique $unrollSteps $findStrategy]
-    return $results
+    return [$results getMessage1]
 }
 
 set parser [java::new ptolemy.moml.MoMLParser]
