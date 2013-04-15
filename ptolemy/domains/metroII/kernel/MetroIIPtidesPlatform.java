@@ -466,11 +466,11 @@ public class MetroIIPtidesPlatform extends MetroIIMirrorComposite {
 
         /** The types of the RecordType fields. */
         public static Type[] TYPES = { BaseType.DOUBLE, BaseType.INT,
-                BaseType.UNKNOWN, BaseType.DOUBLE };
+                BaseType.UNKNOWN };
 
         /** The labels of the RecordType fields. */
         public static String[] LABELS = new String[] { "timestamp",
-                "microstep", "payload", "sourceTimestamp" };
+                "microstep", "payload" };
 
         /** Label of the timestamp that is transmitted within the RecordToken.
          */
