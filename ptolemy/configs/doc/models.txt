@@ -329,6 +329,8 @@ $CLASSPATH/ptolemy/domains/sdf/demo/SoundSpectrum/SoundSpectrum.xml
 $CLASSPATH/ptolemy/domains/sdf/demo/Spectrum/Spectrum.xml
 $CLASSPATH/ptolemy/domains/sdf/demo/SynthesizedVoice/SynthesizedVoice.xml
 $CLASSPATH/ptolemy/domains/sdf/optimize/demo/SDFOptimize/SDFOptimize.xml
+$CLASSPATH/ptolemy/domains/space/demo/DOPCenter/DOPCenter.xml
+$CLASSPATH/ptolemy/domains/space/demo/DOPCenter/Placard.xml
 $CLASSPATH/ptolemy/domains/sr/demo/FeedbackLoop/FeedbackLoop.xml
 $CLASSPATH/ptolemy/domains/sr/demo/GuardedCount/GuardedCount.xml
 $CLASSPATH/ptolemy/domains/sr/demo/GuardedCount/GuardedCountTimed.xml
