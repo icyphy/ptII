@@ -424,8 +424,6 @@ public class WebServerUtilities {
      *  collection of handlers for this web server.
      *
      *  @param appInfo Information about the web application.
-     *  @return A ContextHandler containing servlets for the given application
-     *  (e.g. a Ptolemy model)
      */
     protected void _createServletHandler(WebApplicationInfo appInfo) 
             throws Exception{
