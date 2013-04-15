@@ -45,7 +45,6 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
-import ptolemy.util.StringUtilities;
 
 ///////////////////////////////////////////////////////////////////
 //// RecordAssembler
@@ -160,7 +159,7 @@ public class RecordAssembler extends TypedAtomicActor {
 
         for (int i = 0; i < size; i++) {
             IOPort port = (IOPort) portArray[i];
-            labels[i] = StringUtilities.sanitizeName(port.getName());
+            labels[i] = port.getName();
             values[i] = port.get(0);
         }
 
@@ -233,9 +232,8 @@ public class RecordAssembler extends TypedAtomicActor {
         for (TypedIOPort input : _inputs) {
             // only include ports that have no type declared
             if (input.getTypeTerm().isSettable()) {
-                result.add(new Inequality(new ExtractFieldType(output,
-                        StringUtilities.sanitizeName(input.getName())), input
-                        .getTypeTerm()));
+                result.add(new Inequality(new ExtractFieldType(output, 
+                        input.getName()), input.getTypeTerm()));
             }
         }
 

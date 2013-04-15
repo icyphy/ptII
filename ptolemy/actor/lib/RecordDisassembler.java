@@ -48,7 +48,6 @@ import ptolemy.graph.Inequality;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.util.StringUtilities;
 
 ///////////////////////////////////////////////////////////////////
 //// RecordDisassembler
@@ -150,7 +149,7 @@ public class RecordDisassembler extends TypedAtomicActor {
 
             while (labels.hasNext()) {
                 String label = (String) labels.next();
-                Token value = record.get(StringUtilities.sanitizeName(label));
+                Token value = record.get(label);
                 IOPort port = (IOPort) getPort(label);
 
                 // since the record received may contain more fields than the
@@ -158,39 +157,6 @@ public class RecordDisassembler extends TypedAtomicActor {
                 // output port.
                 if (port != null) {
                     port.send(0, value);
-                } else {
-                    // Backward compatibility to handle the change
-                    // where RecordTokens now sanitize the name.  If
-                    // the port can't be found above, then probably
-                    // the port has spaces in its name that were
-                    // converted to underscores.
-                    port = (IOPort) getPort(label.replace("_", " "));
-                    if (port != null) {
-                        // actor/lib/test/auto/Router.xml needs this.
-                        port.send(0, value);
-                    } else {
-                        if (label.startsWith("_")) {
-                            // If the label starts with _, then sanitizeName probably put it there
-                            // because the label started with a character other than one for which
-                            // Character.isJavaIdentifierStart() would return true.
-                            // The Trilateration demo needs this.
-                            port = (IOPort) getPort(label.replace("_", " ")
-                                    .substring(1));
-                            if (port != null) {
-                                port.send(0, value);
-                            } else {
-                                if (!_printedWarning) {
-                                    _printedWarning = true;
-                                    System.err
-                                            .println(getFullName()
-                                                    + ": Could not find port for label \""
-                                                    + label
-                                                    + "\"  This can occur if the Record field name has spaces or other non Java identifier characters in it");
-                                }
-                            }
-                        }
-                    }
-
                 }
             }
         }
@@ -236,7 +202,7 @@ public class RecordDisassembler extends TypedAtomicActor {
             if (output.numberOfSinks() < 1) {
                 continue;
             }
-            String outputName = StringUtilities.sanitizeName(output.getName());
+            String outputName = output.getName();
             labels.add(outputName);
             types.add(BaseType.GENERAL);
 
@@ -265,7 +231,4 @@ public class RecordDisassembler extends TypedAtomicActor {
     protected Set<Inequality> _defaultTypeConstraints() {
         return null;
     }
-
-    /** Print a warning once about name problems. */
-    private boolean _printedWarning = false;
 }

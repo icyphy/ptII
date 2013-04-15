@@ -56,9 +56,10 @@ import ptolemy.util.StringUtilities;
  (those with the same labels) will be added or subtracted,
  and the disjoint records will not appear in the result.
 
- <p>Record labels are sanitized so that any non-Java identifier
- characters are replaced with underscores, see
- {@link ptolemy.util.StringUtilities#sanitizeName(String)}</p>
+ <p>Record labels that contain any non-Java identifier characters 
+ must be presented as a string i.e., surrounded with single or double 
+ quotes. Quotes within label strings can be escaped using a backslash.
+ </p>
 
  @author Yuhong Xiong, Steve Neuendorffer, Elaine Cheong, Edward Lee; contributor: J. S. Senecal
  @version $Id$
@@ -162,7 +163,8 @@ public class RecordToken extends AbstractNotConvertibleToken {
                         + "map contains either null keys " + "or null values.");
             }
 
-            _fields.put(StringUtilities.sanitizeName(key), val);
+            //_fields.put(StringUtilities.sanitizeName(key), val);
+            _fields.put(key, val);
         }
     }
 
@@ -380,9 +382,11 @@ public class RecordToken extends AbstractNotConvertibleToken {
      *  The record fields are listed in the lexicographical order of the
      *  labels determined by the java.lang.String.compareTo() method.
      *
-     *  <p>Record labels are sanitized so that any non-Java identifier
-     *  characters are replaced with underscores, see
-     *  {@link ptolemy.util.StringUtilities#sanitizeName(String)}</p>
+     *  <p>Record labels that contain any non-Java identifier characters 
+     *  must be presented as a string i.e., surrounded with single or double 
+     *  quotes. Quotes within label strings can be escaped using a backslash.
+     *  </p>
+
      *
      *  @return A String beginning with "{" that contains label and value
      *  pairs separated by commas, ending with "}".
@@ -416,12 +420,11 @@ public class RecordToken extends AbstractNotConvertibleToken {
             if (i != 0) {
                 stringRepresentation.append(", ");
             }
-
-            // FIXME: It is not clear if we need to sanitize again,
-            // but doing so protects against labels being set to
-            // spaces and other characters.
-            stringRepresentation.append(StringUtilities.sanitizeName(label)
-                    + " = " + value);
+            // quote and escape labels that are not valid Java identifiers
+            if (!StringUtilities.isValidIdentifier(label)) {
+                label = "\"" + StringUtilities.escapeString(label) + "\"";
+            }
+            stringRepresentation.append(label + " = " + value);
         }
 
         return stringRepresentation.toString() + "}";
@@ -765,7 +768,8 @@ public class RecordToken extends AbstractNotConvertibleToken {
                 throw new IllegalActionException("RecordToken: the " + i
                         + "'th element of the labels or values array is null");
             }
-            labels[i] = StringUtilities.sanitizeName(labels[i]);
+            //labels[i] = StringUtilities.sanitizeName(labels[i]);
+            labels[i] = labels[i];
             if (!_fields.containsKey(labels[i])) {
                 _fields.put(labels[i], values[i]);
             } else {

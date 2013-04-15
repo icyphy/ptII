@@ -85,9 +85,10 @@ public class RecordType extends AssociativeType implements Cloneable {
      *  the type for the i'th label in the labels array. To construct the
      *  empty record type, set the length of the argument arrays to 0.
      *
-     *  <p>Record labels are sanitized so that any non-Java identifier
-     *  characters are replaced with underscores, see
-     *  {@link ptolemy.util.StringUtilities#sanitizeName(String)}</p>
+     *  <p>Record labels that contain any non-Java identifier characters 
+     *  must be presented as a string i.e., surrounded with single or double 
+     *  quotes. Quotes within label strings can be escaped using a backslash.
+     *  </p>
      *
      *  @param labels An array of String.
      *  @param types An array of Type.
@@ -106,7 +107,8 @@ public class RecordType extends AssociativeType implements Cloneable {
                 throw new IllegalArgumentException("RecordType: the " + i
                         + "'th element of the labels array is null.");
             }
-            labels[i] = StringUtilities.sanitizeName(labels[i]);
+            //labels[i] = StringUtilities.sanitizeName(labels[i]);
+            labels[i] = labels[i];
             if (!_fields.containsKey(labels[i])) {
                 FieldType fieldType = new FieldType(types[i]);
                 _fields.put(labels[i], fieldType);
@@ -567,10 +569,11 @@ public class RecordType extends AssociativeType implements Cloneable {
                 results.append(", ");
             }
 
-            // FIXME: It is not clear if we need to sanitize again,
-            // but doing so protects against labels being set to
-            // spaces and other characters.
-            results.append(StringUtilities.sanitizeName(label) + " = " + type);
+            // quote and escape labels that are not valid Java identifiers
+            if (!StringUtilities.isValidIdentifier(label)) {
+                label = "\"" + StringUtilities.escapeString(label) + "\"";
+            }
+            results.append(label + " = " + type);
         }
 
         return results.toString() + "}";

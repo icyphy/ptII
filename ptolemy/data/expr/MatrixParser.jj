@@ -58,7 +58,7 @@ This Class provides a parser for read matrices in matlab format.
 */
 @SuppressWarnings("static-access")
 public class MatrixParser/*@bgen(jjtree)*/implements MatrixParserTreeConstants/*@egen*/ {/*@bgen(jjtree)*/
-  protected JJTMatrixParserState jjtree = new JJTMatrixParserState();
+  protected static JJTMatrixParserState jjtree = new JJTMatrixParserState();
 
 /*@egen*/
 
@@ -116,7 +116,7 @@ SPECIAL_TOKEN :
 
 Vector matrix() :
 {/*@bgen(jjtree) matrix */
-    SimpleNode jjtn000 = new SimpleNode(this, JJTMATRIX);
+    SimpleNode jjtn000 = new SimpleNode(null, JJTMATRIX);
     boolean jjtc000 = true;
     jjtree.openNodeScope(jjtn000);
 /*@egen*/
@@ -164,7 +164,7 @@ Vector matrix() :
 
 Vector row() :
 {/*@bgen(jjtree) row */
-  SimpleNode jjtn000 = new SimpleNode(this, JJTROW);
+  SimpleNode jjtn000 = new SimpleNode(null, JJTROW);
   boolean jjtc000 = true;
   jjtree.openNodeScope(jjtn000);
 /*@egen*/
@@ -209,7 +209,7 @@ Vector row() :
 
 double element() :
 {/*@bgen(jjtree) element */
-  SimpleNode jjtn000 = new SimpleNode(this, JJTELEMENT);
+  SimpleNode jjtn000 = new SimpleNode(null, JJTELEMENT);
   boolean jjtc000 = true;
   jjtree.openNodeScope(jjtn000);
 /*@egen*/

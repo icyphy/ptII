@@ -287,6 +287,94 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants/*@egen*/ 
         }
         return map;
     }
+    
+    public String cleanupString(String str) throws ParseException {
+        // Check to see that the start and the end are the same.
+        String start = str.substring(0, 1);
+        if(!token.image.endsWith(start)) {
+            throw new ParseException(
+                    "Found unterminated string: " + token.image);
+        }
+        
+        // Now cut the " from each end of the string.
+        int len = token.image.length();
+        String tidied = token.image.substring(1, (len -1));
+
+        // Resolve escape sequences in the string.
+        StringTokenizer st = new StringTokenizer(tidied, "\\", true);
+        boolean escape = false;
+        String x = new String();
+        while (st.hasMoreTokens()) {
+            String tok = st.nextToken();
+            if (escape) {
+                // The previous character was a backslash that started
+                // an escape sequence.
+                escape = false;
+                int trailingCharIndex = 1;
+                switch (tok.charAt(0)) {
+                    case 'n': x += "\n"; break;
+                    case 't': x += "\t"; break;
+                    case 'b': x += "\b"; break;
+                    case 'r': x += "\r"; break;
+                    case 'f': x += "\f"; break;
+                    case '\\': x += "\\"; break;
+                    case '\'': x += "\'"; break;
+                    case '"': x += "\""; break;
+                    case '0':
+                    case '1':
+                    case '2':
+                    case '3':
+                    case '4':
+                    case '5':
+                    case '6':
+                    case '7':
+                        // The escape sequence is a character
+                        // specified in octal.
+                        int i;
+                        for (i = 1; i < tok.length(); i++) {
+                            // The octal sequence stops at the first
+                            // non-octal character.
+                            char c = tok.charAt(i);
+                            if (! (c == '0' ||
+                                   c == '1' ||
+                                   c == '2' ||
+                                   c == '3' ||
+                                   c == '4' ||
+                                   c == '5' ||
+                                   c == '6' ||
+                                   c == '7'))
+                                break;
+                        }
+                        trailingCharIndex = i;
+                        int octVal = Integer.parseInt(
+                                tok.substring(0, trailingCharIndex), 8);
+                        x += (char)octVal;
+                        break;
+                    default:
+                        throw new ParseException("Unknown backslash sequence: "
+                                + "\\" + tok); 
+                }
+                if (trailingCharIndex < tok.length()) {
+                    // Keep any remaining characters.
+                    x += tok.substring(trailingCharIndex);
+                }
+            }
+            else if (tok.equals("\\")) {
+                // Start an escape sequence.
+                escape = true;
+            }
+            else {
+                // Keep regular text.
+                x += tok;
+            }
+        }
+        if(escape) {
+            throw new ParseException("Unterminated backslash sequence in " + 
+                    "string: " + token.image);
+        }
+        
+        return x;
+    }
           
     /** Return the list of classes the parser searches 
      *  when a function call is encountered.  The 
@@ -1776,7 +1864,7 @@ String x;
 void primaryElement()       :
 {
 int len;
-String tidied, x;
+String x;
 }
 {/*@bgen(jjtree) PtLeafNode */
    {
@@ -1883,92 +1971,8 @@ String tidied, x;
       }
 /*@egen*/
       {
-        // Check to see that the start and the end are the same.
-        String start = token.image.substring(0, 1);
-        if(!token.image.endsWith(start)) {
-            throw new ParseException(
-                    "Found unterminated string: " + token.image);
-        }
-        
-        // Now cut the " from each end of the string.
-        len = token.image.length();
-        tidied = token.image.substring(1, (len -1));
-
-        // Resolve escape sequences in the string.
-        StringTokenizer st = new StringTokenizer(tidied, "\\", true);
-        boolean escape = false;
-        x = new String();
-        while (st.hasMoreTokens()) {
-            String tok = st.nextToken();
-            if (escape) {
-                // The previous character was a backslash that started
-                // an escape sequence.
-                escape = false;
-                int trailingCharIndex = 1;
-                switch (tok.charAt(0)) {
-                    case 'n': x += "\n"; break;
-                    case 't': x += "\t"; break;
-                    case 'b': x += "\b"; break;
-                    case 'r': x += "\r"; break;
-                    case 'f': x += "\f"; break;
-                    case '\\': x += "\\"; break;
-                    case '\'': x += "\'"; break;
-                    case '"': x += "\""; break;
-                    case '0':
-                    case '1':
-                    case '2':
-                    case '3':
-                    case '4':
-                    case '5':
-                    case '6':
-                    case '7':
-                        // The escape sequence is a character
-                        // specified in octal.
-                        int i;
-                        for (i = 1; i < tok.length(); i++) {
-                            // The octal sequence stops at the first
-                            // non-octal character.
-                            char c = tok.charAt(i);
-                            if (! (c == '0' ||
-                                   c == '1' ||
-                                   c == '2' ||
-                                   c == '3' ||
-                                   c == '4' ||
-                                   c == '5' ||
-                                   c == '6' ||
-                                   c == '7'))
-                                break;
-                        }
-                        trailingCharIndex = i;
-                        int octVal = Integer.parseInt(
-                                tok.substring(0, trailingCharIndex), 8);
-                        x += (char)octVal;
-                        break;
-                    default:
-                        throw new ParseException("Unknown backslash sequence: "
-                                + "\\" + tok); 
-                }
-                if (trailingCharIndex < tok.length()) {
-                    // Keep any remaining characters.
-                    x += tok.substring(trailingCharIndex);
-                }
-            }
-            else if (tok.equals("\\")) {
-                // Start an escape sequence.
-                escape = true;
-            }
-            else {
-                // Keep regular text.
-                x += tok;
-            }
-        }
-        if(escape) {
-            throw new ParseException("Unterminated backslash sequence in " + 
-                    "string: " + token.image);
-        }
-
-        jjtn003._ptToken = new StringToken(x);
-	jjtn003._isConstant = true;
+        jjtn003._ptToken = new StringToken(cleanupString(token.image));
+		jjtn003._isConstant = true;
       }
    )/*@bgen(jjtree)*/
    } finally {
@@ -2018,7 +2022,7 @@ String tidied, x;
   |   LOOKAHEAD(<OPENBRACKET>)
       matrixConstruct()      
       
-  |   LOOKAHEAD( <OPENBRACE> <ID> <SETEQUALS> )
+  |   LOOKAHEAD( <OPENBRACE> (<STRING> | <ID>) <SETEQUALS> )
       recordConstruct()
         
   |   LOOKAHEAD(<OPENUNION>)
@@ -2293,8 +2297,14 @@ void recordConstruct()                        :
 {/*@bgen(jjtree) PtRecordConstructNode */
     try {
 /*@egen*/
-    <OPENBRACE> x = <ID> {jjtn000._fieldNames.add(x.image);} <SETEQUALS> funcIf() 
-        (<COMMA> x = <ID> {jjtn000._fieldNames.add(x.image);} <SETEQUALS> funcIf())*
+    <OPENBRACE> (
+    	(x = <STRING> {jjtn000._fieldNames.add(cleanupString(x.image));} <SETEQUALS> funcIf())
+    | 	(x = <ID> {jjtn000._fieldNames.add(x.image);} <SETEQUALS> funcIf())
+    ) 
+    (<COMMA> (
+    	(x = <STRING> {jjtn000._fieldNames.add(cleanupString(x.image));} <SETEQUALS> funcIf())
+    |	(x = <ID> {jjtn000._fieldNames.add(x.image);} <SETEQUALS> funcIf()))
+    )*
     <CLOSEBRACE>/*@bgen(jjtree)*/
     } catch (Throwable jjte000) {
       if (jjtc000) {

@@ -718,6 +718,33 @@ public class StringUtilities {
         }
     }
 
+    /** Test whether a string is a valid Java identifier.
+     *  Section 3.8 of the Java language spec says:
+     *  <blockquote>
+     *  "An identifier is an unlimited-length sequence of Java letters
+     *  and Java digits, the first of which must be a Java letter. An
+     *  identifier cannot have the same spelling (Unicode character
+     *  sequence) as a keyword (3.9), boolean literal (3.10.3), or
+     *  the null literal (3.10.7)."
+     *  </blockquote>
+     *  Java characters are A-Z, a-z, $ and _.
+     *  <p> Characters that are not permitted in a Java identifier are changed
+     *  to underscores.
+     *  This method does not check whether the string is a keyword or literal.
+     *  @param name
+     *  @return True if the given name is a valid Java identifier, or false otherwise.
+     */
+    public static boolean isValidIdentifier(String name) {
+        char[] nameArray = name.toCharArray();
+        
+        for (int i = 0; i < nameArray.length; i++) {
+            if (!Character.isJavaIdentifierPart(nameArray[i])) {
+                return false;
+            }
+        }
+        return true;
+    }
+    
     /**  If the string is longer than 79 characters, split it up by
      *  adding newlines in all newline delimited substrings
      *  that are longer than 79 characters.
