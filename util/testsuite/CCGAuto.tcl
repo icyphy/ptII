@@ -53,7 +53,13 @@ proc test_c_cg {model} {
     set relativeFilename \
 	    [java::call ptolemy.util.StringUtilities substituteFilePrefix \
 	    $PTII $model {$PTII}]
-    puts "------------------ Java ptolemy/cg testing $relativeFilename"
+
+
+    
+    set args [java::new {String[]} 3 \
+		  [list "-generatorPackage" "ptolemy.cg.kernel.generic.program.procedural.c" $model]]
+
+    puts "------------------ Java cg C generation: \$PTII/bin/ptcg -generatorPackage ptolemy.cg.kernel.generic.program.procedural.c $relativeFilename "
     test "Auto" "Automatic Java ptolemy/cg test in file $relativeFilename" {
 	# Remove files from ~/cg so as to force building
 	foreach classFile [glob -nocomplain [java::call System getProperty "user.home"]/cg/*.class] { file delete -force $classFile}
@@ -62,9 +68,6 @@ proc test_c_cg {model} {
 	set parser [java::new ptolemy.moml.MoMLParser]
 	$parser reset
 	$parser purgeAllModelRecords
-
-	set args [java::new {String[]} 3 \
-		  [list "-generatorPackage" "ptolemy.cg.kernel.generic.program.procedural.c" $model]]
 
 	set timeout 60000
 	puts "JavaCGAuto.tcl: Setting watchdog for [expr {$timeout / 1000}]\
