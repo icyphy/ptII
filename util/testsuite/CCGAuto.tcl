@@ -59,7 +59,7 @@ proc test_c_cg {model} {
     set args [java::new {String[]} 3 \
 		  [list "-generatorPackage" "ptolemy.cg.kernel.generic.program.procedural.c" $model]]
 
-    puts "------------------ Java cg C generation: \$PTII/bin/ptcg -generatorPackage ptolemy.cg.kernel.generic.program.procedural.c $relativeFilename "
+    puts "------------------ Invoking the ptolemy/cg C generator by calling GenericCodeGenerator.generateCode(args).  To replicate: \$PTII/bin/ptcg -generatorPackage ptolemy.cg.kernel.generic.program.procedural.c $relativeFilename "
     test "Auto" "Automatic Java ptolemy/cg test in file $relativeFilename" {
 	# Remove files from ~/cg so as to force building
 	foreach classFile [glob -nocomplain [java::call System getProperty "user.home"]/cg/*.class] { file delete -force $classFile}
