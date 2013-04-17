@@ -49,7 +49,6 @@ import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.EventVector;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.Workspace;
 
 /**
  * @author leo
@@ -67,21 +66,10 @@ public class MetroIISystemCDirector extends Director implements
     public MetroIISystemCDirector(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        // TODO Auto-generated constructor stub
+        initialize(); 
     }
 
-    /**
-     * @param workspace
-     * @exception NameDuplicationException
-     * @exception IllegalActionException
-     */
-    public MetroIISystemCDirector(Workspace workspace)
-            throws IllegalActionException, NameDuplicationException {
-        super(workspace);
-        // TODO Auto-generated constructor stub
-    }
-
-    String path = "../temp/";
+    String path;
     String pipe2server = "m2event_ptolemy_buffer";
     String pipe2client = "m2event_metro_buffer";
 
@@ -189,6 +177,11 @@ public class MetroIISystemCDirector extends Director implements
     public void initialize() throws IllegalActionException {
         super.initialize();
 
+        path = System.getenv("METRO_TEMP"); 
+        path = path + "/"; 
+        if (path == null) {
+            throw new IllegalActionException("Environment varialble METRO_TEMP is not accessable."); 
+        }
         events = new LinkedList<Event.Builder>();
     }
 }

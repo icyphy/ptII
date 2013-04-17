@@ -18,11 +18,13 @@ public class TimeScheduler implements ConstraintSolver {
                     if (event.getTime() < time) {
                         time = event.getTime();
                     }
+                    System.out.println(event.getName()+" time "+event.getTime()); 
                 } else {
                     hasEventWithoutTime = true;
                 }
             }
         }
+        System.out.println("Time Scheduler: "+time); 
         if (hasEventWithoutTime) {
             for (Builder event : metroIIEventList) {
                 if (event.getStatus() == Status.NOTIFIED) {

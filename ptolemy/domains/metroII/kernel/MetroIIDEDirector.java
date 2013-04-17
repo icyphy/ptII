@@ -121,31 +121,6 @@ public class MetroIIDEDirector extends DEDirector implements
 
     public Parameter printTrace;
 
-    public class Pair<F, S> {
-        private F first; //first member of pair
-        private S second; //second member of pair
-
-        public Pair(F first, S second) {
-            this.first = first;
-            this.second = second;
-        }
-
-        public void setFirst(F first) {
-            this.first = first;
-        }
-
-        public void setSecond(S second) {
-            this.second = second;
-        }
-
-        public F getFirst() {
-            return first;
-        }
-
-        public S getSecond() {
-            return second;
-        }
-    }
 
     protected Pair<Actor, Integer> _checkNextActorToFire()
             throws IllegalActionException {
@@ -397,7 +372,7 @@ public class MetroIIDEDirector extends DEDirector implements
                         System.out.println("After checking actor Time: "
                                 + this.getModelTime()+this.getMicrostep());
                     }
-                    int result = actorAndState.second;
+                    int result = actorAndState.getSecond();
 
                     assert result <= 1 && result >= -1;
                     if (result == 1) {
@@ -408,19 +383,19 @@ public class MetroIIDEDirector extends DEDirector implements
                         // return;
                     } // else if 0, keep executing
                       //if (!actorList.contains(actorAndState.first)) {
-                    if (actorAndState.first != null) {
+                    if (actorAndState.getFirst() != null) {
                         // System.out.println(_eventQueue);
-                        Actor actor = actorAndState.first;
+                        Actor actor = actorAndState.getFirst();
                         FireMachine firing = _actorDictionary.get(actor
                                 .getFullName());
                         if (firing.getState() != FireMachine.State.START) {
                             _pendingIteration.put(actor.getFullName(), _pendingIteration.get(actor.getFullName())+1);
                         } else {
-                            actorList.add(actorAndState.first);
+                            actorList.add(actorAndState.getFirst());
 
                             if (((BooleanToken) printTrace.getToken())
                                     .booleanValue()) {
-                                System.out.println(actorAndState.first
+                                System.out.println(actorAndState.getFirst()
                                         .getFullName() + " is added");
                             }
 

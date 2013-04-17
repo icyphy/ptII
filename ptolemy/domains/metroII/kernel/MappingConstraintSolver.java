@@ -77,24 +77,14 @@ public class MappingConstraintSolver implements ConstraintSolver {
      *  @param size The maximum number of allowed events.
      */
     public MappingConstraintSolver(int size) {
-        _mapping = new int[size][size];
-        _size = size;
-        _initialize();
     }
 
-    /** Return the adjacency matrix of mapping constraints as a
+    /** Return the adjacency matrix of mapping constraints as a 
      *  string.
      *  @return the adjacency matrix.
      */
     public String toString() {
-        StringBuffer result = new StringBuffer();
-        for (int i = 0; i <= _currentMAXID; i++) {
-            for (int j = 0; j <= _currentMAXID; j++) {
-                result.append(" " + _mapping[i][j]);
-            }
-            result.append("\n");
-        }
-        return result.toString();
+        return _counter.toString(); 
     }
 
     /**
@@ -112,94 +102,48 @@ public class MappingConstraintSolver implements ConstraintSolver {
         // The constraints are resolved in three steps.
         // STEP 1: reset the constraint solver.
         reset();
-
+        
+        Hashtable<Integer, Event.Builder> id2event = new Hashtable<Integer, Event.Builder>();  
         // Step 2: present all the proposed events to the event solver.
-        for (Event.Builder eventBuilder : metroIIEventList) {
-            String eventName = eventBuilder.getName();
-            if (!_eventName2ID.containsKey(eventName)) {
-                _eventName2ID.put(eventName, _nextAvailableID);
-                _nextAvailableID++;
+        for (Event.Builder event : metroIIEventList) {
+            String eventName = event.getName();
+            int nodeId = _eventIDDictionary.getID(eventName);
+            if (nodeId<0) {
+                event.setStatus(Event.Status.NOTIFIED); 
             }
-            eventBuilder.setStatus(Event.Status.WAITING);
-            presentMetroIIEvent(_eventName2ID.get(eventName));
-        }
-
-        // Step 3: update the statuses of all events.
-        for (Event.Builder eventBuilder : metroIIEventList) {
-            String eventName = eventBuilder.getName();
-            if (isSatisfied(_eventName2ID.get(eventName))) {
-                eventBuilder.setStatus(Event.Status.NOTIFIED);
-            }
-        }
-
-    }
-
-    /** Mark each event on the adjacency matrix of mapping
-     * constraints.
-     *
-     * @param id Event ID that is PROPOSED or WAITING
-     */
-    public void presentMetroIIEvent(int id) {
-        // System.out.print("present M2Event: ");
-        // System.out.println(id);
-        assert id < _size;
-        assert id > 0;
-        if (id > _size) {
-            return;
-        }
-        for (int i = 0; i < _size; i++) {
-            if (_mapping[id][i] > 0) {
-                _mapping[id][i]++;
-            }
-        }
-    }
-
-    /** Check if the input event satisfies all the mapping constraints
-     *
-     * @param id Event ID
-     */
-    public boolean isSatisfied(int id) {
-        // System.out.print("check M2Event: ");
-        // System.out.println(id);
-        assert id > 0;
-        if (id > _size) {
-            return true;
-        }
-        for (int i = 0; i < _size; i++) {
-            if (_mapping[id][i] == 1 || _mapping[i][id] == 1) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    /** Initialize the constraint solver. */
-    public void reset() {
-        for (int i = 0; i < _size; i++) {
-            for (int j = 0; j < _size; j++) {
-                if (_mapping[i][j] > 0) {
-                    _mapping[i][j] = 1;
+            else {
+                id2event.put(nodeId, event); 
+                Iterable<Integer> edges = _mapping.getEdges(nodeId); 
+                _counter.increaseCount(edges); 
+                int firstConstraintId = _counter.firstGreaterThanOne(edges); 
+                if (firstConstraintId>=0) {
+                    Pair<Integer, Integer> idPair = _mapping.getEdge(firstConstraintId); 
+                    int eventId1 = idPair.getFirst(); 
+                    int eventId2 = idPair.getSecond();
+                    Event.Builder e1 = id2event.get(eventId1); 
+                    Event.Builder e2 = id2event.get(eventId2); 
+                    e1.setStatus(Event.Status.NOTIFIED); 
+                    e2.setStatus(Event.Status.NOTIFIED); 
+                    
+                    Iterable<Integer> edges1 = _mapping.getEdges(eventId1);
+                    Iterable<Integer> edges2 = _mapping.getEdges(eventId2);
+                    _counter.decreaseCount(edges1); 
+                    _counter.decreaseCount(edges2); 
                 }
             }
         }
+        
     }
 
-    /** Add a mapping constraint (A, B).
-     *
-     * @param id1 Event A in the constraint
-     * @param id2 Event B in the constraint
-     */
-    public void add(int id1, int id2) {
-        _mapping[id1][id2] = 1;
-        _mapping[id2][id1] = 1;
-
-        if (id1 > _currentMAXID) {
-            _currentMAXID = id1;
-        }
-        if (id2 > _currentMAXID) {
-            _currentMAXID = id2;
-        }
+    /** 
+     * Initialize the constraint solver. 
+     **/
+    public void reset() {
+        
+        int constraintNum = _mapping.edgeSize(); 
+        _counter = new ConstraintCounter(constraintNum); 
     }
+
 
     /**
      * Read mapping constraints from a file
@@ -215,16 +159,10 @@ public class MappingConstraintSolver implements ConstraintSolver {
             while ((line = reader.readLine()) != null) {
                 String[] actorNames = line.split(",");
                 assert actorNames.length == 2;
-                if (!_eventName2ID.containsKey(actorNames[0])) {
-                    _eventName2ID.put(actorNames[0], _nextAvailableID);
-                    _nextAvailableID++;
-                }
-                if (!_eventName2ID.containsKey(actorNames[1])) {
-                    _eventName2ID.put(actorNames[1], _nextAvailableID);
-                    _nextAvailableID++;
-                }
-                add(_eventName2ID.get(actorNames[0]),
-                        _eventName2ID.get(actorNames[1]));
+                _eventIDDictionary.add(actorNames[0]);
+                _eventIDDictionary.add(actorNames[1]);
+                _mapping.add(_eventIDDictionary.getID(actorNames[0]),
+                        _eventIDDictionary.getID(actorNames[1]));
             }
         } finally {
             reader.close();
@@ -234,37 +172,53 @@ public class MappingConstraintSolver implements ConstraintSolver {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-    private void _initialize() {
-        for (int i = 0; i < _size; i++) {
-            for (int j = 0; j < _size; j++) {
-                _mapping[i][j] = 0;
-            }
-        }
-        _currentMAXID = 0;
-    }
 
     ///////////////////////////////////////////////////////////////////
     ////                    private fields                         ////
+    
+    private class ConstraintCounter {
+        
+        public ConstraintCounter(int size) {
+            _size = size; 
+            _count = new int[_size]; 
+            initialize(); 
+        }
+        
+        public int firstGreaterThanOne(Iterable<Integer> ids) {
+            for (Integer id : ids) {
+                if (_count[id]>1) {
+                    return id; 
+                }
+            }
+            return -1; 
+        }
+        
+        public void initialize() {
+            for (int i=0; i<_size; i++) {
+                _count[i] = 0; 
+            }
+        }
+        
+        public void increaseCount(Iterable<Integer> ids) {
+            for (Integer id : ids) {
+                _count[id]++; 
+            }
+        }
+        
+        public void decreaseCount(Iterable<Integer> ids) {
+            for (Integer id : ids) {
+                _count[id]--; 
+            }
+        }
+        
+        private int _size; 
+        
+        private int[] _count; 
+    }
+    
+    private ConstraintCounter _counter; 
+    
+    private Graph _mapping = new Graph(); 
 
-    /** The adjacency matrix that represents the mapping constraints
-     *  (event pairs).
-     */
-    private int _mapping[][];
-
-    /** The maximum number of allowed events. */
-    private int _size;
-
-    /** The largest event ID.  */
-    private int _currentMAXID;
-
-    /** The next available event ID. If an new event is proposed, the
-     *  _nextAvailableID is assigned to the new event and
-     *  _nextAvailableID is increased by one.
-     */
-    private int _nextAvailableID = 0;
-
-    /** The dictionary of event name and ID pair.
-     *
-     */
-    private Hashtable<String, Integer> _eventName2ID = new Hashtable<String, Integer>();
+    private EventDictionary _eventIDDictionary = new EventDictionary();
 }
