@@ -55,7 +55,9 @@ JSRCS = \
     BlockingActor.java \
     BlockingFire.java \
     ConstraintSolver.java \
+    EventDictionary.java \
     FireMachine.java \
+    Graph.java \
     MappingConstraintSolver.java \
     MetroIICompositeActor.java \
     MetroIIDEDirector.java \
@@ -75,6 +77,7 @@ JSRCS = \
     MetroIISRDirector.java \
     MetroIISystemCDirector.java \
     NonBlockingFire.java \
+    Pair.java \
     ResumableActor.java \
     ResumableFire.java \
     StartOrResumable.java \
@@ -91,15 +94,18 @@ MISC_FILES =	$(DIRS) test
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	doc \
-	'ActMachine.class' \
-	'ActMachine$State.class' \
-	'BlockingActor.class' \
+    doc \
+    'ActMachine.class' \
+    'ActMachine$State.class' \
+    'BlockingActor.class' \
     'BlockingFire.class' \
     'ConstraintSolver.class' \
+    'EventDictionary.class' \
     'FireMachine.class' \
     'FireMachine$State.class' \
+    'Graph.class' \
     'MappingConstraintSolver.class' \
+    'MappingConstraintSolver$ConstraintCounter.class' \
     'MetroIICompositeActor$1.class' \
     'MetroIICompositeActor.class' \
     'MetroIIDEDirector.class' \
@@ -136,9 +142,12 @@ OPTIONAL_FILES = \
     'MetroIISystemCDirector$1.class' \
     'MetroIISystemCDirector.class' \
     'NonBlockingFire.class' \
+    'OverridingMappingConstraintSolver.class' \
+    'Pair.class' \
+    'ResumableActor.class' \
     'ResumableFire.class' \
     'StartOrResumable.class' \
-	'TimeScheduler.class' 
+    'TimeScheduler.class' 
 
 
 JCLASS = $(JSRCS:%.java=%.class)
