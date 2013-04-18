@@ -1,12 +1,12 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="CompareBasicCrossbar" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
+<entity name="Switch" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={42, 149, 813, 510}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={315, 62, 834, 634}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 524]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
@@ -75,11 +75,15 @@
             <property name="input"/>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{20.0, 200.0}">
             </property>
-            <property name="qm" class="ptolemy.data.expr.Parameter" value="BasicSwitch">
-            </property>
             <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.4,0.8,0.0,1.0}">
             </property>
-            <property name="_showInfo" class="ptolemy.kernel.util.StringAttribute" value="QM: BasicSwitch">
+            <property name="_showInfo" class="ptolemy.kernel.util.StringAttribute" value="QM = {BasicSwitch}">
+            </property>
+            <property name="qm" class="ptolemy.actor.lib.qm.QuantityManagerAttribute" value="BasicSwitch">
+                <property name="portIn" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
+                <property name="portOut" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
             </property>
         </port>
         <port name="port2" class="ptolemy.actor.TypedIOPort">
@@ -91,11 +95,15 @@
             <property name="input"/>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{20.0, 240.0}">
             </property>
-            <property name="qm" class="ptolemy.data.expr.Parameter" value="BasicSwitch">
-            </property>
             <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.4,0.8,0.0,1.0}">
             </property>
-            <property name="_showInfo" class="ptolemy.kernel.util.StringAttribute" value="QM: BasicSwitch">
+            <property name="_showInfo" class="ptolemy.kernel.util.StringAttribute" value="QM = {BasicSwitch}">
+            </property>
+            <property name="qm" class="ptolemy.actor.lib.qm.QuantityManagerAttribute" value="BasicSwitch">
+                <property name="portIn" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
+                <property name="portOut" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
             </property>
         </port>
         <port name="port4" class="ptolemy.actor.TypedIOPort">
@@ -197,11 +205,15 @@
             <property name="input"/>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{20.0, 200.0}">
             </property>
-            <property name="qm" class="ptolemy.data.expr.Parameter" value="CrossbarSwitch">
-            </property>
             <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.8,0.8,1.0}">
             </property>
-            <property name="_showInfo" class="ptolemy.kernel.util.StringAttribute" value="QM: CrossbarSwitch">
+            <property name="_showInfo" class="ptolemy.kernel.util.StringAttribute" value="QM = {CrossbarSwitch}">
+            </property>
+            <property name="qm" class="ptolemy.actor.lib.qm.QuantityManagerAttribute" value="CrossbarSwitch">
+                <property name="portIn" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
+                <property name="portOut" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
             </property>
         </port>
         <port name="port2" class="ptolemy.actor.TypedIOPort">
@@ -213,11 +225,15 @@
             <property name="input"/>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{20.0, 240.0}">
             </property>
-            <property name="qm" class="ptolemy.data.expr.Parameter" value="CrossbarSwitch">
-            </property>
             <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.8,0.8,1.0}">
             </property>
-            <property name="_showInfo" class="ptolemy.kernel.util.StringAttribute" value="QM: CrossbarSwitch">
+            <property name="_showInfo" class="ptolemy.kernel.util.StringAttribute" value="QM = {CrossbarSwitch}">
+            </property>
+            <property name="qm" class="ptolemy.actor.lib.qm.QuantityManagerAttribute" value="CrossbarSwitch">
+                <property name="portIn" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
+                <property name="portOut" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
             </property>
         </port>
         <port name="port4" class="ptolemy.actor.TypedIOPort">
@@ -260,7 +276,7 @@
 <title>TimedPlotter</title>
 <xLabel></xLabel>
 <yLabel></yLabel>
-<xRange min="0.3" max="9.4"/>
+<xRange min="0.3" max="9.5"/>
 <yRange min="1.0" max="3.0"/>
 <default connected="no" stems="yes"/>
 </plot>?>
@@ -383,11 +399,15 @@
             <property name="input"/>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{20.0, 200.0}">
             </property>
-            <property name="qm" class="ptolemy.data.expr.Parameter" value="BasicSwitch">
-            </property>
             <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.4,0.8,0.0,1.0}">
             </property>
-            <property name="_showInfo" class="ptolemy.kernel.util.StringAttribute" value="QM: BasicSwitch">
+            <property name="_showInfo" class="ptolemy.kernel.util.StringAttribute" value="QM = {BasicSwitch}">
+            </property>
+            <property name="qm" class="ptolemy.actor.lib.qm.QuantityManagerAttribute" value="BasicSwitch">
+                <property name="portIn" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
+                <property name="portOut" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
             </property>
         </port>
         <port name="port2" class="ptolemy.actor.TypedIOPort">
@@ -431,11 +451,15 @@
             <property name="input"/>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{20.0, 200.0}">
             </property>
-            <property name="qm" class="ptolemy.data.expr.Parameter" value="CrossbarSwitch">
-            </property>
             <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.8,0.8,1.0}">
             </property>
-            <property name="_showInfo" class="ptolemy.kernel.util.StringAttribute" value="QM: CrossbarSwitch">
+            <property name="_showInfo" class="ptolemy.kernel.util.StringAttribute" value="QM = {CrossbarSwitch}">
+            </property>
+            <property name="qm" class="ptolemy.actor.lib.qm.QuantityManagerAttribute" value="CrossbarSwitch">
+                <property name="portIn" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
+                <property name="portOut" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
             </property>
         </port>
         <port name="port2" class="ptolemy.actor.TypedIOPort">
@@ -465,36 +489,56 @@
         </property>
         <vertex name="vertex1" value="[135.0, 185.0]">
         </vertex>
+        <property name="color" class="ptolemy.actor.gui.ColorAttribute" value="{0.4,0.8,0.0,1.0}">
+        </property>
     </relation>
     <relation name="relation10" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
         <vertex name="vertex1" value="[135.0, 335.0]">
         </vertex>
+        <property name="color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.8,0.8,1.0}">
+        </property>
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+        </property>
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+        </property>
     </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+        </property>
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+        </property>
     </relation>
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+        </property>
     </relation>
     <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+        </property>
     </relation>
     <relation name="relation11" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
         <vertex name="vertex1" value="{140.0, 265.0}">
         </vertex>
+        <property name="color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.8,0.8,1.0}">
+        </property>
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
         <vertex name="vertex1" value="{140.0, 115.0}">
         </vertex>
+        <property name="color" class="ptolemy.actor.gui.ColorAttribute" value="{0.4,0.8,0.0,1.0}">
+        </property>
     </relation>
     <link port="A.port" relation="relation4"/>
     <link port="B.port" relation="relation4"/>

@@ -130,7 +130,7 @@ public class CrossbarSwitch extends BasicSwitch {
                 if (event != null) {
                     Object[] output = (Object[]) event.contents;
                     Receiver receiver = (Receiver) output[0];
-                    int actorPort = _ioPortToSwitchInPort.get(receiver);
+                    int actorPort = _ioPortToSwitchInPort.get(receiver.getContainer());
                     boolean free = true;
                     for (int j = 0; j < _numberOfPorts; j++) {
                         free = free & _crossbarSwitchStates[j][actorPort]
@@ -157,7 +157,7 @@ public class CrossbarSwitch extends BasicSwitch {
                             .get(i).get(0);
                     Receiver receiver = (Receiver) output[0];
 
-                    int actorPort = _ioPortToSwitchInPort.get(receiver);
+                    int actorPort = _ioPortToSwitchInPort.get(receiver.getContainer());
                     Time lastTimeStamp = currentTime;
                     boolean free = true;
                     for (int j = 0; j < _numberOfPorts; j++) {
@@ -249,7 +249,7 @@ public class CrossbarSwitch extends BasicSwitch {
                         .get(0);
                 Receiver receiver = (Receiver) output[0];
 
-                int actorPort = _ioPortToSwitchOutPort.get(receiver);
+                int actorPort = _ioPortToSwitchOutPort.get(receiver.getContainer());
                 boolean free = true;
                 for (int j = 0; j < _numberOfPorts; j++) {
                     free = free & _crossbarSwitchStates[j][actorPort]
