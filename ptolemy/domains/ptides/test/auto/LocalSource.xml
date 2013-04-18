@@ -295,19 +295,27 @@
             <entity name="Test value and timestamp" class="ptolemy.actor.TypedCompositeActor">
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[210.0, 140.0]">
                 </property>
+                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={173, 83, 934, 634}, maximized=false}">
+                </property>
+                <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
+                </property>
+                <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+                </property>
+                <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{457.0, 354.181640625}">
+                </property>
                 <port name="port" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
-                    <property name="_location" class="ptolemy.kernel.util.Location" value="{130.0, 355.0}">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[135.0, 135.0]">
                     </property>
                 </port>
                 <entity name="CurrentTime2" class="ptolemy.actor.lib.CurrentTime">
                     <doc>Output the current time.</doc>
-                    <property name="_location" class="ptolemy.kernel.util.Location" value="[195.0, 200.0]">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[245.0, 200.0]">
                     </property>
                     <port name="trigger" class="ptolemy.actor.TypedIOPort">
                         <property name="input"/>
                         <property name="multiport"/>
-                        <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="Infinity">
+                        <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="0.0">
                         </property>
                         <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="Infinity">
                         </property>
@@ -317,12 +325,12 @@
                     <property name="useLocalTime" class="ptolemy.data.expr.Parameter" value="false">
                     </property>
                     <doc>Output the current time.</doc>
-                    <property name="_location" class="ptolemy.kernel.util.Location" value="[195.0, 270.0]">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[245.0, 270.0]">
                     </property>
                     <port name="trigger" class="ptolemy.actor.TypedIOPort">
                         <property name="input"/>
                         <property name="multiport"/>
-                        <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="Infinity">
+                        <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="0.0">
                         </property>
                         <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="Infinity">
                         </property>
@@ -333,12 +341,12 @@
                     </property>
                     <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
                     </property>
-                    <property name="_location" class="ptolemy.kernel.util.Location" value="[220.0, 135.0]">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[340.0, 135.0]">
                     </property>
                     <port name="input" class="ptolemy.actor.TypedIOPort">
                         <property name="input"/>
                         <property name="multiport"/>
-                        <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="Infinity">
+                        <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="0.0">
                         </property>
                         <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="Infinity">
                         </property>
@@ -349,12 +357,12 @@
                     </property>
                     <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.100000000000001E-8">
                     </property>
-                    <property name="_location" class="ptolemy.kernel.util.Location" value="[290.0, 200.0]">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[340.0, 200.0]">
                     </property>
                     <port name="input" class="ptolemy.actor.TypedIOPort">
                         <property name="input"/>
                         <property name="multiport"/>
-                        <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="Infinity">
+                        <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="0.0">
                         </property>
                         <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="Infinity">
                         </property>
@@ -363,12 +371,12 @@
                 <entity name="Test3" class="ptolemy.actor.lib.Test">
                     <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, 0.0, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0}">
                     </property>
-                    <property name="_location" class="ptolemy.kernel.util.Location" value="[290.0, 270.0]">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[340.0, 270.0]">
                     </property>
                     <port name="input" class="ptolemy.actor.TypedIOPort">
                         <property name="input"/>
                         <property name="multiport"/>
-                        <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="Infinity">
+                        <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="0.0">
                         </property>
                         <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="Infinity">
                         </property>
@@ -377,7 +385,7 @@
                 <relation name="relation2" class="ptolemy.actor.TypedIORelation">
                     <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
                     </property>
-                    <vertex name="vertex1" value="[130.0, 135.0]">
+                    <vertex name="vertex1" value="[180.0, 135.0]">
                     </vertex>
                     <property name="color" class="ptolemy.actor.gui.ColorAttribute">
                     </property>
@@ -424,7 +432,7 @@
                     <port name="trigger" class="ptolemy.actor.TypedIOPort">
                         <property name="input"/>
                         <property name="multiport"/>
-                        <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="Infinity">
+                        <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="0.0">
                         </property>
                         <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="Infinity">
                         </property>
@@ -439,7 +447,7 @@
                     <port name="trigger" class="ptolemy.actor.TypedIOPort">
                         <property name="input"/>
                         <property name="multiport"/>
-                        <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="Infinity">
+                        <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="0.0">
                         </property>
                         <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="Infinity">
                         </property>
@@ -455,7 +463,7 @@
                     <port name="input" class="ptolemy.actor.TypedIOPort">
                         <property name="input"/>
                         <property name="multiport"/>
-                        <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="Infinity">
+                        <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="0.0">
                         </property>
                         <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="Infinity">
                         </property>
@@ -471,7 +479,7 @@
                     <port name="input" class="ptolemy.actor.TypedIOPort">
                         <property name="input"/>
                         <property name="multiport"/>
-                        <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="Infinity">
+                        <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="0.0">
                         </property>
                         <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="Infinity">
                         </property>
@@ -485,7 +493,7 @@
                     <port name="input" class="ptolemy.actor.TypedIOPort">
                         <property name="input"/>
                         <property name="multiport"/>
-                        <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="Infinity">
+                        <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="0.0">
                         </property>
                         <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="Infinity">
                         </property>

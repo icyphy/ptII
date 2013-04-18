@@ -295,7 +295,8 @@ public class PtidesDirector extends DEDirector {
                     event.receiver().put(event.token());
                     _currentLogicalTime = null;
                     if (_debugging) {
-                        _debug("iiiiiiii - transfer inputs from " + event.ioPort());
+                        _debug("iiiiiiii - transfer inputs from "
+                                + event.ioPort());
                     }
                 }
             }
@@ -827,6 +828,24 @@ public class PtidesDirector extends DEDirector {
      */
     private void _calculateDelayOffsets() throws IllegalActionException {
 
+        // find all local source actors
+        List<Actor> localSourceActors = new ArrayList<Actor>();
+        for (Object entity : ((CompositeActor) getContainer()).entityList()) {
+            if (entity instanceof Actor) {
+                Actor actor = (Actor) entity;
+                boolean isSource = true;
+                for (Object inputPortObject : actor.inputPortList()) {
+                    if (((IOPort) inputPortObject).sourcePortList().size() > 0) {
+                        isSource = false;
+                        break;
+                    }
+                }
+                if (isSource) {
+                    localSourceActors.add(actor);
+                }
+            }
+        }
+
         // Calculate delayOffset to each input port.
         for (TypedIOPort port : _inputPorts) {
 
@@ -869,20 +888,40 @@ public class PtidesDirector extends DEDirector {
                 if (thisDelayOffset < delayOffset) {
                     delayOffset = thisDelayOffset;
                 }
+            }
 
-                Double timePrecision = null;
-                try {
-                    timePrecision = PtidesDirector._getDoubleParameterValue(
-                            port.getContainer(), "timePrecision");
-                } catch (IllegalActionException e) {
-                    // In this case timePrecision is set to 0.0 in the next lines.
+            for (Actor localSource : localSourceActors) { 
+                Double delayOffsetAtSource = _getDoubleParameterValue(
+                        (NamedObj) localSource, "delayOffset");
+                
+                SuperdenseDependency sourceDelay = SuperdenseDependency.OPLUS_IDENTITY;
+                if (delayOffsetAtSource != null) { 
+                    sourceDelay = SuperdenseDependency.valueOf(delayOffsetAtSource, 1);
                 }
-                if (timePrecision != null) {
-                    if (-1 * timePrecision < delayOffset) {
-                        delayOffset = -1 * timePrecision;
+                SuperdenseDependency minDelay = SuperdenseDependency.OPLUS_IDENTITY;
+                // Find minimum path to input port group.
+                for (TypedIOPort groupPort : _inputPortGroups.get(port)) {
+                    for (Object lsOutput : localSource.outputPortList()) {
+                        IOPort outputPort = (IOPort) lsOutput;
+                        for (IOPort sinkPort : outputPort.sinkPortList()) {
+                            SuperdenseDependency dependency = _getSuperdenseDependencyPair(
+                                    (TypedIOPort) sinkPort, groupPort);
+                            if (!dependency.equals(SuperdenseDependency.OPLUS_IDENTITY)) {
+                                minDelay = (SuperdenseDependency) minDelay
+                                        .oPlus(dependency);
+                            }
+                        }
                     }
                 }
+
+                // Check if best so far.
+                minDelay = (SuperdenseDependency) sourceDelay.oTimes(minDelay);
+                double thisDelayOffset = minDelay.timeValue();
+                if (thisDelayOffset < delayOffset) {
+                    delayOffset = thisDelayOffset;
+                }
             }
+
             _setDelayOffset(
                     port,
                     delayOffset
@@ -899,8 +938,8 @@ public class PtidesDirector extends DEDirector {
                         ((DoubleToken) ((TimeDelay) entity).minimumDelay
                                 .getToken()).doubleValue());
             }
-            if (entity instanceof CompositeActor && 
-                    ((CompositeActor) entity).getDirector() instanceof SRDirector) {
+            if (entity instanceof CompositeActor
+                    && ((CompositeActor) entity).getDirector() instanceof SRDirector) {
                 // TODO calculate delayOffset
             }
         }
@@ -1151,15 +1190,16 @@ public class PtidesDirector extends DEDirector {
 
                 // Check if actor can be fired by putting token into receiver
                 // and calling prefire.
-                
+
                 // if this is a pure event but there is an event in the 
                 // trigger events with a smaller timestamp, pick that one
-                
+
                 if (queue == _pureEvents) {
                     for (Object triggeredEventObject : _eventQueue.toArray()) {
                         PtidesEvent triggeredEvent = (PtidesEvent) triggeredEventObject;
-                        if (triggeredEvent.actor() == ptidesEvent.actor() && 
-                                triggeredEvent.timeStamp().compareTo(ptidesEvent.timeStamp()) < 0) {
+                        if (triggeredEvent.actor() == ptidesEvent.actor()
+                                && triggeredEvent.timeStamp().compareTo(
+                                        ptidesEvent.timeStamp()) < 0) {
                             ptidesEvent = triggeredEvent;
                         }
                     }
@@ -1205,8 +1245,7 @@ public class PtidesDirector extends DEDirector {
                 if (prefire
                         && (!_resourceScheduling || queue != _pureEvents
                                 && ptidesEvent.actor() instanceof TimeDelay || _schedule(
-                                    ptidesEvent.actor(),
-                                    ptidesEvent.timeStamp()))) {
+                                ptidesEvent.actor(), ptidesEvent.timeStamp()))) {
                     if (!(ptidesEvent.actor() instanceof CompositeActor)
                             || ((CompositeActor) ptidesEvent.actor())
                                     .getDirector().scheduleContainedActors()) {
@@ -1221,7 +1260,8 @@ public class PtidesDirector extends DEDirector {
                             _removeEventsFromQueue(_pureEvents, ptidesEvent);
                         }
                         if (_debugging) {
-                            _debug(">>> next actor: " + ptidesEvent.actor() + " @ " + ptidesEvent.timeStamp());
+                            _debug(">>> next actor: " + ptidesEvent.actor()
+                                    + " @ " + ptidesEvent.timeStamp());
                         }
                         return ptidesEvent.actor();
                     }
@@ -1451,34 +1491,45 @@ public class PtidesDirector extends DEDirector {
      */
     private boolean _isSafeToProcess(PtidesEvent event)
             throws IllegalActionException {
-        Time eventTimestamp = event.timeStamp();
-
-        IOPort port = event.ioPort();
-        Double delayOffset = null;
+        // Check if there are any events upstream that have to be
+        // processed before this one.
+        Object[] eventArray = _eventQueue.toArray();
+        for (Object object : eventArray) {
+            PtidesEvent ptidesEvent = (PtidesEvent) object;
+            if (ptidesEvent.actor() != event.actor()
+                    && ptidesEvent.ioPort() != null && event.ioPort() != null) {
+                SuperdenseDependency minDelay = _getSuperdenseDependencyPair(
+                        (TypedIOPort) ptidesEvent.ioPort(),
+                        (TypedIOPort) event.ioPort());
+                if (event.timeStamp().getDoubleValue()
+                        - ptidesEvent.timeStamp().getDoubleValue() >= minDelay
+                        .timeValue()) {
+                    return false;
+                }
+            }
+        }
 
         // A local source can have a maximum future events parameter.
         Integer maxFutureEvents = _getIntParameterValue(
                 (NamedObj) event.actor(), "maxFutureEvents");
         if (maxFutureEvents != null) {
             int futureEvents = _getNumberOfFutureEventsFrom(event.actor());
-            if (futureEvents > maxFutureEvents) {
-                return false;
-            } else {
-                return true;
-            }
+            return (futureEvents <= maxFutureEvents);
         }
+
+        Double delayOffset = null;
+        Time eventTimestamp = event.timeStamp();
+        IOPort port = event.ioPort();
 
         if (port != null) {
             Actor actor = (Actor) port.getContainer();
             for (Object ioPort : actor.inputPortList()) {
-                //if (ioPort != port) {
                 Double ioPortDelayOffset = _getDoubleParameterValue(
                         (NamedObj) ioPort, "delayOffset");
                 if (ioPortDelayOffset != null
                         && (delayOffset == null || ioPortDelayOffset < delayOffset)) {
                     delayOffset = ioPortDelayOffset;
                 }
-                //}
             }
         } else {
             // A local source can have a delay offset parameter.
@@ -1487,7 +1538,8 @@ public class PtidesDirector extends DEDirector {
         }
         if (delayOffset == null
                 || localClock.getLocalTime().compareTo(
-                        eventTimestamp.subtract(delayOffset).subtract(_clockSynchronizationErrorBound)) >= 0) {
+                        eventTimestamp.subtract(delayOffset).subtract(
+                                _clockSynchronizationErrorBound)) >= 0) {
             return true;
         }
 
