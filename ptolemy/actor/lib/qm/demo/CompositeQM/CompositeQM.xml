@@ -23,7 +23,7 @@
     <property name="enableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="false">
     </property>
     <entity name="A" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[130.0, -30.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[130.0, 105.0]">
         </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={233, 132, 834, 634}, maximized=false}">
         </property>
@@ -80,7 +80,7 @@
         <link port="Ramp.trigger" relation="relation"/>
     </entity>
     <entity name="B" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{315.0, -30.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[310.0, 105.0]">
         </property>
         <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
             <property name="_location" class="ptolemy.kernel.util.Location" value="{55, 50}">
@@ -271,7 +271,7 @@
         <link port="b.output" relation="relation3"/>
     </entity>
     <entity name="X" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[130.0, 172.5]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{130.0, 170.0}">
         </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={233, 132, 834, 634}, maximized=false}">
         </property>
@@ -332,7 +332,7 @@
         <link port="Ramp.trigger" relation="relation"/>
     </entity>
     <entity name="Y" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[310.0, 172.5]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{310.0, 170.0}">
         </property>
         <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
             <property name="_location" class="ptolemy.kernel.util.Location" value="{55, 50}">
