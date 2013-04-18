@@ -79,7 +79,6 @@ public class ThreadedYieldAdapter<T> implements YieldAdapter<T> {
                         }
                         try {
                             try {
-
                                 client.collect(new ResultHandler<T>() {
                                     public void handleResult(T value)
                                             throws CollectionAbortedException {

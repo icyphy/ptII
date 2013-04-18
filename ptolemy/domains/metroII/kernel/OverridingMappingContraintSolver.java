@@ -10,8 +10,8 @@ import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event.Builder;
 
 public class OverridingMappingContraintSolver extends MappingConstraintSolver {
 
-    public OverridingMappingContraintSolver(int size) {
-        super(size); 
+    public OverridingMappingContraintSolver() {
+        super(); 
     }
 
     @Override

@@ -155,8 +155,8 @@ public class MetroIIDirector extends Director {
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
         _actorList = new LinkedList<StartOrResumable>();
-        _mappingConstraintSolver = new MappingConstraintSolver(_maxEvent);
-        _timeScheduler = new TimeScheduler(); 
+        _mappingConstraintSolver = new MappingConstraintSolver();
+        _timeScheduler = new TimeScheduler();
 
         _initializeParameters();
         initialize();
@@ -308,7 +308,7 @@ public class MetroIIDirector extends Director {
             //Debug.Out.println(this.getFullName() + ": " + "Phase 2");
 
             _mappingConstraintSolver.resolve(globalMetroIIEventList);
-            _timeScheduler.resolve(globalMetroIIEventList); 
+            _timeScheduler.resolve(globalMetroIIEventList);
 
             if (((BooleanToken) printTrace.getToken()).booleanValue()) {
                 for (Event.Builder builder : globalMetroIIEventList) {
@@ -333,8 +333,7 @@ public class MetroIIDirector extends Director {
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         MetroIIDirector newObject = (MetroIIDirector) super.clone(workspace);
-        newObject._mappingConstraintSolver = new MappingConstraintSolver(
-                _maxEvent);
+        newObject._mappingConstraintSolver = new MappingConstraintSolver();
         newObject._actorList = new LinkedList<StartOrResumable>();
         newObject._timeScheduler = new TimeScheduler();
         return newObject;
@@ -393,11 +392,11 @@ public class MetroIIDirector extends Director {
      *
      */
     private MappingConstraintSolver _mappingConstraintSolver;
-    
+
     /**
      * The time scheduler
      */
-    private TimeScheduler _timeScheduler; 
+    private TimeScheduler _timeScheduler;
 
     /**
      * The list of actors governed by MetroIIDirector

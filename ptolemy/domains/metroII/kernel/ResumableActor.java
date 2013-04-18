@@ -120,7 +120,9 @@ public class ResumableActor extends ActMachine {
                     eventBuilder.setStatus(Event.Status.PROPOSED);
                     metroIIEventList.add(eventBuilder);
                 }
-                // metroIIEventList.add(proposeCurrentStateEvent());
+                if (metroIIEventList.isEmpty()) {
+                    metroIIEventList.add(proposeStateEvent());
+                }
             } else {
                 setState(State.FIRE_END_POSTFIRE_BEGIN);
                 metroIIEventList.add(proposeStateEvent());

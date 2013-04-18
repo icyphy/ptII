@@ -155,11 +155,18 @@ public abstract class FireMachine implements StartOrResumable {
     */
     private Builder _createMetroIIEvent(String name) {
         Event.Builder builder = Event.newBuilder();
-        builder.setName(_actor.getFullName() + "." + name);
+        System.out.println(_trimModelName(_actor.getFullName()));
+        builder.setName(_trimModelName(_actor.getFullName()) + "." + name);
         builder.setOwner(_actor.getFullName());
         builder.setStatus(Event.Status.PROPOSED);
         builder.setType(Event.Type.GENERIC);
         return builder;
+    }
+    
+    private String _trimModelName(String name) {
+        assert name.length()>1; 
+        int pos = name.indexOf(".", 1); 
+        return name.substring(pos); 
     }
     
     ///////////////////////////////////////////////////////////////////

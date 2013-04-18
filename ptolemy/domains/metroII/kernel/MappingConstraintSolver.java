@@ -33,6 +33,7 @@ import java.io.DataInputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Arrays;
 import java.util.Hashtable;
 
 import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event;
@@ -76,7 +77,7 @@ public class MappingConstraintSolver implements ConstraintSolver {
      *
      *  @param size The maximum number of allowed events.
      */
-    public MappingConstraintSolver(int size) {
+    public MappingConstraintSolver() {
     }
 
     /** Return the adjacency matrix of mapping constraints as a 
@@ -84,7 +85,7 @@ public class MappingConstraintSolver implements ConstraintSolver {
      *  @return the adjacency matrix.
      */
     public String toString() {
-        return _counter.toString(); 
+        return _counter.toString();
     }
 
     /**
@@ -102,48 +103,61 @@ public class MappingConstraintSolver implements ConstraintSolver {
         // The constraints are resolved in three steps.
         // STEP 1: reset the constraint solver.
         reset();
-        
-        Hashtable<Integer, Event.Builder> id2event = new Hashtable<Integer, Event.Builder>();  
+
+        Hashtable<Integer, Event.Builder> id2event = new Hashtable<Integer, Event.Builder>();
         // Step 2: present all the proposed events to the event solver.
         for (Event.Builder event : metroIIEventList) {
             String eventName = event.getName();
             int nodeId = _eventIDDictionary.getID(eventName);
-            if (nodeId<0) {
-                event.setStatus(Event.Status.NOTIFIED); 
-            }
-            else {
-                id2event.put(nodeId, event); 
-                Iterable<Integer> edges = _mapping.getEdges(nodeId); 
-                _counter.increaseCount(edges); 
-                int firstConstraintId = _counter.firstGreaterThanOne(edges); 
-                if (firstConstraintId>=0) {
-                    Pair<Integer, Integer> idPair = _mapping.getEdge(firstConstraintId); 
-                    int eventId1 = idPair.getFirst(); 
+            if (nodeId < 0) {
+                event.setStatus(Event.Status.NOTIFIED);
+            } else {
+                id2event.put(nodeId, event);
+                Iterable<Integer> edges = _mapping.getEdges(nodeId);
+                _counter.increaseCount(edges);
+                int firstConstraintId = _counter.firstGreaterThanOne(edges);
+                if (firstConstraintId < 0) {
+                    event.setStatus(Event.Status.WAITING);
+                } else {
+                    Pair<Integer, Integer> idPair = _mapping
+                            .getEdge(firstConstraintId);
+                    int eventId1 = idPair.getFirst();
                     int eventId2 = idPair.getSecond();
-                    Event.Builder e1 = id2event.get(eventId1); 
-                    Event.Builder e2 = id2event.get(eventId2); 
-                    e1.setStatus(Event.Status.NOTIFIED); 
-                    e2.setStatus(Event.Status.NOTIFIED); 
-                    
+                    Event.Builder e1 = id2event.get(eventId1);
+                    Event.Builder e2 = id2event.get(eventId2);
+                    e1.setStatus(Event.Status.NOTIFIED);
+                    e2.setStatus(Event.Status.NOTIFIED);
+                    if (e1.hasTime() && !e2.hasTime()) {
+                        e2.setTime(e1.getTime()); 
+                    }
+                    else if (!e1.hasTime() && e2.hasTime()) {
+                        e1.setTime(e2.getTime()); 
+                    }
+                    else if (e1.hasTime() && e2.hasTime() && e1.getTime() != e2.getTime()) {
+                        assert false; 
+                    }
+                    System.out.println("Notifying "+e1.getName()+" "+e2.getName()); 
+
                     Iterable<Integer> edges1 = _mapping.getEdges(eventId1);
                     Iterable<Integer> edges2 = _mapping.getEdges(eventId2);
-                    _counter.decreaseCount(edges1); 
-                    _counter.decreaseCount(edges2); 
+                    _counter.decreaseCount(edges1);
+                    _counter.decreaseCount(edges2);
                 }
             }
+            // System.out.println(_counter); 
         }
-        
+    }
+
+    public int numConstraints() {
+        return _mapping.edgeSize();
     }
 
     /** 
      * Initialize the constraint solver. 
      **/
     public void reset() {
-        
-        int constraintNum = _mapping.edgeSize(); 
-        _counter = new ConstraintCounter(constraintNum); 
+        _counter = new ConstraintCounter(numConstraints());
     }
-
 
     /**
      * Read mapping constraints from a file
@@ -159,66 +173,75 @@ public class MappingConstraintSolver implements ConstraintSolver {
             while ((line = reader.readLine()) != null) {
                 String[] actorNames = line.split(",");
                 assert actorNames.length == 2;
-                _eventIDDictionary.add(actorNames[0]);
-                _eventIDDictionary.add(actorNames[1]);
-                _mapping.add(_eventIDDictionary.getID(actorNames[0]),
-                        _eventIDDictionary.getID(actorNames[1]));
+                addMapping(actorNames[0], actorNames[1]);
             }
         } finally {
             reader.close();
         }
     }
 
+    public void addMapping(String eventName1, String eventName2) {
+        _eventIDDictionary.add(eventName1);
+        _eventIDDictionary.add(eventName2);
+        int id1 = _eventIDDictionary.getID(eventName1);
+        int id2 = _eventIDDictionary.getID(eventName2);
+        // System.out.println(id1+" "+id2); 
+        _mapping.add(id1, id2);
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-
     ///////////////////////////////////////////////////////////////////
     ////                    private fields                         ////
-    
+
     private class ConstraintCounter {
-        
+
         public ConstraintCounter(int size) {
-            _size = size; 
-            _count = new int[_size]; 
-            initialize(); 
+            _size = size;
+            _count = new int[_size];
+            initialize();
         }
-        
+
+        public String toString() {
+            return Arrays.toString(_count);
+        }
+
         public int firstGreaterThanOne(Iterable<Integer> ids) {
             for (Integer id : ids) {
-                if (_count[id]>1) {
-                    return id; 
+                if (_count[id] > 1) {
+                    return id;
                 }
             }
-            return -1; 
+            return -1;
         }
-        
+
         public void initialize() {
-            for (int i=0; i<_size; i++) {
-                _count[i] = 0; 
+            for (int i = 0; i < _size; i++) {
+                _count[i] = 0;
             }
         }
-        
+
         public void increaseCount(Iterable<Integer> ids) {
             for (Integer id : ids) {
-                _count[id]++; 
+                _count[id]++;
             }
         }
-        
+
         public void decreaseCount(Iterable<Integer> ids) {
             for (Integer id : ids) {
-                _count[id]--; 
+                _count[id]--;
             }
         }
-        
-        private int _size; 
-        
-        private int[] _count; 
+
+        private int _size;
+
+        private int[] _count;
     }
-    
-    private ConstraintCounter _counter; 
-    
-    private Graph _mapping = new Graph(); 
+
+    private ConstraintCounter _counter;
+
+    private Graph _mapping = new Graph();
 
     private EventDictionary _eventIDDictionary = new EventDictionary();
 }

@@ -59,7 +59,9 @@ public class ResumableFire extends FireMachine {
                     eventBuilder.setStatus(Event.Status.PROPOSED);
                     metroIIEventList.add(eventBuilder);
                 }
-                metroIIEventList.add(proposeStateEvent());
+                if (metroIIEventList.isEmpty()) {
+                    metroIIEventList.add(proposeStateEvent());
+                }
             } else {
                 setState(State.END);
                 metroIIEventList.add(proposeStateEvent());
