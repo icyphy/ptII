@@ -137,12 +137,4 @@
     <link port="ReadParametersAcrossLink.my input" relation="relation"/>
     <link port="ReadParametersAcrossLink.output" relation="relation2"/>
     <link port="InstanceOfCompositeActor.port2" relation="relation"/>
-    <property name="SDF Director._ReadParametersAcrossLinkTest_JavaCodeGenerator" class="ptolemy.kernel.DecoratedAttributesImplementation">
-        <property name="padBuffers" class="ptolemy.data.expr.Parameter" value="true">
-        </property>
-        <property name="allowDynamicMultiportReference" class="ptolemy.data.expr.Parameter" value="false">
-        </property>
-        <property name="_decorator" class="ptolemy.kernel.util.StringAttribute" value="JavaCodeGenerator">
-        </property>
-    </property>
 </entity>

@@ -840,12 +840,4 @@
     <link port="Uniform2.output" relation="relation2"/>
     <link port="Uniform3.output" relation="relation3"/>
     <link port="Uniform4.output" relation="relation4"/>
-    <property name="SDF Director._Uniform_JavaCodeGenerator" class="ptolemy.kernel.DecoratedAttributesImplementation">
-        <property name="padBuffers" class="ptolemy.data.expr.Parameter" value="true">
-        </property>
-        <property name="allowDynamicMultiportReference" class="ptolemy.data.expr.Parameter" value="false">
-        </property>
-        <property name="_decorator" class="ptolemy.kernel.util.StringAttribute" value="JavaCodeGenerator">
-        </property>
-    </property>
 </entity>

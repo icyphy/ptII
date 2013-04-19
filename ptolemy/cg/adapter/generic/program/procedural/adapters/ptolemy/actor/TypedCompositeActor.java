@@ -485,7 +485,12 @@ public class TypedCompositeActor extends
                         .generateVariableName(portParameter)));
                 // FIXME: The = sign is language specific.
                 tempCode.append(" = ");
-                String reference = getReference(inputPort.getName(), false);
+                String reference = "";
+                try {
+                    reference = getReference(inputPort.getName(), false);
+                } catch (Exception ex) {
+                    // Ignore and fall through to the next attempt, which looks for the port in the executive director context.
+                }
                 if (!reference.equals("")) {
                     tempCode.append(reference);
                 } else {

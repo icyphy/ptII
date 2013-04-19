@@ -280,12 +280,4 @@
     <link port="Const2.output" relation="relation5"/>
     <link port="Test.input" relation="relation3"/>
     <link port="Test2.input" relation="relation4"/>
-    <property name="SDF Director._ModularCodeGen6_ModularCodeGenerator" class="ptolemy.kernel.DecoratedAttributesImplementation">
-        <property name="padBuffers" class="ptolemy.data.expr.Parameter" value="true">
-        </property>
-        <property name="allowDynamicMultiportReference" class="ptolemy.data.expr.Parameter" value="false">
-        </property>
-        <property name="_decorator" class="ptolemy.kernel.util.StringAttribute" value="ModularCodeGenerator">
-        </property>
-    </property>
 </entity>

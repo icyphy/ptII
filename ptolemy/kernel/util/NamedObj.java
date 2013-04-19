@@ -47,6 +47,7 @@ import java.util.ListIterator;
 import java.util.Map;
 import java.util.Set;
 
+import ptolemy.kernel.CompositeEntity;
 import ptolemy.util.StringUtilities;
 
 ///////////////////////////////////////////////////////////////////
@@ -118,13 +119,9 @@ import ptolemy.util.StringUtilities;
  Derived classes should override the _description() method to
  append new fields if there is new information that should be included
  in the description.
-
  <p>
- A NamedObj can contain DecoratedAttributes. These are attributes that are
- added by another NamedObj, called a decorator to this NamedObj.
- An example is for example a code generator. This one has specific attributes
- for for example the generated code of the director in a model. These attributes
- are added by the Decorator (the code generator), to the director ("this" object).
+ A NamedObj can contain DecoratorAttributes. These are attributes that are
+ added by another NamedObj that implements the {@link Decorator} interface.
  These attributes are stored separately and can be retrieved by using
  {@link #getDecoratorAttributes(Decorator)} or
  {@link #getDecoratorAttribute(Decorator, String)}.
@@ -506,7 +503,8 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
             // to access the directory are synchronized.
             newObject._attributes = null;
 
-            newObject._decoratedAttributes = new HashMap<Decorator, DecoratedAttributes>();
+            newObject._decoratorAttributes = new HashMap<Decorator, DecoratorAttributes>();
+            newObject._decoratorAttributesVersion = -1L;
 
             // NOTE: As of version 5.0, clones inherit the derived
             // level of the object from which they are cloned.
@@ -545,8 +543,9 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
                 }
             }
 
-            for (DecoratedAttributes attribute : _decoratedAttributes.values()) {
-                DecoratedAttributes newParameter = (DecoratedAttributes) attribute
+            /* FIXME: Don't know why the following was here. Attributes are cloned automatically.
+            for (DecoratorAttributes attribute : _decoratorAttributes.values()) {
+                DecoratorAttributes newParameter = (DecoratorAttributes) attribute
                         .clone(workspace);
 
                 try {
@@ -558,6 +557,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
                                     + exception);
                 }
             }
+            */
 
             if (_debugging) {
                 if (workspace == null) {
@@ -606,6 +606,20 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
      */
     public Iterator containedObjectsIterator() {
         return new ContainedObjectsIterator();
+    }
+
+    /** Return the set of decorators that decorate this object.
+     *  @see Decorator
+     *  @return The decorators that decorate this object (which may
+     *   be an empty set).
+     * @throws IllegalActionException If a decorator referenced
+     *  by a DecoratorAttributes cannot be found.
+     */
+    public Set<Decorator> decorators() throws IllegalActionException {
+        synchronized (_decoratorAttributes) {
+            _updateDecoratorAttributes();
+            return _decoratorAttributes.keySet();
+        }
     }
 
     /** Return true if this object contains the specified object,
@@ -1081,53 +1095,52 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
     public NamedObj getContainer() {
         return null;
     }
-
-    /** Return the decorated attributes of this Named Object, decorated by decorator.
-     *  DecoratedAttributes are attributes that have been added by calling
-     *  {@link #_addAttribute(Attribute)}.
-     *  If the DecoratedAttributes for this NamedObj do not contain the
-     *  decorated named by the <i>decorator</i> parameter, then the a
-     *  DecoratedAttribute is created, see
-     *  {@link ptolemy.kernel.util.Decorator#createDecoratedAttributes(NamedObj)}.
-     *  @param decorator The decorator.
-     *  @return The decorated attributes.
-     */
-    public DecoratedAttributes getDecoratorAttributes(Decorator decorator) {
-        synchronized (_decoratedAttributes) {
-            if (_decoratedAttributes.containsKey(decorator)) {
-                return _decoratedAttributes.get(decorator);
-            } else {
-                // FIXME: It seems odd to create the DecoratedAttribute here.
-                try {
-                    DecoratedAttributes attributes = decorator
-                            .createDecoratedAttributes(this);
-                    _decoratedAttributes.put(decorator, attributes);
-                    return attributes;
-                } catch (Exception ex) {
-                    throw new InternalErrorException(this, ex,
-                            "Failed to get decorator attribute \"" + decorator
-                                    + "\"");
-                }
-            }
-        }
-    }
-
-    /** Return the decorated attribute with the given name for the decorator.
-     *  Return null if the attribute cannot be found.
+    
+    /** Return the decorated attribute with the specified name for the
+     *  specified decorator, or null the specified decorator provides
+     *  no attribute with the specified name or the decorator does not
+     *  decorate this object.
+     *  If this object has no decorator attributes, then calling
+     *  this method will cause them to be created and assigned default values,
+     *  if the specified decorator decorates this object.
+     *  @see ptolemy.kernel.util.Decorator#createDecoratorAttributes(NamedObj)
+     *  @see #getDecoratorAttributes(Decorator)
      *  @param decorator The decorator.
      *  @param name The name of the attribute.
-     *  @return The attribute with the given name for the decorator. .
-     *  @see #getDecoratorAttributes(Decorator)
+     *  @return The attribute with the given name for the decorator, or null
+     *   if the specified decorator does not provide an attribute with the specified
+     *   name.
+     *  @throws IllegalActionException If a decorator referenced
+     *   by a DecoratorAttributes cannot be found.
      */
-    public Attribute getDecoratorAttribute(Decorator decorator, String name) {
-        // FIXME: Note that this will add the decorator?
-        DecoratedAttributes attributes = getDecoratorAttributes(decorator);
-        for (Object attribute : attributes.attributeList()) {
-            if (((Attribute) attribute).getName().equals(name)) {
-                return (Attribute) attribute;
-            }
+    public Attribute getDecoratorAttribute(Decorator decorator, String name)
+            throws IllegalActionException {
+        DecoratorAttributes attributes = getDecoratorAttributes(decorator);
+        if (attributes != null) {
+            return attributes.getAttribute(name);            
         }
         return null;
+    }
+
+    /** Return the decorated attributes of this NamedObj, as decorated by the
+     *  specified decorator. If there are no such attributes, then calling
+     *  this method will cause them to attempt to be created and assigned default values.
+     *  If the specified decorator does not decorate this object, then this method will
+     *  return null.
+     *  @see ptolemy.kernel.util.Decorator#createDecoratorAttributes(NamedObj)
+     *  @see #getDecoratorAttribute(Decorator, String)
+     *  @param decorator The decorator.
+     *  @return The decorated attributes, or null if the specified decorator does not
+     *   decorate this object.
+     *  @throws IllegalActionException If a decorator referenced
+     *   by a DecoratorAttributes cannot be found.
+     */
+    public DecoratorAttributes getDecoratorAttributes(Decorator decorator)
+            throws IllegalActionException {
+        synchronized (_decoratorAttributes) {
+            _updateDecoratorAttributes();
+            return _decoratorAttributes.get(decorator);
+        }
     }
 
     /** Get the minimum level above this object in the hierarchy where a
@@ -2146,15 +2159,16 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
      *  Derived classes may further constrain the class of the attribute.
      *  To do this, they should override this method to throw an exception
      *  when the argument is not an instance of the expected class.
-     *
-     *  <p>If the attribute is an instance of {@link DecoratedAttributes},
-     *  then it is added to the Map of decorators for this NamedObj.  The
+     *  <p>
+     *  If the attribute is an instance of {@link DecoratorAttributes},
+     *  then it is added to the Map of decorators for this NamedObj rather than
+     *  being added to the attribute list of this NamedObj.  The
      *  key in the map is the {@link Decorator} for the attribute, the value
      *  is the attribute.  The DecoratedAttribute may be read using
      *  {@link #getDecoratorAttributes(Decorator)} or
      *  {@link #getDecoratorAttribute(Decorator, String)}.</p>
-     *
-     *  <p>This method is write-synchronized on the workspace and increments its
+     *  <p>
+     *  This method is write-synchronized on the workspace and increments its
      *  version number.</p>
      *
      *  @param attribute The attribute to be added.
@@ -2168,29 +2182,11 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
         try {
             _workspace.getWriteAccess();
 
-            if (attribute instanceof DecoratedAttributes) {
-                DecoratedAttributes decoratedAttributes = (DecoratedAttributes) attribute;
-                Decorator decorator = decoratedAttributes.getDecorator();
-
-                // When you are constructing the model, the decorator might
-                // not yet be filled in.
-                if (decorator != null) {
-                    _decoratedAttributes.put(decorator, decoratedAttributes);
-                }
-                return;
+            if (_attributes == null) {
+                _attributes = new NamedList();
             }
 
-            try {
-                if (_attributes == null) {
-                    _attributes = new NamedList();
-                }
-
-                _attributes.append(attribute);
-            } catch (IllegalActionException ex) {
-                // This exception should not be thrown.
-                throw new InternalErrorException(null, ex,
-                        "Internal error in NamedObj _addAttribute() method!");
-            }
+            _attributes.append(attribute);
 
             if (_debugging) {
                 _debug("Added attribute", attribute.getName(), "to",
@@ -2607,15 +2603,6 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
                 attribute.exportMoML(output, depth);
             }
         }
-        for (Decorator decorator : _decoratedAttributes.keySet()) {
-            if (decorator instanceof NamedObj) {
-                NamedObj container = ((NamedObj) decorator).getContainer();
-                if (container != null) {
-                    container._recordDecoratedAttributes(_decoratedAttributes
-                            .get(decorator));
-                }
-            }
-        }
     }
 
     /** Get an object with the specified name in the specified container.
@@ -2872,13 +2859,6 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
      */
     protected void _propagateValue(NamedObj destination)
             throws IllegalActionException {
-    }
-
-    /** Record decorated attributes to store at the level of the
-     *  container of the decorator.
-     *  @param attributes The decorated attributes.
-     */
-    protected void _recordDecoratedAttributes(DecoratedAttributes attributes) {
     }
 
     /** Remove the given attribute.
@@ -3354,6 +3334,85 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
 
         return false;
     }
+    
+    /** Update the decorator attributes.
+     *  This method finds all decorators in scope (above this object in the hierarchy),
+     *  and for each decorator that can decorate this object, creates an entry in
+     *  _decoratorAttributes.
+     * @throws IllegalActionException 
+     *  @see ptolemy.kernel.util.Decorator#createDecoratorAttributes(NamedObj)
+     *  @see #getDecoratorAttributes(Decorator)
+     */
+    private void _updateDecoratorAttributes() throws IllegalActionException {
+        synchronized (_decoratorAttributes) {
+            if (workspace().getVersion() != _decoratorAttributesVersion) {
+                _decoratorAttributes.clear();
+                // Find all the decorators in scope, and store them indexed by full name.
+                HashMap<String,Decorator> decorators = new HashMap<String,Decorator>();
+                NamedObj container = getContainer();
+                boolean crossedOpaqueBoundary = false;
+                while (container != null) {
+                    List<Decorator> localDecorators = container.attributeList(Decorator.class);
+                    for (Decorator decorator : localDecorators) {
+                        if (!crossedOpaqueBoundary || decorator.isGlobalDecorator()) {
+                            decorators.put(decorator.getFullName(), decorator);
+                        }
+                    }
+                    if (container instanceof CompositeEntity
+                            && ((CompositeEntity)container).isOpaque()) {
+                        crossedOpaqueBoundary = true;
+                    }
+                    container = container.getContainer();
+                }
+                
+                // Find all the instances of DecoratorAttributes contained by this NamedObj,
+                // and put these in the cache, associated with the right decorator.
+                List<DecoratorAttributes> decoratorAttributes = attributeList(DecoratorAttributes.class);
+                for (DecoratorAttributes decoratorAttribute : decoratorAttributes) {
+                    Decorator decorator = decoratorAttribute.getDecorator();
+                    if (decorator != null) {
+                        // Since this decorator is now associated with a decoratorAttribute, remove it.
+                        Decorator removed = decorators.remove(decorator.getFullName());
+                        // If the above returns null, then the decorator is no longer in scope.
+                        if (removed == null) {
+                            decorator = null;
+                        } else {
+                            // The decorator was found. Put in cache.
+                            _decoratorAttributes.put(decorator, decoratorAttribute);
+                        }
+                    } else {
+                        // So that the user can recover, delete this invalid decorator.
+                        // FIXME: Should this be done in a ChangeRequest?
+                        try {
+                            decoratorAttribute.setContainer(null);
+                        } catch (NameDuplicationException e) {
+                            throw new InternalErrorException(e);
+                        }
+                        throw new IllegalActionException(this,
+                                "Cannot find decorator with name "
+                                + decoratorAttribute.decoratorName.getExpression());
+                    }
+                    if (decorator == null) {
+                        // The decorator is no longer in scope. Delete the attributes.
+                        // FIXME: Should this be done in a change request?
+                        try {
+                            decoratorAttribute.setContainer(null);
+                        } catch (KernelException e) {
+                            throw new InternalErrorException(e);
+                        }
+                    }
+                }
+                
+                // For each remaining decorator, if it decorates this NamedObj, create an entry.
+                for (Decorator decorator : decorators.values()) {
+                    DecoratorAttributes attribute = decorator.createDecoratorAttributes(this);
+                    _decoratorAttributes.put(decorator, attribute);
+                }
+                
+                _decoratorAttributesVersion = workspace().getVersion();
+            }
+        }
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         friendly variables                 ////
@@ -3369,8 +3428,14 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
     /** The class name for MoML exports. */
     private String _className;
 
-    /** The decorated attributes decorated by a certain decorator.*/
-    private Map<Decorator, DecoratedAttributes> _decoratedAttributes = new HashMap<Decorator, DecoratedAttributes>();
+    /** A map from decorators to the decorated attributes which which each decorator has decorated this NamedObj.
+     *  This is a cache that may not be complete. To get a complete list of decorated attributes, get a list
+     *  of attributes of type DecoratorAttributes.
+     */
+    private Map<Decorator, DecoratorAttributes> _decoratorAttributes = new HashMap<Decorator, DecoratorAttributes>();
+    
+    /** Workspace version for decorated attributes. */
+    private long _decoratorAttributesVersion = -1L;
 
     /** Instance of a workspace that can be used if no other
      *  is specified.

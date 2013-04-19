@@ -245,12 +245,16 @@ public class TemplateParser {
         // to find the associated adapter.
         String sourcePortChannel = source.port.getName() + "#"
                 + source.channelNumber + ", " + offset;
-        String sourceRef;
+        String sourceRef = "";
 
         if (alternativeSourceRef == null) {
-            sourceRef = ((NamedProgramCodeGeneratorAdapter) _codeGenerator
-                    .getAdapter(source.port.getContainer())).getReference(
-                    sourcePortChannel, true);
+            try {
+                sourceRef = ((NamedProgramCodeGeneratorAdapter) _codeGenerator
+                        .getAdapter(source.port.getContainer())).getReference(
+                                sourcePortChannel, true);
+            } catch (Exception ex) {
+                // Ignore and fall through to the next.
+            }
             if (sourceRef.equals("")) {
                 // Needed by $PTII/ptolemy/cg/adapter/generic/program/procedural/java/adapters/ptolemy/actor/lib/hoc/test/auto/CaseOpaque.xml
                 sourceRef = ((NamedProgramCodeGeneratorAdapter) _codeGenerator

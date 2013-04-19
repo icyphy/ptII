@@ -64,12 +64,4 @@
     <link port="ColtPoisson.output" relation="relation2"/>
     <link port="ColtPoisson.mean" relation="relation"/>
     <link port="Ramp.output" relation="relation"/>
-    <property name="SDF Director._ColtPoissonPortParameter_JavaCodeGenerator" class="ptolemy.kernel.DecoratedAttributesImplementation">
-        <property name="padBuffers" class="ptolemy.data.expr.Parameter" value="true">
-        </property>
-        <property name="allowDynamicMultiportReference" class="ptolemy.data.expr.Parameter" value="false">
-        </property>
-        <property name="_decorator" class="ptolemy.kernel.util.StringAttribute" value="JavaCodeGenerator">
-        </property>
-    </property>
 </entity>

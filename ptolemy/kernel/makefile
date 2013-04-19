@@ -63,7 +63,6 @@ JSRCS = \
 	ComponentPort.java \
 	ComponentRelation.java \
 	CompositeEntity.java \
-	DecoratedAttributesImplementation.java \
 	Entity.java \
 	InstantiableNamedObj.java \
 	Port.java \

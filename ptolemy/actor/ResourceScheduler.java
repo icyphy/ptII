@@ -34,36 +34,49 @@ import java.util.HashMap;
 import java.util.List;
 
 import ptolemy.actor.util.Time;
-import ptolemy.data.DoubleToken;
-import ptolemy.data.ObjectToken;
-import ptolemy.data.expr.Parameter;
+import ptolemy.data.BooleanToken;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.DecoratedAttributesImplementation;
-import ptolemy.kernel.util.DecoratedAttributes;
 import ptolemy.kernel.util.Decorator;
+import ptolemy.kernel.util.DecoratorAttributes;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.moml.MoMLModelAttribute;
 
-/** This is a resource scheduler.
- *
- * @author Patricia Derler
-   @version $Id$
-   @since Ptolemy II 9.0
+/**
+This is a base class for resource schedulers.
+This is a {@link Decorator} that will decorate any instance of {@link Actor}
+that is deeply contained by its container, including within opaque
+composites.
+This base class provides two decorator attributes. When you create an instance
+of this class in a composite actor, every Actor within that composite actor
+is decorated with these two parameter:
+<ul>
+<li> <li>enable</i>: If true, then the decorated actor will use this resource.
+     This is a boolean that defaults to false.
+<li> <i>executionTime</i>: Specifies the execution time of the
+     decorated actor. This means the time that the decorated actor occupies
+     the processor or core when it fires.
+     This is a double that defaults to 0.0.
+</ul>
 
-   @Pt.ProposedRating Red (derler)
-   @Pt.AcceptedRating Red (derler)
+@author Patricia Derler
+@author Edward A. Lee
+@version $Id$
+@since Ptolemy II 9.0
+@Pt.ProposedRating Red (derler)
+@Pt.AcceptedRating Red (derler)
  */
-public abstract class ResourceScheduler extends MoMLModelAttribute implements
+public class ResourceScheduler extends MoMLModelAttribute implements
         ResourceSchedulerInterface, Decorator {
 
-    /** Create a new actor in the specified container with the specified
+    /** Create a new resource schedule in the specified container with the specified
      *  name.  The name must be unique within the container or an exception
      *  is thrown. The container argument must not be null, or a
      *  NullPointerException will be thrown.
-     *
      *  @param container The container.
      *  @param name The name of this actor within the container.
      *  @exception IllegalActionException If this actor cannot be contained
@@ -74,21 +87,14 @@ public abstract class ResourceScheduler extends MoMLModelAttribute implements
     public ResourceScheduler(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-
-        try {
-            _schedulePlotterEditorFactory = new SchedulePlotterEditorFactory(
-                    this, this.uniqueName("_editorFactory"));
-        } catch (NameDuplicationException e) {
-            // Do nothing, we made sure that there cannot be a name duplication
-            // exception.
-        }
-
+        _schedulePlotterEditorFactory = new SchedulePlotterEditorFactory(
+                this, this.uniqueName("_editorFactory"));
     }
 
     ///////////////////////////////////////////////////////////////////
     //                         public variables                      //
 
-    /** Execution time event type. */
+    /** Execution time event types. */
     public static enum ExecutionEventType {
         /** Started the execution of an actor. */
         START,
@@ -102,41 +108,32 @@ public abstract class ResourceScheduler extends MoMLModelAttribute implements
     //                           public methods                      //
 
     /** Return the decorated attributes for the target NamedObj.
+     *  If the specified target is not an Actor, return null.
      *  @param target The NamedObj that will be decorated.
-     *  @return The decorated attributes for the target NamedObj.
-     *  @exception IllegalActionException If the attribute is not of an
-     *   acceptable class for the container, or if the name contains a period.
-     *  @exception NameDuplicationException If the name coincides with
-     *   an attribute already in the container.
+     *  @return The decorated attributes for the target NamedObj, or
+     *   null if the specified target is not an Actor.
      */
-    public DecoratedAttributes createDecoratedAttributes(NamedObj target)
-            throws IllegalActionException, NameDuplicationException {
-        DecoratedAttributesImplementation decoratedAttributes = new DecoratedAttributesImplementation(
-                target, this);
-        if (target.getAttribute("scheduler") == null) {
-            Parameter schedulerParameter = new Parameter(target, "scheduler");
-            schedulerParameter.setExpression("");
+    public DecoratorAttributes createDecoratorAttributes(NamedObj target) {
+        if (target instanceof Actor) {
+            try {
+                return new ResourceAttributes(target, this);
+            } catch (KernelException ex) {
+                // This should not occur.
+                throw new InternalErrorException(ex);
+            }
+        } else {
+            return null;
         }
-        if (target.getAttribute("executionTime") == null) {
-            Parameter executionTime = new Parameter(target, "executionTime");
-            executionTime.setExpression("0.0");
-        }
-        return decoratedAttributes;
     }
 
-    /** Set the current type of the decorated attributes.
-     *  The type information of the parameters are not saved in the
-     *  model hand hence this has to be reset when reading the model
-     *  again.
-     *  @param decoratedAttributes The decorated attributes.
-     *  @exception IllegalActionException If the attribute is not of an
-     *   acceptable class for the container, or if the name contains a period.
+    /** Return a list of the entities deeply contained by the container
+     *  of this resource scheduler.
+     *  @return A list of the objects decorated by this decorator.
      */
-    public void setTypesOfDecoratedVariables(
-            DecoratedAttributes decoratedAttributes)
-            throws IllegalActionException {
-        // FIXME: What has to be done here?
-
+    public List<NamedObj> decoratedObjects() {
+        // FIXME: This should traverse opaque boundaries.
+        CompositeEntity container = (CompositeEntity)getContainer();
+        return container.deepEntityList();
     }
 
     /** Clone the actor into the specified workspace.
@@ -153,14 +150,18 @@ public abstract class ResourceScheduler extends MoMLModelAttribute implements
             newObject._schedulePlotterEditorFactory = new SchedulePlotterEditorFactory(
                     newObject, this.uniqueName("_editorFactory"));
             newObject._previousY = new HashMap<NamedObj, Double>();
-        } catch (NameDuplicationException e) {
-            // Do nothing, we made sure that there cannot be a name duplication
-            // exception.
-        } catch (IllegalActionException e) {
-            // If we would run into this catch clause
+        } catch (KernelException e) {
+            throw new InternalErrorException(e);
         }
 
         return newObject;
+    }
+
+    /** Return true to indicate that this decorator should
+     *  decorate objects across opaque hierarchy boundaries.
+     */
+    public boolean isGlobalDecorator() {
+        return true;
     }
 
     /** If the last actor that was scheduled finished execution
@@ -184,7 +185,7 @@ public abstract class ResourceScheduler extends MoMLModelAttribute implements
         _lastTimeScheduled = new HashMap<Actor, Time>();
         _actors = new ArrayList<NamedObj>();
 
-        _getActorsToSchedule((CompositeActor) getContainer());
+        _initializeActorsToSchedule();
         _actors.add(this);
 
         if (_schedulePlotterEditorFactory.plot != null) {
@@ -309,62 +310,25 @@ public abstract class ResourceScheduler extends MoMLModelAttribute implements
     ///////////////////////////////////////////////////////////////////
     //                          protected methods                    //
 
-    /** Iterate through all actors in the container and find those
-     *  that are scheduled by this ResourceScheduler.
-     *  @param compositeActor The container.
-     *  @exception IllegalActionException If actor parameters that describe
-     *  the schedulers cannot be read.
+    /** Iterate through all entities deeply contained by the container,
+     *  record for each that it is not executing.
+     *  @exception IllegalActionException If the decorator parameters cannot be read.
      */
-    protected void _getActorsToSchedule(CompositeActor compositeActor)
+    protected void _initializeActorsToSchedule()
             throws IllegalActionException {
-        for (Object entity : compositeActor.entityList()) {
-            Parameter schedulerAttribute = (Parameter) ((NamedObj) entity)
-                    .getAttribute("scheduler");
-            if (schedulerAttribute != null
-                    && schedulerAttribute.getToken() != null
-                    && schedulerAttribute.getToken() instanceof ObjectToken
-                    && ((ObjectToken) schedulerAttribute.getToken()).getValue() instanceof ResourceScheduler) {
-                ResourceScheduler scheduler = (ResourceScheduler) ((ObjectToken) schedulerAttribute
-                        .getToken()).getValue();
-                if (scheduler == this || !(entity instanceof ResourceScheduler)) {
-                    Double executionTime = ResourceScheduler
-                            ._getDoubleParameterValue(compositeActor,
-                                    "executionTime");
-
-                    if (executionTime != null) {
-                        _remainingTimes.put(compositeActor, null);
-                    }
-                    _actors.add((NamedObj) entity);
-                    event(compositeActor, 0.0, null);
+        List<NamedObj> entities = ((CompositeEntity)getContainer()).deepEntityList();
+        for (NamedObj entity : entities) {
+            ResourceAttributes decoratorAttributes = (ResourceAttributes)entity.getDecoratorAttributes(this);
+            if (decoratorAttributes != null) {
+                if (((BooleanToken)decoratorAttributes.enable.getToken()).booleanValue()) {
+                    // The entity uses this resource scheduler.
+                    _actors.add(entity);
+                    // Indicate that the actor is not running.
+                    _remainingTimes.put((Actor)entity, null);
+                    event(entity, 0.0, null);
                 }
-            } else if (entity instanceof CompositeActor) {
-                _getActorsToSchedule((CompositeActor) entity);
             }
         }
-    }
-
-    /** Return the value stored in a parameter associated with
-     *  the input port.
-     *  Used for deviceDelay, deviceDelayBound, networkDelayBound,
-     *  platformDelay and sourcePlatformDelay.
-     *  FIXME: specialized ports do contain the parameters, don't
-     *  have to get the attribute with the string! For now leave it
-     *  that way to support older models that do not use PtidesPorts.
-     *  @param object The object that has the parameter.
-     *  @param parameterName The name of the parameter to be retrieved.
-     *  @return the value of the named parameter if the parameter is not
-     *  null. Otherwise return null.
-     *  @exception IllegalActionException If thrown while getting the value
-     *  of the parameter.
-     */
-    protected static Double _getDoubleParameterValue(NamedObj object,
-            String parameterName) throws IllegalActionException {
-        Parameter parameter = (Parameter) object.getAttribute(parameterName);
-        if (parameter != null && parameter.getToken() != null) {
-            return Double.valueOf(((DoubleToken) parameter.getToken())
-                    .doubleValue());
-        }
-        return null;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -386,9 +350,6 @@ public abstract class ResourceScheduler extends MoMLModelAttribute implements
     protected HashMap<Actor, Time> _remainingTimes;
 
     ///////////////////////////////////////////////////////////////////
-    //                        private methods                        //
-
-    ///////////////////////////////////////////////////////////////////
     //                      private variables                        //
 
     /** Contains the actors inside a ptides platform (=platforms). */
@@ -398,5 +359,4 @@ public abstract class ResourceScheduler extends MoMLModelAttribute implements
     private HashMap<NamedObj, Double> _previousY = new HashMap<NamedObj, Double>();
 
     private SchedulePlotterEditorFactory _schedulePlotterEditorFactory;
-
 }

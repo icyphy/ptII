@@ -54,11 +54,10 @@ import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.DecoratedAttributesImplementation;
 import ptolemy.kernel.attributes.VersionAttribute;
 import ptolemy.kernel.util.Attribute;
-import ptolemy.kernel.util.DecoratedAttributes;
 import ptolemy.kernel.util.Decorator;
+import ptolemy.kernel.util.DecoratorAttributes;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
@@ -302,24 +301,26 @@ public abstract class GenericCodeGenerator extends Attribute implements
 
     /** Return the decorated attributes for the target NamedObj.
      *  @param target The NamedObj that will be decorated.
-     *  @return A list of decorated attributes for the target NamedObj.
-     *  @exception IllegalActionException If thrown while creating a
-     *  {@link ptolemy.kernel.DecoratedAttributesImplementation} or while
-     *  creating the decoratedAttributes.
-     *  @exception NameDuplicationException If thrown while creating a
-     *  {@link ptolemy.kernel.DecoratedAttributesImplementation} or while
-     *  creating the decoratedAttributes.
+     *  @return A list of decorated attributes for the target NamedObj,
+     *   or null if there is no adaptor for this object.
      */
-    public DecoratedAttributes createDecoratedAttributes(NamedObj target)
-            throws IllegalActionException, NameDuplicationException {
+    public DecoratorAttributes createDecoratorAttributes(NamedObj target) {
         CodeGeneratorAdapter adapter;
         try {
             adapter = _getAdapter(target);
         } catch (IllegalActionException e) {
-            // If no adapter, return empty list
-            return new DecoratedAttributesImplementation(target, this);
+            return null;
         }
-        return adapter.createDecoratedAttributes(target, this);
+        return adapter.createDecoratorAttributes(target, this);
+    }
+
+    /** Return a list of the entities deeply contained by the container
+     *  of this resource scheduler.
+     *  @return A list of the objects decorated by this decorator.
+     */
+    public List<NamedObj> decoratedObjects() {
+        CompositeEntity container = (CompositeEntity)getContainer();
+        return container.deepEntityList();
     }
 
     /** Generate code and write it to the file specified by the
@@ -710,6 +711,13 @@ public abstract class GenericCodeGenerator extends Attribute implements
         return "";
     }
 
+    /** Return false to indicate that this decorator should not
+     *  decorate objects across opaque hierarchy boundaries.
+     */
+    public boolean isGlobalDecorator() {
+        return true;
+    }
+
     /** Generate code for a model.
      *  <p>For example:
      *  <pre>
@@ -770,27 +778,6 @@ public abstract class GenericCodeGenerator extends Attribute implements
      */
     public void setExecuteCommands(ExecuteCommands executeCommands) {
         _executeCommands = executeCommands;
-    }
-
-    /** Set the current type of the decorated attributes.
-     *  The type information of the parameters are not saved in the
-     *  model hand hence this has to be reset when reading the model
-     *  again.
-     *  @param decoratedAttributes The decorated attributes
-     *  @exception IllegalActionException If the attribute is not of an
-     *   acceptable class for the container, or if the name contains a period.
-     */
-    public void setTypesOfDecoratedVariables(
-            DecoratedAttributes decoratedAttributes)
-            throws IllegalActionException {
-        CodeGeneratorAdapter adapter;
-        try {
-            adapter = _getAdapter(decoratedAttributes.getContainer());
-        } catch (IllegalActionException e) {
-            // If no adapter,nothing to set
-            return;
-        }
-        adapter.setTypesOfDecoratedVariables(decoratedAttributes);
     }
 
     /** Return an updated array of command line options.

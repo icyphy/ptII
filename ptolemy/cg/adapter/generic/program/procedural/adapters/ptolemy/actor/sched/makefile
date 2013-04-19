@@ -55,7 +55,8 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 PTCLASSALLJARS = 
 
 # Keep this list alphabetized.
-JSRCS = StaticSchedulingDirector.java
+JSRCS = StaticSchedulingDirector.java \
+	StaticSchedulingDirectorAttributes.java
 
 OTHER_FILES_TO_BE_JARED = 
 

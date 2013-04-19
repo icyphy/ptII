@@ -356,7 +356,7 @@ public class SDFDirector
                     }
                 } else {
                     code.append(compositeActorAdapter.getReference("@"
-                            + portNameWithChannelNumber, true));
+                            + portNameWithChannelNumber, false));
                     code.append(" = " + portName + "_" + i + ";" + _eol);
                 }
 
@@ -465,7 +465,7 @@ public class SDFDirector
 
                     for (int k = 0; k < rate; k++) {
                         code.append(CodeStream.indent(compositeActorAdapter
-                                .getReference(name + "," + k, false))
+                                .getReference(name + "," + k, true))
                                 + " ="
                                 + CodeStream.indent(compositeActorAdapter
                                         .getReference("@" + name + "," + k,

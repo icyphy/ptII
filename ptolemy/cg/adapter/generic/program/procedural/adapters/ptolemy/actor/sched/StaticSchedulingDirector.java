@@ -55,13 +55,12 @@ import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.Variable;
-import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.DecoratedAttributesImplementation;
 import ptolemy.kernel.util.Attribute;
-import ptolemy.kernel.util.DecoratedAttributes;
+import ptolemy.kernel.util.DecoratorAttributes;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.util.StringUtilities;
 
@@ -106,39 +105,25 @@ public class StaticSchedulingDirector extends Director {
             throws IllegalActionException {
         return ((BooleanToken) ((Parameter) getComponent()
                 .getDecoratorAttribute(getCodeGenerator(),
-                        "allowDynamicMultiportReference")).getToken())
+                "allowDynamicMultiportReference")).getToken())
                 .booleanValue();
     }
 
     /** Create and return the decorated attributes for the
-     *  corresponding Ptolemy Component.
+     *  corresponding Ptolemy component.
      *  @param target The corresponding Ptolemy Component.
      *  @param genericCodeGenerator The code generator that is the
      *  decorator for the corresponding Ptolemy Component.
      *  @return The decorated attributes.
-     *  @exception IllegalActionException If the parameter is not of an
-     *   acceptable class for the container.
-     *  @exception NameDuplicationException If the name coincides with
-     *   a parameter already in the container.
      */
-    public DecoratedAttributes createDecoratedAttributes(NamedObj target,
-            GenericCodeGenerator genericCodeGenerator)
-            throws IllegalActionException, NameDuplicationException {
-        DecoratedAttributes decoratedAttributes = new DecoratedAttributesImplementation(
-                target, genericCodeGenerator);
-        Parameter padBuffers = new Parameter(decoratedAttributes, "padBuffers");
-        padBuffers.setTypeEquals(BaseType.BOOLEAN);
-        padBuffers.setExpression("true");
-
-        /** If true, then channels in multiports can be dynamically
-         *  referenced using the $ref macro.
-         */
-        Parameter allowDynamicMultiportReference = new Parameter(
-                decoratedAttributes, "allowDynamicMultiportReference");
-        allowDynamicMultiportReference.setTypeEquals(BaseType.BOOLEAN);
-        allowDynamicMultiportReference.setExpression("false");
-
-        return decoratedAttributes;
+    public DecoratorAttributes createDecoratorAttributes(NamedObj target,
+            GenericCodeGenerator genericCodeGenerator) {
+        // FIXME: Which types of targets should get decorated?
+        try {
+            return new StaticSchedulingDirectorAttributes(target, genericCodeGenerator);
+        } catch (KernelException ex) {
+            throw new InternalErrorException(ex);
+        }
     }
 
     /** Generate the code for the firing of actors according to the SDF
@@ -675,32 +660,11 @@ public class StaticSchedulingDirector extends Director {
      *   and there are variables that depend on this one.
      */
     final public Boolean padBuffers() throws IllegalActionException {
-        return ((BooleanToken) ((Parameter) getComponent()
-                .getDecoratorAttribute(getCodeGenerator(), "padBuffers"))
-                .getToken()).booleanValue();
-    }
-
-    /** Set the current type of the decorated attributes.
-     *  The type information of the parameters are not saved in the
-     *  model hand hence this has to be reset when reading the model
-     *  again.
-     *  @param decoratedAttributes The decorated attributes
-     *  @exception IllegalActionException If the attribute is not of an
-     *   acceptable class for the container, or if the name contains a period.
-     */
-    public void setTypesOfDecoratedVariables(
-            DecoratedAttributes decoratedAttributes)
-            throws IllegalActionException {
-        Parameter padBuffers = (Parameter) decoratedAttributes
-                .getAttribute("padBuffers");
-        padBuffers.setTypeEquals(BaseType.BOOLEAN);
-
-        /** If true, then channels in multiports can be dynamically
-         *  referenced using the $ref macro.
-         */
-        Parameter allowDynamicMultiportReference = (Parameter) decoratedAttributes
-                .getAttribute("allowDynamicMultiportReference");
-        allowDynamicMultiportReference.setTypeEquals(BaseType.BOOLEAN);
+        DecoratorAttributes decorators = getComponent().getDecoratorAttributes(getCodeGenerator());
+        if (!(decorators instanceof StaticSchedulingDirectorAttributes)) {
+            throw new IllegalActionException(getComponent(), "Has no StaticSchedulingDirectorAttributes decorators!");
+        }
+        return ((BooleanToken) ((StaticSchedulingDirectorAttributes) decorators).padBuffers.getToken()).booleanValue();
     }
 
     /** The declaration for the _currentTime variable. */

@@ -36,27 +36,26 @@ import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
 import ptolemy.actor.Executable;
 import ptolemy.actor.Initializable;
-import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.parameters.SharedParameter;
 import ptolemy.actor.sched.Firing;
 import ptolemy.actor.sched.Schedule;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
-import ptolemy.data.IntToken;
 import ptolemy.data.LongToken;
-import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.SingletonParameter;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.data.expr.Variable;
 import ptolemy.data.type.BaseType;
+import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.ChangeRequest;
-import ptolemy.kernel.util.DecoratedAttributes;
 import ptolemy.kernel.util.Decorator;
+import ptolemy.kernel.util.DecoratorAttributes;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
@@ -233,6 +232,41 @@ public class GiottoTimingManager extends SingletonAttribute implements
         } else {
             super.attributeChanged(attribute);
         }
+    }
+
+    /** Return the decorated attributes for the target NamedObj.
+     *  @param target The NamedObj that will be decorated.
+     *  @return The decorated attributes for the target NamedObj.
+     */
+    public DecoratorAttributes createDecoratorAttributes(NamedObj target) {
+        if (_debugging) {
+            _debug("createDecoratorAttributes method called for Giotto Director");
+        }
+        if (target instanceof Actor) {
+            try {
+                return new ExecutionAttributes(target);
+            } catch (KernelException e) {
+                throw new InternalErrorException(e);
+            }
+        } else {
+            return null;
+        }
+    }
+    
+    /** Return a list of the entities deeply contained by the container
+     *  of this resource scheduler.
+     *  @return A list of the objects decorated by this decorator.
+     */
+    public List<NamedObj> decoratedObjects() {
+        CompositeEntity container = (CompositeEntity)getContainer();
+        return container.deepEntityList();
+    }
+    
+    /** Return false to indicate that this decorator should not
+     *  decorate objects across opaque hierarchy boundaries.
+     */
+    public boolean isGlobalDecorator() {
+        return false;
     }
 
     /** Specify the container. If the container is not the same as the
@@ -570,59 +604,6 @@ public class GiottoTimingManager extends SingletonAttribute implements
 
     }
 
-    /** Set the current type of the decorated attributes.
-     *  The type information of the parameters are not saved in the
-     *  model hand hence this has to be reset when reading the model
-     *  again.
-     *  @param decoratedAttributes The decorated attributes.
-     *  @exception IllegalActionException If the attribute is not of an
-     *   acceptable class for the container, or if the name contains a period.
-     */
-    public void setTypesOfDecoratedVariables(
-            DecoratedAttributes decoratedAttributes)
-            throws IllegalActionException {
-    }
-
-    /** Remove the decorated attributes.
-     *  @param target The decorated attribute to remove
-     */
-    public void removeDecoratedAttributes(NamedObj target) {
-        if (_debugging) {
-            _debug("create decorated attributes to be called for Giotto quantityManager");
-        }
-        for (Actor actor : (List<Actor>) ((TypedCompositeActor) target
-                .getContainer()).deepEntityList()) {
-            NamedObj temp = (NamedObj) actor;
-            if (_debugging) {
-                _debug("temp has name " + temp.getDisplayName());
-            }
-
-            List<Parameter> paramList = temp.attributeList();
-
-            for (Parameter param : paramList) {
-                if (param.getDisplayName().equals("WCET")) {
-                    param.setPersistent(false);
-                }
-            }
-        }
-    }
-
-    /** Return the decorated attributes for the target NamedObj.
-     *  @param target The NamedObj that will be decorated.
-     *  @return The decorated attributes for the target NamedObj.
-     *  @exception IllegalActionException If the attribute is not of an
-     *   acceptable class for the container, or if the name contains a period.
-     *  @exception NameDuplicationException If the name coincides with
-     *   an attribute already in the container.
-     */
-    public DecoratedAttributes createDecoratedAttributes(NamedObj target)
-            throws IllegalActionException, NameDuplicationException {
-        if (_debugging) {
-            _debug("create decorated attributes to be called for Giotto quantityManager");
-        }
-        return new GiottoDecoratedAttributesImplementation2(target, this);
-    }
-
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
@@ -695,17 +676,7 @@ public class GiottoTimingManager extends SingletonAttribute implements
             if (executiveDirector instanceof GiottoDirector) {
                 double periodValue = ((GiottoDirector) executiveDirector)
                         .getPeriod();
-                Attribute frequency = ((CompositeActor) container)
-                        .getAttribute("frequency");
-                if (frequency != null) {
-                    if (frequency instanceof Parameter) {
-                        Token result = ((Parameter) frequency).getToken();
-                        if (result instanceof IntToken) {
-                            frequencyValue = ((IntToken) result).intValue();
-                        }
-                    }
-                }
-
+                frequencyValue = GiottoDirector.getActorFrequency(container, (GiottoDirector) executiveDirector);
                 thePeriod = periodValue / frequencyValue;
             }
         }
@@ -777,4 +748,37 @@ public class GiottoTimingManager extends SingletonAttribute implements
     /** Schedule to be executed. */
     private Schedule _schedule;
 
+    ///////////////////////////////////////////////////////////////////
+    //                      inner classes                            //
+
+    /** An attribute containing the decorator attributes for a target object.
+     *  The decorator attributes specify the frequency of an actor.
+     */
+    private class ExecutionAttributes extends DecoratorAttributes {
+
+        /** Execution time. */
+        public Parameter executionTime;
+
+        /** Worst case execution time. */
+        public Parameter WCET;
+        
+        public ExecutionAttributes(NamedObj target) throws IllegalActionException, NameDuplicationException {
+            // Create an attribute in the target to store the decorator parameters.
+            // Use uniqueName() in case there are multiple decorators in scope with the same name.
+            // FIXME: Should we instead throw an exception?
+            super(target, GiottoTimingManager.this);
+            try {
+                WCET = new Parameter(this, "WCET");
+                WCET.setExpression("0.0");
+                WCET.setTypeEquals(BaseType.DOUBLE);
+                
+                executionTime = new Parameter(this, "executionTime");
+                executionTime.setExpression("0.0");
+                executionTime.setTypeEquals(BaseType.DOUBLE);
+            } catch (KernelException ex) {
+                // This should not occur.
+                throw new InternalErrorException(ex);
+            }
+        }
+    }
 }

@@ -31,18 +31,19 @@ import java.awt.BorderLayout;
 import java.awt.Component;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 import javax.swing.JLabel;
 import javax.swing.JTabbedPane;
 
-import ptolemy.kernel.DecoratedAttributesImplementation;
 import ptolemy.kernel.util.Attribute;
-import ptolemy.kernel.util.DecoratedAttributes;
+import ptolemy.kernel.util.DecoratorAttributes;
 import ptolemy.kernel.util.Decorator;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
+import ptolemy.util.MessageHandler;
 
 ///////////////////////////////////////////////////////////////////
 //// EditorPaneFactory
@@ -137,31 +138,36 @@ public class EditorPaneFactory extends Attribute {
         mainTab.setTextWidth(40);
         tabs.addTab(object.getDisplayName(), mainTab);
 
-        List<Decorator> decorators = DecoratedAttributesImplementation
-                .findDecorators(object);
-        for (Decorator decorator : decorators) {
-            DecoratedAttributes decoratedAttributes = object
-                    .getDecoratorAttributes(decorator);
+        try {
+            Set<Decorator> decorators = object.decorators();
+            for (Decorator decorator : decorators) {
+                DecoratorAttributes decoratorAttributes = object
+                        .getDecoratorAttributes(decorator);
 
-            PtolemyQuery decoratorQuery = new PtolemyQuery(object);
-            decoratorQuery.setAlignmentY(Component.TOP_ALIGNMENT);
-            decoratorQuery.setTextWidth(40);
-            boolean foundDecoratorAttribute = false;
+                if (decoratorAttributes != null) {
+                    PtolemyQuery decoratorQuery = new PtolemyQuery(object);
+                    decoratorQuery.setAlignmentY(Component.TOP_ALIGNMENT);
+                    decoratorQuery.setTextWidth(40);
+                    boolean foundDecoratorAttribute = false;
 
-            for (Object attribute : decoratedAttributes.attributeList()) {
-                if (attribute instanceof Settable) {
-                    Settable settable = (Settable) attribute;
-                    if (Configurer.isVisible(object, settable)) {
-                        foundDecoratorAttribute = true;
-                        decoratorQuery.addStyledEntry(settable);
+                    for (Object attribute : decoratorAttributes.attributeList()) {
+                        if (attribute instanceof Settable) {
+                            Settable settable = (Settable) attribute;
+                            if (Configurer.isVisible(object, settable)) {
+                                foundDecoratorAttribute = true;
+                                decoratorQuery.addStyledEntry(settable);
+                            }
+                        }
+                    }
+                    foundOne = foundOne || foundDecoratorAttribute;
+                    if (foundDecoratorAttribute) {
+                        tabs.addTab(decorator.getFullName(), decoratorQuery);
+                        numberOfTabs += 1;
                     }
                 }
             }
-            foundOne = foundOne || foundDecoratorAttribute;
-            if (foundDecoratorAttribute) {
-                tabs.addTab(decorator.getFullName(), decoratorQuery);
-                numberOfTabs += 1;
-            }
+        } catch (IllegalActionException e) {
+            MessageHandler.error("Invalid decorator value", e);
         }
 
         if (numberOfTabs > 1) {

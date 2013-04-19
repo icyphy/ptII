@@ -460,7 +460,6 @@ public class ModularCodeGenTypedCompositeActor extends LazyTypedCompositeActor {
         super.initialize(); // TODO only do when not generating code
         try {
             _generatingCode = true;
-            _createCodeGenerator();
             if (_modelChanged()) {
                 super.preinitialize(); //TODO optimize this for hierarchy
                 executeChangeRequests();
@@ -662,6 +661,11 @@ public class ModularCodeGenTypedCompositeActor extends LazyTypedCompositeActor {
             }
 
             // FIXME port.getTypeTerm().setValue(resolvedType);
+        }
+        try {
+            _createCodeGenerator();
+        } catch (NameDuplicationException e) {
+            throw new InternalErrorException(e);
         }
     }
 

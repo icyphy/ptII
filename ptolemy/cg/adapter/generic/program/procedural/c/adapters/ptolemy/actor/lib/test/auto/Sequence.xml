@@ -48,12 +48,4 @@
     </relation>
     <link port="Sequence2.output" relation="relation"/>
     <link port="Test.input" relation="relation"/>
-    <property name="SDF Director._Sequence_JavaCodeGenerator" class="ptolemy.kernel.DecoratedAttributesImplementation">
-        <property name="padBuffers" class="ptolemy.data.expr.Parameter" value="true">
-        </property>
-        <property name="allowDynamicMultiportReference" class="ptolemy.data.expr.Parameter" value="false">
-        </property>
-        <property name="_decorator" class="ptolemy.kernel.util.StringAttribute" value="JavaCodeGenerator">
-        </property>
-    </property>
 </entity>

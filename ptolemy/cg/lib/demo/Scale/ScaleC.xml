@@ -125,14 +125,6 @@
             <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="unknown">
             </property>
         </port>
-        <property name="SDF Director._ScaleC_EmbeddedActor_CodeGenerator_AutoAdded" class="ptolemy.kernel.DecoratedAttributesImplementation">
-            <property name="padBuffers" class="ptolemy.data.expr.Parameter" value="true">
-            </property>
-            <property name="allowDynamicMultiportReference" class="ptolemy.data.expr.Parameter" value="false">
-            </property>
-            <property name="_decorator" class="ptolemy.kernel.util.StringAttribute" value="EmbeddedActor.CodeGenerator_AutoAdded">
-            </property>
-        </property>
     </entity>
     <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
         <doc>Create a sequence of tokens with increasing value</doc>

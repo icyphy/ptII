@@ -100,12 +100,4 @@
     <link port="Display.input" relation="relation2"/>
     <link port="Scale.input" relation="relation"/>
     <link port="Scale.output" relation="relation2"/>
-    <property name="SDF Director._ScaleCFlat_CCodeGenerator" class="ptolemy.kernel.DecoratedAttributesImplementation">
-        <property name="padBuffers" class="ptolemy.data.expr.Parameter" value="true">
-        </property>
-        <property name="allowDynamicMultiportReference" class="ptolemy.data.expr.Parameter" value="false">
-        </property>
-        <property name="_decorator" class="ptolemy.kernel.util.StringAttribute" value="CCodeGenerator">
-        </property>
-    </property>
 </entity>

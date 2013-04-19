@@ -129,12 +129,4 @@
     </relation>
     <link port="Publisher.input" relation="relation"/>
     <link port="Const.output" relation="relation"/>
-    <property name="SDF Director._ModularCodeGenPubSubAgg3_ModularCodeGenerator" class="ptolemy.kernel.DecoratedAttributesImplementation">
-        <property name="padBuffers" class="ptolemy.data.expr.Parameter" value="true">
-        </property>
-        <property name="allowDynamicMultiportReference" class="ptolemy.data.expr.Parameter" value="false">
-        </property>
-        <property name="_decorator" class="ptolemy.kernel.util.StringAttribute" value="ModularCodeGenerator">
-        </property>
-    </property>
 </entity>

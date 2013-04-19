@@ -59,12 +59,4 @@
     <link port="UpSample.input" relation="relation"/>
     <link port="UpSample.output" relation="relation2"/>
     <link port="Test.input" relation="relation2"/>
-    <property name="SDF Director._Display_JavaCodeGenerator2" class="ptolemy.kernel.DecoratedAttributesImplementation">
-        <property name="padBuffers" class="ptolemy.data.expr.Parameter" value="true">
-        </property>
-        <property name="allowDynamicMultiportReference" class="ptolemy.data.expr.Parameter" value="false">
-        </property>
-        <property name="_decorator" class="ptolemy.kernel.util.StringAttribute" value="JavaCodeGenerator2">
-        </property>
-    </property>
 </entity>

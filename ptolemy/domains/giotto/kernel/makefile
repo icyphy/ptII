@@ -47,10 +47,9 @@ PTPACKAGE = 	kernel
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
+	GiottoAttributes.java \
 	GiottoCodeGenerator.java \
 	GiottoCodeGeneratorUtilities.java \
-	GiottoDecoratedAttributesImplementation.java \
-	GiottoDecoratedAttributesImplementation2.java \
 	GiottoDirector.java \
 	GiottoReceiver.java \
 	GiottoScheduler.java \

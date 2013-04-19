@@ -53,10 +53,11 @@ import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
-import ptolemy.kernel.util.DecoratedAttributes;
 import ptolemy.kernel.util.Decorator;
+import ptolemy.kernel.util.DecoratorAttributes;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
@@ -84,8 +85,8 @@ import ptolemy.kernel.util.Workspace;
  @see GiottoScheduler
  @see GiottoReceiver
  */
-public class GiottoDirector extends StaticSchedulingDirector implements
-        Decorator {
+public class GiottoDirector extends StaticSchedulingDirector implements Decorator {
+    
     /** Construct a director in the default workspace with an empty string
      *  as its name. The director is added to the list of objects in
      *  the workspace. Increment the version number of the workspace.
@@ -172,6 +173,34 @@ public class GiottoDirector extends StaticSchedulingDirector implements
         GiottoDirector newObject = (GiottoDirector) super.clone(workspace);
         newObject._receivers = new LinkedList();
         return newObject;
+    }
+
+    /** Return the decorated attributes for the target NamedObj.
+     *  @param target The NamedObj that will be decorated.
+     *  @return The decorated attributes for the target NamedObj.
+     */
+    public DecoratorAttributes createDecoratorAttributes(NamedObj target) {
+        if (_debugging) {
+            _debug("createDecoratorAttributes method called for Giotto Director");
+        }
+        if (target instanceof Actor) {
+            try {
+                return new GiottoAttributes(target, this);
+            } catch (KernelException e) {
+                throw new InternalErrorException(e);
+            }
+        } else {
+            return null;
+        }
+    }
+
+    /** Return a list of the entities deeply contained by the container
+     *  of this resource scheduler.
+     *  @return A list of the objects decorated by this decorator.
+     */
+    public List<NamedObj> decoratedObjects() {
+        CompositeEntity container = (CompositeEntity)getContainer();
+        return container.deepEntityList();
     }
 
     /** Fire a complete iteration and advance time to the current time plus
@@ -386,7 +415,7 @@ public class GiottoDirector extends StaticSchedulingDirector implements
         // that the test is worth doing.
         Time currentTime = getModelTime();
 
-        int frequencyValue = _getActorFrequency((NamedObj) actor);
+        int frequencyValue = getActorFrequency((NamedObj) actor, this);
 
         double actorPeriod = _periodValue / frequencyValue;
         if (_debugging) {
@@ -427,6 +456,29 @@ public class GiottoDirector extends StaticSchedulingDirector implements
             }
         }
         return currentTime.add(nextFiringTime);
+    }
+    
+    /** Return the frequency of the specified actor by accessing a
+     *  parameter named "frequency". If there is no such parameter,
+     *  then look for a decorator parameter named "frequency."
+     *  @param actor The actor.
+     *  @param director The director.
+     *  @return The frequency of the actor firings.
+     */
+    public static int getActorFrequency(NamedObj actor, GiottoDirector director)
+            throws IllegalActionException {
+        int frequencyValue = 1;
+        Attribute frequency = actor.getAttribute("frequency");
+        if (frequency == null) {
+            frequency = actor.getDecoratorAttribute(director, "frequency");
+        }
+        if (frequency instanceof Parameter) {
+            Token result = ((Parameter) frequency).getToken();
+            if (result instanceof IntToken) {
+                frequencyValue = ((IntToken) result).intValue();
+            }
+        }
+        return frequencyValue;
     }
 
     /** Get the period of the giotto director in ms.
@@ -554,6 +606,13 @@ public class GiottoDirector extends StaticSchedulingDirector implements
         _realStartTime = System.currentTimeMillis();
     }
 
+    /** Return false to indicate that this decorator should not
+     *  decorate objects across opaque hierarchy boundaries.
+     */
+    public boolean isGlobalDecorator() {
+        return false;
+    }
+
     /** Return a new receiver consistent with the Giotto domain.
      *  @return A new GiottoReceiver.
      */
@@ -677,7 +736,7 @@ public class GiottoDirector extends StaticSchedulingDirector implements
             if (executiveDirector instanceof GiottoDirector) {
                 double periodValue = ((GiottoDirector) executiveDirector)
                         .getPeriod();
-                int frequencyValue = _getActorFrequency(compositeActor);
+                int frequencyValue = getActorFrequency(compositeActor, (GiottoDirector)executiveDirector);
 
                 _periodValue = periodValue / frequencyValue;
                 period.setExpression(Double.toString(_periodValue));
@@ -846,23 +905,6 @@ public class GiottoDirector extends StaticSchedulingDirector implements
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-    /** Return the frequency of the specified actor by accessing a
-     *  parameter named "frequency". If there is no such parameter,
-     *  return 1.
-     */
-    private int _getActorFrequency(NamedObj actor)
-            throws IllegalActionException {
-        int frequencyValue = 1;
-        Attribute frequency = actor.getAttribute("frequency");
-        if (frequency instanceof Parameter) {
-            Token result = ((Parameter) frequency).getToken();
-            if (result instanceof IntToken) {
-                frequencyValue = ((IntToken) result).intValue();
-            }
-        }
-        return frequencyValue;
-    }
-
     /* Initialize the director by creating a scheduler and parameters.
     *  @exception NameDuplicationException If the container reports an entity
     *  that duplicates an existing name during initialization.
@@ -901,35 +943,6 @@ public class GiottoDirector extends StaticSchedulingDirector implements
         fireContainerAt(_expectedNextIterationTime);
     }
 
-    /** Set the current type of the decorated attributes.
-     *  The type information of the parameters are not saved in the
-     *  model hand hence this has to be reset when reading the model
-     *  again.
-     *  @param decoratedAttributes The decorated attributes.
-     *  @exception IllegalActionException If the attribute is not of an
-     *   acceptable class for the container, or if the name contains a period.
-     */
-    public void setTypesOfDecoratedVariables(
-            DecoratedAttributes decoratedAttributes)
-            throws IllegalActionException {
-    }
-
-    /** Return the decorated attributes for the target NamedObj.
-     *  @param target The NamedObj that will be decorated.
-     *  @return The decorated attributes for the target NamedObj.
-     *  @exception IllegalActionException If the attribute is not of an
-     *   acceptable class for the container, or if the name contains a period.
-     *  @exception NameDuplicationException If the name coincides with
-     *   an attribute already in the container.
-     */
-    public DecoratedAttributes createDecoratedAttributes(NamedObj target)
-            throws IllegalActionException, NameDuplicationException {
-        if (_debugging) {
-            _debug("createDecoratedAttributes method called for Giotto Director");
-        }
-        return new GiottoDecoratedAttributesImplementation(target, this);
-    }
-
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
@@ -966,5 +979,4 @@ public class GiottoDirector extends StaticSchedulingDirector implements
 
     //lcm of frequencies see my this director
     private int _lcm;
-
 }

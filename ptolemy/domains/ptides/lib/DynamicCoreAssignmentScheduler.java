@@ -36,7 +36,6 @@ import java.util.HashMap;
 import java.util.List;
 
 import ptolemy.actor.Actor;
-import ptolemy.actor.CompositeActor;
 import ptolemy.actor.ResourceScheduler;
 import ptolemy.actor.util.Time;
 import ptolemy.data.ObjectToken;
@@ -160,14 +159,14 @@ public class DynamicCoreAssignmentScheduler extends ResourceScheduler {
     ///////////////////////////////////////////////////////////////////
     //                        protected methods                      //
 
-    /** Get Cores that are used by this ResourceScheduler to
-     *  schedule actor executions.
+    /** Override the base class to list all contained resource schedulers
+     *  instead of actors.
      *  @param container The container.
      *  @exception IllegalActionException Thrown if actor parameters
      *    cannot be read.
      */
     @Override
-    protected void _getActorsToSchedule(CompositeActor container)
+    protected void _initializeActorsToSchedule()
             throws IllegalActionException {
         _actors = new ArrayList<NamedObj>();
 
@@ -177,6 +176,7 @@ public class DynamicCoreAssignmentScheduler extends ResourceScheduler {
                 if (paramToken instanceof ObjectToken) {
                     Object paramObject = ((ObjectToken) paramToken).getValue();
                     if (paramObject instanceof ResourceScheduler) {
+                        // FIXME: Shouldn't these resource schedulers be initialized?
                         _actors.add((ResourceScheduler) paramObject);
                     }
                 }

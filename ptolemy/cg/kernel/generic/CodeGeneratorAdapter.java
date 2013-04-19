@@ -28,10 +28,9 @@
 package ptolemy.cg.kernel.generic;
 
 import ptolemy.cg.kernel.generic.program.TemplateParser;
-import ptolemy.kernel.DecoratedAttributesImplementation;
-import ptolemy.kernel.util.DecoratedAttributes;
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.DecoratorAttributes;
+import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.util.StringUtilities;
 
@@ -74,16 +73,18 @@ abstract public class CodeGeneratorAdapter extends NamedObj {
      *  @param genericCodeGenerator The code generator that is the decorator for the
      *  corresponding Ptolemy Component.
      *  @return The decorated attributes.
-     *  @exception IllegalActionException If the parameter is not of an
-     *   acceptable class for the container.
-     *  @exception NameDuplicationException If the name coincides with
-     *   a parameter already in the container.
      */
-    public DecoratedAttributes createDecoratedAttributes(NamedObj target,
-            GenericCodeGenerator genericCodeGenerator)
-            throws IllegalActionException, NameDuplicationException {
-        return new DecoratedAttributesImplementation(target,
-                genericCodeGenerator);
+    public DecoratorAttributes createDecoratorAttributes(NamedObj target,
+            GenericCodeGenerator genericCodeGenerator) {
+        try {
+            // This base class uses a decorator with no parameters.
+            // Subclasses will override this to provide parameters.
+            return new DecoratorAttributes(target,
+                    genericCodeGenerator);
+        } catch (KernelException ex) {
+            // This should not occur.
+            throw new InternalErrorException(ex);
+        }
     }
 
     /**
@@ -124,18 +125,4 @@ abstract public class CodeGeneratorAdapter extends NamedObj {
      *  @see #getCodeGenerator()
      */
     abstract public void setCodeGenerator(GenericCodeGenerator codeGenerator);
-
-    /** Set the current type of the decorated attributes.
-     *  The type information of the parameters are not saved in the
-     *  model hand hence this has to be reset when reading the model
-     *  again.
-     *  @param decoratedAttributes The decorated attributes
-     *  @exception IllegalActionException If the attribute is not of an
-     *   acceptable class for the container, or if the name contains a period.
-     */
-    public void setTypesOfDecoratedVariables(
-            DecoratedAttributes decoratedAttributes)
-            throws IllegalActionException {
-    }
-
 }

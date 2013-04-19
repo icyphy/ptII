@@ -1,4 +1,4 @@
-/* This is a fixed priority scheduler.
+/* A fixed priority scheduler resource manager.s
 
 @Copyright (c) 2008-2013 The Regents of the University of California.
 All rights reserved.
@@ -42,15 +42,42 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 
-/** This is a fixed priority scheduler.
- *
- * @author Patricia Derler
-   @version $Id$
-   @since Ptolemy II 0.2
+/**
+This is a fixed priority scheduler resource manager on a single processor or core.
+This attribute decorates actors in the model at the same and lower levels of the
+hierarchy, including those inside opaque composite actors. It decorates them
+with the following parameters:
+<ul>
+<li> <li>enable</i>: If true, then the decorated actor will use this resource.
+     This is a boolean that defaults to false.
+<li> <i>executionTime</i>: Specifies the execution time of the
+     decorated actor. This means the time that the decorated actor occupies
+     the processor or core when it fires.
+     This is a double that defaults to 0.0.
+<li> <i>priority</i>: An integer where a lower number indicates a higher priority.
+     E.g., priority 1 means higher priority than priority 2.
+     Priority 0 means higher priority than any positive number.
+     Priority -1 means higher priority than any non-negative number.
+</ul>
+To use this, drag it into a model with a PtidesDirector director and enable
+the actors that will use the resource.
+This will cause the platform time at which actors produce their outputs
+to be delayed by the specified execution time beyond the platform time at
+which the resource becomes available to execute the actor.
+When the Ptides director requests that an actor fire, if this resource is
+free, it will immediately schedule it. Otherwise, it will queue it to be
+executed when the resource becomes free. When the resource becomes free,
+the actor with the highest priority (the lower priority number) will
+be chosen from the queue to be executed. If two actors have the same
+highest priority, then they will be executed in FIFO order.
 
-   @Pt.ProposedRating Red (derler)
-   @Pt.AcceptedRating Red (derler)
- */
+@author Patricia Derler
+@author Edward A. Lee
+@version $Id$
+@since Ptolemy II 10.0
+@Pt.ProposedRating Yellow (eal)
+@Pt.AcceptedRating Red (derler)
+*/
 public class FPPCore extends ResourceScheduler {
 
     /** Create a new actor in the specified container with the specified

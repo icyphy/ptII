@@ -37,8 +37,6 @@ import ptolemy.actor.sched.NotSchedulableException;
 import ptolemy.actor.sched.Schedule;
 import ptolemy.actor.sched.Scheduler;
 import ptolemy.actor.sched.StaticSchedulingDirector;
-import ptolemy.data.IntToken;
-import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
@@ -106,32 +104,6 @@ public class GiottoScheduler extends Scheduler {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-
-    /** Return the frequency of the given actor. If the actor has a
-     *  <I>frequency</I> parameter with a valid integer value, return
-     *  that value. For actors without a <I>frequency</I> parameter,
-     *  their frequency is _DEFAULT_GIOTTO_FREQUENCY.
-     *  @param actor An actor.
-     *  @return The frequency of the actor.
-     */
-    public static int getFrequency(Actor actor) {
-        try {
-            Parameter parameter = (Parameter) ((NamedObj) actor)
-                    .getAttribute("frequency");
-
-            if (parameter != null) {
-                IntToken intToken = (IntToken) parameter.getToken();
-
-                return intToken.intValue();
-            } else {
-                return _DEFAULT_GIOTTO_FREQUENCY;
-            }
-        } catch (ClassCastException ex) {
-            return _DEFAULT_GIOTTO_FREQUENCY;
-        } catch (IllegalActionException ex) {
-            return _DEFAULT_GIOTTO_FREQUENCY;
-        }
-    }
 
     /**
      * Returns the LCM value.
@@ -202,7 +174,12 @@ public class GiottoScheduler extends Scheduler {
 
         while (actorListIterator.hasNext()) {
             Actor actor = (Actor) actorListIterator.next();
-            int frequency = getFrequency(actor);
+            int frequency = 1;
+            try {
+                frequency = GiottoDirector.getActorFrequency((NamedObj)actor, (GiottoDirector)getContainer());
+            } catch (IllegalActionException e) {
+                throw new NotSchedulableException(actor, "Invalid frequency: " + e.getMessage());
+            }
 
             // if (Arrays.binarySearch(_candidateFrequencies, frequency) >= 0) {
             // this frequency is a good candidate to calculate accurate

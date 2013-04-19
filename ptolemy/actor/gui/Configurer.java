@@ -43,14 +43,15 @@ import javax.swing.SwingUtilities;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.gui.CloseListener;
-import ptolemy.kernel.DecoratedAttributesImplementation;
-import ptolemy.kernel.util.DecoratedAttributes;
 import ptolemy.kernel.util.Decorator;
+import ptolemy.kernel.util.DecoratorAttributes;
+import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.moml.MoMLChangeRequest;
+import ptolemy.util.MessageHandler;
 import ptolemy.util.StringUtilities;
 
 ///////////////////////////////////////////////////////////////////
@@ -327,19 +328,19 @@ public class Configurer extends JPanel implements CloseListener {
     ////                         private variables                 ////
 
     /** Return the visible Settables of NamedObj object. When
-     *  addDecoratedAttributes is true we will also return the
+     *  addDecoratorAttributes is true we will also return the
      *  decorated attributes.
      *  In case the passed NamedObj is the top level container, the
      *  parameter enableBackwardTypeInference is added if not present,
      *  with default value false.
      *  @param object The named object for which to show the visible
      *          Settables
-     *  @param addDecoratedAttributes A flag that specifies whether
+     *  @param addDecoratorAttributes A flag that specifies whether
      *          decorated attributes should also be included.
      *  @return The visible attributes.
      */
     static private Set<Settable> _getVisibleSettables(final NamedObj object,
-            boolean addDecoratedAttributes) {
+            boolean addDecoratorAttributes) {
         Set<Settable> attributes = new HashSet<Settable>();
         Iterator<?> parameters = object.attributeList(Settable.class)
                 .iterator();
@@ -370,23 +371,28 @@ public class Configurer extends JPanel implements CloseListener {
             }
         }
 
-        if (addDecoratedAttributes) {
-            // Get decorated attributes
-            List<Decorator> decorators = DecoratedAttributesImplementation
-                    .findDecorators(object);
-
-            for (Decorator decorator : decorators) {
-                DecoratedAttributes decoratedAttributes = object
-                        .getDecoratorAttributes(decorator);
-                for (Object attribute : decoratedAttributes.attributeList()) {
-                    if (attribute instanceof Settable) {
-                        Settable settable = (Settable) attribute;
-                        if (isVisible(object, settable)) {
-                            attributes.add(settable);
+        if (addDecoratorAttributes) {
+            // Get the decorators that decorate this object, if any.
+            Set<Decorator> decorators;
+            try {
+                decorators = object.decorators();
+                for (Decorator decorator : decorators) {
+                    // Get the attributes provided by the decorator.
+                    DecoratorAttributes decoratorAttributes = object
+                            .getDecoratorAttributes(decorator);
+                    if (decoratorAttributes != null) {
+                        for (Object attribute : decoratorAttributes.attributeList()) {
+                            if (attribute instanceof Settable) {
+                                Settable settable = (Settable) attribute;
+                                if (isVisible(object, settable)) {
+                                    attributes.add(settable);
+                                }
+                            }
                         }
-
                     }
                 }
+            } catch (IllegalActionException e) {
+                MessageHandler.error("Invalid decorator value", e);
             }
         }
         return attributes;

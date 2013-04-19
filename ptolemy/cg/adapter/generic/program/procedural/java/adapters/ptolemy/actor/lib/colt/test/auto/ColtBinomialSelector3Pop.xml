@@ -154,12 +154,4 @@
     <link port="Sequence2.output" relation="relation6"/>
     <link port="Sequence3.output" relation="relation7"/>
     <link port="SequenceTrials.output" relation="relation5"/>
-    <property name="SDF Director._ColtBinomialSelector3Pop_JavaCodeGenerator4" class="ptolemy.kernel.DecoratedAttributesImplementation">
-        <property name="padBuffers" class="ptolemy.data.expr.Parameter" value="true">
-        </property>
-        <property name="allowDynamicMultiportReference" class="ptolemy.data.expr.Parameter" value="false">
-        </property>
-        <property name="_decorator" class="ptolemy.kernel.util.StringAttribute" value="JavaCodeGenerator4">
-        </property>
-    </property>
 </entity>
