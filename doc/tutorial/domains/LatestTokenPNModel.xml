@@ -4,7 +4,7 @@
 <entity name="LatestTokenPNModel" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={36, 140, 928, 648}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={157, 264, 928, 648}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[694, 538]">
     </property>
@@ -25,9 +25,9 @@
     <entity name="SequencePlotter" class="ptolemy.actor.lib.gui.SequencePlotter">
         <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={204, 124, 500, 344}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-1, 22, 781, 331}, maximized=false}">
         </property>
-        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[781, 287]">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[370.0, 175.0]">
         </property>
@@ -36,8 +36,11 @@
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
 <title>SequencePlotter</title>
-<xRange min="0.0" max="85.0"/>
-<yRange min="-2.1725595958452217" max="2.1727984249762096"/>
+<xLabel></xLabel>
+<yLabel></yLabel>
+<xRange min="0.0" max="131.0"/>
+<yRange min="-1.9021130325903157" max="1.902113032590307"/>
+<default stems="yes"/>
 </plot>?>
         </configure>
     </entity>
@@ -50,7 +53,7 @@
         </property>
     </entity>
     <entity name="PeriodicProducer2" class="doc.tutorial.domains.SensorModel">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 285.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 285.0]">
         </property>
         <property name="frequency" class="ptolemy.data.expr.Parameter" value="0.3">
         </property>
@@ -99,13 +102,13 @@
         </property>
         <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{247.21679687499991, 425.076319067029}">
         </property>
-        <port name="port_0" class="ptolemy.actor.TypedIOPort">
+        <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[-60.0, 300.0]">
             </property>
         </port>
-        <port name="port_1" class="ptolemy.actor.TypedIOPort">
+        <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[335.0, 310.0]">
             </property>
@@ -146,8 +149,8 @@
             <property name="color" class="ptolemy.actor.gui.ColorAttribute">
             </property>
         </relation>
-        <link port="port_0" relation="relation2_0"/>
-        <link port="port_1" relation="relation2"/>
+        <link port="input" relation="relation2_0"/>
+        <link port="output" relation="relation2"/>
         <link port="AddSubtract.plus" relation="relation2_0"/>
         <link port="AddSubtract.output" relation="relation"/>
         <link port="Sleep.input" relation="relation"/>
@@ -168,7 +171,7 @@
     <link port="SequencePlotter.input" relation="relation3"/>
     <link port="PeriodicProducer1.output" relation="relation"/>
     <link port="PeriodicProducer2.output" relation="relation2"/>
-    <link port="Consumer.port_0" relation="relation"/>
-    <link port="Consumer.port_0" relation="relation2"/>
-    <link port="Consumer.port_1" relation="relation3"/>
+    <link port="Consumer.input" relation="relation"/>
+    <link port="Consumer.input" relation="relation2"/>
+    <link port="Consumer.output" relation="relation3"/>
 </entity>
