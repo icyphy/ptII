@@ -4,9 +4,9 @@
 <entity name="WebServerDE" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={38, 0, 1078, 721}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={38, 22, 1332, 703}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[850, 604]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1098, 593]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.9208475360134291">
     </property>
@@ -15,7 +15,7 @@
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model launches a web server and provides a service&#10;available at http://localhost:8078/ptolemnizer.&#10;Run the model and navigate to that location&#10;(or click on this comment).">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{170.0, 5.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[140.0, 5.0]">
         </property>
         <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="http://localhost:8078/ptolemnizer#in_browser">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -50,7 +50,7 @@
         </property>
         <property name="resourceLocation" class="ptolemy.data.expr.FileParameter" value="$PTII/org/ptolemy/ptango/demo/WebServerDE">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[505.0, 80.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[600.0, 55.0]">
         </property>
         <property name="resourceLocation2" class="ptolemy.data.expr.FileParameter" value="$PTII/org/ptolemy/ptango/demo/files">
         </property>
@@ -58,13 +58,13 @@
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The upper loop handles HTTP get requests&#10;by posting the web page given in the FileReader.&#10;The HTML file it serves is specified by a path&#10;relative to the location of this demo.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[260.0, 150.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[305.0, 150.0]">
         </property>
     </property>
     <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The lower loop handles HTTP post requests&#10;by extracting text from post, Ptolemnizing it,&#10;and returning the result in a web page.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[260.0, 235.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[310.0, 235.0]">
         </property>
     </property>
     <property name="Annotation5" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -74,7 +74,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="NOTE: the &quot;img&quot; element in StringConst refer to &#10;files with a path relative to the resourceLocation&#10;parameters of the WebServer.  &#10;&#10;The first resourceLocation is by default&#10;the directory that the current model is in.&#10;&#10;The syntax &#10;&lt;img src=&quot;/files/img/Icon.gif&quot; /&gt; &#10;is a GET request to the web server.  &#10;First the web server determines which handler &#10;is mapped to URLs with the prefix /files&#10;in this case, it is a ResourceHandler created&#10;in WebServer.  (The prefix for the ResourceHandler&#10;is specified in WebServer's resourcePath parameter).  &#10;A ResourceHandler is a Jetty class that knows how &#10;to return files as part of an HttpResponse.&#10;&#10;Next, the ResourceHandler looks for a file /img/Icon.gif &#10;relative to the resourceLocation - here, the&#10;resourceLocation is the directory that this model is in, &#10;$PTII/org/ptolemy/ptango/demo/WebServerDE&#10;so the file is&#10;$PTII/org/ptolemy/ptango/demo/WebServerDE/img/Icon.gif&#10;&#10;Note that the resourcePath prefix does NOT have to &#10;be part of the resourceLocation's path anywhere.  &#10;In this example there is no /files in&#10;$PTII/org/ptolemy/ptango/demo/WebServerDE/img/Icon.gif&#10; &#10;You can add as many FileParameters&#10;as you like to the WebServer, and these&#10;directories or URLs will be searched for &#10;files.&#10;&#10;For example, StringConst2 uses a file&#10;that is stored in the WebServer's &#10;resourceLocation2, so &#10;&lt;img src=&quot;/files/PtolemyIISmallIcon.gif&quot; /&gt;&#10;maps to&#10;$PTII/org/ptolemy/ptango/demo/files/PtolemyIISmallIcon.gif&#10;&#10;&#10;">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[570.0, 10.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[665.0, 5.0]">
         </property>
     </property>
     <property name="enableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="true">
@@ -93,7 +93,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[265.0, 135.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[315.0, 130.0]">
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -101,7 +101,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Edward A. Lee">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[13.0, 510.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-55.0, 605.0]">
         </property>
     </property>
     <property name="Annotation6" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -109,7 +109,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Port 8078">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[365.0, 85.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[415.0, 80.0]">
         </property>
     </property>
     <entity name="HttpActor" class="org.ptolemy.ptango.lib.HttpActor">
@@ -143,7 +143,7 @@
         <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="pages/index.html">
         </property>
         <doc>Read an entire file and output as a string</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[200.0, 150.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[230.0, 160.0]">
         </property>
     </entity>
     <entity name="RecordDisassembler" class="ptolemy.actor.lib.RecordDisassembler">
