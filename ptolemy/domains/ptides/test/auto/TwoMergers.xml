@@ -320,7 +320,7 @@
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[150.0, -180.0]">
                 </property>
             </property>
-            <property name="PEDFCore" class="ptolemy.domains.ptides.lib.PEDFCore">
+            <property name="PEDFCore" class="ptolemy.actor.lib.resourceScheduler.PreemptiveEDFScheduler">
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[265.0, -155.0]">
                 </property>
             </property>

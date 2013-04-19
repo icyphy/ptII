@@ -1,4 +1,4 @@
-/* This is an earliest deadline first scheduler.
+/* This is a first come first serve scheduler.
 
 @Copyright (c) 2008-2013 The Regents of the University of California.
 All rights reserved.
@@ -28,17 +28,16 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
  */
 
-package ptolemy.domains.ptides.lib;
-
-import java.util.HashMap;
+package ptolemy.actor.lib.resourceScheduler;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.util.Time;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.NamedObj;
 
-/** This is an earliest deadline first scheduler.
+/** This is a first come first serve scheduler.
  *
  * @author Patricia Derler
    @version $Id$
@@ -47,7 +46,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.ProposedRating Red (derler)
    @Pt.AcceptedRating Red (derler)
  */
-public class PEDFCore extends FPPCore {
+public class NonPreemptiveFCFSScheduler extends ResourceScheduler {
 
     /** Create a new actor in the specified container with the specified
      *  name.  The name must be unique within the container or an exception
@@ -61,68 +60,67 @@ public class PEDFCore extends FPPCore {
      *  @exception NameDuplicationException If the name coincides with
      *   an entity already in the container.
      */
-    public PEDFCore(CompositeEntity container, String name)
+    public NonPreemptiveFCFSScheduler(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 
-    /** Initialize local variables.
-     *  @exception IllegalActionException Thrown in super class.
-     */
-    @Override
-    public Time initialize() throws IllegalActionException {
-        super.initialize();
-        _deadlines = new HashMap();
-        return null;
-    }
+    ///////////////////////////////////////////////////////////////////
+    //                      public methods                           //
 
     /** Schedule a new actor for execution and return the next time
      *  this scheduler has to perform a reschedule.
      *  @param actor The actor to be scheduled.
      *  @param currentPlatformTime The current platform time.
-     *  @param deadline The event deadline.
+     *  @param deadline The deadline - not used here.
      *  @param executionTime The execution time of the actor.
      *  @return Relative time when this Scheduler has to be executed
      *    again.
      *  @exception IllegalActionException Thrown if actor paramaters such
      *    as execution time or priority cannot be read.
      */
+    @Override
     public Time schedule(Actor actor, Time currentPlatformTime,
             Double deadline, Time executionTime) throws IllegalActionException {
-        if (!_currentlyExecuting.contains(actor)) {
-            _deadlines.put(actor, deadline);
+        super.schedule(actor, currentPlatformTime, deadline, executionTime);
+        _lastActorFinished = false;
+        if (currentlyExecuting == null) {
+            currentlyExecuting = actor;
+            event((NamedObj) currentlyExecuting,
+                    currentPlatformTime.getDoubleValue(),
+                    ExecutionEventType.START);
         }
-        Time time = super.schedule(actor, currentPlatformTime, deadline,
-                executionTime);
-        if (lastScheduledActorFinished()) {
-            _deadlines.put(actor, null);
+
+        Time remainingTime = null;
+        if (_remainingTimes.get(currentlyExecuting) == null) { // hasn't been scheduled
+            remainingTime = executionTime;
+            _remainingTimes.put(currentlyExecuting, executionTime);
+        } else { //has been scheduled
+            Time lasttime = _lastTimeScheduled.get(currentlyExecuting);
+            Time timePassed = currentPlatformTime.subtract(lasttime);
+            remainingTime = _remainingTimes.get(currentlyExecuting).subtract(
+                    timePassed);
+            _remainingTimes.put(currentlyExecuting, remainingTime);
         }
-        return time;
+
+        _lastTimeScheduled.put(currentlyExecuting, currentPlatformTime);
+
+        if (remainingTime.getDoubleValue() == 0.0) {
+            event((NamedObj) currentlyExecuting,
+                    currentPlatformTime.getDoubleValue(),
+                    ExecutionEventType.STOP);
+
+            _remainingTimes.put(currentlyExecuting, null);
+            currentlyExecuting = null;
+            _lastActorFinished = true;
+        }
+        return remainingTime;
     }
-
-    ///////////////////////////////////////////////////////////////////
-    //                      protected methods                        //
-
-    /** Get the deadline of the actor and return it as the priority.
-     *  The priority is treated equal to deadline in this scheduler:
-     *  lower value for the priority means higher priority, lower
-     *  deadline means higher priority.
-     *  @param actor The actor.
-     *  @return The priority of the actor or, if the actor has no priority
-     *    assigned, the lowest priority.
-     *  @exception IllegalActionException Thrown if parameter cannot be read.
-     */
-    protected double _getPriority(Actor actor) throws IllegalActionException {
-        return _deadlines.get(actor);
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    //                        private methods                        //
 
     ///////////////////////////////////////////////////////////////////
     //                      private variables                        //
 
-    // For every firing request store the deadline
-    private HashMap<Actor, Double> _deadlines;
+    /** Currently executing actor. */
+    private Actor currentlyExecuting;
 
 }

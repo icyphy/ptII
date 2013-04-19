@@ -27,15 +27,11 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 
  */
-package ptolemy.domains.ptides.lib;
+package ptolemy.actor.lib.resourceScheduler;
 
-import ptolemy.actor.ResourceAttributes;
-import ptolemy.actor.ResourceScheduler;
 import ptolemy.data.IntToken;
 import ptolemy.data.expr.Parameter;
-import ptolemy.data.type.BaseType;
-import ptolemy.domains.giotto.kernel.GiottoReceiver;
-import ptolemy.domains.giotto.kernel.GiottoScheduler;
+import ptolemy.data.type.BaseType; 
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;

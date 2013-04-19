@@ -35,6 +35,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
+import ptolemy.actor.lib.resourceScheduler.ResourceScheduler;
 import ptolemy.actor.util.BooleanDependency;
 import ptolemy.actor.util.CausalityInterface;
 import ptolemy.actor.util.CausalityInterfaceForComposites;
@@ -861,11 +862,11 @@ public class Director extends Attribute implements Executable {
         localClock.start();
 
         _resourceScheduling = false;
-        _resourceSchedulers = new ArrayList<ResourceSchedulerInterface>();
-        _schedulerForActor = new HashMap<Actor, ResourceSchedulerInterface>();
+        _resourceSchedulers = new ArrayList<ResourceScheduler>();
+        _schedulerForActor = new HashMap<Actor, ResourceScheduler>();
         for (Object entity : getContainer().attributeList(
-                ResourceSchedulerInterface.class)) {
-            ResourceSchedulerInterface scheduler = (ResourceSchedulerInterface) entity;
+                ResourceScheduler.class)) {
+            ResourceScheduler scheduler = (ResourceScheduler) entity;
             _resourceSchedulers.add(scheduler);
             Time time = scheduler.initialize();
             if (time != null) {
@@ -1612,7 +1613,7 @@ public class Director extends Attribute implements Executable {
         }
 
         if (_resourceSchedulers != null) {
-            for (ResourceSchedulerInterface scheduler : _resourceSchedulers) {
+            for (ResourceScheduler scheduler : _resourceSchedulers) {
                 scheduler.wrapup();
             }
         }
@@ -1840,7 +1841,7 @@ public class Director extends Attribute implements Executable {
      */
     protected boolean _schedule(Actor actor, Time timestamp)
             throws IllegalActionException {
-        ResourceSchedulerInterface scheduler = _getScheduler(actor);
+        ResourceScheduler scheduler = _getScheduler(actor);
         Time time = null;
         Boolean finished = true;
         if (timestamp == null) {
@@ -1869,9 +1870,9 @@ public class Director extends Attribute implements Executable {
      *  @param actor The actor to be scheduled.
      *  @return the resource scheduler.
      */
-    protected ResourceSchedulerInterface _getScheduler(Actor actor) {
+    protected ResourceScheduler _getScheduler(Actor actor) {
         if (_schedulerForActor == null) {
-            _schedulerForActor = new HashMap<Actor, ResourceSchedulerInterface>();
+            _schedulerForActor = new HashMap<Actor, ResourceScheduler>();
         }
         Object object = _schedulerForActor.get(actor);
         if (!_schedulerForActor.containsKey(actor)) {
@@ -1883,8 +1884,8 @@ public class Director extends Attribute implements Executable {
                         if (paramToken instanceof ObjectToken) {
                             Object paramObject = ((ObjectToken) paramToken)
                                     .getValue();
-                            if (paramObject instanceof ResourceSchedulerInterface) {
-                                ResourceSchedulerInterface scheduler = (ResourceSchedulerInterface) paramObject;
+                            if (paramObject instanceof ResourceScheduler) {
+                                ResourceScheduler scheduler = (ResourceScheduler) paramObject;
                                 if (_resourceSchedulers.contains(scheduler)) {
                                     _schedulerForActor.put(actor, scheduler);
                                     object = scheduler;
@@ -1916,7 +1917,7 @@ public class Director extends Attribute implements Executable {
             }
         }
         if (object != null) {
-            return (ResourceSchedulerInterface) object;
+            return (ResourceScheduler) object;
         } else {
             return null;
         }
@@ -1946,7 +1947,7 @@ public class Director extends Attribute implements Executable {
 
     /** Resource schedulers in the container of this director.
      */
-    protected List<ResourceSchedulerInterface> _resourceSchedulers;
+    protected List<ResourceScheduler> _resourceSchedulers;
 
     /** Indicator that a stop has been requested by a call to stop(). */
     protected boolean _stopRequested = false;
@@ -2041,7 +2042,7 @@ public class Director extends Attribute implements Executable {
     private transient boolean _notEmbeddedForced = false;
 
     /** Contains a map of actors and the ResourceScheduler that is specified for the actor. */
-    private HashMap<Actor, ResourceSchedulerInterface> _schedulerForActor;
+    private HashMap<Actor, ResourceScheduler> _schedulerForActor;
 
     /** Start time. */
     private transient Time _startTime;

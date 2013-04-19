@@ -29,14 +29,13 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
  */
 
-package ptolemy.domains.ptides.lib;
+package ptolemy.actor.lib.resourceScheduler;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 import ptolemy.actor.Actor;
-import ptolemy.actor.ResourceScheduler;
 import ptolemy.actor.util.Time;
 import ptolemy.data.ObjectToken;
 import ptolemy.data.Token;

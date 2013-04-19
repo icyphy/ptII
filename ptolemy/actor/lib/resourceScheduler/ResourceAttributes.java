@@ -27,8 +27,9 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 
  */
-package ptolemy.actor;
+package ptolemy.actor.lib.resourceScheduler;
 
+import ptolemy.actor.lib.resourceScheduler.ResourceScheduler;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;

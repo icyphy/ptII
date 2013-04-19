@@ -482,7 +482,7 @@
                     </property>
                 </port>
             </entity>
-            <property name="FCFSScheduler" class="ptolemy.domains.ptides.lib.NPFCFSCore">
+            <property name="FCFSScheduler" class="ptolemy.actor.lib.resourceScheduler.NonPreemptiveFCFSScheduler">
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[225.0, 60.0]">
                 </property>
             </property>

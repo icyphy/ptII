@@ -27,12 +27,14 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 
  */
-package ptolemy.actor;
+package ptolemy.actor.lib.resourceScheduler;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import ptolemy.actor.Actor;
+import ptolemy.actor.CompositeActor; 
 import ptolemy.actor.util.Time;
 import ptolemy.data.BooleanToken;
 import ptolemy.kernel.CompositeEntity;
@@ -71,7 +73,7 @@ is decorated with these two parameter:
 @Pt.AcceptedRating Red (derler)
  */
 public class ResourceScheduler extends MoMLModelAttribute implements
-        ResourceSchedulerInterface, Decorator {
+        Decorator {
 
     /** Create a new resource schedule in the specified container with the specified
      *  name.  The name must be unique within the container or an exception

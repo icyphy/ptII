@@ -1,11 +1,10 @@
-# Makefile for the PTIDES domain library
-# PTIDES: Programming Temporally Integrated Distributed Embedded Systems
+# Makefile for Ptolemy II scripting actors
 #
-# @Authors: Christopher Brooks (makefile only)
+# @Authors: Christopher Brooks, based on a file by Thomas M. Parks
 #
 # @Version: $Id$
 #
-# @Copyright (c) 2008-2013 The Regents of the University of California.
+# @Copyright (c) 2011-2013 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -27,76 +26,60 @@
 # CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 # ENHANCEMENTS, OR MODIFICATIONS.
 #
-# 						PT_COPYRIGHT_VERSION_2
-# 						COPYRIGHTENDKEY
+#                                               PT_COPYRIGHT_VERSION_2
+#                                               COPYRIGHTENDKEY
 
-ME =		ptolemy/domains/ptides/lib
+ME =            ptolemy/actor/lib/resourceScheduler
 
-DIRS =		luminary qm test
+DIRS = 		test #demo
 
 # Root of the Java directory
-ROOT =		../../../..
+ROOT =          ../../../..
 
-CLASSPATH =	$(ROOT)
+# JYTHON_JAR is set in $PTII/mk/ptII.mk by running configure
+CLASSPATH =     $(ROOT)$(CLASSPATHSEPARATOR)
 
 # Get configuration info
-CONFIG =	$(ROOT)/mk/ptII.mk
+CONFIG =        $(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	lib
-PTCLASSJAR =
+PTPACKAGE =     resourceScheduler
+PTCLASSJAR = 	$(PTPACKAGE).jar
 
-# Include the .class files from these jars in PTCLASSALLJAR
-PTCLASSALLJARS = \
-	luminary/luminary.jar \
-	qm/qm.jar
-
-PTCLASSALLJAR = $(PTPACKAGE).jar
+OTHER_FILES_TO_BE_JARED = \ 
+	DynamicCoreAssignmentSchedulerIcon.xml \
+	FixedPrioritySchedulerIcon.xml \
+	NonPreemptiveFCFSSchedulerIcon.xml \
+	PreemptiveEDFSchedulerIcon.xml \
+	SchedulerModelIcon.xml
 
 JSRCS = \
-	ActuationDevice.java \
-	ActuatorSetup.java \
-	ErrorHandlingAction.java \
-	InputDevice.java \
-	OutputDevice.java \
-	PtidesPort.java \
-	SensorHandler.java \
-	SchedulerDirector.java
-
-OTHER_FILES_TO_BE_JARED = \
-	ptidesentities.xml 
+    DynamicCoreAssignmentScheduler.java \
+    FixedPriorityScheduler.java \
+    NonPreemptiveFCFSScheduler.java \
+    PreemptiveEDFScheduler.java \
+    PriorityResourceAttributes.java \
+    ResourceAttributes.java \
+    ResourceScheduler.java \
+    ResourceSchedulePlotterEditorFactory.java \
+    SchedulerModel.java
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES =	luminary qm test
+# Don't include demo or DIRS here, or else 'make sources' will run 'make demo'
+MISC_FILES = test doc-files
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	doc \
-	'ErrorHandlingAction$$ErrorHandlingActionString.class' \
-	'ExecutionTimeListener$$ExecutionEventType.class' \
-	'ExecutionTimeMonitor$$SchedulePlotterEditorFactory.class' \
-	'MulticoreExecutionTimeMonitor$$1.class' \
-	'MulticoreExecutionTimeMonitor$$2.class' \
-	'MulticoreExecutionTimeMonitor$$3.class' \
-	'MulticoreExecutionTimeMonitor$$4.class' \
-	'MulticoreExecutionTimeMonitor$$ParallelMonitor.class' \
-	'NetworkReceiver$$1.class' \
-	'NetworkReceiver$$PortFunction.class' \
-	'PlatformTimeMonitor$$PlatformTimePlotterEditorFactory.class' \
-	'ScheduleListener$$ScheduleEventType.class' \
-	'SchedulePlotter$$SchedulePlotterEditorFactory.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 
-
 all: jclass
 install: jclass jars
-
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

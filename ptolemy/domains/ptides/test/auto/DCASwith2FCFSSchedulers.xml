@@ -226,11 +226,11 @@
             </property>
             <property name="scheduler" class="ptolemy.data.expr.Parameter" value="FCFSScheduler">
             </property>
-            <property name="FCFSScheduler" class="ptolemy.domains.ptides.lib.NPFCFSCore">
+            <property name="FCFSScheduler" class="ptolemy.actor.lib.resourceScheduler.NonPreemptiveFCFSScheduler">
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[175.0, 75.0]">
                 </property>
             </property>
-            <property name="DynamicCoreAssignmentScheduler" class="ptolemy.domains.ptides.lib.DynamicCoreAssignmentScheduler">
+            <property name="DynamicCoreAssignmentScheduler" class="ptolemy.actor.lib.resourceScheduler.DynamicCoreAssignmentScheduler">
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, 380.0]">
                 </property>
                 <property name="core1" class="ptolemy.data.expr.Parameter" value="FCFSScheduler">
@@ -238,7 +238,7 @@
                 <property name="core2" class="ptolemy.data.expr.Parameter" value="FCFSScheduler2">
                 </property>
             </property>
-            <property name="FCFSScheduler2" class="ptolemy.domains.ptides.lib.NPFCFSCore">
+            <property name="FCFSScheduler2" class="ptolemy.actor.lib.resourceScheduler.NonPreemptiveFCFSScheduler">
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{270.0, 75.0}">
                 </property>
             </property>

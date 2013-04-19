@@ -234,7 +234,7 @@
             </property>
             <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{350.0, 262.0}">
             </property>
-            <property name="FPPCore" class="ptolemy.domains.ptides.lib.FPPCore">
+            <property name="FPPCore" class="ptolemy.actor.lib.resourceScheduler.FixedPriorityScheduler">
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[240.0, 70.0]">
                 </property>
             </property>

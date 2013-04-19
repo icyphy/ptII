@@ -297,7 +297,7 @@
             </property>
             <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{372.0884454036965, 310.80078125}">
             </property>
-            <property name="PEDFCore" class="ptolemy.domains.ptides.lib.PEDFCore">
+            <property name="PEDFCore" class="ptolemy.actor.lib.resourceScheduler.PreemptiveEDFScheduler">
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{30.0, 135.0}">
                 </property>
             </property>

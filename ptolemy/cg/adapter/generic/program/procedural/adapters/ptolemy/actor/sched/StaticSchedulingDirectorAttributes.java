@@ -29,7 +29,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
  */
 package ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.sched;
 
-import ptolemy.actor.ResourceScheduler;
 import ptolemy.cg.kernel.generic.GenericCodeGenerator;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;

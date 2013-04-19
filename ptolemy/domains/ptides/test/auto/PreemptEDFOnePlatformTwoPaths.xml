@@ -308,7 +308,7 @@
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[120.0, 190.0]">
                 </property>
             </property>
-            <property name="NPFCFSCore" class="ptolemy.domains.ptides.lib.NPFCFSCore">
+            <property name="NPFCFSCore" class="ptolemy.actor.lib.resourceScheduler.NonPreemptiveFCFSScheduler">
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[215.0, 70.0]">
                 </property>
             </property>

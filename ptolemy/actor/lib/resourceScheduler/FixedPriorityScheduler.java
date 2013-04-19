@@ -28,12 +28,11 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
  */
 
-package ptolemy.domains.ptides.lib;
+package ptolemy.actor.lib.resourceScheduler;
 
 import java.util.Stack;
 
 import ptolemy.actor.Actor;
-import ptolemy.actor.ResourceScheduler;
 import ptolemy.actor.util.Time;
 import ptolemy.data.IntToken;
 import ptolemy.data.expr.Parameter;
@@ -78,7 +77,7 @@ highest priority, then they will be executed in FIFO order.
 @Pt.ProposedRating Yellow (eal)
 @Pt.AcceptedRating Red (derler)
 */
-public class FPPCore extends ResourceScheduler {
+public class FixedPriorityScheduler extends ResourceScheduler {
 
     /** Create a new actor in the specified container with the specified
      *  name.  The name must be unique within the container or an exception
@@ -92,7 +91,7 @@ public class FPPCore extends ResourceScheduler {
      *  @exception NameDuplicationException If the name coincides with
      *   an entity already in the container.
      */
-    public FPPCore(CompositeEntity container, String name)
+    public FixedPriorityScheduler(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }

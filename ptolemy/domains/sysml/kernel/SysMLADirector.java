@@ -44,8 +44,8 @@ import ptolemy.actor.Initializable;
 import ptolemy.actor.Mailbox;
 import ptolemy.actor.NoRoomException;
 import ptolemy.actor.NoTokenException;
-import ptolemy.actor.Receiver;
-import ptolemy.actor.ResourceSchedulerInterface;
+import ptolemy.actor.Receiver; 
+import ptolemy.actor.lib.resourceScheduler.ResourceScheduler;
 import ptolemy.actor.process.ProcessDirector;
 import ptolemy.actor.process.ProcessThread;
 import ptolemy.actor.util.Time;
@@ -611,7 +611,7 @@ public class SysMLADirector extends ProcessDirector {
             }
 
             if (_resourceSchedulers != null) {
-                for (ResourceSchedulerInterface scheduler : _resourceSchedulers) {
+                for (ResourceScheduler scheduler : _resourceSchedulers) {
                     scheduler.wrapup();
                 }
             }

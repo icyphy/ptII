@@ -226,11 +226,11 @@
             </property>
             <property name="scheduler" class="ptolemy.data.expr.Parameter" value="FCFSScheduler">
             </property>
-            <property name="FPScheduler" class="ptolemy.domains.ptides.lib.FPPCore">
+            <property name="FPScheduler" class="ptolemy.actor.lib.resourceScheduler.FixedPriorityScheduler">
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[255.0, 55.0]">
                 </property>
             </property>
-            <property name="FPScheduler2" class="ptolemy.domains.ptides.lib.FPPCore">
+            <property name="FPScheduler2" class="ptolemy.actor.lib.resourceScheduler.FixedPriorityScheduler">
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[275.0, 400.0]">
                 </property>
             </property>

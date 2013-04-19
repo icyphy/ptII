@@ -27,7 +27,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 
  */
-package ptolemy.actor;
+package ptolemy.actor.lib.resourceScheduler;
 
 import java.awt.Frame;
 

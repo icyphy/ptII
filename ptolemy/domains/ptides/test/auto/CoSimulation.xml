@@ -261,7 +261,7 @@
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 155.0]">
                 </property>
             </property>
-            <property name="ArchitectureMappingModel" class="ptolemy.domains.ptides.lib.SchedulerModel">
+            <property name="ArchitectureMappingModel" class="ptolemy.actor.lib.resourceScheduler.SchedulerModel">
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, 55.0]">
                 </property>
                 <configure>

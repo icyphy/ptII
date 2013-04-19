@@ -232,7 +232,7 @@
             </property>
             <property name="scheduler" class="ptolemy.data.expr.Parameter" value="FCFSScheduler">
             </property>
-            <property name="EDFScheduler" class="ptolemy.domains.ptides.lib.PEDFCore">
+            <property name="EDFScheduler" class="ptolemy.actor.lib.resourceScheduler.PreemptiveEDFScheduler">
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[225.0, 75.0]">
                 </property>
             </property>
