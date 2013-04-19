@@ -128,10 +128,10 @@ public class MappingConstraintSolver implements ConstraintSolver {
                     e1.setStatus(Event.Status.NOTIFIED);
                     e2.setStatus(Event.Status.NOTIFIED);
                     if (e1.hasTime() && !e2.hasTime()) {
-                        e2.setTime(e1.getTime()); 
+                        assert false;  //e2.setTime(e1.getTime()); 
                     }
                     else if (!e1.hasTime() && e2.hasTime()) {
-                        e1.setTime(e2.getTime()); 
+                        assert false;  //e1.setTime(e2.getTime()); 
                     }
                     else if (e1.hasTime() && e2.hasTime() && e1.getTime() != e2.getTime()) {
                         assert false; 

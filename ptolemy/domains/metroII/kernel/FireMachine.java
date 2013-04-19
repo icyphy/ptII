@@ -134,6 +134,7 @@ public abstract class FireMachine implements StartOrResumable {
     protected Builder proposeStateEvent() {
         Builder event = getStateEvent(); 
         event.setStatus(Status.PROPOSED); 
+        event.clearTime(); 
         return event; 
     }
         

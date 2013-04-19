@@ -49,6 +49,7 @@ import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.EventVector;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Workspace;
 
 /**
  * @author leo
@@ -68,7 +69,14 @@ public class MetroIISystemCDirector extends Director implements
         super(container, name);
         initialize(); 
     }
-
+    
+    @Override
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        MetroIISystemCDirector newObject = (MetroIISystemCDirector) super.clone(workspace);
+        newObject.events = (LinkedList<Event.Builder>) events.clone(); 
+        return newObject; 
+    }
+    
     String path;
     String pipe2server = "m2event_ptolemy_buffer";
     String pipe2client = "m2event_metro_buffer";
