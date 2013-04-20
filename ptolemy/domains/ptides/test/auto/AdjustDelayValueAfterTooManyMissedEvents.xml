@@ -332,6 +332,18 @@
                 </property>
                 <property name="executionTime" class="ptolemy.data.expr.Parameter" value="1.0">
                 </property>
+                <property name="DecoratorAttributesFor_FPPCore" class="ptolemy.actor.lib.resourceScheduler.PriorityResourceAttributes">
+                    <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.FPPCore">
+                    </property>
+                    <property name="enable" class="ptolemy.data.expr.Parameter" value="true">
+                    </property>
+                    <property name="executionTime" class="ptolemy.data.expr.Parameter" value="1.0">
+                    </property>
+                    <property name="LOWEST_PRIORITY" class="ptolemy.data.expr.Parameter" value="2147483647">
+                    </property>
+                    <property name="priority" class="ptolemy.data.expr.Parameter" value="LOWEST_PRIORITY">
+                    </property>
+                </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                     <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -341,8 +353,12 @@
                 </port>
             </entity>
             <relation name="relation" class="ptolemy.actor.TypedIORelation">
+                <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+                </property>
             </relation>
             <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+                <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+                </property>
             </relation>
             <link port="SensorPort" relation="relation"/>
             <link port="NetworkTransmitterPort" relation="relation2"/>
@@ -355,7 +371,7 @@
         </property>
         <property name="_tableauFactory" class="ptolemy.actor.gui.LevelSkippingTableauFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 265.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{170.0, 265.0}">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
             <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={195, 129, 934, 634}, maximized=false}">
@@ -556,7 +572,7 @@
                 <property name="executionTime" class="ptolemy.data.expr.Parameter" value="null">
                 </property>
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-44, 286, 934, 634}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 132, 934, 634}, maximized=false}">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
             </property>
@@ -630,6 +646,18 @@
                 <property name="scheduler" class="ptolemy.data.expr.Parameter" value="FPPCore">
                 </property>
                 <property name="executionTime" class="ptolemy.data.expr.Parameter" value="3.0">
+                </property>
+                <property name="DecoratorAttributesFor_FPPCore" class="ptolemy.actor.lib.resourceScheduler.PriorityResourceAttributes">
+                    <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform3.PtidesPlatformContents.FPPCore">
+                    </property>
+                    <property name="enable" class="ptolemy.data.expr.Parameter" value="true">
+                    </property>
+                    <property name="executionTime" class="ptolemy.data.expr.Parameter" value="3.0">
+                    </property>
+                    <property name="LOWEST_PRIORITY" class="ptolemy.data.expr.Parameter" value="2147483647">
+                    </property>
+                    <property name="priority" class="ptolemy.data.expr.Parameter" value="LOWEST_PRIORITY">
+                    </property>
                 </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -717,6 +745,18 @@
                 <property name="clearAllEvents" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
                 <property name="clearEarlierEvents" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="DecoratorAttributesFor_FPPCore" class="ptolemy.actor.lib.resourceScheduler.PriorityResourceAttributes">
+                    <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform3.PtidesPlatformContents.FPPCore">
+                    </property>
+                    <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                    <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                    </property>
+                    <property name="LOWEST_PRIORITY" class="ptolemy.data.expr.Parameter" value="2147483647">
+                    </property>
+                    <property name="priority" class="ptolemy.data.expr.Parameter" value="LOWEST_PRIORITY">
+                    </property>
                 </property>
                 <entity name="missedN2" class="ptolemy.actor.lib.Const">
                     <property name="value" class="ptolemy.data.expr.Parameter" value="true">
@@ -932,8 +972,12 @@
                 <link port="MicrostepDelay.output" relation="relation"/>
             </entity>
             <relation name="relation" class="ptolemy.actor.TypedIORelation">
+                <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+                </property>
             </relation>
             <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+                <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+                </property>
             </relation>
             <link port="SensorPort" relation="relation"/>
             <link port="N2" relation="relation2"/>
@@ -1414,12 +1458,20 @@
                 </port>
             </entity>
             <relation name="relation" class="ptolemy.actor.TypedIORelation">
+                <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+                </property>
             </relation>
             <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+                <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+                </property>
             </relation>
             <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+                <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+                </property>
             </relation>
             <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+                <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+                </property>
             </relation>
             <link port="N1" relation="relation"/>
             <link port="N2" relation="relation2"/>
@@ -1480,16 +1532,28 @@
         </property>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+        </property>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+        </property>
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+        </property>
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+        </property>
     </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+        </property>
     </relation>
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+        </property>
     </relation>
     <link port="PtidesPlatform.SensorPort" relation="relation4"/>
     <link port="PtidesPlatform.NetworkTransmitterPort" relation="relation"/>

@@ -396,6 +396,14 @@
                 </property>
                 <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
+                <property name="DecoratorAttributesFor_PEDFCore" class="ptolemy.actor.lib.resourceScheduler.ResourceAttributes">
+                    <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.PEDFCore">
+                    </property>
+                    <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                    <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                    </property>
+                </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                     <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="11.0">
@@ -410,6 +418,14 @@
                 <property name="scheduler" class="ptolemy.data.expr.Parameter" value="PEDFCore">
                 </property>
                 <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+                <property name="DecoratorAttributesFor_PEDFCore" class="ptolemy.actor.lib.resourceScheduler.ResourceAttributes">
+                    <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.PEDFCore">
+                    </property>
+                    <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                    <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                    </property>
                 </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -426,6 +442,14 @@
                 </property>
                 <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
+                <property name="DecoratorAttributesFor_PEDFCore" class="ptolemy.actor.lib.resourceScheduler.ResourceAttributes">
+                    <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.PEDFCore">
+                    </property>
+                    <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                    <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                    </property>
+                </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                     <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="1.0">
@@ -441,6 +465,14 @@
                 </property>
                 <property name="executionTime" class="ptolemy.data.expr.Parameter" value="wcet">
                 </property>
+                <property name="DecoratorAttributesFor_PEDFCore" class="ptolemy.actor.lib.resourceScheduler.ResourceAttributes">
+                    <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.PEDFCore">
+                    </property>
+                    <property name="enable" class="ptolemy.data.expr.Parameter" value="true">
+                    </property>
+                    <property name="executionTime" class="ptolemy.data.expr.Parameter" value="wcet">
+                    </property>
+                </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                     <property name="multiport"/>
@@ -451,25 +483,37 @@
             <relation name="relation" class="ptolemy.actor.TypedIORelation">
                 <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;port._location&quot;,x=20.0,y=0.0}, tail={id=&quot;TimeDelay.input&quot;,x=95.0,y=0.0}, points={} } }">
                 </property>
+                <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+                </property>
             </relation>
             <relation name="relation2" class="ptolemy.actor.TypedIORelation">
                 <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;port2._location&quot;,x=20.0,y=-75.0}, tail={id=&quot;TimeDelay2.input&quot;,x=95.0,y=-75.0}, points={} } }">
+                </property>
+                <property name="color" class="ptolemy.actor.gui.ColorAttribute">
                 </property>
             </relation>
             <relation name="relation3" class="ptolemy.actor.TypedIORelation">
                 <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;TimeDelay2.output&quot;,x=95.0,y=-75.0}, tail={id=&quot;Merge.input&quot;,x=180.0,y=-70.0,index=2}, points={} } }">
                 </property>
+                <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+                </property>
             </relation>
             <relation name="relation4" class="ptolemy.actor.TypedIORelation">
                 <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;TimeDelay.output&quot;,x=95.0,y=0.0}, tail={id=&quot;Merge.input&quot;,x=180.0,y=-70.0,index=2}, points={145.0,0.0,145.0,-70.0} } }">
+                </property>
+                <property name="color" class="ptolemy.actor.gui.ColorAttribute">
                 </property>
             </relation>
             <relation name="relation5" class="ptolemy.actor.TypedIORelation">
                 <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;TimeDelay3.input&quot;,x=255.0,y=-70.0}, tail={id=&quot;Merge.output&quot;,x=180.0,y=-70.0}, points={} } }">
                 </property>
+                <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+                </property>
             </relation>
             <relation name="relation6" class="ptolemy.actor.TypedIORelation">
                 <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;port3._location&quot;,x=320.0,y=-70.0}, tail={id=&quot;TimeDelay3.output&quot;,x=255.0,y=-70.0}, points={} } }">
+                </property>
+                <property name="color" class="ptolemy.actor.gui.ColorAttribute">
                 </property>
             </relation>
             <link port="port" relation="relation"/>
@@ -522,16 +566,24 @@
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
         <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;EventSequence.output&quot;,x=75.0,y=155.0}, tail={id=&quot;PtidesPlatform.port&quot;,x=195.0,y=165.0}, points={} } }">
         </property>
+        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+        </property>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+        </property>
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+        </property>
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
         <vertex name="vertex1" value="{270.0, 165.0}">
         </vertex>
+        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+        </property>
     </relation>
     <link port="EventSequence.output" relation="relation"/>
     <link port="PtidesPlatform.port" relation="relation"/>

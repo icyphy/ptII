@@ -37,7 +37,10 @@ import ptolemy.actor.util.Time;
 import ptolemy.data.IntToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.DecoratorAttributes;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 
@@ -98,6 +101,25 @@ public class FixedPriorityScheduler extends ResourceScheduler {
 
     /** Lowest task priority. */
     public static int LOWEST_PRIORITY = Integer.MAX_VALUE;
+    
+    /** Return the decorated attributes for the target NamedObj.
+     *  If the specified target is not an Actor, return null.
+     *  @param target The NamedObj that will be decorated.
+     *  @return The decorated attributes for the target NamedObj, or
+     *   null if the specified target is not an Actor.
+     */
+    public DecoratorAttributes createDecoratorAttributes(NamedObj target) {
+        if (target instanceof Actor) {
+            try {
+                return new PriorityResourceAttributes(target, this);
+            } catch (KernelException ex) {
+                // This should not occur.
+                throw new InternalErrorException(ex);
+            }
+        } else {
+            return null;
+        }
+    }
 
     /** Initialize local variables.
      *  @exception IllegalActionException Thrown in super class.
@@ -109,6 +131,8 @@ public class FixedPriorityScheduler extends ResourceScheduler {
         return null;
     }
 
+    
+    
     /** Schedule a new actor for execution and return the next time
      *  this scheduler has to perform a reschedule.
      *  @param actor The actor to be scheduled.
@@ -181,13 +205,7 @@ public class FixedPriorityScheduler extends ResourceScheduler {
      *  @exception IllegalActionException Thrown if parameter cannot be read.
      */
     protected double _getPriority(Actor actor) throws IllegalActionException {
-        Parameter parameter = (Parameter) ((NamedObj) actor)
-                .getAttribute("priority");
-        if (parameter != null) {
-            return Integer
-                    .valueOf(((IntToken) parameter.getToken()).intValue());
-        }
-        return LOWEST_PRIORITY;
+        return ((IntToken)((Parameter)((NamedObj)actor).getDecoratorAttribute(this, "priority")).getToken()).intValue();
     }
 
     ///////////////////////////////////////////////////////////////////

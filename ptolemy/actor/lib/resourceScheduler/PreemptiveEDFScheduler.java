@@ -35,8 +35,12 @@ import java.util.HashMap;
 import ptolemy.actor.Actor;
 import ptolemy.actor.util.Time;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.DecoratorAttributes;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.NamedObj;
 
 /** This is an earliest deadline first scheduler.
  *
@@ -64,6 +68,25 @@ public class PreemptiveEDFScheduler extends FixedPriorityScheduler {
     public PreemptiveEDFScheduler(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
+    }
+    
+    /** Return the decorated attributes for the target NamedObj.
+     *  If the specified target is not an Actor, return null.
+     *  @param target The NamedObj that will be decorated.
+     *  @return The decorated attributes for the target NamedObj, or
+     *   null if the specified target is not an Actor.
+     */
+    public DecoratorAttributes createDecoratorAttributes(NamedObj target) {
+        if (target instanceof Actor) {
+            try {
+                return new ResourceAttributes(target, this);
+            } catch (KernelException ex) {
+                // This should not occur.
+                throw new InternalErrorException(ex);
+            }
+        } else {
+            return null;
+        }
     }
 
     /** Initialize local variables.

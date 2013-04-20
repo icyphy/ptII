@@ -406,6 +406,14 @@
                 </property>
                 <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
+                <property name="DecoratorAttributesFor_EDFScheduler" class="ptolemy.actor.lib.resourceScheduler.ResourceAttributes">
+                    <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform2.PtidesPlatformContents.EDFScheduler">
+                    </property>
+                    <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                    <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                    </property>
+                </property>
                 <port name="in1" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="{20.0, 200.0}">
@@ -427,6 +435,14 @@
                     <property name="scheduler" class="ptolemy.data.expr.Parameter" value="EDFScheduler">
                     </property>
                     <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                    </property>
+                    <property name="DecoratorAttributesFor_EDFScheduler" class="ptolemy.actor.lib.resourceScheduler.ResourceAttributes">
+                        <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform2.PtidesPlatformContents.EDFScheduler">
+                        </property>
+                        <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                        </property>
+                        <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                        </property>
                     </property>
                     <port name="input" class="ptolemy.actor.TypedIOPort">
                         <property name="input"/>
@@ -468,6 +484,14 @@
                 <doc>Output the current time.</doc>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[475.0, 135.0]">
                 </property>
+                <property name="DecoratorAttributesFor_EDFScheduler" class="ptolemy.actor.lib.resourceScheduler.ResourceAttributes">
+                    <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform2.PtidesPlatformContents.EDFScheduler">
+                    </property>
+                    <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                    <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                    </property>
+                </property>
                 <port name="trigger" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                     <property name="multiport"/>
@@ -492,6 +516,14 @@
                 </property>
                 <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
+                <property name="DecoratorAttributesFor_EDFScheduler" class="ptolemy.actor.lib.resourceScheduler.ResourceAttributes">
+                    <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform2.PtidesPlatformContents.EDFScheduler">
+                    </property>
+                    <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                    <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                    </property>
+                </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                     <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="-0.5">
@@ -512,6 +544,14 @@
                 <property name="scheduler" class="ptolemy.data.expr.Parameter" value="EDFScheduler">
                 </property>
                 <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+                <property name="DecoratorAttributesFor_EDFScheduler" class="ptolemy.actor.lib.resourceScheduler.ResourceAttributes">
+                    <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform2.PtidesPlatformContents.EDFScheduler">
+                    </property>
+                    <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                    <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                    </property>
                 </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -545,6 +585,14 @@
                 <property name="scheduler" class="ptolemy.data.expr.Parameter" value="EDFScheduler">
                 </property>
                 <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.4">
+                </property>
+                <property name="DecoratorAttributesFor_EDFScheduler" class="ptolemy.actor.lib.resourceScheduler.ResourceAttributes">
+                    <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform2.PtidesPlatformContents.EDFScheduler">
+                    </property>
+                    <property name="enable" class="ptolemy.data.expr.Parameter" value="true">
+                    </property>
+                    <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.4">
+                    </property>
                 </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -581,6 +629,14 @@
                 </property>
                 <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.5">
                 </property>
+                <property name="DecoratorAttributesFor_EDFScheduler" class="ptolemy.actor.lib.resourceScheduler.ResourceAttributes">
+                    <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform2.PtidesPlatformContents.EDFScheduler">
+                    </property>
+                    <property name="enable" class="ptolemy.data.expr.Parameter" value="true">
+                    </property>
+                    <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.5">
+                    </property>
+                </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                     <property name="minDelay" class="ptolemy.data.expr.Parameter" value="{-0.5}">
@@ -595,6 +651,14 @@
                 <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{3.0, 3.0, 2.0, 3.0, 2.0, 3.0, 2.0, 3.0, 2.0, 3.0, 2.0, 3.0, 2.0, 3.0, 2.0, 3.0, 2.0}">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{550, 360}">
+                </property>
+                <property name="DecoratorAttributesFor_EDFScheduler" class="ptolemy.actor.lib.resourceScheduler.ResourceAttributes">
+                    <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform2.PtidesPlatformContents.EDFScheduler">
+                    </property>
+                    <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                    <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                    </property>
                 </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -613,6 +677,14 @@
                 <property name="scheduler" class="ptolemy.data.expr.Parameter" value="">
                 </property>
                 <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+                <property name="DecoratorAttributesFor_EDFScheduler" class="ptolemy.actor.lib.resourceScheduler.ResourceAttributes">
+                    <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform2.PtidesPlatformContents.EDFScheduler">
+                    </property>
+                    <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                    <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                    </property>
                 </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>

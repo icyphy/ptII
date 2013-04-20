@@ -210,6 +210,7 @@
             <input source="ptolemy/domains/wireless/wireless.xml"/>
             <input source="ptolemy/actor/lib/xslt/xslt.xml"/>
             <input source="ptolemy/actor/lib/qm/qm.xml"/>
+            <input source="ptolemy/actor/lib/resourceScheduler/resourceScheduler.xml"/>
             <input source="ptolemy/domains/metroII/metroII.xml"/>
           </group>
         ?>

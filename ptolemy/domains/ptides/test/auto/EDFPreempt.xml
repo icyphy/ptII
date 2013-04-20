@@ -260,7 +260,7 @@
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[-165.0, -35.0]">
                 </property>
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={23, 199, 687, 634}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={23, 132, 918, 634}, maximized=false}">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[453, 524]">
             </property>
@@ -269,7 +269,7 @@
             <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{350.0, 262.0}">
             </property>
             <property name="EDFScheduler" class="ptolemy.actor.lib.resourceScheduler.PreemptiveEDFScheduler">
-                <property name="_location" class="ptolemy.kernel.util.Location" value="{-60.0, -30.0}">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[-50.0, -35.0]">
                 </property>
             </property>
             <port name="SensorPort" class="ptolemy.domains.ptides.lib.PtidesPort">
@@ -346,6 +346,14 @@
                 </property>
                 <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.1">
                 </property>
+                <property name="DecoratorAttributesFor_EDFScheduler" class="ptolemy.actor.lib.resourceScheduler.ResourceAttributes">
+                    <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.EDFScheduler">
+                    </property>
+                    <property name="enable" class="ptolemy.data.expr.Parameter" value="true">
+                    </property>
+                    <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.1">
+                    </property>
+                </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                     <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -363,6 +371,14 @@
                 </property>
                 <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.1">
                 </property>
+                <property name="DecoratorAttributesFor_EDFScheduler" class="ptolemy.actor.lib.resourceScheduler.ResourceAttributes">
+                    <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.EDFScheduler">
+                    </property>
+                    <property name="enable" class="ptolemy.data.expr.Parameter" value="true">
+                    </property>
+                    <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.1">
+                    </property>
+                </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                     <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -372,14 +388,20 @@
                 </port>
             </entity>
             <relation name="relation" class="ptolemy.actor.TypedIORelation">
+                <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+                </property>
             </relation>
             <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+                <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+                </property>
             </relation>
             <relation name="relation4" class="ptolemy.actor.TypedIORelation">
                 <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
                 </property>
                 <vertex name="vertex1" value="[115.0, 90.0]">
                 </vertex>
+                <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+                </property>
             </relation>
             <link port="SensorPort" relation="relation2"/>
             <link port="ActuatorPort" relation="relation4"/>
@@ -423,22 +445,32 @@
         </property>
     </entity>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+        </property>
     </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
         <vertex name="vertex1" value="[200.0, 190.0]">
         </vertex>
+        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+        </property>
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
         <vertex name="vertex1" value="[200.0, 210.0]">
         </vertex>
+        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+        </property>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+        </property>
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+        </property>
     </relation>
     <link port="Test3.input" relation="relation6"/>
     <link port="CurrentTime2.output" relation="relation5"/>

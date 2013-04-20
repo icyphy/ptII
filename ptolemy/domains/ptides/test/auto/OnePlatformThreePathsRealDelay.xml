@@ -7,9 +7,9 @@
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="10.0">
         </property>
-        <property name="enableResourceScheduling" class="ptolemy.actor.parameters.SharedParameter" value="true">
-        </property>
         <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="enableResourceScheduling" class="ptolemy.actor.parameters.SharedParameter" value="true">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{120.0, 95.0}">
         </property>
@@ -554,6 +554,14 @@
                 </property>
                 <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.4">
                 </property>
+                <property name="DecoratorAttributesFor_PEDFCore" class="ptolemy.actor.lib.resourceScheduler.ResourceAttributes">
+                    <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform2.PtidesPlatformContents.PEDFCore">
+                    </property>
+                    <property name="enable" class="ptolemy.data.expr.Parameter" value="true">
+                    </property>
+                    <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.4">
+                    </property>
+                </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                     <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="1.0">
@@ -574,6 +582,14 @@
                 <property name="scheduler" class="ptolemy.data.expr.Parameter" value="PEDFCore">
                 </property>
                 <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.5">
+                </property>
+                <property name="DecoratorAttributesFor_PEDFCore" class="ptolemy.actor.lib.resourceScheduler.ResourceAttributes">
+                    <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform2.PtidesPlatformContents.PEDFCore">
+                    </property>
+                    <property name="enable" class="ptolemy.data.expr.Parameter" value="true">
+                    </property>
+                    <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.5">
+                    </property>
                 </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -598,6 +614,14 @@
                 </property>
                 <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.05">
                 </property>
+                <property name="DecoratorAttributesFor_PEDFCore" class="ptolemy.actor.lib.resourceScheduler.ResourceAttributes">
+                    <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform2.PtidesPlatformContents.PEDFCore">
+                    </property>
+                    <property name="enable" class="ptolemy.data.expr.Parameter" value="true">
+                    </property>
+                    <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.05">
+                    </property>
+                </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                     <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="1.0">
@@ -610,6 +634,14 @@
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[410.0, 140.0]">
                 </property>
                 <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="1.0">
+                </property>
+                <property name="DecoratorAttributesFor_PEDFCore" class="ptolemy.actor.lib.resourceScheduler.ResourceAttributes">
+                    <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform2.PtidesPlatformContents.PEDFCore">
+                    </property>
+                    <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                    <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                    </property>
                 </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -624,6 +656,14 @@
                 </property>
                 <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="1.0">
                 </property>
+                <property name="DecoratorAttributesFor_PEDFCore" class="ptolemy.actor.lib.resourceScheduler.ResourceAttributes">
+                    <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform2.PtidesPlatformContents.PEDFCore">
+                    </property>
+                    <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                    <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                    </property>
+                </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                     <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -637,6 +677,14 @@
                 </property>
                 <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="1.0">
                 </property>
+                <property name="DecoratorAttributesFor_PEDFCore" class="ptolemy.actor.lib.resourceScheduler.ResourceAttributes">
+                    <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform2.PtidesPlatformContents.PEDFCore">
+                    </property>
+                    <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                    <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                    </property>
+                </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                     <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -648,22 +696,40 @@
             <relation name="relation" class="ptolemy.actor.TypedIORelation">
                 <vertex name="vertex1" value="[330.0, 140.0]">
                 </vertex>
+                <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+                </property>
             </relation>
             <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+                <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+                </property>
             </relation>
             <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+                <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+                </property>
             </relation>
             <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+                <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+                </property>
             </relation>
             <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+                <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+                </property>
             </relation>
             <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+                <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+                </property>
             </relation>
             <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+                <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+                </property>
             </relation>
             <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+                <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+                </property>
             </relation>
             <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+                <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+                </property>
             </relation>
             <link port="SensorPort4" relation="relation4"/>
             <link port="SensorPort5" relation="relation6"/>
@@ -689,6 +755,8 @@
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
         </property>
+        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+        </property>
     </relation>
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
@@ -697,9 +765,13 @@
         </property>
         <vertex name="vertex1" value="[395.0, 105.0]">
         </vertex>
+        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+        </property>
     </relation>
     <relation name="relation8" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
+        </property>
+        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
         </property>
     </relation>
     <relation name="relation9" class="ptolemy.actor.TypedIORelation">
@@ -709,9 +781,13 @@
         </property>
         <vertex name="vertex1" value="[410.53125, 240.7421875]">
         </vertex>
+        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+        </property>
     </relation>
     <relation name="relation10" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
+        </property>
+        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
         </property>
     </relation>
     <relation name="relation11" class="ptolemy.actor.TypedIORelation">
@@ -721,22 +797,36 @@
         </property>
         <vertex name="vertex1" value="[385.0, 290.0]">
         </vertex>
+        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+        </property>
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+        </property>
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+        </property>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+        </property>
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+        </property>
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+        </property>
     </relation>
     <relation name="relation12" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
         <vertex name="vertex1" value="[395.0, 130.0]">
         </vertex>
+        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+        </property>
     </relation>
     <link port="Clock.output" relation="relation"/>
     <link port="Clock2.output" relation="relation2"/>

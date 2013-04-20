@@ -251,9 +251,25 @@
                 </property>
                 <property name="priority" class="ptolemy.data.expr.Parameter" value="4">
                 </property>
+                <property name="DecoratorAttributesFor_FCFSScheduler" class="ptolemy.actor.lib.resourceScheduler.ResourceAttributes">
+                    <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.FCFSScheduler">
+                    </property>
+                    <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                    <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                    </property>
+                </property>
+                <property name="DecoratorAttributesFor_DynamicCoreAssignmentScheduler" class="ptolemy.actor.lib.resourceScheduler.ResourceAttributes">
+                    <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.DynamicCoreAssignmentScheduler">
+                    </property>
+                    <property name="enable" class="ptolemy.data.expr.Parameter" value="true">
+                    </property>
+                    <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.1">
+                    </property>
+                </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
-                    <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="Infinity">
+                    <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="0.0">
                     </property>
                     <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="Infinity">
                     </property>
@@ -274,9 +290,25 @@
                 </property>
                 <property name="priority" class="ptolemy.data.expr.Parameter" value="5">
                 </property>
+                <property name="DecoratorAttributesFor_FCFSScheduler" class="ptolemy.actor.lib.resourceScheduler.ResourceAttributes">
+                    <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.FCFSScheduler">
+                    </property>
+                    <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                    <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                    </property>
+                </property>
+                <property name="DecoratorAttributesFor_DynamicCoreAssignmentScheduler" class="ptolemy.actor.lib.resourceScheduler.ResourceAttributes">
+                    <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.DynamicCoreAssignmentScheduler">
+                    </property>
+                    <property name="enable" class="ptolemy.data.expr.Parameter" value="true">
+                    </property>
+                    <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.4">
+                    </property>
+                </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
-                    <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="Infinity">
+                    <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="0.0">
                     </property>
                     <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="Infinity">
                     </property>
@@ -298,6 +330,22 @@
                 </property>
                 <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
+                <property name="DecoratorAttributesFor_FCFSScheduler" class="ptolemy.actor.lib.resourceScheduler.ResourceAttributes">
+                    <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.FCFSScheduler">
+                    </property>
+                    <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                    <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                    </property>
+                </property>
+                <property name="DecoratorAttributesFor_DynamicCoreAssignmentScheduler" class="ptolemy.actor.lib.resourceScheduler.ResourceAttributes">
+                    <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.DynamicCoreAssignmentScheduler">
+                    </property>
+                    <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                    <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                    </property>
+                </property>
             </entity>
             <entity name="Spectrum2" class="ptolemy.actor.lib.Scale">
                 <property name="factor" class="ptolemy.data.expr.Parameter" value="2">
@@ -314,9 +362,25 @@
                 </property>
                 <property name="priority" class="ptolemy.data.expr.Parameter" value="1">
                 </property>
+                <property name="DecoratorAttributesFor_FCFSScheduler" class="ptolemy.actor.lib.resourceScheduler.ResourceAttributes">
+                    <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.FCFSScheduler">
+                    </property>
+                    <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                    <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                    </property>
+                </property>
+                <property name="DecoratorAttributesFor_DynamicCoreAssignmentScheduler" class="ptolemy.actor.lib.resourceScheduler.ResourceAttributes">
+                    <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.DynamicCoreAssignmentScheduler">
+                    </property>
+                    <property name="enable" class="ptolemy.data.expr.Parameter" value="true">
+                    </property>
+                    <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.1">
+                    </property>
+                </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
-                    <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="Infinity">
+                    <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="0.0">
                     </property>
                     <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="Infinity">
                     </property>
@@ -337,9 +401,25 @@
                 </property>
                 <property name="priority" class="ptolemy.data.expr.Parameter" value="3">
                 </property>
+                <property name="DecoratorAttributesFor_FCFSScheduler" class="ptolemy.actor.lib.resourceScheduler.ResourceAttributes">
+                    <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.FCFSScheduler">
+                    </property>
+                    <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                    <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                    </property>
+                </property>
+                <property name="DecoratorAttributesFor_DynamicCoreAssignmentScheduler" class="ptolemy.actor.lib.resourceScheduler.ResourceAttributes">
+                    <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.DynamicCoreAssignmentScheduler">
+                    </property>
+                    <property name="enable" class="ptolemy.data.expr.Parameter" value="true">
+                    </property>
+                    <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.1">
+                    </property>
+                </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
-                    <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="Infinity">
+                    <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="0.0">
                     </property>
                     <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="Infinity">
                     </property>
@@ -361,6 +441,22 @@
                 </property>
                 <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
+                <property name="DecoratorAttributesFor_FCFSScheduler" class="ptolemy.actor.lib.resourceScheduler.ResourceAttributes">
+                    <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.FCFSScheduler">
+                    </property>
+                    <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                    <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                    </property>
+                </property>
+                <property name="DecoratorAttributesFor_DynamicCoreAssignmentScheduler" class="ptolemy.actor.lib.resourceScheduler.ResourceAttributes">
+                    <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.DynamicCoreAssignmentScheduler">
+                    </property>
+                    <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                    <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                    </property>
+                </property>
             </entity>
             <entity name="CurrentTime" class="ptolemy.actor.lib.CurrentTime">
                 <property name="useLocalTime" class="ptolemy.data.expr.Parameter" value="false">
@@ -372,10 +468,26 @@
                 </property>
                 <property name="executionTime" class="ptolemy.data.expr.Parameter">
                 </property>
+                <property name="DecoratorAttributesFor_FCFSScheduler" class="ptolemy.actor.lib.resourceScheduler.ResourceAttributes">
+                    <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.FCFSScheduler">
+                    </property>
+                    <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                    <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                    </property>
+                </property>
+                <property name="DecoratorAttributesFor_DynamicCoreAssignmentScheduler" class="ptolemy.actor.lib.resourceScheduler.ResourceAttributes">
+                    <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.DynamicCoreAssignmentScheduler">
+                    </property>
+                    <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                    <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                    </property>
+                </property>
                 <port name="trigger" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                     <property name="multiport"/>
-                    <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="Infinity">
+                    <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="0.0">
                     </property>
                     <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="Infinity">
                     </property>
@@ -391,10 +503,26 @@
                 </property>
                 <property name="executionTime" class="ptolemy.data.expr.Parameter">
                 </property>
+                <property name="DecoratorAttributesFor_FCFSScheduler" class="ptolemy.actor.lib.resourceScheduler.ResourceAttributes">
+                    <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.FCFSScheduler">
+                    </property>
+                    <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                    <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                    </property>
+                </property>
+                <property name="DecoratorAttributesFor_DynamicCoreAssignmentScheduler" class="ptolemy.actor.lib.resourceScheduler.ResourceAttributes">
+                    <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.DynamicCoreAssignmentScheduler">
+                    </property>
+                    <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                    <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                    </property>
+                </property>
                 <port name="trigger" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                     <property name="multiport"/>
-                    <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="Infinity">
+                    <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="0.0">
                     </property>
                     <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="Infinity">
                     </property>
@@ -411,10 +539,26 @@
                 </property>
                 <property name="executionTime" class="ptolemy.data.expr.Parameter">
                 </property>
+                <property name="DecoratorAttributesFor_FCFSScheduler" class="ptolemy.actor.lib.resourceScheduler.ResourceAttributes">
+                    <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.FCFSScheduler">
+                    </property>
+                    <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                    <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                    </property>
+                </property>
+                <property name="DecoratorAttributesFor_DynamicCoreAssignmentScheduler" class="ptolemy.actor.lib.resourceScheduler.ResourceAttributes">
+                    <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.DynamicCoreAssignmentScheduler">
+                    </property>
+                    <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                    <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                    </property>
+                </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                     <property name="multiport"/>
-                    <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="Infinity">
+                    <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="0.0">
                     </property>
                     <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="Infinity">
                     </property>
@@ -431,10 +575,26 @@
                 </property>
                 <property name="executionTime" class="ptolemy.data.expr.Parameter">
                 </property>
+                <property name="DecoratorAttributesFor_FCFSScheduler" class="ptolemy.actor.lib.resourceScheduler.ResourceAttributes">
+                    <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.FCFSScheduler">
+                    </property>
+                    <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                    <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                    </property>
+                </property>
+                <property name="DecoratorAttributesFor_DynamicCoreAssignmentScheduler" class="ptolemy.actor.lib.resourceScheduler.ResourceAttributes">
+                    <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.DynamicCoreAssignmentScheduler">
+                    </property>
+                    <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                    <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                    </property>
+                </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                     <property name="multiport"/>
-                    <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="Infinity">
+                    <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="0.0">
                     </property>
                     <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="Infinity">
                     </property>
@@ -451,10 +611,26 @@
                 </property>
                 <property name="executionTime" class="ptolemy.data.expr.Parameter">
                 </property>
+                <property name="DecoratorAttributesFor_FCFSScheduler" class="ptolemy.actor.lib.resourceScheduler.ResourceAttributes">
+                    <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.FCFSScheduler">
+                    </property>
+                    <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                    <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                    </property>
+                </property>
+                <property name="DecoratorAttributesFor_DynamicCoreAssignmentScheduler" class="ptolemy.actor.lib.resourceScheduler.ResourceAttributes">
+                    <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.DynamicCoreAssignmentScheduler">
+                    </property>
+                    <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                    <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                    </property>
+                </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                     <property name="multiport"/>
-                    <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="Infinity">
+                    <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="0.0">
                     </property>
                     <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="Infinity">
                     </property>
@@ -469,38 +645,70 @@
                 </property>
                 <property name="executionTime" class="ptolemy.data.expr.Parameter">
                 </property>
+                <property name="DecoratorAttributesFor_FCFSScheduler" class="ptolemy.actor.lib.resourceScheduler.ResourceAttributes">
+                    <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.FCFSScheduler">
+                    </property>
+                    <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                    <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                    </property>
+                </property>
+                <property name="DecoratorAttributesFor_DynamicCoreAssignmentScheduler" class="ptolemy.actor.lib.resourceScheduler.ResourceAttributes">
+                    <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.DynamicCoreAssignmentScheduler">
+                    </property>
+                    <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                    <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                    </property>
+                </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                     <property name="multiport"/>
-                    <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="Infinity">
+                    <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="0.0">
                     </property>
                     <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="Infinity">
                     </property>
                 </port>
             </entity>
             <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+                <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+                </property>
             </relation>
             <relation name="relation" class="ptolemy.actor.TypedIORelation">
+                <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+                </property>
             </relation>
             <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+                <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+                </property>
             </relation>
             <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+                <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+                </property>
             </relation>
             <relation name="relation7" class="ptolemy.actor.TypedIORelation">
                 <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
                 </property>
                 <vertex name="vertex1" value="[319.5, 265.0]">
                 </vertex>
+                <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+                </property>
             </relation>
             <relation name="relation6" class="ptolemy.actor.TypedIORelation">
                 <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
                 </property>
                 <vertex name="vertex1" value="[319.5, 170.0]">
                 </vertex>
+                <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+                </property>
             </relation>
             <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+                <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+                </property>
             </relation>
             <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+                <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+                </property>
             </relation>
             <link port="Spectrum.input" relation="relation2"/>
             <link port="Spectrum.output" relation="relation6"/>

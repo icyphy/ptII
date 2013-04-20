@@ -39,7 +39,7 @@
         </property>
         <property name="_tableauFactory" class="ptolemy.actor.gui.LevelSkippingTableauFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-120.0, -20.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{-120.0, -20.0}">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
             <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={195, 129, 934, 634}, maximized=false}">
@@ -577,7 +577,7 @@
                                 </property>
                             </port>
                             <entity name="P" class="ptolemy.domains.de.lib.Server">
-                                <property name="serviceTime" class="ptolemy.actor.parameters.PortParameter" value="0.1">
+                                <property name="serviceTime" class="ptolemy.actor.parameters.PortParameter" value="0.3">
                                 </property>
                                 <property name="_location" class="ptolemy.kernel.util.Location" value="[230.0, 300.0]">
                                 </property>
@@ -3378,7 +3378,7 @@
                 <property name="period" class="ptolemy.actor.parameters.PortParameter" value="clockPeriod">
                 </property>
                 <doc>Create periodic timed events.</doc>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[90.0, 210.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{90.0, 210.0}">
                 </property>
                 <property name="scheduler" class="ptolemy.data.expr.Parameter" value="ArchitectureMappingModel">
                 </property>
@@ -3386,9 +3386,17 @@
                 </property>
                 <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
+                <property name="DecoratorAttributesFor_ArchitectureMappingModel" class="ptolemy.actor.lib.resourceScheduler.ResourceAttributes">
+                    <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.ArchitectureMappingModel">
+                    </property>
+                    <property name="enable" class="ptolemy.data.expr.Parameter" value="true">
+                    </property>
+                    <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                    </property>
+                </property>
             </entity>
             <entity name="App" class="ptolemy.actor.TypedCompositeActor">
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[245.0, 210.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[245.0, 205.0]">
                 </property>
                 <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
                     <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
@@ -3409,6 +3417,14 @@
                 <property name="scheduler" class="ptolemy.data.expr.Parameter" value="">
                 </property>
                 <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+                <property name="DecoratorAttributesFor_ArchitectureMappingModel" class="ptolemy.actor.lib.resourceScheduler.ResourceAttributes">
+                    <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.ArchitectureMappingModel">
+                    </property>
+                    <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                    <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                    </property>
                 </property>
                 <port name="port2" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
@@ -3437,6 +3453,14 @@
                     </property>
                     <property name="scheduler" class="ptolemy.data.expr.Parameter" value="ArchitectureMappingModel">
                     </property>
+                    <property name="DecoratorAttributesFor_ArchitectureMappingModel" class="ptolemy.actor.lib.resourceScheduler.ResourceAttributes">
+                        <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.ArchitectureMappingModel">
+                        </property>
+                        <property name="enable" class="ptolemy.data.expr.Parameter" value="true">
+                        </property>
+                        <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                        </property>
+                    </property>
                 </entity>
                 <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
                     <property name="init" class="ptolemy.actor.parameters.PortParameter" value="0">
@@ -3448,6 +3472,14 @@
                     </property>
                     <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
                     </property>
+                    <property name="DecoratorAttributesFor_ArchitectureMappingModel" class="ptolemy.actor.lib.resourceScheduler.ResourceAttributes">
+                        <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.ArchitectureMappingModel">
+                        </property>
+                        <property name="enable" class="ptolemy.data.expr.Parameter" value="true">
+                        </property>
+                        <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                        </property>
+                    </property>
                     <port name="trigger" class="ptolemy.actor.TypedIOPort">
                         <property name="input"/>
                         <property name="multiport"/>
@@ -3458,8 +3490,12 @@
                     </port>
                 </entity>
                 <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+                    <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+                    </property>
                 </relation>
                 <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+                    <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+                    </property>
                 </relation>
                 <link port="port2" relation="relation2"/>
                 <link port="Spectrum.input" relation="relation3"/>
@@ -3479,6 +3515,14 @@
                 </property>
                 <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
+                <property name="DecoratorAttributesFor_ArchitectureMappingModel" class="ptolemy.actor.lib.resourceScheduler.ResourceAttributes">
+                    <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.ArchitectureMappingModel">
+                    </property>
+                    <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                    <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                    </property>
+                </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                     <property name="multiport"/>
@@ -3495,6 +3539,14 @@
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[465.0, 270.0]">
                 </property>
+                <property name="DecoratorAttributesFor_ArchitectureMappingModel" class="ptolemy.actor.lib.resourceScheduler.ResourceAttributes">
+                    <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.ArchitectureMappingModel">
+                    </property>
+                    <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                    <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                    </property>
+                </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                     <property name="multiport"/>
@@ -3507,6 +3559,14 @@
             <entity name="CurrentTime" class="ptolemy.actor.lib.CurrentTime">
                 <doc>Output the current time.</doc>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[380.0, 270.0]">
+                </property>
+                <property name="DecoratorAttributesFor_ArchitectureMappingModel" class="ptolemy.actor.lib.resourceScheduler.ResourceAttributes">
+                    <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.ArchitectureMappingModel">
+                    </property>
+                    <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                    <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                    </property>
                 </property>
                 <port name="trigger" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -3523,6 +3583,14 @@
                 <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.661999999999999E-7">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[465.0, 330.0]">
+                </property>
+                <property name="DecoratorAttributesFor_ArchitectureMappingModel" class="ptolemy.actor.lib.resourceScheduler.ResourceAttributes">
+                    <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.ArchitectureMappingModel">
+                    </property>
+                    <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                    <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                    </property>
                 </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -3543,6 +3611,14 @@
                 </property>
                 <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
+                <property name="DecoratorAttributesFor_ArchitectureMappingModel" class="ptolemy.actor.lib.resourceScheduler.ResourceAttributes">
+                    <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.ArchitectureMappingModel">
+                    </property>
+                    <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                    <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                    </property>
+                </property>
                 <port name="trigger" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                     <property name="multiport"/>
@@ -3553,16 +3629,24 @@
                 </port>
             </entity>
             <relation name="relation" class="ptolemy.actor.TypedIORelation">
+                <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+                </property>
             </relation>
             <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+                <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+                </property>
             </relation>
             <relation name="relation4" class="ptolemy.actor.TypedIORelation">
                 <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
                 </property>
                 <vertex name="vertex1" value="{320.0, 210.0}">
                 </vertex>
+                <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+                </property>
             </relation>
             <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+                <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+                </property>
             </relation>
             <link port="DiscreteClock.output" relation="relation"/>
             <link port="App.port2" relation="relation4"/>

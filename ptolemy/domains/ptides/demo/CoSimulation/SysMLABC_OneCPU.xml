@@ -244,7 +244,7 @@
             </property>
             <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{350.0, 262.0}">
             </property>
-            <property name="ArchitectureMappingModel" class="ptolemy.domains.ptides.lib.SchedulerModel">
+            <property name="ArchitectureMappingModel" class="ptolemy.actor.lib.resourceScheduler.SchedulerModel">
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{250.0, 65.0}">
                 </property>
                 <configure>

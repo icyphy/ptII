@@ -299,6 +299,18 @@
                 </property>
                 <property name="executionTime" class="ptolemy.data.expr.Parameter" value="1.0">
                 </property>
+                <property name="DecoratorAttributesFor_FPPCore" class="ptolemy.actor.lib.resourceScheduler.PriorityResourceAttributes">
+                    <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.FPPCore">
+                    </property>
+                    <property name="enable" class="ptolemy.data.expr.Parameter" value="true">
+                    </property>
+                    <property name="executionTime" class="ptolemy.data.expr.Parameter" value="1.0">
+                    </property>
+                    <property name="LOWEST_PRIORITY" class="ptolemy.data.expr.Parameter" value="2147483647">
+                    </property>
+                    <property name="priority" class="ptolemy.data.expr.Parameter" value="LOWEST_PRIORITY">
+                    </property>
+                </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                     <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -345,6 +357,18 @@
                 </property>
                 <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{353.65625, 309.181640625}">
                 </property>
+                <property name="DecoratorAttributesFor_FPPCore" class="ptolemy.actor.lib.resourceScheduler.PriorityResourceAttributes">
+                    <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.FPPCore">
+                    </property>
+                    <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                    <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                    </property>
+                    <property name="LOWEST_PRIORITY" class="ptolemy.data.expr.Parameter" value="2147483647">
+                    </property>
+                    <property name="priority" class="ptolemy.data.expr.Parameter" value="LOWEST_PRIORITY">
+                    </property>
+                </property>
                 <entity name="missedNetworkTransmitterPort" class="ptolemy.actor.lib.Const">
                     <property name="value" class="ptolemy.data.expr.Parameter" value="true">
                     </property>
@@ -386,8 +410,12 @@
                 <link port="SetVariable.input" relation="relation"/>
             </entity>
             <relation name="relation" class="ptolemy.actor.TypedIORelation">
+                <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+                </property>
             </relation>
             <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+                <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+                </property>
             </relation>
             <link port="SensorPort" relation="relation"/>
             <link port="NetworkTransmitterPort" relation="relation2"/>
@@ -663,12 +691,20 @@
                 </port>
             </entity>
             <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+                <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+                </property>
             </relation>
             <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+                <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+                </property>
             </relation>
             <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+                <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+                </property>
             </relation>
             <relation name="relation" class="ptolemy.actor.TypedIORelation">
+                <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+                </property>
             </relation>
             <link port="NetworkReceiverPort" relation="relation3"/>
             <link port="ActuatorPort" relation="relation2"/>
@@ -722,20 +758,32 @@
         </property>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+        </property>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+        </property>
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
         <vertex name="vertex1" value="[485.0, 135.0]">
         </vertex>
+        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+        </property>
     </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+        </property>
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+        </property>
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+        </property>
     </relation>
     <link port="PtidesPlatform.SensorPort" relation="relation"/>
     <link port="PtidesPlatform.NetworkTransmitterPort" relation="relation3"/>

@@ -226,7 +226,7 @@
             </property>
             <property name="scheduler" class="ptolemy.data.expr.Parameter" value="FCFSScheduler">
             </property>
-            <property name="FPScheduler" class="ptolemy.actor.lib.resourceScheduler.FixedPriorityScheduler">
+            <property name="FixedPriorityScheduler" class="ptolemy.actor.lib.resourceScheduler.FixedPriorityScheduler">
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[255.0, 55.0]">
                 </property>
             </property>
@@ -239,11 +239,17 @@
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[244.5, 170.0]">
                 </property>
-                <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.1">
-                </property>
-                <property name="scheduler" class="ptolemy.data.expr.Parameter" value="FPScheduler">
-                </property>
-                <property name="priority" class="ptolemy.data.expr.Parameter" value="4">
+                <property name="DecoratorAttributesFor_FixedPriorityScheduler" class="ptolemy.actor.lib.resourceScheduler.PriorityResourceAttributes">
+                    <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.FixedPriorityScheduler">
+                    </property>
+                    <property name="enable" class="ptolemy.data.expr.Parameter" value="true">
+                    </property>
+                    <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.1">
+                    </property>
+                    <property name="LOWEST_PRIORITY" class="ptolemy.data.expr.Parameter" value="2147483647">
+                    </property>
+                    <property name="priority" class="ptolemy.data.expr.Parameter" value="4">
+                    </property>
                 </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -262,11 +268,17 @@
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[159.5, 170.0]">
                 </property>
-                <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.4">
-                </property>
-                <property name="scheduler" class="ptolemy.data.expr.Parameter" value="FPScheduler">
-                </property>
-                <property name="priority" class="ptolemy.data.expr.Parameter" value="5">
+                <property name="DecoratorAttributesFor_FixedPriorityScheduler" class="ptolemy.actor.lib.resourceScheduler.PriorityResourceAttributes">
+                    <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.FixedPriorityScheduler">
+                    </property>
+                    <property name="enable" class="ptolemy.data.expr.Parameter" value="true">
+                    </property>
+                    <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.4">
+                    </property>
+                    <property name="LOWEST_PRIORITY" class="ptolemy.data.expr.Parameter" value="2147483647">
+                    </property>
+                    <property name="priority" class="ptolemy.data.expr.Parameter" value="5">
+                    </property>
                 </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -286,10 +298,6 @@
                 <doc>Create periodic timed events.</doc>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[59.5, 170.0]">
                 </property>
-                <property name="scheduler" class="ptolemy.data.expr.Parameter" value="">
-                </property>
-                <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
-                </property>
                 <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
             </entity>
@@ -302,11 +310,17 @@
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[249.5, 265.0]">
                 </property>
-                <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.1">
-                </property>
-                <property name="scheduler" class="ptolemy.data.expr.Parameter" value="FPScheduler">
-                </property>
-                <property name="priority" class="ptolemy.data.expr.Parameter" value="1">
+                <property name="DecoratorAttributesFor_FixedPriorityScheduler" class="ptolemy.actor.lib.resourceScheduler.PriorityResourceAttributes">
+                    <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.FixedPriorityScheduler">
+                    </property>
+                    <property name="enable" class="ptolemy.data.expr.Parameter" value="true">
+                    </property>
+                    <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.1">
+                    </property>
+                    <property name="LOWEST_PRIORITY" class="ptolemy.data.expr.Parameter" value="2147483647">
+                    </property>
+                    <property name="priority" class="ptolemy.data.expr.Parameter" value="1">
+                    </property>
                 </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -325,11 +339,17 @@
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[159.5, 265.0]">
                 </property>
-                <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.1">
-                </property>
-                <property name="scheduler" class="ptolemy.data.expr.Parameter" value="FPScheduler">
-                </property>
-                <property name="priority" class="ptolemy.data.expr.Parameter" value="3">
+                <property name="DecoratorAttributesFor_FixedPriorityScheduler" class="ptolemy.actor.lib.resourceScheduler.PriorityResourceAttributes">
+                    <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.FixedPriorityScheduler">
+                    </property>
+                    <property name="enable" class="ptolemy.data.expr.Parameter" value="true">
+                    </property>
+                    <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.1">
+                    </property>
+                    <property name="LOWEST_PRIORITY" class="ptolemy.data.expr.Parameter" value="2147483647">
+                    </property>
+                    <property name="priority" class="ptolemy.data.expr.Parameter" value="3">
+                    </property>
                 </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -348,10 +368,6 @@
                 </property>
                 <doc>Create periodic timed events.</doc>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[59.5, 265.0]">
-                </property>
-                <property name="scheduler" class="ptolemy.data.expr.Parameter" value="">
-                </property>
-                <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
                 <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>

@@ -35,12 +35,14 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
+import ptolemy.actor.lib.resourceScheduler.ResourceAttributes;
 import ptolemy.actor.lib.resourceScheduler.ResourceScheduler;
 import ptolemy.actor.util.BooleanDependency;
 import ptolemy.actor.util.CausalityInterface;
 import ptolemy.actor.util.CausalityInterfaceForComposites;
 import ptolemy.actor.util.Dependency;
 import ptolemy.actor.util.Time;
+import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.ObjectToken;
 import ptolemy.data.Token;
@@ -1869,58 +1871,29 @@ public class Director extends Attribute implements Executable {
     /** Find resource scheduler for actor.
      *  @param actor The actor to be scheduled.
      *  @return the resource scheduler.
+     * @throws IllegalActionException 
      */
-    protected ResourceScheduler _getScheduler(Actor actor) {
+    protected ResourceScheduler _getScheduler(Actor actor) throws IllegalActionException {
         if (_schedulerForActor == null) {
             _schedulerForActor = new HashMap<Actor, ResourceScheduler>();
         }
         Object object = _schedulerForActor.get(actor);
         if (!_schedulerForActor.containsKey(actor)) {
             if (object == null) {
-                for (Parameter parameter : ((NamedObj) actor)
-                        .attributeList(Parameter.class)) {
-                    try {
-                        Token paramToken = parameter.getToken();
-                        if (paramToken instanceof ObjectToken) {
-                            Object paramObject = ((ObjectToken) paramToken)
-                                    .getValue();
-                            if (paramObject instanceof ResourceScheduler) {
-                                ResourceScheduler scheduler = (ResourceScheduler) paramObject;
-                                if (_resourceSchedulers.contains(scheduler)) {
-                                    _schedulerForActor.put(actor, scheduler);
-                                    object = scheduler;
-                                    break;
-                                } else {
-                                    CompositeActor container = (CompositeActor) getContainer();
-                                    while (container.getContainer() != null) {
-                                        container = (CompositeActor) container
-                                                .getContainer();
-                                        if (container.getDirector()._resourceSchedulers
-                                                .contains(scheduler)) {
-                                            object = scheduler;
-                                            break;
-                                        }
-                                    }
-                                } // Else could have been deleted.
-                            }
+                for (ResourceAttributes resourceAttributes : ((NamedObj) actor)
+                        .attributeList(ResourceAttributes.class)) {
+                    if (((BooleanToken)resourceAttributes.enable.getToken()).booleanValue()) {
+                        ResourceScheduler scheduler = (ResourceScheduler) resourceAttributes.getDecorator();
+                        if (_schedulerForActor.get(actor) != null) {
+                            // already has a scheduler - will be overridden. FIXME!
                         }
-                    } catch (IllegalActionException ex) {
-                        // Do nothing, the resource scheduler might
-                        // have been deleted.
+                        _schedulerForActor.put(actor, scheduler);   
+                        _executionTimes.put(actor, new Time(this, ((DoubleToken)resourceAttributes.executionTime.getToken()).doubleValue()));
                     }
-
-                    if (!_schedulerForActor.containsKey(actor)) {
-                        _schedulerForActor.put(actor, null);
-                    }
-
                 }
             }
         }
-        if (object != null) {
-            return (ResourceScheduler) object;
-        } else {
-            return null;
-        }
+        return _schedulerForActor.get(actor);
     }
 
     /** Set of actors that have returned false from  postfire(),
@@ -1990,23 +1963,6 @@ public class Director extends Attribute implements Executable {
             _executionTimes = new HashMap<Actor, Time>();
         }
         executionTime = _executionTimes.get(actor);
-        // TODO: figure out when to cache execution time and when it needs to be read.
-//        if (executionTime == null) {
-            Double executionTimeParam = null;
-            Parameter parameter = (Parameter) ((NamedObj) actor)
-                    .getAttribute("executionTime");
-            if (parameter != null && parameter.getToken() != null) {
-                executionTimeParam = Double.valueOf(((DoubleToken) parameter
-                        .getToken()).doubleValue());
-            }
-
-            if (executionTimeParam == null) {
-                executionTime = new Time(this, 0.0);
-            } else {
-                executionTime = new Time(this, executionTimeParam);
-            }
-            _executionTimes.put(actor, executionTime);
-//        }
         return executionTime;
     }
 

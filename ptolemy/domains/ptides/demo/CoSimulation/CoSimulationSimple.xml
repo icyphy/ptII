@@ -283,7 +283,7 @@
                 <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
             </property>
-            <property name="FPPCore" class="ptolemy.domains.ptides.lib.FPPCore">
+            <property name="FPPCore" class="ptolemy.actor.lib.resourceScheduler.FixedPriorityScheduler">
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[265.0, 50.0]">
                 </property>
             </property>
