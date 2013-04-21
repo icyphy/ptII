@@ -70,7 +70,7 @@ import ptolemy.util.StringUtilities;
  bottom of the type lattice, and hence satisfies this type
  constraint).
 
- @author Yuhong Xiong, Elaine Cheong and Steve Neuendorffer; contributor: J. S. Senecal
+ @author Yuhong Xiong, Elaine Cheong and Steve Neuendorffer; contributors: J. S. Senecal, Marten Lohstroh
  @version $Id$
  @since Ptolemy II 3.0
  @Pt.ProposedRating Red (neuendor)
@@ -82,14 +82,10 @@ public class RecordType extends AssociativeType implements Cloneable {
      *  The labels and the types are specified in two arrays. These two
      *  arrays must have the same length, and their elements have one to
      *  one correspondence. That is, the i'th entry in the types array is
-     *  the type for the i'th label in the labels array. To construct the
-     *  empty record type, set the length of the argument arrays to 0.
-     *
-     *  <p>Record labels that contain any non-Java identifier characters 
-     *  must be presented as a string i.e., surrounded with single or double 
-     *  quotes. Quotes within label strings can be escaped using a backslash.
-     *  </p>
-     *
+     *  the type for the i'th label in the labels array. Record labels may be 
+     *  arbitrary strings. To construct the empty record type, set the length
+     *  of the argument arrays to 0.
+     *     *
      *  @param labels An array of String.
      *  @param types An array of Type.
      *  @exception IllegalArgumentException If the two arrays do not have
@@ -129,10 +125,12 @@ public class RecordType extends AssociativeType implements Cloneable {
      *  keys or values, or if it contains non-String keys or non-Type
      *  values
      */
-    public RecordType(Map fieldMap) throws IllegalActionException {
-        Iterator fields = fieldMap.entrySet().iterator();
+    public RecordType(Map<String, FieldType> fieldMap)
+            throws IllegalActionException {
+        Iterator<Map.Entry<String, FieldType>> fields = fieldMap.entrySet()
+                .iterator();
         while (fields.hasNext()) {
-            Map.Entry entry = (Map.Entry) fields.next();
+            Map.Entry<String, FieldType> entry = fields.next();
             if (entry.getKey() == null || entry.getValue() == null) {
                 throw new IllegalActionException("RecordType: given map"
                         + " contains either null keys or null values.");
@@ -290,17 +288,17 @@ public class RecordType extends AssociativeType implements Cloneable {
         RecordType recordType = (RecordType) object;
 
         // Check that the label sets are equal
-        Set myLabelSet = _fields.keySet();
-        Set argLabelSet = recordType._fields.keySet();
+        Set<String> myLabelSet = _fields.keySet();
+        Set<String> argLabelSet = recordType._fields.keySet();
 
         if (!myLabelSet.equals(argLabelSet)) {
             return false;
         }
 
-        Iterator fieldNames = myLabelSet.iterator();
+        Iterator<String> fieldNames = myLabelSet.iterator();
 
         while (fieldNames.hasNext()) {
-            String label = (String) fieldNames.next();
+            String label = fieldNames.next();
             Type myType = this.get(label);
             Type argType = recordType.get(label);
 
@@ -330,7 +328,7 @@ public class RecordType extends AssociativeType implements Cloneable {
     /** Return the class for tokens that this type represents.
      *  @return The class for tokens that this type represents.
      */
-    public Class getTokenClass() {
+    public Class<RecordToken> getTokenClass() {
         return RecordToken.class;
     }
 
@@ -357,10 +355,10 @@ public class RecordType extends AssociativeType implements Cloneable {
      */
     public boolean isAbstract() {
         // Loop through all of the fields.
-        Iterator fieldNames = _fields.keySet().iterator();
+        Iterator<String> fieldNames = _fields.keySet().iterator();
 
         while (fieldNames.hasNext()) {
-            String label = (String) fieldNames.next();
+            String label = fieldNames.next();
             Type type = this.get(label);
 
             // Return false if the field is not instantiable.
@@ -378,11 +376,11 @@ public class RecordType extends AssociativeType implements Cloneable {
      */
     public void initialize(Type type) {
         try {
-            Iterator fieldNames = _fields.keySet().iterator();
+            Iterator<String> fieldNames = _fields.keySet().iterator();
 
             while (fieldNames.hasNext()) {
-                String label = (String) fieldNames.next();
-                FieldType fieldType = (FieldType) _fields.get(label);
+                String label = fieldNames.next();
+                FieldType fieldType = _fields.get(label);
 
                 if (fieldType.isSettable()) {
                     fieldType.initialize(type);
@@ -415,10 +413,10 @@ public class RecordType extends AssociativeType implements Cloneable {
         RecordType argumentRecordType = (RecordType) type;
 
         // Loop through all of the fields of this type...
-        Iterator iterator = _fields.keySet().iterator();
+        Iterator<String> iterator = _fields.keySet().iterator();
 
         while (iterator.hasNext()) {
-            String label = (String) iterator.next();
+            String label = iterator.next();
 
             // The given type cannot be losslessly converted to this type
             // if it does not contain one of the fields of this type.
@@ -447,10 +445,10 @@ public class RecordType extends AssociativeType implements Cloneable {
      */
     public boolean isConstant() {
         // Loop through all of the fields.
-        Iterator fieldTypes = _fields.values().iterator();
+        Iterator<FieldType> fieldTypes = _fields.values().iterator();
 
         while (fieldTypes.hasNext()) {
-            FieldType fieldType = (FieldType) fieldTypes.next();
+            FieldType fieldType = fieldTypes.next();
             Type type = fieldType._declaredType;
 
             // Return false if the field is not constant.
@@ -469,10 +467,10 @@ public class RecordType extends AssociativeType implements Cloneable {
      */
     public boolean isInstantiable() {
         // Loop through all of the fields.
-        Iterator fieldNames = _fields.keySet().iterator();
+        Iterator<String> fieldNames = _fields.keySet().iterator();
 
         while (fieldNames.hasNext()) {
-            String label = (String) fieldNames.next();
+            String label = fieldNames.next();
             Type type = this.get(label);
 
             // Return false if the field is not instantiable.
@@ -501,18 +499,18 @@ public class RecordType extends AssociativeType implements Cloneable {
 
         // Check if this record type and the argument have the same
         // label set.
-        Set myLabelSet = _fields.keySet();
-        Set argLabelSet = recordType._fields.keySet();
+        Set<String> myLabelSet = _fields.keySet();
+        Set<String> argLabelSet = recordType._fields.keySet();
 
         if (!myLabelSet.equals(argLabelSet)) {
             return false;
         }
 
         // Loop over all the labels.
-        Iterator fieldNames = myLabelSet.iterator();
+        Iterator<String> fieldNames = myLabelSet.iterator();
 
         while (fieldNames.hasNext()) {
-            String label = (String) fieldNames.next();
+            String label = fieldNames.next();
 
             FieldType fieldType = (FieldType) _fields.get(label);
             Type myDeclaredType = fieldType._declaredType;
@@ -529,7 +527,7 @@ public class RecordType extends AssociativeType implements Cloneable {
     /** Return the labels of this record type as a Set.
      *  @return A Set containing strings.
      */
-    public Set labelSet() {
+    public Set<String> labelSet() {
         return _fields.keySet();
     }
 
@@ -608,10 +606,10 @@ public class RecordType extends AssociativeType implements Cloneable {
                     + "Cannot update this type to the new type.");
         }
 
-        Iterator fieldNames = _fields.keySet().iterator();
+        Iterator<String> fieldNames = _fields.keySet().iterator();
 
         while (fieldNames.hasNext()) {
-            String label = (String) fieldNames.next();
+            String label = fieldNames.next();
             FieldType fieldType = (FieldType) _fields.get(label);
 
             if (fieldType.isSettable()) {
@@ -690,9 +688,9 @@ public class RecordType extends AssociativeType implements Cloneable {
         RecordType recordType = (RecordType) type;
 
         // the label set of the GLB is the union of the two label sets.
-        Set unionSet = new HashSet();
-        Set myLabelSet = _fields.keySet();
-        Set argLabelSet = recordType._fields.keySet();
+        Set<String> unionSet = new HashSet<String>();
+        Set<String> myLabelSet = _fields.keySet();
+        Set<String> argLabelSet = recordType._fields.keySet();
 
         unionSet.addAll(myLabelSet);
         unionSet.addAll(argLabelSet);
@@ -739,9 +737,9 @@ public class RecordType extends AssociativeType implements Cloneable {
         RecordType recordType = (RecordType) type;
 
         // the label set of the LUB is the intersection of the two label sets.
-        Set intersectionSet = new HashSet();
-        Set myLabelSet = _fields.keySet();
-        Set argLabelSet = recordType._fields.keySet();
+        Set<String> intersectionSet = new HashSet<String>();
+        Set<String> myLabelSet = _fields.keySet();
+        Set<String> argLabelSet = recordType._fields.keySet();
 
         intersectionSet.addAll(myLabelSet);
         intersectionSet.retainAll(argLabelSet);
@@ -768,18 +766,18 @@ public class RecordType extends AssociativeType implements Cloneable {
     ////                         private methods                   ////
     // Test if the first RecordType is less than or equal to the second
     private boolean _isLessThanOrEqualTo(RecordType t1, RecordType t2) {
-        Set labelSet1 = t1._fields.keySet();
-        Set labelSet2 = t2._fields.keySet();
+        Set<String> labelSet1 = t1._fields.keySet();
+        Set<String> labelSet2 = t2._fields.keySet();
 
         if (!labelSet1.containsAll(labelSet2)) {
             return false;
         }
 
         // iterate over the labels of the second type
-        Iterator iter = labelSet2.iterator();
+        Iterator<String> iter = labelSet2.iterator();
 
         while (iter.hasNext()) {
-            String label = (String) iter.next();
+            String label = iter.next();
             Type type1 = t1.get(label);
             Type type2 = t2.get(label);
             int result = TypeLattice.compare(type1, type2);
@@ -795,7 +793,7 @@ public class RecordType extends AssociativeType implements Cloneable {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     // Mapping from label to field information.
-    private Map _fields = new HashMap();
+    private Map<String, FieldType> _fields = new HashMap<String, FieldType>();
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner class                       ////

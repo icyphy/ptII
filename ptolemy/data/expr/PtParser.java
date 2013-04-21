@@ -2354,10 +2354,24 @@ String x;
   jjtree.openNodeScope(jjtn000);Token x = null;
     try {
       jj_consume_token(OPENBRACKET);
-      x = jj_consume_token(ID);
-                            jjtn000._fieldNames.add(x.image);
-      jj_consume_token(SETEQUALS);
-      funcIf();
+      switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+      case STRING:
+        x = jj_consume_token(STRING);
+                       jjtn000._fieldNames.add(cleanupString(x.image));
+        jj_consume_token(SETEQUALS);
+        funcIf();
+        break;
+      case ID:
+        x = jj_consume_token(ID);
+                   jjtn000._fieldNames.add(x.image);
+        jj_consume_token(SETEQUALS);
+        funcIf();
+        break;
+      default:
+        jj_la1[44] = jj_gen;
+        jj_consume_token(-1);
+        throw new ParseException();
+      }
       label_22:
       while (true) {
         switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
@@ -2365,14 +2379,28 @@ String x;
           ;
           break;
         default:
-          jj_la1[44] = jj_gen;
+          jj_la1[45] = jj_gen;
           break label_22;
         }
         jj_consume_token(COMMA);
-        x = jj_consume_token(ID);
-                           jjtn000._fieldNames.add(x.image);
-        jj_consume_token(SETEQUALS);
-        funcIf();
+        switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+        case STRING:
+          x = jj_consume_token(STRING);
+                       jjtn000._fieldNames.add(cleanupString(x.image));
+          jj_consume_token(SETEQUALS);
+          funcIf();
+          break;
+        case ID:
+          x = jj_consume_token(ID);
+                   jjtn000._fieldNames.add(x.image);
+          jj_consume_token(SETEQUALS);
+          funcIf();
+          break;
+        default:
+          jj_la1[46] = jj_gen;
+          jj_consume_token(-1);
+          throw new ParseException();
+        }
       }
       jj_consume_token(CLOSEBRACKET);
     } catch (Throwable jjte000) {
@@ -2414,7 +2442,7 @@ String x;
           ;
           break;
         default:
-          jj_la1[45] = jj_gen;
+          jj_la1[47] = jj_gen;
           break label_23;
         }
         jj_consume_token(COMMA);
@@ -2460,7 +2488,7 @@ String x;
           ;
           break;
         default:
-          jj_la1[46] = jj_gen;
+          jj_la1[48] = jj_gen;
           break label_24;
         }
         jj_consume_token(COMMA);
@@ -2615,11 +2643,6 @@ String x;
     finally { jj_save(15, xla); }
   }
 
-  private boolean jj_3R_66() {
-    if (jj_scan_token(OPENBRACE)) return true;
-    return false;
-  }
-
   private boolean jj_3R_54() {
     if (jj_3R_63()) return true;
     return false;
@@ -2670,6 +2693,11 @@ String x;
     return false;
   }
 
+  private boolean jj_3R_67() {
+    if (jj_scan_token(OPENBRACE)) return true;
+    return false;
+  }
+
   private boolean jj_3R_52() {
     if (jj_scan_token(OPENPAREN)) return true;
     return false;
@@ -2680,18 +2708,13 @@ String x;
     return false;
   }
 
-  private boolean jj_3R_67() {
-    if (jj_scan_token(OPENBRACE)) return true;
+  private boolean jj_3R_65() {
+    if (jj_scan_token(OPENUNION)) return true;
     return false;
   }
 
   private boolean jj_3R_38() {
     if (jj_3R_39()) return true;
-    return false;
-  }
-
-  private boolean jj_3R_65() {
-    if (jj_scan_token(OPENUNION)) return true;
     return false;
   }
 
@@ -2984,8 +3007,18 @@ String x;
 
   private boolean jj_3_9() {
     if (jj_scan_token(OPENBRACKET)) return true;
-    if (jj_scan_token(ID)) return true;
+    Token xsp;
+    xsp = jj_scanpos;
+    if (jj_scan_token(56)) {
+    jj_scanpos = xsp;
+    if (jj_scan_token(54)) return true;
+    }
     if (jj_scan_token(SETEQUALS)) return true;
+    return false;
+  }
+
+  private boolean jj_3R_66() {
+    if (jj_scan_token(OPENBRACE)) return true;
     return false;
   }
 
@@ -3028,7 +3061,7 @@ String x;
   private boolean jj_lookingAhead = false;
   private boolean jj_semLA;
   private int jj_gen;
-  final private int[] jj_la1 = new int[47];
+  final private int[] jj_la1 = new int[49];
   static private int[] jj_la1_0;
   static private int[] jj_la1_1;
   static private int[] jj_la1_2;
@@ -3038,13 +3071,13 @@ String x;
       jj_la1_init_2();
    }
    private static void jj_la1_init_0() {
-      jj_la1_0 = new int[] {0x0,0x0,0x0,0x2000000,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x8000,0xf0000000,0xf0000000,0x0,0x0,0xc00,0xc00,0x7000,0x7000,0x4150800,0x810000,0x400000,0x400000,0x810000,0x800,0x800,0x0,0x400000,0x0,0x1000000,0x400000,0x800000,0x0,0x10000,0x0,0x400000,0x0,0x400000,0x0,0x1600000,0x0,0x400000,0x0,0x400000,0x400000,0x400000,};
+      jj_la1_0 = new int[] {0x0,0x0,0x0,0x2000000,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x8000,0xf0000000,0xf0000000,0x0,0x0,0xc00,0xc00,0x7000,0x7000,0x4150800,0x810000,0x400000,0x400000,0x810000,0x800,0x800,0x0,0x400000,0x0,0x1000000,0x400000,0x800000,0x0,0x10000,0x0,0x400000,0x0,0x400000,0x0,0x1600000,0x0,0x400000,0x0,0x0,0x400000,0x0,0x400000,0x400000,};
    }
    private static void jj_la1_init_1() {
-      jj_la1_1 = new int[] {0x4000000,0x78000000,0x78000000,0x0,0x8,0x4,0x80,0x100,0x40,0x3,0x3,0x0,0x0,0x0,0xe00,0xe00,0x0,0x0,0x0,0x0,0x815c1030,0x0,0x0,0x0,0x0,0x1000,0x11c1000,0x80400000,0x0,0x400000,0x0,0x0,0x0,0x401000,0x0,0x80400000,0x0,0x4000000,0x0,0x4000000,0x4000000,0x1400000,0x0,0x1400000,0x0,0x0,0x0,};
+      jj_la1_1 = new int[] {0x4000000,0x78000000,0x78000000,0x0,0x8,0x4,0x80,0x100,0x40,0x3,0x3,0x0,0x0,0x0,0xe00,0xe00,0x0,0x0,0x0,0x0,0x815c1030,0x0,0x0,0x0,0x0,0x1000,0x11c1000,0x80400000,0x0,0x400000,0x0,0x0,0x0,0x401000,0x0,0x80400000,0x0,0x4000000,0x0,0x4000000,0x4000000,0x1400000,0x0,0x1400000,0x1400000,0x0,0x1400000,0x0,0x0,};
    }
    private static void jj_la1_init_2() {
-      jj_la1_2 = new int[] {0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0xa,0x0,0x0,0x0,0x0,0x0,0x0,0xa,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0xa,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,};
+      jj_la1_2 = new int[] {0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0xa,0x0,0x0,0x0,0x0,0x0,0x0,0xa,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0xa,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,};
    }
   final private JJCalls[] jj_2_rtns = new JJCalls[16];
   private boolean jj_rescan = false;
@@ -3061,7 +3094,7 @@ String x;
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 47; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 49; i++) jj_la1[i] = -1;
     for (int i = 0; i < jj_2_rtns.length; i++) jj_2_rtns[i] = new JJCalls();
   }
 
@@ -3077,7 +3110,7 @@ String x;
     jj_ntk = -1;
     jjtree.reset();
     jj_gen = 0;
-    for (int i = 0; i < 47; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 49; i++) jj_la1[i] = -1;
     for (int i = 0; i < jj_2_rtns.length; i++) jj_2_rtns[i] = new JJCalls();
   }
 
@@ -3088,7 +3121,7 @@ String x;
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 47; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 49; i++) jj_la1[i] = -1;
     for (int i = 0; i < jj_2_rtns.length; i++) jj_2_rtns[i] = new JJCalls();
   }
 
@@ -3100,7 +3133,7 @@ String x;
     jj_ntk = -1;
     jjtree.reset();
     jj_gen = 0;
-    for (int i = 0; i < 47; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 49; i++) jj_la1[i] = -1;
     for (int i = 0; i < jj_2_rtns.length; i++) jj_2_rtns[i] = new JJCalls();
   }
 
@@ -3110,7 +3143,7 @@ String x;
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 47; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 49; i++) jj_la1[i] = -1;
     for (int i = 0; i < jj_2_rtns.length; i++) jj_2_rtns[i] = new JJCalls();
   }
 
@@ -3121,7 +3154,7 @@ String x;
     jj_ntk = -1;
     jjtree.reset();
     jj_gen = 0;
-    for (int i = 0; i < 47; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 49; i++) jj_la1[i] = -1;
     for (int i = 0; i < jj_2_rtns.length; i++) jj_2_rtns[i] = new JJCalls();
   }
 
@@ -3238,7 +3271,7 @@ String x;
       la1tokens[jj_kind] = true;
       jj_kind = -1;
     }
-    for (int i = 0; i < 47; i++) {
+    for (int i = 0; i < 49; i++) {
       if (jj_la1[i] == jj_gen) {
         for (int j = 0; j < 32; j++) {
           if ((jj_la1_0[i] & (1<<j)) != 0) {

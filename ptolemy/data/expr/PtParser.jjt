@@ -1221,7 +1221,7 @@ String x;
   |   LOOKAHEAD(<OPENPAREN>)
       <OPENPAREN> expression() <CLOSEPAREN>
 
-  |   LOOKAHEAD( <OPENBRACKET> <ID> <SETEQUALS> )
+  |   LOOKAHEAD( <OPENBRACKET> (<STRING> | <ID>) <SETEQUALS> )
       orderedRecordConstruct()
       
   |   LOOKAHEAD(<OPENBRACKET>)
@@ -1385,8 +1385,14 @@ void orderedRecordConstruct() #PtOrderedRecordConstructNode :
   Token x = null;
 }
 {
-    <OPENBRACKET> x = <ID> {jjtThis._fieldNames.add(x.image);} <SETEQUALS> funcIf() 
-        (<COMMA> x = <ID> {jjtThis._fieldNames.add(x.image);} <SETEQUALS> funcIf())*
+    <OPENBRACKET> (
+    	(x = <STRING> {jjtThis._fieldNames.add(cleanupString(x.image));} <SETEQUALS> funcIf())
+    | 	(x = <ID> {jjtThis._fieldNames.add(x.image);} <SETEQUALS> funcIf())
+    ) 
+    (<COMMA> (
+    	(x = <STRING> {jjtThis._fieldNames.add(cleanupString(x.image));} <SETEQUALS> funcIf())
+    |	(x = <ID> {jjtThis._fieldNames.add(x.image);} <SETEQUALS> funcIf()))
+    )*
     <CLOSEBRACKET>
 }
 

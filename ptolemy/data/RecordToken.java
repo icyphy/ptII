@@ -48,20 +48,15 @@ import ptolemy.util.StringUtilities;
 //// RecordToken
 
 /**
- A token that contains a set of label/token pairs. Operations on record
- tokens result in new record tokens containing only the common fields,
- where the operation specifies how to combine the data in the common
- fields.  Thus, for example, if two record tokens
- are added or subtracted, then common records
- (those with the same labels) will be added or subtracted,
- and the disjoint records will not appear in the result.
+ A token that contains a set of label/token pairs. Record labels may be 
+ arbitrary strings. Operations on record tokens result in new record tokens 
+ containing only the common fields, where the operation specifies how to 
+ combine the data in the common fields.  Thus, for example, if two record 
+ tokens are added or subtracted, then common records (those with the same 
+ labels) will be added or subtracted, and the disjoint records will not 
+ appear in the result.
 
- <p>Record labels that contain any non-Java identifier characters 
- must be presented as a string i.e., surrounded with single or double 
- quotes. Quotes within label strings can be escaped using a backslash.
- </p>
-
- @author Yuhong Xiong, Steve Neuendorffer, Elaine Cheong, Edward Lee; contributor: J. S. Senecal
+ @author Yuhong Xiong, Steve Neuendorffer, Elaine Cheong, Edward Lee; contributors: J. S. Senecal, Marten Lohstroh
  @version $Id$
  @since Ptolemy II 1.0
  @Pt.ProposedRating Green (neuendor)
@@ -88,10 +83,6 @@ public class RecordToken extends AbstractNotConvertibleToken {
      *  the labels array is the label for the i'th value in the values array.
      *  If both arrays are empty, this creates an empty record token.
      *
-     *  <p>Record labels are sanitized so that any non-Java identifier
-     *  characters are replaced with underscores, see
-     *  {@link ptolemy.util.StringUtilities#sanitizeName(String)}</p>
-     *
      *  @param labels An array of labels.
      *  @param values An array of Tokens.
      *  @exception IllegalActionException If the labels or the values array
@@ -106,10 +97,11 @@ public class RecordToken extends AbstractNotConvertibleToken {
 
     /** Construct a RecordToken from the specified string.
      *
-     *  <p>Record labels are sanitized so that any non-Java identifier
-     *  characters are replaced with underscores, see
-     *  {@link ptolemy.util.StringUtilities#sanitizeName(String)}</p>
-     *
+     * <p>Record labels that contain any non-Java identifier characters 
+     * must be presented as a string i.e., surrounded with single or double 
+     * quotes. Quotes within label strings must be escaped using a backslash.
+     * </p>
+     * 
      *  @param init A string expression of a record.
      *  @exception IllegalActionException If the string does not
      *  contain a parsable record.
@@ -153,7 +145,7 @@ public class RecordToken extends AbstractNotConvertibleToken {
             throws IllegalActionException {
         _initializeStorage();
 
-        // iterate through map and put values under sanitized key in local map
+        // iterate through map and put values under key in local map
         for (Map.Entry<String, Token> entry : fieldMap.entrySet()) {
             String key = entry.getKey();
             Token val = entry.getValue();
@@ -163,7 +155,6 @@ public class RecordToken extends AbstractNotConvertibleToken {
                         + "map contains either null keys " + "or null values.");
             }
 
-            //_fields.put(StringUtilities.sanitizeName(key), val);
             _fields.put(key, val);
         }
     }
@@ -190,17 +181,17 @@ public class RecordToken extends AbstractNotConvertibleToken {
 
         RecordToken recordToken = (RecordToken) object;
 
-        Set myLabelSet = _fields.keySet();
-        Set argLabelSet = recordToken._fields.keySet();
+        Set<String> myLabelSet = _fields.keySet();
+        Set<String> argLabelSet = recordToken._fields.keySet();
 
         if (!myLabelSet.equals(argLabelSet)) {
             return false;
         }
 
-        Iterator iterator = myLabelSet.iterator();
+        Iterator<String> iterator = myLabelSet.iterator();
 
         while (iterator.hasNext()) {
-            String label = (String) iterator.next();
+            String label = iterator.next();
             Token token1 = get(label);
             Token token2 = recordToken.get(label);
 
@@ -244,8 +235,8 @@ public class RecordToken extends AbstractNotConvertibleToken {
      */
     public int hashCode() {
         int code = 0;
-        Set labelSet = _fields.keySet();
-        Iterator iterator = labelSet.iterator();
+        Set<String> labelSet = _fields.keySet();
+        Iterator<String> iterator = labelSet.iterator();
 
         while (iterator.hasNext()) {
             String label = (String) iterator.next();
@@ -279,9 +270,9 @@ public class RecordToken extends AbstractNotConvertibleToken {
      *  @return A new RecordToken.
      */
     public static RecordToken merge(RecordToken token1, RecordToken token2) {
-        Set unionSet = new HashSet();
-        Set labelSet1 = token1._fields.keySet();
-        Set labelSet2 = token2._fields.keySet();
+        Set<String> unionSet = new HashSet<String>();
+        Set<String> labelSet1 = token1._fields.keySet();
+        Set<String> labelSet2 = token2._fields.keySet();
         unionSet.addAll(labelSet1);
         unionSet.addAll(labelSet2);
 
@@ -325,9 +316,9 @@ public class RecordToken extends AbstractNotConvertibleToken {
             RecordType recordType1 = (RecordType) type1;
             RecordType recordType2 = (RecordType) type2;
 
-            Set unionSet = new HashSet();
-            Set labelSet1 = recordType1.labelSet();
-            Set labelSet2 = recordType2.labelSet();
+            Set<String> unionSet = new HashSet<String>();
+            Set<String> labelSet1 = recordType1.labelSet();
+            Set<String> labelSet2 = recordType2.labelSet();
             unionSet.addAll(labelSet1);
             unionSet.addAll(labelSet2);
 
@@ -383,10 +374,9 @@ public class RecordToken extends AbstractNotConvertibleToken {
      *  labels determined by the java.lang.String.compareTo() method.
      *
      *  <p>Record labels that contain any non-Java identifier characters 
-     *  must be presented as a string i.e., surrounded with single or double 
-     *  quotes. Quotes within label strings can be escaped using a backslash.
+     *  are surrounded with double quotes. Quotes within label strings are 
+     *  escaped using a backslash.
      *  </p>
-
      *
      *  @return A String beginning with "{" that contains label and value
      *  pairs separated by commas, ending with "}".
@@ -472,11 +462,11 @@ public class RecordToken extends AbstractNotConvertibleToken {
     protected Token _add(Token rightArgument) throws IllegalActionException {
         RecordToken recordToken = (RecordToken) rightArgument;
 
-        Set intersectionSet = _createSet();
+        Set<String> intersectionSet = _createSet();
         intersectionSet.addAll(_fields.keySet());
         intersectionSet.retainAll(recordToken._fields.keySet());
 
-        Iterator labels = intersectionSet.iterator();
+        Iterator<String> labels = intersectionSet.iterator();
         int size = intersectionSet.size();
         String[] newLabels = new String[size];
         Token[] newValues = new Token[size];
@@ -507,11 +497,11 @@ public class RecordToken extends AbstractNotConvertibleToken {
     protected Token _divide(Token rightArgument) throws IllegalActionException {
         RecordToken recordToken = (RecordToken) rightArgument;
 
-        Set intersectionSet = _createSet();
+        Set<String> intersectionSet = _createSet();
         intersectionSet.addAll(_fields.keySet());
         intersectionSet.retainAll(recordToken._fields.keySet());
 
-        Iterator labels = intersectionSet.iterator();
+        Iterator<String> labels = intersectionSet.iterator();
         int size = intersectionSet.size();
         String[] newLabels = new String[size];
         Token[] newValues = new Token[size];
@@ -551,15 +541,15 @@ public class RecordToken extends AbstractNotConvertibleToken {
             throws IllegalActionException {
         RecordToken recordToken = (RecordToken) rightArgument;
 
-        Set myLabelSet = _fields.keySet();
-        Set argLabelSet = recordToken._fields.keySet();
+        Set<String> myLabelSet = _fields.keySet();
+        Set<String> argLabelSet = recordToken._fields.keySet();
 
         if (!myLabelSet.equals(argLabelSet)) {
             return BooleanToken.FALSE;
         }
 
         // Loop through all of the fields, checking each one for closeness.
-        Iterator iterator = myLabelSet.iterator();
+        Iterator<String> iterator = myLabelSet.iterator();
 
         while (iterator.hasNext()) {
             String label = (String) iterator.next();
@@ -590,17 +580,17 @@ public class RecordToken extends AbstractNotConvertibleToken {
             throws IllegalActionException {
         RecordToken recordToken = (RecordToken) rightArgument;
 
-        Set myLabelSet = _fields.keySet();
-        Set argLabelSet = recordToken._fields.keySet();
+        Set<String> myLabelSet = _fields.keySet();
+        Set<String> argLabelSet = recordToken._fields.keySet();
 
         if (!myLabelSet.equals(argLabelSet)) {
             return BooleanToken.FALSE;
         }
 
-        Iterator iterator = myLabelSet.iterator();
+        Iterator<String> iterator = myLabelSet.iterator();
 
         while (iterator.hasNext()) {
-            String label = (String) iterator.next();
+            String label = iterator.next();
             Token token1 = get(label);
             Token token2 = recordToken.get(label);
             BooleanToken result = token1.isEqualTo(token2);
@@ -624,18 +614,18 @@ public class RecordToken extends AbstractNotConvertibleToken {
     protected Token _modulo(Token rightArgument) throws IllegalActionException {
         RecordToken recordToken = (RecordToken) rightArgument;
 
-        Set intersectionSet = _createSet();
+        Set<String> intersectionSet = _createSet();
         intersectionSet.addAll(_fields.keySet());
         intersectionSet.retainAll(recordToken._fields.keySet());
 
-        Iterator labels = intersectionSet.iterator();
+        Iterator<String> labels = intersectionSet.iterator();
         int size = intersectionSet.size();
         String[] newLabels = new String[size];
         Token[] newValues = new Token[size];
         int i = 0;
 
         while (labels.hasNext()) {
-            String label = (String) labels.next();
+            String label = labels.next();
             Token token1 = get(label);
             Token token2 = recordToken.get(label);
 
@@ -660,18 +650,18 @@ public class RecordToken extends AbstractNotConvertibleToken {
             throws IllegalActionException {
         RecordToken recordToken = (RecordToken) rightArgument;
 
-        Set intersectionSet = _createSet();
+        Set<String> intersectionSet = _createSet();
         intersectionSet.addAll(_fields.keySet());
         intersectionSet.retainAll(recordToken._fields.keySet());
 
-        Iterator labels = intersectionSet.iterator();
+        Iterator<String> labels = intersectionSet.iterator();
         int size = intersectionSet.size();
         String[] newLabels = new String[size];
         Token[] newValues = new Token[size];
         int i = 0;
 
         while (labels.hasNext()) {
-            String label = (String) labels.next();
+            String label = labels.next();
             Token token1 = get(label);
             Token token2 = recordToken.get(label);
 
@@ -696,18 +686,18 @@ public class RecordToken extends AbstractNotConvertibleToken {
             throws IllegalActionException {
         RecordToken recordToken = (RecordToken) rightArgument;
 
-        Set intersectionSet = _createSet();
+        Set<String> intersectionSet = _createSet();
         intersectionSet.addAll(_fields.keySet());
         intersectionSet.retainAll(recordToken._fields.keySet());
 
-        Iterator labels = intersectionSet.iterator();
+        Iterator<String> labels = intersectionSet.iterator();
         int size = intersectionSet.size();
         String[] newLabels = new String[size];
         Token[] newValues = new Token[size];
         int i = 0;
 
         while (labels.hasNext()) {
-            String label = (String) labels.next();
+            String label = labels.next();
             Token token1 = get(label);
             Token token2 = recordToken.get(label);
 
@@ -726,7 +716,7 @@ public class RecordToken extends AbstractNotConvertibleToken {
      * This may not be desired in some applications.
      */
     protected void _initializeStorage() {
-        _fields = new TreeMap();
+        _fields = new TreeMap<String, Token>();
     }
 
     /**
@@ -747,8 +737,8 @@ public class RecordToken extends AbstractNotConvertibleToken {
      * Subclasses of RecordToken may return a different implementation.
      * @return a new Set.
      */
-    protected Set _createSet() {
-        return new HashSet();
+    protected Set<String> _createSet() {
+        return new HashSet<String>();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -768,7 +758,7 @@ public class RecordToken extends AbstractNotConvertibleToken {
                 throw new IllegalActionException("RecordToken: the " + i
                         + "'th element of the labels or values array is null");
             }
-            //labels[i] = StringUtilities.sanitizeName(labels[i]);
+
             labels[i] = labels[i];
             if (!_fields.containsKey(labels[i])) {
                 _fields.put(labels[i], values[i]);

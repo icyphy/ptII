@@ -18,7 +18,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{85.0, 55.0}">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={139, 36, 796, 634}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={139, 36, 789, 649}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[562, 524]">
     </property>
@@ -27,7 +27,7 @@
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{281.0, 175.5}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This test checks that spaces are trimmed.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This test checks that labels with spaces are delimited with quotes.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{175.0, 50.0}">
         </property>
@@ -47,7 +47,7 @@
         </property>
     </entity>
     <entity name="Test" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{[x = 1, y_b = 2, z = 3], [x = 4, y_b = 5, z = 6]}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{[x = 1, &quot;y b&quot; = 2, z = 3], [x = 4, &quot;y b&quot; = 5, z = 6]}">
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
@@ -55,8 +55,12 @@
         </property>
     </entity>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+        </property>
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+        </property>
     </relation>
     <link port="CSVReader.output" relation="relation"/>
     <link port="CSVReader.endOfFile" relation="relation5"/>

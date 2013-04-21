@@ -2016,7 +2016,7 @@ String x;
   |   LOOKAHEAD(<OPENPAREN>)
       <OPENPAREN> expression() <CLOSEPAREN>
 
-  |   LOOKAHEAD( <OPENBRACKET> <ID> <SETEQUALS> )
+  |   LOOKAHEAD( <OPENBRACKET> (<STRING> | <ID>) <SETEQUALS> )
       orderedRecordConstruct()
       
   |   LOOKAHEAD(<OPENBRACKET>)
@@ -2339,8 +2339,14 @@ void orderedRecordConstruct()                               :
 {/*@bgen(jjtree) PtOrderedRecordConstructNode */
     try {
 /*@egen*/
-    <OPENBRACKET> x = <ID> {jjtn000._fieldNames.add(x.image);} <SETEQUALS> funcIf() 
-        (<COMMA> x = <ID> {jjtn000._fieldNames.add(x.image);} <SETEQUALS> funcIf())*
+    <OPENBRACKET> (
+    	(x = <STRING> {jjtn000._fieldNames.add(cleanupString(x.image));} <SETEQUALS> funcIf())
+    | 	(x = <ID> {jjtn000._fieldNames.add(x.image);} <SETEQUALS> funcIf())
+    ) 
+    (<COMMA> (
+    	(x = <STRING> {jjtn000._fieldNames.add(cleanupString(x.image));} <SETEQUALS> funcIf())
+    |	(x = <ID> {jjtn000._fieldNames.add(x.image);} <SETEQUALS> funcIf()))
+    )*
     <CLOSEBRACKET>/*@bgen(jjtree)*/
     } catch (Throwable jjte000) {
       if (jjtc000) {

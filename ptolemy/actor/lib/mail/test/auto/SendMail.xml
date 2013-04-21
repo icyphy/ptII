@@ -18,9 +18,9 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{85.0, 55.0}">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1, 24, 1039, 634}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={211, 19, 1620, 891}, maximized=true}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[805, 524]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1375, 745]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0394028535577">
     </property>
@@ -77,12 +77,12 @@
     <entity name="RecordDisassembler" class="ptolemy.actor.lib.RecordDisassembler">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[185.0, 257.5]">
         </property>
-        <port name="First_Name" class="ptolemy.actor.TypedIOPort">
+        <port name="First Name" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
         </port>
-        <port name="Work_Email" class="ptolemy.actor.TypedIOPort">
+        <port name="Work Email" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
@@ -120,16 +120,28 @@
         </property>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+        </property>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+        </property>
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+        </property>
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+        </property>
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+        </property>
     </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+        </property>
     </relation>
     <link port="SendMail.to" relation="relation2"/>
     <link port="SendMail.message" relation="relation4"/>
@@ -137,8 +149,8 @@
     <link port="CSVReader.output" relation="relation"/>
     <link port="CSVReader.endOfFile" relation="relation5"/>
     <link port="RecordDisassembler.input" relation="relation"/>
-    <link port="RecordDisassembler.First_Name" relation="relation3"/>
-    <link port="RecordDisassembler.Work_Email" relation="relation2"/>
+    <link port="RecordDisassembler.First Name" relation="relation3"/>
+    <link port="RecordDisassembler.Work Email" relation="relation2"/>
     <link port="StringReplace.replacement" relation="relation3"/>
     <link port="StringReplace.output" relation="relation4"/>
     <link port="Stop.input" relation="relation5"/>

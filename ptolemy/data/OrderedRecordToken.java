@@ -41,23 +41,19 @@ import ptolemy.util.StringUtilities;
 //// OrderedRecordToken
 
 /**
- A token that contains a set of label/token pairs. Operations on record
- tokens result in new record tokens containing only the common fields,
- where the operation specifies how to combine the data in the common
- fields.  Thus, for example, if two record tokens
- are added or subtracted, then common records
- (those with the same labels) will be added or subtracted,
- and the disjoint records will not appear in the result.
-
- <p>Record labels are sanitized so that any non-Java identifier
- characters are replaced with underscores, see
- {@link ptolemy.util.StringUtilities#sanitizeName(String)}</p>
+ A token that contains a set of label/token pairs. Record labels may be 
+ arbitrary strings. Operations on record tokens result in new record tokens 
+ containing only the common fields, where the operation specifies how to 
+ combine the data in the common fields.  Thus, for example, if two record 
+ tokens are added or subtracted, then common records (those with the same 
+ labels) will be added or subtracted, and the disjoint records will not 
+ appear in the result.
 
  <p>This implementation maintains the order of the entries as they were added.
 
  @author Ben Leinfelder
-@version $Id$
-@since Ptolemy II 8.0
+ @version $Id$
+ @since Ptolemy II 8.0
  @version $Id$
  @Pt.ProposedRating yellow (leinfelder)
  @Pt.AcceptedRating red (leinfelder)
@@ -75,25 +71,22 @@ public class OrderedRecordToken extends RecordToken {
      *  by a given Map object. The object cannot contain any null keys
      *  or values.
      *
-     *  <p>Record labels are sanitized so that any non-Java identifier
-     *  characters are replaced with underscores, see
-     *  {@link ptolemy.util.StringUtilities#sanitizeName(String)}</p>
-     *
      *  @param fieldMap A Map that has keys of type String and
      *  values of type Token.
      *  @exception IllegalActionException If the map contains null
      *  keys or values, or if it contains non-String keys or non-Token
      *  values.
      */
-    public OrderedRecordToken(Map fieldMap) throws IllegalActionException {
+    public OrderedRecordToken(Map<String, Token> fieldMap)
+            throws IllegalActionException {
         super(fieldMap);
     }
 
     /** Construct a RecordToken from the specified string.
-     *
-     *  <p>Record labels are sanitized so that any non-Java identifier
-     *  characters are replaced with underscores, see
-     *  {@link ptolemy.util.StringUtilities#sanitizeName(String)}</p>
+     *  <p>Record labels that contain any non-Java identifier characters
+     *  must be presented as a string i.e., surrounded with single or double
+     *  quotes. Quotes within label strings must be escaped using a backslash.
+     *  </p>
      *
      *  @param init A string expression of a record.
      *  @exception IllegalActionException If the string does not
@@ -108,10 +101,6 @@ public class OrderedRecordToken extends RecordToken {
      *  to one correspondence with each other.  That is, the i'th entry in
      *  the labels array is the label for the i'th value in the values array.
      *  If both arrays are empty, this creates an empty record token.
-     *
-     *  <p>Record labels are sanitized so that any non-Java identifier
-     *  characters are replaced with underscores, see
-     *  {@link ptolemy.util.StringUtilities#sanitizeName(String)}</p>
      *
      *  @param labels An array of labels.
      *  @param values An array of Tokens.
@@ -163,11 +152,11 @@ public class OrderedRecordToken extends RecordToken {
      */
     public int hashCode() {
         int code = 0;
-        Set labelSet = _fields.keySet();
-        Iterator iterator = labelSet.iterator();
+        Set<String> labelSet = _fields.keySet();
+        Iterator<String> iterator = labelSet.iterator();
 
         while (iterator.hasNext()) {
-            String label = (String) iterator.next();
+            String label = iterator.next();
             Token token = get(label);
             code ^= label.hashCode();
             code ^= token.hashCode();
@@ -181,10 +170,10 @@ public class OrderedRecordToken extends RecordToken {
      *  instead of curly braces,
      *  <code>[<i>label</i> = <i>value</i>, <i>label</i> = <i>value</i>, ...]</code>
      *  The record fields are listed in the their original order
-     *
-     *  <p>Record labels are sanitized so that any non-Java identifier
-     *  characters are replaced with underscores, see
-     *  {@link ptolemy.util.StringUtilities#sanitizeName(String)}</p>
+     *  <p>Record labels that contain any non-Java identifier characters
+     *  are surrounded with double quotes. Quotes within label strings are 
+     *  escaped using a backslash.
+     *  </p>
      *
      *  @return A String beginning with "[" that contains label and value
      *  pairs separated by commas, ending with "]".
@@ -204,11 +193,11 @@ public class OrderedRecordToken extends RecordToken {
                 stringRepresentation.append(", ");
             }
 
-            // FIXME: It is not clear if we need to sanitize again,
-            // but doing so protects against labels being set to
-            // spaces and other characters.
-            stringRepresentation.append(StringUtilities.sanitizeName(label)
-                    + " = " + value);
+            // quote and escape labels that are not valid Java identifiers
+            if (!StringUtilities.isValidIdentifier(label)) {
+                label = "\"" + StringUtilities.escapeString(label) + "\"";
+            }
+            stringRepresentation.append(label + " = " + value);
         }
 
         return stringRepresentation.toString() + "]";
@@ -230,7 +219,7 @@ public class OrderedRecordToken extends RecordToken {
      *   is maintained.
      */
     protected void _initializeStorage() {
-        _fields = new LinkedHashMap();
+        _fields = new LinkedHashMap<String, Token>();
     }
 
     /**
@@ -238,8 +227,8 @@ public class OrderedRecordToken extends RecordToken {
      * Here we are using an ordered set.
      * @return a new Set.
      */
-    protected Set _createSet() {
-        return new LinkedHashSet();
+    protected Set<String> _createSet() {
+        return new LinkedHashSet<String>();
     }
 
     /** Return true if the specified token is equal to this one.
@@ -257,15 +246,15 @@ public class OrderedRecordToken extends RecordToken {
             throws IllegalActionException {
         RecordToken recordToken = (RecordToken) rightArgument;
 
-        Set myLabelSet = _fields.keySet();
-        Set argLabelSet = recordToken._fields.keySet();
+        Set<String> myLabelSet = _fields.keySet();
+        Set<String> argLabelSet = recordToken._fields.keySet();
 
         if (!myLabelSet.equals(argLabelSet)) {
             return BooleanToken.FALSE;
         }
 
-        Iterator iterator = myLabelSet.iterator();
-        Iterator argIterator = argLabelSet.iterator();
+        Iterator<String> iterator = myLabelSet.iterator();
+        Iterator<String> argIterator = argLabelSet.iterator();
 
         while (iterator.hasNext()) {
             String label = (String) iterator.next();
