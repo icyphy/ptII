@@ -573,6 +573,7 @@ ALLPACKAGES = \
 	ptolemy.actor.lib.anomaly \
 	ptolemy.actor.lib.net \
 	ptolemy.actor.lib.qm \
+	ptolemy.actor.lib.resourceScheduler \
 	ptolemy.actor.lib.video \
 	ptolemy.actor.lib.vhdl \
 	ptolemy.caltrop \

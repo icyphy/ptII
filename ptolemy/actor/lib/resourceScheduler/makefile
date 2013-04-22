@@ -47,23 +47,24 @@ include $(CONFIG)
 PTPACKAGE =     resourceScheduler
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
-OTHER_FILES_TO_BE_JARED = \ 
+OTHER_FILES_TO_BE_JARED = \
 	DynamicCoreAssignmentSchedulerIcon.xml \
 	FixedPrioritySchedulerIcon.xml \
 	NonPreemptiveFCFSSchedulerIcon.xml \
 	PreemptiveEDFSchedulerIcon.xml \
-	SchedulerModelIcon.xml
+	SchedulerModelIcon.xml \
+	resourceScheduler.xml
 
 JSRCS = \
-    DynamicCoreAssignmentScheduler.java \
-    FixedPriorityScheduler.java \
-    NonPreemptiveFCFSScheduler.java \
-    PreemptiveEDFScheduler.java \
-    PriorityResourceAttributes.java \
-    ResourceAttributes.java \
-    ResourceScheduler.java \
-    ResourceSchedulePlotterEditorFactory.java \
-    SchedulerModel.java
+	DynamicCoreAssignmentScheduler.java \
+	FixedPriorityScheduler.java \
+	NonPreemptiveFCFSScheduler.java \
+	PreemptiveEDFScheduler.java \
+	PriorityResourceAttributes.java \
+	ResourceAttributes.java \
+	ResourceScheduler.java \
+	SchedulePlotterEditorFactory.java \
+	SchedulerModel.java
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
@@ -75,6 +76,7 @@ MISC_FILES = test doc-files
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
+	'ResourceScheduler$$ExecutionEventType.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 
