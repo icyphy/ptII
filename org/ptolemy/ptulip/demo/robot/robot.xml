@@ -19,7 +19,7 @@
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{340.0, 252.0}">
     </property>
     <entity name="Exec" class="ptolemy.actor.lib.Exec">
-        <property name="command" class="ptolemy.actor.parameters.PortParameter" value="python2 tulip_synth.py rsimple_example.yaml ">
+        <property name="command" class="ptolemy.actor.parameters.PortParameter" value="python2 tools/tulip_synth.py $PTII/org/ptolemy/ptulip/demo/robot/rsimple_example.yaml ">
         </property>
         <property name="directory" class="ptolemy.data.expr.FileParameter" value="/home/ptbuild/tulip-control">
         </property>
