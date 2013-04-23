@@ -543,22 +543,6 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
                 }
             }
 
-            /* FIXME: Don't know why the following was here. Attributes are cloned automatically.
-            for (DecoratorAttributes attribute : _decoratorAttributes.values()) {
-                DecoratorAttributes newParameter = (DecoratorAttributes) attribute
-                        .clone(workspace);
-
-                try {
-                    newParameter.setContainer(newObject);
-                } catch (KernelException exception) {
-                    throw new CloneNotSupportedException(
-                            "Failed to clone attribute "
-                                    + attribute.getFullName() + ": "
-                                    + exception);
-                }
-            }
-            */
-
             if (_debugging) {
                 if (workspace == null) {
                     _debug("Cloned", getFullName(), "into default workspace.");
