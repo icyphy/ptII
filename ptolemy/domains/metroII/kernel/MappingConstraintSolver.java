@@ -73,9 +73,7 @@ import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event;
  */
 public class MappingConstraintSolver implements ConstraintSolver {
 
-    /** Construct a mapping constraint solver of given size.
-     *
-     *  @param size The maximum number of allowed events.
+    /** Construct a mapping constraint solver.
      */
     public MappingConstraintSolver() {
     }

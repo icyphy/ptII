@@ -48,8 +48,6 @@ a {@link ResourceScheduler}.
  @since Ptolemy II 10.0
  @Pt.ProposedRating Yellow (eal)
  @Pt.AcceptedRating Red (eal)
- @see GiottoScheduler
- @see GiottoReceiver
  */
 public class PriorityResourceAttributes extends ResourceAttributes {
 

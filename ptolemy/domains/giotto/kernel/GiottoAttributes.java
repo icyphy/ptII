@@ -53,7 +53,7 @@ public class GiottoAttributes extends DecoratorAttributes {
         
     /** Constructor to use when editing a model.
      *  @param target The object being decorated.
-     *  @param decorator The decorator.
+     *  @param director The director.
      *  @throws IllegalActionException If the superclass throws it.
      *  @throws NameDuplicationException If the superclass throws it.
      */

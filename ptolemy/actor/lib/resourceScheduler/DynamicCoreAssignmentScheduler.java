@@ -160,7 +160,6 @@ public class DynamicCoreAssignmentScheduler extends ResourceScheduler {
 
     /** Override the base class to list all contained resource schedulers
      *  instead of actors.
-     *  @param container The container.
      *  @exception IllegalActionException Thrown if actor parameters
      *    cannot be read.
      */
