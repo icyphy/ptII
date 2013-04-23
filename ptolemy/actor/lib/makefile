@@ -241,6 +241,7 @@ JSRCS = \
 	SubscriptionAggregator.java \
 	Switch.java \
 	Synchronizer.java \
+	SynchronizeToRealTime.java \
 	Test.java \
 	TestExceptionAttribute.java \
 	TestExceptionHandler.java \
@@ -320,6 +321,7 @@ OTHER_FILES_TO_BE_JARED = \
 	SinewaveIcon.xml \
 	SingleEventIcon.xml \
 	SwitchIcon.xml \
+	SynchronizeToRealTimeIcon.xml \
 	TimeDelayIcon.xml \
 	TimedSine.xml \
 	TriggeredSinewave.xml \

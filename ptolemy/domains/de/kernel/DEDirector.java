@@ -2009,12 +2009,18 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
                 // find the actor associated with the event just found,
                 // and update the current tag with the event tag.
                 Time currentTime;
+                int depth = 0;
+                try {
+                    synchronized (_eventQueue) {
+                        lastFoundEvent = _eventQueue.get();
+                        currentTime = _consultTimeRegulators(lastFoundEvent.timeStamp());
 
-                if (_synchronizeToRealTime) {
-                    // If synchronized to the real time.
-                    int depth = 0;
-                    try {
-                        synchronized (_eventQueue) {
+                        // NOTE: Synchronize to real time here for backward compatibility,
+                        // but the preferred way to do this is now to use a
+                        // {@link SynchronizeToRealTime} attribute, which implements the
+                        //  {@link TimeRegulator} interface.
+                        if (_synchronizeToRealTime) {
+                            // If synchronized to the real time.
                             while (!_stopRequested && !_stopFireRequested) {
                                 lastFoundEvent = _eventQueue.get();
                                 currentTime = lastFoundEvent.timeStamp();
@@ -2105,13 +2111,13 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
                             if (_stopRequested || _stopFireRequested) {
                                 return null;
                             }
-                        } // sync
-                    } finally {
-                        if (depth > 0) {
-                            _workspace.reacquireReadPermission(depth);
-                        }
+                        } // if (_synchronizeToRealTime)
+                    } // sync
+                } finally {
+                    if (depth > 0) {
+                        _workspace.reacquireReadPermission(depth);
                     }
-                } // if (_synchronizeToRealTime)
+                }
 
                 // Consume the earliest event from the queue. The event must be
                 // obtained here, since a new event could have been enqueued

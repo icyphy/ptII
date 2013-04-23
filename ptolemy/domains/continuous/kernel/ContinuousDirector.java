@@ -1800,10 +1800,15 @@ public class ContinuousDirector extends FixedPointDirector implements
         // Note that time has already been automatically adjusted with the
         // accumulated suspend time.
         Time outTime = localClock.getLocalTimeForCurrentEnvironmentTime();
-        executiveDirector.getModelTime();
-
+        
         int localTimeExceedsOutsideTime = currentTime.compareTo(outTime);
-        if (localTimeExceedsOutsideTime > 0) {
+        
+        Time modifiedTime = _consultTimeRegulators(currentTime);
+        int modifiedTimeExceedsLocalTime = modifiedTime.compareTo(currentTime);
+
+        // Rollback has to occur if either the local time exceeds the modified time
+        // or a time regulator requires a smaller current time than the current time.
+        if (localTimeExceedsOutsideTime > 0 || modifiedTimeExceedsLocalTime < 0) {
             ///////////////////////////////////////////////////////////////
             // First case: Local current time exceeds that of the environment.
             if (!_commitIsPending) {
@@ -1813,6 +1818,13 @@ public class ContinuousDirector extends FixedPointDirector implements
                         + "Environment: " + outTime
                         + ", the model time (iteration begin time): "
                         + currentTime);
+            }
+            if (modifiedTimeExceedsLocalTime < 0 && modifiedTime.compareTo(outTime) < 0) {
+                throw new IllegalActionException(this,
+                        "A TimeRegulator requires time to be set back to "
+                        + modifiedTime
+                        + ", which is less than the last commit time of "
+                        + outTime);
             }
             // If we get here, local time exceeds the environment time
             // and we have speculatively executed past that local time.

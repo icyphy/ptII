@@ -24,6 +24,7 @@
             </property>
           </property>
         </entity>
+        <property name="SynchronizeToRealTime" class="ptolemy.actor.SynchronizeToRealTime"/>
 	    <entity name="VariableSleep" class="ptolemy.actor.lib.VariableSleep"/>
         <entity name="WallClockTime" class="ptolemy.actor.lib.WallClockTime"/>
       </group>

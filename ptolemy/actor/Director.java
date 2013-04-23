@@ -44,7 +44,6 @@ import ptolemy.actor.util.Dependency;
 import ptolemy.actor.util.Time;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
-import ptolemy.data.ObjectToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
@@ -1090,8 +1089,11 @@ public class Director extends Attribute implements Executable {
         if (_debugging) {
             _debug("Director: Called prefire().");
         }
+        
+        Time modifiedTime = _consultTimeRegulators(
+                localClock.getLocalTimeForCurrentEnvironmentTime());
 
-        setModelTime(localClock.getLocalTimeForCurrentEnvironmentTime());
+        setModelTime(modifiedTime);
 
         if (_debugging) {
             _debug("-- Setting current time to " + getModelTime());
@@ -1631,6 +1633,27 @@ public class Director extends Attribute implements Executable {
     protected boolean _actorFinished(Actor actor) {
         return _schedulerForActor.get(actor) != null
                 && _schedulerForActor.get(actor).lastScheduledActorFinished();
+    }
+    
+    /** Consult all attributes contained by the container of this director
+     *  that implement the {@link TimeRegulator} interface, if any, and return the
+     *  smallest time returned by those regulators. If there are no such
+     *  attributes, return the proposedTime argument.
+     *  @param proposedTime The time proposed.
+     *  @return The smallest time returned by a TimeRegulator, or the
+     *   proposedTime if none.
+     *  @exception IllegalActionException If a time regulator throws it.
+     */
+    protected Time _consultTimeRegulators(Time proposedTime) throws IllegalActionException {
+        Time returnValue = proposedTime;
+        List<TimeRegulator> regulators = getContainer().attributeList(TimeRegulator.class);
+        for (TimeRegulator regulator : regulators) {
+            Time modifiedTime = regulator.proposeTime(returnValue);
+            if (modifiedTime.compareTo(returnValue) < 0) {
+                returnValue = modifiedTime;
+            }
+        }
+        return returnValue;
     }
 
     /** Return a description of the object.  The level of detail depends

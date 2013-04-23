@@ -114,6 +114,7 @@ JSRCS = \
 	SubscriptionAggregatorPort.java \
 	SuperdenseTimeDirector.java \
 	TimedActor.java \
+	TimeRegulator.java \
 	TokenGotEvent.java \
 	TokenGotListener.java \
 	TokenSentEvent.java \
