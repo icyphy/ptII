@@ -418,25 +418,6 @@ public class MetroIIDEDirector extends DEDirector implements
                 } 
 
                 _events.clear();
-                if (!_eventQueue.isEmpty()
-                        && !_eventQueue.get().timeStamp().isNegative()) {
-                    Event.Builder builder = Event.newBuilder();
-                    builder.setName(getFullName() + ".Idle");
-                    builder.setOwner(getFullName());
-                    builder.setStatus(Event.Status.PROPOSED);
-                    builder.setType(Event.Type.GENERIC);
-                    builder.setTime(_eventQueue.get().timeStamp()
-                            .getLongValue());
-                    _events.add(builder);
-                } else {
-                    Event.Builder builder = Event.newBuilder();
-                    builder.setName(getFullName() + ".Idle");
-                    builder.setOwner(getFullName());
-                    builder.setStatus(Event.Status.PROPOSED);
-                    builder.setType(Event.Type.GENERIC);
-                    builder.setTime(Long.MAX_VALUE);
-                    _events.add(builder);
-                }
 
                 ArrayList<Actor> firingActorList = new ArrayList<Actor>();
                 for (Actor actor : actorList) {
@@ -479,6 +460,27 @@ public class MetroIIDEDirector extends DEDirector implements
                     }
                 }
                 actorList = firingActorList;
+                
+                if (!_eventQueue.isEmpty()
+                        && !_eventQueue.get().timeStamp().isNegative()) {
+                    Event.Builder builder = Event.newBuilder();
+                    builder.setName(getFullName() + ".Idle");
+                    builder.setOwner(getFullName());
+                    builder.setStatus(Event.Status.PROPOSED);
+                    builder.setType(Event.Type.GENERIC);
+                    builder.setTime(_eventQueue.get().timeStamp()
+                            .getLongValue()/10);
+                    _events.add(0, builder);
+                } else {
+                    Event.Builder builder = Event.newBuilder();
+                    builder.setName(getFullName() + ".Idle");
+                    builder.setOwner(getFullName());
+                    builder.setStatus(Event.Status.PROPOSED);
+                    builder.setType(Event.Type.GENERIC);
+                    builder.setTime(Long.MAX_VALUE);
+                    _events.add(0, builder);
+                }
+                
                 resultHandler.handleResult(_events);
                 
                 if (_events.get(0).getStatus() == Event.Status.NOTIFIED) {

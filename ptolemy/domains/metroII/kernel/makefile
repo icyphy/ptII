@@ -59,6 +59,8 @@ JSRCS = \
     FireMachine.java \
     Graph.java \
     MappingConstraintSolver.java \
+    MappingConstraintSolverTest.java \
+    MetroDebugger.java \
     MetroIICompositeActor.java \
     MetroIIDEDirector.java \
     MetroIIDEDirectorForPtides.java \
@@ -105,6 +107,8 @@ OPTIONAL_FILES = \
     'FireMachine$State.class' \
     'Graph.class' \
     'MappingConstraintSolver.class' \
+    'MappingConstraintSolverTest.class' \
+    'MetroDebugger.class' \
     'MappingConstraintSolver$ConstraintCounter.class' \
     'MetroIICompositeActor$1.class' \
     'MetroIICompositeActor.class' \

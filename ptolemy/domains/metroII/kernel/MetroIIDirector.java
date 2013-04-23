@@ -188,6 +188,11 @@ public class MetroIIDirector extends Director {
 
     public Parameter printTrace;
 
+    /**
+     * Option parameter whether debug info is printed out
+     */
+    public Parameter printDebug;
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -226,7 +231,17 @@ public class MetroIIDirector extends Director {
                 }
             }
 
-        } else {
+        } else if (attribute == printDebug) {
+            if (((BooleanToken) printDebug.getToken()).booleanValue()) {
+                _mappingConstraintSolver.turnOnDebugging(); 
+                _timeScheduler.turnOnDebugging();
+            }
+            else {
+                _mappingConstraintSolver.turnOffDebugging(); 
+                _timeScheduler.turnOffDebugging();
+            }
+        }
+        else {
             super.attributeChanged(attribute);
         }
     }
@@ -376,6 +391,9 @@ public class MetroIIDirector extends Director {
         printTrace = new Parameter(this, "printTrace");
         printTrace.setTypeEquals(BaseType.BOOLEAN);
         printTrace.setExpression("true");
+        printDebug = new Parameter(this, "printDebug");
+        printDebug.setTypeEquals(BaseType.BOOLEAN);
+        printDebug.setExpression("false");
     }
 
     ///////////////////////////////////////////////////////////////////

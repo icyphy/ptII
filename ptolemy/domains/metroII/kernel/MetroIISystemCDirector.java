@@ -45,6 +45,7 @@ import net.jimblackler.Utils.YieldAdapterIterable;
 import ptolemy.actor.Director;
 import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event;
 import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event.Builder;
+import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event.Status;
 import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.EventVector;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
@@ -67,16 +68,17 @@ public class MetroIISystemCDirector extends Director implements
     public MetroIISystemCDirector(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        initialize(); 
+        initialize();
     }
-    
+
     @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        MetroIISystemCDirector newObject = (MetroIISystemCDirector) super.clone(workspace);
-        newObject.events = (LinkedList<Event.Builder>) events.clone(); 
-        return newObject; 
+        MetroIISystemCDirector newObject = (MetroIISystemCDirector) super
+                .clone(workspace);
+        newObject.events = (LinkedList<Event.Builder>) events.clone();
+        return newObject;
     }
-    
+
     String path;
     String pipe2server = "m2event_ptolemy_buffer";
     String pipe2client = "m2event_metro_buffer";
@@ -158,6 +160,15 @@ public class MetroIISystemCDirector extends Director implements
         }
     }
 
+    public boolean atLeastOneNotified(Iterable<Event.Builder> events) {
+        for (Builder event : events) {
+            if (event.getStatus() == Status.NOTIFIED) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     LinkedList<Event.Builder> events;
 
     public void getfire(ResultHandler<Iterable<Event.Builder>> resultHandler)
@@ -165,7 +176,9 @@ public class MetroIISystemCDirector extends Director implements
 
         syncEvents(events);
 
-        resultHandler.handleResult(events);
+        do {
+            resultHandler.handleResult(events);
+        } while (!atLeastOneNotified(events));
 
         pushEvents(events);
     }
@@ -185,10 +198,11 @@ public class MetroIISystemCDirector extends Director implements
     public void initialize() throws IllegalActionException {
         super.initialize();
 
-        path = System.getenv("METRO_TEMP"); 
-        path = path + "/"; 
+        path = System.getenv("METRO_TEMP");
+        path = path + "/";
         if (path == null) {
-            throw new IllegalActionException("Environment varialble METRO_TEMP is not accessable."); 
+            throw new IllegalActionException(
+                    "Environment varialble METRO_TEMP is not accessable.");
         }
         events = new LinkedList<Event.Builder>();
     }
