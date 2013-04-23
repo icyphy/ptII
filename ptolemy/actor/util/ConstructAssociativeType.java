@@ -95,8 +95,12 @@ public class ConstructAssociativeType extends MonotonicFunction {
         int i = 0;
         for (TypedIOPort port : _ports) {
             InequalityTerm portTypeTerm = port.getTypeTerm();
-            labels[i] = port.getName();
-
+            if (port.getDisplayName() == null || port.getDisplayName().equals("")) {
+                labels[i] = port.getName();
+            } else {
+                labels[i] = port.getDisplayName();
+            }
+            
             if (portTypeTerm.isSettable()) {
                 types[i] = (Type) portTypeTerm.getValue();
             } else {

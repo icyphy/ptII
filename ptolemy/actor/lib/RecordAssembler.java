@@ -77,18 +77,11 @@ import ptolemy.kernel.util.Workspace;
  is that the type of each record field is no less than the type of the
  corresponding input port.
  </p>
- <p>Note that while port names may have spaces in them, record labels
- may not because record labels that have spaces in them are not
- parseable by the expression language.  Spaces in record labels
- are converted to underscores in the RecordToken constructors an
- toString() method.  If this actor has ports that have a space
- or other character that is substituted, then at runtime the port
- may resolve to an unknown type with a message like:</p>
- <pre>
-Caused by: ptolemy.actor.TypeConflictException: Types resolved
-  to unacceptable types in .Router due to the following objects:
-  (port .Router.Record Disassembler.sequence number: unknown)
- </pre>
+ <p>Note that if the display name of a port is set, display name is used in
+ the type constraints instead of name. This is useful in case fields to 
+ add to the record contain a period, because periods are not allowed in 
+ port names.</p>
+
 
  @author Yuhong Xiong, Marten Lohstroh
  @version $Id$
@@ -232,8 +225,14 @@ public class RecordAssembler extends TypedAtomicActor {
         for (TypedIOPort input : _inputs) {
             // only include ports that have no type declared
             if (input.getTypeTerm().isSettable()) {
+                String inputName;
+                if (input.getDisplayName() == null || input.getDisplayName().equals("")) {
+                    inputName = input.getName(); 
+                } else {
+                    inputName = input.getDisplayName();
+                }
                 result.add(new Inequality(new ExtractFieldType(output, 
-                        input.getName()), input.getTypeTerm()));
+                        inputName), input.getTypeTerm()));
             }
         }
 

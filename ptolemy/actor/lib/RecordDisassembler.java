@@ -72,7 +72,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  and outputs.
  </li>
  </ul>
-
+ 
  <p>If the received Token contains more fields than the output ports, the extra
  fields are ignored.</p>
 
@@ -81,18 +81,10 @@ import ptolemy.kernel.util.NameDuplicationException;
  the type of each output port is no less than the type of the corresponding
  record field.</p>
 
- <p>Note that while port names may have spaces in them, record labels
- may not because record labels that have spaces in them are not
- parseable by the expression language.  Spaces in record labels
- are converted to underscores in the RecordToken constructors an
- toString() method.  If this actor has ports that have a space
- or other character that is substituted, then at runtime the port
- may resolve to an unknown type with a message like:</p>
- <pre>
-Caused by: ptolemy.actor.TypeConflictException: Types resolved
-  to unacceptable types in .Router due to the following objects:
-  (port .Router.Record Disassembler.sequence number: unknown)
- </pre>
+ <p>Note that if the display name of a port is set, display name is used in
+ the type constraints instead of name. This is useful in case fields to 
+ extract from the record contain a period, because periods are not allowed 
+ in port names.</p>
 
  @author Yuhong Xiong, Steve Neuendorffer, Edward A. Lee, Marten Lohstroh
  @version $Id$
@@ -198,11 +190,16 @@ public class RecordDisassembler extends TypedAtomicActor {
                 outputPortList(), RecordType.class), input.getTypeTerm()));
 
         for (TypedIOPort output : outputPortList()) {
+            String outputName;
             // ignore unconnected ports
             if (output.numberOfSinks() < 1) {
                 continue;
             }
-            String outputName = output.getName();
+            if (output.getDisplayName() == null || output.getDisplayName().equals("")) {
+                outputName = output.getName(); 
+            } else {
+                outputName = output.getDisplayName();
+            }
             labels.add(outputName);
             types.add(BaseType.GENERAL);
 

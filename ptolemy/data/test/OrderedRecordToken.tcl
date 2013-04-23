@@ -58,4 +58,4 @@ test OrderedRecordToken-toString.2 {Test toString with spaces} {
     set r2 [java::new {ptolemy.data.OrderedRecordToken} $result1]
     set result2 [$r2 toString]
     list $result1 $result2 [$r1 equals $r2]
-} {{[with_spaces = "foo", value = 5]} {[with_spaces = "foo", value = 5]} 1}
+} {{["with spaces" = "foo", value = 5]} {["with spaces" = "foo", value = 5]} 1}

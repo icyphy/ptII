@@ -70,6 +70,8 @@ import javax.swing.table.JTableHeader;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 
+import org.jivesoftware.smack.util.StringUtils;
+
 import ptolemy.actor.Actor;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.TypeAttribute;
@@ -438,11 +440,11 @@ public class PortConfigurerDialog extends PtolemyDialog implements
             NamedObj composite = container.getContainer();
 
             if (composite != null) {
-                moml.append("<deletePort name=\"" + actualPort.getName()
+                moml.append("<deletePort name=\"" + StringUtils.escapeForXML(actualPort.getName())
                         + "\" entity=\"" + container.getName() + "\" />");
             } else {
                 moml.append("<deletePort name=\""
-                        + actualPort.getName(container) + "\" />");
+                        + StringUtils.escapeForXML(actualPort.getName(container)) + "\" />");
             }
 
             // NOTE: the context is the composite entity containing
@@ -494,8 +496,22 @@ public class PortConfigurerDialog extends PtolemyDialog implements
                             .get(ColumnNames.COL_NAME);
 
                     if (!actualPort.getName().equals(tableValue)) {
-                        havePortUpdate = true;
-                        updates.put(ColumnNames.COL_NAME, Boolean.TRUE);
+                        if (tableValue.contains(".")) {
+                            MessageHandler
+                                    .error("Failed to rename port "
+                                            + actualPort.getName()
+                                            + "; port names are not allowed to contain periods.",
+                                            new InternalErrorException(
+                                                    null,
+                                                    null,
+                                                    "Instead, alias the port by setting display name. " +
+                                                    "Right-click on the port,\nchoose Rename, then enter " +
+                                                    "the desired alias into the field Display Name."));
+                            _applyChangeRequestFailed = true;
+                        } else {
+                            havePortUpdate = true;
+                            updates.put(ColumnNames.COL_NAME, Boolean.TRUE);
+                        }
                     }
                 }
 
@@ -663,7 +679,24 @@ public class PortConfigurerDialog extends PtolemyDialog implements
                 // not have a pre-existing name.  Note that "rename"
                 // is used for pre-existing ports with new names.
                 if (_columnNames.contains(ColumnNames.COL_NAME)) {
-                    updates.put(ColumnNames.COL_NAME, Boolean.FALSE);
+                    String tableValue = (String) portInfo
+                            .get(ColumnNames.COL_NAME);
+                    if (tableValue.contains(".")) {
+                        MessageHandler
+                                .error("Failed to add port \""
+                                        + tableValue
+                                        + "\"; port names are not allowed to contain periods.",
+                                        new InternalErrorException(
+                                                null,
+                                                null,
+                                                "Instead, provide a name without periods and then alias the port by setting display name.\n"
+                                                        + "Right-click on the port, choose Rename, then enter "
+                                                        + "the desired alias into the field Display Name."));
+                        break;
+                    } else {
+                        updates.put(ColumnNames.COL_NAME, Boolean.FALSE);
+                    }
+                    
                 }
 
                 // Put this in the MoMLChangeRequest if the value is
@@ -1591,7 +1624,7 @@ public class PortConfigurerDialog extends PtolemyDialog implements
     private String _createMoMLUpdate(Hashtable updates, Hashtable portInfo,
             String currentPortName, String newPortName) {
         StringBuffer momlUpdate = new StringBuffer("<port name=\""
-                + currentPortName + "\">");
+                + StringUtilities.escapeForXML(currentPortName) + "\">");
 
         // Assumes that updates only contains keys that are in _columnNames.
         // Assumes that updates only contains COL_NAME as key if the
@@ -1600,7 +1633,7 @@ public class PortConfigurerDialog extends PtolemyDialog implements
             Boolean updateValue = (Boolean) updates.get(ColumnNames.COL_NAME);
 
             if (updateValue.booleanValue()) {
-                momlUpdate.append("<rename name=\"" + newPortName + "\"/>");
+                momlUpdate.append("<rename name=\"" + StringUtilities.escapeForXML(newPortName) + "\"/>");
             }
         }
 

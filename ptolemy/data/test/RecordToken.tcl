@@ -708,7 +708,7 @@ test RecordToken-toString.2 {Test toString with spaces} {
     set r2 [java::new {ptolemy.data.RecordToken} $result1]
     set result2 [$r2 toString]
     list $result1 $result2 [$r1 equals $r2]
-} {{{value = 5, with_spaces = "foo"}} {{value = 5, with_spaces = "foo"}} 1}
+} {{{value = 5, "with spaces" = "foo"}} {{value = 5, "with spaces" = "foo"}} 1}
 
 ######################################################################
 ####

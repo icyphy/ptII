@@ -106,7 +106,7 @@ public class RenameConfigurer extends Query implements ChangeListener,
      */
     public void apply() {
         if (_changed) {
-            String newName = getStringValue(_NAME_LABEL);
+            String newName = StringUtilities.escapeForXML(getStringValue(_NAME_LABEL));
             String displayName = StringUtilities
                     .escapeForXML(getStringValue(_DISPLAY_NAME_LABEL));
 
@@ -118,7 +118,7 @@ public class RenameConfigurer extends Query implements ChangeListener,
                         .message("Please save the model before changing the name.");
                 return;
             }
-            String oldName = _object.getName();
+            String oldName = StringUtilities.escapeForXML(_object.getName());
             String oldDisplayName = StringUtilities.escapeForXML(_object
                     .getDisplayName());
 
