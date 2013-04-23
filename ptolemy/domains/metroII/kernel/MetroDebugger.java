@@ -41,7 +41,7 @@ public class MetroDebugger {
         String buffer = "DEBUG:";
 
         if (event.hasTime()) {
-            buffer = buffer.concat(" Time " + Long.toString(event.getTime()));
+            buffer = buffer.concat(" Time " + event.getTime());
         }
 
         buffer = buffer.concat(" " + event.getStatus().toString());

@@ -1,12 +1,15 @@
 package ptolemy.domains.metroII.kernel;
 
+import ptolemy.actor.Director;
+import ptolemy.actor.util.Time;
+import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event;
 import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event.Builder;
 import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event.Status;
 
 public class TimeScheduler implements ConstraintSolver {
 
     public TimeScheduler() {
-        current_time = 0;
+        current_time = 0; 
     }
 
     public void turnOnDebugging() {
@@ -16,7 +19,7 @@ public class TimeScheduler implements ConstraintSolver {
     public void turnOffDebugging() {
         _debugger.turnOffDebugging();
     }
-
+    
     @Override
     public void resolve(Iterable<Builder> metroIIEventList) {
         _debugger.printTitle("TimeScheduler Begins at Time " + current_time); 
@@ -27,8 +30,8 @@ public class TimeScheduler implements ConstraintSolver {
         for (Builder event : metroIIEventList) {
             if (event.getStatus() == Status.PROPOSED) {
                 if (event.hasTime()) {
-                    if (event.getTime() < time) {
-                        time = event.getTime();
+                    if (event.getTime().getValue() < time) {
+                        time = event.getTime().getValue();
                     }
                 } else {
                     hasEventWithoutTime = true;
@@ -49,7 +52,7 @@ public class TimeScheduler implements ConstraintSolver {
             for (Builder event : metroIIEventList) {
                 if (event.getStatus() == Status.PROPOSED) {
                     if (event.hasTime()) {
-                        if (event.getTime() > time) {
+                        if (event.getTime().getValue() > time) {
                             event.setStatus(Status.WAITING);
                         }
                     }
@@ -61,8 +64,8 @@ public class TimeScheduler implements ConstraintSolver {
         for (Builder event : metroIIEventList) {
             if (event.getStatus() == Status.PROPOSED) {
                 if (event.hasTime()) {
-                    if (current_time < event.getTime()) {
-                        current_time = event.getTime();
+                    if (current_time < event.getTime().getValue()) {
+                        current_time = event.getTime().getValue();
                     }
                 }
             }
@@ -70,7 +73,9 @@ public class TimeScheduler implements ConstraintSolver {
         for (Builder event : metroIIEventList) {
             if (event.getStatus() == Status.PROPOSED) {
                 if (!event.hasTime()) {
-                    event.setTime(current_time);
+                    Event.Time.Builder builder = Event.Time.newBuilder();
+                    builder.setValue(current_time); 
+                    event.setTime(builder);
                 }
             }
         }
@@ -88,5 +93,5 @@ public class TimeScheduler implements ConstraintSolver {
     private MetroDebugger _debugger = new MetroDebugger();
 
     private long current_time;
-
+    
 }

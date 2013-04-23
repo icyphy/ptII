@@ -22,7 +22,13 @@ message Event {
 
   required Type type = 4;
   required Status status = 5; 
-  optional int64 time = 6;
+  
+  message Time {
+    required int64 value = 1;
+    optional double resolution = 2 [default = 0.000000000001]; 
+  }
+  
+  optional Time time = 6;
 }
 
 message EventVector {
