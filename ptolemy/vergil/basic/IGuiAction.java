@@ -39,7 +39,7 @@ the class implementing the actions but can just call doAction
 to trigger it.
 
 @author  Christian Motika
-@version $Id: IGuiAction.java 59288 2010-09-27 19:39:22Z cmot $
+@version $Id$
 @since Ptolemy II 9.0
 @Pt.ProposedRating Red (cmot)
 @Pt.AcceptedRating Red (cmot)

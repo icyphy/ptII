@@ -2,7 +2,7 @@
 #
 # @Author: Edward A. Lee, Contributor: Christopher Hylands
 #
-# @Version: $Id: MoMLParser.tcl 63926 2012-07-11 06:04:41Z marten $
+# @Version: $Id$
 #
 # @Copyright (c) 1997-2012 The Regents of the University of California.
 # All rights reserved.

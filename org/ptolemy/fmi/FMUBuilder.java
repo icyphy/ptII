@@ -40,7 +40,7 @@ import java.io.InputStreamReader;
  * Build a FMU shared object.
  *
  * @author Christopher Brooks
- * @version $Id: FMIModelDescription.java 65508 2013-01-19 13:07:17Z eal $
+ * @version $Id$
  * @Pt.ProposedRating Red (cxh)
  * @Pt.AcceptedRating Red (cxh)
  */

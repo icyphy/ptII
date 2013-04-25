@@ -2,7 +2,7 @@
 #
 # @Authors: Christopher Brooks
 #
-# @Version: $Id: makefile 62936 2012-02-07 02:53:27Z cxh $
+# @Version: $Id$
 #
 # @Copyright (c) 2013 The Regents of the University of California.
 # All rights reserved.

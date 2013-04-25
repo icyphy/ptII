@@ -49,7 +49,7 @@ import ptolemy.util.test.junit.JUnitTclTestBase;
  * </pre>
  *
  * @author Christopher Brooks
- * @version $Id: JUnitTclTest.java 62006 2011-09-17 21:27:28Z cxh $
+ * @version $Id$
  * @since Ptolemy II 8.1
  * @Pt.ProposedRating Green (cxh)
  * @Pt.AcceptedRating Green (cxh)

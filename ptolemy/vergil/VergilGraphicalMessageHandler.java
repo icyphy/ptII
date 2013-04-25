@@ -40,7 +40,7 @@ import ptolemy.vergil.basic.BasicGraphFrame;
  that contains the actor that caused the exception and zooms into the actor.
 
  @author  Christopher Brooks
- @version $Id: ActorGraphicalMessageHandler.java 61458 2011-07-11 19:54:07Z cxh $
+ @version $Id$
  @since Ptolemy II 9.0
  @Pt.ProposedRating Red (cxh)
  @Pt.AcceptedRating Red (cxh)

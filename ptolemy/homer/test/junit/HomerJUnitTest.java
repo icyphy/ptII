@@ -46,7 +46,7 @@ import ptolemy.util.StringUtilities;
 /**
  * Run homer as a junit test.
  * @author Christopher Brooks
- * @version $Id: ExampleSystemJUnitTest.java 62749 2012-01-09 07:04:24Z cxh $
+ * @version $Id$
  * @since Ptolemy II 8.1
  * @Pt.ProposedRating Green (cxh)
  * @Pt.AcceptedRating Green (cxh)

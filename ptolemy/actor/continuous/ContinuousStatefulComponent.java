@@ -36,7 +36,7 @@ import ptolemy.kernel.util.IllegalActionException;
  Interface for actors and directors
  that have tentative state that can be rolled back.
  @author  Haiyang Zheng and Edward A. Lee
- @version $Id: ContinuousStatefulComponent.java 64744 2012-10-01 22:51:43Z cxh $
+ @version $Id$
  @since Ptolemy II 6.0
  @Pt.ProposedRating Green (hyzheng)
  @Pt.AcceptedRating Green (eal)

@@ -1,6 +1,6 @@
 # Makefile for SysML Model of Computation Ptolemy Kernel
 #
-# @Version: $Id: makefile 65148 2012-12-06 01:46:45Z cxh $
+# @Version: $Id$
 # @Author: Christopher Brooks (makefile only)
 #
 # @Copyright (c) 2012 The Regents of the University of California.

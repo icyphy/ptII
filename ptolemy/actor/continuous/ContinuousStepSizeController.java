@@ -72,7 +72,7 @@ import ptolemy.kernel.util.IllegalActionException;
  coincide with one of these steps.
 
  @author  Jie Liu, Haiyang Zheng, Edward A. Lee
- @version $Id: ContinuousStepSizeController.java 57040 2010-01-27 20:52:32Z cxh $
+ @version $Id$
  @since Ptolemy II 0.2
  @Pt.ProposedRating Green (hyzheng)
  @Pt.AcceptedRating Green (eal)

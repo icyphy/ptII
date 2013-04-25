@@ -43,7 +43,7 @@ import com.sun.jna.Pointer;
  * use ##.
  *
  * @author Christopher Brooks
- * @version $Id: FMILibrary.java 63441 2012-04-30 19:02:37Z cxh $
+ * @version $Id$
  * @Pt.ProposedRating Red (cxh)
  * @Pt.AcceptedRating Red (cxh)
  */

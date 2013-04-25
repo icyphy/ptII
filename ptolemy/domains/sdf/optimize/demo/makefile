@@ -1,6 +1,6 @@
 # Makefile for PtolemyII SDF Optimize Demos
 #
-# @Version: $Id: makefile 47480 2007-12-06 18:25:06Z cxh $
+# @Version: $Id$
 # @Author: Christopher Brooks (makefile only)
 #
 # @Copyright (c) 2010 The Regents of the University of California.

@@ -1,6 +1,6 @@
 # Makefile for the Ptolemy II SystemDMS book, fsm chapter
 #
-# Version: $Id: makefile 62006 2011-09-17 21:27:28Z cxh $
+# Version: $Id$
 # Makefile Author: Christopher Brooks
 #
 # Copyright (c) 2012 The Regents of the University of California.

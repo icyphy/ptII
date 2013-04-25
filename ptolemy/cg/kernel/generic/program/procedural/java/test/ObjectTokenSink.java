@@ -42,7 +42,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  a Double with the value of 42.0.
 
  @author Christopher Brooks
- @version $Id: CustomAdder.java 63784 2012-06-19 23:54:14Z cxh $
+ @version $Id$
  @since Ptolemy II 8.1
 
  @Pt.ProposedRating Red (cxh)

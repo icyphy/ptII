@@ -35,7 +35,7 @@ package ptolemy.actor.continuous;
  that have a getCurrentStepSize() method and have state that can be
  rolled back.
  @author  Christopher Brooks
- @version $Id: ContinuousStatefulComponent.java 64744 2012-10-01 22:51:43Z cxh $
+ @version $Id$
  @since Ptolemy II 9.1
  @Pt.ProposedRating Green (hyzheng)
  @Pt.AcceptedRating Green (eal)

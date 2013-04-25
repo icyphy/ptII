@@ -39,7 +39,7 @@ package ptolemy.actor;
  object implements this interface.</p>
 
  @author Christopher Brooks
- @version $Id: Singleton.java 38798 2005-07-08 20:00:01Z cxh $
+ @version $Id$
  @since Ptolemy II 9.0
  @Pt.ProposedRating Green (eal)
  @Pt.AcceptedRating Green (cxh)

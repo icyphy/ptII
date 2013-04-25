@@ -37,7 +37,7 @@ import ptolemy.kernel.util.IllegalActionException;
  Code generator helper for FSMReceiver.
 
  @author Christopher Brooks
- @version $Id: FSMActor.java 64869 2012-10-26 12:54:51Z eal $
+ @version $Id$
  @since Ptolemy II 8.1
  @Pt.ProposedRating Red (zgang)
  @Pt.AcceptedRating Red (zgang)

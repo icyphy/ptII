@@ -54,7 +54,7 @@ import org.w3c.dom.Element;
  * </p>
  *
  * @author Christopher Brooks
- * @version $Id: FMIModelDescription.java 63521 2012-05-09 23:25:18Z cxh $
+ * @version $Id$
  * @Pt.ProposedRating Red (cxh)
  * @Pt.AcceptedRating Red (cxh)
  */

@@ -2,7 +2,7 @@
 #
 # @Author: Christopher Brooks
 #
-# @Version $Id: ArrayToken.tcl 59854 2010-11-16 18:47:42Z crawl $
+# @Version $Id$
 #
 # @Copyright (c) 2012 The Regents of the University of California.
 # All rights reserved.

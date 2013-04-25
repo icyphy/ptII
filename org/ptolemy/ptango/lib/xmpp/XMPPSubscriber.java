@@ -38,7 +38,7 @@ import org.jivesoftware.smackx.pubsub.listener.ItemEventListener;
  *
  *  @see XMPPGateway
  *  @author Marten Lohstroh
- *  @version $Id: XMPPSubscriber.java 64744 2012-10-24 22:51:43Z marten $
+ *  @version $Id$
  *  @since Ptolemy II 9.0
  *  @Pt.ProposedRating Red (marten)
  *  @Pt.AcceptedRating Red (marten)

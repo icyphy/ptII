@@ -1,6 +1,6 @@
 # Makefile for yield return
 #
-# @Version: $Id: makefile 33535 2004-05-06 23:51:31Z cxh $
+# @Version: $Id$
 # @Author: Christopher Brooks
 #
 # @Copyright (c) 2012 The Regents of the University of California.

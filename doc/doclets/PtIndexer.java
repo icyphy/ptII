@@ -60,7 +60,7 @@ import java.util.Set;
  *  <p>The {@link #search(String)} returns a list of values that match a key</p>
  *
  *  @author Christopher Brooks, Contributor: Edward A. Lee
- *  @version $Id: PtDoclet.java 61458 2011-07-11 19:54:07Z cxh $
+ *  @version $Id$
  *  @since Ptolemy II 9.0
  */
 public class PtIndexer {

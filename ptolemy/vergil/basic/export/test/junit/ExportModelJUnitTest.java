@@ -74,7 +74,7 @@ import ptolemy.vergil.basic.export.ExportModel;
  * </p>
  *
  * @author Christopher Brooks
- * @version $Id: FMUCoSimulationJUnitTest.java 63110 2012-03-06 02:09:03Z cxh $
+ * @version $Id$
  * @since Ptolemy II 8.1
  * @Pt.ProposedRating Green (cxh)
  * @Pt.AcceptedRating Red (cxh)

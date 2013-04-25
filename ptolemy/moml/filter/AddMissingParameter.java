@@ -47,7 +47,7 @@ import ptolemy.moml.MoMLParser;
   The two classes should be merged by parameterizing.
 
  @author Christopher Brooks
- @version $Id: AddEditorFactory.java 62222 2011-10-09 05:27:27Z cxh $
+ @version $Id$
  @since Ptolemy II 9.0
  @Pt.ProposedRating Red (cxh)
  @Pt.AcceptedRating Red (cxh)

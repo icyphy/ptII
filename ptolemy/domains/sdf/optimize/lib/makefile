@@ -1,6 +1,6 @@
 # Makefile for PtolemyII SDF Domain Buffer Optimization Testing
 #
-# @Version: $Id: makefile 43472 2006-08-21 23:16:56Z cxh $
+# @Version: $Id$
 # @Author: Christopher Brooks (makefile only)
 #
 # @Copyright (c) 2010 The Regents of the University of California.

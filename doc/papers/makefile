@@ -1,6 +1,6 @@
 # Makefile for the Ptolemy II papers
 #
-# Version: $Id: makefile 62431 2011-11-17 23:37:41Z cxh $
+# Version: $Id$
 # Makefile Author: Christopher Brooks
 #
 # Copyright (c) 2011-2012 The Regents of the University of California.

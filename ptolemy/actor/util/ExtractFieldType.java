@@ -55,7 +55,7 @@ import ptolemy.kernel.util.IllegalActionException;
  function partial.
  </p>
  @author Edward A. Lee, Marten Lohstroh
- @version $Id: CompositeType.java $
+ @version $Id$
  @since Ptolemy II 9.0
  @Pt.ProposedRating Red (marten)
  @Pt.AcceptedRating Red

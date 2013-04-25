@@ -2,7 +2,7 @@
 #
 # @Author: Christopher Brooks
 #
-# $Id: validDemos.tcl 64620 2012-09-12 17:21:44Z hudson $
+# $Id$
 #
 # @Copyright (c) 2013 The Regents of the University of California.
 # All rights reserved.

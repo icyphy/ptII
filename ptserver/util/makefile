@@ -1,6 +1,6 @@
 # Makefile for ptserver utilities.
 #
-# @Version: $Id: makefile 61072 2011-06-01 00:06:23Z cxh $
+# @Version: $Id$
 # @Author: Christopher Brooks (makefile only)
 #
 # @Copyright (c) 2011 The Regents of the University of California.

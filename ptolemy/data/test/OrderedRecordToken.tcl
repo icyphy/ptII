@@ -2,7 +2,7 @@
 #
 # @Author: Yuhong Xiong and Elaine Cheong
 #
-# @Version $Id: RecordToken.tcl 57040 2010-01-27 20:52:32Z cxh $
+# @Version $Id$
 #
 # @Copyright (c) 1997-2012 The Regents of the University of California.
 # All rights reserved.

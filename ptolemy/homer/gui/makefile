@@ -1,6 +1,6 @@
 # Makefile for gui code for homer - a model gui builder
 #
-# @Version: $Id: makefile 61629 2011-07-28 02:17:45Z ahuseyno $
+# @Version: $Id$
 # @Author: Christopher Brooks (makefile only)
 #
 # @Copyright (c) 2011 The Regents of the University of California.

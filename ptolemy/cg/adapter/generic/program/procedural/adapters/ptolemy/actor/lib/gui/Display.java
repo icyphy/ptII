@@ -36,7 +36,7 @@ import ptolemy.kernel.util.IllegalActionException;
  *  An adapter class for ptolemy.actor.lib.Display.
  *
  * @author Bert Rodiers
- * @version $Id: Display.java 61458 2011-07-11 19:54:07Z cxh $
+ * @version $Id$
  * @since Ptolemy II 8.0
  * @Pt.ProposedRating Red (rodiers)
  * @Pt.AcceptedRating Red (rodiers)

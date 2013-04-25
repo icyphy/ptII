@@ -38,7 +38,7 @@ import java.lang.reflect.Proxy;
  * There is no public constructor.  Instead, call stati set*Method() methods.
  *
  *  @author Christopher Brooks, Based on OSXAdapter.java, downloaded from: <a href="http://developer.apple.com/library/mac/#samplecode/OSXAdapter/Listings/src_OSXAdapter_java.html">http://developer.apple.com/library/mac/#samplecode/OSXAdapter/Listings/src_OSXAdapter_java.html</a> on July 26, 2011.
- * @version $Id: Top.java 61567 2011-07-21 07:19:30Z eal $
+ * @version $Id$
  * @since Ptolemy II 9.0
  * @Pt.ProposedRating Red (cxh)
  * @Pt.AcceptedRating Red (cxh)

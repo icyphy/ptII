@@ -43,7 +43,7 @@ import ptolemy.kernel.util.IllegalActionException;
  An adapter class for ptolemy.actor.lib.Ramp.
 
  @author Jia Zou, based on Ramp.java by Gang Zhou, Bert Rodiers
- @version $Id: Ramp.java 57044 2010-01-27 22:41:05Z cxh $
+ @version $Id$
  @since Ptolemy II 8.0
  @Pt.ProposedRating Red (jiazou)
  @Pt.AcceptedRating Red (jiazou)

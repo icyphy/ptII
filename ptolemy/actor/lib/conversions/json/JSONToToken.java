@@ -80,7 +80,7 @@ the least upper bound of the entire collection.</p>
 
 @see TokenToJSON
 @author  Marten Lohstroh, Contributor: Beth Latronico
-@version $Id: JSONToToken.java $
+@version $Id$
 @since Ptolemy II 9.0
 @Pt.ProposedRating Yellow (marten)
 @Pt.AcceptedRating Red (chx)

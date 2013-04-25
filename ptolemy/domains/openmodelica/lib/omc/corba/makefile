@@ -1,6 +1,6 @@
 # Makefile for Ptolemy interface to OpenModelica Corba classes 
 #
-# @Version: $Id: makefile 65385 2013-01-07 12:39:10Z mmirzae $
+# @Version: $Id$
 # @Author: Christopher Brooks (makefile only)
 #
 # @Copyright (c) 2012 The Regents of the University of California.

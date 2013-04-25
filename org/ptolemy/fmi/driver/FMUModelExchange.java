@@ -74,7 +74,7 @@ import com.sun.jna.ptr.ByteByReference;
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</p>
  *
  * @author Christopher Brooks, based on fmusim_me/main.c by Jakob Mauss
- * @version $Id: FMUModelExchange.java 63359 2012-04-16 06:45:49Z cxh $
+ * @version $Id$
  * @Pt.ProposedRating Red (cxh)
  * @Pt.AcceptedRating Red (cxh)
  */

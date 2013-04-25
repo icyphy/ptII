@@ -1,5 +1,5 @@
 #!/bin/sh
-# $Id: updateDemos 57308 2010-02-24 15:02:01Z cxh $
+# $Id$
 # Script that updates the demos
 
 demos=`cd $PTII/ptolemy/configs/doc; make --no-print-directory listDemos |  egrep -v '(iRobotCreateVerification|Matlab|SystemLevelType)' `

@@ -2,7 +2,7 @@
 #
 # @Author: Christopher Brooks, based on RecordType.tcl by Yuhong Xiong, Elaine Cheong and Steve Neuendorffer
 #
-# @Version $Id: UnionType.tcl 57040 2010-01-27 20:52:32Z cxh $
+# @Version $Id$
 #
 # @Copyright (c) 2012 The Regents of the University of California.
 # All rights reserved.

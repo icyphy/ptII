@@ -45,7 +45,7 @@ import com.sun.jna.NativeLibrary;
  *  _processArgs(args) and them simulate(...).</p>
  *
  *  @author Christopher Brooks
- *  @version $Id: FMUCoSimulation.java 63359 2012-04-16 06:45:49Z cxh $
+ *  @version $Id$
  *  @Pt.ProposedRating Red (cxh)
  *  @Pt.AcceptedRating Red (cxh)
  */

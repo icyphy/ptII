@@ -2,7 +2,7 @@
 #
 # @Author: Christopher Brooks
 #
-# @Version: $Id: testDefs.tcl 36428 2005-02-28 21:07:31Z cxh $
+# @Version: $Id$
 #
 # @Copyright (c) 2012 The Regents of the University of California.
 # All rights reserved.

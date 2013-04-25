@@ -2,7 +2,7 @@
 # Awk script to generate Sun Java HTML compatible files
 #
 # Author:  Christopher Hylands
-# Version: $Id: ptinyKepler.awk 42203 2006-05-02 22:53:47Z cxh $
+# Version: $Id$
 #
 # Copyright (c) 2001-2006 The Regents of the University of California.
 # 	All Rights Reserved.

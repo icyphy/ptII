@@ -77,7 +77,7 @@ import ptolemy.kernel.util.NamedObj;
  *  FIXME: add XMPP icon
  *  @see XMPPGateway
  *  @author Marten Lohstroh and Ben Zhang
- *  @version $Id: XMPPGateway.java 64744 2012-10-24 22:51:43Z marten $
+ *  @version $Id$
  *  @since Ptolemy II 9.0
  *  @Pt.ProposedRating Red (marten)
  *  @Pt.AcceptedRating Red (marten)

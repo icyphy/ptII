@@ -37,7 +37,7 @@ a get() method that retrieves the type of the value associated with a given
 key.
 
 @author Marten Lohstroh
-@version $Id: CompositeType.java $
+@version $Id$
 @since Ptolemy II 9.0
 @Pt.ProposedRating Red (marten)
 @Pt.AcceptedRating Red

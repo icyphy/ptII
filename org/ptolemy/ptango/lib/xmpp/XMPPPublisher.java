@@ -35,7 +35,7 @@ package org.ptolemy.ptango.lib.xmpp;
  *
  *  @see XMPPGateway
  *  @author Marten Lohstroh
- *  @version $Id: XMPPPublisher.java 64744 2012-10-24 22:51:43Z marten $
+ *  @version $Id$
  *  @since Ptolemy II 9.0
  *  @Pt.ProposedRating Red (marten)
  *  @Pt.AcceptedRating Red (marten)

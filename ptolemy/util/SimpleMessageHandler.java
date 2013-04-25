@@ -35,7 +35,7 @@ package ptolemy.util;
  @see ptolemy.gui.GraphicalMessageHandler
 
  @author  Christopher Brooks
- @version $Id: MessageHandler.java 57040 2010-01-27 20:52:32Z cxh $
+ @version $Id$
  @since Ptolemy II 9.0
  @Pt.ProposedRating Red (cxh)
  @Pt.AcceptedRating Red (cxh)

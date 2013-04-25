@@ -82,7 +82,7 @@ To use this actor, instantiate it, and then add input ports
 (instances of TypedIOPort).
 </p>
 @author Edward A. Lee, Haiyang Zheng, Yuhong Xiong, Marten Lohstroh
-@version $Id: UnionMerge.java 63960 2012-07-13 22:59:42Z cxh $
+@version $Id$
 @since Ptolemy II 9.0
 @Pt.ProposedRating Red (yuhongx)
 @Pt.AcceptedRating Red (yuhongx)

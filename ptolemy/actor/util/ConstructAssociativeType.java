@@ -49,7 +49,7 @@ import ptolemy.util.StringUtilities;
  *  passed to the constructor.
  *
  * @author Edward A. Lee, Marten Lohstroh
- * @version $Id: CompositeType.java $
+ * @version $Id$
  * @since Ptolemy II 9.0
  * @Pt.ProposedRating Red (marten)
  * @Pt.AcceptedRating Red

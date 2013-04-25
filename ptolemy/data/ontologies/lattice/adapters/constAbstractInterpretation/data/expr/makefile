@@ -2,7 +2,7 @@
 #
 # @Authors: Christopher Brooks (makefile only)
 #
-# $Id: makefile 58592 2010-07-13 21:37:06Z bldmastr $
+# $Id$
 #
 # @Copyright (c) 2010 The Regents of the University of California.
 # All rights reserved.

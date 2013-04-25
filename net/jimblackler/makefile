@@ -1,6 +1,6 @@
 # Makefile sources from outside of Ptolemy
 #
-# @Version: $Id: makefile 62288 2011-10-21 18:11:37Z cxh $
+# @Version: $Id$
 # @Author: Christopher Brooks
 #
 # @Copyright (c) 2012 The Regents of the University of California.

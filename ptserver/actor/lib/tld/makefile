@@ -1,6 +1,6 @@
 # Makefile for ptserver actors - a system that allows execution of models on handheld devices
 #
-# @Version: $Id: makefile 61448 2011-07-11 17:11:01Z cxh $
+# @Version: $Id$
 # @Author: Christopher Brooks (makefile only)
 #
 # @Copyright (c) 2011 The Regents of the University of California.

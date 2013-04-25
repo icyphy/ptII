@@ -42,7 +42,7 @@ import ptolemy.util.test.junit.JUnitCGCTestBase;
  * so that it is easy for developers to run tests.</p>
 
  * @author Christopher Brooks
- * @version $Id: JUnitCGCTest.java 62067 2011-09-23 06:31:24Z cxh $
+ * @version $Id$
  * @since Ptolemy II 8.1
  * @Pt.ProposedRating Green (cxh)
  * @Pt.AcceptedRating Green (cxh)

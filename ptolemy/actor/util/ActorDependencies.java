@@ -47,7 +47,7 @@ import ptolemy.kernel.util.NamedObj;
  *  Utilities for data dependencies between actors.
  *
  *  @author Christopher Brooks
- *  @version $Id: DependencyResultsDialog.java 63152 2012-03-08 21:28:43Z derler $
+ *  @version $Id$
  *  @since Ptolemy II 9.0
  *  @Pt.ProposedRating Yellow (cxh)
  *  @Pt.AcceptedRating Red (cxh)

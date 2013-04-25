@@ -1,6 +1,6 @@
 # Makefile org.ptolemy sources
 #
-# @Version: $Id: makefile 63573 2012-05-15 19:10:30Z cxh $
+# @Version: $Id$
 # @Author: Christopher Brooks
 #
 # @Copyright (c) 2012 The Regents of the University of California.
