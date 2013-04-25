@@ -69,16 +69,16 @@ public abstract class ActMachine implements StartOrResumable {
         String actorName = _actor.getFullName();
         String actorNameWithoutModelName = _trimModelName(actorName);
 
-        _PrefireBeginEvent = null; //MetroEventBuilder.newProposedEvent(
-        //actorNameWithoutModelName + "." + "PREFIRE_BEGIN", actorName);
-        _FireBeginEvent = null;// MetroEventBuilder.newProposedEvent(
-        //actorNameWithoutModelName + "." + "FIRE_BEGIN", actorName);
-        _FiringEvent = null; //MetroEventBuilder.newProposedEvent(actorNameWithoutModelName
-        //+ "." + "FIRING", actorName);
-        _PostfireBeginEvent = null; //MetroEventBuilder.newProposedEvent(
-        //actorNameWithoutModelName + "." + "POSTFIRE_BEGIN", actorName);
-        _PostfireEndEvent = null; //MetroEventBuilder.newProposedEvent(
-        //actorNameWithoutModelName + "." + "POSTFIRE_END", actorName);
+        _PrefireBeginEvent = MetroEventBuilder.newProposedEvent(
+        actorNameWithoutModelName + "." + "PREFIRE_BEGIN", actorName);
+        _FireBeginEvent = MetroEventBuilder.newProposedEvent(
+        actorNameWithoutModelName + "." + "FIRE_BEGIN", actorName);
+        _FiringEvent = MetroEventBuilder.newProposedEvent(actorNameWithoutModelName
+        + "." + "FIRING", actorName);
+        _PostfireBeginEvent = MetroEventBuilder.newProposedEvent(
+        actorNameWithoutModelName + "." + "POSTFIRE_BEGIN", actorName);
+        _PostfireEndEvent = MetroEventBuilder.newProposedEvent(
+        actorNameWithoutModelName + "." + "POSTFIRE_END", actorName);
 
         reset();
     }

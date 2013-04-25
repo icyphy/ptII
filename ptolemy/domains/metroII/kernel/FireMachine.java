@@ -69,12 +69,12 @@ public abstract class FireMachine implements StartOrResumable {
         String actorName = _actor.getFullName();
         String actorNameWithoutModelName = _trimModelName(actorName);
 
-        _BeginEvent = null; //MetroEventBuilder.newProposedEvent(
-        //actorNameWithoutModelName + "." + "FIRE_BEGIN", actorName);
-        _ProcessEvent = null; //MetroEventBuilder.newProposedEvent(
-                //actorNameWithoutModelName + "." + "PROCESS", actorName);
-        _EndEvent = null; //MetroEventBuilder.newProposedEvent(
-                //actorNameWithoutModelName + "." + "FIRE_END", actorName);
+        _BeginEvent = MetroEventBuilder.newProposedEvent(
+        actorNameWithoutModelName + "." + "FIRE_BEGIN", actorName);
+        _ProcessEvent = MetroEventBuilder.newProposedEvent(
+                actorNameWithoutModelName + "." + "PROCESS", actorName);
+        _EndEvent = MetroEventBuilder.newProposedEvent(
+                actorNameWithoutModelName + "." + "FIRE_END", actorName);
         
         reset();
     }

@@ -357,9 +357,9 @@ public class MetroIIDEDirector extends DEDirector implements
                         + "  with microstep as " + _microstep);
             }
 
-//             Event.Builder idleEvent = MetroEventBuilder.newProposedEvent(
-//                     getFullName() + ".Idle", getFullName(), Long.MAX_VALUE,
-//                     getTimeResolution());
+            Event.Builder idleEvent = MetroEventBuilder.newProposedEvent(
+                    getFullName() + ".Idle", getFullName(), Long.MAX_VALUE,
+                    getTimeResolution());
             do {
 
                 // NOTE: This fire method does not call super.fire()
@@ -477,15 +477,15 @@ public class MetroIIDEDirector extends DEDirector implements
                             .getLongValue();
                 }
 
-//                 idleEvent = MetroEventBuilder.newProposedEvent(getFullName()
-//                         + ".Idle", getFullName(), idleEventTimeStamp,
-//                         getTimeResolution());
+                idleEvent = MetroEventBuilder.newProposedEvent(getFullName()
+                        + ".Idle", getFullName(), idleEventTimeStamp,
+                        getTimeResolution());
 
-//                _events.add(idleEvent);
+                _events.add(idleEvent);
 
                 resultHandler.handleResult(_events);
 
-            } while (_events != null /* idleEvent.getStatus() != Event.Status.NOTIFIED*/);
+            } while (idleEvent.getStatus() != Event.Status.NOTIFIED);
 
             this.setModelTime(_eventQueue.get().timeStamp());
             this.setIndex(_eventQueue.get().microstep());
