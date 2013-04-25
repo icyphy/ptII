@@ -70,8 +70,6 @@ import javax.swing.table.JTableHeader;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 
-import org.jivesoftware.smack.util.StringUtils;
-
 import ptolemy.actor.Actor;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.TypeAttribute;
@@ -440,11 +438,11 @@ public class PortConfigurerDialog extends PtolemyDialog implements
             NamedObj composite = container.getContainer();
 
             if (composite != null) {
-                moml.append("<deletePort name=\"" + StringUtils.escapeForXML(actualPort.getName())
+                moml.append("<deletePort name=\"" + StringUtilities.escapeForXML(actualPort.getName())
                         + "\" entity=\"" + container.getName() + "\" />");
             } else {
                 moml.append("<deletePort name=\""
-                        + StringUtils.escapeForXML(actualPort.getName(container)) + "\" />");
+                        + StringUtilities.escapeForXML(actualPort.getName(container)) + "\" />");
             }
 
             // NOTE: the context is the composite entity containing
