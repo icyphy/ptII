@@ -57,6 +57,7 @@ OTHER_FILES_TO_BE_JARED = \
 
 JSRCS = \
 	DynamicCoreAssignmentScheduler.java \
+	ExecutionTimeResourceAttributes.java \
 	FixedPriorityScheduler.java \
 	NonPreemptiveFCFSScheduler.java \
 	PreemptiveEDFScheduler.java \
