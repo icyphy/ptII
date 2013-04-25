@@ -6,6 +6,7 @@ public class MetroDebugger {
 
     public MetroDebugger() {
         // TODO Auto-generated constructor stub
+        turnOffDebugging(); 
     }
 
     public boolean debugging() {
@@ -41,7 +42,7 @@ public class MetroDebugger {
         String buffer = "DEBUG:";
 
         if (event.hasTime()) {
-            buffer = buffer.concat(" Time " + event.getTime());
+            buffer = buffer.concat(" Time " + event.getTime().getValue());
         }
 
         buffer = buffer.concat(" " + event.getStatus().toString());

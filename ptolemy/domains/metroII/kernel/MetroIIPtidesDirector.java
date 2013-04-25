@@ -415,21 +415,21 @@ public class MetroIIPtidesDirector extends MetroIIDEDirectorForPtides {
         }
         double minDelay = minDelayBetween(ports1, ports2); 
         
-        if (e1.ioPort() != null && e2.ioPort() != null) {
-            System.out
-                    .println(e1.ioPort().getName()
-                            + " "
-                            + e2.ioPort().getName()
-                            + " "
-                            + e1.timeStamp()
-                            + " "
-                            + e2.timeStamp()
-                            + " "
-                            + minDelay
-                            + " "
-                            + (e1.timeStamp().add(minDelay)
-                                    .compareTo(e2.timeStamp()) <= 0));
-        }
+//        if (e1.ioPort() != null && e2.ioPort() != null) {
+//            System.out
+//                    .println(e1.ioPort().getName()
+//                            + " "
+//                            + e2.ioPort().getName()
+//                            + " "
+//                            + e1.timeStamp()
+//                            + " "
+//                            + e2.timeStamp()
+//                            + " "
+//                            + minDelay
+//                            + " "
+//                            + (e1.timeStamp().add(minDelay)
+//                                    .compareTo(e2.timeStamp()) <= 0));
+//        }
         if (e1.timeStamp().add(minDelay).compareTo(e2.timeStamp()) <= 0) {
             return true;
         } else {
@@ -1558,8 +1558,8 @@ public class MetroIIPtidesDirector extends MetroIIDEDirectorForPtides {
                 .getFullName());
 
         if (metroActor.getState() != FireMachine.State.START) {
-            System.out.println(metroActor.getState());
-            System.out.println(FireMachine.State.START);
+            // System.out.println(metroActor.getState());
+            // System.out.println(FireMachine.State.START);
             return false;
         }
 

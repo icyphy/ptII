@@ -29,7 +29,6 @@
 package ptolemy.domains.metroII.kernel;
 
 import ptolemy.actor.Actor;
-import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event;
 import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event.Builder;
 import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event.Status;
 
@@ -66,9 +65,17 @@ public abstract class FireMachine implements StartOrResumable {
      */
     public FireMachine(Actor actor) {
         _actor = actor;
-        _BeginEvent = _createMetroIIEvent("FIRE_BEGIN"); 
-        _ProcessEvent = _createMetroIIEvent("PROCESS"); 
-        _EndEvent = _createMetroIIEvent("FIRE_END"); 
+
+        String actorName = _actor.getFullName();
+        String actorNameWithoutModelName = _trimModelName(actorName);
+
+        _BeginEvent = MetroEventBuilder.newProposedEvent(
+                actorNameWithoutModelName + "." + "FIRE_BEGIN", actorName);
+        _ProcessEvent = MetroEventBuilder.newProposedEvent(
+                actorNameWithoutModelName + "." + "PROCESS", actorName);
+        _EndEvent = MetroEventBuilder.newProposedEvent(
+                actorNameWithoutModelName + "." + "FIRE_END", actorName);
+        
         reset();
     }
 
@@ -150,19 +157,6 @@ public abstract class FireMachine implements StartOrResumable {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-
-    /** 
-    * Create a MetroII event
-    */
-    private Builder _createMetroIIEvent(String name) {
-        Event.Builder builder = Event.newBuilder();
-        System.out.println(_trimModelName(_actor.getFullName()));
-        builder.setName(_trimModelName(_actor.getFullName()) + "." + name);
-        builder.setOwner(_actor.getFullName());
-        builder.setStatus(Event.Status.PROPOSED);
-        builder.setType(Event.Type.GENERIC);
-        return builder;
-    }
     
     private String _trimModelName(String name) {
         assert name.length()>1; 

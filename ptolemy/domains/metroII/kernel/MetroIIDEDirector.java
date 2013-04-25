@@ -357,6 +357,9 @@ public class MetroIIDEDirector extends DEDirector implements
                         + "  with microstep as " + _microstep);
             }
 
+            Event.Builder idleEvent = MetroEventBuilder.newProposedEvent(
+                    getFullName() + ".Idle", getFullName(), Long.MAX_VALUE,
+                    getTimeResolution());
             do {
 
                 // NOTE: This fire method does not call super.fire()
@@ -466,49 +469,26 @@ public class MetroIIDEDirector extends DEDirector implements
                 }
                 actorList = firingActorList;
 
+                long idleEventTimeStamp = Long.MAX_VALUE;
+
                 if (!_eventQueue.isEmpty()
                         && !_eventQueue.get().timeStamp().isNegative()) {
-                    Event.Builder builder = Event.newBuilder();
-                    builder.setName(getFullName() + ".Idle");
-                    builder.setOwner(getFullName());
-                    builder.setStatus(Event.Status.PROPOSED);
-                    builder.setType(Event.Type.GENERIC);
-                    Event.Time.Builder timeBuilder = Event.Time.newBuilder();
-                    long timeValue = _eventQueue.get().timeStamp()
+                    idleEventTimeStamp = _eventQueue.get().timeStamp()
                             .getLongValue();
-                    double scaler = this.getTimeResolution()
-                            / timeBuilder.getResolution();
-
-                    assert scaler > 0;
-                    assert Math.abs(scaler - (int) scaler) < 0.00001;
-
-                    timeValue = timeValue * ((int) scaler);
-                    timeBuilder.setValue(timeValue);
-                    builder.setTime(timeBuilder);
-                    _events.add(0, builder);
-                } else {
-                    Event.Builder builder = Event.newBuilder();
-                    builder.setName(getFullName() + ".Idle");
-                    builder.setOwner(getFullName());
-                    builder.setStatus(Event.Status.PROPOSED);
-                    builder.setType(Event.Type.GENERIC);
-                    Event.Time.Builder timeBuilder = Event.Time.newBuilder();
-                    timeBuilder.setValue(Long.MAX_VALUE);
-                    builder.setTime(timeBuilder);
-                    _events.add(0, builder);
                 }
+
+                idleEvent = MetroEventBuilder.newProposedEvent(getFullName()
+                        + ".Idle", getFullName(), idleEventTimeStamp,
+                        getTimeResolution());
+
+                _events.add(idleEvent);
 
                 resultHandler.handleResult(_events);
 
-                if (_events.get(0).getStatus() == Event.Status.NOTIFIED) {
-                    this.setModelTime(_eventQueue.get().timeStamp());
-                    this.setIndex(_eventQueue.get().microstep());
+            } while (idleEvent.getStatus() != Event.Status.NOTIFIED);
 
-                    // System.out.println(_eventQueue);
-                }
-
-            } while (_events.get(0).getStatus() != Event.Status.NOTIFIED);
-
+            this.setModelTime(_eventQueue.get().timeStamp());
+            this.setIndex(_eventQueue.get().microstep());
             // Since we are now actually stopping the firing, we can set this false.
             _stopFireRequested = false;
 

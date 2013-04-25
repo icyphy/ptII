@@ -43,6 +43,7 @@ import ptolemy.data.expr.FileParameter;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event;
+import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event.Status;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
@@ -233,15 +234,15 @@ public class MetroIIDirector extends Director {
 
         } else if (attribute == printDebug) {
             if (((BooleanToken) printDebug.getToken()).booleanValue()) {
-                _mappingConstraintSolver.turnOnDebugging(); 
+                _mappingConstraintSolver.turnOnDebugging();
                 _timeScheduler.turnOnDebugging();
-            }
-            else {
-                _mappingConstraintSolver.turnOffDebugging(); 
+                _debugger.turnOnDebugging();
+            } else {
+                _mappingConstraintSolver.turnOffDebugging();
                 _timeScheduler.turnOffDebugging();
+                _debugger.turnOffDebugging();
             }
-        }
-        else {
+        } else {
             super.attributeChanged(attribute);
         }
     }
@@ -302,6 +303,9 @@ public class MetroIIDirector extends Director {
 
             // Phase 1: base model execution
             //Debug.Out.println(this.getFullName() + ": " + "Phase 1");
+            _debugger.printTitle(getFullName() + " begins " + "iteration "
+                    + Integer.toString(_iterationCount));
+            _debugger.printText("Base model execution:");
 
             for (StartOrResumable actor : _actorList) {
                 LinkedList<Event.Builder> metroIIEventList = new LinkedList<Event.Builder>();
@@ -309,30 +313,35 @@ public class MetroIIDirector extends Director {
                 globalMetroIIEventList.addAll(metroIIEventList);
             }
 
-            if (((BooleanToken) printTrace.getToken()).booleanValue()) {
-                for (Event.Builder builder : globalMetroIIEventList) {
-                    // System.out.format("%-50s %-10s\n", builder.getName(),
-                    //        builder.getStatus());
-                    System.out.println(this.getFullName() + ": " + "Iteration "
-                            + Integer.toString(_iterationCount) + " "
-                            + "Phase 1" + " " + builder.getStatus() + " "
-                            + builder.getName());
-                }
-            }
+            _debugger.printText("Before resolution:");
+            _debugger.printMetroEvents(globalMetroIIEventList);
+            //            if (((BooleanToken) printTrace.getToken()).booleanValue()) {
+            //                for (Event.Builder builder : globalMetroIIEventList) {
+            //                    // System.out.format("%-50s %-10s\n", builder.getName(),
+            //                    //        builder.getStatus());
+            //                    System.out.println(this.getFullName() + ": " + "Iteration "
+            //                            + Integer.toString(_iterationCount) + " "
+            //                            + "Phase 1" + " " + builder.getStatus() + " "
+            //                            + builder.getName());
+            //                }
+            //            }
             // Phase 2: constraint resolution
             //Debug.Out.println(this.getFullName() + ": " + "Phase 2");
 
             _mappingConstraintSolver.resolve(globalMetroIIEventList);
             _timeScheduler.resolve(globalMetroIIEventList);
 
+            _debugger.printText("After resolution:");
+            _debugger.printMetroEvents(globalMetroIIEventList);
+            _debugger.printTitle(getFullName() + " ends " + "iteration "
+                    + Integer.toString(_iterationCount));
+
             if (((BooleanToken) printTrace.getToken()).booleanValue()) {
-                for (Event.Builder builder : globalMetroIIEventList) {
-                    // System.out.format("%-50s %-10s\n", builder.getName(),
-                    //         builder.getStatus());
-                    System.out.println(this.getFullName() + ": " + "Iteration "
-                            + Integer.toString(_iterationCount) + " "
-                            + "Phase 2" + " " + builder.getStatus() + " "
-                            + builder.getName());
+                for (Event.Builder event : globalMetroIIEventList) {
+                    if (event.getStatus() == Status.NOTIFIED) {
+                        System.out.println("Time " + event.getTime().getValue()
+                                + ": " + event.getName());
+                    }
                 }
             }
         }
@@ -399,12 +408,13 @@ public class MetroIIDirector extends Director {
     ///////////////////////////////////////////////////////////////////
     ////                    private fields                         ////
 
+    /**
+     * Debugger
+     */
+    private MetroDebugger _debugger = new MetroDebugger();
+
     /** The iteration count. */
     protected int _iterationCount = 0;
-
-    /** The maximum number of events.
-     */
-    private final int _maxEvent = 1000;
 
     /** The constraint solver
      *

@@ -100,8 +100,8 @@ public class MetroIIDEDirectorForPtides extends DEDirector implements
                     _actorDictionary.put(actor.getFullName(),
                             new ResumableFire(actor));
                 } else {
-                    _actorDictionary.put(actor.getFullName(),
-                            new BlockingFire(actor));
+                    _actorDictionary.put(actor.getFullName(), new BlockingFire(
+                            actor));
                 }
             }
         }
@@ -362,9 +362,6 @@ public class MetroIIDEDirectorForPtides extends DEDirector implements
 
     }
 
-
-
-
     //    public int getFiringEventSize() {
     //        return _eventList.size(); 
     //    }
@@ -438,8 +435,8 @@ public class MetroIIDEDirectorForPtides extends DEDirector implements
 
                     _setLogicalTime(ptidesEvent);
 
-                    FireMachine firing = _actorDictionary
-                            .get(actor.getFullName());
+                    FireMachine firing = _actorDictionary.get(actor
+                            .getFullName());
                     LinkedList<Event.Builder> metroIIEventList = new LinkedList<Event.Builder>();
 
                     if (((BooleanToken) printTrace.getToken()).booleanValue()) {
@@ -458,7 +455,7 @@ public class MetroIIDEDirectorForPtides extends DEDirector implements
                         }
 
                         firing.actor().postfire();
-                        firing.reset(); 
+                        firing.reset();
 
                         if (_debugging) {
                             _debug(new FiringEvent(this, actor,

@@ -7,6 +7,11 @@ public class Graph {
     public Graph() {
 
     }
+    
+    public void clear() {
+        _nodeConnection.clear();
+        _edge.clear(); 
+    }
 
     public boolean contains(int id1, int id2) {
         if (id1 >= _nodeConnection.size() || id2 >= _nodeConnection.size()) {

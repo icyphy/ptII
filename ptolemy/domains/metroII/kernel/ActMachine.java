@@ -29,7 +29,6 @@
 package ptolemy.domains.metroII.kernel;
 
 import ptolemy.actor.Actor;
-import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event;
 import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event.Builder;
 import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event.Status;
 
@@ -66,11 +65,21 @@ public abstract class ActMachine implements StartOrResumable {
      */
     public ActMachine(Actor actor) {
         _actor = actor;
-        _PrefireBeginEvent = _createMetroIIEvent("PREFIRE_BEGIN");
-        _FireBeginEvent = _createMetroIIEvent("FIRE_BEGIN");
-        _FiringEvent = _createMetroIIEvent("FIRING");
-        _PostfireBeginEvent = _createMetroIIEvent("POSTFIRE_BEGIN");
-        _PostfireEndEvent = _createMetroIIEvent("POSTFIRE_END");
+
+        String actorName = _actor.getFullName();
+        String actorNameWithoutModelName = _trimModelName(actorName);
+
+        _PrefireBeginEvent = MetroEventBuilder.newProposedEvent(
+                actorNameWithoutModelName + "." + "PREFIRE_BEGIN", actorName);
+        _FireBeginEvent = MetroEventBuilder.newProposedEvent(
+                actorNameWithoutModelName + "." + "FIRE_BEGIN", actorName);
+        _FiringEvent = MetroEventBuilder.newProposedEvent(actorNameWithoutModelName
+                + "." + "FIRING", actorName);
+        _PostfireBeginEvent = MetroEventBuilder.newProposedEvent(
+                actorNameWithoutModelName + "." + "POSTFIRE_BEGIN", actorName);
+        _PostfireEndEvent = MetroEventBuilder.newProposedEvent(
+                actorNameWithoutModelName + "." + "POSTFIRE_END", actorName);
+
         reset();
     }
 
@@ -138,7 +147,7 @@ public abstract class ActMachine implements StartOrResumable {
     protected Builder proposeStateEvent() {
         Builder event = getStateEvent();
         event.setStatus(Status.PROPOSED);
-        event.clearTime(); 
+        event.clearTime();
         return event;
     }
 
@@ -154,27 +163,14 @@ public abstract class ActMachine implements StartOrResumable {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-    /** 
-    * Create a MetroII event
-    */
-    private Builder _createMetroIIEvent(String name) {
-        Event.Builder builder = Event.newBuilder();
-        builder.setName(_trimModelName(_actor.getFullName()) + "." + name);
-        builder.setOwner(_actor.getFullName());
-        builder.setStatus(Event.Status.PROPOSED);
-        builder.setType(Event.Type.GENERIC);
-        return builder;
-    }
-
     private String _trimModelName(String name) {
-        assert name.length()>1; 
-        int pos = name.indexOf(".", 1); 
-        return name.substring(pos); 
+        assert name.length() > 1;
+        int pos = name.indexOf(".", 1);
+        return name.substring(pos);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private fields                    ////
-
 
     /**
      * Prefire begin event.
