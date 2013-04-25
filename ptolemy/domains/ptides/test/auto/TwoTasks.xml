@@ -494,7 +494,7 @@
                 </property>
                 <property name="executionTime" class="ptolemy.data.expr.Parameter" value="wcet1">
                 </property>
-                <property name="DecoratorAttributesFor_PEDFCore" class="ptolemy.actor.lib.resourceScheduler.ResourceAttributes">
+                <property name="DecoratorAttributesFor_PEDFCore" class="ptolemy.actor.lib.resourceScheduler.ExecutionTimeResourceAttributes">
                     <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.PEDFCore">
                     </property>
                     <property name="enable" class="ptolemy.data.expr.Parameter" value="true">
@@ -525,7 +525,7 @@
                 </property>
                 <property name="executionTime" class="ptolemy.data.expr.Parameter" value="wcet2">
                 </property>
-                <property name="DecoratorAttributesFor_PEDFCore" class="ptolemy.actor.lib.resourceScheduler.ResourceAttributes">
+                <property name="DecoratorAttributesFor_PEDFCore" class="ptolemy.actor.lib.resourceScheduler.ExecutionTimeResourceAttributes">
                     <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.PEDFCore">
                     </property>
                     <property name="enable" class="ptolemy.data.expr.Parameter" value="true">
@@ -554,7 +554,7 @@
                 </property>
                 <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="8.0">
                 </property>
-                <property name="DecoratorAttributesFor_PEDFCore" class="ptolemy.actor.lib.resourceScheduler.ResourceAttributes">
+                <property name="DecoratorAttributesFor_PEDFCore" class="ptolemy.actor.lib.resourceScheduler.ExecutionTimeResourceAttributes">
                     <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.PEDFCore">
                     </property>
                     <property name="enable" class="ptolemy.data.expr.Parameter" value="true">
@@ -592,7 +592,7 @@
                 </property>
                 <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="6.0">
                 </property>
-                <property name="DecoratorAttributesFor_PEDFCore" class="ptolemy.actor.lib.resourceScheduler.ResourceAttributes">
+                <property name="DecoratorAttributesFor_PEDFCore" class="ptolemy.actor.lib.resourceScheduler.ExecutionTimeResourceAttributes">
                     <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.PEDFCore">
                     </property>
                     <property name="enable" class="ptolemy.data.expr.Parameter" value="false">

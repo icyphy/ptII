@@ -86,35 +86,8 @@ public class ResourceAttributes extends DecoratorAttributes {
      *  the resource scheduler decorator.
      *  This is a boolean that defaults to false.
      */
-    public Parameter enable;
-    
-    /** The executionTime parameter specifies the execution time of the
-     *  decorated object. This means the time that the decorated actor occupies
-     *  the decorator resource when it fires.
-     *  This is a double that defaults to 0.0.
-     */
-    public Parameter executionTime;
+    public Parameter enable; 
 
-    ///////////////////////////////////////////////////////////////////
-    ////                        public methods                     ////
-    
-    /** React to a change in an attribute.  If the attribute is
-     *  <i>executionTime</i>, check that it is non-negative.
-     *  @param attribute The attribute that changed.
-     *  @exception IllegalActionException If the change is not acceptable
-     *   to this container (not thrown in this base class).
-     */
-    public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
-        if (attribute == executionTime) {
-            double value = ((DoubleToken)executionTime.getToken()).doubleValue();
-            if (value < 0.0) {
-                throw new IllegalActionException(getContainer(),
-                        "Cannot specify a negative number for executionTime.");
-            }
-        }
-        super.attributeChanged(attribute);
-    }
 
     ///////////////////////////////////////////////////////////////////
     ////                        private methods                    ////
@@ -125,11 +98,7 @@ public class ResourceAttributes extends DecoratorAttributes {
         try {
             enable = new Parameter(this, "enable");
             enable.setExpression("false");
-            enable.setTypeEquals(BaseType.BOOLEAN);
-
-            executionTime = new Parameter(this, "executionTime");
-            executionTime.setExpression("0.0");
-            executionTime.setTypeEquals(BaseType.DOUBLE);
+            enable.setTypeEquals(BaseType.BOOLEAN); 
         } catch (KernelException ex) {
             // This should not occur.
             throw new InternalErrorException(ex);

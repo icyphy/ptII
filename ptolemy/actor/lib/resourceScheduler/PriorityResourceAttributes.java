@@ -49,7 +49,7 @@ a {@link ResourceScheduler}.
  @Pt.ProposedRating Yellow (eal)
  @Pt.AcceptedRating Red (eal)
  */
-public class PriorityResourceAttributes extends ResourceAttributes {
+public class PriorityResourceAttributes extends ExecutionTimeResourceAttributes {
 
     /** Constructor to use when editing a model.
      *  @param target The object being decorated.

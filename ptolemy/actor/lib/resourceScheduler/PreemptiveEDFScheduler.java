@@ -33,7 +33,13 @@ package ptolemy.actor.lib.resourceScheduler;
 import java.util.HashMap;
 
 import ptolemy.actor.Actor;
+import ptolemy.actor.CompositeActor;
+import ptolemy.actor.Director;
 import ptolemy.actor.util.Time;
+import ptolemy.data.DoubleToken;
+import ptolemy.data.IntToken;
+import ptolemy.data.Token;
+import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.DecoratorAttributes;
 import ptolemy.kernel.util.IllegalActionException;
@@ -69,7 +75,7 @@ public class PreemptiveEDFScheduler extends FixedPriorityScheduler {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
-    
+
     /** Return the decorated attributes for the target NamedObj.
      *  If the specified target is not an Actor, return null.
      *  @param target The NamedObj that will be decorated.
@@ -79,7 +85,7 @@ public class PreemptiveEDFScheduler extends FixedPriorityScheduler {
     public DecoratorAttributes createDecoratorAttributes(NamedObj target) {
         if (target instanceof Actor) {
             try {
-                return new ResourceAttributes(target, this);
+                return new ExecutionTimeResourceAttributes(target, this);
             } catch (KernelException ex) {
                 // This should not occur.
                 throw new InternalErrorException(ex);
@@ -110,12 +116,13 @@ public class PreemptiveEDFScheduler extends FixedPriorityScheduler {
      *  @exception IllegalActionException Thrown if actor paramaters such
      *    as execution time or priority cannot be read.
      */
-    public Time schedule(Actor actor, Time currentPlatformTime,
-            Double deadline, Time executionTime) throws IllegalActionException {
+    @Override
+    public Time _schedule(Actor actor, Time currentPlatformTime, Time deadline,
+            Time executionTime) throws IllegalActionException {
         if (!_currentlyExecuting.contains(actor)) {
             _deadlines.put(actor, deadline);
         }
-        Time time = super.schedule(actor, currentPlatformTime, deadline,
+        Time time = super._schedule(actor, currentPlatformTime, deadline,
                 executionTime);
         if (lastScheduledActorFinished()) {
             _deadlines.put(actor, null);
@@ -136,7 +143,7 @@ public class PreemptiveEDFScheduler extends FixedPriorityScheduler {
      *  @exception IllegalActionException Thrown if parameter cannot be read.
      */
     protected double _getPriority(Actor actor) throws IllegalActionException {
-        return _deadlines.get(actor);
+        return _deadlines.get(actor).getDoubleValue();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -146,6 +153,6 @@ public class PreemptiveEDFScheduler extends FixedPriorityScheduler {
     //                      private variables                        //
 
     // For every firing request store the deadline
-    private HashMap<Actor, Double> _deadlines;
+    private HashMap<Actor, Time> _deadlines;
 
 }

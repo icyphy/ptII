@@ -48,6 +48,7 @@ import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.lib.Const;
 import ptolemy.actor.lib.TimeDelay;
+import ptolemy.actor.lib.resourceScheduler.ResourceScheduler;
 import ptolemy.actor.parameters.ParameterPort;
 import ptolemy.actor.parameters.SharedParameter;
 import ptolemy.actor.util.CausalityInterface;
@@ -301,6 +302,10 @@ public class PtidesDirector extends DEDirector {
                 }
             }
             _inputEventQueue.remove(getModelTime());
+        }
+        
+        for (ResourceScheduler scheduler : _resourceSchedulers) {
+            scheduler.schedule(localClock.getLocalTime());
         }
 
         super.fire();
@@ -695,7 +700,7 @@ public class PtidesDirector extends DEDirector {
      *  @return The deadline for the actor.
      *  @exception IllegalActionException If time objects cannot be created.
      */
-    protected double _getDeadline(Actor actor, Time timestamp)
+    public Time getDeadline(Actor actor, Time timestamp)
             throws IllegalActionException {
         Time relativeDeadline = Time.POSITIVE_INFINITY;
         for (int i = 0; i < actor.outputPortList().size(); i++) {
@@ -710,7 +715,7 @@ public class PtidesDirector extends DEDirector {
                 }
             }
         }
-        return timestamp.add(relativeDeadline).getDoubleValue();
+        return timestamp.add(relativeDeadline);
     }
 
     /** Return the value stored in a parameter associated with

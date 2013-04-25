@@ -249,8 +249,7 @@ public class Director extends Attribute implements Executable {
         newObject._initializables = null;
         newObject._startTime = null;
         newObject._stopTime = null;
-        newObject._zeroTime = new Time(newObject);
-        newObject._executionTimes = null;
+        newObject._zeroTime = new Time(newObject); 
         newObject._resourceSchedulers = null;
         newObject._schedulerForActor = null;
         return newObject;
@@ -1843,18 +1842,6 @@ public class Director extends Attribute implements Executable {
         return result;
     }
 
-    /** Compute the deadline for an actor that requests a firing at time
-     *  <i>timestamp</i>. This base class just returns the maximum value.
-     *  @param actor The actor that requests firing.
-     *  @param timestamp The time when the actor wants to be fired.
-     *  @return The deadline for the actor.
-     *  @exception IllegalActionException If time objects cannot be created.
-     */
-    protected double _getDeadline(Actor actor, Time timestamp)
-            throws IllegalActionException {
-        return Double.MAX_VALUE;
-    }
-
     /** Schedule an actor for execution on a ResourceScheduler. If the actor can
      *  execute this method returns true. If resources are not available this
      *  method returns false.
@@ -1873,15 +1860,16 @@ public class Director extends Attribute implements Executable {
             timestamp = getModelTime();
         }
         if (scheduler != null) {
-            double deadline = _getDeadline(actor, timestamp);
-            time = scheduler.schedule(actor, getEnvironmentTime(), deadline,
-                    _getExecutionTime(actor));
+            Time environmentTime = ((CompositeActor) ((Attribute) scheduler)
+                    .getContainer()).getDirector().getEnvironmentTime();
+            time = scheduler.schedule(actor, environmentTime, 
+                    getDeadline(actor, timestamp));
             finished = _actorFinished(actor);
             if (time != null && time.getDoubleValue() > 0.0) {
                 CompositeActor container = (CompositeActor) ((Attribute) scheduler)
                         .getContainer();
                 container.getDirector().fireContainerAt(
-                        getEnvironmentTime().add(time));
+                        environmentTime.add(time));
 
             }
         } else if (isEmbedded()) {
@@ -1889,6 +1877,17 @@ public class Director extends Attribute implements Executable {
                     .getContainer()).getDirector()._schedule(actor, timestamp);
         }
         return time == null || finished;
+    }
+    
+    /** Compute the deadline for an actor firing. In this base class, the deadline
+     *  is set to the maximum value.
+     * @param actor The actor.
+     * @param timestamp The timestamp of the event that triggered the firing.
+     * @return The deadline.
+     * @throws IllegalActionException Thrown in subclasses.
+     */
+    public Time getDeadline(Actor actor, Time timestamp) throws IllegalActionException {
+        return Time.POSITIVE_INFINITY;
     }
 
     /** Find resource scheduler for actor.
@@ -1911,7 +1910,6 @@ public class Director extends Attribute implements Executable {
                             // already has a scheduler - will be overridden. FIXME!
                         }
                         _schedulerForActor.put(actor, scheduler);   
-                        _executionTimes.put(actor, new Time(this, ((DoubleToken)resourceAttributes.executionTime.getToken()).doubleValue()));
                     }
                 }
             }
@@ -1974,21 +1972,6 @@ public class Director extends Attribute implements Executable {
         }
     }
 
-    /** Return the value of the executionTime parameter of an actor, if
-     *  specified. Otherwise, return null.
-     * @param actor The actor.
-     * @return The execution time or null if no execution time is specified.
-     * @exception IllegalActionException Thrown if time objects cannot be created.
-     */
-    private Time _getExecutionTime(Actor actor) throws IllegalActionException {
-        Time executionTime = null;
-        if (_executionTimes == null) {
-            _executionTimes = new HashMap<Actor, Time>();
-        }
-        executionTime = _executionTimes.get(actor);
-        return executionTime;
-    }
-
     /** Initialize parameters. This is called by the constructor.
      *  @exception IllegalActionException
      *  @exception NameDuplicationException
@@ -2004,16 +1987,11 @@ public class Director extends Attribute implements Executable {
         stopTime.setTypeEquals(BaseType.DOUBLE);
 
         _defaultMicrostep = 0;
-        _executionTimes = new HashMap<Actor, Time>();
 
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
-    /** The execution times of actors.
-     */
-    private HashMap<Actor, Time> _executionTimes;
 
     /** Flag indicating that this director has been forced to behave
      *  as if it were at the top level.

@@ -985,8 +985,6 @@
                             <property name="_location" class="ptolemy.kernel.util.Location" value="[465.0, -10.0]">
                             </property>
                             <entity name="_Controller" class="ptolemy.domains.modal.modal.ModalController">
-                                <property name="errorCause" class="ptolemy.data.expr.Parameter">
-                                </property>
                                 <property name="_library" class="ptolemy.moml.LibraryAttribute">
                                     <configure>
       <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.modal.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory"></property></entity></entity>
@@ -1118,8 +1116,6 @@
                                 </property>
                             </port>
                             <entity name="_Controller" class="ptolemy.domains.modal.modal.ModalController">
-                                <property name="errorCause" class="ptolemy.data.expr.Parameter">
-                                </property>
                                 <property name="_library" class="ptolemy.moml.LibraryAttribute">
                                     <configure>
       <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.modal.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory"></property></entity></entity>
@@ -2035,8 +2031,6 @@
                                 </property>
                             </port>
                             <entity name="_Controller" class="ptolemy.domains.modal.modal.ModalController">
-                                <property name="errorCause" class="ptolemy.data.expr.Parameter">
-                                </property>
                                 <property name="Ellipse" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
                                     <property name="_location" class="ptolemy.kernel.util.Location" value="[370.0, 245.0]">
                                     </property>
@@ -2501,8 +2495,6 @@
                                 </property>
                             </port>
                             <entity name="_Controller" class="ptolemy.domains.modal.modal.ModalController">
-                                <property name="errorCause" class="ptolemy.data.expr.Parameter">
-                                </property>
                                 <property name="_library" class="ptolemy.moml.LibraryAttribute">
                                     <configure>
       <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.modal.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory"></property></entity></entity>
@@ -2922,8 +2914,6 @@
                                 </property>
                             </port>
                             <entity name="_Controller" class="ptolemy.domains.modal.modal.ModalController">
-                                <property name="errorCause" class="ptolemy.data.expr.Parameter">
-                                </property>
                                 <property name="_library" class="ptolemy.moml.LibraryAttribute">
                                     <configure>
       <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.modal.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory"></property></entity></entity>
@@ -3380,8 +3370,6 @@
                 <doc>Create periodic timed events.</doc>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{90.0, 210.0}">
                 </property>
-                <property name="scheduler" class="ptolemy.data.expr.Parameter" value="ArchitectureMappingModel">
-                </property>
                 <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
                 <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -3451,8 +3439,6 @@
                     </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[260.0, 125.0]">
                     </property>
-                    <property name="scheduler" class="ptolemy.data.expr.Parameter" value="ArchitectureMappingModel">
-                    </property>
                     <property name="DecoratorAttributesFor_ArchitectureMappingModel" class="ptolemy.actor.lib.resourceScheduler.ResourceAttributes">
                         <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.ArchitectureMappingModel">
                         </property>
@@ -3467,8 +3453,6 @@
                     </property>
                     <doc>Create a sequence of tokens with increasing value</doc>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[130.0, 125.0]">
-                    </property>
-                    <property name="scheduler" class="ptolemy.data.expr.Parameter" value="ArchitectureMappingModel">
                     </property>
                     <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
                     </property>

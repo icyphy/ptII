@@ -80,9 +80,9 @@ public class NonPreemptiveFCFSScheduler extends ResourceScheduler {
      *    as execution time or priority cannot be read.
      */
     @Override
-    public Time schedule(Actor actor, Time currentPlatformTime,
-            Double deadline, Time executionTime) throws IllegalActionException {
-        super.schedule(actor, currentPlatformTime, deadline, executionTime);
+    public Time _schedule(Actor actor, Time currentPlatformTime,
+            Time deadline, Time executionTime) throws IllegalActionException {
+        super._schedule(actor, currentPlatformTime, deadline, executionTime);
         _lastActorFinished = false;
         if (currentlyExecuting == null) {
             currentlyExecuting = actor;

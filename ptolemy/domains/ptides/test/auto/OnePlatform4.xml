@@ -402,7 +402,7 @@
                 </property>
                 <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{185.5, 188.5}">
                 </property>
-                <property name="DecoratorAttributesFor_EDFScheduler" class="ptolemy.actor.lib.resourceScheduler.ResourceAttributes">
+                <property name="DecoratorAttributesFor_EDFScheduler" class="ptolemy.actor.lib.resourceScheduler.ExecutionTimeResourceAttributes">
                     <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform2.PtidesPlatformContents.EDFScheduler">
                     </property>
                     <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -428,7 +428,7 @@
                 <entity name="Merge" class="ptolemy.domains.de.lib.Merge">
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[200.0, 205.0]">
                     </property>
-                    <property name="DecoratorAttributesFor_EDFScheduler" class="ptolemy.actor.lib.resourceScheduler.ResourceAttributes">
+                    <property name="DecoratorAttributesFor_EDFScheduler" class="ptolemy.actor.lib.resourceScheduler.ExecutionTimeResourceAttributes">
                         <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform2.PtidesPlatformContents.EDFScheduler">
                         </property>
                         <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -467,7 +467,7 @@
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[565.0, 135.0]">
                 </property>
-                <property name="DecoratorAttributesFor_EDFScheduler" class="ptolemy.actor.lib.resourceScheduler.ResourceAttributes">
+                <property name="DecoratorAttributesFor_EDFScheduler" class="ptolemy.actor.lib.resourceScheduler.ExecutionTimeResourceAttributes">
                     <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform2.PtidesPlatformContents.EDFScheduler">
                     </property>
                     <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -492,7 +492,7 @@
                 <doc>Output the current time.</doc>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[475.0, 135.0]">
                 </property>
-                <property name="DecoratorAttributesFor_EDFScheduler" class="ptolemy.actor.lib.resourceScheduler.ResourceAttributes">
+                <property name="DecoratorAttributesFor_EDFScheduler" class="ptolemy.actor.lib.resourceScheduler.ExecutionTimeResourceAttributes">
                     <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform2.PtidesPlatformContents.EDFScheduler">
                     </property>
                     <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -518,7 +518,7 @@
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[520.0, 300.0]">
                 </property>
-                <property name="DecoratorAttributesFor_EDFScheduler" class="ptolemy.actor.lib.resourceScheduler.ResourceAttributes">
+                <property name="DecoratorAttributesFor_EDFScheduler" class="ptolemy.actor.lib.resourceScheduler.ExecutionTimeResourceAttributes">
                     <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform2.PtidesPlatformContents.EDFScheduler">
                     </property>
                     <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -546,7 +546,7 @@
                 </property>
                 <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="3.0">
                 </property>
-                <property name="DecoratorAttributesFor_EDFScheduler" class="ptolemy.actor.lib.resourceScheduler.ResourceAttributes">
+                <property name="DecoratorAttributesFor_EDFScheduler" class="ptolemy.actor.lib.resourceScheduler.ExecutionTimeResourceAttributes">
                     <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform2.PtidesPlatformContents.EDFScheduler">
                     </property>
                     <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -571,7 +571,7 @@
                 </property>
                 <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="2.0">
                 </property>
-                <property name="DecoratorAttributesFor_EDFScheduler" class="ptolemy.actor.lib.resourceScheduler.ResourceAttributes">
+                <property name="DecoratorAttributesFor_EDFScheduler" class="ptolemy.actor.lib.resourceScheduler.ExecutionTimeResourceAttributes">
                     <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform2.PtidesPlatformContents.EDFScheduler">
                     </property>
                     <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -612,7 +612,7 @@
                 </property>
                 <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.4">
                 </property>
-                <property name="DecoratorAttributesFor_EDFScheduler" class="ptolemy.actor.lib.resourceScheduler.ResourceAttributes">
+                <property name="DecoratorAttributesFor_EDFScheduler" class="ptolemy.actor.lib.resourceScheduler.ExecutionTimeResourceAttributes">
                     <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform2.PtidesPlatformContents.EDFScheduler">
                     </property>
                     <property name="enable" class="ptolemy.data.expr.Parameter" value="true">
@@ -655,7 +655,7 @@
                 </property>
                 <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.5">
                 </property>
-                <property name="DecoratorAttributesFor_EDFScheduler" class="ptolemy.actor.lib.resourceScheduler.ResourceAttributes">
+                <property name="DecoratorAttributesFor_EDFScheduler" class="ptolemy.actor.lib.resourceScheduler.ExecutionTimeResourceAttributes">
                     <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform2.PtidesPlatformContents.EDFScheduler">
                     </property>
                     <property name="enable" class="ptolemy.data.expr.Parameter" value="true">

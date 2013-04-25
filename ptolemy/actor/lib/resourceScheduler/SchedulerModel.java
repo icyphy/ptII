@@ -125,9 +125,9 @@ public class SchedulerModel extends ResourceScheduler {
      *    as execution time or priority cannot be read.
      */
     @Override
-    public Time schedule(Actor actor, Time currentPlatformTime,
-            Double deadline, Time executionTime) throws IllegalActionException {
-        super.schedule(actor, currentPlatformTime, deadline, executionTime);
+    public Time _schedule(Actor actor, Time currentPlatformTime,
+            Time deadline, Time executionTime) throws IllegalActionException {
+        super._schedule(actor, currentPlatformTime, deadline, executionTime);
         boolean finished = false;
         Time time = null;
 
@@ -169,7 +169,21 @@ public class SchedulerModel extends ResourceScheduler {
         return time;
     }
 
-    @Override
+    /** Perform rescheduling actions when no new actor requests to be
+     *  scheduled.
+     * @param environmentTime The outside time.
+     * @return Relative time when this Scheduler has to be executed
+     *    again to perform rescheduling actions.
+     * @throws IllegalActionException 
+     */
+    public Time schedule(Time environmentTime) throws IllegalActionException {
+        return _fireModel(environmentTime);
+    }
+    
+    /** Reset and call wrapup for contained model.
+     *  @exception IllegalActionException If model or super class
+     *  throws it.
+     */
     public void wrapup() throws IllegalActionException {
         super.wrapup();
         ((CompositeActor) _model).wrapup();
@@ -178,7 +192,7 @@ public class SchedulerModel extends ResourceScheduler {
     /** List of currently executing actors. */
     protected List<Actor> _currentlyExecuting;
 
-    private void _fireModel(Time currentPlatformTime)
+    private Time _fireModel(Time currentPlatformTime)
             throws IllegalActionException {
         Time time = ((CompositeActor) _model).getDirector()
                 .getModelNextIterationTime();
@@ -199,6 +213,7 @@ public class SchedulerModel extends ResourceScheduler {
                 index = 1;
             }
         }
+        return time;
     }
 
     private Actor _getActor(Actor actor, String suffix) {
