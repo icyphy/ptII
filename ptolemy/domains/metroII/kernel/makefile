@@ -61,6 +61,7 @@ JSRCS = \
     MappingConstraintSolver.java \
     MappingConstraintSolverTest.java \
     MetroDebugger.java \
+    MetroEventBuilder.java \
     MetroIICompositeActor.java \
     MetroIIDEDirector.java \
     MetroIIDEDirectorForPtides.java \
@@ -109,6 +110,7 @@ OPTIONAL_FILES = \
     'MappingConstraintSolver.class' \
     'MappingConstraintSolverTest.class' \
     'MetroDebugger.class' \
+    'MetroEventBuilder.class' \
     'MappingConstraintSolver$ConstraintCounter.class' \
     'MetroIICompositeActor$1.class' \
     'MetroIICompositeActor.class' \
