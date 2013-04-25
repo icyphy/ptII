@@ -103,10 +103,20 @@ public class StaticSchedulingDirector extends Director {
      */
     final public Boolean allowDynamicMultiportReference()
             throws IllegalActionException {
-        return ((BooleanToken) ((Parameter) getComponent()
-                .getDecoratorAttribute(getCodeGenerator(),
-                "allowDynamicMultiportReference")).getToken())
-                .booleanValue();
+        NamedObj component = getComponent();
+        if (component == null) {
+            return false;
+        }
+        if (getCodeGenerator() == null) {
+            return false;
+        }
+        Parameter allowDynamicMultiportReference = (Parameter) component.getDecoratorAttribute(getCodeGenerator(), "allowDynamicMultiportReference");
+        if (allowDynamicMultiportReference == null) {
+            // $PTII/bin/vergil ptolemy/cg/lib/test/auto/ScaleC.xml was failing
+            // here with a NPE because the there were no decorators.
+            return false;
+        }
+        return ((BooleanToken)allowDynamicMultiportReference.getToken()).booleanValue();
     }
 
     /** Create and return the decorated attributes for the
@@ -662,7 +672,10 @@ public class StaticSchedulingDirector extends Director {
     final public Boolean padBuffers() throws IllegalActionException {
         DecoratorAttributes decorators = getComponent().getDecoratorAttributes(getCodeGenerator());
         if (!(decorators instanceof StaticSchedulingDirectorAttributes)) {
-            throw new IllegalActionException(getComponent(), "Has no StaticSchedulingDirectorAttributes decorators!");
+            // $PTII/bin/vergil ptolemy/cg/lib/test/auto/ScaleC.xml was failing here
+            // it is okd to not have a decorator and just default to false.
+            // throw new IllegalActionException(getComponent(), "Has no StaticSchedulingDirectorAttributes decorators!");
+            return false;
         }
         return ((BooleanToken) ((StaticSchedulingDirectorAttributes) decorators).padBuffers.getToken()).booleanValue();
     }
