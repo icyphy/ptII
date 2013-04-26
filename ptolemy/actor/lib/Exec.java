@@ -58,27 +58,14 @@ import ptolemy.kernel.util.Nameable;
 import ptolemy.util.StringUtilities;
 
 ///////////////////////////////////////////////////////////////////
-//// Execute
+//// Exec
 
 /**
  Execute a command as a separately running subprocess.
 
- <p> To get the effect of executing,
- a command provided in a shell interpreter,
- <i>prependPlatformDependentShellCommand</i> parameter to true,
- or set <i>command</i> to "cmd" (Windows) or "sh" (Windows with Cygwin
- or Linux), and then provide commands at the <i>input</i> port.
- Note that each command must be terminated with a newline.
- For example, to open a model in vergil and run it, you can
- set <i>command</i> to "sh" and use a Const actor to provide
- on the <i>input</i> port the string:</p>
- <pre>
- "vergil -run model.xml\n exit\n"
- </pre>
-
  <p>This actor uses java.lang.Runtime.exec() to invoke a subprocess
- named by the <i>command</i> parameter in a <i>directory</i> with an
- <i>environment</i>.  Data from the <i>input</i> port (if any) is
+ named by the <i>command</i> parameter in a specified <i>directory</i> with a
+ specified  <i>environment</i>.  Data from the <i>input</i> port (if any) is
  passed to the input of the subprocess.  The subprocess is run until it
  exits and then contents of the output and error streams of the
  subprocess (if any) are passed to the <i>output</i> and <i>error</i>
@@ -87,6 +74,22 @@ import ptolemy.util.StringUtilities;
  <p>If the subprocess generates no data on the output or error stream,
  then the data on the corresponding port(s) will consist of the empty
  string.</p>
+
+ <p> To get the effect of executing a command provided in a shell interpreter, set the
+ <i>prependPlatformDependentShellCommand</i> parameter to true.
+ This will prepend a default platform-dependent shell command to the command
+ you wish to execute so that your command is executed within the shell.
+ Alternatively, you can set <i>command</i> to "cmd" (Windows) or "sh" (Windows with Cygwin
+ or Linux), and then provide commands at the <i>input</i> port.
+ In this case, however, your model will only work on platforms that have the shell
+ command you have specified.
+ Note that in this case each command must be terminated with a newline.
+ For example, to open a model in vergil and run it, you can
+ set <i>command</i> to "sh" and use a Const actor to provide
+ on the <i>input</i> port the string:</p>
+ <pre>
+ "vergil -run model.xml\n exit\n"
+ </pre>
 
  <p>A much more interesting actor could be written using a
  Kahn Process Network.  This actor would generate output asynchronously
