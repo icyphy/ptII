@@ -1,0 +1,19 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<property name="CompositeQMIcon" class="ptolemy.vergil.icon.EditorIcon">
+    <property name="polygon" class="ptolemy.vergil.kernel.attributes.ResizablePolygonAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{-25, -5}">
+        </property>
+        <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
+        </property>
+        <property name="vertices" class="ptolemy.data.expr.Parameter" value="{-0.0, 0.0, -4, -4, -4, -10, 6, 0, -4, 10, -4, 4}">
+        </property>
+        <property name="width" class="ptolemy.data.expr.Parameter" value="16">
+        </property>
+        <property name="height" class="ptolemy.data.expr.Parameter" value="20">
+        </property>
+    </property>  
+</property>

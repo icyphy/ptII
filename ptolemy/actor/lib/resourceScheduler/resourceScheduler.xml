@@ -11,8 +11,39 @@
 <property name="FixedPriorityScheduler" class="ptolemy.actor.lib.resourceScheduler.FixedPriorityScheduler"> </property>
 <property name="NonPreemptiveFCFSScheduler" class="ptolemy.actor.lib.resourceScheduler.NonPreemptiveFCFSScheduler"> </property>
 <property name="PreemptiveEDFScheduler" class="ptolemy.actor.lib.resourceScheduler.PreemptiveEDFScheduler"> </property><property name="DynamicCoreAssignmentScheduler" class="ptolemy.actor.lib.resourceScheduler.DynamicCoreAssignmentScheduler"> </property>
-<property name="SchedulerModel" class="ptolemy.actor.lib.resourceScheduler.SchedulerModel"> </property>
+
 <property name="SchedulePlotterEditorFactory" class="ptolemy.actor.lib.resourceScheduler.SchedulePlotterEditorFactory"> </property>
+
+<property name="SchedulerModel" class="ptolemy.actor.lib.resourceScheduler.CompositeResourceScheduler"> </property>
+
+<entity name="ResourceMappingInputPort" class="ptolemy.actor.lib.resourceScheduler.ResourceMappingInputPort">
+</entity>
+
+<entity name="ResourceMappingOutputPort" class="ptolemy.actor.lib.resourceScheduler.ResourceMappingOutputPort">
+	<property createIfNecessary="true" name="Parameter" class="ptolemy.data.expr.Parameter"></property>
+	<port name="input" class="ptolemy.actor.TypedIOPort">
+    	<property name="input"/>
+    	<property name="_location" class="ptolemy.kernel.util.Location" value="{20.0, 200.0}"></property>
+	</port>
+	<entity name="SetVariable" class="ptolemy.actor.lib.SetVariable">
+		<property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="Parameter">
+    	</property>
+    	<property name="delayed" class="ptolemy.data.expr.Parameter" value="true">
+    	</property>
+    	<property name="_location" class="ptolemy.kernel.util.Location" value="{0.0, 0.0}">
+    	</property>
+    	<port name="input" class="ptolemy.actor.TypedIOPort">
+        	<property name="input"/>
+    	</port>
+    	<port name="output" class="ptolemy.actor.TypedIOPort">
+        	<property name="output"/>
+    	</port>
+	</entity>
+	<relation name="relation" class="ptolemy.actor.TypedIORelation">
+	</relation>
+    <link port="input" relation="relation"/>
+    <link port="SetVariable.input" relation="relation"/>
+</entity>
 
       </group>
     ?>

@@ -35,9 +35,13 @@ import java.util.List;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
+import ptolemy.actor.Receiver;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.util.Time;
 import ptolemy.data.BooleanToken;
+import ptolemy.data.ObjectToken;
+import ptolemy.data.RecordToken;
+import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.domains.de.kernel.DEDirector;
 import ptolemy.kernel.CompositeEntity;
@@ -56,7 +60,7 @@ import ptolemy.kernel.util.NamedObj;
    @Pt.ProposedRating Red (derler)
    @Pt.AcceptedRating Red (derler)
  */
-public class SchedulerModel extends ResourceScheduler {
+public class CompositeResourceScheduler extends ResourceScheduler {
 
     /** Create a new actor in the specified container with the specified
      *  name.  The name must be unique within the container or an exception
@@ -70,7 +74,7 @@ public class SchedulerModel extends ResourceScheduler {
      *  @exception NameDuplicationException If the name coincides with
      *   an entity already in the container.
      */
-    public SchedulerModel(CompositeEntity container, String name)
+    public CompositeResourceScheduler(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
@@ -125,8 +129,8 @@ public class SchedulerModel extends ResourceScheduler {
      *    as execution time or priority cannot be read.
      */
     @Override
-    public Time _schedule(Actor actor, Time currentPlatformTime,
-            Time deadline, Time executionTime) throws IllegalActionException {
+    public Time _schedule(Actor actor, Time currentPlatformTime, Time deadline,
+            Time executionTime) throws IllegalActionException {
         super._schedule(actor, currentPlatformTime, deadline, executionTime);
         boolean finished = false;
         Time time = null;
@@ -135,7 +139,7 @@ public class SchedulerModel extends ResourceScheduler {
             _currentlyExecuting.add(actor);
             event((NamedObj) actor, currentPlatformTime.getDoubleValue(),
                     ExecutionEventType.START);
-            Actor mappedActor = _getActor(actor, "");
+            Actor mappedActor = (Actor) ((CompositeActor) _model).getEntity(actor.getName());
             if (mappedActor != null) {
                 ((CompositeActor) _model).getDirector().setModelTime(
                         currentPlatformTime);
@@ -146,17 +150,15 @@ public class SchedulerModel extends ResourceScheduler {
 
         _fireModel(currentPlatformTime);
 
-        Parameter parameter = (Parameter) ((CompositeActor) _model)
-                .getAttribute("resume" + actor.getName());
-        if (parameter == null || parameter.getToken() == null) {
-            throw new IllegalActionException(this, "Tried to schedule actor "
-                    + actor + " but no parameter " + "resume" + actor.getName()
-                    + " was found!");
-        }
-        finished = ((BooleanToken) parameter.getToken()).booleanValue();
+        ResourceMappingOutputPort output = (ResourceMappingOutputPort) ((CompositeActor) _model)
+                .getEntity("resume" + actor.getName());
+        
+        if (output.hasToken()) {
+            Token token = (Token) output.takeToken();
+            finished = true;
+        }  
         if (finished) {
-            time = getTime(0.0);
-            parameter.setToken(new BooleanToken(false));
+            time = getTime(0.0); 
             _lastActorFinished = true;
             _currentlyExecuting.remove(actor);
             event((NamedObj) actor, currentPlatformTime.getDoubleValue(),
@@ -179,7 +181,7 @@ public class SchedulerModel extends ResourceScheduler {
     public Time schedule(Time environmentTime) throws IllegalActionException {
         return _fireModel(environmentTime);
     }
-    
+
     /** Reset and call wrapup for contained model.
      *  @exception IllegalActionException If model or super class
      *  throws it.
@@ -214,17 +216,6 @@ public class SchedulerModel extends ResourceScheduler {
             }
         }
         return time;
-    }
-
-    private Actor _getActor(Actor actor, String suffix) {
-        for (int i = 0; i < ((CompositeActor) _model).entityList().size(); i++) {
-            Actor mappedActor = (Actor) ((CompositeActor) _model).entityList()
-                    .get(i);
-            if (mappedActor.getName().equals(actor.getName() + suffix)) {
-                return mappedActor;
-            }
-        }
-        return null;
     }
 
 }

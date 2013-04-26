@@ -20,7 +20,7 @@
     </property>
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{350.0, 262.0}">
     </property>
-    <property name="enableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="true">
+    <property name="enableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="false">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Execution time &gt; &#10;model time delay">
@@ -332,6 +332,18 @@
                 </property>
                 <property name="executionTime" class="ptolemy.data.expr.Parameter" value="1.0">
                 </property>
+                <property name="DecoratorAttributesFor_FPPCore" class="ptolemy.actor.lib.resourceScheduler.PriorityResourceAttributes">
+                    <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.FPPCore">
+                    </property>
+                    <property name="enable" class="ptolemy.data.expr.Parameter" value="true">
+                    </property>
+                    <property name="executionTime" class="ptolemy.data.expr.Parameter" value="2.0">
+                    </property>
+                    <property name="LOWEST_PRIORITY" class="ptolemy.data.expr.Parameter" value="2147483647">
+                    </property>
+                    <property name="priority" class="ptolemy.data.expr.Parameter" value="LOWEST_PRIORITY">
+                    </property>
+                </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                     <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -341,8 +353,12 @@
                 </port>
             </entity>
             <relation name="relation" class="ptolemy.actor.TypedIORelation">
+                <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+                </property>
             </relation>
             <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+                <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+                </property>
             </relation>
             <link port="SensorPort" relation="relation"/>
             <link port="NetworkTransmitterPort" relation="relation2"/>
@@ -631,6 +647,18 @@
                 </property>
                 <property name="executionTime" class="ptolemy.data.expr.Parameter" value="3.0">
                 </property>
+                <property name="DecoratorAttributesFor_FPPCore" class="ptolemy.actor.lib.resourceScheduler.PriorityResourceAttributes">
+                    <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform3.PtidesPlatformContents.FPPCore">
+                    </property>
+                    <property name="enable" class="ptolemy.data.expr.Parameter" value="true">
+                    </property>
+                    <property name="executionTime" class="ptolemy.data.expr.Parameter" value="3.0">
+                    </property>
+                    <property name="LOWEST_PRIORITY" class="ptolemy.data.expr.Parameter" value="2147483647">
+                    </property>
+                    <property name="priority" class="ptolemy.data.expr.Parameter" value="LOWEST_PRIORITY">
+                    </property>
+                </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                     <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -650,7 +678,7 @@
                 </property>
                 <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
-                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={230, 132, 920, 552}, maximized=false}">
+                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={230, 132, 934, 634}, maximized=false}">
                 </property>
                 <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
                 </property>
@@ -718,6 +746,18 @@
                 </property>
                 <property name="clearEarlierEvents" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
+                <property name="DecoratorAttributesFor_FPPCore" class="ptolemy.actor.lib.resourceScheduler.PriorityResourceAttributes">
+                    <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform3.PtidesPlatformContents.FPPCore">
+                    </property>
+                    <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                    <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                    </property>
+                    <property name="LOWEST_PRIORITY" class="ptolemy.data.expr.Parameter" value="2147483647">
+                    </property>
+                    <property name="priority" class="ptolemy.data.expr.Parameter" value="LOWEST_PRIORITY">
+                    </property>
+                </property>
                 <entity name="missedN2" class="ptolemy.actor.lib.Const">
                     <property name="value" class="ptolemy.data.expr.Parameter" value="true">
                     </property>
@@ -734,6 +774,18 @@
                     </property>
                     <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
                     </property>
+                    <property name="DecoratorAttributesFor_FPPCore" class="ptolemy.actor.lib.resourceScheduler.PriorityResourceAttributes">
+                        <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform3.PtidesPlatformContents.FPPCore">
+                        </property>
+                        <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                        </property>
+                        <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                        </property>
+                        <property name="LOWEST_PRIORITY" class="ptolemy.data.expr.Parameter" value="2147483647">
+                        </property>
+                        <property name="priority" class="ptolemy.data.expr.Parameter" value="LOWEST_PRIORITY">
+                        </property>
+                    </property>
                 </entity>
                 <entity name="ErrorHandlingAction" class="ptolemy.domains.ptides.lib.ErrorHandlingAction">
                     <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
@@ -743,6 +795,18 @@
                         </property>
                     </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="{590.0, 190.0}">
+                    </property>
+                    <property name="DecoratorAttributesFor_FPPCore" class="ptolemy.actor.lib.resourceScheduler.PriorityResourceAttributes">
+                        <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform3.PtidesPlatformContents.FPPCore">
+                        </property>
+                        <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                        </property>
+                        <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                        </property>
+                        <property name="LOWEST_PRIORITY" class="ptolemy.data.expr.Parameter" value="2147483647">
+                        </property>
+                        <property name="priority" class="ptolemy.data.expr.Parameter" value="LOWEST_PRIORITY">
+                        </property>
                     </property>
                 </entity>
                 <entity name="ErrorHandlingAction2" class="ptolemy.domains.ptides.lib.ErrorHandlingAction">
@@ -756,6 +820,18 @@
                     </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="{600.0, 230.0}">
                     </property>
+                    <property name="DecoratorAttributesFor_FPPCore" class="ptolemy.actor.lib.resourceScheduler.PriorityResourceAttributes">
+                        <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform3.PtidesPlatformContents.FPPCore">
+                        </property>
+                        <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                        </property>
+                        <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                        </property>
+                        <property name="LOWEST_PRIORITY" class="ptolemy.data.expr.Parameter" value="2147483647">
+                        </property>
+                        <property name="priority" class="ptolemy.data.expr.Parameter" value="LOWEST_PRIORITY">
+                        </property>
+                    </property>
                 </entity>
                 <entity name="ErrorHandlingAction3" class="ptolemy.domains.ptides.lib.ErrorHandlingAction">
                     <property name="action" class="ptolemy.data.expr.Parameter" value="&quot;fixTimestamp&quot;">
@@ -767,6 +843,18 @@
                         </property>
                     </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[600.0, 270.0]">
+                    </property>
+                    <property name="DecoratorAttributesFor_FPPCore" class="ptolemy.actor.lib.resourceScheduler.PriorityResourceAttributes">
+                        <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform3.PtidesPlatformContents.FPPCore">
+                        </property>
+                        <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                        </property>
+                        <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                        </property>
+                        <property name="LOWEST_PRIORITY" class="ptolemy.data.expr.Parameter" value="2147483647">
+                        </property>
+                        <property name="priority" class="ptolemy.data.expr.Parameter" value="LOWEST_PRIORITY">
+                        </property>
                     </property>
                 </entity>
                 <entity name="ErrorHandlingAction4" class="ptolemy.domains.ptides.lib.ErrorHandlingAction">
@@ -780,6 +868,18 @@
                     </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[600.0, 310.0]">
                     </property>
+                    <property name="DecoratorAttributesFor_FPPCore" class="ptolemy.actor.lib.resourceScheduler.PriorityResourceAttributes">
+                        <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform3.PtidesPlatformContents.FPPCore">
+                        </property>
+                        <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                        </property>
+                        <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                        </property>
+                        <property name="LOWEST_PRIORITY" class="ptolemy.data.expr.Parameter" value="2147483647">
+                        </property>
+                        <property name="priority" class="ptolemy.data.expr.Parameter" value="LOWEST_PRIORITY">
+                        </property>
+                    </property>
                 </entity>
                 <entity name="ErrorHandlingAction5" class="ptolemy.domains.ptides.lib.ErrorHandlingAction">
                     <property name="action" class="ptolemy.data.expr.Parameter" value="&quot;clearEarlierEvents&quot;">
@@ -792,9 +892,33 @@
                     </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[610.0, 350.0]">
                     </property>
+                    <property name="DecoratorAttributesFor_FPPCore" class="ptolemy.actor.lib.resourceScheduler.PriorityResourceAttributes">
+                        <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform3.PtidesPlatformContents.FPPCore">
+                        </property>
+                        <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                        </property>
+                        <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                        </property>
+                        <property name="LOWEST_PRIORITY" class="ptolemy.data.expr.Parameter" value="2147483647">
+                        </property>
+                        <property name="priority" class="ptolemy.data.expr.Parameter" value="LOWEST_PRIORITY">
+                        </property>
+                    </property>
                 </entity>
                 <entity name="Counter" class="ptolemy.actor.lib.Counter">
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[185.0, 240.0]">
+                    </property>
+                    <property name="DecoratorAttributesFor_FPPCore" class="ptolemy.actor.lib.resourceScheduler.PriorityResourceAttributes">
+                        <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform3.PtidesPlatformContents.FPPCore">
+                        </property>
+                        <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                        </property>
+                        <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                        </property>
+                        <property name="LOWEST_PRIORITY" class="ptolemy.data.expr.Parameter" value="2147483647">
+                        </property>
+                        <property name="priority" class="ptolemy.data.expr.Parameter" value="LOWEST_PRIORITY">
+                        </property>
                     </property>
                 </entity>
                 <entity name="Comparator" class="ptolemy.actor.lib.logic.Comparator">
@@ -818,6 +942,18 @@
                     </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[275.0, 330.0]">
                     </property>
+                    <property name="DecoratorAttributesFor_FPPCore" class="ptolemy.actor.lib.resourceScheduler.PriorityResourceAttributes">
+                        <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform3.PtidesPlatformContents.FPPCore">
+                        </property>
+                        <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                        </property>
+                        <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                        </property>
+                        <property name="LOWEST_PRIORITY" class="ptolemy.data.expr.Parameter" value="2147483647">
+                        </property>
+                        <property name="priority" class="ptolemy.data.expr.Parameter" value="LOWEST_PRIORITY">
+                        </property>
+                    </property>
                 </entity>
                 <entity name="Const" class="ptolemy.actor.lib.Const">
                     <property name="value" class="ptolemy.data.expr.Parameter" value="3">
@@ -833,9 +969,33 @@
                     </property>
                     <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
                     </property>
+                    <property name="DecoratorAttributesFor_FPPCore" class="ptolemy.actor.lib.resourceScheduler.PriorityResourceAttributes">
+                        <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform3.PtidesPlatformContents.FPPCore">
+                        </property>
+                        <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                        </property>
+                        <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                        </property>
+                        <property name="LOWEST_PRIORITY" class="ptolemy.data.expr.Parameter" value="2147483647">
+                        </property>
+                        <property name="priority" class="ptolemy.data.expr.Parameter" value="LOWEST_PRIORITY">
+                        </property>
+                    </property>
                 </entity>
                 <entity name="TrueGate" class="ptolemy.actor.lib.logic.TrueGate">
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[360.0, 330.0]">
+                    </property>
+                    <property name="DecoratorAttributesFor_FPPCore" class="ptolemy.actor.lib.resourceScheduler.PriorityResourceAttributes">
+                        <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform3.PtidesPlatformContents.FPPCore">
+                        </property>
+                        <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                        </property>
+                        <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                        </property>
+                        <property name="LOWEST_PRIORITY" class="ptolemy.data.expr.Parameter" value="2147483647">
+                        </property>
+                        <property name="priority" class="ptolemy.data.expr.Parameter" value="LOWEST_PRIORITY">
+                        </property>
                     </property>
                 </entity>
                 <entity name="SetVariable" class="ptolemy.actor.lib.SetVariable">
@@ -848,6 +1008,18 @@
                         </property>
                     </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[580.0, 475.0]">
+                    </property>
+                    <property name="DecoratorAttributesFor_FPPCore" class="ptolemy.actor.lib.resourceScheduler.PriorityResourceAttributes">
+                        <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform3.PtidesPlatformContents.FPPCore">
+                        </property>
+                        <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                        </property>
+                        <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                        </property>
+                        <property name="LOWEST_PRIORITY" class="ptolemy.data.expr.Parameter" value="2147483647">
+                        </property>
+                        <property name="priority" class="ptolemy.data.expr.Parameter" value="LOWEST_PRIORITY">
+                        </property>
                     </property>
                 </entity>
                 <entity name="Expression" class="ptolemy.actor.lib.Expression">
@@ -863,6 +1035,18 @@
                     </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[425.0, 475.0]">
                     </property>
+                    <property name="DecoratorAttributesFor_FPPCore" class="ptolemy.actor.lib.resourceScheduler.PriorityResourceAttributes">
+                        <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform3.PtidesPlatformContents.FPPCore">
+                        </property>
+                        <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                        </property>
+                        <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                        </property>
+                        <property name="LOWEST_PRIORITY" class="ptolemy.data.expr.Parameter" value="2147483647">
+                        </property>
+                        <property name="priority" class="ptolemy.data.expr.Parameter" value="LOWEST_PRIORITY">
+                        </property>
+                    </property>
                     <port name="in" class="ptolemy.actor.TypedIOPort">
                         <property name="input"/>
                         <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
@@ -876,11 +1060,35 @@
                     </property>
                     <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
                     </property>
+                    <property name="DecoratorAttributesFor_FPPCore" class="ptolemy.actor.lib.resourceScheduler.PriorityResourceAttributes">
+                        <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform3.PtidesPlatformContents.FPPCore">
+                        </property>
+                        <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                        </property>
+                        <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                        </property>
+                        <property name="LOWEST_PRIORITY" class="ptolemy.data.expr.Parameter" value="2147483647">
+                        </property>
+                        <property name="priority" class="ptolemy.data.expr.Parameter" value="LOWEST_PRIORITY">
+                        </property>
+                    </property>
                 </entity>
                 <entity name="MicrostepDelay" class="ptolemy.actor.lib.MicrostepDelay">
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[130.0, 395.0]">
                     </property>
                     <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
+                    </property>
+                    <property name="DecoratorAttributesFor_FPPCore" class="ptolemy.actor.lib.resourceScheduler.PriorityResourceAttributes">
+                        <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform3.PtidesPlatformContents.FPPCore">
+                        </property>
+                        <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                        </property>
+                        <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                        </property>
+                        <property name="LOWEST_PRIORITY" class="ptolemy.data.expr.Parameter" value="2147483647">
+                        </property>
+                        <property name="priority" class="ptolemy.data.expr.Parameter" value="LOWEST_PRIORITY">
+                        </property>
                     </property>
                 </entity>
                 <relation name="relation4" class="ptolemy.actor.TypedIORelation">
@@ -888,28 +1096,44 @@
                     </property>
                     <vertex name="vertex1" value="{230.0, 290.0}">
                     </vertex>
+                    <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+                    </property>
                 </relation>
                 <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+                    <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+                    </property>
                 </relation>
                 <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+                    <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+                    </property>
                 </relation>
                 <relation name="relation7" class="ptolemy.actor.TypedIORelation">
                     <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
                     </property>
                     <vertex name="vertex1" value="[320.0, 385.0]">
                     </vertex>
+                    <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+                    </property>
                 </relation>
                 <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+                    <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+                    </property>
                 </relation>
                 <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+                    <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+                    </property>
                 </relation>
                 <relation name="relation" class="ptolemy.actor.TypedIORelation">
+                    <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+                    </property>
                 </relation>
                 <relation name="relation9" class="ptolemy.actor.TypedIORelation">
                     <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
                     </property>
                     <vertex name="vertex1" value="[130.0, 195.0]">
                     </vertex>
+                    <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+                    </property>
                 </relation>
                 <link port="missedN2.output" relation="relation9"/>
                 <link port="ErrorHandlingAction.input" relation="relation9"/>
@@ -932,8 +1156,12 @@
                 <link port="MicrostepDelay.output" relation="relation"/>
             </entity>
             <relation name="relation" class="ptolemy.actor.TypedIORelation">
+                <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+                </property>
             </relation>
             <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+                <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+                </property>
             </relation>
             <link port="SensorPort" relation="relation"/>
             <link port="N2" relation="relation2"/>
@@ -1492,16 +1720,28 @@
         </configure>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+        </property>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+        </property>
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+        </property>
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+        </property>
     </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+        </property>
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+        </property>
     </relation>
     <link port="PtidesPlatform.SensorPort" relation="relation4"/>
     <link port="PtidesPlatform.NetworkTransmitterPort" relation="relation"/>

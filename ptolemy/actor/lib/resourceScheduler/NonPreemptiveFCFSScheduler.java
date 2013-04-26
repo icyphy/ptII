@@ -33,7 +33,10 @@ package ptolemy.actor.lib.resourceScheduler;
 import ptolemy.actor.Actor;
 import ptolemy.actor.util.Time;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.DecoratorAttributes;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 
@@ -68,6 +71,25 @@ public class NonPreemptiveFCFSScheduler extends ResourceScheduler {
     ///////////////////////////////////////////////////////////////////
     //                      public methods                           //
 
+    /** Return the decorated attributes for the target NamedObj.
+     *  If the specified target is not an Actor, return null.
+     *  @param target The NamedObj that will be decorated.
+     *  @return The decorated attributes for the target NamedObj, or
+     *   null if the specified target is not an Actor.
+     */
+    public DecoratorAttributes createDecoratorAttributes(NamedObj target) {
+        if (target instanceof Actor) {
+            try {
+                return new PriorityResourceAttributes(target, this);
+            } catch (KernelException ex) {
+                // This should not occur.
+                throw new InternalErrorException(ex);
+            }
+        } else {
+            return null;
+        }
+    }
+    
     /** Schedule a new actor for execution and return the next time
      *  this scheduler has to perform a reschedule.
      *  @param actor The actor to be scheduled.

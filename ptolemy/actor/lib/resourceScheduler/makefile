@@ -48,14 +48,17 @@ PTPACKAGE =     resourceScheduler
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 OTHER_FILES_TO_BE_JARED = \
+	CompositeResourceSchedulerIcon.xml \
 	DynamicCoreAssignmentSchedulerIcon.xml \
 	FixedPrioritySchedulerIcon.xml \
 	NonPreemptiveFCFSSchedulerIcon.xml \
 	PreemptiveEDFSchedulerIcon.xml \
-	SchedulerModelIcon.xml \
+	ResourceMappingInputPortIcon.xml \
+	ResourceMappingOutputPortIcon.xml \
 	resourceScheduler.xml
 
 JSRCS = \
+	CompositeResourceScheduler.java \
 	DynamicCoreAssignmentScheduler.java \
 	ExecutionTimeResourceAttributes.java \
 	FixedPriorityScheduler.java \
@@ -63,9 +66,10 @@ JSRCS = \
 	PreemptiveEDFScheduler.java \
 	PriorityResourceAttributes.java \
 	ResourceAttributes.java \
+	ResourceMappingInputPort.java \
+	ResourceMappingOutputPort.java \
 	ResourceScheduler.java \
-	SchedulePlotterEditorFactory.java \
-	SchedulerModel.java
+	SchedulePlotterEditorFactory.java
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
