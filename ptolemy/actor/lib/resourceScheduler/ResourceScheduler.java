@@ -286,8 +286,8 @@ public class ResourceScheduler extends MoMLModelAttribute implements Decorator {
      *  activity that is displayed in the plotter.
      *  @param actor The actor to be scheduled.
      *  @param environmentTime The current platform time.
-     *  @param timestamp The logical timestamp of the event. This can be the same
-     *  as the environmentTime 
+     *  @param deadline The deadline timestamp of the event to be scheduled.
+     *  This can be the same as the environmentTime. 
      *  @return Relative time when this Scheduler has to be executed
      *    again to perform rescheduling actions.
      *  @exception IllegalActionException Thrown if actor parameters such
@@ -338,9 +338,6 @@ public class ResourceScheduler extends MoMLModelAttribute implements Decorator {
         _getAllManagedEntities(entities);
     }
 
-    ///////////////////////////////////////////////////////////////////
-    //                      protected variables                        //
-
     /** Get the deadline for an actor that requests a firing at time
      *  <i>timestamp</i>. This base class just returns the maximum value.
      *  @param actor The actor that requests firing.
@@ -375,13 +372,25 @@ public class ResourceScheduler extends MoMLModelAttribute implements Decorator {
         return executionTime;
     }
 
-    ///////////////////////////////////////////////////////////////////
-    //                      protected variables                        //
-    
+    /** Schedule the actor. In this base class, do nothing.  Derived
+     *  classes should schedule the actor.   
+     *  @param actor The actor to be scheduled.
+     *  @param environmentTime The current platform time.
+     *  @param deadline The deadline timestamp of the event to be scheduled.
+     *  This can be the same as the environmentTime. 
+     *  @return Relative time when this Scheduler has to be executed
+     *    again to perform rescheduling actions.  In this base class, null
+     *    is returned.
+     *  @exception IllegalActionException Thrown if actor parameters such
+     *    as execution time or priority cannot be read.
+     */
     protected Time _schedule(Actor actor, Time environmentTime, Time deadline,
             Time executionTime) throws IllegalActionException {
         return null;
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                    protected variables                    ////
 
     /** True if in the last request to schedule an actor, this actor
      *  finished execution.
