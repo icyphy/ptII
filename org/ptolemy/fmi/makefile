@@ -44,7 +44,7 @@ include $(CONFIG)
 
 # Variables and rules used to create source file distributions
 PTPACKAGE = 	fmi
-PTVERSION =	1.0.1
+PTVERSION =	1.0.2
 PTDIST =	jfmi$(PTVERSION)
 PTCLASSJAR =
 
