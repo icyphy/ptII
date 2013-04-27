@@ -1,0 +1,2361 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="Map" class="ptolemy.actor.TypedCompositeActor">
+    <property name="Image" class="ptolemy.vergil.kernel.attributes.ImageAttribute">
+        <property name="source" class="ptolemy.data.expr.FileParameter" value="pages/livingroom.png">
+        </property>
+        <property name="scale" class="ptolemy.data.expr.Parameter" value="100.0">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-25.0, -15.0]">
+        </property>
+        <property name="_renderFirst" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+    </property>
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 15, 1287, 615}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1059, 498]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.6120971339066211">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{728.1484375000001, 383.62954175704994}">
+    </property>
+    <property name="enableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="false">
+    </property>
+    <property name="_runLayoutAttribute" class="ptolemy.kernel.util.ConfigurableAttribute">
+        <configure><?xml version="1.0" encoding="UTF-8"?>
+
+<containers>
+    <container name="top" columnSpecs="default,3dlu,default:grow" rowSpecs="default">
+        <cellconstraints name="Subpanel:ControlPanel" gridX="1" gridY="1" gridWidth="1" gridHeight="1" horizontalAlignment="default" verticalAlignment="top" topInset="0" bottomInset="0" rightInset="0" leftInset="0"></cellconstraints>
+        <cellconstraints name="Subpanel:PlaceablePanel" gridX="3" gridY="1" gridWidth="1" gridHeight="1" horizontalAlignment="default" verticalAlignment="top" topInset="0" bottomInset="0" rightInset="0" leftInset="0"></cellconstraints>
+    </container>
+    <container name="Subpanel:ControlPanel" columnSpecs="default" rowSpecs="default,5dlu,default,5dlu,default,5dlu,default,5dlu,default,5dlu,default,5dlu,default">
+        <cellconstraints name="Label:Run Control" gridX="1" gridY="1" gridWidth="1" gridHeight="1" horizontalAlignment="default" verticalAlignment="default" topInset="0" bottomInset="0" rightInset="0" leftInset="0"></cellconstraints>
+        <cellconstraints name="Subpanel:Run Control" gridX="1" gridY="3" gridWidth="1" gridHeight="1" horizontalAlignment="default" verticalAlignment="top" topInset="0" bottomInset="0" rightInset="0" leftInset="0"></cellconstraints>
+        <cellconstraints name="Label:Top-Level Parameters" gridX="1" gridY="5" gridWidth="1" gridHeight="1" horizontalAlignment="default" verticalAlignment="default" topInset="0" bottomInset="0" rightInset="0" leftInset="0"></cellconstraints>
+        <cellconstraints name="ConfigureTopLevel" gridX="1" gridY="7" gridWidth="1" gridHeight="1" horizontalAlignment="default" verticalAlignment="top" topInset="0" bottomInset="0" rightInset="0" leftInset="0"></cellconstraints>
+        <cellconstraints name="Label:Director Parameters" gridX="1" gridY="9" gridWidth="1" gridHeight="1" horizontalAlignment="default" verticalAlignment="default" topInset="0" bottomInset="0" rightInset="0" leftInset="0"></cellconstraints>
+        <cellconstraints name="ConfigureDirector" gridX="1" gridY="11" gridWidth="1" gridHeight="1" horizontalAlignment="default" verticalAlignment="top" topInset="0" bottomInset="0" rightInset="0" leftInset="0"></cellconstraints>
+    </container>
+    <container name="Subpanel:Run Control" columnSpecs="default,3dlu,default,3dlu,default,3dlu,default" rowSpecs="default">
+        <cellconstraints name="GoButton" gridX="1" gridY="1" gridWidth="1" gridHeight="1" horizontalAlignment="default" verticalAlignment="default" topInset="0" bottomInset="0" rightInset="0" leftInset="0"></cellconstraints>
+        <cellconstraints name="PauseButton" gridX="3" gridY="1" gridWidth="1" gridHeight="1" horizontalAlignment="default" verticalAlignment="default" topInset="0" bottomInset="0" rightInset="0" leftInset="0"></cellconstraints>
+        <cellconstraints name="ResumeButton" gridX="5" gridY="1" gridWidth="1" gridHeight="1" horizontalAlignment="default" verticalAlignment="default" topInset="0" bottomInset="0" rightInset="0" leftInset="0"></cellconstraints>
+        <cellconstraints name="StopButton" gridX="7" gridY="1" gridWidth="1" gridHeight="1" horizontalAlignment="default" verticalAlignment="default" topInset="0" bottomInset="0" rightInset="0" leftInset="0"></cellconstraints>
+    </container>
+    <container name="Subpanel:PlaceablePanel" columnSpecs="default,3dlu,default,3dlu,default,3dlu,default" rowSpecs="default">
+    </container>
+</containers>
+</configure>
+    </property>
+    <property name="_defaultWebExportParameters" class="ptolemy.vergil.basic.export.web.WebExportParameters">
+        <property name="directoryToExportTo" class="ptolemy.data.expr.FileParameter" value="eport/">
+            <property name="allowFiles" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="allowDirectories" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+        </property>
+        <property name="openCompositesBeforeExport" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="runBeforeExport" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="showInBrowser" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="copyJavaScriptFiles" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="usePtWebsite" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+    </property>
+    <property name="LocalPreferences" class="ptolemy.actor.gui.PtolemyPreferences">
+        <property name="backgroundColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,1.0,1.0,1.0}">
+            <display name="Background Color"/>
+        </property>
+        <property name="_showParameters" class="ptolemy.data.expr.StringParameter" value="None">
+            <display name="Show parameters"/>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[830.0, 140.0]">
+        </property>
+    </property>
+    <property name="Annotation5" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="14">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Port parameters hold the values &#10;input from the web page">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{1115.0, 25.0}">
+        </property>
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Set background to white">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{905.0, 130.0}">
+        </property>
+    </property>
+    <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="14">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The Marker class &#10;has a custom icon&#10;to show the name&#10;in the circle&#10;&#10;Right click -&gt;&#10;Appearance -&gt;&#10;Edit Custom Icon">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[920.0, 310.0]">
+        </property>
+    </property>
+    <property name="Annotation11" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="SDF Director parameters&#10;iterations 1&#10;allowDisconnectedGraphs true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[760.0, 50.0]">
+        </property>
+    </property>
+    <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[690.0, 65.0]">
+        </property>
+    </property>
+    <property name="Annotation6" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="14">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Ptolemy X,Y : 600 by 400&#10;Image is 584 by 488">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[640.0, 390.0]">
+        </property>
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Calculate the heat map data &#10;from the lighting data">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[635.0, 465.0]">
+        </property>
+    </property>
+    <property name="blocksHigh" class="ptolemy.actor.parameters.PortParameter" value="25">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="false">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+	<polyline points="-15,-15, -3,-5, -16,5" style="stroke:black"></polyline>
+	<polygon points="-22,-1, -22,4, -10,-5, -22,-14, -22,-9, -30,-9, -30, -1" style="fill:lightGray"></polygon>
+      </svg>
+    </configure>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:black" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1150.0, 225.0]">
+        </property>
+    </property>
+    <property name="blocksWide" class="ptolemy.actor.parameters.PortParameter" value="30">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="false">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+	<polyline points="-15,-15, -3,-5, -16,5" style="stroke:black"></polyline>
+	<polygon points="-22,-1, -22,4, -10,-5, -22,-14, -22,-9, -30,-9, -30, -1" style="fill:lightGray"></polygon>
+      </svg>
+    </configure>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:black" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1150.0, 310.0]">
+        </property>
+    </property>
+    <property name="blockHeight" class="ptolemy.actor.parameters.PortParameter" value="20">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="false">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+	<polyline points="-15,-15, -3,-5, -16,5" style="stroke:black"></polyline>
+	<polygon points="-22,-1, -22,4, -10,-5, -22,-14, -22,-9, -30,-9, -30, -1" style="fill:lightGray"></polygon>
+      </svg>
+    </configure>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:black" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1150.0, 255.0]">
+        </property>
+    </property>
+    <property name="blockWidth" class="ptolemy.actor.parameters.PortParameter" value="20">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="false">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+	<polyline points="-15,-15, -3,-5, -16,5" style="stroke:black"></polyline>
+	<polygon points="-22,-1, -22,4, -10,-5, -22,-14, -22,-9, -30,-9, -30, -1" style="fill:lightGray"></polygon>
+      </svg>
+    </configure>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:black" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1150.0, 340.0]">
+        </property>
+    </property>
+    <property name="Annotation7" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="14">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Ports are hidden on lights and sensors&#10;and relations (lines) are set to transparent&#10;to give a clean look for people editing model">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[640.0, 200.0]">
+        </property>
+    </property>
+    <property name="result" class="ptolemy.actor.parameters.PortParameter" value="{{value = 168.8232083445913, x = 0, y = 0}, {value = 200.3259123518768, x = 0, y = 20}, {value = 239.9875075027264, x = 0, y = 40}, {value = 288.1335303294322, x = 0, y = 60}, {value = 341.6518013246574, x = 0, y = 80}, {value = 390.998085903522, x = 0, y = 100}, {value = 420.9921434748317, x = 0, y = 120}, {value = 420.8390387896264, x = 0, y = 140}, {value = 395.0630784829852, x = 0, y = 160}, {value = 359.2550678496571, x = 0, y = 180}, {value = 327.4803317825201, x = 0, y = 200}, {value = 307.2303652119994, x = 0, y = 220}, {value = 301.5802389446103, x = 0, y = 240}, {value = 312.3036838904807, x = 0, y = 260}, {value = 341.4773603409999, x = 0, y = 280}, {value = 391.0167660960552, x = 0, y = 300}, {value = 458.6614448531246, x = 0, y = 320}, {value = 528.7985578816047, x = 0, y = 340}, {value = 566.9043898334719, x = 0, y = 360}, {value = 543.0644132765326, x = 0, y = 380}, {value = 468.3542456355829, x = 0, y = 400}, {value = 379.5730305884678, x = 0, y = 420}, {value = 301.5046613395291, x = 0, y = 440}, {value = 240.6974025425965, x = 0, y = 460}, {value = 195.2263868593342, x = 0, y = 480}, {value = 190.0020416712572, x = 20, y = 0}, {value = 232.6657765276848, x = 20, y = 20}, {value = 291.1666506553786, x = 20, y = 40}, {value = 370.6100662581837, x = 20, y = 60}, {value = 471.8406819241759, x = 20, y = 80}, {value = 578.753948393652, x = 20, y = 100}, {value = 646.7849963075857, x = 20, y = 120}, {value = 633.9063172468165, x = 20, y = 140}, {value = 557.222106755494, x = 20, y = 160}, {value = 468.8934615919354, x = 20, y = 180}, {value = 400.7578368236815, x = 20, y = 200}, {value = 360.4977375461985, x = 20, y = 220}, {value = 347.5388528940672, x = 20, y = 240}, {value = 362.3171568370064, x = 20, y = 260}, {value = 409.9799206666141, x = 20, y = 280}, {value = 501.9467466050374, x = 20, y = 300}, {value = 652.15747511606, x = 20, y = 320}, {value = 848.8388684059603, x = 20, y = 340}, {value = 987.0905432835092, x = 20, y = 360}, {value = 923.5695285793338, x = 20, y = 380}, {value = 717.8956892626027, x = 20, y = 400}, {value = 519.7477725623783, x = 20, y = 420}, {value = 378.1585761342232, x = 20, y = 440}, {value = 284.0375422069854, x = 20, y = 460}, {value = 221.0993482695684, x = 20, y = 480}, {value = 211.0546485785452, x = 40, y = 0}, {value = 266.9887329340734, x = 40, y = 20}, {value = 351.2183841838656, x = 40, y = 40}, {value = 482.654929367473, x = 40, y = 60}, {value = 687.3495214589174, x = 40, y = 80}, {value = 966.2580075048703, x = 40, y = 100}, {value = 1183.249689858689, x = 40, y = 120}, {value = 1113.1929378008106, x = 40, y = 140}, {value = 854.5785628580792, x = 40, y = 160}, {value = 629.3837162886747, x = 40, y = 180}, {value = 489.9505085129887, x = 40, y = 200}, {value = 417.2084527154511, x = 40, y = 220}, {value = 392.7006760500813, x = 40, y = 240}, {value = 410.8850515671304, x = 40, y = 260}, {value = 481.4294698336641, x = 40, y = 280}, {value = 638.052614559864, x = 40, y = 300}, {value = 962.0749779580617, x = 40, y = 320}, {value = 1587.9374468691583, x = 40, y = 340}, {value = 2289.3847006351843, x = 40, y = 360}, {value = 1977.4125176218943, x = 40, y = 380}, {value = 1196.9682198805613, x = 40, y = 400}, {value = 715.8270527544053, x = 40, y = 420}, {value = 464.9595924731574, x = 40, y = 440}, {value = 327.037964068866, x = 40, y = 460}, {value = 244.7879969546823, x = 40, y = 480}, {value = 229.2912045291399, x = 60, y = 0}, {value = 298.2278497460599, x = 60, y = 20}, {value = 411.305248276549, x = 60, y = 40}, {value = 615.1532974684241, x = 60, y = 60}, {value = 1024.8983488320582, x = 60, y = 80}, {value = 1894.3511517521104, x = 60, y = 100}, {value = 3071.0813654317158, x = 60, y = 120}, {value = 2554.000144850312, x = 60, y = 140}, {value = 1418.3619040514482, x = 60, y = 160}, {value = 841.8870050642125, x = 60, y = 180}, {value = 584.2187444238756, x = 60, y = 200}, {value = 469.3445946833646, x = 60, y = 220}, {value = 430.5375668239629, x = 60, y = 240}, {value = 449.3620001703877, x = 60, y = 260}, {value = 538.7225613085609, x = 60, y = 280}, {value = 761.9781163385162, x = 60, y = 300}, {value = 1346.256258940212, x = 60, y = 320}, {value = 3341.1326063726065, x = 60, y = 340}, {value = 11080.93476335335, x = 60, y = 360}, {value = 6190.268498850789, x = 60, y = 380}, {value = 1974.3720820708324, x = 60, y = 400}, {value = 918.5843652205134, x = 60, y = 420}, {value = 536.9659962738065, x = 60, y = 440}, {value = 359.0680908935436, x = 60, y = 460}, {value = 261.6291418845342, x = 60, y = 480}, {value = 241.5745361673235, x = 80, y = 0}, {value = 319.103136412354, x = 80, y = 20}, {value = 453.0870316276131, x = 80, y = 40}, {value = 719.7523869169962, x = 80, y = 60}, {value = 1384.4754922853308, x = 80, y = 80}, {value = 3887.8579125923447, x = 80, y = 100}, {value = 22074.262972201082, x = 80, y = 120}, {value = 8569.713336375828, x = 80, y = 140}, {value = 2207.8235213419384, x = 80, y = 160}, {value = 1031.0479563517092, x = 80, y = 180}, {value = 653.6940256810021, x = 80, y = 200}, {value = 504.8207225830452, x = 80, y = 220}, {value = 454.1961532732448, x = 80, y = 240}, {value = 469.3569940394007, x = 80, y = 260}, {value = 561.2043432370888, x = 80, y = 280}, {value = 801.1841209804376, x = 80, y = 300}, {value = 1473.8862749356574, x = 80, y = 320}, {value = 4342.280642044244, x = 80, y = 340}, {value = 55014.03235582516, x = 80, y = 360}, {value = 11076.460002624912, x = 80, y = 380}, {value = 2282.029983457643, x = 80, y = 400}, {value = 978.0849562813391, x = 80, y = 420}, {value = 557.1731334955165, x = 80, y = 440}, {value = 368.7867508618932, x = 80, y = 460}, {value = 267.4983987041452, x = 80, y = 480}, {value = 245.7005794697832, x = 100, y = 0}, {value = 323.7890953123907, x = 100, y = 20}, {value = 458.4237557537215, x = 100, y = 40}, {value = 725.8405855894016, x = 100, y = 60}, {value = 1391.417631254814, x = 100, y = 80}, {value = 3895.7415229858602, x = 100, y = 100}, {value = 22083.132113459913, x = 100, y = 120}, {value = 8579.526500395621, x = 100, y = 140}, {value = 2218.3995680648795, x = 100, y = 160}, {value = 1042.0038085422764, x = 100, y = 180}, {value = 664.3690384913489, x = 100, y = 200}, {value = 514.140919293289, x = 100, y = 220}, {value = 460.3031151313746, x = 100, y = 240}, {value = 468.4133055298348, x = 100, y = 260}, {value = 543.1131465240851, x = 100, y = 280}, {value = 730.9851332545712, x = 100, y = 300}, {value = 1179.2236271262523, x = 100, y = 320}, {value = 2322.3538289337503, x = 100, y = 340}, {value = 4335.736832681473, x = 100, y = 360}, {value = 3330.2822601076928, x = 100, y = 380}, {value = 1574.5723660386316, x = 100, y = 400}, {value = 834.3553217195762, x = 100, y = 420}, {value = 514.2295592008325, x = 100, y = 440}, {value = 353.1759465104978, x = 100, y = 460}, {value = 261.386815115369, x = 100, y = 480}, {value = 241.7047515196881, x = 120, y = 0}, {value = 312.338391223812, x = 120, y = 20}, {value = 427.3974365123287, x = 120, y = 40}, {value = 633.5494164410203, x = 120, y = 60}, {value = 1045.937241333711, x = 120, y = 80}, {value = 1918.3404817406133, x = 120, y = 100}, {value = 3098.210858996944, x = 120, y = 120}, {value = 2584.207398969208, x = 120, y = 140}, {value = 1451.1548166640835, x = 120, y = 160}, {value = 876.1426346319003, x = 120, y = 180}, {value = 617.9693655237426, x = 120, y = 200}, {value = 499.4630943980359, x = 120, y = 220}, {value = 451.9223740993194, x = 120, y = 240}, {value = 452.3424879986252, x = 120, y = 260}, {value = 500.3959174157061, x = 120, y = 280}, {value = 614.0274392807466, x = 120, y = 300}, {value = 830.0112536534531, x = 120, y = 320}, {value = 1169.8597948114107, x = 120, y = 340}, {value = 1458.0333091741488, x = 120, y = 360}, {value = 1326.4262611060137, x = 120, y = 380}, {value = 940.3742343970686, x = 120, y = 400}, {value = 630.2280711137793, x = 120, y = 420}, {value = 437.6696444948491, x = 120, y = 440}, {value = 320.4822961075398, x = 120, y = 460}, {value = 246.1358190584174, x = 120, y = 480}, {value = 231.8589142986989, x = 140, y = 0}, {value = 290.6759771393793, x = 140, y = 20}, {value = 378.3023566923059, x = 140, y = 40}, {value = 513.7399375181091, x = 140, y = 60}, {value = 723.1082071759548, x = 140, y = 80}, {value = 1007.3632186565078, x = 140, y = 100}, {value = 1230.2303415026904, x = 140, y = 120}, {value = 1166.1847430121888, x = 140, y = 140}, {value = 912.9656003936461, x = 140, y = 160}, {value = 691.3849454862578, x = 140, y = 180}, {value = 552.2582443768343, x = 140, y = 200}, {value = 474.7041370782158, x = 140, y = 220}, {value = 437.8782173840719, x = 140, y = 240}, {value = 431.7514660975375, x = 140, y = 260}, {value = 454.8471078199864, x = 140, y = 280}, {value = 510.7567362414005, x = 140, y = 300}, {value = 601.3160545214428, x = 140, y = 320}, {value = 708.4881659048368, x = 140, y = 340}, {value = 772.0948783401333, x = 140, y = 360}, {value = 729.4130141416293, x = 140, y = 380}, {value = 604.6998056553398, x = 140, y = 400}, {value = 469.8408493426345, x = 140, y = 420}, {value = 361.4845872306706, x = 140, y = 440}, {value = 282.6922714843238, x = 140, y = 460}, {value = 226.4750831560796, x = 140, y = 480}, {value = 219.359801305576, x = 160, y = 0}, {value = 266.1643601557996, x = 160, y = 20}, {value = 329.6034991709454, x = 160, y = 40}, {value = 414.9705226115587, x = 160, y = 60}, {value = 523.3014614223075, x = 160, y = 80}, {value = 638.6264261643287, x = 160, y = 100}, {value = 716.3353642869317, x = 160, y = 120}, {value = 713.9661525512786, x = 160, y = 140}, {value = 647.5233905478374, x = 160, y = 160}, {value = 567.202243804297, x = 160, y = 180}, {value = 502.1559087250494, x = 160, y = 200}, {value = 457.2930308615056, x = 160, y = 220}, {value = 429.7468482186819, x = 160, y = 240}, {value = 417.5244387463602, x = 160, y = 260}, {value = 420.7425695755305, x = 160, y = 280}, {value = 439.6042358111313, x = 160, y = 300}, {value = 470.630817909787, x = 160, y = 320}, {value = 501.8910578649706, x = 160, y = 340}, {value = 512.8258234579216, x = 160, y = 360}, {value = 487.6614080848754, x = 160, y = 380}, {value = 431.4813732816217, x = 160, y = 400}, {value = 363.8018139986696, x = 160, y = 420}, {value = 300.5409300851767, x = 160, y = 440}, {value = 248.0248374674154, x = 160, y = 460}, {value = 206.5290927456084, x = 160, y = 480}, {value = 206.9463032128914, x = 180, y = 0}, {value = 243.9277872821667, x = 180, y = 20}, {value = 290.214061468498, x = 180, y = 40}, {value = 346.4800190445079, x = 180, y = 60}, {value = 410.0438153086755, x = 180, y = 80}, {value = 471.8251020349318, x = 180, y = 100}, {value = 516.9868331690476, x = 180, y = 120}, {value = 534.5917676684073, x = 180, y = 140}, {value = 527.8680675294058, x = 180, y = 160}, {value = 509.1546460919511, x = 180, y = 180}, {value = 487.243968466508, x = 180, y = 200}, {value = 464.2259417796199, x = 180, y = 220}, {value = 440.7174938642328, x = 180, y = 240}, {value = 419.6571295219897, x = 180, y = 260}, {value = 405.0070703244625, x = 180, y = 280}, {value = 398.6923908532122, x = 180, y = 300}, {value = 398.7527461356049, x = 180, y = 320}, {value = 399.0950822709268, x = 180, y = 340}, {value = 391.5091137635352, x = 180, y = 360}, {value = 370.3851855357727, x = 180, y = 380}, {value = 336.6482621453753, x = 180, y = 400}, {value = 296.378506406172, x = 180, y = 420}, {value = 256.0760707876886, x = 180, y = 440}, {value = 219.7232284493878, x = 180, y = 460}, {value = 188.7349536099728, x = 180, y = 480}, {value = 196.315426732528, x = 200, y = 0}, {value = 226.2385241124771, x = 200, y = 20}, {value = 261.7114243846346, x = 200, y = 40}, {value = 302.5036627654068, x = 200, y = 60}, {value = 346.8589022430712, x = 200, y = 80}, {value = 391.1180910757417, x = 200, y = 100}, {value = 430.8804488951031, x = 200, y = 120}, {value = 463.8443038690699, x = 200, y = 140}, {value = 491.1799598603268, x = 200, y = 160}, {value = 513.7782807185466, x = 200, y = 180}, {value = 526.2948723858631, x = 200, y = 200}, {value = 518.9361684591363, x = 200, y = 220}, {value = 489.7178575039736, x = 200, y = 240}, {value = 449.5807407644669, x = 200, y = 260}, {value = 411.7705625106628, x = 200, y = 280}, {value = 382.6867188646354, x = 200, y = 300}, {value = 361.9021546326784, x = 200, y = 320}, {value = 345.3693354200308, x = 200, y = 340}, {value = 328.2634220315165, x = 200, y = 360}, {value = 307.2475056668495, x = 200, y = 380}, {value = 281.7260647265637, x = 200, y = 400}, {value = 253.4232149390417, x = 200, y = 420}, {value = 224.8544452465276, x = 200, y = 440}, {value = 198.0354837449001, x = 200, y = 460}, {value = 174.0496142079959, x = 200, y = 480}, {value = 188.2347755555998, x = 220, y = 0}, {value = 213.5026019140485, x = 220, y = 20}, {value = 242.6396158809032, x = 220, y = 40}, {value = 275.6895976015625, x = 220, y = 60}, {value = 312.406104845631, x = 220, y = 80}, {value = 352.6298048927817, x = 220, y = 100}, {value = 397.3489104469685, x = 220, y = 120}, {value = 450.0296475401928, x = 220, y = 140}, {value = 516.0538820261506, x = 220, y = 160}, {value = 595.4061136411152, x = 220, y = 180}, {value = 665.1622864390788, x = 220, y = 200}, {value = 677.3161261296625, x = 220, y = 220}, {value = 615.997875409608, x = 220, y = 240}, {value = 524.8588264471139, x = 220, y = 260}, {value = 444.898199391957, x = 220, y = 280}, {value = 386.90915230319, x = 220, y = 300}, {value = 346.7700863559143, x = 220, y = 320}, {value = 317.6039487561, x = 220, y = 340}, {value = 293.6756465583577, x = 220, y = 360}, {value = 271.266253171672, x = 220, y = 380}, {value = 248.6890700355526, x = 220, y = 400}, {value = 225.8175452689574, x = 220, y = 420}, {value = 203.3332286849042, x = 220, y = 440}, {value = 182.0519104202405, x = 220, y = 460}, {value = 162.556599720704, x = 220, y = 480}, {value = 182.9081010545375, x = 240, y = 0}, {value = 205.3069156689499, x = 240, y = 20}, {value = 230.9278822363877, x = 240, y = 40}, {value = 260.3468981164566, x = 240, y = 60}, {value = 294.6685991360184, x = 240, y = 80}, {value = 336.3854100692156, x = 240, y = 100}, {value = 391.1541566035613, x = 240, y = 120}, {value = 471.0100202730638, x = 240, y = 140}, {value = 598.8153033131621, x = 240, y = 160}, {value = 804.8751165719086, x = 240, y = 180}, {value = 1061.3953885900269, x = 240, y = 200}, {value = 1139.5629803801166, x = 240, y = 220}, {value = 924.8476417665134, x = 240, y = 240}, {value = 673.1604252814321, x = 240, y = 260}, {value = 505.7186134181937, x = 240, y = 280}, {value = 405.7518075657594, x = 240, y = 300}, {value = 344.5419946362258, x = 240, y = 320}, {value = 304.1399617853662, x = 240, y = 340}, {value = 274.5261972236589, x = 240, y = 360}, {value = 250.2309772371378, x = 240, y = 380}, {value = 228.4672260342954, x = 240, y = 400}, {value = 208.0668332624642, x = 240, y = 420}, {value = 188.7585737337972, x = 240, y = 440}, {value = 170.6588292428228, x = 240, y = 460}, {value = 153.9606437197042, x = 240, y = 480}, {value = 180.3180425572578, x = 260, y = 0}, {value = 201.0830318997825, x = 260, y = 20}, {value = 224.8290244792174, x = 260, y = 40}, {value = 252.5857524689649, x = 260, y = 60}, {value = 286.4750285102501, x = 260, y = 80}, {value = 331.0648390497057, x = 260, y = 100}, {value = 396.5370634881766, x = 260, y = 120}, {value = 506.9297651265493, x = 260, y = 140}, {value = 724.8666894571409, x = 260, y = 160}, {value = 1232.40362499769, x = 260, y = 180}, {value = 2444.3285902580874, x = 260, y = 200}, {value = 3132.763633086151, x = 260, y = 220}, {value = 1719.702800988474, x = 260, y = 240}, {value = 910.2563685838123, x = 260, y = 260}, {value = 581.4529318029113, x = 260, y = 280}, {value = 429.1281346616955, x = 260, y = 300}, {value = 347.503251366223, x = 260, y = 320}, {value = 297.8576823747284, x = 260, y = 340}, {value = 263.8812449964527, x = 260, y = 360}, {value = 237.9190443660715, x = 260, y = 380}, {value = 216.1974427846486, x = 260, y = 400}, {value = 196.8965114537165, x = 260, y = 420}, {value = 179.2241618751783, x = 260, y = 440}, {value = 162.90300168589, x = 260, y = 460}, {value = 147.8743419572638, x = 260, y = 480}, {value = 180.4738060018332, x = 280, y = 0}, {value = 200.472375580995, x = 280, y = 20}, {value = 223.2538094281143, x = 280, y = 40}, {value = 250.064197118453, x = 280, y = 60}, {value = 283.5431864666287, x = 280, y = 80}, {value = 329.3833043109352, x = 280, y = 100}, {value = 400.5038238966113, x = 280, y = 120}, {value = 529.6272044807307, x = 280, y = 140}, {value = 818.0990716109643, x = 280, y = 160}, {value = 1718.7796808853718, x = 280, y = 180}, {value = 7828.50855775566, x = 280, y = 200}, {value = 38384.13356260858, x = 280, y = 220}, {value = 3123.0105632305213, x = 280, y = 240}, {value = 1114.3665945446546, x = 280, y = 260}, {value = 630.1014988378281, x = 280, y = 280}, {value = 441.9289654770604, x = 280, y = 300}, {value = 348.5523559510551, x = 280, y = 320}, {value = 294.0475129552052, x = 280, y = 340}, {value = 257.8490054016233, x = 280, y = 360}, {value = 231.0025941364796, x = 280, y = 380}, {value = 209.2246219524837, x = 280, y = 400}, {value = 190.4000600576906, x = 280, y = 420}, {value = 173.5083082608351, x = 280, y = 440}, {value = 158.0893635724227, x = 280, y = 460}, {value = 143.95423946988, x = 280, y = 480}, {value = 183.580854484781, x = 300, y = 0}, {value = 203.543957822477, x = 300, y = 20}, {value = 225.9462362847087, x = 300, y = 40}, {value = 251.9273646281974, x = 300, y = 60}, {value = 284.0295038311191, x = 300, y = 80}, {value = 327.7592343501712, x = 300, y = 100}, {value = 395.3391980683019, x = 300, y = 120}, {value = 516.5203165245937, x = 300, y = 140}, {value = 777.3699215320681, x = 300, y = 160}, {value = 1505.5375429509406, x = 300, y = 180}, {value = 4430.685937523668, x = 300, y = 200}, {value = 7824.0143401918585, x = 300, y = 220}, {value = 2429.55348690127, x = 300, y = 240}, {value = 1029.6584607534928, x = 300, y = 260}, {value = 608.1176015850634, x = 300, y = 280}, {value = 433.04676839352, x = 300, y = 300}, {value = 343.5233484398053, x = 300, y = 320}, {value = 290.3275253437187, x = 300, y = 340}, {value = 254.5811100813982, x = 300, y = 360}, {value = 227.9026414725358, x = 300, y = 380}, {value = 206.2430216720645, x = 300, y = 400}, {value = 187.5814795302974, x = 300, y = 420}, {value = 170.9194273466806, x = 300, y = 440}, {value = 155.7822680771889, x = 300, y = 460}, {value = 141.9532565344881, x = 300, y = 480}, {value = 190.1661756432726, x = 320, y = 0}, {value = 210.9652072235544, x = 320, y = 20}, {value = 233.6582243460122, x = 320, y = 40}, {value = 258.917683550246, x = 320, y = 60}, {value = 288.6045809589538, x = 320, y = 80}, {value = 326.9516572680395, x = 320, y = 100}, {value = 382.8512879558635, x = 320, y = 120}, {value = 474.9632971359078, x = 320, y = 140}, {value = 643.7633297763742, x = 320, y = 160}, {value = 971.4820273550099, x = 320, y = 180}, {value = 1506.5696435680322, x = 320, y = 200}, {value = 1715.0719785088324, x = 320, y = 220}, {value = 1217.7084740395371, x = 320, y = 240}, {value = 771.476073148925, x = 320, y = 260}, {value = 532.7496731910484, x = 320, y = 280}, {value = 406.4205687656757, x = 320, y = 300}, {value = 333.5347218084447, x = 320, y = 320}, {value = 286.9586831769314, x = 320, y = 340}, {value = 253.9820160728594, x = 320, y = 360}, {value = 228.3541481880493, x = 320, y = 380}, {value = 206.9247832651865, x = 320, y = 400}, {value = 188.1215252117813, x = 320, y = 420}, {value = 171.1885069805368, x = 320, y = 440}, {value = 155.7783659085427, x = 320, y = 460}, {value = 141.7309394542497, x = 320, y = 480}, {value = 201.1874458649032, x = 340, y = 0}, {value = 224.199242238476, x = 340, y = 20}, {value = 248.4220521655055, x = 340, y = 40}, {value = 273.6366886162289, x = 340, y = 60}, {value = 300.5209101071698, x = 340, y = 80}, {value = 331.5751409447283, x = 340, y = 100}, {value = 372.1413160377136, x = 340, y = 120}, {value = 431.3420054056841, x = 340, y = 140}, {value = 521.7783069694508, x = 340, y = 160}, {value = 650.8664011393874, x = 340, y = 180}, {value = 785.1862726341674, x = 340, y = 200}, {value = 820.8424628764546, x = 340, y = 220}, {value = 716.1412353508051, x = 340, y = 240}, {value = 570.1480512638789, x = 340, y = 260}, {value = 454.7504016573279, x = 340, y = 280}, {value = 376.6030637123409, x = 340, y = 300}, {value = 324.0087002283504, x = 340, y = 320}, {value = 286.5237297594463, x = 340, y = 340}, {value = 257.513647024242, x = 340, y = 360}, {value = 233.2335426788998, x = 340, y = 380}, {value = 211.7701737016156, x = 340, y = 400}, {value = 192.2659874672202, x = 340, y = 420}, {value = 174.3996909463917, x = 340, y = 440}, {value = 158.0717272844844, x = 340, y = 460}, {value = 143.2408326254163, x = 340, y = 480}, {value = 218.1417585757608, x = 360, y = 0}, {value = 245.815816149587, x = 360, y = 20}, {value = 274.1220501422158, x = 360, y = 40}, {value = 301.2656131503021, x = 360, y = 60}, {value = 326.0353605481463, x = 360, y = 80}, {value = 349.1162065919206, x = 360, y = 100}, {value = 373.7583157052189, x = 360, y = 120}, {value = 404.9357191513101, x = 360, y = 140}, {value = 446.5917858045258, x = 360, y = 160}, {value = 496.1355611179217, x = 360, y = 180}, {value = 537.3951521349727, x = 360, y = 200}, {value = 545.056105231187, x = 360, y = 220}, {value = 511.0888547634958, x = 360, y = 240}, {value = 455.4678151077382, x = 360, y = 260}, {value = 400.8909569403346, x = 360, y = 280}, {value = 356.45757738173, x = 360, y = 300}, {value = 321.6883226342406, x = 360, y = 320}, {value = 293.2284648854054, x = 360, y = 340}, {value = 268.0926238993403, x = 360, y = 360}, {value = 244.5716407115785, x = 360, y = 380}, {value = 222.1035935558551, x = 360, y = 400}, {value = 200.7906466028028, x = 360, y = 420}, {value = 180.9429472977957, x = 360, y = 440}, {value = 162.8114411373727, x = 360, y = 460}, {value = 146.5002743591798, x = 360, y = 480}, {value = 243.1484474486656, x = 380, y = 0}, {value = 280.028297394654, x = 380, y = 20}, {value = 317.8142930335717, x = 380, y = 40}, {value = 351.6738203361133, x = 380, y = 60}, {value = 376.6027976606348, x = 380, y = 80}, {value = 390.8991001484355, x = 380, y = 100}, {value = 397.9857529616104, x = 380, y = 120}, {value = 404.055341204839, x = 380, y = 140}, {value = 413.6317034148968, x = 380, y = 160}, {value = 426.2868419316602, x = 380, y = 180}, {value = 436.0838833726066, x = 380, y = 200}, {value = 435.3449801201183, x = 380, y = 220}, {value = 421.4826251659516, x = 380, y = 240}, {value = 399.2384584859902, x = 380, y = 260}, {value = 375.4054207942662, x = 380, y = 280}, {value = 353.552889771987, x = 380, y = 300}, {value = 333.413912578971, x = 380, y = 320}, {value = 312.9485374043176, x = 380, y = 340}, {value = 290.5076901851836, x = 380, y = 360}, {value = 265.9101519169171, x = 380, y = 380}, {value = 240.2464469514796, x = 380, y = 400}, {value = 215.026621700848, x = 380, y = 420}, {value = 191.4676481679721, x = 380, y = 440}, {value = 170.2395415049538, x = 380, y = 460}, {value = 151.5389503073205, x = 380, y = 480}, {value = 278.8438440177389, x = 400, y = 0}, {value = 333.5106513815035, x = 400, y = 20}, {value = 392.7513064229826, x = 400, y = 40}, {value = 445.4120596709558, x = 400, y = 60}, {value = 476.3078478958189, x = 400, y = 80}, {value = 477.9572850914349, x = 400, y = 100}, {value = 458.5551079676966, x = 400, y = 120}, {value = 433.624502867879, x = 400, y = 140}, {value = 413.8462445511558, x = 400, y = 160}, {value = 401.8918755270783, x = 400, y = 180}, {value = 395.3085204987732, x = 400, y = 200}, {value = 390.428246409857, x = 400, y = 220}, {value = 385.3278132377047, x = 400, y = 240}, {value = 380.4691199257368, x = 400, y = 260}, {value = 376.8832284737636, x = 400, y = 280}, {value = 373.8291251348723, x = 400, y = 300}, {value = 368.0159374342603, x = 400, y = 320}, {value = 355.1895643777679, x = 400, y = 340}, {value = 333.1290843952412, x = 400, y = 360}, {value = 303.3662516925247, x = 400, y = 380}, {value = 269.9523155336584, x = 400, y = 400}, {value = 236.9167171755332, x = 400, y = 420}, {value = 206.7929721951647, x = 400, y = 440}, {value = 180.5825865824417, x = 400, y = 460}, {value = 158.3163574905928, x = 400, y = 480}, {value = 327.5516065733008, x = 420, y = 0}, {value = 416.0093169930444, x = 420, y = 20}, {value = 525.0569733287377, x = 420, y = 40}, {value = 631.8277620281608, x = 420, y = 60}, {value = 686.977202867884, x = 420, y = 80}, {value = 659.5122837713167, x = 420, y = 100}, {value = 580.8066287708754, x = 420, y = 120}, {value = 500.4111365092454, x = 420, y = 140}, {value = 441.0854914283419, x = 420, y = 160}, {value = 404.1841687479854, x = 420, y = 180}, {value = 384.4199637245367, x = 420, y = 200}, {value = 376.7930145610414, x = 420, y = 220}, {value = 378.508794666517, x = 420, y = 240}, {value = 388.6102279918222, x = 420, y = 260}, {value = 406.0763762338754, x = 420, y = 280}, {value = 426.8977088355494, x = 420, y = 300}, {value = 441.8789649771132, x = 420, y = 320}, {value = 439.1350696614139, x = 420, y = 340}, {value = 412.6977046705968, x = 420, y = 360}, {value = 368.1512973197414, x = 420, y = 380}, {value = 317.1681506208104, x = 420, y = 400}, {value = 268.9748644261622, x = 420, y = 420}, {value = 227.6740127166905, x = 420, y = 440}, {value = 193.8524339921646, x = 420, y = 460}, {value = 166.5973732197706, x = 420, y = 480}, {value = 388.4888086275986, x = 440, y = 0}, {value = 537.7086706901919, x = 440, y = 20}, {value = 765.931109287517, x = 440, y = 40}, {value = 1052.9184865207208, x = 440, y = 60}, {value = 1215.716194863042, x = 440, y = 80}, {value = 1077.1850505105485, x = 440, y = 100}, {value = 814.8342297450009, x = 440, y = 120}, {value = 611.9604158251246, x = 440, y = 140}, {value = 489.1355971810309, x = 440, y = 160}, {value = 421.4630375181883, x = 440, y = 180}, {value = 388.5842973749236, x = 440, y = 200}, {value = 379.411686736669, x = 440, y = 220}, {value = 389.5604020636228, x = 440, y = 240}, {value = 418.8320119968966, x = 440, y = 260}, {value = 468.0952435221659, x = 440, y = 280}, {value = 532.9461036036391, x = 440, y = 300}, {value = 593.2444562379037, x = 440, y = 320}, {value = 612.1907770427381, x = 440, y = 340}, {value = 568.0536636677912, x = 440, y = 360}, {value = 482.1484839452102, x = 440, y = 380}, {value = 390.8429073193262, x = 440, y = 400}, {value = 313.7247732166959, x = 440, y = 420}, {value = 254.2290560461502, x = 440, y = 440}, {value = 209.5082161864574, x = 440, y = 460}, {value = 175.7895443893098, x = 440, y = 480}, {value = 451.8355721798412, x = 460, y = 0}, {value = 692.7886714197824, x = 460, y = 20}, {value = 1188.728267747688, x = 460, y = 40}, {value = 2211.363666272556, x = 460, y = 60}, {value = 3160.1691973209945, x = 460, y = 80}, {value = 2233.2360739226406, x = 460, y = 100}, {value = 1232.9588906458841, x = 460, y = 120}, {value = 760.4181232534447, x = 460, y = 140}, {value = 544.648916623082, x = 460, y = 160}, {value = 442.4163823983288, x = 460, y = 180}, {value = 397.6029426528231, x = 460, y = 200}, {value = 388.8268596808151, x = 460, y = 220}, {value = 410.5410096641352, x = 460, y = 240}, {value = 467.1698243536818, x = 460, y = 260}, {value = 571.0528394592797, x = 460, y = 280}, {value = 734.149080569854, x = 460, y = 300}, {value = 928.3365644726977, x = 460, y = 320}, {value = 1022.3883521358628, x = 460, y = 340}, {value = 905.9903638805066, x = 460, y = 360}, {value = 688.9123376809689, x = 460, y = 380}, {value = 501.7197473042262, x = 460, y = 400}, {value = 371.5582242606089, x = 460, y = 420}, {value = 284.7967332630649, x = 460, y = 440}, {value = 225.9993196051429, x = 460, y = 460}, {value = 184.7919795975845, x = 460, y = 480}, {value = 494.1470754449084, x = 480, y = 0}, {value = 820.143483568583, x = 480, y = 20}, {value = 1700.2843322365893, x = 480, y = 40}, {value = 5584.351797634839, x = 480, y = 60}, {value = 27557.10126656662, x = 480, y = 80}, {value = 5604.483142934487, x = 480, y = 100}, {value = 1741.1723095000027, x = 480, y = 120}, {value = 883.1705849909686, x = 480, y = 140}, {value = 581.7766475243598, x = 480, y = 160}, {value = 454.3753513438884, x = 480, y = 180}, {value = 402.8653713107304, x = 480, y = 200}, {value = 397.137565754819, x = 480, y = 220}, {value = 432.7097401870071, x = 480, y = 240}, {value = 524.019688238963, x = 480, y = 260}, {value = 714.2879076539394, x = 480, y = 280}, {value = 1101.9878987632837, x = 480, y = 300}, {value = 1806.984238441382, x = 480, y = 320}, {value = 2347.8320412948256, x = 480, y = 340}, {value = 1786.786471216547, x = 480, y = 360}, {value = 1060.9320169611478, x = 480, y = 380}, {value = 650.8883611419683, x = 480, y = 400}, {value = 435.5588046932536, x = 480, y = 420}, {value = 314.3993178701329, x = 480, y = 440}, {value = 240.4366009358142, x = 480, y = 460}, {value = 191.9845741225382, x = 480, y = 480}, {value = 490.4253117750179, x = 500, y = 0}, {value = 815.9167366936169, x = 500, y = 20}, {value = 1695.4864534843566, x = 500, y = 40}, {value = 5578.919058476248, x = 500, y = 60}, {value = 27550.984579078224, x = 500, y = 80}, {value = 5597.669927629279, x = 500, y = 100}, {value = 1733.7227761318186, x = 500, y = 120}, {value = 875.2752112847681, x = 500, y = 140}, {value = 573.8475675716326, x = 500, y = 160}, {value = 447.2047696342482, x = 500, y = 180}, {value = 397.9510971036209, x = 500, y = 200}, {value = 397.492076663688, x = 500, y = 220}, {value = 445.2228862182557, x = 500, y = 240}, {value = 567.5208214175484, x = 500, y = 260}, {value = 852.9839403661446, x = 500, y = 280}, {value = 1625.3483209360186, x = 500, y = 300}, {value = 4501.971474994003, x = 500, y = 320}, {value = 12301.277808472278, x = 500, y = 340}, {value = 4483.544015365327, x = 500, y = 360}, {value = 1587.7728687123804, x = 500, y = 380}, {value = 794.6441871342529, x = 500, y = 400}, {value = 485.4844180781366, x = 500, y = 420}, {value = 334.3990435030597, x = 500, y = 440}, {value = 248.9660111852643, x = 500, y = 460}, {value = 195.5287027333742, x = 500, y = 480}, {value = 440.6347447346152, x = 520, y = 0}, {value = 680.0517080446464, x = 520, y = 20}, {value = 1174.2439730270028, x = 520, y = 40}, {value = 2194.9209450406975, x = 520, y = 60}, {value = 3141.591025392038, x = 520, y = 80}, {value = 2212.4426681107734, x = 520, y = 100}, {value = 1210.075146394814, x = 520, y = 120}, {value = 735.9450344977764, x = 520, y = 140}, {value = 519.7302764227595, x = 520, y = 160}, {value = 419.275333796839, x = 520, y = 180}, {value = 380.3748943508633, x = 520, y = 200}, {value = 385.5053647664964, x = 520, y = 220}, {value = 438.3622082072466, x = 520, y = 240}, {value = 569.7575318592565, x = 520, y = 260}, {value = 883.1261778467782, x = 520, y = 280}, {value = 1802.0754648482257, x = 520, y = 300}, {value = 6561.621327448792, x = 520, y = 320}, {value = 109909.73803261889, x = 520, y = 340}, {value = 6544.787435426761, x = 520, y = 360}, {value = 1767.6922197015413, x = 520, y = 380}, {value = 829.6038486598078, x = 520, y = 400}, {value = 494.259761801566, x = 520, y = 420}, {value = 336.0825250442482, x = 520, y = 440}, {value = 248.2901178192907, x = 520, y = 460}, {value = 194.007238417969, x = 520, y = 480}, {value = 369.7065515058474, x = 540, y = 0}, {value = 516.297989060171, x = 540, y = 20}, {value = 741.4981362256359, x = 540, y = 40}, {value = 1025.0448454948535, x = 540, y = 60}, {value = 1184.0053475672655, x = 540, y = 80}, {value = 1041.3577195701284, x = 540, y = 100}, {value = 774.9020630083727, x = 540, y = 120}, {value = 568.5129687585196, x = 540, y = 140}, {value = 443.7790173996516, x = 540, y = 160}, {value = 377.469497600984, x = 540, y = 180}, {value = 351.9336144263967, x = 540, y = 200}, {value = 360.8621348999674, x = 540, y = 220}, {value = 409.7543589903333, x = 540, y = 240}, {value = 522.4767409553075, x = 540, y = 260}, {value = 766.388485106481, x = 540, y = 280}, {value = 1338.500955221818, x = 540, y = 300}, {value = 2773.251246602431, x = 540, y = 320}, {value = 4479.223877708703, x = 540, y = 340}, {value = 2757.9424586096943, x = 540, y = 360}, {value = 1307.228475215255, x = 540, y = 380}, {value = 717.7162546532007, x = 540, y = 400}, {value = 453.8996941025055, x = 540, y = 420}, {value = 317.1642635835544, x = 540, y = 440}, {value = 237.597250016285, x = 540, y = 460}, {value = 187.0820903236517, x = 540, y = 480}, {value = 301.0309492326305, x = 560, y = 0}, {value = 385.6743463943556, x = 560, y = 20}, {value = 490.2711053343643, x = 560, y = 40}, {value = 591.8658240803233, x = 560, y = 60}, {value = 641.0637410178631, x = 560, y = 80}, {value = 606.926367736246, x = 560, y = 100}, {value = 521.1062581651818, x = 560, y = 120}, {value = 433.8456866566294, x = 560, y = 140}, {value = 369.2540856101559, x = 560, y = 160}, {value = 330.9398856769334, x = 560, y = 180}, {value = 316.966022385701, x = 560, y = 200}, {value = 327.1077270868126, x = 560, y = 220}, {value = 366.0418831892941, x = 560, y = 240}, {value = 446.6961949320618, x = 560, y = 260}, {value = 595.671927470284, x = 560, y = 280}, {value = 854.3002557200307, x = 560, y = 300}, {value = 1220.2769863406206, x = 560, y = 320}, {value = 1436.4816253684362, x = 560, y = 340}, {value = 1206.4658641216713, x = 560, y = 360}, {value = 826.1199284634156, x = 560, y = 380}, {value = 551.9177727982608, x = 560, y = 400}, {value = 385.3226860769773, x = 560, y = 420}, {value = 283.8244757818497, x = 560, y = 440}, {value = 219.0987961122859, x = 560, y = 460}, {value = 175.6636062983939, x = 560, y = 480}, {value = 244.3916629184598, x = 580, y = 0}, {value = 293.9451449866081, x = 580, y = 20}, {value = 347.1167450522198, x = 580, y = 40}, {value = 392.5417235819339, x = 580, y = 60}, {value = 414.8148328471506, x = 580, y = 80}, {value = 406.2943468957227, x = 580, y = 100}, {value = 375.2347087663739, x = 580, y = 120}, {value = 337.7500645376741, x = 580, y = 140}, {value = 306.1277306244145, x = 580, y = 160}, {value = 286.1573291901, x = 580, y = 180}, {value = 280.0410498157885, x = 580, y = 200}, {value = 289.4236701901839, x = 580, y = 220}, {value = 317.2376358952213, x = 580, y = 240}, {value = 368.5752878447752, x = 580, y = 260}, {value = 449.7236220521299, x = 580, y = 280}, {value = 560.9038680150346, x = 580, y = 300}, {value = 675.4228564783399, x = 580, y = 320}, {value = 725.0049818821237, x = 580, y = 340}, {value = 663.080703234719, x = 580, y = 360}, {value = 535.7736372879021, x = 580, y = 380}, {value = 410.8594280209783, x = 580, y = 400}, {value = 314.4182651414448, x = 580, y = 420}, {value = 245.4363324269463, x = 580, y = 440}, {value = 196.5856716075259, x = 580, y = 460}, {value = 161.4436030073743, x = 580, y = 480}}">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="false">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+	<polyline points="-15,-15, -3,-5, -16,5" style="stroke:black"></polyline>
+	<polygon points="-22,-1, -22,4, -10,-5, -22,-14, -22,-9, -30,-9, -30, -1" style="fill:lightGray"></polygon>
+      </svg>
+    </configure>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:black" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1150.0, 165.0]">
+        </property>
+    </property>
+    <property name="lights" class="ptolemy.actor.parameters.PortParameter" value="{{name = &quot;L1&quot;, x = 90, y = 125}, {name = &quot;L2&quot;, x = 75, y = 365}, {name = &quot;L3&quot;, x = 285, y = 215}, {name = &quot;L4&quot;, x = 490, y = 80}, {name = &quot;L5&quot;, x = 515, y = 340}}">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+	<polyline points="-15,-15, -3,-5, -16,5" style="stroke:black"></polyline>
+	<polygon points="-22,-1, -22,4, -10,-5, -22,-14, -22,-9, -30,-9, -30, -1" style="fill:lightGray"></polygon>
+      </svg>
+    </configure>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:black" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1150.0, 100.0]">
+        </property>
+    </property>
+    <property name="sensors" class="ptolemy.actor.parameters.PortParameter" value="{{name = &quot;S1&quot;, x = 220, y = 70}, {name = &quot;S2&quot;, x = 230, y = 265}, {name = &quot;S3&quot;, x = 355, y = 435}}">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+	<polyline points="-15,-15, -3,-5, -16,5" style="stroke:black"></polyline>
+	<polygon points="-22,-1, -22,4, -10,-5, -22,-14, -22,-9, -30,-9, -30, -1" style="fill:lightGray"></polygon>
+      </svg>
+    </configure>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:black" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1150.0, 130.0]">
+        </property>
+    </property>
+    <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="TODO:  Figure out how to dynamically create array">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[635.0, 510.0]">
+        </property>
+    </property>
+    <port name="blocksHigh" class="ptolemy.actor.parameters.ParameterPort">
+        <property name="input"/>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{1130.0, 220.0}">
+        </property>
+    </port>
+    <port name="blocksWide" class="ptolemy.actor.parameters.ParameterPort">
+        <property name="input"/>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{1130.0, 305.0}">
+        </property>
+    </port>
+    <port name="blockHeight" class="ptolemy.actor.parameters.ParameterPort">
+        <property name="input"/>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{1130.0, 250.0}">
+        </property>
+    </port>
+    <port name="blockWidth" class="ptolemy.actor.parameters.ParameterPort">
+        <property name="input"/>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{1130.0, 335.0}">
+        </property>
+    </port>
+    <port name="result" class="ptolemy.actor.parameters.ParameterPort">
+        <property name="input"/>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{1130.0, 160.0}">
+        </property>
+    </port>
+    <port name="lights" class="ptolemy.actor.parameters.ParameterPort">
+        <property name="input"/>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{1130.0, 95.0}">
+        </property>
+    </port>
+    <port name="sensors" class="ptolemy.actor.parameters.ParameterPort">
+        <property name="input"/>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{1130.0, 125.0}">
+        </property>
+    </port>
+    <class name="SensorClassDefinition" extends="ptolemy.actor.TypedCompositeActor">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[675.0, 340.0]">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
+            <property name="rectangle" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[1.0, 0.0]">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="35.0">
+                </property>
+                <property name="height" class="ptolemy.data.expr.Parameter" value="34.0">
+                </property>
+                <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="ColorAttribute">
+                </property>
+                <property name="_renderFirst" class="ptolemy.kernel.util.SingletonAttribute">
+                </property>
+            </property>
+            <property name="ParameterValue" class="ptolemy.vergil.kernel.attributes.AttributeValueAttribute">
+                <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
+                </property>
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="markerName">
+                </property>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[-17.0, -11.0]">
+                </property>
+            </property>
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={75, 11, 1156, 617}, maximized=false}">
+        </property>
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[928, 500]">
+        </property>
+        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+        </property>
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{350.0, 250.0}">
+        </property>
+        <property name="markerName" class="ptolemy.data.expr.Parameter" value="&quot;my name&quot;">
+            <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="false">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[610.0, 45.0]">
+            </property>
+        </property>
+        <property name="ColorAttribute" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,1.0,0.2,1.0}">
+            <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="false">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:#BB00BB" y="20">-C-</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[610.0, 135.0]">
+            </property>
+        </property>
+        <property name="markerXCoord" class="ptolemy.data.expr.Parameter" value="&quot;0&quot;">
+            <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="false">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[610.0, 65.0]">
+            </property>
+        </property>
+        <property name="markerYCoord" class="ptolemy.data.expr.Parameter" value="&quot;0&quot;">
+            <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="false">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[610.0, 85.0]">
+            </property>
+        </property>
+        <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Set the location of the actor based on web page input&#10;&#10;Convert from strings to doubles&#10;Output ports on ExpressionToToken actors&#10;have been set to type &quot;double&quot;&#10;(Right click on ExpressionToToken actor -&gt; Customize -&gt; Ports to see type info)">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 40.0]">
+            </property>
+        </property>
+        <property name="light" class="ptolemy.data.expr.Parameter" value="0.0">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[610.0, 110.0]">
+            </property>
+        </property>
+        <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="After location is set, initialize light to zero&#10;and calculate amount of light received&#10;&#10;RecordAssembler used to ensure light parameter&#10;is set to zero before IterateOverArray is fired">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[305.0, 305.0]">
+            </property>
+        </property>
+        <property name="sensorLocation" class="ptolemy.data.expr.Parameter" value="{0,0}">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[610.0, 155.0]">
+            </property>
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 400.0]">
+            </property>
+            <property name="_hide" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <entity name="SetVariable" class="ptolemy.actor.lib.SetVariable">
+            <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="_location">
+            </property>
+            <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
+                </property>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[600.0, 190.0]">
+            </property>
+        </entity>
+        <entity name="Expression" class="ptolemy.actor.lib.Expression">
+            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="{xCoordAsDouble, yCoordAsDouble}">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+                </property>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                </property>
+                <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[395.0, 235.0]">
+            </property>
+            <port name="xCoordAsDouble" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+            </port>
+            <port name="yCoordAsDouble" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+            </port>
+        </entity>
+        <entity name="Const" class="ptolemy.actor.lib.Const">
+            <property name="value" class="ptolemy.data.expr.Parameter" value="markerXCoord">
+            </property>
+            <doc>Create a constant sequence.</doc>
+            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+                </property>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 205.0]">
+            </property>
+        </entity>
+        <entity name="Const2" class="ptolemy.actor.lib.Const">
+            <property name="value" class="ptolemy.data.expr.Parameter" value="markerYCoord">
+            </property>
+            <doc>Create a constant sequence.</doc>
+            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+                </property>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 260.0]">
+            </property>
+        </entity>
+        <entity name="ExpressionToToken" class="ptolemy.actor.lib.conversions.ExpressionToToken">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 205.0]">
+            </property>
+            <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+                <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
+                </property>
+            </port>
+        </entity>
+        <entity name="ExpressionToToken2" class="ptolemy.actor.lib.conversions.ExpressionToToken">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 260.0]">
+            </property>
+            <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+                <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
+                </property>
+            </port>
+        </entity>
+        <entity name="IterateOverArray" class="ptolemy.actor.lib.hoc.IterateOverArray">
+            <doc>Iterate a contained actor over input arrays</doc>
+            <property name="_icon" class="ptolemy.vergil.icon.CopyCatIcon">
+            </property>
+            <property name="_configurer" class="ptolemy.actor.gui.InsideEntityEditorPaneFactory">
+            </property>
+            <property name="_tableauFactory" class="ptolemy.actor.gui.LevelSkippingTableauFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[390.0, 460.0]">
+            </property>
+            <port name="lightLocation" class="ptolemy.actor.lib.hoc.IterateOverArray$IteratePort">
+                <property name="input"/>
+                <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+            </port>
+            <port name="output" class="ptolemy.actor.lib.hoc.IterateOverArray$IteratePort">
+                <property name="output"/>
+                <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+            </port>
+            <entity name="IterateComposite" class="ptolemy.actor.lib.hoc.IterateOverArray$IterateComposite">
+                <property name="annotation" class="ptolemy.kernel.util.Attribute">
+                    <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+                    </property>
+                    <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                        <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">Make sure there is a director here!</text></svg></configure>
+                    </property>
+                    <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                        <configure>
+                <svg> 
+                    <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
+                </svg>
+              </configure>
+                    </property>
+                    <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+                    </property>
+                    <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+                    </property>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="-5.0, 5.0">
+                    </property>
+                </property>
+                <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+                    <property name="iterations" class="ptolemy.data.expr.Parameter" value="AUTO">
+                    </property>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="{60, 70}">
+                    </property>
+                </property>
+                <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+                    <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Scale:  One pixel = 1 centimeter&#10;(Room would be roughly 15 x 15 feet, 225 sq ft)&#10;&#10;Equation:  Luminous intensity on a spherical surface&#10;I = (3P) / (4*pi*r^2) where P is power in watts or lumens&#10;= Lumens per meter squared">
+                    </property>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="{145.0, 50.0}">
+                    </property>
+                </property>
+                <property name="input" class="ptolemy.kernel.util.Attribute">
+                </property>
+                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-8, -8, 1382, 744}, maximized=true}">
+                </property>
+                <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[949, 500]">
+                </property>
+                <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+                </property>
+                <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{347.0, 254.984375}">
+                </property>
+                <port name="lightLocation" class="ptolemy.actor.lib.hoc.IterateOverArray$IteratePort">
+                    <property name="input"/>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 220.0]">
+                    </property>
+                </port>
+                <port name="output" class="ptolemy.actor.lib.hoc.IterateOverArray$IteratePort">
+                    <property name="output"/>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[1010.0, 255.0]">
+                    </property>
+                </port>
+                <entity name="RecordDisassembler" class="ptolemy.actor.lib.RecordDisassembler">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[110.0, 200.0]">
+                    </property>
+                    <port name="lumens" class="ptolemy.actor.TypedIOPort">
+                        <property name="output"/>
+                        <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                        </property>
+                    </port>
+                    <port name="location" class="ptolemy.actor.TypedIOPort">
+                        <property name="output"/>
+                        <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                        </property>
+                    </port>
+                </entity>
+                <entity name="ArrayElement_xLight" class="ptolemy.actor.lib.ArrayElement">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[335.0, 240.0]">
+                    </property>
+                </entity>
+                <entity name="ArrayElement_yLight" class="ptolemy.actor.lib.ArrayElement">
+                    <property name="index" class="ptolemy.actor.parameters.PortParameter" value="1">
+                    </property>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[335.0, 305.0]">
+                    </property>
+                </entity>
+                <entity name="ArrayElement_xSensor" class="ptolemy.actor.lib.ArrayElement">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[335.0, 385.0]">
+                    </property>
+                </entity>
+                <entity name="ArrayElement_ySensor" class="ptolemy.actor.lib.ArrayElement">
+                    <property name="index" class="ptolemy.actor.parameters.PortParameter" value="1">
+                    </property>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[335.0, 460.0]">
+                    </property>
+                </entity>
+                <entity name="Expression" class="ptolemy.actor.lib.Expression">
+                    <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="sqrt( (xLight - xSensor)^2 + (yLight - ySensor)^2 )">
+                    </property>
+                    <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                        <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+                        </property>
+                        <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                        </property>
+                        <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
+                        </property>
+                    </property>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[705.0, 310.0]">
+                    </property>
+                    <port name="xLight" class="ptolemy.actor.TypedIOPort">
+                        <property name="input"/>
+                        <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                        </property>
+                    </port>
+                    <port name="yLight" class="ptolemy.actor.TypedIOPort">
+                        <property name="input"/>
+                        <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                        </property>
+                    </port>
+                    <port name="xSensor" class="ptolemy.actor.TypedIOPort">
+                        <property name="input"/>
+                        <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                        </property>
+                    </port>
+                    <port name="ySensor" class="ptolemy.actor.TypedIOPort">
+                        <property name="input"/>
+                        <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                        </property>
+                    </port>
+                </entity>
+                <entity name="Const" class="ptolemy.actor.lib.Const">
+                    <property name="value" class="ptolemy.data.expr.Parameter" value="sensorLocation">
+                    </property>
+                    <doc>Create a constant sequence.</doc>
+                    <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                        <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+                        </property>
+                        <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                        </property>
+                    </property>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, 375.0]">
+                    </property>
+                </entity>
+                <entity name="Expression2" class="ptolemy.actor.lib.Expression">
+                    <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="(3*P) / (4*3.14159*(r^2)) ">
+                    </property>
+                    <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                        <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+                        </property>
+                        <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                        </property>
+                        <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
+                        </property>
+                    </property>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[880.0, 255.0]">
+                    </property>
+                    <port name="P" class="ptolemy.actor.TypedIOPort">
+                        <property name="input"/>
+                        <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                        </property>
+                    </port>
+                    <port name="r" class="ptolemy.actor.TypedIOPort">
+                        <property name="input"/>
+                        <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                        </property>
+                    </port>
+                </entity>
+                <entity name="Expression3" class="ptolemy.actor.lib.Expression">
+                    <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="cm * 0.01">
+                    </property>
+                    <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                        <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+                        </property>
+                        <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                        </property>
+                        <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
+                        </property>
+                    </property>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[480.0, 280.0]">
+                    </property>
+                    <port name="cm" class="ptolemy.actor.TypedIOPort">
+                        <property name="input"/>
+                        <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                        </property>
+                    </port>
+                </entity>
+                <entity name="Expression4" class="ptolemy.actor.lib.Expression">
+                    <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="cm * 0.01">
+                    </property>
+                    <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                        <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+                        </property>
+                        <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                        </property>
+                        <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
+                        </property>
+                    </property>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[480.0, 315.0]">
+                    </property>
+                    <port name="cm" class="ptolemy.actor.TypedIOPort">
+                        <property name="input"/>
+                        <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                        </property>
+                    </port>
+                </entity>
+                <entity name="Expression5" class="ptolemy.actor.lib.Expression">
+                    <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="cm * 0.01">
+                    </property>
+                    <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                        <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+                        </property>
+                        <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                        </property>
+                        <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
+                        </property>
+                    </property>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[480.0, 360.0]">
+                    </property>
+                    <port name="cm" class="ptolemy.actor.TypedIOPort">
+                        <property name="input"/>
+                        <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                        </property>
+                    </port>
+                </entity>
+                <entity name="Expression6" class="ptolemy.actor.lib.Expression">
+                    <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="cm * 0.01">
+                    </property>
+                    <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                        <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+                        </property>
+                        <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                        </property>
+                        <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
+                        </property>
+                    </property>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[480.0, 400.0]">
+                    </property>
+                    <port name="cm" class="ptolemy.actor.TypedIOPort">
+                        <property name="input"/>
+                        <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                        </property>
+                    </port>
+                </entity>
+                <relation name="relation" class="ptolemy.actor.TypedIORelation">
+                    <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+                    </property>
+                </relation>
+                <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+                    <vertex name="vertex1" value="[235.0, 230.0]">
+                    </vertex>
+                    <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+                    </property>
+                </relation>
+                <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+                    <vertex name="vertex1" value="[255.0, 375.0]">
+                    </vertex>
+                    <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+                    </property>
+                </relation>
+                <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+                    <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+                    </property>
+                </relation>
+                <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+                    <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+                    </property>
+                </relation>
+                <relation name="relation10" class="ptolemy.actor.TypedIORelation">
+                    <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+                    </property>
+                </relation>
+                <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+                    <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+                    </property>
+                </relation>
+                <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+                    <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+                    </property>
+                </relation>
+                <relation name="relation11" class="ptolemy.actor.TypedIORelation">
+                    <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+                    </property>
+                </relation>
+                <relation name="relation12" class="ptolemy.actor.TypedIORelation">
+                    <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+                    </property>
+                </relation>
+                <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+                    <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+                    </property>
+                </relation>
+                <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+                    <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+                    </property>
+                </relation>
+                <relation name="relation13" class="ptolemy.actor.TypedIORelation">
+                    <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+                    </property>
+                </relation>
+                <relation name="relation14" class="ptolemy.actor.TypedIORelation">
+                    <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+                    </property>
+                </relation>
+                <link port="lightLocation" relation="relation"/>
+                <link port="output" relation="relation14"/>
+                <link port="RecordDisassembler.input" relation="relation"/>
+                <link port="RecordDisassembler.lumens" relation="relation9"/>
+                <link port="RecordDisassembler.location" relation="relation2"/>
+                <link port="ArrayElement_xLight.input" relation="relation2"/>
+                <link port="ArrayElement_xLight.output" relation="relation10"/>
+                <link port="ArrayElement_yLight.input" relation="relation2"/>
+                <link port="ArrayElement_yLight.output" relation="relation5"/>
+                <link port="ArrayElement_xSensor.input" relation="relation3"/>
+                <link port="ArrayElement_xSensor.output" relation="relation12"/>
+                <link port="ArrayElement_ySensor.input" relation="relation3"/>
+                <link port="ArrayElement_ySensor.output" relation="relation6"/>
+                <link port="Expression.output" relation="relation8"/>
+                <link port="Expression.xLight" relation="relation4"/>
+                <link port="Expression.yLight" relation="relation11"/>
+                <link port="Expression.xSensor" relation="relation7"/>
+                <link port="Expression.ySensor" relation="relation13"/>
+                <link port="Const.output" relation="relation3"/>
+                <link port="Expression2.output" relation="relation14"/>
+                <link port="Expression2.P" relation="relation9"/>
+                <link port="Expression2.r" relation="relation8"/>
+                <link port="Expression3.output" relation="relation4"/>
+                <link port="Expression3.cm" relation="relation10"/>
+                <link port="Expression4.output" relation="relation11"/>
+                <link port="Expression4.cm" relation="relation5"/>
+                <link port="Expression5.output" relation="relation7"/>
+                <link port="Expression5.cm" relation="relation12"/>
+                <link port="Expression6.output" relation="relation13"/>
+                <link port="Expression6.cm" relation="relation6"/>
+            </entity>
+        </entity>
+        <entity name="Const3" class="ptolemy.actor.lib.Const">
+            <property name="value" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+            <doc>Create a constant sequence.</doc>
+            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+                </property>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[115.0, 345.0]">
+            </property>
+        </entity>
+        <entity name="SetVariable2" class="ptolemy.actor.lib.SetVariable">
+            <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="light">
+            </property>
+            <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
+                </property>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[225.0, 345.0]">
+            </property>
+        </entity>
+        <entity name="SetVariable3" class="ptolemy.actor.lib.SetVariable">
+            <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="sensorLocation">
+            </property>
+            <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
+                </property>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[615.0, 235.0]">
+            </property>
+        </entity>
+        <entity name="RecordAssembler" class="ptolemy.actor.lib.RecordAssembler">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[145.0, 410.0]">
+            </property>
+            <port name="light" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+            </port>
+            <port name="lightLocations" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+            </port>
+        </entity>
+        <entity name="RecordDisassembler" class="ptolemy.actor.lib.RecordDisassembler">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{220, 430}">
+            </property>
+            <port name="light" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+                <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+            </port>
+            <port name="lightLocations" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+                <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+            </port>
+        </entity>
+        <entity name="ArraySum" class="ptolemy.actor.lib.ArraySum">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[525.0, 460.0]">
+            </property>
+        </entity>
+        <entity name="Display" class="ptolemy.actor.lib.gui.Display">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
+            </property>
+            <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[625.0, 460.0]">
+            </property>
+        </entity>
+        <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+            <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+            </property>
+        </relation>
+        <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+            <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+            </property>
+        </relation>
+        <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+            <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+            </property>
+        </relation>
+        <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+            <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+            </property>
+        </relation>
+        <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+            <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+            </property>
+        </relation>
+        <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+            <vertex name="vertex1" value="[530.0, 235.0]">
+            </vertex>
+            <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+            </property>
+        </relation>
+        <relation name="relation" class="ptolemy.actor.TypedIORelation">
+            <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+            </property>
+        </relation>
+        <relation name="relation10" class="ptolemy.actor.TypedIORelation">
+            <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+            </property>
+        </relation>
+        <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+            <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+            </property>
+        </relation>
+        <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+            <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+            </property>
+        </relation>
+        <relation name="relation11" class="ptolemy.actor.TypedIORelation">
+            <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+            </property>
+        </relation>
+        <relation name="relation12" class="ptolemy.actor.TypedIORelation">
+            <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+            </property>
+        </relation>
+        <relation name="relation13" class="ptolemy.actor.TypedIORelation">
+            <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+            </property>
+        </relation>
+        <link port="input" relation="relation10"/>
+        <link port="SetVariable.input" relation="relation7"/>
+        <link port="Expression.output" relation="relation7"/>
+        <link port="Expression.xCoordAsDouble" relation="relation4"/>
+        <link port="Expression.yCoordAsDouble" relation="relation5"/>
+        <link port="Const.output" relation="relation2"/>
+        <link port="Const2.output" relation="relation3"/>
+        <link port="ExpressionToToken.input" relation="relation2"/>
+        <link port="ExpressionToToken.output" relation="relation4"/>
+        <link port="ExpressionToToken2.input" relation="relation3"/>
+        <link port="ExpressionToToken2.output" relation="relation5"/>
+        <link port="IterateOverArray.lightLocation" relation="relation11"/>
+        <link port="IterateOverArray.output" relation="relation12"/>
+        <link port="Const3.output" relation="relation9"/>
+        <link port="Const3.trigger" relation="relation"/>
+        <link port="SetVariable2.input" relation="relation9"/>
+        <link port="SetVariable2.output" relation="relation6"/>
+        <link port="SetVariable3.input" relation="relation7"/>
+        <link port="SetVariable3.output" relation="relation"/>
+        <link port="RecordAssembler.output" relation="relation8"/>
+        <link port="RecordAssembler.light" relation="relation6"/>
+        <link port="RecordAssembler.lightLocations" relation="relation10"/>
+        <link port="RecordDisassembler.input" relation="relation8"/>
+        <link port="RecordDisassembler.lightLocations" relation="relation11"/>
+        <link port="ArraySum.input" relation="relation12"/>
+        <link port="ArraySum.output" relation="relation13"/>
+        <link port="Display.input" relation="relation13"/>
+    </class>
+    <class name="LightClassDefinition" extends="ptolemy.actor.TypedCompositeActor">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{815.0, 340.0}">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
+            <property name="ellipse" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[0.0, -1.0]">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="40.0">
+                </property>
+                <property name="height" class="ptolemy.data.expr.Parameter" value="37.0">
+                </property>
+                <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="ColorAttribute">
+                </property>
+            </property>
+            <property name="ParameterValue" class="ptolemy.vergil.kernel.attributes.AttributeValueAttribute">
+                <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
+                </property>
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="markerName">
+                </property>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
+                </property>
+                <property name="useExpression" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[-16.0, -11.0]">
+                </property>
+            </property>
+        </property>
+        <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Set the location of the actor based on web page input&#10;&#10;Convert from strings to doubles&#10;Output ports on ExpressionToToken actors&#10;have been set to type &quot;double&quot;&#10;(Right click on ExpressionToToken actor -&gt; Customize -&gt; Ports to see type info)">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 50.0]">
+            </property>
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={35, 26, 1245, 617}, maximized=false}">
+        </property>
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1017, 500]">
+        </property>
+        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+        </property>
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{350.0, 250.0}">
+        </property>
+        <property name="markerName" class="ptolemy.data.expr.Parameter" value="&quot;my name&quot;">
+            <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="false">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[610.0, 45.0]">
+            </property>
+        </property>
+        <property name="ColorAttribute" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,1.0,0.2,1.0}">
+            <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="false">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:#BB00BB" y="20">-C-</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[610.0, 130.0]">
+            </property>
+        </property>
+        <property name="markerXCoord" class="ptolemy.data.expr.Parameter" value="&quot;0&quot;">
+            <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="false">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[610.0, 65.0]">
+            </property>
+        </property>
+        <property name="markerYCoord" class="ptolemy.data.expr.Parameter" value="&quot;0&quot;">
+            <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="false">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[610.0, 85.0]">
+            </property>
+        </property>
+        <property name="lumens" class="ptolemy.data.expr.Parameter" value="1150.0">
+            <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="false">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[610.0, 105.0]">
+            </property>
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[700.0, 290.0]">
+            </property>
+            <property name="_hide" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <entity name="SetVariable" class="ptolemy.actor.lib.SetVariable">
+            <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="_location">
+            </property>
+            <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
+                </property>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[565.0, 235.0]">
+            </property>
+        </entity>
+        <entity name="Expression" class="ptolemy.actor.lib.Expression">
+            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="{xCoordAsDouble, yCoordAsDouble}">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+                </property>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                </property>
+                <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[395.0, 235.0]">
+            </property>
+            <port name="xCoordAsDouble" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+            </port>
+            <port name="yCoordAsDouble" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+            </port>
+        </entity>
+        <entity name="Const" class="ptolemy.actor.lib.Const">
+            <property name="value" class="ptolemy.data.expr.Parameter" value="markerXCoord">
+            </property>
+            <doc>Create a constant sequence.</doc>
+            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+                </property>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 205.0]">
+            </property>
+        </entity>
+        <entity name="Const2" class="ptolemy.actor.lib.Const">
+            <property name="value" class="ptolemy.data.expr.Parameter" value="markerYCoord">
+            </property>
+            <doc>Create a constant sequence.</doc>
+            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+                </property>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 260.0]">
+            </property>
+        </entity>
+        <entity name="ExpressionToToken" class="ptolemy.actor.lib.conversions.ExpressionToToken">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 205.0]">
+            </property>
+            <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+                <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
+                </property>
+            </port>
+        </entity>
+        <entity name="ExpressionToToken2" class="ptolemy.actor.lib.conversions.ExpressionToToken">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 260.0]">
+            </property>
+            <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+                <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
+                </property>
+            </port>
+        </entity>
+        <entity name="RecordAssembler" class="ptolemy.actor.lib.RecordAssembler">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[575.0, 270.0]">
+            </property>
+            <port name="location" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+            </port>
+            <port name="lumens" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+                <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
+                </property>
+            </port>
+        </entity>
+        <entity name="Expression2" class="ptolemy.actor.lib.Expression">
+            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="lumens">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+                </property>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                </property>
+                <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[425.0, 300.0]">
+            </property>
+        </entity>
+        <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+            <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+            </property>
+        </relation>
+        <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+            <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+            </property>
+        </relation>
+        <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+            <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+            </property>
+        </relation>
+        <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+            <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+            </property>
+        </relation>
+        <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+            <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+            </property>
+        </relation>
+        <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+            <vertex name="vertex1" value="[520.0, 280.0]">
+            </vertex>
+            <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+            </property>
+        </relation>
+        <relation name="relation" class="ptolemy.actor.TypedIORelation">
+            <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+            </property>
+        </relation>
+        <link port="output" relation="relation"/>
+        <link port="SetVariable.input" relation="relation8"/>
+        <link port="Expression.output" relation="relation8"/>
+        <link port="Expression.xCoordAsDouble" relation="relation4"/>
+        <link port="Expression.yCoordAsDouble" relation="relation5"/>
+        <link port="Const.output" relation="relation2"/>
+        <link port="Const2.output" relation="relation3"/>
+        <link port="ExpressionToToken.input" relation="relation2"/>
+        <link port="ExpressionToToken.output" relation="relation4"/>
+        <link port="ExpressionToToken2.input" relation="relation3"/>
+        <link port="ExpressionToToken2.output" relation="relation5"/>
+        <link port="RecordAssembler.output" relation="relation"/>
+        <link port="RecordAssembler.location" relation="relation8"/>
+        <link port="RecordAssembler.lumens" relation="relation6"/>
+        <link port="Expression2.output" relation="relation6"/>
+    </class>
+    <entity name="S2" class="SensorClassDefinition">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{230.0, 265.0}">
+        </property>
+        <property name="markerName" class="ptolemy.data.expr.Parameter" value="sensors(1).name">
+        </property>
+        <property name="ColorAttribute" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,1.0,0.2,1.0}">
+        </property>
+        <property name="markerXCoord" class="ptolemy.data.expr.Parameter" value="sensors(1).x">
+        </property>
+        <property name="markerYCoord" class="ptolemy.data.expr.Parameter" value="sensors(1).y">
+        </property>
+        <property name="light" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="sensorLocation" class="ptolemy.data.expr.Parameter" value="{230.0, 265.0}">
+        </property>
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <entity name="Display" class="ptolemy.actor.lib.gui.Display">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={329, 409, 342, 246}, maximized=false}">
+            </property>
+            <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[326, 186]">
+            </property>
+        </entity>
+    </entity>
+    <entity name="L1" class="LightClassDefinition">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{90.0, 125.0}">
+        </property>
+        <property name="markerName" class="ptolemy.data.expr.Parameter" value="lights(0).name">
+        </property>
+        <property name="ColorAttribute" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,1.0,0.4,1.0}">
+        </property>
+        <property name="markerXCoord" class="ptolemy.data.expr.Parameter" value="lights(0).x">
+        </property>
+        <property name="markerYCoord" class="ptolemy.data.expr.Parameter" value="lights(0).y">
+        </property>
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+    </entity>
+    <entity name="L2" class="LightClassDefinition">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{75.0, 365.0}">
+        </property>
+        <property name="markerName" class="ptolemy.data.expr.Parameter" value="lights(1).name">
+        </property>
+        <property name="ColorAttribute" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,1.0,0.4,1.0}">
+        </property>
+        <property name="markerXCoord" class="ptolemy.data.expr.Parameter" value="lights(1).x">
+        </property>
+        <property name="markerYCoord" class="ptolemy.data.expr.Parameter" value="lights(1).y">
+        </property>
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+    </entity>
+    <entity name="L3" class="LightClassDefinition">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{285.0, 215.0}">
+        </property>
+        <property name="markerName" class="ptolemy.data.expr.Parameter" value="lights(2).name">
+        </property>
+        <property name="ColorAttribute" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,1.0,0.4,1.0}">
+        </property>
+        <property name="markerXCoord" class="ptolemy.data.expr.Parameter" value="lights(2).x">
+        </property>
+        <property name="markerYCoord" class="ptolemy.data.expr.Parameter" value="lights(2).y">
+        </property>
+        <property name="lumens" class="ptolemy.data.expr.Parameter" value="800">
+        </property>
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+    </entity>
+    <entity name="L4" class="LightClassDefinition">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{490.0, 80.0}">
+        </property>
+        <property name="markerName" class="ptolemy.data.expr.Parameter" value="lights(3).name">
+        </property>
+        <property name="ColorAttribute" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,1.0,0.4,1.0}">
+        </property>
+        <property name="markerXCoord" class="ptolemy.data.expr.Parameter" value="lights(3).x">
+        </property>
+        <property name="markerYCoord" class="ptolemy.data.expr.Parameter" value="lights(3).y">
+        </property>
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+    </entity>
+    <entity name="L5" class="LightClassDefinition">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{515.0, 340.0}">
+        </property>
+        <property name="markerName" class="ptolemy.data.expr.Parameter" value="lights(4).name">
+        </property>
+        <property name="ColorAttribute" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,1.0,0.4,1.0}">
+        </property>
+        <property name="markerXCoord" class="ptolemy.data.expr.Parameter" value="lights(4).x">
+        </property>
+        <property name="markerYCoord" class="ptolemy.data.expr.Parameter" value="lights(4).y">
+        </property>
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+    </entity>
+    <entity name="S1" class="SensorClassDefinition">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{220.0, 70.0}">
+        </property>
+        <property name="markerName" class="ptolemy.data.expr.Parameter" value="sensors(0).name">
+        </property>
+        <property name="ColorAttribute" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,1.0,0.2,1.0}">
+        </property>
+        <property name="markerXCoord" class="ptolemy.data.expr.Parameter" value="sensors(0).x">
+        </property>
+        <property name="markerYCoord" class="ptolemy.data.expr.Parameter" value="sensors(0).y">
+        </property>
+        <property name="light" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="sensorLocation" class="ptolemy.data.expr.Parameter" value="{220.0, 70.0}">
+        </property>
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <entity name="Display" class="ptolemy.actor.lib.gui.Display">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={731, 394, 342, 246}, maximized=false}">
+            </property>
+            <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[326, 186]">
+            </property>
+        </entity>
+    </entity>
+    <entity name="S3" class="SensorClassDefinition">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{355.0, 435.0}">
+        </property>
+        <property name="markerName" class="ptolemy.data.expr.Parameter" value="sensors(2).name">
+        </property>
+        <property name="ColorAttribute" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,1.0,0.2,1.0}">
+        </property>
+        <property name="markerXCoord" class="ptolemy.data.expr.Parameter" value="sensors(2).x">
+        </property>
+        <property name="markerYCoord" class="ptolemy.data.expr.Parameter" value="sensors(2).y">
+        </property>
+        <property name="light" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="sensorLocation" class="ptolemy.data.expr.Parameter" value="{355.0, 435.0}">
+        </property>
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <entity name="Display" class="ptolemy.actor.lib.gui.Display">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={512, 261, 342, 246}, maximized=false}">
+            </property>
+            <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[326, 186]">
+            </property>
+        </entity>
+    </entity>
+    <entity name="ElementsToArray" class="ptolemy.actor.lib.ElementsToArray">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[610.0, 160.0]">
+        </property>
+    </entity>
+    <entity name="CompositeActor" class="ptolemy.actor.TypedCompositeActor">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{670.0, 585.0}">
+        </property>
+        <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Save input array as a parameter, &#10;since it is not the same size as our data array,&#10;we cannot pass it in as an input to IterateOverArray&#10;(which iterates to the length of the shortest array input)">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[110.0, 240.0]">
+            </property>
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={111, 60, 928, 617}, maximized=false}">
+        </property>
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 500]">
+        </property>
+        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+        </property>
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{347.0, 415.875}">
+        </property>
+        <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Create array &#10;of correct size&#10;FIXME:  For loop in Ptolemy?">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 445.0]">
+            </property>
+        </property>
+        <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Fill array with data">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[415.0, 455.0]">
+            </property>
+        </property>
+        <property name="inputData" class="ptolemy.data.expr.Parameter" value="{{location = {490.0, 80.0}, lumens = 1150.0}, {location = {515.0, 340.0}, lumens = 1150.0}, {location = {75.0, 365.0}, lumens = 1150.0}, {location = {90.0, 125.0}, lumens = 1150.0}, {location = {285.0, 215.0}, lumens = 800.0}}">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[120.0, 200.0]">
+            </property>
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[38.25, 350.0]">
+            </property>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[590.0, 410.0]">
+            </property>
+        </port>
+        <entity name="Const" class="ptolemy.actor.lib.Const">
+            <property name="value" class="ptolemy.data.expr.Parameter" value="{{x=0,y=0,value=0},{x=0,y=20,value=0},{x=0,y=40,value=0},{x=0,y=60,value=0},{x=0,y=80,value=0},{x=0,y=100,value=0},{x=0,y=120,value=0},{x=0,y=140,value=0},{x=0,y=160,value=0},{x=0,y=180,value=0},{x=0,y=200,value=0},{x=0,y=220,value=0},{x=0,y=240,value=0},{x=0,y=260,value=0},{x=0,y=280,value=0},{x=0,y=300,value=0},{x=0,y=320,value=0},{x=0,y=340,value=0},{x=0,y=360,value=0},{x=0,y=380,value=0},{x=0,y=400,value=0},{x=0,y=420,value=0},{x=0,y=440,value=0},{x=0,y=460,value=0},{x=0,y=480,value=0},{x=20,y=0,value=0},{x=20,y=20,value=0},{x=20,y=40,value=0},{x=20,y=60,value=0},{x=20,y=80,value=0},{x=20,y=100,value=0},{x=20,y=120,value=0},{x=20,y=140,value=0},{x=20,y=160,value=0},{x=20,y=180,value=0},{x=20,y=200,value=0},{x=20,y=220,value=0},{x=20,y=240,value=0},{x=20,y=260,value=0},{x=20,y=280,value=0},{x=20,y=300,value=0},{x=20,y=320,value=0},{x=20,y=340,value=0},{x=20,y=360,value=0},{x=20,y=380,value=0},{x=20,y=400,value=0},{x=20,y=420,value=0},{x=20,y=440,value=0},{x=20,y=460,value=0},{x=20,y=480,value=0},{x=40,y=0,value=0},{x=40,y=20,value=0},{x=40,y=40,value=0},{x=40,y=60,value=0},{x=40,y=80,value=0},{x=40,y=100,value=0},{x=40,y=120,value=0},{x=40,y=140,value=0},{x=40,y=160,value=0},{x=40,y=180,value=0},{x=40,y=200,value=0},{x=40,y=220,value=0},{x=40,y=240,value=0},{x=40,y=260,value=0},{x=40,y=280,value=0},{x=40,y=300,value=0},{x=40,y=320,value=0},{x=40,y=340,value=0},{x=40,y=360,value=0},{x=40,y=380,value=0},{x=40,y=400,value=0},{x=40,y=420,value=0},{x=40,y=440,value=0},{x=40,y=460,value=0},{x=40,y=480,value=0},{x=60,y=0,value=0},{x=60,y=20,value=0},{x=60,y=40,value=0},{x=60,y=60,value=0},{x=60,y=80,value=0},{x=60,y=100,value=0},{x=60,y=120,value=0},{x=60,y=140,value=0},{x=60,y=160,value=0},{x=60,y=180,value=0},{x=60,y=200,value=0},{x=60,y=220,value=0},{x=60,y=240,value=0},{x=60,y=260,value=0},{x=60,y=280,value=0},{x=60,y=300,value=0},{x=60,y=320,value=0},{x=60,y=340,value=0},{x=60,y=360,value=0},{x=60,y=380,value=0},{x=60,y=400,value=0},{x=60,y=420,value=0},{x=60,y=440,value=0},{x=60,y=460,value=0},{x=60,y=480,value=0},{x=80,y=0,value=0},{x=80,y=20,value=0},{x=80,y=40,value=0},{x=80,y=60,value=0},{x=80,y=80,value=0},{x=80,y=100,value=0},{x=80,y=120,value=0},{x=80,y=140,value=0},{x=80,y=160,value=0},{x=80,y=180,value=0},{x=80,y=200,value=0},{x=80,y=220,value=0},{x=80,y=240,value=0},{x=80,y=260,value=0},{x=80,y=280,value=0},{x=80,y=300,value=0},{x=80,y=320,value=0},{x=80,y=340,value=0},{x=80,y=360,value=0},{x=80,y=380,value=0},{x=80,y=400,value=0},{x=80,y=420,value=0},{x=80,y=440,value=0},{x=80,y=460,value=0},{x=80,y=480,value=0},{x=100,y=0,value=0},{x=100,y=20,value=0},{x=100,y=40,value=0},{x=100,y=60,value=0},{x=100,y=80,value=0},{x=100,y=100,value=0},{x=100,y=120,value=0},{x=100,y=140,value=0},{x=100,y=160,value=0},{x=100,y=180,value=0},{x=100,y=200,value=0},{x=100,y=220,value=0},{x=100,y=240,value=0},{x=100,y=260,value=0},{x=100,y=280,value=0},{x=100,y=300,value=0},{x=100,y=320,value=0},{x=100,y=340,value=0},{x=100,y=360,value=0},{x=100,y=380,value=0},{x=100,y=400,value=0},{x=100,y=420,value=0},{x=100,y=440,value=0},{x=100,y=460,value=0},{x=100,y=480,value=0},{x=120,y=0,value=0},{x=120,y=20,value=0},{x=120,y=40,value=0},{x=120,y=60,value=0},{x=120,y=80,value=0},{x=120,y=100,value=0},{x=120,y=120,value=0},{x=120,y=140,value=0},{x=120,y=160,value=0},{x=120,y=180,value=0},{x=120,y=200,value=0},{x=120,y=220,value=0},{x=120,y=240,value=0},{x=120,y=260,value=0},{x=120,y=280,value=0},{x=120,y=300,value=0},{x=120,y=320,value=0},{x=120,y=340,value=0},{x=120,y=360,value=0},{x=120,y=380,value=0},{x=120,y=400,value=0},{x=120,y=420,value=0},{x=120,y=440,value=0},{x=120,y=460,value=0},{x=120,y=480,value=0},{x=140,y=0,value=0},{x=140,y=20,value=0},{x=140,y=40,value=0},{x=140,y=60,value=0},{x=140,y=80,value=0},{x=140,y=100,value=0},{x=140,y=120,value=0},{x=140,y=140,value=0},{x=140,y=160,value=0},{x=140,y=180,value=0},{x=140,y=200,value=0},{x=140,y=220,value=0},{x=140,y=240,value=0},{x=140,y=260,value=0},{x=140,y=280,value=0},{x=140,y=300,value=0},{x=140,y=320,value=0},{x=140,y=340,value=0},{x=140,y=360,value=0},{x=140,y=380,value=0},{x=140,y=400,value=0},{x=140,y=420,value=0},{x=140,y=440,value=0},{x=140,y=460,value=0},{x=140,y=480,value=0},{x=160,y=0,value=0},{x=160,y=20,value=0},{x=160,y=40,value=0},{x=160,y=60,value=0},{x=160,y=80,value=0},{x=160,y=100,value=0},{x=160,y=120,value=0},{x=160,y=140,value=0},{x=160,y=160,value=0},{x=160,y=180,value=0},{x=160,y=200,value=0},{x=160,y=220,value=0},{x=160,y=240,value=0},{x=160,y=260,value=0},{x=160,y=280,value=0},{x=160,y=300,value=0},{x=160,y=320,value=0},{x=160,y=340,value=0},{x=160,y=360,value=0},{x=160,y=380,value=0},{x=160,y=400,value=0},{x=160,y=420,value=0},{x=160,y=440,value=0},{x=160,y=460,value=0},{x=160,y=480,value=0},{x=180,y=0,value=0},{x=180,y=20,value=0},{x=180,y=40,value=0},{x=180,y=60,value=0},{x=180,y=80,value=0},{x=180,y=100,value=0},{x=180,y=120,value=0},{x=180,y=140,value=0},{x=180,y=160,value=0},{x=180,y=180,value=0},{x=180,y=200,value=0},{x=180,y=220,value=0},{x=180,y=240,value=0},{x=180,y=260,value=0},{x=180,y=280,value=0},{x=180,y=300,value=0},{x=180,y=320,value=0},{x=180,y=340,value=0},{x=180,y=360,value=0},{x=180,y=380,value=0},{x=180,y=400,value=0},{x=180,y=420,value=0},{x=180,y=440,value=0},{x=180,y=460,value=0},{x=180,y=480,value=0},{x=200,y=0,value=0},{x=200,y=20,value=0},{x=200,y=40,value=0},{x=200,y=60,value=0},{x=200,y=80,value=0},{x=200,y=100,value=0},{x=200,y=120,value=0},{x=200,y=140,value=0},{x=200,y=160,value=0},{x=200,y=180,value=0},{x=200,y=200,value=0},{x=200,y=220,value=0},{x=200,y=240,value=0},{x=200,y=260,value=0},{x=200,y=280,value=0},{x=200,y=300,value=0},{x=200,y=320,value=0},{x=200,y=340,value=0},{x=200,y=360,value=0},{x=200,y=380,value=0},{x=200,y=400,value=0},{x=200,y=420,value=0},{x=200,y=440,value=0},{x=200,y=460,value=0},{x=200,y=480,value=0},{x=220,y=0,value=0},{x=220,y=20,value=0},{x=220,y=40,value=0},{x=220,y=60,value=0},{x=220,y=80,value=0},{x=220,y=100,value=0},{x=220,y=120,value=0},{x=220,y=140,value=0},{x=220,y=160,value=0},{x=220,y=180,value=0},{x=220,y=200,value=0},{x=220,y=220,value=0},{x=220,y=240,value=0},{x=220,y=260,value=0},{x=220,y=280,value=0},{x=220,y=300,value=0},{x=220,y=320,value=0},{x=220,y=340,value=0},{x=220,y=360,value=0},{x=220,y=380,value=0},{x=220,y=400,value=0},{x=220,y=420,value=0},{x=220,y=440,value=0},{x=220,y=460,value=0},{x=220,y=480,value=0},{x=240,y=0,value=0},{x=240,y=20,value=0},{x=240,y=40,value=0},{x=240,y=60,value=0},{x=240,y=80,value=0},{x=240,y=100,value=0},{x=240,y=120,value=0},{x=240,y=140,value=0},{x=240,y=160,value=0},{x=240,y=180,value=0},{x=240,y=200,value=0},{x=240,y=220,value=0},{x=240,y=240,value=0},{x=240,y=260,value=0},{x=240,y=280,value=0},{x=240,y=300,value=0},{x=240,y=320,value=0},{x=240,y=340,value=0},{x=240,y=360,value=0},{x=240,y=380,value=0},{x=240,y=400,value=0},{x=240,y=420,value=0},{x=240,y=440,value=0},{x=240,y=460,value=0},{x=240,y=480,value=0},{x=260,y=0,value=0},{x=260,y=20,value=0},{x=260,y=40,value=0},{x=260,y=60,value=0},{x=260,y=80,value=0},{x=260,y=100,value=0},{x=260,y=120,value=0},{x=260,y=140,value=0},{x=260,y=160,value=0},{x=260,y=180,value=0},{x=260,y=200,value=0},{x=260,y=220,value=0},{x=260,y=240,value=0},{x=260,y=260,value=0},{x=260,y=280,value=0},{x=260,y=300,value=0},{x=260,y=320,value=0},{x=260,y=340,value=0},{x=260,y=360,value=0},{x=260,y=380,value=0},{x=260,y=400,value=0},{x=260,y=420,value=0},{x=260,y=440,value=0},{x=260,y=460,value=0},{x=260,y=480,value=0},{x=280,y=0,value=0},{x=280,y=20,value=0},{x=280,y=40,value=0},{x=280,y=60,value=0},{x=280,y=80,value=0},{x=280,y=100,value=0},{x=280,y=120,value=0},{x=280,y=140,value=0},{x=280,y=160,value=0},{x=280,y=180,value=0},{x=280,y=200,value=0},{x=280,y=220,value=0},{x=280,y=240,value=0},{x=280,y=260,value=0},{x=280,y=280,value=0},{x=280,y=300,value=0},{x=280,y=320,value=0},{x=280,y=340,value=0},{x=280,y=360,value=0},{x=280,y=380,value=0},{x=280,y=400,value=0},{x=280,y=420,value=0},{x=280,y=440,value=0},{x=280,y=460,value=0},{x=280,y=480,value=0},{x=300,y=0,value=0},{x=300,y=20,value=0},{x=300,y=40,value=0},{x=300,y=60,value=0},{x=300,y=80,value=0},{x=300,y=100,value=0},{x=300,y=120,value=0},{x=300,y=140,value=0},{x=300,y=160,value=0},{x=300,y=180,value=0},{x=300,y=200,value=0},{x=300,y=220,value=0},{x=300,y=240,value=0},{x=300,y=260,value=0},{x=300,y=280,value=0},{x=300,y=300,value=0},{x=300,y=320,value=0},{x=300,y=340,value=0},{x=300,y=360,value=0},{x=300,y=380,value=0},{x=300,y=400,value=0},{x=300,y=420,value=0},{x=300,y=440,value=0},{x=300,y=460,value=0},{x=300,y=480,value=0},{x=320,y=0,value=0},{x=320,y=20,value=0},{x=320,y=40,value=0},{x=320,y=60,value=0},{x=320,y=80,value=0},{x=320,y=100,value=0},{x=320,y=120,value=0},{x=320,y=140,value=0},{x=320,y=160,value=0},{x=320,y=180,value=0},{x=320,y=200,value=0},{x=320,y=220,value=0},{x=320,y=240,value=0},{x=320,y=260,value=0},{x=320,y=280,value=0},{x=320,y=300,value=0},{x=320,y=320,value=0},{x=320,y=340,value=0},{x=320,y=360,value=0},{x=320,y=380,value=0},{x=320,y=400,value=0},{x=320,y=420,value=0},{x=320,y=440,value=0},{x=320,y=460,value=0},{x=320,y=480,value=0},{x=340,y=0,value=0},{x=340,y=20,value=0},{x=340,y=40,value=0},{x=340,y=60,value=0},{x=340,y=80,value=0},{x=340,y=100,value=0},{x=340,y=120,value=0},{x=340,y=140,value=0},{x=340,y=160,value=0},{x=340,y=180,value=0},{x=340,y=200,value=0},{x=340,y=220,value=0},{x=340,y=240,value=0},{x=340,y=260,value=0},{x=340,y=280,value=0},{x=340,y=300,value=0},{x=340,y=320,value=0},{x=340,y=340,value=0},{x=340,y=360,value=0},{x=340,y=380,value=0},{x=340,y=400,value=0},{x=340,y=420,value=0},{x=340,y=440,value=0},{x=340,y=460,value=0},{x=340,y=480,value=0},{x=360,y=0,value=0},{x=360,y=20,value=0},{x=360,y=40,value=0},{x=360,y=60,value=0},{x=360,y=80,value=0},{x=360,y=100,value=0},{x=360,y=120,value=0},{x=360,y=140,value=0},{x=360,y=160,value=0},{x=360,y=180,value=0},{x=360,y=200,value=0},{x=360,y=220,value=0},{x=360,y=240,value=0},{x=360,y=260,value=0},{x=360,y=280,value=0},{x=360,y=300,value=0},{x=360,y=320,value=0},{x=360,y=340,value=0},{x=360,y=360,value=0},{x=360,y=380,value=0},{x=360,y=400,value=0},{x=360,y=420,value=0},{x=360,y=440,value=0},{x=360,y=460,value=0},{x=360,y=480,value=0},{x=380,y=0,value=0},{x=380,y=20,value=0},{x=380,y=40,value=0},{x=380,y=60,value=0},{x=380,y=80,value=0},{x=380,y=100,value=0},{x=380,y=120,value=0},{x=380,y=140,value=0},{x=380,y=160,value=0},{x=380,y=180,value=0},{x=380,y=200,value=0},{x=380,y=220,value=0},{x=380,y=240,value=0},{x=380,y=260,value=0},{x=380,y=280,value=0},{x=380,y=300,value=0},{x=380,y=320,value=0},{x=380,y=340,value=0},{x=380,y=360,value=0},{x=380,y=380,value=0},{x=380,y=400,value=0},{x=380,y=420,value=0},{x=380,y=440,value=0},{x=380,y=460,value=0},{x=380,y=480,value=0},{x=400,y=0,value=0},{x=400,y=20,value=0},{x=400,y=40,value=0},{x=400,y=60,value=0},{x=400,y=80,value=0},{x=400,y=100,value=0},{x=400,y=120,value=0},{x=400,y=140,value=0},{x=400,y=160,value=0},{x=400,y=180,value=0},{x=400,y=200,value=0},{x=400,y=220,value=0},{x=400,y=240,value=0},{x=400,y=260,value=0},{x=400,y=280,value=0},{x=400,y=300,value=0},{x=400,y=320,value=0},{x=400,y=340,value=0},{x=400,y=360,value=0},{x=400,y=380,value=0},{x=400,y=400,value=0},{x=400,y=420,value=0},{x=400,y=440,value=0},{x=400,y=460,value=0},{x=400,y=480,value=0},{x=420,y=0,value=0},{x=420,y=20,value=0},{x=420,y=40,value=0},{x=420,y=60,value=0},{x=420,y=80,value=0},{x=420,y=100,value=0},{x=420,y=120,value=0},{x=420,y=140,value=0},{x=420,y=160,value=0},{x=420,y=180,value=0},{x=420,y=200,value=0},{x=420,y=220,value=0},{x=420,y=240,value=0},{x=420,y=260,value=0},{x=420,y=280,value=0},{x=420,y=300,value=0},{x=420,y=320,value=0},{x=420,y=340,value=0},{x=420,y=360,value=0},{x=420,y=380,value=0},{x=420,y=400,value=0},{x=420,y=420,value=0},{x=420,y=440,value=0},{x=420,y=460,value=0},{x=420,y=480,value=0},{x=440,y=0,value=0},{x=440,y=20,value=0},{x=440,y=40,value=0},{x=440,y=60,value=0},{x=440,y=80,value=0},{x=440,y=100,value=0},{x=440,y=120,value=0},{x=440,y=140,value=0},{x=440,y=160,value=0},{x=440,y=180,value=0},{x=440,y=200,value=0},{x=440,y=220,value=0},{x=440,y=240,value=0},{x=440,y=260,value=0},{x=440,y=280,value=0},{x=440,y=300,value=0},{x=440,y=320,value=0},{x=440,y=340,value=0},{x=440,y=360,value=0},{x=440,y=380,value=0},{x=440,y=400,value=0},{x=440,y=420,value=0},{x=440,y=440,value=0},{x=440,y=460,value=0},{x=440,y=480,value=0},{x=460,y=0,value=0},{x=460,y=20,value=0},{x=460,y=40,value=0},{x=460,y=60,value=0},{x=460,y=80,value=0},{x=460,y=100,value=0},{x=460,y=120,value=0},{x=460,y=140,value=0},{x=460,y=160,value=0},{x=460,y=180,value=0},{x=460,y=200,value=0},{x=460,y=220,value=0},{x=460,y=240,value=0},{x=460,y=260,value=0},{x=460,y=280,value=0},{x=460,y=300,value=0},{x=460,y=320,value=0},{x=460,y=340,value=0},{x=460,y=360,value=0},{x=460,y=380,value=0},{x=460,y=400,value=0},{x=460,y=420,value=0},{x=460,y=440,value=0},{x=460,y=460,value=0},{x=460,y=480,value=0},{x=480,y=0,value=0},{x=480,y=20,value=0},{x=480,y=40,value=0},{x=480,y=60,value=0},{x=480,y=80,value=0},{x=480,y=100,value=0},{x=480,y=120,value=0},{x=480,y=140,value=0},{x=480,y=160,value=0},{x=480,y=180,value=0},{x=480,y=200,value=0},{x=480,y=220,value=0},{x=480,y=240,value=0},{x=480,y=260,value=0},{x=480,y=280,value=0},{x=480,y=300,value=0},{x=480,y=320,value=0},{x=480,y=340,value=0},{x=480,y=360,value=0},{x=480,y=380,value=0},{x=480,y=400,value=0},{x=480,y=420,value=0},{x=480,y=440,value=0},{x=480,y=460,value=0},{x=480,y=480,value=0},{x=500,y=0,value=0},{x=500,y=20,value=0},{x=500,y=40,value=0},{x=500,y=60,value=0},{x=500,y=80,value=0},{x=500,y=100,value=0},{x=500,y=120,value=0},{x=500,y=140,value=0},{x=500,y=160,value=0},{x=500,y=180,value=0},{x=500,y=200,value=0},{x=500,y=220,value=0},{x=500,y=240,value=0},{x=500,y=260,value=0},{x=500,y=280,value=0},{x=500,y=300,value=0},{x=500,y=320,value=0},{x=500,y=340,value=0},{x=500,y=360,value=0},{x=500,y=380,value=0},{x=500,y=400,value=0},{x=500,y=420,value=0},{x=500,y=440,value=0},{x=500,y=460,value=0},{x=500,y=480,value=0},{x=520,y=0,value=0},{x=520,y=20,value=0},{x=520,y=40,value=0},{x=520,y=60,value=0},{x=520,y=80,value=0},{x=520,y=100,value=0},{x=520,y=120,value=0},{x=520,y=140,value=0},{x=520,y=160,value=0},{x=520,y=180,value=0},{x=520,y=200,value=0},{x=520,y=220,value=0},{x=520,y=240,value=0},{x=520,y=260,value=0},{x=520,y=280,value=0},{x=520,y=300,value=0},{x=520,y=320,value=0},{x=520,y=340,value=0},{x=520,y=360,value=0},{x=520,y=380,value=0},{x=520,y=400,value=0},{x=520,y=420,value=0},{x=520,y=440,value=0},{x=520,y=460,value=0},{x=520,y=480,value=0},{x=540,y=0,value=0},{x=540,y=20,value=0},{x=540,y=40,value=0},{x=540,y=60,value=0},{x=540,y=80,value=0},{x=540,y=100,value=0},{x=540,y=120,value=0},{x=540,y=140,value=0},{x=540,y=160,value=0},{x=540,y=180,value=0},{x=540,y=200,value=0},{x=540,y=220,value=0},{x=540,y=240,value=0},{x=540,y=260,value=0},{x=540,y=280,value=0},{x=540,y=300,value=0},{x=540,y=320,value=0},{x=540,y=340,value=0},{x=540,y=360,value=0},{x=540,y=380,value=0},{x=540,y=400,value=0},{x=540,y=420,value=0},{x=540,y=440,value=0},{x=540,y=460,value=0},{x=540,y=480,value=0},{x=560,y=0,value=0},{x=560,y=20,value=0},{x=560,y=40,value=0},{x=560,y=60,value=0},{x=560,y=80,value=0},{x=560,y=100,value=0},{x=560,y=120,value=0},{x=560,y=140,value=0},{x=560,y=160,value=0},{x=560,y=180,value=0},{x=560,y=200,value=0},{x=560,y=220,value=0},{x=560,y=240,value=0},{x=560,y=260,value=0},{x=560,y=280,value=0},{x=560,y=300,value=0},{x=560,y=320,value=0},{x=560,y=340,value=0},{x=560,y=360,value=0},{x=560,y=380,value=0},{x=560,y=400,value=0},{x=560,y=420,value=0},{x=560,y=440,value=0},{x=560,y=460,value=0},{x=560,y=480,value=0},{x=580,y=0,value=0},{x=580,y=20,value=0},{x=580,y=40,value=0},{x=580,y=60,value=0},{x=580,y=80,value=0},{x=580,y=100,value=0},{x=580,y=120,value=0},{x=580,y=140,value=0},{x=580,y=160,value=0},{x=580,y=180,value=0},{x=580,y=200,value=0},{x=580,y=220,value=0},{x=580,y=240,value=0},{x=580,y=260,value=0},{x=580,y=280,value=0},{x=580,y=300,value=0},{x=580,y=320,value=0},{x=580,y=340,value=0},{x=580,y=360,value=0},{x=580,y=380,value=0},{x=580,y=400,value=0},{x=580,y=420,value=0},{x=580,y=440,value=0},{x=580,y=460,value=0},{x=580,y=480,value=0}}">
+                <property name="style" class="ptolemy.actor.gui.style.TextStyle">
+                    <property name="height" class="ptolemy.data.expr.Parameter" value="10">
+                    </property>
+                    <property name="width" class="ptolemy.data.expr.Parameter" value="30">
+                    </property>
+                </property>
+            </property>
+            <doc>Create a constant sequence.</doc>
+            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+                </property>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[195.0, 410.0]">
+            </property>
+            <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+                <property name="_type" class="ptolemy.actor.TypeAttribute" value="arrayType({x=int,y=int})">
+                </property>
+            </port>
+        </entity>
+        <entity name="SetVariable" class="ptolemy.actor.lib.SetVariable">
+            <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="inputData">
+            </property>
+            <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
+                </property>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[125.0, 350.0]">
+            </property>
+        </entity>
+        <entity name="IterateOverArray" class="ptolemy.actor.lib.hoc.IterateOverArray">
+            <doc>Iterate a contained actor over input arrays</doc>
+            <property name="_icon" class="ptolemy.vergil.icon.CopyCatIcon">
+            </property>
+            <property name="_configurer" class="ptolemy.actor.gui.InsideEntityEditorPaneFactory">
+            </property>
+            <property name="_tableauFactory" class="ptolemy.actor.gui.LevelSkippingTableauFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{475.0, 410.0}">
+            </property>
+            <port name="input" class="ptolemy.actor.lib.hoc.IterateOverArray$IteratePort">
+                <property name="input"/>
+                <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="false">
+                </property>
+            </port>
+            <port name="output" class="ptolemy.actor.lib.hoc.IterateOverArray$IteratePort">
+                <property name="output"/>
+            </port>
+            <entity name="IterateComposite" class="ptolemy.actor.lib.hoc.IterateOverArray$IterateComposite">
+                <property name="annotation" class="ptolemy.kernel.util.Attribute">
+                    <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+                    </property>
+                    <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                        <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">Make sure there is a director here!</text></svg></configure>
+                    </property>
+                    <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                        <configure>
+                <svg> 
+                    <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
+                </svg>
+              </configure>
+                    </property>
+                    <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+                    </property>
+                    <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+                    </property>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="-5.0, 5.0">
+                    </property>
+                </property>
+                <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+                    <property name="iterations" class="ptolemy.data.expr.Parameter" value="AUTO">
+                    </property>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 70.0]">
+                    </property>
+                </property>
+                <property name="x" class="ptolemy.data.expr.Parameter" value="580">
+                    <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+                    </property>
+                    <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                        <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                        </property>
+                    </property>
+                    <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                        <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+                    </property>
+                    <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+                    </property>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[165.0, 60.0]">
+                    </property>
+                </property>
+                <property name="y" class="ptolemy.data.expr.Parameter" value="480">
+                    <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+                    </property>
+                    <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                        <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                        </property>
+                    </property>
+                    <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                        <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+                    </property>
+                    <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+                    </property>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[165.0, 80.0]">
+                    </property>
+                </property>
+                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={219, 76, 928, 616}, maximized=false}">
+                </property>
+                <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 500]">
+                </property>
+                <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+                </property>
+                <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{347.0, 254.984375}">
+                </property>
+                <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+                    <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Iterate over the array of lights for the current&#10;x, y location.  x and y must be stored in parameters,&#10;not directly input to IterateOverArray through ports, &#10;since IterateOverArray expects arrays on input ports&#10;">
+                    </property>
+                    <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="[225.0, 45.0]">
+                    </property>
+                </property>
+                <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+                    <property name="text" class="ptolemy.kernel.util.StringAttribute" value="RecordAssembler used to ensure both x and y &#10;are set before IterateOverArray is fired">
+                    </property>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 390.0]">
+                    </property>
+                </property>
+                <port name="input" class="ptolemy.actor.lib.hoc.IterateOverArray$IteratePort">
+                    <property name="input"/>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[22.5, 202.5]">
+                    </property>
+                </port>
+                <port name="output" class="ptolemy.actor.lib.hoc.IterateOverArray$IteratePort">
+                    <property name="output"/>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[615.0, 195.0]">
+                    </property>
+                </port>
+                <entity name="RecordDisassembler" class="ptolemy.actor.lib.RecordDisassembler">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[82.5, 182.5]">
+                    </property>
+                    <port name="x" class="ptolemy.actor.TypedIOPort">
+                        <property name="output"/>
+                        <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                        </property>
+                    </port>
+                    <port name="y" class="ptolemy.actor.TypedIOPort">
+                        <property name="output"/>
+                        <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                        </property>
+                    </port>
+                </entity>
+                <entity name="IterateOverArray" class="ptolemy.actor.lib.hoc.IterateOverArray">
+                    <doc>Iterate a contained actor over input arrays</doc>
+                    <property name="_icon" class="ptolemy.vergil.icon.CopyCatIcon">
+                    </property>
+                    <property name="_configurer" class="ptolemy.actor.gui.InsideEntityEditorPaneFactory">
+                    </property>
+                    <property name="_tableauFactory" class="ptolemy.actor.gui.LevelSkippingTableauFactory">
+                    </property>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="{400.0, 360.0}">
+                    </property>
+                    <port name="output" class="ptolemy.actor.lib.hoc.IterateOverArray$IteratePort">
+                        <property name="output"/>
+                        <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                        </property>
+                    </port>
+                    <port name="lightData" class="ptolemy.actor.lib.hoc.IterateOverArray$IteratePort">
+                        <property name="input"/>
+                        <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                        </property>
+                    </port>
+                    <entity name="IterateComposite" class="ptolemy.actor.lib.hoc.IterateOverArray$IterateComposite">
+                        <property name="annotation" class="ptolemy.kernel.util.Attribute">
+                            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+                            </property>
+                            <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                                <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">Make sure there is a director here!</text></svg></configure>
+                            </property>
+                            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                                <configure>
+                <svg> 
+                    <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
+                </svg>
+              </configure>
+                            </property>
+                            <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+                            </property>
+                            <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+                            </property>
+                            <property name="_location" class="ptolemy.kernel.util.Location" value="-5.0, 5.0">
+                            </property>
+                        </property>
+                        <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+                            <property name="iterations" class="ptolemy.data.expr.Parameter" value="AUTO">
+                            </property>
+                            <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 65.0]">
+                            </property>
+                        </property>
+                        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={2, 27, 1231, 617}, maximized=false}">
+                        </property>
+                        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[860, 500]">
+                        </property>
+                        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+                        </property>
+                        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{347.0, 254.984375}">
+                        </property>
+                        <port name="output" class="ptolemy.actor.lib.hoc.IterateOverArray$IteratePort">
+                            <property name="output"/>
+                            <property name="_location" class="ptolemy.kernel.util.Location" value="[849.5, 160.0]">
+                            </property>
+                        </port>
+                        <port name="lightData" class="ptolemy.actor.lib.hoc.IterateOverArray$IteratePort">
+                            <property name="input"/>
+                            <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 220.0]">
+                            </property>
+                        </port>
+                        <entity name="RecordDisassembler" class="ptolemy.actor.lib.RecordDisassembler">
+                            <property name="_location" class="ptolemy.kernel.util.Location" value="[110.0, 200.0]">
+                            </property>
+                            <port name="location" class="ptolemy.actor.TypedIOPort">
+                                <property name="output"/>
+                                <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                                </property>
+                            </port>
+                            <port name="lumens" class="ptolemy.actor.TypedIOPort">
+                                <property name="output"/>
+                                <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                                </property>
+                                <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
+                                </property>
+                            </port>
+                        </entity>
+                        <entity name="ArrayElement_xLight" class="ptolemy.actor.lib.ArrayElement">
+                            <property name="_location" class="ptolemy.kernel.util.Location" value="[300.0, 180.0]">
+                            </property>
+                        </entity>
+                        <entity name="ArrayElement_yLight" class="ptolemy.actor.lib.ArrayElement">
+                            <property name="index" class="ptolemy.actor.parameters.PortParameter" value="1">
+                            </property>
+                            <property name="_location" class="ptolemy.kernel.util.Location" value="[299.5, 245.0]">
+                            </property>
+                        </entity>
+                        <entity name="Expression" class="ptolemy.actor.lib.Expression">
+                            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="sqrt( (xLight - xSensor)^2 + (yLight - ySensor)^2 )">
+                            </property>
+                            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+                                </property>
+                                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                                </property>
+                                <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
+                                </property>
+                            </property>
+                            <property name="_location" class="ptolemy.kernel.util.Location" value="[670.0, 250.0]">
+                            </property>
+                            <port name="xLight" class="ptolemy.actor.TypedIOPort">
+                                <property name="input"/>
+                                <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                                </property>
+                            </port>
+                            <port name="yLight" class="ptolemy.actor.TypedIOPort">
+                                <property name="input"/>
+                                <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                                </property>
+                            </port>
+                            <port name="xSensor" class="ptolemy.actor.TypedIOPort">
+                                <property name="input"/>
+                                <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                                </property>
+                            </port>
+                            <port name="ySensor" class="ptolemy.actor.TypedIOPort">
+                                <property name="input"/>
+                                <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                                </property>
+                            </port>
+                        </entity>
+                        <entity name="Expression2" class="ptolemy.actor.lib.Expression">
+                            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="(3*P) / (4*3.14159 * (r^2)) ">
+                            </property>
+                            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+                                </property>
+                                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                                </property>
+                                <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
+                                </property>
+                            </property>
+                            <property name="_location" class="ptolemy.kernel.util.Location" value="[719.5, 160.0]">
+                            </property>
+                            <port name="P" class="ptolemy.actor.TypedIOPort">
+                                <property name="input"/>
+                                <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                                </property>
+                            </port>
+                            <port name="r" class="ptolemy.actor.TypedIOPort">
+                                <property name="input"/>
+                                <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                                </property>
+                            </port>
+                        </entity>
+                        <entity name="Expression3" class="ptolemy.actor.lib.Expression">
+                            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="cm * 0.01">
+                            </property>
+                            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+                                </property>
+                                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                                </property>
+                                <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
+                                </property>
+                            </property>
+                            <property name="_location" class="ptolemy.kernel.util.Location" value="[445.0, 220.0]">
+                            </property>
+                            <port name="cm" class="ptolemy.actor.TypedIOPort">
+                                <property name="input"/>
+                                <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                                </property>
+                            </port>
+                        </entity>
+                        <entity name="Expression4" class="ptolemy.actor.lib.Expression">
+                            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="cm * 0.01">
+                            </property>
+                            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+                                </property>
+                                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                                </property>
+                                <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
+                                </property>
+                            </property>
+                            <property name="_location" class="ptolemy.kernel.util.Location" value="[445.0, 255.0]">
+                            </property>
+                            <port name="cm" class="ptolemy.actor.TypedIOPort">
+                                <property name="input"/>
+                                <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                                </property>
+                            </port>
+                        </entity>
+                        <entity name="Expression5" class="ptolemy.actor.lib.Expression">
+                            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="cm * 0.01">
+                            </property>
+                            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+                                </property>
+                                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                                </property>
+                                <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
+                                </property>
+                            </property>
+                            <property name="_location" class="ptolemy.kernel.util.Location" value="[445.0, 295.0]">
+                            </property>
+                            <port name="cm" class="ptolemy.actor.TypedIOPort">
+                                <property name="input"/>
+                                <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                                </property>
+                            </port>
+                        </entity>
+                        <entity name="Expression6" class="ptolemy.actor.lib.Expression">
+                            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="cm * 0.01">
+                            </property>
+                            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+                                </property>
+                                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                                </property>
+                                <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
+                                </property>
+                            </property>
+                            <property name="_location" class="ptolemy.kernel.util.Location" value="[445.0, 335.0]">
+                            </property>
+                            <port name="cm" class="ptolemy.actor.TypedIOPort">
+                                <property name="input"/>
+                                <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                                </property>
+                            </port>
+                        </entity>
+                        <entity name="Const" class="ptolemy.actor.lib.Const">
+                            <property name="value" class="ptolemy.data.expr.Parameter" value="x">
+                            </property>
+                            <doc>Create a constant sequence.</doc>
+                            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+                                </property>
+                                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                                </property>
+                            </property>
+                            <property name="_location" class="ptolemy.kernel.util.Location" value="[299.5, 295.0]">
+                            </property>
+                        </entity>
+                        <entity name="Const2" class="ptolemy.actor.lib.Const">
+                            <property name="value" class="ptolemy.data.expr.Parameter" value="y">
+                            </property>
+                            <doc>Create a constant sequence.</doc>
+                            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+                                </property>
+                                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                                </property>
+                            </property>
+                            <property name="_location" class="ptolemy.kernel.util.Location" value="[299.5, 335.0]">
+                            </property>
+                        </entity>
+                        <relation name="relation" class="ptolemy.actor.TypedIORelation">
+                            <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+                            </property>
+                        </relation>
+                        <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+                            <vertex name="vertex1" value="{240.0, 210.0}">
+                            </vertex>
+                            <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+                            </property>
+                        </relation>
+                        <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+                            <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+                            </property>
+                        </relation>
+                        <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+                            <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+                            </property>
+                        </relation>
+                        <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+                            <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+                            </property>
+                        </relation>
+                        <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+                            <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+                            </property>
+                        </relation>
+                        <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+                            <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+                            </property>
+                        </relation>
+                        <relation name="relation12" class="ptolemy.actor.TypedIORelation">
+                            <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+                            </property>
+                        </relation>
+                        <relation name="relation13" class="ptolemy.actor.TypedIORelation">
+                            <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+                            </property>
+                        </relation>
+                        <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+                            <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+                            </property>
+                        </relation>
+                        <relation name="relation11" class="ptolemy.actor.TypedIORelation">
+                            <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+                            </property>
+                        </relation>
+                        <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+                            <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+                            </property>
+                        </relation>
+                        <relation name="relation10" class="ptolemy.actor.TypedIORelation">
+                            <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+                            </property>
+                        </relation>
+                        <link port="output" relation="relation11"/>
+                        <link port="lightData" relation="relation"/>
+                        <link port="RecordDisassembler.input" relation="relation"/>
+                        <link port="RecordDisassembler.location" relation="relation3"/>
+                        <link port="RecordDisassembler.lumens" relation="relation2"/>
+                        <link port="ArrayElement_xLight.input" relation="relation3"/>
+                        <link port="ArrayElement_xLight.output" relation="relation6"/>
+                        <link port="ArrayElement_yLight.input" relation="relation3"/>
+                        <link port="ArrayElement_yLight.output" relation="relation8"/>
+                        <link port="Expression.output" relation="relation5"/>
+                        <link port="Expression.xLight" relation="relation7"/>
+                        <link port="Expression.yLight" relation="relation9"/>
+                        <link port="Expression.xSensor" relation="relation12"/>
+                        <link port="Expression.ySensor" relation="relation13"/>
+                        <link port="Expression2.output" relation="relation11"/>
+                        <link port="Expression2.P" relation="relation2"/>
+                        <link port="Expression2.r" relation="relation5"/>
+                        <link port="Expression3.output" relation="relation7"/>
+                        <link port="Expression3.cm" relation="relation6"/>
+                        <link port="Expression4.output" relation="relation9"/>
+                        <link port="Expression4.cm" relation="relation8"/>
+                        <link port="Expression5.output" relation="relation12"/>
+                        <link port="Expression5.cm" relation="relation4"/>
+                        <link port="Expression6.output" relation="relation13"/>
+                        <link port="Expression6.cm" relation="relation10"/>
+                        <link port="Const.output" relation="relation4"/>
+                        <link port="Const2.output" relation="relation10"/>
+                    </entity>
+                </entity>
+                <entity name="Const" class="ptolemy.actor.lib.Const">
+                    <property name="value" class="ptolemy.data.expr.Parameter" value="inputData">
+                    </property>
+                    <doc>Create a constant sequence.</doc>
+                    <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                        <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+                        </property>
+                        <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                        </property>
+                    </property>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[285.0, 360.0]">
+                    </property>
+                </entity>
+                <entity name="RecordAssembler" class="ptolemy.actor.lib.RecordAssembler">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[195.0, 340.0]">
+                    </property>
+                    <port name="x" class="ptolemy.actor.TypedIOPort">
+                        <property name="input"/>
+                        <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                        </property>
+                    </port>
+                    <port name="y" class="ptolemy.actor.TypedIOPort">
+                        <property name="input"/>
+                        <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                        </property>
+                    </port>
+                </entity>
+                <entity name="ArraySum" class="ptolemy.actor.lib.ArraySum">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[545.0, 360.0]">
+                    </property>
+                </entity>
+                <entity name="SetVariable" class="ptolemy.actor.lib.SetVariable">
+                    <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="x">
+                    </property>
+                    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                    <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                        <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
+                        </property>
+                        <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+                        </property>
+                    </property>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[172.5, 152.5]">
+                    </property>
+                </entity>
+                <entity name="SetVariable2" class="ptolemy.actor.lib.SetVariable">
+                    <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="y">
+                    </property>
+                    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                    <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                        <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
+                        </property>
+                        <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+                        </property>
+                    </property>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[157.5, 212.5]">
+                    </property>
+                </entity>
+                <entity name="RecordAssembler2" class="ptolemy.actor.lib.RecordAssembler">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[475.0, 175.0]">
+                    </property>
+                    <port name="x" class="ptolemy.actor.TypedIOPort">
+                        <property name="input"/>
+                        <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                        </property>
+                    </port>
+                    <port name="y" class="ptolemy.actor.TypedIOPort">
+                        <property name="input"/>
+                        <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                        </property>
+                    </port>
+                    <port name="value" class="ptolemy.actor.TypedIOPort">
+                        <property name="input"/>
+                        <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                        </property>
+                    </port>
+                </entity>
+                <relation name="relation" class="ptolemy.actor.TypedIORelation">
+                    <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+                    </property>
+                </relation>
+                <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+                    <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+                    </property>
+                </relation>
+                <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+                    <vertex name="vertex1" value="[267.5, 152.5]">
+                    </vertex>
+                    <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+                    </property>
+                </relation>
+                <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+                    <vertex name="vertex1" value="[292.5, 212.5]">
+                    </vertex>
+                    <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+                    </property>
+                </relation>
+                <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+                    <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+                    </property>
+                </relation>
+                <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+                    <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+                    </property>
+                </relation>
+                <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+                    <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+                    </property>
+                </relation>
+                <relation name="relation10" class="ptolemy.actor.TypedIORelation">
+                    <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+                    </property>
+                </relation>
+                <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+                    <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+                    </property>
+                </relation>
+                <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+                    <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+                    </property>
+                </relation>
+                <link port="input" relation="relation"/>
+                <link port="output" relation="relation7"/>
+                <link port="RecordDisassembler.input" relation="relation"/>
+                <link port="RecordDisassembler.x" relation="relation2"/>
+                <link port="RecordDisassembler.y" relation="relation3"/>
+                <link port="IterateOverArray.output" relation="relation8"/>
+                <link port="IterateOverArray.lightData" relation="relation5"/>
+                <link port="Const.output" relation="relation5"/>
+                <link port="Const.trigger" relation="relation4"/>
+                <link port="RecordAssembler.output" relation="relation4"/>
+                <link port="RecordAssembler.x" relation="relation6"/>
+                <link port="RecordAssembler.y" relation="relation9"/>
+                <link port="ArraySum.input" relation="relation8"/>
+                <link port="ArraySum.output" relation="relation10"/>
+                <link port="SetVariable.input" relation="relation2"/>
+                <link port="SetVariable.output" relation="relation6"/>
+                <link port="SetVariable2.input" relation="relation3"/>
+                <link port="SetVariable2.output" relation="relation9"/>
+                <link port="RecordAssembler2.output" relation="relation7"/>
+                <link port="RecordAssembler2.x" relation="relation6"/>
+                <link port="RecordAssembler2.y" relation="relation9"/>
+                <link port="RecordAssembler2.value" relation="relation10"/>
+            </entity>
+        </entity>
+        <relation name="relation" class="ptolemy.actor.TypedIORelation">
+            <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+            </property>
+        </relation>
+        <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+            <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+            </property>
+        </relation>
+        <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+            <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+            </property>
+        </relation>
+        <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+            <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+            </property>
+        </relation>
+        <link port="input" relation="relation"/>
+        <link port="output" relation="relation4"/>
+        <link port="Const.output" relation="relation3"/>
+        <link port="Const.trigger" relation="relation2"/>
+        <link port="SetVariable.input" relation="relation"/>
+        <link port="SetVariable.output" relation="relation2"/>
+        <link port="IterateOverArray.input" relation="relation3"/>
+        <link port="IterateOverArray.output" relation="relation4"/>
+    </entity>
+    <entity name="SetVariable" class="ptolemy.actor.lib.SetVariable">
+        <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="result">
+        </property>
+        <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[825.0, 585.0]">
+        </property>
+    </entity>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        <property name="color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,0.0}">
+        </property>
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="[540.0, 545.0]">
+        </vertex>
+        <property name="color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,0.0}">
+        </property>
+    </relation>
+    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+        <property name="color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,0.0}">
+        </property>
+    </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <property name="color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,0.0}">
+        </property>
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        <property name="color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,0.0}">
+        </property>
+    </relation>
+    <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="[765.0, 585.0]">
+        </vertex>
+        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+        </property>
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+        <property name="color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,0.0}">
+        </property>
+    </relation>
+    <link port="S2.input" relation="relation6"/>
+    <link port="L1.output" relation="relation"/>
+    <link port="L2.output" relation="relation7"/>
+    <link port="L3.output" relation="relation3"/>
+    <link port="L4.output" relation="relation4"/>
+    <link port="L5.output" relation="relation5"/>
+    <link port="S1.input" relation="relation6"/>
+    <link port="S3.input" relation="relation6"/>
+    <link port="ElementsToArray.input" relation="relation4"/>
+    <link port="ElementsToArray.input" relation="relation5"/>
+    <link port="ElementsToArray.input" relation="relation7"/>
+    <link port="ElementsToArray.input" relation="relation"/>
+    <link port="ElementsToArray.input" relation="relation3"/>
+    <link port="ElementsToArray.output" relation="relation6"/>
+    <link port="CompositeActor.input" relation="relation6"/>
+    <link port="CompositeActor.output" relation="relation9"/>
+    <link port="SetVariable.input" relation="relation9"/>
+</entity>
