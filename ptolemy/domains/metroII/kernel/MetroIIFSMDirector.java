@@ -120,8 +120,7 @@ public class MetroIIFSMDirector extends FSMDirector implements
 
             Event.Builder eb;
             do {
-                eb = makeEventBuilder(currentState.getFullName(),
-                        Event.Type.BEGIN, Event.Status.PROPOSED);
+                eb = MetroEventBuilder.newProposedEvent(MetroEventBuilder.trimModelName(currentState.getFullName()), "");
                 events.add(eb);
                 resultHandler.handleResult(events);
                 events.remove(events.size() - 1);

@@ -39,5 +39,11 @@ public class MetroEventBuilder {
         return builder; 
     }
     
+    static public String trimModelName(String name) {
+        assert name.length()>1; 
+        int pos = name.indexOf(".", 1); 
+        return name.substring(pos); 
+    }
+    
     
 }

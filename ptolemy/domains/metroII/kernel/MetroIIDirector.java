@@ -360,6 +360,7 @@ public class MetroIIDirector extends Director {
         newObject._mappingConstraintSolver = new MappingConstraintSolver();
         newObject._actorList = new LinkedList<StartOrResumable>();
         newObject._timeScheduler = new TimeScheduler();
+        newObject._debugger = new MetroDebugger(); 
         return newObject;
     }
 
