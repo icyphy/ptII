@@ -464,6 +464,8 @@ public class GiottoDirector extends StaticSchedulingDirector implements Decorato
      *  @param actor The actor.
      *  @param director The director.
      *  @return The frequency of the actor firings.
+     *  @exception IllegalActionException If thrown while getting the value
+     *  of the frequency decorator attribute.
      */
     public static int getActorFrequency(NamedObj actor, GiottoDirector director)
             throws IllegalActionException {

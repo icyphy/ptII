@@ -43,7 +43,7 @@ import ptolemy.domains.ptides.kernel.PtidesEvent;
  */
 public class PtidesEventJUnitTest {
     /**
-     *
+     * Pass nulls to the PtidesEvent constructor.
      */
     @org.junit.Test
     public void constructorWithNulls() throws Exception {
@@ -54,6 +54,9 @@ public class PtidesEventJUnitTest {
         assertArrayEquals(event.toString().getBytes(), knownGood.getBytes());
     }
 
+    /** Invoke the test.
+     *  @param args Ignored
+     */  
     public static void main(String args[]) {
         org.junit.runner.JUnitCore
                 .main("ptolemy.kernel.test.junit.ExampleSystemJUnitTest");

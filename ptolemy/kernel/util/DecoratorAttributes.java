@@ -39,7 +39,7 @@ decorated by a decorator. The parameters that the decorator creates
 will be contained by an instance of this object.
 These attributes can be retrieved by using
 {@link NamedObj#getDecoratorAttribute(Decorator,String)} or
-{@link NamedObj#getDecoratorAttributes(Decorator)}.</p>
+{@link NamedObj#getDecoratorAttributes(Decorator)}.
 
 @author Bert Rodiers
 @author Edward A. Lee

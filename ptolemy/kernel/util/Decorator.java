@@ -94,6 +94,7 @@ public interface Decorator extends Nameable {
     /** Return true if this decorator should decorate objects across
      *  opaque hierarchy boundaries. That is, return true to make this
      *  decorator visible to objects even within opaque composites.
+     *  @return True if decorator is global.
      */
     public boolean isGlobalDecorator();
 }

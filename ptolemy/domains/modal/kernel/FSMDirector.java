@@ -830,7 +830,11 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
         return getController().prefire();
     }
     
-    /** Rebuild the output receivers map and reset the output receivers. */
+    /** Rebuild the output receivers map and reset the output receivers.
+     *  @exception IllegalActionException If there is no mode
+     *  controller, or can not find refinements for states or if
+     *  getting the receivers fails.
+     */
     public void resetOutputReceivers() throws IllegalActionException {
         _buildLocalReceiverMaps();
         _resetOutputReceivers();

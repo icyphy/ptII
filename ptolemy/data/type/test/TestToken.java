@@ -52,6 +52,9 @@ import ptolemy.kernel.util.IllegalActionException;
 
  */
 public class TestToken extends Token {
+    /** Construct a token to be used for testing that encapsulates an object.
+     *  @param object The object to be encapsulated
+     */
     public TestToken(Object object) {
         super();
         _object = object;
@@ -61,6 +64,7 @@ public class TestToken extends Token {
     ////                         public methods                    ////
 
     /** Return the object contained by this token.
+     *  @return The object.   
      */
     public Object getObject() {
         return _object;
@@ -103,6 +107,8 @@ public class TestToken extends Token {
         return "TestToken(" + _object + ")";
     }
 
+    /** The class of this token.
+     */
     public static class TestType implements Type, Serializable, Cloneable {
         ///////////////////////////////////////////////////////////////////
         ////                         public methods                    ////
@@ -120,6 +126,8 @@ public class TestToken extends Token {
 
         /** Return this, that is, return the reference to this object.
          *  @return A TestType
+         *  @exception CloneNotSupportedException Not thrown in this baseclass
+         *  unless thrown by a parent class.
          */
         public Object clone() throws CloneNotSupportedException {
             super.clone();
@@ -154,6 +162,7 @@ public class TestToken extends Token {
         }
 
         /** Return the class for tokens that this basetype represents.
+         *  @return The class.   
          */
         public Class getTokenClass() {
             return TestToken.class;

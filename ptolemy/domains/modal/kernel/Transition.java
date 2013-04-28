@@ -573,6 +573,7 @@ public class Transition extends ComponentRelation {
      *  and return that value.
      *  If there is no such parameter, then we have to assume the default
      *  behavior that prevailed before 9.1.devel, and set history to true.
+     *  @return true if this transition is a history transition.
      *  @exception IllegalActionException If the value of the history parameter
      *   cannot be read.
      */

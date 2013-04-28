@@ -1342,6 +1342,7 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
 
     /** Return a string describing the specified fmiStatus.
      *  @param fmiStatus The status returned by an FMI procedure.
+     *  @return a String describing the status.
      */
     protected static String _fmiStatusDescription(int fmiStatus) {
         // FIXME: FMI 2.0 has apparently lost fmiWarning and fmiFatal.

@@ -337,7 +337,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
     */
     public Parameter probability;
 
-    /** Boolean parameter to determine whether seeds are reset on each run
+    /** Boolean parameter to determine whether seeds are reset on each run.
      */
     public SharedParameter resetOnEachRun;
     

@@ -51,6 +51,7 @@ import ptolemy.domains.pn.kernel.event.PNProcessListener;
 public class StringPNListener implements PNProcessListener {
     /** Return a string containing a description of all the activities
      *  recorded by the listener and reset the description.
+     *  @return the profile.
      */
     public String getProfile() {
         String results = _profile.toString();
