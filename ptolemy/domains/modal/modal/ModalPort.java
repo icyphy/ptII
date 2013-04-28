@@ -183,32 +183,7 @@ public class ModalPort extends ModalBasePort {
             if (model != null && container != model) {
                 // The port is being removed from the current container.
                 // Remove it from the mirrored ports.
-                Iterator entities = model.entityList().iterator();
-
-                while (entities.hasNext()) {
-                    Entity entity = (Entity) entities.next();
-                    Port mirrorPort = entity.getPort(getName());
-
-                    if (mirrorPort instanceof RefinementPort) {
-                        RefinementPort castPort = (RefinementPort) mirrorPort;
-                        boolean disableStatus = castPort._mirrorDisable;
-
-                        try {
-                            castPort._mirrorDisable = true;
-                            castPort.setContainer(null);
-                        } finally {
-                            castPort._mirrorDisable = disableStatus;
-                        }
-                    }
-                }
-
-                // Remove the relation as well.
-                ComponentRelation relation = model.getRelation(getName()
-                        + "Relation");
-
-                if (relation != null) {
-                    relation.setContainer(null);
-                }
+                _removePort(model);
             }
 
             super.setContainer(container);

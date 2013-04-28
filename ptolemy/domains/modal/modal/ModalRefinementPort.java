@@ -179,33 +179,7 @@ public class ModalRefinementPort extends RefinementPort {
                     && container != oldContainer) {
                 // The port is being removed from the current container.
                 // Remove it from the mirrored ports.
-                Iterator entities = ((CompositeEntity) oldContainer)
-                        .entityList().iterator();
-
-                while (entities.hasNext()) {
-                    Entity entity = (Entity) entities.next();
-                    Port mirrorPort = entity.getPort(getName());
-
-                    if (mirrorPort instanceof RefinementPort) {
-                        RefinementPort castPort = (RefinementPort) mirrorPort;
-                        boolean disableStatus = castPort._mirrorDisable;
-
-                        try {
-                            castPort._mirrorDisable = true;
-                            castPort.setContainer(null);
-                        } finally {
-                            castPort._mirrorDisable = disableStatus;
-                        }
-                    }
-                }
-
-                // Remove the relation as well.
-                ComponentRelation relation = ((CompositeEntity) oldContainer)
-                        .getRelation(getName() + "Relation");
-
-                if (relation != null) {
-                    relation.setContainer(null);
-                }
+                _removePort((CompositeEntity)oldContainer);
             }
         } else {
             // Not mirroring changes from above.

@@ -323,6 +323,43 @@ public class ModalBasePort extends TypedIOPort {
         }
     }
 
+    /** Remove a port from the current container.
+     *  @param oldContainer The contaner of the port
+     *  @exception IllegalActionException If the container or the
+     *  container of the relation cannot be set to null.
+     *  @exception NameDuplicationException If the thrown will setting
+     *  the container or the container of the relation to null.
+     */
+    protected void  _removePort( CompositeEntity oldContainer)
+            throws IllegalActionException, NameDuplicationException {
+        Iterator entities = ((CompositeEntity) oldContainer)
+            .entityList().iterator();
+
+        while (entities.hasNext()) {
+            Entity entity = (Entity) entities.next();
+            Port mirrorPort = entity.getPort(getName());
+
+            if (mirrorPort instanceof RefinementPort) {
+                RefinementPort castPort = (RefinementPort) mirrorPort;
+                boolean disableStatus = castPort._mirrorDisable;
+
+                try {
+                    castPort._mirrorDisable = true;
+                    castPort.setContainer(null);
+                } finally {
+                    castPort._mirrorDisable = disableStatus;
+                }
+            }
+        }
+        // Remove the relation as well.
+        ComponentRelation relation = ((CompositeEntity) oldContainer)
+            .getRelation(getName() + "Relation");
+        
+        if (relation != null) {
+            relation.setContainer(null);
+        }
+    }
+        
     /** If the argument is true, make the port an input port.
      *  If the argument is false, make the port not an input port.
      *  This method overrides the base class to make the same
