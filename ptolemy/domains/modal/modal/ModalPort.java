@@ -56,7 +56,7 @@ import ptolemy.kernel.util.Workspace;
  @Pt.ProposedRating Red (eal)
  @Pt.AcceptedRating Red (liuxj)
  */
-public class ModalPort extends TypedIOPort {
+public class ModalPort extends ModalBasePort {
     /** Construct a port in the given workspace.
      *  @param workspace The workspace.
      *  @exception IllegalActionException If the port is not of an acceptable
@@ -84,9 +84,6 @@ public class ModalPort extends TypedIOPort {
         super(container, name);
     }
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////
-
     /** Move this object down by one in the list of attributes of
      *  its container. If this object is already last, do nothing.
      *  This method overrides the base class to mirror the change
@@ -98,38 +95,7 @@ public class ModalPort extends TypedIOPort {
      *   no container.
      */
     public int moveDown() throws IllegalActionException {
-        try {
-            _workspace.getWriteAccess();
-
-            int result = super.moveDown();
-
-            if (result != -1) {
-                // Mirror the change in mirror ports.
-                CompositeEntity container = (CompositeEntity) getContainer();
-                Iterator entities = container.entityList().iterator();
-
-                while (entities.hasNext()) {
-                    Entity entity = (Entity) entities.next();
-                    Port mirrorPort = entity.getPort(getName());
-
-                    if (mirrorPort instanceof RefinementPort) {
-                        RefinementPort castPort = (RefinementPort) mirrorPort;
-                        boolean disableStatus = castPort._mirrorDisable;
-
-                        try {
-                            castPort._mirrorDisable = true;
-                            castPort.moveDown();
-                        } finally {
-                            castPort._mirrorDisable = disableStatus;
-                        }
-                    }
-                }
-            }
-
-            return result;
-        } finally {
-            _workspace.doneWriting();
-        }
+        return _moveDown();
     }
 
     /** Move this object to the first position in the list
@@ -143,38 +109,7 @@ public class ModalPort extends TypedIOPort {
      *   no container.
      */
     public int moveToFirst() throws IllegalActionException {
-        try {
-            _workspace.getWriteAccess();
-
-            int result = super.moveToFirst();
-
-            if (result != -1) {
-                // Mirror the change in mirror ports.
-                CompositeEntity container = (CompositeEntity) getContainer();
-                Iterator entities = container.entityList().iterator();
-
-                while (entities.hasNext()) {
-                    Entity entity = (Entity) entities.next();
-                    Port mirrorPort = entity.getPort(getName());
-
-                    if (mirrorPort instanceof RefinementPort) {
-                        RefinementPort castPort = (RefinementPort) mirrorPort;
-                        boolean disableStatus = castPort._mirrorDisable;
-
-                        try {
-                            castPort._mirrorDisable = true;
-                            castPort.moveToFirst();
-                        } finally {
-                            castPort._mirrorDisable = disableStatus;
-                        }
-                    }
-                }
-            }
-
-            return result;
-        } finally {
-            _workspace.doneWriting();
-        }
+        return _moveToFirst();
     }
 
     /** Move this object to the specified position in the list
@@ -190,38 +125,7 @@ public class ModalPort extends TypedIOPort {
      *   no container or if the index is out of bounds.
      */
     public int moveToIndex(int index) throws IllegalActionException {
-        try {
-            _workspace.getWriteAccess();
-
-            int result = super.moveToIndex(index);
-
-            if (result != -1) {
-                // Mirror the change in mirror ports.
-                CompositeEntity container = (CompositeEntity) getContainer();
-                Iterator entities = container.entityList().iterator();
-
-                while (entities.hasNext()) {
-                    Entity entity = (Entity) entities.next();
-                    Port mirrorPort = entity.getPort(getName());
-
-                    if (mirrorPort instanceof RefinementPort) {
-                        RefinementPort castPort = (RefinementPort) mirrorPort;
-                        boolean disableStatus = castPort._mirrorDisable;
-
-                        try {
-                            castPort._mirrorDisable = true;
-                            castPort.moveToIndex(index);
-                        } finally {
-                            castPort._mirrorDisable = disableStatus;
-                        }
-                    }
-                }
-            }
-
-            return result;
-        } finally {
-            _workspace.doneWriting();
-        }
+        return _moveToIndex(index);
     }
 
     /** Move this object to the last position in the list
@@ -235,38 +139,7 @@ public class ModalPort extends TypedIOPort {
      *   no container.
      */
     public int moveToLast() throws IllegalActionException {
-        try {
-            _workspace.getWriteAccess();
-
-            int result = super.moveToLast();
-
-            if (result != -1) {
-                // Mirror the change in mirror ports.
-                CompositeEntity container = (CompositeEntity) getContainer();
-                Iterator entities = container.entityList().iterator();
-
-                while (entities.hasNext()) {
-                    Entity entity = (Entity) entities.next();
-                    Port mirrorPort = entity.getPort(getName());
-
-                    if (mirrorPort instanceof RefinementPort) {
-                        RefinementPort castPort = (RefinementPort) mirrorPort;
-                        boolean disableStatus = castPort._mirrorDisable;
-
-                        try {
-                            castPort._mirrorDisable = true;
-                            castPort.moveToLast();
-                        } finally {
-                            castPort._mirrorDisable = disableStatus;
-                        }
-                    }
-                }
-            }
-
-            return result;
-        } finally {
-            _workspace.doneWriting();
-        }
+        return _moveToLast();
     }
 
     /** Move this object up by one in the list of
@@ -281,39 +154,11 @@ public class ModalPort extends TypedIOPort {
      *   no container.
      */
     public int moveUp() throws IllegalActionException {
-        try {
-            _workspace.getWriteAccess();
-
-            int result = super.moveUp();
-
-            if (result != -1) {
-                // Mirror the change in mirror ports.
-                CompositeEntity container = (CompositeEntity) getContainer();
-                Iterator entities = container.entityList().iterator();
-
-                while (entities.hasNext()) {
-                    Entity entity = (Entity) entities.next();
-                    Port mirrorPort = entity.getPort(getName());
-
-                    if (mirrorPort instanceof RefinementPort) {
-                        RefinementPort castPort = (RefinementPort) mirrorPort;
-                        boolean disableStatus = castPort._mirrorDisable;
-
-                        try {
-                            castPort._mirrorDisable = true;
-                            castPort.moveUp();
-                        } finally {
-                            castPort._mirrorDisable = disableStatus;
-                        }
-                    }
-                }
-            }
-
-            return result;
-        } finally {
-            _workspace.doneWriting();
-        }
+        return _moveUp();
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /** Override the base class so that if the port is being removed
      *  from the current container, then it is also removed from the
@@ -329,6 +174,7 @@ public class ModalPort extends TypedIOPort {
      */
     public void setContainer(Entity container) throws IllegalActionException,
             NameDuplicationException {
+        // See also ModelRefinementPort.setContainer() for a similar method.
         try {
             _workspace.getWriteAccess();
 
@@ -384,34 +230,7 @@ public class ModalPort extends TypedIOPort {
      *   not permitted.
      */
     public void setInput(boolean isInput) throws IllegalActionException {
-        try {
-            _workspace.getWriteAccess();
-
-            super.setInput(isInput);
-
-            // Mirror the change in mirror ports.
-            CompositeEntity container = (CompositeEntity) getContainer();
-            Iterator entities = container.entityList().iterator();
-
-            while (entities.hasNext()) {
-                Entity entity = (Entity) entities.next();
-                Port mirrorPort = entity.getPort(getName());
-
-                if (mirrorPort instanceof RefinementPort) {
-                    RefinementPort castPort = (RefinementPort) mirrorPort;
-                    boolean disableStatus = castPort._mirrorDisable;
-
-                    try {
-                        castPort._mirrorDisable = true;
-                        castPort.setInput(isInput);
-                    } finally {
-                        castPort._mirrorDisable = disableStatus;
-                    }
-                }
-            }
-        } finally {
-            _workspace.doneWriting();
-        }
+        _setInput(isInput);
     }
 
     /** If the argument is true, make the port a multiport.
@@ -427,34 +246,7 @@ public class ModalPort extends TypedIOPort {
      *   not permitted.
      */
     public void setMultiport(boolean isMultiport) throws IllegalActionException {
-        try {
-            _workspace.getWriteAccess();
-
-            super.setMultiport(isMultiport);
-
-            // Mirror the change in mirror ports.
-            CompositeEntity container = (CompositeEntity) getContainer();
-            Iterator entities = container.entityList().iterator();
-
-            while (entities.hasNext()) {
-                Entity entity = (Entity) entities.next();
-                Port mirrorPort = entity.getPort(getName());
-
-                if (mirrorPort instanceof RefinementPort) {
-                    RefinementPort castPort = (RefinementPort) mirrorPort;
-                    boolean disableStatus = castPort._mirrorDisable;
-
-                    try {
-                        castPort._mirrorDisable = true;
-                        castPort.setMultiport(isMultiport);
-                    } finally {
-                        castPort._mirrorDisable = disableStatus;
-                    }
-                }
-            }
-        } finally {
-            _workspace.doneWriting();
-        }
+        _setMultiport(isMultiport);
     }
 
     /** Set the name of the port, and mirror the change in all the
@@ -467,47 +259,7 @@ public class ModalPort extends TypedIOPort {
      */
     public void setName(String name) throws IllegalActionException,
             NameDuplicationException {
-        try {
-            _workspace.getWriteAccess();
-
-            String oldName = getName();
-            super.setName(name);
-
-            // Mirror the change in mirror ports.
-            CompositeEntity container = (CompositeEntity) getContainer();
-
-            // NOTE: This is called before there is even a container
-            // to originally set the name.
-            if (container != null) {
-                Iterator entities = container.entityList().iterator();
-
-                while (entities.hasNext()) {
-                    Entity entity = (Entity) entities.next();
-                    Port mirrorPort = entity.getPort(oldName);
-
-                    if (mirrorPort instanceof RefinementPort) {
-                        RefinementPort castPort = (RefinementPort) mirrorPort;
-                        boolean disableStatus = castPort._mirrorDisable;
-
-                        try {
-                            castPort._mirrorDisable = true;
-                            castPort.setName(name);
-                        } finally {
-                            castPort._mirrorDisable = disableStatus;
-                        }
-                    }
-                }
-
-                // Rename the corresponding relation.
-                Relation relation = container.getRelation(oldName + "Relation");
-
-                if (relation != null) {
-                    relation.setName(name + "Relation");
-                }
-            }
-        } finally {
-            _workspace.doneWriting();
-        }
+        _setName(name);
     }
 
     /** If the argument is true, make the port an output port.
@@ -523,72 +275,6 @@ public class ModalPort extends TypedIOPort {
      *   not permitted.
      */
     public void setOutput(boolean isOutput) throws IllegalActionException {
-        try {
-            _workspace.getWriteAccess();
-
-            super.setOutput(isOutput);
-
-            // Mirror the change in mirror ports.
-            CompositeEntity container = (CompositeEntity) getContainer();
-            Iterator entities = container.entityList().iterator();
-
-            while (entities.hasNext()) {
-                Entity entity = (Entity) entities.next();
-                Port mirrorPort = entity.getPort(getName());
-
-                if (mirrorPort instanceof RefinementPort) {
-                    RefinementPort castPort = (RefinementPort) mirrorPort;
-                    boolean disableStatus = castPort._mirrorDisable;
-
-                    try {
-                        castPort._mirrorDisable = true;
-                        castPort.setOutput(isOutput);
-                    } finally {
-                        castPort._mirrorDisable = disableStatus;
-                    }
-
-                    // If the entity is a controller, then set the
-                    // port to also be an input.
-                    if (entity.getName().equals("_Controller")) {
-                        boolean controlPortStatus = castPort._mirrorDisable;
-
-                        try {
-                            castPort._mirrorDisable = true;
-                            castPort.setInput(true);
-
-                            // Mark that the input property is
-                            // automatically set, so that if it
-                            // is changed, that change is not
-                            // mirrored.
-                            if (!isInput()) {
-                                castPort._automaticallyInput = true;
-                            }
-                        } finally {
-                            castPort._mirrorDisable = controlPortStatus;
-                        }
-                    }
-                }
-            }
-        } finally {
-            _workspace.doneWriting();
-        }
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected methods                 ////
-
-    /** Override the base class to ensure that the proposed container
-     *  is a CompositeEntity or null.
-     *  @param container The proposed container.
-     *  @exception IllegalActionException If the proposed container is not a
-     *   TypedActor, or if the base class throws it.
-     */
-    protected void _checkContainer(Entity container)
-            throws IllegalActionException {
-        if (!(container instanceof CompositeEntity) && container != null) {
-            throw new IllegalActionException(container, this,
-                    "ModalPort can only be contained by CompositeEntity objects. "
-                            + "The container was: " + container);
-        }
+        _setOutput(isOutput);
     }
 }
