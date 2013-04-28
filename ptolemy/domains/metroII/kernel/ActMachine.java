@@ -1,4 +1,4 @@
-/* Abstract wrapper for actors.
+/* ActMachine is an abstract wrapper for actors.
 
  Copyright (c) 2012-2013 The Regents of the University of California.
  All rights reserved.
@@ -37,7 +37,7 @@ import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event.Status;
 
 /**
  * 
- * Abstract wrapper for actors. ActMachine is a FSM. The states of the FSM represent
+ * ActMachine is an abstract wrapper for actors. ActMachine is a FSM. The states of the FSM represent
  * the state of the wrapped actor. Each state may associate with a MetroII event and 
  * these events are supposed to be used as the interface interacting with outside. 
  * The StartOrResumable interface has to be implemented by subclass as the triggering 

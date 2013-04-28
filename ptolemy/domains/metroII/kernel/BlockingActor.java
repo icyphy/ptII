@@ -1,4 +1,4 @@
-/* MetroIIActorBasicWrapper is a basic wrapper for Ptolemy actor to work with a MetroIIDirector.
+/* BlockingActor is a basic wrapper for Ptolemy actor to work with a MetroIIDirector.
 
  Copyright (c) 2012-2013 The Regents of the University of California.
  All rights reserved.
