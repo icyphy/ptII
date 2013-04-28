@@ -23,6 +23,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 */
 package ptolemy.vergil.tdl;
 
+import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.util.Iterator;
 import java.util.List;
@@ -46,8 +47,10 @@ import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.util.MessageHandler;
+import ptolemy.vergil.basic.BasicGraphController;
 import ptolemy.vergil.modal.FSMGraphController;
 import ptolemy.vergil.modal.StateController;
+import ptolemy.vergil.modal.modal.HierarchicalStateController;
 import ptolemy.vergil.toolbox.FigureAction;
 import ptolemy.vergil.toolbox.MenuActionFactory;
 import diva.graph.GraphController;
@@ -83,7 +86,7 @@ public class HierarchicalModeController extends StateController {
         _menuFactory.addMenuItemFactory(new MenuActionFactory(
                 new AddRefinementAction()));
         _menuFactory.addMenuItemFactory(new MenuActionFactory(
-                new RemoveRefinementAction()));
+                new HierarchicalStateController.RemoveRefinementAction()));
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -97,6 +100,8 @@ public class HierarchicalModeController extends StateController {
         }
 
         public void actionPerformed(ActionEvent e) {
+            // This method is similar to a method in
+            // ptolemy/vergil/modal/modal/HierarchicalStateController.java
             super.actionPerformed(e);
 
             NamedObj target = getTarget();
@@ -158,10 +163,13 @@ public class HierarchicalModeController extends StateController {
 
             query.addChoice("Class", "Class", choiceNames, choiceNames[0], true);
 
-            // FIXME: Need a frame owner for first arg.
-            // Perhaps calling getController(), which returns a GraphController
-            // will be a good start.
-            ComponentDialog dialog = new ComponentDialog(null,
+            // Need a frame owner for first arg. for the dialog constructor.
+            Frame owner = null;
+            GraphController controller = getController();
+            if (controller instanceof BasicGraphController) {
+                owner = ((BasicGraphController) controller).getFrame();
+            }
+            ComponentDialog dialog = new ComponentDialog(owner,
                     "Specify Refinement", query);
 
             if (!dialog.buttonPressed().equals("OK")) {
@@ -291,177 +299,6 @@ public class HierarchicalModeController extends StateController {
                 }
             };
 
-            container.requestChange(change);
-        }
-    }
-
-    /** Action to remove refinements. */
-    private static class RemoveRefinementAction extends FigureAction {
-        public RemoveRefinementAction() {
-            super("Remove Refinement");
-        }
-
-        public void actionPerformed(ActionEvent e) {
-            super.actionPerformed(e);
-
-            NamedObj target = getTarget();
-
-            if (!(target instanceof State)) {
-                MessageHandler
-                        .error("Can only remove refinements from states.");
-                return;
-            }
-
-            State state = (State) target;
-
-            // Check that all these containers exist.
-            CompositeEntity immediateContainer = (CompositeEntity) state
-                    .getContainer();
-
-            if (immediateContainer == null) {
-                MessageHandler.error("State has no container!");
-                return;
-            }
-
-            final CompositeEntity container = (CompositeEntity) immediateContainer
-                    .getContainer();
-
-            if (container == null) {
-                MessageHandler.error("State container has no container!");
-                return;
-            }
-
-            TypedActor[] refinements;
-
-            try {
-                refinements = state.getRefinement();
-            } catch (Exception ex) {
-                MessageHandler.error("Invalid refinements.", ex);
-                return;
-            }
-
-            if (refinements == null || refinements.length < 1) {
-                MessageHandler.error("No refinements to remove.");
-                return;
-            }
-
-            String[] choices = new String[refinements.length];
-
-            for (int i = 0; i < refinements.length; i++) {
-                choices[i] = ((Nameable) refinements[i]).getName();
-            }
-
-            // Open a dialog to get the refinement name and class.
-            Query query = new Query();
-            query.addChoice("Refinement", "Refinement", choices, choices[0],
-                    false);
-
-            // FIXME: Need a frame owner for first arg.
-            // Perhaps calling getController(), which returns a GraphController
-            // will be a good start.
-            ComponentDialog dialog = new ComponentDialog(null,
-                    "Specify Refinement", query);
-
-            if (!dialog.buttonPressed().equals("OK")) {
-                return;
-            }
-
-            String refinementName = query.getStringValue("Refinement");
-            StringBuffer newRefinements = new StringBuffer();
-            String currentRefinements = state.refinementName.getExpression();
-            StringTokenizer tokenizer = new StringTokenizer(currentRefinements,
-                    ",");
-
-            while (tokenizer.hasMoreTokens()) {
-                String token = tokenizer.nextToken();
-
-                if (!token.trim().equals(refinementName)) {
-                    if (newRefinements.length() > 0) {
-                        newRefinements.append(", ");
-                    }
-
-                    newRefinements.append(token.trim());
-                }
-            }
-
-            // Check to see whether any other state or transition has
-            // this refinment, and if not, remove it from its container.
-            Iterator states = immediateContainer.entityList().iterator();
-            boolean foundOne = false;
-
-            while (states.hasNext()) {
-                NamedObj other = (NamedObj) states.next();
-
-                if (other != state && other instanceof State) {
-                    String refinementList = ((State) other).refinementName
-                            .getExpression();
-
-                    if (refinementList == null) {
-                        continue;
-                    }
-
-                    tokenizer = new StringTokenizer(refinementList, ",");
-
-                    while (tokenizer.hasMoreTokens()) {
-                        String token = tokenizer.nextToken();
-
-                        if (token.equals(refinementName)) {
-                            foundOne = true;
-                            break;
-                        }
-                    }
-
-                    if (foundOne) {
-                        break;
-                    }
-                }
-            }
-
-            if (!foundOne) {
-                Iterator transitions = immediateContainer.relationList()
-                        .iterator();
-
-                while (transitions.hasNext()) {
-                    NamedObj other = (NamedObj) transitions.next();
-
-                    if (other instanceof Transition) {
-                        String refinementList = ((Transition) other).refinementName
-                                .getExpression();
-
-                        if (refinementList == null) {
-                            continue;
-                        }
-
-                        tokenizer = new StringTokenizer(refinementList, ",");
-
-                        while (tokenizer.hasMoreTokens()) {
-                            String token = tokenizer.nextToken();
-
-                            if (token.equals(refinementName)) {
-                                foundOne = true;
-                                break;
-                            }
-                        }
-
-                        if (foundOne) {
-                            break;
-                        }
-                    }
-                }
-            }
-
-            String removal = "";
-
-            if (!foundOne) {
-                removal = "<deleteEntity name=\"" + refinementName + "\"/>";
-            }
-
-            String moml = "<group><entity name=\"" + state.getName(container)
-                    + "\"><property name=\"refinementName\" value=\""
-                    + newRefinements.toString() + "\"/></entity>" + removal
-                    + "</group>";
-            MoMLChangeRequest change = new MoMLChangeRequest(this, container,
-                    moml);
             container.requestChange(change);
         }
     }
