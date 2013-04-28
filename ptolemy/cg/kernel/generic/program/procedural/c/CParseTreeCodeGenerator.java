@@ -312,8 +312,8 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor implements
             if (valueType.equals(elementType)) {
                 result.append(", " + childCode[i]);
             } else {
-                result.append(", $convert_" + _generator.codeGenType(valueType)
-                        + "_" + _generator.codeGenType(elementType) + "("
+                result.append(", $convert_" + _codeGenType(valueType)
+                        + "_" + _codeGenType(elementType) + "("
                         + childCode[i] + ")");
             }
         }
@@ -321,7 +321,7 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor implements
         if (elementType instanceof ArrayType) {
             _childCode = "$new(" + "Array(" + result + "))";
         } else {
-            _childCode = "$new(" + _generator.codeGenType(elementType)
+            _childCode = "$new(" + _codeGenType(elementType)
                     + "Array(" + result + "))";
 
         }
@@ -500,7 +500,6 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor implements
                 functionName = cFunction;
             }
         }
-        System.out.println("CParseTree2: " + functionName + " value: " + value);
 
         // The first child contains the function name as an id.  It is
         // ignored, and not evaluated unless necessary.
@@ -515,8 +514,6 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor implements
             if (value == null) {
                 value = _evaluateChild(node, 0);
             }
-            System.out.println("CParseTree: " + functionName + "value: "
-                    + value);
 
             if (type instanceof ArrayType) {
                 if (argCount == 1) {
@@ -911,7 +908,7 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor implements
 
                     if (_generator.isPrimitive(valueType)) {
                         result.append("$new("
-                                + _generator.codeGenType(valueType) + "("
+                                + _codeGenType(valueType) + "("
                                 + _childCode + "))");
                     }
 
@@ -922,7 +919,7 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor implements
                 }
             }
 
-            String codegenType = _generator.codeGenType(elementType);
+            String codegenType = _codeGenType(elementType);
 
             // Insert the elementType of the array as the last argument.
             if (_generator.targetType(elementType).equals("Token")) {
@@ -1153,8 +1150,8 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor implements
             if (operator.kind == PtParserConstants.MULTIPLY) {
                 if (type != null) {
                     result = new StringBuffer("$multiply_"
-                            + _generator.codeGenType(resultType) + "_"
-                            + _generator.codeGenType(type) + "("
+                            + _codeGenType(resultType) + "_"
+                            + _codeGenType(type) + "("
                             + result.toString() + ", " + _childCode + ")");
 
                     resultType = resultType.multiply(type);
@@ -1165,8 +1162,8 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor implements
             } else if (operator.kind == PtParserConstants.DIVIDE) {
                 if (type != null) {
                     result = new StringBuffer("$divide_"
-                            + _generator.codeGenType(resultType) + "_"
-                            + _generator.codeGenType(type) + "(" + result
+                            + _codeGenType(resultType) + "_"
+                            + _codeGenType(type) + "(" + result
                             + ", " + _childCode + ")");
 
                     resultType = resultType.divide(type);
@@ -1175,7 +1172,17 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor implements
                     result.append("/" + _childCode);
                 }
             } else if (operator.kind == PtParserConstants.MODULO) {
-                result.append("%" + _childCode);
+                if (type != null) {
+                    result = new StringBuffer("$modulo_"
+                            + _codeGenType(resultType) + "_"
+                            + _codeGenType(type) + "(" + result.toString()
+                            + ", " + _childCode + ")");
+
+                    resultType = resultType.divide(type);
+
+                } else {
+                    result.append("%" + _childCode);
+                }
             }
 
             if (operator.kind == PtParserConstants.MULTIPLY) {
@@ -1441,16 +1448,16 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor implements
 
         ptolemy.data.Token childToken = _evaluateChild(node, 0);
 
-        String childType = _generator.codeGenType(((ASTPtRootNode) node
+        String childType = _codeGenType(((ASTPtRootNode) node
                 .jjtGetChild(0)).getType());
 
-        String nodeType = _generator.codeGenType(node.getType());
+        String nodeType = _codeGenType(node.getType());
 
         result.append("$convert_" + childType + "_" + nodeType + "("
                 + _childCode + ")");
 
         for (int i = 1; i < numChildren; i++) {
-            childType = _generator.codeGenType(((ASTPtRootNode) node
+            childType = _codeGenType(((ASTPtRootNode) node
                     .jjtGetChild(i)).getType());
 
             Token operator = (Token) lexicalTokenList.get(i - 1);
@@ -1602,7 +1609,7 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor implements
 
         //_fireCode.append("Array_get(");
         StringBuffer result = new StringBuffer(
-                _generator.codeGenType(elementType) + "Array_get(");
+                _codeGenType(elementType) + "Array_get(");
 
         String name = value.toString();
         if (name.startsWith("object(")) {
@@ -1675,6 +1682,19 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor implements
     //                     + value + "'.");
     //         }
     //     }
+
+    /**
+     * Get the corresponding type in code generation from the given Ptolemy
+     * type.
+     * @param ptType The given Ptolemy type.
+     * @return The code generation type.
+     * @exception IllegalActionException Thrown if the given ptolemy cannot
+     *  be resolved.
+     */
+    private/*static*/String _codeGenType(Type ptType) {
+        // This method exists because JavaParseTreeCodeGenerator specializes it.
+        return _generator.codeGenType(ptType);
+    }
 
     /** Add a record to the current trace corresponding to the given message.
      *  If the trace is null, do nothing.
@@ -1754,7 +1774,7 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor implements
 
         if (function.equals("$arrayRepeat") && argumentIndex == 1) {
             if (_generator.isPrimitive(argumentType)) {
-                return "$new(" + _generator.codeGenType(argumentType) + "("
+                return "$new(" + _codeGenType(argumentType) + "("
                         + argumentCode + "))";
             }
         }
@@ -1765,7 +1785,7 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor implements
             String returnCode) {
         if (function.equals("$arraySum") && _generator.isPrimitive(returnType)) {
 
-            returnCode += ".payload." + _generator.codeGenType(returnType);
+            returnCode += ".payload." + _codeGenType(returnType);
         }
         return returnCode;
     }
