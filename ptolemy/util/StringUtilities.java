@@ -731,7 +731,7 @@ public class StringUtilities {
      *  <p> Characters that are not permitted in a Java identifier are changed
      *  to underscores.
      *  This method does not check whether the string is a keyword or literal.
-     *  @param name
+     *  @param name The name to be checked.
      *  @return True if the given name is a valid Java identifier, or false otherwise.
      */
     public static boolean isValidIdentifier(String name) {
