@@ -694,8 +694,8 @@ public class FixedPointDirector extends StaticSchedulingDirector implements
     /** Synchronize to real time, if appropriate.
      *  NOTE: This method is provided for backward compatibility. The preferred
      *  method for synchronizing to real time is now to use a
-     *  {@link #SynchronizeToRealTime} attribute, which implements the
-     *  {@link #TimeRegulator} interface.
+     *  {@link ptolemy.actor.lib.SynchronizeToRealTime} attribute, which implements the
+     *  {@link ptolemy.actor.TimeRegulator} interface.
      *  @exception IllegalActionException If the <i>synchronizeToRealTime</i>
      *   parameter is ill formed.
      */
