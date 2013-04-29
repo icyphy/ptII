@@ -65,9 +65,7 @@ import ptolemy.util.StringUtilities;
  entity.  For example, to specify the iteration count in an SDF model,
  you can invoke this on the command line as follows:
  <pre>
- CLASSPATH=$PTII
- export CLASSPATH
- java ptolemy.actor.gui.CompositeActorApplication \
+ java -classpath $PTII ptolemy.actor.gui.CompositeActorApplication \
  -director.iterations 1000 \
  -class ptolemy.domains.sdf.demo.Butterfly.Butterfly
  </pre>
@@ -88,7 +86,7 @@ import ptolemy.util.StringUtilities;
  @Pt.ProposedRating Yellow (cxh)
  @Pt.AcceptedRating Red (vogel)
  */
-public class CompositeActorApplication {
+public class CompositeActorApplication extends CompositeActorSimpleApplication {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -108,32 +106,9 @@ public class CompositeActorApplication {
      */
     public static void main(String[] args) {
         CompositeActorApplication application = new CompositeActorApplication();
-
-        try {
-            application.processArgs(args);
-            // If the -test arg was set, then exit after 2 seconds.
-            if (_test) {
-                try {
-                    Thread.sleep(2000);
-                    application.close();
-                } catch (InterruptedException e) {
-                }
-                StringUtilities.exit(0);
-            }
-            application.waitForFinish();
-        } catch (Exception ex) {
-            System.err.println(KernelException.stackTraceToString(ex));
-            StringUtilities.exit(0);
-        }
+        _run(application, args);
     }
 
-    /** Return the list of models.
-     *  @return The list of models passed in as arguments.
-     */
-    public List<CompositeActor> models() {
-        // Used primarily for testing.
-        return _models;
-    }
 
     /** Parse the command-line arguments, creating models as specified.
      *  @param args The command-line arguments.
@@ -147,36 +122,9 @@ public class CompositeActorApplication {
             Iterator models = _models.iterator();
 
             while (models.hasNext()) {
-                _frames.add(startRun((CompositeActor) models.next()));
+                _frames.add((ModelFrame)startRun((CompositeActor) models.next()));
             }
         }
-    }
-
-    /** Report an exception.  This prints a message to the standard error
-     *  stream, followed by the stack trace.
-     *  @param ex The exception to report.
-     */
-    public void report(Exception ex) {
-        report("", ex);
-    }
-
-    /** Report a message to the user.
-     *  This prints a message to the standard output stream.
-     *  @param message The message to report.
-     */
-    public void report(String message) {
-        System.out.println(message);
-    }
-
-    /** Report an exception with an additional message.
-     *  This prints a message to standard error, followed by the
-     *  stack trace.
-     *  @param message The message.
-     *  @param ex The exception to report.
-     */
-    public void report(String message, Exception ex) {
-        System.err.println("Exception thrown:\n" + message + "\n"
-                + KernelException.stackTraceToString(ex));
     }
 
     /** If the specified model has a manager and is not already running,
@@ -193,7 +141,7 @@ public class CompositeActorApplication {
      *  @return The ModelFrame that for the model.
      *  @see ptolemy.actor.Manager#startRun()
      */
-    public synchronized ModelFrame startRun(CompositeActor model) {
+    public synchronized Object startRun(CompositeActor model) {
         // This method is synchronized so that it can atomically modify
         // the count of executing processes.
         // NOTE: If you modify this method, please be sure that it
@@ -259,242 +207,9 @@ public class CompositeActorApplication {
         return frame;
     }
 
-    /** If the specified model has a manager and is executing, then
-     *  stop execution by calling the stop() method of the manager.
-     *  If there is no manager, do nothing.
-     *  @param model The model to stop.
-     */
-    public void stopRun(CompositeActor model) {
-        Manager manager = model.getManager();
-
-        if (manager != null) {
-            manager.stop();
-        }
-    }
-
-    /** Wait for all windows to close.
-     */
-    public synchronized void waitForFinish() {
-        while (_openCount > 0) {
-            try {
-                wait();
-            } catch (InterruptedException ex) {
-                break;
-            }
-        }
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected methods                 ////
-
-    /** Parse a command-line argument.  The recognized arguments, which
-     *  result in this method returning true, are summarized below:
-     *  <ul>
-     *  <li>If the argument is "-class", then attempt to interpret
-     *  the next argument as the fully qualified classname of a class
-     *  to instantiate as a ptolemy model.  The model will be created,
-     *  added to the directory of models, and then executed.
-     *  <li>If the argument is "-help", then print a help message.
-     *  <li>If the argument is "-test", then set a flag that will
-     *  abort execution of any created models after two seconds.
-     *  <li>If the argument is "-version", then print a short version message.
-     *  <li>If the argument is "", then ignore it.
-     *  </ul>
-     *  Otherwise, the argument is ignored and false is returned.
-     *
-     *  @param arg The argument to be parse.
-     *  @return True if the argument is understood, false otherwise.
-     *  @exception Exception If something goes wrong.
-     */
-    protected boolean _parseArg(String arg) throws Exception {
-        if (arg.equals("-class")) {
-            _expectingClass = true;
-        } else if (arg.equals("-help")) {
-            System.out.println(_usage());
-
-            // Don't call System.exit(0) here, it will break the test suites
-        } else if (arg.equals("-test")) {
-            _test = true;
-        } else if (arg.equals("-version")) {
-            System.out
-                    .println("Version "
-                            + VersionAttribute.CURRENT_VERSION
-                            + ", Build $Id$");
-
-            // quit the program if the user asked for the version
-            // Don't call System.exit(0) here, it will break the test suites
-        } else if (arg.equals("")) {
-            // Ignore blank argument.
-        } else {
-            if (_expectingClass) {
-                _expectingClass = false;
-
-                MoMLParser parser = new MoMLParser();
-                String string = "<entity name=\"toplevel\" class=\"" + arg
-                        + "\"/>";
-                CompositeActor model = null;
-                try {
-                    model = (CompositeActor) parser.parse(string);
-                } catch (Throwable ex) {
-                    throw new IllegalActionException(null, ex,
-                            "Could not find class " + arg);
-                }
-
-                // Temporary hack because cloning doesn't properly clone
-                // type constraints.
-                CompositeActor modelClass = (CompositeActor) parser
-                        .searchForClass(arg, model.getSource());
-
-                if (modelClass != null) {
-                    model = modelClass;
-                }
-
-                _models.add(model);
-
-                // Create a manager.
-                Manager manager = model.getManager();
-
-                if (manager == null) {
-                    model.setManager(new Manager(model.workspace(), "manager"));
-                }
-            } else {
-                // Argument not recognized.
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-    /** Parse the command-line arguments.
-     *  @param args The arguments to be parsed.
-     *  @exception Exception If an argument is not understood or triggers
-     *   an error.
-     */
-    protected void _parseArgs(String[] args) throws Exception {
-        for (int i = 0; i < args.length; i++) {
-            String arg = args[i];
-
-            if (_parseArg(arg) == false) {
-                if (arg.startsWith("-") && i < args.length - 1) {
-                    // Save in case this is a parameter name and value.
-                    _parameterNames.add(arg.substring(1));
-                    _parameterValues.add(args[i + 1]);
-                    i++;
-                } else {
-                    // Unrecognized option.
-                    throw new IllegalActionException("Unrecognized option: "
-                            + arg);
-                }
-            }
-        }
-
-        if (_expectingClass) {
-            throw new IllegalActionException("Missing classname.");
-        }
-
-        // Check saved options to see whether any is a parameter.
-        Iterator names = _parameterNames.iterator();
-        Iterator values = _parameterValues.iterator();
-
-        while (names.hasNext() && values.hasNext()) {
-            String name = (String) names.next();
-            String value = (String) values.next();
-
-            boolean match = false;
-            Iterator models = _models.iterator();
-
-            while (models.hasNext()) {
-                CompositeActor model = (CompositeActor) models.next();
-                Attribute attribute = model.getAttribute(name);
-
-                if (attribute instanceof Variable) {
-                    match = true;
-                    ((Variable) attribute).setExpression(value);
-
-                    // Force evaluation so that listeners are notified.
-                    ((Variable) attribute).getToken();
-                }
-
-                Director director = model.getDirector();
-
-                if (director != null) {
-                    attribute = director.getAttribute(name);
-
-                    if (attribute instanceof Variable) {
-                        match = true;
-                        ((Variable) attribute).setExpression(value);
-
-                        // Force evaluation so that listeners are notified.
-                        ((Variable) attribute).getToken();
-                    }
-                }
-            }
-
-            if (!match) {
-                // Unrecognized option.
-                throw new IllegalActionException("Unrecognized option: " + "-"
-                        + name);
-            }
-        }
-    }
-
-    /** Return a string summarizing the command-line arguments.
-     *  @return A usage string.
-     */
-    protected String _usage() {
-        StringBuffer result = new StringBuffer("Usage: " + _commandTemplate
-                + "\n\n" + "Options that take values:\n");
-
-        int i;
-
-        for (i = 0; i < _commandOptions.length; i++) {
-            result.append(" " + _commandOptions[i][0] + " "
-                    + _commandOptions[i][1] + "\n");
-        }
-
-        result.append("\nBoolean flags:\n");
-
-        for (i = 0; i < _commandFlags.length; i++) {
-            result.append(" " + _commandFlags[i]);
-        }
-
-        return result.toString();
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected variables               ////
-
-    /** The command-line options that are either present or not. */
-    protected String[] _commandFlags = { "-help", "-test", "-version", };
-
-    /** The command-line options that take arguments. */
-    protected String[][] _commandOptions = { { "-class", "<classname>" },
-            { "-<parameter name>", "<parameter value>" }, };
-
-    /** The form of the command line. */
-    protected String _commandTemplate = "ptolemy [ options ]";
-
-    /** The list of all the models. */
-    protected List<CompositeActor> _models = new LinkedList<CompositeActor>();
-
-    /** The count of currently open windows. */
-    protected int _openCount = 0;
-
-    /** If true, then auto exit after a few seconds. */
-    protected static boolean _test = false;
-
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    // Flag indicating that the previous argument was -class.
-    private boolean _expectingClass = false;
 
     // List of ModelFrames created processArgs();
     private List<ModelFrame> _frames = new LinkedList<ModelFrame>();
-
-    // List of parameter names seen on the command line.
-    private List _parameterNames = new LinkedList();
-
-    // List of parameter values seen on the command line.
-    private List _parameterValues = new LinkedList();
 }

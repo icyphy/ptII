@@ -53,8 +53,10 @@ import ptolemy.util.StringUtilities;
  its own thread.  Each specified class should be derived from
  CompositeActor, and should have a constructor that takes a single
  argument, an instance of Workspace.  If the model does not contain
- a manager, then one will be created for it. The model is not displayed,
- models that have actors that extend Placeable should instead use
+ a manager, then one will be created for it.</p>
+ <p>
+ The model is not displayed,  models that have actors that extend
+ Placeable should instead use
  {@link ptolemy.actor.gui.CompositeActorApplication}.
  <p>
  The command-line arguments can also set parameter values for any
@@ -62,11 +64,9 @@ import ptolemy.util.StringUtilities;
  entity.  For example, to specify the iteration count in an SDF model,
  you can invoke this on the command line as follows:
  <pre>
- CLASSPATH=$PTII
- export CLASSPATH
- java ptolemy.actor.gui.CompositeActorSimpleApplication \
+ java -classpath $PTII ptolemy.actor.gui.CompositeActorSimpleApplication \
  -director.iterations 1000 \
- -class ptolemy.domains.sdf.demo.Butterfly.Butterfly
+ -class ptolemy.actor.gui.test.TestModel
  </pre>
  This assumes that the model given by the specified class name has a director
  named "director" with a parameter named "iterations".  If more than
@@ -89,24 +89,15 @@ public class CompositeActorSimpleApplication {
      */
     public static void main(String[] args) {
         CompositeActorSimpleApplication application = new CompositeActorSimpleApplication();
-
-        try {
-            application.processArgs(args);
-            application.waitForFinish();
-        } catch (Exception ex) {
-            System.err.println(KernelException.stackTraceToString(ex));
-            StringUtilities.exit(0);
-        }
-
-        // If the -test arg was set, then exit after 2 seconds.
-        if (_test) {
-            try {
-                Thread.sleep(2000);
-            } catch (InterruptedException e) {
-            }
-
-            StringUtilities.exit(0);
-        }
+        _run(application, args);
+    }
+    
+    /** Return the list of models.
+     *  @return The list of models passed in as arguments.
+     */
+    public List<CompositeActor> models() {
+        // Used primarily for testing.
+        return _models;
     }
 
     /** Parse the command-line arguments, creating models as specified.
@@ -168,7 +159,7 @@ public class CompositeActorSimpleApplication {
      *  or does not have a manager.
      *  @see ptolemy.actor.Manager#startRun()
      */
-    public synchronized void startRun(CompositeActor model)
+    public synchronized Object startRun(CompositeActor model)
             throws IllegalActionException {
         // This method is synchronized so that it can atomically modify
         // the count of executing processes.
@@ -201,6 +192,7 @@ public class CompositeActorSimpleApplication {
             report("Model " + model.getFullName() + " cannot be executed "
                     + "because it does not have a manager.");
         }
+        return null;
     }
 
     /** If the specified model has a manager and is executing, then
@@ -378,6 +370,29 @@ public class CompositeActorSimpleApplication {
         }
     }
 
+    /** Run the application.
+     *  @param application The application.
+     */
+    protected static void _run(CompositeActorSimpleApplication application, String [] args) {
+        try {
+            application.processArgs(args);
+            application.waitForFinish();
+        } catch (Exception ex) {
+            System.err.println(KernelException.stackTraceToString(ex));
+            StringUtilities.exit(0);
+        }
+
+        // If the -test arg was set, then exit after 2 seconds.
+        if (_test) {
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+            }
+
+            StringUtilities.exit(0);
+        }
+    }
+
     /** Return a string summarizing the command-line arguments.
      *  @return A usage string.
      */
@@ -415,7 +430,7 @@ public class CompositeActorSimpleApplication {
     protected String _commandTemplate = "ptolemy [ options ]";
 
     /** The list of all the models. */
-    protected List _models = new LinkedList();
+    protected List<CompositeActor> _models = new LinkedList<CompositeActor>();
 
     /** The count of currently open windows. */
     protected int _openCount = 0;

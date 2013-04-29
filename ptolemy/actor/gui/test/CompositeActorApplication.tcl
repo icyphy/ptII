@@ -139,11 +139,14 @@ test CompositeActorApplication-2.2 {test invalid class name} {
     set cmdArgs [java::new {java.lang.String[]} 2 \
             {{-class} {ptolemy.actor.gui.test.bogon}}]
     set app2_2 [java::new ptolemy.actor.gui.CompositeActorApplication]
+    set msg {}
     jdkCaptureErr {
 	catch {$app2_2 processArgs $cmdArgs} msg
     } err
-    list [string range $msg 0 92] $err
-} {{ptolemy.kernel.util.IllegalActionException: Could not find class ptolemy.actor.gui.test.bogon} {}}
+    #puts $msg
+    #puts [jdkStackTrace]
+    regexp {.*ptolemy.kernel.util.IllegalActionException: Cannot find class: ptolemy.actor.gui.test.bogon.*} $msg
+} {1}
 
 test CompositeActorApplication-2.3 {test valid class name} {
     set cmdArgs [java::new {java.lang.String[]} 5 \

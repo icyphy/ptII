@@ -87,6 +87,7 @@ EXTRA_SRCS =	\
 MISC_FILES =	alljtests.tcl  junit \
 	alljsimpletests.tcl \
 	CompositeActorApplication.tcl \
+	CompositeActorSimpleApplication.tcl \
 	badMoML.moml \
 	hideNameTestModel.xml \
 	hideNameTestSinewave.xml \
