@@ -172,6 +172,8 @@ public class OutputRow {
                 } else if (scalarVariable.type instanceof FMIStringType) {
                     String result = scalarVariable.getString(fmiComponent);
                     file.format("%c%s", separator, result);
+                } else if (scalarVariable.type == null) {
+                    file.format("%cTypeIsNull???", separator);
                 } else {
                     file.format("%cNoValueForType=%s", separator,
                             scalarVariable.type.getClass().getName());
