@@ -34,7 +34,7 @@ typedef size_t fmiValueReference;
 #endif
 extern const char *elmNames[SIZEOF_ELM];
 
-#define SIZEOF_ATT 47
+#define SIZEOF_ATT 48
 extern const char *attNames[SIZEOF_ATT];
 
 #define SIZEOF_ENU 13
@@ -61,7 +61,8 @@ typedef enum {
   att_numberOfEventIndicators,att_input,
   att_canHandleVariableCommunicationStepSize,att_canHandleEvents,att_canRejectSteps,att_canInterpolateInputs,
   att_maxOutputDerivativeOrder,att_canRunAsynchronuously,att_canSignalEvents,att_canBeInstantiatedOnlyOncePerProcess,
-  att_canNotUseMemoryManagementFunctions,att_entryPoint,att_manualStart,att_type
+  att_canNotUseMemoryManagementFunctions,att_entryPoint,att_manualStart,att_type,
+  att_canGetAndSetFMUstate
 } Att;
 
 // Enumeration values

@@ -52,7 +52,8 @@ const char *attNames[SIZEOF_ATT] = {
     "numberOfEventIndicators","input",
     "canHandleVariableCommunicationStepSize","canHandleEvents","canRejectSteps","canInterpolateInputs",
     "maxOutputDerivativeOrder","canRunAsynchronuously","canSignalEvents","canBeInstantiatedOnlyOncePerProcess",
-    "canNotUseMemoryManagementFunctions","file","entryPoint","manualStart","type"
+    "canNotUseMemoryManagementFunctions","file","entryPoint","manualStart","type",
+    "canGetAndSetFMUstate"
 };
 
 const char *enuNames[SIZEOF_ENU] = {
@@ -351,6 +352,11 @@ static void logFatalTypeError(const char* expected, Elm found) {
 // Verify that Element elm is of the given type
 static int checkElementType(void* element, Elm e) {
     Element* elm = (Element* )element;
+    if (elm == NULL) {
+        printf("Error: CheckElementType: element was null.  Perhaps the element is not defined??\n");
+        XML_StopParser(parser, XML_FALSE);
+        return 0;
+    }
     if (elm->type == e) return 1; // success
     logFatalTypeError(elmNames[e], elm->type);
     return 0; // error    
