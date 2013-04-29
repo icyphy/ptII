@@ -83,7 +83,8 @@ public class FMUCoSimulation extends FMUDriver {
      *
      *  <p>Usage:</p>
      *  <pre>
-     *  java -classpath ../../../lib/jna.jar:../../.. org.ptolemy.fmi.driver.FMUCoSimulation \
+     *  java -classpath ../../../../lib/jna.jar:../../../.. \
+     *  org.ptolemy.fmi.driver.FMUCoSimulation \
      *  file.fmu [endTime] [stepTime] [loggingOn] [csvSeparator] [outputFile]
      *  </pre>
      *  <p>For example, under Mac OS X or Linux:
@@ -184,16 +185,19 @@ public class FMUCoSimulation extends FMUDriver {
         loggingOn = (byte) 0;
 
         Function instantiateSlave = getFunction("_fmiInstantiateSlave");
+	System.out.println("_fmiInstantiateSlave = " + instantiateSlave);
         Pointer fmiComponent = (Pointer) instantiateSlave.invoke(Pointer.class,
                 new Object[] { _modelIdentifier, fmiModelDescription.guid,
                         fmuLocation, mimeType, timeout, visible, interactive,
                         callbacks, loggingOn });
+	System.out.println("instantiatedSlave");
         if (fmiComponent.equals(Pointer.NULL)) {
             throw new RuntimeException("Could not instantiate model.");
         }
 
         double startTime = 0;
 
+	System.out.println("about to initializeSlave");
         invoke("_fmiInitializeSlave", new Object[] { fmiComponent, startTime,
                 (byte) 1, endTime }, "Could not initialize slave: ");
 
