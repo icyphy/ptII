@@ -971,6 +971,7 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
             fmiStatus fmiSetFMUstate (fmiComponent c, fmiFMUstate FMUstate);
             fmiStatus fmiFreeFMUstate(fmiComponent c, fmiFMUstate* FMUstate);
              */
+            throw new IllegalActionException(this, "FMUImport does not yet support rollback.");
         } else {
             if (!((BooleanToken) suppressWarnings.getToken()).booleanValue()) {
                 try {

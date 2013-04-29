@@ -261,8 +261,12 @@ fmiStatus fmiGetReal(fmiComponent c, const fmiValueReference vr[], size_t nvr, f
         } else if (valueReference == CURRENT_COUNT) {
             value[i] = component->currentCount;
         } else {
-            component->functions->logger(component, component->instanceName, fmiError, "error",
-                                             "fmiGetReal: Value reference out of range: %u.", nvr);
+            // FIXME: Use logger instead when this works.
+            // component->functions->logger(component, component->instanceName, fmiError, "error",
+            //                                 "fmiGetReal: Value reference out of range: %u.", nvr);
+            printf("%s: fmiGetReal: Value reference out of range: %u.\n", component->instanceName, nvr);
+            fflush(stdout);
+
             return fmiError;
         }
         printf("%s: Invoked fmiGetReal on index %d, which has value %g\n",
@@ -325,8 +329,11 @@ fmiComponent fmiInstantiateSlave(
     component->functions = functions;
     component->instanceName = instanceName;
 
-    functions->logger(component, instanceName, fmiOK, "message",
-                      "Invoked fmiInstantiateSlave for instance %s.", instanceName);
+    // FIXME: Use logger instead when this works.
+    // functions->logger(component, instanceName, fmiOK, "message",
+    //                  "Invoked fmiInstantiateSlave for instance %s.", instanceName);
+    printf("%s: Invoked fmiInstantiateSlave.\n", component->instanceName);
+    fflush(stdout);
 
     return component;
 }
@@ -347,9 +354,14 @@ fmiStatus fmiInitializeSlave(fmiComponent c,
                              fmiBoolean stopTimeDefined,
                              fmiReal tStop) {
     ModelInstance* component = (ModelInstance *) c;
-    component->functions->logger(c, component->instanceName, fmiOK, "message",
-                                 "Invoked fmiIntializeSlave: start: %g, StopTimeDefined: %d, tStop: %g.",
-                                 tStart, stopTimeDefined, tStop);
+    // FIXME: Use logger instead.
+    // component->functions->logger(c, component->instanceName, fmiOK, "message",
+    //                             "Invoked fmiIntializeSlave: start: %g, StopTimeDefined: %d, tStop: %g.",
+    //                             tStart, stopTimeDefined, tStop);
+    printf("%s: Invoked fmiIntializeSlave: start: %g, StopTimeDefined: %d, tStop: %g..\n",
+           component->instanceName, tStart, stopTimeDefined, tStop);
+    fflush(stdout);
+    
     component->lastSuccessfulTime = tStart;
     component->atBreakpoint = fmiFalse;
     component->relativeTolerance = relativeTolerance;
@@ -379,8 +391,13 @@ fmiStatus fmiSetReal(fmiComponent c, const fmiValueReference vr[], size_t nvr, c
         } else if (valueReference == CURRENT_COUNT) {
             component->currentCount = value[i];
         } else {
-            component->functions->logger(component, component->instanceName, fmiError, "error",
-                        "fmiGetReal: Value reference out of range: %u.", valueReference);
+            // FIXME: Use logger instead.
+            // component->functions->logger(component, component->instanceName, fmiError, "error",
+            //            "fmiGetReal: Value reference out of range: %u.", valueReference);
+            printf("%s: fmiGetReal: Value reference out of range: %u.\n",
+                   component->instanceName, valueReference);
+            fflush(stdout);
+
             return fmiError;
         }
     }
