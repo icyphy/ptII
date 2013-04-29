@@ -52,7 +52,7 @@ import ptolemy.math.Complex;
  <i>Kp</i> is the proportional gain, and <i>x</i> is the input value.
  <p>
  For integral gain, the output is available after two input symbols have been
- received, such that yi[n]=Ki*(yi[n-1]+(x[n] + x[n-1]))*dt[n]/2, where <i>yi</i>
+ received, such that yi[n]=Ki*(yi[n-1]+(x[n] + x[n-1])*dt[n]/2), where <i>yi</i>
  is the integral component of the output, <i>Ki</i> is the integral gain, and
  <i>dt[n]</i> is the time differential between input events x[n] and x[n-1].
  <p>
