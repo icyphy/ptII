@@ -30,13 +30,11 @@ package org.ptolemy.fmi;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
 import com.sun.jna.NativeLibrary;
-import com.sun.jna.Pointer;
 
 ///////////////////////////////////////////////////////////////////
 //// FMUModelDescription
@@ -123,20 +121,21 @@ public class FMIModelDescription {
      */	
     public void dispose() {
 	if (_fmuAllocateMemory != null) {
-	    _fmuAllocateMemory.pointers = new HashSet<Pointer>();
+	    // Prevent a memory leak by releasing Memory and Pointer objects to the GC.
+	    // FIXME: This is wrong!  This releases all instances of Memory and Pointer that have been created!
+	    // It should only release those for this FMU.
+	    FMULibrary.FMUAllocateMemory.pointers.clear();
 	}
 	if (_nativeLibrary != null) {
 	    _nativeLibrary.dispose();
 	}
     }
 
-    /** A class that allocates memory, but retains a reference
+    /** Return a class that provides a callback function
+     *  that allocates memory, but retains a reference
      *  so that the memory does not get gc'd.
      */
     public FMULibrary.FMUAllocateMemory getFMUAllocateMemory() {
-	if (_fmuAllocateMemory == null) {
-	    _fmuAllocateMemory = new FMULibrary.FMUAllocateMemory();
-	}
 	return _fmuAllocateMemory;
     }
 
@@ -245,5 +244,5 @@ public class FMIModelDescription {
     /** A class that allocates memory, but retains a reference
      *  so that the memory does not get gc'd.
      */
-    private FMULibrary.FMUAllocateMemory _fmuAllocateMemory;
+    private FMULibrary.FMUAllocateMemory _fmuAllocateMemory = new FMULibrary.FMUAllocateMemory();
 }
