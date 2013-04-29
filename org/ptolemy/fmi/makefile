@@ -69,7 +69,8 @@ JSRCS = \
 	FMULog.java \
 	NativeSizeT.java
 
-OTHER_FILES_TO_BE_JARED = build.xml
+OTHER_FILES_TO_BE_JARED = build.xml \
+	ChangeLog
 
 # Files that are not compiled, such as .tcl and .itcl files.
 EXTRA_SRCS = $(JSRCS) $(OTHER_FILES_TO_BE_JARED)
@@ -252,6 +253,8 @@ fixtmpdist:
 		$(PTTMPDIR)/$(PTDIST)/README.txt
 	echo "Thierry Stephane Nouidui (Lawrence Berkeley National Laboratory)"   >> \
 		$(PTTMPDIR)/$(PTDIST)/README.txt
+	echo "Stavros Tripakis (UC Berkeley)"  >> \
+		$(PTTMPDIR)/$(PTDIST)/README.txt
 	echo "Michael Wetter (Lawrence Berkeley National Laboratory)"  >> \
 		$(PTTMPDIR)/$(PTDIST)/README.txt
 	echo ""  >> \
@@ -263,7 +266,7 @@ fixtmpdist:
 	echo "at https://groups.google.com/group/bcvtb maybe be used for questions." >> \
 		$(PTTMPDIR)/$(PTDIST)/README.txt
 	# Update copyright
-	sed  -e 's/1995-/2012-/' -e 's/Ptolemy II system/JFMI distribution/' \
+	sed  -e 's/1995-/2013-/' -e 's/Ptolemy II system/JFMI distribution/' \
 		$(PTTMPDIR)/$(PTDIST)/copyright.txt | \
 		grep -v "Ptolemy II includes the work of others, to see those copyrights" | \
 		grep -v "the copyright link on the splash page or see copyright.htm." > \

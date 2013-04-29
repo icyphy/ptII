@@ -1,0 +1,28 @@
+2013-04-28 Christopher Brooks
+
+	* JFMI 1.0.2 released
+	
+	* FMIScalarVariable.setBoolean() This method now works properly.
+	Previously, a ByteBuffer was used.  The correct type is an
+	IntBuffer.
+	
+	* FMIScalarVariable.setString(): Properly allocate memory so that
+	the Java side retains a reference.
+	
+	* FMIModelDescription.dispose(): A method that frees references to
+	the Java handles to allocated memory.
+
+	* FMUBuilder: Better support for building FMUs under Windows.
+	
+	JFMI can be compiled with gcj, which supports Java 1.5 or earlier.
+	
+2013-03-10  Christopher Brooks
+	* JFMI 1.0.1 released
+	
+	The primary difference between jfmi1.0 and jfm1.0.1 is that there
+	was a bug where boolean values were being reported incorrectly.
+	
+	A new facility is that if a shared file cannot be found for a
+	platform and the sources director exists in the .fmu file, then
+	make arch is run, where arch is the fmu architecture (linux64
+	etc.)
