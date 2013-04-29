@@ -349,11 +349,13 @@ update_ftp:
 
 
 # Experimental support for compiling with gcj.
-GCJ=/usr/local/gcc-4.8.0/bin/gcj
+GCC_DIR=/usr/local/gcc-4.8.0
+GCJ=$(GCC_DIR)/bin/gcj
 # To build jna using gcj, download the sources and edit WString.java and NativeString.java and comment out the CharSequence in the implements line and comment out the subSequence() method
 jna.o: jna.jar
-	$(GCJ) -fjni -c jna.jar -o jna.o
+	$(GCJ) -g -fjni -c jna.jar -o jna.o
 gcj: jna.o
-	$(GCJ) -C *.java */*.java --classpath=$(PTII):jna.jar
-	$(GCJ) -fjni *.class */*.class --classpath=$(PTII):jna.jar jna.o --main=org.ptolemy.fmi.driver.FMUCoSimulation  -lefence
+	$(GCJ) -g -C *.java */*.java --classpath=$(PTII):jna.jar
+	$(GCJ) -g -fjni *.class */*.class --classpath=$(PTII):jna.jar jna.o --main=org.ptolemy.fmi.driver.FMUCoSimulation  -lefence
+	export LD_LIBRARY_PATH=${GCC_DIR}/lib64
 	./a.out fmu/cs/values.fmu 1.0 0.1 true c foo.csv
