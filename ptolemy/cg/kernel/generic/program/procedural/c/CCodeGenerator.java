@@ -933,6 +933,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         _overloadedFunctions.parse(functionDir + "delete.c");
         _overloadedFunctions.parse(functionDir + "divide.c");
         _overloadedFunctions.parse(functionDir + "equals.c");
+        _overloadedFunctions.parse(functionDir + "modulo.c");
         _overloadedFunctions.parse(functionDir + "multiply.c");
         _overloadedFunctions.parse(functionDir + "negate.c");
         _overloadedFunctions.parse(functionDir + "print.c");

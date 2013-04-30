@@ -55,6 +55,7 @@ OTHER_FILES_TO_BE_JARED = \
 	delete.c \
 	divide.c \
 	equals.c \
+	modulo.c \
 	multiply.c \
 	negate.c \
 	one.c \
