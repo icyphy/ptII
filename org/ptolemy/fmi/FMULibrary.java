@@ -28,8 +28,8 @@
 
 package org.ptolemy.fmi;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.HashMap;
+import java.util.Map;
 
 import com.sun.jna.Memory;
 import com.sun.jna.Pointer;
@@ -83,7 +83,7 @@ public interface FMULibrary extends FMILibrary {
         }
     }
 
-    /** Allocate memory. */
+    /** Class for the allocate memory callback function. */
     public class FMUAllocateMemory implements FMICallbackAllocateMemory {
 
         /** Allocate memory.
@@ -104,15 +104,19 @@ public interface FMULibrary extends FMILibrary {
                 // "out of memory" if they are null.
                 numberOfObjectsValue = 1;
             }
-            Memory memory = new Memory(numberOfObjectsValue * size.intValue());
+            // FIXME: Perhaps the +4 is needed for the align command to work below?
+            int bytes = numberOfObjectsValue * size.intValue() + 4;
+            Memory memory = new Memory(bytes);
             // FIXME: not sure about alignment.
             Memory alignedMemory = memory.align(4);
             memory.clear();
             Pointer pointer = alignedMemory.share(0);
+            System.out.println("Foo");
 
             // Need to keep a reference so the memory does not get gc'd.
+            // Here, we keep a reference to both the Pointer and the Memory.
             // See http://osdir.com/ml/java.jna.user/2008-09/msg00065.html
-            pointers.add(pointer);
+            pointers.put(pointer, memory);
 
             return pointer;
         }
@@ -120,10 +124,10 @@ public interface FMULibrary extends FMILibrary {
         /** Keep references to memory that has been allocated and
          *  avoid problems with the memory being garbage collected.
          */
-        public static Set<Pointer> pointers = new HashSet<Pointer>();
+        public static Map<Pointer,Memory> pointers = new HashMap<Pointer,Memory>();
     }
 
-    /** A callback that frees memory.
+    /** A class providing a callback method that frees memory.
      */
     public class FMUFreeMemory implements FMICallbackFreeMemory {
         /** Free memory.
