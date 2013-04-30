@@ -133,8 +133,8 @@ fmiStatus fmiDoStep(fmiComponent c, fmiReal currentCommunicationPoint,
            communicationStepSize,
            (noSetFMUStatePriorToCurrentPoint)?"true":"false");
      */
-    // printf("fmiDoStep\n");
-    // fflush(stdout);
+    printf("fmiDoStep\n");
+    fflush(stdout);
     // The following is extremely tricky.
     // Since this FMU is designed to work without rollback,
     // if a step is being restarted, then we have to reset the
@@ -265,8 +265,8 @@ fmiStatus fmiGetReal(fmiComponent c, const fmiValueReference vr[], size_t nvr, f
     int i, valueReference;
     ModelInstance* component = (ModelInstance *) c;
     // FIXME
-    // printf("fmiGetReal\n");
-    // fflush(stdout);
+    printf("fmiGetReal\n");
+    fflush(stdout);
 
     for (i = 0; i < nvr; i++) {
         valueReference = vr[i];
@@ -306,8 +306,8 @@ fmiStatus fmiGetReal(fmiComponent c, const fmiValueReference vr[], size_t nvr, f
  */
 fmiStatus fmiGetRealStatus(fmiComponent c, const fmiStatusKind s, fmiReal* value) {
     // FIXME
-    // printf("fmiGetRealStatus\n");
-    // fflush(stdout);
+    printf("fmiGetRealStatus\n");
+    fflush(stdout);
 
     ModelInstance* component = (ModelInstance *) c;
     if (s == fmiLastSuccessfulTime) {
@@ -338,8 +338,8 @@ fmiComponent fmiInstantiateSlave(
                                  fmiBoolean visible,
                                  fmiBoolean loggingOn)  {
     // FIXME
-    // printf("fmiInstantiateSlave\n");
-    // fflush(stdout);
+    printf("fmiInstantiateSlave\n");
+    fflush(stdout);
 
     ModelInstance* component;
 
@@ -382,8 +382,8 @@ fmiStatus fmiInitializeSlave(fmiComponent c,
                              fmiBoolean stopTimeDefined,
                              fmiReal tStop) {
     // FIXME
-    // printf("fmiInitializeSlave\n");
-    // fflush(stdout);
+    printf("fmiInitializeSlave\n");
+    fflush(stdout);
 
     ModelInstance* component = (ModelInstance *) c;
     // FIXME: Use logger instead.
@@ -414,8 +414,8 @@ fmiStatus fmiSetReal(fmiComponent c, const fmiValueReference vr[], size_t nvr, c
     int i, valueReference;
 
     // FIXME
-    // printf("fmiSetReal\n");
-    // fflush(stdout);
+    printf("fmiSetReal\n");
+    fflush(stdout);
 
     ModelInstance* component = (ModelInstance *) c;
     for (i = 0; i < nvr; i++) {
@@ -456,8 +456,8 @@ fmiStatus fmiSetReal(fmiComponent c, const fmiValueReference vr[], size_t nvr, c
 fmiStatus fmiSetFMUstate (fmiComponent c, fmiFMUstate FMUstate) {
 
     // FIXME
-    // printf("fmiSetFMUState\n");
-    // fflush(stdout);
+    printf("fmiSetFMUState\n");
+    fflush(stdout);
 
     ModelInstance* component = (ModelInstance *) c;
     ModelInstance* snapshot = (ModelInstance *) FMUstate;
@@ -480,8 +480,8 @@ fmiStatus fmiSetFMUstate (fmiComponent c, fmiFMUstate FMUstate) {
  */
 fmiStatus fmiTerminateSlave(fmiComponent c) {
     // FIXME
-    // printf("fmiTerminateSlave\n");
-    // fflush(stdout);
+    printf("fmiTerminateSlave\n");
+    fflush(stdout);
 
     return fmiOK;
 }
