@@ -1036,6 +1036,15 @@ public class Director extends Attribute implements Executable {
             return Executable.COMPLETED;
         }
     }
+    
+    /** Return the object to use to obtain a mutex lock on this director.
+     *  This base class returns this director itself, but subclasses may
+     *  return something else.
+     *  @return An object to use to obtain a lock on this director.
+     */
+    public Object mutexLockObject() {
+        return this;
+    }
 
     /** Return a new receiver of a type compatible with this director.
      *  In this base class, this returns an instance of Mailbox.

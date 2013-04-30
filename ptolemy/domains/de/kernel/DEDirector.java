@@ -872,6 +872,14 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
         causality.invalidate();
     }
 
+    /** Return the object to use to obtain a mutex lock on this director.
+     *  This class overrides the base class to return the event queue.
+     *  @return An object to use to obtain a lock on this director.
+     */
+    public Object mutexLockObject() {
+        return _eventQueue;
+    }
+
     /** Return a new receiver of the type DEReceiver.
      *  @return A new DEReceiver.
      */

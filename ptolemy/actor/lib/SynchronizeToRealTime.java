@@ -28,6 +28,7 @@ package ptolemy.actor.lib;
 
 import ptolemy.actor.AbstractInitializableAttribute;
 import ptolemy.actor.Actor;
+import ptolemy.actor.Director;
 import ptolemy.actor.TimeRegulator;
 import ptolemy.actor.util.Time;
 import ptolemy.kernel.CompositeEntity;
@@ -79,9 +80,17 @@ public class SynchronizeToRealTime extends AbstractInitializableAttribute
      *   contained by an Actor.
      */
     public Time proposeTime(Time proposedTime) throws IllegalActionException {
+        NamedObj container = getContainer();
+        if (!(container instanceof Actor)) {
+            throw new IllegalActionException(this, "SynchronizeToRealTime has to be contained by an Actor");
+        }
+        
+        Director director = ((Actor)container).getDirector();
+        Object mutexLockObject = director.mutexLockObject();
+
         int depth = 0;
         try {
-            synchronized (this) {
+            synchronized (mutexLockObject) {
                 while (true) {
                     long elapsedTime = System.currentTimeMillis()
                             - _realStartTime;
@@ -91,13 +100,8 @@ public class SynchronizeToRealTime extends AbstractInitializableAttribute
                     // the SR domain has an upper limit on running
                     // time of Double.MAX_VALUE milliseconds.
                     double elapsedTimeInSeconds = elapsedTime / 1000.0;
-                    
-                    NamedObj container = getContainer();
-                    if (!(container instanceof Actor)) {
-                        throw new IllegalActionException(this, "SynchronizeToRealTime has to be contained by an Actor");
-                    }
-                    
-                    double currentTime = ((Actor)container).getDirector().getModelTime().getDoubleValue();
+                                        
+                    double currentTime = director.getModelTime().getDoubleValue();
 
                     if (currentTime <= elapsedTimeInSeconds) {
                         break;
@@ -129,7 +133,7 @@ public class SynchronizeToRealTime extends AbstractInitializableAttribute
                             // consideration and the thread simply
                             // waits until notified."
                             depth = _workspace.releaseReadPermission();
-                            wait(timeToWait);
+                            mutexLockObject.wait(timeToWait);
                         }
                     } catch (InterruptedException ex) {
                         // Continue executing.
