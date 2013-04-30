@@ -226,7 +226,7 @@
             </property>
             <property name="scheduler" class="ptolemy.data.expr.Parameter" value="FCFSScheduler">
             </property>
-            <property name="FCFSScheduler" class="ptolemy.actor.lib.resourceScheduler.NonPreemptiveFCFSScheduler">
+            <property name="FCFSScheduler" class="ptolemy.actor.lib.resourceScheduler.FCFSScheduler">
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[175.0, 75.0]">
                 </property>
             </property>
@@ -238,7 +238,7 @@
                 <property name="core2" class="ptolemy.data.expr.Parameter" value="FCFSScheduler2">
                 </property>
             </property>
-            <property name="FCFSScheduler2" class="ptolemy.actor.lib.resourceScheduler.NonPreemptiveFCFSScheduler">
+            <property name="FCFSScheduler2" class="ptolemy.actor.lib.resourceScheduler.FCFSScheduler">
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{270.0, 75.0}">
                 </property>
             </property>

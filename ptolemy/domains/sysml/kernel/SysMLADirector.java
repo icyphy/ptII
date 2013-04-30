@@ -408,9 +408,6 @@ public class SysMLADirector extends ProcessDirector {
                 }
             }
             actor.initialize();
-            if (_getScheduler(actor) != null) {
-                _resourceScheduling = true;
-            }
         }
     }
 

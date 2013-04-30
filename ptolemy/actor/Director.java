@@ -916,7 +916,7 @@ public class Director extends Attribute implements Executable {
         }
 
         actor.initialize();
-        if (_getScheduler(actor) != null) {
+        if (_getResourceScheduler(actor) != null) {
             _resourceScheduling = true;
         }
     }
@@ -1862,7 +1862,7 @@ public class Director extends Attribute implements Executable {
      */
     protected boolean _schedule(Actor actor, Time timestamp)
             throws IllegalActionException {
-        ResourceScheduler scheduler = _getScheduler(actor);
+        ResourceScheduler scheduler = _getResourceScheduler(actor);
         Time time = null;
         Boolean finished = true;
         if (timestamp == null) {
@@ -1897,33 +1897,6 @@ public class Director extends Attribute implements Executable {
      */
     public Time getDeadline(Actor actor, Time timestamp) throws IllegalActionException {
         return Time.POSITIVE_INFINITY;
-    }
-
-    /** Find resource scheduler for actor.
-     *  @param actor The actor to be scheduled.
-     *  @return the resource scheduler.
-     * @throws IllegalActionException 
-     */
-    protected ResourceScheduler _getScheduler(Actor actor) throws IllegalActionException {
-        if (_schedulerForActor == null) {
-            _schedulerForActor = new HashMap<Actor, ResourceScheduler>();
-        }
-        Object object = _schedulerForActor.get(actor);
-        if (!_schedulerForActor.containsKey(actor)) {
-            if (object == null) {
-                for (ResourceAttributes resourceAttributes : ((NamedObj) actor)
-                        .attributeList(ResourceAttributes.class)) {
-                    if (((BooleanToken)resourceAttributes.enable.getToken()).booleanValue()) {
-                        ResourceScheduler scheduler = (ResourceScheduler) resourceAttributes.getDecorator();
-                        if (_schedulerForActor.get(actor) != null) {
-                            // already has a scheduler - will be overridden. FIXME!
-                        }
-                        _schedulerForActor.put(actor, scheduler);   
-                    }
-                }
-            }
-        }
-        return _schedulerForActor.get(actor);
     }
 
     /** Set of actors that have returned false from  postfire(),
@@ -1979,6 +1952,34 @@ public class Director extends Attribute implements Executable {
                 ((Actor) actor).createReceivers();
             }
         }
+    }
+
+    /** Find the ResourceScheduler for the actor. Only one ResourceScheduler
+     * 
+     *  @param actor The actor to be scheduled.
+     *  @return the resource scheduler.
+     * @throws IllegalActionException 
+     */
+    private ResourceScheduler _getResourceScheduler(Actor actor) throws IllegalActionException {
+        if (_schedulerForActor == null) {
+            _schedulerForActor = new HashMap<Actor, ResourceScheduler>();
+        }
+        Object object = _schedulerForActor.get(actor);
+        if (!_schedulerForActor.containsKey(actor)) {
+            if (object == null) {
+                for (ResourceAttributes resourceAttributes : ((NamedObj) actor)
+                        .attributeList(ResourceAttributes.class)) {
+                    if (((BooleanToken)resourceAttributes.enable.getToken()).booleanValue()) {
+                        ResourceScheduler scheduler = (ResourceScheduler) resourceAttributes.getDecorator();
+                        if (_schedulerForActor.get(actor) != null) {
+                            // already has a scheduler - will be overridden. FIXME!
+                        }
+                        _schedulerForActor.put(actor, scheduler);   
+                    }
+                }
+            }
+        }
+        return _schedulerForActor.get(actor);
     }
 
     /** Initialize parameters. This is called by the constructor.

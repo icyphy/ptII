@@ -316,7 +316,7 @@
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{280.0, 45.0}">
                 </property>
             </property>
-            <property name="PEDFCore" class="ptolemy.actor.lib.resourceScheduler.PreemptiveEDFScheduler">
+            <property name="PEDFCore" class="ptolemy.actor.lib.resourceScheduler.EDFScheduler">
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{400.0, 70.0}">
                 </property>
             </property>

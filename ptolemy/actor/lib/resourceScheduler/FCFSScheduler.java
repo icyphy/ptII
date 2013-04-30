@@ -49,7 +49,7 @@ import ptolemy.kernel.util.NamedObj;
    @Pt.ProposedRating Red (derler)
    @Pt.AcceptedRating Red (derler)
  */
-public class NonPreemptiveFCFSScheduler extends ResourceScheduler {
+public class FCFSScheduler extends ResourceScheduler {
 
     /** Create a new actor in the specified container with the specified
      *  name.  The name must be unique within the container or an exception
@@ -63,7 +63,7 @@ public class NonPreemptiveFCFSScheduler extends ResourceScheduler {
      *  @exception NameDuplicationException If the name coincides with
      *   an entity already in the container.
      */
-    public NonPreemptiveFCFSScheduler(CompositeEntity container, String name)
+    public FCFSScheduler(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }

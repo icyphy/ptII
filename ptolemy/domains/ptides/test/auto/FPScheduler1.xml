@@ -228,7 +228,7 @@
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, 110.0]">
                 </property>
             </property>
-            <property name="PreemptiveEDFScheduler" class="ptolemy.actor.lib.resourceScheduler.PreemptiveEDFScheduler">
+            <property name="EDFScheduler" class="ptolemy.actor.lib.resourceScheduler.EDFScheduler">
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[460.0, 125.0]">
                 </property>
             </property>
@@ -250,18 +250,6 @@
                 </property>
                 <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
-                <property name="DecoratorAttributesFor_PreemptiveEDFScheduler" class="ptolemy.actor.lib.resourceScheduler.PriorityResourceAttributes">
-                    <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform2.PtidesPlatformContents.PreemptiveEDFScheduler">
-                    </property>
-                    <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
-                    </property>
-                    <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
-                    </property>
-                    <property name="LOWEST_PRIORITY" class="ptolemy.data.expr.Parameter" value="2147483647">
-                    </property>
-                    <property name="priority" class="ptolemy.data.expr.Parameter" value="LOWEST_PRIORITY">
-                    </property>
-                </property>
             </entity>
             <entity name="DiscreteClock2" class="ptolemy.actor.lib.DiscreteClock">
                 <doc>Create periodic timed events.</doc>
@@ -281,18 +269,6 @@
                 </property>
                 <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
-                <property name="DecoratorAttributesFor_PreemptiveEDFScheduler" class="ptolemy.actor.lib.resourceScheduler.PriorityResourceAttributes">
-                    <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform2.PtidesPlatformContents.PreemptiveEDFScheduler">
-                    </property>
-                    <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
-                    </property>
-                    <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
-                    </property>
-                    <property name="LOWEST_PRIORITY" class="ptolemy.data.expr.Parameter" value="2147483647">
-                    </property>
-                    <property name="priority" class="ptolemy.data.expr.Parameter" value="LOWEST_PRIORITY">
-                    </property>
-                </property>
             </entity>
             <entity name="Scale" class="ptolemy.actor.lib.Scale">
                 <property name="factor" class="ptolemy.data.expr.Parameter" value="2">
@@ -309,18 +285,6 @@
                     <property name="enable" class="ptolemy.data.expr.Parameter" value="true">
                     </property>
                     <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.4">
-                    </property>
-                    <property name="LOWEST_PRIORITY" class="ptolemy.data.expr.Parameter" value="2147483647">
-                    </property>
-                    <property name="priority" class="ptolemy.data.expr.Parameter" value="LOWEST_PRIORITY">
-                    </property>
-                </property>
-                <property name="DecoratorAttributesFor_PreemptiveEDFScheduler" class="ptolemy.actor.lib.resourceScheduler.PriorityResourceAttributes">
-                    <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform2.PtidesPlatformContents.PreemptiveEDFScheduler">
-                    </property>
-                    <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
-                    </property>
-                    <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
                     </property>
                     <property name="LOWEST_PRIORITY" class="ptolemy.data.expr.Parameter" value="2147483647">
                     </property>
@@ -354,18 +318,6 @@
                     <property name="priority" class="ptolemy.data.expr.Parameter" value="LOWEST_PRIORITY">
                     </property>
                 </property>
-                <property name="DecoratorAttributesFor_PreemptiveEDFScheduler" class="ptolemy.actor.lib.resourceScheduler.PriorityResourceAttributes">
-                    <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform2.PtidesPlatformContents.PreemptiveEDFScheduler">
-                    </property>
-                    <property name="enable" class="ptolemy.data.expr.Parameter" value="true">
-                    </property>
-                    <property name="executionTime" class="ptolemy.data.expr.Parameter" value="1.0">
-                    </property>
-                    <property name="LOWEST_PRIORITY" class="ptolemy.data.expr.Parameter" value="2147483647">
-                    </property>
-                    <property name="priority" class="ptolemy.data.expr.Parameter" value="LOWEST_PRIORITY">
-                    </property>
-                </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                     <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="Infinity">
@@ -381,18 +333,6 @@
                     <property name="enable" class="ptolemy.data.expr.Parameter" value="true">
                     </property>
                     <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.1">
-                    </property>
-                    <property name="LOWEST_PRIORITY" class="ptolemy.data.expr.Parameter" value="2147483647">
-                    </property>
-                    <property name="priority" class="ptolemy.data.expr.Parameter" value="LOWEST_PRIORITY">
-                    </property>
-                </property>
-                <property name="DecoratorAttributesFor_PreemptiveEDFScheduler" class="ptolemy.actor.lib.resourceScheduler.PriorityResourceAttributes">
-                    <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform2.PtidesPlatformContents.PreemptiveEDFScheduler">
-                    </property>
-                    <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
-                    </property>
-                    <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
                     </property>
                     <property name="LOWEST_PRIORITY" class="ptolemy.data.expr.Parameter" value="2147483647">
                     </property>
@@ -431,18 +371,7 @@
                     <property name="priority" class="ptolemy.data.expr.Parameter" value="LOWEST_PRIORITY">
                     </property>
                 </property>
-                <property name="DecoratorAttributesFor_PreemptiveEDFScheduler" class="ptolemy.actor.lib.resourceScheduler.PriorityResourceAttributes">
-                    <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform2.PtidesPlatformContents.PreemptiveEDFScheduler">
-                    </property>
-                    <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
-                    </property>
-                    <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
-                    </property>
-                    <property name="LOWEST_PRIORITY" class="ptolemy.data.expr.Parameter" value="2147483647">
-                    </property>
-                    <property name="priority" class="ptolemy.data.expr.Parameter" value="LOWEST_PRIORITY">
-                    </property>
-                </property>
+                
                 <port name="input" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                     <property name="multiport"/>

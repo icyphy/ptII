@@ -289,7 +289,7 @@
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[130.0, 205.0]">
                 </property>
             </property>
-            <property name="FCFSScheduler" class="ptolemy.actor.lib.resourceScheduler.NonPreemptiveFCFSScheduler">
+            <property name="FCFSScheduler" class="ptolemy.actor.lib.resourceScheduler.FCFSScheduler">
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[225.0, 60.0]">
                 </property>
             </property>

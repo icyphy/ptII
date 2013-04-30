@@ -270,7 +270,7 @@ preemptive ones can.
                 <property name="executionTime" class="ptolemy.data.expr.Parameter" value="null">
                 </property>
             </property>
-            <property name="NPFCFSCore" class="ptolemy.actor.lib.resourceScheduler.NonPreemptiveFCFSScheduler">
+            <property name="NPFCFSCore" class="ptolemy.actor.lib.resourceScheduler.FCFSScheduler">
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{310, 55}">
                 </property>
             </property>

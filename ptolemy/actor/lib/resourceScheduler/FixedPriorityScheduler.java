@@ -34,9 +34,13 @@ import java.util.Stack;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.util.Time;
+import ptolemy.data.BooleanToken;
 import ptolemy.data.IntToken;
+import ptolemy.data.LongToken;
 import ptolemy.data.expr.Parameter;
+import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.DecoratorAttributes;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
@@ -97,10 +101,34 @@ public class FixedPriorityScheduler extends ResourceScheduler {
     public FixedPriorityScheduler(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
+        
+        preemptive = new Parameter(this, "preemptive");
+        preemptive.setTypeEquals(BaseType.BOOLEAN);
+        preemptive.setExpression("true");
+        _preemptive = true;
     }
+    
+    /** Parameter to configure whether a preemptive or non-preemptive
+     *  scheduling strategy should be used. The default value is the
+     *  boolean value true.
+     */
+    public Parameter preemptive;
 
     /** Lowest task priority. */
-    public static int LOWEST_PRIORITY = Integer.MAX_VALUE;
+    public static int LOWEST_PRIORITY = Integer.MAX_VALUE; 
+    
+    /** If the attribute is <i>preemptive</i> then change the
+     *  scheduling algorithm to be preemptive or non-preemptive.
+     *  @param attribute The attribute that changed.
+     *  @exception IllegalActionException If the change is not acceptable
+     *   to this container (not thrown in this base class).
+     */
+    public void attributeChanged(Attribute attribute)
+            throws IllegalActionException {
+        if (attribute == preemptive) {
+            _preemptive = ((BooleanToken)preemptive.getToken()).booleanValue();
+        }
+    }
     
     /** Return the decorated attributes for the target NamedObj.
      *  If the specified target is not an Actor, return null.
@@ -141,7 +169,7 @@ public class FixedPriorityScheduler extends ResourceScheduler {
      *  @param executionTime The execution time of the actor.
      *  @return Relative time when this Scheduler has to be executed
      *    again.
-     *  @exception IllegalActionException Thrown if actor paramaters such
+     *  @exception IllegalActionException Thrown if actor parameters such
      *    as execution time or priority cannot be read.
      */
     @Override
@@ -159,7 +187,7 @@ public class FixedPriorityScheduler extends ResourceScheduler {
             Time timePassed = currentPlatformTime.subtract(lasttime);
             remainingTime = _remainingTimes.get(executing).subtract(timePassed);
             _remainingTimes.put(executing, remainingTime);
-            if (!_currentlyExecuting.contains(actor) && executing != actor) {
+            if (_preemptive && !_currentlyExecuting.contains(actor) && executing != actor) {
                 double executingPriority = _getPriority(executing);
                 double newActorPriority = _getPriority(actor);
                 if (newActorPriority < executingPriority) {
@@ -231,5 +259,9 @@ public class FixedPriorityScheduler extends ResourceScheduler {
         _remainingTimes.put(actor, executionTime);
         _lastTimeScheduled.put(actor, currentPlatformTime);
     }
+    
+    /** True if preemptive scheduling strategy should be used. 
+     */
+    private boolean _preemptive;
 
 }

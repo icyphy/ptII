@@ -57,7 +57,7 @@ import ptolemy.kernel.util.NamedObj;
    @Pt.ProposedRating Red (derler)
    @Pt.AcceptedRating Red (derler)
  */
-public class PreemptiveEDFScheduler extends FixedPriorityScheduler {
+public class EDFScheduler extends FixedPriorityScheduler {
 
     /** Create a new actor in the specified container with the specified
      *  name.  The name must be unique within the container or an exception
@@ -71,7 +71,7 @@ public class PreemptiveEDFScheduler extends FixedPriorityScheduler {
      *  @exception NameDuplicationException If the name coincides with
      *   an entity already in the container.
      */
-    public PreemptiveEDFScheduler(CompositeEntity container, String name)
+    public EDFScheduler(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
