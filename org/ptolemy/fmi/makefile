@@ -266,7 +266,7 @@ fixtmpdist:
 	echo "at https://groups.google.com/group/bcvtb maybe be used for questions." >> \
 		$(PTTMPDIR)/$(PTDIST)/README.txt
 	# Update copyright
-	sed  -e 's/1995-/2013-/' -e 's/Ptolemy II system/JFMI distribution/' \
+	sed  -e 's/1995-/2012-/' -e 's/Ptolemy II system/JFMI distribution/' \
 		$(PTTMPDIR)/$(PTDIST)/copyright.txt | \
 		grep -v "Ptolemy II includes the work of others, to see those copyrights" | \
 		grep -v "the copyright link on the splash page or see copyright.htm." > \
