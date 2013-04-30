@@ -1,4 +1,4 @@
-# Makefile Ptango - Ptolemy Internet of Things docs
+# Makefile Ptango - Ptolemy Internet of Things demos
 #
 # @Version: $Id$
 # @Author: Christopher Brooks
@@ -29,35 +29,56 @@
 # 						COPYRIGHTENDKEY
 ##########################################################################
 
-DIRS =
+DIRS = Cookies EPlus70Actuator ErrorHandler files Guidance OptimizationAdvisor \
+		SmartRoom UCBPower UCBPowerPtera WebServerDE
 
 # Root of Ptolemy II directory
 ROOT =		../../../..
 
 # $(ME) is used in ptdir.mk
-ME =		org/ptolemy/ptango/doc
-
-# True source directory
-VPATH =		$(ROOT)/$(ME)
+ME =		org/ptolemy/ptango/demo
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Variables and rules used to create source file distributions
-PTPACKAGE = 	doc
+PTPACKAGE = 	demo
 PTCLASSJAR =	$(PTPACKAGE).jar
 
-OTHER_FILES_TO_BE_JARED = \
-	PtangoWebExport.png \
-	PtangoWebExport.zargo
+# Include these jars in PTAUXALLJAR
+# (Copied syntax from \ptolemy\demo )
+PTAUXALLJARS = \
+	Cookies/Cookies.jar \
+	EPlus70Actuator/EPlus70Actuator.jar \
+	ErrorHandler/ErrorHandler.jar \
+	files/files.jar \
+	Guidance/Guidance.jar \
+	OptimizationAdvisor/OptimizationAdvisor.jar \
+	SmartRoom/SmartRoom.jar \
+	UCBPower/UCBPower.xml \
+	UCBPowerPtera/UCBPowerPtera.xml \
+	WebServerDE/WebServerDE.jar 
 
-all: suball
-install: subinstall
+PTAUXALLJAR = $(PTPACKAGE).jar
+
+OTHER_FILES_TO_BE_JARED =
+
+EXTRA_SRCS = \
+	$(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't
-# want make checkjunk to report an error on them.
+# want make checkjunk to barf on them.
 MISC_FILES = $(DIRS)
 
-# Get the rest of the rules
+OPTIONAL_FILES = \
+
+# Files to remove with 'make clean'
+KRUFT = \
+	*.jar
+
+all: suball $(EXTRA_SRCS)
+install: subinstall jars
+
+# Include rules for directories that contain only subdirectories.
 include $(ROOT)/mk/ptcommon.mk
