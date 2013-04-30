@@ -631,7 +631,7 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
         // support the current platform.
         FMIModelDescription fmiModelDescription = FMUFile
                 .parseFMUFile(fmuFileName);
-
+        
         // FIXME: Use URLs, not files so that we can work from JarZip files.
 
         // If a location is given as a URL, construct MoML to
@@ -903,7 +903,8 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
                     new FMULibrary.FMUAllocateMemory(),
                     new FMULibrary.FMUFreeMemory(),
                     new FMULibrary.FMUStepFinished());
-
+            // FIXME: Check canBeInstantiatedOnlyOncePerProcess capability flag.
+            // Do not instantiate if true and previously instantiated.
             _fmiComponent = (Pointer) _fmiInstantiateSlave.invoke(
                     Pointer.class, new Object[] { getFullName(),
                             _fmiModelDescription.guid, fmuLocation, callbacks,
