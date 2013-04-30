@@ -9,8 +9,8 @@
 
   <property name="DynamicCoreAssignmentScheduler" class="ptolemy.actor.lib.resourceScheduler.DynamicCoreAssignmentScheduler"> </property>
 <property name="FixedPriorityScheduler" class="ptolemy.actor.lib.resourceScheduler.FixedPriorityScheduler"> </property>
-<property name="NonPreemptiveFCFSScheduler" class="ptolemy.actor.lib.resourceScheduler.NonPreemptiveFCFSScheduler"> </property>
-<property name="PreemptiveEDFScheduler" class="ptolemy.actor.lib.resourceScheduler.PreemptiveEDFScheduler"> </property><property name="DynamicCoreAssignmentScheduler" class="ptolemy.actor.lib.resourceScheduler.DynamicCoreAssignmentScheduler"> </property>
+<property name="NonPreemptiveFCFSScheduler" class="ptolemy.actor.lib.resourceScheduler.FCFSScheduler"> </property>
+<property name="PreemptiveEDFScheduler" class="ptolemy.actor.lib.resourceScheduler.EDFScheduler"> </property><property name="DynamicCoreAssignmentScheduler" class="ptolemy.actor.lib.resourceScheduler.DynamicCoreAssignmentScheduler"> </property>
 
 <property name="SchedulePlotterEditorFactory" class="ptolemy.actor.lib.resourceScheduler.SchedulePlotterEditorFactory"> </property>
 
