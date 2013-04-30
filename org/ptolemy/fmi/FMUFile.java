@@ -33,9 +33,11 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
@@ -67,6 +69,10 @@ import org.w3c.dom.NodeList;
  * @Pt.AcceptedRating Red (cxh)
  */
 public class FMUFile {
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+
     /** Return the name of the shared library from a .fmu file.
      *  @param fmiModelDescription The representation of the model that was read
      *  in by {#parseFMUFile}.
@@ -137,6 +143,8 @@ public class FMUFile {
     }
 
     /** Read in a .fmu file and parse the modelDescription.xml file.
+     *  If the same file has been previously read, then return the
+     *  FMIModelDescription from that previous reading.
      *  Note that this does not load the shared library.
      *  That is loaded upon the first attempt to use the procedures in it.
      *  This is important because we want to be able to view
@@ -151,6 +159,12 @@ public class FMUFile {
      */
     public static FMIModelDescription parseFMUFile(String fmuFileName)
             throws IOException {
+        
+        FMIModelDescription result = _modelDescriptions.get(fmuFileName);
+        if (result != null) {
+            return result;
+        }
+        
         // Unzip the file.
         List<File> files = null;
         try {
@@ -199,6 +213,9 @@ public class FMUFile {
 
         // Create an object that represents the modelDescription.xml file
         FMIModelDescription fmiModelDescription = new FMIModelDescription();
+        
+        // Record this model description in case there is another instance of this FMU.
+        _modelDescriptions.put(fmuFileName, fmiModelDescription);
 
         // Save the list of files that were extracted for later use.
         fmiModelDescription.files = files;
@@ -318,6 +335,7 @@ public class FMUFile {
 
         // ModelVariables.
         // This has to be done after the native libraries have been loaded.
+        // FIXME: The above comment contradicts the method comment that this does not load libraries.
         // NodeList is not a list, it only has getLength() and item(). #fail.
         NodeList scalarVariables = document
                 .getElementsByTagName("ScalarVariable");
@@ -422,4 +440,10 @@ public class FMUFile {
         }
         return files;
     }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
+    /** Record of previously read files. */
+    private static Map<String,FMIModelDescription> _modelDescriptions = new HashMap<String,FMIModelDescription>();
 }
