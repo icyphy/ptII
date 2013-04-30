@@ -31,6 +31,8 @@ import java.util.Set;
 
 import ptolemy.actor.IOPort;
 import ptolemy.actor.IORelation;
+import ptolemy.actor.Librariable;
+import ptolemy.actor.TypedActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.graph.Inequality;
 import ptolemy.kernel.ComponentEntity;
@@ -691,6 +693,26 @@ public class RefinementPort extends ModalBasePort {
             }
         }
         return super.typeConstraints();
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
+
+    /** Override the base class to ensure that the proposed container
+     *  implements the TypedActor interface (the base class ensures that
+     *  the container implements the Actor interface), is null, or is
+     *  an EntityLibrary.
+     *  @param container The proposed container.
+     *  @exception IllegalActionException If the proposed container is not a
+     *   TypedActor, or if the base class throws it.
+     */
+    protected void _checkContainer(Entity container)
+            throws IllegalActionException {
+        // This is copied from TypedIOPort because the parent class of
+        // this class (RefinementPort) is ModalBasePort, which has a
+        // _checkContainer() method used in ModalPort and ModalRefinementPort.
+        // This is convoluted, but avoids quite a bit of code duplication.
+        _checkTypedIOPortContainer(container);
     }
 
     ///////////////////////////////////////////////////////////////////

@@ -730,6 +730,22 @@ public class TypedIOPort extends IOPort implements Typeable {
      */
     protected void _checkContainer(Entity container)
             throws IllegalActionException {
+        _checkTypedIOPortContainer(container);
+    }
+
+    /** Override the base class to ensure that the proposed container
+     *  implements the TypedActor interface (the base class ensures that
+     *  the container implements the Actor interface), is null, or is
+     *  an EntityLibrary.
+     *  Derived classes may call this method to get the appropriate 
+     *  functionality if parent classes have redefined _checkContainer();
+     *  @param container The proposed container.
+     *  @exception IllegalActionException If the proposed container is not a
+     *   TypedActor, or if the base class throws it.
+     */
+    final protected void _checkTypedIOPortContainer(Entity container) 
+            throws IllegalActionException {
+        // ptolemy/domains/modal/modal/RefinementPort.java uses this method.
         if (!(container instanceof TypedActor)
                 && !(container instanceof Librariable) && container != null) {
             throw new IllegalActionException(container, this,
