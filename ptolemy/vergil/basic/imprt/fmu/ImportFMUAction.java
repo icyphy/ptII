@@ -170,6 +170,7 @@ public class ImportFMUAction extends AbstractAction {
 
                     // Only read the file if the name has changed from the last time we
                     // read the file or if the modification time has changed.
+                    // FIXME: why??? What if I want multiple instances of an FMU?
                     //fmuFileName = fmuFile.asFile().getCanonicalPath();
                     fmuFileName = _lastLocation;
                     if (fmuFileName.equals(_fmuFileName)) {
