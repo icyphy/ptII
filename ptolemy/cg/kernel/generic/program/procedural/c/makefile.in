@@ -64,7 +64,9 @@ optimize:
 	    time ./@modelName@_$${O_FLAG}_stripped.exe; \
 	done	
 
-# Generate code coverage using gcov
+# Generate code coverage using gcov.
+# Under Mac OS X, to use gcov, use clang instead of gcc.
+# Use gcc --version to check that gcc is really gcc and not llvm-gcc.
 coverage:
 	rm -f @modelName@ @modelName@.exe
 	make -f @modelName@.mk USER_CC_FLAGS="-fprofile-arcs -ftest-coverage"
