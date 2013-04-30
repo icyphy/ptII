@@ -209,11 +209,6 @@ public abstract class FMUDriver {
      */
     static double _endTime = 1.0;
 
-    /** Memory allocator callback.  At the end, call dispose() to free
-     * memory.
-     */
-    FMUAllocateMemory _fmuAllocateMemory;
-
     /** The name of the .fmu file.
      *  The initial default is the empty string.
      */
