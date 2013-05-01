@@ -635,8 +635,6 @@ public class PtidesDirector extends DEDirector {
                 ioPort.getChannelForReceiver(receiver), getModelTime(), 1,
                 depth, token, receiver, _currentSourceTimestamp);
 
-        // FIXME: any way of knowing if coming from sensor?
-
         if (ioPort.isOutput()) {
 
             Time deliveryTime;

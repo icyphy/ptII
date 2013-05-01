@@ -65,12 +65,12 @@ with the following parameters:
      Priority 0 means higher priority than any positive number.
      Priority -1 means higher priority than any non-negative number.
 </ul>
-To use this, drag it into a model with a PtidesDirector director and enable
-the actors that will use the resource.
-This will cause the platform time at which actors produce their outputs
-to be delayed by the specified execution time beyond the platform time at
-which the resource becomes available to execute the actor.
-When the Ptides director requests that an actor fire, if this resource is
+
+For usage and supported directors {@see ResourceScheduler}.
+
+When using this ResourceScheduler in the Ptides domain, the platform
+time in Ptides will be used to schedule execution times. When
+ the Ptides director requests that an actor fire, if this resource is
 free, it will immediately schedule it. Otherwise, it will queue it to be
 executed when the resource becomes free. When the resource becomes free,
 the actor with the highest priority (the lower priority number) will

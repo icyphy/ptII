@@ -5,14 +5,13 @@
   <configure>
     <?moml
       <group>
-  <doc>Quantity managers</doc>
+  <doc>Resource Schedulers</doc>
 
-  <property name="DynamicCoreAssignmentScheduler" class="ptolemy.actor.lib.resourceScheduler.DynamicCoreAssignmentScheduler"> </property>
+ 
 <property name="FixedPriorityScheduler" class="ptolemy.actor.lib.resourceScheduler.FixedPriorityScheduler"> </property>
-<property name="NonPreemptiveFCFSScheduler" class="ptolemy.actor.lib.resourceScheduler.FCFSScheduler"> </property>
-<property name="PreemptiveEDFScheduler" class="ptolemy.actor.lib.resourceScheduler.EDFScheduler"> </property><property name="DynamicCoreAssignmentScheduler" class="ptolemy.actor.lib.resourceScheduler.DynamicCoreAssignmentScheduler"> </property>
-
-<property name="SchedulePlotterEditorFactory" class="ptolemy.actor.lib.resourceScheduler.SchedulePlotterEditorFactory"> </property>
+<property name="FCFSScheduler" class="ptolemy.actor.lib.resourceScheduler.FCFSScheduler"> </property>
+<property name="EDFScheduler" class="ptolemy.actor.lib.resourceScheduler.EDFScheduler"> </property>
+<property name="DynamicCoreAssignmentScheduler" class="ptolemy.actor.lib.resourceScheduler.DynamicCoreAssignmentScheduler"> </property>
 
 <property name="SchedulerModel" class="ptolemy.actor.lib.resourceScheduler.CompositeResourceScheduler"> </property>
 
@@ -44,6 +43,8 @@
     <link port="input" relation="relation"/>
     <link port="SetVariable.input" relation="relation"/>
 </entity>
+
+<property name="SchedulePlotterEditorFactory" class="ptolemy.actor.lib.resourceScheduler.SchedulePlotterEditorFactory"> </property>
 
       </group>
     ?>

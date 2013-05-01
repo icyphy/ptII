@@ -56,17 +56,31 @@ This is a base class for resource schedulers.
 This is a {@link Decorator} that will decorate any instance of {@link Actor}
 that is deeply contained by its container, including within opaque
 composites.
-This base class provides two decorator attributes. When you create an instance
+This base class provides one decorator attributes. When you create an instance
 of this class in a composite actor, every Actor within that composite actor
-is decorated with these two parameter:
+is decorated with these this parameter:
 <ul>
 <li> <li>enable</i>: If true, then the decorated actor will use this resource.
      This is a boolean that defaults to false.
-<li> <i>executionTime</i>: Specifies the execution time of the
-     decorated actor. This means the time that the decorated actor occupies
-     the processor or core when it fires.
-     This is a double that defaults to 0.0.
 </ul>
+
+This base class is not used but to use derived classes, drag them into a model 
+and enable the actors that will use the resource. 
+
+Currently, the following Directors honor ResourceScheduler settings:
+<ul>
+<li> PtidesDirector. A ResourceScheduler on a PtidesPlatform will cause the 
+platform time at which actors produce their outputs
+to be delayed by the specified execution time beyond the platform time at
+which the resource becomes available to execute the actor. </li>
+<li> DEDirector. Note that using a ResourceScheduler in a DE model
+will change the MoC and nondeterminism is introduced with ResourceSchedulers.
+</li>
+<li> SDF Director, if contained hierarchically directly or via multiple
+hierarchy layers by a PtidesDirector. </li>
+<li> SysMLSequentialDirector, if contained hierarchically directly or via multiple
+hierarchy layers by a PtidesDirector. </li>
+</ul>  
 
 @author Patricia Derler
 @author Edward A. Lee
