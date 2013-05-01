@@ -7,6 +7,7 @@ $CLASSPATH/org/ptolemy/ptango/demo/ErrorHandler/ErrorHandler.xml
 $CLASSPATH/org/ptolemy/ptango/demo/Guidance/Guidance.xml
 $CLASSPATH/org/ptolemy/ptango/demo/Guidance/GuidanceSingleUserWithName.xml
 $CLASSPATH/org/ptolemy/ptango/demo/OptimizationAdvisor/OptimizationAdvisor.xml
+$CLASSPATH/org/ptolemy/ptango/demo/SmartRoom/SmartRoom.xml
 $CLASSPATH/org/ptolemy/ptango/demo/UCBPower/DataReadingExample.xml
 $CLASSPATH/org/ptolemy/ptango/demo/UCBPower/UCBPower.xml
 $CLASSPATH/org/ptolemy/ptango/demo/UCBPower/UCBPowerAnalyzerServer.xml
