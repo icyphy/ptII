@@ -31,7 +31,7 @@
 
 ME =            ptolemy/actor/lib/resourceScheduler
 
-DIRS = 		test demo
+DIRS = 		demo #test
 
 # Root of the Java directory
 ROOT =          ../../../..
@@ -50,9 +50,9 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 OTHER_FILES_TO_BE_JARED = \
 	CompositeResourceSchedulerIcon.xml \
 	DynamicCoreAssignmentSchedulerIcon.xml \
+	EDFSchedulerIcon.xml \
+	FCFSSchedulerIcon.xml \
 	FixedPrioritySchedulerIcon.xml \
-	NonPreemptiveFCFSSchedulerIcon.xml \
-	PreemptiveEDFSchedulerIcon.xml \
 	ResourceMappingInputPortIcon.xml \
 	ResourceMappingOutputPortIcon.xml \
 	resourceScheduler.xml
@@ -60,10 +60,10 @@ OTHER_FILES_TO_BE_JARED = \
 JSRCS = \
 	CompositeResourceScheduler.java \
 	DynamicCoreAssignmentScheduler.java \
+	EDFScheduler.java \
 	ExecutionTimeResourceAttributes.java \
+	FCFSScheduler.java \
 	FixedPriorityScheduler.java \
-	NonPreemptiveFCFSScheduler.java \
-	PreemptiveEDFScheduler.java \
 	PriorityResourceAttributes.java \
 	ResourceAttributes.java \
 	ResourceMappingInputPort.java \
@@ -76,11 +76,12 @@ EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
 # Don't include demo or DIRS here, or else 'make sources' will run 'make demo'
-MISC_FILES = test doc-files
+MISC_FILES = #test
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
+	demo \
 	'ResourceScheduler$$ExecutionEventType.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
