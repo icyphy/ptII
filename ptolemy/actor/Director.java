@@ -252,6 +252,7 @@ public class Director extends Attribute implements Executable {
         newObject._zeroTime = new Time(newObject); 
         newObject._resourceSchedulers = null;
         newObject._schedulerForActor = null;
+        newObject._nextScheduleTime = null;
         return newObject;
     }
 
@@ -1873,6 +1874,10 @@ public class Director extends Attribute implements Executable {
                     .getContainer()).getDirector().getEnvironmentTime();
             time = scheduler.schedule(actor, environmentTime, 
                     getDeadline(actor, timestamp));
+            if (_nextScheduleTime == null) {
+                _nextScheduleTime = new HashMap<ResourceScheduler, Time>();
+            }
+            _nextScheduleTime.put(scheduler, time);
             finished = _actorFinished(actor);
             if (time != null && time.getDoubleValue() > 0.0) {
                 CompositeActor container = (CompositeActor) ((Attribute) scheduler)
@@ -1924,6 +1929,12 @@ public class Director extends Attribute implements Executable {
     /** Resource schedulers in the container of this director.
      */
     protected List<ResourceScheduler> _resourceSchedulers;
+    
+    /** Next time the scheduler wants to be executed. */
+    protected HashMap<ResourceScheduler, Time> _nextScheduleTime;
+
+    /** Contains a map of actors and the ResourceScheduler that is specified for the actor. */
+    protected HashMap<Actor, ResourceScheduler> _schedulerForActor;
 
     /** Indicator that a stop has been requested by a call to stop(). */
     protected boolean _stopRequested = false;
@@ -2007,9 +2018,6 @@ public class Director extends Attribute implements Executable {
      *  as if it were at the top level.
      */
     private transient boolean _notEmbeddedForced = false;
-
-    /** Contains a map of actors and the ResourceScheduler that is specified for the actor. */
-    private HashMap<Actor, ResourceScheduler> _schedulerForActor;
 
     /** Start time. */
     private transient Time _startTime;
