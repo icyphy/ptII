@@ -872,8 +872,6 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
         }
         // Run the simulator without user interaction.
         byte interactive = 0;
-        // Callbacks
-        FMICallbackFunctions callbacks;
 
         // FIXME: We should send logging messages to the debug listener.
         byte loggingOn = _debugging ? (byte) 1 : (byte) 0;
@@ -885,7 +883,7 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
         }
 
         if (_fmiVersion < 2.0) {
-            callbacks = new FMICallbackFunctions.ByValue(
+            _callbacks = new FMICallbackFunctions.ByValue(
                     new FMULibrary.FMULogger(),
                     new FMULibrary.FMUAllocateMemory(),
                     new FMULibrary.FMUFreeMemory(),
@@ -893,21 +891,26 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
             _fmiComponent = (Pointer) _fmiInstantiateSlave.invoke(
                     Pointer.class, new Object[] { getFullName(),
                             _fmiModelDescription.guid, fmuLocation, mimeType,
-                            timeout, toBeVisible, interactive, callbacks,
+                            timeout, toBeVisible, interactive, _callbacks,
                             loggingOn });
         } else {
             // In FMI 2.0, this is a pointer to the structure, which is by
             // default how a subclass of Structure is handled, so there is no
             // need for the inner class ByValue, as above.
-            callbacks = new FMICallbackFunctions(new FMULibrary.FMULogger(),
+            _callbacks = new FMICallbackFunctions(new FMULibrary.FMULogger(),
                     new FMULibrary.FMUAllocateMemory(),
                     new FMULibrary.FMUFreeMemory(),
                     new FMULibrary.FMUStepFinished());
+            // The FMI standard is silent about whether an FMU needs to copy
+            // the struct pointed to by the callbacks argument, so we have to
+            // assume that the FMU will not. This means that we need to allocate
+            // memory here, and deallocate it in wrapup().
+                        
             // FIXME: Check canBeInstantiatedOnlyOncePerProcess capability flag.
             // Do not instantiate if true and previously instantiated.
             _fmiComponent = (Pointer) _fmiInstantiateSlave.invoke(
                     Pointer.class, new Object[] { getFullName(),
-                            _fmiModelDescription.guid, fmuLocation, callbacks,
+                            _fmiModelDescription.guid, fmuLocation, _callbacks,
                             toBeVisible, loggingOn });
         }
         if (_debugging) {
@@ -920,7 +923,7 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
                     "Could not instantiate Functional Mock-up Unit (FMU).");
         }
     }
-
+    
     /** Return suggested refined step size, if the FMU has provided one.
      *  @return The suggested refined step size.
      *  @exception IllegalActionException If the step size cannot be further refined.
@@ -1049,6 +1052,8 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
                         + _fmiStatusDescription(fmiFlag));
             }
         }
+        // Allow the callback functions structure to be garbage collected.
+        _callbacks = null;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -1724,6 +1729,15 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
 
     ///////////////////////////////////////////////////////////////////
     ////                     private fields                        ////
+
+    /** Callback functions provided to the C code as a struct.
+     *  This reference is non-null between creation of the struct in preinitialize()
+     *  and invocation of wrapup() so that the callback structure does not get
+     *  garbage collected. JNA documentation is silent about whether there is any
+     *  assurance a C pointer to this struct is valid until garbage collection,
+     *  but we assume it is.
+     */
+    private FMICallbackFunctions _callbacks;
 
     /** Flag identifying the first invocation of fire() after each
      *  invocation of initialize() or postfire().
