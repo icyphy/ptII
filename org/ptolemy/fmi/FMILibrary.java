@@ -107,7 +107,7 @@ public interface FMILibrary extends Library {
         public static final int fmiLastSuccessfulTime = 2;
     };
 
-    /** A callback for the fmiCallbackLogger() function.
+    /** A interface for the fmiCallbackLogger() function.
      *
      *  <p>Derived classes such as FMICallbackFunctions have a static classes
      *  that extend this interface and implements Structure.ByReference
@@ -127,7 +127,7 @@ public interface FMILibrary extends Library {
          *  @param parameters The printf style parameters.
          */
         void apply(Pointer fmiComponent, String instanceName, int status,
-                String category, String message, Pointer /*...*/parameters);
+                String category, String message, Pointer /*...*/ parameters);
         // What to do about jni callbacks with varargs?
         // See
         // http://chess.eecs.berkeley.edu/ptexternal/wiki/Main/JNA#fmiCallbackLogger

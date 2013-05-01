@@ -63,7 +63,9 @@ public class FMULog {
      */
     public static void log(Pointer fmiComponent, String instanceName,
             int status, String category, String message,
-            Pointer /*...*/parameters) {
+            Pointer /*...*/ parameters) {
+        
+        // MessageHandler.message(String.format(message, (Object[])parameters));
         // What to do about jni callbacks with varargs?
         // See
         // http://chess.eecs.berkeley.edu/ptexternal/wiki/Main/JNA#fmiCallbackLogger
@@ -75,7 +77,7 @@ public class FMULog {
         // r, i, b or s. To print a #, use ##.
 
         if (parameters != null) {
-            StringTokenizer tokenizer = new StringTokenizer(message, "%", false /* Return delimiters */);
+            StringTokenizer tokenizer = new StringTokenizer(message, "%", false ); // Return delimiters
             ArrayList<Object> parameterList = new ArrayList<Object>();
             //long nativeLong = Pointer.nativeValue(parameters);
             int offset = 0;

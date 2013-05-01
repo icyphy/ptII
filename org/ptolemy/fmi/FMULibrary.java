@@ -75,8 +75,7 @@ public interface FMULibrary extends FMILibrary {
          *  @param parameters The printf style parameters.
          */
         public void apply(Pointer fmiComponent, String instanceName,
-                int status, String category, String message, Pointer /*...*/
-                parameters) {
+                int status, String category, String message, Pointer /*...*/ parameters) {
             // We place this method in separate file for testing purposes.
             FMULog.log(fmiComponent, instanceName, status, category, message,
                     parameters);
