@@ -4,7 +4,7 @@
 <entity name="SmartRoom" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 13, 1362, 667}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 1368, 660}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1134, 550]">
     </property>
@@ -15,7 +15,7 @@
     <property name="WebServer" class="org.ptolemy.ptango.lib.WebServer">
         <property name="resourcePath" class="ptolemy.data.expr.StringParameter" value="/">
         </property>
-        <property name="resourceLocation" class="ptolemy.data.expr.FileParameter" value="/C:/workspace/ptII/org/ptolemy/ptango/demo/SmartRoom/pages">
+        <property name="resourceLocation" class="ptolemy.data.expr.FileParameter" value="$PTII/org/ptolemy/ptango/demo/SmartRoom/pages">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[660.0, 35.0]">
         </property>
@@ -31,7 +31,7 @@
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model launches a web server and provides a service&#10;available at http://localhost:8078/room&#10;Please run the model and navigate to that location&#10;(or run the model and double click on this comment).">
         </property>
-        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="http://localhost:8078/guidance?rate=0#in_browser">
+        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="http://localhost:8078/room#in_browser">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
