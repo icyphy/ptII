@@ -28,8 +28,21 @@ var blocksHigh = 25,  // Number of squares in grid top to bottom 58
 
 var svg;
 
-// Draggability - Not working yet
-// Based on https://gist.github.com/enjalot/1378144
+// Draggability
+// Based on https://github.com/mbostock/d3/wiki/Drag-Behavior
+// and http://bl.ocks.org/mbostock/1557377
+
+var drag = d3.behavior.drag()
+			 .origin(Object)
+			 .on("drag", dragmove);
+
+function dragmove(d) {
+	d3.select(this)
+		.attr("cx", d.x += d3.event.dx)
+		.attr("cy", d.y += d3.event.dy);
+}
+
+/* // Based on https://gist.github.com/enjalot/1378144
 var drag = d3.behavior.drag()
 	.on("drag", function(d,i) {
 		d.x += d3.event.dx
@@ -38,17 +51,19 @@ var drag = d3.behavior.drag()
 		return "translate(" + [ d.x,d.y ] + ")"
 	})
 });
+*/
 
 
 // Create the graphic elements once the DOM is loaded
 $(document).ready(function() {
+	// Formatting for radio buttons.  From jQueryUI
+	$("#radio-group").buttonset();
 	createSVG();
 });
 
-// TODO: Implement heat map toggle on/off
 // Delete the heat map graphic element
 function clearHeatMap() {
-	
+	d3.selectAll(".value").remove();
 }
 
 // Create SVG element showing the room image plus markers for lights, sensors
@@ -86,8 +101,10 @@ function createSVG() {
 	//alert(text);
 	*/
 	
-	getMarkers();
+	// The markers must be draw last in order to be draggable, since the 
+	// mouse click is mapped to the topmost element
 	getData();
+	getMarkers();
 }
 
 // Draw markers on the graph for the lights and sensors
@@ -100,16 +117,30 @@ function drawMarkers() {
 	for (var i = 0; i < lights.length; i++){
 		svg.append("circle")
 				.attr("class", "light") // So we can select by class later
-										 // (circles don't need it, but keeps
-										 // syntax consistent with rectangles)
 				.attr("r", 23)
 				.style("fill", "rgb(248, 198, 78)")
 				.style("stroke", "black")
-				.style("stroke-width", 3);
+				.style("stroke-width", 3)
+				.call(drag);
 		
 		svg.append("text")
 			.attr("class", "lightLabel");
 	}
+	
+	/*
+	for (var i = 0; i < lights.length; i++){
+		var marker = 
+			svg.append("g")			// "g" stands for group
+			.append("circle")
+			.attr("class", "light") // So we can select by class later
+			.attr("r", 23)
+			.style("fill", "rgb(248, 198, 78)")
+			.style("stroke", "black")
+			.style("stroke-width", 3);
+		
+		marker.call(drag);
+	}
+	*/		
 	
 	for (var i = 0; i < sensors.length; i++) {
 		svg.append("rect")
@@ -252,6 +283,32 @@ function getMarkers(){
 	})
 	.fail(function() {alert("Failed to get marker data from server."); });
 }
+
+// TODO:  Update this to use groups instead of circles 
+// Add sensors
+// Post new light and sensor locations to the Ptolemy model
+function postData(){
+	var newLightLocations= [];
+	var circle;
+
+	d3.selectAll(".light").each( function(d, i) {
+	
+		// TODO:  Read names directly from circles.  Will be possible once
+		// groups are implemented
+		newLightLocations.push({
+			x: d3.select(this).attr("cx"),
+		    y: d3.select(this).attr("cy"),
+		    name: "L" + i
+		});
+	});
+	
+	// Not working yet...
+	for (var i = 0; i < newLightLocations.length; i++) {
+		alert(newLightLocations[i].x);
+	};
+	
+}
+
 
 // Creates an rgb color string from an array of three numbers each 0 to 255
 // TODO:  Auto-scale graphic according to max and min luminosity
