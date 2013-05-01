@@ -38,7 +38,7 @@ all:
 
 fast: all
 
-install jars jclass tests:
+install jars jclass sources tests:
 	@echo "Nothing to do in fmusim2 for 'make $@'."
 
 #####
