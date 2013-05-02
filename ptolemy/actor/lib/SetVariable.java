@@ -406,6 +406,10 @@ public class SetVariable extends TypedAtomicActor implements ChangeListener,
             if (attribute instanceof Variable) {
                 result.add(new Inequality(((Variable) attribute).getTypeTerm(),
                         output.getTypeTerm()));
+                if (this.isBackwardTypeInferenceEnabled()) {
+                    result.add(new Inequality(output.getTypeTerm(), 
+                            ((Variable) attribute).getTypeTerm()));
+                }
             }
         } catch (IllegalActionException e) {
             // The variable cannot be found. Ignore it.
