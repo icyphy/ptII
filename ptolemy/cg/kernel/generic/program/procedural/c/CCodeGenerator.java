@@ -36,6 +36,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
@@ -46,7 +47,10 @@ import java.util.Set;
 import java.util.StringTokenizer;
 
 import ptolemy.actor.Actor;
+import ptolemy.actor.CompositeActor;
+import ptolemy.actor.Director;
 import ptolemy.actor.TypedIOPort;
+import ptolemy.cg.kernel.generic.CodeGeneratorAdapter;
 import ptolemy.cg.kernel.generic.CodeGeneratorUtilities;
 import ptolemy.cg.kernel.generic.program.CodeStream;
 import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
@@ -58,9 +62,12 @@ import ptolemy.data.BooleanToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.Variable;
 import ptolemy.data.type.BaseType;
+import ptolemy.domains.de.kernel.DEDirector;
+import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.attributes.URIAttribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.util.ExecuteCommands;
@@ -75,16 +82,19 @@ import ptolemy.util.StringUtilities;
 
 /** Base class for C code generator.
  *
- *  @author Gang Zhou
+ *  @author Gang Zhou, William Lucas
  *  @version $Id$
  *  @since Ptolemy II 8.0
- *  @Pt.ProposedRating red (zgang)
- *  @Pt.AcceptedRating red (zgang)
+ *  @Pt.ProposedRating red (wlc)
+ *  @Pt.AcceptedRating red (wlc)
  */
 
 public class CCodeGenerator extends ProceduralCodeGenerator {
 
     /** Create a new instance of the C code generator.
+     * This class is the core of the C Code generation
+     * For instance, the _generateCode method is key to the
+     * code generation.
      *  @param container The container.
      *  @param name The name of the C code generator.
      *  @exception IllegalActionException If the super class throws the
@@ -167,6 +177,8 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
                     + "(Token, ...)= {" + _eol);
 
             for (int i = 0; i < types.length; i++) {
+                if (types[i].endsWith("Structure"))
+                    continue;
                 code.append("\t{");
                 for (int j = 0; j < functions.length; j++) {
                     // Do not add the *_new() methods because they
@@ -389,27 +401,41 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
      * types referenced. Fourth, generate type resolution code, which consists
      * of constants (MAX_NUM_TYPE, MAX_NUM_FUNC), the type map, the function
      * map, function definitions read from the files, and function table.
+     * Note that this method is really different from the super one because
+     * it splits the code in a .c part and a .h part.
      * @return The type resolution code.
-     * @exception IllegalActionException If an error occurrs when generating
+     * @exception IllegalActionException If an error occurs when generating
      *  the type resolution code, or if the adapter class for the model
      *  director cannot be found, or if an error occurs when the adapter
      *  actor generates the type resolution code.
      */
-    public String generateTypeConvertCode() throws IllegalActionException {
+    public String[] generateTypeConvertCodeCandH() throws IllegalActionException {
 
-        StringBuffer code = new StringBuffer();
+        StringBuffer codeH = new StringBuffer();
+        StringBuffer codeC = new StringBuffer();
+        codeC.append("#include \"types.h\"");
 
-        code.append(_eol
+        codeH.append(_eol + "#include <stdio.h>");
+        codeH.append(_eol + "#include <stdlib.h>");
+        codeH.append(_eol + "#include <stdbool.h>");
+        codeH.append(_eol + "#include <string.h>");
+        codeH.append(_eol + "#include <math.h>");
+        codeH.append(_eol + "#include <stdarg.h>");
+
+        codeH.append(_eol
                 + comment("Generate type resolution code for "
                         + getContainer().getFullName()));
-
+        codeC.append(_eol
+                + comment("Generate type resolution code for "
+                        + getContainer().getFullName()));
+        
         // Include the constantsBlock at the top so that sharedBlocks from
         // actors can use true and false etc.  StringMatches needs this.
         CodeStream sharedStream = new CodeStream(
                 "$CLASSPATH/ptolemy/cg/kernel/generic/program/procedural/c/SharedCode.c",
                 this);
         sharedStream.appendCodeBlock("constantsBlock");
-        code.append(sharedStream.toString());
+        codeH.append(sharedStream.toString());
 
         HashSet<String> functions = _getReferencedFunctions();
 
@@ -422,20 +448,30 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
 
         // Generate type map.
         StringBuffer typeMembers = new StringBuffer();
-        code.append("#define TYPE_Token -1 " + _eol);
+        codeH.append("#define TYPE_Token -1 " + _eol);
 
         for (int i = 0; i < typesArray.length; i++) {
-            // Open the .c file for each type.
-            typeStreams[i] = new CodeStream(
-                    "$CLASSPATH/ptolemy/cg/kernel/generic/program/procedural/c/type/"
-                            + typesArray[i] + ".c", this);
-
-            code.append("#define TYPE_" + typesArray[i] + " " + i + _eol);
-
-            // Dynamically generate all the types within the union.
-            typeMembers.append(typesArray[i] + "Token " + typesArray[i] + ";");
-            if (i < typesArray.length - 1) {
-                typeMembers.append(_eol);
+            
+            // We have to define a new structure
+            if (typesArray[i].endsWith("Structure")) {
+                // Open the .c file for each structure.
+                typeStreams[i] = new CodeStream(
+                        "$CLASSPATH/ptolemy/cg/kernel/generic/program/procedural/c/structures/"
+                                + typesArray[i].substring(0, typesArray[i].indexOf("Structure")) + ".c", this);
+            }
+            else {
+                // Open the .c file for each type.
+                typeStreams[i] = new CodeStream(
+                        "$CLASSPATH/ptolemy/cg/kernel/generic/program/procedural/c/type/"
+                                + typesArray[i] + ".c", this);
+    
+                codeH.append("#define TYPE_" + typesArray[i] + " " + i + _eol);
+    
+                // Dynamically generate all the types within the union.
+                typeMembers.append(typesArray[i] + "Token " + typesArray[i] + ";");
+                if (i < typesArray.length - 1) {
+                    typeMembers.append(_eol);
+                }
             }
         }
 
@@ -453,7 +489,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
             if (functionsArray[i].equals("new")) {
                 offset = 1;
             } else {
-                code.append("#define FUNC_" + functionsArray[i] + " "
+                codeH.append("#define FUNC_" + functionsArray[i] + " "
                         + (i - offset) + _eol);
                 if (functionsArray[i].equals("delete")) {
                     defineEmptyToken = true;
@@ -461,7 +497,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
             }
         }
 
-        code.append("typedef struct token Token;" + _eol);
+        codeH.append("typedef struct token Token;" + _eol);
 
         // Generate type and function definitions.
         for (int i = 0; i < typesArray.length; i++) {
@@ -469,10 +505,11 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
             // type; thus, it is always read into the code stream when
             // accessing this particular type.
             typeStreams[i].appendCodeBlock("declareBlock");
-            code.append(typeStreams[i].toString());
+            codeH.append(typeStreams[i].toString());
         }
 
         ArrayList<String> args = new ArrayList<String>();
+        ArrayList<String> functionsDeclared = new ArrayList<String>();
         // Token declareBlock.
         if (typeMembers.length() != 0) {
             sharedStream.clear();
@@ -483,7 +520,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
                 sharedStream.append("Token emptyToken; "
                         + comment("Used by *_delete() and others.") + _eol);
             }
-            code.append(sharedStream.toString());
+            codeH.append(sharedStream.toString());
         }
 
         // Set to true if we need the unsupportedFunction() method.
@@ -497,21 +534,32 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         for (int i = 0; i < typesArray.length; i++) {
             typeStreams[i].clear();
             typeStreams[i].appendCodeBlock("funcDeclareBlock");
-            code.append(typeStreams[i].toString());
+            codeH.append(typeStreams[i].toString());
         }
 
         // FIXME: in the future we need to load the convertPrimitivesBlock
         // dynamically, and maybe break it into multiple blocks to minimize
         // code size.
         sharedStream.clear();
-        sharedStream.appendCodeBlock("convertPrimitivesBlock");
-        code.append(sharedStream.toString());
+        sharedStream.appendCodeBlock("convertPrimitivesBlockDeclaration");
+        codeH.append(sharedStream.toString());
+        sharedStream.clear();
+        sharedStream.appendCodeBlock("convertPrimitivesBlockImplementation");
+        codeC.append(sharedStream.toString());
+        
         sharedStream.clear();
 
         StringBuffer typeFunctionCode = new StringBuffer();
-        for (int i = 0; i < typesArray.length; i++) {
+        for (int i = 0; i < typesArray.length; i++) {        
             typeStreams[i].clear();
             //typeStreams[i].appendCodeBlock(typesArray[i] + "_new");
+            
+            // Appends the Structure code in case of a structure declaration
+            if (typesArray[i].endsWith("Structure")) {
+                typeStreams[i].appendCodeBlock("funcImplementationBlock");
+                codeC.append(typeStreams[i].toString());
+                continue;
+            }
 
             for (String element : functionsArray) {
                 // The code block declaration has to follow this convention:
@@ -563,6 +611,8 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         for (int i = 0; i < types.size(); i++) {
             // The "funcDeclareBlock" contains all function declarations for
             // the type.
+            if (typesArray[i].endsWith("Structure"))
+                continue;
             for (int j = 0; j < functionsArray.length; j++) {
                 String functionName = typesArray[i] + "_" + functionsArray[j];
 
@@ -589,6 +639,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
                         functionName = typesArray[i] + "_equals";
                         if (!_unsupportedTypeFunctions.contains(functionName)) {
                             args.add(functionName);
+                            functionsDeclared.add(functionName);
                             sharedStream.appendCodeBlock("funcHeaderBlock",
                                     args);
                         }
@@ -601,6 +652,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
                     if (!_unsupportedTypeFunctions.contains(functionName)
                             && !functionName.endsWith("_new")) {
                         args.add(functionName);
+                        functionsDeclared.add(functionName);
                         sharedStream.append("// functionHeader: " + _eol);
                         sharedStream.appendCodeBlock("funcHeaderBlock", args);
                     }
@@ -608,34 +660,53 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
             }
         }
 
+        // We have to declare all the functions which have not been declared before.
+        /*for (String functionName : _overloadedFunctionSet) {
+                if (!functionsDeclared.contains(functionName) 
+                                && !functionName.endsWith("_new")
+                                && !functionName.endsWith("_delete")) {
+                        args.clear();
+                        //args.add(functionName);
+                        _overloadedFunctionsDeclaration = 
+                        sharedStream.append("// functionHeader: " + _eol);
+                        sharedStream.appendCodeBlock(functionName, args);
+                }
+        }*/
+        
+        // sharedStream should the global code (e.g. token declaration,
+        // constants, and etc.)
+        codeH.append(sharedStream.toString());
+        
+        sharedStream.clear();
         if (defineUnsupportedTypeFunctionMethod) {
             // Some type/function combos are not supported, so we
             // save space by defining only one method.
             sharedStream.appendCodeBlock("unsupportedTypeFunction");
         }
-
+        
         if (defineScalarDeleteMethod) {
             // Types that share the scalarDelete() method, which does nothing.
             // We use one method so as to reduce code size.
             sharedStream.appendCodeBlock("scalarDeleteFunction");
         }
-
-        // sharedStream should the global code (e.g. token declaration,
-        // constants, and etc.)
-        code.append(sharedStream.toString());
-
-        // Generate function type and token table.
-        code.append(generateFunctionTable(typesArray, functionsArray));
+        codeC.append(sharedStream.toString());
 
         // _overloadedFunctions contains the set of functions:
         // add_Type1_Type2, negate_Type, and etc.
-        code.append(_overloadedFunctions.toString());
+        codeC.append(_overloadedFunctions.toString());
+        codeH.append(_overloadedFunctionsDeclaration.toString());
+        
+        // Generate function type and token table.
+        codeC.append(generateFunctionTable(typesArray, functionsArray));
 
         // typeFunction contains the set of function:
         // Type_new(), Type_delete(), and etc.
-        code.append(typeFunctionCode);
+        codeH.append(typeFunctionCode);
 
-        return code.toString();
+        String[] result = new String[2];
+        result[0] = codeH.toString();
+        result[1] = codeC.toString();
+        return result;
     }
 
     private HashSet<String> _getTypeIDToUsed(HashSet<String> types) {
@@ -816,6 +887,64 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         return INDENT1 + "wrapup();" + _eol;
     }
 
+    /** Add called functions to the set of overloaded functions for
+     *  later use.
+     *  If the function starts with "Array_", add everything after the
+     *  "Array_" is added to the set of token functions used.
+     *  @param name The name of the function, for example "Double_equals"
+     *  @param templateParser The corresponding templateParser that contains the
+     *  codeBlock.
+     *  @exception IllegalActionException If there is a problem adding
+     *  a function to the set of overloaded functions.
+     */
+    public void markFunctionCalled(String name,
+            ProceduralTemplateParser templateParser)
+            throws IllegalActionException {
+    
+        try {
+            String functionCode = _overloadedFunctions.getCodeBlock(name);
+            HashSet<String> functions = _getReferencedFunctions();
+            
+            int indexEndDeclaration = functionCode.indexOf('{');
+            String declarationFunctionCode = "";
+            if (indexEndDeclaration > 0)
+                declarationFunctionCode = functionCode.substring(0, indexEndDeclaration) + ";" + _eol; 
+            if (!_overloadedFunctionSet.contains(name)) {
+    
+                String code = templateParser == null ? processCode(functionCode)
+                        : templateParser.processCode(functionCode);
+    
+                _overloadedFunctions.append(code);
+                //if (!declarationFunctionCode.contains("_new")
+                        //      && !declarationFunctionCode.contains("_delete"))
+                boolean ok = true;
+                for (String partName : functions)
+                        if (name.endsWith(partName) || name.endsWith("_new") || name.endsWith("_equals")) {
+                                ok = false;
+                                break;
+                        }
+                if (ok)
+                        _overloadedFunctionsDeclaration.append(declarationFunctionCode);
+                
+    
+                _overloadedFunctionSet.add(name);
+            }
+            if (name.startsWith("Array_")) {
+                // Array_xxx might need to have xxx added.
+                // See c/actor/lib/test/auto/MultiplyDivide5.xml
+    
+                // FIXME: this will add any function, which means that
+                // if the user has Array_foo, foo is added.  Is this right?
+                _tokenFuncUsed.add(name.substring(6));
+            }
+        } catch (Throwable throwable) {
+            throw new IllegalActionException(this, throwable,
+                    "Failed to mark function called for \"" + name + "\" in \""
+                            + getComponent().getFullName() + "\"");
+        }
+    
+    }
+
     /** Split a long function body into multiple functions.
      *  @param linesPerMethod The number of lines that should go into
      *  each method.
@@ -926,6 +1055,8 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         String cCodegenPath = "$CLASSPATH/ptolemy/cg/kernel/generic/program/procedural/c/";
         String typeDir = cCodegenPath + "type/";
         String functionDir = typeDir + "polymorphic/";
+        
+        _overloadedFunctionsDeclaration = new CodeStream(functionDir, this);
 
         _overloadedFunctions = new CodeStream(functionDir + "add.c", this);
         _overloadedFunctions.parse(functionDir + "clone.c");
@@ -933,7 +1064,6 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         _overloadedFunctions.parse(functionDir + "delete.c");
         _overloadedFunctions.parse(functionDir + "divide.c");
         _overloadedFunctions.parse(functionDir + "equals.c");
-        _overloadedFunctions.parse(functionDir + "modulo.c");
         _overloadedFunctions.parse(functionDir + "multiply.c");
         _overloadedFunctions.parse(functionDir + "negate.c");
         _overloadedFunctions.parse(functionDir + "print.c");
@@ -953,6 +1083,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         _overloadedFunctions.parse(typeDir + "Long.c");
         _overloadedFunctions.parse(typeDir + "Matrix.c");
         _overloadedFunctions.parse(typeDir + "Pointer.c");
+        _overloadedFunctions.parse(typeDir + "Scalar.c");
         _overloadedFunctions.parse(typeDir + "String.c");
         _overloadedFunctions.parse(typeDir + "StringArray.c");
         _overloadedFunctions.parse(typeDir + "UnsignedByte.c");
@@ -1081,6 +1212,414 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         return code;
     }
 
+    /** Generate code and append it to the given string buffer.
+     *  Write the code to the directory specified by the codeDirectory
+     *  parameter.  The file name is a sanitized version of the model
+     *  name with a suffix that is based on last package name of the
+     *  <i>generatorPackage</i> parameter.  Thus if the
+     *  <i>codeDirectory</i> is <code>$HOME</code>, the name of the
+     *  model is <code>Foo</code> and the <i>generatorPackage</i>
+     *  is <code>ptolemy.codegen.c</code>, then the file that is
+     *  written will be <code>$HOME/Foo.c</code>
+     *  This method is the main entry point.
+     *  We do not call the super method because it is too different from it.
+     *  For instance, there is not only one file generated, but a few.
+     *  @param code The given string buffer.
+     *  @return The return value of the last subprocess that was executed.
+     *  or -1 if no commands were executed.
+     *  @exception KernelException If the target file cannot be overwritten
+     *   or write-to-file throw any exception.
+     */
+    protected int _generateCode(StringBuffer code) throws KernelException {
+        // Record the current time so that we can monitor performance of the
+        // code generator by printing messages whenever any part of the code
+        // generation process takes more than 10 seconds.
+        long startTime = new Date().getTime();
+        long overallStartTime = startTime;
+
+        _reset();
+
+        _sanitizedModelName = CodeGeneratorAdapter.generateName(_model);
+
+        // Each time a .dll file is generated, we must use a different name
+        // for it so that it can be loaded without restarting vergil.
+        NamedObj container = getContainer();
+        Director director = null;
+        if (container instanceof CompositeActor)
+                director = ((CompositeActor) container).getDirector();
+                
+        if (container instanceof ptolemy.cg.lib.CompiledCompositeActor) {
+            _sanitizedModelName = ((ptolemy.cg.lib.CompiledCompositeActor) container)
+                    .getSanitizedName();
+        }
+
+        boolean inlineValue = ((BooleanToken) inline.getToken()).booleanValue();
+
+        // Analyze type conversions that may be needed.
+        // This must be called before any code is generated.
+        _analyzeTypeConversions();
+
+        // Report time consumed if appropriate.
+        startTime = _printTimeAndMemory(startTime,
+                "CCodeGenerator.analyzeTypeConvert() consumed: ");
+
+        // Add include directories and libraries specified by actors.
+        _addActorIncludeDirectories();
+        _addActorLibraries();
+
+        // Generate code.
+        // We use the strategy pattern here, calling methods that
+        // can be overridden in derived classes. We mostly invoke
+        // these methods in the order that the code will be
+        // executed, except for some exceptions as noted.
+
+        // Perform any setup in the adapter.  EmbeddedCodeActor uses this.
+        _setupAdapter();
+        String preinitializeCode = _generatePreinitializeCode();
+
+        // Typically, the preinitialize code consists of variable
+        // declarations.  However, AutoAdapter generates method calls
+        // that instantiate wrapper TypedCompositeActors, so we need
+        // to invoke those method calls.
+        String preinitializeMethodEntryCode = _generatePreinitializeMethodEntryCode();
+        String preinitializeMethodBodyCode = _generatePreinitializeMethodBodyCode();
+        String preinitializeMethodExitCode = _generatePreinitializeMethodExitCode();
+        String preinitializeProcedureName = _generatePreinitializeMethodProcedureName();
+
+        // FIXME: The rest of these methods should be made protected
+        // like the ones called above. The derived classes also need
+        // to be fixed.
+        String initializeCode = generateInitializeCode();
+
+        // The StaticSchedulingCodeGenerator._generateBodyCode() reads
+        // _postfireCode to see if we should include a call to postfire or
+        // not, so we need to call generatePostfireCode() before
+        // call _generateBodyCode().
+        //_postfireCode = generatePostfireCode();
+        
+        // Generating the code for all the actors
+        // FIXME : for now this is only for DE Director
+        String[] actorsCode;
+        if (director != null && director instanceof DEDirector) {
+            ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.de.kernel.DEDirector directorAdapter = 
+                    (ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.de.kernel.DEDirector) 
+                    getAdapter(((DEDirector)director));
+            actorsCode = directorAdapter.generateActorCode();
+        }
+        else
+            actorsCode = new String[0];
+
+        String bodyCode = _generateBodyCode();
+        String mainEntryCode = generateMainEntryCode();
+        String mainExitCode = generateMainExitCode();
+        String initializeEntryCode = generateInitializeEntryCode();
+        String initializeExitCode = generateInitializeExitCode();
+        String initializeProcedureName = generateInitializeProcedureName();
+        //String postfireEntryCode = generatePostfireEntryCode();
+        //String postfireExitCode = generatePostfireExitCode();
+        ///*String postfireProcedureName =*/generatePostfireProcedureName();
+        String wrapupEntryCode = generateWrapupEntryCode();
+        String wrapupExitCode = generateWrapupExitCode();
+        String wrapupProcedureName = generateWrapupProcedureName();
+
+        String fireFunctionCode = null;
+        if (!inlineValue) {
+            fireFunctionCode = generateFireFunctionCode();
+        }
+        String wrapupCode = generateWrapupCode();
+        String closingEntryCode = generateClosingEntryCode();
+        String closingExitCode = generateClosingExitCode();
+
+        String variableInitCode = generateVariableInitialization();
+
+        // Generate shared code.  Some adapter optionally add methods
+        // to the shared code block, so we generate the shared code as
+        // late as possible.  However, we have to generateSharedCode()
+        // before generateTypeConvertCode() so that any polymorphic
+        // codegen token methods used in the shared code are recorded.  See
+        // $PTII/bin/ptcg -language java $PTII/ptolemy/cg/adapter/generic/program/procedural/java/adapters/ptolemy/actor/lib/test/auto/arrayType18.xml
+        String sharedCode = _generateSharedCode();
+
+        // generate type resolution code has to be after
+        // fire(), wrapup(), preinit(), init()...
+        String[] typeResolutionCode = generateTypeConvertCodeCandH();
+
+        // Generating variable declarations needs to happen after buffer
+        // sizes are set(?).  Also, we want to generate the type convert code
+        // so that we know if we need to import Array etc.
+        List<String> variableDeclareCode = _splitVariableDeclaration(
+                "Variables", generateVariableDeclaration());
+
+        //String globalCode = generateGlobalCode();
+
+        // Include files depends the generated code, so it
+        // has to be generated after everything.
+        String includeFiles = _generateIncludeFiles();
+
+        startTime = _printTimeAndMemory(startTime,
+                "CCodeGenerator: generating code consumed: ");
+
+        StringBuffer codeMainH = new StringBuffer();
+        StringBuffer codeTypesH = new StringBuffer();
+        StringBuffer codeTypesC = new StringBuffer();
+        
+        // appending the .h multi-inclusions protection macro
+        codeTypesH.append("#ifndef NO_TYPES_H" + _eol + "#define NO_TYPES_H" + _eol);
+        // appending the include of the main.h
+        //codeTypesH.append("#include \"main.h\"" + _eol);
+        
+        // The appending phase.
+        code.append(generateCopyright());
+
+        code.append(generatePackageStatement());
+
+        code.append(variableDeclareCode.get(0));
+        //variableDeclareCode.set(0, null);
+
+        // FIXME: Some user libraries may depend on our generated
+        // code (i.e. definition of "boolean"). So, we need to append
+        // these user libraries after the sharedCode. An easy to do
+        // this is to separate the standard libraries from user library,
+        // hinted by the angle bracket <> syntax in a #include statement.
+     
+        // appending the .h multi-inclusions protection macro
+        codeMainH.append("#ifndef NO_MAIN_H" + _eol + "#define NO_MAIN_H" + _eol);
+        // FIXME : again, this is only for the DE director maybe we can extend that !
+        if (director != null && director instanceof DEDirector) {
+            codeMainH.append("#include \"DEReceiver.h\"" + _eol);
+            codeMainH.append("#include \"IOPort.h\"" + _eol);
+            codeMainH.append("#include \"CalendarQueue.h\"" + _eol);
+            codeMainH.append("#include \"DEEvent.h\"" + _eol);
+            codeMainH.append("#include \"DEDirector.h\"" + _eol);
+            codeMainH.append("#include \"Actor.h\"" + _eol);
+        }
+        codeMainH.append("#include \"types.h\"" + _eol);
+        codeMainH.append(includeFiles);
+        
+        code.append("#include \"src/main.h\""+_eol);
+        /*if (director != null && director instanceof DEDirector)
+                code.append("#include \"src/DEReceiver.h\""+_eol);
+        else
+                code.append("#include \"src/types.h\""+_eol);*/
+        // Free up space as we go.
+        includeFiles = null;
+
+        // Get any include or import lines needed by the variable declarations.
+        code.append(comment("end includeecode"));
+        codeTypesH.append(typeResolutionCode[0]);
+        typeResolutionCode[0] = null;
+        codeTypesH.append(comment("end typeResolution code"));
+        codeTypesC.append(typeResolutionCode[1]);
+        typeResolutionCode[1] = null;
+        codeTypesC.append(comment("end typeResolution code"));
+        codeTypesH.append(sharedCode);
+        sharedCode = null;
+        // Don't use **** in comments, it causes the nightly build to
+        // report errors.
+        codeTypesH.append(comment("end shared code"));
+        codeMainH.append(_writeVariableDeclarations(variableDeclareCode));
+        codeMainH.append(comment("end variable declaration code"));
+        codeMainH.append(preinitializeCode);
+        preinitializeCode = null;
+        codeMainH.append(comment("end preinitialize code"));
+        codeMainH.append(comment("end preinitialize method code"));
+        //code.append(globalCode);
+
+        String[] splitPreinitializeMethodBodyCode = _splitBody(
+                "_preinitializeMethod_", preinitializeMethodBodyCode);
+        codeMainH.append(comment("Before appending splitPreinitializeMethodBodyCode[0]."));
+        codeMainH.append(splitPreinitializeMethodBodyCode[0]);
+        // Set this to null to free up space.
+        splitPreinitializeMethodBodyCode[0] = null;
+        codeMainH.append(comment("After appending splitPreinitializeMethodBodyCode[0]."));
+        codeMainH.append(preinitializeMethodEntryCode);
+        codeMainH.append(splitPreinitializeMethodBodyCode[1]);
+        splitPreinitializeMethodBodyCode[1] = null;
+        codeMainH.append(preinitializeMethodExitCode);
+        
+        codeMainH.append(_eol + "#endif");
+
+        if (!inlineValue) {
+
+            code.append(comment("Before appending fireFunctionCode."));
+            code.append(fireFunctionCode);
+            fireFunctionCode = null;
+            code.append(comment("After appending fireFunctionCode."));
+        }
+
+        //if (containsCode(variableInitCode)
+        //        || containsCode(initializeCode)) {
+
+        String[] splitVariableInitCode = _splitBody("_varinit_",
+                variableInitCode);
+        code.append(comment("Before appending splitVariableInitCode[0]."));
+        code.append(splitVariableInitCode[0] + "\n");
+        splitVariableInitCode[0] = null;
+        code.append(comment("\nAfter appending splitVariableInitCode[0].\n"));
+
+        String[] splitInitializeCode = _splitBody("_initialize_",
+                initializeCode);
+        code.append(comment("Before appending splitInitializeCode[0]."));
+        code.append(splitInitializeCode[0]);
+        splitInitializeCode[0] = null;
+        code.append(comment("After appending splitInitializeCode[0]."));
+
+        code.append(comment("Before appending initializeEntryCode"));
+        code.append(initializeEntryCode);
+        code.append(comment("After appending initializeEntryCode"));
+        code.append(comment("Before appending splitVariableInitCode[1]."));
+        code.append(splitVariableInitCode[1]);
+        splitVariableInitCode[1] = null;
+        code.append(comment("After appending splitVariableInitCode[1]."));
+        code.append(comment("Before appending splitInitializeCode[1]."));
+        code.append(splitInitializeCode[1]);
+        splitInitializeCode[1] = null;
+        code.append(comment("After appending splitInitializeCode[1]."));
+        code.append(comment("Before appending initializeExitCode."));
+        code.append(initializeExitCode);
+
+        String[] splitWrapupCode = _splitBody("_wrapup_", wrapupCode);
+        code.append(splitWrapupCode[0]);
+        splitWrapupCode[0] = null;
+        code.append(wrapupEntryCode);
+        code.append(splitWrapupCode[1]);
+        splitWrapupCode[1] = null;
+        //code.append(wrapupCode);
+        code.append(wrapupExitCode);
+        //}
+
+        code.append(mainEntryCode);
+
+        // If the container is in the top level, we are generating code
+        // for the whole model.
+        if (_isTopLevel()) {
+            if (containsCode(preinitializeMethodBodyCode)) {
+                code.append(preinitializeProcedureName);
+            }
+            if (containsCode(variableInitCode) || containsCode(initializeCode)) {
+                code.append(initializeProcedureName);
+            }
+        }
+
+        // Appends the body code for the director
+        code.append(bodyCode);
+        
+        String directorySrc = codeDirectory.stringValue() + "src/";
+        new File(directorySrc).mkdirs();
+        
+        _actorsToInclude = new LinkedList<String>();
+        for (int i = 0 ; i < actorsCode.length ; i+=3) {
+            _actorsToInclude.add(actorsCode[i]);
+            StringBuffer actorCode = new StringBuffer();
+            actorCode.append(actorsCode[i+1]);
+            super._writeCodeFileName(actorCode, "src/"+actorsCode[i]+".c", true, false);
+            StringBuffer actorCodeH = new StringBuffer();
+            actorCodeH.append(actorsCode[i+2]);
+            super._writeCodeFileName(actorCodeH, "src/"+actorsCode[i]+".h", true, false);
+        }
+        
+        // Findbugs warns that it is not necessary to set these fields
+        // to null in JSSE1.6, but these strings are so huge that it
+        // seems to help reduce the memory footprint.
+        bodyCode = null;
+
+        // If the container is in the top level, we are generating code
+        // for the whole model.
+        if (_isTopLevel()) {
+            if (containsCode(closingEntryCode)) {
+                code.append(closingEntryCode);
+            }
+            if (containsCode(wrapupCode)) {
+                code.append(wrapupProcedureName);
+            }
+            //if (containsCode(closingExitCode)) {
+            code.append(closingExitCode);
+            //}
+        }
+
+        code.append(mainExitCode);
+        codeTypesH.append("#endif");
+
+        if (_executeCommands == null) {
+            _executeCommands = new StreamExec();
+        }
+
+        startTime = _printTimeAndMemory(startTime,
+                "CCodeGenerator: appending code consumed: ");
+
+        code = _finalPassOverCode(code);
+        startTime = _printTimeAndMemory(startTime,
+                "CCodeGenerator: final pass consumed: ");
+
+        super._writeCode(code);
+        
+        super._writeCodeFileName(codeMainH, "src/main.h", true, false);
+        super._writeCodeFileName(codeTypesH, "src/types.h", true, false);
+        super._writeCodeFileName(codeTypesC, "src/types.c", true, false);
+        // Let's copy the needed files
+        if (director != null && director instanceof DEDirector) {
+            _copyCFileTosrc("Actor.h");
+            _copyCFileTosrc("Actor.c");
+            _copyCFileTosrc("CalendarQueue.h");
+            _copyCFileTosrc("CalendarQueue.c");
+            _copyCFileTosrc("DEDirector.h");
+            _copyCFileTosrc("DEDirector.c");
+            _copyCFileTosrc("DEEvent.h");
+            _copyCFileTosrc("DEEvent.c");
+            _copyCFileTosrc("DEReceiver.h");
+            _copyCFileTosrc("DEReceiver.c");
+            _copyCFileTosrc("IOPort.h");
+            _copyCFileTosrc("IOPort.c");
+        }
+        
+        code = null;
+
+        /*startTime =*/_printTimeAndMemory(startTime,
+                "CCodeGenerator: writing code consumed: ");
+
+        _writeMakefile();
+
+        _printTimeAndMemory(overallStartTime,
+                "CCodeGenerator: All phases above consumed: ");
+
+        return _executeCommands();
+    }
+    
+    /** Generate the body code that lies between variable declaration
+     *  and wrapup. This method delegates to the director adapter
+     *  to generate a main loop.
+     *  Note : We do not call the super method, because this one is too different
+     *  @return The generated body code.
+     *  @exception IllegalActionException If there is no director.
+     */
+    protected String _generateBodyCode() throws IllegalActionException {
+
+        String code = "";
+
+        CompositeEntity model = (CompositeEntity) getContainer();
+
+        // NOTE: The cast is safe because setContainer ensures
+        // the container is an Actor.
+        ptolemy.actor.Director director = ((Actor) model).getDirector();
+
+        if (director == null) {
+            throw new IllegalActionException(model, "Does not have a director.");
+        }
+        ptolemy.cg.adapter.generic.adapters.ptolemy.actor.Director directorAdapter = 
+                (ptolemy.cg.adapter.generic.adapters.ptolemy.actor.Director) getAdapter(director);
+
+        if (_isTopLevel()) {
+            code += directorAdapter.generateMainLoop();
+        } else {
+            // Generate embedded code.
+            NamedProgramCodeGeneratorAdapter compositeAdapter = (NamedProgramCodeGeneratorAdapter) getAdapter(model);
+            code += compositeAdapter.generateFireCode();
+        }
+
+        return code;
+    }
+
+    
     /** Generate include files. FIXME: State what is included.
      *  @return The #include statements, surrounded by #ifndef to ensure
      *   that the files are included only once.
@@ -1109,16 +1648,18 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         includingFiles.add("<stdarg.h>");
         includingFiles.add("<stdio.h>");
         includingFiles.add("<string.h>");
+        includingFiles.add("<stdbool.h>");
 
         for (String file : includingFiles) {
             // Not all embedded platforms have all .h files.
             // For example, the AVR does not have time.h
             // FIXME: Surely we can control whether the files are
             // included more than once rather than relying on #ifndef!
-            code.append("#ifndef PT_NO_"
+            /*code.append("#ifndef PT_NO_"
                     + file.substring(1, file.length() - 3).replace('/', '_')
                             .toUpperCase() + "_H" + _eol + "#include " + file
-                    + _eol + "#endif" + _eol);
+                    + _eol + "#endif" + _eol);*/
+            code.append("#include " + file + _eol);
         }
 
         return code.toString();
@@ -1260,7 +1801,27 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
                     .put("@PTCGIncludes@", _concatenateElements(_includes));
             substituteMap.put("@PTCGLibraries@",
                     _concatenateElements(_libraries));
-
+            // Adds the .c and .o needed files
+            Director director = null;
+            if (getContainer() instanceof CompositeActor)
+                    director = ((CompositeActor) getContainer()).getDirector();
+            if (director != null && director instanceof DEDirector) {
+                String ptcgC = "src/types.c src/Actor.c src/CalendarQueue.c src/DEDirector.c src/DEEvent.c src/DEReceiver.c src/IOPort.c";
+                String ptcgO = "src/types.o src/Actor.o src/CalendarQueue.o src/DEDirector.o src/DEEvent.o src/DEReceiver.o src/IOPort.o";
+                Iterator<String> actors = _actorsToInclude.iterator();
+                while (actors.hasNext()) {
+                    String actor = actors.next();
+                    ptcgC += " src/" + actor + ".c";
+                    ptcgO += " src/" + actor + ".o";
+                }
+                substituteMap.put("@PTCG_CFILES@", ptcgC);
+                substituteMap.put("@PTCG_OFILES@", ptcgO);
+            }
+            else {
+                substituteMap.put("@PTCG_CFILES@", "src/types.c");
+                substituteMap.put("@PTCG_OFILES@", "src/types.o");
+            }
+            
             // Define substitutions to be used in the makefile
             substituteMap.put("@PTJNI_NO_CYGWIN@", "");
             substituteMap.put("@PTJNI_SHAREDLIBRARY_CFLAG@", "");
@@ -1424,7 +1985,63 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         }
         return buffer.toString();
     }
+    
+    /** Copy a C (or h) file into the directory /src of the project.
+     *  This is useful to copy the files pre-written in C.
+     *  @param String the name of the file to copy.
+     *  
+     */
+    private void _copyCFileTosrc(String codeFileName) throws IllegalActionException {
+        StringBuffer code = new StringBuffer();
+        
+        BufferedReader cFileReader = null;
+        String cFileName = "ptolemy/cg/kernel/generic/program/procedural/c/de/" + codeFileName;
+        String referenceClassName = "ptolemy.util.FileUtilities";
+        Class referenceClass;
+        try {
+            referenceClass = Class.forName(referenceClassName);
+        } catch (ClassNotFoundException e) {
+            throw new IllegalActionException(this, e,
+                    "Did not find the base class !\"");
+        }
+        ClassLoader classLoader = referenceClass.getClassLoader();
+        URL url = classLoader.getResource(cFileName);
+        codeFileName = "src/" + codeFileName;
+        String inputLine = "";
 
+        try {
+            try {
+                cFileReader = CodeGeneratorUtilities.openAsFileOrURL(url.toString());
+            } catch (IOException ex) {
+                throw new IllegalActionException(this, ex,
+                        "Failed to read \"" + cFileName + "\"");
+            }
+            if (cFileReader != null) {
+                _executeCommands.stdout("Reading \"" + cFileName
+                        + "\"," + _eol + "    writing \""
+                        + codeFileName + "\"");
+                while ((inputLine = cFileReader.readLine()) != null) {
+                    code.append(inputLine + _eol);
+                }
+            }
+        } catch (Throwable throwable) {
+            throw new IllegalActionException(this, throwable,
+                    "Failed to read \"" + cFileName
+                            + "\" or write \"" + codeFileName + "\"");
+        } finally {
+            if (cFileReader != null) {
+                try {
+                    cFileReader.close();
+                } catch (IOException ex) {
+                    throw new IllegalActionException(this, ex,
+                            "Failed to close \"" + cFileName + "\"");
+                }
+            }
+        }
+        
+        super._writeCodeFileName(code, codeFileName, true, false);
+    }
+    
     /** Get the header files needed to compile with the jvm library.
       *  @return A set of strings that are names of the header files
       *   needed by the code generated for jvm library
@@ -1598,48 +2215,6 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         return files;
     }
 
-    /** Add called functions to the set of overloaded functions for
-     *  later use.
-     *  If the function starts with "Array_", add everything after the
-     *  "Array_" is added to the set of token functions used.
-     *  @param name The name of the function, for example "Double_equals"
-     *  @param templateParser The corresponding templateParser that contains the
-     *  codeBlock.
-     *  @exception IllegalActionException If there is a problem adding
-     *  a function to the set of overloaded functions.
-     */
-    public void markFunctionCalled(String name,
-            ProceduralTemplateParser templateParser)
-            throws IllegalActionException {
-
-        try {
-            String functionCode = _overloadedFunctions.getCodeBlock(name);
-
-            if (!_overloadedFunctionSet.contains(name)) {
-
-                String code = templateParser == null ? processCode(functionCode)
-                        : templateParser.processCode(functionCode);
-
-                _overloadedFunctions.append(code);
-
-                _overloadedFunctionSet.add(name);
-            }
-            if (name.startsWith("Array_")) {
-                // Array_xxx might need to have xxx added.
-                // See c/actor/lib/test/auto/MultiplyDivide5.xml
-
-                // FIXME: this will add any function, which means that
-                // if the user has Array_foo, foo is added.  Is this right?
-                _tokenFuncUsed.add(name.substring(6));
-            }
-        } catch (Throwable throwable) {
-            throw new IllegalActionException(this, throwable,
-                    "Failed to mark function called for \"" + name + "\" in \""
-                            + getComponent().getFullName() + "\"");
-        }
-
-    }
-
     /** Return true if include/jni.h is found. */
     private static class _JniFileFilter implements FileFilter {
         // FindBugs suggested "Could be refactored into a named static
@@ -1652,6 +2227,10 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         }
     }
 
+    /** A list of actors present to include in the makefile*/
+    private List<String> _actorsToInclude;
+    
+    private CodeStream _overloadedFunctionsDeclaration;
     private CodeStream _overloadedFunctions;
 
     /** An ordered set of function code */

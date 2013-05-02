@@ -43,6 +43,7 @@ import ptolemy.actor.CompositeActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.parameters.PortParameter;
 import ptolemy.cg.adapter.generic.adapters.ptolemy.actor.Director;
+import ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.de.kernel.DEDirector;
 import ptolemy.cg.kernel.generic.CGException;
 import ptolemy.cg.kernel.generic.CodeGeneratorAdapter;
 import ptolemy.cg.kernel.generic.GenericCodeGenerator;
@@ -80,11 +81,11 @@ A class that allows to parse macros of templates in a code generator
 perspective.
 
 
-@author Bert Rodiers
+@author Bert Rodiers, William Lucas
 @version $Id$
 @since Ptolemy II 8.0
-@Pt.ProposedRating Red (rodiers)
-@Pt.AcceptedRating Red (rodiers)
+@Pt.ProposedRating Red (wlc)
+@Pt.AcceptedRating Red (wlc)
 */
 
 public class TemplateParser {
@@ -245,16 +246,12 @@ public class TemplateParser {
         // to find the associated adapter.
         String sourcePortChannel = source.port.getName() + "#"
                 + source.channelNumber + ", " + offset;
-        String sourceRef = "";
+        String sourceRef;
 
         if (alternativeSourceRef == null) {
-            try {
-                sourceRef = ((NamedProgramCodeGeneratorAdapter) _codeGenerator
-                        .getAdapter(source.port.getContainer())).getReference(
-                                sourcePortChannel, true);
-            } catch (Exception ex) {
-                // Ignore and fall through to the next.
-            }
+            sourceRef = ((NamedProgramCodeGeneratorAdapter) _codeGenerator
+                    .getAdapter(source.port.getContainer())).getReference(
+                    sourcePortChannel, true);
             if (sourceRef.equals("")) {
                 // Needed by $PTII/ptolemy/cg/adapter/generic/program/procedural/java/adapters/ptolemy/actor/lib/hoc/test/auto/CaseOpaque.xml
                 sourceRef = ((NamedProgramCodeGeneratorAdapter) _codeGenerator
@@ -1346,7 +1343,7 @@ public class TemplateParser {
             } else {
                 return _codeGenerator
                         .generateVariableName((NamedObj) _component)
-                        + "_"
+                        + ""
                         + processCode(parameter);
             }
         } else if (macro.equals("containerSymbol")) {
@@ -1360,6 +1357,8 @@ public class TemplateParser {
                                 + processCode(parameter));
             }
 
+        } else if (macro.equals("actorName")) {
+            return ((NamedObj) _component).getName();
         } else if (macro.equals("actorClass")) {
             return ((NamedObj) _component).getClassName().replace('.', '_')
                     + "_" + processCode(parameter);
@@ -1373,6 +1372,10 @@ public class TemplateParser {
 
         } else if (macro.equals("typeFunc")) {
             return getFunctionInvocation(parameter, true);
+        } else if (macro.equals("fireAt")) {
+            return _replaceFireAtMacro(parameter);
+        } else if (macro.equals("structure")) {
+            _codeGenerator._newTypesUsed.add(parameter+"Structure");	
         } else {
             // Try calling a method defined in the adapter first.
             try {
@@ -1607,6 +1610,34 @@ public class TemplateParser {
         return result;
     }
 
+    private String _replaceFireAtMacro(String parameter) 
+    		throws IllegalActionException {
+    	// e.g. $fireAt(&director, actorName, timestamp, microstep); 
+        List<String> parameters = parseList(parameter);
+
+        if (parameters.size() != 4) {
+            CGException
+                    .throwException("\""
+                            + parameter
+                            + "\" is not acceptable by $fireAt(). "
+                            + "$fireAt could be used in the following way: "
+                            + "$fireAt(&director, actorName, timestamp, microstep); ");
+        }
+
+        if (!(_component instanceof Actor)) {
+            CGException.throwException(_component,
+                    "Parameters are only supported for"
+                            + "actors, but this component is not one.");
+        }
+        Director directorAdapter = (Director) _codeGenerator
+                .getAdapter(((Actor) _component).getDirector());
+        
+        if (directorAdapter instanceof DEDirector)
+        	return "DEDirectorFireAt(" + parameter +");";
+
+        return "";
+    }
+    
     private String _replaceGetMacro(String parameter)
             throws IllegalActionException {
         // e.g. $get(input#channel, offset); or
@@ -1776,11 +1807,12 @@ public class TemplateParser {
         return processCode(portAdapter.generatePutCode(channel, offset,
                 dataToken));
     }
+    
 
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
 
-    private ProgramCodeGenerator _codeGenerator;
+    protected ProgramCodeGenerator _codeGenerator;
 
     /**
      * The code stream associated with this adapter.
