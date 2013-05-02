@@ -306,7 +306,9 @@ CGPACKAGES = \
 	ptolemy.cg.kernel.generic.program \
 	ptolemy.cg.kernel.generic.program.procedural \
 	ptolemy.cg.kernel.generic.program.procedural.c \
+	ptolemy.cg.kernel.generic.program.procedural.c.de \
 	ptolemy.cg.kernel.generic.program.procedural.c.ptidyos \
+	ptolemy.cg.kernel.generic.program.procedural.c.structures \
 	ptolemy.cg.kernel.generic.program.procedural.java \
 	ptolemy.cg.kernel.generic.program.procedural.java.modular \
 	ptolemy.cg.kernel.generic.program.procedural.java.type \
