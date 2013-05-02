@@ -217,7 +217,7 @@
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, 40.0]">
                 </property>
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={19, 81, 961, 685}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={135, 81, 961, 685}, maximized=false}">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[727, 575]">
             </property>
@@ -246,9 +246,9 @@
                 </property>
             </property>
             <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-                <property name="text" class="ptolemy.kernel.util.StringAttribute" value="throttle local source with &#10;delayOffset parameter">
+                <property name="text" class="ptolemy.kernel.util.StringAttribute" value="throttle local source with &#10;maximumFutureFiringTime &#10;parameter">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="[-5.0, 65.0]">
+                <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="{-50.0, 65.0}">
                     <property name="relativeTo" class="ptolemy.kernel.util.StringAttribute" value="DiscreteClock">
                     </property>
                     <property name="relativeToElementName" class="ptolemy.kernel.util.StringAttribute" value="entity">
@@ -278,7 +278,17 @@
                 <doc>Create periodic timed events.</doc>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 140.0]">
                 </property>
-                <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="1.0">
+                <property name="DecoratorAttributesFor_PtidesDirector" class="ptolemy.domains.ptides.kernel.ThrottleAttributes">
+                    <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.PtidesDirector">
+                    </property>
+                    <property name="useMaximumFutureFiringTime" class="ptolemy.data.expr.Parameter" value="true">
+                    </property>
+                    <property name="maximumFutureFiringTime" class="ptolemy.data.expr.Parameter" value="1.0">
+                    </property>
+                    <property name="useMaximumFutureEvents" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                    <property name="maximumFutureEvents" class="ptolemy.data.expr.Parameter" value="0">
+                    </property>
                 </property>
             </entity>
             <entity name="DiscreteClock2" class="ptolemy.actor.lib.DiscreteClock">
@@ -287,9 +297,19 @@
                 <property name="stopTimeIsLocal" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
                 <doc>Create periodic timed events.</doc>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[325.0, 375.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{325.0, 375.0}">
                 </property>
-                <property name="maxFutureEvents" class="ptolemy.data.expr.Parameter" value="4">
+                <property name="DecoratorAttributesFor_PtidesDirector" class="ptolemy.domains.ptides.kernel.ThrottleAttributes">
+                    <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.PtidesDirector">
+                    </property>
+                    <property name="useMaximumFutureFiringTime" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                    <property name="maximumFutureFiringTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                    </property>
+                    <property name="useMaximumFutureEvents" class="ptolemy.data.expr.Parameter" value="true">
+                    </property>
+                    <property name="maximumFutureEvents" class="ptolemy.data.expr.Parameter" value="4">
+                    </property>
                 </property>
             </entity>
             <entity name="Test value and timestamp" class="ptolemy.actor.TypedCompositeActor">
@@ -310,12 +330,24 @@
                 </port>
                 <entity name="CurrentTime2" class="ptolemy.actor.lib.CurrentTime">
                     <doc>Output the current time.</doc>
-                    <property name="_location" class="ptolemy.kernel.util.Location" value="[245.0, 200.0]">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="{245.0, 200.0}">
+                    </property>
+                    <property name="DecoratorAttributesFor_PtidesDirector" class="ptolemy.domains.ptides.kernel.ThrottleAttributes">
+                        <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.PtidesDirector">
+                        </property>
+                        <property name="useMaximumFutureFiringTime" class="ptolemy.data.expr.Parameter" value="false">
+                        </property>
+                        <property name="maximumFutureFiringTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                        </property>
+                        <property name="useMaximumFutureEvents" class="ptolemy.data.expr.Parameter" value="false">
+                        </property>
+                        <property name="maximumFutureEvents" class="ptolemy.data.expr.Parameter" value="0">
+                        </property>
                     </property>
                     <port name="trigger" class="ptolemy.actor.TypedIOPort">
                         <property name="input"/>
                         <property name="multiport"/>
-                        <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="0.0">
+                        <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="1.0">
                         </property>
                         <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="Infinity">
                         </property>
@@ -327,10 +359,22 @@
                     <doc>Output the current time.</doc>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[245.0, 270.0]">
                     </property>
+                    <property name="DecoratorAttributesFor_PtidesDirector" class="ptolemy.domains.ptides.kernel.ThrottleAttributes">
+                        <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.PtidesDirector">
+                        </property>
+                        <property name="useMaximumFutureFiringTime" class="ptolemy.data.expr.Parameter" value="false">
+                        </property>
+                        <property name="maximumFutureFiringTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                        </property>
+                        <property name="useMaximumFutureEvents" class="ptolemy.data.expr.Parameter" value="false">
+                        </property>
+                        <property name="maximumFutureEvents" class="ptolemy.data.expr.Parameter" value="0">
+                        </property>
+                    </property>
                     <port name="trigger" class="ptolemy.actor.TypedIOPort">
                         <property name="input"/>
                         <property name="multiport"/>
-                        <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="0.0">
+                        <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="1.0">
                         </property>
                         <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="Infinity">
                         </property>
@@ -346,7 +390,7 @@
                     <port name="input" class="ptolemy.actor.TypedIOPort">
                         <property name="input"/>
                         <property name="multiport"/>
-                        <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="0.0">
+                        <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="1.0">
                         </property>
                         <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="Infinity">
                         </property>
@@ -362,7 +406,7 @@
                     <port name="input" class="ptolemy.actor.TypedIOPort">
                         <property name="input"/>
                         <property name="multiport"/>
-                        <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="0.0">
+                        <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="1.0">
                         </property>
                         <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="Infinity">
                         </property>
@@ -376,7 +420,7 @@
                     <port name="input" class="ptolemy.actor.TypedIOPort">
                         <property name="input"/>
                         <property name="multiport"/>
-                        <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="0.0">
+                        <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="1.0">
                         </property>
                         <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="Infinity">
                         </property>
@@ -418,7 +462,7 @@
                 </port>
             </entity>
             <entity name="Test value and timestamp2" class="ptolemy.actor.TypedCompositeActor">
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[525.0, 475.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{525.0, 475.0}">
                 </property>
                 <port name="port" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -427,12 +471,24 @@
                 </port>
                 <entity name="CurrentTime2" class="ptolemy.actor.lib.CurrentTime">
                     <doc>Output the current time.</doc>
-                    <property name="_location" class="ptolemy.kernel.util.Location" value="[195.0, 200.0]">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[195.0, 205.0]">
+                    </property>
+                    <property name="DecoratorAttributesFor_PtidesDirector" class="ptolemy.domains.ptides.kernel.ThrottleAttributes">
+                        <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.PtidesDirector">
+                        </property>
+                        <property name="useMaximumFutureFiringTime" class="ptolemy.data.expr.Parameter" value="false">
+                        </property>
+                        <property name="maximumFutureFiringTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                        </property>
+                        <property name="useMaximumFutureEvents" class="ptolemy.data.expr.Parameter" value="false">
+                        </property>
+                        <property name="maximumFutureEvents" class="ptolemy.data.expr.Parameter" value="0">
+                        </property>
                     </property>
                     <port name="trigger" class="ptolemy.actor.TypedIOPort">
                         <property name="input"/>
                         <property name="multiport"/>
-                        <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="0.0">
+                        <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="Infinity">
                         </property>
                         <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="Infinity">
                         </property>
@@ -444,10 +500,22 @@
                     <doc>Output the current time.</doc>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[195.0, 270.0]">
                     </property>
+                    <property name="DecoratorAttributesFor_PtidesDirector" class="ptolemy.domains.ptides.kernel.ThrottleAttributes">
+                        <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.PtidesDirector">
+                        </property>
+                        <property name="useMaximumFutureFiringTime" class="ptolemy.data.expr.Parameter" value="false">
+                        </property>
+                        <property name="maximumFutureFiringTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                        </property>
+                        <property name="useMaximumFutureEvents" class="ptolemy.data.expr.Parameter" value="false">
+                        </property>
+                        <property name="maximumFutureEvents" class="ptolemy.data.expr.Parameter" value="0">
+                        </property>
+                    </property>
                     <port name="trigger" class="ptolemy.actor.TypedIOPort">
                         <property name="input"/>
                         <property name="multiport"/>
-                        <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="0.0">
+                        <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="Infinity">
                         </property>
                         <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="Infinity">
                         </property>
@@ -463,7 +531,7 @@
                     <port name="input" class="ptolemy.actor.TypedIOPort">
                         <property name="input"/>
                         <property name="multiport"/>
-                        <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="0.0">
+                        <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="Infinity">
                         </property>
                         <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="Infinity">
                         </property>
@@ -479,7 +547,7 @@
                     <port name="input" class="ptolemy.actor.TypedIOPort">
                         <property name="input"/>
                         <property name="multiport"/>
-                        <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="0.0">
+                        <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="Infinity">
                         </property>
                         <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="Infinity">
                         </property>
@@ -493,7 +561,7 @@
                     <port name="input" class="ptolemy.actor.TypedIOPort">
                         <property name="input"/>
                         <property name="multiport"/>
-                        <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="0.0">
+                        <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="Infinity">
                         </property>
                         <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="Infinity">
                         </property>

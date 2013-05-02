@@ -47,7 +47,9 @@ import ptolemy.actor.Receiver;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.lib.Const;
+import ptolemy.actor.lib.Source;
 import ptolemy.actor.lib.TimeDelay;
+import ptolemy.actor.lib.resourceScheduler.ResourceAttributes;
 import ptolemy.actor.lib.resourceScheduler.ResourceScheduler;
 import ptolemy.actor.parameters.ParameterPort;
 import ptolemy.actor.parameters.SharedParameter;
@@ -69,7 +71,11 @@ import ptolemy.domains.ptides.lib.PtidesPort;
 import ptolemy.domains.sr.kernel.SRDirector;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.Decorator;
+import ptolemy.kernel.util.DecoratorAttributes;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 
@@ -170,7 +176,7 @@ import ptolemy.kernel.util.NamedObj;
  *  @Pt.ProposedRating Red (derler)
  *  @Pt.AcceptedRating Red (derler)
  */
-public class PtidesDirector extends DEDirector {
+public class PtidesDirector extends DEDirector implements Decorator {
 
     /** Construct a director in the given container with the given name.
      *  The container argument must not be null, or a
@@ -396,8 +402,8 @@ public class PtidesDirector extends DEDirector {
             _currentSourceTimestamp = time;
         }
 
-        _pureEvents.put(new PtidesEvent(actor, null, time, newIndex, 0,
-                _zeroTime, _currentSourceTimestamp));
+        _pureEvents.put(new PtidesEvent(actor, null, time, newIndex,
+                _getDepthOfActor(actor), _zeroTime, _currentSourceTimestamp));
         _currentSourceTimestamp = null;
 
         Time environmentTime = super.getEnvironmentTime();
@@ -417,6 +423,31 @@ public class PtidesDirector extends DEDirector {
      */
     public Time getCurrentSourceTimestamp() {
         return _currentSourceTimestamp;
+    }
+
+    /** Compute the deadline for an actor that requests a firing at time
+     *  <i>timestamp</i>.
+     *  @param actor The actor that requests firing.
+     *  @param timestamp The time when the actor wants to be fired.
+     *  @return The deadline for the actor.
+     *  @exception IllegalActionException If time objects cannot be created.
+     */
+    public Time getDeadline(Actor actor, Time timestamp)
+            throws IllegalActionException {
+        Time relativeDeadline = Time.POSITIVE_INFINITY;
+        for (int i = 0; i < actor.outputPortList().size(); i++) {
+            for (int j = 0; j < ((IOPort) actor.outputPortList().get(i))
+                    .sinkPortList().size(); j++) {
+                double newRelativeDeadline = _getRelativeDeadline((TypedIOPort) ((IOPort) actor
+                        .outputPortList().get(i)).sinkPortList().get(j));
+                if (newRelativeDeadline < Double.MAX_VALUE
+                        && newRelativeDeadline < relativeDeadline
+                                .getDoubleValue()) {
+                    relativeDeadline = new Time(this, newRelativeDeadline);
+                }
+            }
+        }
+        return timestamp.add(relativeDeadline);
     }
 
     /** Return a superdense time index for the current time,
@@ -695,31 +726,6 @@ public class PtidesDirector extends DEDirector {
         }
     }
 
-    /** Compute the deadline for an actor that requests a firing at time
-     *  <i>timestamp</i>.
-     *  @param actor The actor that requests firing.
-     *  @param timestamp The time when the actor wants to be fired.
-     *  @return The deadline for the actor.
-     *  @exception IllegalActionException If time objects cannot be created.
-     */
-    public Time getDeadline(Actor actor, Time timestamp)
-            throws IllegalActionException {
-        Time relativeDeadline = Time.POSITIVE_INFINITY;
-        for (int i = 0; i < actor.outputPortList().size(); i++) {
-            for (int j = 0; j < ((IOPort) actor.outputPortList().get(i))
-                    .sinkPortList().size(); j++) {
-                double newRelativeDeadline = _getRelativeDeadline((TypedIOPort) ((IOPort) actor
-                        .outputPortList().get(i)).sinkPortList().get(j));
-                if (newRelativeDeadline < Double.MAX_VALUE
-                        && newRelativeDeadline < relativeDeadline
-                                .getDoubleValue()) {
-                    relativeDeadline = new Time(this, newRelativeDeadline);
-                }
-            }
-        }
-        return timestamp.add(relativeDeadline);
-    }
-
     /** Return the value stored in a parameter associated with
      *  the NamedObj.
      *  @param object The object that has the parameter.
@@ -897,13 +903,20 @@ public class PtidesDirector extends DEDirector {
                 }
             }
 
-            for (Actor localSource : localSourceActors) { 
-                Double delayOffsetAtSource = _getDoubleParameterValue(
-                        (NamedObj) localSource, "delayOffset");
-                
+            for (Actor localSource : localSourceActors) {
+                Double delayOffsetAtSource = null;
+                ThrottleAttributes attributes = (ThrottleAttributes) ((NamedObj) localSource)
+                        .getDecoratorAttributes(this);
+                if (((BooleanToken) attributes.useMaximumFutureFiringTime
+                        .getToken()).booleanValue()) {
+                    delayOffsetAtSource = ((DoubleToken) attributes.maximumFutureFiringTime
+                            .getToken()).doubleValue();
+                }
+
                 SuperdenseDependency sourceDelay = SuperdenseDependency.OPLUS_IDENTITY;
-                if (delayOffsetAtSource != null) { 
-                    sourceDelay = SuperdenseDependency.valueOf(delayOffsetAtSource, 1);
+                if (delayOffsetAtSource != null) {
+                    sourceDelay = SuperdenseDependency.valueOf(
+                            delayOffsetAtSource, 1);
                 }
                 SuperdenseDependency minDelay = SuperdenseDependency.OPLUS_IDENTITY;
                 // Find minimum path to input port group.
@@ -913,7 +926,8 @@ public class PtidesDirector extends DEDirector {
                         for (IOPort sinkPort : outputPort.sinkPortList()) {
                             SuperdenseDependency dependency = _getSuperdenseDependencyPair(
                                     (TypedIOPort) sinkPort, groupPort);
-                            if (!dependency.equals(SuperdenseDependency.OPLUS_IDENTITY)) {
+                            if (!dependency
+                                    .equals(SuperdenseDependency.OPLUS_IDENTITY)) {
                                 minDelay = (SuperdenseDependency) minDelay
                                         .oPlus(dependency);
                             }
@@ -1517,11 +1531,17 @@ public class PtidesDirector extends DEDirector {
         }
 
         // A local source can have a maximum future events parameter.
-        Integer maxFutureEvents = _getIntParameterValue(
-                (NamedObj) event.actor(), "maxFutureEvents");
-        if (maxFutureEvents != null) {
-            int futureEvents = _getNumberOfFutureEventsFrom(event.actor());
-            return (futureEvents <= maxFutureEvents);
+        ThrottleAttributes attributes = (ThrottleAttributes) ((NamedObj) event
+                .actor()).getDecoratorAttributes(this);
+        if (attributes != null
+                && ((BooleanToken) attributes.useMaximumFutureEvents.getToken())
+                        .booleanValue()) {
+            Integer maxFutureEvents = ((IntToken) attributes.maximumFutureEvents
+                    .getToken()).intValue();
+            if (maxFutureEvents != null) {
+                int futureEvents = _getNumberOfFutureEventsFrom(event.actor());
+                return (futureEvents <= maxFutureEvents);
+            }
         }
 
         Double delayOffset = null;
@@ -1539,9 +1559,15 @@ public class PtidesDirector extends DEDirector {
                 }
             }
         } else {
-            // A local source can have a delay offset parameter.
-            delayOffset = _getDoubleParameterValue((NamedObj) event.actor(),
-                    "delayOffset");
+            attributes = (ThrottleAttributes) ((NamedObj) event.actor())
+                    .getDecoratorAttributes(this);
+            if (((BooleanToken) attributes.useMaximumFutureFiringTime
+                    .getToken()).booleanValue()) {
+                delayOffset = Double
+                        .valueOf(((DoubleToken) attributes.maximumFutureFiringTime
+                                .getToken()).doubleValue());
+            }
+
         }
         if (delayOffset == null
                 || localClock.getLocalTime().compareTo(
@@ -1679,5 +1705,49 @@ public class PtidesDirector extends DEDirector {
     private HashMap<PtidesPort, Queue<PtidesEvent>> _ptidesOutputPortEventQueue;
 
     private DEEventQueue _pureEvents;
+
+    @Override
+    public DecoratorAttributes createDecoratorAttributes(NamedObj target) {
+        if (target instanceof Source
+                || (target instanceof CompositeActor && ((((CompositeActor) target)
+                        .isOpaque())
+                        && ((CompositeActor) target).inputPortList().size() == 0 || ((CompositeActor) target)
+                        .getDirector() instanceof SRDirector))) {
+            try {
+                return new ThrottleAttributes(target, this);
+            } catch (KernelException ex) {
+                // This should not occur.
+                throw new InternalErrorException(ex);
+            } 
+        }
+        return null;
+    }
+
+    /** Return entities contained by the composite of this director.
+     *  @return List of entities.
+     */
+    public List<NamedObj> decoratedObjects() {
+        List<NamedObj> list = new ArrayList();
+        CompositeEntity container = (CompositeEntity) getContainer();
+        for (Object target : container.entityList()) {
+            if (target instanceof Source
+                    || (target instanceof CompositeActor && ((((CompositeActor) target)
+                            .isOpaque())
+                            && ((CompositeActor) target).inputPortList().size() == 0 || ((CompositeActor) target)
+                            .getDirector() instanceof SRDirector))) {
+                list.add((NamedObj) target);
+            }
+        }
+        return list;
+    }
+
+    /** Returns false, as this director only decorates local sources 
+     *  immediately contained by the PtidesDirector, thus it should 
+     *  not cross opaque hierarchy boundaries. 
+     *  @return false.
+     */
+    public boolean isGlobalDecorator() {
+        return true;
+    }
 
 }
