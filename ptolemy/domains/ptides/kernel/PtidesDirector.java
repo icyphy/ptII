@@ -229,13 +229,10 @@ public class PtidesDirector extends DEDirector implements Decorator {
                     sourcePort, "networkDelayBound");
             double sourcePlatformDelayBound = PtidesDirector
                     ._getDoubleParameterValue(sourcePort,
-                            "sourcePlatformDelayBound");
-            double clockSynchronizationErrorBound = PtidesDirector
-                    ._getDoubleParameterValue(sourcePort,
-                            "clockSynchronizationErrorBound");
+                            "sourcePlatformDelayBound"); 
             if (localClock.getLocalTime().subtract(event.timeStamp())
                     .getDoubleValue() > sourcePlatformDelayBound
-                    + networkDelayBound + clockSynchronizationErrorBound) {
+                    + networkDelayBound + _clockSynchronizationErrorBound) {
                 event = _handleTimingError(
                         sourcePort,
                         event,
