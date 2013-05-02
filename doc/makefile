@@ -254,6 +254,7 @@ CGPACKAGES = \
 	ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib.logic \
 	ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib.string \
 	ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.sched \
+	ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.de.kernel \
 	ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.de.lib \
 	ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.giotto.kernel \
 	ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.modal.kernel \
