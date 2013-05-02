@@ -2,18 +2,20 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="PowerMonitoringSeries" class="ptolemy.domains.ptera.kernel.PteraModalModel">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
     </property>
     <property name="_location" class="ptolemy.kernel.util.Location" value="{315.0, 295.0}">
     </property>
     <property name="_expertMode" class="ptolemy.kernel.util.SingletonAttribute">
     </property>
     <entity name="_Controller" class="ptolemy.domains.ptera.kernel.PteraController">
+        <property name="errorCause" class="ptolemy.data.expr.Parameter">
+        </property>
         <property name="_Director" class="ptolemy.domains.ptera.kernel.PteraDirector">
             <property name="_location" class="ptolemy.kernel.util.Location" value="{0.0, 0.0}">
             </property>
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 23, 1440, 831}, maximized=true}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={65, 19, 1451, 860}, maximized=true}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1206, 720]">
         </property>
@@ -198,7 +200,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[710.0, 65.0]">
             </property>
         </property>
-        <property name="useOnlineData" class="ptolemy.data.expr.Parameter" value="">
+        <property name="useOnlineData" class="ptolemy.data.expr.Parameter" value="false">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -364,6 +366,8 @@
             </property>
             <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.21313897753518193">
             </property>
+            <property name="history" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
         </relation>
         <relation name="relation3" class="ptolemy.domains.ptera.kernel.SchedulingRelation">
             <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.10122009912265917">
@@ -371,6 +375,8 @@
             <property name="gamma" class="ptolemy.data.expr.Parameter" value="-0.36693290314707383">
             </property>
             <property name="immediate" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="history" class="ptolemy.data.expr.Parameter" value="true">
             </property>
             <property name="delay" class="ptolemy.domains.ptera.kernel.SchedulingRelation$1" value="0.0">
             </property>
@@ -385,17 +391,23 @@
             </property>
             <property name="gamma" class="ptolemy.data.expr.Parameter" value="2.055136669496288">
             </property>
+            <property name="history" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
         </relation>
         <relation name="relation2" class="ptolemy.domains.ptera.kernel.SchedulingRelation">
             <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.004943293177446304">
             </property>
             <property name="gamma" class="ptolemy.data.expr.Parameter" value="-1.1233840564596653">
             </property>
+            <property name="history" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
         </relation>
         <relation name="relation" class="ptolemy.domains.ptera.kernel.SchedulingRelation">
             <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.26103993871100184">
             </property>
             <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.6653869150033958">
+            </property>
+            <property name="history" class="ptolemy.data.expr.Parameter" value="true">
             </property>
             <property name="errorTransition" class="ptolemy.data.expr.Parameter" value="true">
             </property>
@@ -404,6 +416,8 @@
             <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.5594597898648522">
             </property>
             <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.8983619742964378">
+            </property>
+            <property name="history" class="ptolemy.data.expr.Parameter" value="true">
             </property>
             <property name="errorTransition" class="ptolemy.data.expr.Parameter" value="true">
             </property>
@@ -416,6 +430,8 @@
             </property>
             <property name="gamma" class="ptolemy.data.expr.Parameter" value="-0.558089133442452">
             </property>
+            <property name="history" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
         </relation>
         <relation name="relation8" class="ptolemy.domains.ptera.kernel.SchedulingRelation">
             <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="!useOnlineData">
@@ -425,17 +441,23 @@
             </property>
             <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.566166837970347">
             </property>
+            <property name="history" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
         </relation>
         <relation name="relation9" class="ptolemy.domains.ptera.kernel.SchedulingRelation">
             <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.21562406997801728">
             </property>
             <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.3702053086309419">
             </property>
+            <property name="history" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
         </relation>
         <relation name="relation10" class="ptolemy.domains.ptera.kernel.SchedulingRelation">
             <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.4514981419195724">
             </property>
             <property name="gamma" class="ptolemy.data.expr.Parameter" value="-0.524026225635944">
+            </property>
+            <property name="history" class="ptolemy.data.expr.Parameter" value="true">
             </property>
         </relation>
         <link port="ChangeIconColor.incomingPort" relation="relation2"/>
@@ -1227,7 +1249,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, 25.0]">
             </property>
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={80, 96, 934, 634}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={262, 157, 945, 663}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
         </property>
@@ -1235,16 +1257,30 @@
         </property>
         <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{424.0498046874999, 329.0003850446428}">
         </property>
+        <property name="enableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="true">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{75, 245}">
+            </property>
+        </property>
         <entity name="JSONToToken" class="ptolemy.actor.lib.conversions.json.JSONToToken">
             <property name="_location" class="ptolemy.kernel.util.Location" value="{150.0, 120.0}">
             </property>
             <property name="_expertMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-                <property name="_type" class="ptolemy.actor.TypeAttribute" value="arrayType({Readings = arrayType(arrayType(double)), uuid = string}) ">
-                </property>
-            </port>
         </entity>
         <entity name="ArrayToSequence" class="ptolemy.domains.sdf.lib.ArrayToSequence">
             <property name="enforceArrayLength" class="ptolemy.data.expr.Parameter" value="false">
@@ -1302,23 +1338,35 @@
         <relation name="relation" class="ptolemy.actor.TypedIORelation">
             <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;JSONToToken.output&quot;,x=150.0,y=120.0}, tail={id=&quot;ArrayToSequence.input&quot;,x=270.0,y=120.0}, points={} } }">
             </property>
+            <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+            </property>
         </relation>
         <relation name="relation2" class="ptolemy.actor.TypedIORelation">
             <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;ArrayToSequence.output&quot;,x=270.0,y=120.0}, tail={id=&quot;RecordDisassembler.input&quot;,x=370.0,y=100.0}, points={} } }">
             </property>
+            <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+            </property>
         </relation>
         <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+            <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+            </property>
         </relation>
         <relation name="relation4" class="ptolemy.actor.TypedIORelation">
             <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;ArrayElement.output&quot;,x=560.0,y=120.0}, tail={id=&quot;ArrayElement2.input&quot;,x=665.0,y=130.0}, points={} } }">
+            </property>
+            <property name="color" class="ptolemy.actor.gui.ColorAttribute">
             </property>
         </relation>
         <relation name="relation5" class="ptolemy.actor.TypedIORelation">
             <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;JSONToToken.input&quot;,x=150.0,y=120.0}, tail={id=&quot;OnlineDataFileReader.output&quot;,x=5.0,y=120.0}, points={} } }">
             </property>
+            <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+            </property>
         </relation>
         <relation name="relation6" class="ptolemy.actor.TypedIORelation">
             <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;ArrayElement2.output&quot;,x=665.0,y=130.0}, tail={id=&quot;SetVariable.input&quot;,x=775.0,y=130.0}, points={} } }">
+            </property>
+            <property name="color" class="ptolemy.actor.gui.ColorAttribute">
             </property>
         </relation>
         <link port="JSONToToken.input" relation="relation5"/>
@@ -1341,7 +1389,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, 5.0]">
             </property>
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={253, 133, 934, 634}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={189, 216, 945, 663}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
         </property>
@@ -1368,6 +1416,25 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="{295, 50}">
             </property>
         </property>
+        <property name="enableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="true">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{226.21886160715616, 343.90895647321787}">
+            </property>
+        </property>
         <entity name="LocalDataFileReader" class="ptolemy.actor.lib.io.FileReader">
             <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="$file">
             </property>
@@ -1380,11 +1447,6 @@
             </property>
             <property name="_expertMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-                <property name="_type" class="ptolemy.actor.TypeAttribute" value="arrayType({Readings = arrayType(arrayType(double)), uuid = string}) ">
-                </property>
-            </port>
         </entity>
         <entity name="ArrayToSequence" class="ptolemy.domains.sdf.lib.ArrayToSequence">
             <property name="enforceArrayLength" class="ptolemy.data.expr.Parameter" value="false">
@@ -1486,17 +1548,25 @@
         <relation name="relation" class="ptolemy.actor.TypedIORelation">
             <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;JSONToToken.output&quot;,x=105.0,y=210.0}, tail={id=&quot;ArrayToSequence.input&quot;,x=230.0,y=210.0}, points={} } }">
             </property>
+            <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+            </property>
         </relation>
         <relation name="relation2" class="ptolemy.actor.TypedIORelation">
             <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;ArrayToSequence.output&quot;,x=230.0,y=210.0}, tail={id=&quot;RecordDisassembler.input&quot;,x=340.0,y=180.0}, points={315.0,210.0,315.0,200.0} } }">
+            </property>
+            <property name="color" class="ptolemy.actor.gui.ColorAttribute">
             </property>
         </relation>
         <relation name="relation3" class="ptolemy.actor.TypedIORelation">
             <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;ArrayElement.output&quot;,x=820.0,y=175.0}, tail={id=&quot;ArrayElement2.input&quot;,x=935.0,y=195.0}, points={880.0,175.0,880.0,185.0} } }">
             </property>
+            <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+            </property>
         </relation>
         <relation name="relation4" class="ptolemy.actor.TypedIORelation">
             <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;LocalDataFileReader.output&quot;,x=-30.0,y=210.0}, tail={id=&quot;JSONToToken.input&quot;,x=105.0,y=210.0}, points={} } }">
+            </property>
+            <property name="color" class="ptolemy.actor.gui.ColorAttribute">
             </property>
         </relation>
         <relation name="relation6" class="ptolemy.actor.TypedIORelation">
@@ -1506,17 +1576,25 @@
             </vertex>
             <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;ArrayLength.input&quot;,x=535.0,y=200.0}, tail={id=&quot;relation6.vertex1&quot;,x=470.0,y=190.0}, points={480.0,200.0,480.0,190.0} },{ head={id=&quot;RecordDisassembler.Readings&quot;,x=340.0,y=180.0}, tail={id=&quot;relation6.vertex1&quot;,x=470.0,y=190.0}, points={} },{ head={id=&quot;ArrayElement.input&quot;,x=820.0,y=175.0}, tail={id=&quot;relation6.vertex1&quot;,x=470.0,y=190.0}, points={765.0,165.0,765.0,145.0,480.0,145.0,480.0,190.0} } }">
             </property>
+            <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+            </property>
         </relation>
         <relation name="relation7" class="ptolemy.actor.TypedIORelation">
             <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Expression.max&quot;,x=675.0,y=220.0}, tail={id=&quot;ArrayLength.output&quot;,x=535.0,y=200.0}, points={590.0,210.0,590.0,200.0} } }">
+            </property>
+            <property name="color" class="ptolemy.actor.gui.ColorAttribute">
             </property>
         </relation>
         <relation name="relation9" class="ptolemy.actor.TypedIORelation">
             <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;ArrayElement2.output&quot;,x=935.0,y=195.0}, tail={id=&quot;SetVariable.input&quot;,x=1045.0,y=195.0}, points={} } }">
             </property>
+            <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+            </property>
         </relation>
         <relation name="relation5" class="ptolemy.actor.TypedIORelation">
             <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Expression.input&quot;,x=675.0,y=220.0}, tail={id=&quot;Const.output&quot;,x=555.0,y=270.0}, points={590.0,230.0,590.0,270.0} } }">
+            </property>
+            <property name="color" class="ptolemy.actor.gui.ColorAttribute">
             </property>
         </relation>
         <relation name="relation10" class="ptolemy.actor.TypedIORelation">
@@ -1525,6 +1603,8 @@
             <vertex name="vertex1" value="{765.0, 220.0}">
             </vertex>
             <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;relation10.vertex1&quot;,x=765.0,y=220.0}, tail={id=&quot;SetVariable2.input&quot;,x=810.0,y=230.0}, points={765.0,230.0} },{ head={id=&quot;ArrayElement.index&quot;,x=820.0,y=175.0}, tail={id=&quot;relation10.vertex1&quot;,x=765.0,y=220.0}, points={765.0,185.0} },{ head={id=&quot;Expression.output&quot;,x=675.0,y=220.0}, tail={id=&quot;relation10.vertex1&quot;,x=765.0,y=220.0}, points={} } }">
+            </property>
+            <property name="color" class="ptolemy.actor.gui.ColorAttribute">
             </property>
         </relation>
         <link port="LocalDataFileReader.output" relation="relation4"/>
