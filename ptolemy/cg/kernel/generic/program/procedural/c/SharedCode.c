@@ -39,13 +39,23 @@ struct token {         // Base type for tokens.
 /**/
 
 
-/***convertPrimitivesBlock***/
+/***convertPrimitivesBlockDeclaration***/
 #define StringtoInt atoi
 #define StringtoDouble atof
 #define StringtoLong atol
 #define DoubletoInt (int)
 #define InttoDouble (double)
 #define InttoLong (long)
+
+char* InttoString (int i);
+char* LongtoString (long long l);
+char* DoubletoString (double d);
+char* BooleantoString (boolean b);
+char* UnsignedBytetoString (unsigned char b);
+
+/**/
+
+/***convertPrimitivesBlockImplementation***/
 
 char* InttoString (int i) {
     char* string = (char*) malloc(sizeof(char) * 12);

@@ -14,6 +14,8 @@
 
 PTCGLIBRARIES = @PTCGLibraries@
 PTCGINCLUDES = @PTCGIncludes@
+PTCG_CFILES = @PTCG_CFILES@
+PTCG_OFILES = @PTCG_OFILES@
 
 # Under Windows, to create a binary that does not pop up a console window,
 # compile with: make -f @modelName@.mk CC_FLAGS=-mwindows
@@ -42,8 +44,13 @@ WARNING_CC_FLAGS = -Wall
 
 # We need -lm so we can get floor() for ftoi() 
 # We need -D__int64="long long" when invoking jni interface under cygwin
-@modelName@: @modelName@.c
-	@PTCGCompiler@ -D__int64="long long" $(WARNING_CC_FLAGS) $(CC_FLAGS) $(USER_CC_FLAGS) $(DEBUG) @modelName@.c $(PTCGINCLUDES) -o @modelName@ -lm $(PTCGLIBRARIES)
+@modelName@: @modelName@.c $(PTCG_OFILES)
+	@PTCGCompiler@ -D__int64="long long" $(WARNING_CC_FLAGS) $(CC_FLAGS) $(USER_CC_FLAGS) $(DEBUG) $(PTCGINCLUDES) $^ -o @modelName@ -lm $(PTCGLIBRARIES)
+
+# Each subdirectory must supply rules for building sources it contributes
+./src/%.o: ./src/%.c
+	gcc $(WARNING_CC_FLAGS) $(CC_FLAGS) $(USER_CC_FLAGS) $(DEBUG) -c -o "$@" "$<"
+
 
 # Rule to compile with different optimizers
 O_FLAGS=-O0 -O -Os -O2 -O3
@@ -72,3 +79,11 @@ coverage:
 	make -f @modelName@.mk USER_CC_FLAGS="-fprofile-arcs -ftest-coverage"
 	./@modelName@
 	#gcov @modelName@.c
+	
+# Other Targets
+clean:
+	rm -rf $(PTCG_OFILES) @modelName@
+	-@echo ' '
+
+.PHONY: all clean dependents
+.SECONDARY:
