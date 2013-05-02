@@ -244,11 +244,11 @@
             </property>
             <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{350.0, 262.0}">
             </property>
-            <property name="PEDFCore" class="ptolemy.actor.lib.resourceScheduler.PreemptiveEDFScheduler">
+            <property name="PEDFCore" class="ptolemy.actor.lib.resourceScheduler.EDFScheduler">
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{240, 110}">
                 </property>
             </property>
-            <property name="PEDFCore2" class="ptolemy.actor.lib.resourceScheduler.PreemptiveEDFScheduler">
+            <property name="PEDFCore2" class="ptolemy.actor.lib.resourceScheduler.EDFScheduler">
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[405.0, 455.0]">
                 </property>
             </property>
