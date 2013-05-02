@@ -1561,7 +1561,8 @@ public class PtidesDirector extends DEDirector implements Decorator {
         } else {
             attributes = (ThrottleAttributes) ((NamedObj) event.actor())
                     .getDecoratorAttributes(this);
-            if (((BooleanToken) attributes.useMaximumFutureFiringTime
+            if (attributes != null && 
+                    ((BooleanToken) attributes.useMaximumFutureFiringTime
                     .getToken()).booleanValue()) {
                 delayOffset = Double
                         .valueOf(((DoubleToken) attributes.maximumFutureFiringTime
