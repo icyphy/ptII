@@ -335,7 +335,7 @@ public class MetroIIPNDirector extends PNDirector implements
         // Actor actor = (Actor) getContainer().getContainer();
         Thread current_thread = Thread.currentThread();
         String event_name = current_thread.getName() + suffix;
-        addProposedMetroIIEvent(_makeEventBuilder(event_name, Event.Type.BEGIN));
+        addProposedMetroIIEvent(_makeEventBuilder(event_name));
 
         // System.out.println("propose: " + event_name);
 
@@ -391,12 +391,11 @@ public class MetroIIPNDirector extends PNDirector implements
      * @param t Type of the MetroII event
      * @return newly created MetroII event
      */
-    private Event.Builder _makeEventBuilder(String name, Event.Type t) {
+    private Event.Builder _makeEventBuilder(String name) {
         Event.Builder meb = Event.newBuilder();
         meb.setName(name);
-        meb.setOwner(name);
         meb.setStatus(Event.Status.PROPOSED);
-        meb.setType(t);
+        meb.setType(Event.Type.DEFAULT_NOTIFIED);
         return meb;
     }
 

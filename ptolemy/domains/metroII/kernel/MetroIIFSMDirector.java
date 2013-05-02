@@ -93,7 +93,6 @@ public class MetroIIFSMDirector extends FSMDirector implements
             Event.Status s) {
         Event.Builder meb = Event.newBuilder();
         meb.setName(name);
-        meb.setOwner(name);
         meb.setStatus(s);
         meb.setType(t);
         return meb;
@@ -120,7 +119,7 @@ public class MetroIIFSMDirector extends FSMDirector implements
 
             Event.Builder eb;
             do {
-                eb = MetroEventBuilder.newProposedEvent(MetroEventBuilder.trimModelName(currentState.getFullName()), "");
+                eb = MetroEventBuilder.newProposedEvent(MetroEventBuilder.trimModelName(currentState.getFullName()));
                 events.add(eb);
                 resultHandler.handleResult(events);
                 events.remove(events.size() - 1);

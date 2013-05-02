@@ -153,8 +153,7 @@ public class MetroIISRDirector extends SRDirector implements
                         // check if the actor is ready to fire.
                         if (_isReadyToFire(actor)) {
                             Event.Builder builder = makeEventBuilder(
-                                    actor.getFullName(), Event.Type.BEGIN,
-                                    Event.Status.PROPOSED);
+                                    actor.getFullName());
                             _nameToActor.put(builder.getName(), actor);
                             _events.add(builder);
                         } else {
@@ -183,8 +182,8 @@ public class MetroIISRDirector extends SRDirector implements
                     resultHandler.handleResult(_events);
                     ArrayList<Event.Builder> tmp_events = new ArrayList<Event.Builder>();
                     for (Builder etb : _events) {
-                        if (etb.getType() == Event.Type.BEGIN
-                                && etb.getStatus() == Event.Status.NOTIFIED) {
+                        if (etb.getName().contains("Begin") && 
+                                etb.getStatus() == Event.Status.NOTIFIED) {
                             Actor actor = _nameToActor.get(etb.getName());
                             if (_debugging) {
                                 _debug("Firing " + actor.getFullName());
@@ -230,13 +229,11 @@ public class MetroIISRDirector extends SRDirector implements
      * @param s MetroII event status
      * @return MetroII event builder
      */
-    private Event.Builder makeEventBuilder(String name, Event.Type t,
-            Event.Status s) {
+    private Event.Builder makeEventBuilder(String name) {
         Event.Builder builder = Event.newBuilder();
         builder.setName(name);
-        builder.setOwner(name);
-        builder.setStatus(s);
-        builder.setType(t);
+        builder.setStatus(Event.Status.PROPOSED);
+        builder.setType(Event.Type.DEFAULT_NOTIFIED);
         return builder;
     }
 

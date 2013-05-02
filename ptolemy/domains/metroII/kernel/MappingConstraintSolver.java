@@ -85,17 +85,17 @@ public class MappingConstraintSolver implements ConstraintSolver {
     public String toString() {
         return _counter.toString();
     }
-    
+
     public boolean debugging() {
-        return _debugging; 
+        return _debugging;
     }
-    
+
     public void turnOnDebugging() {
-        _debugging = true; 
+        _debugging = true;
     }
-    
+
     public void turnOffDebugging() {
-        _debugging = false; 
+        _debugging = false;
     }
 
     /**
@@ -120,7 +120,14 @@ public class MappingConstraintSolver implements ConstraintSolver {
             String eventName = event.getName();
             int nodeId = _eventIDDictionary.getID(eventName);
             if (nodeId < 0) {
-                event.setStatus(Event.Status.PROPOSED);
+                if (event.getType() == Event.Type.DEFAULT_NOTIFIED) {
+                    event.setStatus(Event.Status.PROPOSED);
+                } else if (event.getType() == Event.Type.DEFAULT_WAITING){
+                    event.setStatus(Event.Status.WAITING);
+                }
+                else {
+                    assert false; 
+                }
             } else {
                 id2event.put(nodeId, event);
                 Iterable<Integer> edges = _mapping.getEdges(nodeId);
@@ -137,20 +144,21 @@ public class MappingConstraintSolver implements ConstraintSolver {
                     Event.Builder e2 = id2event.get(eventId2);
                     e1.setStatus(Event.Status.PROPOSED);
                     e2.setStatus(Event.Status.PROPOSED);
-                    
-                    assert !e1.hasTime() && !e2.hasTime();
-                    
-//                    if (e1.hasTime() && !e2.hasTime()) {
-//                        assert false;  //e2.setTime(e1.getTime()); 
-//                    }
-//                    else if (!e1.hasTime() && e2.hasTime()) {
-//                        assert false;  //e1.setTime(e2.getTime()); 
-//                    }
-//                    else if (e1.hasTime() && e2.hasTime() && e1.getTime() != e2.getTime()) {
-//                        assert false; 
-//                    }
 
-                    System.out.println("Notifying "+e1.getName()+" "+e2.getName()); 
+                    assert !e1.hasTime() && !e2.hasTime();
+
+                    //                    if (e1.hasTime() && !e2.hasTime()) {
+                    //                        assert false;  //e2.setTime(e1.getTime()); 
+                    //                    }
+                    //                    else if (!e1.hasTime() && e2.hasTime()) {
+                    //                        assert false;  //e1.setTime(e2.getTime()); 
+                    //                    }
+                    //                    else if (e1.hasTime() && e2.hasTime() && e1.getTime() != e2.getTime()) {
+                    //                        assert false; 
+                    //                    }
+
+                    System.out.println("Notifying " + e1.getName() + " "
+                            + e2.getName());
 
                     Iterable<Integer> edges1 = _mapping.getEdges(eventId1);
                     Iterable<Integer> edges2 = _mapping.getEdges(eventId2);
@@ -252,8 +260,8 @@ public class MappingConstraintSolver implements ConstraintSolver {
 
         private int[] _count;
     }
-    
-    private boolean _debugging = false; 
+
+    private boolean _debugging = false;
 
     private ConstraintCounter _counter;
 

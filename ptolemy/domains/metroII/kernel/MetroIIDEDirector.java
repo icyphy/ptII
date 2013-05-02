@@ -358,7 +358,7 @@ public class MetroIIDEDirector extends DEDirector implements
             }
 
             Event.Builder idleEvent = MetroEventBuilder.newProposedEvent(
-                    getFullName() + ".Idle", getFullName(), Long.MAX_VALUE,
+                    getFullName() + ".Idle", Long.MAX_VALUE,
                     getTimeResolution());
             do {
 
@@ -478,7 +478,7 @@ public class MetroIIDEDirector extends DEDirector implements
                 }
 
                 idleEvent = MetroEventBuilder.newProposedEvent(getFullName()
-                        + ".Idle", getFullName(), idleEventTimeStamp,
+                        + ".Idle", idleEventTimeStamp,
                         getTimeResolution());
 
                 _events.add(idleEvent);

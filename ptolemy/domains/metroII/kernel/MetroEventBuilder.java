@@ -9,13 +9,12 @@ public class MetroEventBuilder {
         // TODO Auto-generated constructor stub
     }
 
-    static public Builder newProposedEvent(String eventName, String Owner, long timeValue,
+    static public Builder newProposedEvent(String eventName, long timeValue,
             double resolution) {
         Event.Builder builder = Event.newBuilder();
         builder.setName(eventName);
-        builder.setOwner(Owner);
         builder.setStatus(Event.Status.PROPOSED);
-        builder.setType(Event.Type.GENERIC);
+        builder.setType(Event.Type.DEFAULT_NOTIFIED);
         Event.Time.Builder timeBuilder = Event.Time.newBuilder();
         double scaler = resolution / timeBuilder.getResolution();
 
@@ -29,12 +28,11 @@ public class MetroEventBuilder {
         return builder; 
     }
     
-    static public Builder newProposedEvent(String eventName, String Owner) {
+    static public Builder newProposedEvent(String eventName) {
         Event.Builder builder = Event.newBuilder();
         builder.setName(eventName);
-        builder.setOwner(Owner);
         builder.setStatus(Event.Status.PROPOSED);
-        builder.setType(Event.Type.GENERIC);
+        builder.setType(Event.Type.DEFAULT_NOTIFIED);
         
         return builder; 
     }

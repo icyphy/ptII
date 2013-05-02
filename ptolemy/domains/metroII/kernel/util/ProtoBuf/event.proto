@@ -4,12 +4,10 @@ option java_outer_classname = "metroIIcomm";
 
 message Event {
   required string name = 1;
-  required string owner = 2; 
 
   enum Type {
-    BEGIN = 0;
-    END = 1;
-    GENERIC = 2;
+    DEFAULT_NOTIFIED = 0;
+    DEFAULT_WAITING = 1;
   }
 
   enum Status {

@@ -59,9 +59,8 @@ public class MappingConstraintSolverTest {
     private Builder _createMetroIIEvent(String name) {
         Event.Builder builder = Event.newBuilder();
         builder.setName(name);
-        // builder.setOwner();
         builder.setStatus(Event.Status.PROPOSED);
-        builder.setType(Event.Type.GENERIC);
+        builder.setType(Event.Type.DEFAULT_NOTIFIED);
         return builder;
     }
     
