@@ -11,6 +11,10 @@ if ($param(scaleOnLeft)) {
 }
 /**/
 
+/***Scale_declareScaleOnLeftBlock***/
+Token Scale_scaleOnLeft(Token input, double factor);
+/**/
+
 /***Scale_scaleOnLeftBlock***/
 Token Scale_scaleOnLeft(Token input, double factor) {
 #ifdef PTCG_TYPE_Array
@@ -31,6 +35,10 @@ Token Scale_scaleOnLeft(Token input, double factor) {
     }
 #endif
 }
+/**/
+
+/***Scale_declareScaleOnRightBlock***/
+Token Scale_scaleOnRight(Token input, double factor);
 /**/
 
 /***Scale_scaleOnRightBlock***/

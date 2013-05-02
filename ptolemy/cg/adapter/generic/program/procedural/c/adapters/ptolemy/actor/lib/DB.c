@@ -1,4 +1,4 @@
-/*** sharedBlock ***/
+/*** declareSharedBlock ***/
 #define _20LOG10SCALE 8.68588963807 //20.0 * (1.0 / Math.log(10.0))
 #include <math.h>
 /**/

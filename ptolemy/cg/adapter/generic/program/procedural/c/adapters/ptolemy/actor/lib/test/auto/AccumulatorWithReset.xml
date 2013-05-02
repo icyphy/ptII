@@ -2,11 +2,11 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="AccumulatorWithReset" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={177, 22, 813, 510}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={178, 52, 1336, 725}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1122, 634]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
@@ -17,9 +17,17 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, 60.0]">
         </property>
+        <property name="DecoratorAttributesFor_CCodeGenerator" class="ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.sched.StaticSchedulingDirectorAttributes">
+            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="CCodeGenerator">
+            </property>
+            <property name="padBuffers" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <property name="allowDynamicMultiportReference" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+        </property>
     </property>
-    <property name="JavaCodeGenerator" class="ptolemy.cg.kernel.generic.program.procedural.java.JavaCodeGenerator">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[405.0, 75.0]">
+    <property name="CCodeGenerator" class="ptolemy.cg.kernel.generic.program.procedural.c.CCodeGenerator">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[430.0, 70.0]">
         </property>
     </property>
     <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
@@ -79,21 +87,31 @@
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
         </property>
+        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+        </property>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
         </property>
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
         </property>
+        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+        </property>
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
         </property>
+        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+        </property>
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
         </property>
     </relation>
     <link port="Ramp.output" relation="relation"/>

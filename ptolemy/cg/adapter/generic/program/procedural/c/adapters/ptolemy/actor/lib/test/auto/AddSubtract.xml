@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="AddSubtract" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
     </property>
     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="2">
@@ -10,16 +10,16 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[120.0, 50.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={102, 41, 814, 638}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={103, 69, 1195, 619}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[601, 528]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[981, 528]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.5, 264.0}">
     </property>
-    <property name="JavaCodeGenerator" class="ptolemy.cg.kernel.generic.program.procedural.java.JavaCodeGenerator">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[405.0, 70.0]">
+    <property name="CCodeGenerator" class="ptolemy.cg.kernel.generic.program.procedural.c.CCodeGenerator">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[410.0, 70.0]">
         </property>
     </property>
     <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
@@ -61,13 +61,19 @@
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
         </property>
+        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+        </property>
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
         </property>
+        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+        </property>
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
         </property>
     </relation>
     <link port="AddSubtract.plus" relation="relation2"/>

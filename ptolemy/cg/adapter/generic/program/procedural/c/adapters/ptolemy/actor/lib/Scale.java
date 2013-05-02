@@ -1,6 +1,6 @@
 /* A adapter class for ptolemy.actor.lib.Scale
 
- Copyright (c) 2006-2011 The Regents of the University of California.
+ Copyright (c) 2006-2013 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -27,13 +27,19 @@
  */
 package ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.actor.lib;
 
+import java.util.HashSet;
+import java.util.Set;
+
+import ptolemy.cg.kernel.generic.program.CodeStream;
+import ptolemy.kernel.util.IllegalActionException;
+
 //////////////////////////////////////////////////////////////////////////
 //// Scale
 
 /**
  A adapter class for ptolemy.actor.lib.Scale.
 
- @author Bert Rodiers
+ @author Bert Rodiers, William Lucas
  @version $Id$
  @since Ptolemy II 8.0
  @Pt.ProposedRating Red (rodiers)
@@ -49,5 +55,28 @@ public class Scale
      */
     public Scale(ptolemy.actor.lib.Scale actor) {
         super(actor);
+    }
+        
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+    
+    /**
+     * Generate the declaration of the shared code.  If the Scale_scaleOnLeft() or
+     * Scale_scaleOnRight methods are needed, include them in the shared
+     * section
+     * @exception IllegalActionException Not thrown in this base class.
+     */
+    public Set<String> getDeclareSharedCode() throws IllegalActionException {
+        Set<String> sharedCode = new HashSet<String>();
+        CodeStream codestream = _templateParser.getCodeStream();
+        codestream.clear();
+        if (_needScaleMethods) {
+            codestream.appendCodeBlocks("Scale_declareScaleOn.*");
+            if (!codestream.isEmpty()) {
+                sharedCode.add(_templateParser.processCode(codestream
+                        .toString()));
+            }
+        }
+        return sharedCode;
     }
 }
