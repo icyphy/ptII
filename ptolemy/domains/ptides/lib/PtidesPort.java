@@ -157,7 +157,13 @@ public class PtidesPort extends MirrorPort {
      */
     public Parameter isNetworkPort;
 
-    /** Network delay bound parameter that defaults to the double value 0.0. */
+    /** An assumed upper bound on the network delay, used if this is a network
+     *  receiver port (<i>isNetworkPort</i> is true and the port is an input).
+     *  If the actual network delay exceeds this assumed value, then an exception
+     *  may result if actual received time of the input is too late to ensure that
+     *  DE semantics is respected.
+     *  This is a double that defaults to 0.0.
+     */
     public Parameter networkDelayBound;
 
     /** Platform delay bound parameter that defaults to the double value 0.0. */
