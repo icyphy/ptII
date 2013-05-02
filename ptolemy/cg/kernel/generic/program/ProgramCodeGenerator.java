@@ -269,7 +269,7 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
 
         if (ptType == BaseType.SCALAR) {
             // FIXME: do we need a codegen type for scalar?
-            return "";
+            return "Scalar";
         }
 
         // FIXME: We may need to add more types.
