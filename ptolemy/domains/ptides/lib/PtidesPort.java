@@ -168,7 +168,7 @@ public class PtidesPort extends MirrorPort {
 
     /** An assumed upper bound on the difference between platform time and
      *  the event timestamp sent to a network transmitter port
-     *  (i>isNetworkPort</i> is true and the port is an output), 
+     *  (<i>isNetworkPort</i> is true and the port is an output), 
      *  where platform time is smaller than the event timestamp. 
      *  If the platform time plus the platformDelayBound
      *  is smaller than the event timestamp, an exception is thrown. 
@@ -183,7 +183,7 @@ public class PtidesPort extends MirrorPort {
 
     /** An assumed upper bound on the difference between platform time and
      *  the event timestamp received at a network receiver port
-     *  (i>isNetworkPort</i> is true and the port is an output), 
+     *  (<i>isNetworkPort</i> is true and the port is an output), 
      *  where platform time is smaller than the event timestamp.
      *  This is used to indicate that the designer knows that the execution
      *  time on the sending platform is bigger than the time delay on the
