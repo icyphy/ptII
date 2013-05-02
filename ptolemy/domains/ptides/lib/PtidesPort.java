@@ -166,10 +166,36 @@ public class PtidesPort extends MirrorPort {
      */
     public Parameter networkDelayBound;
 
-    /** Platform delay bound parameter that defaults to the double value 0.0. */
+    /** An assumed upper bound on the difference between platform time and
+     *  the event timestamp sent to a network transmitter port
+     *  (i>isNetworkPort</i> is true and the port is an output), 
+     *  where platform time is smaller than the event timestamp. 
+     *  If the platform time plus the platformDelayBound
+     *  is smaller than the event timestamp, an exception is thrown. 
+     *  This parameter is used in cases where the execution time is larger than
+     *  the logical time delays on the platform to indicate that the designer
+     *  knows that the execution time is bigger than the time delay on the
+     *  platform.
+     *  This is a double that defaults to 0.0. In that case, an exception
+     *  is thrown when platform time is smaller than the event timestamp.
+     */
     public Parameter platformDelayBound;
 
-    /** Source platform delay bound parameter that defaults to the double value 0.0. */
+    /** An assumed upper bound on the difference between platform time and
+     *  the event timestamp received at a network receiver port
+     *  (i>isNetworkPort</i> is true and the port is an output), 
+     *  where platform time is smaller than the event timestamp.
+     *  This is used to indicate that the designer knows that the execution
+     *  time on the sending platform is bigger than the time delay on the
+     *  sending platform. 
+     *  Together with the networkDelayBound and the clockSycnhronizationError
+     *  this parameter is used to determine whether an event is arriving at
+     *  a network receiver too late.
+     *  The value specified for the platformDelayBound on a network transmitter
+     *  and the value specified for the sourcePlatformDelayBound on a network
+     *  receiver should ideally match, however, this is not enforced.  
+     *  This is a double that defaults to 0.0.
+     */
     public Parameter sourcePlatformDelayBound;
 
     /** Return true if actuation should happen at event timestamp and false if
