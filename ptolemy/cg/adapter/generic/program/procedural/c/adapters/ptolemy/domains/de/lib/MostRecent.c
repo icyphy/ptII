@@ -34,10 +34,6 @@ for (i = 0; i < $inputSize; i++) {
 boolean hasToken = false;
 /**/
 
-/***inputConnectedPreFireBlock***/
-hasToken = $hasToken(input#0);
-/**/
-
 /***preFireLoopBlock($channel)***/
 hasToken |= $hasToken(trigger#$channel);
 /**/

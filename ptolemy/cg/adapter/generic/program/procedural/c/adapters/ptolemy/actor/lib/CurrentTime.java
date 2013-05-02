@@ -1,6 +1,6 @@
-/* A adapter class for ptolemy.domains.de.lib.TimeGap
+/* A adapter class for ptolemy.actor.lib.CurrentTime
 
- Copyright (c) 2006-2010 The Regents of the University of California.
+ Copyright (c) 2006-2012 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -25,39 +25,31 @@
  COPYRIGHTENDKEY
 
  */
-package ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.de.lib;
-
-import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
+package ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.actor.lib;
 
 //////////////////////////////////////////////////////////////////////////
-//// TimeGap
+//// CurrentTime
 
 /**
- * A adapter class for ptolemy.domains.de.lib.TimeGap.
- *
- * @author William Lucas
- * @version $Id$
- * @since Ptolemy II 9.1
- * @Pt.ProposedRating Red (wlc)
- * @Pt.AcceptedRating Red (wlc)
+ A adapter class for CurrentTime.
+
+ @author William Lucas
  */
-public class TimeGap extends NamedProgramCodeGeneratorAdapter {
+public class CurrentTime
+        extends
+        ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib.CurrentTime {
     /**
-     * Construct a TimeGap adapter.
-     * @param actor the associated actor
+     *  Construct a CurrentTime adapter.
+     *  @param actor The given ptolemy.actor.lib.CurrentTime actor.
      */
-    public TimeGap(ptolemy.domains.de.lib.TimeGap actor) {
+    public CurrentTime(ptolemy.actor.lib.CurrentTime actor) {
         super(actor);
     }
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////
-    
-    
-    
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected methods                 ////
-
-    
-    
+    /** Return the name of the port that is the time source.
+     *  @return The string "trigger".
+     */
+    public String getTimeSourcePortName() {
+        return "trigger";
+    }
 }

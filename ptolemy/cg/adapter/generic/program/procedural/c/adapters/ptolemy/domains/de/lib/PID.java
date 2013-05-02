@@ -1,6 +1,6 @@
-/* An adapter class for ptolemy.domains.de.lib.PID
+/* A adapter class for ptolemy.domains.de.lib.PID
 
- Copyright (c) 2010 The Regents of the University of California.
+ Copyright (c) 2006-2010 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -27,24 +27,100 @@
  */
 package ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.de.lib;
 
+import java.util.LinkedList;
+
+import ptolemy.cg.kernel.generic.program.CodeStream;
+import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
+import ptolemy.data.DoubleToken;
+import ptolemy.data.expr.Parameter;
+import ptolemy.kernel.util.IllegalActionException;
+
 //////////////////////////////////////////////////////////////////////////
-//// Register
+//// PID
 
 /**
- A adapter class for ptolemy.domains.de.lib.Register.
-
- @author Jeff C. Jensen
-@version $Id$
-@since Ptolemy II 8.0
+ * A adapter class for ptolemy.domains.de.lib.PID.
+ *
+ * @author William Lucas
+ * @version $Id$
+ * @since Ptolemy II 9.1
+ * @Pt.ProposedRating Red (wlc)
+ * @Pt.AcceptedRating Red (wlc)
  */
-public class PID
-        extends
-        ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.de.lib.PID {
+public class PID extends NamedProgramCodeGeneratorAdapter {
     /**
-     *  Construct a PID adapter.
-     *  @param actor The given ptolemy.actor.lib.TimeGap actor.
+     * Construct a PID adapter.
+     * @param actor the associated actor
      */
     public PID(ptolemy.domains.de.lib.PID actor) {
         super(actor);
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+
+    /**
+     * A function which returns the generated code from the C template
+     * initialization method.
+     * @return A string representing the Initialize C code for this actor
+     * @throws IllegalActionException If illegal macro names are found.
+     */
+    public String generateInitializeCode() throws IllegalActionException {
+        CodeStream codeStream = _templateParser.getCodeStream();
+        codeStream.clear();
+
+        LinkedList args = new LinkedList();
+        Parameter Kp = ((ptolemy.domains.de.lib.PID) getComponent()).Kp;
+        double KpValue = ((DoubleToken) Kp.getToken()).doubleValue();
+        args.add(Double.toString(KpValue));
+        Parameter Ki = ((ptolemy.domains.de.lib.PID) getComponent()).Ki;
+        double KiValue = ((DoubleToken) Ki.getToken()).doubleValue();
+        args.add(Double.toString(KiValue));
+        Parameter Kd = ((ptolemy.domains.de.lib.PID) getComponent()).Kd;
+        double KdValue = ((DoubleToken) Kd.getToken()).doubleValue();
+        args.add(Double.toString(KdValue));
+
+        codeStream.appendCodeBlock("initBlock", args);
+        return processCode(codeStream.toString());
+    }
+    
+    /**
+     * A function which returns the generated code from the C template
+     * postFire method.
+     * @return A string representing the postFire C code for this actor
+     * @throws IllegalActionException If illegal macro names are found.
+     */
+    public String generatePostfireCode() throws IllegalActionException {
+        CodeStream codeStream = _templateParser.getCodeStream();
+        codeStream.clear();
+
+        LinkedList args = new LinkedList();
+        boolean resetConnected = (((ptolemy.domains.de.lib.PID) getComponent()).reset.getWidth() > 0);
+        args.add(Boolean.toString(resetConnected));
+
+        codeStream.appendCodeBlock("postFireBlock", args);
+        return processCode(codeStream.toString());
+    }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
+
+    
+    /**
+     * Generate fire code.
+     * The method generates code that is executed when the <i>input</i> has a Token
+     * @return The generated code.
+     * @exception IllegalActionException If the code stream encounters an
+     *  error in processing the specified code block(s).
+     */
+    @Override
+    protected String _generateFireCode() throws IllegalActionException {
+        super._generateFireCode();
+        LinkedList args = new LinkedList();
+        CodeStream codeStream = _templateParser.getCodeStream();
+
+        codeStream.appendCodeBlock("customFireBlock", args);
+        
+        return codeStream.toString();
     }
 }

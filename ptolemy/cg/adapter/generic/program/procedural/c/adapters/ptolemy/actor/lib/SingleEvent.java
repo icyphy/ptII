@@ -44,7 +44,7 @@ import ptolemy.kernel.util.IllegalActionException;
 /**
  A adapter class for ptolemy.actor.lib.SingleEvent.
 
- @author Jia Zou
+ @author Jia Zou, Willian Lucas
  @version $Id$
  @since Ptolemy II 8.0
  */
@@ -63,6 +63,47 @@ public class SingleEvent extends NamedProgramCodeGeneratorAdapter {
         LinkedList args = new LinkedList();
         Parameter time = ((ptolemy.actor.lib.SingleEvent) getComponent()).time;
         double doubleTime = ((DoubleToken) time.getToken()).doubleValue();
+        // The value should not be used in the initialize block, only on the fire block
+        /*Parameter valuePar = ((ptolemy.actor.lib.SingleEvent) getComponent()).value;
+        double value;
+        Token valueToken = valuePar.getToken();
+        if (valueToken instanceof BooleanToken) {
+            if (((BooleanToken) valueToken).booleanValue() == true) {
+                value = 1;
+            } else {
+                value = 0;
+            }
+        } else if (valueToken instanceof IntToken) {
+            value = ((IntToken) valueToken).intValue();
+        } else if (valueToken instanceof DoubleToken) {
+            value = ((DoubleToken) valueToken).doubleValue();
+        } else {
+            throw new IllegalActionException("Token type at single "
+                    + "event not supported yet.");
+        }*/
+        int intPart = (int) doubleTime;
+        int fracPart = (int) ((doubleTime - intPart) * 1000000000.0);
+        args.add(Integer.toString(intPart));
+        args.add(Integer.toString(fracPart));
+        //args.add(Double.toString(value));
+
+        codeStream.appendCodeBlock("initBlock", args);
+        return processCode(codeStream.toString());
+    }
+    
+    /**
+     * Generate the fire code of a single event.
+     * @return The generated code.
+     * @exception IllegalActionException 
+     */
+    @Override
+    protected String _generateFireCode() throws IllegalActionException {
+        // FIXME : not sure if this call is really necessary
+    	super._generateFireCode();
+    	CodeStream codeStream = _templateParser.getCodeStream();
+        codeStream.clear();
+        LinkedList args = new LinkedList();
+        
         Parameter valuePar = ((ptolemy.actor.lib.SingleEvent) getComponent()).value;
         double value;
         Token valueToken = valuePar.getToken();
@@ -80,14 +121,11 @@ public class SingleEvent extends NamedProgramCodeGeneratorAdapter {
             throw new IllegalActionException("Token type at single "
                     + "event not supported yet.");
         }
-
-        int intPart = (int) doubleTime;
-        int fracPart = (int) ((doubleTime - intPart) * 1000000000.0);
-        args.add(Integer.toString(intPart));
-        args.add(Integer.toString(fracPart));
+        
         args.add(Double.toString(value));
 
-        codeStream.appendCodeBlock("initBlock", args);
+        codeStream.appendCodeBlock("fireBlock", args);
         return processCode(codeStream.toString());
     }
+
 }

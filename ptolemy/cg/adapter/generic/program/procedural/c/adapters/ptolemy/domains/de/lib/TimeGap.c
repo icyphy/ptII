@@ -1,7 +1,27 @@
+/***preinitBlock***/
+$include(<float.h>)
+// The time when the previous input arrives.
+static Time $actorSymbol(previousTime);
+/**/
+
+/***initializeBlock***/
+$actorSymbol(previousTime) = -DBL_MAX;
+/**/
+
 /***fireBlock***/
-static Time lastModelTime;
-Time timeGap;
-timeSub(currentModelTime, lastModelTime, &timeGap);
-$put(output, timeGap.secs + timeGap.nsecs/1000000000);
-lastModelTime = currentModelTime;
+// Consume an input.
+if ($hasToken(input)) {
+	$get(input);
+}
+
+Time currentTime = director.currentModelTime;
+
+if ($actorSymbol(previousTime) != -DBL_MAX) {
+	Time outToken = currentTime - $actorSymbol(previousTime);
+	$put(output, outToken);
+}
+/**/
+
+/***postfireBlock***/
+$actorSymbol(previousTime) = director.currentModelTime;
 /**/

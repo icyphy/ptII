@@ -1,12 +1,12 @@
-/* An adapter class for ptolemy.domains.de.lib.Merge
-
- Copyright (c) 2006-2012 The Regents of the University of California.
+/* A adapter class for ptolemy.domains.de.lib.Merge.
+ @Copyright (c) 2005-2012 The Regents of the University of California.
  All rights reserved.
+
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+ software and its documentation for any purpose, provided that the
+ above copyright notice and the following two paragraphs appear in all
+ copies of this software.
 
  IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
  FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
@@ -24,48 +24,86 @@
  PT_COPYRIGHT_VERSION_2
  COPYRIGHTENDKEY
 
+
  */
 package ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.de.lib;
 
-import java.util.ArrayList;
+import java.util.LinkedList;
 
 import ptolemy.cg.kernel.generic.CodeGeneratorAdapter;
 import ptolemy.cg.kernel.generic.program.CodeStream;
 import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
+import ptolemy.data.BooleanToken;
+import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
 
+///////////////////////////////////////////////////////////////////
+////Merge
+
 /**
-A adapter class for ptolemy.domains.de.lib.Merge.
-
-@author Patricia Derler
-@version $Id$
-@since Ptolemy II 8.0
-*/
+ * A adapter class for ptolemy.domains.de.lib.Merge.
+ *
+ * @author William Lucas, Based on Merge.java by Patricia Derler
+ * @version $Id$
+ * @since Ptolemy II 9.1
+ * @Pt.ProposedRating Red (wlc)
+ * @Pt.AcceptedRating Red (wlc)
+ */
 public class Merge extends NamedProgramCodeGeneratorAdapter {
-
     /**
-     *  Construct a Merge adapter.
-     *  @param actor The given ptolemy.domains.de.lib.Merge actor.
+     * Constructor method for the Merge adapter.
+     * @param actor the associated actor
      */
     public Merge(ptolemy.domains.de.lib.Merge actor) {
         super(actor);
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
     /**
-     * Construct the fire block.
+     * A function which returns the generated code from the C template
+     * initialization method.
+     * @return A string representing the Initialize C code for this actor
+     * @throws IllegalActionException If illegal macro names are found.
      */
-    public String generateFireCode() throws IllegalActionException {
-
-        ptolemy.domains.de.lib.Merge actor = (ptolemy.domains.de.lib.Merge) getComponent();
-        ArrayList<String> args = new ArrayList<String>();
+    public String generateInitializeCode() throws IllegalActionException {
         CodeStream codeStream = _templateParser.getCodeStream();
-        args.add("");
-        for (int i = 0; i < actor.input.getWidth(); i++) {
-            args.set(0, Integer.valueOf(i).toString());
-            codeStream.appendCodeBlock("mergeBlock", args);
-        }
+        codeStream.clear();
+
+        LinkedList args = new LinkedList();
+        Parameter discardEvents = ((ptolemy.domains.de.lib.Merge) getComponent()).discardEvents;
+        boolean value = ((BooleanToken) discardEvents.getToken())
+                .booleanValue();
+        args.add(Boolean.toString(value));
+
+        codeStream.appendCodeBlock("initBlock", args);
         return processCode(codeStream.toString());
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
+
+    /**
+     * Generate the fire code of the current actor.
+     * @return The generated code.
+     * @exception IllegalActionException If the code stream encounters an
+     *  error in processing the specified code block(s).
+     */
+    protected String _generateFireCode() throws IllegalActionException {
+        StringBuffer code = new StringBuffer();
+        LinkedList args = new LinkedList();
+        
+        ptolemy.domains.de.lib.Merge actor = (ptolemy.domains.de.lib.Merge) getComponent();
+
+        code.append(getTemplateParser().generateBlockCode("fireBeginBlock", args));
+        for (int i = 0; i < actor.input.getWidth(); i++) {
+            args.clear();
+            args.add(Integer.toString(i));
+            code.append(getTemplateParser().generateBlockCode("fireLoopBlock", args));
+        }
+
+        return code.toString();
     }
 
     /** Return a string that represents the source time.

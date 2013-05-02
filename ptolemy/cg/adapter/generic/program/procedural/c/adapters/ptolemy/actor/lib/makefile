@@ -66,6 +66,8 @@ JSRCS = \
 	BooleanMultiplexor.java \
 	BooleanSwitch.java \
 	Const.java \
+	CurrentMicrostep.java \
+	CurrentTime.java \
 	DB.java \
 	Differential.java \
 	Discard.java \
@@ -74,6 +76,7 @@ JSRCS = \
 	Expression.java \
 	Maximum.java \
 	MultiplyDivide.java \
+	PoissonClock.java \
 	Publisher.java \
 	Pulse.java \
 	Ramp.java \

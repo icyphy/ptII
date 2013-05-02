@@ -33,6 +33,7 @@ import java.util.LinkedList;
 import ptolemy.cg.kernel.generic.program.CodeStream;
 import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
 import ptolemy.data.ArrayToken;
+import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.Token;
@@ -40,16 +41,16 @@ import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.util.IllegalActionException;
 
 /**
- * A adapter class for ptolemy.actor.lib.DiscreteClock.
+ * A adapter class for ptolemy.actor.lib.PoissonClock.
  *
  * @author Jia Zou, William Lucas
  */
-public class DiscreteClock extends NamedProgramCodeGeneratorAdapter {
+public class PoissonClock extends NamedProgramCodeGeneratorAdapter {
     /**
-     * Constructor method for the DiscreteClock adapter.
+     * Constructor method for the PoissonClock adapter.
      * @param actor the associated actor
      */
-    public DiscreteClock(ptolemy.actor.lib.DiscreteClock actor) {
+    public PoissonClock(ptolemy.actor.lib.PoissonClock actor) {
         super(actor);
     }
 
@@ -73,73 +74,35 @@ public class DiscreteClock extends NamedProgramCodeGeneratorAdapter {
         CodeStream codeStream = _templateParser.getCodeStream();
         codeStream.clear();
         LinkedList args = new LinkedList();
-        Parameter stopTime = ((ptolemy.actor.lib.DiscreteClock) getComponent()).stopTime;
+        Parameter stopTime = ((ptolemy.actor.lib.PoissonClock) getComponent()).stopTime;
         double doubleStopTime = ((DoubleToken) stopTime.getToken()).doubleValue();
-        ptolemy.actor.lib.DiscreteClock actor = (ptolemy.actor.lib.DiscreteClock) getComponent();
+        ptolemy.actor.lib.PoissonClock actor = (ptolemy.actor.lib.PoissonClock) getComponent();
         ptolemy.actor.CompositeActor container = (ptolemy.actor.CompositeActor) actor.getContainer();
         ptolemy.actor.Director director = container.getDirector();
         double modelStopTime = director.getModelStopTime().getDoubleValue();
         if (doubleStopTime > modelStopTime)
         	doubleStopTime = modelStopTime;
-        Parameter period = ((ptolemy.actor.lib.DiscreteClock) getComponent()).period;
-        double doublePeriod = ((DoubleToken) period.getToken()).doubleValue();
+        Parameter meanTime = ((ptolemy.actor.lib.PoissonClock) getComponent()).meanTime;
+        double doubleMeanTime = ((DoubleToken) meanTime.getToken()).doubleValue();
+        Parameter fireAtStart = ((ptolemy.actor.lib.PoissonClock) getComponent()).fireAtStart;
+        boolean boolFireAtStart = ((BooleanToken) fireAtStart.getToken()).booleanValue();
         
         args.add(Double.toString(doubleStopTime));
-        args.add(Double.toString(doublePeriod));
+        args.add(Double.toString(doubleMeanTime));
+        args.add(Boolean.toString(boolFireAtStart));
         
-        Parameter offsetPar = ((ptolemy.actor.lib.DiscreteClock) getComponent()).offsets;
-        Token offsetToken = offsetPar.getToken();
-        Token[] offsets;
-        double[] offsetsDouble = null;
-        int size = 0;
-        
-        if (offsetToken instanceof ArrayToken) {
-        	offsets = ((ArrayToken) offsetToken).arrayValue();
-            size = offsets.length;
-            args.add(Integer.toString(size));
-            int i = 0;
-            if (size > 0) {
-            	if (offsets[0] instanceof DoubleToken) {
-            		offsetsDouble = new double[size];
-            	}
-            	else {
-                    throw new IllegalActionException("Token type at DiscreteClock "
-                            + "not supported yet.");
-                }
-            }
-            for (Token t : offsets) {
-            	if (t instanceof DoubleToken) {
-            		offsetsDouble[i++] = ((DoubleToken)t).doubleValue();
-            	}
-            	else {
-                    throw new IllegalActionException("Token type at DiscreteClock "
-                            + "not supported yet.");
-                }
-            }
-        } else {
-            throw new IllegalActionException("Token type at DiscreteClock "
-                    + "not supported yet.");
-        }
-        
-        String offsetsString = "";
-        int i = 0;
-        for (double offset : offsetsDouble) 
-        	offsetsString += "$actorSymbol(offsets)["+ i++ +"] = " + Double.toString(offset) + "; ";
-                
-        args.add(offsetsString);
-        
-        Parameter valuesPar = ((ptolemy.actor.lib.DiscreteClock) getComponent()).values;
+        Parameter valuesPar = ((ptolemy.actor.lib.PoissonClock) getComponent()).values;
         Token valuesToken = valuesPar.getToken();
         Token[] values;
         double[] valuesDouble = null;
         int[] valuesInt = null;
-        size = 0;
+        int size = 0;
         
         if (valuesToken instanceof ArrayToken) {
         	values = ((ArrayToken) valuesToken).arrayValue();
             size = values.length;
             args.add(Integer.toString(size));
-            i = 0;
+            int i = 0;
             if (size > 0) {
             	if (values[0] instanceof DoubleToken) {
             		valuesDouble = new double[size];
@@ -148,7 +111,7 @@ public class DiscreteClock extends NamedProgramCodeGeneratorAdapter {
             		valuesInt = new int[size];
             	}
             	else {
-                    throw new IllegalActionException("Token type at DiscreteClock "
+                    throw new IllegalActionException("Token type at PoissonClock "
                             + "not supported yet.");
                 }
             }
@@ -160,17 +123,17 @@ public class DiscreteClock extends NamedProgramCodeGeneratorAdapter {
             		valuesInt[i++] = ((IntToken)t).intValue();
             	}
             	else {
-                    throw new IllegalActionException("Token type at DiscreteClock "
+                    throw new IllegalActionException("Token type at PoissonClock "
                             + "not supported yet.");
                 }
             }
         } else {
-            throw new IllegalActionException("Token type at DiscreteClock "
+            throw new IllegalActionException("Token type at PoissonClock "
                     + "not supported yet.");
         }
         
         String valuesString = "";
-        i = 0;
+        int i = 0;
         if (valuesDouble != null)
         	for (double value : valuesDouble) 
         		valuesString += "$actorSymbol(values)["+ i++ +"] = " + Double.toString(value) + "; ";
@@ -185,7 +148,7 @@ public class DiscreteClock extends NamedProgramCodeGeneratorAdapter {
     }
     
     /**
-     * Generate the fire code of a single event.
+     * Generate the fire code of a Poisson Clock.
      * @return The generated code.
      * @exception IllegalActionException 
      */
@@ -196,7 +159,7 @@ public class DiscreteClock extends NamedProgramCodeGeneratorAdapter {
         //codeStream.clear();
         //LinkedList args = new LinkedList();
         /*
-        Parameter valuePar = ((ptolemy.actor.lib.DiscreteClock) getComponent()).values;
+        Parameter valuePar = ((ptolemy.actor.lib.PoissonClock) getComponent()).values;
         Token valueToken = valuePar.getToken();
         Token[] values;
         double[] valuesDouble = null;
@@ -217,7 +180,7 @@ public class DiscreteClock extends NamedProgramCodeGeneratorAdapter {
             		currentType = "int";
             	}
             	else {
-                    throw new IllegalActionException("Token type at DiscreteClock "
+                    throw new IllegalActionException("Token type at PoissonClock "
                             + "not supported yet.");
                 }
             }
@@ -229,12 +192,12 @@ public class DiscreteClock extends NamedProgramCodeGeneratorAdapter {
             		valuesInt[i++] = ((IntToken)t).intValue();
             	}
             	else {
-                    throw new IllegalActionException("Token type at DiscreteClock "
+                    throw new IllegalActionException("Token type at PoissonClock "
                             + "not supported yet.");
                 }
             }
         } else {
-            throw new IllegalActionException("Token type at DiscreteClock "
+            throw new IllegalActionException("Token type at PoissonClock "
                     + "not supported yet.");
         }
         
@@ -262,7 +225,7 @@ public class DiscreteClock extends NamedProgramCodeGeneratorAdapter {
         codeStream.clear();
         LinkedList args = new LinkedList();
         
-        Parameter valuePar = ((ptolemy.actor.lib.DiscreteClock) getComponent()).values;
+        Parameter valuePar = ((ptolemy.actor.lib.PoissonClock) getComponent()).values;
         Token valueToken = valuePar.getToken();
         Token[] values;
         int size = 0;

@@ -1,4 +1,4 @@
-/* A adapter class for ptolemy.domains.de.lib.TimeGap
+/* A adapter class for ptolemy.domains.de.lib.TimeCompare
 
  Copyright (c) 2006-2010 The Regents of the University of California.
  All rights reserved.
@@ -33,7 +33,7 @@ import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
 //// TimeGap
 
 /**
- * A adapter class for ptolemy.domains.de.lib.TimeGap.
+ * A adapter class for ptolemy.domains.de.lib.TimeCompare.
  *
  * @author William Lucas
  * @version $Id$
@@ -41,12 +41,12 @@ import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
  * @Pt.ProposedRating Red (wlc)
  * @Pt.AcceptedRating Red (wlc)
  */
-public class TimeGap extends NamedProgramCodeGeneratorAdapter {
+public class TimeCompare extends NamedProgramCodeGeneratorAdapter {
     /**
-     * Construct a TimeGap adapter.
+     * Construct a TimeCompare adapter.
      * @param actor the associated actor
      */
-    public TimeGap(ptolemy.domains.de.lib.TimeGap actor) {
+    public TimeCompare(ptolemy.domains.de.lib.TimeCompare actor) {
         super(actor);
     }
 
