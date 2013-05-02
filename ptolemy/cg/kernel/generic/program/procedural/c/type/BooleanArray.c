@@ -448,6 +448,14 @@ typedef struct booleanarray* BooleanArrayToken;
 // BooleanArray_get: get an element of an array.
 #define BooleanArray_length(array) ((array).payload.BooleanArray->size)
 
+boolean BooleanArray_get(Token array, int i);
+void BooleanArray_set(Token array, int i, boolean element);
+void BooleanArray_resize(Token array, int size);
+void BooleanArray_insert(Token array, boolean token);
+
+/**/
+
+/*** funcImplementationBlock() ***/
 boolean BooleanArray_get(Token array, int i) {
         // Token result;
         // result.type = array.payload.BooleanArray->elementType;
@@ -481,4 +489,3 @@ void BooleanArray_insert(Token array, boolean token) {
 
 }
 /**/
-

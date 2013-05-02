@@ -367,6 +367,11 @@ typedef struct matrix* MatrixToken;
 
 /*** funcDeclareBlock() ***/
 Token Matrix_new(int row, int column, int given, ...);
+Token Matrix_get(Token token, int row, int column);
+void Matrix_set(Token matrix, int row, int column, Token element);
+/**/
+
+/*** funcImplementationBlock() ***/
 Token Matrix_get(Token token, int row, int column) {
     return token.payload.Matrix->elements[column * token.payload.Matrix->row + row];
 }

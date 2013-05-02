@@ -435,6 +435,14 @@ typedef struct intarray* IntArrayToken;
 // IntArray_get: get an element of an array.
 #define IntArray_length(array) ((array).payload.IntArray->size)
 
+int IntArray_get(Token array, int i);
+void IntArray_set(Token array, int i, int element);
+void IntArray_resize(Token array, int size);
+void IntArray_insert(Token array, int token);
+
+/**/
+
+/*** funcImplementationBlock() ***/
 int IntArray_get(Token array, int i) {
         // Token result;
         // result.type = array.payload.IntArray->elementType;
@@ -468,4 +476,3 @@ void IntArray_insert(Token array, int token) {
     ((int *) array.payload.IntArray->elements)[oldSize] = token;
 }
 /**/
-

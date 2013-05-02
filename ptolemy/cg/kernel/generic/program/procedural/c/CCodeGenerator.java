@@ -165,14 +165,12 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
      *  @param functions An array of functions.
      *  @return The code that declares functions.
      */
-    public Object generateFunctionTable(String[] types, String[] functions) {
+    public String generateFunctionTable(String[] types, String[] functions) {
         // FIXME: make this private?
         StringBuffer code = new StringBuffer();
 
         if (functions.length > 0 && types.length > 0) {
 
-            code.append("#define NUM_TYPE " + types.length + _eol);
-            code.append("#define NUM_FUNC " + functions.length + _eol);
             code.append("Token (*functionTable[NUM_TYPE][NUM_FUNC])"
                     + "(Token, ...)= {" + _eol);
 
@@ -505,7 +503,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
             // type; thus, it is always read into the code stream when
             // accessing this particular type.
             typeStreams[i].appendCodeBlock("declareBlock");
-            codeH.append(typeStreams[i].toString());
+            codeH.append(typeStreams[i].toString());            
         }
 
         ArrayList<String> args = new ArrayList<String>();
@@ -535,6 +533,9 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
             typeStreams[i].clear();
             typeStreams[i].appendCodeBlock("funcDeclareBlock");
             codeH.append(typeStreams[i].toString());
+            typeStreams[i].clear();
+            typeStreams[i].appendCodeBlock("funcImplementationBlock", true);
+            codeC.append(typeStreams[i].toString());
         }
 
         // FIXME: in the future we need to load the convertPrimitivesBlock
@@ -690,6 +691,19 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
             sharedStream.appendCodeBlock("scalarDeleteFunction");
         }
         codeC.append(sharedStream.toString());
+        sharedStream.clear();
+        if (defineUnsupportedTypeFunctionMethod) {
+            // Some type/function combos are not supported, so we
+            // save space by defining only one method.
+            sharedStream.appendCodeBlock("unsupportedTypeFunctionDeclaration");
+        }
+        
+        if (defineScalarDeleteMethod) {
+            // Types that share the scalarDelete() method, which does nothing.
+            // We use one method so as to reduce code size.
+            sharedStream.appendCodeBlock("scalarDeleteFunctionDeclaration");
+        }
+        codeH.append(sharedStream.toString());
 
         // _overloadedFunctions contains the set of functions:
         // add_Type1_Type2, negate_Type, and etc.
@@ -698,6 +712,12 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         
         // Generate function type and token table.
         codeC.append(generateFunctionTable(typesArray, functionsArray));
+        
+        codeH.append("#define NUM_TYPE " + typesArray.length + _eol);
+        codeH.append("#define NUM_FUNC " + functionsArray.length + _eol);
+        
+        codeH.append("extern Token (*functionTable[NUM_TYPE][NUM_FUNC])"
+                + "(Token, ...);" + _eol);
 
         // typeFunction contains the set of function:
         // Type_new(), Type_delete(), and etc.
@@ -905,26 +925,35 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
             String functionCode = _overloadedFunctions.getCodeBlock(name);
             HashSet<String> functions = _getReferencedFunctions();
             
+            boolean macro = false;
             int indexEndDeclaration = functionCode.indexOf('{');
             String declarationFunctionCode = "";
             if (indexEndDeclaration > 0)
                 declarationFunctionCode = functionCode.substring(0, indexEndDeclaration) + ";" + _eol; 
+            else if (functionCode.startsWith("#define")) {
+                // int this case the function is a macro, we have to define it in the types.h !
+                declarationFunctionCode = functionCode;
+                macro = true;
+            }
             if (!_overloadedFunctionSet.contains(name)) {
     
                 String code = templateParser == null ? processCode(functionCode)
                         : templateParser.processCode(functionCode);
+                String declarationCode = templateParser == null ? processCode(declarationFunctionCode)
+                        : templateParser.processCode(declarationFunctionCode);
     
-                _overloadedFunctions.append(code);
-                //if (!declarationFunctionCode.contains("_new")
-                        //      && !declarationFunctionCode.contains("_delete"))
+                if (!macro) // In case of a macro we do not want to add the code to the types.c
+                    _overloadedFunctions.append(code);
+                
                 boolean ok = true;
                 for (String partName : functions)
-                        if (name.endsWith(partName) || name.endsWith("_new") || name.endsWith("_equals")) {
-                                ok = false;
-                                break;
-                        }
-                if (ok)
-                        _overloadedFunctionsDeclaration.append(declarationFunctionCode);
+                    if (name.endsWith(partName) || name.endsWith("_new") || name.endsWith("_equals")) {
+                            ok = false;
+                            break;
+                    }
+                if (ok) {
+                    _overloadedFunctionsDeclaration.append(declarationCode);
+                }
                 
     
                 _overloadedFunctionSet.add(name);
@@ -1339,6 +1368,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         // codegen token methods used in the shared code are recorded.  See
         // $PTII/bin/ptcg -language java $PTII/ptolemy/cg/adapter/generic/program/procedural/java/adapters/ptolemy/actor/lib/test/auto/arrayType18.xml
         String sharedCode = _generateSharedCode();
+        String declareSharedCode = _generateDeclareSharedCode();
 
         // generate type resolution code has to be after
         // fire(), wrapup(), preinit(), init()...
@@ -1412,8 +1442,10 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         codeTypesC.append(typeResolutionCode[1]);
         typeResolutionCode[1] = null;
         codeTypesC.append(comment("end typeResolution code"));
-        codeTypesH.append(sharedCode);
+        codeTypesC.append(sharedCode);
         sharedCode = null;
+        codeTypesH.append(declareSharedCode);
+        declareSharedCode = null;
         // Don't use **** in comments, it causes the nightly build to
         // report errors.
         codeTypesH.append(comment("end shared code"));
@@ -1617,6 +1649,38 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         }
 
         return code;
+    }
+    
+    /** Generate the declarations of the code shared by actors, 
+     *  including globally defined
+     *  data struct types and static methods or variables shared by multiple
+     *  instances of the same actor type.
+     *  @return The shared code of the containing composite actor.
+     *  @exception IllegalActionException If an error occurrs when generating
+     *   the globally shared code, or if the adapter class for the model
+     *   director cannot be found, or if an error occurs when the adapter
+     *   actor generates the shared code.
+     */
+    protected String _generateDeclareSharedCode() throws IllegalActionException {
+        StringBuffer code = new StringBuffer();
+
+        NamedProgramCodeGeneratorAdapter adapter = (NamedProgramCodeGeneratorAdapter) getAdapter(getContainer());
+        Set<String> sharedCodeBlocks = adapter.getDeclareSharedCode();
+        Iterator<String> blocks = sharedCodeBlocks.iterator();
+        while (blocks.hasNext()) {
+            String block = blocks.next();
+            code.append(block);
+        }
+
+        if (code.length() > 0) {
+            code.insert(0, _eol
+                    + comment("Generate shared code for "
+                            + getContainer().getName()));
+            code.append(comment("Finished generating shared code for "
+                    + getContainer().getName()));
+        }
+
+        return code.toString();
     }
 
     

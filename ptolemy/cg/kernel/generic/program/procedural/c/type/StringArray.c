@@ -284,6 +284,14 @@ typedef struct stringarray* StringArrayToken;
 // StringArray_get: get an element of an array.
 #define StringArray_length(array) ((array).payload.StringArray->size)
 
+string StringArray_get(Token array, int i);
+void StringArray_set(Token array, int i, string element);
+void StringArray_resize(Token array, int size);
+void StringArray_insert(Token array, string token);
+
+/**/
+
+/*** funcImplementationBlock() ***/
 string StringArray_get(Token array, int i) {
         // Token result;
         // result.type = array.payload.StringArray->elementType;
@@ -317,4 +325,3 @@ void StringArray_insert(Token array, string token) {
     ((string *) array.payload.StringArray->elements)[oldSize] = token;
 }
 /**/
-

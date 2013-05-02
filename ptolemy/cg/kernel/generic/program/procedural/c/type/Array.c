@@ -457,9 +457,19 @@ typedef struct array* ArrayToken;
 /*** funcDeclareBlock() ***/
 Token Array_new(int size, int given, ...);
 
+Token Array_get(Token array, int i);
+void Array_set(Token array, int i, Token element);
+void Array_resize(Token array, int size);
+void Array_insert(Token array, Token token);
+
+#define Array_length(array) ((array).payload.Array->size)
+/**/
+
+/*** funcImplementationBlock() ***/
+
 // Array_get: get an element of an array.
 Token Array_get(Token array, int i) {
-        return array.payload.Array->elements[i];
+    return array.payload.Array->elements[i];
 }
 
 // Array_set: set an element of an array.
@@ -486,6 +496,4 @@ void Array_insert(Token array, Token token) {
     ((Token *)array.payload.Array->elements)[oldSize] = token;
 }
 
-#define Array_length(array) ((array).payload.Array->size)
 /**/
-

@@ -250,7 +250,7 @@ boolean equals_Token_Token(Token thisToken, Token otherToken) {
 /**/
 
 /*** isCloseTo_Token_Token() ***/
-static boolean isCloseTo_Token_Token(Token thisToken, Token otherToken, Token tolerance) {
+boolean isCloseTo_Token_Token(Token thisToken, Token otherToken, Token tolerance) {
     boolean result = false;
     switch (thisToken.type) {
 #ifdef TYPE_Boolean

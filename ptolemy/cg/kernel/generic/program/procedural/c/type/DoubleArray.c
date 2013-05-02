@@ -453,6 +453,14 @@ typedef struct doublearray* DoubleArrayToken;
 // DoubleArray_get: get an element of an array.
 #define DoubleArray_length(array) ((array).payload.DoubleArray->size)
 
+double DoubleArray_get(Token array, int i);
+void DoubleArray_set(Token array, int i, double element);
+void DoubleArray_resize(Token array, int size);
+void DoubleArray_insert(Token array, double token);
+
+/**/
+
+/*** funcImplementationBlock() ***/
 double DoubleArray_get(Token array, int i) {
         // Token result;
         // result.type = array.payload.DoubleArray->elementType;
@@ -486,4 +494,3 @@ void DoubleArray_insert(Token array, double token) {
     ((double *) array.payload.DoubleArray->elements)[oldSize] = token;
 }
 /**/
-

@@ -108,6 +108,10 @@ char* UnsignedBytetoString (unsigned char b) {
 
 /**/
 
+/*** unsupportedTypeFunctionDeclaration ***/
+Token unsupportedTypeFunction(Token token, ...);
+/**/
+
 /*** unsupportedTypeFunction ***/
 /* We share one method between all types so as to reduce code size. */
 Token unsupportedTypeFunction(Token token, ...) {
@@ -115,6 +119,10 @@ Token unsupportedTypeFunction(Token token, ...) {
     exit(1);
     return emptyToken;
 }
+/**/
+
+/*** scalarDeleteFunctionDeclaration ***/
+Token scalarDelete(Token token, ...);
 /**/
 
 /*** scalarDeleteFunction ***/
