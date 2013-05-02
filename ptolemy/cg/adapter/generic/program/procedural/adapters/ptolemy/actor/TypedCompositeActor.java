@@ -380,6 +380,39 @@ public class TypedCompositeActor extends
         return set;
     }
 
+    /** Generate a set of declaration shared code fragments of the associated
+     *  composite actor.  It returns the result of calling
+     *  getDeclareSharedCode() method of the adapters of all contained actors.
+     *
+     *  @return a set of shared code fragments.
+     *  @exception IllegalActionException If the adapter associated with
+     *  an actor throws it while generating shared code for the actor.
+     */
+    @Override
+    public Set<String> getDeclareSharedCode() throws IllegalActionException {
+
+        // Use LinkedHashSet to give order to the shared code.
+        Set<String> sharedCode = new LinkedHashSet<String>();
+        sharedCode.addAll(super.getDeclareSharedCode());
+
+        Iterator<?> actors = ((ptolemy.actor.CompositeActor) getComponent())
+                .deepEntityList().iterator();
+
+        while (actors.hasNext()) {
+            Actor actor = (Actor) actors.next();
+            NamedProgramCodeGeneratorAdapter adapterObject = (NamedProgramCodeGeneratorAdapter) getCodeGenerator()
+                    .getAdapter(actor);
+            sharedCode.addAll(adapterObject.getDeclareSharedCode());
+        }
+
+        // Get shared code used by the director adapter.
+        Director directorAdapter = (Director) getCodeGenerator().getAdapter(
+                ((ptolemy.actor.CompositeActor) getComponent()).getDirector());
+        sharedCode.addAll(directorAdapter.getDeclareSharedCode());
+
+        return sharedCode;
+    }
+    
     /** Generate a set of shared code fragments of the associated
      *  composite actor.  It returns the result of calling
      *  getSharedCode() method of the adapters of all contained actors.
