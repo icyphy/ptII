@@ -22,6 +22,12 @@ Token add_Array_Long(Token a1, long long a2) {
 }
 /**/
 
+/*** add_Array_Scalar() ***/
+Token add_Array_Scalar(Token a1, Scalar a2) {
+    return $add_Scalar_Array(a2, a1);
+}
+/**/
+
 /*** add_BooleanArray_BooleanArray() ***/
 Token add_BooleanArray_BooleanArray(Token a1, Token a2) {
     return $BooleanArray_add(a1, a2);
@@ -194,6 +200,57 @@ long long add_Long_Long(long long a1, long long a2) {
 /*** add_Long_Token() ***/
 Token add_Long_Token(long long a1, Token a2) {
     Token token = $new(Long(a1));
+    return $add_Token_Token(token, a2);
+}
+/**/
+
+/*** add_Scalar_Array() ***/
+Token add_Scalar_Array(Scalar a1, Token a2) {
+    int i;
+    Token result = $new(Array(a2.payload.Array->size, 0));
+
+    for (i = 0; i < a2.payload.Array->size; i++) {
+        Array_set(result, i, $add_Scalar_Token(a1, Array_get(a2, i)));
+    }
+    return result;
+}
+/**/
+
+/*** add_Scalar_Scalar() ***/
+Scalar add_Scalar_Scalar(Scalar a1, Scalar a2) {
+    return a1 + a2;
+}
+/**/
+
+/*** add_Scalar_DoubleArray() ***/
+Token add_Scalar_DoubleArray(Scalar a1, Token a2) {
+    int i;
+    Token result = $new(DoubleArray(a2.payload.Array->size, 0));
+
+    for (i = 0; i < a2.payload.DoubleArray->size; i++) {
+            DoubleArray_set(result, i, $add_Scalar_Double(a1, DoubleArray_get(a2, i)));
+    }
+    return result;
+}
+/**/
+
+/*** add_Scalar_Int() ***/
+Scalar add_Scalar_Int(Scalar a1, int a2) {
+    return a1 + a2;
+}
+/**/
+
+/*** add_Scalar_String() ***/
+char* add_Scalar_String(Scalar a1, char* a2) {
+    char* string = (char*) malloc(sizeof(char) * (20 + strlen(a2)));
+    sprintf((char*) string, "%g%s", a1, a2);
+    return string;
+}
+/**/
+
+/*** add_Scalar_Token() ***/
+Token add_Scalar_Token(Scalar a1, Token a2) {
+    Token token = $new(Scalar(a1));
     return $add_Token_Token(token, a2);
 }
 /**/

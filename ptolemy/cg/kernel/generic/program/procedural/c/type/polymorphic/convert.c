@@ -37,6 +37,12 @@ int convert_Boolean_Int(boolean a) {
 }
 /**/
 
+/*** convert_Boolean_Scalar() ***/
+Scalar convert_Boolean_Scalar(boolean a) {
+    return a ? 1.0 : 0.0;
+}
+/**/
+
 /*** convert_Boolean_String() ***/
 char* convert_Boolean_String(boolean a) {
         return $toString_Boolean(a);
@@ -110,6 +116,12 @@ Token convert_Double_DoubleArray(double a) {
 /*** convert_Double_Int() ***/
 int convert_Double_Int(double a) {
     return (int) a;
+}
+/**/
+
+/*** convert_Double_Scalar() ***/
+int convert_Double_Scalar(double a) {
+    return (Scalar) a;
 }
 /**/
 
@@ -218,6 +230,12 @@ char* convert_Int_String(int a) {
 }
 /**/
 
+/*** convert_Int_Scalar() ***/
+Scalar convert_Int_Scalar(int a) {
+    return (Scalar) a;
+}
+/**/
+
 /*** convert_Int_StringArray() ***/
 Token convert_Int_StringArray(int i) {
         Token result = $new(StringArray(1, 0));
@@ -240,6 +258,10 @@ Token convert_Long_Array(long long a) {
 
 /*** convert_Long_Long() ***/
 #define convert_Long_Long(a) a
+/**/
+
+/*** convert_Long_Scalar() ***/
+#define convert_Long_Scalar(a) a
 /**/
 
 /*** convert_Long_String() ***/

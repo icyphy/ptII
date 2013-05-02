@@ -128,6 +128,11 @@ public class IOPort extends NamedProgramCodeGeneratorAdapter implements
                             && ((Actor) port.getContainer()).getDirector() instanceof ptolemy.actor.sched.StaticSchedulingDirector) {
                         return receivers[channelIndex][0]
                                 .generateGetCode(offset);
+                    } 
+                    if (port.getContainer() != null
+                            && ((Actor) port.getContainer()).getDirector() instanceof ptolemy.domains.de.kernel.DEDirector) {
+                        return receivers[channelIndex][0]
+                                .generateGetCode(offset);
                     } else {
                         // Used by CaseDirector.
                         // FIXME: A real hack.  The problem is that ptolemy.actor.lib.hoc.CaseDirector
@@ -302,7 +307,7 @@ public class IOPort extends NamedProgramCodeGeneratorAdapter implements
             }
             code.append(targetType(type) + " temporary = " + dataToken + ";"
                     + _eol);
-
+            
             boolean debug = ((IntToken) getCodeGenerator().verbosity.getToken())
                     .intValue() > 9;
             for (int i = 0; i < remoteReceivers[channelIndex].length; i++) {
