@@ -62,6 +62,7 @@ import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.domains.de.kernel.DEDirector;
+import ptolemy.domains.de.kernel.DEEvent;
 import ptolemy.domains.de.kernel.DEEventQueue;
 import ptolemy.domains.ptides.lib.ErrorHandlingAction;
 import ptolemy.domains.ptides.lib.PtidesPort;
@@ -223,9 +224,12 @@ public class PtidesDirector extends DEDirector {
             double sourcePlatformDelayBound = PtidesDirector
                     ._getDoubleParameterValue(sourcePort,
                             "sourcePlatformDelayBound");
+            double clockSynchronizationErrorBound = PtidesDirector
+                    ._getDoubleParameterValue(sourcePort,
+                            "clockSynchronizationErrorBound");
             if (localClock.getLocalTime().subtract(event.timeStamp())
                     .getDoubleValue() > sourcePlatformDelayBound
-                    + networkDelayBound) {
+                    + networkDelayBound + clockSynchronizationErrorBound) {
                 event = _handleTimingError(
                         sourcePort,
                         event,
@@ -303,7 +307,7 @@ public class PtidesDirector extends DEDirector {
             }
             _inputEventQueue.remove(getModelTime());
         }
-        
+
         for (ResourceScheduler scheduler : _resourceSchedulers) {
             scheduler.schedule(localClock.getLocalTime());
         }
