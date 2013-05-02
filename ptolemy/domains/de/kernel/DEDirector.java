@@ -2021,7 +2021,8 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
                 try {
                     synchronized (_eventQueue) {
                         lastFoundEvent = _eventQueue.get();
-                        currentTime = _consultTimeRegulators(lastFoundEvent.timeStamp());
+                        currentTime = _consultTimeRegulators(lastFoundEvent
+                                .timeStamp());
 
                         // NOTE: Synchronize to real time here for backward compatibility,
                         // but the preferred way to do this is now to use a
@@ -2216,6 +2217,17 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
 
         if (actorToFire != null && _resourceScheduling
                 && !_schedule(actorToFire, getModelTime())) {
+            Time nextEventTime = null;
+            if (_eventQueue.size() > 0) {
+                nextEventTime = _eventQueue.get().timeStamp();
+            }
+            Time nextScheduleTime = _nextScheduleTime.get(_schedulerForActor
+                    .get(actorToFire)).add(getModelTime());
+            if (nextEventTime == null || 
+                    nextEventTime.compareTo(nextScheduleTime) > 0) {
+                nextEventTime = nextScheduleTime;
+            } 
+            _enqueueEvent(actorToFire, nextScheduleTime, 1);
             return null;
         }
         // Note that the actor to be fired can be null.
