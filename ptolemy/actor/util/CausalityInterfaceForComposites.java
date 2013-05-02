@@ -329,7 +329,7 @@ public class CausalityInterfaceForComposites extends DefaultCausalityInterface {
      *  associated composite actor.
      *  The depth of an actor is the minimum depth of the output ports.
      *  If there are no output ports, then the depth of
-     *  the actor it is the maximum depth of the input ports.
+     *  the actor is the maximum depth of the input ports.
      *  If there are no input ports or output ports, the depth is zero.
      *  @see #getDepthOfPort(IOPort)
      *  @param actor An actor whose depth is requested.
