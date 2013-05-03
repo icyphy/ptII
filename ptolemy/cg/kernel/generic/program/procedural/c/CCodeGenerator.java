@@ -1284,7 +1284,11 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         }
 
         boolean inlineValue = ((BooleanToken) inline.getToken()).booleanValue();
-
+        
+        if (inlineValue && director != null && director instanceof DEDirector) {
+            throw new IllegalActionException("Inline is not relevant for a DE model !");
+        }
+        
         // Analyze type conversions that may be needed.
         // This must be called before any code is generated.
         _analyzeTypeConversions();
@@ -1326,18 +1330,6 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         // not, so we need to call generatePostfireCode() before
         // call _generateBodyCode().
         //_postfireCode = generatePostfireCode();
-        
-        // Generating the code for all the actors
-        // FIXME : for now this is only for DE Director
-        String[] actorsCode;
-        if (director != null && director instanceof DEDirector) {
-            ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.de.kernel.DEDirector directorAdapter = 
-                    (ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.de.kernel.DEDirector) 
-                    getAdapter(((DEDirector)director));
-            actorsCode = directorAdapter.generateActorCode();
-        }
-        else
-            actorsCode = new String[0];
 
         String bodyCode = _generateBodyCode();
         String mainEntryCode = generateMainEntryCode();
@@ -1353,8 +1345,23 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         String wrapupProcedureName = generateWrapupProcedureName();
 
         String fireFunctionCode = null;
+        String[] actorsCode = null;
         if (!inlineValue) {
-            fireFunctionCode = generateFireFunctionCode();
+            // Generating the code for all the actors
+            // FIXME : for now this is only for DE Director
+            if (director != null && director instanceof DEDirector) {
+                ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.de.kernel.DEDirector directorAdapter = 
+                        (ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.de.kernel.DEDirector) 
+                        getAdapter(((DEDirector)director));
+                actorsCode = directorAdapter.generateActorCode();
+            }
+            else {
+                actorsCode = new String[0];
+                fireFunctionCode = generateFireFunctionCode();
+            }
+            //StringBuffer code = new StringBuffer();
+            //NamedProgramCodeGeneratorAdapter adapter = (NamedProgramCodeGeneratorAdapter) getAdapter(getContainer());
+            //code.append(adapter.generateFireFunctionCode());
         }
         String wrapupCode = generateWrapupCode();
         String closingEntryCode = generateClosingEntryCode();
@@ -1472,7 +1479,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         
         codeMainH.append(_eol + "#endif");
 
-        if (!inlineValue) {
+        if (!inlineValue && fireFunctionCode != null) {
 
             code.append(comment("Before appending fireFunctionCode."));
             code.append(fireFunctionCode);

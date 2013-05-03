@@ -37,6 +37,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.StringTokenizer;
 
+import com.sun.tools.internal.ws.processor.model.Model;
+
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.IOPort;
@@ -164,10 +166,10 @@ public class DEDirector extends Director {
             codeActor.append(_eol + "}" + _eol);
             codeActorH.append(_eol + "bool " + actor.getName() + "PrefireCode();");
     
-            codeActor.append(_eol + "void " + actor.getName() + "FireCode() {");
-            codeActor.append(_eol + actorAdapter.generateFireCode());
-            codeActor.append(_eol + "}" + _eol);
-            codeActorH.append(_eol + "void " + actor.getName() + "FireCode();");
+            //codeActor.append(_eol + "void " + actor.getName() + "FireCode() {");
+            codeActor.append(_eol + actorAdapter.generateFireFunctionCode());
+            //codeActor.append(_eol + "}" + _eol);
+            codeActorH.append(_eol + "void " + actorAdapter.generateFireCode());
     
             codeActor.append(_eol + "void " + actor.getName() + "PostfireCode() {");
             codeActor.append(_eol + actorAdapter.generatePostfireCode());
@@ -251,6 +253,8 @@ public class DEDirector extends Director {
         ptolemy.actor.Director director = (ptolemy.actor.Director) getComponent();
         List actorList = ((CompositeActor) _director.getContainer())
                 .deepEntityList();
+        
+        String modelName = ((CompositeActor) _director.getContainer()).getName();
         // Sort by name so that we retrieve the actors from the list
         // by composite.
 
@@ -333,7 +337,8 @@ public class DEDirector extends Director {
             code.append(_eol + "director.actors[" + i + "]->prefireFunction = "
                     + actor.getName() + "PrefireCode;");
             code.append(_eol + "director.actors[" + i + "]->fireFunction = "
-                    + actor.getName() + "FireCode;");
+                    + modelName + "_" + actor.getName() + ";");
+            
             code.append(_eol + "director.actors[" + i
                     + "]->postfireFunction = " + actor.getName()
                     + "PostfireCode;");
