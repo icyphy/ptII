@@ -46,6 +46,7 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Settable;
+import ptolemy.kernel.util.Settable.Visibility;
 import ptolemy.kernel.util.SingletonConfigurableAttribute;
 
 /** A specialized port for Ptides platform I/O implementing
@@ -124,11 +125,13 @@ public class PtidesPort extends MirrorPort {
         platformDelayBound = new Parameter(this, "platformDelayBound");
         platformDelayBound.setExpression("0.0");
         platformDelayBound.setTypeEquals(BaseType.DOUBLE);
+        platformDelayBound.setVisibility(Settable.EXPERT);
 
         sourcePlatformDelayBound = new Parameter(this,
                 "sourcePlatformDelayBound");
         sourcePlatformDelayBound.setExpression("0.0");
         sourcePlatformDelayBound.setTypeEquals(BaseType.DOUBLE);
+        sourcePlatformDelayBound.setVisibility(Settable.EXPERT);
 
         networkDelayBound = new Parameter(this, "networkDelayBound");
         networkDelayBound.setExpression("0.0");
@@ -351,7 +354,7 @@ public class PtidesPort extends MirrorPort {
                 actuateAtEventTimestamp.setVisibility(Settable.NONE);
                 networkDelayBound.setVisibility(Settable.FULL);
                 platformDelayBound.setVisibility(Settable.NONE);
-                sourcePlatformDelayBound.setVisibility(Settable.FULL);
+                sourcePlatformDelayBound.setVisibility(Settable.EXPERT);
                 _iconDescription
                         .configure(
                                 null,
@@ -363,7 +366,7 @@ public class PtidesPort extends MirrorPort {
             } else if (isNetworkTransmitterPort()) {
                 actuateAtEventTimestamp.setVisibility(Settable.NONE);
                 networkDelayBound.setVisibility(Settable.NONE);
-                platformDelayBound.setVisibility(Settable.FULL);
+                platformDelayBound.setVisibility(Settable.EXPERT);
                 sourcePlatformDelayBound.setVisibility(Settable.NONE);
                 _iconDescription
                         .configure(
