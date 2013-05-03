@@ -30,11 +30,8 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.domains.ptides.kernel;
 
-import ptolemy.data.BooleanToken;
-import ptolemy.data.DoubleToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
-import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.DecoratorAttributes;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
@@ -45,19 +42,35 @@ import ptolemy.kernel.util.NamedObj;
 /**
 Container for decorator attributes that are provided to local sources and 
 other actors that schedule their own firings by
-a {@link PtidesDirector}. These attributes are used to throttle the 
-production of events by those sources.
+a {@link PtidesDirector}. Local sources in Ptides can produce an infinite 
+number of future events. Whether this can happen depends on the execution
+strategy implemented in the Ptides director. Note that in a DE composite, 
+all events are produced in time-stamp order. In Ptides we do not have
+this restriction; events can be produced out of timestamp order as long
+as the event is safe to process. Local sources are triggered by pure
+events produced during a firing of a local source. Such a pure event is
+always safe to process. 
+The attributes provided by this decorator are used to throttle the 
+production of events by local sources in Ptides.
 
-The parameter maximumLookaheadTime makes sure that actors are not fired
+<ul>
+<li>The parameter <i>maximumLookaheadTime</i> makes sure that actors are not fired
 at logical times bigger than the current platform time plus the parameter value.
-The parameter maximumFutureEvents specifies that the decorated actor
+</li>
+<li>
+The parameter <i>maximumFutureEvents</i> specifies that the decorated actor
 can only create and put onto the event queue a certain number of events. These
 events have to be consumed by downstream actors in order to allow the actor
 to create more events.
+</li>
+</ul>
 
 The boolean parameters useMaximumLookaheadTime and useMaximumFutureEvents
-are used to specify which paramter is used. Selecting one paramter automatically
-deselects the other such that only one can be true at a time.
+are used to specify which parameter is used. It is possible to use both parameters
+to throttle events to say the following:
+The decorated actor should produce events with timestamps up to maximumLookaheadTime
+time units ahead of the current platform time, but there should not be more than
+maximumFutureEvents events from this actor in the event queue at any time.
 
  @author  Patricia Derler 
  @version $Id$
@@ -118,32 +131,6 @@ public class ThrottleAttributes extends DecoratorAttributes {
      *  This parameter contains an int value that defaults to 0.
      */
     public Parameter maximumFutureEvents;
-    
-    ///////////////////////////////////////////////////////////////////
-    ////                        public methods                     ////
-    
-    /** Make sure that only one of the boolean values in the parameters 
-     *  <i>useMaximumLookaheadTime</i> and <i>useMaximumFutureEvents</i>
-     *  is true.
-     *  @param attribute The attribute that changed.
-     *  @exception IllegalActionException If the change is not acceptable
-     *   to this container (not thrown in this base class).
-     */
-    public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
-        if (attribute == useMaximumLookaheadTime) {
-            boolean value = ((BooleanToken)useMaximumLookaheadTime.getToken()).booleanValue();
-            if (value) {
-                useMaximumFutureEvents.setExpression("false");
-            }
-        } else if (attribute == useMaximumFutureEvents) {
-            boolean value = ((BooleanToken)useMaximumFutureEvents.getToken()).booleanValue();
-            if (value) {
-                useMaximumLookaheadTime.setExpression("false");
-            }
-        }
-        super.attributeChanged(attribute);
-    }
 
     ///////////////////////////////////////////////////////////////////
     ////                        private methods                    ////
