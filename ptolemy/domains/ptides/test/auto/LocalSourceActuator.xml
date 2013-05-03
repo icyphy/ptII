@@ -268,7 +268,7 @@
                     <property name="multiport"/>
                     <property name="minDelay" class="ptolemy.data.expr.Parameter" value="{Infinity}">
                     </property>
-                    <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="Infinity">
+                    <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="1.0">
                     </property>
                     <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="Infinity">
                     </property>
@@ -286,7 +286,7 @@
                     <property name="multiport"/>
                     <property name="minDelay" class="ptolemy.data.expr.Parameter" value="{Infinity}">
                     </property>
-                    <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="Infinity">
+                    <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="1.0">
                     </property>
                     <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="Infinity">
                     </property>
@@ -304,7 +304,7 @@
                     <property name="multiport"/>
                     <property name="minDelay" class="ptolemy.data.expr.Parameter" value="{Infinity}">
                     </property>
-                    <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="Infinity">
+                    <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="1.0">
                     </property>
                     <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="Infinity">
                     </property>
@@ -321,7 +321,7 @@
                     <property name="input"/>
                     <property name="minDelay" class="ptolemy.data.expr.Parameter" value="{Infinity}">
                     </property>
-                    <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="Infinity">
+                    <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="0.0">
                     </property>
                     <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="1.0">
                     </property>
@@ -339,18 +339,36 @@
                 </property>
                 <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
+                <property name="DecoratorAttributesFor_PtidesDirector" class="ptolemy.domains.ptides.kernel.ThrottleAttributes">
+                    <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.PtidesDirector">
+                    </property>
+                    <property name="useMaximumFutureFiringTime" class="ptolemy.data.expr.Parameter" value="true">
+                    </property>
+                    <property name="maximumFutureFiringTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                    </property>
+                    <property name="useMaximumFutureEvents" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                    <property name="maximumFutureEvents" class="ptolemy.data.expr.Parameter" value="0">
+                    </property>
+                </property>
             </entity>
             <relation name="relation" class="ptolemy.actor.TypedIORelation">
                 <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
                 </property>
                 <vertex name="vertex1" value="[280.0, 165.0]">
                 </vertex>
+                <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+                </property>
             </relation>
             <relation name="relation2" class="ptolemy.actor.TypedIORelation">
                 <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
                 </property>
+                <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+                </property>
             </relation>
             <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+                <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+                </property>
             </relation>
             <link port="ActuatorPort" relation="relation"/>
             <link port="CurrentTime.output" relation="relation2"/>
@@ -369,9 +387,13 @@
         </property>
         <vertex name="vertex1" value="[180.0, 175.0]">
         </vertex>
+        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+        </property>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
+        </property>
+        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
         </property>
     </relation>
     <link port="CurrentTime.output" relation="relation2"/>

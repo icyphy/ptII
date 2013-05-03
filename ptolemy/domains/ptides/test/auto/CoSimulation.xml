@@ -892,6 +892,8 @@
                             <property name="_location" class="ptolemy.kernel.util.Location" value="[465.0, -10.0]">
                             </property>
                             <entity name="_Controller" class="ptolemy.domains.modal.modal.ModalController">
+                                <property name="errorCause" class="ptolemy.data.expr.Parameter">
+                                </property>
                                 <property name="_library" class="ptolemy.moml.LibraryAttribute">
                                     <configure>
       <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.modal.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory"></property></entity></entity>
@@ -1023,6 +1025,8 @@
                                 </property>
                             </port>
                             <entity name="_Controller" class="ptolemy.domains.modal.modal.ModalController">
+                                <property name="errorCause" class="ptolemy.data.expr.Parameter">
+                                </property>
                                 <property name="_library" class="ptolemy.moml.LibraryAttribute">
                                     <configure>
       <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.modal.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory"></property></entity></entity>
@@ -1938,6 +1942,8 @@
                                 </property>
                             </port>
                             <entity name="_Controller" class="ptolemy.domains.modal.modal.ModalController">
+                                <property name="errorCause" class="ptolemy.data.expr.Parameter">
+                                </property>
                                 <property name="Ellipse" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
                                     <property name="_location" class="ptolemy.kernel.util.Location" value="[370.0, 245.0]">
                                     </property>
@@ -2402,6 +2408,8 @@
                                 </property>
                             </port>
                             <entity name="_Controller" class="ptolemy.domains.modal.modal.ModalController">
+                                <property name="errorCause" class="ptolemy.data.expr.Parameter">
+                                </property>
                                 <property name="_library" class="ptolemy.moml.LibraryAttribute">
                                     <configure>
       <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.modal.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory"></property></entity></entity>
@@ -2821,6 +2829,8 @@
                                 </property>
                             </port>
                             <entity name="_Controller" class="ptolemy.domains.modal.modal.ModalController">
+                                <property name="errorCause" class="ptolemy.data.expr.Parameter">
+                                </property>
                                 <property name="_library" class="ptolemy.moml.LibraryAttribute">
                                     <configure>
       <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.modal.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory"></property></entity></entity>
@@ -2997,7 +3007,7 @@
                             </port>
                         </entity>
                         <entity name="resumeDiscreteClock" class="ptolemy.actor.lib.resourceScheduler.ResourceMappingOutputPort">
-                            <property name="Parameter" class="ptolemy.data.expr.Parameter">
+                            <property name="Parameter" class="ptolemy.data.expr.Parameter" value="false">
                             </property>
                             <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 75.0]">
                             </property>
@@ -3020,7 +3030,7 @@
                             <link port="SetVariable.input" relation="relation"/>
                         </entity>
                         <entity name="resumeRamp" class="ptolemy.actor.lib.resourceScheduler.ResourceMappingOutputPort">
-                            <property name="Parameter" class="ptolemy.data.expr.Parameter">
+                            <property name="Parameter" class="ptolemy.data.expr.Parameter" value="false">
                             </property>
                             <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 120.0]">
                             </property>
@@ -3043,7 +3053,7 @@
                             <link port="SetVariable.input" relation="relation"/>
                         </entity>
                         <entity name="resumeSpectrum" class="ptolemy.actor.lib.resourceScheduler.ResourceMappingOutputPort">
-                            <property name="Parameter" class="ptolemy.data.expr.Parameter">
+                            <property name="Parameter" class="ptolemy.data.expr.Parameter" value="false">
                             </property>
                             <property name="_location" class="ptolemy.kernel.util.Location" value="[485.0, 100.0]">
                             </property>
@@ -3261,6 +3271,18 @@
                     <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
                     </property>
                 </property>
+                <property name="DecoratorAttributesFor_PtidesDirector" class="ptolemy.domains.ptides.kernel.ThrottleAttributes">
+                    <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.PtidesDirector">
+                    </property>
+                    <property name="useMaximumFutureFiringTime" class="ptolemy.data.expr.Parameter" value="true">
+                    </property>
+                    <property name="maximumFutureFiringTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                    </property>
+                    <property name="useMaximumFutureEvents" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                    <property name="maximumFutureEvents" class="ptolemy.data.expr.Parameter" value="0">
+                    </property>
+                </property>
             </entity>
             <entity name="App" class="ptolemy.actor.TypedCompositeActor">
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[245.0, 210.0]">
@@ -3341,6 +3363,18 @@
                         <property name="enable" class="ptolemy.data.expr.Parameter" value="true">
                         </property>
                         <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                        </property>
+                    </property>
+                    <property name="DecoratorAttributesFor_PtidesDirector" class="ptolemy.domains.ptides.kernel.ThrottleAttributes">
+                        <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.PtidesDirector">
+                        </property>
+                        <property name="useMaximumFutureFiringTime" class="ptolemy.data.expr.Parameter" value="false">
+                        </property>
+                        <property name="maximumFutureFiringTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                        </property>
+                        <property name="useMaximumFutureEvents" class="ptolemy.data.expr.Parameter" value="false">
+                        </property>
+                        <property name="maximumFutureEvents" class="ptolemy.data.expr.Parameter" value="0">
                         </property>
                     </property>
                     <port name="trigger" class="ptolemy.actor.TypedIOPort">
@@ -3431,6 +3465,18 @@
                     <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
                     </property>
                 </property>
+                <property name="DecoratorAttributesFor_PtidesDirector" class="ptolemy.domains.ptides.kernel.ThrottleAttributes">
+                    <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.PtidesDirector">
+                    </property>
+                    <property name="useMaximumFutureFiringTime" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                    <property name="maximumFutureFiringTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                    </property>
+                    <property name="useMaximumFutureEvents" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                    <property name="maximumFutureEvents" class="ptolemy.data.expr.Parameter" value="0">
+                    </property>
+                </property>
                 <port name="trigger" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                     <property name="multiport"/>
@@ -3480,6 +3526,18 @@
                     <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
                     </property>
                     <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                    </property>
+                </property>
+                <property name="DecoratorAttributesFor_PtidesDirector" class="ptolemy.domains.ptides.kernel.ThrottleAttributes">
+                    <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.PtidesDirector">
+                    </property>
+                    <property name="useMaximumFutureFiringTime" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                    <property name="maximumFutureFiringTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                    </property>
+                    <property name="useMaximumFutureEvents" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                    <property name="maximumFutureEvents" class="ptolemy.data.expr.Parameter" value="0">
                     </property>
                 </property>
                 <port name="trigger" class="ptolemy.actor.TypedIOPort">

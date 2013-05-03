@@ -47,6 +47,8 @@ import ptolemy.actor.Receiver;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.lib.Const;
+import ptolemy.actor.lib.DiscreteClock;
+import ptolemy.actor.lib.PoissonClock;
 import ptolemy.actor.lib.Source;
 import ptolemy.actor.lib.TimeDelay;
 import ptolemy.actor.lib.resourceScheduler.ResourceAttributes;
@@ -57,6 +59,7 @@ import ptolemy.actor.util.CausalityInterface;
 import ptolemy.actor.util.Dependency;
 import ptolemy.actor.util.SuperdenseDependency;
 import ptolemy.actor.util.Time;
+import ptolemy.data.ArrayToken;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
@@ -66,6 +69,7 @@ import ptolemy.data.type.BaseType;
 import ptolemy.domains.de.kernel.DEDirector;
 import ptolemy.domains.de.kernel.DEEvent;
 import ptolemy.domains.de.kernel.DEEventQueue;
+import ptolemy.domains.modal.modal.ModalModel;
 import ptolemy.domains.ptides.lib.ErrorHandlingAction;
 import ptolemy.domains.ptides.lib.PtidesPort;
 import ptolemy.domains.sr.kernel.SRDirector;
@@ -904,7 +908,7 @@ public class PtidesDirector extends DEDirector implements Decorator {
                 Double delayOffsetAtSource = null;
                 ThrottleAttributes attributes = (ThrottleAttributes) ((NamedObj) localSource)
                         .getDecoratorAttributes(this);
-                if (((BooleanToken) attributes.useMaximumFutureFiringTime
+                if (attributes != null && ((BooleanToken) attributes.useMaximumFutureFiringTime
                         .getToken()).booleanValue()) {
                     delayOffsetAtSource = ((DoubleToken) attributes.maximumFutureFiringTime
                             .getToken()).doubleValue();
@@ -1547,9 +1551,18 @@ public class PtidesDirector extends DEDirector implements Decorator {
 
         if (port != null) {
             Actor actor = (Actor) port.getContainer();
-            for (Object ioPort : actor.inputPortList()) {
-                Double ioPortDelayOffset = _getDoubleParameterValue(
-                        (NamedObj) ioPort, "delayOffset");
+            for (int i = 0; i < actor.inputPortList().size(); i++) {
+                Object ioPort = actor.inputPortList().get(i);
+                Parameter parameter = (Parameter) ((NamedObj) ioPort).getAttribute("delayOffset");
+                Double ioPortDelayOffset = null;
+                if (parameter != null) {
+                    Token token = parameter.getToken();
+                    if (token instanceof DoubleToken) {
+                        ioPortDelayOffset = ((DoubleToken)token).doubleValue();
+                    } else if (token instanceof ArrayToken) {
+                        ioPortDelayOffset = ((DoubleToken)((ArrayToken)token).getElement(0)).doubleValue();
+                    }
+                }
                 if (ioPortDelayOffset != null
                         && (delayOffset == null || ioPortDelayOffset < delayOffset)) {
                     delayOffset = ioPortDelayOffset;
@@ -1565,6 +1578,7 @@ public class PtidesDirector extends DEDirector implements Decorator {
                         .valueOf(((DoubleToken) attributes.maximumFutureFiringTime
                                 .getToken()).doubleValue());
             }
+            
 
         }
         if (delayOffset == null
@@ -1706,11 +1720,7 @@ public class PtidesDirector extends DEDirector implements Decorator {
 
     @Override
     public DecoratorAttributes createDecoratorAttributes(NamedObj target) {
-        if (target instanceof Source
-                || (target instanceof CompositeActor && ((((CompositeActor) target)
-                        .isOpaque())
-                        && ((CompositeActor) target).inputPortList().size() == 0 || ((CompositeActor) target)
-                        .getDirector() instanceof SRDirector))) {
+        if (_isLocalSource(target)) {
             try {
                 return new ThrottleAttributes(target, this);
             } catch (KernelException ex) {
@@ -1728,15 +1738,35 @@ public class PtidesDirector extends DEDirector implements Decorator {
         List<NamedObj> list = new ArrayList();
         CompositeEntity container = (CompositeEntity) getContainer();
         for (Object target : container.entityList()) {
-            if (target instanceof Source
-                    || (target instanceof CompositeActor && ((((CompositeActor) target)
-                            .isOpaque())
-                            && ((CompositeActor) target).inputPortList().size() == 0 || ((CompositeActor) target)
-                            .getDirector() instanceof SRDirector))) {
+            if (_isLocalSource(target)) {
                 list.add((NamedObj) target);
             }
         }
         return list;
+    }
+    
+    private boolean _isLocalSource(Object target) { 
+        if (target instanceof DiscreteClock ||
+            target instanceof PoissonClock) {
+            return true;
+        }
+        if (target instanceof ModalModel) {
+            return true;
+        }
+        if (target instanceof CompositeActor && ((CompositeActor) target).isOpaque()) {
+            if (((CompositeActor) target).inputPortList().size() == 0 
+                    || ((CompositeActor) target).getDirector() instanceof SRDirector) {
+                return true;
+            }
+            for (Object entity : ((CompositeActor) target).allAtomicEntityList()) {
+                if (entity instanceof DiscreteClock ||
+                        entity instanceof PoissonClock) {
+                    return true;
+                }
+            }
+                
+        }
+        return false;
     }
 
     /** Returns false, as this director only decorates local sources 
