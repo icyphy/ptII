@@ -28,6 +28,7 @@
 package ptolemy.actor.gui;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Component;
 import java.util.LinkedList;
 import java.util.List;
@@ -147,7 +148,8 @@ public class EditorPaneFactory extends Attribute {
                 if (decoratorAttributes != null) {
                     PtolemyQuery decoratorQuery = new PtolemyQuery(object);
                     decoratorQuery.setAlignmentY(Component.TOP_ALIGNMENT);
-                    decoratorQuery.setTextWidth(40);
+                    decoratorQuery.setTextWidth(40); 
+                    decoratorQuery.addText("Full name: " + decorator.getFullName(), Color.BLACK, 0); 
                     boolean foundDecoratorAttribute = false;
 
                     for (Object attribute : decoratorAttributes.attributeList()) {
@@ -161,7 +163,7 @@ public class EditorPaneFactory extends Attribute {
                     }
                     foundOne = foundOne || foundDecoratorAttribute;
                     if (foundDecoratorAttribute) {
-                        tabs.addTab(decorator.getFullName(), decoratorQuery);
+                        tabs.addTab(decorator.getName(), decoratorQuery);
                         numberOfTabs += 1;
                     }
                 }
@@ -171,7 +173,7 @@ public class EditorPaneFactory extends Attribute {
         }
 
         if (numberOfTabs > 1) {
-            query.add(tabs, BorderLayout.CENTER);
+            query.add(tabs);
         }
 
         PtolemyQuery queryForMainAttributes = numberOfTabs > 1 ? mainTab
@@ -182,7 +184,7 @@ public class EditorPaneFactory extends Attribute {
                 foundOne = true;
                 queryForMainAttributes.addStyledEntry(parameter);
             }
-        }
+        } 
 
         if (!foundOne) {
             return new JLabel(object.getName() + " has no parameters.");
