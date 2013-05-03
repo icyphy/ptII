@@ -1,0 +1,2700 @@
+making tests in ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor
+make[1]: entrant dans le répertoire « /home/william/workspace/ptII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor »
+making tests in ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib
+make[2]: entrant dans le répertoire « /home/william/workspace/ptII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib »
+making tests in ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/conversions
+make[3]: entrant dans le répertoire « /home/william/workspace/ptII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/conversions »
+making tests in ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/conversions/test
+make[4]: entrant dans le répertoire « /home/william/workspace/ptII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/conversions/test »
+CLASSPATH="../../../../../../../../../../../../..:/home/william/workspace/ptII/lib/ptjacl.jar" "/usr/lib/jvm/java-7-oracle/bin/java" -Xmx1000M  "-Dptolemy.ptII.dir=/home/william/workspace/ptII"  tcl.lang.Shell ../../../../../../../../../../../../../util/testsuite/auto.tcl
+------------------ testing $PTII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/conversions/test/auto/Round.xml
+auto.tcl: Setting watchdog for 200 seconds at Thu May 02 17:12:51 PDT 2013
+62 ms. Memory: 30784K Free: 21172K (69%)
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:12:52 PDT 2013
+auto.tcl: Setting watchdog for 200 seconds at Thu May 02 17:12:52 PDT 2013
+13 ms. Memory: 30784K Free: 28744K (93%)
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:12:52 PDT 2013
+05/02/13 05:12:52
+Failed: 0  Total Tests: 2  ((Passed: 2, Newly Passed: 0)  Known Failed: 0) /home/william/workspace/ptII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/conversions/test
+CLASSPATH="../../../../../../../../../../../../..:/home/william/workspace/ptII/lib/ptjacl.jar" "/usr/lib/jvm/java-7-oracle/bin/java" -Xmx1000M  "-Dptolemy.ptII.dir=/home/william/workspace/ptII"  tcl.lang.Shell ../../../../../../../../../../../../../util/testsuite/CCGAuto.tcl
+------------------ Invoking the ptolemy/cg C generator by calling GenericCodeGenerator.generateCode(args).  To replicate: $PTII/bin/ptcg -generatorPackage ptolemy.cg.kernel.generic.program.procedural.c $PTII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/conversions/test/auto/Round.xml 
+JavaCGAuto.tcl: Setting watchdog for 60 seconds at Thu May 02 17:12:53 PDT 2013
+Writing Round.c in file:/home/william/cg (8829 characters)
+Wrote /home/william/cg/Round.c
+Wrote /home/william/cg/src/main.h
+Wrote /home/william/cg/src/types.h
+Wrote /home/william/cg/src/types.c
+Reading "ptolemy/cg/kernel/generic/program/procedural/c/makefile.in",
+    writing "/home/william/cg/Round.mk"
+In "/home/william/cg", about to execute:
+    make -f Round.mk
+make[5]: entrant dans le répertoire « /home/william/cg »
+gcc -Wall   -ggdb -c -o "src/types.o" "src/types.c"
+gcc -D__int64="long long" -Wall   -ggdb  Round.c src/types.o -o Round -lm 
+In file included from Round.c:21:0:
+src/main.h:19:16: attention : ‘Round_Test_output’ defined but not used [-Wunused-variable]
+make[5]: quittant le répertoire « /home/william/cg »
+In "/home/william/cg", about to execute:
+    /home/william/cg/Round
+All Done
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:12:54 PDT 2013
+05/02/13 05:12:54
+Failed: 0  Total Tests: 1  ((Passed: 1, Newly Passed: 0)  Known Failed: 0) /home/william/workspace/ptII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/conversions/test
+CLASSPATH="../../../../../../../../../../../../..:/home/william/workspace/ptII/lib/ptjacl.jar" "/usr/lib/jvm/java-7-oracle/bin/java" -Xmx1000M  "-Dptolemy.ptII.dir=/home/william/workspace/ptII"  tcl.lang.Shell alljtests.tcl
+dummy.tcl
+make[4]: quittant le répertoire « /home/william/workspace/ptII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/conversions/test »
+make[3]: quittant le répertoire « /home/william/workspace/ptII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/conversions »
+making tests in ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/gui
+make[3]: entrant dans le répertoire « /home/william/workspace/ptII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/gui »
+making tests in ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/gui/test
+make[4]: entrant dans le répertoire « /home/william/workspace/ptII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/gui/test »
+CLASSPATH="../../../../../../../../../../../../..:/home/william/workspace/ptII/lib/ptjacl.jar" "/usr/lib/jvm/java-7-oracle/bin/java" -Xmx1000M  "-Dptolemy.ptII.dir=/home/william/workspace/ptII"  tcl.lang.Shell ../../../../../../../../../../../../../util/testsuite/auto.tcl
+------------------ testing $PTII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/gui/test/auto/Display.xml
+auto.tcl: Setting watchdog for 200 seconds at Thu May 02 17:12:54 PDT 2013
+29 ms. Memory: 30784K Free: 28173K (92%)
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:12:55 PDT 2013
+auto.tcl: Setting watchdog for 200 seconds at Thu May 02 17:12:55 PDT 2013
+4 ms. Memory: 30784K Free: 27539K (89%)
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:12:55 PDT 2013
+05/02/13 05:12:55
+Failed: 0  Total Tests: 2  ((Passed: 2, Newly Passed: 0)  Known Failed: 0) /home/william/workspace/ptII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/gui/test
+CLASSPATH="../../../../../../../../../../../../..:/home/william/workspace/ptII/lib/ptjacl.jar" "/usr/lib/jvm/java-7-oracle/bin/java" -Xmx1000M  "-Dptolemy.ptII.dir=/home/william/workspace/ptII"  tcl.lang.Shell ../../../../../../../../../../../../../util/testsuite/CCGAuto.tcl
+------------------ Invoking the ptolemy/cg C generator by calling GenericCodeGenerator.generateCode(args).  To replicate: $PTII/bin/ptcg -generatorPackage ptolemy.cg.kernel.generic.program.procedural.c $PTII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/gui/test/auto/Display.xml 
+JavaCGAuto.tcl: Setting watchdog for 60 seconds at Thu May 02 17:12:55 PDT 2013
+Writing Display.c in file:/home/william/cg (2964 characters)
+Wrote /home/william/cg/Display.c
+Wrote /home/william/cg/src/main.h
+Wrote /home/william/cg/src/types.h
+Wrote /home/william/cg/src/types.c
+Reading "ptolemy/cg/kernel/generic/program/procedural/c/makefile.in",
+    writing "/home/william/cg/Display.mk"
+In "/home/william/cg", about to execute:
+    make -f Display.mk
+make[5]: entrant dans le répertoire « /home/william/cg »
+gcc -Wall   -ggdb -c -o "src/types.o" "src/types.c"
+gcc -D__int64="long long" -Wall   -ggdb  Display.c src/types.o -o Display -lm 
+make[5]: quittant le répertoire « /home/william/cg »
+In "/home/william/cg", about to execute:
+    /home/william/cg/Display
+All Done
+2
+2
+2
+2
+2
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:12:56 PDT 2013
+05/02/13 05:12:56
+Failed: 0  Total Tests: 1  ((Passed: 1, Newly Passed: 0)  Known Failed: 0) /home/william/workspace/ptII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/gui/test
+CLASSPATH="../../../../../../../../../../../../..:/home/william/workspace/ptII/lib/ptjacl.jar" "/usr/lib/jvm/java-7-oracle/bin/java" -Xmx1000M  "-Dptolemy.ptII.dir=/home/william/workspace/ptII"  tcl.lang.Shell alljtests.tcl
+dummy.tcl
+make[4]: quittant le répertoire « /home/william/workspace/ptII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/gui/test »
+make[3]: quittant le répertoire « /home/william/workspace/ptII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/gui »
+making tests in ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/logic
+make[3]: entrant dans le répertoire « /home/william/workspace/ptII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/logic »
+making tests in ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/logic/test
+make[4]: entrant dans le répertoire « /home/william/workspace/ptII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/logic/test »
+CLASSPATH="../../../../../../../../../../../../..:/home/william/workspace/ptII/lib/ptjacl.jar" "/usr/lib/jvm/java-7-oracle/bin/java" -Xmx1000M  "-Dptolemy.ptII.dir=/home/william/workspace/ptII"  tcl.lang.Shell ../../../../../../../../../../../../../util/testsuite/auto.tcl
+------------------ testing $PTII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/logic/test/auto/Comparator.xml
+auto.tcl: Setting watchdog for 200 seconds at Thu May 02 17:12:57 PDT 2013
+54 ms. Memory: 30784K Free: 28166K (91%)
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:12:58 PDT 2013
+auto.tcl: Setting watchdog for 200 seconds at Thu May 02 17:12:58 PDT 2013
+7 ms. Memory: 30784K Free: 27503K (89%)
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:12:58 PDT 2013
+------------------ testing $PTII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/logic/test/auto/LogicFunctionand.xml
+auto.tcl: Setting watchdog for 200 seconds at Thu May 02 17:12:58 PDT 2013
+8 ms. Memory: 30784K Free: 26821K (87%)
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:12:58 PDT 2013
+auto.tcl: Setting watchdog for 200 seconds at Thu May 02 17:12:58 PDT 2013
+5 ms. Memory: 30784K Free: 26386K (86%)
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:12:58 PDT 2013
+------------------ testing $PTII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/logic/test/auto/LogicFunctionnand.xml
+auto.tcl: Setting watchdog for 200 seconds at Thu May 02 17:12:58 PDT 2013
+7 ms. Memory: 30784K Free: 26753K (87%)
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:12:58 PDT 2013
+auto.tcl: Setting watchdog for 200 seconds at Thu May 02 17:12:58 PDT 2013
+5 ms. Memory: 30784K Free: 26310K (85%)
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:12:58 PDT 2013
+------------------ testing $PTII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/logic/test/auto/LogicFunctionnor.xml
+auto.tcl: Setting watchdog for 200 seconds at Thu May 02 17:12:58 PDT 2013
+7 ms. Memory: 30784K Free: 26794K (87%)
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:12:58 PDT 2013
+auto.tcl: Setting watchdog for 200 seconds at Thu May 02 17:12:58 PDT 2013
+5 ms. Memory: 30784K Free: 26456K (86%)
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:12:58 PDT 2013
+------------------ testing $PTII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/logic/test/auto/LogicFunctionor.xml
+auto.tcl: Setting watchdog for 200 seconds at Thu May 02 17:12:58 PDT 2013
+6 ms. Memory: 30784K Free: 26938K (88%)
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:12:58 PDT 2013
+auto.tcl: Setting watchdog for 200 seconds at Thu May 02 17:12:58 PDT 2013
+5 ms. Memory: 30784K Free: 26420K (86%)
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:12:58 PDT 2013
+------------------ testing $PTII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/logic/test/auto/LogicFunctionxnor.xml
+auto.tcl: Setting watchdog for 200 seconds at Thu May 02 17:12:58 PDT 2013
+6 ms. Memory: 30784K Free: 26841K (87%)
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:12:58 PDT 2013
+auto.tcl: Setting watchdog for 200 seconds at Thu May 02 17:12:58 PDT 2013
+4 ms. Memory: 30784K Free: 26397K (86%)
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:12:58 PDT 2013
+------------------ testing $PTII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/logic/test/auto/LogicFunctionxor.xml
+auto.tcl: Setting watchdog for 200 seconds at Thu May 02 17:12:58 PDT 2013
+6 ms. Memory: 30784K Free: 26890K (87%)
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:12:58 PDT 2013
+auto.tcl: Setting watchdog for 200 seconds at Thu May 02 17:12:58 PDT 2013
+6 ms. Memory: 30784K Free: 26447K (86%)
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:12:58 PDT 2013
+05/02/13 05:12:58
+Failed: 0  Total Tests: 14  ((Passed: 14, Newly Passed: 0)  Known Failed: 0) /home/william/workspace/ptII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/logic/test
+CLASSPATH="../../../../../../../../../../../../..:/home/william/workspace/ptII/lib/ptjacl.jar" "/usr/lib/jvm/java-7-oracle/bin/java" -Xmx1000M  "-Dptolemy.ptII.dir=/home/william/workspace/ptII"  tcl.lang.Shell ../../../../../../../../../../../../../util/testsuite/CCGAuto.tcl
+------------------ Invoking the ptolemy/cg C generator by calling GenericCodeGenerator.generateCode(args).  To replicate: $PTII/bin/ptcg -generatorPackage ptolemy.cg.kernel.generic.program.procedural.c $PTII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/logic/test/auto/Comparator.xml 
+JavaCGAuto.tcl: Setting watchdog for 60 seconds at Thu May 02 17:12:58 PDT 2013
+Writing Comparator.c in file:/home/william/cg (18110 characters)
+Wrote /home/william/cg/Comparator.c
+Wrote /home/william/cg/src/main.h
+Wrote /home/william/cg/src/types.h
+Wrote /home/william/cg/src/types.c
+Reading "ptolemy/cg/kernel/generic/program/procedural/c/makefile.in",
+    writing "/home/william/cg/Comparator.mk"
+In "/home/william/cg", about to execute:
+    make -f Comparator.mk
+make[5]: entrant dans le répertoire « /home/william/cg »
+gcc -Wall   -ggdb -c -o "src/types.o" "src/types.c"
+gcc -D__int64="long long" -Wall   -ggdb  Comparator.c src/types.o -o Comparator -lm 
+In file included from Comparator.c:21:0:
+src/main.h:20:12: attention : ‘Comparator_Pulse1_output_0’ defined but not used [-Wunused-variable]
+src/main.h:27:12: attention : ‘Comparator_Pulse2_output_0’ defined but not used [-Wunused-variable]
+src/main.h:48:16: attention : ‘Comparator_Test11_output’ defined but not used [-Wunused-variable]
+src/main.h:57:16: attention : ‘Comparator_13_Test11_output’ defined but not used [-Wunused-variable]
+src/main.h:66:16: attention : ‘Comparator_14_Test11_output’ defined but not used [-Wunused-variable]
+src/main.h:75:16: attention : ‘Comparator_15_Test11_output’ defined but not used [-Wunused-variable]
+src/main.h:88:16: attention : ‘Comparator_15_Test_output’ defined but not used [-Wunused-variable]
+make[5]: quittant le répertoire « /home/william/cg »
+In "/home/william/cg", about to execute:
+    /home/william/cg/Comparator
+All Done
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:00 PDT 2013
+------------------ Invoking the ptolemy/cg C generator by calling GenericCodeGenerator.generateCode(args).  To replicate: $PTII/bin/ptcg -generatorPackage ptolemy.cg.kernel.generic.program.procedural.c $PTII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/logic/test/auto/LogicFunctionxnor.xml 
+JavaCGAuto.tcl: Setting watchdog for 60 seconds at Thu May 02 17:13:00 PDT 2013
+Writing LogicFunctionxnor.c in file:/home/william/cg/ (7491 characters)
+Wrote /home/william/cg/LogicFunctionxnor.c
+Wrote /home/william/cg/src/main.h
+Wrote /home/william/cg/src/types.h
+Wrote /home/william/cg/src/types.c
+Reading "ptolemy/cg/kernel/generic/program/procedural/c/makefile.in",
+    writing "/home/william/cg/LogicFunctionxnor.mk"
+In "/home/william/cg", about to execute:
+    make -f LogicFunctionxnor.mk
+make[5]: entrant dans le répertoire « /home/william/cg »
+gcc -Wall   -ggdb -c -o "src/types.o" "src/types.c"
+gcc -D__int64="long long" -Wall   -ggdb  LogicFunctionxnor.c src/types.o -o LogicFunctionxnor -lm 
+In file included from LogicFunctionxnor.c:21:0:
+src/main.h:24:16: attention : ‘LogicFunctionxnor_Test_output’ defined but not used [-Wunused-variable]
+make[5]: quittant le répertoire « /home/william/cg »
+In "/home/william/cg", about to execute:
+    /home/william/cg/LogicFunctionxnor
+All Done
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:00 PDT 2013
+------------------ Invoking the ptolemy/cg C generator by calling GenericCodeGenerator.generateCode(args).  To replicate: $PTII/bin/ptcg -generatorPackage ptolemy.cg.kernel.generic.program.procedural.c $PTII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/logic/test/auto/LogicFunctionor.xml 
+JavaCGAuto.tcl: Setting watchdog for 60 seconds at Thu May 02 17:13:00 PDT 2013
+Writing LogicFunctionor.c in file:/home/william/cg/ (7356 characters)
+Wrote /home/william/cg/LogicFunctionor.c
+Wrote /home/william/cg/src/main.h
+Wrote /home/william/cg/src/types.h
+Wrote /home/william/cg/src/types.c
+Reading "ptolemy/cg/kernel/generic/program/procedural/c/makefile.in",
+    writing "/home/william/cg/LogicFunctionor.mk"
+In "/home/william/cg", about to execute:
+    make -f LogicFunctionor.mk
+make[5]: entrant dans le répertoire « /home/william/cg »
+gcc -Wall   -ggdb -c -o "src/types.o" "src/types.c"
+gcc -D__int64="long long" -Wall   -ggdb  LogicFunctionor.c src/types.o -o LogicFunctionor -lm 
+In file included from LogicFunctionor.c:21:0:
+src/main.h:24:16: attention : ‘LogicFunctionor_Test_output’ defined but not used [-Wunused-variable]
+make[5]: quittant le répertoire « /home/william/cg »
+In "/home/william/cg", about to execute:
+    /home/william/cg/LogicFunctionor
+All Done
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:01 PDT 2013
+------------------ Invoking the ptolemy/cg C generator by calling GenericCodeGenerator.generateCode(args).  To replicate: $PTII/bin/ptcg -generatorPackage ptolemy.cg.kernel.generic.program.procedural.c $PTII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/logic/test/auto/LogicFunctionxor.xml 
+JavaCGAuto.tcl: Setting watchdog for 60 seconds at Thu May 02 17:13:01 PDT 2013
+Writing LogicFunctionxor.c in file:/home/william/cg/ (7425 characters)
+Wrote /home/william/cg/LogicFunctionxor.c
+Wrote /home/william/cg/src/main.h
+Wrote /home/william/cg/src/types.h
+Wrote /home/william/cg/src/types.c
+Reading "ptolemy/cg/kernel/generic/program/procedural/c/makefile.in",
+    writing "/home/william/cg/LogicFunctionxor.mk"
+In "/home/william/cg", about to execute:
+    make -f LogicFunctionxor.mk
+make[5]: entrant dans le répertoire « /home/william/cg »
+gcc -Wall   -ggdb -c -o "src/types.o" "src/types.c"
+gcc -D__int64="long long" -Wall   -ggdb  LogicFunctionxor.c src/types.o -o LogicFunctionxor -lm 
+In file included from LogicFunctionxor.c:21:0:
+src/main.h:24:16: attention : ‘LogicFunctionxor_Test_output’ defined but not used [-Wunused-variable]
+make[5]: quittant le répertoire « /home/william/cg »
+In "/home/william/cg", about to execute:
+    /home/william/cg/LogicFunctionxor
+All Done
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:01 PDT 2013
+------------------ Invoking the ptolemy/cg C generator by calling GenericCodeGenerator.generateCode(args).  To replicate: $PTII/bin/ptcg -generatorPackage ptolemy.cg.kernel.generic.program.procedural.c $PTII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/logic/test/auto/LogicFunctionnor.xml 
+JavaCGAuto.tcl: Setting watchdog for 60 seconds at Thu May 02 17:13:01 PDT 2013
+Writing LogicFunctionnor.c in file:/home/william/cg/ (7430 characters)
+Wrote /home/william/cg/LogicFunctionnor.c
+Wrote /home/william/cg/src/main.h
+Wrote /home/william/cg/src/types.h
+Wrote /home/william/cg/src/types.c
+Reading "ptolemy/cg/kernel/generic/program/procedural/c/makefile.in",
+    writing "/home/william/cg/LogicFunctionnor.mk"
+In "/home/william/cg", about to execute:
+    make -f LogicFunctionnor.mk
+make[5]: entrant dans le répertoire « /home/william/cg »
+gcc -Wall   -ggdb -c -o "src/types.o" "src/types.c"
+gcc -D__int64="long long" -Wall   -ggdb  LogicFunctionnor.c src/types.o -o LogicFunctionnor -lm 
+In file included from LogicFunctionnor.c:21:0:
+src/main.h:24:16: attention : ‘LogicFunctionnor_Test_output’ defined but not used [-Wunused-variable]
+make[5]: quittant le répertoire « /home/william/cg »
+In "/home/william/cg", about to execute:
+    /home/william/cg/LogicFunctionnor
+All Done
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:01 PDT 2013
+------------------ Invoking the ptolemy/cg C generator by calling GenericCodeGenerator.generateCode(args).  To replicate: $PTII/bin/ptcg -generatorPackage ptolemy.cg.kernel.generic.program.procedural.c $PTII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/logic/test/auto/LogicFunctionand.xml 
+JavaCGAuto.tcl: Setting watchdog for 60 seconds at Thu May 02 17:13:01 PDT 2013
+Writing LogicFunctionand.c in file:/home/william/cg/ (7431 characters)
+Wrote /home/william/cg/LogicFunctionand.c
+Wrote /home/william/cg/src/main.h
+Wrote /home/william/cg/src/types.h
+Wrote /home/william/cg/src/types.c
+Reading "ptolemy/cg/kernel/generic/program/procedural/c/makefile.in",
+    writing "/home/william/cg/LogicFunctionand.mk"
+In "/home/william/cg", about to execute:
+    make -f LogicFunctionand.mk
+make[5]: entrant dans le répertoire « /home/william/cg »
+gcc -Wall   -ggdb -c -o "src/types.o" "src/types.c"
+gcc -D__int64="long long" -Wall   -ggdb  LogicFunctionand.c src/types.o -o LogicFunctionand -lm 
+In file included from LogicFunctionand.c:21:0:
+src/main.h:24:16: attention : ‘LogicFunctionand_Test_output’ defined but not used [-Wunused-variable]
+make[5]: quittant le répertoire « /home/william/cg »
+In "/home/william/cg", about to execute:
+    /home/william/cg/LogicFunctionand
+All Done
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:01 PDT 2013
+------------------ Invoking the ptolemy/cg C generator by calling GenericCodeGenerator.generateCode(args).  To replicate: $PTII/bin/ptcg -generatorPackage ptolemy.cg.kernel.generic.program.procedural.c $PTII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/logic/test/auto/LogicFunctionnand.xml 
+JavaCGAuto.tcl: Setting watchdog for 60 seconds at Thu May 02 17:13:01 PDT 2013
+Writing LogicFunctionnand.c in file:/home/william/cg/ (7485 characters)
+Wrote /home/william/cg/LogicFunctionnand.c
+Wrote /home/william/cg/src/main.h
+Wrote /home/william/cg/src/types.h
+Wrote /home/william/cg/src/types.c
+Reading "ptolemy/cg/kernel/generic/program/procedural/c/makefile.in",
+    writing "/home/william/cg/LogicFunctionnand.mk"
+In "/home/william/cg", about to execute:
+    make -f LogicFunctionnand.mk
+make[5]: entrant dans le répertoire « /home/william/cg »
+gcc -Wall   -ggdb -c -o "src/types.o" "src/types.c"
+gcc -D__int64="long long" -Wall   -ggdb  LogicFunctionnand.c src/types.o -o LogicFunctionnand -lm 
+In file included from LogicFunctionnand.c:21:0:
+src/main.h:24:16: attention : ‘LogicFunctionnand_Test_output’ defined but not used [-Wunused-variable]
+make[5]: quittant le répertoire « /home/william/cg »
+In "/home/william/cg", about to execute:
+    /home/william/cg/LogicFunctionnand
+All Done
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:02 PDT 2013
+05/02/13 05:13:02
+Failed: 0  Total Tests: 7  ((Passed: 7, Newly Passed: 0)  Known Failed: 0) /home/william/workspace/ptII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/logic/test
+CLASSPATH="../../../../../../../../../../../../..:/home/william/workspace/ptII/lib/ptjacl.jar" "/usr/lib/jvm/java-7-oracle/bin/java" -Xmx1000M  "-Dptolemy.ptII.dir=/home/william/workspace/ptII"  tcl.lang.Shell alljtests.tcl
+dummy.tcl
+make[4]: quittant le répertoire « /home/william/workspace/ptII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/logic/test »
+make[3]: quittant le répertoire « /home/william/workspace/ptII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/logic »
+making tests in ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/string
+make[3]: entrant dans le répertoire « /home/william/workspace/ptII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/string »
+making tests in ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/string/test
+make[4]: entrant dans le répertoire « /home/william/workspace/ptII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/string/test »
+CLASSPATH="../../../../../../../../../../../../..:/home/william/workspace/ptII/lib/ptjacl.jar" "/usr/lib/jvm/java-7-oracle/bin/java" -Xmx1000M  "-Dptolemy.ptII.dir=/home/william/workspace/ptII"  tcl.lang.Shell ../../../../../../../../../../../../../util/testsuite/auto.tcl
+------------------ testing $PTII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/string/test/auto/StringCompare.xml
+auto.tcl: Setting watchdog for 200 seconds at Thu May 02 17:13:02 PDT 2013
+41 ms. Memory: 30784K Free: 22293K (72%)
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:03 PDT 2013
+auto.tcl: Setting watchdog for 200 seconds at Thu May 02 17:13:03 PDT 2013
+5 ms. Memory: 30784K Free: 21743K (71%)
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:03 PDT 2013
+------------------ testing $PTII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/string/test/auto/StringCompare2.xml
+auto.tcl: Setting watchdog for 200 seconds at Thu May 02 17:13:03 PDT 2013
+8 ms. Memory: 30784K Free: 26917K (87%)
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:03 PDT 2013
+auto.tcl: Setting watchdog for 200 seconds at Thu May 02 17:13:03 PDT 2013
+5 ms. Memory: 30784K Free: 26555K (86%)
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:03 PDT 2013
+------------------ testing $PTII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/string/test/auto/StringCompare3.xml
+auto.tcl: Setting watchdog for 200 seconds at Thu May 02 17:13:03 PDT 2013
+6 ms. Memory: 30784K Free: 27317K (89%)
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:03 PDT 2013
+auto.tcl: Setting watchdog for 200 seconds at Thu May 02 17:13:03 PDT 2013
+4 ms. Memory: 30784K Free: 26719K (87%)
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:03 PDT 2013
+------------------ testing $PTII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/string/test/auto/StringLength.xml
+auto.tcl: Setting watchdog for 200 seconds at Thu May 02 17:13:03 PDT 2013
+7 ms. Memory: 30784K Free: 26683K (87%)
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:03 PDT 2013
+auto.tcl: Setting watchdog for 200 seconds at Thu May 02 17:13:03 PDT 2013
+4 ms. Memory: 30784K Free: 26187K (85%)
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:03 PDT 2013
+05/02/13 05:13:03
+Failed: 0  Total Tests: 8  ((Passed: 8, Newly Passed: 0)  Known Failed: 0) /home/william/workspace/ptII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/string/test
+CLASSPATH="../../../../../../../../../../../../..:/home/william/workspace/ptII/lib/ptjacl.jar" "/usr/lib/jvm/java-7-oracle/bin/java" -Xmx1000M  "-Dptolemy.ptII.dir=/home/william/workspace/ptII"  tcl.lang.Shell ../../../../../../../../../../../../../util/testsuite/CCGAuto.tcl
+------------------ Invoking the ptolemy/cg C generator by calling GenericCodeGenerator.generateCode(args).  To replicate: $PTII/bin/ptcg -generatorPackage ptolemy.cg.kernel.generic.program.procedural.c $PTII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/string/test/auto/StringCompare2.xml 
+JavaCGAuto.tcl: Setting watchdog for 60 seconds at Thu May 02 17:13:03 PDT 2013
+Writing StringCompare2.c in file:/home/william/cg (5700 characters)
+Wrote /home/william/cg/StringCompare2.c
+Wrote /home/william/cg/src/main.h
+Wrote /home/william/cg/src/types.h
+Wrote /home/william/cg/src/types.c
+Reading "ptolemy/cg/kernel/generic/program/procedural/c/makefile.in",
+    writing "/home/william/cg/StringCompare2.mk"
+In "/home/william/cg", about to execute:
+    make -f StringCompare2.mk
+make[5]: entrant dans le répertoire « /home/william/cg »
+gcc -Wall   -ggdb -c -o "src/types.o" "src/types.c"
+gcc -D__int64="long long" -Wall   -ggdb  StringCompare2.c src/types.o -o StringCompare2 -lm 
+In file included from StringCompare2.c:21:0:
+src/main.h:16:12: attention : ‘StringCompare2_Const_output_0’ defined but not used [-Wunused-variable]
+src/main.h:19:12: attention : ‘StringCompare2_Const2_output_0’ defined but not used [-Wunused-variable]
+src/main.h:28:16: attention : ‘StringCompare2_Test_output’ defined but not used [-Wunused-variable]
+make[5]: quittant le répertoire « /home/william/cg »
+In "/home/william/cg", about to execute:
+    /home/william/cg/StringCompare2
+All Done
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:04 PDT 2013
+------------------ Invoking the ptolemy/cg C generator by calling GenericCodeGenerator.generateCode(args).  To replicate: $PTII/bin/ptcg -generatorPackage ptolemy.cg.kernel.generic.program.procedural.c $PTII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/string/test/auto/StringCompare3.xml 
+JavaCGAuto.tcl: Setting watchdog for 60 seconds at Thu May 02 17:13:04 PDT 2013
+Writing StringCompare3.c in file:/home/william/cg/ (5190 characters)
+Wrote /home/william/cg/StringCompare3.c
+Wrote /home/william/cg/src/main.h
+Wrote /home/william/cg/src/types.h
+Wrote /home/william/cg/src/types.c
+Reading "ptolemy/cg/kernel/generic/program/procedural/c/makefile.in",
+    writing "/home/william/cg/StringCompare3.mk"
+In "/home/william/cg", about to execute:
+    make -f StringCompare3.mk
+make[5]: entrant dans le répertoire « /home/william/cg »
+gcc -Wall   -ggdb -c -o "src/types.o" "src/types.c"
+gcc -D__int64="long long" -Wall   -ggdb  StringCompare3.c src/types.o -o StringCompare3 -lm 
+In file included from StringCompare3.c:21:0:
+src/main.h:21:16: attention : ‘StringCompare3_Test_output’ defined but not used [-Wunused-variable]
+make[5]: quittant le répertoire « /home/william/cg »
+In "/home/william/cg", about to execute:
+    /home/william/cg/StringCompare3
+All Done
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:05 PDT 2013
+------------------ Invoking the ptolemy/cg C generator by calling GenericCodeGenerator.generateCode(args).  To replicate: $PTII/bin/ptcg -generatorPackage ptolemy.cg.kernel.generic.program.procedural.c $PTII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/string/test/auto/StringCompare.xml 
+JavaCGAuto.tcl: Setting watchdog for 60 seconds at Thu May 02 17:13:05 PDT 2013
+Writing StringCompare.c in file:/home/william/cg/ (5670 characters)
+Wrote /home/william/cg/StringCompare.c
+Wrote /home/william/cg/src/main.h
+Wrote /home/william/cg/src/types.h
+Wrote /home/william/cg/src/types.c
+Reading "ptolemy/cg/kernel/generic/program/procedural/c/makefile.in",
+    writing "/home/william/cg/StringCompare.mk"
+In "/home/william/cg", about to execute:
+    make -f StringCompare.mk
+make[5]: entrant dans le répertoire « /home/william/cg »
+gcc -Wall   -ggdb -c -o "src/types.o" "src/types.c"
+gcc -D__int64="long long" -Wall   -ggdb  StringCompare.c src/types.o -o StringCompare -lm 
+In file included from StringCompare.c:21:0:
+src/main.h:22:16: attention : ‘StringCompare_Test_output’ defined but not used [-Wunused-variable]
+make[5]: quittant le répertoire « /home/william/cg »
+In "/home/william/cg", about to execute:
+    /home/william/cg/StringCompare
+All Done
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:05 PDT 2013
+------------------ Invoking the ptolemy/cg C generator by calling GenericCodeGenerator.generateCode(args).  To replicate: $PTII/bin/ptcg -generatorPackage ptolemy.cg.kernel.generic.program.procedural.c $PTII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/string/test/auto/StringLength.xml 
+JavaCGAuto.tcl: Setting watchdog for 60 seconds at Thu May 02 17:13:05 PDT 2013
+Writing StringLength.c in file:/home/william/cg/ (6549 characters)
+Wrote /home/william/cg/StringLength.c
+Wrote /home/william/cg/src/main.h
+Wrote /home/william/cg/src/types.h
+Wrote /home/william/cg/src/types.c
+Reading "ptolemy/cg/kernel/generic/program/procedural/c/makefile.in",
+    writing "/home/william/cg/StringLength.mk"
+In "/home/william/cg", about to execute:
+    make -f StringLength.mk
+make[5]: entrant dans le répertoire « /home/william/cg »
+gcc -Wall   -ggdb -c -o "src/types.o" "src/types.c"
+gcc -D__int64="long long" -Wall   -ggdb  StringLength.c src/types.o -o StringLength -lm 
+In file included from StringLength.c:21:0:
+src/main.h:19:16: attention : ‘StringLength_Test_output’ defined but not used [-Wunused-variable]
+make[5]: quittant le répertoire « /home/william/cg »
+In "/home/william/cg", about to execute:
+    /home/william/cg/StringLength
+All Done
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:05 PDT 2013
+05/02/13 05:13:05
+Failed: 0  Total Tests: 4  ((Passed: 4, Newly Passed: 0)  Known Failed: 0) /home/william/workspace/ptII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/string/test
+CLASSPATH="../../../../../../../../../../../../..:/home/william/workspace/ptII/lib/ptjacl.jar" "/usr/lib/jvm/java-7-oracle/bin/java" -Xmx1000M  "-Dptolemy.ptII.dir=/home/william/workspace/ptII"  tcl.lang.Shell alljtests.tcl
+dummy.tcl
+make[4]: quittant le répertoire « /home/william/workspace/ptII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/string/test »
+make[3]: quittant le répertoire « /home/william/workspace/ptII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/string »
+making tests in ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/test
+make[3]: entrant dans le répertoire « /home/william/workspace/ptII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/test »
+CLASSPATH="../../../../../../../../../../../..:/home/william/workspace/ptII/lib/ptjacl.jar" "/usr/lib/jvm/java-7-oracle/bin/java" -Xmx1000M  "-Dptolemy.ptII.dir=/home/william/workspace/ptII"  tcl.lang.Shell ../../../../../../../../../../../../util/testsuite/auto.tcl
+------------------ testing $PTII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/test/auto/knownFailedTests/ExpressionMultiplyPower2.xml (Known Failure) 
+51 ms. Memory: 30784K Free: 21660K (70%)
+!!!! Auto was marked as failing, but now passes
+------------------ testing $PTII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/test/auto/AccumulatorWithReset.xml
+auto.tcl: Setting watchdog for 200 seconds at Thu May 02 17:13:07 PDT 2013
+15 ms. Memory: 30784K Free: 23273K (76%)
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:07 PDT 2013
+auto.tcl: Setting watchdog for 200 seconds at Thu May 02 17:13:07 PDT 2013
+11 ms. Memory: 30784K Free: 22483K (73%)
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:07 PDT 2013
+------------------ testing $PTII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/test/auto/ActorOrientedClass.xml
+auto.tcl: Setting watchdog for 200 seconds at Thu May 02 17:13:07 PDT 2013
+11 ms. Memory: 30784K Free: 24107K (78%)
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:07 PDT 2013
+auto.tcl: Setting watchdog for 200 seconds at Thu May 02 17:13:07 PDT 2013
+8 ms. Memory: 30784K Free: 23353K (76%)
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:07 PDT 2013
+------------------ testing $PTII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/test/auto/AddSubtract.xml
+auto.tcl: Setting watchdog for 200 seconds at Thu May 02 17:13:07 PDT 2013
+5 ms. Memory: 30784K Free: 26197K (85%)
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:07 PDT 2013
+auto.tcl: Setting watchdog for 200 seconds at Thu May 02 17:13:07 PDT 2013
+4 ms. Memory: 30784K Free: 25716K (84%)
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:07 PDT 2013
+------------------ testing $PTII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/test/auto/AddSubtract3.xml
+auto.tcl: Setting watchdog for 200 seconds at Thu May 02 17:13:07 PDT 2013
+6 ms. Memory: 30784K Free: 25806K (84%)
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:07 PDT 2013
+auto.tcl: Setting watchdog for 200 seconds at Thu May 02 17:13:07 PDT 2013
+4 ms. Memory: 30784K Free: 25333K (82%)
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:07 PDT 2013
+------------------ testing $PTII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/test/auto/DB.xml
+auto.tcl: Setting watchdog for 200 seconds at Thu May 02 17:13:07 PDT 2013
+6 ms. Memory: 30784K Free: 24887K (81%)
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:07 PDT 2013
+auto.tcl: Setting watchdog for 200 seconds at Thu May 02 17:13:07 PDT 2013
+4 ms. Memory: 30784K Free: 24375K (79%)
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:07 PDT 2013
+------------------ testing $PTII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/test/auto/DistributorMultipleTypes.xml
+auto.tcl: Setting watchdog for 200 seconds at Thu May 02 17:13:07 PDT 2013
+7 ms. Memory: 30784K Free: 24848K (81%)
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:07 PDT 2013
+auto.tcl: Setting watchdog for 200 seconds at Thu May 02 17:13:07 PDT 2013
+5 ms. Memory: 30784K Free: 24268K (79%)
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:07 PDT 2013
+------------------ testing $PTII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/test/auto/ExpressionIntegerDoubleDivision.xml
+auto.tcl: Setting watchdog for 200 seconds at Thu May 02 17:13:07 PDT 2013
+4 ms. Memory: 30784K Free: 27083K (88%)
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:07 PDT 2013
+auto.tcl: Setting watchdog for 200 seconds at Thu May 02 17:13:07 PDT 2013
+3 ms. Memory: 30784K Free: 26560K (86%)
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:07 PDT 2013
+------------------ testing $PTII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/test/auto/MatrixToArray.xml
+auto.tcl: Setting watchdog for 200 seconds at Thu May 02 17:13:07 PDT 2013
+11 ms. Memory: 30784K Free: 26870K (87%)
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:07 PDT 2013
+auto.tcl: Setting watchdog for 200 seconds at Thu May 02 17:13:07 PDT 2013
+3 ms. Memory: 30784K Free: 26466K (86%)
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:07 PDT 2013
+------------------ testing $PTII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/test/auto/MultiplyDivideDivideOnly.xml
+auto.tcl: Setting watchdog for 200 seconds at Thu May 02 17:13:07 PDT 2013
+5 ms. Memory: 30784K Free: 27140K (88%)
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:07 PDT 2013
+auto.tcl: Setting watchdog for 200 seconds at Thu May 02 17:13:07 PDT 2013
+3 ms. Memory: 30784K Free: 26664K (87%)
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:07 PDT 2013
+------------------ testing $PTII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/test/auto/OpaqueConst.xml
+auto.tcl: Setting watchdog for 200 seconds at Thu May 02 17:13:07 PDT 2013
+6 ms. Memory: 30784K Free: 25760K (84%)
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:07 PDT 2013
+auto.tcl: Setting watchdog for 200 seconds at Thu May 02 17:13:07 PDT 2013
+4 ms. Memory: 30784K Free: 24872K (81%)
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:07 PDT 2013
+------------------ testing $PTII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/test/auto/PublisherSubscriber.xml
+auto.tcl: Setting watchdog for 200 seconds at Thu May 02 17:13:07 PDT 2013
+14 ms. Memory: 30784K Free: 23173K (75%)
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:07 PDT 2013
+auto.tcl: Setting watchdog for 200 seconds at Thu May 02 17:13:07 PDT 2013
+9 ms. Memory: 30784K Free: 22367K (73%)
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:07 PDT 2013
+------------------ testing $PTII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/test/auto/PublisherSubscriber2.xml
+auto.tcl: Setting watchdog for 200 seconds at Thu May 02 17:13:07 PDT 2013
+6 ms. Memory: 30784K Free: 25939K (84%)
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:07 PDT 2013
+auto.tcl: Setting watchdog for 200 seconds at Thu May 02 17:13:07 PDT 2013
+5 ms. Memory: 30784K Free: 25417K (83%)
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:07 PDT 2013
+------------------ testing $PTII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/test/auto/PublisherSubscriber3.xml
+auto.tcl: Setting watchdog for 200 seconds at Thu May 02 17:13:07 PDT 2013
+6 ms. Memory: 30784K Free: 26017K (85%)
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:08 PDT 2013
+auto.tcl: Setting watchdog for 200 seconds at Thu May 02 17:13:08 PDT 2013
+3 ms. Memory: 30784K Free: 25386K (82%)
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:08 PDT 2013
+------------------ testing $PTII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/test/auto/PublisherSubscriber4.xml
+auto.tcl: Setting watchdog for 200 seconds at Thu May 02 17:13:08 PDT 2013
+5 ms. Memory: 30784K Free: 26191K (85%)
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:08 PDT 2013
+auto.tcl: Setting watchdog for 200 seconds at Thu May 02 17:13:08 PDT 2013
+4 ms. Memory: 30784K Free: 25568K (83%)
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:08 PDT 2013
+------------------ testing $PTII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/test/auto/PublisherSubscriber5.xml
+auto.tcl: Setting watchdog for 200 seconds at Thu May 02 17:13:08 PDT 2013
+7 ms. Memory: 30784K Free: 24653K (80%)
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:08 PDT 2013
+auto.tcl: Setting watchdog for 200 seconds at Thu May 02 17:13:08 PDT 2013
+5 ms. Memory: 30784K Free: 24091K (78%)
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:08 PDT 2013
+------------------ testing $PTII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/test/auto/PublisherSubscriber6.xml
+auto.tcl: Setting watchdog for 200 seconds at Thu May 02 17:13:08 PDT 2013
+8 ms. Memory: 30784K Free: 24745K (80%)
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:08 PDT 2013
+auto.tcl: Setting watchdog for 200 seconds at Thu May 02 17:13:08 PDT 2013
+5 ms. Memory: 30784K Free: 24224K (79%)
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:08 PDT 2013
+------------------ testing $PTII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/test/auto/PublisherSubscriber7.xml
+auto.tcl: Setting watchdog for 200 seconds at Thu May 02 17:13:08 PDT 2013
+7 ms. Memory: 30784K Free: 24233K (79%)
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:08 PDT 2013
+auto.tcl: Setting watchdog for 200 seconds at Thu May 02 17:13:08 PDT 2013
+5 ms. Memory: 30784K Free: 23753K (77%)
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:08 PDT 2013
+------------------ testing $PTII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/test/auto/PublisherTestSubscriber.xml
+auto.tcl: Setting watchdog for 200 seconds at Thu May 02 17:13:08 PDT 2013
+10 ms. Memory: 30784K Free: 22916K (74%)
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:08 PDT 2013
+auto.tcl: Setting watchdog for 200 seconds at Thu May 02 17:13:08 PDT 2013
+8 ms. Memory: 30784K Free: 22034K (72%)
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:08 PDT 2013
+------------------ testing $PTII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/test/auto/PublisherTestSubscriber11.xml
+auto.tcl: Setting watchdog for 200 seconds at Thu May 02 17:13:08 PDT 2013
+6 ms. Memory: 30784K Free: 25133K (82%)
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:08 PDT 2013
+auto.tcl: Setting watchdog for 200 seconds at Thu May 02 17:13:08 PDT 2013
+6 ms. Memory: 30784K Free: 24441K (79%)
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:08 PDT 2013
+------------------ testing $PTII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/test/auto/PublisherTestSubscriber12.xml
+auto.tcl: Setting watchdog for 200 seconds at Thu May 02 17:13:08 PDT 2013
+9 ms. Memory: 30784K Free: 24629K (80%)
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:08 PDT 2013
+auto.tcl: Setting watchdog for 200 seconds at Thu May 02 17:13:08 PDT 2013
+7 ms. Memory: 30784K Free: 23859K (78%)
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:08 PDT 2013
+------------------ testing $PTII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/test/auto/PublisherTestSubscriber14.xml
+auto.tcl: Setting watchdog for 200 seconds at Thu May 02 17:13:08 PDT 2013
+5 ms. Memory: 30784K Free: 22937K (75%)
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:08 PDT 2013
+auto.tcl: Setting watchdog for 200 seconds at Thu May 02 17:13:08 PDT 2013
+5 ms. Memory: 30784K Free: 22407K (73%)
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:08 PDT 2013
+------------------ testing $PTII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/test/auto/PublisherTestSubscriber2.xml
+auto.tcl: Setting watchdog for 200 seconds at Thu May 02 17:13:08 PDT 2013
+4 ms. Memory: 30784K Free: 25858K (84%)
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:08 PDT 2013
+auto.tcl: Setting watchdog for 200 seconds at Thu May 02 17:13:08 PDT 2013
+4 ms. Memory: 30784K Free: 25233K (82%)
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:08 PDT 2013
+------------------ testing $PTII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/test/auto/PublisherTestSubscriber3.xml
+auto.tcl: Setting watchdog for 200 seconds at Thu May 02 17:13:08 PDT 2013
+4 ms. Memory: 30784K Free: 25793K (84%)
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:08 PDT 2013
+auto.tcl: Setting watchdog for 200 seconds at Thu May 02 17:13:08 PDT 2013
+4 ms. Memory: 30784K Free: 25214K (82%)
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:08 PDT 2013
+------------------ testing $PTII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/test/auto/PublisherTestSubscriber4.xml
+auto.tcl: Setting watchdog for 200 seconds at Thu May 02 17:13:08 PDT 2013
+5 ms. Memory: 30784K Free: 25949K (84%)
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:08 PDT 2013
+auto.tcl: Setting watchdog for 200 seconds at Thu May 02 17:13:08 PDT 2013
+5 ms. Memory: 30784K Free: 25281K (82%)
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:08 PDT 2013
+------------------ testing $PTII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/test/auto/PublisherTestSubscriber5.xml
+auto.tcl: Setting watchdog for 200 seconds at Thu May 02 17:13:08 PDT 2013
+7 ms. Memory: 30784K Free: 24302K (79%)
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:08 PDT 2013
+auto.tcl: Setting watchdog for 200 seconds at Thu May 02 17:13:08 PDT 2013
+5 ms. Memory: 30784K Free: 23709K (77%)
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:08 PDT 2013
+------------------ testing $PTII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/test/auto/PublisherTestSubscriber6.xml
+auto.tcl: Setting watchdog for 200 seconds at Thu May 02 17:13:08 PDT 2013
+7 ms. Memory: 30784K Free: 24279K (79%)
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:08 PDT 2013
+auto.tcl: Setting watchdog for 200 seconds at Thu May 02 17:13:08 PDT 2013
+5 ms. Memory: 30784K Free: 23733K (77%)
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:08 PDT 2013
+------------------ testing $PTII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/test/auto/PublisherTestSubscriber7.xml
+auto.tcl: Setting watchdog for 200 seconds at Thu May 02 17:13:08 PDT 2013
+7 ms. Memory: 30784K Free: 23820K (77%)
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:08 PDT 2013
+auto.tcl: Setting watchdog for 200 seconds at Thu May 02 17:13:08 PDT 2013
+5 ms. Memory: 30784K Free: 23310K (76%)
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:08 PDT 2013
+------------------ testing $PTII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/test/auto/PublisherTestSubscriberClassr.xml
+auto.tcl: Setting watchdog for 200 seconds at Thu May 02 17:13:08 PDT 2013
+5 ms. Memory: 30784K Free: 23058K (75%)
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:08 PDT 2013
+auto.tcl: Setting watchdog for 200 seconds at Thu May 02 17:13:08 PDT 2013
+4 ms. Memory: 30784K Free: 22482K (73%)
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:08 PDT 2013
+------------------ testing $PTII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/test/auto/Ramp.xml
+auto.tcl: Setting watchdog for 200 seconds at Thu May 02 17:13:08 PDT 2013
+4 ms. Memory: 30784K Free: 26381K (86%)
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:08 PDT 2013
+auto.tcl: Setting watchdog for 200 seconds at Thu May 02 17:13:08 PDT 2013
+4 ms. Memory: 30784K Free: 25625K (83%)
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:08 PDT 2013
+------------------ testing $PTII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/test/auto/Ramp1000.xml
+auto.tcl: Setting watchdog for 200 seconds at Thu May 02 17:13:08 PDT 2013
+97 ms. Memory: 30784K Free: 24200K (79%)
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:09 PDT 2013
+auto.tcl: Setting watchdog for 200 seconds at Thu May 02 17:13:09 PDT 2013
+73 ms. Memory: 30784K Free: 22400K (73%)
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:09 PDT 2013
+------------------ testing $PTII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/test/auto/Recorder.xml
+auto.tcl: Setting watchdog for 200 seconds at Thu May 02 17:13:09 PDT 2013
+3 ms. Memory: 30784K Free: 27252K (89%)
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:09 PDT 2013
+auto.tcl: Setting watchdog for 200 seconds at Thu May 02 17:13:09 PDT 2013
+2 ms. Memory: 30784K Free: 26725K (87%)
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:09 PDT 2013
+------------------ testing $PTII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/test/auto/Sequence.xml
+auto.tcl: Setting watchdog for 200 seconds at Thu May 02 17:13:09 PDT 2013
+2 ms. Memory: 30784K Free: 26012K (84%)
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:09 PDT 2013
+auto.tcl: Setting watchdog for 200 seconds at Thu May 02 17:13:09 PDT 2013
+2 ms. Memory: 30784K Free: 25513K (83%)
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:09 PDT 2013
+------------------ testing $PTII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/test/auto/Sequence2.xml
+auto.tcl: Setting watchdog for 200 seconds at Thu May 02 17:13:09 PDT 2013
+3 ms. Memory: 30784K Free: 26861K (87%)
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:09 PDT 2013
+auto.tcl: Setting watchdog for 200 seconds at Thu May 02 17:13:09 PDT 2013
+2 ms. Memory: 30784K Free: 26342K (86%)
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:09 PDT 2013
+------------------ testing $PTII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/test/auto/StringConstComposite.xml
+auto.tcl: Setting watchdog for 200 seconds at Thu May 02 17:13:09 PDT 2013
+4 ms. Memory: 30784K Free: 25757K (84%)
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:09 PDT 2013
+auto.tcl: Setting watchdog for 200 seconds at Thu May 02 17:13:09 PDT 2013
+3 ms. Memory: 30784K Free: 25093K (82%)
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:09 PDT 2013
+------------------ testing $PTII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/test/auto/Test.xml
+auto.tcl: Setting watchdog for 200 seconds at Thu May 02 17:13:09 PDT 2013
+2 ms. Memory: 30784K Free: 27170K (88%)
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:09 PDT 2013
+auto.tcl: Setting watchdog for 200 seconds at Thu May 02 17:13:09 PDT 2013
+2 ms. Memory: 30784K Free: 26619K (86%)
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:09 PDT 2013
+------------------ testing $PTII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/test/auto/TestMultiPortDouble.xml
+auto.tcl: Setting watchdog for 200 seconds at Thu May 02 17:13:09 PDT 2013
+2 ms. Memory: 30784K Free: 26787K (87%)
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:09 PDT 2013
+auto.tcl: Setting watchdog for 200 seconds at Thu May 02 17:13:09 PDT 2013
+2 ms. Memory: 30784K Free: 26299K (85%)
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:09 PDT 2013
+------------------ testing $PTII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/test/auto/TestNaN.xml
+auto.tcl: Setting watchdog for 200 seconds at Thu May 02 17:13:09 PDT 2013
+3 ms. Memory: 30784K Free: 26445K (86%)
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:09 PDT 2013
+auto.tcl: Setting watchdog for 200 seconds at Thu May 02 17:13:09 PDT 2013
+2 ms. Memory: 30784K Free: 25942K (84%)
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:09 PDT 2013
+------------------ testing $PTII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/test/auto/arrayType.xml
+auto.tcl: Setting watchdog for 200 seconds at Thu May 02 17:13:09 PDT 2013
+3 ms. Memory: 30784K Free: 26317K (85%)
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:09 PDT 2013
+auto.tcl: Setting watchdog for 200 seconds at Thu May 02 17:13:09 PDT 2013
+2 ms. Memory: 30784K Free: 25814K (84%)
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:09 PDT 2013
+------------------ testing $PTII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/test/auto/arrayType10.xml
+auto.tcl: Setting watchdog for 200 seconds at Thu May 02 17:13:09 PDT 2013
+3 ms. Memory: 30784K Free: 26570K (86%)
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:09 PDT 2013
+auto.tcl: Setting watchdog for 200 seconds at Thu May 02 17:13:09 PDT 2013
+2 ms. Memory: 30784K Free: 26067K (85%)
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:09 PDT 2013
+------------------ testing $PTII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/test/auto/arrayType11.xml
+auto.tcl: Setting watchdog for 200 seconds at Thu May 02 17:13:09 PDT 2013
+3 ms. Memory: 30784K Free: 26560K (86%)
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:09 PDT 2013
+auto.tcl: Setting watchdog for 200 seconds at Thu May 02 17:13:09 PDT 2013
+2 ms. Memory: 30784K Free: 26083K (85%)
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:09 PDT 2013
+------------------ testing $PTII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/test/auto/arrayType12.xml
+auto.tcl: Setting watchdog for 200 seconds at Thu May 02 17:13:09 PDT 2013
+3 ms. Memory: 30784K Free: 25220K (82%)
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:09 PDT 2013
+auto.tcl: Setting watchdog for 200 seconds at Thu May 02 17:13:09 PDT 2013
+3 ms. Memory: 30784K Free: 24709K (80%)
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:09 PDT 2013
+------------------ testing $PTII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/test/auto/arrayType13.xml
+auto.tcl: Setting watchdog for 200 seconds at Thu May 02 17:13:09 PDT 2013
+3 ms. Memory: 30784K Free: 26277K (85%)
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:09 PDT 2013
+auto.tcl: Setting watchdog for 200 seconds at Thu May 02 17:13:09 PDT 2013
+2 ms. Memory: 30784K Free: 25878K (84%)
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:09 PDT 2013
+------------------ testing $PTII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/test/auto/arrayType14.xml
+auto.tcl: Setting watchdog for 200 seconds at Thu May 02 17:13:09 PDT 2013
+3 ms. Memory: 30784K Free: 26420K (86%)
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:09 PDT 2013
+auto.tcl: Setting watchdog for 200 seconds at Thu May 02 17:13:09 PDT 2013
+1 ms. Memory: 30784K Free: 25925K (84%)
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:09 PDT 2013
+------------------ testing $PTII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/test/auto/arrayType15.xml
+auto.tcl: Setting watchdog for 200 seconds at Thu May 02 17:13:09 PDT 2013
+3 ms. Memory: 30784K Free: 26370K (86%)
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:09 PDT 2013
+auto.tcl: Setting watchdog for 200 seconds at Thu May 02 17:13:09 PDT 2013
+2 ms. Memory: 30784K Free: 25875K (84%)
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:09 PDT 2013
+------------------ testing $PTII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/test/auto/arrayType16.xml
+auto.tcl: Setting watchdog for 200 seconds at Thu May 02 17:13:09 PDT 2013
+3 ms. Memory: 30784K Free: 26364K (86%)
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:09 PDT 2013
+auto.tcl: Setting watchdog for 200 seconds at Thu May 02 17:13:09 PDT 2013
+2 ms. Memory: 30784K Free: 25917K (84%)
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:09 PDT 2013
+------------------ testing $PTII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/test/auto/arrayType17.xml
+auto.tcl: Setting watchdog for 200 seconds at Thu May 02 17:13:09 PDT 2013
+3 ms. Memory: 30784K Free: 26363K (86%)
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:09 PDT 2013
+auto.tcl: Setting watchdog for 200 seconds at Thu May 02 17:13:09 PDT 2013
+2 ms. Memory: 30784K Free: 25864K (84%)
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:09 PDT 2013
+------------------ testing $PTII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/test/auto/arrayType18.xml
+auto.tcl: Setting watchdog for 200 seconds at Thu May 02 17:13:09 PDT 2013
+3 ms. Memory: 30784K Free: 26488K (86%)
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:09 PDT 2013
+auto.tcl: Setting watchdog for 200 seconds at Thu May 02 17:13:09 PDT 2013
+3 ms. Memory: 30784K Free: 26041K (85%)
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:09 PDT 2013
+------------------ testing $PTII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/test/auto/arrayType19.xml
+auto.tcl: Setting watchdog for 200 seconds at Thu May 02 17:13:09 PDT 2013
+3 ms. Memory: 30784K Free: 26534K (86%)
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:09 PDT 2013
+auto.tcl: Setting watchdog for 200 seconds at Thu May 02 17:13:09 PDT 2013
+2 ms. Memory: 30784K Free: 25991K (84%)
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:09 PDT 2013
+------------------ testing $PTII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/test/auto/arrayType2.xml
+auto.tcl: Setting watchdog for 200 seconds at Thu May 02 17:13:09 PDT 2013
+3 ms. Memory: 30784K Free: 26356K (86%)
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:09 PDT 2013
+auto.tcl: Setting watchdog for 200 seconds at Thu May 02 17:13:09 PDT 2013
+2 ms. Memory: 30784K Free: 25909K (84%)
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:09 PDT 2013
+------------------ testing $PTII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/test/auto/arrayType20.xml
+auto.tcl: Setting watchdog for 200 seconds at Thu May 02 17:13:09 PDT 2013
+3 ms. Memory: 30784K Free: 26294K (85%)
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:09 PDT 2013
+auto.tcl: Setting watchdog for 200 seconds at Thu May 02 17:13:09 PDT 2013
+2 ms. Memory: 30784K Free: 25792K (84%)
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:09 PDT 2013
+------------------ testing $PTII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/test/auto/arrayType21.xml
+auto.tcl: Setting watchdog for 200 seconds at Thu May 02 17:13:09 PDT 2013
+3 ms. Memory: 30784K Free: 26516K (86%)
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:09 PDT 2013
+auto.tcl: Setting watchdog for 200 seconds at Thu May 02 17:13:09 PDT 2013
+2 ms. Memory: 30784K Free: 26012K (84%)
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:09 PDT 2013
+------------------ testing $PTII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/test/auto/arrayType22.xml
+auto.tcl: Setting watchdog for 200 seconds at Thu May 02 17:13:09 PDT 2013
+3 ms. Memory: 30784K Free: 26583K (86%)
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:09 PDT 2013
+auto.tcl: Setting watchdog for 200 seconds at Thu May 02 17:13:09 PDT 2013
+2 ms. Memory: 30784K Free: 26064K (85%)
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:09 PDT 2013
+------------------ testing $PTII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/test/auto/arrayType23.xml
+auto.tcl: Setting watchdog for 200 seconds at Thu May 02 17:13:09 PDT 2013
+4 ms. Memory: 30784K Free: 26519K (86%)
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:09 PDT 2013
+auto.tcl: Setting watchdog for 200 seconds at Thu May 02 17:13:09 PDT 2013
+2 ms. Memory: 30784K Free: 25959K (84%)
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:09 PDT 2013
+------------------ testing $PTII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/test/auto/arrayType24.xml
+auto.tcl: Setting watchdog for 200 seconds at Thu May 02 17:13:09 PDT 2013
+3 ms. Memory: 30784K Free: 26229K (85%)
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:09 PDT 2013
+auto.tcl: Setting watchdog for 200 seconds at Thu May 02 17:13:09 PDT 2013
+2 ms. Memory: 30784K Free: 25781K (84%)
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:09 PDT 2013
+------------------ testing $PTII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/test/auto/arrayType4.xml
+auto.tcl: Setting watchdog for 200 seconds at Thu May 02 17:13:09 PDT 2013
+3 ms. Memory: 30784K Free: 26238K (85%)
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:09 PDT 2013
+auto.tcl: Setting watchdog for 200 seconds at Thu May 02 17:13:09 PDT 2013
+2 ms. Memory: 30784K Free: 25838K (84%)
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:09 PDT 2013
+------------------ testing $PTII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/test/auto/arrayType5.xml
+auto.tcl: Setting watchdog for 200 seconds at Thu May 02 17:13:09 PDT 2013
+3 ms. Memory: 30784K Free: 26260K (85%)
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:09 PDT 2013
+auto.tcl: Setting watchdog for 200 seconds at Thu May 02 17:13:09 PDT 2013
+2 ms. Memory: 30784K Free: 25853K (84%)
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:09 PDT 2013
+------------------ testing $PTII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/test/auto/arrayType6.xml
+auto.tcl: Setting watchdog for 200 seconds at Thu May 02 17:13:10 PDT 2013
+2 ms. Memory: 30784K Free: 26521K (86%)
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:10 PDT 2013
+auto.tcl: Setting watchdog for 200 seconds at Thu May 02 17:13:10 PDT 2013
+2 ms. Memory: 30784K Free: 26082K (85%)
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:10 PDT 2013
+------------------ testing $PTII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/test/auto/arrayType7.xml
+auto.tcl: Setting watchdog for 200 seconds at Thu May 02 17:13:10 PDT 2013
+3 ms. Memory: 30784K Free: 26456K (86%)
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:10 PDT 2013
+auto.tcl: Setting watchdog for 200 seconds at Thu May 02 17:13:10 PDT 2013
+1 ms. Memory: 30784K Free: 26017K (85%)
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:10 PDT 2013
+------------------ testing $PTII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/test/auto/arrayType8.xml
+auto.tcl: Setting watchdog for 200 seconds at Thu May 02 17:13:10 PDT 2013
+3 ms. Memory: 30784K Free: 26222K (85%)
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:10 PDT 2013
+auto.tcl: Setting watchdog for 200 seconds at Thu May 02 17:13:10 PDT 2013
+2 ms. Memory: 30784K Free: 25807K (84%)
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:10 PDT 2013
+------------------ testing $PTII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/test/auto/arrayType9.xml
+auto.tcl: Setting watchdog for 200 seconds at Thu May 02 17:13:10 PDT 2013
+2 ms. Memory: 30784K Free: 26508K (86%)
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:10 PDT 2013
+auto.tcl: Setting watchdog for 200 seconds at Thu May 02 17:13:10 PDT 2013
+1 ms. Memory: 30784K Free: 26013K (85%)
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:10 PDT 2013
+------------------ testing $PTII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/test/auto/hierarchicalModel_1_1.xml
+auto.tcl: Setting watchdog for 200 seconds at Thu May 02 17:13:10 PDT 2013
+3 ms. Memory: 30784K Free: 25071K (81%)
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:10 PDT 2013
+auto.tcl: Setting watchdog for 200 seconds at Thu May 02 17:13:10 PDT 2013
+1 ms. Memory: 30784K Free: 24551K (80%)
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:10 PDT 2013
+------------------ testing $PTII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/test/auto/hierarchicalModel_2_2e.xml
+auto.tcl: Setting watchdog for 200 seconds at Thu May 02 17:13:10 PDT 2013
+5 ms. Memory: 30784K Free: 23602K (77%)
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:10 PDT 2013
+auto.tcl: Setting watchdog for 200 seconds at Thu May 02 17:13:10 PDT 2013
+3 ms. Memory: 30784K Free: 22612K (73%)
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:10 PDT 2013
+05/02/13 05:13:10
+Failed: 0  Total Tests: 125  ((Passed: 125, Newly Passed: 1)  Known Failed: 0) /home/william/workspace/ptII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/test
+CLASSPATH="../../../../../../../../../../../..:/home/william/workspace/ptII/lib/ptjacl.jar" "/usr/lib/jvm/java-7-oracle/bin/java" -Xmx1000M  "-Dptolemy.ptII.dir=/home/william/workspace/ptII"  tcl.lang.Shell ../../../../../../../../../../../../util/testsuite/CCGAuto.tcl
+------------------ Invoking the ptolemy/cg C generator by calling GenericCodeGenerator.generateCode(args).  To replicate: $PTII/bin/ptcg -generatorPackage ptolemy.cg.kernel.generic.program.procedural.c $PTII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/test/auto/arrayType13.xml 
+JavaCGAuto.tcl: Setting watchdog for 60 seconds at Thu May 02 17:13:10 PDT 2013
+Writing arrayType13.c in file:/home/william/cg (7516 characters)
+Wrote /home/william/cg/arrayType13.c
+Wrote /home/william/cg/src/main.h
+Wrote /home/william/cg/src/types.h
+Wrote /home/william/cg/src/types.c
+Reading "ptolemy/cg/kernel/generic/program/procedural/c/makefile.in",
+    writing "/home/william/cg/arrayType13.mk"
+In "/home/william/cg", about to execute:
+    make -f arrayType13.mk
+make[4]: entrant dans le répertoire « /home/william/cg »
+gcc -Wall   -ggdb -c -o "src/types.o" "src/types.c"
+gcc -D__int64="long long" -Wall   -ggdb  arrayType13.c src/types.o -o arrayType13 -lm 
+In file included from arrayType13.c:21:0:
+src/main.h:29:16: attention : ‘arrayType13_Test_output’ defined but not used [-Wunused-variable]
+make[4]: quittant le répertoire « /home/william/cg »
+In "/home/william/cg", about to execute:
+    /home/william/cg/arrayType13
+All Done
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:11 PDT 2013
+------------------ Invoking the ptolemy/cg C generator by calling GenericCodeGenerator.generateCode(args).  To replicate: $PTII/bin/ptcg -generatorPackage ptolemy.cg.kernel.generic.program.procedural.c $PTII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/test/auto/arrayType23.xml 
+JavaCGAuto.tcl: Setting watchdog for 60 seconds at Thu May 02 17:13:11 PDT 2013
+Writing arrayType23.c in file:/home/william/cg/ (7941 characters)
+Wrote /home/william/cg/arrayType23.c
+Wrote /home/william/cg/src/main.h
+Wrote /home/william/cg/src/types.h
+Wrote /home/william/cg/src/types.c
+Reading "ptolemy/cg/kernel/generic/program/procedural/c/makefile.in",
+    writing "/home/william/cg/arrayType23.mk"
+In "/home/william/cg", about to execute:
+    make -f arrayType23.mk
+make[4]: entrant dans le répertoire « /home/william/cg »
+gcc -Wall   -ggdb -c -o "src/types.o" "src/types.c"
+gcc -D__int64="long long" -Wall   -ggdb  arrayType23.c src/types.o -o arrayType23 -lm 
+In file included from arrayType23.c:21:0:
+src/main.h:25:16: attention : ‘arrayType23_Test_output’ defined but not used [-Wunused-variable]
+make[4]: quittant le répertoire « /home/william/cg »
+In "/home/william/cg", about to execute:
+    /home/william/cg/arrayType23
+All Done
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:12 PDT 2013
+------------------ Invoking the ptolemy/cg C generator by calling GenericCodeGenerator.generateCode(args).  To replicate: $PTII/bin/ptcg -generatorPackage ptolemy.cg.kernel.generic.program.procedural.c $PTII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/test/auto/DistributorMultipleTypes.xml 
+JavaCGAuto.tcl: Setting watchdog for 60 seconds at Thu May 02 17:13:12 PDT 2013
+Writing DistributorMultipleTypes.c in file:/home/william/cg/ (9890 characters)
+Wrote /home/william/cg/DistributorMultipleTypes.c
+Wrote /home/william/cg/src/main.h
+Wrote /home/william/cg/src/types.h
+Wrote /home/william/cg/src/types.c
+Reading "ptolemy/cg/kernel/generic/program/procedural/c/makefile.in",
+    writing "/home/william/cg/DistributorMultipleTypes.mk"
+In "/home/william/cg", about to execute:
+    make -f DistributorMultipleTypes.mk
+make[4]: entrant dans le répertoire « /home/william/cg »
+gcc -Wall   -ggdb -c -o "src/types.o" "src/types.c"
+gcc -D__int64="long long" -Wall   -ggdb  DistributorMultipleTypes.c src/types.o -o DistributorMultipleTypes -lm 
+In file included from DistributorMultipleTypes.c:21:0:
+src/main.h:15:12: attention : ‘DistributorMultipleTypes_Distributor_output_1’ defined but not used [-Wunused-variable]
+src/main.h:28:16: attention : ‘DistributorMultipleTypes_Test_output’ defined but not used [-Wunused-variable]
+src/main.h:38:16: attention : ‘DistributorMultipleTypes_Test2_output’ defined but not used [-Wunused-variable]
+make[4]: quittant le répertoire « /home/william/cg »
+In "/home/william/cg", about to execute:
+    /home/william/cg/DistributorMultipleTypes
+All Done
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:12 PDT 2013
+------------------ Invoking the ptolemy/cg C generator by calling GenericCodeGenerator.generateCode(args).  To replicate: $PTII/bin/ptcg -generatorPackage ptolemy.cg.kernel.generic.program.procedural.c $PTII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/test/auto/Sequence2.xml 
+JavaCGAuto.tcl: Setting watchdog for 60 seconds at Thu May 02 17:13:12 PDT 2013
+Writing Sequence2.c in file:/home/william/cg/ (5672 characters)
+Wrote /home/william/cg/Sequence2.c
+Wrote /home/william/cg/src/main.h
+Wrote /home/william/cg/src/types.h
+Wrote /home/william/cg/src/types.c
+Reading "ptolemy/cg/kernel/generic/program/procedural/c/makefile.in",
+    writing "/home/william/cg/Sequence2.mk"
+In "/home/william/cg", about to execute:
+    make -f Sequence2.mk
+make[4]: entrant dans le répertoire « /home/william/cg »
+gcc -Wall   -ggdb -c -o "src/types.o" "src/types.c"
+gcc -D__int64="long long" -Wall   -ggdb  Sequence2.c src/types.o -o Sequence2 -lm 
+In file included from Sequence2.c:21:0:
+src/main.h:25:16: attention : ‘Sequence2_Test_output’ defined but not used [-Wunused-variable]
+make[4]: quittant le répertoire « /home/william/cg »
+In "/home/william/cg", about to execute:
+    /home/william/cg/Sequence2
+All Done
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:12 PDT 2013
+------------------ Invoking the ptolemy/cg C generator by calling GenericCodeGenerator.generateCode(args).  To replicate: $PTII/bin/ptcg -generatorPackage ptolemy.cg.kernel.generic.program.procedural.c $PTII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/test/auto/PublisherTestSubscriber.xml 
+JavaCGAuto.tcl: Setting watchdog for 60 seconds at Thu May 02 17:13:12 PDT 2013
+Writing PublisherTestSubscriber.c in file:/home/william/cg/ (11344 characters)
+Wrote /home/william/cg/PublisherTestSubscriber.c
+Wrote /home/william/cg/src/main.h
+Wrote /home/william/cg/src/types.h
+Wrote /home/william/cg/src/types.c
+Reading "ptolemy/cg/kernel/generic/program/procedural/c/makefile.in",
+    writing "/home/william/cg/PublisherTestSubscriber.mk"
+In "/home/william/cg", about to execute:
+    make -f PublisherTestSubscriber.mk
+make[4]: entrant dans le répertoire « /home/william/cg »
+gcc -Wall   -ggdb -c -o "src/types.o" "src/types.c"
+gcc -D__int64="long long" -Wall   -ggdb  PublisherTestSubscriber.c src/types.o -o PublisherTestSubscriber -lm 
+In file included from PublisherTestSubscriber.c:21:0:
+src/main.h:22:16: attention : ‘PublisherTestSubscriber_Test_output’ defined but not used [-Wunused-variable]
+src/main.h:35:16: attention : ‘PublisherTestSubscriber_Test2_output’ defined but not used [-Wunused-variable]
+src/main.h:56:12: attention : ‘PublisherTestSubscriber_PublisherTest3_output’ defined but not used [-Wunused-variable]
+make[4]: quittant le répertoire « /home/william/cg »
+In "/home/william/cg", about to execute:
+    /home/william/cg/PublisherTestSubscriber
+All Done
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:13 PDT 2013
+------------------ Invoking the ptolemy/cg C generator by calling GenericCodeGenerator.generateCode(args).  To replicate: $PTII/bin/ptcg -generatorPackage ptolemy.cg.kernel.generic.program.procedural.c $PTII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/test/auto/arrayType2.xml 
+JavaCGAuto.tcl: Setting watchdog for 60 seconds at Thu May 02 17:13:13 PDT 2013
+Writing arrayType2.c in file:/home/william/cg/ (7425 characters)
+Wrote /home/william/cg/arrayType2.c
+Wrote /home/william/cg/src/main.h
+Wrote /home/william/cg/src/types.h
+Wrote /home/william/cg/src/types.c
+Reading "ptolemy/cg/kernel/generic/program/procedural/c/makefile.in",
+    writing "/home/william/cg/arrayType2.mk"
+In "/home/william/cg", about to execute:
+    make -f arrayType2.mk
+make[4]: entrant dans le répertoire « /home/william/cg »
+gcc -Wall   -ggdb -c -o "src/types.o" "src/types.c"
+gcc -D__int64="long long" -Wall   -ggdb  arrayType2.c src/types.o -o arrayType2 -lm 
+In file included from arrayType2.c:21:0:
+src/main.h:29:16: attention : ‘arrayType2_Test_output’ defined but not used [-Wunused-variable]
+make[4]: quittant le répertoire « /home/william/cg »
+In "/home/william/cg", about to execute:
+    /home/william/cg/arrayType2
+All Done
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:13 PDT 2013
+------------------ Invoking the ptolemy/cg C generator by calling GenericCodeGenerator.generateCode(args).  To replicate: $PTII/bin/ptcg -generatorPackage ptolemy.cg.kernel.generic.program.procedural.c $PTII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/test/auto/PublisherTestSubscriber3.xml 
+JavaCGAuto.tcl: Setting watchdog for 60 seconds at Thu May 02 17:13:13 PDT 2013
+Writing PublisherTestSubscriber3.c in file:/home/william/cg/ (6652 characters)
+Wrote /home/william/cg/PublisherTestSubscriber3.c
+Wrote /home/william/cg/src/main.h
+Wrote /home/william/cg/src/types.h
+Wrote /home/william/cg/src/types.c
+Reading "ptolemy/cg/kernel/generic/program/procedural/c/makefile.in",
+    writing "/home/william/cg/PublisherTestSubscriber3.mk"
+In "/home/william/cg", about to execute:
+    make -f PublisherTestSubscriber3.mk
+make[4]: entrant dans le répertoire « /home/william/cg »
+gcc -Wall   -ggdb -c -o "src/types.o" "src/types.c"
+gcc -D__int64="long long" -Wall   -ggdb  PublisherTestSubscriber3.c src/types.o -o PublisherTestSubscriber3 -lm 
+In file included from PublisherTestSubscriber3.c:21:0:
+src/main.h:19:16: attention : ‘PublisherTestSubscriber3_Test_output’ defined but not used [-Wunused-variable]
+make[4]: quittant le répertoire « /home/william/cg »
+In "/home/william/cg", about to execute:
+    /home/william/cg/PublisherTestSubscriber3
+All Done
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:13 PDT 2013
+------------------ Invoking the ptolemy/cg C generator by calling GenericCodeGenerator.generateCode(args).  To replicate: $PTII/bin/ptcg -generatorPackage ptolemy.cg.kernel.generic.program.procedural.c $PTII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/test/auto/arrayType9.xml 
+JavaCGAuto.tcl: Setting watchdog for 60 seconds at Thu May 02 17:13:13 PDT 2013
+Writing arrayType9.c in file:/home/william/cg/ (7642 characters)
+Wrote /home/william/cg/arrayType9.c
+Wrote /home/william/cg/src/main.h
+Wrote /home/william/cg/src/types.h
+Wrote /home/william/cg/src/types.c
+Reading "ptolemy/cg/kernel/generic/program/procedural/c/makefile.in",
+    writing "/home/william/cg/arrayType9.mk"
+In "/home/william/cg", about to execute:
+    make -f arrayType9.mk
+make[4]: entrant dans le répertoire « /home/william/cg »
+gcc -Wall   -ggdb -c -o "src/types.o" "src/types.c"
+gcc -D__int64="long long" -Wall   -ggdb  arrayType9.c src/types.o -o arrayType9 -lm 
+In file included from arrayType9.c:21:0:
+src/main.h:25:16: attention : ‘arrayType9_Test_output’ defined but not used [-Wunused-variable]
+make[4]: quittant le répertoire « /home/william/cg »
+In "/home/william/cg", about to execute:
+    /home/william/cg/arrayType9
+All Done
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:14 PDT 2013
+------------------ Invoking the ptolemy/cg C generator by calling GenericCodeGenerator.generateCode(args).  To replicate: $PTII/bin/ptcg -generatorPackage ptolemy.cg.kernel.generic.program.procedural.c $PTII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/test/auto/arrayType14.xml 
+JavaCGAuto.tcl: Setting watchdog for 60 seconds at Thu May 02 17:13:14 PDT 2013
+Writing arrayType14.c in file:/home/william/cg/ (7521 characters)
+Wrote /home/william/cg/arrayType14.c
+Wrote /home/william/cg/src/main.h
+Wrote /home/william/cg/src/types.h
+Wrote /home/william/cg/src/types.c
+Reading "ptolemy/cg/kernel/generic/program/procedural/c/makefile.in",
+    writing "/home/william/cg/arrayType14.mk"
+In "/home/william/cg", about to execute:
+    make -f arrayType14.mk
+make[4]: entrant dans le répertoire « /home/william/cg »
+gcc -Wall   -ggdb -c -o "src/types.o" "src/types.c"
+gcc -D__int64="long long" -Wall   -ggdb  arrayType14.c src/types.o -o arrayType14 -lm 
+In file included from arrayType14.c:21:0:
+src/main.h:29:16: attention : ‘arrayType14_Test_output’ defined but not used [-Wunused-variable]
+make[4]: quittant le répertoire « /home/william/cg »
+In "/home/william/cg", about to execute:
+    /home/william/cg/arrayType14
+All Done
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:14 PDT 2013
+------------------ Invoking the ptolemy/cg C generator by calling GenericCodeGenerator.generateCode(args).  To replicate: $PTII/bin/ptcg -generatorPackage ptolemy.cg.kernel.generic.program.procedural.c $PTII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/test/auto/arrayType18.xml 
+JavaCGAuto.tcl: Setting watchdog for 60 seconds at Thu May 02 17:13:14 PDT 2013
+Writing arrayType18.c in file:/home/william/cg/ (7943 characters)
+Wrote /home/william/cg/arrayType18.c
+Wrote /home/william/cg/src/main.h
+Wrote /home/william/cg/src/types.h
+Wrote /home/william/cg/src/types.c
+Reading "ptolemy/cg/kernel/generic/program/procedural/c/makefile.in",
+    writing "/home/william/cg/arrayType18.mk"
+In "/home/william/cg", about to execute:
+    make -f arrayType18.mk
+make[4]: entrant dans le répertoire « /home/william/cg »
+gcc -Wall   -ggdb -c -o "src/types.o" "src/types.c"
+gcc -D__int64="long long" -Wall   -ggdb  arrayType18.c src/types.o -o arrayType18 -lm 
+In file included from arrayType18.c:21:0:
+src/main.h:12:12: attention : ‘arrayType18_Const2_output_0’ defined but not used [-Wunused-variable]
+src/main.h:28:16: attention : ‘arrayType18_Test_output’ defined but not used [-Wunused-variable]
+make[4]: quittant le répertoire « /home/william/cg »
+In "/home/william/cg", about to execute:
+    /home/william/cg/arrayType18
+All Done
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:14 PDT 2013
+------------------ Invoking the ptolemy/cg C generator by calling GenericCodeGenerator.generateCode(args).  To replicate: $PTII/bin/ptcg -generatorPackage ptolemy.cg.kernel.generic.program.procedural.c $PTII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/test/auto/PublisherTestSubscriber7.xml 
+JavaCGAuto.tcl: Setting watchdog for 60 seconds at Thu May 02 17:13:14 PDT 2013
+Writing PublisherTestSubscriber7.c in file:/home/william/cg/ (9019 characters)
+Wrote /home/william/cg/PublisherTestSubscriber7.c
+Wrote /home/william/cg/src/main.h
+Wrote /home/william/cg/src/types.h
+Wrote /home/william/cg/src/types.c
+Reading "ptolemy/cg/kernel/generic/program/procedural/c/makefile.in",
+    writing "/home/william/cg/PublisherTestSubscriber7.mk"
+In "/home/william/cg", about to execute:
+    make -f PublisherTestSubscriber7.mk
+make[4]: entrant dans le répertoire « /home/william/cg »
+gcc -Wall   -ggdb -c -o "src/types.o" "src/types.c"
+gcc -D__int64="long long" -Wall   -ggdb  PublisherTestSubscriber7.c src/types.o -o PublisherTestSubscriber7 -lm 
+In file included from PublisherTestSubscriber7.c:21:0:
+src/main.h:19:16: attention : ‘PublisherTestSubscriber7_Test_output’ defined but not used [-Wunused-variable]
+make[4]: quittant le répertoire « /home/william/cg »
+In "/home/william/cg", about to execute:
+    /home/william/cg/PublisherTestSubscriber7
+All Done
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:15 PDT 2013
+------------------ Invoking the ptolemy/cg C generator by calling GenericCodeGenerator.generateCode(args).  To replicate: $PTII/bin/ptcg -generatorPackage ptolemy.cg.kernel.generic.program.procedural.c $PTII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/test/auto/PublisherSubscriber.xml 
+JavaCGAuto.tcl: Setting watchdog for 60 seconds at Thu May 02 17:13:15 PDT 2013
+Writing PublisherSubscriber.c in file:/home/william/cg/ (10752 characters)
+Wrote /home/william/cg/PublisherSubscriber.c
+Wrote /home/william/cg/src/main.h
+Wrote /home/william/cg/src/types.h
+Wrote /home/william/cg/src/types.c
+Reading "ptolemy/cg/kernel/generic/program/procedural/c/makefile.in",
+    writing "/home/william/cg/PublisherSubscriber.mk"
+In "/home/william/cg", about to execute:
+    make -f PublisherSubscriber.mk
+make[4]: entrant dans le répertoire « /home/william/cg »
+gcc -Wall   -ggdb -c -o "src/types.o" "src/types.c"
+gcc -D__int64="long long" -Wall   -ggdb  PublisherSubscriber.c src/types.o -o PublisherSubscriber -lm 
+In file included from PublisherSubscriber.c:21:0:
+src/main.h:22:16: attention : ‘PublisherSubscriber_Test_output’ defined but not used [-Wunused-variable]
+src/main.h:35:16: attention : ‘PublisherSubscriber_Test2_output’ defined but not used [-Wunused-variable]
+src/main.h:56:12: attention : ‘PublisherSubscriber_Publisher3_output’ defined but not used [-Wunused-variable]
+make[4]: quittant le répertoire « /home/william/cg »
+In "/home/william/cg", about to execute:
+    /home/william/cg/PublisherSubscriber
+All Done
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:15 PDT 2013
+------------------ Invoking the ptolemy/cg C generator by calling GenericCodeGenerator.generateCode(args).  To replicate: $PTII/bin/ptcg -generatorPackage ptolemy.cg.kernel.generic.program.procedural.c $PTII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/test/auto/arrayType6.xml 
+JavaCGAuto.tcl: Setting watchdog for 60 seconds at Thu May 02 17:13:15 PDT 2013
+Writing arrayType6.c in file:/home/william/cg/ (7652 characters)
+Wrote /home/william/cg/arrayType6.c
+Wrote /home/william/cg/src/main.h
+Wrote /home/william/cg/src/types.h
+Wrote /home/william/cg/src/types.c
+Reading "ptolemy/cg/kernel/generic/program/procedural/c/makefile.in",
+    writing "/home/william/cg/arrayType6.mk"
+In "/home/william/cg", about to execute:
+    make -f arrayType6.mk
+make[4]: entrant dans le répertoire « /home/william/cg »
+gcc -Wall   -ggdb -c -o "src/types.o" "src/types.c"
+gcc -D__int64="long long" -Wall   -ggdb  arrayType6.c src/types.o -o arrayType6 -lm 
+In file included from arrayType6.c:21:0:
+src/main.h:12:12: attention : ‘arrayType6_Const2_output_0’ defined but not used [-Wunused-variable]
+src/main.h:28:16: attention : ‘arrayType6_Test_output’ defined but not used [-Wunused-variable]
+make[4]: quittant le répertoire « /home/william/cg »
+In "/home/william/cg", about to execute:
+    /home/william/cg/arrayType6
+All Done
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:15 PDT 2013
+------------------ Invoking the ptolemy/cg C generator by calling GenericCodeGenerator.generateCode(args).  To replicate: $PTII/bin/ptcg -generatorPackage ptolemy.cg.kernel.generic.program.procedural.c $PTII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/test/auto/PublisherSubscriber2.xml 
+JavaCGAuto.tcl: Setting watchdog for 60 seconds at Thu May 02 17:13:15 PDT 2013
+Writing PublisherSubscriber2.c in file:/home/william/cg/ (6687 characters)
+Wrote /home/william/cg/PublisherSubscriber2.c
+Wrote /home/william/cg/src/main.h
+Wrote /home/william/cg/src/types.h
+Wrote /home/william/cg/src/types.c
+Reading "ptolemy/cg/kernel/generic/program/procedural/c/makefile.in",
+    writing "/home/william/cg/PublisherSubscriber2.mk"
+In "/home/william/cg", about to execute:
+    make -f PublisherSubscriber2.mk
+make[4]: entrant dans le répertoire « /home/william/cg »
+gcc -Wall   -ggdb -c -o "src/types.o" "src/types.c"
+gcc -D__int64="long long" -Wall   -ggdb  PublisherSubscriber2.c src/types.o -o PublisherSubscriber2 -lm 
+In file included from PublisherSubscriber2.c:21:0:
+src/main.h:22:16: attention : ‘PublisherSubscriber2_CompositeActor_Test_output’ defined but not used [-Wunused-variable]
+make[4]: quittant le répertoire « /home/william/cg »
+In "/home/william/cg", about to execute:
+    /home/william/cg/PublisherSubscriber2
+All Done
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:16 PDT 2013
+------------------ Invoking the ptolemy/cg C generator by calling GenericCodeGenerator.generateCode(args).  To replicate: $PTII/bin/ptcg -generatorPackage ptolemy.cg.kernel.generic.program.procedural.c $PTII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/test/auto/arrayType15.xml 
+JavaCGAuto.tcl: Setting watchdog for 60 seconds at Thu May 02 17:13:16 PDT 2013
+Writing arrayType15.c in file:/home/william/cg/ (7522 characters)
+Wrote /home/william/cg/arrayType15.c
+Wrote /home/william/cg/src/main.h
+Wrote /home/william/cg/src/types.h
+Wrote /home/william/cg/src/types.c
+Reading "ptolemy/cg/kernel/generic/program/procedural/c/makefile.in",
+    writing "/home/william/cg/arrayType15.mk"
+In "/home/william/cg", about to execute:
+    make -f arrayType15.mk
+make[4]: entrant dans le répertoire « /home/william/cg »
+gcc -Wall   -ggdb -c -o "src/types.o" "src/types.c"
+gcc -D__int64="long long" -Wall   -ggdb  arrayType15.c src/types.o -o arrayType15 -lm 
+In file included from arrayType15.c:21:0:
+src/main.h:29:16: attention : ‘arrayType15_Test_output’ defined but not used [-Wunused-variable]
+make[4]: quittant le répertoire « /home/william/cg »
+In "/home/william/cg", about to execute:
+    /home/william/cg/arrayType15
+All Done
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:16 PDT 2013
+------------------ Invoking the ptolemy/cg C generator by calling GenericCodeGenerator.generateCode(args).  To replicate: $PTII/bin/ptcg -generatorPackage ptolemy.cg.kernel.generic.program.procedural.c $PTII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/test/auto/TestNaN.xml 
+JavaCGAuto.tcl: Setting watchdog for 60 seconds at Thu May 02 17:13:16 PDT 2013
+Writing TestNaN.c in file:/home/william/cg/ (5762 characters)
+Wrote /home/william/cg/TestNaN.c
+Wrote /home/william/cg/src/main.h
+Wrote /home/william/cg/src/types.h
+Wrote /home/william/cg/src/types.c
+Reading "ptolemy/cg/kernel/generic/program/procedural/c/makefile.in",
+    writing "/home/william/cg/TestNaN.mk"
+In "/home/william/cg", about to execute:
+    make -f TestNaN.mk
+make[4]: entrant dans le répertoire « /home/william/cg »
+gcc -Wall   -ggdb -c -o "src/types.o" "src/types.c"
+gcc -D__int64="long long" -Wall   -ggdb  TestNaN.c src/types.o -o TestNaN -lm 
+In file included from TestNaN.c:21:0:
+src/main.h:22:16: attention : ‘TestNaN_Test_output’ defined but not used [-Wunused-variable]
+make[4]: quittant le répertoire « /home/william/cg »
+In "/home/william/cg", about to execute:
+    /home/william/cg/TestNaN
+All Done
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:16 PDT 2013
+------------------ Invoking the ptolemy/cg C generator by calling GenericCodeGenerator.generateCode(args).  To replicate: $PTII/bin/ptcg -generatorPackage ptolemy.cg.kernel.generic.program.procedural.c $PTII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/test/auto/arrayType17.xml 
+JavaCGAuto.tcl: Setting watchdog for 60 seconds at Thu May 02 17:13:16 PDT 2013
+Writing arrayType17.c in file:/home/william/cg/ (7553 characters)
+Wrote /home/william/cg/arrayType17.c
+Wrote /home/william/cg/src/main.h
+Wrote /home/william/cg/src/types.h
+Wrote /home/william/cg/src/types.c
+Reading "ptolemy/cg/kernel/generic/program/procedural/c/makefile.in",
+    writing "/home/william/cg/arrayType17.mk"
+In "/home/william/cg", about to execute:
+    make -f arrayType17.mk
+make[4]: entrant dans le répertoire « /home/william/cg »
+gcc -Wall   -ggdb -c -o "src/types.o" "src/types.c"
+gcc -D__int64="long long" -Wall   -ggdb  arrayType17.c src/types.o -o arrayType17 -lm 
+In file included from arrayType17.c:21:0:
+src/main.h:29:16: attention : ‘arrayType17_Test_output’ defined but not used [-Wunused-variable]
+make[4]: quittant le répertoire « /home/william/cg »
+In "/home/william/cg", about to execute:
+    /home/william/cg/arrayType17
+All Done
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:17 PDT 2013
+------------------ Invoking the ptolemy/cg C generator by calling GenericCodeGenerator.generateCode(args).  To replicate: $PTII/bin/ptcg -generatorPackage ptolemy.cg.kernel.generic.program.procedural.c $PTII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/test/auto/PublisherSubscriber4.xml 
+JavaCGAuto.tcl: Setting watchdog for 60 seconds at Thu May 02 17:13:17 PDT 2013
+Writing PublisherSubscriber4.c in file:/home/william/cg/ (6147 characters)
+Wrote /home/william/cg/PublisherSubscriber4.c
+Wrote /home/william/cg/src/main.h
+Wrote /home/william/cg/src/types.h
+Wrote /home/william/cg/src/types.c
+Reading "ptolemy/cg/kernel/generic/program/procedural/c/makefile.in",
+    writing "/home/william/cg/PublisherSubscriber4.mk"
+In "/home/william/cg", about to execute:
+    make -f PublisherSubscriber4.mk
+make[4]: entrant dans le répertoire « /home/william/cg »
+gcc -Wall   -ggdb -c -o "src/types.o" "src/types.c"
+gcc -D__int64="long long" -Wall   -ggdb  PublisherSubscriber4.c src/types.o -o PublisherSubscriber4 -lm 
+In file included from PublisherSubscriber4.c:21:0:
+src/main.h:22:16: attention : ‘PublisherSubscriber4_Test_output’ defined but not used [-Wunused-variable]
+make[4]: quittant le répertoire « /home/william/cg »
+In "/home/william/cg", about to execute:
+    /home/william/cg/PublisherSubscriber4
+All Done
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:17 PDT 2013
+------------------ Invoking the ptolemy/cg C generator by calling GenericCodeGenerator.generateCode(args).  To replicate: $PTII/bin/ptcg -generatorPackage ptolemy.cg.kernel.generic.program.procedural.c $PTII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/test/auto/PublisherTestSubscriber6.xml 
+JavaCGAuto.tcl: Setting watchdog for 60 seconds at Thu May 02 17:13:17 PDT 2013
+Writing PublisherTestSubscriber6.c in file:/home/william/cg/ (8802 characters)
+Wrote /home/william/cg/PublisherTestSubscriber6.c
+Wrote /home/william/cg/src/main.h
+Wrote /home/william/cg/src/types.h
+Wrote /home/william/cg/src/types.c
+Reading "ptolemy/cg/kernel/generic/program/procedural/c/makefile.in",
+    writing "/home/william/cg/PublisherTestSubscriber6.mk"
+In "/home/william/cg", about to execute:
+    make -f PublisherTestSubscriber6.mk
+make[4]: entrant dans le répertoire « /home/william/cg »
+gcc -Wall   -ggdb -c -o "src/types.o" "src/types.c"
+gcc -D__int64="long long" -Wall   -ggdb  PublisherTestSubscriber6.c src/types.o -o PublisherTestSubscriber6 -lm 
+In file included from PublisherTestSubscriber6.c:21:0:
+src/main.h:19:16: attention : ‘PublisherTestSubscriber6_Test_output’ defined but not used [-Wunused-variable]
+make[4]: quittant le répertoire « /home/william/cg »
+In "/home/william/cg", about to execute:
+    /home/william/cg/PublisherTestSubscriber6
+All Done
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:17 PDT 2013
+------------------ Invoking the ptolemy/cg C generator by calling GenericCodeGenerator.generateCode(args).  To replicate: $PTII/bin/ptcg -generatorPackage ptolemy.cg.kernel.generic.program.procedural.c $PTII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/test/auto/arrayType21.xml 
+JavaCGAuto.tcl: Setting watchdog for 60 seconds at Thu May 02 17:13:17 PDT 2013
+Writing arrayType21.c in file:/home/william/cg/ (7950 characters)
+Wrote /home/william/cg/arrayType21.c
+Wrote /home/william/cg/src/main.h
+Wrote /home/william/cg/src/types.h
+Wrote /home/william/cg/src/types.c
+Reading "ptolemy/cg/kernel/generic/program/procedural/c/makefile.in",
+    writing "/home/william/cg/arrayType21.mk"
+In "/home/william/cg", about to execute:
+    make -f arrayType21.mk
+make[4]: entrant dans le répertoire « /home/william/cg »
+gcc -Wall   -ggdb -c -o "src/types.o" "src/types.c"
+gcc -D__int64="long long" -Wall   -ggdb  arrayType21.c src/types.o -o arrayType21 -lm 
+In file included from arrayType21.c:21:0:
+src/main.h:25:16: attention : ‘arrayType21_Test_output’ defined but not used [-Wunused-variable]
+make[4]: quittant le répertoire « /home/william/cg »
+In "/home/william/cg", about to execute:
+    /home/william/cg/arrayType21
+All Done
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:18 PDT 2013
+------------------ Invoking the ptolemy/cg C generator by calling GenericCodeGenerator.generateCode(args).  To replicate: $PTII/bin/ptcg -generatorPackage ptolemy.cg.kernel.generic.program.procedural.c $PTII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/test/auto/AddSubtract3.xml 
+JavaCGAuto.tcl: Setting watchdog for 60 seconds at Thu May 02 17:13:18 PDT 2013
+Writing AddSubtract3.c in file:/home/william/cg/ (6270 characters)
+Wrote /home/william/cg/AddSubtract3.c
+Wrote /home/william/cg/src/main.h
+Wrote /home/william/cg/src/types.h
+Wrote /home/william/cg/src/types.c
+Reading "ptolemy/cg/kernel/generic/program/procedural/c/makefile.in",
+    writing "/home/william/cg/AddSubtract3.mk"
+In "/home/william/cg", about to execute:
+    make -f AddSubtract3.mk
+make[4]: entrant dans le répertoire « /home/william/cg »
+gcc -Wall   -ggdb -c -o "src/types.o" "src/types.c"
+gcc -D__int64="long long" -Wall   -ggdb  AddSubtract3.c src/types.o -o AddSubtract3 -lm 
+In file included from AddSubtract3.c:21:0:
+src/main.h:16:12: attention : ‘AddSubtract3_Const_output_0’ defined but not used [-Wunused-variable]
+src/main.h:26:16: attention : ‘AddSubtract3_Test_output’ defined but not used [-Wunused-variable]
+src/main.h:29:12: attention : ‘AddSubtract3_Const3_output_0’ defined but not used [-Wunused-variable]
+make[4]: quittant le répertoire « /home/william/cg »
+In "/home/william/cg", about to execute:
+    /home/william/cg/AddSubtract3
+All Done
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:18 PDT 2013
+------------------ Invoking the ptolemy/cg C generator by calling GenericCodeGenerator.generateCode(args).  To replicate: $PTII/bin/ptcg -generatorPackage ptolemy.cg.kernel.generic.program.procedural.c $PTII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/test/auto/MatrixToArray.xml 
+JavaCGAuto.tcl: Setting watchdog for 60 seconds at Thu May 02 17:13:18 PDT 2013
+Writing MatrixToArray.c in file:/home/william/cg/ (6566 characters)
+Wrote /home/william/cg/MatrixToArray.c
+Wrote /home/william/cg/src/main.h
+Wrote /home/william/cg/src/types.h
+Wrote /home/william/cg/src/types.c
+Reading "ptolemy/cg/kernel/generic/program/procedural/c/makefile.in",
+    writing "/home/william/cg/MatrixToArray.mk"
+In "/home/william/cg", about to execute:
+    make -f MatrixToArray.mk
+make[4]: entrant dans le répertoire « /home/william/cg »
+gcc -Wall   -ggdb -c -o "src/types.o" "src/types.c"
+gcc -D__int64="long long" -Wall   -ggdb  MatrixToArray.c src/types.o -o MatrixToArray -lm 
+In file included from MatrixToArray.c:21:0:
+src/main.h:22:16: attention : ‘MatrixToArray_Test_output’ defined but not used [-Wunused-variable]
+make[4]: quittant le répertoire « /home/william/cg »
+In "/home/william/cg", about to execute:
+    /home/william/cg/MatrixToArray
+All Done
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:18 PDT 2013
+------------------ Invoking the ptolemy/cg C generator by calling GenericCodeGenerator.generateCode(args).  To replicate: $PTII/bin/ptcg -generatorPackage ptolemy.cg.kernel.generic.program.procedural.c $PTII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/test/auto/Ramp.xml 
+JavaCGAuto.tcl: Setting watchdog for 60 seconds at Thu May 02 17:13:18 PDT 2013
+Writing Ramp.c in file:/home/william/cg/ (6221 characters)
+Wrote /home/william/cg/Ramp.c
+Wrote /home/william/cg/src/main.h
+Wrote /home/william/cg/src/types.h
+Wrote /home/william/cg/src/types.c
+Reading "ptolemy/cg/kernel/generic/program/procedural/c/makefile.in",
+    writing "/home/william/cg/Ramp.mk"
+In "/home/william/cg", about to execute:
+    make -f Ramp.mk
+make[4]: entrant dans le répertoire « /home/william/cg »
+gcc -Wall   -ggdb -c -o "src/types.o" "src/types.c"
+gcc -D__int64="long long" -Wall   -ggdb  Ramp.c src/types.o -o Ramp -lm 
+In file included from Ramp.c:21:0:
+src/main.h:32:16: attention : ‘Ramp_Test_output’ defined but not used [-Wunused-variable]
+make[4]: quittant le répertoire « /home/william/cg »
+In "/home/william/cg", about to execute:
+    /home/william/cg/Ramp
+All Done
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:18 PDT 2013
+------------------ Invoking the ptolemy/cg C generator by calling GenericCodeGenerator.generateCode(args).  To replicate: $PTII/bin/ptcg -generatorPackage ptolemy.cg.kernel.generic.program.procedural.c $PTII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/test/auto/MultiplyDivideDivideOnly.xml 
+JavaCGAuto.tcl: Setting watchdog for 60 seconds at Thu May 02 17:13:18 PDT 2013
+Writing MultiplyDivideDivideOnly.c in file:/home/william/cg/ (6159 characters)
+Wrote /home/william/cg/MultiplyDivideDivideOnly.c
+Wrote /home/william/cg/src/main.h
+Wrote /home/william/cg/src/types.h
+Wrote /home/william/cg/src/types.c
+Reading "ptolemy/cg/kernel/generic/program/procedural/c/makefile.in",
+    writing "/home/william/cg/MultiplyDivideDivideOnly.mk"
+In "/home/william/cg", about to execute:
+    make -f MultiplyDivideDivideOnly.mk
+make[4]: entrant dans le répertoire « /home/william/cg »
+gcc -Wall   -ggdb -c -o "src/types.o" "src/types.c"
+gcc -D__int64="long long" -Wall   -ggdb  MultiplyDivideDivideOnly.c src/types.o -o MultiplyDivideDivideOnly -lm 
+In file included from MultiplyDivideDivideOnly.c:21:0:
+src/main.h:25:16: attention : ‘MultiplyDivideDivideOnly_Test_output’ defined but not used [-Wunused-variable]
+make[4]: quittant le répertoire « /home/william/cg »
+In "/home/william/cg", about to execute:
+    /home/william/cg/MultiplyDivideDivideOnly
+All Done
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:18 PDT 2013
+------------------ Invoking the ptolemy/cg C generator by calling GenericCodeGenerator.generateCode(args).  To replicate: $PTII/bin/ptcg -generatorPackage ptolemy.cg.kernel.generic.program.procedural.c $PTII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/test/auto/arrayType24.xml 
+JavaCGAuto.tcl: Setting watchdog for 60 seconds at Thu May 02 17:13:18 PDT 2013
+Writing arrayType24.c in file:/home/william/cg/ (8461 characters)
+Wrote /home/william/cg/arrayType24.c
+Wrote /home/william/cg/src/main.h
+Wrote /home/william/cg/src/types.h
+Wrote /home/william/cg/src/types.c
+Reading "ptolemy/cg/kernel/generic/program/procedural/c/makefile.in",
+    writing "/home/william/cg/arrayType24.mk"
+In "/home/william/cg", about to execute:
+    make -f arrayType24.mk
+make[4]: entrant dans le répertoire « /home/william/cg »
+gcc -Wall   -ggdb -c -o "src/types.o" "src/types.c"
+gcc -D__int64="long long" -Wall   -ggdb  arrayType24.c src/types.o -o arrayType24 -lm 
+In file included from arrayType24.c:21:0:
+src/main.h:25:16: attention : ‘arrayType24_Test_output’ defined but not used [-Wunused-variable]
+src/main.h:28:12: attention : ‘arrayType24_Const3_output_0’ defined but not used [-Wunused-variable]
+make[4]: quittant le répertoire « /home/william/cg »
+In "/home/william/cg", about to execute:
+    /home/william/cg/arrayType24
+All Done
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:19 PDT 2013
+------------------ Invoking the ptolemy/cg C generator by calling GenericCodeGenerator.generateCode(args).  To replicate: $PTII/bin/ptcg -generatorPackage ptolemy.cg.kernel.generic.program.procedural.c $PTII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/test/auto/arrayType11.xml 
+JavaCGAuto.tcl: Setting watchdog for 60 seconds at Thu May 02 17:13:19 PDT 2013
+Writing arrayType11.c in file:/home/william/cg/ (7720 characters)
+Wrote /home/william/cg/arrayType11.c
+Wrote /home/william/cg/src/main.h
+Wrote /home/william/cg/src/types.h
+Wrote /home/william/cg/src/types.c
+Reading "ptolemy/cg/kernel/generic/program/procedural/c/makefile.in",
+    writing "/home/william/cg/arrayType11.mk"
+In "/home/william/cg", about to execute:
+    make -f arrayType11.mk
+make[4]: entrant dans le répertoire « /home/william/cg »
+gcc -Wall   -ggdb -c -o "src/types.o" "src/types.c"
+gcc -D__int64="long long" -Wall   -ggdb  arrayType11.c src/types.o -o arrayType11 -lm 
+In file included from arrayType11.c:21:0:
+src/main.h:25:16: attention : ‘arrayType11_Test_output’ defined but not used [-Wunused-variable]
+make[4]: quittant le répertoire « /home/william/cg »
+In "/home/william/cg", about to execute:
+    /home/william/cg/arrayType11
+All Done
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:19 PDT 2013
+------------------ Invoking the ptolemy/cg C generator by calling GenericCodeGenerator.generateCode(args).  To replicate: $PTII/bin/ptcg -generatorPackage ptolemy.cg.kernel.generic.program.procedural.c $PTII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/test/auto/arrayType20.xml 
+JavaCGAuto.tcl: Setting watchdog for 60 seconds at Thu May 02 17:13:19 PDT 2013
+Writing arrayType20.c in file:/home/william/cg/ (8463 characters)
+Wrote /home/william/cg/arrayType20.c
+Wrote /home/william/cg/src/main.h
+Wrote /home/william/cg/src/types.h
+Wrote /home/william/cg/src/types.c
+Reading "ptolemy/cg/kernel/generic/program/procedural/c/makefile.in",
+    writing "/home/william/cg/arrayType20.mk"
+In "/home/william/cg", about to execute:
+    make -f arrayType20.mk
+make[4]: entrant dans le répertoire « /home/william/cg »
+gcc -Wall   -ggdb -c -o "src/types.o" "src/types.c"
+gcc -D__int64="long long" -Wall   -ggdb  arrayType20.c src/types.o -o arrayType20 -lm 
+In file included from arrayType20.c:21:0:
+src/main.h:12:12: attention : ‘arrayType20_Const2_output_0’ defined but not used [-Wunused-variable]
+src/main.h:28:16: attention : ‘arrayType20_Test_output’ defined but not used [-Wunused-variable]
+src/main.h:31:12: attention : ‘arrayType20_Const3_output_0’ defined but not used [-Wunused-variable]
+make[4]: quittant le répertoire « /home/william/cg »
+In "/home/william/cg", about to execute:
+    /home/william/cg/arrayType20
+All Done
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:20 PDT 2013
+------------------ Invoking the ptolemy/cg C generator by calling GenericCodeGenerator.generateCode(args).  To replicate: $PTII/bin/ptcg -generatorPackage ptolemy.cg.kernel.generic.program.procedural.c $PTII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/test/auto/PublisherSubscriber5.xml 
+JavaCGAuto.tcl: Setting watchdog for 60 seconds at Thu May 02 17:13:20 PDT 2013
+Writing PublisherSubscriber5.c in file:/home/william/cg/ (7721 characters)
+Wrote /home/william/cg/PublisherSubscriber5.c
+Wrote /home/william/cg/src/main.h
+Wrote /home/william/cg/src/types.h
+Wrote /home/william/cg/src/types.c
+Reading "ptolemy/cg/kernel/generic/program/procedural/c/makefile.in",
+    writing "/home/william/cg/PublisherSubscriber5.mk"
+In "/home/william/cg", about to execute:
+    make -f PublisherSubscriber5.mk
+make[4]: entrant dans le répertoire « /home/william/cg »
+gcc -Wall   -ggdb -c -o "src/types.o" "src/types.c"
+gcc -D__int64="long long" -Wall   -ggdb  PublisherSubscriber5.c src/types.o -o PublisherSubscriber5 -lm 
+In file included from PublisherSubscriber5.c:21:0:
+src/main.h:19:16: attention : ‘PublisherSubscriber5_Test_output’ defined but not used [-Wunused-variable]
+make[4]: quittant le répertoire « /home/william/cg »
+In "/home/william/cg", about to execute:
+    /home/william/cg/PublisherSubscriber5
+All Done
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:20 PDT 2013
+------------------ Invoking the ptolemy/cg C generator by calling GenericCodeGenerator.generateCode(args).  To replicate: $PTII/bin/ptcg -generatorPackage ptolemy.cg.kernel.generic.program.procedural.c $PTII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/test/auto/PublisherTestSubscriber4.xml 
+JavaCGAuto.tcl: Setting watchdog for 60 seconds at Thu May 02 17:13:20 PDT 2013
+Writing PublisherTestSubscriber4.c in file:/home/william/cg/ (6431 characters)
+Wrote /home/william/cg/PublisherTestSubscriber4.c
+Wrote /home/william/cg/src/main.h
+Wrote /home/william/cg/src/types.h
+Wrote /home/william/cg/src/types.c
+Reading "ptolemy/cg/kernel/generic/program/procedural/c/makefile.in",
+    writing "/home/william/cg/PublisherTestSubscriber4.mk"
+In "/home/william/cg", about to execute:
+    make -f PublisherTestSubscriber4.mk
+make[4]: entrant dans le répertoire « /home/william/cg »
+gcc -Wall   -ggdb -c -o "src/types.o" "src/types.c"
+gcc -D__int64="long long" -Wall   -ggdb  PublisherTestSubscriber4.c src/types.o -o PublisherTestSubscriber4 -lm 
+In file included from PublisherTestSubscriber4.c:21:0:
+src/main.h:22:16: attention : ‘PublisherTestSubscriber4_Test_output’ defined but not used [-Wunused-variable]
+make[4]: quittant le répertoire « /home/william/cg »
+In "/home/william/cg", about to execute:
+    /home/william/cg/PublisherTestSubscriber4
+All Done
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:20 PDT 2013
+------------------ Invoking the ptolemy/cg C generator by calling GenericCodeGenerator.generateCode(args).  To replicate: $PTII/bin/ptcg -generatorPackage ptolemy.cg.kernel.generic.program.procedural.c $PTII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/test/auto/arrayType4.xml 
+JavaCGAuto.tcl: Setting watchdog for 60 seconds at Thu May 02 17:13:20 PDT 2013
+Writing arrayType4.c in file:/home/william/cg/ (7427 characters)
+Wrote /home/william/cg/arrayType4.c
+Wrote /home/william/cg/src/main.h
+Wrote /home/william/cg/src/types.h
+Wrote /home/william/cg/src/types.c
+Reading "ptolemy/cg/kernel/generic/program/procedural/c/makefile.in",
+    writing "/home/william/cg/arrayType4.mk"
+In "/home/william/cg", about to execute:
+    make -f arrayType4.mk
+make[4]: entrant dans le répertoire « /home/william/cg »
+gcc -Wall   -ggdb -c -o "src/types.o" "src/types.c"
+gcc -D__int64="long long" -Wall   -ggdb  arrayType4.c src/types.o -o arrayType4 -lm 
+In file included from arrayType4.c:21:0:
+src/main.h:29:16: attention : ‘arrayType4_Test_output’ defined but not used [-Wunused-variable]
+make[4]: quittant le répertoire « /home/william/cg »
+In "/home/william/cg", about to execute:
+    /home/william/cg/arrayType4
+All Done
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:20 PDT 2013
+------------------ Invoking the ptolemy/cg C generator by calling GenericCodeGenerator.generateCode(args).  To replicate: $PTII/bin/ptcg -generatorPackage ptolemy.cg.kernel.generic.program.procedural.c $PTII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/test/auto/arrayType5.xml 
+JavaCGAuto.tcl: Setting watchdog for 60 seconds at Thu May 02 17:13:20 PDT 2013
+Writing arrayType5.c in file:/home/william/cg/ (7457 characters)
+Wrote /home/william/cg/arrayType5.c
+Wrote /home/william/cg/src/main.h
+Wrote /home/william/cg/src/types.h
+Wrote /home/william/cg/src/types.c
+Reading "ptolemy/cg/kernel/generic/program/procedural/c/makefile.in",
+    writing "/home/william/cg/arrayType5.mk"
+In "/home/william/cg", about to execute:
+    make -f arrayType5.mk
+make[4]: entrant dans le répertoire « /home/william/cg »
+gcc -Wall   -ggdb -c -o "src/types.o" "src/types.c"
+gcc -D__int64="long long" -Wall   -ggdb  arrayType5.c src/types.o -o arrayType5 -lm 
+In file included from arrayType5.c:21:0:
+src/main.h:29:16: attention : ‘arrayType5_Test_output’ defined but not used [-Wunused-variable]
+make[4]: quittant le répertoire « /home/william/cg »
+In "/home/william/cg", about to execute:
+    /home/william/cg/arrayType5
+All Done
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:21 PDT 2013
+------------------ Invoking the ptolemy/cg C generator by calling GenericCodeGenerator.generateCode(args).  To replicate: $PTII/bin/ptcg -generatorPackage ptolemy.cg.kernel.generic.program.procedural.c $PTII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/test/auto/TestMultiPortDouble.xml 
+JavaCGAuto.tcl: Setting watchdog for 60 seconds at Thu May 02 17:13:21 PDT 2013
+Writing TestMultiPortDouble.c in file:/home/william/cg/ (7609 characters)
+Wrote /home/william/cg/TestMultiPortDouble.c
+Wrote /home/william/cg/src/main.h
+Wrote /home/william/cg/src/types.h
+Wrote /home/william/cg/src/types.c
+Reading "ptolemy/cg/kernel/generic/program/procedural/c/makefile.in",
+    writing "/home/william/cg/TestMultiPortDouble.mk"
+In "/home/william/cg", about to execute:
+    make -f TestMultiPortDouble.mk
+make[4]: entrant dans le répertoire « /home/william/cg »
+gcc -Wall   -ggdb -c -o "src/types.o" "src/types.c"
+gcc -D__int64="long long" -Wall   -ggdb  TestMultiPortDouble.c src/types.o -o TestMultiPortDouble -lm 
+In file included from TestMultiPortDouble.c:21:0:
+src/main.h:19:16: attention : ‘TestMultiPortDouble_Test_output’ defined but not used [-Wunused-variable]
+make[4]: quittant le répertoire « /home/william/cg »
+In "/home/william/cg", about to execute:
+    /home/william/cg/TestMultiPortDouble
+All Done
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:21 PDT 2013
+------------------ Invoking the ptolemy/cg C generator by calling GenericCodeGenerator.generateCode(args).  To replicate: $PTII/bin/ptcg -generatorPackage ptolemy.cg.kernel.generic.program.procedural.c $PTII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/test/auto/PublisherTestSubscriber12.xml 
+JavaCGAuto.tcl: Setting watchdog for 60 seconds at Thu May 02 17:13:21 PDT 2013
+Writing PublisherTestSubscriber12.c in file:/home/william/cg/ (10794 characters)
+Wrote /home/william/cg/PublisherTestSubscriber12.c
+Wrote /home/william/cg/src/main.h
+Wrote /home/william/cg/src/types.h
+Wrote /home/william/cg/src/types.c
+Reading "ptolemy/cg/kernel/generic/program/procedural/c/makefile.in",
+    writing "/home/william/cg/PublisherTestSubscriber12.mk"
+In "/home/william/cg", about to execute:
+    make -f PublisherTestSubscriber12.mk
+make[4]: entrant dans le répertoire « /home/william/cg »
+gcc -Wall   -ggdb -c -o "src/types.o" "src/types.c"
+gcc -D__int64="long long" -Wall   -ggdb  PublisherTestSubscriber12.c src/types.o -o PublisherTestSubscriber12 -lm 
+In file included from PublisherTestSubscriber12.c:21:0:
+src/main.h:22:16: attention : ‘PublisherTestSubscriber12_Test_output’ defined but not used [-Wunused-variable]
+src/main.h:35:16: attention : ‘PublisherTestSubscriber12_Test2_output’ defined but not used [-Wunused-variable]
+make[4]: quittant le répertoire « /home/william/cg »
+In "/home/william/cg", about to execute:
+    /home/william/cg/PublisherTestSubscriber12
+All Done
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:21 PDT 2013
+------------------ Invoking the ptolemy/cg C generator by calling GenericCodeGenerator.generateCode(args).  To replicate: $PTII/bin/ptcg -generatorPackage ptolemy.cg.kernel.generic.program.procedural.c $PTII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/test/auto/arrayType.xml 
+JavaCGAuto.tcl: Setting watchdog for 60 seconds at Thu May 02 17:13:21 PDT 2013
+Writing arrayType.c in file:/home/william/cg/ (7360 characters)
+Wrote /home/william/cg/arrayType.c
+Wrote /home/william/cg/src/main.h
+Wrote /home/william/cg/src/types.h
+Wrote /home/william/cg/src/types.c
+Reading "ptolemy/cg/kernel/generic/program/procedural/c/makefile.in",
+    writing "/home/william/cg/arrayType.mk"
+In "/home/william/cg", about to execute:
+    make -f arrayType.mk
+make[4]: entrant dans le répertoire « /home/william/cg »
+gcc -Wall   -ggdb -c -o "src/types.o" "src/types.c"
+gcc -D__int64="long long" -Wall   -ggdb  arrayType.c src/types.o -o arrayType -lm 
+In file included from arrayType.c:21:0:
+src/main.h:29:16: attention : ‘arrayType_Test_output’ defined but not used [-Wunused-variable]
+make[4]: quittant le répertoire « /home/william/cg »
+In "/home/william/cg", about to execute:
+    /home/william/cg/arrayType
+All Done
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:21 PDT 2013
+------------------ Invoking the ptolemy/cg C generator by calling GenericCodeGenerator.generateCode(args).  To replicate: $PTII/bin/ptcg -generatorPackage ptolemy.cg.kernel.generic.program.procedural.c $PTII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/test/auto/DB.xml 
+JavaCGAuto.tcl: Setting watchdog for 60 seconds at Thu May 02 17:13:21 PDT 2013
+Writing DB.c in file:/home/william/cg/ (7513 characters)
+Wrote /home/william/cg/DB.c
+Wrote /home/william/cg/src/main.h
+Wrote /home/william/cg/src/types.h
+Wrote /home/william/cg/src/types.c
+Reading "ptolemy/cg/kernel/generic/program/procedural/c/makefile.in",
+    writing "/home/william/cg/DB.mk"
+In "/home/william/cg", about to execute:
+    make -f DB.mk
+make[4]: entrant dans le répertoire « /home/william/cg »
+gcc -Wall   -ggdb -c -o "src/types.o" "src/types.c"
+gcc -D__int64="long long" -Wall   -ggdb  DB.c src/types.o -o DB -lm 
+In file included from DB.c:21:0:
+src/main.h:25:16: attention : ‘DB_Test4_output’ defined but not used [-Wunused-variable]
+src/main.h:38:16: attention : ‘DB_Test13_output’ defined but not used [-Wunused-variable]
+make[4]: quittant le répertoire « /home/william/cg »
+In "/home/william/cg", about to execute:
+    /home/william/cg/DB
+All Done
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:22 PDT 2013
+------------------ Invoking the ptolemy/cg C generator by calling GenericCodeGenerator.generateCode(args).  To replicate: $PTII/bin/ptcg -generatorPackage ptolemy.cg.kernel.generic.program.procedural.c $PTII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/test/auto/PublisherTestSubscriber14.xml 
+JavaCGAuto.tcl: Setting watchdog for 60 seconds at Thu May 02 17:13:22 PDT 2013
+Writing PublisherTestSubscriber14.c in file:/home/william/cg/ (6819 characters)
+Wrote /home/william/cg/PublisherTestSubscriber14.c
+Wrote /home/william/cg/src/main.h
+Wrote /home/william/cg/src/types.h
+Wrote /home/william/cg/src/types.c
+Reading "ptolemy/cg/kernel/generic/program/procedural/c/makefile.in",
+    writing "/home/william/cg/PublisherTestSubscriber14.mk"
+In "/home/william/cg", about to execute:
+    make -f PublisherTestSubscriber14.mk
+make[4]: entrant dans le répertoire « /home/william/cg »
+gcc -Wall   -ggdb -c -o "src/types.o" "src/types.c"
+gcc -D__int64="long long" -Wall   -ggdb  PublisherTestSubscriber14.c src/types.o -o PublisherTestSubscriber14 -lm 
+In file included from PublisherTestSubscriber14.c:21:0:
+src/main.h:28:16: attention : ‘PublisherTestSubscriber14_Test_output’ defined but not used [-Wunused-variable]
+make[4]: quittant le répertoire « /home/william/cg »
+In "/home/william/cg", about to execute:
+    /home/william/cg/PublisherTestSubscriber14
+All Done
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:22 PDT 2013
+------------------ Invoking the ptolemy/cg C generator by calling GenericCodeGenerator.generateCode(args).  To replicate: $PTII/bin/ptcg -generatorPackage ptolemy.cg.kernel.generic.program.procedural.c $PTII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/test/auto/arrayType16.xml 
+JavaCGAuto.tcl: Setting watchdog for 60 seconds at Thu May 02 17:13:22 PDT 2013
+Writing arrayType16.c in file:/home/william/cg/ (7516 characters)
+Wrote /home/william/cg/arrayType16.c
+Wrote /home/william/cg/src/main.h
+Wrote /home/william/cg/src/types.h
+Wrote /home/william/cg/src/types.c
+Reading "ptolemy/cg/kernel/generic/program/procedural/c/makefile.in",
+    writing "/home/william/cg/arrayType16.mk"
+In "/home/william/cg", about to execute:
+    make -f arrayType16.mk
+make[4]: entrant dans le répertoire « /home/william/cg »
+gcc -Wall   -ggdb -c -o "src/types.o" "src/types.c"
+gcc -D__int64="long long" -Wall   -ggdb  arrayType16.c src/types.o -o arrayType16 -lm 
+In file included from arrayType16.c:21:0:
+src/main.h:29:16: attention : ‘arrayType16_Test_output’ defined but not used [-Wunused-variable]
+make[4]: quittant le répertoire « /home/william/cg »
+In "/home/william/cg", about to execute:
+    /home/william/cg/arrayType16
+All Done
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:22 PDT 2013
+------------------ Invoking the ptolemy/cg C generator by calling GenericCodeGenerator.generateCode(args).  To replicate: $PTII/bin/ptcg -generatorPackage ptolemy.cg.kernel.generic.program.procedural.c $PTII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/test/auto/PublisherTestSubscriber2.xml 
+JavaCGAuto.tcl: Setting watchdog for 60 seconds at Thu May 02 17:13:22 PDT 2013
+Writing PublisherTestSubscriber2.c in file:/home/william/cg/ (6907 characters)
+Wrote /home/william/cg/PublisherTestSubscriber2.c
+Wrote /home/william/cg/src/main.h
+Wrote /home/william/cg/src/types.h
+Wrote /home/william/cg/src/types.c
+Reading "ptolemy/cg/kernel/generic/program/procedural/c/makefile.in",
+    writing "/home/william/cg/PublisherTestSubscriber2.mk"
+In "/home/william/cg", about to execute:
+    make -f PublisherTestSubscriber2.mk
+make[4]: entrant dans le répertoire « /home/william/cg »
+gcc -Wall   -ggdb -c -o "src/types.o" "src/types.c"
+gcc -D__int64="long long" -Wall   -ggdb  PublisherTestSubscriber2.c src/types.o -o PublisherTestSubscriber2 -lm 
+In file included from PublisherTestSubscriber2.c:21:0:
+src/main.h:22:16: attention : ‘PublisherTestSubscriber2_CompositeActor_Test_output’ defined but not used [-Wunused-variable]
+make[4]: quittant le répertoire « /home/william/cg »
+In "/home/william/cg", about to execute:
+    /home/william/cg/PublisherTestSubscriber2
+All Done
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:22 PDT 2013
+------------------ Invoking the ptolemy/cg C generator by calling GenericCodeGenerator.generateCode(args).  To replicate: $PTII/bin/ptcg -generatorPackage ptolemy.cg.kernel.generic.program.procedural.c $PTII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/test/auto/StringConstComposite.xml 
+JavaCGAuto.tcl: Setting watchdog for 60 seconds at Thu May 02 17:13:22 PDT 2013
+Writing StringConstComposite.c in file:/home/william/cg/ (6291 characters)
+Wrote /home/william/cg/StringConstComposite.c
+Wrote /home/william/cg/src/main.h
+Wrote /home/william/cg/src/types.h
+Wrote /home/william/cg/src/types.c
+Reading "ptolemy/cg/kernel/generic/program/procedural/c/makefile.in",
+    writing "/home/william/cg/StringConstComposite.mk"
+In "/home/william/cg", about to execute:
+    make -f StringConstComposite.mk
+make[4]: entrant dans le répertoire « /home/william/cg »
+gcc -Wall   -ggdb -c -o "src/types.o" "src/types.c"
+gcc -D__int64="long long" -Wall   -ggdb  StringConstComposite.c src/types.o -o StringConstComposite -lm 
+In file included from StringConstComposite.c:21:0:
+src/main.h:25:16: attention : ‘StringConstComposite_Test_output’ defined but not used [-Wunused-variable]
+make[4]: quittant le répertoire « /home/william/cg »
+In "/home/william/cg", about to execute:
+    /home/william/cg/StringConstComposite
+All Done
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:22 PDT 2013
+------------------ Invoking the ptolemy/cg C generator by calling GenericCodeGenerator.generateCode(args).  To replicate: $PTII/bin/ptcg -generatorPackage ptolemy.cg.kernel.generic.program.procedural.c $PTII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/test/auto/PublisherSubscriber3.xml 
+JavaCGAuto.tcl: Setting watchdog for 60 seconds at Thu May 02 17:13:22 PDT 2013
+Writing PublisherSubscriber3.c in file:/home/william/cg/ (6432 characters)
+Wrote /home/william/cg/PublisherSubscriber3.c
+Wrote /home/william/cg/src/main.h
+Wrote /home/william/cg/src/types.h
+Wrote /home/william/cg/src/types.c
+Reading "ptolemy/cg/kernel/generic/program/procedural/c/makefile.in",
+    writing "/home/william/cg/PublisherSubscriber3.mk"
+In "/home/william/cg", about to execute:
+    make -f PublisherSubscriber3.mk
+make[4]: entrant dans le répertoire « /home/william/cg »
+gcc -Wall   -ggdb -c -o "src/types.o" "src/types.c"
+gcc -D__int64="long long" -Wall   -ggdb  PublisherSubscriber3.c src/types.o -o PublisherSubscriber3 -lm 
+In file included from PublisherSubscriber3.c:21:0:
+src/main.h:19:16: attention : ‘PublisherSubscriber3_Test_output’ defined but not used [-Wunused-variable]
+make[4]: quittant le répertoire « /home/william/cg »
+In "/home/william/cg", about to execute:
+    /home/william/cg/PublisherSubscriber3
+All Done
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:23 PDT 2013
+------------------ Invoking the ptolemy/cg C generator by calling GenericCodeGenerator.generateCode(args).  To replicate: $PTII/bin/ptcg -generatorPackage ptolemy.cg.kernel.generic.program.procedural.c $PTII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/test/auto/ActorOrientedClass.xml 
+JavaCGAuto.tcl: Setting watchdog for 60 seconds at Thu May 02 17:13:23 PDT 2013
+Writing ActorOrientedClass.c in file:/home/william/cg/ (6999 characters)
+Wrote /home/william/cg/ActorOrientedClass.c
+Wrote /home/william/cg/src/main.h
+Wrote /home/william/cg/src/types.h
+Wrote /home/william/cg/src/types.c
+Reading "ptolemy/cg/kernel/generic/program/procedural/c/makefile.in",
+    writing "/home/william/cg/ActorOrientedClass.mk"
+In "/home/william/cg", about to execute:
+    make -f ActorOrientedClass.mk
+make[4]: entrant dans le répertoire « /home/william/cg »
+gcc -Wall   -ggdb -c -o "src/types.o" "src/types.c"
+gcc -D__int64="long long" -Wall   -ggdb  ActorOrientedClass.c src/types.o -o ActorOrientedClass -lm 
+In file included from ActorOrientedClass.c:21:0:
+src/main.h:19:16: attention : ‘ActorOrientedClass_Test_output’ defined but not used [-Wunused-variable]
+make[4]: quittant le répertoire « /home/william/cg »
+In "/home/william/cg", about to execute:
+    /home/william/cg/ActorOrientedClass
+All Done
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:23 PDT 2013
+------------------ Invoking the ptolemy/cg C generator by calling GenericCodeGenerator.generateCode(args).  To replicate: $PTII/bin/ptcg -generatorPackage ptolemy.cg.kernel.generic.program.procedural.c $PTII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/test/auto/Sequence.xml 
+JavaCGAuto.tcl: Setting watchdog for 60 seconds at Thu May 02 17:13:23 PDT 2013
+Writing Sequence.c in file:/home/william/cg/ (5284 characters)
+Wrote /home/william/cg/Sequence.c
+Wrote /home/william/cg/src/main.h
+Wrote /home/william/cg/src/types.h
+Wrote /home/william/cg/src/types.c
+Reading "ptolemy/cg/kernel/generic/program/procedural/c/makefile.in",
+    writing "/home/william/cg/Sequence.mk"
+In "/home/william/cg", about to execute:
+    make -f Sequence.mk
+make[4]: entrant dans le répertoire « /home/william/cg »
+gcc -Wall   -ggdb -c -o "src/types.o" "src/types.c"
+gcc -D__int64="long long" -Wall   -ggdb  Sequence.c src/types.o -o Sequence -lm 
+In file included from Sequence.c:21:0:
+src/main.h:22:16: attention : ‘Sequence_Test_output’ defined but not used [-Wunused-variable]
+make[4]: quittant le répertoire « /home/william/cg »
+In "/home/william/cg", about to execute:
+    /home/william/cg/Sequence
+All Done
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:23 PDT 2013
+------------------ Invoking the ptolemy/cg C generator by calling GenericCodeGenerator.generateCode(args).  To replicate: $PTII/bin/ptcg -generatorPackage ptolemy.cg.kernel.generic.program.procedural.c $PTII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/test/auto/hierarchicalModel_1_1.xml 
+JavaCGAuto.tcl: Setting watchdog for 60 seconds at Thu May 02 17:13:23 PDT 2013
+Writing hierarchicalModel_1_1.c in file:/home/william/cg/ (5875 characters)
+Wrote /home/william/cg/hierarchicalModel_1_1.c
+Wrote /home/william/cg/src/main.h
+Wrote /home/william/cg/src/types.h
+Wrote /home/william/cg/src/types.c
+Reading "ptolemy/cg/kernel/generic/program/procedural/c/makefile.in",
+    writing "/home/william/cg/hierarchicalModel_1_1.mk"
+In "/home/william/cg", about to execute:
+    make -f hierarchicalModel_1_1.mk
+make[4]: entrant dans le répertoire « /home/william/cg »
+gcc -Wall   -ggdb -c -o "src/types.o" "src/types.c"
+gcc -D__int64="long long" -Wall   -ggdb  hierarchicalModel_1_1.c src/types.o -o hierarchicalModel_1_1 -lm 
+In file included from hierarchicalModel_1_1.c:21:0:
+src/main.h:25:16: attention : ‘hierarchicalModel_1_1_Test_output’ defined but not used [-Wunused-variable]
+make[4]: quittant le répertoire « /home/william/cg »
+In "/home/william/cg", about to execute:
+    /home/william/cg/hierarchicalModel_1_1
+All Done
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:23 PDT 2013
+------------------ Invoking the ptolemy/cg C generator by calling GenericCodeGenerator.generateCode(args).  To replicate: $PTII/bin/ptcg -generatorPackage ptolemy.cg.kernel.generic.program.procedural.c $PTII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/test/auto/PublisherTestSubscriberClassr.xml 
+JavaCGAuto.tcl: Setting watchdog for 60 seconds at Thu May 02 17:13:23 PDT 2013
+Writing PublisherTestSubscriberClass.c in file:/home/william/cg/ (7608 characters)
+Wrote /home/william/cg/PublisherTestSubscriberClass.c
+Wrote /home/william/cg/src/main.h
+Wrote /home/william/cg/src/types.h
+Wrote /home/william/cg/src/types.c
+Reading "ptolemy/cg/kernel/generic/program/procedural/c/makefile.in",
+    writing "/home/william/cg/PublisherTestSubscriberClass.mk"
+In "/home/william/cg", about to execute:
+    make -f PublisherTestSubscriberClass.mk
+make[4]: entrant dans le répertoire « /home/william/cg »
+gcc -Wall   -ggdb -c -o "src/types.o" "src/types.c"
+gcc -D__int64="long long" -Wall   -ggdb  PublisherTestSubscriberClass.c src/types.o -o PublisherTestSubscriberClass -lm 
+In file included from PublisherTestSubscriberClass.c:21:0:
+src/main.h:19:16: attention : ‘PublisherTestSubscriberClass_Test_output’ defined but not used [-Wunused-variable]
+make[4]: quittant le répertoire « /home/william/cg »
+In "/home/william/cg", about to execute:
+    /home/william/cg/PublisherTestSubscriberClass
+All Done
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:23 PDT 2013
+------------------ Invoking the ptolemy/cg C generator by calling GenericCodeGenerator.generateCode(args).  To replicate: $PTII/bin/ptcg -generatorPackage ptolemy.cg.kernel.generic.program.procedural.c $PTII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/test/auto/AddSubtract.xml 
+JavaCGAuto.tcl: Setting watchdog for 60 seconds at Thu May 02 17:13:23 PDT 2013
+Writing AddSubtract.c in file:/home/william/cg/ (5694 characters)
+Wrote /home/william/cg/AddSubtract.c
+Wrote /home/william/cg/src/main.h
+Wrote /home/william/cg/src/types.h
+Wrote /home/william/cg/src/types.c
+Reading "ptolemy/cg/kernel/generic/program/procedural/c/makefile.in",
+    writing "/home/william/cg/AddSubtract.mk"
+In "/home/william/cg", about to execute:
+    make -f AddSubtract.mk
+make[4]: entrant dans le répertoire « /home/william/cg »
+gcc -Wall   -ggdb -c -o "src/types.o" "src/types.c"
+gcc -D__int64="long long" -Wall   -ggdb  AddSubtract.c src/types.o -o AddSubtract -lm 
+In file included from AddSubtract.c:21:0:
+src/main.h:15:12: attention : ‘AddSubtract_Const_output_0’ defined but not used [-Wunused-variable]
+src/main.h:25:16: attention : ‘AddSubtract_Test_output’ defined but not used [-Wunused-variable]
+make[4]: quittant le répertoire « /home/william/cg »
+In "/home/william/cg", about to execute:
+    /home/william/cg/AddSubtract
+All Done
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:24 PDT 2013
+------------------ Invoking the ptolemy/cg C generator by calling GenericCodeGenerator.generateCode(args).  To replicate: $PTII/bin/ptcg -generatorPackage ptolemy.cg.kernel.generic.program.procedural.c $PTII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/test/auto/Recorder.xml 
+JavaCGAuto.tcl: Setting watchdog for 60 seconds at Thu May 02 17:13:24 PDT 2013
+Writing Recorder.c in file:/home/william/cg/ (3296 characters)
+Wrote /home/william/cg/Recorder.c
+Wrote /home/william/cg/src/main.h
+Wrote /home/william/cg/src/types.h
+Wrote /home/william/cg/src/types.c
+Reading "ptolemy/cg/kernel/generic/program/procedural/c/makefile.in",
+    writing "/home/william/cg/Recorder.mk"
+In "/home/william/cg", about to execute:
+    make -f Recorder.mk
+make[4]: entrant dans le répertoire « /home/william/cg »
+gcc -Wall   -ggdb -c -o "src/types.o" "src/types.c"
+gcc -D__int64="long long" -Wall   -ggdb  Recorder.c src/types.o -o Recorder -lm 
+make[4]: quittant le répertoire « /home/william/cg »
+In "/home/william/cg", about to execute:
+    /home/william/cg/Recorder
+All Done
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:24 PDT 2013
+------------------ Invoking the ptolemy/cg C generator by calling GenericCodeGenerator.generateCode(args).  To replicate: $PTII/bin/ptcg -generatorPackage ptolemy.cg.kernel.generic.program.procedural.c $PTII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/test/auto/arrayType19.xml 
+JavaCGAuto.tcl: Setting watchdog for 60 seconds at Thu May 02 17:13:24 PDT 2013
+Writing arrayType19.c in file:/home/william/cg/ (7951 characters)
+Wrote /home/william/cg/arrayType19.c
+Wrote /home/william/cg/src/main.h
+Wrote /home/william/cg/src/types.h
+Wrote /home/william/cg/src/types.c
+Reading "ptolemy/cg/kernel/generic/program/procedural/c/makefile.in",
+    writing "/home/william/cg/arrayType19.mk"
+In "/home/william/cg", about to execute:
+    make -f arrayType19.mk
+make[4]: entrant dans le répertoire « /home/william/cg »
+gcc -Wall   -ggdb -c -o "src/types.o" "src/types.c"
+gcc -D__int64="long long" -Wall   -ggdb  arrayType19.c src/types.o -o arrayType19 -lm 
+In file included from arrayType19.c:21:0:
+src/main.h:12:12: attention : ‘arrayType19_Const2_output_0’ defined but not used [-Wunused-variable]
+src/main.h:28:16: attention : ‘arrayType19_Test_output’ defined but not used [-Wunused-variable]
+make[4]: quittant le répertoire « /home/william/cg »
+In "/home/william/cg", about to execute:
+    /home/william/cg/arrayType19
+All Done
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:24 PDT 2013
+------------------ Invoking the ptolemy/cg C generator by calling GenericCodeGenerator.generateCode(args).  To replicate: $PTII/bin/ptcg -generatorPackage ptolemy.cg.kernel.generic.program.procedural.c $PTII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/test/auto/Ramp1000.xml 
+JavaCGAuto.tcl: Setting watchdog for 60 seconds at Thu May 02 17:13:24 PDT 2013
+Writing Ramp1000.c in file:/home/william/cg/ (11432 characters)
+Wrote /home/william/cg/Ramp1000.c
+Wrote /home/william/cg/src/main.h
+Wrote /home/william/cg/src/types.h
+Wrote /home/william/cg/src/types.c
+Reading "ptolemy/cg/kernel/generic/program/procedural/c/makefile.in",
+    writing "/home/william/cg/Ramp1000.mk"
+In "/home/william/cg", about to execute:
+    make -f Ramp1000.mk
+make[4]: entrant dans le répertoire « /home/william/cg »
+gcc -Wall   -ggdb -c -o "src/types.o" "src/types.c"
+gcc -D__int64="long long" -Wall   -ggdb  Ramp1000.c src/types.o -o Ramp1000 -lm 
+In file included from Ramp1000.c:21:0:
+src/main.h:32:16: attention : ‘Ramp1000_Test_output’ defined but not used [-Wunused-variable]
+make[4]: quittant le répertoire « /home/william/cg »
+In "/home/william/cg", about to execute:
+    /home/william/cg/Ramp1000
+All Done
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:24 PDT 2013
+------------------ Invoking the ptolemy/cg C generator by calling GenericCodeGenerator.generateCode(args).  To replicate: $PTII/bin/ptcg -generatorPackage ptolemy.cg.kernel.generic.program.procedural.c $PTII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/test/auto/PublisherSubscriber6.xml 
+JavaCGAuto.tcl: Setting watchdog for 60 seconds at Thu May 02 17:13:24 PDT 2013
+Writing PublisherSubscriber6.c in file:/home/william/cg/ (8442 characters)
+Wrote /home/william/cg/PublisherSubscriber6.c
+Wrote /home/william/cg/src/main.h
+Wrote /home/william/cg/src/types.h
+Wrote /home/william/cg/src/types.c
+Reading "ptolemy/cg/kernel/generic/program/procedural/c/makefile.in",
+    writing "/home/william/cg/PublisherSubscriber6.mk"
+In "/home/william/cg", about to execute:
+    make -f PublisherSubscriber6.mk
+make[4]: entrant dans le répertoire « /home/william/cg »
+gcc -Wall   -ggdb -c -o "src/types.o" "src/types.c"
+gcc -D__int64="long long" -Wall   -ggdb  PublisherSubscriber6.c src/types.o -o PublisherSubscriber6 -lm 
+In file included from PublisherSubscriber6.c:21:0:
+src/main.h:19:16: attention : ‘PublisherSubscriber6_Test_output’ defined but not used [-Wunused-variable]
+make[4]: quittant le répertoire « /home/william/cg »
+In "/home/william/cg", about to execute:
+    /home/william/cg/PublisherSubscriber6
+All Done
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:25 PDT 2013
+------------------ Invoking the ptolemy/cg C generator by calling GenericCodeGenerator.generateCode(args).  To replicate: $PTII/bin/ptcg -generatorPackage ptolemy.cg.kernel.generic.program.procedural.c $PTII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/test/auto/arrayType7.xml 
+JavaCGAuto.tcl: Setting watchdog for 60 seconds at Thu May 02 17:13:25 PDT 2013
+Writing arrayType7.c in file:/home/william/cg/ (7617 characters)
+Wrote /home/william/cg/arrayType7.c
+Wrote /home/william/cg/src/main.h
+Wrote /home/william/cg/src/types.h
+Wrote /home/william/cg/src/types.c
+Reading "ptolemy/cg/kernel/generic/program/procedural/c/makefile.in",
+    writing "/home/william/cg/arrayType7.mk"
+In "/home/william/cg", about to execute:
+    make -f arrayType7.mk
+make[4]: entrant dans le répertoire « /home/william/cg »
+gcc -Wall   -ggdb -c -o "src/types.o" "src/types.c"
+gcc -D__int64="long long" -Wall   -ggdb  arrayType7.c src/types.o -o arrayType7 -lm 
+In file included from arrayType7.c:21:0:
+src/main.h:25:16: attention : ‘arrayType7_Test_output’ defined but not used [-Wunused-variable]
+make[4]: quittant le répertoire « /home/william/cg »
+In "/home/william/cg", about to execute:
+    /home/william/cg/arrayType7
+All Done
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:25 PDT 2013
+------------------ Invoking the ptolemy/cg C generator by calling GenericCodeGenerator.generateCode(args).  To replicate: $PTII/bin/ptcg -generatorPackage ptolemy.cg.kernel.generic.program.procedural.c $PTII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/test/auto/PublisherTestSubscriber5.xml 
+JavaCGAuto.tcl: Setting watchdog for 60 seconds at Thu May 02 17:13:25 PDT 2013
+Writing PublisherTestSubscriber5.c in file:/home/william/cg/ (8033 characters)
+Wrote /home/william/cg/PublisherTestSubscriber5.c
+Wrote /home/william/cg/src/main.h
+Wrote /home/william/cg/src/types.h
+Wrote /home/william/cg/src/types.c
+Reading "ptolemy/cg/kernel/generic/program/procedural/c/makefile.in",
+    writing "/home/william/cg/PublisherTestSubscriber5.mk"
+In "/home/william/cg", about to execute:
+    make -f PublisherTestSubscriber5.mk
+make[4]: entrant dans le répertoire « /home/william/cg »
+gcc -Wall   -ggdb -c -o "src/types.o" "src/types.c"
+gcc -D__int64="long long" -Wall   -ggdb  PublisherTestSubscriber5.c src/types.o -o PublisherTestSubscriber5 -lm 
+In file included from PublisherTestSubscriber5.c:21:0:
+src/main.h:19:16: attention : ‘PublisherTestSubscriber5_Test_output’ defined but not used [-Wunused-variable]
+make[4]: quittant le répertoire « /home/william/cg »
+In "/home/william/cg", about to execute:
+    /home/william/cg/PublisherTestSubscriber5
+All Done
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:25 PDT 2013
+------------------ Invoking the ptolemy/cg C generator by calling GenericCodeGenerator.generateCode(args).  To replicate: $PTII/bin/ptcg -generatorPackage ptolemy.cg.kernel.generic.program.procedural.c $PTII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/test/auto/PublisherSubscriber7.xml 
+JavaCGAuto.tcl: Setting watchdog for 60 seconds at Thu May 02 17:13:25 PDT 2013
+Writing PublisherSubscriber7.c in file:/home/william/cg/ (8659 characters)
+Wrote /home/william/cg/PublisherSubscriber7.c
+Wrote /home/william/cg/src/main.h
+Wrote /home/william/cg/src/types.h
+Wrote /home/william/cg/src/types.c
+Reading "ptolemy/cg/kernel/generic/program/procedural/c/makefile.in",
+    writing "/home/william/cg/PublisherSubscriber7.mk"
+In "/home/william/cg", about to execute:
+    make -f PublisherSubscriber7.mk
+make[4]: entrant dans le répertoire « /home/william/cg »
+gcc -Wall   -ggdb -c -o "src/types.o" "src/types.c"
+gcc -D__int64="long long" -Wall   -ggdb  PublisherSubscriber7.c src/types.o -o PublisherSubscriber7 -lm 
+In file included from PublisherSubscriber7.c:21:0:
+src/main.h:19:16: attention : ‘PublisherSubscriber7_Test_output’ defined but not used [-Wunused-variable]
+make[4]: quittant le répertoire « /home/william/cg »
+In "/home/william/cg", about to execute:
+    /home/william/cg/PublisherSubscriber7
+All Done
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:25 PDT 2013
+------------------ Invoking the ptolemy/cg C generator by calling GenericCodeGenerator.generateCode(args).  To replicate: $PTII/bin/ptcg -generatorPackage ptolemy.cg.kernel.generic.program.procedural.c $PTII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/test/auto/OpaqueConst.xml 
+JavaCGAuto.tcl: Setting watchdog for 60 seconds at Thu May 02 17:13:25 PDT 2013
+Writing OpaqueConst.c in file:/home/william/cg/ (5769 characters)
+Wrote /home/william/cg/OpaqueConst.c
+Wrote /home/william/cg/src/main.h
+Wrote /home/william/cg/src/types.h
+Wrote /home/william/cg/src/types.c
+Reading "ptolemy/cg/kernel/generic/program/procedural/c/makefile.in",
+    writing "/home/william/cg/OpaqueConst.mk"
+In "/home/william/cg", about to execute:
+    make -f OpaqueConst.mk
+make[4]: entrant dans le répertoire « /home/william/cg »
+gcc -Wall   -ggdb -c -o "src/types.o" "src/types.c"
+gcc -D__int64="long long" -Wall   -ggdb  OpaqueConst.c src/types.o -o OpaqueConst -lm 
+In file included from OpaqueConst.c:21:0:
+src/main.h:25:16: attention : ‘OpaqueConst_Test_output’ defined but not used [-Wunused-variable]
+make[4]: quittant le répertoire « /home/william/cg »
+In "/home/william/cg", about to execute:
+    /home/william/cg/OpaqueConst
+All Done
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:26 PDT 2013
+------------------ Invoking the ptolemy/cg C generator by calling GenericCodeGenerator.generateCode(args).  To replicate: $PTII/bin/ptcg -generatorPackage ptolemy.cg.kernel.generic.program.procedural.c $PTII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/test/auto/arrayType8.xml 
+JavaCGAuto.tcl: Setting watchdog for 60 seconds at Thu May 02 17:13:26 PDT 2013
+Writing arrayType8.c in file:/home/william/cg/ (8134 characters)
+Wrote /home/william/cg/arrayType8.c
+Wrote /home/william/cg/src/main.h
+Wrote /home/william/cg/src/types.h
+Wrote /home/william/cg/src/types.c
+Reading "ptolemy/cg/kernel/generic/program/procedural/c/makefile.in",
+    writing "/home/william/cg/arrayType8.mk"
+In "/home/william/cg", about to execute:
+    make -f arrayType8.mk
+make[4]: entrant dans le répertoire « /home/william/cg »
+gcc -Wall   -ggdb -c -o "src/types.o" "src/types.c"
+gcc -D__int64="long long" -Wall   -ggdb  arrayType8.c src/types.o -o arrayType8 -lm 
+In file included from arrayType8.c:21:0:
+src/main.h:25:16: attention : ‘arrayType8_Test_output’ defined but not used [-Wunused-variable]
+src/main.h:32:12: attention : ‘arrayType8_Const3_output_0’ defined but not used [-Wunused-variable]
+make[4]: quittant le répertoire « /home/william/cg »
+In "/home/william/cg", about to execute:
+    /home/william/cg/arrayType8
+All Done
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:26 PDT 2013
+------------------ Invoking the ptolemy/cg C generator by calling GenericCodeGenerator.generateCode(args).  To replicate: $PTII/bin/ptcg -generatorPackage ptolemy.cg.kernel.generic.program.procedural.c $PTII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/test/auto/ExpressionIntegerDoubleDivision.xml 
+JavaCGAuto.tcl: Setting watchdog for 60 seconds at Thu May 02 17:13:26 PDT 2013
+Writing ExpressionIntegerDoubleDivision.c in file:/home/william/cg/ (6372 characters)
+Wrote /home/william/cg/ExpressionIntegerDoubleDivision.c
+Wrote /home/william/cg/src/main.h
+Wrote /home/william/cg/src/types.h
+Wrote /home/william/cg/src/types.c
+Reading "ptolemy/cg/kernel/generic/program/procedural/c/makefile.in",
+    writing "/home/william/cg/ExpressionIntegerDoubleDivision.mk"
+In "/home/william/cg", about to execute:
+    make -f ExpressionIntegerDoubleDivision.mk
+make[4]: entrant dans le répertoire « /home/william/cg »
+gcc -Wall   -ggdb -c -o "src/types.o" "src/types.c"
+gcc -D__int64="long long" -Wall   -ggdb  ExpressionIntegerDoubleDivision.c src/types.o -o ExpressionIntegerDoubleDivision -lm 
+In file included from ExpressionIntegerDoubleDivision.c:21:0:
+src/main.h:19:16: attention : ‘ExpressionIntegerDoubleDivision_Test_output’ defined but not used [-Wunused-variable]
+make[4]: quittant le répertoire « /home/william/cg »
+In "/home/william/cg", about to execute:
+    /home/william/cg/ExpressionIntegerDoubleDivision
+All Done
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:26 PDT 2013
+------------------ Invoking the ptolemy/cg C generator by calling GenericCodeGenerator.generateCode(args).  To replicate: $PTII/bin/ptcg -generatorPackage ptolemy.cg.kernel.generic.program.procedural.c $PTII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/test/auto/PublisherTestSubscriber11.xml 
+JavaCGAuto.tcl: Setting watchdog for 60 seconds at Thu May 02 17:13:26 PDT 2013
+Writing PublisherTestSubscriber11.c in file:/home/william/cg/ (9716 characters)
+Wrote /home/william/cg/PublisherTestSubscriber11.c
+Wrote /home/william/cg/src/main.h
+Wrote /home/william/cg/src/types.h
+Wrote /home/william/cg/src/types.c
+Reading "ptolemy/cg/kernel/generic/program/procedural/c/makefile.in",
+    writing "/home/william/cg/PublisherTestSubscriber11.mk"
+In "/home/william/cg", about to execute:
+    make -f PublisherTestSubscriber11.mk
+make[4]: entrant dans le répertoire « /home/william/cg »
+gcc -Wall   -ggdb -c -o "src/types.o" "src/types.c"
+gcc -D__int64="long long" -Wall   -ggdb  PublisherTestSubscriber11.c src/types.o -o PublisherTestSubscriber11 -lm 
+In file included from PublisherTestSubscriber11.c:21:0:
+src/main.h:22:16: attention : ‘PublisherTestSubscriber11_Test_output’ defined but not used [-Wunused-variable]
+src/main.h:35:16: attention : ‘PublisherTestSubscriber11_Test2_output’ defined but not used [-Wunused-variable]
+make[4]: quittant le répertoire « /home/william/cg »
+In "/home/william/cg", about to execute:
+    /home/william/cg/PublisherTestSubscriber11
+All Done
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:26 PDT 2013
+------------------ Invoking the ptolemy/cg C generator by calling GenericCodeGenerator.generateCode(args).  To replicate: $PTII/bin/ptcg -generatorPackage ptolemy.cg.kernel.generic.program.procedural.c $PTII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/test/auto/arrayType22.xml 
+JavaCGAuto.tcl: Setting watchdog for 60 seconds at Thu May 02 17:13:26 PDT 2013
+Writing arrayType22.c in file:/home/william/cg/ (7941 characters)
+Wrote /home/william/cg/arrayType22.c
+Wrote /home/william/cg/src/main.h
+Wrote /home/william/cg/src/types.h
+Wrote /home/william/cg/src/types.c
+Reading "ptolemy/cg/kernel/generic/program/procedural/c/makefile.in",
+    writing "/home/william/cg/arrayType22.mk"
+In "/home/william/cg", about to execute:
+    make -f arrayType22.mk
+make[4]: entrant dans le répertoire « /home/william/cg »
+gcc -Wall   -ggdb -c -o "src/types.o" "src/types.c"
+gcc -D__int64="long long" -Wall   -ggdb  arrayType22.c src/types.o -o arrayType22 -lm 
+In file included from arrayType22.c:21:0:
+src/main.h:25:16: attention : ‘arrayType22_Test_output’ defined but not used [-Wunused-variable]
+make[4]: quittant le répertoire « /home/william/cg »
+In "/home/william/cg", about to execute:
+    /home/william/cg/arrayType22
+All Done
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:27 PDT 2013
+------------------ Invoking the ptolemy/cg C generator by calling GenericCodeGenerator.generateCode(args).  To replicate: $PTII/bin/ptcg -generatorPackage ptolemy.cg.kernel.generic.program.procedural.c $PTII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/test/auto/Test.xml 
+JavaCGAuto.tcl: Setting watchdog for 60 seconds at Thu May 02 17:13:27 PDT 2013
+Writing Test.c in file:/home/william/cg/ (4599 characters)
+Wrote /home/william/cg/Test.c
+Wrote /home/william/cg/src/main.h
+Wrote /home/william/cg/src/types.h
+Wrote /home/william/cg/src/types.c
+Reading "ptolemy/cg/kernel/generic/program/procedural/c/makefile.in",
+    writing "/home/william/cg/Test.mk"
+In "/home/william/cg", about to execute:
+    make -f Test.mk
+make[4]: entrant dans le répertoire « /home/william/cg »
+gcc -Wall   -ggdb -c -o "src/types.o" "src/types.c"
+gcc -D__int64="long long" -Wall   -ggdb  Test.c src/types.o -o Test -lm 
+In file included from Test.c:21:0:
+src/main.h:22:16: attention : ‘Test_Test_output’ defined but not used [-Wunused-variable]
+make[4]: quittant le répertoire « /home/william/cg »
+In "/home/william/cg", about to execute:
+    /home/william/cg/Test
+All Done
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:27 PDT 2013
+------------------ Invoking the ptolemy/cg C generator by calling GenericCodeGenerator.generateCode(args).  To replicate: $PTII/bin/ptcg -generatorPackage ptolemy.cg.kernel.generic.program.procedural.c $PTII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/test/auto/arrayType10.xml 
+JavaCGAuto.tcl: Setting watchdog for 60 seconds at Thu May 02 17:13:27 PDT 2013
+Writing arrayType10.c in file:/home/william/cg/ (7720 characters)
+Wrote /home/william/cg/arrayType10.c
+Wrote /home/william/cg/src/main.h
+Wrote /home/william/cg/src/types.h
+Wrote /home/william/cg/src/types.c
+Reading "ptolemy/cg/kernel/generic/program/procedural/c/makefile.in",
+    writing "/home/william/cg/arrayType10.mk"
+In "/home/william/cg", about to execute:
+    make -f arrayType10.mk
+make[4]: entrant dans le répertoire « /home/william/cg »
+gcc -Wall   -ggdb -c -o "src/types.o" "src/types.c"
+gcc -D__int64="long long" -Wall   -ggdb  arrayType10.c src/types.o -o arrayType10 -lm 
+In file included from arrayType10.c:21:0:
+src/main.h:25:16: attention : ‘arrayType10_Test_output’ defined but not used [-Wunused-variable]
+make[4]: quittant le répertoire « /home/william/cg »
+In "/home/william/cg", about to execute:
+    /home/william/cg/arrayType10
+All Done
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:27 PDT 2013
+------------------ Invoking the ptolemy/cg C generator by calling GenericCodeGenerator.generateCode(args).  To replicate: $PTII/bin/ptcg -generatorPackage ptolemy.cg.kernel.generic.program.procedural.c $PTII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/test/auto/arrayType12.xml 
+JavaCGAuto.tcl: Setting watchdog for 60 seconds at Thu May 02 17:13:27 PDT 2013
+Writing arrayType12.c in file:/home/william/cg/ (8238 characters)
+Wrote /home/william/cg/arrayType12.c
+Wrote /home/william/cg/src/main.h
+Wrote /home/william/cg/src/types.h
+Wrote /home/william/cg/src/types.c
+Reading "ptolemy/cg/kernel/generic/program/procedural/c/makefile.in",
+    writing "/home/william/cg/arrayType12.mk"
+In "/home/william/cg", about to execute:
+    make -f arrayType12.mk
+make[4]: entrant dans le répertoire « /home/william/cg »
+gcc -Wall   -ggdb -c -o "src/types.o" "src/types.c"
+gcc -D__int64="long long" -Wall   -ggdb  arrayType12.c src/types.o -o arrayType12 -lm 
+In file included from arrayType12.c:21:0:
+src/main.h:25:16: attention : ‘arrayType12_Test_output’ defined but not used [-Wunused-variable]
+src/main.h:32:12: attention : ‘arrayType12_Const3_output_0’ defined but not used [-Wunused-variable]
+make[4]: quittant le répertoire « /home/william/cg »
+In "/home/william/cg", about to execute:
+    /home/william/cg/arrayType12
+All Done
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:27 PDT 2013
+------------------ Invoking the ptolemy/cg C generator by calling GenericCodeGenerator.generateCode(args).  To replicate: $PTII/bin/ptcg -generatorPackage ptolemy.cg.kernel.generic.program.procedural.c $PTII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/test/auto/hierarchicalModel_2_2e.xml 
+JavaCGAuto.tcl: Setting watchdog for 60 seconds at Thu May 02 17:13:27 PDT 2013
+Writing hierarchicalModel_2_2e.c in file:/home/william/cg/ (7066 characters)
+Wrote /home/william/cg/hierarchicalModel_2_2e.c
+Wrote /home/william/cg/src/main.h
+Wrote /home/william/cg/src/types.h
+Wrote /home/william/cg/src/types.c
+Reading "ptolemy/cg/kernel/generic/program/procedural/c/makefile.in",
+    writing "/home/william/cg/hierarchicalModel_2_2e.mk"
+In "/home/william/cg", about to execute:
+    make -f hierarchicalModel_2_2e.mk
+make[4]: entrant dans le répertoire « /home/william/cg »
+gcc -Wall   -ggdb -c -o "src/types.o" "src/types.c"
+gcc -D__int64="long long" -Wall   -ggdb  hierarchicalModel_2_2e.c src/types.o -o hierarchicalModel_2_2e -lm 
+In file included from hierarchicalModel_2_2e.c:21:0:
+src/main.h:31:16: attention : ‘hierarchicalModel_2_2e_Test_output’ defined but not used [-Wunused-variable]
+make[4]: quittant le répertoire « /home/william/cg »
+In "/home/william/cg", about to execute:
+    /home/william/cg/hierarchicalModel_2_2e
+All Done
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:28 PDT 2013
+------------------ Invoking the ptolemy/cg C generator by calling GenericCodeGenerator.generateCode(args).  To replicate: $PTII/bin/ptcg -generatorPackage ptolemy.cg.kernel.generic.program.procedural.c $PTII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/test/auto/AccumulatorWithReset.xml 
+JavaCGAuto.tcl: Setting watchdog for 60 seconds at Thu May 02 17:13:28 PDT 2013
+Writing AccumulatorWithReset.c in file:/home/william/cg/ (10105 characters)
+Wrote /home/william/cg/AccumulatorWithReset.c
+Wrote /home/william/cg/src/main.h
+Wrote /home/william/cg/src/types.h
+Wrote /home/william/cg/src/types.c
+Reading "ptolemy/cg/kernel/generic/program/procedural/c/makefile.in",
+    writing "/home/william/cg/AccumulatorWithReset.mk"
+In "/home/william/cg", about to execute:
+    make -f AccumulatorWithReset.mk
+make[4]: entrant dans le répertoire « /home/william/cg »
+gcc -Wall   -ggdb -c -o "src/types.o" "src/types.c"
+gcc -D__int64="long long" -Wall   -ggdb  AccumulatorWithReset.c src/types.o -o AccumulatorWithReset -lm 
+In file included from AccumulatorWithReset.c:21:0:
+src/main.h:25:16: attention : ‘AccumulatorWithReset_Test_output’ defined but not used [-Wunused-variable]
+make[4]: quittant le répertoire « /home/william/cg »
+In "/home/william/cg", about to execute:
+    /home/william/cg/AccumulatorWithReset
+All Done
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:28 PDT 2013
+05/02/13 05:13:28
+Failed: 0  Total Tests: 62  ((Passed: 62, Newly Passed: 0)  Known Failed: 0) /home/william/workspace/ptII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/test
+CLASSPATH="../../../../../../../../../../../..:/home/william/workspace/ptII/lib/ptjacl.jar" "/usr/lib/jvm/java-7-oracle/bin/java" -Xmx1000M  "-Dptolemy.ptII.dir=/home/william/workspace/ptII"  tcl.lang.Shell alljtests.tcl
+dummy.tcl
+make[3]: quittant le répertoire « /home/william/workspace/ptII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/test »
+make[2]: quittant le répertoire « /home/william/workspace/ptII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib »
+make[1]: quittant le répertoire « /home/william/workspace/ptII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor »
+making tests in ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/cg
+make[1]: entrant dans le répertoire « /home/william/workspace/ptII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/cg »
+making tests in ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/cg/lib
+make[2]: entrant dans le répertoire « /home/william/workspace/ptII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/cg/lib »
+make[2]: quittant le répertoire « /home/william/workspace/ptII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/cg/lib »
+make[1]: quittant le répertoire « /home/william/workspace/ptII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/cg »
+making tests in ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains
+make[1]: entrant dans le répertoire « /home/william/workspace/ptII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains »
+making tests in ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/de
+make[2]: entrant dans le répertoire « /home/william/workspace/ptII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/de »
+making tests in ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/de/lib
+make[3]: entrant dans le répertoire « /home/william/workspace/ptII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/de/lib »
+make[3]: quittant le répertoire « /home/william/workspace/ptII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/de/lib »
+make[2]: quittant le répertoire « /home/william/workspace/ptII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/de »
+making tests in ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/modal
+make[2]: entrant dans le répertoire « /home/william/workspace/ptII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/modal »
+making tests in ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/modal/kernel
+make[3]: entrant dans le répertoire « /home/william/workspace/ptII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/modal/kernel »
+make[3]: quittant le répertoire « /home/william/workspace/ptII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/modal/kernel »
+making tests in ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/modal/modal
+make[3]: entrant dans le répertoire « /home/william/workspace/ptII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/modal/modal »
+make[3]: quittant le répertoire « /home/william/workspace/ptII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/modal/modal »
+making tests in ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/modal/test
+make[3]: entrant dans le répertoire « /home/william/workspace/ptII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/modal/test »
+CLASSPATH="../../../../../../../../../../../..:/home/william/workspace/ptII/lib/ptjacl.jar" "/usr/lib/jvm/java-7-oracle/bin/java" -Xmx1000M  "-Dptolemy.ptII.dir=/home/william/workspace/ptII"  tcl.lang.Shell ../../../../../../../../../../../../util/testsuite/auto.tcl
+------------------ testing $PTII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/modal/test/auto/knownFailedTests/FSMReceiver.xml (Known Failure) 
+93 ms. Memory: 30784K Free: 22995K (75%)
+!!!! Auto was marked as failing, but now passes
+------------------ testing $PTII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/modal/test/auto/FSMActor.xml
+auto.tcl: Setting watchdog for 200 seconds at Thu May 02 17:13:30 PDT 2013
+20 ms. Memory: 38912K Free: 29604K (76%)
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:30 PDT 2013
+auto.tcl: Setting watchdog for 200 seconds at Thu May 02 17:13:30 PDT 2013
+12 ms. Memory: 38912K Free: 28091K (72%)
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:30 PDT 2013
+------------------ testing $PTII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/modal/test/auto/Simple01.xml
+auto.tcl: Setting watchdog for 200 seconds at Thu May 02 17:13:30 PDT 2013
+26 ms. Memory: 38912K Free: 26743K (69%)
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:30 PDT 2013
+auto.tcl: Setting watchdog for 200 seconds at Thu May 02 17:13:30 PDT 2013
+23 ms. Memory: 38912K Free: 23785K (61%)
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:30 PDT 2013
+05/02/13 05:13:30
+Failed: 0  Total Tests: 5  ((Passed: 5, Newly Passed: 1)  Known Failed: 0) /home/william/workspace/ptII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/modal/test
+CLASSPATH="../../../../../../../../../../../..:/home/william/workspace/ptII/lib/ptjacl.jar" "/usr/lib/jvm/java-7-oracle/bin/java" -Xmx1000M  "-Dptolemy.ptII.dir=/home/william/workspace/ptII"  tcl.lang.Shell ../../../../../../../../../../../../util/testsuite/CCGAuto.tcl
+------------------ Invoking the ptolemy/cg C generator by calling GenericCodeGenerator.generateCode(args).  To replicate: $PTII/bin/ptcg -generatorPackage ptolemy.cg.kernel.generic.program.procedural.c $PTII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/modal/test/auto/FSMActor.xml 
+JavaCGAuto.tcl: Setting watchdog for 60 seconds at Thu May 02 17:13:30 PDT 2013
+Writing FSMActor.c in file:/home/william/cg (7223 characters)
+Wrote /home/william/cg/FSMActor.c
+Wrote /home/william/cg/src/main.h
+Wrote /home/william/cg/src/types.h
+Wrote /home/william/cg/src/types.c
+Reading "ptolemy/cg/kernel/generic/program/procedural/c/makefile.in",
+    writing "/home/william/cg/FSMActor.mk"
+In "/home/william/cg", about to execute:
+    make -f FSMActor.mk
+make[4]: entrant dans le répertoire « /home/william/cg »
+gcc -Wall   -ggdb -c -o "src/types.o" "src/types.c"
+gcc -D__int64="long long" -Wall   -ggdb  FSMActor.c src/types.o -o FSMActor -lm 
+In file included from FSMActor.c:21:0:
+src/main.h:25:16: attention : ‘FSMActor_Test_output’ defined but not used [-Wunused-variable]
+make[4]: quittant le répertoire « /home/william/cg »
+In "/home/william/cg", about to execute:
+    /home/william/cg/FSMActor
+All Done
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:31 PDT 2013
+------------------ Invoking the ptolemy/cg C generator by calling GenericCodeGenerator.generateCode(args).  To replicate: $PTII/bin/ptcg -generatorPackage ptolemy.cg.kernel.generic.program.procedural.c $PTII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/modal/test/auto/Simple01.xml 
+JavaCGAuto.tcl: Setting watchdog for 60 seconds at Thu May 02 17:13:31 PDT 2013
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:32 PDT 2013
+    while executing
+java.lang.Exception: Failed to parse "-generatorPackage ptolemy.cg.kernel.generic.program.procedural.c auto/Simple01.xml"
+	at ptolemy.actor.gui.ConfigurationApplication.throwArgsException(ConfigurationApplication.java:845)
+	at ptolemy.cg.kernel.generic.GenericCodeGenerator.generateCode(GenericCodeGenerator.java:600)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:601)
+	at tcl.lang.reflect.PkgInvoker.invokeMethod(PkgInvoker.java:129)
+	at tcl.lang.JavaInvoke.call(JavaInvoke.java:253)
+	at tcl.lang.JavaInvoke.callStaticMethod(JavaInvoke.java:169)
+	at tcl.lang.JavaCallCmd.cmdProc(JavaCallCmd.java:74)
+	at tcl.lang.Parser.evalObjv(Parser.java:740)
+	at tcl.lang.Parser.eval2(Parser.java:1138)
+	at tcl.lang.Parser.evalTokens(Parser.java:930)
+	at tcl.lang.Parser.eval2(Parser.java:1125)
+	at tcl.lang.Interp.eval(Interp.java:1782)
+	at tcl.lang.Interp.eval(Interp.java:1841)
+	at tcl.lang.CatchCmd.cmdProc(CatchCmd.java:42)
+	at tcl.lang.Parser.evalObjv(Parser.java:740)
+	at tcl.lang.Parser.eval2(Parser.java:1138)
+	at tcl.lang.Parser.evalTokens(Parser.java:930)
+	at tcl.lang.Parser.eval2(Parser.java:1125)
+	at tcl.lang.Interp.eval(Interp.java:1782)
+	at tcl.lang.Interp.eval(Interp.java:1841)
+	at tcl.lang.UplevelCmd.cmdProc(UplevelCmd.java:93)
+	at tcl.lang.Parser.evalObjv(Parser.java:740)
+	at tcl.lang.Parser.eval2(Parser.java:1138)
+	at tcl.lang.Interp.eval(Interp.java:1782)
+	at tcl.lang.Interp.eval(Interp.java:1841)
+	at tcl.lang.CatchCmd.cmdProc(CatchCmd.java:42)
+	at tcl.lang.Parser.evalObjv(Parser.java:740)
+	at tcl.lang.Parser.eval2(Parser.java:1138)
+	at tcl.lang.Parser.evalTokens(Parser.java:930)
+	at tcl.lang.Parser.eval2(Parser.java:1125)
+	at tcl.lang.Procedure.cmdProc(Procedure.java:175)
+	at tcl.lang.Parser.evalObjv(Parser.java:740)
+	at tcl.lang.Parser.eval2(Parser.java:1138)
+	at tcl.lang.Procedure.cmdProc(Procedure.java:175)
+	at tcl.lang.Parser.evalObjv(Parser.java:740)
+	at tcl.lang.Parser.eval2(Parser.java:1138)
+	at tcl.lang.Interp.eval(Interp.java:1782)
+	at tcl.lang.Interp.eval(Interp.java:1841)
+	at tcl.lang.ForeachCmd.cmdProc(ForeachCmd.java:116)
+	at tcl.lang.AutoloadStub.cmdProc(Extension.java:144)
+	at tcl.lang.Parser.evalObjv(Parser.java:740)
+	at tcl.lang.Parser.eval2(Parser.java:1138)
+	at tcl.lang.Interp.eval(Interp.java:1782)
+	at tcl.lang.Interp.evalFile(Interp.java:1880)
+	at tcl.lang.Shell.main(Shell.java:110)
+Caused by: java.lang.Exception: Failed to generate code for "auto/Simple01.xml"
+codeDirectory:       /home/william/cg/
+generatorPackage:    ptolemy.cg.kernel.generic.program.procedural.c
+generatePackageList: generic.program.procedural.c
+	at ptolemy.cg.kernel.generic.GenericCodeGenerator.generateCode(GenericCodeGenerator.java:535)
+	... 46 more
+Caused by: ptolemy.kernel.util.IllegalActionException: Failed to parse "/* Generate Transition Code. */
+$actorSymbol(transitionFlag) = 1;
+switch ($actorSymbol(currentState))
+{
+case STATE_Simple01_ModalModel__Controller_state:
+if ((($modulo_Int_Int(Simple01_ModalModel__Controller_in, 3)) == 0)) 
+{
+$actorSymbol(currentState) = STATE_Simple01_ModalModel__Controller_state2;
+
+}
+else
+{
+$actorSymbol(transitionFlag) = 0;
+
+}
+
+break;
+case STATE_Simple01_ModalModel__Controller_state2:
+if ((($modulo_Int_Int(Simple01_ModalModel__Controller_in, 2)) == 0)) 
+{
+$actorSymbol(currentState) = STATE_Simple01_ModalModel__Controller_state2;
+$actorSymbol(currentState) = STATE_Simple01_ModalModel__Controller_state;
+
+}
+else
+{
+$actorSymbol(transitionFlag) = 0;
+
+}
+
+break;
+
+}
+"
+Because:
+Failed to replace the parameter "Simple01_ModalModel__Controller_in, 3" in the macro "modulo_Int_Int".
+Initial code was:
+/* Generate Transition Code. */
+$actorSymbol(transitionFlag) = 1;
+switch ($actorSymbol(currentState))
+{
+case STATE_Simple01_ModalModel__Controller_state:
+if ((($modulo_Int_Int(Simple01_ModalModel__Controller_in, 3)) == 0)) 
+{
+$actorSymbol(currentState) = STATE_Simple01_ModalModel__Controller_state2;
+
+}
+else
+{
+$actorSymbol(transitionFlag) = 0;
+
+}
+
+break;
+case STATE_Simple01_ModalModel__Controller_state2:
+if ((($modulo_Int_Int(Simple01_ModalModel__Controller_in, 2)) == 0)) 
+{
+$actorSymbol(currentState) = STATE_Simple01_ModalModel__Controller_state2;
+$actorSymbol(currentState) = STATE_Simple01_ModalModel__Controller_state;
+
+}
+else
+{
+$actorSymbol(transitionFlag) = 0;
+
+}
+
+break;
+
+}
+
+Because:
+Failed to mark function called for "modulo_Int_Int" in ".Simple01"
+  in .Simple01.CodeGenerator_AutoAdded
+Because:
+Cannot find code block: "modulo_Int_Int()" in "$CLASSPATH/ptolemy/cg/kernel/generic/program/procedural/c/type/UnsignedByte.c", the initial path was "$CLASSPATH/ptolemy/cg/kernel/generic/program/procedural/c/type/UnsignedByte.c". Try setting debugging to true on the code generator or running with ptcg with "-verbosity 1"
+	at ptolemy.cg.kernel.generic.program.ProgramCodeGeneratorAdapter.processCode(ProgramCodeGeneratorAdapter.java:97)
+	at ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.modal.kernel.FSMActor.generateTransitionCode(FSMActor.java:551)
+	at ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.modal.modal.ModalController.generateFireCode(ModalController.java:132)
+	at ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.modal.kernel.FSMDirector.generateFireCode(FSMDirector.java:84)
+	at ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.TypedCompositeActor._generateFireCode(TypedCompositeActor.java:557)
+	at ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter.generateFireCode(NamedProgramCodeGeneratorAdapter.java:411)
+	at ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.sched.StaticSchedulingDirector.generateFireCode(StaticSchedulingDirector.java:175)
+	at ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.sched.StaticSchedulingDirector.generateMainLoop(StaticSchedulingDirector.java:283)
+	at ptolemy.cg.kernel.generic.program.procedural.c.CCodeGenerator._generateBodyCode(CCodeGenerator.java:1644)
+	at ptolemy.cg.kernel.generic.program.procedural.c.CCodeGenerator._generateCode(CCodeGenerator.java:1341)
+	at ptolemy.cg.kernel.generic.GenericCodeGenerator.generateCode(GenericCodeGenerator.java:375)
+	at ptolemy.cg.kernel.generic.GenericCodeGenerator.generateCode(GenericCodeGenerator.java:337)
+	at ptolemy.cg.kernel.generic.GenericCodeGenerator.generateCode(GenericCodeGenerator.java:533)
+	... 46 more
+Caused by: ptolemy.kernel.util.IllegalActionException: Failed to replace the parameter "Simple01_ModalModel__Controller_in, 3" in the macro "modulo_Int_Int".
+Initial code was:
+/* Generate Transition Code. */
+$actorSymbol(transitionFlag) = 1;
+switch ($actorSymbol(currentState))
+{
+case STATE_Simple01_ModalModel__Controller_state:
+if ((($modulo_Int_Int(Simple01_ModalModel__Controller_in, 3)) == 0)) 
+{
+$actorSymbol(currentState) = STATE_Simple01_ModalModel__Controller_state2;
+
+}
+else
+{
+$actorSymbol(transitionFlag) = 0;
+
+}
+
+break;
+case STATE_Simple01_ModalModel__Controller_state2:
+if ((($modulo_Int_Int(Simple01_ModalModel__Controller_in, 2)) == 0)) 
+{
+$actorSymbol(currentState) = STATE_Simple01_ModalModel__Controller_state2;
+$actorSymbol(currentState) = STATE_Simple01_ModalModel__Controller_state;
+
+}
+else
+{
+$actorSymbol(transitionFlag) = 0;
+
+}
+
+break;
+
+}
+
+Because:
+Failed to mark function called for "modulo_Int_Int" in ".Simple01"
+  in .Simple01.CodeGenerator_AutoAdded
+Because:
+Cannot find code block: "modulo_Int_Int()" in "$CLASSPATH/ptolemy/cg/kernel/generic/program/procedural/c/type/UnsignedByte.c", the initial path was "$CLASSPATH/ptolemy/cg/kernel/generic/program/procedural/c/type/UnsignedByte.c". Try setting debugging to true on the code generator or running with ptcg with "-verbosity 1"
+	at ptolemy.cg.kernel.generic.CGException.throwException(CGException.java:87)
+	at ptolemy.cg.kernel.generic.program.TemplateParser.processCode(TemplateParser.java:915)
+	at ptolemy.cg.kernel.generic.program.ProgramCodeGeneratorAdapter.processCode(ProgramCodeGeneratorAdapter.java:95)
+	... 58 more
+Caused by: ptolemy.kernel.util.IllegalActionException: Failed to mark function called for "modulo_Int_Int" in ".Simple01"
+  in .Simple01.CodeGenerator_AutoAdded
+Because:
+Cannot find code block: "modulo_Int_Int()" in "$CLASSPATH/ptolemy/cg/kernel/generic/program/procedural/c/type/UnsignedByte.c", the initial path was "$CLASSPATH/ptolemy/cg/kernel/generic/program/procedural/c/type/UnsignedByte.c". Try setting debugging to true on the code generator or running with ptcg with "-verbosity 1"
+	at ptolemy.cg.kernel.generic.program.procedural.c.CCodeGenerator.markFunctionCalled(CCodeGenerator.java:970)
+	at ptolemy.cg.kernel.generic.program.procedural.c.CTemplateParser._replaceMacro(CTemplateParser.java:234)
+	at ptolemy.cg.kernel.generic.program.TemplateParser.processCode(TemplateParser.java:912)
+	... 59 more
+Caused by: ptolemy.kernel.util.IllegalActionException: Cannot find code block: "modulo_Int_Int()" in "$CLASSPATH/ptolemy/cg/kernel/generic/program/procedural/c/type/UnsignedByte.c", the initial path was "$CLASSPATH/ptolemy/cg/kernel/generic/program/procedural/c/type/UnsignedByte.c". Try setting debugging to true on the code generator or running with ptcg with "-verbosity 1"
+	at ptolemy.cg.kernel.generic.program.CodeStream.getCodeBlock(CodeStream.java:360)
+	at ptolemy.cg.kernel.generic.program.CodeStream.getCodeBlock(CodeStream.java:320)
+	at ptolemy.cg.kernel.generic.program.CodeStream.getCodeBlock(CodeStream.java:497)
+	at ptolemy.cg.kernel.generic.program.procedural.c.CCodeGenerator.markFunctionCalled(CCodeGenerator.java:925)
+	... 61 more
+
+    while executing
+java.lang.Exception: Failed to parse "-generatorPackage ptolemy.cg.kernel.generic.program.procedural.c auto/Simple01.xml"
+    while executing
+"java::call ptolemy.cg.kernel.generic.GenericCodeGenerator  generateCode $args"
+    invoked from within
+"set returnValue  [java::call ptolemy.cg.kernel.generic.GenericCodeGenerator  generateCode $args]"
+
+
+==== $PTII/util/testsuite/CCGAuto.tcl: Auto Automatic Java ptolemy/cg test in file $PTII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/modal/test/auto/Simple01.xml
+==== Contents of test case:
+
+	# Remove files from ~/cg so as to force building
+	foreach classFile [glob -nocomplain [java::call System getProperty "user.home"]/cg/*.class] { file delete -force $classFile}
+	foreach javaFile [glob -nocomplain [java::call System getProperty "user.home"]/cg/*.java] { file delete -force $javaFile}
+	foreach mkFile [glob -nocomplain [java::call System getProperty "user.home"]/cg/*.mk] { file delete -force $mkFile}
+	set parser [java::new ptolemy.moml.MoMLParser]
+	$parser reset
+	$parser purgeAllModelRecords
+
+	set timeout 60000
+	puts "JavaCGAuto.tcl: Setting watchdog for [expr {$timeout / 1000}] seconds at [clock format [clock seconds]]"
+	set watchDog [java::new util.testsuite.WatchDog $timeout]
+
+	set returnValue 0
+	if [catch {set returnValue  [java::call ptolemy.cg.kernel.generic.GenericCodeGenerator  generateCode $args]} errMsg] {
+	    $watchDog cancel
+	    error "$errMsg\n[jdkStackTrace]"
+	} else {
+	    $watchDog cancel
+	}
+	list $returnValue
+    
+==== Test generated error:
+java.lang.Exception: Failed to parse "-generatorPackage ptolemy.cg.kernel.generic.program.procedural.c auto/Simple01.xml"
+
+    while executing
+"error "$errMsg\n[jdkStackTrace]""
+    invoked from within
+"if [catch {set returnValue  [java::call ptolemy.cg.kernel.generic.GenericCodeGenerator  generateCode $args]} errMsg] {
+	    $watchDog cancel
+	    erro..."
+    ("uplevel" body line 15)
+    invoked from within
+"uplevel $contents_of_test"
+05/02/13 05:13:32
+Failed: 1  Total Tests: 2  ((Passed: 1, Newly Passed: 0)  Known Failed: 0) /home/william/workspace/ptII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/modal/test
+CLASSPATH="../../../../../../../../../../../..:/home/william/workspace/ptII/lib/ptjacl.jar" "/usr/lib/jvm/java-7-oracle/bin/java" -Xmx1000M  "-Dptolemy.ptII.dir=/home/william/workspace/ptII"  tcl.lang.Shell alljtests.tcl
+dummy.tcl
+make[3]: quittant le répertoire « /home/william/workspace/ptII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/modal/test »
+make[2]: quittant le répertoire « /home/william/workspace/ptII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/modal »
+making tests in ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/sdf
+make[2]: entrant dans le répertoire « /home/william/workspace/ptII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/sdf »
+making tests in ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/sdf/kernel
+make[3]: entrant dans le répertoire « /home/william/workspace/ptII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/sdf/kernel »
+make[3]: quittant le répertoire « /home/william/workspace/ptII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/sdf/kernel »
+making tests in ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/sdf/lib
+make[3]: entrant dans le répertoire « /home/william/workspace/ptII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/sdf/lib »
+making tests in ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/sdf/lib/test
+make[4]: entrant dans le répertoire « /home/william/workspace/ptII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/sdf/lib/test »
+CLASSPATH="../../../../../../../../../../../../..:/home/william/workspace/ptII/lib/ptjacl.jar" "/usr/lib/jvm/java-7-oracle/bin/java" -Xmx1000M  "-Dptolemy.ptII.dir=/home/william/workspace/ptII"  tcl.lang.Shell ../../../../../../../../../../../../../util/testsuite/auto.tcl
+------------------ testing $PTII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/sdf/lib/test/auto/SampleDelay.xml
+auto.tcl: Setting watchdog for 200 seconds at Thu May 02 17:13:33 PDT 2013
+29 ms. Memory: 30784K Free: 27992K (91%)
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:33 PDT 2013
+auto.tcl: Setting watchdog for 200 seconds at Thu May 02 17:13:33 PDT 2013
+7 ms. Memory: 30784K Free: 27285K (89%)
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:33 PDT 2013
+------------------ testing $PTII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/sdf/lib/test/auto/SampleDelay1.xml
+auto.tcl: Setting watchdog for 200 seconds at Thu May 02 17:13:33 PDT 2013
+13 ms. Memory: 30784K Free: 25744K (84%)
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:33 PDT 2013
+auto.tcl: Setting watchdog for 200 seconds at Thu May 02 17:13:33 PDT 2013
+10 ms. Memory: 30784K Free: 25006K (81%)
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:33 PDT 2013
+------------------ testing $PTII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/sdf/lib/test/auto/SampleDelay1_1.xml
+auto.tcl: Setting watchdog for 200 seconds at Thu May 02 17:13:33 PDT 2013
+8 ms. Memory: 30784K Free: 25402K (83%)
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:33 PDT 2013
+auto.tcl: Setting watchdog for 200 seconds at Thu May 02 17:13:33 PDT 2013
+5 ms. Memory: 30784K Free: 24780K (80%)
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:33 PDT 2013
+------------------ testing $PTII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/sdf/lib/test/auto/SampleDelay3.xml
+auto.tcl: Setting watchdog for 200 seconds at Thu May 02 17:13:33 PDT 2013
+10 ms. Memory: 30784K Free: 25783K (84%)
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:33 PDT 2013
+auto.tcl: Setting watchdog for 200 seconds at Thu May 02 17:13:33 PDT 2013
+7 ms. Memory: 30784K Free: 25158K (82%)
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:33 PDT 2013
+------------------ testing $PTII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/sdf/lib/test/auto/SampleDelay5.xml
+auto.tcl: Setting watchdog for 200 seconds at Thu May 02 17:13:33 PDT 2013
+16 ms. Memory: 30784K Free: 23334K (76%)
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:33 PDT 2013
+auto.tcl: Setting watchdog for 200 seconds at Thu May 02 17:13:33 PDT 2013
+9 ms. Memory: 30784K Free: 22215K (72%)
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:33 PDT 2013
+05/02/13 05:13:33
+Failed: 0  Total Tests: 10  ((Passed: 10, Newly Passed: 0)  Known Failed: 0) /home/william/workspace/ptII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/sdf/lib/test
+CLASSPATH="../../../../../../../../../../../../..:/home/william/workspace/ptII/lib/ptjacl.jar" "/usr/lib/jvm/java-7-oracle/bin/java" -Xmx1000M  "-Dptolemy.ptII.dir=/home/william/workspace/ptII"  tcl.lang.Shell ../../../../../../../../../../../../../util/testsuite/CCGAuto.tcl
+------------------ Invoking the ptolemy/cg C generator by calling GenericCodeGenerator.generateCode(args).  To replicate: $PTII/bin/ptcg -generatorPackage ptolemy.cg.kernel.generic.program.procedural.c $PTII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/sdf/lib/test/auto/SampleDelay1.xml 
+JavaCGAuto.tcl: Setting watchdog for 60 seconds at Thu May 02 17:13:34 PDT 2013
+Writing SampleDelay1.c in file:/home/william/cg (9783 characters)
+Wrote /home/william/cg/SampleDelay1.c
+Wrote /home/william/cg/src/main.h
+Wrote /home/william/cg/src/types.h
+Wrote /home/william/cg/src/types.c
+Reading "ptolemy/cg/kernel/generic/program/procedural/c/makefile.in",
+    writing "/home/william/cg/SampleDelay1.mk"
+In "/home/william/cg", about to execute:
+    make -f SampleDelay1.mk
+make[5]: entrant dans le répertoire « /home/william/cg »
+gcc -Wall   -ggdb -c -o "src/types.o" "src/types.c"
+gcc -D__int64="long long" -Wall   -ggdb  SampleDelay1.c src/types.o -o SampleDelay1 -lm 
+In file included from SampleDelay1.c:21:0:
+src/main.h:38:16: attention : ‘SampleDelay1_Test_output’ defined but not used [-Wunused-variable]
+make[5]: quittant le répertoire « /home/william/cg »
+In "/home/william/cg", about to execute:
+    /home/william/cg/SampleDelay1
+All Done
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:34 PDT 2013
+------------------ Invoking the ptolemy/cg C generator by calling GenericCodeGenerator.generateCode(args).  To replicate: $PTII/bin/ptcg -generatorPackage ptolemy.cg.kernel.generic.program.procedural.c $PTII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/sdf/lib/test/auto/SampleDelay.xml 
+JavaCGAuto.tcl: Setting watchdog for 60 seconds at Thu May 02 17:13:34 PDT 2013
+Writing SampleDelay.c in file:/home/william/cg/ (6475 characters)
+Wrote /home/william/cg/SampleDelay.c
+Wrote /home/william/cg/src/main.h
+Wrote /home/william/cg/src/types.h
+Wrote /home/william/cg/src/types.c
+Reading "ptolemy/cg/kernel/generic/program/procedural/c/makefile.in",
+    writing "/home/william/cg/SampleDelay.mk"
+In "/home/william/cg", about to execute:
+    make -f SampleDelay.mk
+make[5]: entrant dans le répertoire « /home/william/cg »
+gcc -Wall   -ggdb -c -o "src/types.o" "src/types.c"
+gcc -D__int64="long long" -Wall   -ggdb  SampleDelay.c src/types.o -o SampleDelay -lm 
+In file included from SampleDelay.c:21:0:
+src/main.h:28:16: attention : ‘SampleDelay_Test_output’ defined but not used [-Wunused-variable]
+make[5]: quittant le répertoire « /home/william/cg »
+In "/home/william/cg", about to execute:
+    /home/william/cg/SampleDelay
+All Done
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:35 PDT 2013
+------------------ Invoking the ptolemy/cg C generator by calling GenericCodeGenerator.generateCode(args).  To replicate: $PTII/bin/ptcg -generatorPackage ptolemy.cg.kernel.generic.program.procedural.c $PTII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/sdf/lib/test/auto/SampleDelay3.xml 
+JavaCGAuto.tcl: Setting watchdog for 60 seconds at Thu May 02 17:13:35 PDT 2013
+Writing SampleDelay3.c in file:/home/william/cg/ (9794 characters)
+Wrote /home/william/cg/SampleDelay3.c
+Wrote /home/william/cg/src/main.h
+Wrote /home/william/cg/src/types.h
+Wrote /home/william/cg/src/types.c
+Reading "ptolemy/cg/kernel/generic/program/procedural/c/makefile.in",
+    writing "/home/william/cg/SampleDelay3.mk"
+In "/home/william/cg", about to execute:
+    make -f SampleDelay3.mk
+make[5]: entrant dans le répertoire « /home/william/cg »
+gcc -Wall   -ggdb -c -o "src/types.o" "src/types.c"
+gcc -D__int64="long long" -Wall   -ggdb  SampleDelay3.c src/types.o -o SampleDelay3 -lm 
+In file included from SampleDelay3.c:21:0:
+src/main.h:37:16: attention : ‘SampleDelay3_Test_output’ defined but not used [-Wunused-variable]
+make[5]: quittant le répertoire « /home/william/cg »
+In "/home/william/cg", about to execute:
+    /home/william/cg/SampleDelay3
+All Done
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:35 PDT 2013
+------------------ Invoking the ptolemy/cg C generator by calling GenericCodeGenerator.generateCode(args).  To replicate: $PTII/bin/ptcg -generatorPackage ptolemy.cg.kernel.generic.program.procedural.c $PTII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/sdf/lib/test/auto/SampleDelay5.xml 
+JavaCGAuto.tcl: Setting watchdog for 60 seconds at Thu May 02 17:13:35 PDT 2013
+Writing SampleDelay5.c in file:/home/william/cg/ (13253 characters)
+Wrote /home/william/cg/SampleDelay5.c
+Wrote /home/william/cg/src/main.h
+Wrote /home/william/cg/src/types.h
+Wrote /home/william/cg/src/types.c
+Reading "ptolemy/cg/kernel/generic/program/procedural/c/makefile.in",
+    writing "/home/william/cg/SampleDelay5.mk"
+In "/home/william/cg", about to execute:
+    make -f SampleDelay5.mk
+make[5]: entrant dans le répertoire « /home/william/cg »
+gcc -Wall   -ggdb -c -o "src/types.o" "src/types.c"
+gcc -D__int64="long long" -Wall   -ggdb  SampleDelay5.c src/types.o -o SampleDelay5 -lm 
+In file included from SampleDelay5.c:21:0:
+src/main.h:29:16: attention : ‘SampleDelay5_Test_output’ defined but not used [-Wunused-variable]
+make[5]: quittant le répertoire « /home/william/cg »
+In "/home/william/cg", about to execute:
+    /home/william/cg/SampleDelay5
+All Done
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:35 PDT 2013
+------------------ Invoking the ptolemy/cg C generator by calling GenericCodeGenerator.generateCode(args).  To replicate: $PTII/bin/ptcg -generatorPackage ptolemy.cg.kernel.generic.program.procedural.c $PTII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/sdf/lib/test/auto/SampleDelay1_1.xml 
+JavaCGAuto.tcl: Setting watchdog for 60 seconds at Thu May 02 17:13:35 PDT 2013
+Writing SampleDelay1_1.c in file:/home/william/cg/ (7712 characters)
+Wrote /home/william/cg/SampleDelay1_1.c
+Wrote /home/william/cg/src/main.h
+Wrote /home/william/cg/src/types.h
+Wrote /home/william/cg/src/types.c
+Reading "ptolemy/cg/kernel/generic/program/procedural/c/makefile.in",
+    writing "/home/william/cg/SampleDelay1_1.mk"
+In "/home/william/cg", about to execute:
+    make -f SampleDelay1_1.mk
+make[5]: entrant dans le répertoire « /home/william/cg »
+gcc -Wall   -ggdb -c -o "src/types.o" "src/types.c"
+gcc -D__int64="long long" -Wall   -ggdb  SampleDelay1_1.c src/types.o -o SampleDelay1_1 -lm 
+In file included from SampleDelay1_1.c:21:0:
+src/main.h:28:16: attention : ‘SampleDelay1_1_Test_output’ defined but not used [-Wunused-variable]
+make[5]: quittant le répertoire « /home/william/cg »
+In "/home/william/cg", about to execute:
+    /home/william/cg/SampleDelay1_1
+All Done
+util.testsuite.WatchDog.cancel(): canceling Thu May 02 17:13:35 PDT 2013
+05/02/13 05:13:35
+Failed: 0  Total Tests: 5  ((Passed: 5, Newly Passed: 0)  Known Failed: 0) /home/william/workspace/ptII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/sdf/lib/test
+CLASSPATH="../../../../../../../../../../../../..:/home/william/workspace/ptII/lib/ptjacl.jar" "/usr/lib/jvm/java-7-oracle/bin/java" -Xmx1000M  "-Dptolemy.ptII.dir=/home/william/workspace/ptII"  tcl.lang.Shell alljtests.tcl
+dummy.tcl
+make[4]: quittant le répertoire « /home/william/workspace/ptII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/sdf/lib/test »
+make[3]: quittant le répertoire « /home/william/workspace/ptII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/sdf/lib »
+make[2]: quittant le répertoire « /home/william/workspace/ptII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/sdf »
+making tests in ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/ptides
+make[2]: entrant dans le répertoire « /home/william/workspace/ptII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/ptides »
+making tests in ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/ptides/kernel
+make[3]: entrant dans le répertoire « /home/william/workspace/ptII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/ptides/kernel »
+make[3]: quittant le répertoire « /home/william/workspace/ptII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/ptides/kernel »
+making tests in ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/ptides/lib
+make[3]: entrant dans le répertoire « /home/william/workspace/ptII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/ptides/lib »
+make[3]: quittant le répertoire « /home/william/workspace/ptII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/ptides/lib »
+make[2]: quittant le répertoire « /home/william/workspace/ptII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/ptides »
+make[1]: quittant le répertoire « /home/william/workspace/ptII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains »

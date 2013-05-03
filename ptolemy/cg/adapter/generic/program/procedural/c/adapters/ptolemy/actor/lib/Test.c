@@ -2,8 +2,12 @@
 // Initialize to -1 because we ALWAYS increment first.
 // This is more convenient for multiport, where we check if \$channel
 // number is equal zero (the first channel). If so, then we increment.
-int $actorSymbol(numberOfTokensSeen) = -1;
+int $actorSymbol(numberOfTokensSeen);
 $targetType(input) $actorSymbol(inputToken);
+/**/
+
+/*** initBlock ***/
+$actorSymbol(numberOfTokensSeen) = -1;
 /**/
 
 /*** TokenPreinitBlock($channel)***/
@@ -135,7 +139,6 @@ if ($actorSymbol(numberOfTokensSeen) < $size(correctValues)) {
             $actorSymbol(numberOfTokensSeen),
             $actorSymbol(inputToken),
             $param(tolerance),
-               (Number)(Array_get($actorSymbol(correctValuesThisFiring_$channel), $channel).payload));
             DoubleArray_get($actorSymbol(correctValuesThisFiring_$channel), $channel));
        exit(-1);
    }
