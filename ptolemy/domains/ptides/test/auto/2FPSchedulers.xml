@@ -12,7 +12,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-250.0, 60.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={132, 36, 625, 634}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={132, 38, 625, 634}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[391, 524]">
     </property>
@@ -224,8 +224,6 @@
             </property>
             <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{281.0, 262.0}">
             </property>
-            <property name="scheduler" class="ptolemy.data.expr.Parameter" value="FCFSScheduler">
-            </property>
             <property name="FixedPriorityScheduler" class="ptolemy.actor.lib.resourceScheduler.FixedPriorityScheduler">
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[255.0, 55.0]">
                 </property>
@@ -331,9 +329,9 @@
                 <property name="DecoratorAttributesFor_PtidesDirector" class="ptolemy.domains.ptides.kernel.ThrottleAttributes">
                     <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.PtidesDirector">
                     </property>
-                    <property name="useMaximumFutureFiringTime" class="ptolemy.data.expr.Parameter" value="true">
+                    <property name="useMaximumLookaheadTime" class="ptolemy.data.expr.Parameter" value="true">
                     </property>
-                    <property name="maximumFutureFiringTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                    <property name="maximumLookaheadTime" class="ptolemy.data.expr.Parameter" value="0.0">
                     </property>
                     <property name="useMaximumFutureEvents" class="ptolemy.data.expr.Parameter" value="false">
                     </property>
@@ -462,9 +460,9 @@
                 <property name="DecoratorAttributesFor_PtidesDirector" class="ptolemy.domains.ptides.kernel.ThrottleAttributes">
                     <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.PtidesDirector">
                     </property>
-                    <property name="useMaximumFutureFiringTime" class="ptolemy.data.expr.Parameter" value="true">
+                    <property name="useMaximumLookaheadTime" class="ptolemy.data.expr.Parameter" value="true">
                     </property>
-                    <property name="maximumFutureFiringTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                    <property name="maximumLookaheadTime" class="ptolemy.data.expr.Parameter" value="0.0">
                     </property>
                     <property name="useMaximumFutureEvents" class="ptolemy.data.expr.Parameter" value="false">
                     </property>

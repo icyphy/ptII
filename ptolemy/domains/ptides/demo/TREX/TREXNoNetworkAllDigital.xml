@@ -2083,9 +2083,9 @@
                     <property name="DecoratorAttributesFor_PtidesDirector" class="ptolemy.domains.ptides.kernel.ThrottleAttributes">
                         <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="ContactController.PtidesPlatform.PtidesPlatformContents.PtidesDirector">
                         </property>
-                        <property name="useMaximumFutureFiringTime" class="ptolemy.data.expr.Parameter" value="false">
+                        <property name="useMaximumLookaheadTime" class="ptolemy.data.expr.Parameter" value="false">
                         </property>
-                        <property name="maximumFutureFiringTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                        <property name="maximumLookaheadTime" class="ptolemy.data.expr.Parameter" value="0.0">
                         </property>
                         <property name="useMaximumFutureEvents" class="ptolemy.data.expr.Parameter" value="false">
                         </property>
@@ -2120,9 +2120,9 @@
                     <property name="DecoratorAttributesFor_PtidesDirector" class="ptolemy.domains.ptides.kernel.ThrottleAttributes">
                         <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="ContactController.PtidesPlatform.PtidesPlatformContents.PtidesDirector">
                         </property>
-                        <property name="useMaximumFutureFiringTime" class="ptolemy.data.expr.Parameter" value="false">
+                        <property name="useMaximumLookaheadTime" class="ptolemy.data.expr.Parameter" value="false">
                         </property>
-                        <property name="maximumFutureFiringTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                        <property name="maximumLookaheadTime" class="ptolemy.data.expr.Parameter" value="0.0">
                         </property>
                         <property name="useMaximumFutureEvents" class="ptolemy.data.expr.Parameter" value="false">
                         </property>
@@ -2153,9 +2153,9 @@
                     <property name="DecoratorAttributesFor_PtidesDirector" class="ptolemy.domains.ptides.kernel.ThrottleAttributes">
                         <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="ContactController.PtidesPlatform.PtidesPlatformContents.PtidesDirector">
                         </property>
-                        <property name="useMaximumFutureFiringTime" class="ptolemy.data.expr.Parameter" value="false">
+                        <property name="useMaximumLookaheadTime" class="ptolemy.data.expr.Parameter" value="false">
                         </property>
-                        <property name="maximumFutureFiringTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                        <property name="maximumLookaheadTime" class="ptolemy.data.expr.Parameter" value="0.0">
                         </property>
                         <property name="useMaximumFutureEvents" class="ptolemy.data.expr.Parameter" value="false">
                         </property>
@@ -3757,9 +3757,9 @@
                     <property name="DecoratorAttributesFor_PtidesDirector" class="ptolemy.domains.ptides.kernel.ThrottleAttributes">
                         <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="ReserveTargetProfile2.PtidesPlatform.PtidesPlatformContents.PtidesDirector">
                         </property>
-                        <property name="useMaximumFutureFiringTime" class="ptolemy.data.expr.Parameter" value="true">
+                        <property name="useMaximumLookaheadTime" class="ptolemy.data.expr.Parameter" value="true">
                         </property>
-                        <property name="maximumFutureFiringTime" class="ptolemy.data.expr.Parameter" value="5.0">
+                        <property name="maximumLookaheadTime" class="ptolemy.data.expr.Parameter" value="5.0">
                         </property>
                         <property name="useMaximumFutureEvents" class="ptolemy.data.expr.Parameter" value="false">
                         </property>
@@ -3773,9 +3773,9 @@
                     <property name="DecoratorAttributesFor_PtidesDirector" class="ptolemy.domains.ptides.kernel.ThrottleAttributes">
                         <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="ReserveTargetProfile2.PtidesPlatform.PtidesPlatformContents.PtidesDirector">
                         </property>
-                        <property name="useMaximumFutureFiringTime" class="ptolemy.data.expr.Parameter" value="false">
+                        <property name="useMaximumLookaheadTime" class="ptolemy.data.expr.Parameter" value="false">
                         </property>
-                        <property name="maximumFutureFiringTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                        <property name="maximumLookaheadTime" class="ptolemy.data.expr.Parameter" value="0.0">
                         </property>
                         <property name="useMaximumFutureEvents" class="ptolemy.data.expr.Parameter" value="false">
                         </property>
@@ -3840,9 +3840,9 @@
                     <property name="DecoratorAttributesFor_PtidesDirector" class="ptolemy.domains.ptides.kernel.ThrottleAttributes">
                         <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="ReserveTargetProfile2.PtidesPlatform.PtidesPlatformContents.PtidesDirector">
                         </property>
-                        <property name="useMaximumFutureFiringTime" class="ptolemy.data.expr.Parameter" value="false">
+                        <property name="useMaximumLookaheadTime" class="ptolemy.data.expr.Parameter" value="false">
                         </property>
-                        <property name="maximumFutureFiringTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                        <property name="maximumLookaheadTime" class="ptolemy.data.expr.Parameter" value="0.0">
                         </property>
                         <property name="useMaximumFutureEvents" class="ptolemy.data.expr.Parameter" value="false">
                         </property>
@@ -4159,9 +4159,9 @@
                     <property name="DecoratorAttributesFor_PtidesDirector" class="ptolemy.domains.ptides.kernel.ThrottleAttributes">
                         <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="ReserveTargetProfile2.PtidesPlatform.PtidesPlatformContents.PtidesDirector">
                         </property>
-                        <property name="useMaximumFutureFiringTime" class="ptolemy.data.expr.Parameter" value="false">
+                        <property name="useMaximumLookaheadTime" class="ptolemy.data.expr.Parameter" value="false">
                         </property>
-                        <property name="maximumFutureFiringTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                        <property name="maximumLookaheadTime" class="ptolemy.data.expr.Parameter" value="0.0">
                         </property>
                         <property name="useMaximumFutureEvents" class="ptolemy.data.expr.Parameter" value="false">
                         </property>
@@ -5117,9 +5117,9 @@
                     <property name="DecoratorAttributesFor_PtidesDirector" class="ptolemy.domains.ptides.kernel.ThrottleAttributes">
                         <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="ReserveController2.PtidesPlatform.PtidesPlatformContents.PtidesDirector">
                         </property>
-                        <property name="useMaximumFutureFiringTime" class="ptolemy.data.expr.Parameter" value="false">
+                        <property name="useMaximumLookaheadTime" class="ptolemy.data.expr.Parameter" value="false">
                         </property>
-                        <property name="maximumFutureFiringTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                        <property name="maximumLookaheadTime" class="ptolemy.data.expr.Parameter" value="0.0">
                         </property>
                         <property name="useMaximumFutureEvents" class="ptolemy.data.expr.Parameter" value="false">
                         </property>
@@ -5150,9 +5150,9 @@
                     <property name="DecoratorAttributesFor_PtidesDirector" class="ptolemy.domains.ptides.kernel.ThrottleAttributes">
                         <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="ReserveController2.PtidesPlatform.PtidesPlatformContents.PtidesDirector">
                         </property>
-                        <property name="useMaximumFutureFiringTime" class="ptolemy.data.expr.Parameter" value="false">
+                        <property name="useMaximumLookaheadTime" class="ptolemy.data.expr.Parameter" value="false">
                         </property>
-                        <property name="maximumFutureFiringTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                        <property name="maximumLookaheadTime" class="ptolemy.data.expr.Parameter" value="0.0">
                         </property>
                         <property name="useMaximumFutureEvents" class="ptolemy.data.expr.Parameter" value="false">
                         </property>

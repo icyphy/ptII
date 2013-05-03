@@ -908,9 +908,9 @@ public class PtidesDirector extends DEDirector implements Decorator {
                 Double delayOffsetAtSource = null;
                 ThrottleAttributes attributes = (ThrottleAttributes) ((NamedObj) localSource)
                         .getDecoratorAttributes(this);
-                if (attributes != null && ((BooleanToken) attributes.useMaximumFutureFiringTime
+                if (attributes != null && ((BooleanToken) attributes.useMaximumLookaheadTime
                         .getToken()).booleanValue()) {
-                    delayOffsetAtSource = ((DoubleToken) attributes.maximumFutureFiringTime
+                    delayOffsetAtSource = ((DoubleToken) attributes.maximumLookaheadTime
                             .getToken()).doubleValue();
                 }
 
@@ -1572,10 +1572,10 @@ public class PtidesDirector extends DEDirector implements Decorator {
             attributes = (ThrottleAttributes) ((NamedObj) event.actor())
                     .getDecoratorAttributes(this);
             if (attributes != null && 
-                    ((BooleanToken) attributes.useMaximumFutureFiringTime
+                    ((BooleanToken) attributes.useMaximumLookaheadTime
                     .getToken()).booleanValue()) {
                 delayOffset = Double
-                        .valueOf(((DoubleToken) attributes.maximumFutureFiringTime
+                        .valueOf(((DoubleToken) attributes.maximumLookaheadTime
                                 .getToken()).doubleValue());
             }
             
