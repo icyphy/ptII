@@ -1345,7 +1345,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         String wrapupProcedureName = generateWrapupProcedureName();
 
         String fireFunctionCode = null;
-        String[] actorsCode = null;
+        String[] actorsCode = new String[0];
         if (!inlineValue) {
             // Generating the code for all the actors
             // FIXME : for now this is only for DE Director
@@ -1544,7 +1544,12 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         // Appends the body code for the director
         code.append(bodyCode);
         
-        String directorySrc = codeDirectory.stringValue() + "src/";
+        String directorySrc = "";
+        directorySrc += codeDirectory.stringValue();
+        if (!directorySrc.endsWith("/"))
+            directorySrc += "/";
+        new File(directorySrc).mkdirs();
+        directorySrc +=  "src/";
         new File(directorySrc).mkdirs();
         
         _actorsToInclude = new LinkedList<String>();

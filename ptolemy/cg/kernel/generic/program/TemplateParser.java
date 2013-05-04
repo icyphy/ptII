@@ -1343,7 +1343,7 @@ public class TemplateParser {
             } else {
                 return _codeGenerator
                         .generateVariableName((NamedObj) _component)
-                        + ""
+                        + "_"
                         + processCode(parameter);
             }
         } else if (macro.equals("containerSymbol")) {
