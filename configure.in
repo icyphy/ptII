@@ -842,6 +842,7 @@ ANT_ALWAYS_EXCLUDE='<exclude name="**/CVS/"/>
 <exclude name="ptolemy/apps/etherealSting/"/>
 <exclude name="ptolemy/apps/fullscreen/"/>
 <exclude name="ptolemy/apps/giotto/"/>
+<exclude name="ptolemy/apps/hlacerti/"/>
 <exclude name="ptolemy/apps/ia/"/>
 <exclude name="ptolemy/apps/interfaces/"/>
 <exclude name="ptolemy/apps/jmf/"/>
