@@ -1,19 +1,14 @@
 // Based on http://bl.ocks.org/e-/5244131 Self-Organizing Map example
-// var values = [];
-var values = [{"x":0,"y":0,"value":74.5}],
+var values = [],
 	lights = [],
 	sensors = [];
     // lights = [{"name":"","y":0,"x":0},{"name":"","y":0,"x":0},{"name":"","y":0,"x":0},{"name":"","y":0,"x":0},{"name":"","y":0,"x":0}],
-    //sensors = [{"x":55,"y":23,"name":"S1"}];
-
-var temp = [];
-var text = "";
+	// sensors = [{"x":55,"y":23,"name":"S1", "value"=800}];
 
 // SVG markers
-var circles,
-    squares,
-    labels,
-    blocks;
+var blocks,
+    lightMarkers,
+    sensorMarkers;
 
 //FIXME:  Should use the width of the container. 
 var imageWidth = 584,
@@ -28,31 +23,40 @@ var blocksHigh = 25,  // Number of squares in grid top to bottom 58
 
 var svg;
 
-// Draggability
-// Based on https://github.com/mbostock/d3/wiki/Drag-Behavior
-// and http://bl.ocks.org/mbostock/1557377
+var firstView = true;
 
-var drag = d3.behavior.drag()
-			 .origin(Object)
-			 .on("drag", dragmove);
+//Draggability
+//Based on https://github.com/mbostock/d3/wiki/Drag-Behavior
+//and http://bl.ocks.org/mbostock/1557377
+// TODO:  Way to make this a function, so we can pass in the dataset we 
+// would like to edit?  Or, way to get dataset name from graphical element?
+var dragLights = d3.behavior.drag()
+			 .origin(Object)	// Preserves the offset between the mouse
+			 					// position and the object's position
+			 					// Useful for larger objects
+			 .on("drag", function(d,i) {
+				 	// Write changes to dataset, and copy changes to array
+					d.x += d3.event.dx;	 
+					d.y += d3.event.dy; 
+					lights[i] = {x: d.x, y: d.y, name: d.name, value: d.value};
+					d3.select(this).attr("transform", function(d,i) {
+						return "translate(" + [d.x, d.y] + ")"
+					});
+			 });
 
-function dragmove(d) {
-	d3.select(this)
-		.attr("cx", d.x += d3.event.dx)
-		.attr("cy", d.y += d3.event.dy);
-}
-
-/* // Based on https://gist.github.com/enjalot/1378144
-var drag = d3.behavior.drag()
-	.on("drag", function(d,i) {
-		d.x += d3.event.dx
-		d.y += d3.event.dy
-		d3.select(this).attr("transform", function(d,i){
-		return "translate(" + [ d.x,d.y ] + ")"
-	})
-});
-*/
-
+var dragSensors = d3.behavior.drag()
+			.origin(Object)	// Preserves the offset between the mouse
+								// position and the object's position
+								// Useful for larger objects
+			.on("drag", function(d,i) {
+			 		// Write changes to dataset, and copy changes to array
+					d.x += d3.event.dx;	
+					d.y += d3.event.dy; 
+					sensors[i] = {x: d.x, y: d.y, name: d.name, value: d.value};
+					d3.select(this).attr("transform", function(d,i) {
+						return "translate(" + [d.x, d.y] + ")"
+					});			
+			});
 
 // Create the graphic elements once the DOM is loaded
 $(document).ready(function() {
@@ -68,9 +72,8 @@ function clearHeatMap() {
 
 // Create SVG element showing the room image plus markers for lights, sensors
 function createSVG() {
+	firstView = true;
 	
-	// Create the SVG element and append to the body
-	// FIXME: Next, have fixed place on page
 	svg = d3.select('#room-map')
 			.append('svg')
 			.attr('width', imageWidth)
@@ -81,17 +84,14 @@ function createSVG() {
 		.attr("width", 584)
 		.attr("height", 488);
 	
+	var text = "";
+	
 	// Create blank array to input to Ptolemy
 	// TODO:  Figure out how to do this in Ptolemy
 	/*
 	text += "{";
 	for (var i = 15; i < blocksWide; i++) {
 		for (var j = 0; j < blocksHigh; j++) {
-			temp.push({
-				x: i*blockWidth,
-			    y: j*blockHeight,
-			    value: 0
-			})
 			text += "{x=" + i*blockHeight + ",y=" + j*blockWidth + ",value=0},"; 
 		}	
 	} 
@@ -101,126 +101,10 @@ function createSVG() {
 	//alert(text);
 	*/
 	
-	// The markers must be draw last in order to be draggable, since the 
-	// mouse click is mapped to the topmost element
-	getData();
-	getMarkers();
+	getMarkers();	// Calls getHeatMap()
 }
 
-// Draw markers on the graph for the lights and sensors
-function drawMarkers() {
-	
-	// Create circles and squares 
-	// FIXME:  Use a g grouping, e.g. 
-	// http://stackoverflow.com/questions/11350553/nested-svg-node-creation-in-d3-js
-	
-	for (var i = 0; i < lights.length; i++){
-		svg.append("circle")
-				.attr("class", "light") // So we can select by class later
-				.attr("r", 23)
-				.style("fill", "rgb(248, 198, 78)")
-				.style("stroke", "black")
-				.style("stroke-width", 3)
-				.call(drag);
-		
-		svg.append("text")
-			.attr("class", "lightLabel");
-	}
-	
-	/*
-	for (var i = 0; i < lights.length; i++){
-		var marker = 
-			svg.append("g")			// "g" stands for group
-			.append("circle")
-			.attr("class", "light") // So we can select by class later
-			.attr("r", 23)
-			.style("fill", "rgb(248, 198, 78)")
-			.style("stroke", "black")
-			.style("stroke-width", 3);
-		
-		marker.call(drag);
-	}
-	*/		
-	
-	for (var i = 0; i < sensors.length; i++) {
-		svg.append("rect")
-			.attr("class", "sensor") // So we can select by class later, 
-									 // since heat map also uses rectangles,
-									 // can't use selectAll("rect")
-			.attr("width", 40)
-			.attr("height", 40)		
-			.style("fill", "rgb(161, 189, 213)")
-			.style("stroke", "black")
-			.style("stroke-width", 3);
-		
-		svg.append("text")
-			.attr("class", "sensorLabel");
-	}
-	
-	circles = svg.selectAll(".light");
-	squares = svg.selectAll(".sensor");
-	circleLabels = svg.selectAll(".lightLabel");
-	squareLabels = svg.selectAll(".sensorLabel");
-	
-	// Map the data to the visual representation 
-	circles.data(lights);
-	squares.data(sensors);
-	circleLabels.data(lights);
-	squareLabels.data(sensors);
-	
-	
-	// TODO:  Allow dynamic markers.  This isn't working...
-	// Add any new markers
-	// circles.enter().append("circle")
-	//	.attr("class", "light") 
-	//	.attr("r", 23)
-	//	.style("fill", "rgb(248, 198, 78)")
-	//	.style("stroke", "black")
-	//	.style("stroke-width", 3);	
-
-	// circleLabels.enter().append("text")
-	//		 .attr("class", "lightLabel");
-	
-	//
-	// squares.enter().append("rect")
-	// 		.attr("width", 40)
-	//		.attr("height", 40);
-	
-	// Delete any extra markers
-	// circles.exit().remove();
-	// squares.exit().remove();
-
-	// Set marker locations and labels
-	// The function(d) refers to the dataset mapped to the visual elements
-	// FIXME:  Refactor this stuff into CSS file?  Should be possible?
-	circles.attr("cx", function(d) {return d.x;})
-	       .attr("cy", function(d) {return d.y;});
-	       
-	
-	squares.attr("x", function(d) {return d.x;})
-		   .attr("y", function(d) {return d.y;});
-		   
-	
-	// Add labels. The label location is a bit different for circles vs. squares
-	circleLabels.attr("x", function(d) {return d.x - 8;})
-				.attr("y", function(d) {return d.y + 5;})
-				.attr("font-family", "sans-serif")
-				.attr("font-weight", "bold")
-				.text(function(d) {return d.name;});
-	
-	squareLabels.attr("x", function(d) {return d.x + 11;})
-	            .attr("y", function(d) {return d.y + 25;})
-	            .attr("font-family", "sans-serif")
-	            .attr("font-weight", "bold")
-	            .text(function(d) {return d.name;});
-	
-	// Make draggable
-	// How to get the labels to follow?  Use g grouping?
-	// Based on https://gist.github.com/enjalot/1378144
-	
-}
-
-// Draw the heat map superimposed on the photo
+//Draw the heat map superimposed on the photo
 function drawHeatMap() {
 
 	var opacity = 0.4;   // A value between one (opaque) and zero (transparent)
@@ -241,29 +125,143 @@ function drawHeatMap() {
 	   	  .attr("y", function(d) {return d.y - blockHeight/2;})
 	   	  .attr("fill", function(d){return rgb([d.value, d.value, 0]);});
 	
+	// Need to re-map dataset with .data(), then update labels
+	d3.selectAll(".sensorReading")
+		 .data(sensors)
+		 .text(function(d) {return Math.floor(d.value) + " lumens"});
+	
+	// Optional:  Print sensor location instead of reading
 	/*
-	var graphNodes = svg.append('g').attr('class','nodes');
+	d3.selectAll(".sensorReading")
+	 	.text(function(d) {return Math.floor(d.x) + " , " + Math.floor(d.y)});
+	 */	
+	 
+}
 
-	graphNodes
-		.selectAll('rect')
-		.data(values)
-		.enter().append('rect')
-			.attr('x', function(node){return node.x})
-			.attr('y', function(node){return node.y})
-			.attr('height', blockHeight)
-			.attr('width', blockWidth)
-			.style('fill', function(node){return rgb([node.value, node.value, 0]);})
-			.style('fill-opacity', opacity);
-	*/
+// Draw markers on the graph for the lights and sensors
+function drawMarkers() {
+	
+	// Create circle and square markers, using a g group to link text and marker 
+	// http://stackoverflow.com/questions/11350553/nested-svg-node-creation-in-d3-js
+	
+	for (var i = 0; i < lights.length; i++){
+		var marker = svg.append("g");	// "g" stands for group
+		
+		marker.append("circle")
+				.attr("class", "light") // So we can select by class later
+				.attr("r", 23)
+				.style("fill", "rgb(248, 198, 78)")
+				.style("stroke", "black")
+				.style("stroke-width", 3)
+				.attr("x", 0)
+				.attr("y", 0);
+		
+		marker.append("text")
+			 	.attr("class", "lightLabel")
+			 	.attr("x", -8)
+			 	.attr("y", 5)
+			 	.attr("font-family", "sans-serif")
+				.attr("font-weight", "bold");
+		
+		marker.attr("class", "lightMarker");
+	}
+		
+	lightMarkers = 
+		d3.selectAll(".lightMarker")
+				.data(lights)
+				.attr("transform", function(d,i) {
+					return "translate(" + [d.x, d.y] + ")"
+				})
+				.call(dragLights);
+	
+	// Data must be associated to text labels, too, in addition to markers
+	// .text() must be done after .data() 
+	d3.selectAll(".lightLabel")
+		.data(lights)
+		.text(function(d) {return d.name});
+		
+	for (var i = 0; i < sensors.length; i++) {
+		var marker = svg.append("g");	// "g" stands for group
+		
+		marker.append("rect")
+				.attr("class", "sensor") // So we can select by class later, 
+										 // since heat map also uses rectangles,
+										 // can't use selectAll("rect")
+				.attr("width", 40)
+				.attr("height", 40)		
+				.style("fill", "rgb(161, 189, 213)")
+				.style("stroke", "black")
+				.style("stroke-width", 3);
+		
+		// Name label
+		marker.append("text")
+			 	.attr("class", "sensorLabel")
+			 	.attr("x", 11)
+			 	.attr("y", 25)
+			 	.attr("font-family", "sans-serif")
+				.attr("font-weight", "bold");
+		
+		// Sensor reading
+		marker.append("rect")
+			.attr("width", 116)
+			.attr("height", 40)
+			.attr("x", 40)
+			.attr("y", 0)
+			.style("fill", "rgb(255, 255, 255)")
+			.style("stroke", "black")
+			.style("stroke-width", 3);
+		
+		marker.append("text")
+			 	.attr("class", "sensorReading")
+			 	.attr("x", 55)
+			 	.attr("y", 25)
+			 	.attr("font-family", "sans-serif")
+				.attr("font-weight", "bold");
+		
+		marker.attr("class", "sensorMarker");
+	}
+	
+	sensorMarkers = 
+		d3.selectAll(".sensorMarker")
+				.data(sensors)
+				.attr("transform", function(d,i) {
+					return "translate(" + [d.x, d.y] + ")"
+				})
+				.call(dragSensors);
+	
+	// Data must be associated to text labels, too, in addition to markers
+	// .text() must be done after .data() 
+	d3.selectAll(".sensorLabel")
+		.data(sensors)
+		.text(function(d) {return d.name});
+	
+	
+	d3.selectAll(".sensorReading")
+		 .data(sensors)
+		 .text(function(d) {return Math.floor(d.value) + " lumens";});
+	
+	// Optional - Print sensor location instead of reading	
+	
+	/*
+	d3.selectAll(".sensorReading")
+		 .data(sensors)
+		 .text(function(d) {return Math.floor(d.x) + " , " + Math.floor(d.y)});
+		*/ 
+	
+	// TODO:  Allow to add, remove markers using d3 enter() and exit()
+	// http://mbostock.github.io/d3/tutorial/circle.html
 }
 
 // Submit a request to the Ptolemy model to get the heat map data
-function getData(){
-	$.get('/room/data', function(data) {
+function getHeatMap(){
+	$.get('/room/map', function(data) {
 		// TODO:  JSON is being returned from Ptolemy as a string.  In future, 
 		// allow setting response type to application/json so we don't need
 		// $.parseJSON(data)
-		values = $.parseJSON(data);
+		var jsonData = $.parseJSON(data);
+		values = jsonData.values;
+		sensors = jsonData.sensors;
+		
 		drawHeatMap();
 	})
 	.fail(function() {alert("Failed to get map data from server."); });
@@ -279,40 +277,47 @@ function getMarkers(){
 		lights = json.lights;
 		sensors = json.sensors;
 		
-		drawMarkers();
+		// If first time, draw markers
+		// Called from this function since the get request is asynchronous
+		// (so caller does not wait for it to complete)
+		if (firstView) {
+			drawMarkers();
+			firstView = false;
+			getHeatMap();	// Called here so that map is drawn on top of 
+							// markers, so that markers can't be moved unless
+							// Move Markers tab is selected
+		}
 	})
 	.fail(function() {alert("Failed to get marker data from server."); });
 }
 
-// TODO:  Update this to use groups instead of circles 
-// Add sensors
 // Post new light and sensor locations to the Ptolemy model
-function postData(){
-	var newLightLocations= [];
-	var circle;
 
-	d3.selectAll(".light").each( function(d, i) {
+function postMarkers(){
 	
-		// TODO:  Read names directly from circles.  Will be possible once
-		// groups are implemented
-		newLightLocations.push({
-			x: d3.select(this).attr("cx"),
-		    y: d3.select(this).attr("cy"),
-		    name: "L" + i
-		});
+	// Post the current light locations to the Ptolemy model
+	// Dragging the markers around changes the values in this array
+	$.ajax({
+		url: 'room/markers',
+		type: 'POST',
+		dataType: 'json',
+		data: {lightsList: JSON.stringify(lights), 
+			sensorsList: JSON.stringify(sensors) },
+		success: function(result) {
+			d3.selectAll(".sensorReading")
+			 .text(function(d) {return Math.floor(d.value) + " lumens"});
+			getHeatMap();
+		},
+		error: function(e) {
+			alert("error " + JSON.stringify(e));
+		}
 	});
-	
-	// Not working yet...
-	for (var i = 0; i < newLightLocations.length; i++) {
-		alert(newLightLocations[i].x);
-	};
-	
 }
 
 
 // Creates an rgb color string from an array of three numbers each 0 to 255
 // TODO:  Auto-scale graphic according to max and min luminosity
-// Luminosity in example roughly ranges from 0 - 1000, so divide by 10 first
+// Luminosity in example roughly ranges from 0 - 1000, so divide by 3 first
 function rgb(array){
 	  return 'rgb('+ array.map(function(r){	
 		  			if ((r / 3) > 255) {
