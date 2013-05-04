@@ -1721,6 +1721,10 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
 
             includingFiles.addAll(_getJVMHeaderFiles());
         }
+        
+        if (((BooleanToken)generateEmbeddedCode.getToken()).booleanValue()) {
+            includingFiles.addAll(_getJVMHeaderFiles());
+        }
 
         includingFiles.add("<stdarg.h>");
         includingFiles.add("<stdio.h>");
@@ -2065,7 +2069,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
     
     /** Copy a C (or h) file into the directory /src of the project.
      *  This is useful to copy the files pre-written in C.
-     *  @param String the name of the file to copy.
+     *  @param codeFileName the name of the file to copy.
      *  
      */
     private void _copyCFileTosrc(String codeFileName) throws IllegalActionException {

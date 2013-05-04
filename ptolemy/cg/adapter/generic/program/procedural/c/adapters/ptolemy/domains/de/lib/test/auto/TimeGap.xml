@@ -25,7 +25,13 @@
         </property>
     </property>
     <property name="CCodeGenerator" class="ptolemy.cg.kernel.generic.program.procedural.c.CCodeGenerator">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[405.0, 55.0]">
+        <property name="codeDirectory" class="ptolemy.data.expr.FileParameter" value="$HOME/cg/TimeGap">
+        </property>
+        <property name="generateInSubdirectory" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="inline" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[380.0, 55.0]">
         </property>
     </property>
     <entity name="TimeGap" class="ptolemy.domains.de.lib.TimeGap">
