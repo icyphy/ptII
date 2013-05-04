@@ -1,0 +1,31 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<property name="HlaSubscriberIcon" class="ptolemy.vergil.icon.EditorIcon">
+    <property name="Arrow" class="ptolemy.vergil.kernel.attributes.ArrowAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-9.0, 12.0]">
+        </property>
+        <property name="x" class="ptolemy.data.expr.Parameter" value="-1.0">
+        </property>
+        <property name="arrowLength" class="ptolemy.data.expr.Parameter" value="16.0">
+        </property>
+        <property name="arrowWidth" class="ptolemy.data.expr.Parameter" value="22.0">
+        </property>
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="8">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="HLA">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-30.0, 1.0]">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={145, 269, 934, 634}, maximized=false}">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="6.250000000000017">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{-4.405364961712621E-13, 1.3571366253017914E-12}">
+    </property>
+</property>

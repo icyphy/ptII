@@ -8,6 +8,9 @@
 	    <!-- matlab depends on Matlab being present -->
             <input source="ptolemy/matlab/matlab.xml"/>
 	    <input source="lbnl/actor/lib/simulatorentities.xml"/>
+        
+        <!-- FIXME: see when present or not -->
+        <input source="ptolemy/apps/hlacerti/lib/hlaentities.xml"/>
       </group>
     ?>
   </configure>

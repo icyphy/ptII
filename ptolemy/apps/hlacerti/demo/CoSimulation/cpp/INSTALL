@@ -1,0 +1,36 @@
+--  Author: Gilles Lasnier <gilles.lasnier@isae.fr>
+
+--  $Id$
+--  $Author$
+--  $Date$
+
+A) Requirements
+ We assume that you have already installed and set in your path:
+ - a C++ compiler
+ - the CMake tool
+ - the CERTI environment (see http://savannah.nongnu.org/cvs/?group=certi)
+   !!! Don't forget to source the required CERTI's scripts !!!
+
+B) Compilation and installation
+ 1. Go to the example folder
+ 2. Create the build_example folder
+ 3. Go to the build_example folder
+ 4. Do "cmake ../"
+ 5. Do "make"
+
+C) Run
+ 1. Open three terminals and go to the build_example folder of the example
+ 2. In a first one run "rtig"
+ 3. In a second one run "./producerFederate"
+ 4. In the third one run "./consumerFederate"
+
+Enjoy!
+
+D) TODO
+Arguments for cmake: debug, install_prefix...
+
+
+
+
+
+
