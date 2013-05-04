@@ -65,6 +65,7 @@ import ptolemy.data.type.BaseType;
 import ptolemy.domains.de.kernel.DEDirector;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.attributes.URIAttribute;
+import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
@@ -1281,6 +1282,13 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         if (container instanceof ptolemy.cg.lib.CompiledCompositeActor) {
             _sanitizedModelName = ((ptolemy.cg.lib.CompiledCompositeActor) container)
                     .getSanitizedName();
+        }
+        
+        // Since We generate C Code, this attribute should be false.
+        Attribute generateEmbeddedCode = getAttribute("generateEmbeddedCode");
+        if (generateEmbeddedCode instanceof Parameter) {
+            ((Parameter) generateEmbeddedCode)
+                    .setExpression("false");
         }
 
         boolean inlineValue = ((BooleanToken) inline.getToken()).booleanValue();
