@@ -1,0 +1,40 @@
+-- Author: Gilles Lasnier (gilles.lasnier@isae.fr)
+-- version: $Id$
+
+Installation and deployment of CERTI
+
+Requirements: we assume that you have a
+- recent C++ compiler 
+- the CMake tool
+
+###################################
+1) Installation process (summary) :
+
+	1.	Get the last CERTI cvs source
+	2.	cvs -z3 -d:pserver:anonymous@cvs.savannah.nongnu.org:/sources/certi co certi
+	3.	Go to the CERTI cvs folder downloaded
+	4.	Create the folder build_example and go to this folder
+	5.	Run 'cmake -DCMAKE_INSTALL_PREFIX=<path_for_scripts_and_binaries> ../'. All  files required to build CERTI are stored in the build_example folder.
+	6.	Run 'make'
+	7.	Run 'make install'
+
+Note : In your current terminal, you'll see  information about the (correct) build of CERTI and where are stored the different environment scripts used to set the CERTI environment.
+
+#############
+2) Deployment
+
+For the deployment of an HLA Federation in C++, you need to launch one terminal for running the 'rtig' binary, and one terminal per federate if you have displayed information. To excute the 'rtig' or a federate do this procedure :
+
+	1.	Open a new terminal
+	2.	Source the CERTI environment script. This script is stored in the CMAKE_INSTALL_PREFIX set during the installation process (see previous subsection).
+	3.	'source <path_for_scripts_and_binaries>/share/scripts/myCERTI.sh'
+	4.	Run 'rtig' or the federate required, for example './<fed-binary>'
+
+####################
+3) Debug information
+
+Environment variables used to display traces (e.g. messages) from CERTI :
+
+- 'export RTIG_MSG=D' in RTIG (for messages exchanged between RTIA <--> RTIG)
+
+- 'export RTIA_MSG=D' in a Federate's terminal (for messages exchanges between Federate <--> RTIA)
