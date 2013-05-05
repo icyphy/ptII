@@ -36,7 +36,8 @@ DIRS =
 # Root of the Java directory
 ROOT =      ../../../..
 
-CLASSPATH = $(ROOT)
+# PTJCERTI_JAR is set to $PTII/lib/jcerti.jar by configure.
+CLASSPATH = $(ROOT)$(CLASSPATHSEPARATOR)$(PTJCERTI_JAR)
 
 # Get configuration info
 CONFIG =    $(ROOT)/mk/ptII.mk

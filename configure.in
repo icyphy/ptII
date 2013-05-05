@@ -842,7 +842,6 @@ ANT_ALWAYS_EXCLUDE='<exclude name="**/CVS/"/>
 <exclude name="ptolemy/apps/etherealSting/"/>
 <exclude name="ptolemy/apps/fullscreen/"/>
 <exclude name="ptolemy/apps/giotto/"/>
-<exclude name="ptolemy/apps/hlacerti/"/>
 <exclude name="ptolemy/apps/ia/"/>
 <exclude name="ptolemy/apps/interfaces/"/>
 <exclude name="ptolemy/apps/jmf/"/>
@@ -2323,6 +2322,42 @@ if test -z "$PTJAI_DIR"; then
    updateExcludes "ptolemy/actor/lib/jai/"
 fi
 
+
+#--------------------------------------------------------------------
+#       "CERTI is an Open Source HLA RTI. HLA (High-Level Architecture) is a general purpose architecture for distributed computer simulation systems."
+#	See https://savannah.nongnu.org/projects/certi
+#       JCerti is used by ptolemy/apps/hlacerti
+#--------------------------------------------------------------------
+
+# JCERTI jar files used by ptolemy/apps/hlacerti
+PTJCERTI_JAR=
+
+# We only need to look for JCERTetty if $HLACERT_USER_DIR is present
+HLACERTI_USER_DIR="$PTII/ptolemy/apps/hlacerti"
+
+if test ! -d "$HLACERTI_USER_DIR" ; then
+    PT_MSG_STATUS([$HLACERTI_USER_DIR is not present,
+    so we need not find jcerti.jar.])
+else
+    AC_MSG_CHECKING([for Jcerti, used by hlacerti ])
+    AC_ARG_WITH(jcerti, [  --with-jcerti=JAR       use jcert.jar from JAR,
+                          defaults to \$PTII/lib/jcerti.jar],
+        PTJCERTI_JAR=$withval,
+	PTJCERTI_JAR=$PTII/lib/jcerti.jar)
+    if test  -f "$PTJCERTI_JAR"; then
+	PT_MSG_RESULT([$PTJCERTI_JAR])
+	# Set to mail and used in
+	# $PTII/ptolemy/apps/makefile if jcerti.jar was found.
+	PTHLACERTI_DIR=hlacerti
+        # PTHLACERTI_PACKAGES is used in ptII/doc/makefile
+	PTHLACERTI_PACKAGES="ptolemy.apps.hlacerti.lib"
+	updateClasspath "$PTJCERTI_JAR"
+    else 
+        AC_MSG_WARN([Failed to find jcerti.jar necessary to compile ptolemy/apps/hlacerti
+    hlacerti is optional])	
+       updateExcludes "ptolemy/apps/hlacerti/"
+    fi
+fi
 
 #--------------------------------------------------------------------
 #       "Jetty is a pure Java-based HTTP server and Java Servlet container." 
@@ -5732,6 +5767,12 @@ AC_SUBST(PTGRDOMAIN_JAR)
 # PTGR_PACKAGES is used in ptII/doc/makefile
 AC_SUBST(PTGR_PACKAGES)
 
+# Set to hlacerti and used in $PTII/ptolemy/apps/makefile is lib/jcerti.jar is found
+AC_SUBST(PTHLACERTI_DIR)
+
+# Ptolemy II packages that use jcerti.
+AC_SUBST(PTHLACERTI_PACKAGES)
+
 # Set to homer and used in $PTII/ptolemy/makefile if the netbeans visual gui code is found.
 AC_SUBST(PTHOMER_DIR)
 
@@ -5802,6 +5843,9 @@ AC_SUBST(PTJAVAMAIL_JARS)
 # Ptolemy II packages that use JavaMail framework.
 # PTJMF_PACKAGES is used in ptII/doc/makefile.
 AC_SUBST(PTJAVAMAIL_PACKAGES)
+
+# lib/jcerti.jar, used by ptolemy/apps/hlacerti
+AC_SUBST(PTJCERTI_JAR)
 
 # Jetty jar files used by Ptango and ptserver.
 AC_SUBST(PTJETTY_JAR)

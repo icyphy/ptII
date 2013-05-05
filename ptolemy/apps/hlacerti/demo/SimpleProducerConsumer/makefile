@@ -69,7 +69,7 @@ JCLASS = $(JSRCS:%.java=%.class)
 # Don't include all or install rules here, we want the user
 # to run 'make demos' to run the tests.
 all: jclass $(PTCLASSJAR)
-    @echo "To run all the demos, run 'make demo'"
+	@echo "To run all the demos, run 'make demo'"
 
 
 install: all
@@ -77,12 +77,12 @@ install: all
 demo: demo_ptolemy demo_vergil
 
 demo_ptolemy:
-    "$(PTII)/bin/ptolemy" consumer.xml
-    "$(PTII)/bin/ptolemy" producer.xml
+	"$(PTII)/bin/ptolemy" consumer.xml
+	"$(PTII)/bin/ptolemy" producer.xml
 
 demo_vergil:
-    "$(PTII)/bin/vergil" consumer.xml
-    "$(PTII)/bin/vergil" producer.xml
-    
+	"$(PTII)/bin/vergil" consumer.xml
+	"$(PTII)/bin/vergil" producer.xml
+	
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

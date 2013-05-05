@@ -45,7 +45,7 @@ ME =		ptolemy/apps
 #DIRS =		agilent $(PTKVM_DIR) $(PTJMF_DIR) \
 #		$(PTLEGO_DIR) $(PTLEJOS) \
 #		tini $(PTSOOT_DIR) softwalls #$(PTWABA_DIR) 
-DIRS = $(PTSOOT_DIR) softwalls naomi #$(PTWABA_DIR) 
+DIRS = $(PTSOOT_DIR) softwalls naomi $(PTHLACERTI_DIR) #$(PTWABA_DIR) 
 # Root of Ptolemy II directory
 ROOT =		../..
 
