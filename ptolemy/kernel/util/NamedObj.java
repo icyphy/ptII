@@ -120,7 +120,7 @@ import ptolemy.util.StringUtilities;
  append new fields if there is new information that should be included
  in the description.
  <p>
- A NamedObj can contain DecoratorAttributes. These are attributes that are
+ A NamedObj can contain instances of {@link DecoratorAttributes}. These are attributes that are
  added by another NamedObj that implements the {@link Decorator} interface.
  These attributes are stored separately and can be retrieved by using
  {@link #getDecoratorAttributes(Decorator)} or
@@ -1080,10 +1080,12 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
         return null;
     }
     
-    /** Return the decorated attribute with the specified name for the
+    /** Return the decorator attribute with the specified name for the
      *  specified decorator, or null the specified decorator provides
      *  no attribute with the specified name or the decorator does not
-     *  decorate this object.
+     *  decorate this object. This method is normally called by the
+     *  decorator itself to retrieve its decorated parameter values for
+     *  this NamedObj.
      *  If this object has no decorator attributes, then calling
      *  this method will cause them to be created and assigned default values,
      *  if the specified decorator decorates this object.
@@ -2144,14 +2146,6 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
      *  To do this, they should override this method to throw an exception
      *  when the argument is not an instance of the expected class.
      *  <p>
-     *  If the attribute is an instance of {@link DecoratorAttributes},
-     *  then it is added to the Map of decorators for this NamedObj rather than
-     *  being added to the attribute list of this NamedObj.  The
-     *  key in the map is the {@link Decorator} for the attribute, the value
-     *  is the attribute.  The DecoratedAttribute may be read using
-     *  {@link #getDecoratorAttributes(Decorator)} or
-     *  {@link #getDecoratorAttribute(Decorator, String)}.</p>
-     *  <p>
      *  This method is write-synchronized on the workspace and increments its
      *  version number.</p>
      *
@@ -2282,6 +2276,16 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
                 throw cloneException;
             }
         }
+    }
+    
+    /** Return a list of decorators contained by this object.
+     *  In this base class, this list consists of Attributes that implement
+     *  the {@link Decorator} interface. In subclasses, it can contain other
+     *  objects that implement the Decorator interface, such as Entities.
+     *  @return A list of contained decorators.
+     */
+    protected List<Decorator> _containedDecorators() {
+        return (List<Decorator>)attributeList(Decorator.class);
     }
 
     /** Return a copy of the current list of change requests, or return
@@ -3336,7 +3340,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
                 NamedObj container = getContainer();
                 boolean crossedOpaqueBoundary = false;
                 while (container != null) {
-                    List<Decorator> localDecorators = container.attributeList(Decorator.class);
+                    List<Decorator> localDecorators = container._containedDecorators();
                     for (Decorator decorator : localDecorators) {
                         if (!crossedOpaqueBoundary || decorator.isGlobalDecorator()) {
                             decorators.put(decorator.getFullName(), decorator);

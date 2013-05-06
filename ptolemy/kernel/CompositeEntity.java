@@ -46,6 +46,7 @@ import java.util.TreeMap;
 
 import ptolemy.kernel.attributes.VersionAttribute;
 import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.Decorator;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
@@ -2196,6 +2197,17 @@ public class CompositeEntity extends ComponentEntity {
                 ((ComponentEntity) containedObject)._adjustDeferrals();
             }
         }
+    }
+
+    /** Return a list of decorators contained by this object.
+     *  This overrides the base class to include not only attributes that
+     *  implement the {@link Decorator} interface, but also entities.
+     *  @return A list of contained decorators.
+     */
+    protected List<Decorator> _containedDecorators() {
+        List<Decorator> result = super._containedDecorators();
+        result.addAll((List<Decorator>)entityList(Decorator.class));
+        return result;
     }
 
     /** List the opaque entities that are directly or indirectly

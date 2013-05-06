@@ -39,12 +39,7 @@ and the NamedObj. Those extra attributes are contained by an
 attribute of class {@link DecoratorAttributes} that is created
 by calling {@link #createDecoratorAttributes(NamedObj)} and specifying
 the object that will contain the additional attributes.
-<p>
-A NamedObj can contain DecoratorAttributes. These are attributes that are
-added by another NamedObj, called a decorator to this NamedObj.
-An example is for example a code generator. This one has specific attributes
-for for example the generated code of the director in a model. These attributes
-are added by the Decorator (the code generator), to the director ("this" object).
+The decorated NamedObj will contain these instances of DecoratorAttributes.
 These attributes are stored separately and can be retrieved by using
 {@link NamedObj#getDecoratorAttributes(Decorator)} or
 {@link NamedObj#getDecoratorAttributes(Decorator)}.

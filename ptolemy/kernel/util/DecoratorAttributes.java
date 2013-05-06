@@ -28,6 +28,10 @@
 
 package ptolemy.kernel.util;
 
+import java.util.List;
+
+import ptolemy.kernel.CompositeEntity;
+
 
 ///////////////////////////////////////////////////////////////////
 //// DecoratorAttributes
@@ -99,7 +103,8 @@ public class DecoratorAttributes extends Attribute {
     ///////////////////////////////////////////////////////////////////
     ////                         parameters                        ////
 
-    /** The full name of the decorator, to be stored in a MoML file
+    /** The name of the decorator relative to the top-level of
+     *  the model, to be stored in a MoML file
      *  to re-establish the connection with a decorator after saving
      *  and re-parsing the file. This is a string that is not visible
      *  to the user.
@@ -109,7 +114,7 @@ public class DecoratorAttributes extends Attribute {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Return the decorator.
+    /** Return the decorator that is responsible for this DecoratorAttributes instance.
      *  @return The decorator, or null if there is none.
      */
     public Decorator getDecorator() {
@@ -117,11 +122,26 @@ public class DecoratorAttributes extends Attribute {
             // Retrieve the decorator using the decoratorName parameter.
             String name = decoratorName.getExpression();
             if (name != null && !name.equals("")) {
-                try {
-                    // Name is relative to the toplevel.
-                    _decorator = (Decorator)toplevel().getAttribute(name, Decorator.class);
-                } catch (IllegalActionException e) {
-                    throw new InternalErrorException(e);
+                // Find all the decorators in scope, and return the first one whose name matches.
+                NamedObj container = getContainer().getContainer();
+                boolean crossedOpaqueBoundary = false;
+                while (container != null) {
+                    List<Decorator> localDecorators = container._containedDecorators();
+                    for (Decorator decorator : localDecorators) {
+                        if (!crossedOpaqueBoundary || decorator.isGlobalDecorator()) {
+                            if (decorator.getName(toplevel()).equals(name)) {
+                                // We have a match.
+                                _decorator = decorator;
+                                return _decorator;
+                            }
+                        }
+                    }
+                    // FIXME: kernel.util should not have a dependence on kernel classes.
+                    if (container instanceof CompositeEntity
+                            && ((CompositeEntity)container).isOpaque()) {
+                        crossedOpaqueBoundary = true;
+                    }
+                    container = container.getContainer();
                 }
             }
         }
