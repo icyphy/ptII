@@ -1,4 +1,4 @@
-/* Run the auto/ tests using c cg.
+/* Run the auto/ tests using java cg.
 
  Copyright (c) 2011-2012 The Regents of the University of California.
  All rights reserved.
@@ -26,27 +26,27 @@
 
  */
 
-package ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.de.lib.test.junit;
+package ptolemy.util.test.junit;
 
-import ptolemy.util.test.junit.JUnitCGCTestBase;
+import org.junit.runner.RunWith;
+import org.junit.runners.Suite;
 
 ///////////////////////////////////////////////////////////////////
-//// JUnitCGCTest
+//// JUnitCGCNoInlineTestBase
 /**
- *  Run the auto/ tests using c cg.
- * <pre>
- * (cd $PTII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/de/lib/test/junit; java -classpath ${PTII}:${PTII}/lib/ptjacl.jar:${PTII}/lib/junit-4.8.2.jar:${PTII}/lib/JUnitParams-0.3.0.jar org.junit.runner.JUnitCore ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.sdf.lib.test.junit.JUnitCCGTest)
- * </pre>
+ *  Run the auto/ tests using c cg with no inlining.
+ * <p>
+ * The DE codegen facility does not work with inlining.
+ * </p>
  *
- * <p> A copy of this file appears in each test/junit c cg subdirectory
- * so that it is easy for developers to run tests.</p>
-
  * @author Christopher Brooks
- * @version $Id$
+ * @version $Id: JUnitCGCTestBase.java 64753 2012-10-02 02:05:53Z cxh $
  * @since Ptolemy II 8.1
- * @Pt.ProposedRating Green (cxh)
- * @Pt.AcceptedRating Green (cxh)
+ * @Pt.ProposedRating Red (cxh)
+ * @Pt.AcceptedRating Red (cxh)
  */
-public class JUnitCGCTest extends JUnitCGCTestBase {
-    // This class is empty, all the action occurs in the parent.
+@RunWith(Suite.class)
+@Suite.SuiteClasses({ ptolemy.util.test.junit.AutoCGCKnownFailedTests.class,
+                ptolemy.util.test.junit.AutoCGCNoInlineTests.class})
+public class JUnitCGCNoInlineTestBase {
 }

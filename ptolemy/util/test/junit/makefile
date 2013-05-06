@@ -43,6 +43,8 @@ include $(CONFIG)
 # Java Sources, keep these alphabetical,
 JSRCS = \
 	AutoCGCKnownFailedTests.java \
+	AutoCGCInlineTests.java \
+	AutoCGCNoInlineTests.java \
 	AutoCGCTests.java \
 	AutoCGJavaKnownFailedTests.java \
 	AutoCGJavaTests.java \
