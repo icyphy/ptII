@@ -706,7 +706,7 @@
 <xLabel>time</xLabel>
 <yLabel></yLabel>
 <xRange min="0.0" max="40.75"/>
-<yRange min="0.0" max="5.03779733832637"/>
+<yRange min="0.0" max="5.450412371141835"/>
 <noGrid/>
 </plot>?>
                 </configure>
@@ -757,6 +757,18 @@
                     <property name="_tableauFactory" class="ptolemy.vergil.modal.modal.ModalTableauFactory">
                     </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[118.5, 275.0]">
+                    </property>
+                    <property name="DecoratorAttributesFor_PtidesDirector" class="ptolemy.domains.ptides.kernel.ThrottleAttributes">
+                        <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.PtidesDirector">
+                        </property>
+                        <property name="useMaximumLookaheadTime" class="ptolemy.data.expr.Parameter" value="false">
+                        </property>
+                        <property name="maximumLookaheadTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                        </property>
+                        <property name="useMaximumFutureEvents" class="ptolemy.data.expr.Parameter" value="false">
+                        </property>
+                        <property name="maximumFutureEvents" class="ptolemy.data.expr.Parameter" value="0">
+                        </property>
                     </property>
                     <port name="sensor" class="ptolemy.domains.modal.modal.ModalPort">
                         <property name="input"/>
@@ -930,6 +942,18 @@
                     <property name="_tableauFactory" class="ptolemy.vergil.modal.modal.ModalTableauFactory">
                     </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[253.5, 275.0]">
+                    </property>
+                    <property name="DecoratorAttributesFor_PtidesDirector" class="ptolemy.domains.ptides.kernel.ThrottleAttributes">
+                        <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.PtidesDirector">
+                        </property>
+                        <property name="useMaximumLookaheadTime" class="ptolemy.data.expr.Parameter" value="false">
+                        </property>
+                        <property name="maximumLookaheadTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                        </property>
+                        <property name="useMaximumFutureEvents" class="ptolemy.data.expr.Parameter" value="false">
+                        </property>
+                        <property name="maximumFutureEvents" class="ptolemy.data.expr.Parameter" value="0">
+                        </property>
                     </property>
                     <port name="missed" class="ptolemy.domains.modal.modal.ModalPort">
                         <property name="input"/>
@@ -1133,6 +1157,18 @@
                 <property name="_tableauFactory" class="ptolemy.vergil.modal.modal.ModalTableauFactory">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[350.0, 215.0]">
+                </property>
+                <property name="DecoratorAttributesFor_PtidesDirector" class="ptolemy.domains.ptides.kernel.ThrottleAttributes">
+                    <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.PtidesDirector">
+                    </property>
+                    <property name="useMaximumLookaheadTime" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                    <property name="maximumLookaheadTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                    </property>
+                    <property name="useMaximumFutureEvents" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                    <property name="maximumFutureEvents" class="ptolemy.data.expr.Parameter" value="0">
+                    </property>
                 </property>
                 <port name="operatingTarget" class="ptolemy.domains.modal.modal.ModalPort">
                     <property name="output"/>
@@ -1892,50 +1928,82 @@ The controller runs at least every tick of the local clock.</text></svg></config
                 </property>
                 <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
+                <property name="DecoratorAttributesFor_PtidesDirector" class="ptolemy.domains.ptides.kernel.ThrottleAttributes">
+                    <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.PtidesDirector">
+                    </property>
+                    <property name="useMaximumLookaheadTime" class="ptolemy.data.expr.Parameter" value="true">
+                    </property>
+                    <property name="maximumLookaheadTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                    </property>
+                    <property name="useMaximumFutureEvents" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                    <property name="maximumFutureEvents" class="ptolemy.data.expr.Parameter" value="0">
+                    </property>
+                </property>
             </entity>
             <relation name="relation" class="ptolemy.actor.TypedIORelation">
                 <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
                 </property>
                 <vertex name="vertex1" value="[425.0, 350.0]">
                 </vertex>
+                <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+                </property>
             </relation>
             <relation name="relation2" class="ptolemy.actor.TypedIORelation">
                 <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
                 </property>
                 <vertex name="vertex1" value="[305.0, 370.0]">
                 </vertex>
+                <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+                </property>
             </relation>
             <relation name="relation3" class="ptolemy.actor.TypedIORelation">
                 <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
                 </property>
                 <vertex name="vertex1" value="[140.0, 310.0]">
                 </vertex>
+                <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+                </property>
             </relation>
             <relation name="relation4" class="ptolemy.actor.TypedIORelation">
                 <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
                 </property>
                 <vertex name="vertex1" value="[120.0, 260.0]">
                 </vertex>
+                <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+                </property>
             </relation>
             <relation name="relation5" class="ptolemy.actor.TypedIORelation">
                 <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
                 </property>
                 <vertex name="vertex1" value="[435.0, 205.0]">
                 </vertex>
+                <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+                </property>
             </relation>
             <relation name="relation6" class="ptolemy.actor.TypedIORelation">
                 <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
                 </property>
                 <vertex name="vertex1" value="[280.0, 145.0]">
                 </vertex>
+                <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+                </property>
             </relation>
             <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+                <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+                </property>
             </relation>
             <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+                <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+                </property>
             </relation>
             <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+                <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+                </property>
             </relation>
             <relation name="relation10" class="ptolemy.actor.TypedIORelation">
+                <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+                </property>
             </relation>
             <link port="measuredOutput" relation="relation6"/>
             <link port="targetOutput" relation="relation9"/>
@@ -2375,28 +2443,48 @@ The controller runs at least every tick of the local clock.</text></svg></config
                 </port>
             </entity>
             <relation name="relation" class="ptolemy.actor.TypedIORelation">
+                <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+                </property>
             </relation>
             <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+                <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+                </property>
             </relation>
             <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+                <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+                </property>
             </relation>
             <relation name="relation4" class="ptolemy.actor.TypedIORelation">
                 <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
                 </property>
                 <vertex name="vertex1" value="[165.0, 250.0]">
                 </vertex>
+                <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+                </property>
             </relation>
             <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+                <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+                </property>
             </relation>
             <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+                <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+                </property>
             </relation>
             <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+                <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+                </property>
             </relation>
             <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+                <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+                </property>
             </relation>
             <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+                <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+                </property>
             </relation>
             <relation name="relation10" class="ptolemy.actor.TypedIORelation">
+                <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+                </property>
             </relation>
             <link port="port" relation="relation4"/>
             <link port="port2" relation="relation8"/>
@@ -2424,36 +2512,60 @@ The controller runs at least every tick of the local clock.</text></svg></config
     <relation name="relation10" class="ptolemy.actor.TypedIORelation">
         <vertex name="vertex1" value="[65.0, 300.0]">
         </vertex>
+        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+        </property>
     </relation>
     <relation name="relation12" class="ptolemy.actor.TypedIORelation">
         <vertex name="vertex1" value="[85.0, 310.0]">
         </vertex>
+        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+        </property>
     </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+        </property>
     </relation>
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+        </property>
     </relation>
     <relation name="relation9" class="ptolemy.actor.TypedIORelation">
         <vertex name="vertex1" value="[405.0, 310.0]">
         </vertex>
+        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+        </property>
     </relation>
     <relation name="relation11" class="ptolemy.actor.TypedIORelation">
         <vertex name="vertex1" value="[410.0, 165.0]">
         </vertex>
+        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+        </property>
     </relation>
     <relation name="relation8" class="ptolemy.actor.TypedIORelation">
         <vertex name="vertex1" value="[410.0, 90.0]">
         </vertex>
+        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+        </property>
     </relation>
     <relation name="relation13" class="ptolemy.actor.TypedIORelation">
+        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+        </property>
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+        </property>
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+        </property>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+        </property>
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+        </property>
     </relation>
     <link port="GeneratorTurbine.fuel" relation="relation8"/>
     <link port="GeneratorTurbine.electricOutput" relation="relation7"/>
