@@ -1,4 +1,4 @@
-#include "DEDirector.h"
+#include "../includes/DEDirector.h"
 
 void DEDirectorFireAt(DEDirector * director, Actor * actor,
 		Time time, int microstep) {

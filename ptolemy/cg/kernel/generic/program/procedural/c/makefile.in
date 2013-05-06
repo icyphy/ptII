@@ -48,7 +48,7 @@ WARNING_CC_FLAGS = -Wall
 	@PTCGCompiler@ -D__int64="long long" $(WARNING_CC_FLAGS) $(CC_FLAGS) $(USER_CC_FLAGS) $(DEBUG) $(PTCGINCLUDES) $^ -o @modelName@ -lm $(PTCGLIBRARIES)
 
 # Each subdirectory must supply rules for building sources it contributes
-./src/%.o: ./src/%.c
+./build/%.o: ./src/%.c
 	gcc $(WARNING_CC_FLAGS) $(CC_FLAGS) $(USER_CC_FLAGS) $(DEBUG) -c -o "$@" "$<"
 
 

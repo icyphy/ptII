@@ -131,6 +131,8 @@ public class DEDirector extends Director {
         
         // Sort by name so that we retrieve the actors from the list
         // by composite.
+        
+        String modelName = ((CompositeActor) _director.getContainer()).getName();
     
         Collections.sort(actorList, new FullNameComparator());
     
@@ -146,11 +148,11 @@ public class DEDirector extends Director {
             StringBuffer codeActor = new StringBuffer();
             StringBuffer codeActorH = new StringBuffer();
     
-            codeActor.append("#include \"" + actor.getName() + ".h\"");
+            codeActor.append("#include \"../includes/" + actor.getName() + ".h\"");
             
             codeActorH.append("#ifndef DEFINE_" + actor.getName().toUpperCase() + "_H");
             codeActorH.append(_eol + "#define DEFINE_" + actor.getName().toUpperCase() + "_H");
-            codeActorH.append(_eol + "#include \"main.h\"");
+            codeActorH.append(_eol + "#include \"../" + modelName + ".h\"");
             codeActorH.append(_eol + "#include \"types.h\"");
             codeActorH.append(_eol + "#include <stdbool.h>");
             

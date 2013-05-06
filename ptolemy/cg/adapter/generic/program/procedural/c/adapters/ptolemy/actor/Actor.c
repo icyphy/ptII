@@ -1,4 +1,4 @@
-#include "Actor.h"
+#include "../includes/Actor.h"
 
 // Create a new empty actor
 Actor * newActor() {

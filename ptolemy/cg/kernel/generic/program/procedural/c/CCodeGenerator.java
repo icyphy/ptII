@@ -412,7 +412,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
 
         StringBuffer codeH = new StringBuffer();
         StringBuffer codeC = new StringBuffer();
-        codeC.append("#include \"types.h\"");
+        codeC.append("#include \"../includes/types.h\"");
 
         codeH.append(_eol + "#include <stdio.h>");
         codeH.append(_eol + "#include <stdlib.h>");
@@ -1429,25 +1429,26 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         // hinted by the angle bracket <> syntax in a #include statement.
      
         // appending the .h multi-inclusions protection macro
-        codeMainH.append("#ifndef NO_MAIN_H" + _eol + "#define NO_MAIN_H" + _eol);
+        codeMainH.append("#ifndef NO_" + _sanitizedModelName.toUpperCase() + "_H" + _eol 
+                + "#define NO_" + _sanitizedModelName.toUpperCase() + "_H" + _eol);
         // FIXME : again, this is only for the DE director maybe we can extend that !
         if (director != null && director instanceof DEDirector) {
-            codeMainH.append("#include \"DEReceiver.h\"" + _eol);
-            codeMainH.append("#include \"IOPort.h\"" + _eol);
-            codeMainH.append("#include \"CalendarQueue.h\"" + _eol);
-            codeMainH.append("#include \"DEEvent.h\"" + _eol);
-            codeMainH.append("#include \"DEDirector.h\"" + _eol);
-            codeMainH.append("#include \"Actor.h\"" + _eol);
+            codeMainH.append("#include \"includes/DEReceiver.h\"" + _eol);
+            codeMainH.append("#include \"includes/IOPort.h\"" + _eol);
+            codeMainH.append("#include \"includes/CalendarQueue.h\"" + _eol);
+            codeMainH.append("#include \"includes/DEEvent.h\"" + _eol);
+            codeMainH.append("#include \"includes/DEDirector.h\"" + _eol);
+            codeMainH.append("#include \"includes/Actor.h\"" + _eol);
             
             codeTypesH.append(_eol + "typedef struct IOPort IOPort;");
             codeTypesH.append(_eol + "typedef struct DEEvent DEEvent;");
             codeTypesH.append(_eol + "typedef struct Actor Actor;");
             codeTypesH.append(_eol + "typedef double Time;" + _eol);
         }
-        codeMainH.append("#include \"types.h\"" + _eol);
+        codeMainH.append("#include \"includes/types.h\"" + _eol);
         codeMainH.append(includeFiles);
         
-        code.append("#include \"src/main.h\""+_eol);
+        code.append("#include \"" + _sanitizedModelName + ".h\""+_eol);
         /*if (director != null && director instanceof DEDirector)
                 code.append("#include \"src/DEReceiver.h\""+_eol);
         else
@@ -1557,13 +1558,23 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         // Appends the body code for the director
         code.append(bodyCode);
         
-        String directorySrc = "";
-        directorySrc += codeDirectory.stringValue();
+        // Create the needed directories
+        String directorySrc = codeDirectory.stringValue();
+        String directoryIncludes = codeDirectory.stringValue();
+        String directoryBuild = codeDirectory.stringValue();
         if (!directorySrc.endsWith("/"))
             directorySrc += "/";
+        if (!directoryIncludes.endsWith("/"))
+            directoryIncludes += "/";
+        if (!directoryBuild.endsWith("/"))
+            directoryBuild += "/";
         new File(directorySrc).mkdirs();
         directorySrc +=  "src/";
+        directoryIncludes +=  "includes/";
+        directoryBuild +=  "build/";
         new File(directorySrc).mkdirs();
+        new File(directoryIncludes).mkdirs();
+        new File(directoryBuild).mkdirs();
         
         _actorsToInclude = new LinkedList<String>();
         for (int i = 0 ; i < actorsCode.length ; i+=3) {
@@ -1573,7 +1584,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
             super._writeCodeFileName(actorCode, "src/"+actorsCode[i]+".c", true, false);
             StringBuffer actorCodeH = new StringBuffer();
             actorCodeH.append(actorsCode[i+2]);
-            super._writeCodeFileName(actorCodeH, "src/"+actorsCode[i]+".h", true, false);
+            super._writeCodeFileName(actorCodeH, "includes/"+actorsCode[i]+".h", true, false);
         }
         
         // Findbugs warns that it is not necessary to set these fields
@@ -1611,8 +1622,8 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
 
         super._writeCode(code);
         
-        super._writeCodeFileName(codeMainH, "src/main.h", true, false);
-        super._writeCodeFileName(codeTypesH, "src/types.h", true, false);
+        super._writeCodeFileName(codeMainH, _sanitizedModelName + ".h", true, false);
+        super._writeCodeFileName(codeTypesH, "includes/types.h", true, false);
         super._writeCodeFileName(codeTypesC, "src/types.c", true, false);
         // Let's copy the needed files
         if (director != null && director instanceof DEDirector) {
@@ -1753,7 +1764,11 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
                     + file.substring(1, file.length() - 3).replace('/', '_')
                             .toUpperCase() + "_H" + _eol + "#include " + file
                     + _eol + "#endif" + _eol);*/
-            code.append("#include " + file + _eol);
+            if (file.endsWith("\""))
+                // in case of a close dependency we need to add the /includes/
+                code.append("#include \"includes/" + file.substring(1) + _eol);
+            else
+                code.append("#include " + file + _eol);
         }
 
         return code.toString();
@@ -1901,19 +1916,19 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
                     director = ((CompositeActor) getContainer()).getDirector();
             if (director != null && director instanceof DEDirector) {
                 String ptcgC = "src/types.c src/Actor.c src/CalendarQueue.c src/DEDirector.c src/DEEvent.c src/DEReceiver.c src/IOPort.c";
-                String ptcgO = "src/types.o src/Actor.o src/CalendarQueue.o src/DEDirector.o src/DEEvent.o src/DEReceiver.o src/IOPort.o";
+                String ptcgO = "build/types.o build/Actor.o build/CalendarQueue.o build/DEDirector.o build/DEEvent.o build/DEReceiver.o build/IOPort.o";
                 Iterator<String> actors = _actorsToInclude.iterator();
                 while (actors.hasNext()) {
                     String actor = actors.next();
                     ptcgC += " src/" + actor + ".c";
-                    ptcgO += " src/" + actor + ".o";
+                    ptcgO += " build/" + actor + ".o";
                 }
                 substituteMap.put("@PTCG_CFILES@", ptcgC);
                 substituteMap.put("@PTCG_OFILES@", ptcgO);
             }
             else {
                 substituteMap.put("@PTCG_CFILES@", "src/types.c");
-                substituteMap.put("@PTCG_OFILES@", "src/types.o");
+                substituteMap.put("@PTCG_OFILES@", "build/types.o");
             }
             
             // Define substitutions to be used in the makefile
@@ -2100,7 +2115,12 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         }
         ClassLoader classLoader = referenceClass.getClassLoader();
         URL url = classLoader.getResource(cFileName);
-        codeFileName = "src/" + codeFileName;
+        if (codeFileName.endsWith(".h"))
+            codeFileName = "includes/" + codeFileName;
+        else if (codeFileName.endsWith(".c"))
+            codeFileName = "src/" + codeFileName;
+        else
+            throw new IllegalActionException(this, "Only .c and .h files are allowed in _copyCFileTosrc");
         String inputLine = "";
 
         try {

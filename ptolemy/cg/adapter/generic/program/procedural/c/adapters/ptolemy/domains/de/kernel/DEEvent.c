@@ -1,4 +1,4 @@
-#include "DEEvent.h"
+#include "../includes/DEEvent.h"
 
 // Initialize an empty event
 DEEvent * newDEEvent() {
