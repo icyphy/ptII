@@ -205,14 +205,14 @@ import certi.rti.impl.CertiRtiAmbassador;
  *
  * <b>References</b>:
  * <br>
- * [1] Dpt. of Defense (DoD) Specifications, ÒHigh Level Architecture Interface
- *     Specification, Version 1.3Ó, DOD/DMSO HLA IF 1.3, Tech. Rep., Apr 1998.
- * [2] IEEE, ÒIEEE standard for modeling and simulation High Level Architecture
- *     (HLA)Ó, IEEE Std 1516-2010, vol. 18, pp. 1Ð38, 2010.
- * [3] D. of Defense (DoD) Specifications, ÒHigh Level Architecture Object Model
- *     Template, Version 1.3Ó, DOD/DMSO OMT 1.3, Tech. Rep., Feb 1998.
- * [4] E. Noulard, J.-Y. Rousselot, and P. Siron, ÒCERTI, an open source RTI, 
- *     why and how ?Ó, Spring Simulation Interoperability Workshop, pp. 23Ð27, 
+ * [1] Dpt. of Defense (DoD) Specifications, "High Level Architecture Interface
+ *     Specification, Version 1.3", DOD/DMSO HLA IF 1.3, Tech. Rep., Apr 1998.
+ * [2] IEEE, "IEEE standard for modeling and simulation High Level Architecture
+ *     (HLA)", IEEE Std 1516-2010, vol. 18, pp. 1-38, 2010.
+ * [3] D. of Defense (DoD) Specifications, "High Level Architecture Object Model
+ *     Template, Version 1.3", DOD/DMSO OMT 1.3, Tech. Rep., Feb 1998.
+ * [4] E. Noulard, J.-Y. Rousselot, and P. Siron, "CERTI, an open source RTI, 
+ *     why and how ?", Spring Simulation Interoperability Workshop, pp. 23-27, 
  *     Mar 2009.
  *  
  *  @author Gilles Lasnier, Contributors: Patricia Derler, Edward A. Lee
