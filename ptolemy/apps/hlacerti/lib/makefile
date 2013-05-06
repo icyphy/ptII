@@ -31,7 +31,7 @@
 
 ME =        ptolemy/apps/hlacerti/lib
 
-DIRS =      
+DIRS =      test
 
 # Root of the Java directory
 ROOT =      ../../../..
