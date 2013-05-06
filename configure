@@ -709,6 +709,7 @@ PTJNI_ARCHITECTURE
 PTJMF_PACKAGES
 PTJMF_DIR
 PTJETTY_JAR
+PTJCERTI_JAR
 PTJAVAMAIL_PACKAGES
 PTJAVAMAIL_JARS
 PTJAVAMAIL_DIR
@@ -729,6 +730,8 @@ PTII
 PTHOMER_PACKAGES
 PTHOMER_JARS
 PTHOMER_DIR
+PTHLACERTI_PACKAGES
+PTHLACERTI_DIR
 PTGR_PACKAGES
 PTGRDOMAIN_JAR
 PTGMP_LIB
@@ -930,6 +933,7 @@ with_itextpdf
 with_openideutil
 with_openideutillookup
 with_netbeansapivisual
+with_jcerti
 with_jetty
 with_servlet
 with_javamail
@@ -1625,6 +1629,8 @@ Optional Packages:
                           defaults to \$PTII/lib/org-openide-util-lookup.jar
   --with-netbeansapivisual=JAR       use org-netbeans-api-visual.jar from JAR,
                               defaults to \$PTII/lib/org-netbeans-api-visual.jar
+  --with-jcerti=JAR       use jcert.jar from JAR,
+                          defaults to \$PTII/lib/jcerti.jar
   --with-jetty=JAR       use jetty.jar from JAR,
                           defaults to \$PTII/lib/jetty-all-8.1.5-v20120716.jar
   --with-servlet=JAR       use servlet.jar from JAR,
@@ -4078,7 +4084,6 @@ ANT_ALWAYS_EXCLUDE='<exclude name="**/CVS/"/>
 <exclude name="ptolemy/apps/etherealSting/"/>
 <exclude name="ptolemy/apps/fullscreen/"/>
 <exclude name="ptolemy/apps/giotto/"/>
-<exclude name="ptolemy/apps/hlacerti/"/>
 <exclude name="ptolemy/apps/ia/"/>
 <exclude name="ptolemy/apps/interfaces/"/>
 <exclude name="ptolemy/apps/jmf/"/>
@@ -7792,6 +7797,53 @@ if test -z "$PTJAI_DIR"; then
    updateExcludes "ptolemy/actor/lib/jai/"
 fi
 
+
+#--------------------------------------------------------------------
+#       "CERTI is an Open Source HLA RTI. HLA (High-Level Architecture) is a general purpose architecture for distributed computer simulation systems."
+#	See https://savannah.nongnu.org/projects/certi
+#       JCerti is used by ptolemy/apps/hlacerti
+#--------------------------------------------------------------------
+
+# JCERTI jar files used by ptolemy/apps/hlacerti
+PTJCERTI_JAR=
+
+# We only need to look for JCERTetty if $HLACERT_USER_DIR is present
+HLACERTI_USER_DIR="$PTII/ptolemy/apps/hlacerti"
+
+if test ! -d "$HLACERTI_USER_DIR" ; then
+    if test "${PTVERBOSE:-none}" != "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: $HLACERTI_USER_DIR is not present,
+    so we need not find jcerti.jar." >&5
+$as_echo "$HLACERTI_USER_DIR is not present,
+    so we need not find jcerti.jar." >&6; }; fi
+else
+    { $as_echo "$as_me:${as_lineno-$LINENO}: checking for Jcerti, used by hlacerti " >&5
+$as_echo_n "checking for Jcerti, used by hlacerti ... " >&6; }
+
+# Check whether --with-jcerti was given.
+if test "${with_jcerti+set}" = set; then :
+  withval=$with_jcerti; PTJCERTI_JAR=$withval
+else
+  PTJCERTI_JAR=$PTII/lib/jcerti.jar
+fi
+
+    if test  -f "$PTJCERTI_JAR"; then
+	if test "${PTVERBOSE:-none}" = "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
+$as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: $PTJCERTI_JAR" >&5
+$as_echo "$PTJCERTI_JAR" >&6; }; fi
+	# Set to mail and used in
+	# $PTII/ptolemy/apps/makefile if jcerti.jar was found.
+	PTHLACERTI_DIR=hlacerti
+        # PTHLACERTI_PACKAGES is used in ptII/doc/makefile
+	PTHLACERTI_PACKAGES="ptolemy.apps.hlacerti.lib"
+	updateClasspath "$PTJCERTI_JAR"
+    else
+        { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Failed to find jcerti.jar necessary to compile ptolemy/apps/hlacerti
+    hlacerti is optional" >&5
+$as_echo "$as_me: WARNING: Failed to find jcerti.jar necessary to compile ptolemy/apps/hlacerti
+    hlacerti is optional" >&2;}
+       updateExcludes "ptolemy/apps/hlacerti/"
+    fi
+fi
 
 #--------------------------------------------------------------------
 #       "Jetty is a pure Java-based HTTP server and Java Servlet container."
@@ -12680,6 +12732,12 @@ ANT_JAVADOC_EXCLUDEPACKAGENAMES=`echo "$ANT_ALWAYS_EXCLUDE $ANT_EXCLUDE"| sed 's
 # PTGR_PACKAGES is used in ptII/doc/makefile
 
 
+# Set to hlacerti and used in $PTII/ptolemy/apps/makefile is lib/jcerti.jar is found
+
+
+# Ptolemy II packages that use jcerti.
+
+
 # Set to homer and used in $PTII/ptolemy/makefile if the netbeans visual gui code is found.
 
 
@@ -12749,6 +12807,9 @@ ANT_JAVADOC_EXCLUDEPACKAGENAMES=`echo "$ANT_ALWAYS_EXCLUDE $ANT_EXCLUDE"| sed 's
 
 # Ptolemy II packages that use JavaMail framework.
 # PTJMF_PACKAGES is used in ptII/doc/makefile.
+
+
+# lib/jcerti.jar, used by ptolemy/apps/hlacerti
 
 
 # Jetty jar files used by Ptango and ptserver.
