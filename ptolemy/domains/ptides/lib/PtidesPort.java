@@ -46,7 +46,6 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Settable;
-import ptolemy.kernel.util.Settable.Visibility;
 import ptolemy.kernel.util.SingletonConfigurableAttribute;
 
 /** A specialized port for Ptides platform I/O implementing
