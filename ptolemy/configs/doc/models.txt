@@ -84,6 +84,14 @@ $CLASSPATH/ptolemy/caltrop/demo/FunctionDefinition/FunctionDefinition.xml
 $CLASSPATH/ptolemy/caltrop/demo/Primes/Primes.xml
 $CLASSPATH/ptolemy/caltrop/demo/SDFDDI/SDFDDI.xml
 $CLASSPATH/ptolemy/cg/lib/demo/CompiledCompositeActor/CompiledCompositeActor.xml
+$CLASSPATH/ptolemy/cg/lib/demo/DECG/DECG.xml
+$CLASSPATH/ptolemy/cg/lib/demo/DECG/DECGClockRamp.xml
+$CLASSPATH/ptolemy/cg/lib/demo/DECG/DECGDelay.xml
+$CLASSPATH/ptolemy/cg/lib/demo/DECG/DECGHelloWorld.xml
+$CLASSPATH/ptolemy/cg/lib/demo/DECG/DECGMath.xml
+$CLASSPATH/ptolemy/cg/lib/demo/DECG/DECGPi.xml
+$CLASSPATH/ptolemy/cg/lib/demo/DECG/DECGPiSquare.xml
+$CLASSPATH/ptolemy/cg/lib/demo/DECG/DECGPoisson.xml
 $CLASSPATH/ptolemy/cg/lib/demo/ModularCG/ModularCG.xml
 $CLASSPATH/ptolemy/cg/lib/demo/ModularCGPubSub/ModularCGPubSub.xml
 $CLASSPATH/ptolemy/cg/lib/demo/Scale/ScaleC.xml
