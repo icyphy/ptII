@@ -504,10 +504,16 @@ implements TimeRegulator {
         newObject._federationName = _federationName;
         newObject._isTimeConstrained = _isTimeConstrained;
         newObject._isTimeRegulator = _isTimeRegulator;
-        newObject._hlaStartTime = _hlaStartTime;
-        newObject._hlaTimeStep = _hlaTimeStep;
-        newObject._hlaLookAHead = _hlaLookAHead;
-        newObject._requireSynchronization = _requireSynchronization;
+	try {
+	    newObject._hlaStartTime = ((DoubleToken) hlaStartTime.getToken()).doubleValue();
+	    newObject._hlaTimeStep = ((DoubleToken) hlaTimeStep.getToken()).doubleValue();
+	    newObject._hlaLookAHead = ((DoubleToken) hlaLookAHead.getToken()).doubleValue();
+	} catch (IllegalActionException ex) {
+	    CloneNotSupportedException ex2 = new CloneNotSupportedException("Failed to get a token.");
+	    ex2.initCause(ex);
+	    throw ex2;
+	}
+	newObject._requireSynchronization = _requireSynchronization;
         newObject._synchronizationPointName = _synchronizationPointName;
         newObject._isCreatorSyncPt = _isCreatorSyncPt;
         newObject._useNextEventRequest = _useNextEventRequest;
