@@ -1215,8 +1215,6 @@ implements TimeRegulator {
             }
 
             canDestroyRtig = true;
-            System.out.println("Yes2");
-
         }
 
         // Terminate RTIG subprocess.

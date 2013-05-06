@@ -28,12 +28,10 @@ COPYRIGHTENDKEY
 
 package ptolemy.apps.hlacerti.lib;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -144,7 +142,6 @@ public class CertiRtig extends NamedObj{
     public void initialize(String directory) throws IllegalActionException {
         _directoryAsFile = null;
         _isAlreadyLaunched = false;
-        _commandList = new LinkedList<String>();
         _runtime = Runtime.getRuntime();
 
         // Retrieve CERTI_HOME environment variable.
@@ -174,18 +171,18 @@ public class CertiRtig extends NamedObj{
 
         File fedFileName = new File(directory);
 
+
+        // The list of command and argumentss to execute in the shell. */
+        List<String> commandList = new LinkedList<String>();
+
         // Execute command as shell interpret.
-        _commandList = _getCommandList();
+        commandList = _getCommandList();
 
         // Build the command to execute in the shell: "rtig <.fed file>"
-        _commandList.add("rtig");
-        _commandList.add(fedFileName.getName());
+        commandList.add(certiHome + "/bin/rtig");
+        commandList.add(fedFileName.getName());
         
-        // GL: FIXME: duplicate here so use:
-        // commandList.toArray(new String[commandList.size()]
-        _commandArray = new String[2];
-        _commandArray[0] = certiHome + "/bin/rtig";
-        _commandArray[1] = fedFileName.getName();
+        _commandArray = commandList.toArray(new String[commandList.size()]);
 
         // Set the environment variables.
         _environmentArray = null;
@@ -385,9 +382,6 @@ public class CertiRtig extends NamedObj{
     Runtime _runtime;
 
     /** The command to execute in the shell. */
-    List<String> _commandList;
-
-    /** The parameters associated to the command. */
     String[] _commandArray;
 
     /** The environment variables required to execute the command. */
