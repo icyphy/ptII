@@ -1419,16 +1419,16 @@ implements TimeRegulator {
     /** Federate Ambassador for the Ptolemy Federate. */
     private PtolemyFederateAmbassadorInner _fedAmb;
 
-    /** Indicates the use of the {@link nextEventRequest()} service. */
+    /** Indicates the use of the nextEventRequest() service. */
     private Boolean _useNextEventRequest;
 
-    /** Indicates the use of the {@link timeAdvanceRequest()} service. */
+    /** Indicates the use of the timeAdvanceRequest() service. */
     private Boolean _useTimeAdvancedRequest;
 
-    /** Indicates the use of the {@link enableTimeConstrained()} service. */
+    /** Indicates the use of the enableTimeConstrained() service. */
     private Boolean _isTimeConstrained;
 
-    /** Indicates the use of the {@link enableTimeRegulation()} service. */
+    /** Indicates the use of the enableTimeRegulation() service. */
     private Boolean _isTimeRegulator;
 
     /** Start time of the Ptolemy Federate HLA logical clock. */

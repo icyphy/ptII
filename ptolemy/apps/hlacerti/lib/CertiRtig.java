@@ -89,310 +89,308 @@ import ptolemy.kernel.util.NamedObj;
  */
 public class CertiRtig extends NamedObj{
 
-    /** Construct an actor with the given {@link HlaManager} reference and 
-     *  debug mode status.
-     *  @param hm A reference to the associated {@link HlaManager}.
-     *  @param name The debug mode status.
-     */
-    public CertiRtig(HlaManager hm, Boolean addDebugListener) {
-        _hlaManager = hm;
+	/** Construct an actor with the given {@link HlaManager} reference and 
+	 *  debug mode status.
+	 *  @param hm A reference to the associated {@link HlaManager}.
+	 *  @param addDebugListener The debug mode status.
+	 */
+	public CertiRtig(HlaManager hm, Boolean addDebugListener) {
+		_hlaManager = hm;
 
-        if (addDebugListener) {
-            addDebugListener(new ptolemy.kernel.util.StreamListener());
-        }
-    }
+		if (addDebugListener) {
+			addDebugListener(new ptolemy.kernel.util.StreamListener());
+		}
+	}
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////
+	///////////////////////////////////////////////////////////////////
+	////                         public methods                    ////
 
-    /** Execute a command, set _process to point to the subprocess
-     *  and set up _errorGobbler and _outputGobbler to read data. 
-     *  @throws IllegalActionException If the execution of the Runtime.exec()
-     *  failed or if the RTIG subprocess it not running.
-     */
-    public void exec() throws IllegalActionException {
-        try {
-            _process = _runtime.exec(_commandArray, _environmentArray, 
-                    _directoryAsFile);
-        } catch (IOException e) {
-            throw new IllegalActionException(_hlaManager, e, 
-                    "CertiRtig: exec(): has failed");
-        }
+	/** Execute a command, set _process to point to the subprocess
+	 *  and set up _errorGobbler and _outputGobbler to read data. 
+	 *  @throws IllegalActionException If the execution of the Runtime.exec()
+	 *  failed or if the RTIG subprocess it not running.
+	 */
+	public void exec() throws IllegalActionException {
+		try {
+			_process = _runtime.exec(_commandArray, _environmentArray, 
+					_directoryAsFile);
+		} catch (IOException e) {
+			throw new IllegalActionException(_hlaManager, e, 
+					"CertiRtig: exec(): has failed");
+		}
 
-        // Create two threads to read from the subprocess.
-        _outputGobbler = new _StreamReaderThread(_process.getInputStream(),
-                "Stdout-" + _streamReaderThreadCount++, _hlaManager);
-        _errorGobbler = new _StreamReaderThread(_process.getErrorStream(),
-                "Stderr-" + _streamReaderThreadCount++, _hlaManager);
-        _errorGobbler.start();
-        _outputGobbler.start();
+		// Create two threads to read from the subprocess.
+		_outputGobbler = new _StreamReaderThread(_process.getInputStream(),
+				"Stdout-" + _streamReaderThreadCount++, _hlaManager);
+		_errorGobbler = new _StreamReaderThread(_process.getErrorStream(),
+				"Stderr-" + _streamReaderThreadCount++, _hlaManager);
+		_errorGobbler.start();
+		_outputGobbler.start();
 
-        if (_streamReaderThreadCount > 1000) {
-            // Avoid overflow in the thread count.
-            _streamReaderThreadCount = 0;
-        }
-    }
+		if (_streamReaderThreadCount > 1000) {
+			// Avoid overflow in the thread count.
+			_streamReaderThreadCount = 0;
+		}
+	}
 
-    /** Initialize command, arguments and environment variables to
-     *  invoke the subprocess.
-     *  @param directory The current path where the simulation is executed.
-     *  @exception IllegalActionException If the directory to launch the
-     *  RTIG process doesn't exit.
-     */
-    public void initialize(String directory) throws IllegalActionException {
-        _directoryAsFile = null;
-        _isAlreadyLaunched = false;
-        _runtime = Runtime.getRuntime();
+	/** Initialize command, arguments and environment variables to
+	 *  invoke the subprocess.
+	 *  @param directory The current path where the simulation is executed.
+	 *  @exception IllegalActionException If the directory to launch the
+	 *  RTIG process doesn't exit.
+	 */
+	public void initialize(String directory) throws IllegalActionException {
+		_directoryAsFile = null;
+		_isAlreadyLaunched = false;
+		_runtime = Runtime.getRuntime();
 
-        // Retrieve CERTI_HOME environment variable.
-        String certiHome = null;
+		// Retrieve CERTI_HOME environment variable.
+		String certiHome = null;
 
-        // First, look if there is a CERTI_HOME variable set in the current
-        // shell environment. If not look if there is a CERTI_HOME attribute
-        // set for the model. If not look if there is a CERTI_HOME attribute
-        // set for the associated HlaManager. If not, throws an exception.
-        if (System.getenv("CERTI_HOME") != null) {
-            certiHome = System.getenv("CERTI_HOME");
-        } else if (_hlaManager.getContainer().getAttribute("CERTI_HOME") != null) {
-            certiHome = ((StringToken) ((Parameter) _hlaManager.getContainer()
-                    .getAttribute("CERTI_HOME")).getToken()).stringValue();
+		// First, look if there is a CERTI_HOME variable set in the current
+		// shell environment. If not look if there is a CERTI_HOME attribute
+		// set for the model. If not look if there is a CERTI_HOME attribute
+		// set for the associated HlaManager. If not, throws an exception.
+		if (System.getenv("CERTI_HOME") != null) {
+			certiHome = System.getenv("CERTI_HOME");
+		} else if (_hlaManager.getContainer().getAttribute("CERTI_HOME") != null) {
+			certiHome = ((StringToken) ((Parameter) _hlaManager.getContainer()
+					.getAttribute("CERTI_HOME")).getToken()).stringValue();
 
-        } else if (_hlaManager.getAttribute("CERTI_HOME") != null){            
-            certiHome = ((StringToken) ((Parameter) _hlaManager
-                    .getAttribute("CERTI_HOME")).getToken()).stringValue();
-        } else {
-            throw new IllegalActionException(_hlaManager,
-                    "CertiRtig: initialize(): No CERTI_HOME variable set");
-        }
+		} else if (_hlaManager.getAttribute("CERTI_HOME") != null){            
+			certiHome = ((StringToken) ((Parameter) _hlaManager
+					.getAttribute("CERTI_HOME")).getToken()).stringValue();
+		} else {
+			throw new IllegalActionException(_hlaManager,
+					"CertiRtig: initialize(): No CERTI_HOME variable set");
+		}
 
-        if (_debugging) {
-            _debug("CertiRtig: initialize(): CERTI_HOME=" + certiHome);
-        }
+		if (_debugging) {
+			_debug("CertiRtig: initialize(): CERTI_HOME=" + certiHome);
+		}
 
-        File fedFileName = new File(directory);
+		File fedFileName = new File(directory);
 
+		// The list of command and argumentss to execute in the shell. */
+		List<String> commandList = new LinkedList<String>();
 
-        // The list of command and argumentss to execute in the shell. */
-        List<String> commandList = new LinkedList<String>();
+		// Execute command as shell interpret.
+		commandList = _getCommandList();
 
-        // Execute command as shell interpret.
-        commandList = _getCommandList();
+		// Build the command to execute in the shell: "rtig <.fed file>"
+		commandList.add(certiHome + "/bin/rtig");
+		commandList.add(fedFileName.getName());
 
-        // Build the command to execute in the shell: "rtig <.fed file>"
-        commandList.add(certiHome + "/bin/rtig");
-        commandList.add(fedFileName.getName());
-        
-        _commandArray = commandList.toArray(new String[commandList.size()]);
+		_commandArray = commandList.toArray(new String[commandList.size()]);
 
-        // Set the environment variables.
-        _environmentArray = null;
-        _environmentArray = new String[3];
-        _environmentArray[0] = "DYLD_LIBRARY_PATH=" + certiHome + "/lib";
-        _environmentArray[1] = "LD_LIBRARY_PATH=" + certiHome + "/lib";
-        _environmentArray[2] = "PATH=" + certiHome + "/bin";
+		// Set the environment variables.
+		_environmentArray = null;
+		_environmentArray = new String[3];
+		_environmentArray[0] = "DYLD_LIBRARY_PATH=" + certiHome + "/lib";
+		_environmentArray[1] = "LD_LIBRARY_PATH=" + certiHome + "/lib";
+		_environmentArray[2] = "PATH=" + certiHome + "/bin";
 
-        _directoryAsFile = new File(fedFileName.getParent());
-        if (!_directoryAsFile.isDirectory()) {
-            throw new IllegalActionException(_hlaManager,
-                    "CertiRtig: initialize(): No such directory: "
-                            + _directoryAsFile);
-        }
-    }
+		_directoryAsFile = new File(fedFileName.getParent());
+		if (!_directoryAsFile.isDirectory()) {
+			throw new IllegalActionException(_hlaManager,
+					"CertiRtig: initialize(): No such directory: "
+							+ _directoryAsFile);
+		}
+	}
 
-    /** Indicate if the RTIG process is already running somewhere else.
-     *  @return True if the RTIG is launched somewhere else, False otherwise.
-     */
-    public boolean isAlreadyLaunched() {
-        return _isAlreadyLaunched;
-    }
+	/** Indicate if the RTIG process is already running somewhere else.
+	 *  @return True if the RTIG is launched somewhere else, False otherwise.
+	 */
+	public boolean isAlreadyLaunched() {
+		return _isAlreadyLaunched;
+	}
 
-    /** Indicate if the current subprocess is running.
-     * @return True if the RTIG is running, False otherwise.
-     */
-    public boolean isRunning() {
-        try {
-            _process.exitValue();
-            return false;
-        } catch(IllegalThreadStateException e) {
-            return true;
-        }
-    }
+	/** Indicate if the current subprocess is running.
+	 * @return True if the RTIG is running, False otherwise.
+	 */
+	public boolean isRunning() {
+		try {
+			_process.exitValue();
+			return false;
+		} catch(IllegalThreadStateException e) {
+			return true;
+		}
+	}
 
-    /** Terminate the process and close any associated streams.
-     *  @throws IllegalActionException If the closing stdin of the subprocess
-     *  threw an IOException.
-     */
-    public static void terminateProcess() throws IllegalActionException {
-        if (_process != null) {
-            try {
-                // Close the stdin of the subprocess.
-                _process.getOutputStream().close();
-            } catch (IOException io) {
-                throw new IllegalActionException(_hlaManager, io,
-                        "CertiRtig: terminateProcess(): " +
-                        "Closing stdin of the subprocess threw an IOException.");
-            }
-            if (_process != null) {
-                _process.destroy();
-                _process = null;
-            }
-        }
-    }
+	/** Terminate the process and close any associated streams.
+	 *  @throws IllegalActionException If the closing stdin of the subprocess
+	 *  threw an IOException.
+	 */
+	public void terminateProcess() throws IllegalActionException {
+		if (_process != null) {
+			try {
+				// Close the stdin of the subprocess.
+				_process.getOutputStream().close();
+			} catch (IOException io) {
+				throw new IllegalActionException(_hlaManager, io,
+						"CertiRtig: terminateProcess(): " +
+						"Closing stdin of the subprocess threw an IOException.");
+			}
+			if (_process != null) {
+				_process.destroy();
+				_process = null;
+			}
+		}
+	}
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
+	///////////////////////////////////////////////////////////////////
+	////                         private methods                   ////
 
-    /** Get the command list arguments for exec.
-     *  @return The list of arguments (as strings).
-     */
-    private List<String> _getCommandList() {
-        List<String> retval = new LinkedList<String>();
+	/** Get the command list arguments for exec.
+	 *  @return The list of arguments (as strings).
+	 */
+	private List<String> _getCommandList() {
+		List<String> retval = new LinkedList<String>();
 
-        String osName = System.getProperty("os.name");
-        if (osName.equals("Windows 95")) {
-            retval.add("command.com");
-            retval.add("/C");
-        } else if (osName.startsWith("Windows")) {
-            retval.add("cmd.exe");
-            retval.add("/C");
-        } else {
-            retval.add("/bin/sh");
-            retval.add("-c");
-        }
-        return retval;
-    }
+		String osName = System.getProperty("os.name");
+		if (osName.equals("Windows 95")) {
+			retval.add("command.com");
+			retval.add("/C");
+		} else if (osName.startsWith("Windows")) {
+			retval.add("cmd.exe");
+			retval.add("/C");
+		} else {
+			retval.add("/bin/sh");
+			retval.add("-c");
+		}
+		return retval;
+	}
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         inner classes                     ////
+	///////////////////////////////////////////////////////////////////
+	////                         inner classes                     ////
 
-    /** Private class that reads a stream in a thread and updates the
-     *  stringBuffer. This is a subset of the functionnalities provide by
-     *  the {@link Exec$$_StreamReaderThread} class.
-     *  @author Gilles Lasnier, based on Exec$$_StreamReaderThread.java by
-     *  Christopher Hylands Brooks.
-     */
-    private class _StreamReaderThread extends Thread {
-        /** Create a _StreamReaderThread.
-         *  @param inputStream The stream to read from.
-         *  @param name The name of this StreamReaderThread,
-         *  which is useful for debugging.
-         *  @param actor The parent actor of this thread, which
-         *  is used in error messages.
-         */
-        _StreamReaderThread(InputStream inputStream, String name, Nameable actor) {
-            super(name);
-            _inputStream = inputStream;
-            _inputStreamReader = new InputStreamReader(_inputStream);
-            _actor = actor;
-            _stringBuffer = new StringBuffer();
-        }
+	/** Private class that reads a stream in a thread and updates the
+	 *  stringBuffer. This is a subset of the functionnalities provide by
+	 *  the {@link Exec$$_StreamReaderThread} class.
+	 *  @author Gilles Lasnier, based on Exec$$_StreamReaderThread.java by
+	 *  Christopher Hylands Brooks.
+	 */
+	private class _StreamReaderThread extends Thread {
+		/** Create a _StreamReaderThread.
+		 *  @param inputStream The stream to read from.
+		 *  @param name The name of this StreamReaderThread,
+		 *  which is useful for debugging.
+		 *  @param actor The parent actor of this thread, which
+		 *  is used in error messages.
+		 */
+		_StreamReaderThread(InputStream inputStream, String name, Nameable actor) {
+			super(name);
+			_inputStream = inputStream;
+			_inputStreamReader = new InputStreamReader(_inputStream);
+			_actor = actor;
+			_stringBuffer = new StringBuffer();
+		}
 
-        /** Read lines from the inputStream and append them to the
-         *  stringBuffer.
-         */
-        public synchronized void run() {
-            if (!_inputStreamReaderClosed) {
-                _read();
-            }
-        }
+		/** Read lines from the inputStream and append them to the
+		 *  stringBuffer.
+		 */
+		public synchronized void run() {
+			if (!_inputStreamReaderClosed) {
+				_read();
+			}
+		}
 
-        /** Read from the stream until we get to the end of the stream
-         *  NOTE: This was initially synchronized so that it is not called 
-         *  simultaneously from run() and getAndReset(). As getAndReset()
-         *  is not implemented here we could remove it.
-         */
-        private synchronized void _read() {
-            // We read the data as a char[] instead of using readline()
-            // so that we can get strings that do not end in end of
-            // line chars.
-            char[] chars = new char[80];
-            int length; // Number of characters read.
+		/** Read from the stream until we get to the end of the stream
+		 *  NOTE: This was initially synchronized so that it is not called 
+		 *  simultaneously from run() and getAndReset(). As getAndReset()
+		 *  is not implemented here we could remove it.
+		 */
+		private synchronized void _read() {
+			// We read the data as a char[] instead of using readline()
+			// so that we can get strings that do not end in end of
+			// line chars.
+			char[] chars = new char[80];
+			int length; // Number of characters read.
 
-            // Oddly, InputStreamReader.read() will return -1
-            // if there is no data present, but the string can still
-            // read.
-            try {
-                while ((length = _inputStreamReader.read(chars, 0, 80)) != -1
-                        ) {
-                    _stringBuffer.append(chars, 0, length);
-                }
-            } catch (IOException e) {
-                throw new InternalErrorException(_actor, e, getName()
-                        + " IOExeception throwed.");
-            }
+			// Oddly, InputStreamReader.read() will return -1
+			// if there is no data present, but the string can still
+			// read.
+			try {
+				while ((length = _inputStreamReader.read(chars, 0, 80)) != -1
+						) {
+					_stringBuffer.append(chars, 0, length);
+				}
+			} catch (IOException e) {
+				throw new InternalErrorException(_actor, e, getName()
+						+ " IOExeception throwed.");
+			}
 
-            if (_debugging) {
-                _debug("_read(): " + _stringBuffer.toString());
-            }
+			if (_debugging) {
+				_debug("_read(): " + _stringBuffer.toString());
+			}
 
-            if (_stringBuffer.toString()
-                    .matches(".*SocketUDP:\\sBind:\\sAddress\\s"
-                            + "already\\sin\\suse\n.*")) {
-                _isAlreadyLaunched = true;
+			if (_stringBuffer.toString()
+					.matches(".*SocketUDP:\\sBind:\\sAddress\\s"
+							+ "already\\sin\\suse\n.*")) {
+				_isAlreadyLaunched = true;
 
-                // If another is running, we don't need this subprocess anymore,
-                // so destroy it.
-                try {
-                    CertiRtig.terminateProcess();
-                } catch (IllegalActionException e) {
-                    throw new InternalErrorException(_actor, e, getName()
-                            + " failed to execute terminateProcess().");
-                }
-            }
-        }
+				// If another is running, we don't need this subprocess anymore,
+				// so destroy it.
+				try {
+					terminateProcess();
+				} catch (IllegalActionException e) {
+					throw new InternalErrorException(_actor, e, getName()
+							+ " failed to execute terminateProcess().");
+				}
+			}
+		}
 
-        // The actor associated with this stream reader.
-        private Nameable _actor;
+		// The actor associated with this stream reader.
+		private Nameable _actor;
 
-        // Stream from which to read.
-        private InputStream _inputStream;
+		// Stream from which to read.
+		private InputStream _inputStream;
 
-        // Stream from which to read.
-        private InputStreamReader _inputStreamReader;
+		// Stream from which to read.
+		private InputStreamReader _inputStreamReader;
 
-        // Indicator that the stream has been closed.
-        private boolean _inputStreamReaderClosed = false;
+		// Indicator that the stream has been closed.
+		private boolean _inputStreamReaderClosed = false;
 
-        // StringBuffer to update.
-        private StringBuffer _stringBuffer;
-    }
+		// StringBuffer to update.
+		private StringBuffer _stringBuffer;
+	}
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
+	///////////////////////////////////////////////////////////////////
+	////                         private variables                 ////
 
-    /** StreamReader with which we read stderr. */
-    private _StreamReaderThread _errorGobbler;
+	/** StreamReader with which we read stderr. */
+	private _StreamReaderThread _errorGobbler;
 
-    /** StreamReader with which we read stdout. */
-    private _StreamReaderThread _outputGobbler;
+	/** StreamReader with which we read stdout. */
+	private _StreamReaderThread _outputGobbler;
 
-    /** The Process that we are running. */
-    private static Process _process;
+	/** The Process that we are running. */
+	private static Process _process;
 
-    /** Instance count of output and error threads, used for debugging.
-     *  When the value is greater than 1000, we reset it to 0. */
-    private static int _streamReaderThreadCount = 0;
+	/** Instance count of output and error threads, used for debugging.
+	 *  When the value is greater than 1000, we reset it to 0. */
+	private static int _streamReaderThreadCount = 0;
 
-    /** The directory where the simulation is launched. */
-    File _directoryAsFile;
+	/** The directory where the simulation is launched. */
+	private File _directoryAsFile;
 
-    /** A reference to the Runtime class that allows the application to 
-     *  interface with the environment in which the application is running.
-     */
-    Runtime _runtime;
+	/** A reference to the Runtime class that allows the application to 
+	 *  interface with the environment in which the application is running.
+	 */
+	private Runtime _runtime;
 
-    /** The command to execute in the shell. */
-    String[] _commandArray;
+	/** The command to execute in the shell. */
+	private String[] _commandArray;
 
-    /** The environment variables required to execute the command. */
-    String[] _environmentArray;
+	/** The environment variables required to execute the command. */
+	private String[] _environmentArray;
 
-    /** A reference to the associated {@link HlaManager}.
-     *  GL: FIXME: Maybe remove static here.
-     */
-    static HlaManager _hlaManager;
+	/** A reference to the associated {@link HlaManager}.
+	 */
+	private HlaManager _hlaManager;
 
-    /** Indicate if another RTIG subprocess is already running. */
-    Boolean _isAlreadyLaunched;
+	/** Indicate if another RTIG subprocess is already running. */
+	private Boolean _isAlreadyLaunched;
 }
 

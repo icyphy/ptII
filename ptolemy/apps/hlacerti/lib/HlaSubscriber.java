@@ -196,8 +196,8 @@ public class HlaSubscriber extends TypedAtomicActor {
      *  the tokens queue. Then, program the next firing time of this actor to
      *  send the token at its expected time. This method is called by the
      *  {@link HlaManager} attribute.
-     *  @param te The event containing the updated value of the HLA attribute and
-     *  its time-stamp.
+     *  @param event The event containing the updated value of the HLA attribute 
+     *  and its time-stamp.
      *  @throws IllegalActionException Not thrown here.
      */
     public void putReflectedAttribute(TimedEvent event) throws IllegalActionException {
