@@ -251,6 +251,10 @@ implements TimeRegulator {
         _hlaAttributesSubscribedTo = new HashMap<String, Object[]>();
         _fromFederationEvents = new HashMap<String, LinkedList<TimedEvent>>();
 
+        _hlaStartTime = null;
+        _hlaTimeStep = null;
+        _hlaLookAHead = null;
+        
         // HLA Federation management parameters.
         federateName = new Parameter(this, "federateName");
         federateName.setDisplayName("Federate's name");
@@ -490,8 +494,8 @@ implements TimeRegulator {
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         HlaManager newObject = (HlaManager) super.clone(workspace);
 
-        newObject._hlaAttributesToPublish = new HashMap<String, Object[]>();;
-        newObject._hlaAttributesSubscribedTo = new HashMap<String, Object[]>();;
+        newObject._hlaAttributesToPublish = new HashMap<String, Object[]>();
+        newObject._hlaAttributesSubscribedTo = new HashMap<String, Object[]>();
         newObject._fromFederationEvents = new HashMap<String, LinkedList<TimedEvent>>();
         newObject._attributes = null;
         newObject._rtia = null;

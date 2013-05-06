@@ -30,6 +30,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.apps.hlacerti.lib;
 
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -53,6 +54,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Workspace;
 
 ///////////////////////////////////////////////////////////////////
 //// HlaSubcriber
@@ -130,6 +132,19 @@ public class HlaSubscriber extends TypedAtomicActor {
             }
         }
         super.attributeChanged(attribute);
+    }
+    
+    /** Clone the actor into the specified workspace.
+     *  @param workspace The workspace for the new object.
+     *  @return A new actor.
+     *  @exception CloneNotSupportedException If a derived class contains
+     *  an attribute that cannot be cloned.
+     */
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        HlaSubscriber newObject = (HlaSubscriber) super.clone(workspace);
+        newObject._reflectedAttributeValues = new LinkedList<TimedEvent>();
+
+        return newObject;
     }
 
     /** Check if there is one and only one {@link HlaManager} deployed in the 
