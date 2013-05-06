@@ -13,9 +13,6 @@
 #include <string.h>
 #include "DEEvent.h"
 
-typedef struct IOPort IOPort;
-typedef struct DEEvent DEEvent;
-
 struct IOPort {
 	char * name;
 	char * type;

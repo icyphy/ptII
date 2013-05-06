@@ -1,6 +1,6 @@
 # Makefile for the ptolemy/cg C DE files
 #
-# @Authors: Christopher Brooks
+# @Authors: William Lucas
 #
 # @Version: $Id$
 #
@@ -30,10 +30,10 @@
 # 						COPYRIGHTENDKEY
 
 # Location of this directory, relative to the Ptolemy II directory
-ME =		ptolemy/cg/kernel/generic/program/procedural/c/de
+ME =		ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/de/kernel
 
 # Root of the Ptolemy II directory
-ROOT =		../../../../../../../..
+ROOT =		../../../../../../../../../../../..
 
 CLASSPATH =	$(ROOT)
 
@@ -52,11 +52,11 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 PTCLASSALLJARS = 
 
 # Keep this list alphabetized.
-JSRCS = 
+JSRCS = \
+	DEDirector.java \
+	DEReceiver.java
 
 OTHER_FILES_TO_BE_JARED = \
-	Actor.c \
-	Actor.h \
 	CalendarQueue.c \
 	CalendarQueue.h \
 	DEDirector.c \
@@ -64,9 +64,7 @@ OTHER_FILES_TO_BE_JARED = \
 	DEEvent.c \
 	DEEvent.h \
 	DEReceiver.c \
-	DEReceiver.h \
-	IOPort.c \
-	IOPort.h 
+	DEReceiver.h
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
@@ -77,7 +75,11 @@ MISC_FILES =
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
-OPTIONAL_FILES = 
+OPTIONAL_FILES = \
+	demo \
+	'DEDirector$$FullNameComparator.class' \
+	'DEDirector$$PortInfo.class' \
+	'DEDirector$$Ports.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 

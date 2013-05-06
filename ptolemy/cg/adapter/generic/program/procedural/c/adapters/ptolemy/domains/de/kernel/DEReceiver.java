@@ -26,7 +26,7 @@
 
  */
 
-package ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.de.kernel;
+package ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.de.kernel;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;

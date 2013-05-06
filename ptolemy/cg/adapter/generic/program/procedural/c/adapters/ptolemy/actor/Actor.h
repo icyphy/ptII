@@ -14,7 +14,6 @@
 
 #include "IOPort.h"
 
-typedef struct IOPort IOPort;
 
 struct Actor {
 	char * name;
@@ -28,7 +27,6 @@ struct Actor {
 	void (*fireFunction)(void);
 	void (*postfireFunction)(void);
 };
-typedef struct Actor Actor;
 
 Actor * newActor();
 Actor * newActorWithParam(char* name, IOPort ** inputPorts, IOPort ** outputPorts);

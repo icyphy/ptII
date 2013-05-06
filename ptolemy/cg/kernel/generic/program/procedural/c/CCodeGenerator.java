@@ -1358,8 +1358,8 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
             // Generating the code for all the actors
             // FIXME : for now this is only for DE Director
             if (director != null && director instanceof DEDirector) {
-                ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.de.kernel.DEDirector directorAdapter = 
-                        (ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.de.kernel.DEDirector) 
+                ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.de.kernel.DEDirector directorAdapter = 
+                        (ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.de.kernel.DEDirector) 
                         getAdapter(((DEDirector)director));
                 actorsCode = directorAdapter.generateActorCode();
             }
@@ -1438,6 +1438,11 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
             codeMainH.append("#include \"DEEvent.h\"" + _eol);
             codeMainH.append("#include \"DEDirector.h\"" + _eol);
             codeMainH.append("#include \"Actor.h\"" + _eol);
+            
+            codeTypesH.append(_eol + "typedef struct IOPort IOPort;");
+            codeTypesH.append(_eol + "typedef struct DEEvent DEEvent;");
+            codeTypesH.append(_eol + "typedef struct Actor Actor;");
+            codeTypesH.append(_eol + "typedef double Time;" + _eol);
         }
         codeMainH.append("#include \"types.h\"" + _eol);
         codeMainH.append(includeFiles);
@@ -1611,18 +1616,18 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         super._writeCodeFileName(codeTypesC, "src/types.c", true, false);
         // Let's copy the needed files
         if (director != null && director instanceof DEDirector) {
-            _copyCFileTosrc("Actor.h");
-            _copyCFileTosrc("Actor.c");
-            _copyCFileTosrc("CalendarQueue.h");
-            _copyCFileTosrc("CalendarQueue.c");
-            _copyCFileTosrc("DEDirector.h");
-            _copyCFileTosrc("DEDirector.c");
-            _copyCFileTosrc("DEEvent.h");
-            _copyCFileTosrc("DEEvent.c");
-            _copyCFileTosrc("DEReceiver.h");
-            _copyCFileTosrc("DEReceiver.c");
-            _copyCFileTosrc("IOPort.h");
-            _copyCFileTosrc("IOPort.c");
+            _copyCFileTosrc("ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/", "Actor.h");
+            _copyCFileTosrc("ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/", "Actor.c");
+            _copyCFileTosrc("ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/", "IOPort.h");
+            _copyCFileTosrc("ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/", "IOPort.c");
+            _copyCFileTosrc("ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/de/kernel/", "CalendarQueue.h");
+            _copyCFileTosrc("ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/de/kernel/", "CalendarQueue.c");
+            _copyCFileTosrc("ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/de/kernel/", "DEDirector.h");
+            _copyCFileTosrc("ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/de/kernel/", "DEDirector.c");
+            _copyCFileTosrc("ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/de/kernel/", "DEEvent.h");
+            _copyCFileTosrc("ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/de/kernel/", "DEEvent.c");
+            _copyCFileTosrc("ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/de/kernel/", "DEReceiver.h");
+            _copyCFileTosrc("ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/de/kernel/", "DEReceiver.c");
         }
         
         code = null;
@@ -2080,11 +2085,11 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
      *  @param codeFileName the name of the file to copy.
      *  
      */
-    private void _copyCFileTosrc(String codeFileName) throws IllegalActionException {
+    private void _copyCFileTosrc(String path, String codeFileName) throws IllegalActionException {
         StringBuffer code = new StringBuffer();
         
         BufferedReader cFileReader = null;
-        String cFileName = "ptolemy/cg/kernel/generic/program/procedural/c/de/" + codeFileName;
+        String cFileName = path + codeFileName;
         String referenceClassName = "ptolemy.util.FileUtilities";
         Class referenceClass;
         try {

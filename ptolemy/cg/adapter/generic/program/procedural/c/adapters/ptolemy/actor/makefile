@@ -58,7 +58,11 @@ PTCLASSALLJARS = \
 # Keep this list alphabetized.
 JSRCS = 
 
-OTHER_FILES_TO_BE_JARED = 
+OTHER_FILES_TO_BE_JARED = \
+	Actor.c \
+	Actor.h \
+	IOPort.c \
+	IOPort.h
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 

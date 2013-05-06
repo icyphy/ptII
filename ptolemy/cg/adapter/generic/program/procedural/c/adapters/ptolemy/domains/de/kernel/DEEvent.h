@@ -12,10 +12,6 @@
 #include "Actor.h"
 #include "IOPort.h"
 
-typedef double Time;
-typedef struct Actor Actor;
-typedef struct IOPort IOPort;
-
 struct DEEvent {
   /** The destination actor. */
   Actor * actor;

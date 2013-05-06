@@ -55,9 +55,7 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 PTCLASSALLJARS = 
 
 # Keep this list alphabetized.
-JSRCS = \
-	DEDirector.java \
-	DEReceiver.java
+JSRCS = 
 
 OTHER_FILES_TO_BE_JARED = 
 
@@ -70,11 +68,7 @@ MISC_FILES =
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
-OPTIONAL_FILES = \
-	demo \
-	'DEDirector$$FullNameComparator.class' \
-	'DEDirector$$PortInfo.class' \
-	'DEDirector$$Ports.class'
+OPTIONAL_FILES = 
 
 JCLASS = $(JSRCS:%.java=%.class)
 
