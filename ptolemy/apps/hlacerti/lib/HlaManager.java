@@ -111,6 +111,7 @@ import ptolemy.data.ShortToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.Token;
 import ptolemy.data.UnsignedByteToken;
+import ptolemy.data.expr.FileParameter;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.domains.de.kernel.DEDirector;
@@ -162,8 +163,8 @@ import certi.rti.impl.CertiRtiAmbassador;
  * To enable a Ptolemy model as a Federate, the {@link HlaManager} has to be
  * deployed and configured (by double-clicking on the attribute).
  * Parameters <i>federateName</i>, <i>federationName</i> have to match the 
- * declaration in the FOM (.fed file). <i>fedFile</i> specifies the path to
- * locate the FOM (.fed file).
+ * declaration in the FOM (.fed file). <i>fedFile</i> specifies the FOM file and
+ * its path.
  * </p><p>
  * Parameters <i>ner</i>, <i>tar</i>, <i>timeConst<i> and <i>timeReg</i> are
  * used to configure the HLA time management services of the Federate. A 
@@ -262,37 +263,37 @@ implements TimeRegulator {
         federationName.setTypeEquals(BaseType.STRING);       
         federationName.setExpression("\"SimpleProducerConsumer\"");
         attributeChanged(federationName);
-
-        fedFile = new Parameter(this, "fedFile");
-        fedFile.setDisplayName("Path for .fed file");
-        fedFile.setTypeEquals(BaseType.STRING);       
-        fedFile.setExpression("\"./ptolemy/domains/hla/demo/SimpleProducerConsumer.fed\"");
-        attributeChanged(fedFile);
+        
+        fedFile = new FileParameter(this, "fedFile");
+        fedFile.setDisplayName("Federate Object Model (.fed) file path");
+        new Parameter(fedFile, "allowFiles", BooleanToken.TRUE);
+        new Parameter(fedFile, "allowDirectories", BooleanToken.FALSE);
+        fedFile.setExpression("$CWD/SimpleProducerConsumer.fed");
 
         // HLA Time management parameters.
-        ner = new Parameter(this, "ner");
-        ner.setTypeEquals(BaseType.BOOLEAN);
-        ner.setExpression("true");
-        ner.setDisplayName("NER");
-        attributeChanged(ner);
+        useNextEventRequest = new Parameter(this, "useNextEventRequest");
+        useNextEventRequest.setTypeEquals(BaseType.BOOLEAN);
+        useNextEventRequest.setExpression("true");
+        useNextEventRequest.setDisplayName("useNextEventRequest (NER) ?");
+        attributeChanged(useNextEventRequest);
 
-        tar = new Parameter(this, "tar");
-        tar.setTypeEquals(BaseType.BOOLEAN);
-        tar.setExpression("false");
-        tar.setDisplayName("TAR");
-        attributeChanged(tar);
+        useTimeAdvancedRequest = new Parameter(this, "useTimeAdvancedRequest");
+        useTimeAdvancedRequest.setTypeEquals(BaseType.BOOLEAN);
+        useTimeAdvancedRequest.setExpression("false");
+        useTimeAdvancedRequest.setDisplayName("useTimeAdvancedRequest (TAR) ?");
+        attributeChanged(useTimeAdvancedRequest);
 
-        timeConst = new Parameter(this, "timeConst");
-        timeConst.setTypeEquals(BaseType.BOOLEAN);
-        timeConst.setExpression("true");
-        timeConst.setDisplayName("Time constrained ?");
-        attributeChanged(timeConst);
+        isTimeConstrained = new Parameter(this, "isTimeConstrained");
+        isTimeConstrained.setTypeEquals(BaseType.BOOLEAN);
+        isTimeConstrained.setExpression("true");
+        isTimeConstrained.setDisplayName("isTimeConstrained ?");
+        attributeChanged(isTimeConstrained);
 
-        timeReg = new Parameter(this, "timeReg");
-        timeReg.setTypeEquals(BaseType.BOOLEAN);
-        timeReg.setExpression("true");
-        timeReg.setDisplayName("Time regulator ?");
-        attributeChanged(timeReg);
+        isTimeRegulator = new Parameter(this, "isTimeRegulator");
+        isTimeRegulator.setTypeEquals(BaseType.BOOLEAN);
+        isTimeRegulator.setExpression("true");
+        isTimeRegulator.setDisplayName("isTimeRegulator ?");
+        attributeChanged(isTimeRegulator);
 
         hlaStartTime = new Parameter(this, "hlaStartTime");
         hlaStartTime.setDisplayName("logical start time (in ms)");
@@ -319,17 +320,17 @@ implements TimeRegulator {
         requireSynchronization.setDisplayName("Require synchronization ?");
         attributeChanged(requireSynchronization);
 
-        syncPtName = new Parameter(this, "syncPtName");
-        syncPtName.setDisplayName("Synchronization point name");
-        syncPtName.setTypeEquals(BaseType.STRING);       
-        syncPtName.setExpression("\"Simulating\"");
-        attributeChanged(syncPtName);
+        synchronizationPointName = new Parameter(this, "synchronizationPointName");
+        synchronizationPointName.setDisplayName("Synchronization point name");
+        synchronizationPointName.setTypeEquals(BaseType.STRING);       
+        synchronizationPointName.setExpression("\"Simulating\"");
+        attributeChanged(synchronizationPointName);
 
-        creatorSyncPt = new Parameter(this, "creatorSyncPt");
-        creatorSyncPt.setTypeEquals(BaseType.BOOLEAN);
-        creatorSyncPt.setExpression("false");
-        creatorSyncPt.setDisplayName("Is synchronization point creator ?");
-        attributeChanged(creatorSyncPt);
+        isCreatorSyncPt = new Parameter(this, "isCreatorSyncPt");
+        isCreatorSyncPt.setTypeEquals(BaseType.BOOLEAN);
+        isCreatorSyncPt.setExpression("false");
+        isCreatorSyncPt.setDisplayName("Is synchronization point creator ?");
+        attributeChanged(isCreatorSyncPt);        
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -344,25 +345,25 @@ implements TimeRegulator {
 
     /** Path and name of the Federate Object Model (FOM) file. This parameter 
      *  must contain an StringToken. */
-    public Parameter fedFile;
+    public FileParameter fedFile;
 
     /** Boolean value, 'true' if the Federate requires the use of the
      *  nextEventRequest() HLA service. This parameter must contain an
      *  BooleanToken. */
-    public Parameter ner;
+    public Parameter useNextEventRequest;
 
     /** Boolean value, 'true' if the Federate requires the use of the
      *  timeAdvanceRequest() HLA service. This parameter must contain an
      *  BooleanToken. */
-    public Parameter tar;
+    public Parameter useTimeAdvancedRequest;
 
     /** Boolean value, 'true' if the Federate is declared time constrained
      *  'false' if not. This parameter must contain an BooleanToken. */
-    public Parameter timeConst;
+    public Parameter isTimeConstrained;
 
     /** Boolean value, 'true' if the Federate is declared time regulator
      *  'false' if not. This parameter must contain an BooleanToken. */
-    public Parameter timeReg;
+    public Parameter isTimeRegulator;
 
     /** Value of the start time of the Federate. This parameter must contain 
      *  an DoubleToken. */
@@ -383,12 +384,12 @@ implements TimeRegulator {
 
     /** Name of the synchronization point (if required). This parameter must 
      *  contain an StringToken. */
-    public Parameter syncPtName;
+    public Parameter synchronizationPointName;
 
     /** Boolean value, 'true' if the Federate is the creator of the 
      *  synchronization point 'false' if not. This parameter must contain
      *  an BooleanToken. */
-    public Parameter creatorSyncPt;
+    public Parameter isCreatorSyncPt;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -419,38 +420,22 @@ implements TimeRegulator {
                         "Cannot have empty name !");
             }
             _federationName = value;
-        } else if (attribute == fedFile) {
-            String value = ((StringToken) fedFile.getToken())
-                    .stringValue();
-            if (value.compareTo("") == 0) {
-                throw new IllegalActionException(this,
-                        "Missing FOM file !");
-            }
-            _fedFile = value;
-        } else if (attribute == ner) {
-            if (((BooleanToken) ner.getToken()).booleanValue()) {
-                _ner = true;
-            } else {
-                _ner = false;
-            }
-        } else if (attribute == tar) {
-            if (((BooleanToken) tar.getToken()).booleanValue()) {
-                _tar = true;
-            } else {
-                _tar = false;
-            }
-        } else if (attribute == timeConst) {
-            if (((BooleanToken) timeConst.getToken()).booleanValue()) {
-                _timeConst = true;
-            } else {
-                _timeConst = false;
-            }
-        } else if (attribute == timeReg) {
-            if (((BooleanToken) timeReg.getToken()).booleanValue()) {
-                _timeReg = true;
-            } else {
-                _timeReg = false;
-            }
+        } else if (attribute == useNextEventRequest) {
+        	_useNextEventRequest = ((BooleanToken) useNextEventRequest
+        			.getToken()).booleanValue();
+        	
+        } else if (attribute == useTimeAdvancedRequest) {
+        	_useTimeAdvancedRequest = ((BooleanToken) useTimeAdvancedRequest
+        			.getToken()).booleanValue();
+        	
+        } else if (attribute == isTimeConstrained) {
+        	_isTimeConstrained = ((BooleanToken) isTimeConstrained
+        			.getToken()).booleanValue();
+        	
+        } else if (attribute == isTimeRegulator) {
+        	_isTimeRegulator = ((BooleanToken) isTimeRegulator
+        			.getToken()).booleanValue();
+        	
         } else if (attribute == hlaStartTime) {
             Double value = ((DoubleToken) hlaStartTime.getToken())
                     .doubleValue();
@@ -476,25 +461,23 @@ implements TimeRegulator {
             }
             _hlaLookAHead = value;
         } else if (attribute == requireSynchronization) {
-            if (((BooleanToken) requireSynchronization.getToken()).booleanValue()) {
-                _requireSynchronization = true;
-            } else {
-                _requireSynchronization = false;
-            }
-        } else if (attribute == syncPtName) {
-            String value = ((StringToken) syncPtName.getToken())
+        	_requireSynchronization = ((BooleanToken) requireSynchronization
+        			.getToken()).booleanValue();
+
+        } else if (attribute == synchronizationPointName) {
+            String value = ((StringToken) synchronizationPointName.getToken())
                     .stringValue();
             if (value.compareTo("") == 0) {
                 throw new IllegalActionException(this,
                         "Cannot have empty name !");
             }
-            _syncPtName = value;
-        } else if (attribute == creatorSyncPt) {
-            if (((BooleanToken) creatorSyncPt.getToken()).booleanValue()) {
-                _creatorSyncPt = true;
-            } else {
-                _creatorSyncPt = false;
-            }
+            _synchronizationPointName = value;
+        } else if (attribute == isCreatorSyncPt) {
+        	 _isCreatorSyncPt = ((BooleanToken) isCreatorSyncPt
+        			 .getToken()).booleanValue();
+
+        } else {
+            super.attributeChanged(attribute);
         }
     }
 
@@ -515,17 +498,16 @@ implements TimeRegulator {
         newObject._fedAmb = null;
         newObject._federateName = _federateName;
         newObject._federationName = _federationName;
-        newObject._fedFile = _fedFile;
-        newObject._timeConst = _timeConst;
-        newObject._timeReg = _timeReg;
+        newObject._isTimeConstrained = _isTimeConstrained;
+        newObject._isTimeRegulator = _isTimeRegulator;
         newObject._hlaStartTime = _hlaStartTime;
         newObject._hlaTimeStep = _hlaTimeStep;
         newObject._hlaLookAHead = _hlaLookAHead;
         newObject._requireSynchronization = _requireSynchronization;
-        newObject._syncPtName = _syncPtName;
-        newObject._creatorSyncPt = _creatorSyncPt;
-        newObject._ner = _ner;
-        newObject._tar = _tar;
+        newObject._synchronizationPointName = _synchronizationPointName;
+        newObject._isCreatorSyncPt = _isCreatorSyncPt;
+        newObject._useNextEventRequest = _useNextEventRequest;
+        newObject._useTimeAdvancedRequest = _useTimeAdvancedRequest;
 
         return newObject;
     }
@@ -574,9 +556,9 @@ implements TimeRegulator {
         }
 
         // Create the Federation or raise a warning it the Federation already exits.
-        File fom = new File(_fedFile);
         try {
-            _rtia.createFederationExecution(_federationName, fom.toURI().toURL());
+            _rtia.createFederationExecution(_federationName, fedFile.asFile().toURI().toURL());
+
         } catch (FederationExecutionAlreadyExists e) {
             if (_debugging) {
                 _debug(this.getDisplayName() + " initialize() - WARNING: FederationExecutionAlreadyExists");
@@ -637,7 +619,7 @@ implements TimeRegulator {
         _fedAmb.initializeTimeValues(_hlaStartTime, _hlaTimeStep, _hlaLookAHead);
 
         // Declare the Federate time constrained (if true).
-        if (_timeConst) {
+        if (_isTimeConstrained) {
             try {
                 _rtia.enableTimeConstrained();
             } catch (TimeConstrainedAlreadyEnabled e) {
@@ -660,7 +642,7 @@ implements TimeRegulator {
         }
 
         // Declare the Federate time regulator (if true).
-        if (_timeReg) {
+        if (_isTimeRegulator) {
             try {
                 _rtia.enableTimeRegulation(_fedAmb._logicalTimeHLA, _fedAmb._lookAHeadHLA);
             } catch (TimeRegulationAlreadyEnabled e) {
@@ -690,7 +672,7 @@ implements TimeRegulator {
         // been declared. The only way to get a response is to invoke the tick()
         // method to receive callbacks from the RTI. We use here the tick2() 
         // method which is blocking and saves more CPU than the tick() method.
-        if (_timeReg && _timeConst) {
+        if (_isTimeRegulator && _isTimeConstrained) {
             while (!(_fedAmb._isTimeConst)) {
                 try {
                     _rtia.tick2();
@@ -744,10 +726,10 @@ implements TimeRegulator {
         if (_requireSynchronization) {
             // If the current Federate is the creator then create the 
             // synchronization point.
-            if (_creatorSyncPt) {
+            if (_isCreatorSyncPt) {
                 try {
-                    byte[] rfspTag = EncodingHelpers.encodeString(_syncPtName);
-                    _rtia.registerFederationSynchronizationPoint(_syncPtName, rfspTag);
+                    byte[] rfspTag = EncodingHelpers.encodeString(_synchronizationPointName);
+                    _rtia.registerFederationSynchronizationPoint(_synchronizationPointName, rfspTag);
                 } catch (FederateNotExecutionMember e) {
                     throw new IllegalActionException(this, "FederateNotExecutionMember " + e.getMessage());        
                 } catch (SaveInProgress e) {
@@ -793,11 +775,11 @@ implements TimeRegulator {
 
             // Satisfied synchronization point.
             try {
-                _rtia.synchronizationPointAchieved(_syncPtName);
+                _rtia.synchronizationPointAchieved(_synchronizationPointName);
                 if (_debugging) {
                     _debug(this.getDisplayName()
                             + " initialize() - Synchronisation point "
-                            + _syncPtName + " satisfied !");
+                            + _synchronizationPointName + " satisfied !");
                 }
             } catch (SynchronizationLabelNotAnnounced e) {
                 throw new IllegalActionException(this, "SynchronizationLabelNotAnnounced " + e.getMessage());        
@@ -856,7 +838,7 @@ implements TimeRegulator {
 
         // Try to launch the HLA/CERTI RTIG subprocess.
         _certiRtig = new CertiRtig(this, _debugging);
-        _certiRtig.initialize(_fedFile);
+        _certiRtig.initialize(fedFile.asFile().getAbsolutePath());
 
         _certiRtig.exec();
         if (_debugging) {
@@ -926,7 +908,7 @@ implements TimeRegulator {
 
         // If the HLA Time Management is required, ask to the HLA/CERTI 
         // Federation (the RTI) the authorization to advance its time.
-        if (_timeReg && _timeConst) {
+        if (_isTimeRegulator && _isTimeConstrained) {
             synchronized (this) {
                 // Build a representation of the proposedTime in HLA/CERTI.
                 CertiLogicalTime certiProposedTime = 
@@ -934,7 +916,7 @@ implements TimeRegulator {
 
                 // Call the corresponding HLA Time Management service.
                 try {
-                    if (_ner) {
+                    if (_useNextEventRequest) {
                         if (_debugging) {
                             _debug(this.getDisplayName()
                                     + " proposeTime() -" 
@@ -1427,9 +1409,6 @@ implements TimeRegulator {
     /**-Name of the HLA/CERTI federation to create or to join. */
     private String _federationName;
 
-    /** Path and name of the HLA Federate Object Model (FOM) file.*/
-    private String _fedFile;
-
     /** RTI Ambassador for the Ptolemy Federate. */
     private CertiRtiAmbassador _rtia;
 
@@ -1437,16 +1416,16 @@ implements TimeRegulator {
     private PtolemyFederateAmbassadorInner _fedAmb;
 
     /** Indicates the use of the {@link nextEventRequest()} service. */
-    private Boolean _ner;
+    private Boolean _useNextEventRequest;
 
     /** Indicates the use of the {@link timeAdvanceRequest()} service. */
-    private Boolean _tar;
+    private Boolean _useTimeAdvancedRequest;
 
     /** Indicates the use of the {@link enableTimeConstrained()} service. */
-    private Boolean _timeConst;
+    private Boolean _isTimeConstrained;
 
     /** Indicates the use of the {@link enableTimeRegulation()} service. */
-    private Boolean _timeReg;
+    private Boolean _isTimeRegulator;
 
     /** Start time of the Ptolemy Federate HLA logical clock. */
     private Double _hlaStartTime;
@@ -1461,12 +1440,12 @@ implements TimeRegulator {
     private Boolean _requireSynchronization;
 
     /** Name of the synchronization point to create or to reach. */
-    private String _syncPtName;
+    private String _synchronizationPointName;
 
     /** Indicates if the Ptolemy Federate is the creator of the synchronization
      *  point.
      */
-    private Boolean _creatorSyncPt;
+    private Boolean _isCreatorSyncPt;
 
     /** Records the last proposed time to avoid multiple HLA time advancement
      *  requests at the same time.
