@@ -113,6 +113,12 @@ public class GenerateCopyrights {
         _addIfPresent(copyrightsMap, "com.google.protobuf.MessageOrBuilder",
                 "lib/protobuf-license.htm");
 
+        _addIfPresent(copyrightsMap, "g4ltl.SolverUtility",
+                "lib/g4ltl-license.htm");
+
+        _addIfPresent(copyrightsMap, "hla.rti.jlc.RtiFactory",
+                "lib/jcerti-license.htm");
+
         _addIfPresent(copyrightsMap, "interfaces.util.ChicUI",
                 "lib/chic-license.htm");
 
@@ -271,9 +277,6 @@ public class GenerateCopyrights {
 
         _addIfPresent(copyrightsMap, "org.jivesoftware.smack.XMPPConnection",
                 "lib/smack-license.htm");
-
-        _addIfPresent(copyrightsMap, "g4ltl.SolverUtility",
-                "lib/g4ltl-license.htm");
 
         // Check for the _applicationCopyrights parameter
         try {
