@@ -49,9 +49,7 @@ import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.lib.Const;
 import ptolemy.actor.lib.DiscreteClock;
 import ptolemy.actor.lib.PoissonClock;
-import ptolemy.actor.lib.Source;
 import ptolemy.actor.lib.TimeDelay;
-import ptolemy.actor.lib.resourceScheduler.ResourceAttributes;
 import ptolemy.actor.lib.resourceScheduler.ResourceScheduler;
 import ptolemy.actor.parameters.ParameterPort;
 import ptolemy.actor.parameters.SharedParameter;
@@ -67,7 +65,6 @@ import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.domains.de.kernel.DEDirector;
-import ptolemy.domains.de.kernel.DEEvent;
 import ptolemy.domains.de.kernel.DEEventQueue;
 import ptolemy.domains.modal.modal.ModalModel;
 import ptolemy.domains.ptides.lib.ErrorHandlingAction;
@@ -214,6 +211,8 @@ public class PtidesDirector extends DEDirector implements Decorator {
      *  platforms.
      */
     public SharedParameter clockSynchronizationErrorBound;
+    
+    
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -322,7 +321,7 @@ public class PtidesDirector extends DEDirector implements Decorator {
         super.fire();
 
         // Transfer all outputs to the ports that are ready.
-        list = _outputEventQueue.get(getModelTime());
+        list = _outputEventDeadlines.get(getModelTime());
         if (list != null) {
             for (PtidesEvent event : list) {
                 _currentLogicalTime = event.timeStamp();
@@ -352,7 +351,7 @@ public class PtidesDirector extends DEDirector implements Decorator {
                 }
                 _currentLogicalTime = null;
             }
-            _outputEventQueue.remove(getModelTime());
+            _outputEventDeadlines.remove(getModelTime());
         }
 
         // Transfer all outputs from ports to the outside
@@ -533,10 +532,10 @@ public class PtidesDirector extends DEDirector implements Decorator {
         }
 
         // Potentially set next fire time from _outputEventQueue.
-        Set<Time> deliveryTimes = _outputEventQueue.keySet();
+        Set<Time> deliveryTimes = _outputEventDeadlines.keySet();
         if (deliveryTimes.size() > 0) {
             TreeSet<Time> set = new TreeSet<Time>(deliveryTimes);
-            for (PtidesEvent event : _outputEventQueue.get(set.first())) {
+            for (PtidesEvent event : _outputEventDeadlines.get(set.first())) {
                 if (event.ioPort() instanceof PtidesPort
                         && ((PtidesPort) event.ioPort()).isActuatorPort()
                         && getEnvironmentTime().compareTo(event.timeStamp()) > 0) {
@@ -613,7 +612,7 @@ public class PtidesDirector extends DEDirector implements Decorator {
         super.preinitialize();
         _eventQueue = new PtidesListEventQueue();
         _inputEventQueue = new HashMap<Time, List<PtidesEvent>>();
-        _outputEventQueue = new HashMap<Time, List<PtidesEvent>>();
+        _outputEventDeadlines = new HashMap<Time, List<PtidesEvent>>();
         _ptidesOutputPortEventQueue = new HashMap<PtidesPort, Queue<PtidesEvent>>();
         _nextFireTime = Time.POSITIVE_INFINITY;
         _pureEvents = new PtidesListEventQueue();
@@ -712,12 +711,12 @@ public class PtidesDirector extends DEDirector implements Decorator {
             }
 
             if (newEvent != null) {
-                List<PtidesEvent> list = _outputEventQueue.get(deliveryTime);
+                List<PtidesEvent> list = _outputEventDeadlines.get(deliveryTime);
                 if (list == null) {
                     list = new ArrayList<PtidesEvent>();
                 }
                 list.add(newEvent);
-                _outputEventQueue.put(deliveryTime, list);
+                _outputEventDeadlines.put(deliveryTime, list);
                 if (_debugging) {
                     _debug("  enqueue actuator event for time " + deliveryTime);
                 }
@@ -1300,9 +1299,15 @@ public class PtidesDirector extends DEDirector implements Decorator {
         for (Object object : actor.outputPortList()) {
             IOPort port = (IOPort) object;
             for (Object sinkPort : port.sinkPortList()) {
-                sinkActorEventQueueSize.put(
-                        (Actor) ((IOPort) sinkPort).getContainer(),
-                        Integer.valueOf(0));
+                if (((IOPort) sinkPort).getContainer() == this.getContainer()) {
+                    for (Time time : _outputEventDeadlines.keySet()) {
+                        maxEvents += _outputEventDeadlines.get(time).size();
+                    } 
+                } else {
+                    sinkActorEventQueueSize.put(
+                            (Actor) ((IOPort) sinkPort).getContainer(),
+                            Integer.valueOf(0));
+                }
             }
         }
         Object[] eventArray = _eventQueue.toArray();
@@ -1316,6 +1321,10 @@ public class PtidesDirector extends DEDirector implements Decorator {
                 }
             }
         }
+        
+        // Find all sink ports.
+        
+        
         return maxEvents;
     }
 
@@ -1436,7 +1445,7 @@ public class PtidesDirector extends DEDirector implements Decorator {
                                             && ((BooleanToken) ((Parameter) attribute)
                                                     .getToken()).booleanValue()) {
                                         _eventQueue.clear();
-                                        _outputEventQueue.clear();
+                                        _outputEventDeadlines.clear();
                                         _pureEvents.clear();
                                         return null;
                                     }
@@ -1476,15 +1485,15 @@ public class PtidesDirector extends DEDirector implements Decorator {
                                             idx++;
                                         }
                                     }
-                                    for (Time outputTime : _outputEventQueue
+                                    for (Time outputTime : _outputEventDeadlines
                                             .keySet()) {
-                                        for (PtidesEvent outputEvent : _outputEventQueue
+                                        for (PtidesEvent outputEvent : _outputEventDeadlines
                                                 .get(outputTime)) {
                                             if (outputEvent
                                                     .sourceTimestamp()
                                                     .compareTo(
                                                             event.sourceTimestamp()) < 0) {
-                                                _outputEventQueue
+                                                _outputEventDeadlines
                                                         .remove(outputTime);
                                             }
                                         }
@@ -1530,6 +1539,11 @@ public class PtidesDirector extends DEDirector implements Decorator {
                 }
             }
         }
+        
+        int futureEvents = _getNumberOfFutureEventsFrom(event.actor());
+        if (futureEvents > _maximumNumberOfEventsPerActor) {
+            return false;
+        }
 
         // A local source can have a maximum future events parameter.
         ThrottleAttributes attributes = (ThrottleAttributes) ((NamedObj) event
@@ -1539,11 +1553,11 @@ public class PtidesDirector extends DEDirector implements Decorator {
                         .booleanValue()) {
             Integer maxFutureEvents = ((IntToken) attributes.maximumFutureEvents
                     .getToken()).intValue();
+            
             if (maxFutureEvents != null) {
-                int futureEvents = _getNumberOfFutureEventsFrom(event.actor());
                 return (futureEvents <= maxFutureEvents);
-            }
-        }
+            } 
+        } 
 
         Double delayOffset = null;
         Time eventTimestamp = event.timeStamp();
@@ -1712,7 +1726,7 @@ public class PtidesDirector extends DEDirector implements Decorator {
      */
     private Map<TypedIOPort, Double> _relativeDeadlineForPureEvent;
 
-    private HashMap<Time, List<PtidesEvent>> _outputEventQueue;
+    private HashMap<Time, List<PtidesEvent>> _outputEventDeadlines;
 
     private HashMap<PtidesPort, Queue<PtidesEvent>> _ptidesOutputPortEventQueue;
 
@@ -1777,5 +1791,10 @@ public class PtidesDirector extends DEDirector implements Decorator {
     public boolean isGlobalDecorator() {
         return true;
     }
+    
+    /** This is an upper bound on the events in the event queue
+     *  produced by any actor at any given time. 
+     */
+    private static int _maximumNumberOfEventsPerActor = 10;
 
 }
