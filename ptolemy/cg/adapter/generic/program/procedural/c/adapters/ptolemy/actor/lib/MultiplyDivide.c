@@ -3,11 +3,21 @@ $type $actorSymbol(result);
 /**/
 
 /***initProduct($type1, $type2)***/
-$actorSymbol(result) = $convert_$type1_$type2($get(multiply#0));
+if ($hasToken(multiply#0)) {
+	$actorSymbol(result) = $convert_$type1_$type2($get(multiply#0));
+}
+else {
+	$actorSymbol(result) = $convert_$type1_Double(1.0);
+}
 /**/
 
 /***divideOnlyInitProduct($divideType)***/
-$actorSymbol(result) = $divide_one_$divideType($get(divide#0));
+if ($hasToken(divide#0)) {
+	$actorSymbol(result) = $divide_one_$divideType($get(divide#0));
+}
+else {
+	$actorSymbol(result) = $divide_one_Double(1.0);
+}
 /**/
 
 /***multiplyBlock($channel, $outputType, $multiplyType)***/

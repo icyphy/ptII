@@ -1,11 +1,11 @@
 /*** divide_Array_Array() ***/
-inline Token divide_Array_Array(Token a1, Token a2) {
+ Token divide_Array_Array(Token a1, Token a2) {
     return $Array_divide(a1, a2);
 }
 /**/
 
 /*** divide_Array_Double() ***/
-inline Token divide_Array_Double(Token a1, double a2) {
+Token divide_Array_Double(Token a1, double a2) {
     int i;
     Token result = $new(Array(a1.payload.Array->size, 0));
 
@@ -29,7 +29,7 @@ Token divide_Array_Int(Token a1, int a2) {
 /**/
 
 /*** divide_Array_Long() ***/
-inline Token divide_Array_Long(Token a1, long long a2) {
+Token divide_Array_Long(Token a1, long long a2) {
     int i;
     Token result = $new(Array(a1.payload.Array->size, 0));
 
@@ -41,7 +41,7 @@ inline Token divide_Array_Long(Token a1, long long a2) {
 /**/
 
 /*** divide_Boolean_Boolean() ***/
-inline boolean divide_Boolean_Boolean(boolean a1, boolean a2) {
+boolean divide_Boolean_Boolean(boolean a1, boolean a2) {
     //if (!a2) {
     // FIXME: Illegal boolean divide.
     // throw exception("Illegal boolean division.");
@@ -87,13 +87,13 @@ Token divide_Double_Array(double a1, Token a2) {
 /**/
 
 /*** divide_Double_Double() ***/
-inline double divide_Double_Double(double a1, double a2) {
+double divide_Double_Double(double a1, double a2) {
     return a1 / a2;
 }
 /**/
 
 /*** divide_Double_Int() ***/
-inline double divide_Double_Int(double a1, int a2) {
+double divide_Double_Int(double a1, int a2) {
     return a1 / a2;
 }
 /**/
@@ -153,13 +153,13 @@ Token divide_Int_Array(int a1, Token a2) {
 /**/
 
 /*** divide_Int_Double() ***/
-inline int divide_Int_Double(int a1, double a2) {
+int divide_Int_Double(int a1, double a2) {
     return a1 / a2;
 }
 /**/
 
 /*** divide_Int_Int() ***/
-inline int divide_Int_Int(int a1, int a2) {
+int divide_Int_Int(int a1, int a2) {
     return a1 / a2;
 }
 /**/
@@ -184,7 +184,7 @@ Token divide_Long_Array(long long a1, Token a2) {
 /**/
 
 /*** divide_Long_Long() ***/
-inline long long divide_Long_Long(long long a1, long long a2) {
+long long divide_Long_Long(long long a1, long long a2) {
     return a1 / a2;
 }
 /**/
@@ -197,7 +197,7 @@ Token divide_Long_Token(long long a1, Token a2) {
 /**/
 
 /*** divide_Matrix_Double() ***/
-inline Token divide_Matrix_Double(Token a1, double a2) {
+Token divide_Matrix_Double(Token a1, double a2) {
     int i, j;
     Token result = $new(Matrix(a1.payload.Matrix->row,
                     a1.payload.Matrix->column, 0));
@@ -213,59 +213,59 @@ inline Token divide_Matrix_Double(Token a1, double a2) {
 /**/
 
 /*** divide_Token_Double() ***/
-inline Token divide_Token_Double(Token a1, double a2) {
+Token divide_Token_Double(Token a1, double a2) {
     Token token = $new(Double(a2));
     return $divide_Token_Token(a1, token);
 }
 /**/
 
 /*** divide_Token_Int() ***/
-inline int divide_Token_Int(Token a1, int a2) {
+int divide_Token_Int(Token a1, int a2) {
     Token token = $new(Int(a2));
     return $divide_Token_Token(a1, token);
 }
 /**/
 
 /*** divide_Token_Token() ***/
-inline Token divide_Token_Token(Token a1, Token a2) {
+Token divide_Token_Token(Token a1, Token a2) {
     return $tokenFunc(a1::divide(a2));
 }
 /**/
 
 /*** divide_one_Array() ***/
-inline Token divide_one_Array(Token a1, ...) {
+Token divide_one_Array(Token a1, ...) {
     Token oneToken = $tokenFunc(a1::one(a1));
     return $Array_divide(oneToken, a1);
 }
 /**/
 
 /*** divide_one_Boolean() ***/
-inline double divide_one_Boolean(boolean b, ...) {
+double divide_one_Boolean(boolean b, ...) {
     // FIXME: is this right?
     return b;
 }
 /**/
 
 /*** divide_one_Double() ***/
-inline double divide_one_Double(double d, ...) {
+double divide_one_Double(double d, ...) {
     return 1.0/d;
 }
 /**/
 
 /*** divide_one_Int() ***/
-inline int divide_one_Int(int i, ...) {
+int divide_one_Int(int i, ...) {
     return 1/i;
 }
 /**/
 
 /*** divide_one_Long() ***/
-inline long divide_one_Long(long l, ...) {
+long divide_one_Long(long l, ...) {
     return 1L/l;
 }
 /**/
 
 /*** divide_one_Token() ***/
-inline long divide_one_Token(Token a1, ...) {
+long divide_one_Token(Token a1, ...) {
     Token oneToken = $tokenFunc(a1::one(a1));
     return $divide_Token_Token(a1, token);
 }

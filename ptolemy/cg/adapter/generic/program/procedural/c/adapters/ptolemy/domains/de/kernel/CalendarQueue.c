@@ -51,7 +51,7 @@ bool CQueuePut(struct CalendarQueue * cqueue, void * item)
 {
 	if (cqueue == NULL)
 		perror("Putting an item in an Empty CQueue !");
-	if (CQLinkedListInsert(cqueue->bucket, item)) {
+	if (!CQLinkedListIncludes(cqueue->bucket, item) && CQLinkedListInsert(cqueue->bucket, item)) {
 		cqueue->size++;
 		return true;
 	}
