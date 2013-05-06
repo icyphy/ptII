@@ -33,7 +33,7 @@
 
 ME =		ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/de
 
-DIRS =		lib
+DIRS =		kernel lib
 
 # Root of the Java directory
 ROOT =		../../../../../../../../../../..
@@ -53,6 +53,7 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 # Include the .class files from these jars in PTCLASSALLJAR
 # If you change this, change DIRS above
 PTCLASSALLJARS = \
+	kernel/kernel.jar \
 	lib/lib.jar
 
 # Keep this list alphabetized.

@@ -64,7 +64,6 @@ JSRCS = \
 	TimeCompare.java \
 	TimeGap.java \
 	VariableDelay.java
-	
 
 OTHER_FILES_TO_BE_JARED = \
 	Merge.c \

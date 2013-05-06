@@ -42,7 +42,7 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	de
+PTPACKAGE = 	kernel
 PTCLASSJAR =
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
@@ -77,6 +77,7 @@ MISC_FILES =
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	demo \
+	'DEDirector$$1.class' \
 	'DEDirector$$FullNameComparator.class' \
 	'DEDirector$$PortInfo.class' \
 	'DEDirector$$Ports.class'
