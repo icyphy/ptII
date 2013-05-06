@@ -5,6 +5,8 @@
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
     </property>
     <property name="CCodeGenerator" class="ptolemy.cg.kernel.generic.program.procedural.c.CCodeGenerator">
+        <property name="codeDirectory" class="ptolemy.data.expr.FileParameter" value="$HOME/cg/DECGClockRamp">
+        </property>
         <property name="generateInSubdirectory" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <property name="inline" class="ptolemy.data.expr.Parameter" value="false">
@@ -32,7 +34,7 @@
             </property>
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={331, 237, 916, 636}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={332, 265, 914, 607}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 516]">
     </property>

@@ -5,7 +5,7 @@
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
     </property>
     <property name="CCodeGenerator" class="ptolemy.cg.kernel.generic.program.procedural.c.CCodeGenerator">
-        <property name="codeDirectory" class="ptolemy.data.expr.FileParameter" value="$HOME/cg/demo03bis">
+        <property name="codeDirectory" class="ptolemy.data.expr.FileParameter" value="$HOME/cg/DECGPiSquare">
         </property>
         <property name="generateInSubdirectory" class="ptolemy.data.expr.Parameter" value="true">
         </property>
@@ -34,7 +34,7 @@
             </property>
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={728, 235, 1231, 726}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={533, 254, 1229, 697}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1015, 606]">
     </property>

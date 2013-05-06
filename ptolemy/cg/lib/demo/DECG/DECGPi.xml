@@ -5,7 +5,7 @@
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
     </property>
     <property name="CCodeGenerator" class="ptolemy.cg.kernel.generic.program.procedural.c.CCodeGenerator">
-        <property name="codeDirectory" class="ptolemy.data.expr.FileParameter" value="$HOME/cg/demo03ter">
+        <property name="codeDirectory" class="ptolemy.data.expr.FileParameter" value="$HOME/cg/DECGPi">
         </property>
         <property name="generateInSubdirectory" class="ptolemy.data.expr.Parameter" value="true">
         </property>
@@ -34,7 +34,7 @@
             </property>
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={462, 222, 1363, 802}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={463, 250, 1361, 773}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1147, 682]">
     </property>
@@ -101,7 +101,7 @@
         </property>
     </property>
     <entity name="Display" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1228, 374, 522, 205}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1229, 402, 522, 205}, maximized=false}">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[522, 182]">
         </property>

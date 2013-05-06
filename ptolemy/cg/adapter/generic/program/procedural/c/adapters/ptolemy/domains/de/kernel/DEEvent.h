@@ -36,7 +36,6 @@ struct DEEvent {
   /** The Token corresponding if it is a trigger event */
   Token token;
 };
-typedef struct DEEvent DEEvent;
 
 DEEvent * newDEEvent();
 DEEvent * newDEEventWithParam(Actor* actor, IOPort* ioPort, int depth,
