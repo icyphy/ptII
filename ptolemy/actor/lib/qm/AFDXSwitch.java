@@ -38,6 +38,7 @@ import ptolemy.actor.IOPort;
 import ptolemy.actor.IntermediateReceiver;
 import ptolemy.actor.QuantityManager;
 import ptolemy.actor.Receiver;
+import ptolemy.actor.lib.ResourceAttributes;
 import ptolemy.actor.lib.qm.QuantityManagerListener.EventType;
 import ptolemy.actor.util.Time;
 import ptolemy.actor.util.TimedEvent;
@@ -52,7 +53,10 @@ import ptolemy.domains.de.kernel.DEDirector;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
 
 /** A {@link QuantityManager} actor that, when its
@@ -632,5 +636,49 @@ public class AFDXSwitch extends MonitoredQuantityManager {
 
     /** Label of the payload that is transmitted within the RecordToken. */
     private static final String payload = "payload";
+    
+    public class AFDXSwitchAttributes extends ResourceAttributes {
+
+        /** Constructor to use when editing a model.
+         *  @param target The object being decorated.
+         *  @param decorator The decorator.
+         *  @throws IllegalActionException If the superclass throws it.
+         *  @throws NameDuplicationException If the superclass throws it.
+         */
+        public AFDXSwitchAttributes(NamedObj target, MonitoredQuantityManager decorator)
+                throws IllegalActionException, NameDuplicationException {
+            super(target, decorator);
+            _init();
+        }
+
+        /** Constructor to use when parsing a MoML file.
+         *  @param target The object being decorated.
+         *  @param name The name of this attribute.
+         *  @throws IllegalActionException If the superclass throws it.
+         *  @throws NameDuplicationException If the superclass throws it.
+         */
+        public AFDXSwitchAttributes(NamedObj target, String name)
+                throws IllegalActionException, NameDuplicationException {
+            super(target, name);
+            _init();
+        }
+
+        ///////////////////////////////////////////////////////////////////
+        ////                         parameters                        ////
+
+        
+        public void attributeChanged(Attribute attribute) {
+        } 
+
+        ///////////////////////////////////////////////////////////////////
+        ////                        private methods                    ////
+
+        /** Create the parameters.
+         */
+        private void _init() { 
+        }
+         
+    }
+
 
 }

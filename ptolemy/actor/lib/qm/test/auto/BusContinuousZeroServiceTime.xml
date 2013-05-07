@@ -12,18 +12,6 @@
     </property>
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{340.0, 252.0}">
     </property>
-    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Bus.set(0.1)">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="[135.0, 125.0]">
-        </property>
-    </property>
-    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Bus.set(2.0)">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="[135.0, 240.0]">
-        </property>
-    </property>
     <property name="Continuous Director" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="3">
         </property>
@@ -42,16 +30,20 @@
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
-            <property name="qm" class="ptolemy.actor.lib.qm.QuantityManagerAttribute" value="Bus">
-                <property name="messageLength" class="ptolemy.data.expr.Parameter" value="0.1">
-                </property>
-            </property>
             <property name="_showInfo" class="ptolemy.kernel.util.StringAttribute" value="QM = {Bus}">
+            </property>
+            <property name="DecoratorAttributesFor_Bus" class="ptolemy.actor.lib.qm.Bus$BusAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Bus">
+                </property>
+                <property name="enable" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="messageLength" class="ptolemy.data.expr.Parameter" value="2">
+                </property>
             </property>
         </port>
     </entity>
     <entity name="Bus" class="ptolemy.actor.lib.qm.Bus">
-        <property name="serviceTimeMultiplicationFactor" class="ptolemy.data.expr.Parameter" value="0">
+        <property name="serviceTimeMultiplicationFactor" class="ptolemy.data.expr.Parameter" value="0.1">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 260.0]">
         </property>
@@ -60,6 +52,20 @@
         <doc>Create a sequence of tokens with increasing value</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[205.0, 55.0]">
         </property>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+            <property name="DecoratorAttributesFor_Bus" class="ptolemy.actor.lib.qm.Bus$BusAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Bus">
+                </property>
+                <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="messageLength" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
+            </property>
+            <property name="_showInfo" class="ptolemy.kernel.util.StringAttribute">
+            </property>
+        </port>
     </entity>
     <entity name="Ramp3" class="ptolemy.actor.lib.Ramp">
         <doc>Create a sequence of tokens with increasing value</doc>
@@ -68,11 +74,15 @@
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
-            <property name="qm" class="ptolemy.actor.lib.qm.QuantityManagerAttribute" value="Bus">
-                <property name="messageLength" class="ptolemy.data.expr.Parameter" value="2">
-                </property>
-            </property>
             <property name="_showInfo" class="ptolemy.kernel.util.StringAttribute" value="QM = {Bus}">
+            </property>
+            <property name="DecoratorAttributesFor_Bus" class="ptolemy.actor.lib.qm.Bus$BusAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Bus">
+                </property>
+                <property name="enable" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="messageLength" class="ptolemy.data.expr.Parameter" value="1.5">
+                </property>
             </property>
         </port>
     </entity>
@@ -102,7 +112,7 @@
         </property>
     </entity>
     <entity name="NonStrictTest2" class="ptolemy.actor.lib.NonStrictTest">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0, 1, 2, 3}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0, 1, 2}">
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
@@ -115,7 +125,7 @@
         </property>
     </entity>
     <entity name="NonStrictTest5" class="ptolemy.actor.lib.NonStrictTest">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, 1.0, 2.0, 3.0}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.35, 1.35, 2.35}">
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
@@ -123,7 +133,7 @@
         </property>
     </entity>
     <entity name="NonStrictTest3" class="ptolemy.actor.lib.NonStrictTest">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0, 1, 2, 3}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0, 1, 2}">
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
@@ -136,7 +146,7 @@
         </property>
     </entity>
     <entity name="NonStrictTest6" class="ptolemy.actor.lib.NonStrictTest">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, 1.0, 2.0, 3.0}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.36, 1.36, 2.36}">
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
@@ -160,11 +170,15 @@
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="qm" class="ptolemy.actor.lib.qm.QuantityManagerAttribute" value="Bus">
-                <property name="messageLength" class="ptolemy.data.expr.Parameter" value="1">
-                </property>
-            </property>
             <property name="_showInfo" class="ptolemy.kernel.util.StringAttribute" value="QM = {Bus}">
+            </property>
+            <property name="DecoratorAttributesFor_Bus" class="ptolemy.actor.lib.qm.Bus$BusAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Bus">
+                </property>
+                <property name="enable" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="messageLength" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
             </property>
         </port>
     </entity>
@@ -177,11 +191,15 @@
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="qm" class="ptolemy.actor.lib.qm.QuantityManagerAttribute" value="Bus">
-                <property name="messageLength" class="ptolemy.data.expr.Parameter" value="1">
-                </property>
-            </property>
             <property name="_showInfo" class="ptolemy.kernel.util.StringAttribute" value="QM = {Bus}">
+            </property>
+            <property name="DecoratorAttributesFor_Bus" class="ptolemy.actor.lib.qm.Bus$BusAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Bus">
+                </property>
+                <property name="enable" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="messageLength" class="ptolemy.data.expr.Parameter" value="0.1">
+                </property>
             </property>
         </port>
     </entity>
@@ -198,26 +216,40 @@
         </property>
         <vertex name="vertex1" value="[500.0, 55.0]">
         </vertex>
+        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+        </property>
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+        </property>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
         <vertex name="vertex1" value="[490.0, 170.0]">
         </vertex>
+        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+        </property>
     </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+        </property>
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
         <vertex name="vertex1" value="[505.0, 285.0]">
         </vertex>
+        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+        </property>
     </relation>
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+        </property>
     </relation>
     <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+        </property>
     </relation>
     <relation name="relation9" class="ptolemy.actor.TypedIORelation">
         <property name="color" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.0,1.0}">

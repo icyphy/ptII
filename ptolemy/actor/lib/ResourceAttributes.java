@@ -1,4 +1,5 @@
-/* This is a resource scheduler.
+/* Container for decorator attributes that are provided to actors by
+ * a resource scheduler.
 
 @Copyright (c) 2008-2013 The Regents of the University of California.
 All rights reserved.
@@ -27,19 +28,21 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 
  */
-package ptolemy.actor.lib.resourceScheduler;
+package ptolemy.actor.lib;
 
-import ptolemy.actor.lib.resourceScheduler.ResourceScheduler;
+import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.Decorator;
 import ptolemy.kernel.util.DecoratorAttributes;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
+import soot.dava.internal.AST.ASTTryNode.container;
 
 /**
 Container for decorator attributes that are provided to actors by
@@ -61,7 +64,7 @@ public class ResourceAttributes extends DecoratorAttributes {
      *  @throws IllegalActionException If the superclass throws it.
      *  @throws NameDuplicationException If the superclass throws it.
      */
-    public ResourceAttributes(NamedObj target, ResourceScheduler decorator)
+    public ResourceAttributes(NamedObj target, Decorator decorator)
             throws IllegalActionException, NameDuplicationException {
         super(target, decorator);
         _init();
@@ -78,6 +81,8 @@ public class ResourceAttributes extends DecoratorAttributes {
         super(target, name);
         _init();
     }
+    
+    
 
     ///////////////////////////////////////////////////////////////////
     ////                         parameters                        ////
@@ -88,6 +93,31 @@ public class ResourceAttributes extends DecoratorAttributes {
      */
     public Parameter enable; 
 
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                        public methods                     ////
+    
+    /** React to a change in an attribute.  If the attribute is
+     *  <i>enable</i>, remember the value.
+     *  @param attribute The attribute that changed.
+     *  @exception IllegalActionException If the change is not acceptable
+     *   to this container (not thrown in this base class).
+     */
+    public void attributeChanged(Attribute attribute)
+            throws IllegalActionException {
+        if (attribute == enable) {
+            _enabled = ((BooleanToken)enable.getToken()).booleanValue();
+        }
+        super.attributeChanged(attribute);
+    }
+    
+    /** Return whether the decorator associated with this attribute is 
+     *  enabled.
+     *  @return True if enabled.
+     */
+    public boolean enabled() {
+        return _enabled;
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                        private methods                    ////
@@ -104,4 +134,6 @@ public class ResourceAttributes extends DecoratorAttributes {
             throw new InternalErrorException(ex);
         }
     }
+    
+    private boolean _enabled;
 }

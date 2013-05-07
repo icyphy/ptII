@@ -172,6 +172,18 @@
             </property>
             <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="EAST">
             </property>
+            <property name="DecoratorAttributesFor_BasicSwitch" class="ptolemy.actor.lib.qm.MonitoredQuantityManager$QMAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="BasicSwitch">
+                </property>
+                <property name="enable" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+            </property>
+            <property name="DecoratorAttributesFor_BasicSwitch2" class="ptolemy.actor.lib.qm.MonitoredQuantityManager$QMAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="BasicSwitch2">
+                </property>
+                <property name="enable" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+            </property>
         </port>
         <port name="source" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -229,7 +241,7 @@
 <title>TimedPlotter</title>
 <xLabel></xLabel>
 <yLabel></yLabel>
-<xRange min="0.3" max="9.35"/>
+<xRange min="0.0" max="10.0"/>
 <yRange min="1.0" max="3.0"/>
 <default connected="no" stems="yes"/>
 </plot>?>
@@ -430,6 +442,18 @@
             </property>
             <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="EAST">
             </property>
+            <property name="DecoratorAttributesFor_BasicSwitch" class="ptolemy.actor.lib.qm.MonitoredQuantityManager$QMAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="BasicSwitch">
+                </property>
+                <property name="enable" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+            </property>
+            <property name="DecoratorAttributesFor_BasicSwitch2" class="ptolemy.actor.lib.qm.MonitoredQuantityManager$QMAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="BasicSwitch2">
+                </property>
+                <property name="enable" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+            </property>
         </port>
         <port name="port3" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -491,7 +515,7 @@
 <title>TimedPlotter</title>
 <xLabel></xLabel>
 <yLabel></yLabel>
-<xRange min="0.15" max="9.450000000000001"/>
+<xRange min="0.0" max="10.0"/>
 <yRange min="1.0" max="3.0"/>
 <default connected="no" stems="yes"/>
 </plot>?>
@@ -523,20 +547,28 @@
         </property>
         <vertex name="vertex1" value="[40.0, 255.0]">
         </vertex>
+        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+        </property>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
         <vertex name="vertex1" value="[530.0, 310.0]">
         </vertex>
+        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+        </property>
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
         <vertex name="vertex1" value="[55.0, 270.0]">
         </vertex>
+        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+        </property>
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
         <vertex name="vertex1" value="[510.0, 295.0]">
         </vertex>
+        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+        </property>
     </relation>
     <link port="A.source" relation="relation3"/>
     <link port="B.port" relation="relation"/>

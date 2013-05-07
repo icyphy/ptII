@@ -236,7 +236,7 @@ public class EditParametersDialog extends ComponentDialog implements
                     // Ignore the cancel.
                 }
             }
-        }
+        } 
     }
 
     ///////////////////////////////////////////////////////////////////

@@ -1187,6 +1187,12 @@ public class PtidesDirector extends DEDirector implements Decorator {
                 }
                 _debug(buf.toString());
             }
+            
+            for (Object actor : ((CompositeActor)getContainer()).entityList()) {
+                if (actor instanceof Actor) {
+                    _debug(((Actor)actor).getName() + "\t" + _getDepthOfActor((Actor) actor));
+                }
+            }
         }
     }
 

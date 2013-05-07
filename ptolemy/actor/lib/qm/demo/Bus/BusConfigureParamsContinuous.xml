@@ -51,8 +51,8 @@
 <title>TimedPlotter</title>
 <xLabel>time</xLabel>
 <yLabel>value</yLabel>
-<xRange min="0.0" max="10.0"/>
-<yRange min="0.0" max="10.0"/>
+<xRange min="1.1" max="9.9"/>
+<yRange min="0.0" max="2.0"/>
 <default marks="various" stems="yes"/>
 </plot>?>
         </configure>
@@ -64,11 +64,15 @@
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
-            <property name="qm" class="ptolemy.actor.lib.qm.QuantityManagerAttribute" value="Bus">
+            <property name="_showInfo" class="ptolemy.kernel.util.StringAttribute" value="QM = {Bus}">
+            </property>
+            <property name="DecoratorAttributesFor_Bus" class="ptolemy.actor.lib.qm.Bus$BusAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Bus">
+                </property>
+                <property name="enable" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
                 <property name="messageLength" class="ptolemy.data.expr.Parameter" value="1">
                 </property>
-            </property>
-            <property name="_showInfo" class="ptolemy.kernel.util.StringAttribute" value="QM: Bus">
             </property>
         </port>
     </entity>
@@ -84,6 +88,20 @@
         <doc>Create a sequence of tokens with increasing value</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[248.90625, 54.375]">
         </property>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+            <property name="DecoratorAttributesFor_Bus" class="ptolemy.actor.lib.qm.Bus$BusAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Bus">
+                </property>
+                <property name="enable" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="messageLength" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
+            </property>
+            <property name="_showInfo" class="ptolemy.kernel.util.StringAttribute" value="QM = {Bus}">
+            </property>
+        </port>
     </entity>
     <entity name="Ramp3" class="ptolemy.actor.lib.Ramp">
         <doc>Create a sequence of tokens with increasing value</doc>
@@ -92,11 +110,15 @@
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
-            <property name="qm" class="ptolemy.actor.lib.qm.QuantityManagerAttribute" value="Bus">
-                <property name="messageLength" class="ptolemy.data.expr.Parameter" value="2.0">
-                </property>
+            <property name="_showInfo" class="ptolemy.kernel.util.StringAttribute" value="QM = {Bus}">
             </property>
-            <property name="_showInfo" class="ptolemy.kernel.util.StringAttribute" value="QM: Bus">
+            <property name="DecoratorAttributesFor_Bus" class="ptolemy.actor.lib.qm.Bus$BusAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Bus">
+                </property>
+                <property name="enable" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="messageLength" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
             </property>
         </port>
     </entity>
@@ -109,12 +131,20 @@
         </property>
         <vertex name="vertex1" value="[128.90625, 204.375]">
         </vertex>
+        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+        </property>
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+        </property>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+        </property>
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+        </property>
     </relation>
     <link port="DiscreteClock.output" relation="relation3"/>
     <link port="TimedPlotter.input" relation="relation"/>

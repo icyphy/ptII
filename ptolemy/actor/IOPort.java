@@ -49,6 +49,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+import ptolemy.actor.lib.ResourceAttributes;
 import ptolemy.actor.util.Time;
 import ptolemy.data.IntToken;
 import ptolemy.data.ObjectToken;
@@ -263,29 +264,6 @@ public class IOPort extends ComponentPort {
             }
         }
         super.attributeChanged(attribute);
-    }
-
-    /** React to the deletion of an attribute. If the attribute is
-     *  a {@link QuantityManager}, invalidate the local variable state
-     *  information about QuantityManagers on this port. This causes
-     *  the port to update QuantityManager information and receivers.
-     *  @param attribute The attribute that was deleted.
-     *  @exception IllegalActionException If the deletion is not acceptable
-     *    to this container (not thrown in this base class).
-     */
-    public void attributeDeleted(Attribute attribute)
-            throws IllegalActionException {
-        if (attribute instanceof Parameter) {
-            Token parameterToken = ((Parameter) attribute).getToken();
-            if (parameterToken != null) {
-                if (parameterToken instanceof ObjectToken
-                        && ((ObjectToken) parameterToken).getValue() instanceof QuantityManager) {
-                    // Invalidate list of quantity managers.
-                    _qmListValid = false;
-                }
-            }
-        }
-        super.attributeDeleted(attribute);
     }
 
     /** Send a token to all connected receivers.
@@ -1377,26 +1355,17 @@ public class IOPort extends ComponentPort {
      */
     public List<QuantityManager> getQuantityManagers()
             throws IllegalActionException {
-        if (_qmListValid == false) {
+        //if (_qmListValid == false) {
 
             _qmList = new ArrayList<QuantityManager>();
-            if (attributeList().size() > 0) {
-                for (int i = 0; i < attributeList().size(); i++) {
-                    Object attr = attributeList().get(i);
-                    if (attr instanceof Parameter) {
-                        Token paramToken = ((Parameter) attr).getToken();
-                        if (paramToken instanceof ObjectToken) {
-                            Object paramObject = ((ObjectToken) paramToken)
-                                    .getValue();
-                            if (paramObject instanceof QuantityManager) {   
-                                _qmList.add((QuantityManager) paramObject);
-                            }
-                        }
-                    }
+            List<ResourceAttributes> list = this.attributeList(ResourceAttributes.class);
+            for (ResourceAttributes attribute : list) {
+                if (attribute.enabled()) {
+                    _qmList.add((QuantityManager)attribute.getDecorator());
                 }
             }
             _qmListValid = true;
-        }
+        //}
         return _qmList;
     }
 

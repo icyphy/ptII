@@ -43,14 +43,21 @@ import ptolemy.actor.QuantityManager;
 import ptolemy.actor.Receiver;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.gui.ColorAttribute;
+import ptolemy.actor.lib.qm.Bus.BusAttributes;
 import ptolemy.actor.lib.qm.QuantityManagerListener.EventType;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
+import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.Decorator;
+import ptolemy.kernel.util.DecoratorAttributes;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
 
 /** This abstract class implements functionality to monitor the activity of a
@@ -69,7 +76,7 @@ import ptolemy.kernel.util.Workspace;
  *  @Pt.AcceptedRating Red (derler)
  */
 public abstract class MonitoredQuantityManager extends TypedAtomicActor
-        implements QuantityManager {
+        implements QuantityManager, Decorator {
 
     /** Construct an actor in the specified workspace with an empty
      *  string as a name. You can then change the name with setName().
@@ -104,6 +111,50 @@ public abstract class MonitoredQuantityManager extends TypedAtomicActor
         _parameters = new HashMap<IOPort, List<Attribute>>();
     } 
 
+    
+    /** Return the decorated attributes for the target NamedObj.
+     *  If the specified target is not an Actor, return null.
+     *  @param target The NamedObj that will be decorated.
+     *  @return The decorated attributes for the target NamedObj, or
+     *   null if the specified target is not an Actor.
+     */
+    public DecoratorAttributes createDecoratorAttributes(NamedObj target) {
+        if (target instanceof IOPort) {
+            try {
+                return new QMAttributes(target, this);
+            } catch (KernelException ex) {
+                // This should not occur.
+                throw new InternalErrorException(ex);
+            }
+        } else {
+            return null;
+        }
+    }
+
+    /** Return a list of the entities deeply contained by the container
+     *  of this resource scheduler.
+     *  @return A list of the objects decorated by this decorator.
+     */
+    public List<NamedObj> decoratedObjects() {
+        List<NamedObj> list = new ArrayList();
+        CompositeEntity container = (CompositeEntity) getContainer();
+        for (Object object : container.deepEntityList()) {
+            if (object instanceof Actor) {
+                for (Object port : ((Actor)object).inputPortList()) {
+                    list.add((NamedObj) port);
+                }
+            }
+        }
+        return list;
+    }
+    
+    /** Return true to indicate that this decorator should
+     *  decorate objects across opaque hierarchy boundaries.
+     */
+    public boolean isGlobalDecorator() {
+        return true;
+    }
+    
     /** Clone the object into the specified workspace.
      *  @param workspace The workspace for the new object.
      *  @return A new NamedObj.
@@ -128,38 +179,6 @@ public abstract class MonitoredQuantityManager extends TypedAtomicActor
         IntermediateReceiver intermediateReceiver = new IntermediateReceiver(
                 this, receiver);
         return intermediateReceiver;
-    }
-
-    /** Return the list of Attributes that can be specified per port with default
-     *  values for the specified port. This base class returns null.
-     *  @param container The container parameter.
-     *  @param port The port.
-     *  @return List of attributes.
-     *  @exception IllegalActionException Thrown if attributeList could not be created.
-     */
-    public List<Attribute> getPortAttributeList(Parameter container, Port port)
-            throws IllegalActionException {
-        // TODO Auto-generated method stub
-        return null;
-    }
-    
-    /** Set an attribute for a given port.
-     *  @param container The port.
-     *  @param attribute The new attribute or the attribute containing a new value.
-     *  @exception IllegalActionException Thrown if attribute could not be updated.
-     */
-    public void setPortAttribute(Port container, Attribute attribute) throws IllegalActionException {
-        List<Attribute> list = _parameters.get(container);
-        if (list == null) {
-            list = new ArrayList<Attribute>();
-        }
-        
-        for (Attribute attr : list) {
-            if (attr.getName().equals(attribute.getName())) {
-                ((Parameter)attr).setToken(((Parameter)attribute).getToken());
-                break;
-            }
-        }
     }
     
     /** Add a quantity manager monitor to the list of listeners.
@@ -243,5 +262,57 @@ public abstract class MonitoredQuantityManager extends TypedAtomicActor
 
     /** Amount of tokens currently being processed by the switch. */
     protected int _tokenCount;
+    
+    public class QMAttributes extends DecoratorAttributes {
+
+        /** Constructor to use when editing a model.
+         *  @param target The object being decorated.
+         *  @param decorator The decorator.
+         *  @throws IllegalActionException If the superclass throws it.
+         *  @throws NameDuplicationException If the superclass throws it.
+         */
+        public QMAttributes(NamedObj target, MonitoredQuantityManager decorator)
+                throws IllegalActionException, NameDuplicationException {
+            super(target, decorator);
+            _init();
+        }
+
+        /** Constructor to use when parsing a MoML file.
+         *  @param target The object being decorated.
+         *  @param name The name of this attribute.
+         *  @throws IllegalActionException If the superclass throws it.
+         *  @throws NameDuplicationException If the superclass throws it.
+         */
+        public QMAttributes(NamedObj target, String name)
+                throws IllegalActionException, NameDuplicationException {
+            super(target, name);
+            _init();
+        }
+
+        ///////////////////////////////////////////////////////////////////
+        ////                         parameters                        ////
+
+        /** The enable parameter specifies whether the decorated actor uses
+         *  the decorator.
+         *  This is a boolean that defaults to false.
+         */
+        public Parameter enable;  
+
+        ///////////////////////////////////////////////////////////////////
+        ////                        private methods                    ////
+
+        /** Create the parameters.
+         */
+        private void _init() {
+            try {
+                enable = new Parameter(this, "enable");
+                enable.setExpression("false");
+                enable.setTypeEquals(BaseType.BOOLEAN);  
+            } catch (KernelException ex) {
+                // This should not occur.
+                throw new InternalErrorException(ex);
+            }
+        }
+    }
 
 }

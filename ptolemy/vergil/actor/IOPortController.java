@@ -42,6 +42,7 @@ import ptolemy.actor.IOPort;
 import ptolemy.actor.IORelation;
 import ptolemy.actor.PubSubPort;
 import ptolemy.actor.PublisherPort;
+import ptolemy.actor.QuantityManager;
 import ptolemy.actor.SubscriberPort;
 import ptolemy.actor.gui.ColorAttribute;
 import ptolemy.actor.gui.PtolemyPreferences;
@@ -443,7 +444,7 @@ public class IOPortController extends AttributeController {
             // Handle quantity managers.
             try {
                 if (port instanceof IOPort) {
-                    List qmList = ((IOPort) port).getQuantityManagers();
+                    List<QuantityManager> qmList = ((IOPort) port).getQuantityManagers();
                     if (qmList != null && qmList.size() > 0) {
                         Object object = null;
                         if (((IOPort) port).isOutput()) {
@@ -458,14 +459,14 @@ public class IOPortController extends AttributeController {
                             color = ((CompositeQM) object).color;
                         }
                         fill = color.asColor();
-                        List relations = port.linkedRelationList();
-                        for (Object relation : relations) {
-                            ColorAttribute relationColor = (ColorAttribute) ((IORelation)relation).getAttribute("color");
-                            if (relationColor == null) {
-                                relationColor = new ColorAttribute((IORelation)relation, "color");
-                            }
-                            relationColor.setExpression(color.getExpression());
-                        }
+//                        List relations = port.linkedRelationList();
+//                        for (Object relation : relations) {
+//                            ColorAttribute relationColor = (ColorAttribute) ((IORelation)relation).getAttribute("color");
+//                            if (relationColor == null) {
+//                                relationColor = new ColorAttribute((IORelation)relation, "color");
+//                            }
+//                            relationColor.setExpression(color.getExpression());
+//                        }
                         
 
                         StringAttribute info = (StringAttribute) port

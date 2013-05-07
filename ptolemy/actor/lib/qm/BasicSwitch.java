@@ -40,6 +40,7 @@ import ptolemy.actor.IOPort;
 import ptolemy.actor.IntermediateReceiver;
 import ptolemy.actor.QuantityManager;
 import ptolemy.actor.Receiver;
+import ptolemy.actor.lib.ResourceAttributes;
 import ptolemy.actor.lib.qm.QuantityManagerListener.EventType;
 import ptolemy.actor.util.Time;
 import ptolemy.actor.util.TimedEvent;
@@ -53,6 +54,8 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
@@ -416,43 +419,14 @@ public class BasicSwitch extends MonitoredQuantityManager {
         }
     }
     
-    /** Return the list of Attributes that can be specified per port with default
-     *  values for the specified port.
-     *  @param container The container parameter.
-     *  @param port The port.
-     *  @return List of attributes.
-     *  @exception IllegalActionException Thrown if attributeList could not be created.
-     */
-    public List<Attribute> getPortAttributeList(Parameter container, Port port) throws IllegalActionException {
-        List<Attribute> list = _parameters.get(port);
-        if (list == null) {
-            list = new ArrayList<Attribute>();
-            try {
-                Parameter portIn = new Parameter(container, "portIn", new IntToken(0));
-                Parameter portOut = new Parameter(container, "portOut", new IntToken(1));
-                _ioPortToSwitchInPort.put(port, 0);
-                _ioPortToSwitchOutPort.put(port, 1);
-                list.add(portIn);
-                list.add(portOut);
-            } catch (NameDuplicationException ex) {
-                // This cannot happen.
-            }
-        } 
-        return list;
-    }
-    
     /** Set an attribute for a given port.
      *  @param port The port. 
      *  @param attribute The new attribute or the attribute containing a new value.
      *  @exception IllegalActionException Thrown if attribute could not be updated.
      */
-    public void setPortAttribute(Port port, Attribute attribute) throws IllegalActionException {
-        super.setPortAttribute(port, attribute);
-        if (attribute.getName().equals("portIn")) {
-            _ioPortToSwitchInPort.put((IOPort)port, ((IntToken)((Parameter)attribute).getToken()).intValue());
-        } else if (attribute.getName().equals("portOut")) {
-            _ioPortToSwitchOutPort.put((IOPort)port, ((IntToken)((Parameter)attribute).getToken()).intValue());
-        }
+    public void setPortAttribute(Port port, int portIn, int portOut) throws IllegalActionException {
+        _ioPortToSwitchInPort.put((IOPort)port, portIn); 
+        _ioPortToSwitchOutPort.put((IOPort)port, portOut);
     } 
     
     protected HashMap<Port, Integer> _ioPortToSwitchInPort;
@@ -553,5 +527,76 @@ public class BasicSwitch extends MonitoredQuantityManager {
 
     /** Tokens processed by the switch fabric. */
     private TreeSet<TimedEvent> _switchFabricQueue;
+    
+    public class BasicSwitchAttributes extends ResourceAttributes {
+
+        /** Constructor to use when editing a model.
+         *  @param target The object being decorated.
+         *  @param decorator The decorator.
+         *  @throws IllegalActionException If the superclass throws it.
+         *  @throws NameDuplicationException If the superclass throws it.
+         */
+        public BasicSwitchAttributes(NamedObj target, MonitoredQuantityManager decorator)
+                throws IllegalActionException, NameDuplicationException {
+            super(target, decorator);
+            _init();
+        }
+
+        /** Constructor to use when parsing a MoML file.
+         *  @param target The object being decorated.
+         *  @param name The name of this attribute.
+         *  @throws IllegalActionException If the superclass throws it.
+         *  @throws NameDuplicationException If the superclass throws it.
+         */
+        public BasicSwitchAttributes(NamedObj target, String name)
+                throws IllegalActionException, NameDuplicationException {
+            super(target, name);
+            _init();
+        }
+
+        ///////////////////////////////////////////////////////////////////
+        ////                         parameters                        ////
+
+        /** 
+         */
+        public Parameter portIn;
+        
+        public Parameter portOut;
+        
+        public void attributeChanged(Attribute attribute)
+                throws IllegalActionException {
+            if (attribute == portIn) {
+                _portIn = ((IntToken)((Parameter)attribute).getToken()).intValue();
+            } else if (attribute == portOut) {
+                _portOut = ((IntToken)((Parameter)attribute).getToken()).intValue();
+            } else {
+                super.attributeChanged(attribute);
+            }
+            IOPort port = (IOPort) getContainer();
+            BasicSwitch basicSwitch = (BasicSwitch) getDecorator();
+            basicSwitch.setPortAttribute(port, _portIn, _portOut);
+        } 
+
+        ///////////////////////////////////////////////////////////////////
+        ////                        private methods                    ////
+
+        /** Create the parameters.
+         */
+        private void _init() {
+            try {
+                portIn = new Parameter(this, "portIn", new IntToken(0));
+                portOut = new Parameter(this, "portOut", new IntToken(1));
+                _portIn = 0;
+                _portOut = 1;
+            } catch (KernelException ex) {
+                // This should not occur.
+                throw new InternalErrorException(ex);
+            }
+        }
+        
+        private int _portIn;
+        private int _portOut;
+    }
+
 
 }

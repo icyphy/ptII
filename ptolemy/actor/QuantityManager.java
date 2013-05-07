@@ -65,15 +65,6 @@ public interface QuantityManager {
     public Receiver createIntermediateReceiver(Receiver receiver)
             throws IllegalActionException;
     
-    /** Return the list of Attributes that can be specified per port with default
-     *  values for the specified port.
-     *  @param container The container parameter.
-     *  @param port The port.
-     *  @return List of attributes.
-     *  @exception IllegalActionException Thrown if attributeList could not be created.
-     */
-    public List<Attribute> getPortAttributeList(Parameter container, Port port) throws IllegalActionException;
-
     /** Reset the QuantityManager.
      */
     public void reset();
@@ -90,12 +81,4 @@ public interface QuantityManager {
      */
     public void sendToken(Receiver source, Receiver receiver, Token token)
             throws IllegalActionException; 
-
-    /** Set an attribute for a given port.
-     *  @param port The port. 
-     *  @param attribute The new attribute or the attribute containing a new value.
-     *  @exception IllegalActionException Thrown if attribute could not be updated.
-     */
-    public void setPortAttribute(Port port, Attribute attribute) throws IllegalActionException;
-
 }

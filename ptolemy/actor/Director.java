@@ -35,7 +35,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
-import ptolemy.actor.lib.resourceScheduler.ResourceAttributes;
+import ptolemy.actor.lib.ResourceAttributes;
 import ptolemy.actor.lib.resourceScheduler.ResourceScheduler;
 import ptolemy.actor.util.BooleanDependency;
 import ptolemy.actor.util.CausalityInterface;

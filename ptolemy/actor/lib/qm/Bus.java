@@ -30,7 +30,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.actor.lib.qm;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.List;
@@ -40,12 +39,12 @@ import ptolemy.actor.IOPort;
 import ptolemy.actor.IntermediateReceiver;
 import ptolemy.actor.QuantityManager;
 import ptolemy.actor.Receiver;
+import ptolemy.actor.lib.ResourceAttributes;
 import ptolemy.actor.lib.qm.QuantityManagerListener.EventType;
 import ptolemy.actor.sched.FixedPointDirector;
 import ptolemy.actor.util.FIFOQueue;
 import ptolemy.actor.util.Time;
 import ptolemy.data.DoubleToken;
-import ptolemy.data.IntToken;
 import ptolemy.data.ScalarToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
@@ -55,8 +54,12 @@ import ptolemy.domains.de.lib.Server;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.DecoratorAttributes;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
 
 /** This actor is a {@link QuantityManager} that, when its
@@ -120,6 +123,25 @@ public class Bus extends MonitoredQuantityManager {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+    
+    /** Return the decorated attributes for the target NamedObj.
+     *  If the specified target is not an Actor, return null.
+     *  @param target The NamedObj that will be decorated.
+     *  @return The decorated attributes for the target NamedObj, or
+     *   null if the specified target is not an Actor.
+     */
+    public DecoratorAttributes createDecoratorAttributes(NamedObj target) {
+        if (target instanceof IOPort) {
+            try {
+                return new BusAttributes(target, this);
+            } catch (KernelException ex) {
+                // This should not occur.
+                throw new InternalErrorException(ex);
+            }
+        } else {
+            return null;
+        }
+    }
 
     ///////////////////////////////////////////////////////////////////
     //                          public variables                     //
@@ -215,34 +237,12 @@ public class Bus extends MonitoredQuantityManager {
         } 
     }
     
-    /** Return the list of Attributes that can be specified per port with default
-     *  values for the specified port.
-     *  @param container The container parameter.
-     *  @param port The port.
-     *  @return List of attributes.
-     *  @exception IllegalActionException Thrown if attributeList could not be created.
-     */
-    public List<Attribute> getPortAttributeList(Parameter container, Port port) throws IllegalActionException {
-        List<Attribute> list = _parameters.get(port);
-        if (list == null) {
-            list = new ArrayList<Attribute>();
-            try {
-                Parameter messageLengthParameter = new Parameter(container, "messageLength", new IntToken(1));
-                list.add(messageLengthParameter);
-            } catch (NameDuplicationException ex) {
-                // This cannot happen.
-            }
-        } 
-        return list;
-    }
-    
     /** Set an attribute for a given port.
      *  @param port The port. 
      *  @param attribute The new attribute or the attribute containing a new value.
      *  @exception IllegalActionException Thrown if attribute could not be updated.
      */
     public void setPortAttribute(Port port, Attribute attribute) throws IllegalActionException {
-        super.setPortAttribute(port, attribute);
         if (attribute.getName().equals("messageLength")) {
             _messageLengths.put((IOPort)port, ((ScalarToken)((Parameter)attribute).getToken()).doubleValue());
         }
@@ -437,4 +437,68 @@ public class Bus extends MonitoredQuantityManager {
     /** Tokens stored for processing. This is used with the DE Director. */
     private FIFOQueue _tokens;
 
+    public static class BusAttributes extends ResourceAttributes {
+
+        /** Constructor to use when editing a model.
+         *  @param target The object being decorated.
+         *  @param decorator The decorator.
+         *  @throws IllegalActionException If the superclass throws it.
+         *  @throws NameDuplicationException If the superclass throws it.
+         */
+        public BusAttributes(NamedObj target, MonitoredQuantityManager decorator)
+                throws IllegalActionException, NameDuplicationException {
+            super(target, decorator);
+            _init();
+        }
+
+        /** Constructor to use when parsing a MoML file.
+         *  @param target The object being decorated.
+         *  @param name The name of this attribute.
+         *  @throws IllegalActionException If the superclass throws it.
+         *  @throws NameDuplicationException If the superclass throws it.
+         */
+        public BusAttributes(NamedObj target, String name)
+                throws IllegalActionException, NameDuplicationException {
+            super(target, name);
+            _init();
+        }
+
+        ///////////////////////////////////////////////////////////////////
+        ////                         parameters                        ////
+
+        /** Message length per port. The total time the token is 
+         *  delayed at a quantity manger is the serviceTimeMultiplicationFactor
+         *  * messageLength + the time other tokens need to be serviced.
+         */
+        public Parameter messageLength;
+        
+        public void attributeChanged(Attribute attribute)
+                throws IllegalActionException {
+            if (attribute == messageLength) {
+                IOPort port = (IOPort) getContainer();
+                Bus bus = (Bus) getDecorator();
+                bus.setPortAttribute(port, attribute);
+            }
+            super.attributeChanged(attribute);
+        } 
+
+        ///////////////////////////////////////////////////////////////////
+        ////                        private methods                    ////
+
+        /** Create the parameters.
+         */
+        private void _init() {
+            try {
+                messageLength = new Parameter(this, "messageLength");
+                messageLength.setExpression("1");
+            } catch (KernelException ex) {
+                // This should not occur.
+                throw new InternalErrorException(ex);
+            }
+        }
+    }
+
+    
 }
+
+

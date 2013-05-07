@@ -104,8 +104,12 @@
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
-            <property name="qm" class="ptolemy.actor.lib.qm.QuantityManagerAttribute" value="C">
-                <property name="inputPort" class="ptolemy.data.expr.Parameter" value="&quot;b&quot;">
+            <property name="DecoratorAttributesFor_C" class="ptolemy.actor.lib.qm.CompositeQM$CQMAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="C">
+                </property>
+                <property name="enable" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="inputPort" class="ptolemy.data.expr.Parameter" value="&quot;a&quot;">
                 </property>
             </property>
         </port>
@@ -210,7 +214,7 @@
             <link port="SetVariable.input" relation="relation"/>
         </entity>
         <entity name="a" class="ptolemy.actor.lib.qm.CQMInputPort">
-            <property name="value" class="ptolemy.data.expr.Parameter" value="{receiver = object(ptolemy.domains.de.kernel.DEReceiver {.CompositeQM.Y.q.receiver }), token = -5.0}">
+            <property name="value" class="ptolemy.data.expr.Parameter" value="{receiver = object, token = general}">
             </property>
             <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="NONE">
             </property>
@@ -228,7 +232,7 @@
             </port>
         </entity>
         <entity name="b" class="ptolemy.actor.lib.qm.CQMInputPort">
-            <property name="value" class="ptolemy.data.expr.Parameter" value="{receiver = object(ptolemy.domains.de.kernel.DEReceiver {.CompositeQM.B.q.receiver }), token = 5.0}">
+            <property name="value" class="ptolemy.data.expr.Parameter" value="{receiver = object, token = general}">
             </property>
             <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="NONE">
             </property>
@@ -236,6 +240,27 @@
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[-5.0, 160.0]">
             </property>
+            <port name="trigger" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="multiport"/>
+                <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+                <property name="_hide" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+            </port>
+        </entity>
+        <entity name="" class="ptolemy.actor.lib.qm.CQMInputPort">
+            <property name="value" class="ptolemy.data.expr.Parameter" value="{receiver=object, token=general}">
+            </property>
+            <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="NONE">
+            </property>
+            <property name="NONE" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{0.0, 0.0}">
+            </property>
+            <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+            </port>
             <port name="trigger" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="multiport"/>
@@ -356,8 +381,12 @@
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
-            <property name="qm" class="ptolemy.actor.lib.qm.QuantityManagerAttribute" value="C">
-                <property name="inputPort" class="ptolemy.data.expr.Parameter" value="&quot;a&quot;">
+            <property name="DecoratorAttributesFor_C" class="ptolemy.actor.lib.qm.CompositeQM$CQMAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="C">
+                </property>
+                <property name="enable" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="inputPort" class="ptolemy.data.expr.Parameter" value="&quot;b&quot;">
                 </property>
             </property>
         </port>

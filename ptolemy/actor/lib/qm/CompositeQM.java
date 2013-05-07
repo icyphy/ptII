@@ -34,6 +34,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.IntermediateReceiver;
@@ -42,6 +43,9 @@ import ptolemy.actor.Receiver;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.gui.ColorAttribute;
 import ptolemy.actor.lib.Const;
+import ptolemy.actor.lib.ResourceAttributes;
+import ptolemy.actor.lib.qm.MonitoredQuantityManager.QMAttributes;
+import ptolemy.data.IntToken;
 import ptolemy.data.ObjectToken;
 import ptolemy.data.RecordToken;
 import ptolemy.data.StringToken;
@@ -50,8 +54,13 @@ import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.Decorator;
+import ptolemy.kernel.util.DecoratorAttributes;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
 
 /** This class implements functionality of a composite quantity manager.
@@ -71,7 +80,7 @@ import ptolemy.kernel.util.Workspace;
 *  @Pt.ProposedRating Yellow (derler)
 *  @Pt.AcceptedRating Red (derler)
 */
-public class CompositeQM extends TypedCompositeActor implements QuantityManager {
+public class CompositeQM extends TypedCompositeActor implements QuantityManager, Decorator {
 
     /** Construct a CompositeQM in the specified workspace with
      *  no container and an empty string as a name. You can then change
@@ -147,6 +156,49 @@ public class CompositeQM extends TypedCompositeActor implements QuantityManager 
         newObject._parameters = new HashMap<IOPort, List<Attribute>>();
         return newObject;
     }
+    
+    /** Return the decorated attributes for the target NamedObj.
+     *  If the specified target is not an Actor, return null.
+     *  @param target The NamedObj that will be decorated.
+     *  @return The decorated attributes for the target NamedObj, or
+     *   null if the specified target is not an Actor.
+     */
+    public DecoratorAttributes createDecoratorAttributes(NamedObj target) {
+        if (target instanceof IOPort) {
+            try {
+                return new CQMAttributes(target, this);
+            } catch (KernelException ex) {
+                // This should not occur.
+                throw new InternalErrorException(ex);
+            }
+        } else {
+            return null;
+        }
+    }
+
+    /** Return a list of the entities deeply contained by the container
+     *  of this resource scheduler.
+     *  @return A list of the objects decorated by this decorator.
+     */
+    public List<NamedObj> decoratedObjects() {
+        List<NamedObj> list = new ArrayList();
+        CompositeEntity container = (CompositeEntity) getContainer();
+        for (Object object : container.deepEntityList()) {
+            if (object instanceof Actor) {
+                for (Object port : ((Actor)object).inputPortList()) {
+                    list.add((NamedObj) port);
+                }
+            }
+        }
+        return list;
+    }
+    
+    /** Return true to indicate that this decorator should
+     *  decorate objects across opaque hierarchy boundaries.
+     */
+    public boolean isGlobalDecorator() {
+        return true;
+    }
 
     /** Create an intermediate receiver that wraps a given receiver.
      *  @param receiver The receiver that is being wrapped.
@@ -159,30 +211,6 @@ public class CompositeQM extends TypedCompositeActor implements QuantityManager 
                 this, receiver);
         return intermediateReceiver;
     }
-    
-    /** Return the list of Attributes that can be specified per port with default
-     *  values for the specified port. The parameter returned here is the name
-     *  of the input port in the CQM that this actor port in the functional model 
-     *  is mapped to.
-     *  @param container The container parameter.
-     *  @param port The port.
-     *  @return List of attributes.
-     *  @exception IllegalActionException Thrown if attributeList could not be created.
-     */
-    public List<Attribute> getPortAttributeList(Parameter container, Port port)
-            throws IllegalActionException {
-        List<Attribute> list = _parameters.get(port);
-        if (list == null) {
-            list = new ArrayList<Attribute>();
-            try {
-                Parameter messageLengthParameter = new Parameter(container, "inputPort", new StringToken());
-                list.add(messageLengthParameter);
-            } catch (NameDuplicationException ex) {
-                // This cannot happen.
-            }
-        } 
-        return list;
-    }
 
     
     /** Set an attribute for a given port. In case the attribute is the name of the
@@ -192,27 +220,24 @@ public class CompositeQM extends TypedCompositeActor implements QuantityManager 
      *  @param attribute The new attribute or the attribute containing a new value.
      *  @exception IllegalActionException Thrown if attribute could not be updated.
      */
-    public void setPortAttribute(Port port, Attribute attribute) throws IllegalActionException {
-        if (attribute.getName().equals("inputPort")) {
-            String inputPortName = ((StringToken)((Parameter)attribute).getToken()).stringValue();
-            for (Object entity : entityList()) {
-                if (entity instanceof CQMInputPort) {
-                    if (((CQMInputPort)entity).getName().equals(inputPortName)) {
-                        if (_mappedConsts == null) {
-                            _mappedConsts = new HashMap<Port, CQMInputPort>();
-                        }
-                        _mappedConsts.put(port, (CQMInputPort) entity);
-                        return;
+    public void setInputPortName(Port port, String inputPortName) throws IllegalActionException {
+        for (Object entity : entityList()) {
+            if (entity instanceof CQMInputPort) {
+                if (((CQMInputPort)entity).getName().equals(inputPortName)) {
+                    if (_mappedConsts == null) {
+                        _mappedConsts = new HashMap<Port, CQMInputPort>();
                     }
+                    _mappedConsts.put(port, (CQMInputPort) entity);
+                    return;
                 }
             }
-            // no CQMInputPort was found, create one.
-            try {
-                CQMInputPort cqmInputPort = new CQMInputPort(this, inputPortName);
-            } catch (NameDuplicationException e) { 
-                e.printStackTrace();
-            }
         }
+        // no CQMInputPort was found, create one.
+        try {
+            CQMInputPort cqmInputPort = new CQMInputPort(this, inputPortName);
+        } catch (NameDuplicationException e) { 
+            e.printStackTrace();
+        } 
     }
 
     /** Override the fire and change the transferring tokens
@@ -327,4 +352,69 @@ public class CompositeQM extends TypedCompositeActor implements QuantityManager 
 
     private HashMap<Port, CQMInputPort> _mappedConsts;
     
+    
+    public static class CQMAttributes extends ResourceAttributes {
+
+        /** Constructor to use when editing a model.
+         *  @param target The object being decorated.
+         *  @param decorator The decorator.
+         *  @throws IllegalActionException If the superclass throws it.
+         *  @throws NameDuplicationException If the superclass throws it.
+         */
+        public CQMAttributes(NamedObj target, CompositeQM decorator)
+                throws IllegalActionException, NameDuplicationException {
+            super(target, decorator);
+            _init();
+        }
+
+        /** Constructor to use when parsing a MoML file.
+         *  @param target The object being decorated.
+         *  @param name The name of this attribute.
+         *  @throws IllegalActionException If the superclass throws it.
+         *  @throws NameDuplicationException If the superclass throws it.
+         */
+        public CQMAttributes(NamedObj target, String name)
+                throws IllegalActionException, NameDuplicationException {
+            super(target, name);
+            _init();
+        }
+
+        ///////////////////////////////////////////////////////////////////
+        ////                         parameters                        ////
+
+        /** 
+         */
+        public Parameter inputPort; 
+        
+        public void attributeChanged(Attribute attribute)
+                throws IllegalActionException {
+            if (attribute == inputPort) {
+                _inputPort = ((StringToken)((Parameter)attribute).getToken()).stringValue();
+                IOPort port = (IOPort) getContainer();
+                CompositeQM compositeQM = (CompositeQM) getDecorator();
+                if (compositeQM != null) {
+                    compositeQM.setInputPortName(port, _inputPort);
+                }
+            } else {
+                super.attributeChanged(attribute);
+            } 
+        } 
+
+        ///////////////////////////////////////////////////////////////////
+        ////                        private methods                    ////
+
+        /** Create the parameters.
+         */
+        private void _init() {
+            try {
+                inputPort = new Parameter(this, "inputPort", new StringToken("")); 
+            } catch (KernelException ex) {
+                // This should not occur.
+                throw new InternalErrorException(ex);
+            }
+        }
+        
+        private String _inputPort; 
+    }
+
 }
