@@ -65,7 +65,6 @@ JSRCS = \
 	FCFSScheduler.java \
 	FixedPriorityScheduler.java \
 	PriorityResourceAttributes.java \
-	ResourceAttributes.java \
 	ResourceMappingInputPort.java \
 	ResourceMappingOutputPort.java \
 	ResourceScheduler.java \
