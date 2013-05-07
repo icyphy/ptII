@@ -217,6 +217,7 @@ JSRCS = \
 	Remainder.java \
 	RemoveNilTokens.java \
 	ResettableTimer.java \
+	ResourceAttributes.java \
 	Rician.java \
 	RunningMaximum.java \
 	RunningMinimum.java \
