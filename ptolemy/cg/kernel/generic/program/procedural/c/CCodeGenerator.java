@@ -351,6 +351,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         } else {
             return INDENT1 + "return tokensToAllOutputPorts;" + _eol + "}"
                     + _eol;
+            //return "}" + _eol;
         }
     }
 
@@ -1286,7 +1287,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         
         // Since We generate C Code, this attribute should be false.
         Attribute generateEmbeddedCode = getAttribute("generateEmbeddedCode");
-        if (generateEmbeddedCode instanceof Parameter) {
+        if (generateEmbeddedCode instanceof Parameter && !(container instanceof ptolemy.cg.lib.CompiledCompositeActor)) {
             ((Parameter) generateEmbeddedCode)
                     .setExpression("false");
         }
@@ -1764,7 +1765,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
                     + file.substring(1, file.length() - 3).replace('/', '_')
                             .toUpperCase() + "_H" + _eol + "#include " + file
                     + _eol + "#endif" + _eol);*/
-            if (file.endsWith("\""))
+            if (file.endsWith("\"") && _isTopLevel())
                 // in case of a close dependency we need to add the /includes/
                 code.append("#include \"includes/" + file.substring(1) + _eol);
             else

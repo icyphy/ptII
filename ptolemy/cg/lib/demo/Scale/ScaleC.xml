@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="ScaleC" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
     </property>
     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="5">
@@ -10,7 +10,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{90, 35}">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={32, 107, 834, 634}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={65, 107, 816, 644}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 524]">
     </property>
@@ -112,17 +112,25 @@
                 <property name="constrainBufferSizes" class="ptolemy.data.expr.Parameter" value="constrainBufferSizes">
                 </property>
             </property>
+            <property name="DecoratorAttributesFor_CodeGenerator_AutoAdded" class="ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.sched.StaticSchedulingDirectorAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="EmbeddedActor.CodeGenerator_AutoAdded">
+                </property>
+                <property name="padBuffers" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="allowDynamicMultiportReference" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+            </property>
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="unknown">
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="int">
             </property>
         </port>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
             </property>
-            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="unknown">
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="int">
             </property>
         </port>
     </entity>
@@ -132,28 +140,28 @@
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="unknown">
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="int">
             </property>
         </port>
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
-            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="unknown">
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="general">
             </property>
         </port>
         <port name="init" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
-            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="unknown">
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="int">
             </property>
         </port>
         <port name="step" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
-            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="unknown">
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="int">
             </property>
         </port>
     </entity>
     <entity name="Display" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={346, 268, 324, 228}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={347, 296, 324, 207}, maximized=false}">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[324, 184]">
         </property>
@@ -167,9 +175,13 @@
         </port>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+        </property>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
         </property>
     </relation>
     <link port="EmbeddedActor.input" relation="relation"/>
