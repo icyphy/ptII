@@ -36,6 +36,7 @@ import ptolemy.data.ArrayToken;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
+import ptolemy.data.LongToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.util.IllegalActionException;
@@ -142,6 +143,12 @@ public class PoissonClock extends NamedProgramCodeGeneratorAdapter {
         		valuesString += "$actorSymbol(values)["+ i++ +"] = " + Integer.toString(value) + "; ";
                 
         args.add(valuesString);
+        
+        long longPrivateSeed = 0;
+        Parameter privateSeed = ((ptolemy.actor.lib.PoissonClock) getComponent()).privateSeed;
+        if (privateSeed.getToken() instanceof LongToken)
+            longPrivateSeed = ((LongToken) privateSeed.getToken()).longValue();
+        args.add(Long.toString(longPrivateSeed));
         
         codeStream.appendCodeBlock("initBlock", args);
         return processCode(codeStream.toString());

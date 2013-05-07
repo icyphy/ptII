@@ -416,7 +416,8 @@ public class PoissonClock extends RandomSource implements TimedActor {
     protected void _generateRandomNumber() throws IllegalActionException {
         double meanTimeValue = ((DoubleToken) meanTime.getToken())
                 .doubleValue();
-        _current = -Math.log(1 - _random.nextDouble()) * meanTimeValue;
+        double test = _random.nextDouble();
+        _current = -Math.log(1 - test) * meanTimeValue;
     }
 
     ///////////////////////////////////////////////////////////////////

@@ -4,7 +4,7 @@ $include(<float.h>)
 static Time $actorSymbol(previousTime);
 /**/
 
-/***initializeBlock***/
+/***initBlock***/
 $actorSymbol(previousTime) = -DBL_MAX;
 /**/
 

@@ -37,9 +37,13 @@
     <entity name="TimeGap" class="ptolemy.domains.de.lib.TimeGap">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[330.0, 195.0]">
         </property>
+        <property name="DecoratorAttributesFor_CCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
+            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="CCodeGenerator">
+            </property>
+        </property>
     </entity>
     <entity name="PoissonClock" class="ptolemy.actor.lib.PoissonClock">
-        <property name="privateSeed" class="ptolemy.data.expr.Parameter" value="10">
+        <property name="privateSeed" class="ptolemy.data.expr.Parameter" value="31415">
         </property>
         <property name="resetOnEachRun" class="ptolemy.actor.parameters.SharedParameter" value="true">
         </property>
@@ -51,7 +55,7 @@
         </property>
     </entity>
     <entity name="Test" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1.3109282829, 0.2981402903, 0.0610267914, 0.2798690082, 1.7082036816, 0.4630059717, 1.9399087243, 1.2552123331, 0.3386342136}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0446871089, 0.9396624778, 0.2099201236, 1.5845628087, 0.7228533917, 0.4810273936, 1.2981960243, 1.9602237821, 2.2317688344}">
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>

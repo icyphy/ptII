@@ -7,7 +7,7 @@
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="DECGClockRamp Model">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 135.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 160.0]">
         </property>
         <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$PTII/ptolemy/cg/lib/demo/DECG/DECGClockRamp.xml">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -40,7 +40,7 @@
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="DECGDelay Model">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 160.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 260.0]">
         </property>
         <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$PTII/ptolemy/cg/lib/demo/DECG/DECGDelay.xml">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -65,7 +65,7 @@
     <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="DECGHelloWorld Model">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 185.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 135.0]">
         </property>
         <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$PTII/ptolemy/cg/lib/demo/DECG/DECGHelloWorld.xml">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -90,7 +90,7 @@
     <property name="Annotation5" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="DECGMath Model">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 210.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 185.0]">
         </property>
         <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$PTII/ptolemy/cg/lib/demo/DECG/DECGMath.xml">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -113,11 +113,11 @@
         </property>
     </property>
     <property name="Annotation6" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="DECGPI Model">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="DECGPi Model">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 235.0]">
         </property>
-        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$PTII/ptolemy/cg/lib/demo/DECG/DECGPI.xml">
+        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$PTII/ptolemy/cg/lib/demo/DECG/DECGPi.xml">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -140,7 +140,7 @@
     <property name="Annotation7" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="DECGPiSquare Model">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 260.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 210.0]">
         </property>
         <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$PTII/ptolemy/cg/lib/demo/DECG/DECGPiSquare.xml">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -187,7 +187,7 @@
             </property>
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={378, 208, 934, 634}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={378, 208, 916, 644}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
     </property>

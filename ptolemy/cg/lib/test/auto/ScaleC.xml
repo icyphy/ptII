@@ -18,7 +18,7 @@
             </property>
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={349, 212, 814, 607}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={350, 240, 816, 636}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 516]">
     </property>
@@ -30,6 +30,12 @@
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model includes an actor whose behavior is given in C code.&#10;Double click on the actor to see how it works.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, 25.0]">
+        </property>
+    </property>
+    <property name="CCodeGenerator" class="ptolemy.cg.kernel.generic.program.procedural.c.CCodeGenerator">
+        <property name="inline" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[425.0, -15.0]">
         </property>
     </property>
     <entity name="EmbeddedActor" class="ptolemy.cg.lib.EmbeddedCodeActor">
@@ -115,6 +121,10 @@
                 </property>
                 <property name="allowDynamicMultiportReference" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
+            </property>
+        </property>
+        <property name="DecoratorAttributesFor_CCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
+            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="CCodeGenerator">
             </property>
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
