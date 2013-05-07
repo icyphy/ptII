@@ -457,8 +457,12 @@ public class IOPortController extends AttributeController {
                             color = ((MonitoredQuantityManager) object).color;
                         } else if (object instanceof CompositeQM) {
                             color = ((CompositeQM) object).color;
+                        } 
+                        if (color != null) {
+                            fill = color.asColor();
+                        } else {
+                            fill = Color.BLACK;
                         }
-                        fill = color.asColor();
 //                        List relations = port.linkedRelationList();
 //                        for (Object relation : relations) {
 //                            ColorAttribute relationColor = (ColorAttribute) ((IORelation)relation).getAttribute("color");
