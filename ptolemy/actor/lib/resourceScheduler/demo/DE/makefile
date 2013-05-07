@@ -43,7 +43,7 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE =	Bus
+PTPACKAGE =	DE
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
@@ -52,7 +52,6 @@ JSRCS =
 OTHER_FILES_TO_BE_JARED = \
 	$(JSRCS) \
 	DE.xml
-
 
 EXTRA_SRCS = \
 	$(OTHER_FILES_TO_BE_JARED) \
