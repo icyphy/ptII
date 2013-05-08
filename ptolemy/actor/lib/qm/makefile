@@ -53,20 +53,24 @@ OTHER_FILES_TO_BE_JARED = \
 	AFDXSwitchIcon.xml \
 	BasicSwitchIcon.xml \
 	BusIcon.xml \
+	CQMInputPortIcon.xml \
+	CQMOutputPortIcon.xml \
 	CanBusIcon.xml \
 	CompositeQMIcon.xml \
 	CrossbarSwitchIcon.xml \
 	TTESwitchIcon.xml
 
 JSRCS = \
-    AFDXESs.java \
-    AFDXSwitch.java \
-    AFDXVlCfg.java \
-    AFDXVlink.java \
+	AFDXESs.java \
+	AFDXSwitch.java \
+	AFDXVlCfg.java \
+	AFDXVlink.java \
 	BasicSwitch.java \
 	Bus.java \
 	CanBus.java \
-	CanBusPriority.java \ 
+	CanBusPriority.java \
+	CQMInputPort.java \
+	CQMOutputPort.java \
 	CompositeQM.java \
 	CrossbarSwitch.java \
 	TTESwitch.java \
@@ -87,7 +91,12 @@ OPTIONAL_FILES = \
 	demo \
         doc \
 	'QuantityManagerListener$$EventType.class' \
-	'QuantityManagerMonitor$$QuantityManagerEditorFactory.class'
+	'QuantityManagerMonitor$$QuantityManagerEditorFactory.class' \
+	'AFDXSwitch$$AFDXSwitchAttributes.class' \
+	'BasicSwitch$$BasicSwitchAttributes.class' \
+	'Bus$$BusAttributes.class' \
+	'CompositeQM$$CQMAttributes.class' \
+	'MonitoredQuantityManager$$QMAttributes.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 
