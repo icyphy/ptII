@@ -30,9 +30,11 @@ package ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.actor.l
 
 import java.util.LinkedList;
 
+import ptolemy.actor.parameters.PortParameter;
 import ptolemy.cg.kernel.generic.program.CodeStream;
 import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
 import ptolemy.data.ArrayToken;
+import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.Token;
@@ -133,6 +135,7 @@ public class DiscreteClock extends NamedProgramCodeGeneratorAdapter {
         Token[] values;
         double[] valuesDouble = null;
         int[] valuesInt = null;
+        boolean[] valuesBool = null;
         size = 0;
         
         if (valuesToken instanceof ArrayToken) {
@@ -142,10 +145,13 @@ public class DiscreteClock extends NamedProgramCodeGeneratorAdapter {
             i = 0;
             if (size > 0) {
             	if (values[0] instanceof DoubleToken) {
-            		valuesDouble = new double[size];
+            	    valuesDouble = new double[size];
             	}
             	else if (values[0] instanceof IntToken) {
-            		valuesInt = new int[size];
+            	    valuesInt = new int[size];
+            	}
+            	else if (values[0] instanceof BooleanToken) {
+                    valuesBool = new boolean[size];
             	}
             	else {
                     throw new IllegalActionException("Token type at DiscreteClock "
@@ -154,10 +160,13 @@ public class DiscreteClock extends NamedProgramCodeGeneratorAdapter {
             }
             for (Token t : values) {
             	if (t instanceof DoubleToken) {
-            		valuesDouble[i++] = ((DoubleToken)t).doubleValue();
+            	    valuesDouble[i++] = ((DoubleToken)t).doubleValue();
             	}
             	else if (t instanceof IntToken) {
-            		valuesInt[i++] = ((IntToken)t).intValue();
+            	    valuesInt[i++] = ((IntToken)t).intValue();
+            	}
+            	else if (t instanceof BooleanToken) {
+            	    valuesBool[i++] = ((BooleanToken)t).booleanValue();
             	}
             	else {
                     throw new IllegalActionException("Token type at DiscreteClock "
@@ -172,15 +181,22 @@ public class DiscreteClock extends NamedProgramCodeGeneratorAdapter {
         String valuesString = "";
         i = 0;
         if (valuesDouble != null)
-        	for (double value : valuesDouble) 
-        		valuesString += "$actorSymbol(values)["+ i++ +"] = " + Double.toString(value) + "; ";
+            for (double value : valuesDouble) 
+                valuesString += "$actorSymbol(values)["+ i++ +"] = " + Double.toString(value) + "; ";
         else if (valuesInt != null)
-        	for (int value : valuesInt) 
-        		valuesString += "$actorSymbol(values)["+ i++ +"] = " + Integer.toString(value) + "; ";
-                
+            for (int value : valuesInt) 
+                valuesString += "$actorSymbol(values)["+ i++ +"] = " + Integer.toString(value) + "; ";
+        else if (valuesBool != null)
+            for (boolean value : valuesBool) 
+                valuesString += "$actorSymbol(values)["+ i++ +"] = " + Boolean.toString(value) + "; ";
+            
         args.add(valuesString);
         
         codeStream.appendCodeBlock("initBlock", args);
+        
+        if (((ptolemy.actor.lib.DiscreteClock) getComponent()).start.isOutsideConnected()) {
+            codeStream.appendCodeBlock("startConnectedInit");
+        }
         return processCode(codeStream.toString());
     }
     
@@ -191,61 +207,34 @@ public class DiscreteClock extends NamedProgramCodeGeneratorAdapter {
      */
     @Override
     protected String _generateFireCode() throws IllegalActionException {
-    	return processCode(super._generateFireCode());
-    	//CodeStream codeStream = _templateParser.getCodeStream();
-        //codeStream.clear();
-        //LinkedList args = new LinkedList();
-        /*
-        Parameter valuePar = ((ptolemy.actor.lib.DiscreteClock) getComponent()).values;
-        Token valueToken = valuePar.getToken();
-        Token[] values;
-        double[] valuesDouble = null;
-        int[] valuesInt = null;
-        String currentType = "";
+    	CodeStream codeStream = _templateParser.getCodeStream();
+        codeStream.clear();
+        LinkedList args = new LinkedList();
         
-        if (valueToken instanceof ArrayToken) {
-            values = ((ArrayToken) valueToken).arrayValue();
-            int size = values.length;
-            int i = 0;
-            if (size > 0) {
-            	if (values[0] instanceof DoubleToken) {
-            		valuesDouble = new double[size];
-            		currentType = "double";
-            	}
-            	else if (values[0] instanceof IntToken) {
-            		valuesInt = new int[size];
-            		currentType = "int";
-            	}
-            	else {
-                    throw new IllegalActionException("Token type at DiscreteClock "
-                            + "not supported yet.");
-                }
+        ptolemy.actor.lib.DiscreteClock clock = (ptolemy.actor.lib.DiscreteClock) getComponent();
+        
+        if (clock.start.numberOfSources() > 0)
+            codeStream.appendCodeBlock("startConnected");
+        
+        if (clock.stop.numberOfSources() > 0)
+            codeStream.appendCodeBlock("stopConnected");
+        
+        if (((PortParameter)clock.period).getPort().isOutsideConnected())
+            codeStream.appendCodeBlock("periodConnected");
+        
+        if (clock.trigger.numberOfSources() > 0) {
+            // Have to consume all trigger inputs.
+            for (int i = 0; i < clock.trigger.getWidth(); i++) {
+                args.clear();
+                args.add(Integer.toString(i));
+                codeStream.appendCodeBlock("triggerConnected", args);
             }
-            for (Token t : values) {
-            	if (t instanceof DoubleToken) {
-            		valuesDouble[i++] = ((DoubleToken)t).doubleValue();
-            	}
-            	else if (t instanceof IntToken) {
-            		valuesInt[i++] = ((IntToken)t).intValue();
-            	}
-            	else {
-                    throw new IllegalActionException("Token type at DiscreteClock "
-                            + "not supported yet.");
-                }
-            }
-        } else {
-            throw new IllegalActionException("Token type at DiscreteClock "
-                    + "not supported yet.");
         }
         
-        // FIXME : for now, we only use the first value, this need to be changed !
-        if (currentType == "double")
-        	args.add(Double.toString(valuesDouble[0]));
-        else if (currentType == "int")
-        	args.add(Double.toString(valuesInt[0]));
-        */
-        //codeStream.appendCodeBlock("fireBlock", args);
-        //return processCode(codeStream.toString());
+        args.clear();
+        codeStream.appendCodeBlock("fireTestBlock");
+        
+        return processCode(codeStream.toString());
     }
     
     /**
@@ -272,6 +261,7 @@ public class DiscreteClock extends NamedProgramCodeGeneratorAdapter {
             size = values.length;
         }
         args.add(Integer.toString(size));
+        args.add(Boolean.toString(((ptolemy.actor.lib.DiscreteClock) getComponent()).trigger.numberOfSources() > 0));
             
         codeStream.appendCodeBlock("postfireBlock", args);
         return processCode(codeStream.toString());

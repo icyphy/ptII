@@ -37,6 +37,7 @@ if ($hasToken(input)) {
 			director.currentActor->depth,
 			microstep, director.currentActor->priority, fireTime);
 	newEvent->token.payload.$cgType(input) = $get(input);
+	newEvent->token.type = TYPE_$cgType(input);
 	CQLinkedListInsert($actorSymbol(pendingOutputs), newEvent);
 	$fireAt(&director, $actorName(), fireTime, microstep);
 }

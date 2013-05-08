@@ -1,5 +1,5 @@
 /***initBlock($intPart, $fracPart)***/
-$fireAt(&director, $actorName(), $intPart + $fracPart/1000000000, 0);
+$fireAt(&director, $actorName(), $intPart + $fracPart/(double)1000000000, 0);
 /**/
 
 /***fireBlock($value)***/
