@@ -38,8 +38,7 @@ import java.util.List;
 
 import javax.swing.SwingConstants;
 
-import ptolemy.actor.IOPort;
-import ptolemy.actor.IORelation;
+import ptolemy.actor.IOPort; 
 import ptolemy.actor.PubSubPort;
 import ptolemy.actor.PublisherPort;
 import ptolemy.actor.QuantityManager;
@@ -463,15 +462,6 @@ public class IOPortController extends AttributeController {
                         } else {
                             fill = Color.BLACK;
                         }
-//                        List relations = port.linkedRelationList();
-//                        for (Object relation : relations) {
-//                            ColorAttribute relationColor = (ColorAttribute) ((IORelation)relation).getAttribute("color");
-//                            if (relationColor == null) {
-//                                relationColor = new ColorAttribute((IORelation)relation, "color");
-//                            }
-//                            relationColor.setExpression(color.getExpression());
-//                        }
-                        
 
                         StringAttribute info = (StringAttribute) port
                                 .getAttribute("_showInfo");
@@ -508,14 +498,6 @@ public class IOPortController extends AttributeController {
                                 infoString = infoString.trim();
                                 ((StringAttribute)info).setExpression(infoString);
                             }
-                        }
-                        List relations = port.linkedRelationList();
-                        for (Object relation : relations) {
-                            ColorAttribute relationColor = (ColorAttribute) ((IORelation)relation).getAttribute("color");
-                            if (relationColor == null) {
-                                relationColor = new ColorAttribute((IORelation)relation, "color");
-                            }
-                            relationColor.reset();
                         }
                     }
                 }
