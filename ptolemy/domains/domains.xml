@@ -19,7 +19,8 @@
 	    <input source="ptolemy/domains/dde/dde.xml"/>	 
 
 <!-- GL : XXX : add HLA components to ptII -->
-        <input source="ptolemy/domains/hla/lib/hlaentities.xml"/>
+        <!-- domains/hla/lib/hlaentities.xml does not exist -->
+        <!-- input source="ptolemy/domains/hla/lib/hlaentities.xml"/ -->
 
 	    <!-- ddf is shipped with ptiny, so no need to list fsm here -->
 	    <!-- fsm is shipped with ptiny, so no need to list fsm here -->
