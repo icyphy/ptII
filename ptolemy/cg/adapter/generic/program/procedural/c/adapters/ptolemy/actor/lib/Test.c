@@ -183,8 +183,7 @@ if ($actorSymbol(numberOfTokensSeen) < $size(correctValues)
 $actorSymbol(inputToken) = $get(input#$channel);
 $actorSymbol(numberOfTokensSeen)++;
 if ($actorSymbol(numberOfTokensSeen) < $size(correctValues)
-        && !$param(correctValues, $actorSymbol(numberOfTokensSeen))
-                    .equals($actorSymbol(inputToken))) {
+        && strcmp($actorSymbol(inputToken),$param(correctValues, $actorSymbol(numberOfTokensSeen)))) {
     printf("\nTest $actorSymbol($channel) fails in iteration %d.\n Value was a String: \"%s\". Should have been a String: \"%s\"\n",
             $actorSymbol(numberOfTokensSeen),
             $actorSymbol(inputToken),
@@ -201,15 +200,11 @@ if ($channel == 0) {
 /* $channel of $actorSymbol() */
 $actorSymbol(correctValuesThisFiring_$channel) = $param(correctValues, $actorSymbol(numberOfTokensSeen));
 if ($actorSymbol(numberOfTokensSeen) < $size(correctValues)
-        && !$actorSymbol(inputToken).equals(
-                    (String)(Array_get($actorSymbol(correctValuesThisFiring_$channel), $channel).payload))) {
-    hrow new RuntimeException("Test $actorSymbol($channel) fails in iteration "
-            + $actorSymbol(numberOfTokensSeen)
-            + ".\n Value was a String: \""
-            + $actorSymbol(inputToken)
-            + "\". Should have been a String: \""
-            + (String)(Array_get($actorSymbol(correctValuesThisFiring_$channel), $channel).payload)
-            + "\"");
+        && strcmp($actorSymbol(inputToken), Array_get($actorSymbol(correctValuesThisFiring_$channel), $channel).payload)) {
+	printf("\nTest $actorSymbol($channel) fails in iteration %d.\n Value was a String: \"%s\". Should have been a String: \"%s\"\n",
+	            $actorSymbol(numberOfTokensSeen),
+	            $actorSymbol(inputToken),
+	            $param(correctValues, $actorSymbol(numberOfTokensSeen)));
    exit(-1);
 }
 /**/
