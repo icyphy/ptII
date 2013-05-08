@@ -1,7 +1,7 @@
-;; SimpleProducerConsumer 
+;; MultiProducerConsumer 
 
 (Fed
-  (Federation SimpleProducerConsumer)
+  (Federation MultiProducerConsumer)
   (FedVersion v1.3)
   (Federate "consumer1" "Public")
   (Federate "consumer2" "Public")
