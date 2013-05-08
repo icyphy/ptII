@@ -246,6 +246,7 @@ public class ExportModelJUnitTest {
 		"g4ltl/demo/", // These demos require wiring.
                 "gt/demo/BouncingBallX2/BouncingBallX2/index.html",
                 "distributed/demo/Sleep/Sleep.xml", // Requires jini.
+                "DECG.xml", // This has links to the DE demos and is not runnable in itself.
                 "de/demo/Clock/Clock.xml", // "Audio Device Unavailable"
                 //"domains/gr", // FIXME: need to close ViewScreen3D by adding a ViewScreen3D Tableau.
                 //"GravitationWithCollisionDetection.xml", // "Cannot render to more than 32 Canvas3Ds."
