@@ -42,7 +42,6 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
-import soot.dava.internal.AST.ASTTryNode.container;
 
 /**
 Container for decorator attributes that are provided to actors by
