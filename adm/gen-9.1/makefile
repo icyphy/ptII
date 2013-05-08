@@ -301,6 +301,12 @@ $(PTIIDIST):
 	# Bump up the mod time of $PTII/mk/ptII.mk.in so that if
 	# the user runs make, then configure will run 
 	touch $(PTIIDIST)/mk/ptII.mk.in
+	# Remove apps/hlacerti from cosimulation.xml
+	egrep -v "apps/hlacerti" \
+		< $(PTIIHOME)/ptolemy/configs/cosimulation.xml \
+		> /tmp/cosimulation_tmp.xml
+	mv /tmp/cosimulation_tmp.xml \
+		$(PTIIDIST)/ptolemy/configs/cosimulation.xml
 	# Remove apps.xml, corba.xml and mail.xml from the configuration
 	egrep -v "apps.xml|corba.xml|mail.xml" \
 		< $(PTIIHOME)/ptolemy/configs/defaultFullConfiguration.xml \
