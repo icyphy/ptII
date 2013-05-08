@@ -27,7 +27,7 @@
 
  */
 
-package ptolemy.actor.lib.resourceScheduler.test.junit;
+package ptolemy.actor.lib.qm.test.junit;
 
 import ptolemy.util.test.junit.JUnitTclTestBase;
 
