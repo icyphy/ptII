@@ -2558,7 +2558,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
 
     /** Write a MoML description of the contents of this object, which
      *  in this base class is the attributes.  This method is called
-     *  by _exportMoML().  If there are attributes, then
+     *  by exportMoML().  If there are attributes, then
      *  each attribute description is indented according to the specified
      *  depth and terminated with a newline character.
      *  Callers of this method should hold read access before
@@ -3336,14 +3336,14 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
             if (workspace().getVersion() != _decoratorAttributesVersion) {
                 _decoratorAttributes.clear();
                 // Find all the decorators in scope, and store them indexed by full name.
-                HashMap<String,Decorator> decorators = new HashMap<String,Decorator>();
+                Set<Decorator> decorators = new HashSet<Decorator>();
                 NamedObj container = getContainer();
                 boolean crossedOpaqueBoundary = false;
                 while (container != null) {
                     List<Decorator> localDecorators = container._containedDecorators();
                     for (Decorator decorator : localDecorators) {
                         if (!crossedOpaqueBoundary || decorator.isGlobalDecorator()) {
-                            decorators.put(decorator.getFullName(), decorator);
+                            decorators.add(decorator);
                         }
                     }
                     if (container instanceof CompositeEntity
@@ -3358,41 +3358,25 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
                 List<DecoratorAttributes> decoratorAttributes = attributeList(DecoratorAttributes.class);
                 for (DecoratorAttributes decoratorAttribute : decoratorAttributes) {
                     Decorator decorator = decoratorAttribute.getDecorator();
+                    // If the decorator is not found, decorator will be null.
+                    // In that case, we leave the decoratorAttributes for now (in case the
+                    // decorator reappears, e.g. through an undo). When the model is saved,
+                    // decoratorAttributes will disappear.
                     if (decorator != null) {
                         // Since this decorator is now associated with a decoratorAttribute, remove it.
-                        Decorator removed = decorators.remove(decorator.getFullName());
-                        // If the above returns null, then the decorator is no longer in scope.
-                        if (removed == null) {
-                            decorator = null;
-                        } else {
+                        boolean removed = decorators.remove(decorator);
+                        // If the above returns null, then the decorator is no longer in scope, so
+                        // we do not add it to the cache. We do not want to remove the decoratorAttributes,
+                        // however, until the model is saved.
+                        if (removed) {
                             // The decorator was found. Put in cache.
                             _decoratorAttributes.put(decorator, decoratorAttribute);
-                        }
-                    } else {
-                        // So that the user can recover, delete this invalid decorator.
-                        // FIXME: Should this be done in a ChangeRequest?
-                        try {
-                            decoratorAttribute.setContainer(null);
-                        } catch (NameDuplicationException e) {
-                            throw new InternalErrorException(e);
-                        }
-                        throw new IllegalActionException(this,
-                                "Cannot find decorator with name "
-                                + decoratorAttribute.decoratorName.getExpression());
-                    }
-                    if (decorator == null) {
-                        // The decorator is no longer in scope. Delete the attributes.
-                        // FIXME: Should this be done in a change request?
-                        try {
-                            decoratorAttribute.setContainer(null);
-                        } catch (KernelException e) {
-                            throw new InternalErrorException(e);
                         }
                     }
                 }
                 
                 // For each remaining decorator, if it decorates this NamedObj, create an entry.
-                for (Decorator decorator : decorators.values()) {
+                for (Decorator decorator : decorators) {
                     DecoratorAttributes attribute = decorator.createDecoratorAttributes(this);
                     _decoratorAttributes.put(decorator, attribute);
                 }

@@ -43,13 +43,11 @@ import ptolemy.actor.QuantityManager;
 import ptolemy.actor.Receiver;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.gui.ColorAttribute;
-import ptolemy.actor.lib.qm.Bus.BusAttributes;
 import ptolemy.actor.lib.qm.QuantityManagerListener.EventType;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.Port;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.Decorator;
 import ptolemy.kernel.util.DecoratorAttributes;
@@ -111,7 +109,32 @@ public abstract class MonitoredQuantityManager extends TypedAtomicActor
         _parameters = new HashMap<IOPort, List<Attribute>>();
     } 
 
-    
+    ///////////////////////////////////////////////////////////////////
+    ////                         parameters                        ////
+
+    /** The color associated with this actor used to highlight other
+     *  actors or connections that use this quantity manager. The default value
+     *  is the color red described by the expression {1.0,0.0,0.0,1.0}.
+     */
+    public ColorAttribute color;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+
+    /** If the attribute is <i>color</i>, then update the highlighting colors
+     *  in the model.
+     *  @param attribute The attribute that changed.
+     *  @exception IllegalActionException If the service time is negative.
+     */
+    public void attributeChanged(Attribute attribute)
+            throws IllegalActionException {
+        if (attribute == color) {
+            // FIXME not implemented yet.
+        }
+        super.attributeChanged(attribute);
+    }
+
+
     /** Return the decorated attributes for the target NamedObj.
      *  If the specified target is not an Actor, return null.
      *  @param target The NamedObj that will be decorated.
@@ -220,28 +243,43 @@ public abstract class MonitoredQuantityManager extends TypedAtomicActor
         }
     }
 
-    /** The color associated with this actor used to highlight other
-     *  actors or connections that use this quantity manager. The default value
-     *  is the color red described by the expression {1.0,0.0,0.0,1.0}.
+    /** Override the base class to first set the container, then establish
+     *  a connection with any decorated objects it finds in scope in the new
+     *  container.
+     *  @param container The container to attach this attribute to..
+     *  @exception IllegalActionException If this attribute is not of the
+     *   expected class for the container, or it has no name,
+     *   or the attribute and container are not in the same workspace, or
+     *   the proposed container would result in recursive containment.
+     *  @exception NameDuplicationException If the container already has
+     *   an attribute with the name of this attribute.
+     *  @see #getContainer()
      */
-    public ColorAttribute color;
-
-    /** If the attribute is <i>color</i>, then update the highlighting colors
-     *  in the model.
-     *  @param attribute The attribute that changed.
-     *  @exception IllegalActionException If the service time is negative.
-     */
-    public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
-        if (attribute == color) {
-            // FIXME not implemented yet.
+    public void setContainer(CompositeEntity container) throws IllegalActionException,
+            NameDuplicationException {
+        super.setContainer(container);
+        if (container != null) {
+            List<NamedObj> decoratedObjects = decoratedObjects();
+            for (NamedObj decoratedObject : decoratedObjects) {
+                // The following will create the DecoratorAttributes if it does not
+                // already exist, and associate it with this decorator.
+                decoratedObject.getDecoratorAttributes(this);
+            }
         }
-        super.attributeChanged(attribute);
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                      protected fields                     ////
 
     /** List of parameters per port.
      */
     protected HashMap<IOPort, List<Attribute>> _parameters;  
+
+    /** Amount of tokens currently being processed by the switch. */
+    protected int _tokenCount;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                      protected methods                    ////
 
     /** Send token to receiver.
      *  @param receiver The receiver.
@@ -257,13 +295,16 @@ public abstract class MonitoredQuantityManager extends TypedAtomicActor
         receiver.put(token); 
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                      private fields                       ////
+
     /** Listeners registered to receive events from this object. */
     private ArrayList<QuantityManagerListener> _listeners;
 
-    /** Amount of tokens currently being processed by the switch. */
-    protected int _tokenCount;
+    ///////////////////////////////////////////////////////////////////
+    ////                       inner classes                       ////
     
-    public class QMAttributes extends DecoratorAttributes {
+    public static class QMAttributes extends DecoratorAttributes {
 
         /** Constructor to use when editing a model.
          *  @param target The object being decorated.

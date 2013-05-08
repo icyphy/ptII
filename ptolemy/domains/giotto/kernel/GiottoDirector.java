@@ -756,6 +756,31 @@ public class GiottoDirector extends StaticSchedulingDirector implements Decorato
 
     }
 
+    /** Override the base class to first set the container, then establish
+     *  a connection with any decorated objects it finds in scope in the new
+     *  container.
+     *  @param container The container to attach this attribute to..
+     *  @exception IllegalActionException If this attribute is not of the
+     *   expected class for the container, or it has no name,
+     *   or the attribute and container are not in the same workspace, or
+     *   the proposed container would result in recursive containment.
+     *  @exception NameDuplicationException If the container already has
+     *   an attribute with the name of this attribute.
+     *  @see #getContainer()
+     */
+    public void setContainer(NamedObj container) throws IllegalActionException,
+            NameDuplicationException {
+        super.setContainer(container);
+        if (container != null) {
+            List<NamedObj> decoratedObjects = decoratedObjects();
+            for (NamedObj decoratedObject : decoratedObjects) {
+                // The following will create the DecoratorAttributes if it does not
+                // already exist, and associate it with this decorator.
+                decoratedObject.getDecoratorAttributes(this);
+            }
+        }
+    }
+
     /** Return an array of suggested directors to be used with
      *  ModalModel. Each director is specified by its full class
      *  name.  The first director in the array will be the default

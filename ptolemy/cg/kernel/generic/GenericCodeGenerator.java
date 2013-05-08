@@ -751,7 +751,9 @@ public abstract class GenericCodeGenerator extends Attribute implements
     public void setCodeGenerator(GenericCodeGenerator codeGenerator) {
     }
 
-    /** Set the container of this object to be the given container.
+    /** Override the base class to first set the container, then establish
+     *  a connection with any decorated objects it finds in scope in the new
+     *  container.
      *  @param container The given container.
      *  @exception IllegalActionException If the given container
      *   is not null and not an instance of CompositeEntity.
@@ -765,8 +767,15 @@ public abstract class GenericCodeGenerator extends Attribute implements
                     "CodeGenerator can only be contained"
                             + " by CompositeEntity");
         }
-
         super.setContainer(container);
+        if (container != null) {
+            List<NamedObj> decoratedObjects = decoratedObjects();
+            for (NamedObj decoratedObject : decoratedObjects) {
+                // The following will create the DecoratorAttributes if it does not
+                // already exist, and associate it with this decorator.
+                decoratedObject.getDecoratorAttributes(this);
+            }
+        }
     }
 
     /** Set the command executor, which can be either non-graphical

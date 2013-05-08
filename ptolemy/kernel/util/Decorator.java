@@ -43,6 +43,25 @@ The decorated NamedObj will contain these instances of DecoratorAttributes.
 These attributes are stored separately and can be retrieved by using
 {@link NamedObj#getDecoratorAttributes(Decorator)} or
 {@link NamedObj#getDecoratorAttributes(Decorator)}.
+<p>
+<b>NOTE:</b> An implementer of this interface should override the
+setContainer() method to look for objects that will be in scope with the
+new container and establish a connection with them. Specifically, it should
+do this:
+<pre>
+    public void setContainer(NamedObj container) throws IllegalActionException,
+            NameDuplicationException {
+        super.setContainer(container);
+        if (container != null) {
+            List<NamedObj> decoratedObjects = decoratedObjects();
+            for (NamedObj decoratedObject : decoratedObjects) {
+                // The following will create the DecoratorAttributes if it does not
+                // already exist, and associate it with this decorator.
+                decoratedObject.getDecoratorAttributes(this);
+            }
+        }
+    }
+</pre>
 
 <p>For a description of a decorator pattern, see
 <a href="http://en.wikipedia.org/wiki/Decorator_pattern">http://en.wikipedia.org/wiki/Decorator_pattern</a>.

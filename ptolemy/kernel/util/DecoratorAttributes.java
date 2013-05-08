@@ -28,6 +28,8 @@
 
 package ptolemy.kernel.util;
 
+import java.io.IOException;
+import java.io.Writer;
 import java.util.List;
 
 import ptolemy.kernel.CompositeEntity;
@@ -54,6 +56,16 @@ These attributes can be retrieved by using
 */
 public class DecoratorAttributes extends Attribute {
     
+    // FIXME: The decoratorName mechanism is very fragile.
+    // If the decorator changes name, the connection will be lost.
+    // If the container of the decorator changes name, it will again be lost.
+    // Probably the first constructor should not set the name, and this should
+    // be set only when MoML is to be exported.
+    // The second constructor should immediately look for the decorator by name.
+    // But it may not have been constructed yet. Hence, when a decorator is
+    // constructed, it should look for decorated objects and establish the link.
+    // This way, it doesn't matter which gets constructed first.
+    
     /** Construct a DecoratorAttributes instance to contain the
      *  decorator parameter for the specified container provided
      *  by the specified decorator. This constructor is used
@@ -73,12 +85,6 @@ public class DecoratorAttributes extends Attribute {
         
         decoratorName = new StringAttribute(this, "decoratorName");
         decoratorName.setVisibility(Settable.NONE);
-        // Record the name relative to the toplevel entity so that even if you
-        // do SaveAs (which changes the name of the toplevel) the decorator
-        // can still be found.
-        // FIXME: If you save a submodel, this will break the connection
-        // to the decorator.
-        decoratorName.setExpression(decorator.getName(container.toplevel()));
     }
     
     /** Construct a DecoratorAttributes instance with the given name
@@ -98,6 +104,12 @@ public class DecoratorAttributes extends Attribute {
         
         decoratorName = new StringAttribute(this, "decoratorName");
         decoratorName.setVisibility(Settable.NONE);
+        
+        // Attempt to set the _decorator immediately, because its name
+        // or the name of one of its containers may change later.
+        // This will remain null if the decorator has not yet been
+        // constructed.
+        _decorator = getDecorator();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -106,18 +118,65 @@ public class DecoratorAttributes extends Attribute {
     /** The name of the decorator relative to the top-level of
      *  the model, to be stored in a MoML file
      *  to re-establish the connection with a decorator after saving
-     *  and re-parsing the file. This is a string that is not visible
-     *  to the user.
+     *  and re-parsing the file. The name is relative to the top-level,
+     *  rather than the full name, so that SaveAs works (where the name
+     *  of the toplevel changes).
+     *  FIXME: However, if you save a submodel, then this will not work!
+     *  This is a string that is not visible to the user.
      */
     public StringAttribute decoratorName;
     
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Override the base class to first set the decoratorName attribute
+     *  to the current name of the associated decorator, and then export
+     *  using the superclass.
+     *
+     *  @param output The output stream to write to.
+     *  @param depth The depth in the hierarchy, to determine indenting.
+     *  @exception IOException If an I/O error occurs.
+     *  @see #exportMoML(Writer, int)
+     */
+    public void exportMoML(Writer output, int depth, String name)
+            throws IOException {
+        _decorator = getDecorator();
+        if (_decorator == null) {
+            // No matching decorator is found. Discard the decorator attributes.
+            return;
+        }
+        // Record the name relative to the toplevel entity so that even if you
+        // do SaveAs (which changes the name of the toplevel) the decorator
+        // can still be found.
+        // FIXME: If you save a submodel, this will break the connection
+        // to the decorator.
+        try {
+            decoratorName.setExpression(_decorator.getName(toplevel()));
+        } catch (IllegalActionException e) {
+            throw new InternalErrorException(e);
+        }
+        
+        // Now invoke the superclass to export MoML.
+        super.exportMoML(output, depth, name);
+    }
+
     /** Return the decorator that is responsible for this DecoratorAttributes instance.
      *  @return The decorator, or null if there is none.
      */
     public Decorator getDecorator() {
+        if (_decorator != null) {
+            // There is a decorator associated associated with this DecoratorAttributes.
+            // Check to see whether the decorator is still in scope. If it is not,
+            // then see whether there is a decorator in scope whose name matches,
+            // and establish a link with that one. This makes undo work. Specifically,
+            // if you delete a decorator, then undo, the undo will actually create a
+            // new decorator instance. This code re-establishes the connection.
+            NamedObj decoratorContainer = _decorator.getContainer();
+            if (decoratorContainer == null || !decoratorContainer.deepContains(this)) {
+                // Decorator is no longer in scope.  Fall into code below to try to find it by name.
+                _decorator = null;
+            }
+        }
         if (_decorator == null) {
             // Retrieve the decorator using the decoratorName parameter.
             String name = decoratorName.getExpression();
@@ -147,7 +206,7 @@ public class DecoratorAttributes extends Attribute {
         }
         return _decorator;
     }
-    
+        
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 

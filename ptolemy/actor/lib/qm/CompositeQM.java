@@ -44,8 +44,6 @@ import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.gui.ColorAttribute;
 import ptolemy.actor.lib.Const;
 import ptolemy.actor.lib.ResourceAttributes;
-import ptolemy.actor.lib.qm.MonitoredQuantityManager.QMAttributes;
-import ptolemy.data.IntToken;
 import ptolemy.data.ObjectToken;
 import ptolemy.data.RecordToken;
 import ptolemy.data.StringToken;
@@ -123,6 +121,9 @@ public class CompositeQM extends TypedCompositeActor implements QuantityManager,
         _initialize();
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                      parameters                           ////
+
     /** The color associated with this actor used to highlight other
      *  actors or connections that use this quantity manager. The default value
      *  is the color red described by the expression {1.0,0.0,0.0,1.0}.
@@ -176,6 +177,18 @@ public class CompositeQM extends TypedCompositeActor implements QuantityManager,
         }
     }
 
+    /** Create an intermediate receiver that wraps a given receiver.
+     *  @param receiver The receiver that is being wrapped.
+     *  @return A new intermediate receiver.
+     *  @exception IllegalActionException Not thrown in this class but may be thrown in derived classes.
+     */
+    public Receiver createIntermediateReceiver(Receiver receiver)
+            throws IllegalActionException {
+        IntermediateReceiver intermediateReceiver = new IntermediateReceiver(
+                this, receiver);
+        return intermediateReceiver;
+    }
+
     /** Return a list of the entities deeply contained by the container
      *  of this resource scheduler.
      *  @return A list of the objects decorated by this decorator.
@@ -193,53 +206,6 @@ public class CompositeQM extends TypedCompositeActor implements QuantityManager,
         return list;
     }
     
-    /** Return true to indicate that this decorator should
-     *  decorate objects across opaque hierarchy boundaries.
-     */
-    public boolean isGlobalDecorator() {
-        return true;
-    }
-
-    /** Create an intermediate receiver that wraps a given receiver.
-     *  @param receiver The receiver that is being wrapped.
-     *  @return A new intermediate receiver.
-     *  @exception IllegalActionException Not thrown in this class but may be thrown in derived classes.
-     */
-    public Receiver createIntermediateReceiver(Receiver receiver)
-            throws IllegalActionException {
-        IntermediateReceiver intermediateReceiver = new IntermediateReceiver(
-                this, receiver);
-        return intermediateReceiver;
-    }
-
-    
-    /** Set an attribute for a given port. In case the attribute is the name of the
-     *  input port in the CQM that this actor port is mapped to, store the mapping
-     *  and, if necessary, create the CQMInputPort.
-     *  @param port The port. 
-     *  @param attribute The new attribute or the attribute containing a new value.
-     *  @exception IllegalActionException Thrown if attribute could not be updated.
-     */
-    public void setInputPortName(Port port, String inputPortName) throws IllegalActionException {
-        for (Object entity : entityList()) {
-            if (entity instanceof CQMInputPort) {
-                if (((CQMInputPort)entity).getName().equals(inputPortName)) {
-                    if (_mappedConsts == null) {
-                        _mappedConsts = new HashMap<Port, CQMInputPort>();
-                    }
-                    _mappedConsts.put(port, (CQMInputPort) entity);
-                    return;
-                }
-            }
-        }
-        // no CQMInputPort was found, create one.
-        try {
-            CQMInputPort cqmInputPort = new CQMInputPort(this, inputPortName);
-        } catch (NameDuplicationException e) { 
-            e.printStackTrace();
-        } 
-    }
-
     /** Override the fire and change the transferring tokens
      * from and to input/output placeholders.
      */
@@ -289,10 +255,69 @@ public class CompositeQM extends TypedCompositeActor implements QuantityManager,
         }
     }
 
+    /** Return true to indicate that this decorator should
+     *  decorate objects across opaque hierarchy boundaries.
+     */
+    public boolean isGlobalDecorator() {
+        return true;
+    }
+    
     /** Reset.
      */
     public void reset() {
         // FIXME what to do here?
+    }
+
+    /** Override the base class to first set the container, then establish
+     *  a connection with any decorated objects it finds in scope in the new
+     *  container.
+     *  @param container The container to attach this attribute to..
+     *  @exception IllegalActionException If this attribute is not of the
+     *   expected class for the container, or it has no name,
+     *   or the attribute and container are not in the same workspace, or
+     *   the proposed container would result in recursive containment.
+     *  @exception NameDuplicationException If the container already has
+     *   an attribute with the name of this attribute.
+     *  @see #getContainer()
+     */
+    public void setContainer(CompositeEntity container) throws IllegalActionException,
+            NameDuplicationException {
+        super.setContainer(container);
+        if (container != null) {
+            List<NamedObj> decoratedObjects = decoratedObjects();
+            for (NamedObj decoratedObject : decoratedObjects) {
+                // The following will create the DecoratorAttributes if it does not
+                // already exist, and associate it with this decorator.
+                decoratedObject.getDecoratorAttributes(this);
+            }
+        }
+    }
+
+    /** Set an attribute for a given port. In case the attribute is the name of the
+     *  input port in the CQM that this actor port is mapped to, store the mapping
+     *  and, if necessary, create the CQMInputPort.
+     *  @param port The port. 
+     *  @param attribute The new attribute or the attribute containing a new value.
+     *  @exception IllegalActionException Thrown if attribute could not be updated.
+     */
+    public void setInputPortName(Port port, String inputPortName) throws IllegalActionException {
+        for (Object entity : entityList()) {
+            if (entity instanceof CQMInputPort) {
+                if (((CQMInputPort)entity).getName().equals(inputPortName)) {
+                    if (_mappedConsts == null) {
+                        _mappedConsts = new HashMap<Port, CQMInputPort>();
+                    }
+                    _mappedConsts.put(port, (CQMInputPort) entity);
+                    return;
+                }
+            }
+        }
+        // no CQMInputPort was found, create one.
+        try {
+            new CQMInputPort(this, inputPortName);
+        } catch (NameDuplicationException e) { 
+            e.printStackTrace();
+        } 
     }
 
     /** Initiate a send of the specified token to the specified
@@ -329,9 +354,15 @@ public class CompositeQM extends TypedCompositeActor implements QuantityManager,
         }
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                       protected variables                 ////
+
     /** List of parameters per port.
      */
     protected HashMap<IOPort, List<Attribute>> _parameters;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
 
     /** Initialize color and private lists.
      * @exception IllegalActionException If color attribute cannot be initialized.
@@ -353,6 +384,9 @@ public class CompositeQM extends TypedCompositeActor implements QuantityManager,
     private HashMap<Port, CQMInputPort> _mappedConsts;
     
     
+    ///////////////////////////////////////////////////////////////////
+    ////                         inner classes                     ////
+
     public static class CQMAttributes extends ResourceAttributes {
 
         /** Constructor to use when editing a model.
@@ -416,5 +450,4 @@ public class CompositeQM extends TypedCompositeActor implements QuantityManager,
         
         private String _inputPort; 
     }
-
 }

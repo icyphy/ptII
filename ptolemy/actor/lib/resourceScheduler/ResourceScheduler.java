@@ -330,6 +330,31 @@ public class ResourceScheduler extends MoMLModelAttribute implements Decorator {
         return Time.POSITIVE_INFINITY;
     }
 
+    /** Override the base class to first set the container, then establish
+     *  a connection with any decorated objects it finds in scope in the new
+     *  container.
+     *  @param container The container to attach this attribute to..
+     *  @exception IllegalActionException If this attribute is not of the
+     *   expected class for the container, or it has no name,
+     *   or the attribute and container are not in the same workspace, or
+     *   the proposed container would result in recursive containment.
+     *  @exception NameDuplicationException If the container already has
+     *   an attribute with the name of this attribute.
+     *  @see #getContainer()
+     */
+    public void setContainer(NamedObj container) throws IllegalActionException,
+            NameDuplicationException {
+        super.setContainer(container);
+        if (container != null) {
+            List<NamedObj> decoratedObjects = decoratedObjects();
+            for (NamedObj decoratedObject : decoratedObjects) {
+                // The following will create the DecoratorAttributes if it does not
+                // already exist, and associate it with this decorator.
+                decoratedObject.getDecoratorAttributes(this);
+            }
+        }
+    }
+
     /** Create end events for the plotter.
      *  @exception IllegalActionException Thrown by super class.
      */
@@ -339,7 +364,7 @@ public class ResourceScheduler extends MoMLModelAttribute implements Decorator {
                     .getEnvironmentTime().getDoubleValue(), null);
         }
     }
-
+    
     ///////////////////////////////////////////////////////////////////
     //                          protected methods                    //
 

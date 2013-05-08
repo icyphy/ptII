@@ -619,6 +619,34 @@ public class PtidesDirector extends DEDirector implements Decorator {
         _currentLogicalTime = null;
     }
 
+    /** Override the base class to first set the container, then establish
+     *  a connection with any decorated objects it finds in scope in the new
+     *  container.
+     *  @param container The container to attach this attribute to..
+     *  @exception IllegalActionException If this attribute is not of the
+     *   expected class for the container, or it has no name,
+     *   or the attribute and container are not in the same workspace, or
+     *   the proposed container would result in recursive containment.
+     *  @exception NameDuplicationException If the container already has
+     *   an attribute with the name of this attribute.
+     *  @see #getContainer()
+     */
+    public void setContainer(NamedObj container) throws IllegalActionException,
+            NameDuplicationException {
+        super.setContainer(container);
+        if (container != null) {
+            List<NamedObj> decoratedObjects = decoratedObjects();
+            for (NamedObj decoratedObject : decoratedObjects) {
+                // The following will create the DecoratorAttributes if it does not
+                // already exist, and associate it with this decorator.
+                decoratedObject.getDecoratorAttributes(this);
+            }
+        }
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                      protected methods                    ////
+
     /** Model time is only used for correct execution of actors and the
      * scheduler will determine whether another event can be fired in
      * the current firing of the platform, so this method isn't needed.
@@ -829,7 +857,7 @@ public class PtidesDirector extends DEDirector implements Decorator {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         protected methods                 ////
+    ////                         private methods                   ////
 
     /** Calculate the delay offset for each input port.
      * The delay offset is used in the safe-to-process analysis

@@ -1975,22 +1975,18 @@ public class Director extends Attribute implements Executable {
         if (_schedulerForActor == null) {
             _schedulerForActor = new HashMap<Actor, ResourceScheduler>();
         }
-        Object object = _schedulerForActor.get(actor);
-        if (!_schedulerForActor.containsKey(actor)) {
-            if (object == null) {
-                for (ResourceAttributes resourceAttributes : ((NamedObj) actor)
-                        .attributeList(ResourceAttributes.class)) {
-                    if (((BooleanToken)resourceAttributes.enable.getToken()).booleanValue()) {
-                        ResourceScheduler scheduler = (ResourceScheduler) resourceAttributes.getDecorator();
-                        if (_schedulerForActor.get(actor) != null) {
-                            // already has a scheduler - will be overridden. FIXME!
-                        }
-                        _schedulerForActor.put(actor, scheduler);   
-                    }
+        ResourceScheduler result = _schedulerForActor.get(actor);
+        if (result == null) {
+            for (ResourceAttributes resourceAttributes : ((NamedObj) actor)
+                    .attributeList(ResourceAttributes.class)) {
+                if (((BooleanToken)resourceAttributes.enable.getToken()).booleanValue()) {
+                    result = (ResourceScheduler) resourceAttributes.getDecorator();
+                    _schedulerForActor.put(actor, result);  
+                    break;
                 }
             }
         }
-        return _schedulerForActor.get(actor);
+        return result;
     }
 
     /** Initialize parameters. This is called by the constructor.

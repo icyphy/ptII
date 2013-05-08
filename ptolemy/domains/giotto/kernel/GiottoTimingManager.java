@@ -324,6 +324,16 @@ public class GiottoTimingManager extends SingletonAttribute implements
         }
         super.setContainer(container);
 
+        // Update decorated objects.
+        if (container != null) {
+            List<NamedObj> decoratedObjects = decoratedObjects();
+            for (NamedObj decoratedObject : decoratedObjects) {
+                // The following will create the DecoratorAttributes if it does not
+                // already exist, and associate it with this decorator.
+                decoratedObject.getDecoratorAttributes(this);
+            }
+        }
+
         if (container != null && container instanceof CompositeActor) {
             if (_executable == null) {
 
