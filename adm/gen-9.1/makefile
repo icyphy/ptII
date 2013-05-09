@@ -1113,7 +1113,7 @@ hudson:
 	PTIIHOME=/var/lib/hudson/jobs/ptII/workspace \
 	PTIIADM=/var/lib/hudson/jobs/ptII/workspace/adm \
 	JAR=/usr/bin/jar \
-	clean all jnlp src.jar setup test_setup update_moog updateDOPCenterImage
+	clean all jnlp src.jar setup test_setup updateDOPCenterImage update_moog 
 
 hudson_notest: 
 	$(MAKE) -k USER=hudson \
