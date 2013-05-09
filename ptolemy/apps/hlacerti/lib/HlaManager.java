@@ -156,7 +156,7 @@ import certi.rti.impl.CertiRtiAmbassador;
  * name of Federates which belong to, shared HLA attributes) and the interaction 
  * between Federates and shared attributes. Data exchanged in a HLA Federation
  * are called HLA attributes and their interaction mechanism is based on the
- * publish/susbcribe paradigm. The FOM is specified in a .fed file used by 
+ * publish/subscribe paradigm. The FOM is specified in a .fed file used by 
  * the RTI (e.g. by the RTIG process when using CERTI). More information in [3].
  * <br><a href="http://savannah.nongnu.org/projects/certi" target="_top">http://savannah.nongnu.org/projects/certi</a></br>
  * </p><p>
@@ -166,25 +166,26 @@ import certi.rti.impl.CertiRtiAmbassador;
  * declaration in the FOM (.fed file). <i>fedFile</i> specifies the FOM file and
  * its path.
  * </p><p>
- * Parameters <i>ner</i>, <i>tar</i>, <i>timeConst<i> and <i>timeReg</i> are
+ * Parameters <i>useNextEventRequest</i>, <i>UseTimeAdvanceRequest</i>, 
+ * <i>isTimeConstrained</i> and <i>isTimeRegulator</i> are
  * used to configure the HLA time management services of the Federate. A 
- * Federate can only specify the use of the <i>ner</i> (nextEventRequest()
- * service) or the <i>tar</i> (timeAdvanceRequest()) service at a time.
- * <i>timeConst</i> is used to specify time-constrained Federate and 
- * <i>timeReg</i> to specify time-regulator Federate. The combination of both
- * parameters is possible.
+ * Federate can only specify the use of the <i>nextEventRequest()
+ * service</i> or the <i>timeAdvanceRequest()</i> service at a time.
+ * <i>istimeConstrained</i> is used to specify time-constrained Federate and 
+ * <i>istimeRegulator</i> to specify time-regulator Federate. The combination of 
+ * both parameters is possible and is recommended.
  * </p><p>
- * Parameters <i>hlaStartTime</i>, <i>hlaStepTime</i> and <i>hlaLookAHead<i>
+ * Parameters <i>hlaStartTime</i>, <i>hlaStepTime</i> and <i>hlaLookAHead</i>
  * are used to specify Hla Timing attributes of a Federate.
  * </p><p>
- * Parameters <i>requireSynchronization</i>, <i>syncPtName</i>, <i>syncPtName</i>
- * and <i>creatorSyncPt</i> are used to configure HLA synchronization point. 
+ * Parameters <i>requireSynchronization</i>, <i>synchronizationPointName</i>
+ * and <i>isCreatorSyncPt</i> are used to configure HLA synchronization point. 
  * This mechanism is usually used to synchronize the Federates, during their 
- * initialization, to avoid that federate's that only consume some HLA 
+ * initialization, to avoid that Federates that only consume some HLA 
  * attributes finished their simulation before the other federates have started.
- * <i>creatorSyncPt</i> indicates if the Federate is the creator of the 
+ * <i>isCreatorSyncPt</i> indicates if the Federate is the creator of the 
  * synchronization. Only one Federate can create the named synchronization 
- * point the whole HLA Federation.
+ * point for the whole HLA Federation.
  * </p><p>
  * {@link HlaPublisher} and {@link HlaSubscriber} actors are used to 
  * respectively publish and subscribe to HLA attributes. The name of those
