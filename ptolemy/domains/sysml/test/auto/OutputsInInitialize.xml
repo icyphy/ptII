@@ -60,32 +60,14 @@
             </property>
         </port>
         <entity name="_Controller" class="ptolemy.domains.modal.modal.ModalController">
-            <property name="annotation" class="ptolemy.kernel.util.Attribute">
-                <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-                </property>
-                <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-                    <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">Create a state machine here (and ports, if needed) and
-create refinements for the states.  Create transitions
-by holding the (Mac: command key, Windows: control key)
-and dragging from one state to another.  
-Right click to configure the properties 
-of this model, including setting the final state(s).
-Then delete this annotation.</text>
-    </svg></configure>
-                </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[-525.0, -190.0]">
-                </property>
-                <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
-                </property>
-                <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
-                </property>
+            <property name="errorCause" class="ptolemy.data.expr.Parameter">
             </property>
             <property name="_library" class="ptolemy.moml.LibraryAttribute">
                 <configure>
       <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.modal.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory"></property></entity></entity>
     </configure>
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={336, 142, 928, 616}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={373, 207, 934, 635}, maximized=false}">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 500]">
             </property>
@@ -185,7 +167,7 @@ Then delete this annotation.</text>
                 </property>
                 <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="{-440, 210}">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[-380.0, 135.0]">
                 </property>
             </entity>
             <relation name="relation" class="ptolemy.domains.modal.kernel.Transition">
@@ -314,32 +296,14 @@ Then delete this annotation.</text>
             </property>
         </port>
         <entity name="_Controller" class="ptolemy.domains.modal.modal.ModalController">
-            <property name="annotation" class="ptolemy.kernel.util.Attribute">
-                <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-                </property>
-                <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-                    <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">Create a state machine here (and ports, if needed) and
-create refinements for the states.  Create transitions
-by holding the (Mac: command key, Windows: control key)
-and dragging from one state to another.  
-Right click to configure the properties 
-of this model, including setting the final state(s).
-Then delete this annotation.</text>
-    </svg></configure>
-                </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[-525.0, -190.0]">
-                </property>
-                <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
-                </property>
-                <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
-                </property>
+            <property name="errorCause" class="ptolemy.data.expr.Parameter">
             </property>
             <property name="_library" class="ptolemy.moml.LibraryAttribute">
                 <configure>
       <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.modal.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory"></property></entity></entity>
     </configure>
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={336, 142, 928, 616}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={373, 207, 934, 635}, maximized=false}">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 500]">
             </property>
@@ -347,7 +311,7 @@ Then delete this annotation.</text>
             </property>
             <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{-164.671875, 59.8125}">
             </property>
-            <property name="x" class="ptolemy.data.expr.Parameter" value="2">
+            <property name="x" class="ptolemy.data.expr.Parameter" value="4">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -529,32 +493,14 @@ Then delete this annotation.</text>
             </property>
         </port>
         <entity name="_Controller" class="ptolemy.domains.modal.modal.ModalController">
-            <property name="annotation" class="ptolemy.kernel.util.Attribute">
-                <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-                </property>
-                <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-                    <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">Create a state machine here (and ports, if needed) and
-create refinements for the states.  Create transitions
-by holding the (Mac: command key, Windows: control key)
-and dragging from one state to another.  
-Right click to configure the properties 
-of this model, including setting the final state(s).
-Then delete this annotation.</text>
-    </svg></configure>
-                </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="120.0, 5.0">
-                </property>
-                <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
-                </property>
-                <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
-                </property>
+            <property name="errorCause" class="ptolemy.data.expr.Parameter">
             </property>
             <property name="_library" class="ptolemy.moml.LibraryAttribute">
                 <configure>
       <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.modal.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory"></property></entity></entity>
     </configure>
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={336, 142, 928, 616}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={80, 482, 934, 635}, maximized=false}">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 500]">
             </property>
@@ -597,7 +543,7 @@ Then delete this annotation.</text>
                 </property>
                 <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 90.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, 135.0]">
                 </property>
             </entity>
             <entity name="state2" class="ptolemy.domains.modal.kernel.State">
@@ -605,7 +551,7 @@ Then delete this annotation.</text>
                 </property>
                 <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[120.0, 290.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[120.0, 245.0]">
                 </property>
             </entity>
             <entity name="state3" class="ptolemy.domains.modal.kernel.State">
@@ -613,7 +559,7 @@ Then delete this annotation.</text>
                 </property>
                 <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[280.0, 360.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[365.0, 285.0]">
                 </property>
             </entity>
             <relation name="relation" class="ptolemy.domains.modal.kernel.Transition">
@@ -713,6 +659,8 @@ Then delete this annotation.</text>
             </property>
         </port>
         <entity name="_Controller" class="ptolemy.domains.modal.modal.ModalController">
+            <property name="errorCause" class="ptolemy.data.expr.Parameter">
+            </property>
             <property name="annotation" class="ptolemy.kernel.util.Attribute">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
@@ -746,7 +694,7 @@ Then delete this annotation.</text>
             </property>
             <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{-164.671875, 59.8125}">
             </property>
-            <property name="x" class="ptolemy.data.expr.Parameter" value="2">
+            <property name="x" class="ptolemy.data.expr.Parameter" value="4">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -898,25 +846,27 @@ Then delete this annotation.</text>
         <link port="_Controller.IN2" relation="IN2Relation"/>
     </entity>
     <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{3}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{3, 3}">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-100.0, 50.0]">
         </property>
     </entity>
     <entity name="NonStrictTest2" class="ptolemy.actor.lib.NonStrictTest">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{3}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{3, 3}">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-80.0, 310.0]">
         </property>
     </entity>
     <entity name="NonStrictTest3" class="ptolemy.actor.lib.NonStrictTest">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;true false false false&quot;, &quot;false false true false&quot;, &quot;false true false false&quot;, &quot;false false false true&quot;}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;true false false false&quot;, &quot;false false true false&quot;, &quot;false true false false&quot;, &quot;false false false true&quot;, &quot;true false false false&quot;, &quot;false false true false&quot;, &quot;false true false false&quot;, &quot;false false false true&quot;}">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[370.0, 55.0]">
         </property>
     </entity>
     <entity name="NonStrictTest4" class="ptolemy.actor.lib.NonStrictTest">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{200.0, 200.0, 200.0, 200.0}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, 0.0, 0.0, 0.0, 200.0, 200.0, 200.0, 200.0}">
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="2.0E-7">
         </property>
@@ -926,30 +876,50 @@ Then delete this annotation.</text>
         </property>
     </entity>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+        </property>
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+        </property>
     </relation>
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
         <vertex name="vertex1" value="{310.0, 145.0}">
         </vertex>
+        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+        </property>
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+        </property>
     </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+        </property>
     </relation>
     <relation name="relation10" class="ptolemy.actor.TypedIORelation">
+        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+        </property>
     </relation>
     <relation name="relation11" class="ptolemy.actor.TypedIORelation">
+        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+        </property>
     </relation>
     <relation name="relation9" class="ptolemy.actor.TypedIORelation">
         <vertex name="vertex1" value="[-128.0, 190.0]">
         </vertex>
+        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+        </property>
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
         <vertex name="vertex1" value="[-150.0, 135.0]">
         </vertex>
+        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+        </property>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+        </property>
     </relation>
     <link port="ModalModel.P1" relation="relation5"/>
     <link port="ModalModel.P2" relation="relation9"/>
