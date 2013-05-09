@@ -1,7 +1,7 @@
-;; SimpleProducerConsumer 
+;; MultiDataTypes 
 
 (Fed
-  (Federation SimpleProducerConsumer)
+  (Federation MultiDataTypes)
   (FedVersion v1.3)
   (Federate "consumer" "Public")
   (Federate "producer" "Public")

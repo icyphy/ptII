@@ -10,18 +10,21 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{43.0, 60.0}">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 614, 389}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={476, 52, 614, 634}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[380, 279]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[380, 524]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.7564036644096028">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.1291514674677539">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{178.25926776960787, 371.1540862438725}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{153.83984375, 259.78618032094596}">
     </property>
     <property name="HlaManager" class="ptolemy.apps.hlacerti.lib.HlaManager">
         <display name="consumer1"/>
         <property name="federateName" class="ptolemy.data.expr.Parameter" value="&quot;consumer1&quot;">
             <display name="Federate's name"/>
+        </property>
+        <property name="federationName" class="ptolemy.data.expr.Parameter" value="&quot;MultiProducerConsumer&quot;">
+            <display name="Federation's name"/>
         </property>
         <property name="fedFile" class="ptolemy.data.expr.FileParameter" value="MultiProducerConsumer.fed">
             <display name="Path for .fed file"/>
