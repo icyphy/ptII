@@ -384,10 +384,10 @@
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[215.0, 325.0]">
                 </property>
             </property>
-            <property name="PEDFCore" class="ptolemy.actor.lib.resourceScheduler.EDFScheduler">
+            <entity name="PEDFCore" class="ptolemy.actor.lib.resourceScheduler.EDFScheduler">
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[188.505859375, 55.0]">
                 </property>
-            </property>
+            </entity>
             <port name="SensorPort4" class="ptolemy.domains.ptides.lib.PtidesPort">
                 <property name="input"/>
                 <property name="deviceDelay" class="ptolemy.data.expr.Parameter" value="0.0">

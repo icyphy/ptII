@@ -382,10 +382,10 @@
                     </property>
                 </port>
             </entity>
-            <property name="EDFScheduler" class="ptolemy.actor.lib.resourceScheduler.EDFScheduler">
+            <entity name="EDFScheduler" class="ptolemy.actor.lib.resourceScheduler.EDFScheduler">
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, 55.0]">
                 </property>
-            </property>
+            </entity>
             <relation name="relation9" class="ptolemy.actor.TypedIORelation">
                 <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
                 </property>

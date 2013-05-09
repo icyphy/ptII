@@ -30,6 +30,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 package ptolemy.actor.lib.resourceScheduler;
 
 import ptolemy.actor.TypedCompositeActor;
+import ptolemy.actor.lib.SetVariable;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
@@ -73,6 +74,16 @@ public class ResourceMappingOutputPort extends TypedCompositeActor {
         super(container, name); 
     } 
     
+    /** Initialize actor and clear Parameter value in case it was set
+     *  in a previous execution.
+     */
+    @Override
+    public void initialize() throws IllegalActionException { 
+        super.initialize();
+        
+        ((Parameter)getAttribute("Parameter")).setExpression("");
+    }
+    
     /** Check whether the contained parameter contains a token.
      * @return True if the contained parameter contains a token.
      * @exception IllegalActionException Thrown if token cannot
@@ -81,8 +92,8 @@ public class ResourceMappingOutputPort extends TypedCompositeActor {
     public boolean hasToken() throws IllegalActionException {
         Token token = ((Parameter)getAttribute("Parameter")).getToken();
         if (token != null && 
-                token instanceof BooleanToken) {
-            return ((BooleanToken)token).booleanValue();
+                !(token instanceof BooleanToken)) {
+            return true;
         }
         return false;
     }
@@ -96,6 +107,25 @@ public class ResourceMappingOutputPort extends TypedCompositeActor {
         Token token = ((Parameter)getAttribute("Parameter")).getToken();
         ((Parameter)getAttribute("Parameter")).setToken(new BooleanToken(false));
         return token;
+    }
+    
+    /** Get the token from parameter but do not remove it.
+     *  @return The token.
+     *  @throws IllegalActionException If token cannot be accessed.
+     */
+    public Token getToken() throws IllegalActionException {
+        Token token = ((Parameter)getAttribute("Parameter")).getToken(); 
+        return token;
+    }
+    
+    /** Clear parameter value such that it is not saved to the moml xml
+     *  description or used in another execution.
+     */
+    public void wrapup() throws IllegalActionException {
+        // TODO Auto-generated method stub
+        super.wrapup();
+        
+        ((Parameter)getAttribute("Parameter")).setExpression("");
     }
     
 }

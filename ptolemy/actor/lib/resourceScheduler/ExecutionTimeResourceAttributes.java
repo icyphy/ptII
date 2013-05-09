@@ -5,6 +5,7 @@ import ptolemy.data.DoubleToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.Decorator;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
@@ -19,7 +20,7 @@ public class ExecutionTimeResourceAttributes extends ResourceAttributes {
      *  @throws IllegalActionException If the superclass throws it.
      *  @throws NameDuplicationException If the superclass throws it.
      */
-    public ExecutionTimeResourceAttributes(NamedObj target, ResourceScheduler decorator)
+    public ExecutionTimeResourceAttributes(NamedObj target, Decorator decorator)
             throws IllegalActionException, NameDuplicationException {
         super(target, decorator);
         _init();

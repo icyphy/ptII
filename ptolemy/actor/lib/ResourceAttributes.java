@@ -31,7 +31,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 package ptolemy.actor.lib;
 
 import ptolemy.data.BooleanToken;
-import ptolemy.data.DoubleToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.util.Attribute;

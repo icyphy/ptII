@@ -1561,6 +1561,9 @@ public class PtidesDirector extends DEDirector implements Decorator {
         Object[] eventArray = _eventQueue.toArray();
         for (Object object : eventArray) {
             PtidesEvent ptidesEvent = (PtidesEvent) object;
+            if (event.timeStamp().compareTo(ptidesEvent.timeStamp()) > 0) {
+                break;
+            }
             if (ptidesEvent.actor() != event.actor()
                     && ptidesEvent.ioPort() != null && event.ioPort() != null) {
                 SuperdenseDependency minDelay = _getSuperdenseDependencyPair(
@@ -1574,12 +1577,9 @@ public class PtidesDirector extends DEDirector implements Decorator {
             }
         }
         
-        int futureEvents = _getNumberOfFutureEventsFrom(event.actor());
-        if (futureEvents > _maximumNumberOfEventsPerActor) {
-            return false;
-        }
+        
 
-        // A local source can have a maximum future events parameter.
+        // Throttling actors with maximum future events parameter.
         ThrottleAttributes attributes = (ThrottleAttributes) ((NamedObj) event
                 .actor()).getDecoratorAttributes(this);
         if (attributes != null
@@ -1589,6 +1589,7 @@ public class PtidesDirector extends DEDirector implements Decorator {
                     .getToken()).intValue();
             
             if (maxFutureEvents != null) {
+                int futureEvents = _getNumberOfFutureEventsFrom(event.actor());
                 return (futureEvents <= maxFutureEvents);
             } 
         } 
@@ -1633,6 +1634,12 @@ public class PtidesDirector extends DEDirector implements Decorator {
                 || localClock.getLocalTime().compareTo(
                         eventTimestamp.subtract(delayOffset).subtract(
                                 _clockSynchronizationErrorBound)) >= 0) {
+            
+            // Default throttling actors.
+            int futureEvents = _getNumberOfFutureEventsFrom(event.actor());
+            if (futureEvents > _maximumNumberOfEventsPerActor) {
+                return false;
+            }
             return true;
         }
 

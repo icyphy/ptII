@@ -306,10 +306,6 @@
             </property>
             <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{350.0, 262.0}">
             </property>
-            <property name="EDFScheduler" class="ptolemy.actor.lib.resourceScheduler.EDFScheduler">
-                <property name="_location" class="ptolemy.kernel.util.Location" value="{245, 80}">
-                </property>
-            </property>
             <port name="SensorPort" class="ptolemy.domains.ptides.lib.PtidesPort">
                 <property name="input"/>
                 <property name="deviceDelay" class="ptolemy.data.expr.Parameter" value="0.5">
@@ -371,8 +367,20 @@
                 <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
             </port>
+            <entity name="EDFScheduler" class="ptolemy.actor.lib.resourceScheduler.EDFScheduler">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{245, 80}">
+                </property>
+                <property name="DecoratorAttributesFor_EDFScheduler" class="ptolemy.actor.lib.resourceScheduler.ExecutionTimeResourceAttributes">
+                    <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform2.PtidesPlatformContents.EDFScheduler">
+                    </property>
+                    <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                    <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                    </property>
+                </property>
+            </entity>
             <entity name="Computation" class="ptolemy.actor.TypedCompositeActor">
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[365.0, 240.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{365.0, 240.0}">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
                     <property name="rectangle" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
@@ -409,7 +417,7 @@
                 <property name="DecoratorAttributesFor_EDFScheduler" class="ptolemy.actor.lib.resourceScheduler.ExecutionTimeResourceAttributes">
                     <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform2.PtidesPlatformContents.EDFScheduler">
                     </property>
-                    <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                    <property name="enable" class="ptolemy.data.expr.Parameter" value="true">
                     </property>
                     <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
                     </property>
@@ -607,7 +615,7 @@
             <entity name="Computation3" class="ptolemy.actor.lib.Scale">
                 <property name="factor" class="ptolemy.data.expr.Parameter" value="2">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[135.0, 185.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{135.0, 185.0}">
                 </property>
                 <property name="WCET" class="ptolemy.data.expr.Parameter" value="0.5">
                 </property>
@@ -648,7 +656,9 @@
                 </port>
             </entity>
             <entity name="Test" class="ptolemy.actor.lib.Test">
-                <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{3.0, 3.0, 2.0, 3.0, 2.0, 3.0, 2.0, 3.0, 2.0, 3.0, 2.0, 3.0, 2.0, 3.0, 2.0, 3.0, 2.0}">
+                <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{3.0, 2.0, 3.0, 2.0, 3.0, 2.0, 3.0, 2.0, 3.0, 2.0, 3.0, 2.0, 3.0, 2.0, 3.0, 2.0, 3.0, 2.0}">
+                </property>
+                <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{550, 360}">
                 </property>
@@ -668,7 +678,7 @@
                 </port>
             </entity>
             <entity name="Test2" class="ptolemy.actor.lib.Test">
-                <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1.4, 2.4, 2.4, 3.4, 3.4, 4.4, 4.4, 5.4, 5.4, 6.4, 6.4, 7.4, 7.4, 8.4, 8.4, 9.4, 9.4}">
+                <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1.4, 2.0, 2.4, 3.0, 3.4, 4.0, 4.4, 5.0, 5.4, 6.0, 6.4, 7.0, 7.4, 8.0, 8.4, 9.0, 9.4, 10.0}">
                 </property>
                 <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
                 </property>

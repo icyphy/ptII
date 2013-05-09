@@ -49,7 +49,7 @@ import ptolemy.kernel.util.NamedObj;
    @Pt.ProposedRating Red (derler)
    @Pt.AcceptedRating Red (derler)
  */
-public class FCFSScheduler extends ResourceScheduler {
+public class FCFSScheduler extends AtomicResourceScheduler {
 
     /** Create a new actor in the specified container with the specified
      *  name.  The name must be unique within the container or an exception

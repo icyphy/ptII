@@ -55,7 +55,7 @@ import ptolemy.kernel.util.NamedObj;
    @Pt.ProposedRating Red (derler)
    @Pt.AcceptedRating Red (derler)
  */
-public class DynamicCoreAssignmentScheduler extends ResourceScheduler {
+public class DynamicCoreAssignmentScheduler extends AtomicResourceScheduler {
 
     /** Create a new actor in the specified container with the specified
      *  name.  The name must be unique within the container or an exception
@@ -82,11 +82,10 @@ public class DynamicCoreAssignmentScheduler extends ResourceScheduler {
      *   scheduled by this scheduler cannot be retrieved.
      */
     @Override
-    public Time initialize() throws IllegalActionException {
+    public void initialize() throws IllegalActionException {
         // TODO Auto-generated method stub
         super.initialize();
-        _remainingTimeOnCore = new HashMap<ResourceScheduler, Time>();
-        return null;
+        _remainingTimeOnCore = new HashMap<AtomicResourceScheduler, Time>();
     }
 
     /** Schedule a new actor for execution on the next available
@@ -108,7 +107,7 @@ public class DynamicCoreAssignmentScheduler extends ResourceScheduler {
         Time minimumRemainingTime = null;
         // Check if is already executing somewhere.
         for (NamedObj schedulerActor : _actors) {
-            ResourceScheduler scheduler = (ResourceScheduler) schedulerActor;
+            AtomicResourceScheduler scheduler = (AtomicResourceScheduler) schedulerActor;
             if (scheduler.getRemainingTime(actor) != null
                     && scheduler.getRemainingTime(actor).getDoubleValue() > 0.0) {
                 // This actor is currently executing on this scheduler.
@@ -128,7 +127,7 @@ public class DynamicCoreAssignmentScheduler extends ResourceScheduler {
 
         // Its not executing anywhere, find free core.
         for (NamedObj schedulerActor : _actors) {
-            ResourceScheduler scheduler = (ResourceScheduler) schedulerActor;
+            AtomicResourceScheduler scheduler = (AtomicResourceScheduler) schedulerActor;
             if (scheduler == this) {
                 continue;
             }
@@ -173,9 +172,9 @@ public class DynamicCoreAssignmentScheduler extends ResourceScheduler {
                 Token paramToken = ((Parameter) attribute).getToken();
                 if (paramToken instanceof ObjectToken) {
                     Object paramObject = ((ObjectToken) paramToken).getValue();
-                    if (paramObject instanceof ResourceScheduler) {
+                    if (paramObject instanceof AtomicResourceScheduler) {
                         // FIXME: Shouldn't these resource schedulers be initialized?
-                        _actors.add((ResourceScheduler) paramObject);
+                        _actors.add((AtomicResourceScheduler) paramObject);
                     }
                 }
             }
@@ -185,6 +184,6 @@ public class DynamicCoreAssignmentScheduler extends ResourceScheduler {
     ///////////////////////////////////////////////////////////////////
     //                      private variables                        //
 
-    private HashMap<ResourceScheduler, Time> _remainingTimeOnCore;
+    private HashMap<AtomicResourceScheduler, Time> _remainingTimeOnCore;
 
 }

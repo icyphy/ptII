@@ -308,10 +308,6 @@
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[120.0, 190.0]">
                 </property>
             </property>
-            <property name="NPFCFSCore" class="ptolemy.actor.lib.resourceScheduler.FCFSScheduler">
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[215.0, 70.0]">
-                </property>
-            </property>
             <port name="SensorPort" class="ptolemy.domains.ptides.lib.PtidesPort">
                 <property name="input"/>
                 <property name="deviceDelay" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -396,17 +392,37 @@
                 <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
             </port>
-            <entity name="TimeDelay" class="ptolemy.actor.lib.TimeDelay">
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, 165.0]">
+            <entity name="NPFCFSCore" class="ptolemy.actor.lib.resourceScheduler.FCFSScheduler">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{215.0, 70.0}">
                 </property>
-                <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="1.0">
-                </property>
-                <property name="DecoratorAttributesFor_NPFCFSCore" class="ptolemy.actor.lib.resourceScheduler.ResourceAttributes">
+                <property name="DecoratorAttributesFor_NPFCFSCore" class="ptolemy.actor.lib.resourceScheduler.PriorityResourceAttributes">
                     <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.NPFCFSCore">
                     </property>
                     <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
                     </property>
                     <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                    </property>
+                    <property name="LOWEST_PRIORITY" class="ptolemy.data.expr.Parameter" value="2147483647">
+                    </property>
+                    <property name="priority" class="ptolemy.data.expr.Parameter" value="LOWEST_PRIORITY">
+                    </property>
+                </property>
+            </entity>
+            <entity name="TimeDelay" class="ptolemy.actor.lib.TimeDelay">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, 165.0]">
+                </property>
+                <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="1.0">
+                </property>
+                <property name="DecoratorAttributesFor_NPFCFSCore" class="ptolemy.actor.lib.resourceScheduler.PriorityResourceAttributes">
+                    <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.NPFCFSCore">
+                    </property>
+                    <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                    <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                    </property>
+                    <property name="LOWEST_PRIORITY" class="ptolemy.data.expr.Parameter" value="2147483647">
+                    </property>
+                    <property name="priority" class="ptolemy.data.expr.Parameter" value="LOWEST_PRIORITY">
                     </property>
                 </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
@@ -422,12 +438,16 @@
                 </property>
                 <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="1.0">
                 </property>
-                <property name="DecoratorAttributesFor_NPFCFSCore" class="ptolemy.actor.lib.resourceScheduler.ResourceAttributes">
+                <property name="DecoratorAttributesFor_NPFCFSCore" class="ptolemy.actor.lib.resourceScheduler.PriorityResourceAttributes">
                     <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.NPFCFSCore">
                     </property>
                     <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
                     </property>
                     <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                    </property>
+                    <property name="LOWEST_PRIORITY" class="ptolemy.data.expr.Parameter" value="2147483647">
+                    </property>
+                    <property name="priority" class="ptolemy.data.expr.Parameter" value="LOWEST_PRIORITY">
                     </property>
                 </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
@@ -451,12 +471,16 @@
                 </property>
                 <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.4">
                 </property>
-                <property name="DecoratorAttributesFor_NPFCFSCore" class="ptolemy.actor.lib.resourceScheduler.ResourceAttributes">
+                <property name="DecoratorAttributesFor_NPFCFSCore" class="ptolemy.actor.lib.resourceScheduler.PriorityResourceAttributes">
                     <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.NPFCFSCore">
                     </property>
                     <property name="enable" class="ptolemy.data.expr.Parameter" value="true">
                     </property>
                     <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.4">
+                    </property>
+                    <property name="LOWEST_PRIORITY" class="ptolemy.data.expr.Parameter" value="2147483647">
+                    </property>
+                    <property name="priority" class="ptolemy.data.expr.Parameter" value="LOWEST_PRIORITY">
                     </property>
                 </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
@@ -480,12 +504,16 @@
                 </property>
                 <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.5">
                 </property>
-                <property name="DecoratorAttributesFor_NPFCFSCore" class="ptolemy.actor.lib.resourceScheduler.ResourceAttributes">
+                <property name="DecoratorAttributesFor_NPFCFSCore" class="ptolemy.actor.lib.resourceScheduler.PriorityResourceAttributes">
                     <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.NPFCFSCore">
                     </property>
                     <property name="enable" class="ptolemy.data.expr.Parameter" value="true">
                     </property>
                     <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.5">
+                    </property>
+                    <property name="LOWEST_PRIORITY" class="ptolemy.data.expr.Parameter" value="2147483647">
+                    </property>
+                    <property name="priority" class="ptolemy.data.expr.Parameter" value="LOWEST_PRIORITY">
                     </property>
                 </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">

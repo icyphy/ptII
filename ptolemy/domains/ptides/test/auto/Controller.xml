@@ -262,18 +262,18 @@ preemptive ones can.
             </property>
             <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{350.0, 262.0}">
             </property>
-            <property name="FPPCore" class="ptolemy.actor.lib.resourceScheduler.FixedPriorityScheduler">
+            <entity name="FPPCore" class="ptolemy.actor.lib.resourceScheduler.FixedPriorityScheduler">
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[230.0, 55.0]">
                 </property>
                 <property name="scheduler" class="ptolemy.data.expr.Parameter" value="null">
                 </property>
                 <property name="executionTime" class="ptolemy.data.expr.Parameter" value="null">
                 </property>
-            </property>
-            <property name="NPFCFSCore" class="ptolemy.actor.lib.resourceScheduler.FCFSScheduler">
+            </entity>
+            <entity name="NPFCFSCore" class="ptolemy.actor.lib.resourceScheduler.FCFSScheduler">
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{310, 55}">
                 </property>
-            </property>
+            </entity>
             <port name="port" class="ptolemy.domains.ptides.lib.PtidesPort">
                 <property name="input"/>
                 <property name="deviceDelay" class="ptolemy.data.expr.Parameter" value="0.0">

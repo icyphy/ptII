@@ -32,7 +32,7 @@ import java.util.Iterator;
 import java.util.Set;
 
 import ptolemy.actor.Actor;
-import ptolemy.actor.CompositeActor;
+import ptolemy.actor.CompositeActor; 
 import ptolemy.actor.Director;
 import ptolemy.actor.FiringEvent;
 import ptolemy.actor.IOPort;
@@ -1513,13 +1513,16 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
      */
     protected void _enqueueTriggerEvent(IOPort ioPort)
             throws IllegalActionException {
+        _enqueueTriggerEvent(ioPort, getModelTime());
+    }
+    
+    private void _enqueueTriggerEvent(IOPort ioPort, Time time) throws IllegalActionException {
         Actor actor = (Actor) ioPort.getContainer();
-
         if (_eventQueue == null || _disabledActors != null
                 && _disabledActors.contains(actor)) {
             return;
         }
-
+        
         /* NOTE: We would like to throw an exception if the microstep is
          * zero, but this breaks models with CT inside DE.
          * The CTDirector does not have a notion of superdense time.
@@ -1545,22 +1548,41 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
                             + ". Perhaps a Continuous submodel is sending a continuous rather than"
                             + " discrete signal?");
         }
-
         int depth = _getDepthOfIOPort(ioPort);
 
         int microstep = _microstep;
         if (microstep < 1) {
             microstep = 1;
         }
+        
+        if (_resourceScheduling) {
+            if (_schedulerForActor.get(actor) != null &&
+                    _schedulerForActor.get(actor).isCurrentlyExecuting(actor)) {
+                Object[] eventArray = _eventQueue.toArray();
+                for (Object object : eventArray) {
+                    DEEvent event = (DEEvent)object;
+                    if (event.actor().equals(actor)) {
+                        if (event.timeStamp().compareTo(time) == 0 && event.microstep() == 1) {
+                            microstep = microstep + 1;
+                        } else if (event.timeStamp().compareTo(time) < 0) {
+                            time = event.timeStamp();
+                            microstep = microstep + 1;
+                        } 
+                    }
+                } 
+            } 
+        } 
+
+        
 
         if (_debugging) {
             _debug("enqueue a trigger event for ",
-                    ((NamedObj) actor).getName(), " time = " + getModelTime()
+                    ((NamedObj) actor).getName(), " time = " + time
                             + " microstep = " + microstep + " depth = " + depth);
         }
 
         // Register this trigger event.
-        DEEvent newEvent = new DEEvent(ioPort, getModelTime(), microstep, depth);
+        DEEvent newEvent = new DEEvent(ioPort, time, microstep, depth);
         synchronized (_eventQueue) {
             _eventQueue.put(newEvent);
         }
@@ -1772,11 +1794,14 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
                                     + " still has input on channel " + i
                                     + ". Refire the actor.");
                         }
-                        refire = true;
-
-                        // Found a channel that has input data,
-                        // jump out of the for loop.
-                        break;
+                        // refire only if can be scheduled.
+                        if (_resourceScheduling && _schedule(actorToFire, getModelTime())) {
+                            refire = true;
+    
+                            // Found a channel that has input data,
+                            // jump out of the for loop.
+                            break;
+                        }
                     }
                 }
             }
@@ -1817,6 +1842,13 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
         CausalityInterfaceForComposites causality = (CausalityInterfaceForComposites) container
                 .getCausalityInterface();
         return causality.getDepthOfPort(ioPort);
+    }
+    
+    public Time getNextEventTime() {
+        if (_eventQueue.size() == 0) {
+            return null;
+        }
+        return ((DEEvent)_eventQueue.get()).timeStamp();
     }
 
     /** Dequeue the events that have the smallest tag from the event queue.
@@ -2213,23 +2245,23 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
                     break;
                 }
             }
-        } // close the loop: LOOPLABEL::GetNextEvent
-
-        if (actorToFire != null && _resourceScheduling
-                && !_schedule(actorToFire, getModelTime())) {
-            Time nextEventTime = null;
-            if (_eventQueue.size() > 0) {
-                nextEventTime = _eventQueue.get().timeStamp();
+            if (actorToFire != null && _resourceScheduling) {
+                if (!_schedule(actorToFire, getModelTime())) {
+                    // scheduling of actor returns that actor hasn't been granted all
+                    // the requested resources, create a new event with a future 
+                    // timestamp.
+                    Time nextScheduleTime = _nextScheduleTime.get(_schedulerForActor
+                            .get(actorToFire)).add(getModelTime());
+                    if (lastFoundEvent.ioPort() != null) {
+                        _enqueueTriggerEvent(lastFoundEvent.ioPort(), nextScheduleTime);
+                    } else {
+                        _enqueueEvent(actorToFire, nextScheduleTime, 1);
+                    }
+                    actorToFire = null; 
+                } 
             }
-            Time nextScheduleTime = _nextScheduleTime.get(_schedulerForActor
-                    .get(actorToFire)).add(getModelTime());
-            if (nextEventTime == null || 
-                    nextEventTime.compareTo(nextScheduleTime) > 0) {
-                nextEventTime = nextScheduleTime;
-            } 
-            _enqueueEvent(actorToFire, nextScheduleTime, 1);
-            return null;
-        }
+        } // close the loop: LOOPLABEL::GetNextEvent 
+        
         // Note that the actor to be fired can be null.
         return actorToFire;
     }

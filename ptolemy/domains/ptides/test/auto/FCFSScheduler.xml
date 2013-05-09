@@ -226,10 +226,10 @@
             </property>
             <property name="scheduler" class="ptolemy.data.expr.Parameter" value="FCFSScheduler">
             </property>
-            <property name="FCFSScheduler" class="ptolemy.actor.lib.resourceScheduler.FCFSScheduler">
+            <entity name="FCFSScheduler" class="ptolemy.actor.lib.resourceScheduler.FCFSScheduler">
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[225.0, 75.0]">
                 </property>
-            </property>
+            </entity>
             <entity name="Spectrum" class="ptolemy.actor.lib.Scale">
                 <property name="factor" class="ptolemy.data.expr.Parameter" value="2">
                 </property>

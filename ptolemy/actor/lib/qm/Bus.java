@@ -124,28 +124,6 @@ public class Bus extends MonitoredQuantityManager {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
     
-    /** Return the decorated attributes for the target NamedObj.
-     *  If the specified target is not an Actor, return null.
-     *  @param target The NamedObj that will be decorated.
-     *  @return The decorated attributes for the target NamedObj, or
-     *   null if the specified target is not an Actor.
-     */
-    public DecoratorAttributes createDecoratorAttributes(NamedObj target) {
-        if (target instanceof IOPort) {
-            try {
-                return new BusAttributes(target, this);
-            } catch (KernelException ex) {
-                // This should not occur.
-                throw new InternalErrorException(ex);
-            }
-        } else {
-            return null;
-        }
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    //                          public variables                     //
-
     /** The service time for the default messageLength of 1. This is a double with default 0.1.
      *  It is required to be positive.
      */
@@ -168,6 +146,28 @@ public class Bus extends MonitoredQuantityManager {
             _serviceTimeMultiplicationFactorValue = value;
         }
         super.attributeChanged(attribute);
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+    
+    /** Return the decorated attributes for the target NamedObj.
+     *  If the specified target is not an Actor, return null.
+     *  @param target The NamedObj that will be decorated.
+     *  @return The decorated attributes for the target NamedObj, or
+     *   null if the specified target is not an Actor.
+     */
+    public DecoratorAttributes createDecoratorAttributes(NamedObj target) {
+        if (target instanceof IOPort) {
+            try {
+                return new BusAttributes(target, this);
+            } catch (KernelException ex) {
+                // This should not occur.
+                throw new InternalErrorException(ex);
+            }
+        } else {
+            return null;
+        }
     }
 
     /** Create an intermediate receiver that wraps a given receiver.
@@ -235,17 +235,6 @@ public class Bus extends MonitoredQuantityManager {
                         + receiver.getContainer().getFullName() + ": " + token);
             }
         } 
-    }
-    
-    /** Set an attribute for a given port.
-     *  @param port The port. 
-     *  @param attribute The new attribute or the attribute containing a new value.
-     *  @exception IllegalActionException Thrown if attribute could not be updated.
-     */
-    public void setPortAttribute(Port port, Attribute attribute) throws IllegalActionException {
-        if (attribute.getName().equals("messageLength")) {
-            _messageLengths.put((IOPort)port, ((ScalarToken)((Parameter)attribute).getToken()).doubleValue());
-        }
     }
     
     /** Initialize the actor.
@@ -380,6 +369,15 @@ public class Bus extends MonitoredQuantityManager {
         }
     }
 
+    /** Set an attribute for a given port.
+     *  @param port The port. 
+     *  @param attribute The new attribute or the attribute containing a new value.
+     *  @exception IllegalActionException Thrown if attribute could not be updated.
+     */
+    public void setMessageLength(IOPort port, double messageLength) throws IllegalActionException {
+            _messageLengths.put(port, messageLength);
+    }
+
     /**
      * Nothing to do.
      */
@@ -437,6 +435,10 @@ public class Bus extends MonitoredQuantityManager {
     /** Tokens stored for processing. This is used with the DE Director. */
     private FIFOQueue _tokens;
 
+    /** The port specific attributes for ports mediated by a Bus. 
+     *  
+     *  @author Patricia Derler
+     */
     public static class BusAttributes extends ResourceAttributes {
 
         /** Constructor to use when editing a model.
@@ -472,14 +474,21 @@ public class Bus extends MonitoredQuantityManager {
          */
         public Parameter messageLength;
         
+        /** If attribute is <i>messageLength</i> report the new value 
+         *  to the quantity manager. 
+         *  @param attribute The changed parameter.
+         *  @exception IllegalActionException If the parameter set is not valid.
+         *  Not thrown in this class.
+         */
         public void attributeChanged(Attribute attribute)
                 throws IllegalActionException {
             if (attribute == messageLength) {
                 IOPort port = (IOPort) getContainer();
                 Bus bus = (Bus) getDecorator();
-                bus.setPortAttribute(port, attribute);
+                bus.setMessageLength(port, ((ScalarToken)((Parameter)attribute).getToken()).doubleValue());
+            } else {
+                super.attributeChanged(attribute);
             }
-            super.attributeChanged(attribute);
         } 
 
         ///////////////////////////////////////////////////////////////////

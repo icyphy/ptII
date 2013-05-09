@@ -238,10 +238,10 @@
             </property>
             <property name="scheduler" class="ptolemy.data.expr.Parameter" value="FCFSScheduler">
             </property>
-            <property name="EDFScheduler" class="ptolemy.actor.lib.resourceScheduler.EDFScheduler">
+            <entity name="EDFScheduler" class="ptolemy.actor.lib.resourceScheduler.EDFScheduler">
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[225.0, 75.0]">
                 </property>
-            </property>
+            </entity>
             <port name="SensorPort" class="ptolemy.domains.ptides.lib.PtidesPort">
                 <property name="input"/>
                 <property name="deviceDelay" class="ptolemy.data.expr.Parameter" value="0.0">

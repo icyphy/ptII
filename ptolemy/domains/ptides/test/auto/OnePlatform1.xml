@@ -482,10 +482,10 @@
                     </property>
                 </port>
             </entity>
-            <property name="FCFSScheduler" class="ptolemy.actor.lib.resourceScheduler.FCFSScheduler">
+            <entity name="FCFSScheduler" class="ptolemy.actor.lib.resourceScheduler.FCFSScheduler">
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[225.0, 60.0]">
                 </property>
-            </property>
+            </entity>
             <relation name="relation" class="ptolemy.actor.TypedIORelation">
                 <property name="width" class="ptolemy.data.expr.Parameter" value="1">
                 </property>

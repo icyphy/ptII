@@ -99,10 +99,9 @@ public class EDFScheduler extends FixedPriorityScheduler {
      *  @exception IllegalActionException Thrown in super class.
      */
     @Override
-    public Time initialize() throws IllegalActionException {
+    public void initialize() throws IllegalActionException {
         super.initialize();
-        _deadlines = new HashMap();
-        return null;
+        _deadlines = new HashMap(); 
     }
 
     /** Schedule a new actor for execution and return the next time

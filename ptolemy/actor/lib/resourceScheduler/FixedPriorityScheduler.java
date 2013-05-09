@@ -84,7 +84,7 @@ highest priority, then they will be executed in FIFO order.
 @Pt.ProposedRating Yellow (eal)
 @Pt.AcceptedRating Red (derler)
 */
-public class FixedPriorityScheduler extends ResourceScheduler {
+public class FixedPriorityScheduler extends AtomicResourceScheduler {
 
     /** Create a new actor in the specified container with the specified
      *  name.  The name must be unique within the container or an exception
@@ -153,10 +153,9 @@ public class FixedPriorityScheduler extends ResourceScheduler {
      *  @exception IllegalActionException Thrown in super class.
      */
     @Override
-    public Time initialize() throws IllegalActionException {
+    public void initialize() throws IllegalActionException {
         super.initialize();
-        _currentlyExecuting = new Stack();
-        return null;
+        _currentlyExecuting = new Stack(); 
     }
 
     

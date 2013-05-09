@@ -32,6 +32,7 @@ package ptolemy.actor.lib.resourceScheduler;
 import ptolemy.data.IntToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType; 
+import ptolemy.kernel.util.Decorator;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
@@ -57,7 +58,7 @@ public class PriorityResourceAttributes extends ExecutionTimeResourceAttributes 
      *  @throws IllegalActionException If the superclass throws it.
      *  @throws NameDuplicationException If the superclass throws it.
      */
-    public PriorityResourceAttributes(NamedObj target, ResourceScheduler decorator)
+    public PriorityResourceAttributes(NamedObj target, Decorator decorator)
             throws IllegalActionException, NameDuplicationException {
         super(target, decorator);
         _init();

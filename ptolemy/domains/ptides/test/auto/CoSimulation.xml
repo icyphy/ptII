@@ -261,7 +261,7 @@
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 155.0]">
                 </property>
             </property>
-            <property name="ArchitectureMappingModel" class="ptolemy.actor.lib.resourceScheduler.CompositeResourceScheduler">
+            <entity name="ArchitectureMappingModel" class="ptolemy.actor.lib.resourceScheduler.CompositeResourceScheduler">
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{270.0, 55.0}">
                 </property>
                 <configure>
@@ -3232,7 +3232,7 @@
                         <link port="resumeSpectrum.input" relation="relation7"/>
                     </entity>
                 </configure>
-            </property>
+            </entity>
             <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
                 <property name="text" class="ptolemy.kernel.util.StringAttribute" value="to open: Command + L (Mac), Control + L (Windows)&#10;to observe executions during simulation: double click">
                 </property>

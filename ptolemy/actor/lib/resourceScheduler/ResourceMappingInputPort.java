@@ -40,6 +40,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Settable;
 
 
 /** This actor implements an input port in a composite quantity manager
@@ -75,31 +76,25 @@ public class ResourceMappingInputPort extends Const {
         } else {
             hide.setToken(new BooleanToken(true));
         }
-        _beforeInitialization = true; 
-//        value.setExpression("{receiver=object, token=general}");
-//        output.setTypeEquals(new RecordType(
-//                new String[]{"receiver", "token"}, 
-//                new Type[]{BaseType.OBJECT, BaseType.GENERAL}));
+        
+        value.setVisibility(Settable.NONE);
+        value.setExpression("");
+        _beforeInitialization = true;  
+        
+        RecordType type = new RecordType(
+                new String[]{"actor", "executionTime"}, 
+                new Type[]{BaseType.OBJECT, BaseType.DOUBLE});
+        value.setTypeEquals(type);
     }
     
     
-    
-    /** Do not set a value before initialization.
-     *  @param attribute The attribute that changed.
-     *  @exception IllegalActionException Not thrown here.
-     */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException { 
-        if (attribute == value && _beforeInitialization) { 
-            // Ignore. When saving a model, the constant might contain
-            // a concrete RecordToken with a DEReceiver and a Token. 
-            // When loading this model again after saving, the DEReceiver
-            // might not have been instantiated and therefore creating
-            // the RecordToken will cause errors. 
-            //value.setExpression("{receiver=object, token=general}");
-        } else {
-            super.attributeChanged(attribute);
+        if (attribute == value && _beforeInitialization) {
+            
         }
+        super.attributeChanged(attribute);
     }
     
     /** Initialize the iteration counter.  A derived class must call
@@ -109,10 +104,17 @@ public class ResourceMappingInputPort extends Const {
      *   which could occur if, for example, the director will not accept
      *   sequence actors.
      */
+    @Override
     public void initialize() throws IllegalActionException { 
-        super.initialize(); 
-        //value.setExpression("{receiver=object, token=general}");
+        super.initialize();  
         _beforeInitialization = false;
+    }
+    
+    @Override
+    public void wrapup() throws IllegalActionException { 
+        super.wrapup();
+        // to avoid saving the token. 
+        value.setExpression("");
     }
     
     private boolean _beforeInitialization;

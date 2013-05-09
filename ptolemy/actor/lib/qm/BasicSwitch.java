@@ -41,6 +41,7 @@ import ptolemy.actor.IntermediateReceiver;
 import ptolemy.actor.QuantityManager;
 import ptolemy.actor.Receiver;
 import ptolemy.actor.lib.ResourceAttributes;
+import ptolemy.actor.lib.qm.Bus.BusAttributes;
 import ptolemy.actor.lib.qm.QuantityManagerListener.EventType;
 import ptolemy.actor.util.Time;
 import ptolemy.actor.util.TimedEvent;
@@ -53,6 +54,7 @@ import ptolemy.domains.de.kernel.DEDirector;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.DecoratorAttributes;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
@@ -139,53 +141,24 @@ public class BasicSwitch extends MonitoredQuantityManager {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Create an intermediate receiver that wraps a given receiver.
-     *  For now, we only support wrapping input ports.
-     *  @param receiver The receiver that is being wrapped.
-     *  @return A new intermediate receiver.
-     *  @exception IllegalActionException If the receiver is an
-     *  ouptut port.
-     */
-    public IntermediateReceiver createIntermediateReceiver(Receiver receiver)
-            throws IllegalActionException {
-        if (receiver.getContainer().isOutput()) {
-            throw new IllegalActionException(receiver.getContainer(),
-                    "This quantity manager cannot be " + "used on port "
-                            + receiver.getContainer()
-                            + ", it only be specified on input port.");
-        }
-        IntermediateReceiver intermediateReceiver = new IntermediateReceiver(
-                this, receiver);
-        return intermediateReceiver;
-    }
-
-    /** Create a receiver to mediate a communication via the specified receiver. This
-     *  receiver is linked to a specific port of the quantity manager.
-     *  @param receiver Receiver whose communication is to be mediated.
-     *  @param port Port of the quantity manager.
-     *  @return A new receiver.
-     *  @exception IllegalActionException If the receiver cannot be created.
-     */
-    public Receiver getReceiver(Receiver receiver, IOPort port)
-            throws IllegalActionException {
-        return createIntermediateReceiver(receiver);
-    }
-
-    /** Make sure that this quantity manager is only used in the DE domain.
-     *  FIXME: this actor should be used in other domains later as well.
-     *  @param container The container of this actor.
-     *  @exception IllegalActionException If thrown by the super class or if the
-     *  director of this actor is not a DEDirector.
-     *  @exception NameDuplicationException If thrown by the super class.
-     */
-    public void setContainer(CompositeEntity container)
-            throws IllegalActionException, NameDuplicationException {
-        super.setContainer(container);
-        if (getDirector() != null && !(getDirector() instanceof DEDirector)) {
-            throw new IllegalActionException(this,
-                    "This quantity manager is currently only supported in the DE domain.");
-        }
-    }
+    ///////////////////////////////////////////////////////////////////
+    ////                         public variables                  ////
+    
+    /** Number of ports on the switch. This parameter must contain an
+     *  IntToken.  The value defaults to 4. */
+    public Parameter numberOfPorts;
+    /** Time it takes for a token to be put into the input queue.
+     *  This parameter must contain a DoubleToken. The value defaults
+     *  to 0.1. */
+    public Parameter inputBufferDelay;
+    /** Time it takes for a token to be put into the output queue.
+     *  This parameter must contain a DoubleToken. The value defaults
+     *  to 0.1. */
+    public Parameter outputBufferDelay;
+    /** Time it takes for a token to be processed by the switch fabric.
+     *  This parameter must contain a DoubleToken. The value defaults
+     *  to 0.1. */
+    public Parameter switchFabricDelay;
 
     /** If the attribute for the input, switch fabric or output delay is
      *  changed, then ensure that the value is non-negative.
@@ -251,6 +224,58 @@ public class BasicSwitch extends MonitoredQuantityManager {
         newObject._outputTokens = new HashMap<Integer, TreeSet<TimedEvent>>();
         newObject._switchFabricQueue = new TreeSet<TimedEvent>();
         return newObject;
+    }
+    
+    
+    /** Return the decorated attributes for the target NamedObj.
+     *  If the specified target is not an Actor, return null.
+     *  @param target The NamedObj that will be decorated.
+     *  @return The decorated attributes for the target NamedObj, or
+     *   null if the specified target is not an Actor.
+     */
+    public DecoratorAttributes createDecoratorAttributes(NamedObj target) {
+        if (target instanceof IOPort) {
+            try {
+                return new BasicSwitchAttributes(target, this);
+            } catch (KernelException ex) {
+                // This should not occur.
+                throw new InternalErrorException(ex);
+            }
+        } else {
+            return null;
+        }
+    }
+
+    /** Create an intermediate receiver that wraps a given receiver.
+     *  For now, we only support wrapping input ports.
+     *  @param receiver The receiver that is being wrapped.
+     *  @return A new intermediate receiver.
+     *  @exception IllegalActionException If the receiver is an
+     *  ouptut port.
+     */
+    public IntermediateReceiver createIntermediateReceiver(Receiver receiver)
+            throws IllegalActionException {
+        if (receiver.getContainer().isOutput()) {
+            throw new IllegalActionException(receiver.getContainer(),
+                    "This quantity manager cannot be " + "used on port "
+                            + receiver.getContainer()
+                            + ", it only be specified on input port.");
+        }
+        IntermediateReceiver intermediateReceiver = new IntermediateReceiver(
+                this, receiver);
+        return intermediateReceiver;
+    }
+
+    /** Create a receiver to mediate a communication via the specified receiver. This
+     *  receiver is linked to a specific port of the quantity manager.
+     *  @param receiver Receiver whose communication is to be mediated.
+     *  @param port Port of the quantity manager.
+     *  @return A new receiver.
+     *  @exception IllegalActionException If the receiver cannot be created.
+     */
+    public Receiver getReceiver(Receiver receiver, IOPort port)
+            throws IllegalActionException {
+        return createIntermediateReceiver(receiver);
     }
 
     /** Initialize the actor variables.
@@ -363,20 +388,6 @@ public class BasicSwitch extends MonitoredQuantityManager {
         return super.postfire();
     }
     
-    protected int _getPortID(Receiver receiver, boolean input) {
-        NamedObj containerPort = receiver.getContainer();
-        while (!(receiver.getContainer() instanceof Port)) {
-            containerPort = containerPort.getContainer();
-        }
-        Port port = (Port) containerPort;
-        
-        if (input) {
-            return _ioPortToSwitchInPort.get(port);
-        } else {
-            return _ioPortToSwitchOutPort.get(port);
-        }
-    }
-
     /** Initiate a send of the specified token to the specified
      *  receiver. This method will schedule a refiring of this actor
      *  if there is not one already scheduled.
@@ -419,19 +430,35 @@ public class BasicSwitch extends MonitoredQuantityManager {
         }
     }
     
+    /** Make sure that this quantity manager is only used in the DE domain.
+     *  FIXME: this actor should be used in other domains later as well.
+     *  @param container The container of this actor.
+     *  @exception IllegalActionException If thrown by the super class or if the
+     *  director of this actor is not a DEDirector.
+     *  @exception NameDuplicationException If thrown by the super class.
+     */
+    public void setContainer(CompositeEntity container)
+            throws IllegalActionException, NameDuplicationException {
+        super.setContainer(container);
+        if (getDirector() != null && !(getDirector() instanceof DEDirector)) {
+            throw new IllegalActionException(this,
+                    "This quantity manager is currently only supported in the DE domain.");
+        }
+    }
+
     /** Set an attribute for a given port.
      *  @param port The port. 
      *  @param attribute The new attribute or the attribute containing a new value.
      *  @exception IllegalActionException Thrown if attribute could not be updated.
      */
-    public void setPortAttribute(Port port, int portIn, int portOut) throws IllegalActionException {
-        _ioPortToSwitchInPort.put((IOPort)port, portIn); 
+    public void setPortIn(Port port, int portIn) throws IllegalActionException {
+        _ioPortToSwitchInPort.put((IOPort)port, portIn);  
+    } 
+    
+    public void setPortOut(Port port, int portOut) throws IllegalActionException { 
         _ioPortToSwitchOutPort.put((IOPort)port, portOut);
     } 
     
-    protected HashMap<Port, Integer> _ioPortToSwitchInPort;
-    protected HashMap<Port, Integer> _ioPortToSwitchOutPort;
-
     /** Reset the quantity manager and clear the tokens.
      */
     public void reset() {
@@ -441,28 +468,6 @@ public class BasicSwitch extends MonitoredQuantityManager {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
-
-    /** Number of ports on the switch. This parameter must contain an
-     *  IntToken.  The value defaults to 4. */
-    public Parameter numberOfPorts;
-
-    /** Time it takes for a token to be put into the input queue.
-     *  This parameter must contain a DoubleToken. The value defaults
-     *  to 0.1. */
-    public Parameter inputBufferDelay;
-
-    /** Time it takes for a token to be put into the output queue.
-     *  This parameter must contain a DoubleToken. The value defaults
-     *  to 0.1. */
-    public Parameter outputBufferDelay;
-
-    /** Time it takes for a token to be processed by the switch fabric.
-     *  This parameter must contain a DoubleToken. The value defaults
-     *  to 0.1. */
-    public Parameter switchFabricDelay;
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected methods                 ////
 
     /** Get next fire time for a set of tokens which is either the minimum
      *  next fire time passed as an argument or the smallest timestamp of
@@ -483,6 +488,29 @@ public class BasicSwitch extends MonitoredQuantityManager {
         return nextFireTime;
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         public variables                  ////
+    
+    /** Return the IO of the switch port where this receiver is
+     *  connected to. The port ID's are set via parameters.
+     *  @param receiver The actor receiver.
+     *  @param input Whether the port is an input port.
+     *  @return The port ID.
+     */
+    protected int _getPortID(Receiver receiver, boolean input) {
+        NamedObj containerPort = receiver.getContainer();
+        while (!(receiver.getContainer() instanceof Port)) {
+            containerPort = containerPort.getContainer();
+        }
+        Port port = (Port) containerPort;
+        
+        if (input) {
+            return _ioPortToSwitchInPort.get(port);
+        } else {
+            return _ioPortToSwitchOutPort.get(port);
+        }
+    }
+
     /** Schedule a refiring of this actor based on the tokens in the queues.
      *  @exception IllegalActionException If actor cannot be refired
      *  at the computed time.
@@ -501,33 +529,47 @@ public class BasicSwitch extends MonitoredQuantityManager {
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
+    /** Next time a token is sent and the next token can be processed. */
+    protected Time _nextFireTime;
+    
+    /** Number of switch ports. */
+    protected int _numberOfPorts;
+    
     /** Time it takes for a token to be put into the input queue. */
     protected double _inputBufferDelay;
 
+    /** Tokens received by the switch. */
+    protected HashMap<Integer, TreeSet<TimedEvent>> _inputTokens;
+    
+    /** Tokens sent to ports mediated by this quantity manager 
+     *  are rerouted to the switch ports with the IDs specified in this 
+     *  map.
+     */
+    protected HashMap<Port, Integer> _ioPortToSwitchInPort;
+    
+    /** Tokens set to ports mediated by this quantity manager are
+     *  processed by this quantity manager and then forwarded 
+     *  to the port through the switch port with ID specified here.
+     */
+    protected HashMap<Port, Integer> _ioPortToSwitchOutPort;
+    
     /** Time it takes for a token to be put into the output queue. */
     protected double _outputBufferDelay;
 
-    /** Time it takes for a token to be processed by the switch fabric. */
-    protected double _switchFabricDelay;
-
-    /** Next time a token is sent and the next token can be processed. */
-    protected Time _nextFireTime;
-
-    /** Tokens received by the switch. */
-    protected HashMap<Integer, TreeSet<TimedEvent>> _inputTokens;
-
     /** Tokens to be sent to outputs. */
     protected HashMap<Integer, TreeSet<TimedEvent>> _outputTokens;
-
-    /** Number of switch ports. */
-    protected int _numberOfPorts;
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
+    /** Time it takes for a token to be processed by the switch fabric. */
+    protected double _switchFabricDelay;
 
     /** Tokens processed by the switch fabric. */
     private TreeSet<TimedEvent> _switchFabricQueue;
     
+    /** The attributes configured per port which is mediated by a
+     *  BasicSwitch. The mediation where (which switch port) messages
+     *  are going into the switch and where (which switch port) messages
+     *  are going out of the switch.  
+     *  @author Patricia Derler
+     */
     public class BasicSwitchAttributes extends ResourceAttributes {
 
         /** Constructor to use when editing a model.
@@ -557,24 +599,37 @@ public class BasicSwitch extends MonitoredQuantityManager {
         ///////////////////////////////////////////////////////////////////
         ////                         parameters                        ////
 
-        /** 
+        /** The id of the port on the switch on which incoming messages are
+         *  received.
+         *  This parameter defaults to the integer value 0.
          */
         public Parameter portIn;
         
+        /** The id of the port on the switch to which outgoing messages are
+         *  routed to.
+         *  This parameter defaults to the integer value 1.
+         */
         public Parameter portOut;
         
+        /** If attribute is <i>portIn</i> or <i>portOut</i>, 
+         *  report the new values to the quantity manager. 
+         *  @param attribute The changed parameter.
+         *  @exception IllegalActionException If the parameter set is not valid.
+         *  Not thrown in this class.
+         */
         public void attributeChanged(Attribute attribute)
                 throws IllegalActionException {
+            IOPort port = (IOPort) getContainer();
+            BasicSwitch basicSwitch = (BasicSwitch) getDecorator();
             if (attribute == portIn) {
                 _portIn = ((IntToken)((Parameter)attribute).getToken()).intValue();
+                basicSwitch.setPortIn(port, _portIn);
             } else if (attribute == portOut) {
                 _portOut = ((IntToken)((Parameter)attribute).getToken()).intValue();
+                basicSwitch.setPortOut(port, _portOut);
             } else {
                 super.attributeChanged(attribute);
             }
-            IOPort port = (IOPort) getContainer();
-            BasicSwitch basicSwitch = (BasicSwitch) getDecorator();
-            basicSwitch.setPortAttribute(port, _portIn, _portOut);
         } 
 
         ///////////////////////////////////////////////////////////////////
@@ -595,6 +650,7 @@ public class BasicSwitch extends MonitoredQuantityManager {
         }
         
         private int _portIn;
+        
         private int _portOut;
     }
 

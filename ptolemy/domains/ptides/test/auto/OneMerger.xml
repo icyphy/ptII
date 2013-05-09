@@ -297,10 +297,10 @@
             </property>
             <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{372.0884454036965, 310.80078125}">
             </property>
-            <property name="PEDFCore" class="ptolemy.actor.lib.resourceScheduler.EDFScheduler">
+            <entity name="PEDFCore" class="ptolemy.actor.lib.resourceScheduler.EDFScheduler">
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{30.0, 135.0}">
                 </property>
-            </property>
+            </entity>
             <property name="wcet2" class="ptolemy.data.expr.Parameter" value="2.0">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>

@@ -1,4 +1,4 @@
-/* This is a resource scheduler Ptolemy model.
+/* This is a resource scheduler.
 
 @Copyright (c) 2008-2013 The Regents of the University of California.
 All rights reserved.
@@ -27,7 +27,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 
  */
-
 package ptolemy.actor.lib.resourceScheduler;
 
 import java.util.ArrayList;
@@ -37,28 +36,13 @@ import java.util.List;
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
-import ptolemy.actor.IOPort;
-import ptolemy.actor.Receiver;
-import ptolemy.actor.TypedCompositeActor;
-import ptolemy.actor.lib.Const;
+import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.lib.ResourceAttributes;
-import ptolemy.actor.lib.qm.Bus;
-import ptolemy.actor.lib.qm.CQMOutputPort;
-import ptolemy.actor.lib.qm.MonitoredQuantityManager;
-import ptolemy.actor.lib.resourceScheduler.AtomicResourceScheduler.ExecutionEventType;
 import ptolemy.actor.util.Time;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
-import ptolemy.data.ObjectToken;
-import ptolemy.data.RecordToken;
-import ptolemy.data.ScalarToken;
-import ptolemy.data.StringToken;
 import ptolemy.data.Token;
-import ptolemy.data.expr.Parameter;
-import ptolemy.data.expr.StringParameter;
-import ptolemy.domains.de.kernel.DEDirector;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.Decorator;
 import ptolemy.kernel.util.DecoratorAttributes;
 import ptolemy.kernel.util.IllegalActionException;
@@ -67,25 +51,52 @@ import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
+import ptolemy.moml.MoMLModelAttribute;
 
-/** This is a resource scheduler Ptolemy model. Special naming
- *  conventions are used to connect the functional model to the
- *  scheduler model.
- *
- * @author Patricia Derler
-   @version $Id$
-   @since Ptolemy II 0.2
+/**
+This is a base class for resource schedulers.
+This is a {@link Decorator} that will decorate any instance of {@link Actor}
+that is deeply contained by its container, including within opaque
+composites.
+This base class provides one decorator attributes. When you create an instance
+of this class in a composite actor, every Actor within that composite actor
+is decorated with these this parameter:
+<ul>
+<li> <li>enable</i>: If true, then the decorated actor will use this resource.
+     This is a boolean that defaults to false.
+</ul>
 
-   @Pt.ProposedRating Red (derler)
-   @Pt.AcceptedRating Red (derler)
+This base class is not used but to use derived classes, drag them into a model 
+and enable the actors that will use the resource. 
+
+Currently, the following Directors honor ResourceScheduler settings:
+<ul>
+<li> PtidesDirector. A ResourceScheduler on a PtidesPlatform will cause the 
+platform time at which actors produce their outputs
+to be delayed by the specified execution time beyond the platform time at
+which the resource becomes available to execute the actor. </li>
+<li> DEDirector. Note that using a ResourceScheduler in a DE model
+will change the MoC and nondeterminism is introduced with ResourceSchedulers.
+</li>
+<li> SDF Director, if contained hierarchically directly or via multiple
+hierarchy layers by a PtidesDirector. </li>
+<li> SysMLSequentialDirector, if contained hierarchically directly or via multiple
+hierarchy layers by a PtidesDirector. </li>
+</ul>  
+
+@author Patricia Derler
+@author Edward A. Lee
+@version $Id$
+@since Ptolemy II 9.0
+@Pt.ProposedRating Red (derler)
+@Pt.AcceptedRating Red (derler)
  */
-public class CompositeResourceScheduler extends TypedCompositeActor implements ResourceScheduler {
+public class AtomicResourceScheduler extends TypedAtomicActor implements ResourceScheduler {
 
-    /** Create a new actor in the specified container with the specified
+    /** Create a new resource schedule in the specified container with the specified
      *  name.  The name must be unique within the container or an exception
      *  is thrown. The container argument must not be null, or a
      *  NullPointerException will be thrown.
-     *
      *  @param container The container.
      *  @param name The name of this actor within the container.
      *  @exception IllegalActionException If this actor cannot be contained
@@ -93,15 +104,13 @@ public class CompositeResourceScheduler extends TypedCompositeActor implements R
      *  @exception NameDuplicationException If the name coincides with
      *   an entity already in the container.
      */
-    public CompositeResourceScheduler(CompositeEntity container, String name)
+    public AtomicResourceScheduler(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
-        super(container, name); 
+        super(container, name);
         _schedulePlotterEditorFactory = new SchedulePlotterEditorFactory(this,
                 this.uniqueName("_editorFactory"));
-        _requestPorts = new HashMap<Actor, String>();
-        _previousY = new HashMap<NamedObj, Double>();
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     //                         public variables                      //
 
@@ -125,13 +134,13 @@ public class CompositeResourceScheduler extends TypedCompositeActor implements R
      *   an attribute that cannot be cloned.
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        CompositeResourceScheduler newObject = (CompositeResourceScheduler) super
-                .clone(workspace); 
+        AtomicResourceScheduler newObject = (AtomicResourceScheduler) super
+                .clone(workspace);
+    
         try {
             newObject._schedulePlotterEditorFactory = new SchedulePlotterEditorFactory(
                     newObject, this.uniqueName("_editorFactory"));
             newObject._previousY = new HashMap<NamedObj, Double>();
-            newObject._requestPorts = new HashMap<Actor, String>();
         } catch (KernelException e) {
             throw new InternalErrorException(e);
         }
@@ -148,7 +157,7 @@ public class CompositeResourceScheduler extends TypedCompositeActor implements R
     public DecoratorAttributes createDecoratorAttributes(NamedObj target) {
         if (target instanceof Actor) {
             try {
-                return new CompositeResourceSchedulerAttributes(target, this);
+                return new ResourceAttributes(target, this);
             } catch (KernelException ex) {
                 // This should not occur.
                 throw new InternalErrorException(ex);
@@ -214,7 +223,24 @@ public class CompositeResourceScheduler extends TypedCompositeActor implements R
         _schedulePlotterEditorFactory.plot.fillPlot();
         _schedulePlotterEditorFactory.plot.repaint();
     }
-    
+
+    /** Return remaining time actor needs to finish.
+     *  @param actor The actor.
+     *  @return The time the actor still needs.
+     */
+    public Time getRemainingTime(Actor actor) {
+        return _remainingTimes.get(actor);
+    }
+
+    /** Return a new time object using the enclosing director.
+     *  @param time Double value of the new time object.
+     *  @return The new time object.
+     *  @exception IllegalActionException If the time object cannot be created.
+     */
+    public Time getTime(double time) throws IllegalActionException {
+        return new Time(((CompositeActor) getContainer()).getDirector(), time);
+    }
+
     /** Initialize local variables and if this resource
      *  scheduler wants to be fired at a future time, return
      *  this time.
@@ -222,13 +248,11 @@ public class CompositeResourceScheduler extends TypedCompositeActor implements R
      * @exception IllegalActionException Thrown if list of actors
      *   scheduled by this scheduler cannot be retrieved.
      */
-    @Override
     public void initialize() throws IllegalActionException {
-        super.initialize();
-        _actors = new ArrayList<NamedObj>();  
-        _currentlyExecuting = new ArrayList<Actor>();
-        _lastActorFinished = false;
-        _previousY.clear();
+        _remainingTimes = new HashMap<Actor, Time>();
+        _lastTimeScheduled = new HashMap<Actor, Time>();
+        _actors = new ArrayList<NamedObj>();
+    
         _initializeActorsToSchedule();
         _actors.add(this);
     
@@ -251,11 +275,11 @@ public class CompositeResourceScheduler extends TypedCompositeActor implements R
     public boolean isGlobalDecorator() {
         return true;
     }
-    
-    public boolean isCurrentlyExecuting(Actor actor) {
-        return _currentlyExecuting.contains(actor);
-    }
 
+    public boolean isCurrentlyExecuting(Actor actor) {
+        return _remainingTimes.get(actor) != null;
+    }
+    
     /** Return whether last actor that was scheduled finished execution.
      *  @return True if last actor finished execution.
      */
@@ -270,6 +294,31 @@ public class CompositeResourceScheduler extends TypedCompositeActor implements R
      */
     public boolean lastScheduledActorFinished() {
         return _lastActorFinished;
+    }
+    
+    /** Override the base class to first set the container, then establish
+     *  a connection with any decorated objects it finds in scope in the new
+     *  container.
+     *  @param container The container to attach this attribute to..
+     *  @exception IllegalActionException If this attribute is not of the
+     *   expected class for the container, or it has no name,
+     *   or the attribute and container are not in the same workspace, or
+     *   the proposed container would result in recursive containment.
+     *  @exception NameDuplicationException If the container already has
+     *   an attribute with the name of this attribute.
+     *  @see #getContainer()
+     */
+    public void setContainer(NamedObj container) throws IllegalActionException,
+            NameDuplicationException {
+        super.setContainer((CompositeEntity) container);
+        if (container != null) {
+            List<NamedObj> decoratedObjects = decoratedObjects();
+            for (NamedObj decoratedObject : decoratedObjects) {
+                // The following will create the DecoratorAttributes if it does not
+                // already exist, and associate it with this decorator.
+                decoratedObject.getDecoratorAttributes(this);
+            }
+        }
     }
 
     /** Schedule an actor for execution and return the next time
@@ -307,36 +356,7 @@ public class CompositeResourceScheduler extends TypedCompositeActor implements R
      * @exception IllegalActionException Thrown in subclasses.   
      */
     public Time schedule(Time environmentTime) throws IllegalActionException {
-        return getDirector().getModelNextIterationTime();
-    }
-    
-    /** Override the base class to first set the container, then establish
-     *  a connection with any decorated objects it finds in scope in the new
-     *  container.
-     *  @param container The container to attach this attribute to..
-     *  @exception IllegalActionException If this attribute is not of the
-     *   expected class for the container, or it has no name,
-     *   or the attribute and container are not in the same workspace, or
-     *   the proposed container would result in recursive containment.
-     *  @exception NameDuplicationException If the container already has
-     *   an attribute with the name of this attribute.
-     *  @see #getContainer()
-     */
-    public void setContainer(NamedObj container) throws IllegalActionException,
-            NameDuplicationException {
-        super.setContainer((CompositeEntity) container);
-        if (container != null) {
-            List<NamedObj> decoratedObjects = decoratedObjects();
-            for (NamedObj decoratedObject : decoratedObjects) {
-                // The following will create the DecoratorAttributes if it does not
-                // already exist, and associate it with this decorator.
-                decoratedObject.getDecoratorAttributes(this);
-            }
-        }
-    }
-
-    public void setRequestPort(Actor actor, String portName) {
-        _requestPorts.put(actor, portName);
+        return Time.POSITIVE_INFINITY;
     }
 
     /** Create end events for the plotter.
@@ -347,7 +367,6 @@ public class CompositeResourceScheduler extends TypedCompositeActor implements R
             event(actor, ((CompositeActor) getContainer()).getDirector()
                     .getEnvironmentTime().getDoubleValue(), null);
         }
-        super.wrapup();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -396,91 +415,47 @@ public class CompositeResourceScheduler extends TypedCompositeActor implements R
         }
         return executionTime;
     }
-    
-    ///////////////////////////////////////////////////////////////////
-    ////                    protected variables                    ////
 
-    /** Schedule a new actor for execution. Find the const
-     *  actor in the _model that is mapped to this actor and
-     *  trigger a firing of that one, if the actor is not
-     *  already in execution. If the actor finished execution,
-     *  return zero time, otherwise return the next time the
-     *  model has something to do.
+    /** Schedule the actor. In this base class, do nothing.  Derived
+     *  classes should schedule the actor.   
      *  @param actor The actor to be scheduled.
-     *  @param currentPlatformTime The current platform time.
-     *  @param deadline The deadline of the event.
-     *  @param executionTime The execution time of the actor.
+     *  @param environmentTime The current platform time.
+     *  @param deadline The deadline timestamp of the event to be scheduled.
+     *  This can be the same as the environmentTime. 
      *  @return Relative time when this Scheduler has to be executed
-     *    again.
-     *  @exception IllegalActionException Thrown if actor paramaters such
+     *    again to perform rescheduling actions.  In this base class, null
+     *    is returned.
+     *  @exception IllegalActionException Thrown if actor parameters such
      *    as execution time or priority cannot be read.
      */
-    
-    
-    protected Time _schedule(Actor actor, Time currentPlatformTime, Time deadline,
-            Time executionTime) throws IllegalActionException {   
-        _lastActorFinished = false;
-        
-        // make sure that director has the corret time.
-        getDirector().prefire();
-        
-        // create token for scheduling requests and put them into ports.
-        if (!_currentlyExecuting.contains(actor)) {
-            event((NamedObj) actor, getDirector().getModelTime().getDoubleValue(), ExecutionEventType.START);
-            ResourceMappingInputPort requestPort = (ResourceMappingInputPort) getEntity(_requestPorts.get(actor));
-            if (requestPort == null) {
-                throw new IllegalActionException(this, "No request port with name "
-                        + _requestPorts.get(actor));
-            } 
-            RecordToken recordToken = new RecordToken(
-                    new String[]{"actor", "executionTime"}, 
-                    new Token[]{new ObjectToken(actor), 
-                            new DoubleToken(executionTime.getDoubleValue())});
-            requestPort.value.setToken(recordToken);
-            requestPort.fire(); 
-            
-            _currentlyExecuting.add(actor);
-        } 
-        
-        getDirector().fire();
-        getDirector().postfire();
-        
-        for (Object entity : entityList()) {
-            if (entity instanceof ResourceMappingOutputPort) {
-                ResourceMappingOutputPort outputPort = ((ResourceMappingOutputPort)entity);
-                if (outputPort.hasToken() && outputPort.getToken() instanceof RecordToken) {
-                    RecordToken recordToken = (RecordToken) outputPort.getToken();
-                    if (recordToken.get("actor") != null && 
-                            ((ObjectToken)recordToken.get("actor")).getValue() != null && 
-                            ((ObjectToken)recordToken.get("actor")).getValue().equals(actor)) {
-                        event((NamedObj) actor, getDirector().getModelTime().getDoubleValue(), ExecutionEventType.STOP);
-                        outputPort.takeToken();
-                        _currentlyExecuting.remove(actor);
-                        _lastActorFinished = true;
-                    }
-                }
-            }
-        } 
-        
-        Time nextEventTime = ((DEDirector)getDirector()).getNextEventTime();
-        if (nextEventTime == null) {
-            nextEventTime = Time.POSITIVE_INFINITY;
-        }
-        
-        return nextEventTime.subtract(
-                getDirector().getModelTime());
+    protected Time _schedule(Actor actor, Time environmentTime, Time deadline,
+            Time executionTime) throws IllegalActionException {
+        return null;
     }
 
-    /** Contains the actors inside a ptides platform (=platforms). */
-    protected List<NamedObj> _actors;
+    ///////////////////////////////////////////////////////////////////
+    ////                    protected variables                    ////
 
     /** True if in the last request to schedule an actor, this actor
      *  finished execution.
      */
     protected boolean _lastActorFinished;
 
-    /** List of currently executing actors. */
-    protected List<Actor> _currentlyExecuting;
+    /** The last time an actor's remaining time was updated due to a scheduling
+     *  request.
+     */
+    protected HashMap<Actor, Time> _lastTimeScheduled;
+
+    /** The remaining execution time for every actor that has been scheduled
+     *  or null if the actor execution finished.
+     */
+    protected HashMap<Actor, Time> _remainingTimes;
+
+    /** Contains the actors inside a ptides platform (=platforms). */
+    protected List<NamedObj> _actors;
+
+    ///////////////////////////////////////////////////////////////////
+    //                           private methods                     //
 
     private void _getAllManagedEntities(List<NamedObj> entities)
             throws IllegalActionException {
@@ -491,7 +466,9 @@ public class CompositeResourceScheduler extends TypedCompositeActor implements R
                 if (((BooleanToken) decoratorAttributes.enable.getToken())
                         .booleanValue()) {
                     // The entity uses this resource scheduler.
-                    _actors.add(entity); 
+                    _actors.add(entity);
+                    // Indicate that the actor is not running.
+                    _remainingTimes.put((Actor) entity, null);
                     event(entity, 0.0, null);
                 } else if (entity instanceof CompositeActor) {
                     _getAllManagedEntities(((CompositeActor) entity)
@@ -505,77 +482,7 @@ public class CompositeResourceScheduler extends TypedCompositeActor implements R
     //                          private variables                    //
 
     /** Previous positions of the actor data set. */
-    private HashMap<NamedObj, Double> _previousY;
+    private HashMap<NamedObj, Double> _previousY = new HashMap<NamedObj, Double>();
 
     private SchedulePlotterEditorFactory _schedulePlotterEditorFactory;
-
-    private HashMap<Actor, String> _requestPorts;
-
-    public static class CompositeResourceSchedulerAttributes extends
-            ExecutionTimeResourceAttributes {
-
-        /** Constructor to use when editing a model.
-         *  @param target The object being decorated.
-         *  @param decorator The decorator.
-         *  @throws IllegalActionException If the superclass throws it.
-         *  @throws NameDuplicationException If the superclass throws it.
-         */
-        public CompositeResourceSchedulerAttributes(NamedObj target,
-                Decorator decorator)
-                throws IllegalActionException, NameDuplicationException {
-            super(target, decorator);
-            _init();
-        }
-
-        /** Constructor to use when parsing a MoML file.
-         *  @param target The object being decorated.
-         *  @param name The name of this attribute.
-         *  @throws IllegalActionException If the superclass throws it.
-         *  @throws NameDuplicationException If the superclass throws it.
-         */
-        public CompositeResourceSchedulerAttributes(NamedObj target, String name)
-                throws IllegalActionException, NameDuplicationException {
-            super(target, name);
-            _init();
-        }
-
-        ///////////////////////////////////////////////////////////////////
-        ////                         parameters                        ////
-
-        public Parameter requestPort;
-
-        /** If attribute is <i>messageLength</i> report the new value 
-         *  to the quantity manager. 
-         *  @param attribute The changed parameter.
-         *  @exception IllegalActionException If the parameter set is not valid.
-         *  Not thrown in this class.
-         */
-        public void attributeChanged(Attribute attribute)
-                throws IllegalActionException {
-            if (attribute == requestPort) {
-                Actor actor = (Actor) getContainer();
-                CompositeResourceScheduler scheduler = (CompositeResourceScheduler) getDecorator();
-                scheduler.setRequestPort(actor,
-                        ((StringToken) ((Parameter) attribute).getToken())
-                                .stringValue());
-            } else {
-                super.attributeChanged(attribute);
-            }
-        }
-
-        ///////////////////////////////////////////////////////////////////
-        ////                        private methods                    ////
-
-        /** Create the parameters.
-         */
-        private void _init() {
-            try {
-                requestPort = new StringParameter(this, "requestPort");
-            } catch (KernelException ex) {
-                // This should not occur.
-                throw new InternalErrorException(ex);
-            }
-        }
-    }
-
 }

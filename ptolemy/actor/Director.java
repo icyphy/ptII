@@ -869,10 +869,10 @@ public class Director extends Attribute implements Executable {
                 ResourceScheduler.class)) {
             ResourceScheduler scheduler = (ResourceScheduler) entity;
             _resourceSchedulers.add(scheduler);
-            Time time = scheduler.initialize();
-            if (time != null) {
-                fireContainerAt(time);
-            }
+            ((Actor)scheduler).initialize();
+        }
+        if (_nextScheduleTime != null) {
+            _nextScheduleTime.clear();
         }
 
         // Initialize the contained actors.
@@ -1624,12 +1624,6 @@ public class Director extends Attribute implements Executable {
                 actor.wrapup();
             }
         }
-
-        if (_resourceSchedulers != null) {
-            for (ResourceScheduler scheduler : _resourceSchedulers) {
-                scheduler.wrapup();
-            }
-        }
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -1870,7 +1864,7 @@ public class Director extends Attribute implements Executable {
             timestamp = getModelTime();
         }
         if (scheduler != null) {
-            Time environmentTime = ((CompositeActor) ((Attribute) scheduler)
+            Time environmentTime = ((CompositeActor)  scheduler
                     .getContainer()).getDirector().getEnvironmentTime();
             time = scheduler.schedule(actor, environmentTime, 
                     getDeadline(actor, timestamp));
@@ -1880,7 +1874,7 @@ public class Director extends Attribute implements Executable {
             _nextScheduleTime.put(scheduler, time);
             finished = _actorFinished(actor);
             if (time != null && time.getDoubleValue() > 0.0) {
-                CompositeActor container = (CompositeActor) ((Attribute) scheduler)
+                CompositeActor container = (CompositeActor)  scheduler
                         .getContainer();
                 container.getDirector().fireContainerAt(
                         environmentTime.add(time));

@@ -224,14 +224,14 @@
             </property>
             <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{281.0, 262.0}">
             </property>
-            <property name="FixedPriorityScheduler" class="ptolemy.actor.lib.resourceScheduler.FixedPriorityScheduler">
+            <entity name="FixedPriorityScheduler" class="ptolemy.actor.lib.resourceScheduler.FixedPriorityScheduler">
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[255.0, 55.0]">
                 </property>
-            </property>
-            <property name="FixedPriorityScheduler2" class="ptolemy.actor.lib.resourceScheduler.FixedPriorityScheduler">
+            </entity>
+            <entity name="FixedPriorityScheduler2" class="ptolemy.actor.lib.resourceScheduler.FixedPriorityScheduler">
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[275.0, 400.0]">
                 </property>
-            </property>
+            </entity>
             <entity name="Spectrum" class="ptolemy.actor.lib.Scale">
                 <property name="factor" class="ptolemy.data.expr.Parameter" value="2">
                 </property>
