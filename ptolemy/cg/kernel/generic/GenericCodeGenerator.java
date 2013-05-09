@@ -282,8 +282,8 @@ public abstract class GenericCodeGenerator extends Attribute implements
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         GenericCodeGenerator newObject = (GenericCodeGenerator) super
                 .clone(workspace);
-        newObject._adapterStore = null;
-        newObject._generatorPackageListParser = null;
+        newObject._adapterStore = new HashMap<Object, CodeGeneratorAdapter>();
+        newObject._generatorPackageListParser = new GeneratorPackageListParser();
         newObject._model = null;
 
         return newObject;
@@ -309,6 +309,9 @@ public abstract class GenericCodeGenerator extends Attribute implements
         try {
             adapter = _getAdapter(target);
         } catch (IllegalActionException e) {
+            return null;
+        }
+        if (adapter == null) {
             return null;
         }
         return adapter.createDecoratorAttributes(target, this);
@@ -847,13 +850,18 @@ public abstract class GenericCodeGenerator extends Attribute implements
         }
 
         Class<?> adapterClassFilter = _getAdapterClassFilter();
+        if (_adapterStore == null) {
+            // During instantiation of a CCodeGenerator, we eventually call _getAdapter()
+            // before the reset of this class is instantiated.
+            return null;
+        }
         if (_adapterStore.containsKey(object)) {
             assert adapterClassFilter.isInstance(_adapterStore.get(object));
             return _adapterStore.get(object);
         }
 
-        ArrayList<String> packages = new ArrayList<String>(
-                _generatorPackageListParser.generatorPackages());
+        List<String> packageList = _generatorPackageListParser.generatorPackages();
+        ArrayList<String> packages = new ArrayList<String>(packageList);
         if (packages.isEmpty()) {
             throw new IllegalActionException(
                     "Failed to generate the list of packages, "
@@ -917,7 +925,7 @@ public abstract class GenericCodeGenerator extends Attribute implements
                 String packageName = packages.get(i);
 
                 String adapterClassName = "ptolemy.cg.adapter." + packageName
-                        + ".adapters." + className;
+                    + ".adapters." + className;
                 try {
                     adapterObject = _instantiateAdapter(object, componentClass,
                             adapterClassName);
@@ -926,7 +934,6 @@ public abstract class GenericCodeGenerator extends Attribute implements
                                 + " packageName: " + packageName
                                 + " adapterClassName: " + adapterClassName);
                     }
-
                 } catch (IllegalActionException ex) {
                     if (_debugging) {
                         _debug("Warning: Failed to instantiate adapter: object: "
@@ -949,7 +956,6 @@ public abstract class GenericCodeGenerator extends Attribute implements
                 componentClass = componentClass.getSuperclass();
             }
         }
-
         _adapterStore.put(object, adapterObject);
         return adapterObject;
     }
@@ -1600,9 +1606,11 @@ public abstract class GenericCodeGenerator extends Attribute implements
          */
         private void _updateGeneratorPackageList()
                 throws IllegalActionException {
-            String packageList = generatorPackageList.stringValue();
-            String[] packages = packageList.split(";: *");
-            _generatorPackages = Arrays.asList(packages);
+            if (generatorPackageList != null) {
+                String packageList = generatorPackageList.stringValue();
+                String[] packages = packageList.split(";: *");
+                _generatorPackages = Arrays.asList(packages);
+            }
         }
 
         /** The list of generator packages. */
