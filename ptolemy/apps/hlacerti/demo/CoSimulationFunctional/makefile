@@ -51,7 +51,7 @@ OTHER_FILES_TO_BE_JARED = \
     consumer.xml \
     producerFunct.xml \
     producerSkel.xml \
-    SimpleProducerConsumer.fed
+    CoSimulationFunctional.fed
 
 EXTRA_SRCS = \
     $(OTHER_FILES_TO_BE_JARED) \

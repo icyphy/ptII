@@ -50,7 +50,7 @@ OTHER_FILES_TO_BE_JARED = \
     $(JSRCS) \
     consumer.xml \
     producer.xml \
-    SimpleProducerConsumer.fed
+    MultiDataTypes.fed
 
 EXTRA_SRCS = \
     $(OTHER_FILES_TO_BE_JARED) \

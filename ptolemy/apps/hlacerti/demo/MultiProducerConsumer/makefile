@@ -54,7 +54,7 @@ OTHER_FILES_TO_BE_JARED = \
     prodcons4.xml \
     producer5.xml \
     producer6.xml \
-    SimpleProducerConsumer.fed
+    MultiProducerConsumer.fed
 
 EXTRA_SRCS = \
     $(OTHER_FILES_TO_BE_JARED) \
