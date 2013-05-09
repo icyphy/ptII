@@ -150,6 +150,12 @@ public class PoissonClock extends NamedProgramCodeGeneratorAdapter {
             longPrivateSeed = ((LongToken) privateSeed.getToken()).longValue();
         args.add(Long.toString(longPrivateSeed));
         
+        long longSeed = 0;
+        Parameter seed = ((ptolemy.actor.lib.PoissonClock) getComponent()).seed;
+        if (seed.getToken() instanceof LongToken)
+            longSeed = ((LongToken) seed.getToken()).longValue() + ((ptolemy.actor.lib.PoissonClock) getComponent()).getFullName().hashCode();
+        args.add(Long.toString(longSeed));
+        
         codeStream.appendCodeBlock("initBlock", args);
         return processCode(codeStream.toString());
     }
@@ -161,61 +167,20 @@ public class PoissonClock extends NamedProgramCodeGeneratorAdapter {
      */
     @Override
     protected String _generateFireCode() throws IllegalActionException {
-    	return processCode(super._generateFireCode());
-    	//CodeStream codeStream = _templateParser.getCodeStream();
-        //codeStream.clear();
-        //LinkedList args = new LinkedList();
-        /*
-        Parameter valuePar = ((ptolemy.actor.lib.PoissonClock) getComponent()).values;
-        Token valueToken = valuePar.getToken();
-        Token[] values;
-        double[] valuesDouble = null;
-        int[] valuesInt = null;
-        String currentType = "";
+    	//return processCode(super._generateFireCode());
+    	CodeStream codeStream = _templateParser.getCodeStream();
+        codeStream.clear();
+        LinkedList args = new LinkedList();
         
-        if (valueToken instanceof ArrayToken) {
-            values = ((ArrayToken) valueToken).arrayValue();
-            int size = values.length;
-            int i = 0;
-            if (size > 0) {
-            	if (values[0] instanceof DoubleToken) {
-            		valuesDouble = new double[size];
-            		currentType = "double";
-            	}
-            	else if (values[0] instanceof IntToken) {
-            		valuesInt = new int[size];
-            		currentType = "int";
-            	}
-            	else {
-                    throw new IllegalActionException("Token type at PoissonClock "
-                            + "not supported yet.");
-                }
-            }
-            for (Token t : values) {
-            	if (t instanceof DoubleToken) {
-            		valuesDouble[i++] = ((DoubleToken)t).doubleValue();
-            	}
-            	else if (t instanceof IntToken) {
-            		valuesInt[i++] = ((IntToken)t).intValue();
-            	}
-            	else {
-                    throw new IllegalActionException("Token type at PoissonClock "
-                            + "not supported yet.");
-                }
-            }
-        } else {
-            throw new IllegalActionException("Token type at PoissonClock "
-                    + "not supported yet.");
+        codeStream.appendCodeBlock("fireBlockInit");
+        for (int i = 0; i < ((ptolemy.actor.lib.PoissonClock) getComponent()).trigger.getWidth(); i++) {
+            args.clear();
+            args.add(Integer.toString(i));
+            codeStream.appendCodeBlock("fireBlockTrigger", args);
         }
         
-        // FIXME : for now, we only use the first value, this need to be changed !
-        if (currentType == "double")
-        	args.add(Double.toString(valuesDouble[0]));
-        else if (currentType == "int")
-        	args.add(Double.toString(valuesInt[0]));
-        */
-        //codeStream.appendCodeBlock("fireBlock", args);
-        //return processCode(codeStream.toString());
+        codeStream.appendCodeBlock("fireBlockEnd");
+        return processCode(codeStream.toString());
     }
     
     /**
