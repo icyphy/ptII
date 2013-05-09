@@ -344,8 +344,8 @@ public class CompositeResourceScheduler extends TypedCompositeActor implements R
      */
     public void wrapup() throws IllegalActionException {
         for (NamedObj actor : _actors) {
-            event(actor, ((CompositeActor) getContainer()).getDirector()
-                    .getEnvironmentTime().getDoubleValue(), null);
+//            event(actor, ((CompositeActor) getContainer()).getDirector()
+//                    .getModelTime().getDoubleValue(), null);
         }
         super.wrapup();
     }
@@ -428,18 +428,18 @@ public class CompositeResourceScheduler extends TypedCompositeActor implements R
         if (!_currentlyExecuting.contains(actor)) {
             event((NamedObj) actor, getDirector().getModelTime().getDoubleValue(), ExecutionEventType.START);
             ResourceMappingInputPort requestPort = (ResourceMappingInputPort) getEntity(_requestPorts.get(actor));
-            if (requestPort == null) {
-                throw new IllegalActionException(this, "No request port with name "
-                        + _requestPorts.get(actor));
-            } 
-            RecordToken recordToken = new RecordToken(
-                    new String[]{"actor", "executionTime"}, 
-                    new Token[]{new ObjectToken(actor), 
-                            new DoubleToken(executionTime.getDoubleValue())});
-            requestPort.value.setToken(recordToken);
-            requestPort.fire(); 
-            
-            _currentlyExecuting.add(actor);
+            if (requestPort != null) {
+//                throw new IllegalActionException(this, "No request port with name "
+//                        + _requestPorts.get(actor)); 
+                RecordToken recordToken = new RecordToken(
+                        new String[]{"actor", "executionTime"}, 
+                        new Token[]{new ObjectToken(actor), 
+                                new DoubleToken(executionTime.getDoubleValue())});
+                requestPort.value.setToken(recordToken);
+                requestPort.fire(); 
+                
+                _currentlyExecuting.add(actor);
+            }
         } 
         
         getDirector().fire();

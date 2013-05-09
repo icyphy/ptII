@@ -173,8 +173,8 @@
 <title>TimedPlotter</title>
 <xLabel></xLabel>
 <yLabel></yLabel>
-<xRange min="0.0" max="8.700000000000001"/>
-<yRange min="-783.7040550037075" max="1.0"/>
+<xRange min="0.0" max="9.2"/>
+<yRange min="-1068.7503742285344" max="1.0"/>
 </plot>?>
         </configure>
     </entity>

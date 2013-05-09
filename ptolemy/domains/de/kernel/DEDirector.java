@@ -1516,6 +1516,15 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
         _enqueueTriggerEvent(ioPort, getModelTime());
     }
     
+    /** Put a trigger event into the event queue with a timestamp that can be 
+     *  different from the current model time. 
+     *  Only resource schedulers can enqueue trigger events with future timestamps. 
+     *  @param ioPort The destination IO port.
+     *  @param time The timestamp of the new event.
+     *  @throws IllegalActionException If the time argument is not the
+     *  current time, or the depth of the given IO port has not be calculated,
+     *  or the new event can not be enqueued.
+     */
     private void _enqueueTriggerEvent(IOPort ioPort, Time time) throws IllegalActionException {
         Actor actor = (Actor) ioPort.getContainer();
         if (_eventQueue == null || _disabledActors != null

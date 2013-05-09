@@ -1298,9 +1298,9 @@ public class PtidesDirector extends DEDirector implements Decorator {
                 }
 
                 if (prefire
-                        && (!_resourceScheduling || queue != _pureEvents
-                                && ptidesEvent.actor() instanceof TimeDelay || _schedule(
-                                ptidesEvent.actor(), ptidesEvent.timeStamp()))) {
+                        && (!_resourceScheduling || 
+                                (queue != _pureEvents && ptidesEvent.actor() instanceof TimeDelay) || 
+                                _schedule(ptidesEvent.actor(), ptidesEvent.timeStamp()))) {
                     if (!(ptidesEvent.actor() instanceof CompositeActor)
                             || ((CompositeActor) ptidesEvent.actor())
                                     .getDirector().scheduleContainedActors()) {
@@ -1556,6 +1556,15 @@ public class PtidesDirector extends DEDirector implements Decorator {
      */
     private boolean _isSafeToProcess(PtidesEvent event)
             throws IllegalActionException {
+        // resource scheduler events are only safe to process when physical time 
+        // equals event timestamp.
+        if (event.actor() instanceof ResourceScheduler) {
+            if ((event.timeStamp().compareTo(localClock.getLocalTime())) > 0) {
+                return false;
+            }
+        }
+        
+        
         // Check if there are any events upstream that have to be
         // processed before this one.
         Object[] eventArray = _eventQueue.toArray();

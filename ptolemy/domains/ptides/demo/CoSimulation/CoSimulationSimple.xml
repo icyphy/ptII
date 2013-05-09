@@ -283,10 +283,10 @@
                 <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
             </property>
-            <property name="FPPCore" class="ptolemy.actor.lib.resourceScheduler.FixedPriorityScheduler">
+            <entity name="FPPCore" class="ptolemy.actor.lib.resourceScheduler.FixedPriorityScheduler">
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[265.0, 50.0]">
                 </property>
-            </property>
+            </entity>
             <entity name="DiscreteClock" class="ptolemy.actor.lib.DiscreteClock">
                 <property name="period" class="ptolemy.actor.parameters.PortParameter" value="clockPeriod">
                 </property>
