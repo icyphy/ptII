@@ -358,6 +358,7 @@ public class Bus extends MonitoredQuantityManager {
                     if (_tokens.size() == 1) { // no refiring has been scheduled
                         _scheduleRefire();
                     } 
+                    _receiversAndTokensToSendTo.clear();
                 }
             }
         }
