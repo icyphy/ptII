@@ -72,10 +72,6 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[275.0, 320.0]">
         </property>
     </entity>
-    <entity name="Merge" class="ptolemy.domains.continuous.lib.ContinuousMerge">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[430.0, 240.0]">
-        </property>
-    </entity>
     <entity name="Server" class="ptolemy.domains.de.lib.Server">
         <property name="serviceTime" class="ptolemy.actor.parameters.PortParameter" value="0.01">
         </property>
@@ -281,6 +277,10 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[155.0, 260.0]">
         </property>
     </entity>
+    <entity name="Merge2" class="ptolemy.domains.de.lib.Merge">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[430.0, 240.0]">
+        </property>
+    </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
@@ -296,12 +296,6 @@
         </property>
         <vertex name="vertex1" value="{225.0, 140.0}">
         </vertex>
-    </relation>
-    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation8" class="ptolemy.actor.TypedIORelation">
     </relation>
@@ -329,10 +323,6 @@
         <vertex name="vertex1" value="[100.0, 280.0]">
         </vertex>
     </relation>
-    <relation name="relation10" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation11" class="ptolemy.actor.TypedIORelation">
-    </relation>
     <relation name="relation22" class="ptolemy.actor.TypedIORelation">
         <vertex name="vertex1" value="[104.921875, 82.078125]">
         </vertex>
@@ -349,22 +339,27 @@
     </relation>
     <relation name="relation20" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <link port="RecordAssembler.output" relation="relation5"/>
+    <relation name="relation21" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation10" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="RecordAssembler.output" relation="relation7"/>
     <link port="RecordAssembler.id" relation="relation3"/>
     <link port="RecordAssembler.value" relation="relation4"/>
     <link port="Const.output" relation="relation3"/>
     <link port="Const.trigger" relation="relation4"/>
-    <link port="RecordAssembler2.output" relation="relation6"/>
+    <link port="RecordAssembler2.output" relation="relation5"/>
     <link port="RecordAssembler2.id" relation="relation"/>
     <link port="RecordAssembler2.value" relation="relation2"/>
     <link port="Const2.output" relation="relation"/>
     <link port="Const2.trigger" relation="relation2"/>
-    <link port="Merge.input" relation="relation5"/>
-    <link port="Merge.input" relation="relation6"/>
-    <link port="Merge.input" relation="relation10"/>
-    <link port="Merge.input" relation="relation11"/>
-    <link port="Merge.output" relation="relation7"/>
-    <link port="Server.input" relation="relation7"/>
+    <link port="Server.input" relation="relation21"/>
     <link port="Server.output" relation="relation8"/>
     <link port="RecordDisassembler.input" relation="relation8"/>
     <link port="RecordDisassembler.value" relation="relation9"/>
@@ -382,16 +377,21 @@
     <link port="SineWave2.port_0" relation="relation2"/>
     <link port="SineWave2.port" relation="relation18"/>
     <link port="DiscreteClock.output" relation="relation13"/>
-    <link port="RecordAssembler3.output" relation="relation10"/>
+    <link port="RecordAssembler3.output" relation="relation6"/>
     <link port="RecordAssembler3.id" relation="relation14"/>
     <link port="RecordAssembler3.value" relation="relation15"/>
     <link port="Const3.output" relation="relation14"/>
     <link port="Const3.trigger" relation="relation15"/>
-    <link port="RecordAssembler4.output" relation="relation11"/>
+    <link port="RecordAssembler4.output" relation="relation10"/>
     <link port="RecordAssembler4.id" relation="relation16"/>
     <link port="RecordAssembler4.value" relation="relation17"/>
     <link port="Const4.output" relation="relation16"/>
     <link port="Const4.trigger" relation="relation17"/>
+    <link port="Merge2.input" relation="relation7"/>
+    <link port="Merge2.input" relation="relation5"/>
+    <link port="Merge2.input" relation="relation6"/>
+    <link port="Merge2.input" relation="relation10"/>
+    <link port="Merge2.output" relation="relation21"/>
     <link relation1="relation13" relation2="relation15"/>
     <link relation1="relation13" relation2="relation17"/>
 </entity>
