@@ -204,6 +204,10 @@ public abstract class MonitoredQuantityManager extends TypedAtomicActor
         return intermediateReceiver;
     }
     
+    public ColorAttribute getColor() {
+        return color;
+    }
+    
     /** Add a quantity manager monitor to the list of listeners.
      *  @param monitor The quantity manager monitor.
      */
@@ -271,16 +275,9 @@ public abstract class MonitoredQuantityManager extends TypedAtomicActor
     ///////////////////////////////////////////////////////////////////
     ////                      protected fields                     ////
 
-    /** List of parameters per port.
-     */
-    protected HashMap<IOPort, List<Attribute>> _parameters;  
-
-    /** Amount of tokens currently being processed by the switch. */
-    protected int _tokenCount;
-
     ///////////////////////////////////////////////////////////////////
     ////                      protected methods                    ////
-
+    
     /** Send token to receiver.
      *  @param receiver The receiver.
      *  @param token The token.
@@ -295,8 +292,15 @@ public abstract class MonitoredQuantityManager extends TypedAtomicActor
         receiver.put(token); 
     }
 
+    /** List of parameters per port.
+     */
+    protected HashMap<IOPort, List<Attribute>> _parameters;  
+
+    /** Amount of tokens currently being processed by the switch. */
+    protected int _tokenCount;
+
     ///////////////////////////////////////////////////////////////////
-    ////                      private fields                       ////
+    ////                      protected methods                    ////
 
     /** Listeners registered to receive events from this object. */
     private ArrayList<QuantityManagerListener> _listeners;

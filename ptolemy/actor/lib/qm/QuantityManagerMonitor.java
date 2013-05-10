@@ -151,7 +151,7 @@ public class QuantityManagerMonitor extends TypedAtomicActor implements
             for (Actor actor : list) {
                 if (actor instanceof QuantityManager) {
                     _quantityManagers.add((QuantityManager) actor);
-                    ((MonitoredQuantityManager) actor).registerListener(this);
+                    ((QuantityManager) actor).registerListener(this);
                 }
             }
         }
@@ -164,7 +164,7 @@ public class QuantityManagerMonitor extends TypedAtomicActor implements
                 int idx = _quantityManagers.indexOf(qm);
                 plot.addLegend(idx, ((NamedObj) qm).getName());
                 plot.addPoint(idx, 0.0, /*idx*/0, false);
-                colors[idx] = ((MonitoredQuantityManager) qm).color.asColor();
+                colors[idx] = ((QuantityManager) qm).getColor().asColor();
             }
 
             plot.doLayout();

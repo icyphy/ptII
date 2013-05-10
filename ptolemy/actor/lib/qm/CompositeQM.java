@@ -231,6 +231,7 @@ public class CompositeQM extends TypedCompositeActor implements QuantityManager,
             for (Const mappedConst : _tokens.keySet()) {
                 mappedConst.value.setToken(_tokens.get(mappedConst));
                 mappedConst.fire();
+                System.out.println(mappedConst);
             }
             _tokens.clear();
 
@@ -242,7 +243,7 @@ public class CompositeQM extends TypedCompositeActor implements QuantityManager,
             for (Object entity : entityList()) {
                 if (entity instanceof CQMOutputPort) {
                     CQMOutputPort outputPort = ((CQMOutputPort)entity);
-                    if (outputPort.hasToken()) {
+                    while (outputPort.hasToken()) {
                         RecordToken recordToken = (RecordToken) outputPort.takeToken();
                         Receiver receiver = (Receiver) ((ObjectToken) recordToken.get("receiver")).getValue();
                         Token token = recordToken.get("token");
@@ -254,12 +255,26 @@ public class CompositeQM extends TypedCompositeActor implements QuantityManager,
             _workspace.doneReading();
         }
     }
+    
+    public ColorAttribute getColor() {
+        return color;
+    }
 
     /** Return true to indicate that this decorator should
      *  decorate objects across opaque hierarchy boundaries.
      */
     public boolean isGlobalDecorator() {
         return true;
+    }
+    
+    /** Add a quantity manager monitor to the list of listeners.
+     *  @param monitor The quantity manager monitor.
+     */
+    public void registerListener(QuantityManagerMonitor monitor) {
+        if (_listeners == null) {
+            _listeners = new ArrayList<QuantityManagerListener>();
+        }
+        _listeners.add(monitor);
     }
     
     /** Reset.
@@ -300,24 +315,11 @@ public class CompositeQM extends TypedCompositeActor implements QuantityManager,
      *  @param attribute The new attribute or the attribute containing a new value.
      *  @exception IllegalActionException Thrown if attribute could not be updated.
      */
-    public void setInputPortName(Port port, String inputPortName) throws IllegalActionException {
-        for (Object entity : entityList()) {
-            if (entity instanceof CQMInputPort) {
-                if (((CQMInputPort)entity).getName().equals(inputPortName)) {
-                    if (_mappedConsts == null) {
-                        _mappedConsts = new HashMap<Port, CQMInputPort>();
-                    }
-                    _mappedConsts.put(port, (CQMInputPort) entity);
-                    return;
-                }
-            }
+    public void setInputPortName(Port port, String inputPortName) throws IllegalActionException { 
+        if (_mappedConsts == null) {
+            _mappedConsts = new HashMap<Port, String>();
         }
-        // no CQMInputPort was found, create one.
-        try {
-            new CQMInputPort(this, inputPortName);
-        } catch (NameDuplicationException e) { 
-            e.printStackTrace();
-        } 
+        _mappedConsts.put(port, inputPortName); 
     }
 
     /** Initiate a send of the specified token to the specified
@@ -330,8 +332,8 @@ public class CompositeQM extends TypedCompositeActor implements QuantityManager,
      */
     public void sendToken(Receiver source, Receiver receiver, Token token)
             throws IllegalActionException {
-        Const mappedConst = _mappedConsts.get(receiver.getContainer());
-        if (mappedConst == null) {
+        CQMInputPort port = (CQMInputPort) getEntity(_mappedConsts.get(receiver.getContainer())); 
+        if (port == null) {
             throw new IllegalActionException(this, "No mapping constant in "
                     + this.getName() + " for "
                     + receiver.getContainer().getContainer().getName() + "_"
@@ -343,7 +345,7 @@ public class CompositeQM extends TypedCompositeActor implements QuantityManager,
         RecordToken recordToken = new RecordToken(
                 new String[]{"receiver", "token"}, 
                 new Token[]{new ObjectToken(receiver), token});
-        _tokens.put(mappedConst, recordToken);
+        _tokens.put(port, recordToken);
 
         ((CompositeActor) getContainer()).getDirector().fireAtCurrentTime(this);
 
@@ -380,8 +382,11 @@ public class CompositeQM extends TypedCompositeActor implements QuantityManager,
     ////                         private variables                 ////
 
     private HashMap<Const, Token> _tokens;
+    
+    /** Listeners registered to receive events from this object. */
+    private ArrayList<QuantityManagerListener> _listeners;
 
-    private HashMap<Port, CQMInputPort> _mappedConsts;
+    private HashMap<Port, String> _mappedConsts;
     
     
     ///////////////////////////////////////////////////////////////////
