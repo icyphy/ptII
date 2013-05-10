@@ -144,6 +144,18 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[450.0, 67.5]">
         </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+            <property name="DecoratorAttributesFor_C" class="ptolemy.actor.lib.qm.CompositeQM$CQMAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="C">
+                </property>
+                <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="inputPort" class="ptolemy.data.expr.Parameter" value="&quot;&quot;">
+                </property>
+            </property>
+        </port>
         <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
@@ -178,10 +190,6 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[195.0, 140.0]">
             </property>
         </entity>
-        <entity name="Merge" class="ptolemy.domains.continuous.lib.ContinuousMerge">
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[115.0, 140.0]">
-            </property>
-        </entity>
         <entity name="CQMOutputPort" class="ptolemy.actor.lib.qm.CQMOutputPort">
             <property name="Parameter" class="ptolemy.data.expr.Parameter" value="">
             </property>
@@ -214,7 +222,7 @@
             <link port="SetVariable.input" relation="relation"/>
         </entity>
         <entity name="a" class="ptolemy.actor.lib.qm.CQMInputPort">
-            <property name="value" class="ptolemy.data.expr.Parameter" value="{receiver = object, token = general}">
+            <property name="value" class="ptolemy.data.expr.Parameter" value="{receiver = object(ptolemy.domains.de.kernel.DEReceiver {.CompositeQM.B.q.receiver }), token = 5.0}">
             </property>
             <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="NONE">
             </property>
@@ -232,7 +240,7 @@
             </port>
         </entity>
         <entity name="b" class="ptolemy.actor.lib.qm.CQMInputPort">
-            <property name="value" class="ptolemy.data.expr.Parameter" value="{receiver = object, token = general}">
+            <property name="value" class="ptolemy.data.expr.Parameter" value="{receiver = object(ptolemy.domains.de.kernel.DEReceiver {.CompositeQM.Y.q.receiver }), token = -5.0}">
             </property>
             <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="NONE">
             </property>
@@ -249,51 +257,28 @@
                 </property>
             </port>
         </entity>
-        <entity name="" class="ptolemy.actor.lib.qm.CQMInputPort">
-            <property name="value" class="ptolemy.data.expr.Parameter" value="{receiver=object, token=general}">
+        <entity name="Merge2" class="ptolemy.domains.de.lib.Merge">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 140.0]">
             </property>
-            <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="NONE">
-            </property>
-            <property name="NONE" class="ptolemy.data.expr.Parameter" value="0">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{0.0, 0.0}">
-            </property>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-            </port>
-            <port name="trigger" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="multiport"/>
-                <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-                </property>
-                <property name="_hide" class="ptolemy.data.expr.Parameter" value="true">
-                </property>
-            </port>
         </entity>
-        <relation name="relation8" class="ptolemy.actor.TypedIORelation">
-            <property name="color" class="ptolemy.actor.gui.ColorAttribute">
-            </property>
-        </relation>
         <relation name="relation" class="ptolemy.actor.TypedIORelation">
             <property name="color" class="ptolemy.actor.gui.ColorAttribute">
             </property>
         </relation>
+        <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        </relation>
         <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-            <property name="color" class="ptolemy.actor.gui.ColorAttribute">
-            </property>
         </relation>
         <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-            <property name="color" class="ptolemy.actor.gui.ColorAttribute">
-            </property>
         </relation>
-        <link port="Server.input" relation="relation8"/>
+        <link port="Server.input" relation="relation3"/>
         <link port="Server.output" relation="relation"/>
-        <link port="Merge.input" relation="relation2"/>
-        <link port="Merge.input" relation="relation3"/>
-        <link port="Merge.output" relation="relation8"/>
         <link port="CQMOutputPort.input" relation="relation"/>
-        <link port="a.output" relation="relation2"/>
-        <link port="b.output" relation="relation3"/>
+        <link port="a.output" relation="relation4"/>
+        <link port="b.output" relation="relation2"/>
+        <link port="Merge2.input" relation="relation4"/>
+        <link port="Merge2.input" relation="relation2"/>
+        <link port="Merge2.output" relation="relation3"/>
     </entity>
     <entity name="X" class="ptolemy.actor.TypedCompositeActor">
         <property name="_location" class="ptolemy.kernel.util.Location" value="{130.0, 170.0}">
