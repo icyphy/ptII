@@ -1804,7 +1804,7 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
                                     + ". Refire the actor.");
                         }
                         // refire only if can be scheduled.
-                        if (_resourceScheduling && _schedule(actorToFire, getModelTime())) {
+                        if (!_resourceScheduling || _schedule(actorToFire, getModelTime())) {
                             refire = true;
     
                             // Found a channel that has input data,
