@@ -277,6 +277,27 @@ public class PtidesDirector extends DEDirector implements Decorator {
         }
     }
 
+    /** Create and return the decorated attributes for the PtidesDirector.
+     *  The director decorates local sources with throttling attributes that
+     *  allow for specification of how far ahead in logical time these actors
+     *  can execute or how many tokens they can produce at a time.
+     *  @param target The NamedObj that will be decorated.
+     *  @return The decorated attributes for the target NamedObj, or null if the
+     *   specified NamedObj is not decorated by this decorator.
+     */
+    @Override
+    public DecoratorAttributes createDecoratorAttributes(NamedObj target) {
+        if (_isLocalSource(target)) {
+            try {
+                return new ThrottleAttributes(target, this);
+            } catch (KernelException ex) {
+                // This should not occur.
+                throw new InternalErrorException(ex);
+            } 
+        }
+        return null;
+    }
+
     /**
      * Return the default dependency between input and output ports,
      * which for the Ptides domain is a {@link SuperdenseDependency}.
@@ -286,6 +307,20 @@ public class PtidesDirector extends DEDirector implements Decorator {
      */
     public Dependency defaultDependency() {
         return SuperdenseDependency.OTIMES_IDENTITY;
+    }
+
+    /** Return entities contained by the composite of this director.
+     *  @return List of entities.
+     */
+    public List<NamedObj> decoratedObjects() {
+        List<NamedObj> list = new ArrayList();
+        CompositeEntity container = (CompositeEntity) getContainer();
+        for (Object target : container.entityList()) {
+            if (_isLocalSource(target)) {
+                list.add((NamedObj) target);
+            }
+        }
+        return list;
     }
 
     /**
@@ -498,6 +533,15 @@ public class PtidesDirector extends DEDirector implements Decorator {
         _calculateRelativeDeadlines();
 
         super.initialize();
+    }
+
+    /** Returns false, as this director only decorates local sources 
+     *  immediately contained by the PtidesDirector, thus it should 
+     *  not cross opaque hierarchy boundaries. 
+     *  @return false.
+     */
+    public boolean isGlobalDecorator() {
+        return true;
     }
 
     /** Return a new receiver of the type {@link PtidesReceiver}.
@@ -1548,6 +1592,30 @@ public class PtidesDirector extends DEDirector implements Decorator {
         throw new IllegalActionException(port, message);
     }
 
+    private boolean _isLocalSource(Object target) { 
+        if (target instanceof DiscreteClock ||
+            target instanceof PoissonClock) {
+            return true;
+        }
+        if (target instanceof ModalModel) {
+            return true;
+        }
+        if (target instanceof CompositeActor && ((CompositeActor) target).isOpaque()) {
+            if (((CompositeActor) target).inputPortList().size() == 0 
+                    || ((CompositeActor) target).getDirector() instanceof SRDirector) {
+                return true;
+            }
+            for (Object entity : ((CompositeActor) target).allAtomicEntityList()) {
+                if (entity instanceof DiscreteClock ||
+                        entity instanceof PoissonClock) {
+                    return true;
+                }
+            }
+                
+        }
+        return false;
+    }
+
     /** Check if event is safe to process.
      * @param event The event to be checked.
      * @return true if the event is safe to process.
@@ -1782,66 +1850,6 @@ public class PtidesDirector extends DEDirector implements Decorator {
 
     private DEEventQueue _pureEvents;
 
-    @Override
-    public DecoratorAttributes createDecoratorAttributes(NamedObj target) {
-        if (_isLocalSource(target)) {
-            try {
-                return new ThrottleAttributes(target, this);
-            } catch (KernelException ex) {
-                // This should not occur.
-                throw new InternalErrorException(ex);
-            } 
-        }
-        return null;
-    }
-
-    /** Return entities contained by the composite of this director.
-     *  @return List of entities.
-     */
-    public List<NamedObj> decoratedObjects() {
-        List<NamedObj> list = new ArrayList();
-        CompositeEntity container = (CompositeEntity) getContainer();
-        for (Object target : container.entityList()) {
-            if (_isLocalSource(target)) {
-                list.add((NamedObj) target);
-            }
-        }
-        return list;
-    }
-    
-    private boolean _isLocalSource(Object target) { 
-        if (target instanceof DiscreteClock ||
-            target instanceof PoissonClock) {
-            return true;
-        }
-        if (target instanceof ModalModel) {
-            return true;
-        }
-        if (target instanceof CompositeActor && ((CompositeActor) target).isOpaque()) {
-            if (((CompositeActor) target).inputPortList().size() == 0 
-                    || ((CompositeActor) target).getDirector() instanceof SRDirector) {
-                return true;
-            }
-            for (Object entity : ((CompositeActor) target).allAtomicEntityList()) {
-                if (entity instanceof DiscreteClock ||
-                        entity instanceof PoissonClock) {
-                    return true;
-                }
-            }
-                
-        }
-        return false;
-    }
-
-    /** Returns false, as this director only decorates local sources 
-     *  immediately contained by the PtidesDirector, thus it should 
-     *  not cross opaque hierarchy boundaries. 
-     *  @return false.
-     */
-    public boolean isGlobalDecorator() {
-        return true;
-    }
-    
     /** This is an upper bound on the events in the event queue
      *  produced by any actor at any given time. 
      */
