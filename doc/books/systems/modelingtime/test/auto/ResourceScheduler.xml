@@ -23,7 +23,7 @@
         </property>
         <property name="_tableauFactory" class="ptolemy.actor.gui.LevelSkippingTableauFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-192.5, -22.5]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-195.0, -25.0]">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
             <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={195, 129, 934, 634}, maximized=false}">
@@ -236,10 +236,6 @@
             </property>
             <property name="scheduler" class="ptolemy.data.expr.Parameter" value="FCFSScheduler">
             </property>
-            <property name="FPScheduler" class="ptolemy.actor.lib.resourceScheduler.FixedPriorityScheduler">
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[220.0, 50.0]">
-                </property>
-            </property>
             <port name="SensorPort" class="ptolemy.domains.ptides.lib.PtidesPort">
                 <property name="input"/>
                 <property name="deviceDelay" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -328,6 +324,22 @@
                 <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
             </port>
+            <entity name="FPScheduler" class="ptolemy.actor.lib.resourceScheduler.FixedPriorityScheduler">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[220.0, 50.0]">
+                </property>
+                <property name="DecoratorAttributesFor_FPScheduler" class="ptolemy.actor.lib.resourceScheduler.PriorityResourceAttributes">
+                    <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.FPScheduler">
+                    </property>
+                    <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                    <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                    </property>
+                    <property name="LOWEST_PRIORITY" class="ptolemy.data.expr.Parameter" value="2147483647">
+                    </property>
+                    <property name="priority" class="ptolemy.data.expr.Parameter" value="LOWEST_PRIORITY">
+                    </property>
+                </property>
+            </entity>
             <entity name="Scale" class="ptolemy.actor.lib.Scale">
                 <property name="factor" class="ptolemy.data.expr.Parameter" value="2">
                 </property>
@@ -590,6 +602,254 @@
 </plot>?>
         </configure>
     </entity>
+    <entity name="TestValueAndTime" class="ptolemy.actor.TypedCompositeActor">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-195.0, 105.0]">
+        </property>
+        <port name="port" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 235.0]">
+            </property>
+        </port>
+        <entity name="CurrentTime" class="ptolemy.actor.lib.CurrentTime">
+            <doc>Output the current time.</doc>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[140.0, 235.0]">
+            </property>
+        </entity>
+        <entity name="CurrentMicrostep" class="ptolemy.actor.lib.CurrentMicrostep">
+            <doc>Output the current microstep.</doc>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[150.0, 305.0]">
+            </property>
+        </entity>
+        <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
+            <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1.0, 6.0}">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[275.0, 235.0]">
+            </property>
+        </entity>
+        <entity name="NonStrictTest2" class="ptolemy.actor.lib.NonStrictTest">
+            <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1, 1}">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[280.0, 305.0]">
+            </property>
+        </entity>
+        <entity name="NonStrictTest3" class="ptolemy.actor.lib.NonStrictTest">
+            <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1, 1}">
+            </property>
+            <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[135.0, 375.0]">
+            </property>
+        </entity>
+        <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+            </property>
+            <vertex name="vertex1" value="{75.0, 235.0}">
+            </vertex>
+            <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+            </property>
+        </relation>
+        <relation name="relation" class="ptolemy.actor.TypedIORelation">
+            <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+            </property>
+        </relation>
+        <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+            <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+            </property>
+        </relation>
+        <link port="port" relation="relation2"/>
+        <link port="CurrentTime.output" relation="relation"/>
+        <link port="CurrentTime.trigger" relation="relation2"/>
+        <link port="CurrentMicrostep.output" relation="relation3"/>
+        <link port="CurrentMicrostep.trigger" relation="relation2"/>
+        <link port="NonStrictTest.input" relation="relation"/>
+        <link port="NonStrictTest2.input" relation="relation3"/>
+        <link port="NonStrictTest3.input" relation="relation2"/>
+    </entity>
+    <entity name="TestValueAndTime2" class="ptolemy.actor.TypedCompositeActor">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-30.0, 40.0]">
+        </property>
+        <port name="port" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 235.0]">
+            </property>
+        </port>
+        <entity name="CurrentTime" class="ptolemy.actor.lib.CurrentTime">
+            <doc>Output the current time.</doc>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[140.0, 235.0]">
+            </property>
+        </entity>
+        <entity name="CurrentMicrostep" class="ptolemy.actor.lib.CurrentMicrostep">
+            <doc>Output the current microstep.</doc>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[150.0, 305.0]">
+            </property>
+        </entity>
+        <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
+            <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, 3.0, 6.0, 9.0}">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[275.0, 235.0]">
+            </property>
+        </entity>
+        <entity name="NonStrictTest2" class="ptolemy.actor.lib.NonStrictTest">
+            <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1, 1, 1, 1}">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[280.0, 305.0]">
+            </property>
+        </entity>
+        <entity name="NonStrictTest3" class="ptolemy.actor.lib.NonStrictTest">
+            <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{3, 3, 3, 3}">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[135.0, 375.0]">
+            </property>
+        </entity>
+        <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+            </property>
+            <vertex name="vertex1" value="{75.0, 235.0}">
+            </vertex>
+            <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+            </property>
+        </relation>
+        <relation name="relation" class="ptolemy.actor.TypedIORelation">
+            <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+            </property>
+        </relation>
+        <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+            <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+            </property>
+        </relation>
+        <link port="port" relation="relation2"/>
+        <link port="CurrentTime.output" relation="relation"/>
+        <link port="CurrentTime.trigger" relation="relation2"/>
+        <link port="CurrentMicrostep.output" relation="relation3"/>
+        <link port="CurrentMicrostep.trigger" relation="relation2"/>
+        <link port="NonStrictTest.input" relation="relation"/>
+        <link port="NonStrictTest2.input" relation="relation3"/>
+        <link port="NonStrictTest3.input" relation="relation2"/>
+    </entity>
+    <entity name="TestValueAndTime3" class="ptolemy.actor.TypedCompositeActor">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-30.0, 95.0]">
+        </property>
+        <port name="port" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 235.0]">
+            </property>
+        </port>
+        <entity name="CurrentTime" class="ptolemy.actor.lib.CurrentTime">
+            <doc>Output the current time.</doc>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[140.0, 235.0]">
+            </property>
+        </entity>
+        <entity name="CurrentMicrostep" class="ptolemy.actor.lib.CurrentMicrostep">
+            <doc>Output the current microstep.</doc>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[150.0, 305.0]">
+            </property>
+        </entity>
+        <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
+            <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1.0, 4.0, 7.0, 10.0}">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[275.0, 235.0]">
+            </property>
+        </entity>
+        <entity name="NonStrictTest2" class="ptolemy.actor.lib.NonStrictTest">
+            <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1, 1, 1, 1}">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[280.0, 305.0]">
+            </property>
+        </entity>
+        <entity name="NonStrictTest3" class="ptolemy.actor.lib.NonStrictTest">
+            <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{6, 6, 6, 6}">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[135.0, 375.0]">
+            </property>
+        </entity>
+        <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+            </property>
+            <vertex name="vertex1" value="{75.0, 235.0}">
+            </vertex>
+            <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+            </property>
+        </relation>
+        <relation name="relation" class="ptolemy.actor.TypedIORelation">
+            <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+            </property>
+        </relation>
+        <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+            <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+            </property>
+        </relation>
+        <link port="port" relation="relation2"/>
+        <link port="CurrentTime.output" relation="relation"/>
+        <link port="CurrentTime.trigger" relation="relation2"/>
+        <link port="CurrentMicrostep.output" relation="relation3"/>
+        <link port="CurrentMicrostep.trigger" relation="relation2"/>
+        <link port="NonStrictTest.input" relation="relation"/>
+        <link port="NonStrictTest2.input" relation="relation3"/>
+        <link port="NonStrictTest3.input" relation="relation2"/>
+    </entity>
+    <entity name="TestValueAndTime4" class="ptolemy.actor.TypedCompositeActor">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-15.0, 150.0]">
+        </property>
+        <port name="port" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 235.0]">
+            </property>
+        </port>
+        <entity name="CurrentTime" class="ptolemy.actor.lib.CurrentTime">
+            <doc>Output the current time.</doc>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[140.0, 235.0]">
+            </property>
+        </entity>
+        <entity name="CurrentMicrostep" class="ptolemy.actor.lib.CurrentMicrostep">
+            <doc>Output the current microstep.</doc>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[150.0, 305.0]">
+            </property>
+        </entity>
+        <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
+            <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{4.5, 7.5, 9.5, 10.5}">
+            </property>
+            <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.05E-8">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[275.0, 235.0]">
+            </property>
+        </entity>
+        <entity name="NonStrictTest2" class="ptolemy.actor.lib.NonStrictTest">
+            <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1, 1, 1, 1}">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[280.0, 305.0]">
+            </property>
+        </entity>
+        <entity name="NonStrictTest3" class="ptolemy.actor.lib.NonStrictTest">
+            <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{8, 6, 2, 6}">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[135.0, 375.0]">
+            </property>
+        </entity>
+        <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+            </property>
+            <vertex name="vertex1" value="{75.0, 235.0}">
+            </vertex>
+            <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+            </property>
+        </relation>
+        <relation name="relation" class="ptolemy.actor.TypedIORelation">
+            <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+            </property>
+        </relation>
+        <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+            <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+            </property>
+        </relation>
+        <link port="port" relation="relation2"/>
+        <link port="CurrentTime.output" relation="relation"/>
+        <link port="CurrentTime.trigger" relation="relation2"/>
+        <link port="CurrentMicrostep.output" relation="relation3"/>
+        <link port="CurrentMicrostep.trigger" relation="relation2"/>
+        <link port="NonStrictTest.input" relation="relation"/>
+        <link port="NonStrictTest2.input" relation="relation3"/>
+        <link port="NonStrictTest3.input" relation="relation2"/>
+    </entity>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
@@ -598,25 +858,35 @@
         <property name="color" class="ptolemy.actor.gui.ColorAttribute">
         </property>
     </relation>
-    <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
+        <vertex name="vertex1" value="[-110.0, -35.0]">
+        </vertex>
+    </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="[-100.0, -25.0]">
+        </vertex>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-    </relation>
-    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
-        </property>
+        <vertex name="vertex1" value="[-90.0, -15.0]">
+        </vertex>
     </relation>
     <link port="PtidesPlatform.SensorPort" relation="relation3"/>
-    <link port="PtidesPlatform.c2" relation="relation"/>
-    <link port="PtidesPlatform.d1" relation="relation2"/>
-    <link port="PtidesPlatform.c1+c2" relation="relation4"/>
+    <link port="PtidesPlatform.c2" relation="relation5"/>
+    <link port="PtidesPlatform.d1" relation="relation"/>
+    <link port="PtidesPlatform.c1+c2" relation="relation2"/>
     <link port="C1.output" relation="relation3"/>
     <link port="TimedPlotter.input" relation="relation3"/>
+    <link port="TimedPlotter.input" relation="relation5"/>
     <link port="TimedPlotter.input" relation="relation"/>
     <link port="TimedPlotter.input" relation="relation2"/>
-    <link port="TimedPlotter.input" relation="relation4"/>
+    <link port="TestValueAndTime.port" relation="relation3"/>
+    <link port="TestValueAndTime2.port" relation="relation5"/>
+    <link port="TestValueAndTime3.port" relation="relation"/>
+    <link port="TestValueAndTime4.port" relation="relation2"/>
 </entity>
