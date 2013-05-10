@@ -1,12 +1,17 @@
 package ptolemy.domains.metroII.kernel;
 
+import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event;
 import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event.Builder;
 
 public class MetroDebugger {
 
     public MetroDebugger() {
         // TODO Auto-generated constructor stub
-        turnOffDebugging(); 
+        turnOffDebugging();
+    }
+
+    public void setPrefix(String prefix) {
+        _prefix = prefix;
     }
 
     public boolean debugging() {
@@ -32,17 +37,17 @@ public class MetroDebugger {
         if (!_debugging) {
             return;
         }
-        System.out.println("DEBUG: " + text);
+        System.out.println(_prefix + text);
     }
 
     public void printMetroEvent(Builder event) {
         if (!_debugging) {
             return;
         }
-        String buffer = "DEBUG:";
+        String buffer = _prefix;
 
         if (event.hasTime()) {
-            buffer = buffer.concat(" Time " + event.getTime().getValue());
+            buffer = buffer.concat("Time " + event.getTime().getValue());
         }
 
         buffer = buffer.concat(" " + event.getStatus().toString());
@@ -62,6 +67,19 @@ public class MetroDebugger {
         }
         printText("Event List Ends");
     }
+
+    public void printNotifiedMetroEvents(Iterable<Builder> metroIIEventList) {
+        if (!_debugging) {
+            return;
+        }
+        for (Builder event : metroIIEventList) {
+            if (event.getStatus() == Event.Status.NOTIFIED) {
+                printMetroEvent(event);
+            }
+        }
+    }
+
+    private String _prefix = "DEBUG: ";
 
     private boolean _debugging = false;
 

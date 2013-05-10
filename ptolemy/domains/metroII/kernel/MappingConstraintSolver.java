@@ -122,11 +122,10 @@ public class MappingConstraintSolver implements ConstraintSolver {
             if (nodeId < 0) {
                 if (event.getType() == Event.Type.DEFAULT_NOTIFIED) {
                     event.setStatus(Event.Status.PROPOSED);
-                } else if (event.getType() == Event.Type.DEFAULT_WAITING){
+                } else if (event.getType() == Event.Type.DEFAULT_WAITING) {
                     event.setStatus(Event.Status.WAITING);
-                }
-                else {
-                    assert false; 
+                } else {
+                    assert false;
                 }
             } else {
                 id2event.put(nodeId, event);

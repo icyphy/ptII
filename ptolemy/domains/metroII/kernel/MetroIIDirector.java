@@ -155,7 +155,7 @@ public class MetroIIDirector extends Director {
     public MetroIIDirector(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
-        _actorList = new LinkedList<StartOrResumable>();
+        _actorList = new LinkedList<FireMachine>();
         _mappingConstraintSolver = new MappingConstraintSolver();
         _timeScheduler = new TimeScheduler();
 
@@ -276,13 +276,15 @@ public class MetroIIDirector extends Director {
             while (actors.hasNext()) {
                 Actor actor = (Actor) actors.next();
                 if (actor instanceof MetroIIEventHandler) {
-                    _actorList.add(new ResumableActor(actor));
+                    _actorList.add(new ResumableFire(actor));
                 } else {
-                    _actorList.add(new BlockingActor(actor));
+                    _actorList.add(new BlockingFire(actor));
                 }
             }
         }
         _iterationCount = 0;
+        
+        _timeScheduler.initialize(); 
     }
 
     /**
@@ -307,9 +309,19 @@ public class MetroIIDirector extends Director {
                     + Integer.toString(_iterationCount));
             _debugger.printText("Base model execution:");
 
-            for (StartOrResumable actor : _actorList) {
+            for (FireMachine firing : _actorList) {
                 LinkedList<Event.Builder> metroIIEventList = new LinkedList<Event.Builder>();
-                actor.startOrResume(metroIIEventList);
+                if (firing.getState() == FireMachine.State.START) {
+                    assert firing.actor().prefire();
+                }
+                firing.startOrResume(metroIIEventList);
+                if (firing.getState() == FireMachine.State.FINAL) {
+                    boolean pf = firing.actor().postfire();
+                    if (pf) {
+                        firing.reset();
+                        firing.startOrResume(metroIIEventList);
+                    }
+                }
                 globalMetroIIEventList.addAll(metroIIEventList);
             }
 
@@ -358,7 +370,7 @@ public class MetroIIDirector extends Director {
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         MetroIIDirector newObject = (MetroIIDirector) super.clone(workspace);
         newObject._mappingConstraintSolver = new MappingConstraintSolver();
-        newObject._actorList = new LinkedList<StartOrResumable>();
+        newObject._actorList = new LinkedList<FireMachine>();
         newObject._timeScheduler = new TimeScheduler();
         newObject._debugger = new MetroDebugger(); 
         return newObject;
@@ -430,5 +442,5 @@ public class MetroIIDirector extends Director {
     /**
      * The list of actors governed by MetroIIDirector
      */
-    private LinkedList<StartOrResumable> _actorList;
+    private LinkedList<FireMachine> _actorList;
 }

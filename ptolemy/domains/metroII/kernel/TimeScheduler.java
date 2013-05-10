@@ -1,7 +1,5 @@
 package ptolemy.domains.metroII.kernel;
 
-import ptolemy.actor.Director;
-import ptolemy.actor.util.Time;
 import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event;
 import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event.Builder;
 import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event.Status;
@@ -9,6 +7,10 @@ import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event.Status;
 public class TimeScheduler implements ConstraintSolver {
 
     public TimeScheduler() {
+        initialize(); 
+    }
+    
+    public void initialize() {
         current_time = 0; 
     }
 

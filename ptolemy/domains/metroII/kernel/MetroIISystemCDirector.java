@@ -171,9 +171,55 @@ public class MetroIISystemCDirector extends Director implements
 
     LinkedList<Event.Builder> events;
 
+    boolean createProcess;
+
     public void getfire(ResultHandler<Iterable<Event.Builder>> resultHandler)
             throws CollectionAbortedException {
+//        if (!createProcess) {
+//            new Thread() {
+//                public void run() {
+//                    String s = null;
+//                    try {
+//                        // using the Runtime exec method:
+//                        Process p = Runtime.getRuntime().exec(
+//                                "ptolemy/metroII/single-cpu");
+//
+//                        BufferedReader stdInput = new BufferedReader(
+//                                new InputStreamReader(p.getInputStream()));
+//
+//                        BufferedReader stdError = new BufferedReader(
+//                                new InputStreamReader(p.getErrorStream()));
+//
+//                        // read the output from the command
+//                        System.out
+//                                .println("Here is the standard output of the command:\n");
+//                        while ((s = stdInput.readLine()) != null) {
+//                            System.out.println(s);
+//                        }
+//
+//                        // read any errors from the attempted command
+//                        System.out
+//                                .println("Here is the standard error of the command (if any):\n");
+//                        while ((s = stdError.readLine()) != null) {
+//                            System.out.println(s);
+//                        }
+//
+//                        // System.exit(0);
+//                    } catch (IOException e) {
+//                        System.out
+//                                .println("exception happened - here's what I know: ");
+//                        e.printStackTrace();
+//                        System.exit(-1);
+//                    }
+//                }
+//            }.start();
+//            createProcess = true;
+//
+//        }
 
+        while (!createProcess) {
+            
+        }
         syncEvents(events);
 
         do {
@@ -205,5 +251,8 @@ public class MetroIISystemCDirector extends Director implements
                     "Environment varialble METRO_TEMP is not accessable.");
         }
         events = new LinkedList<Event.Builder>();
+
+        createProcess = false;
+
     }
 }

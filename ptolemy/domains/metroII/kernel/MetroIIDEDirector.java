@@ -40,6 +40,7 @@ import net.jimblackler.Utils.YieldAdapterIterable;
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.FiringEvent;
+import ptolemy.actor.IOPort;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
@@ -368,12 +369,12 @@ public class MetroIIDEDirector extends DEDirector implements
                 while (_checkForNextEvent()) { // Close the BIG while loop.
                     if (((BooleanToken) printTrace.getToken()).booleanValue()) {
                         System.out.println("Before checking actor Time: "
-                                + this.getModelTime() + this.getMicrostep());
+                                + this.getModelTime() + " " + this.getMicrostep());
                     }
                     Pair<Actor, Integer> actorAndState = _checkNextActorToFire();
                     if (((BooleanToken) printTrace.getToken()).booleanValue()) {
                         System.out.println("After checking actor Time: "
-                                + this.getModelTime() + this.getMicrostep());
+                                + this.getModelTime() + " " + this.getMicrostep());
                     }
                     int result = actorAndState.getSecond();
 
@@ -453,7 +454,27 @@ public class MetroIIDEDirector extends DEDirector implements
                                     FiringEvent.AFTER_POSTFIRE));
                         }
 
+                        Iterator<?> inputPorts = firing.actor().inputPortList()
+                                .iterator();
+
+                        boolean refire = false;
+                        while (inputPorts.hasNext() && !refire) {
+                            IOPort port = (IOPort) inputPorts.next();
+
+                            // iterate all the channels of the current input port.
+                            for (int i = 0; i < port.getWidth(); i++) {
+                                if (port.hasToken(i)) {
+                                    refire = true;
+                                    _pendingIteration.put(actor.getFullName(),
+                                            _pendingIteration.get(actor
+                                                    .getFullName()) + 1);
+                                    break;
+                                }
+                            }
+                        }
+
                         if (_pendingIteration.get(actor.getFullName()) > 0) {
+                            assert actor.prefire();
                             firing.startOrResume(metroIIEventList);
                             firingActorList.add(actor);
                             _events.addAll(metroIIEventList);
@@ -478,17 +499,32 @@ public class MetroIIDEDirector extends DEDirector implements
                 }
 
                 idleEvent = MetroEventBuilder.newProposedEvent(getFullName()
-                        + ".Idle", idleEventTimeStamp,
-                        getTimeResolution());
+                        + ".Idle", idleEventTimeStamp, getTimeResolution());
+
+                // System.out.print("idle event time: "+idleEvent.getTime()); 
 
                 _events.add(idleEvent);
 
                 resultHandler.handleResult(_events);
 
+                for (Builder event : _events) {
+                    if (event.getStatus() == Event.Status.NOTIFIED
+                            && event.hasTime()) {                        
+                        if (event.getTime().getValue() > idleEvent.getTime().getValue()) {
+                            System.out.println("Error: notified events go beyond the current time stamp!"); 
+                        }
+                    }
+                }
+
             } while (idleEvent.getStatus() != Event.Status.NOTIFIED);
 
-            this.setModelTime(_eventQueue.get().timeStamp());
-            this.setIndex(_eventQueue.get().microstep());
+            // System.out.println(idleEvent.getTime()); 
+
+            if (!_eventQueue.isEmpty()) {
+                this.setModelTime(_eventQueue.get().timeStamp());
+                this.setIndex(_eventQueue.get().microstep());
+            }
+            // System.out.println(this.getModelTime()); 
             // Since we are now actually stopping the firing, we can set this false.
             _stopFireRequested = false;
 

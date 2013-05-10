@@ -40,6 +40,7 @@ import net.jimblackler.Utils.YieldAdapterIterable;
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.FiringEvent;
+import ptolemy.actor.IOPort;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
@@ -457,6 +458,23 @@ public class MetroIIDEDirectorForPtides extends DEDirector implements
                         firing.actor().postfire();
                         firing.reset();
 
+                        Iterator<?> inputPorts = firing.actor().inputPortList().iterator();
+                        boolean refire = false; 
+                        while (inputPorts.hasNext() && !refire) {
+                            IOPort port = (IOPort) inputPorts.next();
+
+                            // iterate all the channels of the current input port.
+                            for (int i = 0; i < port.getWidth(); i++) {
+                                if (port.hasToken(i) && firing.actor().prefire()) {
+                                    refire = true;
+                                    firing.startOrResume(metroIIEventList);
+                                    firingEventList.add(ptidesEvent);
+                                    _events.addAll(metroIIEventList);
+                                    break; 
+                                }
+                            }
+                        }
+                        
                         if (_debugging) {
                             _debug(new FiringEvent(this, actor,
                                     FiringEvent.AFTER_POSTFIRE));
