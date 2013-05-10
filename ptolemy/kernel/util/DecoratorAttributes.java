@@ -129,6 +129,17 @@ public class DecoratorAttributes extends Attribute {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Clone the object into the specified workspace.
+     *  @param workspace The workspace for the cloned object.
+     *  @exception CloneNotSupportedException Not thrown in this base class
+     *  @return The new Attribute.
+     */
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        DecoratorAttributes newObject = (DecoratorAttributes) super.clone(workspace);
+        newObject._decorator = null;
+        return newObject;
+    }
+
     /** Override the base class to first set the decoratorName attribute
      *  to the current name of the associated decorator, and then export
      *  using the superclass.
