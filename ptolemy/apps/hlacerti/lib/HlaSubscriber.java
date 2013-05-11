@@ -200,7 +200,7 @@ public class HlaSubscriber extends TypedAtomicActor {
      *  and its time-stamp.
      *  @throws IllegalActionException Not thrown here.
      */
-    public void putReflectedAttribute(TimedEvent event) throws IllegalActionException {
+    public void putReflectedHlaAttribute(TimedEvent event) throws IllegalActionException {
         // Add the update value to the queue.
         _reflectedAttributeValues.add(event);
 

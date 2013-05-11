@@ -50,7 +50,7 @@ import ptolemy.kernel.util.NamedObj;
  * </p><p>
  * This object is based on the Exec actor implementation. It invokes the 
  * HLA/CERTI RTIG as a subprocess in a specified <i>directory</i> with a specified  
- * <i>environment</i>.</p> A default platform-dependent shell command is preprended
+ * <i>environment</i>. A default platform-dependent shell command is preprended
  * so the RTIG is executed within the shell. If another RTIG process is running
  * the current subprocess is destroyed. 
  * </p><p>
