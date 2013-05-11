@@ -1273,11 +1273,33 @@ public abstract class GenericCodeGenerator extends Attribute implements
         Iterator<String> names = _parameterNames.iterator();
         Iterator<String> values = _parameterValues.iterator();
 
+        boolean ignoreInline = false;
+        if (model instanceof CompositeActor) {
+            ptolemy.actor.Director director = ((CompositeActor) model)
+                .getDirector();
+            try {
+                // Avoid compile-time dependency on DEDirector.
+                Class deDirectorClass = Class.forName("ptolemy.domains.de.kernel.DEDirector");
+                // FIXME: this only works if the top level director is a DEDirector.
+                if (deDirectorClass.isInstance(director)) {
+                    ignoreInline = true;
+                }
+            } catch (Throwable throwable) {
+                // Ignore, the DEDirector class is not present.
+            }
+        }
+
         while (names.hasNext() && values.hasNext()) {
             String name = names.next();
             String value = values.next();
 
+            if (name.equals("inline") && value.equals("true") && ignoreInline) {
+                System.out.println("Warning: '-inline true' is not relevant for a DE model, forcing the value to false.");
+                value = "false";
+            }
+
             Attribute attribute = model.getAttribute(name);
+
             if (attribute instanceof Settable) {
                 // Use a MoMLChangeRequest so that visual rendition (if
                 // any) is updated and listeners are notified.
