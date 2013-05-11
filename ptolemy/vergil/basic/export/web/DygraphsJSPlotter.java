@@ -116,7 +116,7 @@ public class DygraphsJSPlotter extends BasicJSPlotter {
 
         // Write the parameters to the JavaScript function in the header.
         insertHeaderContent(true, true, "var mainChart;\n");
-        insertHeaderContent(true, true, "$(function () {\n");
+//        insertHeaderContent(true, true, "$(function () {\n");
         insertHeaderContent(true, true,
                 "\tvar data = " + config.get("dataJSON") + ";\n");
         insertHeaderContent(true, true,
@@ -198,7 +198,7 @@ public class DygraphsJSPlotter extends BasicJSPlotter {
     /** Other JavaScript libraries that are required. */
     private static String[] _otherLibs = {
             "<script src=\"http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js\"></script>\n",
-            "<script src=\"http://dygraphs.com/dygraph-combined.js\"</script>\n" };
+            "<script src=\"http://dygraphs.com/dygraph-combined.js\"></script>\n" };
 
     /** HTML code specifying the layout of the HTML page. */
     private static String[] _bodyContent = {
@@ -207,16 +207,19 @@ public class DygraphsJSPlotter extends BasicJSPlotter {
             "\t<div id=\"eventsInfo-container\" style=\"width: 49%; height:100%; float: right\"></div>",
             "</div><hr>",
             "<h2>Instructions:</h2>",
-            "<p><ol>",
+            "<ol>",
             "\t<li><b style=\"color:blue;\">Hide/show</b> a data trace or event trace by <b style=\"color:blue;\">clicking </b> the corresponding checkbox.</li>",
             "\t<li>Get <b style=\"color:blue;\">all events</b> that happened at a particular point on the X axis by <b style=\"color:blue;\">single click</b> on a data point on the upper chart</li>",
             "\t<li><b style=\"color:blue;\">Zoom-in/out</b> to/from an interval by <b style=\"color:blue;\">dragging</b> on the lower chart.</li>",
-            "</ol></p>" };
+            "</ol>" };
 
     /** JavaScript code to plot the figure using the Dygraphs library. */
     private static String[] _plotCode = {
             "\t\t\t\tvar pieChart, dataTable, seriesLabels;\n",
             "\t\t\t\t$(document).ready(function() {",
+            "\t\t\t\t\t// parse data and create main chart",
+            "\t\t\t\t\tparseJSON();", "\t\t\t\t\tcreateMainChart();",
+            "\t\t\t\t});", 
             "\t\t\t\t\tfunction createMainChart() {",
             "\t\t\t\t\t\tmainChart = new Dygraph(",
             "\t\t\t\t\t\t\tdocument.getElementById(\"mainChart-container\"),",
@@ -362,8 +365,5 @@ public class DygraphsJSPlotter extends BasicJSPlotter {
             "\t\t\t\t\t\t\t\tcount++;",
             "\t\t\t\t\t\t});",
             "\t\t\t\t\t\treturn (count > 0);",
-            "\t\t\t\t\t}",
-            "\t\t\t\t\t// create the main chart and in its callback, create the pie chart",
-            "\t\t\t\t\tparseJSON();", "\t\t\t\t\tcreateMainChart();",
-            "\t\t\t\t});", "\t\t\t});" };
+            "\t\t\t\t\t}" };
 }

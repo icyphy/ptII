@@ -422,7 +422,7 @@ public abstract class BasicJSPlotter extends WebContent implements
     public String getHTMLPageContent() {
         StringBuffer pageContent = new StringBuffer();
         pageContent
-                .append("<!DOCTYPE HTML>\n<html>\n\t<head>\n\t\t<meta charset=utf-8\">\n");
+                .append("<!DOCTYPE HTML>\n<html>\n\t<head>\n\t\t<meta charset=\"utf-8\">\n");
         pageContent.append(getHeaderContent());
         pageContent.append("\t</head>\n\n\t<body>\n");
         pageContent.append(getBodyContent());
