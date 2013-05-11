@@ -570,7 +570,7 @@ public class BasicSwitch extends MonitoredQuantityManager {
      *  are going out of the switch.  
      *  @author Patricia Derler
      */
-    public class BasicSwitchAttributes extends ResourceAttributes {
+    public static class BasicSwitchAttributes extends ResourceAttributes {
 
         /** Constructor to use when editing a model.
          *  @param target The object being decorated.
