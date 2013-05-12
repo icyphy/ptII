@@ -444,6 +444,7 @@ ${FAILED_TESTS}
           <hudson.tasks.Shell>
             <command>#!/bin/sh -x
 export PTII=$WORKSPACE
+rm -rf /var/lib/hudson/jobs/ptII/workspace/.maven/repo 
 mvn -Dmaven.repo.local=/var/lib/hudson/jobs/ptII/workspace/.maven/repo install:install-file -DgroupId=PDFRenderer -DartifactId=PDFRenderer -Dversion=ptII -Dpackaging=jar -Dfile=$PTII/lib/PDFRenderer.jar
 mvn -Dmaven.repo.local=/var/lib/hudson/jobs/ptII/workspace/.maven/repo install:install-file -DgroupId=caltrop -DartifactId=ptCal -Dversion=ptII -Dpackaging=jar -Dfile=$PTII/lib/ptCal.jar
 mvn -Dmaven.repo.local=/var/lib/hudson/jobs/ptII/workspace/.maven/repo install:install-file -DgroupId=chic -DartifactId=chic -Dversion=ptII -Dpackaging=jar -Dfile=$PTII/lib/chic.jar
@@ -461,13 +462,14 @@ mvn -Dmaven.repo.local=/var/lib/hudson/jobs/ptII/workspace/.maven/repo install:i
 mvn -Dmaven.repo.local=/var/lib/hudson/jobs/ptII/workspace/.maven/repo install:install-file -DgroupId=jxta -DartifactId=jxtasecurity -Dversion=1.0 -Dpackaging=jar -Dfile=$PTII/vendors/sun/jxta/jxtasecurity.jar
 mvn -Dmaven.repo.local=/var/lib/hudson/jobs/ptII/workspace/.maven/repo install:install-file -DgroupId=kieler -DartifactId=kieler -Dversion=ptII -Dpackaging=jar -Dfile=$PTII/lib/kieler.jar
 mvn -Dmaven.repo.local=/var/lib/hudson/jobs/ptII/workspace/.maven/repo install:install-file -DgroupId=mapss -DartifactId=mapss -Dversion=ptII -Dpackaging=jar -Dfile=$PTII/lib/mapss.jar
-mvn -Dmaven.repo.local=/var/lib/hudson/jobs/ptII/workspace/.maven/repo install:install-file -DgroupId=org.eclipse.jetty -DartifactId=jetty-server -Dversion=8.1.5-v20120716.jar -Dpackaging=jar -Dfile=$PTII/lib/jetty-all-8.1.5-v20120716.jar
+mvn -Dmaven.repo.local=/var/lib/hudson/jobs/ptII/workspace/.maven/repo install:install-file -DgroupId=org.eclipse.jetty -DartifactId=jetty-server -Dversion=8.1.5-v20120716 -Dpackaging=jar -Dfile=$PTII/lib/jetty-all-8.1.5-v20120716.jar
 mvn -Dmaven.repo.local=/var/lib/hudson/jobs/ptII/workspace/.maven/repo install:install-file -DgroupId=soot -DartifactId=sootclasses -Dversion=ptII -Dpackaging=jar -Dfile=$PTII/lib/sootclasses.jar
 mvn -Dmaven.repo.local=/var/lib/hudson/jobs/ptII/workspace/.maven/repo install:install-file -DgroupId=javax.servlet -DartifactId=servlet-api -Dversion=3.0.1 -Dpackaging=jar -Dfile=$PTII/lib/javax.servlet-api-3.0.1.jar
 mvn -Dmaven.repo.local=/var/lib/hudson/jobs/ptII/workspace/.maven/repo install:install-file -DgroupId=guava -DartifactId=guava -Dversion=ptII -Dpackaging=jar -Dfile=$PTII/lib/guava.jar
 mvn -Dmaven.repo.local=/var/lib/hudson/jobs/ptII/workspace/.maven/repo install:install-file -DgroupId=smack -DartifactId=smack -Dversion=3.0.4 -Dpackaging=jar -Dfile=$PTII/lib/smack.jar
 mvn -Dmaven.repo.local=/var/lib/hudson/jobs/ptII/workspace/.maven/repo install:install-file -DgroupId=smackx -DartifactId=smackx -Dversion=3.0.4 -Dpackaging=jar -Dfile=$PTII/lib/smackx.jar
 mvn -Dmaven.repo.local=/var/lib/hudson/jobs/ptII/workspace/.maven/repo install:install-file -DgroupId=protobuf -DartifactId=protobuf -Dversion=ptII -Dpackaging=jar -Dfile=$PTII/lib/protobuf-java-2.4.1.jar
+mvn -Dmaven.repo.local=/var/lib/hudson/jobs/ptII/workspace/.maven/repo install:install-file -DgroupId=g4ltl -DartifactId=g4ltl -Dversion=ptII -Dpackaging=jar -Dfile=$PTII/lib/g4ltl.jar
 </command>
           </hudson.tasks.Shell>
           <maven-builder>
