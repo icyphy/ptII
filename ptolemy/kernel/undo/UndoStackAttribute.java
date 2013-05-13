@@ -230,7 +230,9 @@ public class UndoStackAttribute extends SingletonAttribute {
                 _redoEntries.clear();
             }
         } finally {
-            workspace().doneWriting();
+            // Do not increment the workspace version just
+            // because we pushed an action onto the stack.
+            workspace().doneTemporaryWriting();
         }
     }
 
