@@ -87,6 +87,8 @@ import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.moml.MoMLParser;
 import ptolemy.util.StringUtilities;
 
+import com.microstar.xml.XmlException;
+
 ///////////////////////////////////////////////////////////////////
 //// PtolemyQuery
 
@@ -822,6 +824,15 @@ public class PtolemyQuery extends Query implements QueryListener,
                             try {
                                 _ignoreChangeNotifications = true;
                                 super._execute();
+                            } catch (XmlException ex) {
+                                // Attempt to give a friendlier exception message.
+                                // In this case, the XML string is not really visible to the user,
+                                // so reporting this as an XML exception makes no sense.
+                                if (ex.getCause() instanceof Exception) {
+                                    throw (Exception)ex.getCause();
+                                } else {
+                                    throw ex;
+                                }
                             } finally {
                                 _ignoreChangeNotifications = false;
                             }
