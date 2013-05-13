@@ -1,2 +1,2 @@
-.PNModel.MetroIICompositeActor.Ramp2.put.begin,.PNModel.MetroIIModalModel._Controller.state
-.PNModel.MetroIICompositeActor.Ramp.put.begin,.PNModel.MetroIIModalModel._Controller.state2
+MetroIICompositeActor.Ramp2.put.begin,MetroIIModalModel._Controller.state
+MetroIICompositeActor.Ramp.put.begin,MetroIIModalModel._Controller.state2

@@ -1,5 +1,6 @@
 package ptolemy.domains.metroII.kernel;
 
+import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -17,6 +18,7 @@ import ptolemy.actor.sched.Firing;
 import ptolemy.actor.sched.Schedule;
 import ptolemy.actor.sched.Scheduler;
 import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event;
+import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event.Builder;
 import ptolemy.domains.sdf.kernel.SDFDirector;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
@@ -42,6 +44,17 @@ public class MetroSequentialSDFDirector extends SDFDirector implements
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         // TODO Auto-generated constructor stub
+    }
+
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        MetroSequentialSDFDirector newObject = (MetroSequentialSDFDirector) super
+                .clone(workspace);
+        newObject._actorDictionary = (Hashtable<String, FireMachine>) _actorDictionary
+                .clone();
+        newObject._pendingIteration = (Hashtable<String, Integer>) _pendingIteration
+                .clone();
+
+        return newObject;
     }
 
     ///////////////////////////////////////////////////////////////////

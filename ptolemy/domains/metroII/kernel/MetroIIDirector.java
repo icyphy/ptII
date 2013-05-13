@@ -286,7 +286,7 @@ public class MetroIIDirector extends Director {
         
         _timeScheduler.initialize(); 
     }
-
+    
     /**
     * Each iteration has two phases. In Phase 1, MetroIIDirector
     * calls each actor (no particular order should be presumed. See
@@ -297,6 +297,11 @@ public class MetroIIDirector extends Director {
     */
     public void fire() throws IllegalActionException {
 
+        int iterationsValue = ((IntToken) iterations.getToken()).intValue();
+        if (iterationsValue == 0) {
+            return;
+        }
+        
         if (!_stopRequested) {
             LinkedList<Event.Builder> globalMetroIIEventList = new LinkedList<Event.Builder>();
 
@@ -386,7 +391,7 @@ public class MetroIIDirector extends Director {
     public boolean postfire() throws IllegalActionException {
         _iterationCount++;
         int iterationsValue = ((IntToken) iterations.getToken()).intValue();
-        if (_stopRequested || iterationsValue > 0
+        if (_stopRequested || iterationsValue >= 0
                 && _iterationCount >= iterationsValue) {
             _iterationCount = 0;
             for (StartOrResumable actor : _actorList) {
