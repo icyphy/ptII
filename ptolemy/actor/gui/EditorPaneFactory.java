@@ -125,7 +125,7 @@ public class EditorPaneFactory extends Attribute {
                     PtolemyQuery decoratorQuery = new PtolemyQuery(object);
                     decoratorQuery.setAlignmentY(Component.TOP_ALIGNMENT);
                     decoratorQuery.setTextWidth(DEFAULT_QUERY_WIDTH); 
-                    decoratorQuery.addText("Decorator providing these parameters: "
+                    decoratorQuery.addText("Decorator providing the parameters below: "
                             + decorator.getFullName(), Color.BLACK, 0); 
                     boolean foundDecoratorAttribute = false;
 
