@@ -45,13 +45,13 @@
         </property>
     </property>
     <property name="Title" class="ptolemy.vergil.basic.export.web.Title" value="Test Model for the Generator Class">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[125.0, 0.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[115.0, 0.0]">
         </property>
     </property>
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="See also the ContactorTester model.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Next model: ContactorTester">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[0.0, 40.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[260.0, 315.0]">
         </property>
         <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$PTII/ptolemy/demo/ElectricPowerSystem/ContactorTester.xml">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">

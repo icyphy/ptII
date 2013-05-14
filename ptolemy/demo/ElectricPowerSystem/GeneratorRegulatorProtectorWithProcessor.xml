@@ -4,9 +4,9 @@
 <entity name="GeneratorRegulatorProtectorWithProcessor" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={52, 52, 1150, 714}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={52, 52, 1252, 710}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[916, 604]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1018, 600]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.1600512163892445">
     </property>
@@ -35,16 +35,16 @@
         </property>
     </property>
     <property name="LocalPreferences" class="ptolemy.actor.gui.PtolemyPreferences">
-        <property name="_showParameters" class="ptolemy.data.expr.StringParameter" value="Overridden parameters only">
+        <property name="_showParameters" class="ptolemy.data.expr.StringParameter" value="None">
             <display name="Show parameters"/>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 460.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 555.0]">
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model includes a model of a bus communication fabric, which introduces&#10;delay in communication.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model includes two possible implementation platforms, one with one processor,&#10;one with two processors. Change the selection using the useTwoProcessors parameter.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[120.0, 35.0]">
         </property>
@@ -65,55 +65,24 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 100.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 105.0]">
         </property>
     </property>
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="At 119, if the Bus is used to communicate&#10;to the PID controller, the overvoltage &#10;protection kicks in.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="At 119, if the Supervisor and PID&#10;actors share the same processor, then&#10;overvoltage protection kicks in.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 110.0]">
-        </property>
-    </property>
-    <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="See also the GeneratorRegulatorFMUProtector model.">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[255.0, 485.0]">
-        </property>
-        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$PTII/ptolemy/demo/ElectricPowerSystem/GeneratorRegulatorFMUProtector.xml">
-            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-            </property>
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
-                </property>
-            </property>
-            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-                <configure>
-      <svg>
-        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">LL</text>
-      </svg>
-    </configure>
-            </property>
-            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{395, 280}">
-            </property>
-        </property>
-        <property name="IconLink" class="ptolemy.vergil.basic.export.web.IconLink" value="http://icyphy.org/models/GeneratorRegulatorFMUProtector/index.html">
-            <property name="linkTarget" class="ptolemy.vergil.basic.export.web.LinkTarget" value="_blank">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{335, 500}">
-            </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 115.0]">
         </property>
     </property>
     <property name="Annotation5" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The input here&#10;is delivered over&#10;the Bus (indicated&#10;by the red fill and&#10;annotation on the&#10;port). The delay&#10;of the bus is&#10;sufficient to&#10;cause over-&#10;voltage protection&#10;to kick in.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The platform selection&#10;is determined by the&#10;enable parameter, which&#10;is provided by each of&#10;the platforms. The&#10;platforms are&#10;&quot;decorators.&quot;">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="[-80.0, 75.0]">
-            <property name="relativeTo" class="ptolemy.kernel.util.StringAttribute" value="PID">
+        <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="[60.0, 40.0]">
+            <property name="relativeTo" class="ptolemy.kernel.util.StringAttribute" value="Controller">
             </property>
             <property name="relativeToElementName" class="ptolemy.kernel.util.StringAttribute" value="entity">
             </property>
@@ -122,13 +91,13 @@
     <property name="Annotation6" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.8,0.0,0.0,1.0}">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Removing the &quot;qm&quot; parameter&#10;from the PID input port removes&#10;the bus delay and changes the&#10;behavior. Adding a similar parameter&#10;to other ports increases their delay&#10;and increases contention.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The Supervisor and PID actors can&#10;execute on the same processor or on&#10;two processors, depending on the value&#10;of useTwoProcessors. If they use one&#10;processor, overvoltage protection kicks&#10;in, while if they use two, it does not.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="[380.0, 370.0]">
+        <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="[295.0, 360.0]">
         </property>
     </property>
     <property name="_defaultWebExportParameters" class="ptolemy.vergil.basic.export.web.WebExportParameters">
-        <property name="directoryToExportTo" class="ptolemy.data.expr.FileParameter" value="/Users/eal/Projects/iCyPhy/icyphywww/models/GeneratorRegulatorProtectorWithBus">
+        <property name="directoryToExportTo" class="ptolemy.data.expr.FileParameter" value="/Users/eal/Projects/iCyPhy/icyphywww/models/GeneratorRegulatorProtectorWithProcessor">
             <property name="allowFiles" class="ptolemy.data.expr.Parameter" value="false">
             </property>
             <property name="allowDirectories" class="ptolemy.data.expr.Parameter" value="true">
@@ -149,12 +118,70 @@
         <property name="usePtWebsite" class="ptolemy.data.expr.Parameter" value="false">
         </property>
     </property>
+    <property name="useTwoProcessors" class="ptolemy.data.expr.Parameter" value="false">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 85.0]">
+        </property>
+    </property>
+    <property name="Annotation7" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Two alternative execution platforms.&#10;Select between them using the&#10;useTwoProcessors parameter.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 370.0]">
+        </property>
+    </property>
+    <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Previous model: GeneratorRegulatorProtectorWithBus">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, 480.0]">
+        </property>
+        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$PTII/ptolemy/demo/ElectricPowerSystem/GeneratorRegulatorProtectorWithBus.xml">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">LL</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{395, 280}">
+            </property>
+        </property>
+        <property name="IconLink" class="ptolemy.vergil.basic.export.web.IconLink" value="http://icyphy.org/models/GeneratorRegulatorProtectorWithBus/index.html">
+            <property name="linkTarget" class="ptolemy.vergil.basic.export.web.LinkTarget" value="_blank">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{475, 400}">
+            </property>
+        </property>
+    </property>
     <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
         <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="Voltage, Drive">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={641, 134, 639, 456}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={852, 605, 639, 441}, maximized=false}">
         </property>
-        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[639, 412]">
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[639, 397]">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{570.0, 295.0}">
         </property>
@@ -178,18 +205,6 @@
             <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="">
             </property>
         </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-            <property name="DecoratorAttributesFor_Bus" class="ptolemy.actor.lib.qm.Bus$BusAttributes">
-                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Bus">
-                </property>
-                <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
-                <property name="messageLength" class="ptolemy.data.expr.Parameter" value="1">
-                </property>
-            </property>
-        </port>
         <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
@@ -198,7 +213,7 @@
 <xLabel>time (seconds)</xLabel>
 <yLabel>voltage, drive</yLabel>
 <xRange min="0.0" max="60.0"/>
-<yRange min="0.0" max="289.08439279402626"/>
+<yRange min="-119.31385481864397" max="292.28357399100196"/>
 <default connected="no" marks="various" stems="yes"/>
 </plot>?>
         </configure>
@@ -234,28 +249,6 @@
             <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="">
             </property>
         </property>
-        <port name="drive" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="DecoratorAttributesFor_Bus" class="ptolemy.actor.lib.qm.Bus$BusAttributes">
-                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Bus">
-                </property>
-                <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
-                <property name="messageLength" class="ptolemy.data.expr.Parameter" value="1">
-                </property>
-            </property>
-        </port>
-        <port name="contactor" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="DecoratorAttributesFor_Bus" class="ptolemy.actor.lib.qm.Bus$BusAttributes">
-                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Bus">
-                </property>
-                <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
-                <property name="messageLength" class="ptolemy.data.expr.Parameter" value="1">
-                </property>
-            </property>
-        </port>
         <entity name="Generator" class="ptolemy.demo.ElectricPowerSystem.Generator">
             <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
                 <property name="DecoratorAttributesFor_1Processor" class="ptolemy.actor.lib.resourceScheduler.CompositeResourceScheduler$CompositeResourceSchedulerAttributes">
@@ -280,6 +273,10 @@
                 </property>
             </entity>
             <entity name="Scale" class="ptolemy.actor.lib.Scale">
+                <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+                    <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
+                    </property>
+                </property>
                 <property name="DecoratorAttributesFor_1Processor" class="ptolemy.actor.lib.resourceScheduler.CompositeResourceScheduler$CompositeResourceSchedulerAttributes">
                     <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="1Processor">
                     </property>
@@ -324,6 +321,12 @@
                 </property>
             </entity>
             <entity name="Expression" class="ptolemy.actor.lib.Expression">
+                <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                    <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+                    </property>
+                    <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                    </property>
+                </property>
                 <property name="DecoratorAttributesFor_1Processor" class="ptolemy.actor.lib.resourceScheduler.CompositeResourceScheduler$CompositeResourceSchedulerAttributes">
                     <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="1Processor">
                     </property>
@@ -368,6 +371,12 @@
                 </property>
             </entity>
             <entity name="Const" class="ptolemy.actor.lib.Const">
+                <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                    <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+                    </property>
+                    <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+                    </property>
+                </property>
                 <property name="DecoratorAttributesFor_1Processor" class="ptolemy.actor.lib.resourceScheduler.CompositeResourceScheduler$CompositeResourceSchedulerAttributes">
                     <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="1Processor">
                     </property>
@@ -437,6 +446,12 @@
             </entity>
         </entity>
         <entity name="Load" class="ptolemy.actor.lib.Const">
+            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+                </property>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+                </property>
+            </property>
             <property name="DecoratorAttributesFor_1Processor" class="ptolemy.actor.lib.resourceScheduler.CompositeResourceScheduler$CompositeResourceSchedulerAttributes">
                 <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="1Processor">
                 </property>
@@ -525,155 +540,6 @@
             </property>
         </entity>
     </entity>
-    <entity name="DesiredVoltage" class="ptolemy.actor.lib.Const">
-        <property name="value" class="ptolemy.data.expr.Parameter" value="110.0">
-        </property>
-        <doc>Create a constant sequence.</doc>
-        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
-            </property>
-            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
-            </property>
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[550.0, 160.0]">
-        </property>
-        <property name="DecoratorAttributesFor_1Processor" class="ptolemy.actor.lib.resourceScheduler.CompositeResourceScheduler$CompositeResourceSchedulerAttributes">
-            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="1Processor">
-            </property>
-            <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
-            </property>
-            <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
-            </property>
-            <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="">
-            </property>
-        </property>
-        <property name="DecoratorAttributesFor_2Processors" class="ptolemy.actor.lib.resourceScheduler.CompositeResourceScheduler$CompositeResourceSchedulerAttributes">
-            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="2Processors">
-            </property>
-            <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
-            </property>
-            <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
-            </property>
-            <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="">
-            </property>
-        </property>
-        <port name="trigger" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-            <property name="DecoratorAttributesFor_Bus" class="ptolemy.actor.lib.qm.Bus$BusAttributes">
-                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Bus">
-                </property>
-                <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
-                <property name="messageLength" class="ptolemy.data.expr.Parameter" value="1">
-                </property>
-            </property>
-        </port>
-    </entity>
-    <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[635.0, 200.0]">
-        </property>
-        <property name="DecoratorAttributesFor_1Processor" class="ptolemy.actor.lib.resourceScheduler.CompositeResourceScheduler$CompositeResourceSchedulerAttributes">
-            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="1Processor">
-            </property>
-            <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
-            </property>
-            <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
-            </property>
-            <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="">
-            </property>
-        </property>
-        <property name="DecoratorAttributesFor_2Processors" class="ptolemy.actor.lib.resourceScheduler.CompositeResourceScheduler$CompositeResourceSchedulerAttributes">
-            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="2Processors">
-            </property>
-            <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
-            </property>
-            <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
-            </property>
-            <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="">
-            </property>
-        </property>
-        <port name="plus" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-            <property name="DecoratorAttributesFor_Bus" class="ptolemy.actor.lib.qm.Bus$BusAttributes">
-                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Bus">
-                </property>
-                <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
-                <property name="messageLength" class="ptolemy.data.expr.Parameter" value="1">
-                </property>
-            </property>
-        </port>
-        <port name="minus" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-            <property name="DecoratorAttributesFor_Bus" class="ptolemy.actor.lib.qm.Bus$BusAttributes">
-                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Bus">
-                </property>
-                <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
-                <property name="messageLength" class="ptolemy.data.expr.Parameter" value="1">
-                </property>
-            </property>
-        </port>
-    </entity>
-    <entity name="PID" class="ptolemy.domains.de.lib.PID">
-        <property name="Kp" class="ptolemy.data.expr.Parameter" value="2.0">
-        </property>
-        <property name="Ki" class="ptolemy.data.expr.Parameter" value="1.0">
-        </property>
-        <doc>Discrete proportional, integral, and derivative controller.</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[735.0, 210.0]">
-        </property>
-        <property name="DecoratorAttributesFor_1Processor" class="ptolemy.actor.lib.resourceScheduler.CompositeResourceScheduler$CompositeResourceSchedulerAttributes">
-            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="1Processor">
-            </property>
-            <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
-            </property>
-            <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.1">
-            </property>
-            <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="in2">
-            </property>
-        </property>
-        <property name="DecoratorAttributesFor_2Processors" class="ptolemy.actor.lib.resourceScheduler.CompositeResourceScheduler$CompositeResourceSchedulerAttributes">
-            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="2Processors">
-            </property>
-            <property name="enable" class="ptolemy.data.expr.Parameter" value="true">
-            </property>
-            <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.1">
-            </property>
-            <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="in2">
-            </property>
-        </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="qm" class="ptolemy.data.expr.Parameter" value="Bus">
-            </property>
-            <property name="_showInfo" class="ptolemy.kernel.util.StringAttribute">
-            </property>
-            <property name="DecoratorAttributesFor_Bus" class="ptolemy.actor.lib.qm.Bus$BusAttributes">
-                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Bus">
-                </property>
-                <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
-                <property name="messageLength" class="ptolemy.data.expr.Parameter" value="1">
-                </property>
-            </property>
-        </port>
-        <port name="reset" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-            <property name="DecoratorAttributesFor_Bus" class="ptolemy.actor.lib.qm.Bus$BusAttributes">
-                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Bus">
-                </property>
-                <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
-                <property name="messageLength" class="ptolemy.data.expr.Parameter" value="1">
-                </property>
-            </property>
-        </port>
-    </entity>
     <entity name="SingleEvent" class="ptolemy.actor.lib.SingleEvent">
         <property name="time" class="ptolemy.data.expr.Parameter" value="15.0">
         </property>
@@ -739,14 +605,6 @@
             <property name="input"/>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
-            <property name="DecoratorAttributesFor_Bus" class="ptolemy.actor.lib.qm.Bus$BusAttributes">
-                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Bus">
-                </property>
-                <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
-                <property name="messageLength" class="ptolemy.data.expr.Parameter" value="1">
-                </property>
-            </property>
         </port>
     </entity>
     <entity name="Supervisor" class="ptolemy.domains.modal.modal.ModalModel">
@@ -757,7 +615,7 @@
         <property name="DecoratorAttributesFor_1Processor" class="ptolemy.actor.lib.resourceScheduler.CompositeResourceScheduler$CompositeResourceSchedulerAttributes">
             <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="1Processor">
             </property>
-            <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+            <property name="enable" class="ptolemy.data.expr.Parameter" value="!useTwoProcessors">
             </property>
             <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.5">
             </property>
@@ -767,7 +625,7 @@
         <property name="DecoratorAttributesFor_2Processors" class="ptolemy.actor.lib.resourceScheduler.CompositeResourceScheduler$CompositeResourceSchedulerAttributes">
             <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="2Processors">
             </property>
-            <property name="enable" class="ptolemy.data.expr.Parameter" value="true">
+            <property name="enable" class="ptolemy.data.expr.Parameter" value="useTwoProcessors">
             </property>
             <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.5">
             </property>
@@ -778,28 +636,12 @@
             <property name="input"/>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
-            <property name="DecoratorAttributesFor_Bus" class="ptolemy.actor.lib.qm.Bus$BusAttributes">
-                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Bus">
-                </property>
-                <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
-                <property name="messageLength" class="ptolemy.data.expr.Parameter" value="1">
-                </property>
-            </property>
         </port>
         <port name="fault" class="ptolemy.domains.modal.modal.ModalPort">
             <property name="input"/>
             <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="SOUTH">
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-            <property name="DecoratorAttributesFor_Bus" class="ptolemy.actor.lib.qm.Bus$BusAttributes">
-                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Bus">
-                </property>
-                <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
-                <property name="messageLength" class="ptolemy.data.expr.Parameter" value="1">
-                </property>
             </property>
         </port>
         <port name="contactor" class="ptolemy.domains.modal.modal.ModalPort">
@@ -808,8 +650,6 @@
             </property>
         </port>
         <entity name="_Controller" class="ptolemy.domains.modal.modal.ModalController">
-            <property name="errorCause" class="ptolemy.data.expr.Parameter">
-            </property>
             <property name="_library" class="ptolemy.moml.LibraryAttribute">
                 <configure>
       <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.modal.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory"></property></entity></entity>
@@ -945,69 +785,8 @@
         <link port="_Controller.fault" relation="faultRelation"/>
         <link port="_Controller.contactor" relation="contactorRelation"/>
     </entity>
-    <entity name="MicrostepDelay" class="ptolemy.actor.lib.MicrostepDelay">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[245.0, 220.0]">
-        </property>
-        <property name="DecoratorAttributesFor_1Processor" class="ptolemy.actor.lib.resourceScheduler.CompositeResourceScheduler$CompositeResourceSchedulerAttributes">
-            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="1Processor">
-            </property>
-            <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
-            </property>
-            <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
-            </property>
-            <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="">
-            </property>
-        </property>
-        <property name="DecoratorAttributesFor_2Processors" class="ptolemy.actor.lib.resourceScheduler.CompositeResourceScheduler$CompositeResourceSchedulerAttributes">
-            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="2Processors">
-            </property>
-            <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
-            </property>
-            <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
-            </property>
-            <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="">
-            </property>
-        </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="DecoratorAttributesFor_Bus" class="ptolemy.actor.lib.qm.Bus$BusAttributes">
-                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Bus">
-                </property>
-                <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
-                <property name="messageLength" class="ptolemy.data.expr.Parameter" value="1">
-                </property>
-            </property>
-        </port>
-    </entity>
-    <entity name="Bus" class="ptolemy.actor.lib.qm.Bus">
-        <property name="serviceTimeMultiplicationFactor" class="ptolemy.data.expr.Parameter" value="0.5">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 395.0]">
-        </property>
-        <property name="DecoratorAttributesFor_1Processor" class="ptolemy.actor.lib.resourceScheduler.CompositeResourceScheduler$CompositeResourceSchedulerAttributes">
-            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="1Processor">
-            </property>
-            <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
-            </property>
-            <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
-            </property>
-            <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="">
-            </property>
-        </property>
-        <property name="DecoratorAttributesFor_2Processors" class="ptolemy.actor.lib.resourceScheduler.CompositeResourceScheduler$CompositeResourceSchedulerAttributes">
-            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="2Processors">
-            </property>
-            <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
-            </property>
-            <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
-            </property>
-            <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="">
-            </property>
-        </property>
-    </entity>
     <entity name="1Processor" class="ptolemy.actor.lib.resourceScheduler.CompositeResourceScheduler">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[185.0, 390.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 465.0]">
         </property>
         <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
             <property name="_location" class="ptolemy.kernel.util.Location" value="[255.0, 70.0]">
@@ -1023,13 +802,13 @@
             <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="">
             </property>
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={173, 83, 934, 634}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={593, 412, 934, 634}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
         </property>
-        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.5848619840383296">
         </property>
-        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{412.0, 284.181640625}">
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{289.6845703125, 204.34087126358696}">
         </property>
         <property name="DecoratorAttributesFor_2Processors" class="ptolemy.actor.lib.resourceScheduler.CompositeResourceScheduler$CompositeResourceSchedulerAttributes">
             <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="2Processors">
@@ -1068,9 +847,9 @@
             </property>
         </entity>
         <entity name="Server" class="ptolemy.domains.de.lib.Server">
-            <property name="serviceTime" class="ptolemy.actor.parameters.PortParameter" value="0.7">
+            <property name="serviceTime" class="ptolemy.actor.parameters.PortParameter" value="0.5">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[290.0, 140.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[380.0, 140.0]">
             </property>
             <property name="DecoratorAttributesFor_CompositeResourceScheduler" class="ptolemy.actor.lib.resourceScheduler.CompositeResourceScheduler$CompositeResourceSchedulerAttributes">
                 <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="1Processor">
@@ -1129,7 +908,7 @@
             </property>
             <property name="Parameter" class="ptolemy.data.expr.Parameter" value="">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[425.0, 140.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[495.0, 140.0]">
             </property>
             <property name="DecoratorAttributesFor_CompositeResourceScheduler" class="ptolemy.actor.lib.resourceScheduler.CompositeResourceScheduler$CompositeResourceSchedulerAttributes">
                 <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="1Processor">
@@ -1270,7 +1049,7 @@
         <link port="Merge.output" relation="relation3"/>
     </entity>
     <entity name="2Processors" class="ptolemy.actor.lib.resourceScheduler.CompositeResourceScheduler">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[300.0, 390.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, 465.0]">
         </property>
         <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
             <property name="_location" class="ptolemy.kernel.util.Location" value="[255.0, 70.0]">
@@ -1290,9 +1069,9 @@
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
         </property>
-        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.2985754395314297">
         </property>
-        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{412.0, 284.181640625}">
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{337.67574705131324, 240.0908203125}">
         </property>
         <property name="DecoratorAttributesFor_2Processors" class="ptolemy.actor.lib.resourceScheduler.CompositeResourceScheduler$CompositeResourceSchedulerAttributes">
             <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="2Processors">
@@ -1331,7 +1110,7 @@
             </property>
         </entity>
         <entity name="Server" class="ptolemy.domains.de.lib.Server">
-            <property name="serviceTime" class="ptolemy.actor.parameters.PortParameter" value="0.5">
+            <property name="serviceTime" class="ptolemy.actor.parameters.PortParameter" value="0.1">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[290.0, 140.0]">
             </property>
@@ -1357,7 +1136,7 @@
             </property>
         </entity>
         <entity name="RecordDisassembler" class="ptolemy.actor.lib.RecordDisassembler">
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[235.0, 210.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[145.0, 210.0]">
             </property>
             <property name="DecoratorAttributesFor_CompositeResourceScheduler" class="ptolemy.actor.lib.resourceScheduler.CompositeResourceScheduler$CompositeResourceSchedulerAttributes">
                 <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="1Processor">
@@ -1455,7 +1234,7 @@
         <entity name="in2" class="ptolemy.actor.lib.resourceScheduler.ResourceMappingInputPort">
             <property name="value" class="ptolemy.data.expr.Parameter" value="">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 335.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 340.0]">
             </property>
             <property name="DecoratorAttributesFor_CompositeResourceScheduler" class="ptolemy.actor.lib.resourceScheduler.CompositeResourceScheduler$CompositeResourceSchedulerAttributes">
                 <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="1Processor">
@@ -1505,7 +1284,7 @@
             </property>
         </entity>
         <entity name="RecordDisassembler2" class="ptolemy.actor.lib.RecordDisassembler">
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[230.0, 395.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[150.0, 395.0]">
             </property>
             <property name="DecoratorAttributesFor_CompositeResourceScheduler" class="ptolemy.actor.lib.resourceScheduler.CompositeResourceScheduler$CompositeResourceSchedulerAttributes">
                 <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="1Processor">
@@ -1603,7 +1382,7 @@
         <relation name="relation3" class="ptolemy.actor.TypedIORelation">
             <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
             </property>
-            <vertex name="vertex1" value="[210.0, 140.0]">
+            <vertex name="vertex1" value="[120.0, 140.0]">
             </vertex>
             <property name="color" class="ptolemy.actor.gui.ColorAttribute">
             </property>
@@ -1617,7 +1396,7 @@
         <relation name="relation2" class="ptolemy.actor.TypedIORelation">
             <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
             </property>
-            <vertex name="vertex1" value="[210.0, 340.0]">
+            <vertex name="vertex1" value="[125.0, 340.0]">
             </vertex>
             <property name="color" class="ptolemy.actor.gui.ColorAttribute">
             </property>
@@ -1643,19 +1422,135 @@
         <link port="RecordDisassembler2.executionTime" relation="relation5"/>
         <link port="out2.input" relation="relation6"/>
     </entity>
+    <entity name="MicrostepDelay" class="ptolemy.actor.lib.MicrostepDelay">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[245.0, 220.0]">
+        </property>
+        <property name="DecoratorAttributesFor_1Processor" class="ptolemy.actor.lib.resourceScheduler.CompositeResourceScheduler$CompositeResourceSchedulerAttributes">
+            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="1Processor">
+            </property>
+            <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+            </property>
+            <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="">
+            </property>
+        </property>
+        <property name="DecoratorAttributesFor_2Processors" class="ptolemy.actor.lib.resourceScheduler.CompositeResourceScheduler$CompositeResourceSchedulerAttributes">
+            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="2Processors">
+            </property>
+            <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+            </property>
+            <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="">
+            </property>
+        </property>
+    </entity>
+    <entity name="Controller" class="Controller">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[580.0, 210.0]">
+        </property>
+        <property name="DecoratorAttributesFor_2Processors" class="ptolemy.actor.lib.resourceScheduler.CompositeResourceScheduler$CompositeResourceSchedulerAttributes">
+            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="2Processors">
+            </property>
+            <property name="enable" class="ptolemy.data.expr.Parameter" value="useTwoProcessors">
+            </property>
+            <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.15">
+            </property>
+            <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="in2">
+            </property>
+        </property>
+        <property name="DecoratorAttributesFor_1Processor" class="ptolemy.actor.lib.resourceScheduler.CompositeResourceScheduler$CompositeResourceSchedulerAttributes">
+            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="1Processor">
+            </property>
+            <property name="enable" class="ptolemy.data.expr.Parameter" value="!useTwoProcessors">
+            </property>
+            <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.15">
+            </property>
+            <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="in2">
+            </property>
+        </property>
+        <entity name="DesiredVoltage" class="ptolemy.actor.lib.Const">
+            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+                </property>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+                </property>
+            </property>
+            <property name="DecoratorAttributesFor_1Processor" class="ptolemy.actor.lib.resourceScheduler.CompositeResourceScheduler$CompositeResourceSchedulerAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="1Processor">
+                </property>
+                <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+                <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="">
+                </property>
+            </property>
+            <property name="DecoratorAttributesFor_2Processors" class="ptolemy.actor.lib.resourceScheduler.CompositeResourceScheduler$CompositeResourceSchedulerAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="2Processors">
+                </property>
+                <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+                <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="">
+                </property>
+            </property>
+        </entity>
+        <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
+            <property name="DecoratorAttributesFor_1Processor" class="ptolemy.actor.lib.resourceScheduler.CompositeResourceScheduler$CompositeResourceSchedulerAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="1Processor">
+                </property>
+                <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+                <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="">
+                </property>
+            </property>
+            <property name="DecoratorAttributesFor_2Processors" class="ptolemy.actor.lib.resourceScheduler.CompositeResourceScheduler$CompositeResourceSchedulerAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="2Processors">
+                </property>
+                <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+                <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="">
+                </property>
+            </property>
+        </entity>
+        <entity name="PID" class="ptolemy.domains.de.lib.PID">
+            <property name="DecoratorAttributesFor_1Processor" class="ptolemy.actor.lib.resourceScheduler.CompositeResourceScheduler$CompositeResourceSchedulerAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="1Processor">
+                </property>
+                <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+                <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="">
+                </property>
+            </property>
+            <property name="DecoratorAttributesFor_2Processors" class="ptolemy.actor.lib.resourceScheduler.CompositeResourceScheduler$CompositeResourceSchedulerAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="2Processors">
+                </property>
+                <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+                <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="">
+                </property>
+            </property>
+        </entity>
+    </entity>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
         <vertex name="vertex1" value="[510.0, 210.0]">
         </vertex>
     </relation>
-    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-    </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
         <vertex name="vertex1" value="[330.0, 85.0]">
         </vertex>
-    </relation>
-    <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
     </relation>
@@ -1670,13 +1565,6 @@
     <link port="GeneratorContactorLoad.drive" relation="relation4"/>
     <link port="GeneratorContactorLoad.voltage" relation="relation2"/>
     <link port="GeneratorContactorLoad.contactor" relation="relation6"/>
-    <link port="DesiredVoltage.output" relation="relation"/>
-    <link port="DesiredVoltage.trigger" relation="relation2"/>
-    <link port="AddSubtract.plus" relation="relation"/>
-    <link port="AddSubtract.minus" relation="relation2"/>
-    <link port="AddSubtract.output" relation="relation3"/>
-    <link port="PID.input" relation="relation3"/>
-    <link port="PID.output" relation="relation4"/>
     <link port="SingleEvent.output" relation="relation7"/>
     <link port="Expression.output" relation="relation5"/>
     <link port="Expression.voltage" relation="relation2"/>
@@ -1685,4 +1573,6 @@
     <link port="Supervisor.contactor" relation="relation8"/>
     <link port="MicrostepDelay.input" relation="relation8"/>
     <link port="MicrostepDelay.output" relation="relation6"/>
+    <link port="Controller.drive" relation="relation4"/>
+    <link port="Controller.voltage" relation="relation2"/>
 </entity>
