@@ -96,7 +96,11 @@ public class AttributeValueIcon extends XMLIcon {
     ///////////////////////////////////////////////////////////////////
     ////                         parameters                        ////
 
-    /** The name of the attribute of the container whose value to display. */
+    /** The name of the attribute of the container whose value to display.
+     *  This is a string that by default is empty. An empty string means
+     *  that the attribute whose value to display is the container itself,
+     *  rather than an attribute contained by the container.
+     */
     public StringAttribute attributeName;
 
     /** The maximum number of lines to display. This is an integer, with
@@ -141,6 +145,49 @@ public class AttributeValueIcon extends XMLIcon {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
+    /** Return the associated attribute. If an {@link #entityName} is given,
+     *  then the associated attribute is attribute with name given by
+     *  {@link attributeName} contained by the specified entity.
+     *  If no entityName is given, then the associated attribute is
+     *  the one contained by the container of this object with the
+     *  specified name.  If no attributeName is given either, and the
+     *  the container of this object is an Attribute, then the associated
+     *  attribute is that container. Otherwise, throw an exception.
+     *  @param associatedAttribute
+     *  @return The associated attribute.
+     *  @throws IllegalActionException If no Settable associated attribute
+     *   can be found.
+     */
+    protected Settable _associatedAttribute() throws IllegalActionException {
+        NamedObj container = getContainer();
+        if (entityName.stringValue().trim().equals("")) {
+            String name = attributeName.getExpression();
+            if (!name.trim().equals("") && container != null) {
+                Attribute candidate = container.getAttribute(name);
+                if (candidate instanceof Settable) {
+                    return (Settable)candidate;
+                }
+            } else {
+                // No attributeName is given.
+                // If the container is an Attribute, use it.
+                if (container instanceof Settable) {
+                    return (Settable)container;
+                }
+            }
+        } else if (container instanceof CompositeEntity) {
+            NamedObj entity = ((CompositeEntity) container)
+                    .getEntity(entityName.stringValue());
+            if (entity != null) {
+                Attribute candidate = entity.getAttribute(attributeName
+                        .getExpression());
+                if (candidate instanceof Settable) {
+                    return (Settable)candidate;
+                }
+            }
+        }
+        throw new IllegalActionException(this, "No associated attribute.");
+    }
+
     /** Get the string value of the attribute to render in the icon.
      *  This string is the expression giving the value of the attribute of the
      *  container having the name <i>attributeName</i>. If the string is empty,
@@ -151,36 +198,16 @@ public class AttributeValueIcon extends XMLIcon {
      *   one space if none is found.
      */
     protected String _attributeValueString() {
-        NamedObj container = getContainer();
-
-        if (container != null) {
-            Attribute associatedAttribute = null;
-            try {
-                if (entityName.stringValue().trim().equals("")) {
-                    associatedAttribute = container.getAttribute(attributeName
-                            .getExpression());
-                } else if (container instanceof CompositeEntity) {
-                    NamedObj entity = ((CompositeEntity) container)
-                            .getEntity(entityName.stringValue());
-                    if (entity != null) {
-                        associatedAttribute = entity.getAttribute(attributeName
-                                .getExpression());
-                    }
-                }
-            } catch (IllegalActionException e) {
-                // Ignore and produce a default icon.
+        try {
+            String value = _associatedAttribute().getExpression();
+            if (value == null || value.equals("")) {
+                value = " ";
             }
-
-            if (associatedAttribute instanceof Settable) {
-                String value = ((Settable) associatedAttribute).getExpression();
-                if (value == null || value.equals("")) {
-                    value = " ";
-                }
-                return value;
-            }
+            return value;
+        } catch (IllegalActionException e) {
+            // Ignore and produce a default icon.
+            return " ";
         }
-
-        return " ";
     }
 
     /** Get the string to render in the icon.  This string is the

@@ -52,6 +52,7 @@ JSRCS = \
 	AttributeValueIcon.java \
 	BoxedValueIcon.java \
 	BoxedValuesIcon.java \
+	ConstraintMonitorIcon.java \
 	CopyCatIcon.java \
 	DesignPatternIcon.java \
 	DynamicEditorIcon.java \

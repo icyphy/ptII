@@ -82,6 +82,7 @@ JSRCS = \
 	ConcreteScalarToken.java \
 	Constants.java \
 	ContainmentExtender.java \
+	ConstraintMonitor.java \
 	ConversionUtilities.java \
 	CParseTreeCodeGenerator.java \
 	ExpertParameter.java \
