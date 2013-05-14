@@ -39,7 +39,15 @@
             </property>
             <property name="qm" class="ptolemy.data.expr.Parameter" value="Bus">
             </property>
-            <property name="_showInfo" class="ptolemy.kernel.util.StringAttribute" value="QM: Bus">
+            <property name="_showInfo" class="ptolemy.kernel.util.StringAttribute" value="QM = {Bus}">
+            </property>
+            <property name="DecoratorAttributesFor_Bus" class="ptolemy.actor.lib.qm.Bus$BusAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Bus">
+                </property>
+                <property name="enable" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="messageLength" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
             </property>
         </port>
         <port name="port2" class="ptolemy.actor.TypedIOPort">
@@ -48,7 +56,15 @@
             </property>
             <property name="qm" class="ptolemy.data.expr.Parameter" value="Bus">
             </property>
-            <property name="_showInfo" class="ptolemy.kernel.util.StringAttribute" value="QM: Bus">
+            <property name="_showInfo" class="ptolemy.kernel.util.StringAttribute" value="QM = {Bus}">
+            </property>
+            <property name="DecoratorAttributesFor_Bus" class="ptolemy.actor.lib.qm.Bus$BusAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Bus">
+                </property>
+                <property name="enable" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="messageLength" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
             </property>
         </port>
         <entity name="Maximum" class="ptolemy.actor.lib.Maximum">
@@ -117,7 +133,15 @@
             </property>
             <property name="qm" class="ptolemy.data.expr.Parameter" value="Bus">
             </property>
-            <property name="_showInfo" class="ptolemy.kernel.util.StringAttribute" value="QM: Bus">
+            <property name="_showInfo" class="ptolemy.kernel.util.StringAttribute" value="QM = {Bus}">
+            </property>
+            <property name="DecoratorAttributesFor_Bus" class="ptolemy.actor.lib.qm.Bus$BusAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Bus">
+                </property>
+                <property name="enable" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="messageLength" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
             </property>
         </port>
         <entity name="TriggeredSinewave" class="ptolemy.actor.lib.TriggeredSinewave">
@@ -153,7 +177,15 @@
             </property>
             <property name="qm" class="ptolemy.data.expr.Parameter" value="Bus">
             </property>
-            <property name="_showInfo" class="ptolemy.kernel.util.StringAttribute" value="QM: Bus">
+            <property name="_showInfo" class="ptolemy.kernel.util.StringAttribute" value="QM = {Bus}">
+            </property>
+            <property name="DecoratorAttributesFor_Bus" class="ptolemy.actor.lib.qm.Bus$BusAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Bus">
+                </property>
+                <property name="enable" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="messageLength" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
             </property>
         </port>
         <entity name="TriggeredSinewave" class="ptolemy.actor.lib.TriggeredSinewave">
