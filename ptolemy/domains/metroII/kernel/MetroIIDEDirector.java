@@ -107,10 +107,11 @@ public class MetroIIDEDirector extends DEDirector implements
                 if (actor instanceof MetroIIEventHandler) {
                     _actorDictionary.put(actor.getFullName(),
                             new ResumableFire(actor));
-                } else {
-                    _actorDictionary.put(actor.getFullName(),
-                            new NonBlockingFire(actor));
                 }
+                //                else {
+                //                    _actorDictionary.put(actor.getFullName(),
+                //                            new NonBlockingFire(actor));
+                //                }
                 _pendingIteration.put(actor.getFullName(), 0);
             }
         }
@@ -369,14 +370,23 @@ public class MetroIIDEDirector extends DEDirector implements
                 while (_checkForNextEvent()) { // Close the BIG while loop.
                     if (((BooleanToken) printTrace.getToken()).booleanValue()) {
                         System.out.println("Before checking actor Time: "
-                                + this.getModelTime() + " " + this.getMicrostep());
+                                + this.getModelTime() + " "
+                                + this.getMicrostep());
                     }
                     Pair<Actor, Integer> actorAndState = _checkNextActorToFire();
                     if (((BooleanToken) printTrace.getToken()).booleanValue()) {
                         System.out.println("After checking actor Time: "
-                                + this.getModelTime() + " " + this.getMicrostep());
+                                + this.getModelTime() + " "
+                                + this.getMicrostep());
                     }
                     int result = actorAndState.getSecond();
+
+                    if (actorAndState.getFirst() != null
+                            && !(actorAndState.getFirst() instanceof MetroIIEventHandler)) {
+                        actorAndState.getFirst().fire();
+                        actorAndState.getFirst().postfire();
+                        continue; 
+                    }
 
                     assert result <= 1 && result >= -1;
                     if (result == 1) {
@@ -457,21 +467,21 @@ public class MetroIIDEDirector extends DEDirector implements
                         Iterator<?> inputPorts = firing.actor().inputPortList()
                                 .iterator();
 
-                        boolean refire = false;
-                        while (inputPorts.hasNext() && !refire) {
-                            IOPort port = (IOPort) inputPorts.next();
-
-                            // iterate all the channels of the current input port.
-                            for (int i = 0; i < port.getWidth(); i++) {
-                                if (port.hasToken(i)) {
-                                    refire = true;
-                                    _pendingIteration.put(actor.getFullName(),
-                                            _pendingIteration.get(actor
-                                                    .getFullName()) + 1);
-                                    break;
-                                }
-                            }
-                        }
+                        //                        boolean refire = false;
+                        //                        while (inputPorts.hasNext() && !refire) {
+                        //                            IOPort port = (IOPort) inputPorts.next();
+                        //
+                        //                            // iterate all the channels of the current input port.
+                        //                            for (int i = 0; i < port.getWidth(); i++) {
+                        //                                if (port.hasToken(i) && firing.actor().prefire()) {
+                        //                                    refire = true;
+                        //                                    _pendingIteration.put(actor.getFullName(),
+                        //                                            _pendingIteration.get(actor
+                        //                                                    .getFullName()) + 1);
+                        //                                    break;
+                        //                                }
+                        //                            }
+                        //                        }
 
                         if (_pendingIteration.get(actor.getFullName()) > 0) {
                             assert actor.prefire();
@@ -509,9 +519,11 @@ public class MetroIIDEDirector extends DEDirector implements
 
                 for (Builder event : _events) {
                     if (event.getStatus() == Event.Status.NOTIFIED
-                            && event.hasTime()) {                        
-                        if (event.getTime().getValue() > idleEvent.getTime().getValue()) {
-                            System.out.println("Error: notified events go beyond the current time stamp!"); 
+                            && event.hasTime()) {
+                        if (event.getTime().getValue() > idleEvent.getTime()
+                                .getValue()) {
+                            System.out
+                                    .println("Error: notified events go beyond the current time stamp!");
                         }
                     }
                 }

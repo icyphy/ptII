@@ -228,6 +228,10 @@ public class MetroIIPtidesDirector extends MetroIIDEDirectorForPtides {
                     _currentLogicalIndex = event.microstep();
                     event.receiver().put(event.token());
                     _currentLogicalTime = null;
+                    if (_debugging) {
+                        _debug("iiiiiiii - transfer inputs from "
+                                + event.ioPort());
+                    }
                 }
             }
             _inputEventQueue.remove(getModelTime());
@@ -483,6 +487,10 @@ public class MetroIIPtidesDirector extends MetroIIDEDirectorForPtides {
                         _currentLogicalIndex = event.microstep();
                         event.receiver().put(event.token());
                         _currentLogicalTime = null;
+                        if (_debugging) {
+                            _debug("iiiiiiii - transfer inputs from "
+                                    + event.ioPort());
+                        }
                     }
                 }
                 // System.out.println(getModelTime()); 
