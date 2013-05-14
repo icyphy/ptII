@@ -104,12 +104,6 @@ public class DecoratorAttributes extends Attribute {
         
         decoratorName = new StringAttribute(this, "decoratorName");
         decoratorName.setVisibility(Settable.NONE);
-        
-        // Attempt to set the _decorator immediately, because its name
-        // or the name of one of its containers may change later.
-        // This will remain null if the decorator has not yet been
-        // constructed.
-        _decorator = getDecorator();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -129,6 +123,24 @@ public class DecoratorAttributes extends Attribute {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Override the base class to establish a link to the decorator
+     *  if the argument is decoratorName.
+     *  @exception IllegalActionException If the change is not acceptable
+     *   to this container (not thrown in this base class).
+     */
+    public void attributeChanged(Attribute attribute) throws IllegalActionException {
+        if (attribute == decoratorName) {
+            // The decorator name is being set.
+            // Attempt to set the _decorator now, because its name
+            // or the name of one of its containers may change later.
+            // This will remain null if the decorator has not yet been
+            // constructed.
+            _decorator = getDecorator();
+        } else {
+            super.attributeChanged(attribute);
+        }
+    }
+    
     /** Clone the object into the specified workspace.
      *  @param workspace The workspace for the cloned object.
      *  @exception CloneNotSupportedException Not thrown in this base class
@@ -219,8 +231,8 @@ public class DecoratorAttributes extends Attribute {
     }
         
     ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
+    ////                       protected variables                 ////
 
     /** The decorator.*/
-    private Decorator _decorator = null;
+    protected Decorator _decorator = null;
 }
