@@ -2,12 +2,12 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="FuelSystemQuantityManager" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
     </property>
     <property name="Continuous Director" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
-        <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="true">
-        </property>
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="10.0">
+        </property>
+        <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <property name="maxStepSize" class="ptolemy.data.expr.Parameter" value="0.1">
         </property>
@@ -33,7 +33,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[125.0, 5.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={5, 22, 850, 734}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={5, 22, 871, 734}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[637, 624]">
     </property>
@@ -74,6 +74,18 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[323.40087890625, 72.25]">
         </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+            <property name="DecoratorAttributesFor_Bus" class="ptolemy.actor.lib.qm.Bus$BusAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Bus">
+                </property>
+                <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="messageLength" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
+            </property>
+        </port>
         <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
@@ -82,7 +94,7 @@
 <xLabel>time</xLabel>
 <yLabel></yLabel>
 <xRange min="0.0" max="10.0"/>
-<yRange min="-7.999997779553951E-10" max="4.0"/>
+<yRange min="-5.000000000000001E-5" max="4.00005"/>
 </plot>?>
         </configure>
     </entity>
@@ -110,7 +122,15 @@
             </property>
             <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.0,1.0}">
             </property>
-            <property name="_showInfo" class="ptolemy.kernel.util.StringAttribute" value="QM: Bus">
+            <property name="_showInfo" class="ptolemy.kernel.util.StringAttribute" value="QM = {Bus}">
+            </property>
+            <property name="DecoratorAttributesFor_Bus" class="ptolemy.actor.lib.qm.Bus$BusAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Bus">
+                </property>
+                <property name="enable" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="messageLength" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
             </property>
         </port>
         <port name="tank1Full" class="ptolemy.domains.modal.modal.ModalPort">
@@ -121,10 +141,20 @@
             </property>
             <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.0,1.0}">
             </property>
-            <property name="_showInfo" class="ptolemy.kernel.util.StringAttribute" value="QM: Bus">
+            <property name="_showInfo" class="ptolemy.kernel.util.StringAttribute" value="QM = {Bus}">
+            </property>
+            <property name="DecoratorAttributesFor_Bus" class="ptolemy.actor.lib.qm.Bus$BusAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Bus">
+                </property>
+                <property name="enable" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="messageLength" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
             </property>
         </port>
         <entity name="_Controller" class="ptolemy.domains.modal.modal.ModalController">
+            <property name="errorCause" class="ptolemy.data.expr.Parameter">
+            </property>
             <property name="_library" class="ptolemy.moml.LibraryAttribute">
                 <configure>
       <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.modal.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory"></property></entity></entity>
@@ -183,6 +213,8 @@
                 </property>
                 <property name="gamma" class="ptolemy.data.expr.Parameter" value="1.6894309144768234">
                 </property>
+                <property name="history" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
             </relation>
             <relation name="relation2" class="ptolemy.domains.modal.kernel.Transition">
                 <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="tank1Full_isPresent">
@@ -190,6 +222,8 @@
                 <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.6283185307179586">
                 </property>
                 <property name="gamma" class="ptolemy.data.expr.Parameter" value="-1.4837772553293984">
+                </property>
+                <property name="history" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
             </relation>
             <link port="idle.incomingPort" relation="relation2"/>
@@ -326,6 +360,18 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[23.40087890625, 177.25]">
         </property>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+            <property name="DecoratorAttributesFor_Bus" class="ptolemy.actor.lib.qm.Bus$BusAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Bus">
+                </property>
+                <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="messageLength" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
+            </property>
+        </port>
     </entity>
     <entity name="Const2" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -343,6 +389,18 @@
             <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
             </property>
         </property>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+            <property name="DecoratorAttributesFor_Bus" class="ptolemy.actor.lib.qm.Bus$BusAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Bus">
+                </property>
+                <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="messageLength" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
+            </property>
+        </port>
     </entity>
     <entity name="Tank" class="ptolemy.demo.FuelSystem.ModalTank">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[158.40087890625, 177.25]">
@@ -351,8 +409,170 @@
         </property>
         <property name="initialLevel" class="ptolemy.data.expr.Parameter" value="4.0">
         </property>
-        <property name="actualLevel" class="ptolemy.data.expr.Parameter" value="4.0">
+        <property name="actualLevel" class="ptolemy.data.expr.Parameter" value="-5.000000000000001E-5">
         </property>
+        <entity name="Integrator" class="ptolemy.domains.continuous.lib.Integrator">
+            <port name="impulse" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="DecoratorAttributesFor_Bus" class="ptolemy.actor.lib.qm.Bus$BusAttributes">
+                    <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Bus">
+                    </property>
+                    <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                    <property name="messageLength" class="ptolemy.data.expr.Parameter" value="1">
+                    </property>
+                </property>
+            </port>
+            <port name="derivative" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="DecoratorAttributesFor_Bus" class="ptolemy.actor.lib.qm.Bus$BusAttributes">
+                    <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Bus">
+                    </property>
+                    <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                    <property name="messageLength" class="ptolemy.data.expr.Parameter" value="1">
+                    </property>
+                </property>
+            </port>
+            <port name="initialState" class="ptolemy.actor.parameters.ParameterPort">
+                <property name="input"/>
+                <property name="DecoratorAttributesFor_Bus" class="ptolemy.actor.lib.qm.Bus$BusAttributes">
+                    <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Bus">
+                    </property>
+                    <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                    <property name="messageLength" class="ptolemy.data.expr.Parameter" value="1">
+                    </property>
+                </property>
+            </port>
+        </entity>
+        <entity name="SetVariable" class="ptolemy.actor.lib.SetVariable">
+            <port name="input" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="DecoratorAttributesFor_Bus" class="ptolemy.actor.lib.qm.Bus$BusAttributes">
+                    <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Bus">
+                    </property>
+                    <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                    <property name="messageLength" class="ptolemy.data.expr.Parameter" value="1">
+                    </property>
+                </property>
+            </port>
+        </entity>
+        <entity name="LevelCrossingDetector" class="ptolemy.domains.continuous.lib.LevelCrossingDetector">
+            <port name="trigger" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="DecoratorAttributesFor_Bus" class="ptolemy.actor.lib.qm.Bus$BusAttributes">
+                    <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Bus">
+                    </property>
+                    <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                    <property name="messageLength" class="ptolemy.data.expr.Parameter" value="1">
+                    </property>
+                </property>
+            </port>
+        </entity>
+        <entity name="LevelCrossingDetector_1_2" class="ptolemy.domains.continuous.lib.LevelCrossingDetector">
+            <port name="trigger" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="DecoratorAttributesFor_Bus" class="ptolemy.actor.lib.qm.Bus$BusAttributes">
+                    <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Bus">
+                    </property>
+                    <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                    <property name="messageLength" class="ptolemy.data.expr.Parameter" value="1">
+                    </property>
+                </property>
+            </port>
+        </entity>
+        <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
+            <port name="plus" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="multiport"/>
+                <property name="DecoratorAttributesFor_Bus" class="ptolemy.actor.lib.qm.Bus$BusAttributes">
+                    <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Bus">
+                    </property>
+                    <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                    <property name="messageLength" class="ptolemy.data.expr.Parameter" value="1">
+                    </property>
+                </property>
+            </port>
+            <port name="minus" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="multiport"/>
+                <property name="DecoratorAttributesFor_Bus" class="ptolemy.actor.lib.qm.Bus$BusAttributes">
+                    <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Bus">
+                    </property>
+                    <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                    <property name="messageLength" class="ptolemy.data.expr.Parameter" value="1">
+                    </property>
+                </property>
+            </port>
+        </entity>
+        <entity name="ModalModel_1_2" class="ptolemy.domains.modal.modal.ModalModel">
+            <port name="desiredInFlow" class="ptolemy.domains.modal.modal.ModalPort">
+                <property name="input"/>
+                <property name="DecoratorAttributesFor_Bus" class="ptolemy.actor.lib.qm.Bus$BusAttributes">
+                    <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Bus">
+                    </property>
+                    <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                    <property name="messageLength" class="ptolemy.data.expr.Parameter" value="1">
+                    </property>
+                </property>
+            </port>
+            <port name="desiredOutFlow" class="ptolemy.domains.modal.modal.ModalPort">
+                <property name="input"/>
+                <property name="DecoratorAttributesFor_Bus" class="ptolemy.actor.lib.qm.Bus$BusAttributes">
+                    <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Bus">
+                    </property>
+                    <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                    <property name="messageLength" class="ptolemy.data.expr.Parameter" value="1">
+                    </property>
+                </property>
+            </port>
+            <port name="full" class="ptolemy.domains.modal.modal.ModalPort">
+                <property name="input"/>
+                <property name="DecoratorAttributesFor_Bus" class="ptolemy.actor.lib.qm.Bus$BusAttributes">
+                    <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Bus">
+                    </property>
+                    <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                    <property name="messageLength" class="ptolemy.data.expr.Parameter" value="1">
+                    </property>
+                </property>
+            </port>
+            <port name="empty" class="ptolemy.domains.modal.modal.ModalPort">
+                <property name="input"/>
+                <property name="DecoratorAttributesFor_Bus" class="ptolemy.actor.lib.qm.Bus$BusAttributes">
+                    <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Bus">
+                    </property>
+                    <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                    <property name="messageLength" class="ptolemy.data.expr.Parameter" value="1">
+                    </property>
+                </property>
+            </port>
+            <entity name="_Controller" class="ptolemy.domains.modal.modal.ModalController">
+                <property name="errorCause" class="ptolemy.data.expr.Parameter">
+                </property>
+                <relation name="relation2" class="ptolemy.domains.modal.kernel.Transition">
+                    <property name="history" class="ptolemy.data.expr.Parameter" value="true">
+                    </property>
+                </relation>
+                <relation name="relation3" class="ptolemy.domains.modal.kernel.Transition">
+                    <property name="history" class="ptolemy.data.expr.Parameter" value="true">
+                    </property>
+                </relation>
+                <relation name="relation" class="ptolemy.domains.modal.kernel.Transition">
+                    <property name="history" class="ptolemy.data.expr.Parameter" value="true">
+                    </property>
+                </relation>
+            </entity>
+        </entity>
     </entity>
     <entity name="Tank2" class="ptolemy.demo.FuelSystem.ModalTank">
         <property name="_location" class="ptolemy.kernel.util.Location" value="{145.0, 305.0}">
@@ -361,6 +581,162 @@
         </property>
         <property name="initialLevel" class="ptolemy.data.expr.Parameter" value="4.0">
         </property>
+        <property name="actualLevel" class="ptolemy.data.expr.Parameter" value="-4.999999999999449E-5">
+        </property>
+        <entity name="Integrator" class="ptolemy.domains.continuous.lib.Integrator">
+            <port name="impulse" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="DecoratorAttributesFor_Bus" class="ptolemy.actor.lib.qm.Bus$BusAttributes">
+                    <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Bus">
+                    </property>
+                    <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                    <property name="messageLength" class="ptolemy.data.expr.Parameter" value="1">
+                    </property>
+                </property>
+            </port>
+            <port name="derivative" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="DecoratorAttributesFor_Bus" class="ptolemy.actor.lib.qm.Bus$BusAttributes">
+                    <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Bus">
+                    </property>
+                    <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                    <property name="messageLength" class="ptolemy.data.expr.Parameter" value="1">
+                    </property>
+                </property>
+            </port>
+            <port name="initialState" class="ptolemy.actor.parameters.ParameterPort">
+                <property name="input"/>
+                <property name="DecoratorAttributesFor_Bus" class="ptolemy.actor.lib.qm.Bus$BusAttributes">
+                    <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Bus">
+                    </property>
+                    <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                    <property name="messageLength" class="ptolemy.data.expr.Parameter" value="1">
+                    </property>
+                </property>
+            </port>
+        </entity>
+        <entity name="SetVariable" class="ptolemy.actor.lib.SetVariable">
+            <port name="input" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="DecoratorAttributesFor_Bus" class="ptolemy.actor.lib.qm.Bus$BusAttributes">
+                    <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Bus">
+                    </property>
+                    <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                    <property name="messageLength" class="ptolemy.data.expr.Parameter" value="1">
+                    </property>
+                </property>
+            </port>
+        </entity>
+        <entity name="LevelCrossingDetector" class="ptolemy.domains.continuous.lib.LevelCrossingDetector">
+            <port name="trigger" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="DecoratorAttributesFor_Bus" class="ptolemy.actor.lib.qm.Bus$BusAttributes">
+                    <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Bus">
+                    </property>
+                    <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                    <property name="messageLength" class="ptolemy.data.expr.Parameter" value="1">
+                    </property>
+                </property>
+            </port>
+        </entity>
+        <entity name="LevelCrossingDetector_1_2" class="ptolemy.domains.continuous.lib.LevelCrossingDetector">
+            <port name="trigger" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="DecoratorAttributesFor_Bus" class="ptolemy.actor.lib.qm.Bus$BusAttributes">
+                    <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Bus">
+                    </property>
+                    <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                    <property name="messageLength" class="ptolemy.data.expr.Parameter" value="1">
+                    </property>
+                </property>
+            </port>
+        </entity>
+        <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
+            <port name="plus" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="multiport"/>
+                <property name="DecoratorAttributesFor_Bus" class="ptolemy.actor.lib.qm.Bus$BusAttributes">
+                    <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Bus">
+                    </property>
+                    <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                    <property name="messageLength" class="ptolemy.data.expr.Parameter" value="1">
+                    </property>
+                </property>
+            </port>
+            <port name="minus" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="multiport"/>
+                <property name="DecoratorAttributesFor_Bus" class="ptolemy.actor.lib.qm.Bus$BusAttributes">
+                    <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Bus">
+                    </property>
+                    <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                    <property name="messageLength" class="ptolemy.data.expr.Parameter" value="1">
+                    </property>
+                </property>
+            </port>
+        </entity>
+        <entity name="ModalModel_1_2" class="ptolemy.domains.modal.modal.ModalModel">
+            <port name="desiredInFlow" class="ptolemy.domains.modal.modal.ModalPort">
+                <property name="input"/>
+                <property name="DecoratorAttributesFor_Bus" class="ptolemy.actor.lib.qm.Bus$BusAttributes">
+                    <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Bus">
+                    </property>
+                    <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                    <property name="messageLength" class="ptolemy.data.expr.Parameter" value="1">
+                    </property>
+                </property>
+            </port>
+            <port name="desiredOutFlow" class="ptolemy.domains.modal.modal.ModalPort">
+                <property name="input"/>
+                <property name="DecoratorAttributesFor_Bus" class="ptolemy.actor.lib.qm.Bus$BusAttributes">
+                    <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Bus">
+                    </property>
+                    <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                    <property name="messageLength" class="ptolemy.data.expr.Parameter" value="1">
+                    </property>
+                </property>
+            </port>
+            <port name="full" class="ptolemy.domains.modal.modal.ModalPort">
+                <property name="input"/>
+                <property name="DecoratorAttributesFor_Bus" class="ptolemy.actor.lib.qm.Bus$BusAttributes">
+                    <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Bus">
+                    </property>
+                    <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                    <property name="messageLength" class="ptolemy.data.expr.Parameter" value="1">
+                    </property>
+                </property>
+            </port>
+            <port name="empty" class="ptolemy.domains.modal.modal.ModalPort">
+                <property name="input"/>
+                <property name="DecoratorAttributesFor_Bus" class="ptolemy.actor.lib.qm.Bus$BusAttributes">
+                    <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Bus">
+                    </property>
+                    <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                    <property name="messageLength" class="ptolemy.data.expr.Parameter" value="1">
+                    </property>
+                </property>
+            </port>
+            <entity name="_Controller" class="ptolemy.domains.modal.modal.ModalController">
+                <property name="errorCause" class="ptolemy.data.expr.Parameter">
+                </property>
+                <relation name="relation" class="ptolemy.domains.modal.kernel.Transition">
+                    <property name="history" class="ptolemy.data.expr.Parameter" value="true">
+                    </property>
+                </relation>
+            </entity>
+        </entity>
     </entity>
     <entity name="Bus" class="ptolemy.actor.lib.qm.Bus">
         <property name="serviceTime" class="ptolemy.data.expr.Parameter" value="0.15">
@@ -433,6 +809,18 @@
         </property>
         <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
         </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+            <property name="DecoratorAttributesFor_Bus" class="ptolemy.actor.lib.qm.Bus$BusAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Bus">
+                </property>
+                <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="messageLength" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
+            </property>
+        </port>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
         <vertex name="vertex1" value="[300.0, 340.0]">
