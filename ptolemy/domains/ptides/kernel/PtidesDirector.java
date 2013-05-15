@@ -665,8 +665,7 @@ public class PtidesDirector extends DEDirector implements Decorator {
     }
     
     public void resumeActor(Actor actor) throws IllegalActionException { 
-        _actorsFinished.add(actor);
-        System.out.println("...resume " + actor);
+        _actorsFinished.add(actor); 
     }
 
     /** Override the base class to first set the container, then establish
@@ -1287,8 +1286,7 @@ public class PtidesDirector extends DEDirector implements Decorator {
     private Actor _getNextActorFrom(DEEventQueue queue)
             throws IllegalActionException {
         Object[] eventArray = queue.toArray();
-        for (Object event : eventArray) {
-            System.out.println(event);
+        for (Object event : eventArray) { 
             if (_isSafeToProcess((PtidesEvent) event)) {
                 PtidesEvent ptidesEvent = (PtidesEvent) event;
                 Actor actor = ptidesEvent.actor();
@@ -1348,9 +1346,7 @@ public class PtidesDirector extends DEDirector implements Decorator {
                                     .remove(sameTagEvent.token());
                         }
                     }
-                }
-                if (prefire)
-                System.out.println(getModelTime() + " " + actor + " " + timestamp);
+                } 
                 if (prefire && (
                         // There are no resource schedulers that need to be asked.
                         !_resourceScheduling || 
@@ -1371,8 +1367,7 @@ public class PtidesDirector extends DEDirector implements Decorator {
                                 || ((CompositeActor) actor)
                                         .getDirector().scheduleContainedActors()
                              )
-                        )) { 
-                    System.out.println("-----");
+                        )) {  
                     _currentLogicalTime = timestamp;
                     _currentLogicalIndex = ptidesEvent.microstep();
                     _currentSourceTimestamp = ptidesEvent.sourceTimestamp();
@@ -1677,7 +1672,7 @@ public class PtidesDirector extends DEDirector implements Decorator {
                         (TypedIOPort) event.ioPort());
                 if (event.timeStamp().getDoubleValue()
                         - ptidesEvent.timeStamp().getDoubleValue() >= minDelay
-                        .timeValue()) {
+                        .timeValue()) { 
                     if (_debugging) {
                         _debug("*** !safe" + event);
                     }
