@@ -398,6 +398,12 @@ public class CompositeResourceScheduler extends TypedCompositeActor implements R
     }
     
     @Override
+    public void fire() throws IllegalActionException {
+        // TODO Auto-generated method stub
+        super.fire();
+    }
+    
+    @Override
     public boolean postfire() throws IllegalActionException {
         // TODO Auto-generated method stub
         boolean postfire = super.postfire();
@@ -461,6 +467,7 @@ public class CompositeResourceScheduler extends TypedCompositeActor implements R
                                 new DoubleToken(executionTime.getDoubleValue())});
                 requestPort.value.setToken(recordToken);
                 getDirector().fireAtCurrentTime(requestPort); 
+                getExecutiveDirector().fireAt(this, getDirector().getModelTime());
                 _currentlyExecuting.add(actor);
             } else {
                 throw new IllegalActionException(this, "No request port with name "
