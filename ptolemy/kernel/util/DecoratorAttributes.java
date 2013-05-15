@@ -76,7 +76,7 @@ public class DecoratorAttributes extends Attribute {
      *  @exception IllegalActionException If the attribute is not of an
      *   acceptable class for the container, or if the name contains a period.
      *  @exception NameDuplicationException If the name coincides with
-     *   an attribute already in the container.
+     *   an attribute already in the container. This should not occur.
      */
     public DecoratorAttributes(NamedObj container, Decorator decorator)
             throws IllegalActionException, NameDuplicationException {
@@ -163,7 +163,11 @@ public class DecoratorAttributes extends Attribute {
      */
     public void exportMoML(Writer output, int depth, String name)
             throws IOException {
-        _decorator = getDecorator();
+        try {
+            _decorator = getDecorator();
+        } catch (IllegalActionException e1) {
+            throw new IOException("Export failed.", e1);
+        }
         if (_decorator == null) {
             // No matching decorator is found. Discard the decorator attributes.
             return;
@@ -185,8 +189,10 @@ public class DecoratorAttributes extends Attribute {
 
     /** Return the decorator that is responsible for this DecoratorAttributes instance.
      *  @return The decorator, or null if there is none.
+     *  @throws IllegalActionException If the decorator cannot be determined
+     *   (e.g., a parameter cannot be evaluated).
      */
-    public Decorator getDecorator() {
+    public Decorator getDecorator() throws IllegalActionException {
         if (_decorator != null) {
             // There is a decorator associated associated with this DecoratorAttributes.
             // Check to see whether the decorator is still in scope. If it is not,

@@ -26,12 +26,13 @@
  */
 package ptolemy.data.expr;
 
+import java.util.Collection;
+import java.util.LinkedList;
 import java.util.List;
 
 import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.Token;
-import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
@@ -41,7 +42,6 @@ import ptolemy.kernel.util.DecoratorAttributes;
 import ptolemy.kernel.util.HierarchyListener;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
-import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
@@ -55,11 +55,16 @@ import ptolemy.util.MessageHandler;
  A contract monitor that decorates each entity in a model with a
  <i>value</i> parameter and monitors the sum of all such values.
  If the sum of the values equals or exceeds the value given in
- {@link threshold} and {@link warningEnabled} is true, then this
+ {@link #threshold} and {@link #warningEnabled} is true, then this
  class will issue a warning when the aggregate value matches or
  exceeds the threshold.
  The decorator values default to 0.0, so the default total
- is 0.0.
+ is 0.0. The default threshold is Infinity, so no warnings will
+ be issued by default.
+ <p>
+ If the {@link #includeOpaqueContents} parameter is true, then this decorator will
+ also decorate entities within opaque composite actors. By default,
+ this is false.
  <p>
  This object is a {@link Parameter} whose value is the total
  of the values of all the decorator values.  To use it, simply
@@ -101,10 +106,29 @@ public class ConstraintMonitor extends Parameter implements Decorator {
         warningEnabled = new Parameter(this, "warningEnabled");
         warningEnabled.setExpression("true");
         warningEnabled.setTypeEquals(BaseType.BOOLEAN);
+        
+        includeOpaqueContents = new Parameter(this, "includeOpaqueContents");
+        includeOpaqueContents.setExpression("false");
+        includeOpaqueContents.setTypeEquals(BaseType.BOOLEAN);
+        
+        includeTransparents = new Parameter(this, "includeTransparents");
+        includeTransparents.setExpression("false");
+        includeTransparents.setTypeEquals(BaseType.BOOLEAN);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         parameters                        ////
+    
+    /** If true, then this decorator decorates entities within
+     *  opaque composite actors. This is a boolean that defaults to
+     *  false.
+     */
+    public Parameter includeOpaqueContents;
+    
+    /** If true, then this decorator decorates transparent composite
+     *  entities. This is a boolean that defaults to false.
+     */
+    public Parameter includeTransparents;
     
     /** Threshold at which this monitor issues a warning, if
      *  {@link #warningEnabled} is true.
@@ -122,6 +146,18 @@ public class ConstraintMonitor extends Parameter implements Decorator {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Override the base class to invalidate if parameters have changed.
+     *  @exception IllegalActionException If the change is not acceptable
+     *   to this container (not thrown in this base class).
+     */
+    public void attributeChanged(Attribute attribute)
+            throws IllegalActionException {
+        if (attribute == includeOpaqueContents || attribute == includeTransparents) {
+            invalidate();
+        }
+        super.attributeChanged(attribute);
+    }
+    
     /** Clone the object into the specified workspace. The new object is
      *  <i>not</i> added to the directory of that workspace (you must do this
      *  yourself if you want it there).
@@ -133,18 +169,40 @@ public class ConstraintMonitor extends Parameter implements Decorator {
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         ConstraintMonitor newObject = (ConstraintMonitor) super.clone(workspace);
         newObject._lastValueWarning = null;
+        newObject._decoratedObjects = null;
+        newObject._decoratedObjectsVersion = -1L;
         return newObject;
     }
 
-    /** Return the decorated attributes for the target NamedObj.
+    /** Return the decorated attributes for the target NamedObj, or null
+     *  if the target is not decorated by this decorator.
+     *  Specification, every Entity that is not a class definition
+     *  that is contained (deeply) by the container of this decorator
+     *  is decorated. This includes atomic entities and both opaque and
+     *  transparent composite entities.
      *  @param target The NamedObj that will be decorated.
      *  @return The decorated attributes for the target NamedObj.
+     *  @throws IllegalActionException If some object cannot be determined to
+     *   be decorated or not (e.g., a parameter cannot be evaluated).
      */
-    public DecoratorAttributes createDecoratorAttributes(NamedObj target) {
-        if (target instanceof Entity && !((Entity)target).isClassDefinition()) {
+    public DecoratorAttributes createDecoratorAttributes(NamedObj target)
+            throws IllegalActionException {
+        boolean transparents = ((BooleanToken)includeTransparents.getToken()).booleanValue();
+        boolean opaques = ((BooleanToken)includeOpaqueContents.getToken()).booleanValue();
+        NamedObj container = getContainer();
+        // If the container of this decorator is not a CompositeEntity,
+        // then it cannot possibly deeply contain the target.
+        if (!(container instanceof CompositeEntity)) {
+            return null;
+        }
+        if (target instanceof Entity
+                && !((Entity)target).isClassDefinition()
+                && (transparents || !(target instanceof CompositeEntity) || ((CompositeEntity)target).isOpaque())
+                && _deepContains((CompositeEntity)container, (Entity)target, opaques)) {
             try {
                 return new ConstraintMonitorAttributes(target, this);
-            } catch (KernelException e) {
+            } catch (NameDuplicationException e) {
+                // This should not occur.
                 throw new InternalErrorException(e);
             }
         } else {
@@ -153,48 +211,45 @@ public class ConstraintMonitor extends Parameter implements Decorator {
     }
 
     /** Return a list of the entities deeply contained by the container
-     *  of this resource scheduler.
+     *  of this resource scheduler. This includes all entities, whether
+     *  transparent or opaque, including those inside opaque entities.
+     *  It does not include entities that are class definitions.
      *  @return A list of the objects decorated by this decorator.
+     *  @throws IllegalActionException If some object cannot be determined to
+     *   be decorated or not (e.g., a parameter cannot be evaluated).
      */
-    public List<NamedObj> decoratedObjects() {
+    public List<NamedObj> decoratedObjects() throws IllegalActionException {
+        if (workspace().getVersion() == _decoratedObjectsVersion) {
+            return _decoratedObjects;
+        }
+        boolean transparents = ((BooleanToken)includeTransparents.getToken()).booleanValue();
+        boolean opaques = ((BooleanToken)includeOpaqueContents.getToken()).booleanValue();
+
         CompositeEntity container = (CompositeEntity)getContainer();
-        return container.deepEntityList();
+
+        _decoratedObjectsVersion = workspace().getVersion();
+
+        // Do the easy case (the default case) first.
+        if (!transparents && !opaques) {
+            _decoratedObjects = container.deepEntityList();
+            return _decoratedObjects;
+        }
+        
+        // Now the more complex case.
+        _decoratedObjects = new LinkedList<NamedObj>();
+        _addAllContainedEntities(container, _decoratedObjects, transparents, opaques);
+        return _decoratedObjects;
     }
 
-    /** Return true to indicate that this decorator should
+    /** Return the value of {@link #includeOpaqueContents}.
      *  decorate objects across opaque hierarchy boundaries.
+     *  @throws IllegalActionException 
      */
-    public boolean isGlobalDecorator() {
-        return true;
+    public boolean isGlobalDecorator() throws IllegalActionException {
+        boolean opaques = ((BooleanToken)includeOpaqueContents.getToken()).booleanValue();
+        return opaques;
     }
-    
-    /** Override the base class to first set the container, then establish
-     *  a connection with any decorated objects it finds in scope in the new
-     *  container.
-     *  @param container The container to attach this attribute to..
-     *  @exception IllegalActionException If this attribute is not of the
-     *   expected class for the container, or it has no name,
-     *   or the attribute and container are not in the same workspace, or
-     *   the proposed container would result in recursive containment.
-     *  @exception NameDuplicationException If the container already has
-     *   an attribute with the name of this attribute.
-     *  @see #getContainer()
-     */
-    public void setContainer(NamedObj container) throws IllegalActionException,
-            NameDuplicationException {
-        super.setContainer(container);
-        if (container != null) {
-            List<NamedObj> decoratedObjects = decoratedObjects();
-            for (NamedObj decoratedObject : decoratedObjects) {
-                // The following will create the DecoratorAttributes if it does not
-                // already exist, and associate it with this decorator.
-                ConstraintMonitorAttributes decoratorAttributes = (ConstraintMonitorAttributes)
-                        decoratedObject.getDecoratorAttributes(this);
-                decoratorAttributes.value.addValueListener(this);
-            }
-        }
-    }
-    
+        
     /** Override the base class to check whether the threshold constraint
      *  is satisfied.
      *  @return The token contained by this variable converted to the
@@ -244,6 +299,27 @@ public class ConstraintMonitor extends Parameter implements Decorator {
         _needsEvaluation = true;
     }
     
+    /** Override the base class to establish a connection with any
+     *  decorated objects it finds in scope in the container.
+     *  @return The current list of value listeners, which are evaluated
+     *   as a consequence of this call to validate().
+     *  @exception IllegalActionException If this variable or a
+     *   variable dependent on this variable cannot be evaluated (and is
+     *   not lazy) and the model error handler throws an exception.
+     *   Also thrown if the change is not acceptable to the container.
+     */
+    public Collection validate() throws IllegalActionException {
+        List<NamedObj> decoratedObjects = decoratedObjects();
+        for (NamedObj decoratedObject : decoratedObjects) {
+            // The following will create the DecoratorAttributes if it does not
+            // already exist, and associate it with this decorator.
+            ConstraintMonitorAttributes decoratorAttributes = (ConstraintMonitorAttributes)
+                    decoratedObject.getDecoratorAttributes(this);
+            decoratorAttributes.value.addValueListener(this);
+        }
+        return super.validate();
+    }
+    
     /** Override the base class to mark that evaluation is needed regardless
      *  of the current expression.
      *  @param settable The object that has changed value.
@@ -258,6 +334,73 @@ public class ConstraintMonitor extends Parameter implements Decorator {
     ///////////////////////////////////////////////////////////////////
     ////                       protected methods                   ////
 
+    /** Add to the specified list all contained entities of the specified container
+     *  that are not class definitions. This includes all the entities
+     *  returned by {@link CompositeEntity#deepEntityList()}.
+     *  If {@link #includeTransparents} is true, then it also
+     *  includes transparent composite entities.
+     *  If {@link #includeOpaqueContents} is true, then it also
+     *  includes the entities contained within opaque composite entities.
+     *  @param container The container of the entities.
+     *  @param result The list to which to add the entities.
+     *  @param transparents Specification of whether to include transparent
+     *   composite entities.
+     *  @param opaques Specification of whether to include the
+     *   contents of opaque composite entities.
+     */
+    protected void _addAllContainedEntities(
+            CompositeEntity container, 
+            List<NamedObj> result,
+            boolean transparents,
+            boolean opaques) {
+        try {
+            _workspace.getReadAccess();
+            List<Entity> entities = container.entityList();
+            for (Entity entity : entities) {
+                boolean isComposite = entity instanceof CompositeEntity;
+                if (!isComposite || ((CompositeEntity)entity).isOpaque() || transparents) {
+                    result.add(entity);
+                }
+                if (isComposite && (!((CompositeEntity)entity).isOpaque() || opaques)) {
+                    _addAllContainedEntities((CompositeEntity)entity, result, transparents, opaques);
+                }
+            }
+        } finally {
+            _workspace.doneReading();
+        }
+    }
+    
+    /** Return true if the specified target is deeply contained by the specified container
+     *  subject to the constraints given by the opaques parameter.
+     *  @param container The container.
+     *  @param target The object that may be contained by the container.
+     *  @param opaques If true, then allow one or more intervening opaque composite actors
+     *   in the hierarchy.
+     *  @return True if the specified target is deeply contained by the container
+     */
+    protected boolean _deepContains(
+            CompositeEntity container, Entity target, boolean opaques) {
+        try {
+            _workspace.getReadAccess();
+            if (target != null) {
+                CompositeEntity targetContainer = (CompositeEntity)target.getContainer();
+                while (targetContainer != null) {
+                    if (targetContainer == container) {
+                        return true;
+                    }
+                    if (!opaques && targetContainer.isOpaque()) {
+                        return false;
+                    }
+                    targetContainer = (CompositeEntity)targetContainer.getContainer();
+                }
+            }
+            return false;
+        } finally {
+            _workspace.doneReading();
+        }
+    }
+
+    
     /** Evaluate the current expression to a token, which in this case means
      *  to sum the values of all the decorated objects.
      *  @exception IllegalActionException If the expression cannot
@@ -276,6 +419,12 @@ public class ConstraintMonitor extends Parameter implements Decorator {
     
     ///////////////////////////////////////////////////////////////////
     ////                         private field                     ////
+    
+    /** Cached list of decorated objects. */
+    private List<NamedObj> _decoratedObjects;
+    
+    /** Version for _decoratedObjects. */
+    private long _decoratedObjectsVersion = -1L;
     
     /** To avoid duplicate warnings, when we issue a warning, record the value. */
     private Token _lastValueWarning = null;

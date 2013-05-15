@@ -1,0 +1,74 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="ConstraintMonitor2" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
+    </property>
+    <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="AUTO">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{75, 65}">
+        </property>
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Test ConstraintMonitor">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[165.0, 55.0]">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={373, 208, 934, 634}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{340.0, 252.0}">
+    </property>
+    <property name="ConstraintMonitor" class="ptolemy.data.expr.ConstraintMonitor" value="1.0">
+        <property name="_icon" class="ptolemy.vergil.icon.ConstraintMonitorIcon">
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="30">
+            </property>
+            <property name="boxColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.3, 1.0, 0.3, 1.0}">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[90.0, 125.0]">
+        </property>
+    </property>
+    <entity name="Const" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="ConstraintMonitor">
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{140, 195}">
+        </property>
+        <property name="DecoratorAttributesFor_ConstraintMonitor" class="ptolemy.data.expr.ConstraintMonitor$ConstraintMonitorAttributes">
+            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="ConstraintMonitor">
+            </property>
+            <property name="value" class="ptolemy.data.expr.Parameter" value="1.0">
+            </property>
+        </property>
+    </entity>
+    <entity name="Test" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1.0}">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{265.0, 195.0}">
+        </property>
+        <property name="DecoratorAttributesFor_ConstraintMonitor" class="ptolemy.data.expr.ConstraintMonitor$ConstraintMonitorAttributes">
+            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="ConstraintMonitor">
+            </property>
+            <property name="value" class="ptolemy.data.expr.Parameter" value="0.0">
+            </property>
+        </property>
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="Const.output" relation="relation"/>
+    <link port="Test.input" relation="relation"/>
+</entity>

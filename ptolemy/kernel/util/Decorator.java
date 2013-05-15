@@ -86,29 +86,42 @@ public interface Decorator extends Nameable {
      *  and the specified target object does not already have
      *  decorated attributes for this decorator.
      *  <p>
-     *  The implementer of this method is responsible for ensuring that any
+     *  The implementer of this method is responsible for ensuring consistency
+     *  with the {@link #decoratedObjects()} method. Specifically, any
      *  object returned by {@link #decoratedObjects()}, when passed as an argument
-     *  to this method, will not result in a null returned value.
+     *  to this method, should not result in a null returned value. And conversely,
+     *  any object passed to this method that is not in the list returned by
+     *  decoratedObjects() should result in a null returned value.
      *
      *  @param target The NamedObj that will be decorated.
      *  @return The decorated attributes for the target NamedObj, or null if the
      *   specified NamedObj is not decorated by this decorator.
+     *  @throws IllegalActionException If the target cannot be determined to
+     *   be decorated or not (e.g., a parameter cannot be evaluated).
      */
-    public DecoratorAttributes createDecoratorAttributes(NamedObj target);
+    public DecoratorAttributes createDecoratorAttributes(NamedObj target)
+            throws IllegalActionException;
     
     /** Return a list of the objects that this decorator decorates. This could
      *  be, for example, all of the entities contained by the container of
      *  this decorator. An implementer of this method is responsible for ensuring
      *  that {@link #createDecoratorAttributes(NamedObj)} will not return null
      *  for any object included in the returned list.
+     *  <p>
+     *  Implementers of this method are required to maintain consistency
+     *  with {@link #createDecoratorAttributes(NamedObj)}.
      *  @return A list of the objects decorated by this decorator.
+     *  @throws IllegalActionException If some object cannot be determined to
+     *   be decorated or not (e.g., a parameter cannot be evaluated).
      */
-    public List<NamedObj> decoratedObjects();
+    public List<NamedObj> decoratedObjects() throws IllegalActionException;
     
     /** Return true if this decorator should decorate objects across
      *  opaque hierarchy boundaries. That is, return true to make this
      *  decorator visible to objects even within opaque composites.
      *  @return True if decorator is global.
+     *  @throws IllegalActionException If it cannot be determined whether
+     *   this is global or not (e.g., a parameter cannot be evaluated).
      */
-    public boolean isGlobalDecorator();
+    public boolean isGlobalDecorator() throws IllegalActionException;
 }
