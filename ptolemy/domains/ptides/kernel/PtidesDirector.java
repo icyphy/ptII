@@ -65,6 +65,7 @@ import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.domains.de.kernel.DEDirector;
+import ptolemy.domains.de.kernel.DEEvent;
 import ptolemy.domains.de.kernel.DEEventQueue;
 import ptolemy.domains.modal.modal.ModalModel;
 import ptolemy.domains.ptides.lib.ErrorHandlingAction;
@@ -199,7 +200,7 @@ public class PtidesDirector extends DEDirector implements Decorator {
                 "clockSynchronizationErrorBound");
         clockSynchronizationErrorBound.setTypeEquals(BaseType.DOUBLE);
         clockSynchronizationErrorBound.setExpression("0.0");
-        _clockSynchronizationErrorBound = 0.0;
+        _clockSynchronizationErrorBound = new Time(this, 0.0);
 
     }
 
@@ -235,7 +236,7 @@ public class PtidesDirector extends DEDirector implements Decorator {
                             "sourcePlatformDelayBound"); 
             if (localClock.getLocalTime().subtract(event.timeStamp())
                     .getDoubleValue() > sourcePlatformDelayBound
-                    + networkDelayBound + _clockSynchronizationErrorBound) {
+                    + networkDelayBound + _clockSynchronizationErrorBound.getDoubleValue()) {
                 event = _handleTimingError(
                         sourcePort,
                         event,
@@ -270,8 +271,8 @@ public class PtidesDirector extends DEDirector implements Decorator {
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == clockSynchronizationErrorBound) {
-            _clockSynchronizationErrorBound = ((DoubleToken) clockSynchronizationErrorBound
-                    .getToken()).doubleValue();
+            _clockSynchronizationErrorBound = new Time(this, ((DoubleToken) clockSynchronizationErrorBound
+                    .getToken()).doubleValue());
         } else {
             super.attributeChanged(attribute);
         }
@@ -662,6 +663,11 @@ public class PtidesDirector extends DEDirector implements Decorator {
         _pureEvents = new PtidesListEventQueue();
         _currentLogicalTime = null;
     }
+    
+    public void resumeActor(Actor actor) throws IllegalActionException { 
+        _actorsFinished.add(actor);
+        System.out.println("...resume " + actor);
+    }
 
     /** Override the base class to first set the container, then establish
      *  a connection with any decorated objects it finds in scope in the new
@@ -1017,9 +1023,7 @@ public class PtidesDirector extends DEDirector implements Decorator {
 
             _setDelayOffset(
                     port,
-                    delayOffset
-                            - ((DoubleToken) clockSynchronizationErrorBound
-                                    .getToken()).doubleValue());
+                    delayOffset - _clockSynchronizationErrorBound.getDoubleValue());
         }
 
         // Calculate delayOffset to each actor
@@ -1284,8 +1288,11 @@ public class PtidesDirector extends DEDirector implements Decorator {
             throws IllegalActionException {
         Object[] eventArray = queue.toArray();
         for (Object event : eventArray) {
+            System.out.println(event);
             if (_isSafeToProcess((PtidesEvent) event)) {
                 PtidesEvent ptidesEvent = (PtidesEvent) event;
+                Actor actor = ptidesEvent.actor();
+                Time timestamp = ptidesEvent.timeStamp();
 
                 // Check if actor can be fired by putting token into receiver
                 // and calling prefire.
@@ -1296,13 +1303,15 @@ public class PtidesDirector extends DEDirector implements Decorator {
                 if (queue == _pureEvents) {
                     for (Object triggeredEventObject : _eventQueue.toArray()) {
                         PtidesEvent triggeredEvent = (PtidesEvent) triggeredEventObject;
-                        if (triggeredEvent.actor() == ptidesEvent.actor()
+                        if (triggeredEvent.actor() == actor
                                 && triggeredEvent.timeStamp().compareTo(
-                                        ptidesEvent.timeStamp()) < 0) {
+                                        timestamp) < 0) {
                             ptidesEvent = triggeredEvent;
                         }
                     }
                 }
+                actor = ptidesEvent.actor();
+                timestamp = ptidesEvent.timeStamp();
 
                 List<PtidesEvent> sameTagEvents = new ArrayList<PtidesEvent>();
                 int i = 0;
@@ -1313,7 +1322,7 @@ public class PtidesDirector extends DEDirector implements Decorator {
                     // queue.
                     // TODO: or input port group?
                     if (eventInQueue.hasTheSameTagAs(ptidesEvent)
-                            && eventInQueue.actor().equals(ptidesEvent.actor())) {
+                            && eventInQueue.actor().equals(actor)) {
                         sameTagEvents.add(eventInQueue);
                         if (eventInQueue.receiver() != null) {
                             if (eventInQueue.receiver() instanceof PtidesReceiver) {
@@ -1325,10 +1334,10 @@ public class PtidesDirector extends DEDirector implements Decorator {
                     i++;
                 }
 
-                _currentLogicalTime = ptidesEvent.timeStamp();
+                _currentLogicalTime = timestamp;
                 _currentLogicalIndex = ptidesEvent.microstep();
                 _currentSourceTimestamp = ptidesEvent.sourceTimestamp();
-                boolean prefire = ptidesEvent.actor().prefire();
+                boolean prefire = actor.prefire();
                 _currentLogicalTime = null;
 
                 // Remove tokens again.
@@ -1340,32 +1349,48 @@ public class PtidesDirector extends DEDirector implements Decorator {
                         }
                     }
                 }
+                if (prefire)
+                System.out.println(getModelTime() + " " + actor + " " + timestamp);
+                if (prefire && (
+                        // There are no resource schedulers that need to be asked.
+                        !_resourceScheduling || 
+                        // There are resource schedulers that need to be asked. however, 
+                        // because the timeDelay actor is fired twice, we only schedule
+                        // one firing on the resource scheduler: the second firing due to
+                        // the pure event.
+                        ((queue != _pureEvents && actor instanceof TimeDelay) ||
+                        // Actor was previously scheduled and just finished.
+                        _actorsFinished.contains(actor) ||
+                        // The actor is scheduled and is instantaneously granted all 
+                        // resources.
+                        _schedule(actor, timestamp)
+                        ) && (
+                                // If actor is a composite actor we check whether the
+                                // contained actors can be scheduled. 
+                                !(actor instanceof CompositeActor)
+                                || ((CompositeActor) actor)
+                                        .getDirector().scheduleContainedActors()
+                             )
+                        )) { 
+                    System.out.println("-----");
+                    _currentLogicalTime = timestamp;
+                    _currentLogicalIndex = ptidesEvent.microstep();
+                    _currentSourceTimestamp = ptidesEvent.sourceTimestamp();
 
-                if (prefire
-                        && (!_resourceScheduling || 
-                                (queue != _pureEvents && ptidesEvent.actor() instanceof TimeDelay) || 
-                                _schedule(ptidesEvent.actor(), ptidesEvent.timeStamp()))) {
-                    if (!(ptidesEvent.actor() instanceof CompositeActor)
-                            || ((CompositeActor) ptidesEvent.actor())
-                                    .getDirector().scheduleContainedActors()) {
-                        _currentLogicalTime = ptidesEvent.timeStamp();
-                        _currentLogicalIndex = ptidesEvent.microstep();
-                        _currentSourceTimestamp = ptidesEvent.sourceTimestamp();
-                        _removeEventsFromQueue(queue, ptidesEvent);
-                        // also remove same timestamp events from other queue
-                        if (queue == _pureEvents) {
-                            _removeEventsFromQueue(_eventQueue, ptidesEvent);
-                        } else if (queue == _eventQueue) {
-                            _removeEventsFromQueue(_pureEvents, ptidesEvent);
-                        }
-                        if (_debugging) {
-                            _debug(">>> next actor: " + ptidesEvent.actor()
-                                    + " @ " + ptidesEvent.timeStamp());
-                        }
-                        return ptidesEvent.actor();
+                    // remove all events with same tag from all queues.
+                    _removeEventsFromQueue(_eventQueue, ptidesEvent); 
+                    _removeEventsFromQueue(_pureEvents, ptidesEvent); 
+                    _actorsFinished.remove(actor);
+                    if (_debugging) {
+                        _debug(">>> next actor: " + actor
+                                + " @ " + timestamp);
                     }
+                    return actor;
                 }
             }
+        }
+        if (_debugging) {
+            _debug("--###--- no next actor");
         }
         return null;
     }
@@ -1623,11 +1648,15 @@ public class PtidesDirector extends DEDirector implements Decorator {
      * cannot be read.
      */
     private boolean _isSafeToProcess(PtidesEvent event)
-            throws IllegalActionException {
+            throws IllegalActionException { 
+        
         // resource scheduler events are only safe to process when physical time 
         // equals event timestamp.
         if (event.actor() instanceof ResourceScheduler) {
             if ((event.timeStamp().compareTo(localClock.getLocalTime())) > 0) {
+                if (_debugging) {
+                    _debug("*** !safe" + event);
+                }
                 return false;
             }
         }
@@ -1649,6 +1678,9 @@ public class PtidesDirector extends DEDirector implements Decorator {
                 if (event.timeStamp().getDoubleValue()
                         - ptidesEvent.timeStamp().getDoubleValue() >= minDelay
                         .timeValue()) {
+                    if (_debugging) {
+                        _debug("*** !safe" + event);
+                    }
                     return false;
                 }
             }
@@ -1666,7 +1698,10 @@ public class PtidesDirector extends DEDirector implements Decorator {
                     .getToken()).intValue();
             
             if (maxFutureEvents != null) {
-                int futureEvents = _getNumberOfFutureEventsFrom(event.actor());
+                int futureEvents = _getNumberOfFutureEventsFrom(event.actor()); 
+                if (_debugging) {
+                    _debug("*** safe?" + (futureEvents <= maxFutureEvents) + " " + event);
+                }
                 return (futureEvents <= maxFutureEvents);
             } 
         } 
@@ -1709,18 +1744,27 @@ public class PtidesDirector extends DEDirector implements Decorator {
         }
         if (delayOffset == null
                 || localClock.getLocalTime().compareTo(
-                        eventTimestamp.subtract(delayOffset).subtract(
-                                _clockSynchronizationErrorBound)) >= 0) {
+                        eventTimestamp.subtract(delayOffset)/*.subtract(
+                                _clockSynchronizationErrorBound)*/) >= 0) {
             
             // Default throttling actors.
             int futureEvents = _getNumberOfFutureEventsFrom(event.actor());
             if (futureEvents > _maximumNumberOfEventsPerActor) {
+                if (_debugging) {
+                    _debug("*** !safe" + event);
+                }
                 return false;
+            } 
+            if (_debugging) {
+                _debug("*** safe" + event);
             }
             return true;
         }
 
         _setNextFireTime(eventTimestamp.subtract(delayOffset));
+        if (_debugging) {
+            _debug("*** !safe" + event);
+        }
         return false;
     }
 
@@ -1827,7 +1871,7 @@ public class PtidesDirector extends DEDirector implements Decorator {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    private double _clockSynchronizationErrorBound;
+    private Time _clockSynchronizationErrorBound;
     private Time _currentLogicalTime;
     private Time _currentSourceTimestamp;
     private int _currentLogicalIndex;

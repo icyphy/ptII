@@ -397,6 +397,31 @@ public class CompositeResourceScheduler extends TypedCompositeActor implements R
         return executionTime;
     }
     
+    @Override
+    public boolean postfire() throws IllegalActionException {
+        // TODO Auto-generated method stub
+        boolean postfire = super.postfire();
+        
+        for (Object entity : entityList()) {
+            if (entity instanceof ResourceMappingOutputPort) {
+                ResourceMappingOutputPort outputPort = ((ResourceMappingOutputPort)entity);
+                if (outputPort.hasToken() && outputPort.getToken() instanceof RecordToken) {
+                    RecordToken recordToken = (RecordToken) outputPort.getToken();
+                    if (recordToken.get("actor") != null && 
+                            ((ObjectToken)recordToken.get("actor")).getValue() != null) {
+                        Actor actor = (Actor) ((ObjectToken)recordToken.get("actor")).getValue();
+                        event((NamedObj) actor, getDirector().getModelTime().getDoubleValue(), ExecutionEventType.STOP);
+                        outputPort.takeToken();
+                        _currentlyExecuting.remove(actor);
+                        getExecutiveDirector().resumeActor(actor);
+                        _lastActorFinished = true;
+                    }
+                }
+            }
+        }
+        return postfire;
+    }
+    
     ///////////////////////////////////////////////////////////////////
     ////                    protected variables                    ////
 
@@ -421,54 +446,30 @@ public class CompositeResourceScheduler extends TypedCompositeActor implements R
             Time executionTime) throws IllegalActionException {   
         _lastActorFinished = false;
         
-        // make sure that director has the corret time.
+        // make sure that director has the correct time.
         getDirector().prefire();
+        
         
         // create token for scheduling requests and put them into ports.
         if (!_currentlyExecuting.contains(actor)) {
             event((NamedObj) actor, getDirector().getModelTime().getDoubleValue(), ExecutionEventType.START);
             ResourceMappingInputPort requestPort = (ResourceMappingInputPort) getEntity(_requestPorts.get(actor));
-            if (requestPort != null) {
-//                throw new IllegalActionException(this, "No request port with name "
-//                        + _requestPorts.get(actor)); 
+            if (requestPort != null) { 
                 RecordToken recordToken = new RecordToken(
                         new String[]{"actor", "executionTime"}, 
                         new Token[]{new ObjectToken(actor), 
                                 new DoubleToken(executionTime.getDoubleValue())});
                 requestPort.value.setToken(recordToken);
-                requestPort.fire(); 
-                
+                getDirector().fireAtCurrentTime(requestPort); 
                 _currentlyExecuting.add(actor);
+            } else {
+                throw new IllegalActionException(this, "No request port with name "
+                      + _requestPorts.get(actor));
             }
         } 
-        
-        getDirector().fire();
-        getDirector().postfire();
-        
-        for (Object entity : entityList()) {
-            if (entity instanceof ResourceMappingOutputPort) {
-                ResourceMappingOutputPort outputPort = ((ResourceMappingOutputPort)entity);
-                if (outputPort.hasToken() && outputPort.getToken() instanceof RecordToken) {
-                    RecordToken recordToken = (RecordToken) outputPort.getToken();
-                    if (recordToken.get("actor") != null && 
-                            ((ObjectToken)recordToken.get("actor")).getValue() != null && 
-                            ((ObjectToken)recordToken.get("actor")).getValue().equals(actor)) {
-                        event((NamedObj) actor, getDirector().getModelTime().getDoubleValue(), ExecutionEventType.STOP);
-                        outputPort.takeToken();
-                        _currentlyExecuting.remove(actor);
-                        _lastActorFinished = true;
-                    }
-                }
-            }
-        } 
-        
-        Time nextEventTime = ((DEDirector)getDirector()).getNextEventTime();
-        if (nextEventTime == null) {
-            nextEventTime = Time.POSITIVE_INFINITY;
-        }
-        
-        return nextEventTime.subtract(
-                getDirector().getModelTime());
+        // at this point we don't know how long it will take till the actor
+        // finishes execution.
+        return Time.POSITIVE_INFINITY;
     }
 
     /** Contains the actors inside a ptides platform (=platforms). */

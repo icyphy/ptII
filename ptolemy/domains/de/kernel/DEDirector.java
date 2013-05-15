@@ -26,9 +26,12 @@
  */
 package ptolemy.domains.de.kernel;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 
 import ptolemy.actor.Actor;
@@ -39,6 +42,7 @@ import ptolemy.actor.IOPort;
 import ptolemy.actor.QuasiTransparentDirector;
 import ptolemy.actor.Receiver;
 import ptolemy.actor.SuperdenseTimeDirector;
+import ptolemy.actor.lib.resourceScheduler.ResourceScheduler;
 import ptolemy.actor.util.CausalityInterface;
 import ptolemy.actor.util.CausalityInterfaceForComposites;
 import ptolemy.actor.util.Dependency;
@@ -722,6 +726,20 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
         return aFutureTime;
     }
 
+    /** Return the timestamp of the next event in the queue. This is 
+     *  different from getModelNextIterationTime as it just considers
+     *  the local event queue and not that of directors higher up in
+     *  the model hierarchy.
+     *  @return The timestamp of the next event in the local event
+     *  queue.
+     */
+    public Time getNextEventTime() {
+        if (_eventQueue.size() == 0) {
+            return null;
+        }
+        return ((DEEvent)_eventQueue.get()).timeStamp();
+    }
+
     /** Return the system time at which the model begins executing.
      *  That is, the system time (in milliseconds) when the initialize()
      *  method of the director is called.
@@ -787,6 +805,7 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
      */
     public void initialize() throws IllegalActionException {
         _isInitializing = true;
+        
         synchronized (_eventQueue) {
             _eventQueue.clear();
 
@@ -1205,6 +1224,8 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
                     .getCausalityInterface();
             causality.checkForCycles();
         }
+        
+        _actorsFinished = new ArrayList();
 
         if (_debugging && _verbose) {
             _debug("## Depths assigned to actors and ports:");
@@ -1226,6 +1247,30 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
         }
 
         super.removeDebugListener(listener);
+    }
+    
+    /** Resume the execution of an actor that was previously blocked because
+     *  it didn't have all the resources it needed for execution. This method
+     *  is called by {@link ResourceScheduler} actors.
+     *  
+     *  In this base class, the implementation is empty. Derived directors
+     *  should override this method to handle resuming of actor execution.
+     *  @param actor The actor that resumes execution.
+     *  @throws IllegalActionException Not thrown here but in derived classes.
+     */
+    public void resumeActor(Actor actor) throws IllegalActionException {
+        DEEvent event = _actorsInExecution.get(actor);
+        if (event.ioPort() != null) {
+            _enqueueTriggerEvent(event.ioPort(), getModelTime());
+        } else {
+            _enqueueEvent(actor, getModelTime(), 1); 
+        } 
+        fireContainerAt(getModelTime());
+        _actorsInExecution.remove(actor);
+        if (_actorsFinished == null) {
+            _actorsFinished = new ArrayList();
+        }
+        _actorsFinished.add(actor);
     }
 
     /** Set the superdense time index. This should only be
@@ -1483,7 +1528,7 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
         int depth = _getDepthOfActor(actor);
 
         if (_debugging) {
-            _debug("enqueue a pure event: ", ((NamedObj) actor).getName(),
+            _debug("DEDirector: enqueue a pure event: ", ((NamedObj) actor).getName(),
                     "time = " + time + " microstep = " + microstep
                             + " depth = " + depth);
         }
@@ -1804,7 +1849,8 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
                                     + ". Refire the actor.");
                         }
                         // refire only if can be scheduled.
-                        if (!_resourceScheduling || _schedule(actorToFire, getModelTime())) {
+                        if (!_resourceScheduling ||  
+                                _schedule(actorToFire, getModelTime())) {
                             refire = true;
     
                             // Found a channel that has input data,
@@ -1853,13 +1899,6 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
         return causality.getDepthOfPort(ioPort);
     }
     
-    public Time getNextEventTime() {
-        if (_eventQueue.size() == 0) {
-            return null;
-        }
-        return ((DEEvent)_eventQueue.get()).timeStamp();
-    }
-
     /** Dequeue the events that have the smallest tag from the event queue.
      *  Return their destination actor. Advance the model tag to their tag.
      *  If the timestamp of the smallest tag is greater than the stop time
@@ -2255,17 +2294,18 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
                 }
             }
             if (actorToFire != null && _resourceScheduling) {
-                if (!_schedule(actorToFire, getModelTime())) {
+                if (_actorsFinished.contains(actorToFire)) {
+                    _actorsFinished.remove(actorToFire);
+                } else if (!_schedule(actorToFire, getModelTime())) {
                     // scheduling of actor returns that actor hasn't been granted all
                     // the requested resources, create a new event with a future 
-                    // timestamp.
+                    // timestamp. 
                     Time nextScheduleTime = _nextScheduleTime.get(_schedulerForActor
                             .get(actorToFire)).add(getModelTime());
-                    if (lastFoundEvent.ioPort() != null) {
-                        _enqueueTriggerEvent(lastFoundEvent.ioPort(), nextScheduleTime);
-                    } else {
-                        _enqueueEvent(actorToFire, nextScheduleTime, 1);
+                    if (_actorsInExecution == null) {
+                        _actorsInExecution = new HashMap();
                     }
+                    _actorsInExecution.put(actorToFire, lastFoundEvent);
                     actorToFire = null; 
                 } 
             }
@@ -2283,6 +2323,17 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
      */
     protected void _noActorToFire() throws IllegalActionException {
     }
+
+    /** Actors and their matching events currently in execution and waiting
+     *  for resources.
+     */
+    protected HashMap<Actor, DEEvent> _actorsInExecution;
+
+    /** Actors that just got granted all the resources they needed for
+     *  execution but have not actually been fired yet. After the actor
+     *  is fired, it is removed from this list.
+     */
+    protected List<Actor> _actorsFinished;
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////

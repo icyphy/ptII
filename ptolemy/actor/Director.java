@@ -921,6 +921,18 @@ public class Director extends Attribute implements Executable {
             _resourceScheduling = true;
         }
     }
+    
+    /** Resume the execution of an actor that was previously blocked because
+     *  it didn't have all the resources it needed for execution. This method
+     *  is called by {@link ResourceScheduler} actors.
+     *  
+     *  In this base class, the implementation is empty. Derived directors
+     *  should override this method to handle resuming of actor execution.
+     *  @param actor The actor that resumes execution.
+     *  @throws IllegalActionException Not thrown here but in derived classes.
+     */
+    public void resumeActor(Actor actor) throws IllegalActionException {
+    }
 
     /** Indicate that resolved types in the model may no longer be valid.
      *  This will force type resolution to be redone on the next iteration.
@@ -1873,7 +1885,8 @@ public class Director extends Attribute implements Executable {
             }
             _nextScheduleTime.put(scheduler, time);
             finished = _actorFinished(actor);
-            if (time != null && time.getDoubleValue() > 0.0) {
+            if (time != null && time.getDoubleValue() > 0.0 &&
+                    time.compareTo(Time.POSITIVE_INFINITY) != 0) {
                 CompositeActor container = (CompositeActor)  scheduler
                         .getContainer();
                 container.getDirector().fireContainerAt(

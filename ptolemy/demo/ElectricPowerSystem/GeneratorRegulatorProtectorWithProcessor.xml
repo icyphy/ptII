@@ -4,7 +4,7 @@
 <entity name="GeneratorRegulatorProtectorWithProcessor" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={52, 52, 1252, 710}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={28, 52, 1252, 710}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1018, 600]">
     </property>
@@ -179,7 +179,7 @@
     <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
         <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="Voltage, Drive">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={852, 605, 639, 441}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={641, 325, 639, 441}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[639, 397]">
         </property>
@@ -213,7 +213,7 @@
 <xLabel>time (seconds)</xLabel>
 <yLabel>voltage, drive</yLabel>
 <xRange min="0.0" max="60.0"/>
-<yRange min="-119.31385481864397" max="292.28357399100196"/>
+<yRange min="-137.60671168994895" max="306.758577354018"/>
 <default connected="no" marks="various" stems="yes"/>
 </plot>?>
         </configure>
@@ -650,6 +650,8 @@
             </property>
         </port>
         <entity name="_Controller" class="ptolemy.domains.modal.modal.ModalController">
+            <property name="errorCause" class="ptolemy.data.expr.Parameter">
+            </property>
             <property name="_library" class="ptolemy.moml.LibraryAttribute">
                 <configure>
       <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.modal.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory"></property></entity></entity>
@@ -847,7 +849,7 @@
             </property>
         </entity>
         <entity name="Server" class="ptolemy.domains.de.lib.Server">
-            <property name="serviceTime" class="ptolemy.actor.parameters.PortParameter" value="0.5">
+            <property name="serviceTime" class="ptolemy.actor.parameters.PortParameter" value="0.1">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[380.0, 140.0]">
             </property>
@@ -1454,7 +1456,7 @@
             </property>
             <property name="enable" class="ptolemy.data.expr.Parameter" value="useTwoProcessors">
             </property>
-            <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.15">
+            <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.1">
             </property>
             <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="in2">
             </property>
@@ -1464,7 +1466,7 @@
             </property>
             <property name="enable" class="ptolemy.data.expr.Parameter" value="!useTwoProcessors">
             </property>
-            <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.15">
+            <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.1">
             </property>
             <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="in2">
             </property>
