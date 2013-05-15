@@ -287,6 +287,10 @@ public class MetroIIPtidesDirector extends MetroIIDEDirectorForPtides {
                     event.ioPort().send(0, event.token());
                     _currentLogicalTime = null;
                     ptidesOutputPortList.poll();
+                    if (_debugging) {
+                        _debug("iiiiiiii - transfer outputs to "
+                                + event.ioPort());
+                    }
                 }
             }
         }
@@ -550,6 +554,10 @@ public class MetroIIPtidesDirector extends MetroIIDEDirectorForPtides {
                         event.ioPort().send(0, event.token());
                         _currentLogicalTime = null;
                         ptidesOutputPortList.poll();
+                        if (_debugging) {
+                            _debug("iiiiiiii - transfer outputs to "
+                                    + event.ioPort());
+                        }
                     }
                 }
             }
