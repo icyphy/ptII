@@ -1,16 +1,16 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="GeneratorRegulatorProtectorWithProcessor" class="ptolemy.actor.TypedCompositeActor">
+<entity name="GeneratorRegulatorProtectorWithConstraintMonitor" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={28, 52, 1252, 710}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={99, 107, 1273, 775}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1018, 600]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1039, 665]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.1600512163892445">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.267771748377311">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{392.5, 263.20481943294703}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{407.83015093887053, 265.50889899716736}">
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
@@ -24,7 +24,7 @@
             </property>
         </property>
     </property>
-    <property name="Title" class="ptolemy.vergil.basic.export.web.Title" value="Generator Regulator with Architecture Alternatives">
+    <property name="Title" class="ptolemy.vergil.basic.export.web.Title" value="Generator Regulator with Constraint Monitor">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[120.0, 5.0]">
         </property>
     </property>
@@ -44,7 +44,7 @@
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model includes two possible implementation platforms, one with one processor,&#10;one with two processors. Change the selection using the useTwoProcessors parameter.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model includes two possible implementation platforms, but choosing the two-processor&#10;alternative causes cost to exceed a cost constraint.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[120.0, 35.0]">
         </property>
@@ -91,9 +91,9 @@
     <property name="Annotation6" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.8,0.0,0.0,1.0}">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The Supervisor and PID actors can&#10;execute on the same processor or on&#10;two processors, depending on the value&#10;of useTwoProcessors. If they use one&#10;processor, overvoltage protection kicks&#10;in, while if they use two, it does not.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This ConstraintMonitor, called Cost, keeps track of the&#10;total cost of the control system and compares the total&#10;cost against a threshold. Choosing the two-processor&#10;alternative causes the threshold to be execeeded, resulting&#10;in a warning. Double click on the Controller or Supervisor&#10;and select Cost to see how the cost is specified.&#10;">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="[295.0, 360.0]">
+        <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="[360.0, 380.0]">
         </property>
     </property>
     <property name="_defaultWebExportParameters" class="ptolemy.vergil.basic.export.web.WebExportParameters">
@@ -134,7 +134,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 85.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{20.0, 85.0}">
         </property>
     </property>
     <property name="Annotation7" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -145,43 +145,24 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 370.0]">
         </property>
     </property>
-    <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Previous model: GeneratorRegulatorProtectorWithBus">
+    <property name="Cost" class="ptolemy.data.expr.ConstraintMonitor" value="20.0">
+        <property name="threshold" class="ptolemy.data.expr.Parameter" value="30">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, 470.0]">
-        </property>
-        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$PTII/ptolemy/demo/ElectricPowerSystem/GeneratorRegulatorProtectorWithBus.xml">
-            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        <property name="_icon" class="ptolemy.vergil.icon.ConstraintMonitorIcon">
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="30">
             </property>
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
-                </property>
-            </property>
-            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-                <configure>
-      <svg>
-        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">LL</text>
-      </svg>
-    </configure>
-            </property>
-            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{395, 280}">
+            <property name="boxColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.3, 1.0, 0.3, 1.0}">
             </property>
         </property>
-        <property name="IconLink" class="ptolemy.vergil.basic.export.web.IconLink" value="http://icyphy.org/models/GeneratorRegulatorProtectorWithBus/index.html">
-            <property name="linkTarget" class="ptolemy.vergil.basic.export.web.LinkTarget" value="_blank">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{475, 400}">
-            </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[330.0, 395.0]">
         </property>
     </property>
     <property name="Annotation8" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Next model: GeneratorRegulatorProtectorWithConstraintMonitor">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Previous model: GeneratorRegulatorProtectorWithProcessor">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{270.0, 495.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[295.0, 500.0]">
         </property>
-        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$PTII/ptolemy/demo/ElectricPowerSystem/GeneratorRegulatorProtectorWithBus.xml">
+        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$PTII/ptolemy/demo/ElectricPowerSystem/GeneratorRegulatorProtectorWithProcessor.xml">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -200,17 +181,17 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="{395, 280}">
             </property>
         </property>
-        <property name="IconLink" class="ptolemy.vergil.basic.export.web.IconLink" value="http://icyphy.org/models/GeneratorRegulatorProtectorWithBus/index.html">
+        <property name="IconLink" class="ptolemy.vergil.basic.export.web.IconLink" value="http://icyphy.org/models/GeneratorRegulatorProtectorWithProcessor/index.html">
             <property name="linkTarget" class="ptolemy.vergil.basic.export.web.LinkTarget" value="_blank">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{475, 400}">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{335, 500}">
             </property>
         </property>
     </property>
     <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
         <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="Voltage, Drive">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={641, 325, 639, 441}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={852, 605, 639, 441}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[639, 397]">
         </property>
@@ -236,6 +217,12 @@
             <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="">
             </property>
         </property>
+        <property name="DecoratorAttributesFor_ConstraintMonitor" class="ptolemy.data.expr.ConstraintMonitor$ConstraintMonitorAttributes">
+            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Cost">
+            </property>
+            <property name="value" class="ptolemy.data.expr.Parameter" value="0.0">
+            </property>
+        </property>
         <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
@@ -244,7 +231,7 @@
 <xLabel>time (seconds)</xLabel>
 <yLabel>voltage, drive</yLabel>
 <xRange min="0.0" max="60.0"/>
-<yRange min="-137.60671168994895" max="306.758577354018"/>
+<yRange min="-107.77731620346675" max="290.91472049715077"/>
 <default connected="no" marks="various" stems="yes"/>
 </plot>?>
         </configure>
@@ -278,6 +265,12 @@
             <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
             </property>
             <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="">
+            </property>
+        </property>
+        <property name="DecoratorAttributesFor_ConstraintMonitor" class="ptolemy.data.expr.ConstraintMonitor$ConstraintMonitorAttributes">
+            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Cost">
+            </property>
+            <property name="value" class="ptolemy.data.expr.Parameter" value="0.0">
             </property>
         </property>
         <entity name="Generator" class="ptolemy.demo.ElectricPowerSystem.Generator">
@@ -596,6 +589,12 @@
             <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="">
             </property>
         </property>
+        <property name="DecoratorAttributesFor_ConstraintMonitor" class="ptolemy.data.expr.ConstraintMonitor$ConstraintMonitorAttributes">
+            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Cost">
+            </property>
+            <property name="value" class="ptolemy.data.expr.Parameter" value="0.0">
+            </property>
+        </property>
     </entity>
     <entity name="Expression" class="ptolemy.actor.lib.Expression">
         <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="voltage &gt;= overVoltageThreshold">
@@ -632,6 +631,12 @@
             <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="">
             </property>
         </property>
+        <property name="DecoratorAttributesFor_ConstraintMonitor" class="ptolemy.data.expr.ConstraintMonitor$ConstraintMonitorAttributes">
+            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Cost">
+            </property>
+            <property name="value" class="ptolemy.data.expr.Parameter" value="0.0">
+            </property>
+        </property>
         <port name="voltage" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
@@ -663,6 +668,12 @@
             <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="in1">
             </property>
         </property>
+        <property name="DecoratorAttributesFor_ConstraintMonitor" class="ptolemy.data.expr.ConstraintMonitor$ConstraintMonitorAttributes">
+            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Cost">
+            </property>
+            <property name="value" class="ptolemy.data.expr.Parameter" value="useTwoProcessors? 20 : 10">
+            </property>
+        </property>
         <port name="onOff" class="ptolemy.domains.modal.modal.ModalPort">
             <property name="input"/>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
@@ -681,8 +692,6 @@
             </property>
         </port>
         <entity name="_Controller" class="ptolemy.domains.modal.modal.ModalController">
-            <property name="errorCause" class="ptolemy.data.expr.Parameter">
-            </property>
             <property name="_library" class="ptolemy.moml.LibraryAttribute">
                 <configure>
       <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.modal.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory"></property></entity></entity>
@@ -853,6 +862,12 @@
             <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="">
             </property>
         </property>
+        <property name="DecoratorAttributesFor_ConstraintMonitor" class="ptolemy.data.expr.ConstraintMonitor$ConstraintMonitorAttributes">
+            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Cost">
+            </property>
+            <property name="value" class="ptolemy.data.expr.Parameter" value="0.0">
+            </property>
+        </property>
         <entity name="in1" class="ptolemy.actor.lib.resourceScheduler.ResourceMappingInputPort">
             <property name="value" class="ptolemy.data.expr.Parameter" value="">
             </property>
@@ -880,7 +895,7 @@
             </property>
         </entity>
         <entity name="Server" class="ptolemy.domains.de.lib.Server">
-            <property name="serviceTime" class="ptolemy.actor.parameters.PortParameter" value="0.1">
+            <property name="serviceTime" class="ptolemy.actor.parameters.PortParameter" value="0.5">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[380.0, 140.0]">
             </property>
@@ -1116,6 +1131,12 @@
             <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="">
             </property>
         </property>
+        <property name="DecoratorAttributesFor_ConstraintMonitor" class="ptolemy.data.expr.ConstraintMonitor$ConstraintMonitorAttributes">
+            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Cost">
+            </property>
+            <property name="value" class="ptolemy.data.expr.Parameter" value="0.0">
+            </property>
+        </property>
         <entity name="in1" class="ptolemy.actor.lib.resourceScheduler.ResourceMappingInputPort">
             <property name="value" class="ptolemy.data.expr.Parameter" value="">
             </property>
@@ -1143,7 +1164,7 @@
             </property>
         </entity>
         <entity name="Server" class="ptolemy.domains.de.lib.Server">
-            <property name="serviceTime" class="ptolemy.actor.parameters.PortParameter" value="0.1">
+            <property name="serviceTime" class="ptolemy.actor.parameters.PortParameter" value="0.5">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[290.0, 140.0]">
             </property>
@@ -1291,7 +1312,7 @@
             </property>
         </entity>
         <entity name="Server2" class="ptolemy.domains.de.lib.Server">
-            <property name="serviceTime" class="ptolemy.actor.parameters.PortParameter" value="0.1">
+            <property name="serviceTime" class="ptolemy.actor.parameters.PortParameter" value="0.15">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[290.0, 340.0]">
             </property>
@@ -1478,6 +1499,12 @@
             <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="">
             </property>
         </property>
+        <property name="DecoratorAttributesFor_ConstraintMonitor" class="ptolemy.data.expr.ConstraintMonitor$ConstraintMonitorAttributes">
+            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Cost">
+            </property>
+            <property name="value" class="ptolemy.data.expr.Parameter" value="0.0">
+            </property>
+        </property>
     </entity>
     <entity name="Controller" class="Controller">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[580.0, 210.0]">
@@ -1487,7 +1514,7 @@
             </property>
             <property name="enable" class="ptolemy.data.expr.Parameter" value="useTwoProcessors">
             </property>
-            <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.1">
+            <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.15">
             </property>
             <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="in2">
             </property>
@@ -1497,9 +1524,15 @@
             </property>
             <property name="enable" class="ptolemy.data.expr.Parameter" value="!useTwoProcessors">
             </property>
-            <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.1">
+            <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.15">
             </property>
             <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="in2">
+            </property>
+        </property>
+        <property name="DecoratorAttributesFor_ConstraintMonitor" class="ptolemy.data.expr.ConstraintMonitor$ConstraintMonitorAttributes">
+            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Cost">
+            </property>
+            <property name="value" class="ptolemy.data.expr.Parameter" value="useTwoProcessors ? 20 : 10">
             </property>
         </property>
         <entity name="DesiredVoltage" class="ptolemy.actor.lib.Const">
