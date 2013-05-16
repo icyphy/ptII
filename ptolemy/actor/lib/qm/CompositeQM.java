@@ -49,6 +49,7 @@ import ptolemy.data.RecordToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
+import ptolemy.data.expr.StringParameter;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.util.Attribute;
@@ -446,7 +447,7 @@ public class CompositeQM extends TypedCompositeActor implements QuantityManager,
          */
         private void _init() {
             try {
-                inputPort = new Parameter(this, "inputPort", new StringToken("")); 
+                inputPort = new StringParameter(this, "inputPort"); 
             } catch (KernelException ex) {
                 // This should not occur.
                 throw new InternalErrorException(ex);
