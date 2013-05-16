@@ -17,9 +17,11 @@ why those tags are used here).
 A makefile rule uses $PTII/doc/javahtml.awk to read in this
 file and generate demosPtinyKepler.htm.
 
-NOTE: Every demo should only be mentioned and listed by their
+NOTE: Normally, every demo should only be mentioned and listed by its
 top-level domain. The only exception is GR, which in practice
-is not used as a top-level domain.
+is not used as a top-level domain. However, demos that focus on
+integrating multiple domains can be put instead in the System Demos
+category.
 
 The $PTII/ptolemy/configs/doc/completeDemos.htm file is used
 to generate various files that are used by the documentation system.
@@ -30,6 +32,8 @@ models that use each actor.  How this is generated is as follows:
 $PTII/ptolemy/configs/doc/completeDemos.htm is read and 
 $PTII/ptolem/configs/doc/models.txt is created by running make
 
+Please keep demos alphabetical.
+
 -->
 <link href="../../../doc/default.css" rel="stylesheet" type="text/css">
 </head>
@@ -37,7 +41,7 @@ $PTII/ptolem/configs/doc/models.txt is created by running make
 <!--ptinyKeplerDocs-->
 <!--bcvtbDocs-->
 <h1>
-Demonstrations Listed by Top-Level Domain
+Complete List of Ptolemy II Demos
 </h1>
 
 <!--
@@ -52,8 +56,15 @@ we do codegen, we get Foo.java instead of foo.java
 See the <a href="demosPtinyKepler.htm">quick tour</a> for a smaller
 set of demos that highlight the key features of Ptolemy II.
 
-<h1>Ptolemy II Domains Demonstrations</h1>
-Ptolemy II models that illustrate Model of Computation-oriented functionality.
+<h1>
+System Demos
+</h1>
+<ul>
+<li><a href="#eps">Electric Power System</a></li>
+<li><a href="#fuel">Fuel System</a></li>
+</ul>
+
+<h1>Demos by Domain</h1>
 <ul>
 
 <!--vergilDocs-->
@@ -91,8 +102,7 @@ Ptolemy II models that illustrate Model of Computation-oriented functionality.
 <!--ptinyKeplerDocs-->
 <!--bcvtbDocs-->
 
-<h3><a name="continuous">Continuous</a></h3>
-An recent implementation of Continuous Time semantics, for use with the <a href="#modal">modal</a> domain.
+<h2><a name="continuous">Continuous</a></h2>
 <ul>
 <li><a href="../../domains/continuous/demo/BouncingBall/BouncingBallWithoutGR.xml">Bouncing Ball</a> (Does not require Java 3D) 
 <!--vergilDocs-->
@@ -134,7 +144,7 @@ An recent implementation of Continuous Time semantics, for use with the <a href=
 <!--/bcvtbDocs-->
 
 <!--vergilDocs-->
-<h3><a name="ddf">Dynamic Dataflow (DDF)</a></h3>
+<h2><a name="ddf">Dynamic Dataflow (DDF)</a></h2>
 <ul>
 <li><a href="../../domains/ddf/demo/Eratosthenes/Eratosthenes.xml">Eratosthenes</a>
 <li><a href="../../domains/ddf/demo/Factorial/Factorial.xml">Factorial</a>
@@ -153,7 +163,7 @@ An recent implementation of Continuous Time semantics, for use with the <a href=
 <!--ptiny does not include distributed-->
 <!--vergilDocs-->
 
-<h3><a name="de">Discrete Events (DE)</a></h3>
+<h2><a name="de">Discrete Events (DE)</a></h2>
 <ul>
 <!--vergilDocs-->
 <li><a href="../../domains/de/demo/OpenQueueingNetwork/OpenQueueingNetwork.xml">Open Queueing Network</a>
@@ -190,7 +200,7 @@ An recent implementation of Continuous Time semantics, for use with the <a href=
 <!-- Kepler and BCVTB does not include hdf-->
 <!--ptinyKeplerDocs-->
 <!--bcvtbDocs-->
-<h3><a name="modal">Modal</a></h3>
+<h2><a name="modal">Modal</a></h2>
 A newer implementation of Modal semantics, for use with the <a href="#continuous">continuous</a> domain.
 <ul>
   
@@ -215,7 +225,7 @@ A newer implementation of Modal semantics, for use with the <a href="#continuous
 <!--/bcvtbDocs-->
 <!--vergilDocs-->
 
-<h3><a name="pn">Process Networks (PN)</a></h3>
+<h2><a name="pn">Process Networks (PN)</a></h2>
 
 <ul>
 <li><a href="../../domains/pn/demo/BrockAckerman/BrockAckerman.xml">Brock-Ackerman Anomaly</a>
@@ -239,7 +249,7 @@ A newer implementation of Modal semantics, for use with the <a href="#continuous
 <!--vergilDocs-->
 <!--ptinyKeplerDocs-->
 <!--bcvtbDocs-->
-<h3><a name="sdf">Synchronous Dataflow (SDF)</a></h3>
+<h2><a name="sdf">Synchronous Dataflow (SDF)</a></h2>
 <ul>
   
 <!-- Please keep the demos alphabetical -->
