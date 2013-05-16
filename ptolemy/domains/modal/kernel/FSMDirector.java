@@ -41,7 +41,7 @@ import ptolemy.actor.NoTokenException;
 import ptolemy.actor.QuasiTransparentDirector;
 import ptolemy.actor.Receiver;
 import ptolemy.actor.SuperdenseTimeDirector;
-import ptolemy.actor.TypedActor;
+import ptolemy.actor.TypedActor; 
 import ptolemy.actor.util.BooleanDependency;
 import ptolemy.actor.util.CausalityInterface;
 import ptolemy.actor.util.Dependency;
@@ -51,6 +51,8 @@ import ptolemy.data.BooleanToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.ParseTreeEvaluator;
 import ptolemy.data.expr.Variable;
+import ptolemy.domains.modal.modal.ModalController;
+import ptolemy.domains.modal.modal.Refinement;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.Attribute;
@@ -809,6 +811,22 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
         _resetOutputReceivers();
 
         return result && !_stopRequested && !_finishRequested;
+    }
+    
+   /** Check whether contained refinements have a director.
+    *  @exeption Thrown if a contained refinement does not have a director.
+    */
+    public void preinitialize() throws IllegalActionException { 
+        Iterator<?> actors = ((CompositeActor) getContainer()).deepEntityList()
+                .iterator();
+        while (actors.hasNext()) {
+            Actor actor = (Actor) actors.next(); 
+            if (!(actor instanceof Refinement) && actor.getContainer() instanceof Refinement) {
+                throw new IllegalActionException(actor.getContainer(), "Refinement is missing a director!");
+            }
+        }
+        
+        super.preinitialize();
     }
 
     /**
