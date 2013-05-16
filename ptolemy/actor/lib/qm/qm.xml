@@ -54,17 +54,6 @@
     <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 25.0]">
     </property>
 </property>
-
-<property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
-    <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 25.0]">
-    </property>
-</property>
-<property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-    <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This is a composite quantity manager.">
-    </property>
-    <property name="_location" class="ptolemy.kernel.util.Location" value="[190.0, 15.0]">
-    </property>
-</property>
 <entity name="in" class="ptolemy.actor.lib.qm.CQMInputPort">
     <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 200.0]">
     </property>
