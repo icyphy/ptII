@@ -637,9 +637,10 @@ public class PtidesDirector extends DEDirector implements Decorator {
      * @exception IllegalActionException
      */
     public boolean prefire() throws IllegalActionException {
-        setModelTime(localClock.getLocalTimeForCurrentEnvironmentTime());
+        Time currentTime = _consultTimeRegulators(localClock.getLocalTimeForCurrentEnvironmentTime());
+        setModelTime(currentTime);
         if (_debugging) {
-            _debug("...prefire @ " + localClock.getLocalTime());
+            _debug("...prefire @ " + currentTime);
         }
         setIndex(1);
         _nextFireTime = null;
