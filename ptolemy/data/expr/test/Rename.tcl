@@ -74,8 +74,8 @@ test Rename-18.2 {Renaming a referenced parameter in quotes} {
     # parameter substitution does not occur within double quotes.
 
     set e1 [java::new ptolemy.kernel.Entity]
-    set p1 [java::new ptolemy.data.expr.Parameter $e1 "p1"]
-    set p2 [java::new ptolemy.data.expr.Parameter $e1 "p2"]
+    set p1 [java::new ptolemy.data.expr.StringParameter $e1 "p1"]
+    set p2 [java::new ptolemy.data.expr.StringParameter $e1 "p2"]
     $p1 setExpression {"$p2"}
     $p1 validate
     set r1 [$p1 getExpression]
@@ -102,9 +102,13 @@ test Rename-18.3 {Renaming a parameter referenced by a parameter in string mode}
     # parameter. It is not necessary"
 
     set e1 [java::new ptolemy.kernel.Entity]
-    set p1 [java::new ptolemy.data.expr.Parameter $e1 "p1"]
-    set p2 [java::new ptolemy.data.expr.Parameter $e1 "p2"]
-    $p1 setStringMode true
+    set p1 [java::new ptolemy.data.expr.StringParameter $e1 "p1"]
+    set p2 [java::new ptolemy.data.expr.StringParameter $e1 "p2"]
+
+    # The only difference between this test and the one above is that this
+    # test has no double quotes in the next line.
+
+
     $p1 setExpression {$p2}
     $p1 validate
     set r1 [$p1 getExpression]
@@ -133,6 +137,7 @@ test Rename-18.4 {Renaming a parameter in quotes referenced by a parameter in st
     set p1 [java::new ptolemy.data.expr.Parameter $e1 "p1"]
     set p2 [java::new ptolemy.data.expr.Parameter $e1 "p2"]
     $p1 setStringMode true
+    # This is an string that has $p2 inside, which will not be dereferenced (eal-5/16/13)
     $p1 setExpression {"$p2"}
     $p1 validate
     set r1 [$p1 getExpression]
@@ -141,4 +146,4 @@ test Rename-18.4 {Renaming a parameter in quotes referenced by a parameter in st
 </property>"
     $e1 requestChange [java::new ptolemy.moml.MoMLChangeRequest $e1 $e1 $change]
     list $r1 [$p1 getExpression]
-} {{"$p2"} {"$p3"}}
+} {{"$p2"} {"$p2"}}
