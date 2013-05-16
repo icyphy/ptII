@@ -35,6 +35,7 @@ import java.util.Map;
 import java.util.Set;
 
 import ptolemy.actor.Actor;
+import ptolemy.actor.CompositeActor;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedActor;
 import ptolemy.actor.parameters.ParameterPort;
@@ -258,6 +259,9 @@ public class FSMCausalityInterface extends CausalityInterfaceForComposites {
                     TypedActor[] refinements = state.getRefinement();
                     if (refinements != null && refinements.length > 0) {
                         for (TypedActor refinement : refinements) {
+                            if (!((CompositeActor)refinement).isOpaque()) {
+                                throw new IllegalActionException(refinement, "Refinement is missing a director!");
+                            }
                             CausalityInterface causality = refinement
                                     .getCausalityInterface();
                             // For each output port, find the input ports that affect it.
