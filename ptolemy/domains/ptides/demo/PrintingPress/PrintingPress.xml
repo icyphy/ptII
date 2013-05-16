@@ -14,7 +14,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-405.0, 275.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={230, 32, 1280, 741}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 1280, 741}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1046, 631]">
     </property>
@@ -2402,8 +2402,8 @@
 <title>Drive Paper Velocity - Feed Surface (paper) Velocity</title>
 <xLabel>Time in seconds</xLabel>
 <yLabel>Velocity m/s</yLabel>
-<xRange min="0.0" max="343.2"/>
-<yRange min="0.0" max="9.458503882113602"/>
+<xRange min="0.0" max="750.0"/>
+<yRange min="0.0" max="40.440074539075965"/>
 </plot>?>
         </configure>
     </entity>
@@ -4187,8 +4187,8 @@
 <title>Paper Radius on Reserve Feed Roller</title>
 <xLabel>Time in seconds</xLabel>
 <yLabel>Paper Radius  (meters)</yLabel>
-<xRange min="0.0" max="343.3"/>
-<yRange min="0.7" max="0.7"/>
+<xRange min="0.0" max="750.0"/>
+<yRange min="0.638169409856927" max="0.7"/>
 </plot>?>
         </configure>
     </entity>
@@ -4221,8 +4221,8 @@
 <title>Drive Paper Velocity - Reserve Feed Paper Velocity</title>
 <xLabel>Time in seconds</xLabel>
 <yLabel>Velocity m/s</yLabel>
-<xRange min="0.0" max="343.2"/>
-<yRange min="0.0" max="20.154313561925655"/>
+<xRange min="0.0" max="750.0"/>
+<yRange min="0.0" max="26.02768998882588"/>
 </plot>?>
         </configure>
     </entity>
@@ -11820,8 +11820,8 @@
 <title>Reserve  Velocity (red), Target Velocity (green) and Tracking Error</title>
 <xLabel>Time in seconds</xLabel>
 <yLabel>Velocity m/s</yLabel>
-<xRange min="0.0" max="343.2"/>
-<yRange min="0.0" max="17.72348093130635"/>
+<xRange min="0.0" max="750.0"/>
+<yRange min="-12.97469705912291" max="35.0"/>
 </plot>?>
             </configure>
         </entity>
@@ -12124,7 +12124,7 @@
 <title>Paper Radius on Reserve Feed Roller</title>
 <xLabel>Time in seconds</xLabel>
 <yLabel>Paper Radius  (meters)</yLabel>
-<xRange min="0.0" max="343.3"/>
+<xRange min="0.0" max="750.0"/>
 <yRange min="-0.03453814313871817" max="53.454623638257814"/>
 </plot>?>
         </configure>
@@ -12149,8 +12149,8 @@
 <title>Paper Radius on Feed Roller, start (0.15), contact (0.2), cut (0.3)</title>
 <xLabel>Time in seconds</xLabel>
 <yLabel>Paper Radius  (meters)</yLabel>
-<xRange min="1.7976931348623157E308" max="-1.7976931348623157E308"/>
-<yRange min="1.7976931348623157E308" max="-1.7976931348623157E308"/>
+<xRange min="470.0" max="650.0999620653"/>
+<yRange min="0.15" max="0.3"/>
 </plot>?>
         </configure>
     </entity>
@@ -12174,8 +12174,8 @@
 <title>Paper Radius on Feed Roller, start (0.15), contact (0.2), cut (0.3)</title>
 <xLabel>Time in seconds</xLabel>
 <yLabel>Paper Radius  (meters)</yLabel>
-<xRange min="0.0" max="343.3"/>
-<yRange min="0.5099814520904047" max="0.7"/>
+<xRange min="0.0" max="750.0"/>
+<yRange min="0.07" max="0.7"/>
 </plot>?>
         </configure>
     </entity>

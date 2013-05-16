@@ -1648,7 +1648,7 @@ public class PtidesDirector extends DEDirector implements Decorator {
         if (event.actor() instanceof ResourceScheduler) {
             if ((event.timeStamp().compareTo(localClock.getLocalTime())) > 0) {
                 if (_debugging) {
-                    _debug("*** !safe" + event);
+                    _debug("*** resourceScheduler !safe" + event);
                 }
                 return false;
             }
@@ -1672,7 +1672,7 @@ public class PtidesDirector extends DEDirector implements Decorator {
                         - ptidesEvent.timeStamp().getDoubleValue() >= minDelay
                         .timeValue()) { 
                     if (_debugging) {
-                        _debug("*** !safe" + event);
+                        _debug("*** upstream !safe" + event);
                     }
                     return false;
                 }
@@ -1741,13 +1741,13 @@ public class PtidesDirector extends DEDirector implements Decorator {
                                 _clockSynchronizationErrorBound)*/) >= 0) {
             
             // Default throttling actors.
-            int futureEvents = _getNumberOfFutureEventsFrom(event.actor());
-            if (futureEvents > _maximumNumberOfEventsPerActor) {
-                if (_debugging) {
-                    _debug("*** !safe" + event);
-                }
-                return false;
-            } 
+//            int futureEvents = _getNumberOfFutureEventsFrom(event.actor());
+//            if (futureEvents > _maximumNumberOfEventsPerActor) {
+//                if (_debugging) {
+//                    _debug("*** throttling futureEvents !safe" + event);
+//                }
+//                return false;
+//            } 
             if (_debugging) {
                 _debug("*** safe" + event);
             }
@@ -1756,7 +1756,7 @@ public class PtidesDirector extends DEDirector implements Decorator {
 
         _setNextFireTime(eventTimestamp.subtract(delayOffset));
         if (_debugging) {
-            _debug("*** !safe" + event);
+            _debug("*** delayOffset !safe" + event);
         }
         return false;
     }
@@ -1890,6 +1890,6 @@ public class PtidesDirector extends DEDirector implements Decorator {
     /** This is an upper bound on the events in the event queue
      *  produced by any actor at any given time. 
      */
-    private static int _maximumNumberOfEventsPerActor = 10;
+    private static int _maximumNumberOfEventsPerActor = 100;
 
 }
