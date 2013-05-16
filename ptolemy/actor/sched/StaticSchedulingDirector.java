@@ -156,6 +156,9 @@ public class StaticSchedulingDirector extends Director {
         _savedSchedule = null;
         _savedSchedulePosition = -1;
         _savedIterationCount = 0;
+        
+        _actorFinished = false;
+        _currentlyExecuting = false;
     };
 
     /** Calculate the current schedule, if necessary, and iterate the
@@ -282,6 +285,17 @@ public class StaticSchedulingDirector extends Director {
     public boolean postfire() throws IllegalActionException {
         return super.postfire() && _postfireReturns;
     }
+    
+    @Override
+    public void resumeActor(Actor actor) throws IllegalActionException { 
+        _actorFinished = true;
+        _currentlyExecuting = false;
+    }
+    
+    boolean _actorFinished;
+    boolean _currentlyExecuting;
+    int _lastSchedulePosition;
+    int _lastIterationCount;
 
     /** Return true if the director is ready to fire. This method is
      *  called by the container of this director to determine whether
@@ -329,11 +343,20 @@ public class StaticSchedulingDirector extends Director {
                 }
                 Actor actor = firing.getActor();
 
-                boolean finished = _schedule(actor, getModelTime());
-                if (!finished) {
+                if (_currentlyExecuting) {
                     _prefire = false;
                     return false;
                 }
+                if (!_actorFinished) {
+                    boolean finished = _schedule(actor, getModelTime());
+                    if (!finished) {
+                        _currentlyExecuting = true;
+                        _prefire = false;
+                        return false;
+                    }
+                }
+                _currentlyExecuting = false;
+                _actorFinished = false;
 
                 if (_savedIterationCount == 0) {
                     _savedIterationCount = firing.getIterationCount();

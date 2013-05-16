@@ -13,30 +13,28 @@
   <entity name="QuantityManagerMonitor" class="ptolemy.actor.lib.qm.QuantityManagerMonitor"> 
   </entity>
   
-  <entity name="TTESwitch" class="ptolemy.actor.lib.qm.TTESwitch"> 
-  </entity>
+  <!--entity name="TTESwitch" class="ptolemy.actor.lib.qm.TTESwitch"> 
+  </entity-->
   
-  <entity name="BasicSwitch" class="ptolemy.actor.lib.qm.BasicSwitch"> 
-  </entity>
+  <!--entity name="BasicSwitch" class="ptolemy.actor.lib.qm.BasicSwitch"> 
+  </entity-->
   
-  <entity name="CrossbarSwitch" class="ptolemy.actor.lib.qm.CrossbarSwitch"> 
-  </entity>
+  <!--entity name="CrossbarSwitch" class="ptolemy.actor.lib.qm.CrossbarSwitch"> 
+  </entity-->
 
 <entity name="CQMInputPort" class="ptolemy.actor.lib.qm.CQMInputPort">
 </entity>
 
 <entity name="CQMOutputPort" class="ptolemy.actor.lib.qm.CQMOutputPort">
+	<property name="DEDirector" class="ptolemy.domains.de.kernel.DEDirector"/>
 	<property createIfNecessary="true" name="Parameter" class="ptolemy.data.expr.Parameter"></property>
 	<port name="input" class="ptolemy.actor.TypedIOPort">
     	<property name="input"/>
-    	<property name="_location" class="ptolemy.kernel.util.Location" value="{20.0, 200.0}"></property>
 	</port>
 	<entity name="SetVariable" class="ptolemy.actor.lib.SetVariable">
 		<property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="Parameter">
     	</property>
-    	<property name="delayed" class="ptolemy.data.expr.Parameter" value="true">
-    	</property>
-    	<property name="_location" class="ptolemy.kernel.util.Location" value="{0.0, 0.0}">
+    	<property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
     	</property>
     	<port name="input" class="ptolemy.actor.TypedIOPort">
         	<property name="input"/>
@@ -72,27 +70,25 @@
     </property>
 </entity>
 <entity name="out" class="ptolemy.actor.lib.qm.CQMOutputPort">
-    <property name="Parameter" class="ptolemy.data.expr.Parameter">
-    	<property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
-        </property>
-    </property>
-    <property name="_location" class="ptolemy.kernel.util.Location" value="[425.0, 220.0]">
-    </property>
-    <port name="input" class="ptolemy.actor.TypedIOPort">
-        <property name="input"/>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{20.0, 200.0}">
-        </property>
-    </port>
-    <entity name="SetVariable" class="ptolemy.actor.lib.SetVariable">
-        <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="Parameter">
-        </property>
-        <property name="delayed" class="ptolemy.data.expr.Parameter" value="true">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{0.0, 0.0}">
-        </property>
-    </entity>
-    <relation name="relation" class="ptolemy.actor.TypedIORelation">
-    </relation>
+    <property name="DEDirector" class="ptolemy.domains.de.kernel.DEDirector"/>
+	<property createIfNecessary="true" name="Parameter" class="ptolemy.data.expr.Parameter"></property>
+	<port name="input" class="ptolemy.actor.TypedIOPort">
+    	<property name="input"/>
+	</port>
+	<entity name="SetVariable" class="ptolemy.actor.lib.SetVariable">
+		<property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="Parameter">
+    	</property>
+    	<property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+    	</property>
+    	<port name="input" class="ptolemy.actor.TypedIOPort">
+        	<property name="input"/>
+    	</port>
+    	<port name="output" class="ptolemy.actor.TypedIOPort">
+        	<property name="output"/>
+    	</port>
+	</entity>
+	<relation name="relation" class="ptolemy.actor.TypedIORelation">
+	</relation>
     <link port="input" relation="relation"/>
     <link port="SetVariable.input" relation="relation"/>
 </entity>
@@ -111,7 +107,7 @@
    </property>
  </entity>
 
-<entity name="AFDX_ESs" class="ptolemy.actor.lib.qm.AFDXESs">
+<!--entity name="AFDX_ESs" class="ptolemy.actor.lib.qm.AFDXESs">
    <doc>A quantity manager that manages all AFDX End-Systems.</doc>
 </entity>
   
@@ -124,7 +120,7 @@
      <property name="attributeName" value="AFDXcfg"/>
      <property name="displayWidth" value="60"/>
    </property>
- </entity>
+ </entity-->
 
       </group>
     ?>

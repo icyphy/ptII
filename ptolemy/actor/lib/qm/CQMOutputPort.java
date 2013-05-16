@@ -30,6 +30,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 package ptolemy.actor.lib.qm;
 
 import ptolemy.actor.TypedCompositeActor;
+import ptolemy.data.BooleanToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.CompositeEntity;
@@ -69,13 +70,24 @@ public class CQMOutputPort extends TypedCompositeActor {
         super(container, name); 
     } 
     
+    @Override
+    public void initialize() throws IllegalActionException { 
+        super.initialize();
+        ((Parameter)getAttribute("Parameter")).setExpression("");
+    }
+    
     /** Check whether the contained parameter contains a token.
      * @return True if the contained parameter contains a token.
      * @exception IllegalActionException Thrown if token cannot
      * be accessed. 
      */
     public boolean hasToken() throws IllegalActionException {
-        return ((Parameter)getAttribute("Parameter")).getToken() != null;
+        Token token = ((Parameter)getAttribute("Parameter")).getToken();
+        if (token != null && 
+                !(token instanceof BooleanToken)) {
+            return true;
+        }
+        return false;
     }
     
     /** Get token from parameter and remove it from the parameter.
@@ -85,8 +97,18 @@ public class CQMOutputPort extends TypedCompositeActor {
      */
     public Token takeToken() throws IllegalActionException {
         Token token = ((Parameter)getAttribute("Parameter")).getToken();
-        ((Parameter)getAttribute("Parameter")).reset();
+        ((Parameter)getAttribute("Parameter")).setToken(new BooleanToken(false));
         return token;
+    }
+    
+    /** Clear parameter value such that it is not saved to the moml xml
+     *  description or used in another execution.
+     */
+    public void wrapup() throws IllegalActionException {
+        // TODO Auto-generated method stub
+        super.wrapup();
+        
+        ((Parameter)getAttribute("Parameter")).setExpression("");
     }
     
 }

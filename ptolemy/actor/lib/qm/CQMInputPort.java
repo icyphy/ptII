@@ -33,6 +33,7 @@ package ptolemy.actor.lib.qm;
 import ptolemy.actor.lib.Const;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.expr.Parameter;
+import ptolemy.data.ontologies.lattice.ConceptTermManager.InequalityTerm;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.RecordType;
 import ptolemy.data.type.Type;
@@ -76,13 +77,14 @@ public class CQMInputPort extends Const {
         } else {
             hide.setToken(new BooleanToken(true));
         }
-        _beforeInitialization = true; 
-        value.setExpression("{receiver=object, token=general}");
+        _beforeInitialization = true;  
         value.setVisibility(Settable.NONE);
-        firingCountLimit.setVisibility(Settable.NONE);
-        output.setTypeEquals(new RecordType(
+        value.setExpression("");
+        firingCountLimit.setVisibility(Settable.NONE); 
+        
+        value.setTypeEquals(new RecordType(
                 new String[]{"receiver", "token"}, 
-                new Type[]{BaseType.OBJECT, BaseType.GENERAL}));
+                new Type[]{BaseType.OBJECT, BaseType.DOUBLE}));
     }
     
     
@@ -93,16 +95,10 @@ public class CQMInputPort extends Const {
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException { 
-        if (attribute == value && _beforeInitialization) { 
-            // Ignore. When saving a model, the constant might contain
-            // a concrete RecordToken with a DEReceiver and a Token. 
-            // When loading this model again after saving, the DEReceiver
-            // might not have been instantiated and therefore creating
-            // the RecordToken will cause errors. 
-            value.setExpression("{receiver=object, token=general}");
-        } else {
-            super.attributeChanged(attribute);
+        if (attribute == value && _beforeInitialization) {
+            
         }
+        super.attributeChanged(attribute);
     }
     
     /** Initialize the iteration counter.  A derived class must call
@@ -113,9 +109,14 @@ public class CQMInputPort extends Const {
      *   sequence actors.
      */
     public void initialize() throws IllegalActionException { 
-        super.initialize(); 
-        value.setExpression("{receiver=object, token=general}");
+        super.initialize();  
         _beforeInitialization = false;
+    }
+    
+    public void wrapup() throws IllegalActionException { 
+        super.wrapup();
+        // to avoid saving the token. 
+        value.setExpression("");
     }
     
     private boolean _beforeInitialization;

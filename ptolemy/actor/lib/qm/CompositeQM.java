@@ -231,8 +231,7 @@ public class CompositeQM extends TypedCompositeActor implements QuantityManager,
 
             for (Const mappedConst : _tokens.keySet()) {
                 mappedConst.value.setToken(_tokens.get(mappedConst));
-                mappedConst.fire();
-                System.out.println(mappedConst);
+                mappedConst.fire(); 
             }
             _tokens.clear();
 

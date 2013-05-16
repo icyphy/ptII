@@ -471,11 +471,13 @@ public class IOPortController extends AttributeController {
 
                         StringBuffer qmStringBuffer = new StringBuffer();
                         for (int j = 0; j < qmList.size(); j++) {
-                            if (qmStringBuffer.length() > 0) {
-                                qmStringBuffer.append(", ");
+                            NamedObj namedObj = (NamedObj) qmList.get(j);
+                            if (namedObj != null) {
+                                if (qmStringBuffer.length() > 0) {
+                                    qmStringBuffer.append(", ");
+                                }
+                                qmStringBuffer.append(namedObj.getName());
                             }
-                            qmStringBuffer.append(((NamedObj) qmList.get(j))
-                                    .getName());
                         }
                         info.setExpression("QM = {" + qmStringBuffer.toString() + "}");
                     } else {

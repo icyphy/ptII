@@ -276,10 +276,6 @@
             <entity name="ArchitectureMappingModel" class="ptolemy.actor.lib.resourceScheduler.CompositeResourceScheduler">
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{270.0, 55.0}">
                 </property>
-                <property name="SchedulerDirector" class="ptolemy.domains.ptides.lib.SchedulerDirector">
-                    <property name="_location" class="ptolemy.kernel.util.Location" value="[-65.0, -10.0]">
-                    </property>
-                </property>
                 <property name="etRamp" class="ptolemy.data.expr.Parameter" value="0.3">
                     <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                     </property>
@@ -463,6 +459,10 @@
                 <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
                 </property>
                 <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{192.0, 209.181640625}">
+                </property>
+                <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="{-80, -10}">
+                    </property>
                 </property>
                 <entity name="P1" class="ptolemy.actor.TypedCompositeActor">
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[-50.0, 105.0]">
@@ -1226,8 +1226,6 @@
                         </property>
                     </property>
                     <entity name="_Controller" class="ptolemy.domains.modal.modal.ModalController">
-                        <property name="errorCause" class="ptolemy.data.expr.Parameter">
-                        </property>
                         <property name="_library" class="ptolemy.moml.LibraryAttribute">
                             <configure>
       <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.modal.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory"></property></entity></entity>
@@ -1401,8 +1399,6 @@
                         </property>
                     </port>
                     <entity name="_Controller" class="ptolemy.domains.modal.modal.ModalController">
-                        <property name="errorCause" class="ptolemy.data.expr.Parameter">
-                        </property>
                         <property name="_library" class="ptolemy.moml.LibraryAttribute">
                             <configure>
       <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.modal.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory"></property></entity></entity>
@@ -2640,8 +2636,6 @@
                         </property>
                     </port>
                     <entity name="_Controller" class="ptolemy.domains.modal.modal.ModalController">
-                        <property name="errorCause" class="ptolemy.data.expr.Parameter">
-                        </property>
                         <property name="Ellipse" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
                             <property name="_location" class="ptolemy.kernel.util.Location" value="[370.0, 245.0]">
                             </property>
@@ -3138,8 +3132,6 @@
                         </property>
                     </port>
                     <entity name="_Controller" class="ptolemy.domains.modal.modal.ModalController">
-                        <property name="errorCause" class="ptolemy.data.expr.Parameter">
-                        </property>
                         <property name="_library" class="ptolemy.moml.LibraryAttribute">
                             <configure>
       <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.modal.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory"></property></entity></entity>
@@ -3651,8 +3643,6 @@
                         </property>
                     </port>
                     <entity name="_Controller" class="ptolemy.domains.modal.modal.ModalController">
-                        <property name="errorCause" class="ptolemy.data.expr.Parameter">
-                        </property>
                         <property name="_library" class="ptolemy.moml.LibraryAttribute">
                             <configure>
       <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.modal.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory"></property></entity></entity>
@@ -3857,7 +3847,7 @@
                     <entity name="SetVariable" class="ptolemy.actor.lib.SetVariable">
                         <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="Parameter">
                         </property>
-                        <property name="delayed" class="ptolemy.data.expr.Parameter" value="true">
+                        <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
                         </property>
                         <property name="_location" class="ptolemy.kernel.util.Location" value="{0.0, 0.0}">
                         </property>
@@ -3890,7 +3880,7 @@
                     <entity name="SetVariable" class="ptolemy.actor.lib.SetVariable">
                         <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="Parameter">
                         </property>
-                        <property name="delayed" class="ptolemy.data.expr.Parameter" value="true">
+                        <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
                         </property>
                         <property name="_location" class="ptolemy.kernel.util.Location" value="{0.0, 0.0}">
                         </property>
@@ -3923,7 +3913,7 @@
                     <entity name="SetVariable" class="ptolemy.actor.lib.SetVariable">
                         <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="Parameter">
                         </property>
-                        <property name="delayed" class="ptolemy.data.expr.Parameter" value="true">
+                        <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
                         </property>
                         <property name="_location" class="ptolemy.kernel.util.Location" value="{0.0, 0.0}">
                         </property>
@@ -4214,8 +4204,6 @@
                 <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
                 </property>
                 <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{350.0, 262.0}">
-                </property>
-                <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
                 <property name="DecoratorAttributesFor_ArchitectureMappingModel" class="ptolemy.actor.lib.resourceScheduler.CompositeResourceScheduler$CompositeResourceSchedulerAttributes">
                     <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.ArchitectureMappingModel">

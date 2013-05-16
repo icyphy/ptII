@@ -144,8 +144,9 @@ public class Bus extends MonitoredQuantityManager {
                         "Cannot have negative serviceTime: " + value);
             }
             _serviceTimeMultiplicationFactorValue = value;
+        } else {
+            super.attributeChanged(attribute);
         }
-        super.attributeChanged(attribute);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -486,7 +487,12 @@ public class Bus extends MonitoredQuantityManager {
             if (attribute == messageLength) {
                 IOPort port = (IOPort) getContainer();
                 Bus bus = (Bus) getDecorator();
-                bus.setMessageLength(port, ((ScalarToken)((Parameter)attribute).getToken()).doubleValue());
+                if (bus != null) {
+                Token token = messageLength.getToken();
+                if (token != null) {
+                    bus.setMessageLength(port, ((ScalarToken)token).doubleValue());
+                }
+                }
             } else {
                 super.attributeChanged(attribute);
             }

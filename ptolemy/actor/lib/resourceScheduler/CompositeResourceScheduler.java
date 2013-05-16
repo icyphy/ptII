@@ -398,12 +398,6 @@ public class CompositeResourceScheduler extends TypedCompositeActor implements R
     }
     
     @Override
-    public void fire() throws IllegalActionException {
-        // TODO Auto-generated method stub
-        super.fire();
-    }
-    
-    @Override
     public boolean postfire() throws IllegalActionException {
         // TODO Auto-generated method stub
         boolean postfire = super.postfire();
@@ -419,7 +413,7 @@ public class CompositeResourceScheduler extends TypedCompositeActor implements R
                         event((NamedObj) actor, getDirector().getModelTime().getDoubleValue(), ExecutionEventType.STOP);
                         outputPort.takeToken();
                         _currentlyExecuting.remove(actor);
-                        getExecutiveDirector().resumeActor(actor);
+                        actor.getDirector().resumeActor(actor);
                         _lastActorFinished = true;
                     }
                 }
@@ -453,7 +447,7 @@ public class CompositeResourceScheduler extends TypedCompositeActor implements R
         _lastActorFinished = false;
         
         // make sure that director has the correct time.
-        getDirector().prefire();
+        getDirector().setModelTime(getDirector().localClock.getLocalTimeForCurrentEnvironmentTime());
         
         
         // create token for scheduling requests and put them into ports.
