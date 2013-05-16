@@ -931,7 +931,7 @@ public class Director extends Attribute implements Executable {
      *  @param actor The actor that resumes execution.
      *  @throws IllegalActionException Not thrown here but in derived classes.
      */
-    public void resumeActor(Actor actor) throws IllegalActionException {
+    public void resumeActor(Actor actor) throws IllegalActionException { 
     }
 
     /** Indicate that resolved types in the model may no longer be valid.

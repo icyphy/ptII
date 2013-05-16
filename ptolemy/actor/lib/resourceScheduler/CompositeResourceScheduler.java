@@ -410,10 +410,10 @@ public class CompositeResourceScheduler extends TypedCompositeActor implements R
                     if (recordToken.get("actor") != null && 
                             ((ObjectToken)recordToken.get("actor")).getValue() != null) {
                         Actor actor = (Actor) ((ObjectToken)recordToken.get("actor")).getValue();
-                        event((NamedObj) actor, getDirector().getModelTime().getDoubleValue(), ExecutionEventType.STOP);
+                        event((NamedObj) actor, getExecutiveDirector().getModelTime().getDoubleValue(), ExecutionEventType.STOP);
                         outputPort.takeToken();
                         _currentlyExecuting.remove(actor);
-                        actor.getDirector().resumeActor(actor);
+                        actor.getExecutiveDirector().resumeActor(actor);
                         _lastActorFinished = true;
                     }
                 }
@@ -447,12 +447,12 @@ public class CompositeResourceScheduler extends TypedCompositeActor implements R
         _lastActorFinished = false;
         
         // make sure that director has the correct time.
-        getDirector().setModelTime(getDirector().localClock.getLocalTimeForCurrentEnvironmentTime());
+        getDirector().setModelTime(getExecutiveDirector().localClock.getLocalTime());
         
         
         // create token for scheduling requests and put them into ports.
         if (!_currentlyExecuting.contains(actor)) {
-            event((NamedObj) actor, getDirector().getModelTime().getDoubleValue(), ExecutionEventType.START);
+            event((NamedObj) actor, getExecutiveDirector().localClock.getLocalTime().getDoubleValue(), ExecutionEventType.START);
             ResourceMappingInputPort requestPort = (ResourceMappingInputPort) getEntity(_requestPorts.get(actor));
             if (requestPort != null) { 
                 RecordToken recordToken = new RecordToken(

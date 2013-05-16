@@ -350,10 +350,6 @@ public class PtidesDirector extends DEDirector implements Decorator {
             _inputEventQueue.remove(getModelTime());
         }
 
-        for (ResourceScheduler scheduler : _resourceSchedulers) {
-            scheduler.schedule(localClock.getLocalTime());
-        }
-
         super.fire();
 
         // Transfer all outputs to the ports that are ready.
@@ -666,6 +662,7 @@ public class PtidesDirector extends DEDirector implements Decorator {
     
     public void resumeActor(Actor actor) throws IllegalActionException { 
         _actorsFinished.add(actor); 
+        fireContainerAt(getModelTime());
     }
 
     /** Override the base class to first set the container, then establish

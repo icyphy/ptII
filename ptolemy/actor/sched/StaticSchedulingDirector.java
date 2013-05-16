@@ -289,7 +289,7 @@ public class StaticSchedulingDirector extends Director {
     @Override
     public void resumeActor(Actor actor) throws IllegalActionException { 
         _actorFinished = true;
-        _currentlyExecuting = false;
+        _currentlyExecuting = false; 
     }
     
     boolean _actorFinished;

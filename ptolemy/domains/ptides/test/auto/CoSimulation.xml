@@ -514,7 +514,7 @@
                         </property>
                     </port>
                     <entity name="P" class="ptolemy.domains.de.lib.Server">
-                        <property name="serviceTime" class="ptolemy.actor.parameters.PortParameter" value="0.1">
+                        <property name="serviceTime" class="ptolemy.actor.parameters.PortParameter" value="0.3">
                         </property>
                         <property name="_location" class="ptolemy.kernel.util.Location" value="[384.0, 305.0]">
                         </property>
@@ -1408,7 +1408,7 @@
       <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.modal.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory"></property></entity></entity>
     </configure>
                         </property>
-                        <property name="M1Size" class="ptolemy.data.expr.Parameter" value="0">
+                        <property name="M1Size" class="ptolemy.data.expr.Parameter" value="1">
                             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                             </property>
                             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -1746,7 +1746,7 @@
                         </property>
                     </port>
                     <entity name="Server" class="ptolemy.domains.de.lib.Server">
-                        <property name="serviceTime" class="ptolemy.actor.parameters.PortParameter" value="0.0">
+                        <property name="serviceTime" class="ptolemy.actor.parameters.PortParameter" value="0.8">
                         </property>
                         <property name="_location" class="ptolemy.kernel.util.Location" value="[366.0, 250.0]">
                         </property>
@@ -4315,10 +4315,12 @@
                 <link port="Spectrum.output" relation="relation2"/>
                 <link port="Ramp.output" relation="relation3"/>
             </entity>
-            <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
-                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={394, 379, 500, 344}, maximized=false}">
+            <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
+                <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{3.6979930382209, 6.0205999132796, 11.3535067449782, 19.9122607569249, 11.3535067449782, 6.0205999132796, 3.6979930382209, 3.0102999566398, 3.6979930382209, 6.0205999132796, 11.3535067449782, 30.2448566769917, 11.3535067449782, 6.0205999132796, 3.6979930382209, 3.0102999566398, 3.6979930382209, 6.0205999132796, 11.3535067449782, 34.8315920971698, 11.3535067449782, 6.0205999132796, 3.6979930382209, 3.0102999566398, 3.6979930382209, 6.0205999132796, 11.3535067449782, 37.8175537465247, 11.3535067449782, 6.0205999132796, 3.6979930382209, 3.0102999566398, 3.6979930382209, 6.0205999132796, 11.3535067449782, 40.0354669310213, 11.3535067449782, 6.0205999132796, 3.6979930382209, 3.0102999566398, 3.6979930382209, 6.0205999132796, 11.3535067449782, 41.8006850090122, 11.3535067449782, 6.0205999132796, 3.6979930382209, 3.0102999566398, 3.6979930382209, 6.0205999132796, 11.3535067449782, 43.2670444507432, 11.3535067449782, 6.0205999132796, 3.6979930382209, 3.0102999566398, 3.6979930382209, 6.0205999132796, 11.3535067449782, 44.5212391844904, 11.3535067449782, 6.0205999132796, 3.6979930382209, 3.0102999566398, 3.6979930382209, 6.0205999132796, 11.3535067449782, 45.6169753265399, 11.3535067449782, 6.0205999132796, 3.6979930382209, 3.0102999566398, 3.6979930382209, 6.0205999132796, 11.3535067449782, 46.5898389025032, 11.3535067449782, 6.0205999132796, 3.6979930382209, 3.0102999566398, 3.6979930382209, 6.0205999132796, 11.3535067449782, 47.4646293795915, 11.3535067449782, 6.0205999132796, 3.6979930382209, 3.0102999566398, 3.6979930382209, 6.0205999132796, 11.3535067449782, 48.2593217512484, 11.3535067449782, 6.0205999132796, 3.6979930382209, 3.0102999566398, 3.6979930382209, 6.0205999132796, 11.3535067449782, 48.9873614848339, 11.3535067449782, 6.0205999132796, 3.6979930382209, 3.0102999566398, 3.6979930382209, 6.0205999132796, 11.3535067449782, 49.6590691549519, 11.3535067449782, 6.0205999132796, 3.6979930382209, 3.0102999566398, 3.6979930382209, 6.0205999132796, 11.3535067449782, 50.2825395544827, 11.3535067449782, 6.0205999132796, 3.6979930382209, 3.0102999566398, 3.6979930382209, 6.0205999132796, 11.3535067449782, 50.8642390218331, 11.3535067449782, 6.0205999132796, 3.6979930382209, 3.0102999566398, 3.6979930382209, 6.0205999132796, 11.3535067449782, 51.409414926435, 11.3535067449782, 6.0205999132796, 3.6979930382209, 3.0102999566398, 3.6979930382209, 6.0205999132796, 11.3535067449782, 51.9223840221118, 11.3535067449782, 6.0205999132796, 3.6979930382209, 3.0102999566398, 3.6979930382209, 6.0205999132796, 11.3535067449782, 52.4067402762031, 11.3535067449782, 6.0205999132796, 3.6979930382209, 3.0102999566398, 3.6979930382209, 6.0205999132796, 11.3535067449782, 52.8655077371766, 11.3535067449782, 6.0205999132796, 3.6979930382209, 3.0102999566398, 3.6979930382209, 6.0205999132796, 11.3535067449782, 53.3012550098455, 11.3535067449782, 6.0205999132796, 3.6979930382209, 3.0102999566398}">
                 </property>
-                <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
+                <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.135350674497815E-8">
+                </property>
+                <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[360.0, 210.0]">
                 </property>
@@ -4334,19 +4336,9 @@
                 </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
-                    <property name="multiport"/>
                     <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="Infinity">
                     </property>
                 </port>
-                <configure>
-<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
-"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
-<plot>
-<title>TimedPlotter</title>
-<xRange min="12.5" max="296.1"/>
-<yRange min="3.010299956639811" max="56.47071809921773"/>
-</plot>?>
-                </configure>
             </entity>
             <relation name="relation" class="ptolemy.actor.TypedIORelation">
                 <property name="color" class="ptolemy.actor.gui.ColorAttribute">
@@ -4357,7 +4349,7 @@
             <link port="DiscreteClock.output" relation="relation"/>
             <link port="App.port2" relation="relation2"/>
             <link port="App.trigger" relation="relation"/>
-            <link port="TimedPlotter.input" relation="relation2"/>
+            <link port="NonStrictTest.input" relation="relation2"/>
         </entity>
     </entity>
 </entity>
