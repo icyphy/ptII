@@ -147,13 +147,12 @@ public class AttributeValueIcon extends XMLIcon {
 
     /** Return the associated attribute. If an {@link #entityName} is given,
      *  then the associated attribute is attribute with name given by
-     *  {@link attributeName} contained by the specified entity.
+     *  {@link #attributeName} contained by the specified entity.
      *  If no entityName is given, then the associated attribute is
      *  the one contained by the container of this object with the
      *  specified name.  If no attributeName is given either, and the
      *  the container of this object is an Attribute, then the associated
      *  attribute is that container. Otherwise, throw an exception.
-     *  @param associatedAttribute
      *  @return The associated attribute.
      *  @throws IllegalActionException If no Settable associated attribute
      *   can be found.
