@@ -40,6 +40,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Settable;
 
 
 /** This actor implements an input port in a composite quantity manager
@@ -77,6 +78,8 @@ public class CQMInputPort extends Const {
         }
         _beforeInitialization = true; 
         value.setExpression("{receiver=object, token=general}");
+        value.setVisibility(Settable.NONE);
+        firingCountLimit.setVisibility(Settable.NONE);
         output.setTypeEquals(new RecordType(
                 new String[]{"receiver", "token"}, 
                 new Type[]{BaseType.OBJECT, BaseType.GENERAL}));

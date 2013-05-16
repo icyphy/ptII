@@ -67,24 +67,14 @@
     <property name="_location" class="ptolemy.kernel.util.Location" value="[190.0, 15.0]">
     </property>
 </property>
-<property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-    <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Input ports of actors with incoming relations &#10;mediated by this quantity manager are connected&#10;via name matching: actorName_portName">
-    </property>
-    <property name="_location" class="ptolemy.kernel.util.Location" value="[-5.0, 125.0]">
-    </property>
-</property>
-<property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-    <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Incoming tokens are wrapped and the target &#10;receiver is stored. At this output port, the &#10;target receiver is unwrapped and the token &#10;is sent to said receiver.">
-    </property>
-    <property name="_location" class="ptolemy.kernel.util.Location" value="[355.0, 120.0]">
-    </property>
-</property>
-<entity name="actorName_portName" class="ptolemy.actor.lib.qm.CQMInputPort">
+<entity name="in" class="ptolemy.actor.lib.qm.CQMInputPort">
     <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 215.0]">
     </property>
 </entity>
-<entity name="CQMOutputPort" class="ptolemy.actor.lib.qm.CQMOutputPort">
+<entity name="out" class="ptolemy.actor.lib.qm.CQMOutputPort">
     <property name="Parameter" class="ptolemy.data.expr.Parameter">
+    	<property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
+        </property>
     </property>
     <property name="_location" class="ptolemy.kernel.util.Location" value="[425.0, 220.0]">
     </property>
