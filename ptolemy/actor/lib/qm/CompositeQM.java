@@ -308,18 +308,16 @@ public class CompositeQM extends TypedCompositeActor implements QuantityManager,
         }
     }
 
-    /** Set an attribute for a given port. In case the attribute is the name of the
-     *  input port in the CQM that this actor port is mapped to, store the mapping
-     *  and, if necessary, create the CQMInputPort.
-     *  @param port The port. 
-     *  @param attribute The new attribute or the attribute containing a new value.
-     *  @exception IllegalActionException Thrown if attribute could not be updated.
+    /** Set the name of the CQMInputPort that will be receiving tokens from 
+     *  this actor port.
+     *  @param port The actorport.  
+     *  @param inputPortName The name of the CQMInputPort. 
      */
-    public void setInputPortName(Port port, String inputPortName) throws IllegalActionException { 
-        if (_mappedConsts == null) {
-            _mappedConsts = new HashMap<Port, String>();
+    public void setInputPortName(Port port, String inputPortName) { 
+        if (_cqmInputPortName == null) {
+            _cqmInputPortName = new HashMap<Port, String>();
         }
-        _mappedConsts.put(port, inputPortName); 
+        _cqmInputPortName.put(port, inputPortName); 
     }
 
     /** Initiate a send of the specified token to the specified
@@ -332,12 +330,13 @@ public class CompositeQM extends TypedCompositeActor implements QuantityManager,
      */
     public void sendToken(Receiver source, Receiver receiver, Token token)
             throws IllegalActionException {
-        CQMInputPort port = (CQMInputPort) getEntity(_mappedConsts.get(receiver.getContainer())); 
+        String name = _cqmInputPortName.get(receiver.getContainer());
+        CQMInputPort port = (CQMInputPort) getEntity(name); 
         if (port == null) {
-            throw new IllegalActionException(this, "No mapping constant in "
-                    + this.getName() + " for "
-                    + receiver.getContainer().getContainer().getName() + "_"
-                    + receiver.getContainer().getName());
+            throw new IllegalActionException(this, 
+                    "CQMInputPort with name " + name 
+                    + " specified by " + receiver.getContainer()
+                    + " missing");
         }
         if (_tokens == null) {
             _tokens = new HashMap<Const, Token>();
@@ -386,7 +385,7 @@ public class CompositeQM extends TypedCompositeActor implements QuantityManager,
     /** Listeners registered to receive events from this object. */
     private ArrayList<QuantityManagerListener> _listeners;
 
-    private HashMap<Port, String> _mappedConsts;
+    private HashMap<Port, String> _cqmInputPortName;
     
     
     ///////////////////////////////////////////////////////////////////
@@ -437,6 +436,31 @@ public class CompositeQM extends TypedCompositeActor implements QuantityManager,
             } else {
                 super.attributeChanged(attribute);
             } 
+        } 
+        
+        @Override
+        public void updateContent() throws InternalErrorException { 
+            super.updateContent();
+            try {
+                if (getDecorator() != null) {
+                    List<String> choices = new ArrayList();
+                    if (inputPort.getChoices() != null) {
+                        for (int i = 0; i < inputPort.getChoices().length; i++) {
+                            choices.add(inputPort.getChoices()[i]);
+                        }
+                    }
+                 
+                    List cqmInputPorts = ((CompositeQM)getDecorator()).entityList(CQMInputPort.class);
+                    for (Object cqmInputPort : cqmInputPorts) {
+                        String name = ((CQMInputPort)cqmInputPort).getName();
+                        if (!choices.contains(name)) {
+                            inputPort.addChoice(name);
+                        }
+                    }  
+                }
+            } catch (IllegalActionException e) {
+                throw new InternalErrorException(e);
+            }
         } 
 
         ///////////////////////////////////////////////////////////////////

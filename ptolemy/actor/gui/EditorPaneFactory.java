@@ -120,6 +120,7 @@ public class EditorPaneFactory extends Attribute {
             for (Decorator decorator : decorators) {
                 DecoratorAttributes decoratorAttributes = object
                         .getDecoratorAttributes(decorator);
+                decoratorAttributes.updateContent();
 
                 if (decoratorAttributes != null) {
                     PtolemyQuery decoratorQuery = new PtolemyQuery(object);
@@ -135,6 +136,7 @@ public class EditorPaneFactory extends Attribute {
                             if (Configurer.isVisible(object, settable)) {
                                 foundDecoratorAttribute = true;
                                 decoratorQuery.addStyledEntry(settable);
+                                
                             }
                         }
                     }
