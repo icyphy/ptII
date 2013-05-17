@@ -41,7 +41,6 @@ import ptolemy.actor.IntermediateReceiver;
 import ptolemy.actor.QuantityManager;
 import ptolemy.actor.Receiver;
 import ptolemy.actor.lib.ResourceAttributes;
-import ptolemy.actor.lib.qm.Bus.BusAttributes;
 import ptolemy.actor.lib.qm.QuantityManagerListener.EventType;
 import ptolemy.actor.util.Time;
 import ptolemy.actor.util.TimedEvent;
@@ -54,6 +53,7 @@ import ptolemy.domains.de.kernel.DEDirector;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.Decorator;
 import ptolemy.kernel.util.DecoratorAttributes;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
@@ -446,16 +446,19 @@ public class BasicSwitch extends MonitoredQuantityManager {
         }
     }
 
-    /** Set an attribute for a given port.
-     *  @param port The port. 
-     *  @param attribute The new attribute or the attribute containing a new value.
-     *  @exception IllegalActionException Thrown if attribute could not be updated.
+    /** Set the id of the switch input that is receiving tokens from this actor port.
+     *  @param port The actor port. 
+     *  @param portIn The id of the switch port. 
      */
-    public void setPortIn(Port port, int portIn) throws IllegalActionException {
+    public void setPortIn(Port port, int portIn) {
         _ioPortToSwitchInPort.put((IOPort)port, portIn);  
     } 
     
-    public void setPortOut(Port port, int portOut) throws IllegalActionException { 
+    /** Set the id of the switch output that is sending tokens to this actor port.
+     * @param port The actor port.
+     * @param portOut The id of the switch port. 
+     */
+    public void setPortOut(Port port, int portOut) { 
         _ioPortToSwitchOutPort.put((IOPort)port, portOut);
     } 
     
@@ -578,10 +581,10 @@ public class BasicSwitch extends MonitoredQuantityManager {
          *  @throws IllegalActionException If the superclass throws it.
          *  @throws NameDuplicationException If the superclass throws it.
          */
-        public BasicSwitchAttributes(NamedObj target, MonitoredQuantityManager decorator)
+        public BasicSwitchAttributes(NamedObj container, Decorator decorator)
                 throws IllegalActionException, NameDuplicationException {
-            super(target, decorator);
-            _init();
+            super(container, decorator);
+            _init();  
         }
 
         /** Constructor to use when parsing a MoML file.
@@ -590,10 +593,10 @@ public class BasicSwitch extends MonitoredQuantityManager {
          *  @throws IllegalActionException If the superclass throws it.
          *  @throws NameDuplicationException If the superclass throws it.
          */
-        public BasicSwitchAttributes(NamedObj target, String name)
+        public BasicSwitchAttributes(NamedObj container, String name)
                 throws IllegalActionException, NameDuplicationException {
-            super(target, name);
-            _init();
+            super(container, name);
+            _init(); 
         }
 
         ///////////////////////////////////////////////////////////////////
@@ -621,14 +624,16 @@ public class BasicSwitch extends MonitoredQuantityManager {
                 throws IllegalActionException {
             IOPort port = (IOPort) getContainer();
             BasicSwitch basicSwitch = (BasicSwitch) getDecorator();
-            if (attribute == portIn) {
-                _portIn = ((IntToken)((Parameter)attribute).getToken()).intValue();
-                basicSwitch.setPortIn(port, _portIn);
-            } else if (attribute == portOut) {
-                _portOut = ((IntToken)((Parameter)attribute).getToken()).intValue();
-                basicSwitch.setPortOut(port, _portOut);
-            } else {
-                super.attributeChanged(attribute);
+            if (basicSwitch != null) {
+                if (attribute == portIn) {
+                    _portIn = ((IntToken)((Parameter)attribute).getToken()).intValue();
+                    basicSwitch.setPortIn(port, _portIn);
+                } else if (attribute == portOut) {
+                    _portOut = ((IntToken)((Parameter)attribute).getToken()).intValue();
+                    basicSwitch.setPortOut(port, _portOut);
+                } else {
+                    super.attributeChanged(attribute);
+                }
             }
         } 
 
