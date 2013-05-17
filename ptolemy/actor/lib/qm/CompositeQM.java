@@ -447,20 +447,13 @@ public class CompositeQM extends TypedCompositeActor implements QuantityManager,
         public void updateContent() throws InternalErrorException { 
             super.updateContent();
             try {
-                if (getDecorator() != null) {
-                    List<String> choices = new ArrayList();
-                    if (inputPort.getChoices() != null) {
-                        for (int i = 0; i < inputPort.getChoices().length; i++) {
-                            choices.add(inputPort.getChoices()[i]);
-                        }
-                    }
+                if (getDecorator() != null) { 
+                    inputPort.removeAllChoices();
                  
                     List cqmInputPorts = ((CompositeQM)getDecorator()).entityList(CQMInputPort.class);
                     for (Object cqmInputPort : cqmInputPorts) {
                         String name = ((CQMInputPort)cqmInputPort).getName();
-                        if (!choices.contains(name)) {
-                            inputPort.addChoice(name);
-                        }
+                        inputPort.addChoice(name);
                     }  
                 }
             } catch (IllegalActionException e) {

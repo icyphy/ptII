@@ -566,19 +566,12 @@ public class CompositeResourceScheduler extends TypedCompositeActor implements R
             super.updateContent();
             try {
                 if (getDecorator() != null) {
-                    List<String> choices = new ArrayList();
-                    if (requestPort.getChoices() != null) {
-                        for (int i = 0; i < requestPort.getChoices().length; i++) {
-                            choices.add(requestPort.getChoices()[i]);
-                        }
-                    }
+                    requestPort.removeAllChoices();
                  
                     List cqmInputPorts = ((CompositeResourceScheduler)getDecorator()).entityList(ResourceMappingInputPort.class);
                     for (Object cqmInputPort : cqmInputPorts) {
-                        String name = ((ResourceMappingInputPort)cqmInputPort).getName();
-                        if (!choices.contains(name)) {
-                            requestPort.addChoice(name);
-                        }
+                        String name = ((ResourceMappingInputPort)cqmInputPort).getName(); 
+                        requestPort.addChoice(name); 
                     }  
                 }
             } catch (IllegalActionException e) {
