@@ -57,6 +57,7 @@ import ptolemy.actor.gui.BrowserEffigy;
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.EditParametersDialog;
 import ptolemy.actor.gui.Effigy;
+import ptolemy.actor.gui.PtolemyEffigy;
 import ptolemy.actor.gui.PtolemyFrame;
 import ptolemy.actor.gui.Tableau;
 import ptolemy.domains.modal.kernel.State;
@@ -73,6 +74,7 @@ import ptolemy.util.CancelException;
 import ptolemy.util.FileUtilities;
 import ptolemy.util.MessageHandler;
 import ptolemy.util.StringUtilities;
+import ptolemy.vergil.actor.ActorGraphTableau;
 import ptolemy.vergil.basic.BasicGraphFrame;
 import ptolemy.vergil.basic.ExportParameters;
 import ptolemy.vergil.basic.HTMLExportable;
@@ -1397,16 +1399,20 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable,
         Configuration configuration = graphFrame.getConfiguration();
         Effigy effigy = configuration.getEffigy(entity);
 
+        Tableau tableau;
         if (effigy != null) {
             // Effigy exists. See whether it has an open tableau.
             List<Tableau> tableaux = effigy.entityList(Tableau.class);
             if (tableaux == null || tableaux.size() == 0) {
                 // No open tableau. Open one.
-                tableauxToClose.add(configuration.createPrimaryTableau(effigy));
+                tableau = configuration.createPrimaryTableau(effigy);
+                tableauxToClose.add(tableau);
+            } else {
+                // The first tablequ is sufficient to retrieve the model.
+                tableau = tableaux.get(0);
             }
         } else {
             // No pre-existing effigy.
-            Tableau tableau;
             try {
                 tableau = configuration.openModel(entity);
                 tableauxToClose.add(tableau);
@@ -1415,7 +1421,15 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable,
                 throw new InternalErrorException(e);
             }
         }
-        List<Entity> entities = entity.entityList();
+        // NOTE: The entity that was opened may not actually be entity
+        // because if it was an instance of a class, then class definition
+        // will have been opened.
+        CompositeEntity actualEntity = entity;
+        if (tableau instanceof ActorGraphTableau) {
+            PtolemyEffigy actualEffigy = (PtolemyEffigy)tableau.getContainer();
+            actualEntity = (CompositeEntity)actualEffigy.getModel();
+        }
+        List<Entity> entities = actualEntity.entityList();
         for (Entity inside : entities) {
             _openEntity(inside, tableauxToClose, masterEffigy, graphFrame);
         }
