@@ -438,6 +438,11 @@ public class CompositeQM extends TypedCompositeActor implements QuantityManager,
             } 
         } 
         
+        /** Add names of available CQMInputPort in CompositeQM as
+         *  choices to inputPort.
+         *  @exception InteralErrorException Thrown if CompositeQM
+         *    cannot be accessed.  
+         */
         @Override
         public void updateContent() throws InternalErrorException { 
             super.updateContent();
