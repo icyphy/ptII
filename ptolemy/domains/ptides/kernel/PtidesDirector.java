@@ -80,6 +80,7 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.Workspace;
 
 /** This director implements the Ptides programming model,
  *  which is used for the design of distributed real-time systems.
@@ -276,6 +277,24 @@ public class PtidesDirector extends DEDirector implements Decorator {
         } else {
             super.attributeChanged(attribute);
         }
+    }
+    
+    /** Clone the object into the specified workspace. The new object is
+     *  <i>not</i> added to the directory of that workspace (you must do this
+     *  yourself if you want it there).
+     *  The result is an attribute with no container.
+     *  @param workspace The workspace for the cloned object.
+     *  @exception CloneNotSupportedException Not thrown in this base class
+     *  @return The new Attribute.
+     */
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        PtidesDirector newObject = (PtidesDirector) super.clone(workspace); 
+        try {
+            newObject._clockSynchronizationErrorBound = new Time(newObject, 0.0);
+        } catch (IllegalActionException e) { 
+            // cannot happen.
+        }
+        return newObject;
     }
 
     /** Create and return the decorated attributes for the PtidesDirector.
