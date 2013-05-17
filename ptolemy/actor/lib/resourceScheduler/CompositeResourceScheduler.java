@@ -37,26 +37,17 @@ import java.util.List;
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
-import ptolemy.actor.IOPort;
-import ptolemy.actor.Receiver;
 import ptolemy.actor.TypedCompositeActor;
-import ptolemy.actor.lib.Const;
 import ptolemy.actor.lib.ResourceAttributes;
-import ptolemy.actor.lib.qm.Bus;
-import ptolemy.actor.lib.qm.CQMOutputPort;
-import ptolemy.actor.lib.qm.MonitoredQuantityManager;
-import ptolemy.actor.lib.resourceScheduler.AtomicResourceScheduler.ExecutionEventType;
 import ptolemy.actor.util.Time;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.ObjectToken;
 import ptolemy.data.RecordToken;
-import ptolemy.data.ScalarToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
-import ptolemy.domains.de.kernel.DEDirector;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.Decorator;
@@ -565,6 +556,36 @@ public class CompositeResourceScheduler extends TypedCompositeActor implements R
             }
         }
 
+        /** Add names of available CQMInputPort in CompositeQM as
+         *  choices to inputPort.
+         *  @exception InteralErrorException Thrown if CompositeQM
+         *    cannot be accessed.  
+         */
+        @Override
+        public void updateContent() throws InternalErrorException { 
+            super.updateContent();
+            try {
+                if (getDecorator() != null) {
+                    List<String> choices = new ArrayList();
+                    if (requestPort.getChoices() != null) {
+                        for (int i = 0; i < requestPort.getChoices().length; i++) {
+                            choices.add(requestPort.getChoices()[i]);
+                        }
+                    }
+                 
+                    List cqmInputPorts = ((CompositeResourceScheduler)getDecorator()).entityList(ResourceMappingInputPort.class);
+                    for (Object cqmInputPort : cqmInputPorts) {
+                        String name = ((ResourceMappingInputPort)cqmInputPort).getName();
+                        if (!choices.contains(name)) {
+                            requestPort.addChoice(name);
+                        }
+                    }  
+                }
+            } catch (IllegalActionException e) {
+                throw new InternalErrorException(e);
+            }
+        } 
+        
         ///////////////////////////////////////////////////////////////////
         ////                        private methods                    ////
 
