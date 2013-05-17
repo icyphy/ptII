@@ -120,9 +120,9 @@ public class EditorPaneFactory extends Attribute {
             for (Decorator decorator : decorators) {
                 DecoratorAttributes decoratorAttributes = object
                         .getDecoratorAttributes(decorator);
-                decoratorAttributes.updateContent();
-
+                
                 if (decoratorAttributes != null) {
+                    decoratorAttributes.updateContent();
                     PtolemyQuery decoratorQuery = new PtolemyQuery(object);
                     decoratorQuery.setAlignmentY(Component.TOP_ALIGNMENT);
                     decoratorQuery.setTextWidth(DEFAULT_QUERY_WIDTH); 
