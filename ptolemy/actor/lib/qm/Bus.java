@@ -371,13 +371,12 @@ public class Bus extends MonitoredQuantityManager {
         }
     }
 
-    /** Set an attribute for a given port.
-     *  @param port The port. 
-     *  @param attribute The new attribute or the attribute containing a new value.
-     *  @exception IllegalActionException Thrown if attribute could not be updated.
+    /** Set the message length for tokens sent to this actor port.
+     *  @param port The actor port. 
+     *  @param messageLength The message length. 
      */
-    public void setMessageLength(IOPort port, double messageLength) throws IllegalActionException {
-            _messageLengths.put(port, messageLength);
+    public void setMessageLength(IOPort port, double messageLength) {
+        _messageLengths.put(port, messageLength);
     }
 
     /**
