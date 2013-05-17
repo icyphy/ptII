@@ -44,7 +44,7 @@ import ptolemy.kernel.util.NamedObj;
 
 /**
 Container for decorator attributes that are provided to actors by
-a {@link ResourceScheduler}. The resource scheduler decorates actors
+a ResourceScheduler. The resource scheduler decorates actors
 in a model with the attributes contained by this object.
 
  @author  Patricia Derler
