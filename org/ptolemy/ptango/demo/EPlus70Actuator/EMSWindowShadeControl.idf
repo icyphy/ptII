@@ -96,14 +96,15 @@
 ! Environmental Emissions:        None
 ! Utility Tariffs:                None
 
-  Version,7.0;
+  Version,8.0;
 
   Timestep,6;
 
   ZoneCapacitanceMultiplier:ResearchSpecial,
     1.0,                     !- Temperature Capacity Multiplier
     1.0,                     !- Humidity Capacity Multiplier
-    1.0;                     !- Carbon Dioxide Capacity Multiplier
+    1.0,                     !- Carbon Dioxide Capacity Multiplier
+    1.0;                     !- Generic Contaminant Capacity Multiplier
 
   Building,
     NONE,                    !- Name
@@ -152,39 +153,61 @@
 
   SizingPeriod:DesignDay,
     CHICAGO_IL_USA Annual Heating 99% Design Conditions DB,  !- Name
+    1,                       !- Month
+    21,                      !- Day of Month
+    WinterDesignDay,         !- Day Type
     -17.3,                   !- Maximum Dry-Bulb Temperature {C}
     0.0,                     !- Daily Dry-Bulb Temperature Range {deltaC}
-    -17.3,                   !- Humidity Indicating Conditions at Maximum Dry-Bulb
+    DefaultMultipliers,      !- Dry-Bulb Temperature Range Modifier Type
+    ,                        !- Dry-Bulb Temperature Range Modifier Day Schedule Name
+    Wetbulb,                 !- Humidity Condition Type
+    -17.3,                   !- Wetbulb or DewPoint at Maximum Dry-Bulb {C}
+    ,                        !- Humidity Condition Day Schedule Name
+    ,                        !- Humidity Ratio at Maximum Dry-Bulb {kgWater/kgDryAir}
+    ,                        !- Enthalpy at Maximum Dry-Bulb {J/kg}
+    ,                        !- Daily Wet-Bulb Temperature Range {deltaC}
     99063.,                  !- Barometric Pressure {Pa}
     4.9,                     !- Wind Speed {m/s}
     270,                     !- Wind Direction {deg}
-    0.0,                     !- Sky Clearness
-    0,                       !- Rain Indicator
-    0,                       !- Snow Indicator
-    21,                      !- Day of Month
-    1,                       !- Month
-    WinterDesignDay,         !- Day Type
-    0,                       !- Daylight Saving Time Indicator
-    WetBulb;                 !- Humidity Indicating Type
+    No,                      !- Rain Indicator
+    No,                      !- Snow Indicator
+    No,                      !- Daylight Saving Time Indicator
+    ASHRAEClearSky,          !- Solar Model Indicator
+    ,                        !- Beam Solar Day Schedule Name
+    ,                        !- Diffuse Solar Day Schedule Name
+    0,                       !- ASHRAE Clear Sky Optical Depth for Beam Irradiance (taub) {dimensionless}
+    0,                       !- ASHRAE Clear Sky Optical Depth for Diffuse Irradiance (taud) {dimensionless}
+    0.0;                     !- Sky Clearness
 
  ! CHICAGO_IL_USA Annual Cooling 1% Design Conditions, MaxDB=  31.5°C MCWB=  23.0°C
 
   SizingPeriod:DesignDay,
     CHICAGO_IL_USA Annual Cooling 1% Design Conditions DB/MCWB,  !- Name
+    7,                       !- Month
+    21,                      !- Day of Month
+    SummerDesignDay,         !- Day Type
     31.5,                    !- Maximum Dry-Bulb Temperature {C}
     10.7,                    !- Daily Dry-Bulb Temperature Range {deltaC}
-    23.0,                    !- Humidity Indicating Conditions at Maximum Dry-Bulb
+    DefaultMultipliers,      !- Dry-Bulb Temperature Range Modifier Type
+    ,                        !- Dry-Bulb Temperature Range Modifier Day Schedule Name
+    Wetbulb,                 !- Humidity Condition Type
+    23.0,                    !- Wetbulb or DewPoint at Maximum Dry-Bulb {C}
+    ,                        !- Humidity Condition Day Schedule Name
+    ,                        !- Humidity Ratio at Maximum Dry-Bulb {kgWater/kgDryAir}
+    ,                        !- Enthalpy at Maximum Dry-Bulb {J/kg}
+    ,                        !- Daily Wet-Bulb Temperature Range {deltaC}
     99063.,                  !- Barometric Pressure {Pa}
     5.3,                     !- Wind Speed {m/s}
     230,                     !- Wind Direction {deg}
-    1.0,                     !- Sky Clearness
-    0,                       !- Rain Indicator
-    0,                       !- Snow Indicator
-    21,                      !- Day of Month
-    7,                       !- Month
-    SummerDesignDay,         !- Day Type
-    0,                       !- Daylight Saving Time Indicator
-    WetBulb;                 !- Humidity Indicating Type
+    No,                      !- Rain Indicator
+    No,                      !- Snow Indicator
+    No,                      !- Daylight Saving Time Indicator
+    ASHRAEClearSky,          !- Solar Model Indicator
+    ,                        !- Beam Solar Day Schedule Name
+    ,                        !- Diffuse Solar Day Schedule Name
+    0,                       !- ASHRAE Clear Sky Optical Depth for Beam Irradiance (taub) {dimensionless}
+    0,                       !- ASHRAE Clear Sky Optical Depth for Diffuse Irradiance (taud) {dimensionless}
+    1.0;                     !- Sky Clearness
 
   Material,
     A1 - 1 IN STUCCO,        !- Name
@@ -573,10 +596,10 @@
     ,                        !- People per Zone Floor Area {person/m2}
     ,                        !- Zone Floor Area per Person {m2/person}
     0.3000000,               !- Fraction Radiant
-    ,                        !- Sensible Heat Fraction
+    Autocalculate,           !- Sensible Heat Fraction
     Activity Sch,            !- Activity Level Schedule Name
-    ,                        !- Carbon Dioxide Generation Rate {m3/s-W}
-    ,                        !- Enable ASHRAE 55 Comfort Warnings
+    3.82E-8,                 !- Carbon Dioxide Generation Rate {m3/s-W}
+    No,                      !- Enable ASHRAE 55 Comfort Warnings
     zoneaveraged,            !- Mean Radiant Temperature Calculation Type
     ,                        !- Surface Name/Angle Factor List Name
     Work Eff Sch,            !- Work Efficiency Schedule Name
@@ -605,10 +628,10 @@
     ,                        !- People per Zone Floor Area {person/m2}
     ,                        !- Zone Floor Area per Person {m2/person}
     0.3000000,               !- Fraction Radiant
-    ,                        !- Sensible Heat Fraction
+    Autocalculate,           !- Sensible Heat Fraction
     Activity Sch,            !- Activity Level Schedule Name
-    ,                        !- Carbon Dioxide Generation Rate {m3/s-W}
-    ,                        !- Enable ASHRAE 55 Comfort Warnings
+    3.82E-8,                 !- Carbon Dioxide Generation Rate {m3/s-W}
+    No,                      !- Enable ASHRAE 55 Comfort Warnings
     zoneaveraged,            !- Mean Radiant Temperature Calculation Type
     ,                        !- Surface Name/Angle Factor List Name
     Work Eff Sch,            !- Work Efficiency Schedule Name
@@ -651,10 +674,10 @@
     ,                        !- People per Zone Floor Area {person/m2}
     ,                        !- Zone Floor Area per Person {m2/person}
     0.3000000,               !- Fraction Radiant
-    ,                        !- Sensible Heat Fraction
+    Autocalculate,           !- Sensible Heat Fraction
     Activity Sch,            !- Activity Level Schedule Name
-    ,                        !- Carbon Dioxide Generation Rate {m3/s-W}
-    ,                        !- Enable ASHRAE 55 Comfort Warnings
+    3.82E-8,                 !- Carbon Dioxide Generation Rate {m3/s-W}
+    No,                      !- Enable ASHRAE 55 Comfort Warnings
     zoneaveraged,            !- Mean Radiant Temperature Calculation Type
     ,                        !- Surface Name/Angle Factor List Name
     Work Eff Sch,            !- Work Efficiency Schedule Name
@@ -1116,8 +1139,8 @@
     ,                        !- Zone Exhaust Air Node Name
     50,                      !- Maximum Heating Supply Air Temperature {C}
     13,                      !- Minimum Cooling Supply Air Temperature {C}
-    0.015,                   !- Maximum Heating Supply Air Humidity Ratio {kg-H2O/kg-air}
-    0.010,                   !- Minimum Cooling Supply Air Humidity Ratio {kg-H2O/kg-air}
+    0.015,                   !- Maximum Heating Supply Air Humidity Ratio {kgWater/kgDryAir}
+    0.010,                   !- Minimum Cooling Supply Air Humidity Ratio {kgWater/kgDryAir}
     NoLimit,                 !- Heating Limit
     autosize,                !- Maximum Heating Air Flow Rate {m3/s}
     ,                        !- Maximum Sensible Heating Capacity {W}
@@ -1127,15 +1150,15 @@
     ,                        !- Heating Availability Schedule Name
     ,                        !- Cooling Availability Schedule Name
     ConstantSupplyHumidityRatio,  !- Dehumidification Control Type
-    ,                        !- Cooling Sensible Heat Ratio {dimensionless}
+    0.7,                     !- Cooling Sensible Heat Ratio {dimensionless}
     ConstantSupplyHumidityRatio,  !- Humidification Control Type
     ,                        !- Design Specification Outdoor Air Object Name
     ,                        !- Outdoor Air Inlet Node Name
-    ,                        !- Demand Controlled Ventilation Type
-    ,                        !- Outdoor Air Economizer Type
-    ,                        !- Heat Recovery Type
-    ,                        !- Sensible Heat Recovery Effectiveness {dimensionless}
-    ;                        !- Latent Heat Recovery Effectiveness {dimensionless}
+    None,                    !- Demand Controlled Ventilation Type
+    NoEconomizer,            !- Outdoor Air Economizer Type
+    None,                    !- Heat Recovery Type
+    0.70,                    !- Sensible Heat Recovery Effectiveness {dimensionless}
+    0.65;                    !- Latent Heat Recovery Effectiveness {dimensionless}
 
   ZoneHVAC:IdealLoadsAirSystem,
     Zone2Air,                !- Name
@@ -1144,8 +1167,8 @@
     ,                        !- Zone Exhaust Air Node Name
     50,                      !- Maximum Heating Supply Air Temperature {C}
     13,                      !- Minimum Cooling Supply Air Temperature {C}
-    0.015,                   !- Maximum Heating Supply Air Humidity Ratio {kg-H2O/kg-air}
-    0.010,                   !- Minimum Cooling Supply Air Humidity Ratio {kg-H2O/kg-air}
+    0.015,                   !- Maximum Heating Supply Air Humidity Ratio {kgWater/kgDryAir}
+    0.010,                   !- Minimum Cooling Supply Air Humidity Ratio {kgWater/kgDryAir}
     NoLimit,                 !- Heating Limit
     autosize,                !- Maximum Heating Air Flow Rate {m3/s}
     ,                        !- Maximum Sensible Heating Capacity {W}
@@ -1155,15 +1178,15 @@
     ,                        !- Heating Availability Schedule Name
     ,                        !- Cooling Availability Schedule Name
     ConstantSupplyHumidityRatio,  !- Dehumidification Control Type
-    ,                        !- Cooling Sensible Heat Ratio {dimensionless}
+    0.7,                     !- Cooling Sensible Heat Ratio {dimensionless}
     ConstantSupplyHumidityRatio,  !- Humidification Control Type
     ,                        !- Design Specification Outdoor Air Object Name
     ,                        !- Outdoor Air Inlet Node Name
-    ,                        !- Demand Controlled Ventilation Type
-    ,                        !- Outdoor Air Economizer Type
-    ,                        !- Heat Recovery Type
-    ,                        !- Sensible Heat Recovery Effectiveness {dimensionless}
-    ;                        !- Latent Heat Recovery Effectiveness {dimensionless}
+    None,                    !- Demand Controlled Ventilation Type
+    NoEconomizer,            !- Outdoor Air Economizer Type
+    None,                    !- Heat Recovery Type
+    0.70,                    !- Sensible Heat Recovery Effectiveness {dimensionless}
+    0.65;                    !- Latent Heat Recovery Effectiveness {dimensionless}
 
   ZoneHVAC:IdealLoadsAirSystem,
     Zone3Air,                !- Name
@@ -1172,8 +1195,8 @@
     ,                        !- Zone Exhaust Air Node Name
     50,                      !- Maximum Heating Supply Air Temperature {C}
     13,                      !- Minimum Cooling Supply Air Temperature {C}
-    0.015,                   !- Maximum Heating Supply Air Humidity Ratio {kg-H2O/kg-air}
-    0.010,                   !- Minimum Cooling Supply Air Humidity Ratio {kg-H2O/kg-air}
+    0.015,                   !- Maximum Heating Supply Air Humidity Ratio {kgWater/kgDryAir}
+    0.010,                   !- Minimum Cooling Supply Air Humidity Ratio {kgWater/kgDryAir}
     NoLimit,                 !- Heating Limit
     autosize,                !- Maximum Heating Air Flow Rate {m3/s}
     ,                        !- Maximum Sensible Heating Capacity {W}
@@ -1183,15 +1206,15 @@
     ,                        !- Heating Availability Schedule Name
     ,                        !- Cooling Availability Schedule Name
     ConstantSupplyHumidityRatio,  !- Dehumidification Control Type
-    ,                        !- Cooling Sensible Heat Ratio {dimensionless}
+    0.7,                     !- Cooling Sensible Heat Ratio {dimensionless}
     ConstantSupplyHumidityRatio,  !- Humidification Control Type
     ,                        !- Design Specification Outdoor Air Object Name
     ,                        !- Outdoor Air Inlet Node Name
-    ,                        !- Demand Controlled Ventilation Type
-    ,                        !- Outdoor Air Economizer Type
-    ,                        !- Heat Recovery Type
-    ,                        !- Sensible Heat Recovery Effectiveness {dimensionless}
-    ;                        !- Latent Heat Recovery Effectiveness {dimensionless}
+    None,                    !- Demand Controlled Ventilation Type
+    NoEconomizer,            !- Outdoor Air Economizer Type
+    None,                    !- Heat Recovery Type
+    0.70,                    !- Sensible Heat Recovery Effectiveness {dimensionless}
+    0.65;                    !- Latent Heat Recovery Effectiveness {dimensionless}
 
   NodeList,
     Zone1Inlets,             !- Name
@@ -1205,41 +1228,41 @@
     Zone3Inlets,             !- Name
     NODE_3;                  !- Node 1 Name
 
-  Output:Variable,Environment,Outdoor Dry Bulb,timestep;
+  Output:Variable,Environment,Site Outdoor Air Drybulb Temperature,timestep;
 
   Output:Variable,*,Zone Mean Air Temperature,timestep;
 
-  Output:Variable,Zn001:Wall001:Win001,Surface Ext Solar Incident,timestep;
+  Output:Variable,Zn001:Wall001:Win001,Surface Outside Face Incident Solar Radiation Rate per Area,timestep;
 
-  Output:Variable,*,Fraction of Time Shading Device Is On,timestep;
+  Output:Variable,*,Surface Shading Device Is On Time Fraction,timestep;
 
   Output:Variable,*,Zone Mean Radiant Temperature,timestep;
 
-  Output:Variable,*,Fraction of Time Shading Device Is On,timestep;
+  Output:Variable,*,Surface Shading Device Is On Time Fraction,timestep;
 
-  Output:Variable,*,Window Blind Slat Angle,timestep;
+  Output:Variable,*,Surface Window Blind Slat Angle,timestep;
 
-  Output:Variable,*,Window Transmitted Solar,timestep;
+  Output:Variable,*,Surface Window Transmitted Solar Radiation Rate,timestep;
 
-  Output:Variable,*,Window Solar Absorbed:All Glass Layers,timestep;
+  Output:Variable,*,Surface Window Total Glazing Layers Absorbed Solar Radiation Rate,timestep;
 
-  Output:Variable,*,Window Heat Gain,timestep;
+  Output:Variable,*,Surface Window Heat Gain Rate,timestep;
 
-  Output:Variable,*,Window Heat Loss,timestep;
+  Output:Variable,*,Surface Window Heat Loss Rate,timestep;
 
-  Output:Variable,*,Window Solar Absorbed:Shading Device,timestep;
+  Output:Variable,*,Surface Window Shading Device Absorbed Solar Radiation Rate,timestep;
 
-  Output:Variable,*,Window System Solar Transmittance,timestep;
+  Output:Variable,*,Surface Window System Solar Transmittance,timestep;
 
-  Output:Variable,*,Window System Solar Reflectance,timestep;
+  Output:Variable,*,Surface Window System Solar Reflectance,timestep;
 
-  Output:Variable,*,Window System Solar Absorptance,timestep;
+  Output:Variable,*,Surface Window System Solar Absorptance,timestep;
 
-  Output:Variable,*,Zone/Sys Sensible Cooling Rate,timestep;
+  Output:Variable,*,Zone Air System Sensible Cooling Rate,timestep;
 
-  Output:Variable,*,Zone/Sys Sensible Heating Rate,timestep;
+  Output:Variable,*,Zone Air System Sensible Heating Rate,timestep;
 
-  Output:Variable,*,Zone/Sys Air Temperature,timestep;
+  Output:Variable,*,Zone Air Temperature,timestep;
 
   Output:Variable,*,Zone Air Humidity Ratio,timestep;
 
@@ -1249,7 +1272,7 @@
 
   Output:Constructions,Constructions;
 
-  Output:Variable,*,FangerPMV,timestep;
+  Output:Variable,*,Zone Thermal Comfort Fanger Model PMV,timestep;
 
   Output:Meter:MeterFileOnly,Electricity:Facility,monthly;
 
@@ -1277,26 +1300,26 @@
   EnergyManagementSystem:Sensor,
     Solar_Beam_Incident_Cos, !- Name
     Zn001:Wall001:Win001,    !- Output:Variable or Output:Meter Index Key Name
-    Surface Ext Solar Beam Cosine Of Incidence Angle;  !- Output:Variable or Output:Meter Name
+    Surface Outside Face Beam Solar Incident Angle Cosine Value;  !- Output:Variable or Output:Meter Name
 
-  Output:Variable,Zn001:Wall001:Win001,Surface Ext Solar Beam Cosine Of Incidence Angle,Timestep;
+  Output:Variable,Zn001:Wall001:Win001,Surface Outside Face Beam Solar Incident Angle Cosine Value,Timestep;
 
   EnergyManagementSystem:Sensor,
     Zone_Sensible_Heat_Rate, !- Name
     WEST ZONE,               !- Output:Variable or Output:Meter Index Key Name
-    Zone/Sys Sensible Heating Rate;  !- Output:Variable or Output:Meter Name
+    Zone Air System Sensible Heating Rate;  !- Output:Variable or Output:Meter Name
 
-  Output:Variable,WEST ZONE,Zone/Sys Sensible Heating Rate,Timestep;
+  Output:Variable,WEST ZONE,Zone Air System Sensible Heating Rate,Timestep;
 
   EnergyManagementSystem:Sensor,
     Zone_Sensible_Cool_Rate, !- Name
     WEST ZONE,               !- Output:Variable or Output:Meter Index Key Name
-    Zone/Sys Sensible Cooling Rate;  !- Output:Variable or Output:Meter Name
+    Zone Air System Sensible Cooling Rate;  !- Output:Variable or Output:Meter Name
 
-  Output:Variable,WEST ZONE,Zone/Sys Sensible Cooling Rate,Timestep;
+  Output:Variable,WEST ZONE,Zone Air System Sensible Cooling Rate,Timestep;
 
   ExternalInterface,
-    PtolemyServer;           !- Name
+    PtolemyServer;           !- Name of External Interface
 
   ExternalInterface:Actuator,
     Zn001_Wall001_Win001_Shading_Deploy_Status,  !- Name
