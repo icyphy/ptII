@@ -3,10 +3,16 @@ package ptolemy.domains.metroII.kernel;
 import java.util.Hashtable;
 
 
-public class EventDictionary {
+public class EventDictionary implements Cloneable {
 
     public EventDictionary() {
         // TODO Auto-generated constructor stub
+    }
+    
+    public EventDictionary clone() throws CloneNotSupportedException {
+        EventDictionary newObject = (EventDictionary) super.clone(); 
+        newObject._eventName2ID = (Hashtable<String, Integer>) _eventName2ID.clone(); 
+        return newObject; 
     }
 
     public int getID(String name) {

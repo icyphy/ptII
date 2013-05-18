@@ -57,7 +57,7 @@ public abstract class FireMachine implements StartOrResumable {
     public enum State {
         START, BEGIN, PROCESS, END, FINAL
     }
-    
+
     /**
      * Construct an FireMachine wrapper and initialize the MetroII events
      * 
@@ -69,13 +69,14 @@ public abstract class FireMachine implements StartOrResumable {
         String actorName = _actor.getFullName();
         String actorNameWithoutModelName = _trimModelName(actorName);
 
-        _BeginEvent = MetroEventBuilder.newProposedEvent(
-        actorNameWithoutModelName + "." + "FIRE_BEGIN");
-        _ProcessEvent = MetroEventBuilder.newProposedEvent(
-                actorNameWithoutModelName + "." + "PROCESS");
-        _EndEvent = MetroEventBuilder.newProposedEvent(
-                actorNameWithoutModelName + "." + "FIRE_END");
-        
+        _BeginEvent = MetroEventBuilder
+                .newProposedEvent(actorNameWithoutModelName + "."
+                        + "FIRE_BEGIN");
+        _ProcessEvent = MetroEventBuilder
+                .newProposedEvent(actorNameWithoutModelName + "." + "PROCESS");
+        _EndEvent = MetroEventBuilder
+                .newProposedEvent(actorNameWithoutModelName + "." + "FIRE_END");
+
         reset();
     }
 
@@ -89,15 +90,15 @@ public abstract class FireMachine implements StartOrResumable {
      */
     public Builder getStateEvent() {
         switch (getState()) {
-        case BEGIN: 
-            return _BeginEvent; 
+        case BEGIN:
+            return _BeginEvent;
         case PROCESS:
             return _ProcessEvent;
         case END:
             return _EndEvent;
         default:
-            assert false; 
-            return null; 
+            assert false;
+            return null;
         }
     }
 
@@ -108,10 +109,9 @@ public abstract class FireMachine implements StartOrResumable {
      * @see #setState(State)
      */
     public State getState() {
-        return _state; 
+        return _state;
     }
 
-    
     /**
      * Reset the state to be PREFIRE_BEGIN.
      */
@@ -119,7 +119,7 @@ public abstract class FireMachine implements StartOrResumable {
     public void reset() {
         setState(State.START);
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                       protected methods                   ////
 
@@ -131,7 +131,7 @@ public abstract class FireMachine implements StartOrResumable {
     protected Actor actor() {
         return _actor;
     }
-    
+
     /**
      * Return the MetroII event associated with the current state and 
      * set the state of the event to be PROPOSED.
@@ -139,12 +139,14 @@ public abstract class FireMachine implements StartOrResumable {
      * @return the MetroII event associated with the current state
      */
     protected Builder proposeStateEvent() {
-        Builder event = getStateEvent(); 
-        event.setStatus(Status.PROPOSED); 
-        event.clearTime(); 
-        return event; 
+        Builder event = getStateEvent();
+        assert event != null;
+        event.setStatus(Status.PROPOSED);
+        event.clearTime();
+
+        return event;
     }
-        
+
     /**
      * Set the state of the wrapped actor.
      * 
@@ -152,32 +154,31 @@ public abstract class FireMachine implements StartOrResumable {
      * @see #getState()
      */
     protected void setState(State state) {
-        _state = state; 
+        _state = state;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-    
+
     private String _trimModelName(String name) {
-        assert name.length()>1; 
-        int pos = name.indexOf(".", 1); 
-        return name.substring(pos); 
+        assert name.length() > 1;
+        int pos = name.indexOf(".", 1);
+        return name.substring(pos);
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private fields                    ////
-
 
     /**
      * Fire begin event
      */
     final private Builder _BeginEvent;
-    
+
     /**
      * Processing fire event
      */
     final private Builder _ProcessEvent;
-    
+
     /**
      * Fire end event
      */
@@ -191,5 +192,5 @@ public abstract class FireMachine implements StartOrResumable {
     /**
      * The state of the fire function
      */
-    private State _state; 
+    private State _state;
 }

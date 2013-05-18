@@ -4,9 +4,9 @@
 <entity name="PrintingPress-A1" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={65, 24, 1855, 1176}, maximized=true}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={65, 24, 1615, 1026}, maximized=true}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1641, 1085]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1401, 935]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
@@ -21,7 +21,7 @@
         </property>
         <property name="mappingFileName" class="ptolemy.data.expr.FileParameter" value="">
         </property>
-        <property name="iterations" class="ptolemy.data.expr.Parameter" value="500000">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="208913">
         </property>
         <property name="printTrace" class="ptolemy.data.expr.Parameter" value="false">
         </property>

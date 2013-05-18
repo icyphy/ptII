@@ -71,11 +71,24 @@ import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event;
  * @Pt.AcceptedRating Red (glp)
  *
  */
-public class MappingConstraintSolver implements ConstraintSolver {
+public class MappingConstraintSolver implements ConstraintSolver, Cloneable {
 
     /** Construct a mapping constraint solver.
      */
     public MappingConstraintSolver() {
+    }
+    
+    /**
+     * Clone MappingConstraintSolver
+     * @throws CloneNotSupportedException 
+     */
+    public MappingConstraintSolver clone() throws CloneNotSupportedException {
+        MappingConstraintSolver newObject = (MappingConstraintSolver) super.clone(); 
+        newObject._counter = (ConstraintCounter) _counter.clone(); 
+        newObject._mapping = (Graph) _mapping.clone(); 
+        newObject._eventIDDictionary = (EventDictionary) _eventIDDictionary.clone(); 
+        return newObject; 
+        
     }
 
     /** Return the adjacency matrix of mapping constraints as a 
@@ -216,12 +229,18 @@ public class MappingConstraintSolver implements ConstraintSolver {
     ///////////////////////////////////////////////////////////////////
     ////                    private fields                         ////
 
-    private class ConstraintCounter {
+    private class ConstraintCounter implements Cloneable {
 
         public ConstraintCounter(int size) {
             _size = size;
             _count = new int[_size];
             initialize();
+        }
+        
+        public ConstraintCounter clone() throws CloneNotSupportedException {
+            ConstraintCounter newObject = (ConstraintCounter) super.clone(); 
+            newObject._count = (int[]) _count.clone(); 
+            return newObject; 
         }
 
         public String toString() {

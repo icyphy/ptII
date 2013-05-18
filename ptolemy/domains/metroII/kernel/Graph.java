@@ -2,10 +2,17 @@ package ptolemy.domains.metroII.kernel;
 
 import java.util.ArrayList;
 
-public class Graph {
+public class Graph implements Cloneable {
 
     public Graph() {
 
+    }
+    
+    public Graph clone() throws CloneNotSupportedException {
+        Graph newObject = (Graph) super.clone(); 
+        newObject._nodeConnection = (ArrayList<ArrayList<Integer>>) _nodeConnection.clone(); 
+        newObject._edge = (ArrayList<Pair<Integer, Integer>>) _edge.clone(); 
+        return newObject; 
     }
     
     public void clear() {

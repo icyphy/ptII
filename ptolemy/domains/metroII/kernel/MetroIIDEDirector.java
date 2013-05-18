@@ -62,6 +62,7 @@ public class MetroIIDEDirector extends DEDirector implements
         // TODO Auto-generated constructor stub
         setEmbedded(false);
         _initializeParameters();
+        
     }
 
     /** Clone the object into the specified workspace. The new object
@@ -120,6 +121,22 @@ public class MetroIIDEDirector extends DEDirector implements
         actorList = new ArrayList<Actor>();
 
     }
+    
+    /** Request the execution of the current iteration to stop.
+     *  This is similar to stopFire(), except that the current iteration
+     *  is not allowed to complete.  
+     *  
+     */
+    @Override
+    public void stop() {
+        for (FireMachine firing : _actorDictionary.values()) {
+            if (firing.getState() == FireMachine.State.PROCESS) {
+                firing.reset(); 
+            }
+        }
+        super.stop();
+    }
+    
 
     public Parameter printTrace;
 
@@ -537,7 +554,7 @@ public class MetroIIDEDirector extends DEDirector implements
             }
             // System.out.println(this.getModelTime()); 
             // Since we are now actually stopping the firing, we can set this false.
-            _stopFireRequested = false;
+            // _stopFireRequested = false;
 
             if (_debugging) {
                 _debug("MetroIIDE director fired!");

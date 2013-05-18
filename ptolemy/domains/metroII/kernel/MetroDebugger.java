@@ -3,11 +3,16 @@ package ptolemy.domains.metroII.kernel;
 import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event;
 import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event.Builder;
 
-public class MetroDebugger {
+public class MetroDebugger implements Cloneable {
 
     public MetroDebugger() {
         // TODO Auto-generated constructor stub
         turnOffDebugging();
+    }
+    
+    public MetroDebugger clone() throws CloneNotSupportedException {
+        MetroDebugger newObject = (MetroDebugger) super.clone(); 
+        return newObject; 
     }
 
     public void setPrefix(String prefix) {

@@ -1,15 +1,22 @@
 package ptolemy.domains.metroII.kernel;
 
+
 import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event;
 import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event.Builder;
 import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event.Status;
 
-public class TimeScheduler implements ConstraintSolver {
+public class TimeScheduler implements ConstraintSolver, Cloneable {
 
     public TimeScheduler() {
         initialize(); 
     }
     
+    public TimeScheduler clone() throws CloneNotSupportedException {
+        TimeScheduler newObject = (TimeScheduler) super.clone();
+        newObject._debugger = (MetroDebugger) _debugger.clone(); 
+        return newObject;
+    }
+
     public void initialize() {
         current_time = 0; 
     }
