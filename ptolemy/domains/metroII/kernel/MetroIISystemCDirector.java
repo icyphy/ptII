@@ -216,10 +216,10 @@ public class MetroIISystemCDirector extends Director implements
 //            createProcess = true;
 //
 //        }
-
-        while (!createProcess) {
-            
-        }
+//
+//        while (!createProcess) {
+//
+//        }
         syncEvents(events);
 
         do {
