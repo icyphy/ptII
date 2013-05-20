@@ -1361,7 +1361,10 @@ public class IOPort extends ComponentPort {
             List<ResourceAttributes> list = this.attributeList(ResourceAttributes.class);
             for (ResourceAttributes attribute : list) {
                 if (attribute.enabled()) {
-                    _qmList.add((QuantityManager)attribute.getDecorator());
+                    if ((QuantityManager)attribute.getDecorator() != null) {
+                        _qmList.add((QuantityManager)attribute.getDecorator());
+                        attribute.validateSettables();
+                    } 
                 }
             }
             _qmListValid = true;
