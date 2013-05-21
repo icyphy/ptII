@@ -1248,9 +1248,19 @@ easy detection of simultaneous events.</text></svg></configure>
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[268.4585494995117, 299.39512634277344]">
                 </property>
-                <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 1.0, 1.0, 1.0}">
-                </property>
                 <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+                <property name="DecoratorAttributesFor_PtidesDirector" class="ptolemy.domains.ptides.kernel.ThrottleAttributes">
+                    <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.PtidesDirector">
+                    </property>
+                    <property name="useMaximumLookaheadTime" class="ptolemy.data.expr.Parameter" value="true">
+                    </property>
+                    <property name="maximumLookaheadTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                    </property>
+                    <property name="useMaximumFutureEvents" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                    <property name="maximumFutureEvents" class="ptolemy.data.expr.Parameter" value="0">
+                    </property>
                 </property>
                 <port name="startup" class="ptolemy.domains.modal.modal.ModalPort">
                     <property name="input"/>
