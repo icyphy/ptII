@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="prodconsPtII" class="ptolemy.actor.TypedCompositeActor">
+<entity name="prodconsPTII" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
@@ -10,27 +10,27 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{43.0, 60.0}">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={42, 31, 599, 634}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={437, 25, 786, 663}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[365, 524]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[552, 553]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.8810745963380338">
     </property>
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{89.310546875, 93.47043526785716}">
     </property>
     <property name="HlaManager" class="ptolemy.apps.hlacerti.lib.HlaManager">
-        <display name="prodconsPtII"/>
-        <property name="federateName" class="ptolemy.data.expr.Parameter" value="&quot;prodconsPtII&quot;">
+        <display name="prodconsPTII"/>
+        <property name="federateName" class="ptolemy.data.expr.Parameter" value="&quot;prodconsPTII&quot;">
             <display name="Federate's name"/>
         </property>
-        <property name="fedFile" class="ptolemy.data.expr.Parameter" value="&quot;./ptolemy/apps/hlacerti/demo/CoSimulation/SimpleProducerConsumer.fed&quot;">
+        <property name="federationName" class="ptolemy.data.expr.Parameter" value="&quot;SimpleProducerConsumer&quot;">
+            <display name="Federation's name"/>
+        </property>
+        <property name="fedFile" class="ptolemy.data.expr.FileParameter" value="SimpleProducerConsumer.fed">
             <display name="Path for .fed file"/>
         </property>
-        <property name="creatorSyncPt" class="ptolemy.data.expr.Parameter" value="true">
+        <property name="isCreatorSyncPt" class="ptolemy.data.expr.Parameter" value="true">
             <display name="Is synchronization point creator ?"/>
-        </property>
-        <property name="certiEnv" class="ptolemy.data.expr.Parameter" value="&quot;/Users/gil/Work/certi/build_certi&quot;">
-            <display name="Path for CERTI env."/>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[150.0, 65.0]">
         </property>
@@ -92,6 +92,32 @@
             </property>
         </port>
     </entity>
+    <entity name="val" class="ptolemy.apps.hlacerti.lib.HlaSubscriber">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-15.0, 350.0]">
+        </property>
+        <port name="out" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
+            </property>
+        </port>
+    </entity>
+    <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={16, 56, 500, 344}, maximized=false}">
+        </property>
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{140.499755859375, 348.330078125}">
+        </property>
+        <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>TimedPlotter</title>
+<xRange min="1.7976931348623157E308" max="-1.7976931348623157E308"/>
+<yRange min="1.7976931348623157E308" max="-1.7976931348623157E308"/>
+</plot>?>
+        </configure>
+    </entity>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
         <vertex name="vertex1" value="{68.0, 65.0}">
         </vertex>
@@ -104,8 +130,12 @@
         <property name="color" class="ptolemy.actor.gui.ColorAttribute">
         </property>
     </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
     <link port="DiscreteClock.output" relation="relation4"/>
     <link port="DiscreteClock2.output" relation="relation3"/>
     <link port="val1.in" relation="relation4"/>
     <link port="val2.in" relation="relation3"/>
+    <link port="val.out" relation="relation"/>
+    <link port="TimedPlotter.input" relation="relation"/>
 </entity>

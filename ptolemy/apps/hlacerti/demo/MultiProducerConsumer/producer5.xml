@@ -25,19 +25,19 @@
         <property name="fedFile" class="ptolemy.data.expr.FileParameter" value="MultiProducerConsumer.fed">
             <display name="Path for .fed file"/>
         </property>
-        <property name="isCreatorSyncPt" class="ptolemy.data.expr.Parameter" value="true">
+        <property name="isCreatorSyncPt" class="ptolemy.data.expr.Parameter" value="false">
             <display name="Is synchronization point creator ?"/>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[190.0, 50.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={48, 162, 592, 634}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={344, 22, 335, 247}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[358, 524]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[114, 137]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.8068094801126475">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.3243111555046654">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{231.5936480296185, 173.99511718750003}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{197.33984375, 215.48321063701925}">
     </property>
     <property name="stopTime" class="ptolemy.data.expr.Parameter" value="10">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">

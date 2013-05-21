@@ -2,9 +2,8 @@
 
 (Fed
   (Federation SimpleProducerConsumer)
-  (FedVersion v1.3)
-  (Federate "consumerCPP" "Public")
-  (Federate "prodConsPtII" "Public")
+  (Fedversion v1.3)
+  (Federate "prodconsPTII" "Public")
   (Federate "consumerCPP" "Public")
   (Federate "producerCPP" "Public")
   (Spaces
@@ -16,7 +15,7 @@
 	(Class myObjectClass
 		(Attribute val RELIABLE TIMESTAMP)
 		(Attribute val1 RELIABLE TIMESTAMP)
-        (Attribute val2 RELIABLE TIMESTAMP)
+        	(Attribute val2 RELIABLE TIMESTAMP)
 	)
     )
   )

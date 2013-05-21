@@ -115,16 +115,16 @@ INCLUDE(CPack)
 #   the executable name
 #   the source list
 ###################################
-#SET(EXE_NAME producerFederate)
-#SET(SRC_LIST producerFederate.cc)
+SET(EXE_NAME producerCPP)
+SET(SRC_LIST producerCPP.cc)
 
 ###################################
 # Generic CMake executable target
 ###################################
-#ADD_EXECUTABLE(${EXE_NAME} ${SRC_LIST})
-#TARGET_LINK_LIBRARIES (${EXE_NAME} ${RTI_LIBRARIES} ${CERTI_HLA_LIBRARY})
-#INSTALL(TARGETS ${EXE_NAME} 
-#        RUNTIME DESTINATION ${CMAKE_BINARY_DIR})
+ADD_EXECUTABLE(${EXE_NAME} ${SRC_LIST})
+TARGET_LINK_LIBRARIES (${EXE_NAME} ${RTI_LIBRARIES} ${CERTI_HLA_LIBRARY})
+INSTALL(TARGETS ${EXE_NAME} 
+        RUNTIME DESTINATION ${CMAKE_BINARY_DIR})
 
 ###################################
 # Setup Consumer CPP Federate

@@ -47,14 +47,15 @@ PTCLASSJAR =    $(PTPACKAGE).jar
 JSRCS = 
 
 OTHER_FILES_TO_BE_JARED = \
-    $(JSRCS) \
-    consumer1.xml \
-    consumer2.xml \
-    prodcons3.xml \
-    prodcons4.xml \
-    producer5.xml \
-    producer6.xml \
-    MultiProducerConsumer.fed
+	$(JSRCS) \
+	consumer1.xml \
+	consumer2.xml \
+	prodcons3.xml \
+	prodcons4.xml \
+	producer5.xml \
+	producer6.xml \
+	MultiProducerConsumer.xml \
+	MultiProducerConsumer.fed
 
 EXTRA_SRCS = \
     $(OTHER_FILES_TO_BE_JARED) \
@@ -83,6 +84,7 @@ demo: demo_ptolemy demo_vergil
 demo_ptolemy:
 	"$(PTII)/bin/ptolemy" consumer1.xml
 	"$(PTII)/bin/ptolemy" consumer2.xml
+	"$(PTII)/bin/ptolemy" MultiProducerConsumer.xml
 	"$(PTII)/bin/ptolemy" prodcons3.xml
 	"$(PTII)/bin/ptolemy" prodcons4.xml
 	"$(PTII)/bin/ptolemy" producer5.xml
@@ -91,6 +93,7 @@ demo_ptolemy:
 demo_vergil:
 	"$(PTII)/bin/vergil" consumer1.xml
 	"$(PTII)/bin/vergil" consumer2.xml
+	"$(PTII)/bin/VERGIL" MultiProducerConsumer.xml
 	"$(PTII)/bin/vergil" prodcons3.xml
 	"$(PTII)/bin/vergil" prodcons4.xml
 	"$(PTII)/bin/vergil" producer5.xml

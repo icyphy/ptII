@@ -47,11 +47,12 @@ PTCLASSJAR =    $(PTPACKAGE).jar
 JSRCS = 
 
 OTHER_FILES_TO_BE_JARED = \
-    $(JSRCS) \
-    consumer.xml \
-    producerFunct.xml \
-    producerSkel.xml \
-    CoSimulationFunctional.fed
+	$(JSRCS) \
+	CoSimulationFunctional.xml \
+	consumer.xml \
+	producerFunct.xml \
+	producerSkel.xml \
+	CoSimulationFunctional.fed
 
 EXTRA_SRCS = \
     $(OTHER_FILES_TO_BE_JARED) \
@@ -78,11 +79,13 @@ install: all
 demo: demo_ptolemy demo_vergil
 
 demo_ptolemy:
+	"$(PTII)/bin/ptolemy" CoSimulationFunctional.xml
 	"$(PTII)/bin/ptolemy" consumer.xml
 	"$(PTII)/bin/ptolemy" producerFunct.xml
 	"$(PTII)/bin/ptolemy" producerSkel.xml
 
 demo_vergil:
+	"$(PTII)/bin/vergil" CoSimulationFunctional.xml
 	"$(PTII)/bin/vergil" consumer.xml
 	"$(PTII)/bin/vergil" producerFunct.xml
 	"$(PTII)/bin/vergil" producerSkel.xml

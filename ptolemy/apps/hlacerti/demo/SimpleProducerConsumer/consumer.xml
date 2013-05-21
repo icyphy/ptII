@@ -10,7 +10,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{43.0, 60.0}">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={7, 89, 617, 634}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={121, 96, 617, 634}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[383, 524]">
     </property>
@@ -22,6 +22,9 @@
         <display name="consumer"/>
         <property name="federateName" class="ptolemy.data.expr.Parameter" value="&quot;consumer&quot;">
             <display name="Federate's name"/>
+        </property>
+        <property name="federationName" class="ptolemy.data.expr.Parameter" value="&quot;SimpleProducerConsumer&quot;">
+            <display name="Federation's name"/>
         </property>
         <property name="fedFile" class="ptolemy.data.expr.FileParameter" value="SimpleProducerConsumer.fed">
             <display name="Path for .fed file"/>
@@ -81,12 +84,24 @@
         </port>
     </entity>
     <entity name="ConsumerTimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={390, 228, 500, 344}, maximized=false}">
         </property>
-        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute">
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[135.0, 120.0]">
         </property>
+        <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>ConsumerTimedPlotter</title>
+<xLabel></xLabel>
+<yLabel></yLabel>
+<xRange min="1.0000000000000001E-7" max="10.000000100000001"/>
+<yRange min="0.0" max="10.0"/>
+<default connected="no" marks="various"/>
+</plot>?>
+        </configure>
     </entity>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
         <vertex name="vertex1" value="{68.0, 65.0}">

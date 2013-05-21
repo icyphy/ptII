@@ -10,20 +10,23 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{43.0, 60.0}">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={530, 22, 514, 245}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={6, 455, 511, 260}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[280, 135]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[277, 150]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.7133507393661238">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0288182990338084">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{154.71560694590337, 115.5908203125}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{126.56444498697915, 89.6806640625}">
     </property>
     <property name="HlaManager" class="ptolemy.apps.hlacerti.lib.HlaManager">
         <display name="consumer5"/>
         <property name="federateName" class="ptolemy.data.expr.Parameter" value="&quot;consumer5&quot;">
             <display name="Federate's name"/>
         </property>
-        <property name="fedFile" class="ptolemy.data.expr.Parameter" value="&quot;./ptolemy/apps/hlacerti/demo/SimpleProducerConsumer.fed&quot;">
+        <property name="federationName" class="ptolemy.data.expr.Parameter" value="&quot;CoSimulationNetwork1&quot;">
+            <display name="Federation's name"/>
+        </property>
+        <property name="fedFile" class="ptolemy.data.expr.FileParameter" value="CoSimulationNetwork1.fed">
             <display name="Path for .fed file"/>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[150.0, 65.0]">
@@ -31,7 +34,7 @@
     </property>
     <property name="enableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="true">
     </property>
-    <property name="stopTime" class="ptolemy.data.expr.Parameter" value="100">
+    <property name="stopTime" class="ptolemy.data.expr.Parameter" value="50">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -58,7 +61,7 @@
         </port>
     </entity>
     <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={453, 118, 500, 344}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={615, 129, 500, 344}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
         </property>
@@ -71,7 +74,7 @@
 <title>TimedPlotter</title>
 <xLabel></xLabel>
 <yLabel></yLabel>
-<xRange min="4.8000002" max="96.8000002"/>
+<xRange min="0.5" max="0.5"/>
 <yRange min="2.0" max="2.0"/>
 <default connected="no"/>
 </plot>?>

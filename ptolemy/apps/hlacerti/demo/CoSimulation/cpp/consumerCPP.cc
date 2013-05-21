@@ -208,7 +208,7 @@ public:
     {
     RTI::ULong length;
 
-    cout << "DEBUG: REFLECT with TIME is called ! at Time " << &theTime << endl;
+    //cout << "DEBUG: REFLECT with TIME is called ! at Time " << &theTime << endl;
 
         for (unsigned int i=0; i<theAttributes.size(); i++) {
             RTI::AttributeHandle handle = theAttributes.getHandle(i);
@@ -254,10 +254,8 @@ void timeAdvanceGrant(const RTI::FedTime& theTime)
                                    RTI::FederateInternalError) {
     _LocalTime = theTime ;
     _TimeAdvanceGrant =  true ;
-    if (true){ 
-        cout << "                                           " << endl;
-        cout << " >> TAG RECU == LocalTime = " << _LocalTime << " << " << endl;
-        cout << "                                           " << endl;  
+ if (true){ 
+        cout << " >> TAG(" << _LocalTime << ") RCV == LocalTime = " << _LocalTime << " << " << endl; 
     } // Fin du if (TRACE_SIMU){ 
 } // End of timeAdvanceGrant
 
@@ -435,7 +433,7 @@ int main() {
    bool SYNCHRO_INITIALISATION = true;
     if(SYNCHRO_INITIALISATION){
         cout << " "                           << endl;
-        cout << ">> Simulating the consumer." << endl;  
+        cout << ">> Simulating the consumerCPP." << endl;  
 
         /* Producer is the creator : GOD MODE ! */
         if(false){
@@ -525,12 +523,12 @@ int main() {
 
 	if (myFedAmb.getNewVal1()) {
 	    myFedAmb.setNewVal1(false);
-            cout << "Value val1 (updated) received: " << myFedAmb.getVal1() << endl;
+            cout << "Value val1 (update) received: " << myFedAmb.getVal1() << endl;
 	}
 
         if (myFedAmb.getNewVal2()) {
 	    myFedAmb.setNewVal2(false);
-            cout << "Value val2 (updated) received: " << myFedAmb.getVal2() << endl;
+            cout << "Value val2 (update) received: " << myFedAmb.getVal2() << endl;
 	}
 	cpt += 1;
 
@@ -538,6 +536,8 @@ int main() {
         try {
              rtiAmb.nextEventRequest(myFedAmb.Get_LocalTime() 
                                        + myFedAmb.Get_TimeStep());  
+	     cout << " >> NER(" << myFedAmb.Get_LocalTime() + myFedAmb.Get_TimeStep() << ") SEND == RequestedTime = " << myFedAmb.Get_LocalTime() + myFedAmb.Get_TimeStep() << " << " << endl; 
+
 	} catch ( RTI::Exception &e ) {
         cerr << "RTI exception: " << e._name << " [" << (e._reason ? e._reason : "undefined") << "]." << endl;
         } catch ( ... ) {

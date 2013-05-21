@@ -10,20 +10,23 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{43.0, 60.0}">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 505, 551, 221}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1, 240, 445, 220}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[317, 111]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[211, 110]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.8810745963380338">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.906483481463121">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{89.310546875, 93.47043526785716}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{100.86798828125, 83.841796875}">
     </property>
     <property name="HlaManager" class="ptolemy.apps.hlacerti.lib.HlaManager">
         <display name="prodcons3"/>
         <property name="federateName" class="ptolemy.data.expr.Parameter" value="&quot;prodcons3&quot;">
             <display name="Federate's name"/>
         </property>
-        <property name="fedFile" class="ptolemy.data.expr.Parameter" value="&quot;./ptolemy/apps/hlacerti/demo/SimpleProducerConsumer.fed&quot;">
+        <property name="federationName" class="ptolemy.data.expr.Parameter" value="&quot;CoSimulationNetwork1&quot;">
+            <display name="Federation's name"/>
+        </property>
+        <property name="fedFile" class="ptolemy.data.expr.FileParameter" value="CoSimulationNetwork1.fed">
             <display name="Path for .fed file"/>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[150.0, 65.0]">
@@ -31,7 +34,7 @@
     </property>
     <property name="enableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="true">
     </property>
-    <property name="stopTime" class="ptolemy.data.expr.Parameter" value="100">
+    <property name="stopTime" class="ptolemy.data.expr.Parameter" value="50">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">

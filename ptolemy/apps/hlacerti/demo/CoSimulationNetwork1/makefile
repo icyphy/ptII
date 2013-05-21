@@ -47,14 +47,16 @@ PTCLASSJAR =    $(PTPACKAGE).jar
 JSRCS = 
 
 OTHER_FILES_TO_BE_JARED = \
-    $(JSRCS) \
-    consumer5.xml \
-    consumer6.xml \
-    prodcons3.xml \
-    prodcons4.xml \
-    producer1.xml \
-    producer2.xml \
-    SimpleProducerConsumer.fed
+	$(JSRCS) \
+	CoSimulationNetwork1.xml \
+	consumer5.xml \
+	consumer6.xml \
+	prodcons3.xml \
+	prodcons4.xml \
+	producer1.xml \
+	producer2.xml \
+	network.xml \
+	CoSimulationNetwork1.fed
 
 EXTRA_SRCS = \
     $(OTHER_FILES_TO_BE_JARED) \
@@ -81,20 +83,24 @@ install: all
 demo: demo_ptolemy demo_vergil
 
 demo_ptolemy:
+	"$(PTII)/bin/ptolemy" CoSimulationNetwork1.xml
 	"$(PTII)/bin/ptolemy" consumer5.xml
 	"$(PTII)/bin/ptolemy" consumer6.xml
 	"$(PTII)/bin/ptolemy" prodcons3.xml
 	"$(PTII)/bin/ptolemy" prodcons4.xml
 	"$(PTII)/bin/ptolemy" producer1.xml
 	"$(PTII)/bin/ptolemy" producer2.xml
+	"$(PTII)/bin/ptolemy" network.xml
 
 demo_vergil:
+	"$(PTII)/bin/vergil" CoSimulationNetwork1.xml
 	"$(PTII)/bin/vergil" consumer5.xml
 	"$(PTII)/bin/vergil" consumer6.xml
 	"$(PTII)/bin/vergil" prodcons3.xml
 	"$(PTII)/bin/vergil" prodcons4.xml
 	"$(PTII)/bin/vergil" producer1.xml
 	"$(PTII)/bin/vergil" producer2.xml
+	"$(PTII)/bin/vergil" network.xml
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

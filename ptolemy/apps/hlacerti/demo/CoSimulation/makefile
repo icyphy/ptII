@@ -48,7 +48,7 @@ JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
 	$(JSRCS) \
-	prodconsPtII.xml \
+	prodconsPTII.xml \
 	SimpleProducerConsumer.fed 
 
 EXTRA_SRCS = \
@@ -76,10 +76,10 @@ install: all
 demo: demo_ptolemy demo_vergil
 
 demo_ptolemy:
-	"$(PTII)/bin/ptolemy" prodconsPtII.xml
+	"$(PTII)/bin/ptolemy" prodconsPTII.xml
 
 demo_vergil:
-	"$(PTII)/bin/vergil" prodconsPtII.xml
+	"$(PTII)/bin/vergil" prodconsPTII.xml
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

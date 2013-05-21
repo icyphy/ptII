@@ -47,10 +47,11 @@ PTCLASSJAR =    $(PTPACKAGE).jar
 JSRCS = 
 
 OTHER_FILES_TO_BE_JARED = \
-    $(JSRCS) \
-    consumer.xml \
-    producer.xml \
-    SimpleProducerConsumer.fed
+	$(JSRCS) \
+	consumer.xml \
+	producer.xml \
+	SimpleProducerConsumer.xml \
+	SimpleProducerConsumer.fed
 
 EXTRA_SRCS = \
     $(OTHER_FILES_TO_BE_JARED) \
@@ -79,10 +80,12 @@ demo: demo_ptolemy demo_vergil
 demo_ptolemy:
 	"$(PTII)/bin/ptolemy" consumer.xml
 	"$(PTII)/bin/ptolemy" producer.xml
+	"$(PTII)/bin/ptolemy" SimpleProducerConsumer.xml
 
 demo_vergil:
 	"$(PTII)/bin/vergil" consumer.xml
 	"$(PTII)/bin/vergil" producer.xml
+	"$(PTII)/bin/vergil" SimpleProducerConsumer.xml
 	
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

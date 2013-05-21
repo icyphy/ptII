@@ -25,6 +25,9 @@
         <property name="fedFile" class="ptolemy.data.expr.FileParameter" value="MultiProducerConsumer.fed">
             <display name="Path for .fed file"/>
         </property>
+        <property name="isCreatorSyncPt" class="ptolemy.data.expr.Parameter" value="true">
+            <display name="Is synchronization point creator ?"/>
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[200.0, 40.0]">
         </property>
     </property>

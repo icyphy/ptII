@@ -1,8 +1,8 @@
-;; SimpleProducerConsumer 
+;; CoSimulationNetwork1 
 
 (Fed
-  (Federation SimpleProducerConsumer)
-  (FedVersion v1.3)
+  (Federation CoSimulationNetwork1)
+  (Fedversion v1.3)
   (Federate "network" "Public")
   (Federate "producer1" "Public")
   (Federate "producer2" "Public")
