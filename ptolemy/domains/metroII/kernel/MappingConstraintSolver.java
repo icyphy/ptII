@@ -84,7 +84,13 @@ public class MappingConstraintSolver implements ConstraintSolver, Cloneable {
      */
     public MappingConstraintSolver clone() throws CloneNotSupportedException {
         MappingConstraintSolver newObject = (MappingConstraintSolver) super.clone(); 
-        newObject._counter = (ConstraintCounter) _counter.clone(); 
+        // FIXME: I'm not sure if we want to call clone like this.  Typically, we
+        // would just instantiate new versions of the fields.
+        if (_counter == null) {
+            newObject._counter = null;
+        } else {
+            newObject._counter = (ConstraintCounter) _counter.clone(); 
+        }
         newObject._mapping = (Graph) _mapping.clone(); 
         newObject._eventIDDictionary = (EventDictionary) _eventIDDictionary.clone(); 
         return newObject; 
