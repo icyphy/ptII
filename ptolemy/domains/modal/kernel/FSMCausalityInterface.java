@@ -259,9 +259,12 @@ public class FSMCausalityInterface extends CausalityInterfaceForComposites {
                     TypedActor[] refinements = state.getRefinement();
                     if (refinements != null && refinements.length > 0) {
                         for (TypedActor refinement : refinements) {
-                            if (!((CompositeActor)refinement).isOpaque()) {
-                                throw new IllegalActionException(refinement, "Refinement is missing a director!");
-                            }
+                            // The following causes test failures in models such as 
+                            // ptolemy/domains/modal/test/auto/ABPTest.xml 
+                            // The error is caught in the FSM Director
+//                            if (!((CompositeActor)refinement).isOpaque()) {
+//                                throw new IllegalActionException(refinement, "Refinement is missing a director!");
+//                            }
                             CausalityInterface causality = refinement
                                     .getCausalityInterface();
                             // For each output port, find the input ports that affect it.
