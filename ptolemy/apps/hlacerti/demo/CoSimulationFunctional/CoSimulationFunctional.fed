@@ -1,11 +1,11 @@
-;; SimpleProducerConsumer 
+;; CoSimulationFunctional 
 
 (Fed
-  (Federation SimpleProducerConsumer)
-  (Fedversion v1.3)
-  (Federate "prodconsPTII" "Public")
-  (Federate "consumerCPP" "Public")
-  (Federate "producerCPP" "Public")
+  (Federation CoSimulationFunctional)
+  (FedVersion v1.3)
+  (Federate "consumer" "Public")
+  (Federate "producerSkel" "Public")
+  (Federate "producerFunc" "Public")
   (Spaces
   )
   (Objects
@@ -15,7 +15,7 @@
 	(Class myObjectClass
 		(Attribute val RELIABLE TIMESTAMP)
 		(Attribute val1 RELIABLE TIMESTAMP)
-        	(Attribute val2 RELIABLE TIMESTAMP)
+        (Attribute val2 RELIABLE TIMESTAMP)
 	)
     )
   )

@@ -299,9 +299,9 @@ int main() {
     RTI::RTIambassador   rtiAmb;
     consumerCPPAmb       myFedAmb;
 
-    string federationName = "SimpleProducerConsumer";
+    string federationName = "CoSimulation";
     string federateName   = "consumerCPP";
-    string fedFile        = "SimpleProducerConsumer.fed";
+    string fedFile        = "CoSimulation.fed";
 
     /* create federation execution */
     try {

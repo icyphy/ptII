@@ -49,7 +49,7 @@ JSRCS =
 OTHER_FILES_TO_BE_JARED = \
 	$(JSRCS) \
 	prodconsPTII.xml \
-	SimpleProducerConsumer.fed 
+	CoSimulation.fed 
 
 EXTRA_SRCS = \
 	$(OTHER_FILES_TO_BE_JARED) \
