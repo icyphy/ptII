@@ -109,7 +109,7 @@
                 </property>
                 <property name="enable" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
-                <property name="inputPort" class="ptolemy.data.expr.Parameter" value="&quot;a&quot;">
+                <property name="inputPort" class="ptolemy.data.expr.StringParameter" value="a">
                 </property>
             </property>
         </port>
@@ -159,7 +159,7 @@
             </property>
         </entity>
         <entity name="CQMOutputPort" class="ptolemy.actor.lib.qm.CQMOutputPort">
-            <property name="Parameter" class="ptolemy.data.expr.Parameter" value="">
+            <property name="Parameter" class="ptolemy.data.expr.Parameter" value="false">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[275.0, 140.0]">
             </property>
@@ -190,7 +190,7 @@
             <link port="SetVariable.input" relation="relation"/>
         </entity>
         <entity name="a" class="ptolemy.actor.lib.qm.CQMInputPort">
-            <property name="value" class="ptolemy.data.expr.Parameter" value="{receiver = object(ptolemy.domains.de.kernel.DEReceiver {.CompositeQM.B.q.receiver }), token = 5.0}">
+            <property name="value" class="ptolemy.data.expr.Parameter" value="">
             </property>
             <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="NONE">
             </property>
@@ -208,7 +208,7 @@
             </port>
         </entity>
         <entity name="b" class="ptolemy.actor.lib.qm.CQMInputPort">
-            <property name="value" class="ptolemy.data.expr.Parameter" value="{receiver = object(ptolemy.domains.de.kernel.DEReceiver {.CompositeQM.Y.q.receiver }), token = -5.0}">
+            <property name="value" class="ptolemy.data.expr.Parameter" value="">
             </property>
             <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="NONE">
             </property>
@@ -339,7 +339,7 @@
                 </property>
                 <property name="enable" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
-                <property name="inputPort" class="ptolemy.data.expr.Parameter" value="&quot;b&quot;">
+                <property name="inputPort" class="ptolemy.data.expr.StringParameter" value="b">
                 </property>
             </property>
         </port>
