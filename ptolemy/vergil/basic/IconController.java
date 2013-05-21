@@ -27,6 +27,7 @@
 package ptolemy.vergil.basic;
 
 import java.awt.Color;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -236,7 +237,8 @@ public class IconController extends ParameterizedNodeController {
                     object.validateSettables();
                 }
                 
-                Set<Decorator> decorators = object.decorators();
+                List<Decorator> decorators = new ArrayList();
+                decorators.addAll(object.decorators());
     
                 for (Decorator decorator : decorators) {
                     DecoratorAttributes decoratorAttributes = object.getDecoratorAttributes(decorator);
