@@ -667,6 +667,8 @@
             <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="in1">
             </property>
         </property>
+        <property name="_decoratorHighlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.8, 0.0, 1.0}">
+        </property>
         <port name="onOff" class="ptolemy.domains.modal.modal.ModalPort">
             <property name="input"/>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
@@ -685,8 +687,6 @@
             </property>
         </port>
         <entity name="_Controller" class="ptolemy.domains.modal.modal.ModalController">
-            <property name="errorCause" class="ptolemy.data.expr.Parameter">
-            </property>
             <property name="_library" class="ptolemy.moml.LibraryAttribute">
                 <configure>
       <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.modal.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory"></property></entity></entity>
@@ -823,6 +823,8 @@
         <link port="_Controller.contactor" relation="contactorRelation"/>
     </entity>
     <entity name="1Processor" class="ptolemy.actor.lib.resourceScheduler.CompositeResourceScheduler">
+        <property name="decoratorHighlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.8,0.0,1.0}">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 465.0]">
         </property>
         <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
@@ -1086,6 +1088,8 @@
         <link port="Merge.output" relation="relation3"/>
     </entity>
     <entity name="2Processors" class="ptolemy.actor.lib.resourceScheduler.CompositeResourceScheduler">
+        <property name="decoratorHighlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.8,0.8,1.0}">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, 465.0]">
         </property>
         <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
@@ -1505,6 +1509,8 @@
             </property>
             <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="in2">
             </property>
+        </property>
+        <property name="_decoratorHighlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.8, 0.0, 1.0}">
         </property>
         <entity name="DesiredVoltage" class="ptolemy.actor.lib.Const">
             <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">

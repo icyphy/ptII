@@ -38,6 +38,7 @@ import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
 import ptolemy.actor.TypedCompositeActor;
+import ptolemy.actor.gui.ColorAttribute;
 import ptolemy.actor.lib.ResourceAttributes;
 import ptolemy.actor.util.Time;
 import ptolemy.data.BooleanToken;
@@ -87,6 +88,8 @@ public class CompositeResourceScheduler extends TypedCompositeActor implements R
     public CompositeResourceScheduler(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name); 
+        ColorAttribute attribute = new ColorAttribute(this, "decoratorHighlightColor");
+        attribute.setExpression("{0.0,0.8,0.0,1.0}");
         _schedulePlotterEditorFactory = new SchedulePlotterEditorFactory(this,
                 this.uniqueName("_editorFactory"));
         _requestPorts = new HashMap<Actor, String>();

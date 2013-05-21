@@ -30,14 +30,21 @@ import java.awt.Color;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import ptolemy.actor.gui.ColorAttribute;
+import ptolemy.actor.lib.ResourceAttributes;
+import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.Entity;
+import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.ChangeRequest;
+import ptolemy.kernel.util.Decorator;
+import ptolemy.kernel.util.DecoratorAttributes;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.Locatable;
+import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.vergil.icon.EditorIcon;
@@ -217,9 +224,48 @@ public class IconController extends ParameterizedNodeController {
             } catch (IllegalActionException e) {
                 // Ignore
             }
-
+            
             // New way to specify a highlight color.
             AttributeController.renderHighlight(object, result);
+            
+            try {
+                // clear highlighting
+                Attribute highlightColor = object.getAttribute("_decoratorHighlightColor");
+                if (highlightColor != null) {
+                    object.removeAttribute(highlightColor);
+                    object.validateSettables();
+                }
+                
+                Set<Decorator> decorators = object.decorators();
+    
+                for (Decorator decorator : decorators) {
+                    DecoratorAttributes decoratorAttributes = object.getDecoratorAttributes(decorator);
+                    if (decoratorAttributes instanceof ResourceAttributes) {
+                        if (decoratorAttributes.getDecorator() != null && 
+                                ((ResourceAttributes)decoratorAttributes).enabled()) {
+                            try {
+                                if (object.getAttribute("_decoratorHighlightColor") == null) {
+                                    highlightColor = new ColorAttribute(object, "_decoratorHighlightColor");
+                                    Attribute attribute = ((NamedObj)decorator).getAttribute("decoratorHighlightColor");
+                                    String colorExpression = "{0.5, 0.5, 0.5, 0.5}";
+                                    if (attribute != null) {
+                                        colorExpression = (((ColorAttribute)attribute).getToken()).toString();
+                                    }
+                                    ((ColorAttribute)highlightColor).setExpression(colorExpression);
+                                }
+                            } catch (NameDuplicationException e) {
+                                // Not gonna happen.
+                            }
+                        } 
+                    }
+                }
+                
+            } catch (IllegalActionException e1) {
+                // TODO Auto-generated catch block
+                e1.printStackTrace();
+            } 
+            
+            AttributeController.renderDecoratorHighlight(object, result);
 
             // If a shadow is specified, render it now.
             // The shadow attribute can be contained by the container

@@ -37,6 +37,7 @@ import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
 import ptolemy.actor.TypedAtomicActor;
+import ptolemy.actor.gui.ColorAttribute;
 import ptolemy.actor.lib.ResourceAttributes;
 import ptolemy.actor.util.Time;
 import ptolemy.data.BooleanToken;
@@ -107,6 +108,8 @@ public class AtomicResourceScheduler extends TypedAtomicActor implements Resourc
     public AtomicResourceScheduler(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
+        ColorAttribute attribute = new ColorAttribute(this, "decoratorHighlightColor");
+        attribute.setExpression("{0.0,0.8,0.0,1.0}");
         _schedulePlotterEditorFactory = new SchedulePlotterEditorFactory(this,
                 this.uniqueName("_editorFactory"));
     }

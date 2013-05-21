@@ -75,6 +75,15 @@ public class AnimationRenderer implements SelectionRenderer {
     public AnimationRenderer(Color color) {
         _prototypeDecorator = new BasicHighlighter(color, 6.0f);
     }
+    
+    /** Create a new selection renderer with the default prototype
+     *  decorator using the specified color and halo size.
+     *  @param color The color for the highlight.
+     *  @param halo The halo size.
+     */
+    public AnimationRenderer(Color color, float halo) {
+        _prototypeDecorator = new BasicHighlighter(color, halo);
+    }
 
     /** Create a new selection renderer with the default prototype
      *  decorator using the specified color and stroke. This draws
@@ -84,7 +93,7 @@ public class AnimationRenderer implements SelectionRenderer {
      */
     public AnimationRenderer(Color color, Stroke stroke) {
         _prototypeDecorator = new BasicHighlighter(color, 4.0f, null, stroke);
-    }
+    } 
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////

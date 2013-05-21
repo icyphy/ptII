@@ -115,7 +115,7 @@
     </property>
     <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
     </property>
-    <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,1.0,0.0,1.0}">
+    <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="decoratorHighlightColor">
     </property>
 </property>
 <property name="line7" class="ptolemy.vergil.kernel.attributes.LineAttribute">
@@ -145,7 +145,7 @@
     </property>
     <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
     </property>
-    <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,1.0,0.0,1.0}">
+    <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="decoratorHighlightColor">
     </property>
 </property>
 <property name="line11" class="ptolemy.vergil.kernel.attributes.LineAttribute">
@@ -175,7 +175,7 @@
     </property>
     <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
     </property>
-    <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,1.0,0.0,1.0}">
+    <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="decoratorHighlightColor">
     </property>
 </property>
 <property name="line9" class="ptolemy.vergil.kernel.attributes.LineAttribute">

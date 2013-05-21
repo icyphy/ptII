@@ -148,6 +148,29 @@ public class AttributeController extends IconController {
         }
 
     }
+    
+    /** Render the value of the _highlightColor parameter.
+     *  @param namedObj  The NamedObj that contains the _highlightColor
+     *  parameter.
+     *  @param figure the Diva figure that is rendered.
+     */
+    public static void renderDecoratorHighlight(NamedObj namedObj, Figure figure) {
+        // New way to specify a highlight color.
+        try {
+            ColorAttribute highlightAttribute = (ColorAttribute) namedObj
+                    .getAttribute("_decoratorHighlightColor", ColorAttribute.class);
+            if (highlightAttribute != null
+                    && !highlightAttribute.getExpression().trim().equals("")) {
+                Color color = highlightAttribute.asColor();
+                AnimationRenderer decoratorRenderer = new AnimationRenderer(
+                        color, 0.2f);
+                decoratorRenderer.renderSelected(figure);
+            }
+        } catch (IllegalActionException e) {
+            // Ignore.
+        }
+
+    }
 
     /** Set the configuration.  This is used in derived classes to
      *  to open files (such as documentation).  The configuration is
