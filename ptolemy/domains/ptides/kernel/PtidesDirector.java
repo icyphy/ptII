@@ -585,8 +585,7 @@ public class PtidesDirector extends DEDirector implements Decorator {
             // If there is a still event on the event queue with time stamp
             // equal to the stop time, we want to process that event before
             // we declare that we are done.
-            // FIXME: With EDF, event at head of event queue may not have smallest timestamp.
-            if (!_eventQueue.get().timeStamp().equals(getModelStopTime())) {
+            if (_eventQueue.size() == 0 || !_eventQueue.get().timeStamp().equals(getModelStopTime())) {
                 result = false;
             }
         }
