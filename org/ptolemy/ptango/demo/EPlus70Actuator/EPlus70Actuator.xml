@@ -4,7 +4,7 @@
 <entity name="EPlus70Actuator" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-8, -8, 1382, 744}, maximized=true}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 1388, 737}, maximized=true}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1154, 627]">
     </property>
@@ -556,9 +556,9 @@
         <link port="Const2.output" relation="relation8"/>
     </class>
     <entity name="EPlusSimulator" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[110.0, 255.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{110.0, 255.0}">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 0, 1296, 777}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 1302, 770}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1068, 660]">
         </property>
@@ -1189,7 +1189,7 @@ This is for illustration purposes only and not needed by the above model.</text>
             </configure>
         </entity>
         <entity name="Simulator" class="lbnl.actor.lib.Simulator">
-            <property name="programName" class="ptolemy.data.expr.FileParameter" value="RunEPlus.bat">
+            <property name="programName" class="ptolemy.data.expr.FileParameter" value="runenergyplus">
             </property>
             <property name="programArguments" class="ptolemy.data.expr.Parameter" value="&quot;EMSWindowShadeControl USA_IL_Chicago-OHare.Intl.AP.725300_TMY3&quot;">
             </property>
