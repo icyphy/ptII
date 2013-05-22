@@ -85,7 +85,6 @@ import hla.rti.jlc.NullFederateAmbassador;
 import hla.rti.jlc.RtiFactory;
 import hla.rti.jlc.RtiFactoryFactory;
 
-import java.io.File;
 import java.net.MalformedURLException;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -910,6 +909,10 @@ implements TimeRegulator {
 
 		// If the proposedTime has already been asked to the HLA/CERTI Federation 
 		// then return it.
+
+		// GL: FIXME: Comment this until the clarification with NERA and TARA
+		// and the use of TICK is made.
+		/*
 		if (_lastProposedTime != null) {
 			if (_lastProposedTime.compareTo(proposedTime) == 0) {
 
@@ -928,6 +931,7 @@ implements TimeRegulator {
 				return _lastProposedTime;
 			}
 		}
+		 */
 
 		// If the HLA Time Management is required, ask to the HLA/CERTI 
 		// Federation (the RTI) the authorization to advance its time.
@@ -939,46 +943,22 @@ implements TimeRegulator {
 
 				// Call the corresponding HLA Time Management service.
 				try {
-					if (_hlaLookAHead.compareTo(0.0) == 0) {
-						// If lookahead = 0, HLA and CERTI require to use TARA or NERA.
-						
-						if (_useNextEventRequest) {
-							if (_debugging) {
-								_debug(this.getDisplayName()
-										+ " proposeTime() - call CERTI NERA -" 
-										+ " nextEventRequestAvailable(" 
-										+ certiProposedTime.getTime() +")");
-							}
-							_rtia.nextEventRequestAvailable(certiProposedTime);
-						} else {
-							if (_debugging) {
-								_debug(this.getDisplayName()
-										+ " proposeTime() - call CERTI TARA -"
-										+ " timeAdvanceRequestAvailable(" 
-										+ certiProposedTime.getTime() +")");
-							}
-							_rtia.timeAdvanceRequestAvailable(certiProposedTime);
+					if (_useNextEventRequest) {
+						if (_debugging) {
+							_debug(this.getDisplayName()
+									+ " proposeTime() - call CERTI NER -" 
+									+ " nextEventRequest(" 
+									+ certiProposedTime.getTime() +")");
 						}
-					} else { 
-						// If lookahead > 0, HLA and CERTI require to use TAR or NER.
-						
-						if (_useNextEventRequest) {
-							if (_debugging) {
-								_debug(this.getDisplayName()
-										+ " proposeTime() - call CERTI NER -" 
-										+ " nextEventRequest(" 
-										+ certiProposedTime.getTime() +")");
-							}
-							_rtia.nextEventRequest(certiProposedTime);
-						} else {
-							if (_debugging) {
-								_debug(this.getDisplayName()
-										+ " proposeTime() -  call CERTI TAR -"
-										+ " timeAdvanceRequest(" 
-										+ certiProposedTime.getTime() +")");
-							}
-							_rtia.timeAdvanceRequest(certiProposedTime);
+						_rtia.nextEventRequest(certiProposedTime);
+					} else {
+						if (_debugging) {
+							_debug(this.getDisplayName()
+									+ " proposeTime() -  call CERTI TAR -"
+									+ " timeAdvanceRequest(" 
+									+ certiProposedTime.getTime() +")");
 						}
+						_rtia.timeAdvanceRequest(certiProposedTime);
 					}
 				} catch (InvalidFederationTime e) {
 					throw new IllegalActionException(this, "InvalidFederationTime " + e.getMessage());        
@@ -1082,29 +1062,8 @@ implements TimeRegulator {
 		byte[] tag = EncodingHelpers.encodeString(((TypedIOPort) tObj[0]).getContainer().getName());
 
 		// Create a representation of the current director time for CERTI.
-		CertiLogicalTime ct = null;
-		
-		if (_hlaLookAHead.compareTo(0.0) == 0) {
-			// If lookahead = 0 , HLA and CERTI require the use of TARA or NERA.
-			// This has to be the default and the correct behavior.
-			
-			ct = new CertiLogicalTime(currentTime.getDoubleValue());
-		}
-		else {
-			// If lookahead > 0, HLA and CERTI require the use of TAR or NER, 
-			// then we need to add a little epsilon to avoid InvalidFederationTime 
-			// exception when sending an UAV. This is only an experimental case.
-			
-			ct = new CertiLogicalTime(currentTime.getDoubleValue() + 0.0000001);
-			if (_debugging) {
-				_debug(this.getDisplayName()
-						+ " publish() -" + " (UAV) updateAttributeValues"
-						+ " !!! WARNING !!! Experimental case lookahead > 0,"
-						+ " the UAV timestamp will be a time in the future ="
-						+ " current Ptolemy Time=" + currentTime.getDoubleValue() 
-						+ " epsilon");
-			}
-		}
+		CertiLogicalTime ct = new CertiLogicalTime(currentTime
+				.getDoubleValue() + 0.0000001);
 
 		try {
 			_rtia.updateAttributeValues((Integer) tObj[5], suppAttributes, tag, ct);
@@ -1132,7 +1091,7 @@ implements TimeRegulator {
 					+ " publish() -" + " send (UAV) updateAttributeValues "
 					+ " current Ptolemy Time=" + currentTime.getDoubleValue() 
 					+ " HLA attribute (timestamp=" + ct.getTime() 
-					+ ", value=" + ((DoubleToken) in).doubleValue() + ")");
+					+ ", value=" + in.toString() + ")");
 		}
 	}
 
