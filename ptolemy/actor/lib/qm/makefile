@@ -56,7 +56,7 @@ OTHER_FILES_TO_BE_JARED = \
 	CQMInputPortIcon.xml \
 	CQMOutputPortIcon.xml \
 	CanBusIcon.xml \
-	CompositeQMIcon.xml \
+	CompositeQuantityManagerIcon.xml \
 	CrossbarSwitchIcon.xml \
 	TTESwitchIcon.xml
 
