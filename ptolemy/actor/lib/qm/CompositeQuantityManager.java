@@ -32,6 +32,7 @@ package ptolemy.actor.lib.qm;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 
 import ptolemy.actor.Actor;
@@ -44,12 +45,15 @@ import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.gui.ColorAttribute;
 import ptolemy.actor.lib.Const;
 import ptolemy.actor.lib.ResourceAttributes;
+import ptolemy.actor.parameters.ParameterPort;
+import ptolemy.data.BooleanToken;
 import ptolemy.data.ObjectToken;
 import ptolemy.data.RecordToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
+import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.util.Attribute;
@@ -121,9 +125,32 @@ public class CompositeQuantityManager extends TypedCompositeActor implements Qua
         super(container, name);
         _initialize();
     }
+    
+    /** This parameter indicates whether the tokens received via the 
+     *  ImmediateReceivers are immediately forwarded to the wrapped 
+     *  receivers or whether they are delayed by this quantity manager
+     *  and only forwarded through a CQMOutputPort. 
+     *  This parameter is a boolean that defaults to false.
+     */
+    public Parameter justMonitor;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+    
+    /** React to the change of the <i>justMonitor</i> attribute by
+     *  updating internal variables.
+     *  @param attribute The attribute that changed.
+     *  @throws IllegalActionException If token in attribute cannot
+     *    be accessed.
+     */
+    @Override
+    public void attributeChanged(Attribute attribute)
+            throws IllegalActionException { 
+        if (attribute == justMonitor) {
+            _justMonitor = ((BooleanToken)justMonitor.getToken()).booleanValue();
+        }
+        super.attributeChanged(attribute);
+    }
 
     /** Clone the actor into the specified workspace.
      *
@@ -188,7 +215,7 @@ public class CompositeQuantityManager extends TypedCompositeActor implements Qua
     /** Override the fire and change the transferring tokens
      * from and to input/output placeholders.
      */
-    public void fire() throws IllegalActionException {
+    public void fire() throws IllegalActionException {super.fire();
         if (_debugging) {
             _debug("Calling fire() at " + getDirector().getModelTime());
         }
@@ -201,11 +228,27 @@ public class CompositeQuantityManager extends TypedCompositeActor implements Qua
                         "Cannot fire a non-opaque actor.");
             }
 
-            // No input ports.
+            _transferPortParameterInputs();
+
+            // Use the local director to transfer inputs from
+            // everything that is not a port parameter.
+            // The director will also update the schedule in
+            // the process, if necessary.
+            for (Iterator<?> inputPorts = inputPortList().iterator(); inputPorts
+                    .hasNext() && !_stopRequested;) {
+                IOPort p = (IOPort) inputPorts.next();
+
+                if (!(p instanceof ParameterPort)) {
+                    getDirector().transferInputs(p);
+                }
+            }
 
             if (_stopRequested) {
                 return;
             }
+
+            // Use the local director to transfer outputs.
+            getDirector().transferOutputs();
 
             for (Const mappedConst : _tokens.keySet()) {
                 mappedConst.value.setToken(_tokens.get(mappedConst));
@@ -218,17 +261,19 @@ public class CompositeQuantityManager extends TypedCompositeActor implements Qua
             if (_stopRequested) {
                 return;
             } 
-            for (Object entity : entityList()) {
-                if (entity instanceof CQMOutputPort) {
-                    CQMOutputPort outputPort = ((CQMOutputPort)entity);
-                    while (outputPort.hasToken()) {
-                        RecordToken recordToken = (RecordToken) outputPort.takeToken();
-                        Receiver receiver = (Receiver) ((ObjectToken) recordToken.get("receiver")).getValue();
-                        Token token = recordToken.get("token");
-                        receiver.put(token);
+            if (!_justMonitor) {
+                for (Object entity : entityList()) {
+                    if (entity instanceof CQMOutputPort) {
+                        CQMOutputPort outputPort = ((CQMOutputPort)entity);
+                        while (outputPort.hasToken()) {
+                            RecordToken recordToken = (RecordToken) outputPort.takeToken();
+                            Receiver receiver = (Receiver) ((ObjectToken) recordToken.get("receiver")).getValue();
+                            Token token = recordToken.get("token");
+                            receiver.put(token);
+                        }
                     }
-                }
-            } 
+                } 
+            }
         } finally {
             _workspace.doneReading();
         }
@@ -313,12 +358,15 @@ public class CompositeQuantityManager extends TypedCompositeActor implements Qua
                     + " missing");
         }
         if (_tokens == null) {
-            _tokens = new HashMap<Const, Token>();
+            _tokens = new HashMap<CQMInputPort, Token>();
         }
         RecordToken recordToken = new RecordToken(
                 new String[]{"receiver", "token"}, 
                 new Token[]{new ObjectToken(receiver), token});
         _tokens.put(port, recordToken);
+        if (_justMonitor) {
+            receiver.put(token);
+        }
 
         ((CompositeActor) getContainer()).getDirector().fireAtCurrentTime(this);
 
@@ -348,18 +396,25 @@ public class CompositeQuantityManager extends TypedCompositeActor implements Qua
         ColorAttribute color = new ColorAttribute(this, decoratorHighlightColorName);
         color.setExpression("{1.0,0.6,0.0,1.0}");
         
+        justMonitor = new Parameter(this, "justMonitor");
+        justMonitor.setTypeEquals(BaseType.BOOLEAN);
+        justMonitor.setExpression("false");
+        _justMonitor = false;
+        
         _parameters = new HashMap<IOPort, List<Attribute>>();
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    private HashMap<Const, Token> _tokens;
+    private HashMap<CQMInputPort, Token> _tokens;
     
     /** Listeners registered to receive events from this object. */
     private ArrayList<QuantityManagerListener> _listeners;
 
     private HashMap<Port, String> _cqmInputPortName;
+    
+    private boolean _justMonitor;
     
     
     ///////////////////////////////////////////////////////////////////
