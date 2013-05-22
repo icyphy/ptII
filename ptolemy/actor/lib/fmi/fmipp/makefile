@@ -70,14 +70,14 @@ OPTIONAL_FILES = \
 	demo \
 	doc 
 
-JCLASS = $(JSRCS:%.java=%.class)
+JCLASS = $(JSRCS:%.java=%.class) $(PTLIB) $(PTLIB2)
 
 OPTFLAGS = -O3
 OBJECTS=src/stack.o src/xml_parser.o src/FMU.o src/FMUIntegrator.o src/FMUIntegratorStepper.o src/History.o src/IncrementalFMU.o src/ModelManager.o
 
-CFLAGS= -DBUILD_FMI_DLL $(PTJNI_SHAREDLIBRARY_CFLAG)
+CFLAGS= -DBUILD_FMI_DLL $(PTJNI_SHAREDLIBRARY_CFLAG) -Iinclude -I$(PTBOOST_INCLUDE_DIR)
 
-PTLIB=libfmipp.$(PTJNI_SHAREDLIBRARY_SUFFIX2)
+PTLIB=libfmipp.$(PTJNI_SHAREDLIBRARY_SUFFIX)
 PTLIB2=libIncrementalFMU_wrap.$(PTJNI_SHAREDLIBRARY_SUFFIX)
 all: jclass $(PTLIB) $(PTLIB2)
 install: jclass jars
@@ -85,6 +85,9 @@ install: jclass jars
 
 $(PTLIB): $(OBJECTS)
 	$(CXX) $(PTJNI_GCC_SHARED_FLAG) -o $(PTLIB) $(OBJECTS) -L$(LIBEXPAT_LIB_DIR) -lexpat 
+	if [ "`uname -s`" = "Darwin" ]; then \
+		ln $(PTLIB) libfmipp.dylib; \
+	fi
 
 src/stack.o: src/stack.c include/stack.h
 	$(CC) $(INCLUDE) -c $(OPTFLAGS) $(CFLAGS) src/stack.c -o src/stack.o
@@ -102,13 +105,13 @@ src/FMUIntegratorStepper.o: src/FMUIntegratorStepper.cpp include/FMUIntegratorSt
 	$(CXX) $(INCLUDE) -c $(OPTFLAGS) $(CFLAGS) src/FMUIntegratorStepper.cpp -o src/FMUIntegratorStepper.o
 
 src/History.o:  src/History.cpp include/History.h
-	$(CPP) $(INCLUDE) -c $(OPTFLAGS) $(CFLAGS) src/History.cpp -o src/History.o
+	$(CXX) $(INCLUDE) -c $(OPTFLAGS) $(CFLAGS) src/History.cpp -o src/History.o
 
 src/IncrementalFMU.o: src/IncrementalFMU.cpp include/IncrementalFMU.h
-	$(CPP) $(INCLUDE) -c $(OPTFLAGS) $(CFLAGS) src/IncrementalFMU.cpp -o src/IncrementalFMU.o
+	$(CXX) $(INCLUDE) -c $(OPTFLAGS) $(CFLAGS) src/IncrementalFMU.cpp -o src/IncrementalFMU.o
 
 src/ModelManager.o:  src/ModelManager.cpp include/ModelManager.h
-	$(CPP) $(INCLUDE) -c $(OPTFLAGS) $(CFLAGS) src/ModelManager.cpp -o src/ModelManager.o
+	$(CXX) $(INCLUDE) -c $(OPTFLAGS) $(CFLAGS) src/ModelManager.cpp -o src/ModelManager.o
 
 .PHONY = swig
 swig: $(PTLIB2)
@@ -118,7 +121,7 @@ $(PTLIB2): swig/IncrementalFMU.i
 	$(CXX) -shared -o $(PTLIB2) swig/IncrementalFMU_wrap.o -L. -lfmipp -lexpat $(PTJNI_DL_LIBRARY)
 	javac swig/*.java
 
-KRUFT = swig/*.o swig/*.class
+KRUFT = swig/*.o swig/*.class src/*.o
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
