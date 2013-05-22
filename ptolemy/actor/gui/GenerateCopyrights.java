@@ -168,6 +168,8 @@ public class GenerateCopyrights {
                 "ptolemy/actor/lib/database/mysql-copyright.htm");
         _addIfPresent(copyrightsMap, "ptolemy.actor.lib.excel.Excel",
                 "ptolemy/actor/lib/excel/jxl-copyright.htm");
+        _addIfPresent(copyrightsMap, "ptolemy.actor.lib.fmi.fmipp.FMUModelExchange",
+                "ptolemy/actor/lib/fmi/fmipp/fmipp-license.htm");
         _addIfPresent(copyrightsMap, "ptolemy.actor.lib.io.comm.SerialComm",
                 "ptolemy/actor/lib/io/comm/copyright.htm");
         _addIfPresent(copyrightsMap, "ptolemy.actor.lib.jai.JAIImageToken",
