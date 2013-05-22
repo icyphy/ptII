@@ -1,0 +1,71 @@
+EXPAT_INCLUDE=/usr/include
+EXPAT_BIN=/usr/lib
+EXPAT_DLL=expat
+BOOST_INCLUDE=/usr/include/boost
+
+EXPAT_INCLUDE=/opt/local/include
+EXPAT_BIN=/opt/local/lib
+EXPAT_DLL=expat
+BOOST_INCLUDE=/opt/local/include/boost
+
+CC=gcc
+CPP=g++
+
+MACROS=-DBUILD_FMI_DLL
+OPTFLAGS=-O3
+CFLAGS=$(MACROS) -march=x86-64 -fPIC
+INCLUDE=-Iinclude -I$(EXPAT_INCLUDE) -I$(BOOST_INCLUDE)
+
+OBJECTS=src/stack.o src/xml_parser.o src/FMU.o src/FMUIntegrator.o src/FMUIntegratorStepper.o src/History.o src/IncrementalFMU.o src/ModelManager.o
+
+TARGET=lib/libfmipp.so
+
+# -Wl,--no-undefined -shared -o lib/libfmipp.so $(OBJECTS) -L$(EXPAT_BIN) -l$(EXPAT_DLL) -ldl
+build: $(OBJECTS)
+	mkdir -p lib
+	$(CPP) -march=x86-64 -Wl,--no-undefined -shared -o lib/libfmipp.so $(OBJECTS) -L$(EXPAT_BIN) -l$(EXPAT_DLL) -ldl
+
+build.macos: $(OBJECTS)
+	mkdir -p lib
+	$(CPP) -dynamiclib -o lib/libfmipp.so $(OBJECTS) -L$(EXPAT_BIN) -l$(EXPAT_DLL) -ldl
+
+clean:	
+	rm -rf $(OBJECTS) lib
+
+rebuild: clean build
+
+src/stack.o: src/stack.c include/stack.h
+	$(CC) $(INCLUDE) -c $(OPTFLAGS) $(CFLAGS) src/stack.c -o src/stack.o
+
+src/xml_parser.o: src/xml_parser.c include/xml_parser.h
+	$(CC) $(INCLUDE) -c $(OPTFLAGS) $(CFLAGS) src/xml_parser.c -o src/xml_parser.o
+
+src/FMU.o: src/FMU.cpp include/FMU.h
+	$(CPP) $(INCLUDE) -c $(OPTFLAGS) $(CFLAGS) src/FMU.cpp -o src/FMU.o
+
+src/FMUIntegrator.o: src/FMUIntegrator.cpp include/FMUIntegrator.h
+	$(CPP) $(INCLUDE) -c $(OPTFLAGS) $(CFLAGS) src/FMUIntegrator.cpp -o src/FMUIntegrator.o
+
+src/FMUIntegratorStepper.o: src/FMUIntegratorStepper.cpp include/FMUIntegratorStepper.h
+	$(CPP) $(INCLUDE) -c $(OPTFLAGS) $(CFLAGS) src/FMUIntegratorStepper.cpp -o src/FMUIntegratorStepper.o
+
+src/History.o:  src/History.cpp include/History.h
+	$(CPP) $(INCLUDE) -c $(OPTFLAGS) $(CFLAGS) src/History.cpp -o src/History.o
+
+src/IncrementalFMU.o: src/IncrementalFMU.cpp include/IncrementalFMU.h
+	$(CPP) $(INCLUDE) -c $(OPTFLAGS) $(CFLAGS) src/IncrementalFMU.cpp -o src/IncrementalFMU.o
+
+src/ModelManager.o:  src/ModelManager.cpp include/ModelManager.h
+	$(CPP) $(INCLUDE) -c $(OPTFLAGS) $(CFLAGS) src/ModelManager.cpp -o src/ModelManager.o
+
+swig::
+	swig -c++ -java -package ptolemy.actor.lib.fmi.fmipp.swig swig/IncrementalFMU.i
+	$(CPP) $(INC) -c $(OPTFLAGS) $(CFLAGS) swig/IncrementalFMU_wrap.cxx -o swig/IncrementalFMU_wrap.o -I/usr/lib/jvm/java-7-openjdk/include -I/usr/lib/jvm/java-7-openjdk/include/linux
+	gcc -shared -o lib/libIncrementalFMU_wrap.so swig/IncrementalFMU_wrap.o -Llib -lfmipp -ldl -lexpat
+	javac swig/*.java
+
+swig.macos::
+	swig -c++ -java -package ptolemy.actor.lib.fmipp.swig swig/IncrementalFMU.i
+	$(CPP) $(INC) -c $(OPTFLAGS) $(CFLAGS) swig/IncrementalFMU_wrap.cxx -o swig/IncrementalFMU_wrap.o -I/System/Library/Java/JavaVirtualMachines/1.6.0.jdk/Contents/Home/../Headers
+	$(CPP) -shared -o lib/libIncrementalFMU_wrap.so swig/IncrementalFMU_wrap.o -Llib -lfmipp -ldl -lexpat
+	javac swig/*.java

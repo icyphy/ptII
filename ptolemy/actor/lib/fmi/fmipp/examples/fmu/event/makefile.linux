@@ -1,0 +1,82 @@
+################################################################
+# About: 
+# ======
+#	A help makefile for building fmu applications 
+#       platform: cygwin, gcc and omc  
+#
+# Usage:
+# ======
+#
+#	$ Make -f makefile.cygwin.omc 
+#
+################################################################
+
+
+################################################################
+#Software, Compiler and flags 
+################################################################
+
+
+MODELID=Events
+OMCHOME=/opt/openmodelica
+FMIPPHOME=/Users/cxh/src/fmipp-code
+EXPAT=/usr
+
+
+CC=gcc
+CPP=g++
+MACROS=-DOPENMODELICA -DBUILD_FMI_DLL -DDLL_SUFFIX=\".so\"
+OPTFLAGS=-O0 -g
+CFLAGS=$(MACROS)$
+DBGFLAGS=-g
+INC=-I$(FMIPPHOME)/include -I$(OMCHOME)/include/omc -I$(EXPAT)/include
+#LDFLAGS=-L$(FMIPPHOME)/lib  -l:binaries/linux64/$(MODELID).so -lfmipp -lexpat -ldl
+LDFLAGS=-L$(FMIPPHOME)/lib -lfmipp -lexpat -ldl
+
+
+# see makefile.win .. 
+
+################################################################
+# help menu 
+################################################################
+help: 
+	@echo "Targets"
+	@echo "======="
+	@echo ""
+	@echo "	build:		build exe without debuging"
+	@echo "	run:		run the executable"
+	@echo "	clean:		clean all objects"
+	@echo ""
+#	@echo "Macros"
+#	@echo "======"
+
+
+################################################################
+# Source files and Objects 
+################################################################
+CSRC=
+CPPSRC=main.cpp
+OBJECTS=main.o
+
+################################################################
+# Build targets 
+################################################################
+
+# Targets 
+TARGET=a.exe
+
+build: main.o 
+#	$(CPP) $(OPTFLAGS) main.o -o  $(TARGET) $(LDFLAGS)  	
+	$(CPP) $(OPTFLAGS) main.o -o  $(TARGET) $(LDFLAGS)  	
+
+main.o:  main.cpp 
+	$(CPP) -c $(CFLAGS) $(INC)  $(OPTFLAGS) main.cpp
+
+run:
+	PATH="$(PATH):$(PWD)/binaries/win32/"  ./$(TARGET)
+
+clean:
+	rm -f $(OBJECTS) $(TARGET) 
+
+depend: 
+	makedepend -- $(SRC)

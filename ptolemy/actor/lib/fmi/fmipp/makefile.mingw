@@ -1,0 +1,65 @@
+EXPAT_INCLUDE=/c/Tools/expat-2.1.0/include
+EXPAT_BIN=/c/Tools/expat-2.1.0/bin
+EXPAT_DLL=libexpat-1
+
+BOOST_INCLUDE=/c/Tools/boost_1_52_0/include/boost-1_52
+
+JAVA_HOME=/c/Program\ Files\ \(x86\)/Java/jdk1.7.0_13
+
+CC=gcc
+CPP=g++
+
+OPTFLAGS=-O3
+CFLAGS=-march=i686
+INCLUDE=-Iinclude -I$(EXPAT_INCLUDE) -I$(BOOST_INCLUDE)
+
+#OBJECTS=src/FMU.o src/RollbackFMU.o src/FMILibraryFMU.o src/FMUIntegrator.o src/FMUIntegratorStepper.o src/History.o src/IncrementalFMU.o src/ModelManager.o src/stack.o src/xml_parser.o
+OBJECTS=src/FMU.o src/RollbackFMU.o src/FMUIntegrator.o src/FMUIntegratorStepper.o src/History.o src/IncrementalFMU.o src/ModelManager.o src/stack.o src/xml_parser.o
+
+TARGET=lib/libfmipp.dll
+
+build: $(OBJECTS)
+	mkdir -p lib
+#	$(CPP) -march=i686 -Wl,--no-undefined -shared -o lib/libfmipp.dll $(OBJECTS) -L$(FMILIB_BIN) -l$(FMILIB_DLL) -L$(EXPAT_BIN) -l$(EXPAT_DLL)
+	$(CPP) -march=i686 -Wl,--no-undefined -shared -o lib/libfmipp.dll $(OBJECTS) -L$(EXPAT_BIN) -l$(EXPAT_DLL)
+
+clean:
+	rm -rf $(OBJECTS) lib
+
+rebuild: clean build
+
+src/FMU.o: src/FMU.cpp include/FMU.h
+	$(CPP) $(INCLUDE) -c $(OPTFLAGS) $(CFLAGS) -DBUILD_FMI_DLL -DMINGW src/FMU.cpp -o src/FMU.o
+
+src/RollbackFMU.o: src/RollbackFMU.cpp include/RollbackFMU.h
+	$(CPP) $(INCLUDE) -c $(OPTFLAGS) $(CFLAGS) -DBUILD_FMI_DLL -DMINGW src/RollbackFMU.cpp -o src/RollbackFMU.o
+
+src/FMILibraryFMU.o: src/FMILibraryFMU.cpp include/FMILibraryFMU.h
+	$(CPP) $(INCLUDE) -c $(OPTFLAGS) $(CFLAGS) -DBUILD_FMI_DLL src/FMILibraryFMU.cpp -o src/FMILibraryFMU.o
+
+src/FMUIntegrator.o: src/FMUIntegrator.cpp include/FMUIntegrator.h
+	$(CPP) $(INCLUDE) -c $(OPTFLAGS) $(CFLAGS) -DBUILD_FMI_DLL -DMINGW src/FMUIntegrator.cpp -o src/FMUIntegrator.o
+
+src/FMUIntegratorStepper.o: src/FMUIntegratorStepper.cpp include/FMUIntegratorStepper.h
+	$(CPP) $(INCLUDE) -c $(OPTFLAGS) $(CFLAGS) -DBUILD_FMI_DLL -DMINGW src/FMUIntegratorStepper.cpp -o src/FMUIntegratorStepper.o
+
+src/History.o:  src/History.cpp include/History.h
+	$(CPP) $(INCLUDE) -c $(OPTFLAGS) $(CFLAGS) -DBUILD_FMI_DLL -DMINGW src/History.cpp -o src/History.o
+
+src/IncrementalFMU.o: src/IncrementalFMU.cpp include/IncrementalFMU.h
+	$(CPP) $(INCLUDE) -c $(OPTFLAGS) $(CFLAGS) -DBUILD_FMI_DLL -DMINGW src/IncrementalFMU.cpp -o src/IncrementalFMU.o
+
+src/ModelManager.o:  src/ModelManager.cpp include/ModelManager.h
+	$(CPP) $(INCLUDE) -c $(OPTFLAGS) $(CFLAGS) -DBUILD_FMI_DLL -DMINGW src/ModelManager.cpp -o src/ModelManager.o
+
+src/stack.o: src/stack.c include/stack.h
+	$(CC) $(INCLUDE) -c $(OPTFLAGS) $(CFLAGS) src/stack.c -o src/stack.o
+
+src/xml_parser.o: src/xml_parser.c include/xml_parser.h
+	$(CC) $(INCLUDE) -c $(OPTFLAGS) $(CFLAGS) src/xml_parser.c -o src/xml_parser.o
+
+swig::
+	swig -c++ -java -package ptolemy.actor.lib.fmi.fmipp.swig swig/IncrementalFMU.i
+	$(CPP) $(INC) -c $(OPTFLAGS) $(CFLAGS) -DMINGW swig/IncrementalFMU_wrap.cxx -o swig/IncrementalFMU_wrap.o -I$(JAVA_HOME)/include -I$(JAVA_HOME)/include/win32 -I/usr/lib/jvm/java-7-openjdk/include/linux -L$(EXPAT_BIN) -l$(EXPAT_DLL)
+	gcc -Wall -D_JNI_IMPLEMENTATION_ -Wl,--kill-at -I ${JAVA_HOME}/include -I ${JAVA_HOME}/include/win32 -shared -o lib/IncrementalFMU_wrap.dll swig/IncrementalFMU_wrap.o -L$(EXPAT_BIN) -l$(EXPAT_DLL) -Llib -lfmipp -lstdc++
+	javac swig/*.java

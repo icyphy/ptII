@@ -1,0 +1,72 @@
+################################################################
+# About: 
+# ======
+#	A help makefile for building fmu applications 
+#       platform: cygwin, gcc and omc  
+#
+# Usage:
+# ======
+#
+#	$ Make -f makefile.cygwin.omc 
+#
+################################################################
+
+
+################################################################
+#Software, Compiler and flags 
+################################################################
+
+
+FMIPP=/c/Development/fmipp
+EXPAT=/c/Tools/expat-2.1.0
+
+
+CC=gcc
+CPP=g++
+MACROS=-DMINGW
+OPTFLAGS=-O3
+CFLAGS=$(MACROS)$
+INCLUDE=-I$(FMIPP)/include -I$(EXPAT)/include
+LDFLAGS=-L$(FMIPP)/lib -llibfmipp -L$(EXPAT)/bin -lexpat-1 
+
+
+################################################################
+# help menu 
+################################################################
+help: 
+	@echo "Targets"
+	@echo "======="
+	@echo ""
+	@echo "	build:		build exe without debuging"
+	@echo "	run:		run the executable"
+	@echo "	clean:		clean all objects"
+	@echo ""
+#	@echo "Macros"
+#	@echo "======"
+
+
+################################################################
+# Source files and Objects 
+################################################################
+CSRC=
+CPPSRC=main.cpp
+OBJECTS=main.o
+
+################################################################
+# Build targets 
+################################################################
+
+# Targets 
+TARGET=a.exe
+
+build: main.o 
+	$(CPP) $(OPTFLAGS) main.o -o $(TARGET) $(LDFLAGS)
+
+main.o:  main.cpp 
+	$(CPP) -c $(CFLAGS) $(INCLUDE) $(OPTFLAGS) main.cpp
+
+run:
+	PATH="$(PATH):$(PWD)/binaries/win32/:$(FMIPP)/lib:$(EXPAT)/bin"  ./$(TARGET)
+
+clean:
+	rm -f $(OBJECTS) $(TARGET) 
