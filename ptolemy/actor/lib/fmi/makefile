@@ -33,7 +33,8 @@
 
 ME =		ptolemy/actor/lib/fmi
 
-DIRS = 		fmus demo test
+# PTFMIPP_DIR is set by configure in $PTII/mk/ptII.mk
+DIRS = 		fmus $(PTFMIPP_DIR) demo test
 
 # Root of the Java directory
 ROOT =		../../../..
