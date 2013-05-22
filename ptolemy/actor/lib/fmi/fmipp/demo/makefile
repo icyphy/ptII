@@ -29,7 +29,7 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/actor/lib/fmi/demo
+ME =		ptolemy/actor/lib/fmi/fmipp/demo
 
 DIRS =		FMUModelExchange HouseControl
 

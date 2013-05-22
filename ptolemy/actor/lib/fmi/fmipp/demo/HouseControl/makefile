@@ -29,7 +29,7 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/actor/lib/fmi/fmipp/demo/FMUHouseControl
+ME =		ptolemy/actor/lib/fmi/fmipp/demo/HouseControl
 
 # Root of the Java directory
 ROOT =		../../../../../../..
@@ -41,16 +41,16 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	FMUHouseControl
+PTPACKAGE = 	HouseControl
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
-	FMUHouseControl.xml \
-	Simple.fmu \
-	Simple.mo \
-	Simple.mos
+	Heating.mo \
+	Heating.mos \
+	Heating_ControlledHouse.fmu \
+	HouseControl.xml
 
 EXTRA_SRCS = \
 	$(JSRCS) \
@@ -78,22 +78,22 @@ all: jclass
 install: all $(PTCLASSJAR)
 
 # Invoke the OpenModelica Compiler (omc) to create Simple.fmu
-Simple.fmu: Simple.mo Simple.mos
-	omc Simple.mos
+Heating_ControlledHouse.fmu: Heating.mo Heating.mos
+	omc Heating.mos
 
 demo: demo_vergil #demo_ptolemy
 
 #demo_applet:
-#	CLASSPATH="$(CLASSPATH)" appletviewer FMUHouseControl.htm
+#	CLASSPATH="$(CLASSPATH)" appletviewer HouseControl.htm
 
 #demo_applet_vergil:
-#	CLASSPATH="$(CLASSPATH)" appletviewer FMUHouseControlVergil.htm
+#	CLASSPATH="$(CLASSPATH)" appletviewer HouseControlVergil.htm
 
 demo_ptolemy:
-	"$(PTII)/bin/ptolemy" FMUHouseControl.xml
+	"$(PTII)/bin/ptolemy" HouseControl.xml
 
 demo_vergil:
-	"$(PTII)/bin/vergil" FMUHouseControl.xml
+	"$(PTII)/bin/vergil" HouseControl.xml
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
