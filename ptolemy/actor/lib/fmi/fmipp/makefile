@@ -33,7 +33,7 @@
 
 ME =		ptolemy/actor/lib/fmi/fmipp
 
-DIRS = 		demo
+DIRS = 		demo test
 
 # Root of the Java directory
 ROOT =		../../../../..
@@ -68,7 +68,8 @@ MISC_FILES = test fmus
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	demo \
-	doc 
+	doc \
+	test
 
 JCLASS = $(JSRCS:%.java=%.class) $(PTLIB) $(PTLIB2)
 
