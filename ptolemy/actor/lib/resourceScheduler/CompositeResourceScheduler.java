@@ -209,10 +209,7 @@ public class CompositeResourceScheduler extends TypedCompositeActor implements R
         _schedulePlotterEditorFactory.plot.repaint();
     }
     
-    /** Initialize local variables and if this resource
-     *  scheduler wants to be fired at a future time, return
-     *  this time.
-     * @return Next time this scheduler requests a firing.
+    /** Initialize local variables.
      * @exception IllegalActionException Thrown if list of actors
      *   scheduled by this scheduler cannot be retrieved.
      */
