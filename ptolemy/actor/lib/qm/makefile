@@ -65,6 +65,7 @@ JSRCS = \
 	AFDXSwitch.java \
 	AFDXVlCfg.java \
 	AFDXVlink.java \
+	AtomicQuantityManager.java \
 	BasicSwitch.java \
 	Bus.java \
 	CanBus.java \
@@ -74,7 +75,6 @@ JSRCS = \
 	CompositeQM.java \
 	CrossbarSwitch.java \
 	TTESwitch.java \
-	MonitoredQuantityManager.java \
 	QuantityManagerListener.java \
 	QuantityManagerMonitor.java
 

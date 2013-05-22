@@ -1,7 +1,7 @@
 /* This actor implements an AFDX virtual-link parameter which
  * is used to configure a virtual-link.
 
-@Copyright (c) 2010-2013 The Regents of the University of California.
+@Copyright (c) 2010-2011 The Regents of the University of California.
 All rights reserved.
 
 Permission is hereby granted, without written agreement and without
@@ -43,12 +43,12 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
-/** This actor is a {@link ptolemy.actor.lib.Transformer} designed for use with
- * the {@link AFDXESs}. This actor comes with parameters that configure one
+/** This actor is a {@link ptolemy.actor.lib.Transformer} designed for use with 
+ * the {@link AFDXESs}. This actor comes with parameters that configure one 
  * virtual link which belong to one AFDX End-system.
  * To improve visibility this parameter is made visible using a BoxedValueIcon.
  * For more information see: <i>AFDX network simulation in PtolemyII</i>.
- *
+ *       
  *  @author G. Lasnier
  *  @version $Id$
    @since Ptolemy II 0.2
@@ -68,43 +68,44 @@ public class AFDXVlCfg extends Transformer {
         super(container, name);
 
         vlink = new Parameter(this, "vlink");
-        vlink.setTypeEquals(BaseType.STRING);
+        vlink.setTypeEquals(BaseType.STRING);       
         vlink.setExpression("\"VL\"");
 
         bag = new Parameter(this, "bag");
         bag.setDisplayName("bag (ms)");
-        bag.setTypeEquals(BaseType.DOUBLE);
+        bag.setTypeEquals(BaseType.DOUBLE);       
         bag.setExpression("0.0");
 
-        trameSize = new Parameter(this, "trameSize");
-        trameSize.setDisplayName("trameSize (bytes)");
-        trameSize.setTypeEquals(BaseType.INT);
-        trameSize.setExpression("0");
+        frameSize = new Parameter(this, "frameSize");
+        frameSize.setDisplayName("frameSize (bits)");
+        frameSize.setTypeEquals(BaseType.INT);       
+        frameSize.setExpression("0");
 
         schedulerMux = new Parameter(this, "schedulerMux");
-        schedulerMux.setTypeEquals(BaseType.STRING);
+        schedulerMux.setTypeEquals(BaseType.STRING);       
         schedulerMux.setExpression("\"Scheduler multiplexor name\"");
 
         // Icon description.
-        _attachText("_iconDescription", "<svg>\n" + "<rect x=\"0\" y=\"0\" "
-                + "width=\"60\" height=\"20\" " + "style=\"fill:white\"/>\n"
-                + "</svg>\n");
+        _attachText("_iconDescription", "<svg>\n"
+                + "<rect x=\"0\" y=\"0\" "
+                + "width=\"60\" height=\"20\" "
+                + "style=\"fill:white\"/>\n" + "</svg>\n");
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    /** Value of the virtual link parameter. */
+    /** Name of the virtual link parameter. */
     public Parameter vlink;
 
-    /** Value of the scheduler multiplexor parameter. */
+    /** Name of the scheduler multiplexor parameter. */
     public Parameter schedulerMux;
 
     /** Value of the bag parameter. */
     public Parameter bag;
 
-    /** Value of the trameSize parameter. */
-    public Parameter trameSize;
+    /** Value of the frameSize parameter. */
+    public Parameter frameSize;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -117,17 +118,19 @@ public class AFDXVlCfg extends Transformer {
             throws IllegalActionException {
 
         if (attribute == vlink) {
-            String value = ((StringToken) vlink.getToken()).stringValue();
+            String value = ((StringToken) vlink.getToken())
+                    .stringValue();
             this.setDisplayName(value);
 
         } else if (attribute == bag) {
-            double value = ((DoubleToken) bag.getToken()).doubleValue();
+            double value = ((DoubleToken) bag.getToken())
+                    .doubleValue();
             if (value < 0.0) {
                 throw new IllegalActionException(this,
-                        "Cannot have negative serviceTime: " + value);
+                        "Cannot have negative bag: " + value);
             }
-        } else if (attribute == trameSize) {
-            int value = ((IntToken) trameSize.getToken()).intValue();
+        } else if (attribute == frameSize) {
+            int value = ((IntToken) frameSize.getToken()).intValue();
             if (value < 0) {
                 throw new IllegalActionException(this,
                         "Cannot have negative or zero size of trames: " + value);
@@ -153,7 +156,7 @@ public class AFDXVlCfg extends Transformer {
      */
     public void fire() throws IllegalActionException {
         super.fire();
-        if (input.hasToken(0)) {
+        if (input.hasToken(0)) {         
             output.send(0, input.get(0));
         }
     }

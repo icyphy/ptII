@@ -1,6 +1,6 @@
 /* This java object implements a virtual-link for an AFDX Network.
 
-@Copyright (c) 2010-2013 The Regents of the University of California.
+@Copyright (c) 2010-2011 The Regents of the University of California.
 All rights reserved.
 
 Permission is hereby granted, without written agreement and without
@@ -31,7 +31,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 package ptolemy.actor.lib.qm;
 
 import ptolemy.actor.Actor;
-import ptolemy.actor.IntermediateReceiver;
+import ptolemy.domains.de.kernel.DEReceiver;
 import ptolemy.actor.Receiver;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
@@ -40,46 +40,46 @@ import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
 
-/** This java obejct implements a virtual-link which belongs to the end-system
+/** This java obejct implements a virtual-link which belongs to the end-system 
  *  of an AFDX Network.
- *  For more information please refer to:
+ *  For more information please refer to: 
  *      <i>AFDX network simulation using PtolemyII</i>.
- *
+ *       
  *  @author G. Lasnier
  *  @version $Id$
    @since Ptolemy II 0.2
  */
 public class AFDXVlink {
-
+    
     /** Constructor.
      * @param source
-     * @exception IllegalActionException
+     * @throws IllegalActionException
      */
-    public AFDXVlink(Receiver source) throws IllegalActionException {
+   /* public AFDXVlink (Receiver receiver) throws IllegalActionException {
         // 'vlink' parameter and value.
-        Parameter vlParam = (Parameter) ((NamedObj) ((IntermediateReceiver) source).source)
+        Parameter vlParam = (Parameter) ((NamedObj) ((DEReceiver) receiver).)
                 .getAttribute("vlink");
         this._name = ((StringToken) vlParam.getToken()).stringValue();
-
+        
         // 'bag' parameter and value.
-        Parameter bagParam = (Parameter) ((NamedObj) ((IntermediateReceiver) source).source)
+        Parameter bagParam = (Parameter) ((NamedObj) ((DEReceiver) receiver).source)
                 .getAttribute("bag");
         this._bag = ((DoubleToken) bagParam.getToken()).doubleValue() / 1000;
-
-        // 'trameSize' parameter and value.
-        Parameter tsParam = (Parameter) ((NamedObj) ((IntermediateReceiver) source).source)
-                .getAttribute("trameSize");
-        this._trameSize = ((IntToken) tsParam.getToken()).intValue();
-
+        
+        // 'frameSize' parameter and value.
+        Parameter tsParam = (Parameter) ((NamedObj) ((DEReceiver) receiver).source)
+                .getAttribute("frameSize");
+        this._frameSize = ((IntToken) tsParam.getToken()).intValue();
+        
         // 'schedulerMux' parameter and value.
-        Parameter smParam = (Parameter) ((NamedObj) ((IntermediateReceiver) source).source)
+        Parameter smParam = (Parameter) ((NamedObj) ((DEReceiver) receiver).source)
                 .getAttribute("schedulerMux");
         this._schedulerMux = ((StringToken) smParam.getToken()).stringValue();
-
-        // 'source' connected to the vlink.
-        this._source = ((IntermediateReceiver) source).source;
-    }
-
+        
+        // 'source' connected to the vlink. 
+        this._source = ((DEReceiver) receiver).source;
+    }*/
+    
     /** Constructor.
      * @param nm The name of the virtual-link.
      * @param b The value of the bag.
@@ -87,63 +87,93 @@ public class AFDXVlink {
      * @param sched The name of the virtual-link scheduler.
      * @param src The initial actor connected to the virtual-link.
      */
-    public AFDXVlink(String nm, Double b, int ts, String sched, Actor src) {
+    public AFDXVlink (String nm, Double b, int ts, String sched, Actor src) {
         this._name = nm;
         this._bag = b;
-        this._trameSize = ts;
+        this._frameSize = ts;
         this._source = src;
         this._schedulerMux = sched;
     }
-
+    
+    /** Constructor.
+     */
+    public AFDXVlink () {
+        //this._source = src;
+    }
+    
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
     /* The followings methods are classics getter/setter. */
-
+    
     public String getName() {
         return _name;
     }
-
+    
+    public void setName(String nm) {
+        this._name = nm;
+    }
+    
     public Double getBag() {
         return _bag;
     }
-
-    public int getTrameSize() {
-        return _trameSize;
+    
+    public void setBag(Double b) {
+        // GL: FIXME: XXX: we need to think how to not hide the bag conversion
+        this._bag = b / 1000;
     }
-
+    
+    public int getFrameSize() {
+        return _frameSize;
+    }
+    
+    public void setFrameSize(int fs) {
+        this._frameSize = fs;
+    }
+    
     public Actor getSource() {
         return _source;
+    }
+    
+    public void setSource(Actor src) {
+        this._source = src;
     }
 
     public String getSchedulerMux() {
         return _schedulerMux;
     }
-
-    public String toString() {
-        return "Object AFDXVlink {" + "vl_name=" + _name + " bag="
-                + _bag.toString() + " trameSize=" + _trameSize
-                + " schedulerMux=" + _schedulerMux + " source=" + _source + "}";
+    
+    public void setSchedulerMux(String sched) {
+        this._schedulerMux = sched;
     }
-
+    
+    public String toString() {
+        return "Object AFDXVlink {"
+                + "vl_name=" + _name + " bag=" + _bag.toString() 
+                + " frameSize=" + _frameSize
+                + " schedulerMux=" + _schedulerMux
+                + " source=" + _source
+                + "}";
+    }
+    
     /** The name of the virtual-link
      */
     private String _name;
-
+    
     /** The bag of the virtual-link
      */
     private Double _bag;
-
+    
     /** The size of the trame for the virtual-link
      */
-    private int _trameSize;
+    private int _frameSize;
 
     /** The name of the virtual-link scheduler multiplexor
      */
     private String _schedulerMux;
-
+    
     /** The source actor connected to the virtual-link
      */
     private Actor _source;
-
+    
 }

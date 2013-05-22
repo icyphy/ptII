@@ -91,7 +91,7 @@ import ptolemy.kernel.util.Workspace;
  *  @Pt.ProposedRating Yellow (derler)
  *  @Pt.AcceptedRating Red (derler)
  */
-public class BasicSwitch extends MonitoredQuantityManager {
+public class BasicSwitch extends AtomicQuantityManager {
 
     /** Construct a Bus with a name and a container.
      *  The container argument must not be null, or a

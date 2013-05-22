@@ -1,6 +1,6 @@
 /* This quantity manager actor implements an AFDX switch.
 
-@Copyright (c) 2011-2013 The Regents of the University of California.
+@Copyright (c) 2011-2012 The Regents of the University of California.
 All rights reserved.
 
 Permission is hereby granted, without written agreement and without
@@ -30,8 +30,10 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.actor.lib.qm;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.List;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.IOPort;
@@ -46,11 +48,14 @@ import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.ObjectToken;
 import ptolemy.data.RecordToken;
+import ptolemy.data.ScalarToken;
+import ptolemy.data.StringToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.domains.de.kernel.DEDirector;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.Port;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
@@ -85,10 +90,10 @@ import ptolemy.kernel.util.Workspace;
  *  @author Gilles Lasnier, Based on BasiSwitch.java by Patricia Derler
  *  @version $Id$
  *  @since Ptolemy II 8.0
- *  @Pt.ProposedRating
+ *  @Pt.ProposedRating 
  *  @Pt.AcceptedRating
  */
-public class AFDXSwitch extends MonitoredQuantityManager {
+public class AFDXSwitch extends BasicSwitch {
 
     /** Construct a Bus with a name and a container.
      *  The container argument must not be null, or a
@@ -107,10 +112,12 @@ public class AFDXSwitch extends MonitoredQuantityManager {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
-        _inputTokens = new HashMap();
-        _outputTokens = new HashMap();
+        _inputTokens = new HashMap<Integer, LinkedList<TimedEvent>>();
+        _outputTokens = new HashMap<Integer, LinkedList<TimedEvent>>();
         _switchFabricQueue = new LinkedList<TimedEvent>();
         _actorPorts = new HashMap<Actor, Integer>();
+        _ioPortToSwitchInPort = new HashMap<Port, Integer>();
+        _ioPortToSwitchOutPort = new HashMap<Port, Integer>();
         _tokenCount = 0;
 
         bitRate = new Parameter(this, "bitRate");
@@ -125,24 +132,6 @@ public class AFDXSwitch extends MonitoredQuantityManager {
         technologicalDelay.setTypeEquals(BaseType.DOUBLE);
         _technologicalDelay = 140 / 1000000;
 
-        inputBufferDelay = new Parameter(this, "inputBufferDelay");
-        inputBufferDelay.setDisplayName("inputBufferDelay (ms)");
-        inputBufferDelay.setExpression("0.0");
-        inputBufferDelay.setTypeEquals(BaseType.DOUBLE);
-        _inputBufferDelay = 0.0;
-
-        outputBufferDelay = new Parameter(this, "outputBufferDelay");
-        outputBufferDelay.setDisplayName("outputBufferDelay (ms)");
-        outputBufferDelay.setExpression("0.0");
-        outputBufferDelay.setTypeEquals(BaseType.DOUBLE);
-        _outputBufferDelay = 0.0;
-
-        numberOfPorts = new Parameter(this, "numberOfPorts");
-        numberOfPorts.setDisplayName("Number of ports");
-        numberOfPorts.setExpression("2");
-        numberOfPorts.setTypeEquals(BaseType.INT);
-        _numberOfPorts = 2;
-
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -155,7 +144,7 @@ public class AFDXSwitch extends MonitoredQuantityManager {
      *  @exception IllegalActionException If the receiver is an
      *  ouptut port.
      */
-    public IntermediateReceiver createIntermediateReceiver(Receiver receiver)
+    public IntermediateReceiver getReceiver(Receiver receiver)
             throws IllegalActionException {
         if (receiver.getContainer().isOutput()) {
             throw new IllegalActionException(receiver.getContainer(),
@@ -177,11 +166,10 @@ public class AFDXSwitch extends MonitoredQuantityManager {
      */
     public Receiver getReceiver(Receiver receiver, IOPort port)
             throws IllegalActionException {
-        return createIntermediateReceiver(receiver);
+        return getReceiver(receiver);
     }
 
     /** Make sure that this quantity manager is only used in the DE domain.
-     *  FIXME: this actor should be used in other domains later as well.
      *  @param container The container of this actor.
      *  @exception IllegalActionException If thrown by the super class or if the
      *  director of this actor is not a DEDirector.
@@ -235,7 +223,8 @@ public class AFDXSwitch extends MonitoredQuantityManager {
                 _outputTokens.put(i, new LinkedList<TimedEvent>());
             }
         } else if (attribute == bitRate) {
-            double value = ((DoubleToken) bitRate.getToken()).doubleValue();
+            double value = ((DoubleToken) bitRate.getToken())
+                    .doubleValue();
             if (value < 0.0) {
                 throw new IllegalActionException(this,
                         "Cannot have negative bitRate: " + value);
@@ -260,6 +249,8 @@ public class AFDXSwitch extends MonitoredQuantityManager {
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         AFDXSwitch newObject = (AFDXSwitch) super.clone(workspace);
+        _ioPortToSwitchInPort = new HashMap<Port, Integer>();
+        _ioPortToSwitchOutPort = new HashMap<Port, Integer>();
         newObject._actorPorts = new HashMap();
         newObject._nextFireTime = null;
         newObject._inputTokens = new HashMap();
@@ -275,11 +266,7 @@ public class AFDXSwitch extends MonitoredQuantityManager {
     public void initialize() throws IllegalActionException {
         super.initialize();
         _nextFireTime = null;
-        for (int i = 0; i < _numberOfPorts; i++) {
-            _inputTokens.put(i, new LinkedList<TimedEvent>());
-            _outputTokens.put(i, new LinkedList<TimedEvent>());
-        }
-
+/*
         // Read the switching table from the parameters.
         for (int i = 0; i < attributeList().size(); i++) {
             Attribute attribute = (Attribute) attributeList().get(i);
@@ -288,6 +275,7 @@ public class AFDXSwitch extends MonitoredQuantityManager {
                 Parameter param = (Parameter) attribute;
                 Token token = param.getToken();
                 Actor actor = (Actor) ((ObjectToken) token).getValue();
+                System.out.println("actor:"+actor.toString());
                 _actorPorts.put(actor, portNumber);
             } catch (NumberFormatException ex) {
                 // Parameter was not a number and therefore not a part of
@@ -298,7 +286,7 @@ public class AFDXSwitch extends MonitoredQuantityManager {
                         + "in the routing table information for "
                         + this.getName());
             }
-        }
+        }*/
         for (int i = 0; i < _numberOfPorts; i++) {
             _inputTokens.put(i, new LinkedList<TimedEvent>());
             _outputTokens.put(i, new LinkedList<TimedEvent>());
@@ -330,15 +318,25 @@ public class AFDXSwitch extends MonitoredQuantityManager {
                 if (_inputTokens.get(i).size() > 0) {
                     event = _inputTokens.get(i).getFirst();
                     if (event.timeStamp.compareTo(currentTime) == 0) {
-                        Time lastTimeStamp = currentTime;
+                        Time lastTimeStamp = currentTime;                  
                         if (_switchFabricQueue.size() > 0) {
-                            Object[] last = (Object[]) _switchFabricQueue
-                                    .getLast().contents;
+                            Object[] last = (Object[]) _switchFabricQueue.getLast().contents;
                             Object[] eObj = (Object[]) event.contents;
-                            if (((AFDXVlink) last[2]).getSource().equals(
-                                    ((AFDXVlink) eObj[2]).getSource())
-                                    && ((Time) last[3]).compareTo(eObj[3]) == 0) {
+                            
+                            if (_debugging) {
+                            	_debug("looo");
+                            	
+                            }
+                            System.out.println("last" + ((AFDXVlink) last[2]).getSource().getFullName() + "time="+((Time) last[3]));
+                            System.out.println("new" + ((AFDXVlink) eObj[2]).getSource().getFullName() + "time"+ eObj[3]);
+                            
+
+                            
+                            if ( ((AFDXVlink) last[2]).getSource().equals(((AFDXVlink) eObj[2]).getSource())
+                                    && ((Time) last[3]).compareTo(eObj[3]) == 0 ) {
                                 multicast = true;
+                                System.out.println("multicat="+multicast);
+
                             }
 
                             lastTimeStamp = _switchFabricQueue.getLast().timeStamp;
@@ -348,19 +346,21 @@ public class AFDXSwitch extends MonitoredQuantityManager {
                             computedTimeStamp = lastTimeStamp;
                             multicast = false;
                         } else {
-                            Object[] output = (Object[]) event.contents;
+                            /*Object[] output = (Object[]) event.contents;
                             AFDXVlink vl = (AFDXVlink) output[2];
-                            computedTimeStamp = lastTimeStamp.add(
-                                    vl.getTrameSize() / (_bitRate * 1000000))
+                            computedTimeStamp = lastTimeStamp
+                                    .add(_technologicalDelay)
+                                    .add(vl.getFrameSize()/(_bitRate*1000000));*/
+                            computedTimeStamp = currentTime
                                     .add(_technologicalDelay);
                         }
-                        _switchFabricQueue.add(new TimedEvent(
-                                computedTimeStamp, event.contents));
+                        _switchFabricQueue.add(new TimedEvent(computedTimeStamp, event.contents));
 
                         _inputTokens.get(i).remove(event);
                     }
                 }
             }
+            //  _scheduleRefire();
 
             // Move tokens from switch fabric to output queue.
 
@@ -379,14 +379,16 @@ public class AFDXSwitch extends MonitoredQuantityManager {
                     } else {
                         actor = (Actor) receiver.getContainer().getContainer();
                     }
-                    int actorPort = _actorPorts.get(actor);
+                    //GL: FIXME: XXX: change for new QM implem.
+                    //int actorPort = _actorPorts.get(actor);
+                    int actorPort = _getPortID(receiver, false);
+
                     Time lastTimeStamp = currentTime;
                     if (_outputTokens.get(actorPort).size() > 0) {
-                        Object[] last = (Object[]) _outputTokens.get(actorPort)
-                                .getLast().contents;
-                        if (((AFDXVlink) last[2]).getSource().equals(
-                                ((AFDXVlink) output[2]).getSource())
-                                && ((Time) last[3]).compareTo(output[3]) == 0) {
+                        Object[] last = (Object[]) _outputTokens.get(actorPort).getLast().contents;
+                        if ( ((AFDXVlink) last[2]).getSource()
+                                .equals(((AFDXVlink) output[2]).getSource())
+                                && ((Time) last[3]).compareTo(output[3]) == 0 ) {
                             multicast = true;
                         }
 
@@ -397,15 +399,19 @@ public class AFDXSwitch extends MonitoredQuantityManager {
                         computedTimeStamp = lastTimeStamp;
                         multicast = false;
                     } else {
+                        AFDXVlink vl = (AFDXVlink) output[2];
                         computedTimeStamp = lastTimeStamp
-                                .add(_outputBufferDelay);
+                                .add(_outputBufferDelay)
+                                .add(vl.getFrameSize()/(_bitRate*1000000));
                     }
-                    _outputTokens.get(actorPort).add(
-                            new TimedEvent(computedTimeStamp, event.contents));
+                    _outputTokens.get(actorPort)
+                    .add(new TimedEvent(computedTimeStamp, event.contents));
 
                     _switchFabricQueue.remove(event);
                 }
             }
+            // _scheduleRefire();
+
 
             // Send tokens to target receiver.
 
@@ -415,21 +421,18 @@ public class AFDXSwitch extends MonitoredQuantityManager {
                     if (event.timeStamp.compareTo(currentTime) == 0) {
                         Object[] output = (Object[]) event.contents;
 
-                        // The receiver is an AFDXSwitch (qm).
+                        // The receiver is an AFDXSwitch (qm). 
                         Receiver receiver = (Receiver) output[0];
                         if (receiver instanceof IntermediateReceiver) {
-                            String[] labels = new String[] { timestamp, vlink,
-                                    payload };
-                            Token[] values = new Token[] {
-                                    new DoubleToken(
-                                            event.timeStamp.getDoubleValue()),
-                                    new ObjectToken(output[2]),
+                            String[] labels = new String[] { timestamp, vlink, payload };
+                            Token[] values = new Token[] {new DoubleToken(event.timeStamp.getDoubleValue()), 
+                                    new ObjectToken (output[2]),
                                     (Token) output[1] };
                             RecordToken record = new RecordToken(labels, values);
                             _sendToReceiver((Receiver) output[0], record);
                         } else { // Else the receiver is an actor.
                             Token token = (Token) output[1];
-                            _sendToReceiver((Receiver) output[0], token);
+                            _sendToReceiver((Receiver) output[0], token);                            
                         }
                         _outputTokens.get(i).remove(event);
                     }
@@ -472,31 +475,32 @@ public class AFDXSwitch extends MonitoredQuantityManager {
         // FIXME add Continuous support.
 
         if (token instanceof RecordToken) {
-            vl = (AFDXVlink) ((ObjectToken) ((RecordToken) token).get("vlink"))
-                    .getValue();
+            vl = (AFDXVlink) ((ObjectToken) ((RecordToken) token).get("vlink")).getValue();
             tok = ((RecordToken) token).get("payload");
         }
 
-        IntermediateReceiver ir = (IntermediateReceiver) source;
+        // IntermediateReceiver ir = (IntermediateReceiver) source;
 
-        int actorPortId = 0;
-        if (ir.source != null) {
+        int actorPortId = _getPortID(receiver, true);
+
+        /*if (ir.source != null) {
             Actor sender = ir.source;
             actorPortId = _actorPorts.get(sender);
         } else {
             throw new IllegalActionException(this, "The receiver " + receiver
                     + "does not have a source");
-        }
+        }*/
 
         Time lastTimeStamp = currentTime;
         if (_inputTokens.get(actorPortId).size() > 0) {
-            if (currentTime.compareTo(((Object[]) _inputTokens.get(actorPortId)
-                    .getLast().contents)[3]) == 0) {
+            if (currentTime.compareTo(
+                    (Time) ((Object[]) _inputTokens.get(actorPortId).getLast().contents)[3]) 
+                    == 0) {
                 multicast = true;
             }
 
             lastTimeStamp = _inputTokens.get(actorPortId).getLast().timeStamp;
-        }
+        }        
 
         if (multicast) {
             computedTimeStamp = lastTimeStamp;
@@ -506,8 +510,8 @@ public class AFDXSwitch extends MonitoredQuantityManager {
         }
 
         _inputTokens.get(actorPortId).add(
-                new TimedEvent(computedTimeStamp, new Object[] { receiver, tok,
-                        vl, currentTime }));
+                new TimedEvent(computedTimeStamp,
+                        new Object[] {receiver, tok , vl , currentTime}));
 
         _tokenCount++;
         sendQMTokenEvent((Actor) source.getContainer().getContainer(), 0,
@@ -532,23 +536,9 @@ public class AFDXSwitch extends MonitoredQuantityManager {
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
 
-    /** Number of ports on the switch. This parameter must contain an
-     *  IntToken.  The value defaults to 2. */
-    public Parameter numberOfPorts;
-
-    /** Time it takes for a token to be put into the input queue.
-     *  This parameter must contain a DoubleToken. The value defaults
-     *  to 0.0. */
-    public Parameter inputBufferDelay;
-
-    /** Time it takes for a token to be put into the output queue.
-     *  This parameter must contain a DoubleToken. The value defaults
-     *  to 0.0. */
-    public Parameter outputBufferDelay;
-
     /** Technological latency according to the AFDX specification.
      *  This parameter must contain a DoubleToken. The value defaults
-     *  to 0.000140 (140 us). */
+     *  to 0.000140 s (140 us). */
     public Parameter technologicalDelay;
 
     /** The bit rate of the bus. The value defaults to 100 Mbits/s.
@@ -584,7 +574,8 @@ public class AFDXSwitch extends MonitoredQuantityManager {
     protected void _scheduleRefire() throws IllegalActionException {
         _nextFireTime = Time.POSITIVE_INFINITY;
         for (int i = 0; i < _numberOfPorts; i++) {
-            _nextFireTime = _getNextFireTime(_nextFireTime, _inputTokens.get(i));
+            _nextFireTime = _getNextFireTime(_nextFireTime, 
+                    _inputTokens.get(i));
             _nextFireTime = _getNextFireTime(_nextFireTime,
                     _outputTokens.get(i));
         }
@@ -594,12 +585,6 @@ public class AFDXSwitch extends MonitoredQuantityManager {
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
-
-    /** Time it takes for a token to be put into the input queue. */
-    protected double _inputBufferDelay;
-
-    /** Time it takes for a token to be put into the output queue. */
-    protected double _outputBufferDelay;
 
     /** Time it takes for a token to be processed by the switch fabric. */
     protected double _technologicalDelay;
@@ -615,9 +600,6 @@ public class AFDXSwitch extends MonitoredQuantityManager {
 
     /** Tokens to be sent to outputs. */
     protected HashMap<Integer, LinkedList<TimedEvent>> _outputTokens;
-
-    /** Number of switch ports. */
-    protected int _numberOfPorts;
 
     /** Value of the bit rate of the bus. */
     protected double _bitRate;
@@ -636,49 +618,7 @@ public class AFDXSwitch extends MonitoredQuantityManager {
 
     /** Label of the payload that is transmitted within the RecordToken. */
     private static final String payload = "payload";
-    
-    public class AFDXSwitchAttributes extends ResourceAttributes {
-
-        /** Constructor to use when editing a model.
-         *  @param target The object being decorated.
-         *  @param decorator The decorator.
-         *  @throws IllegalActionException If the superclass throws it.
-         *  @throws NameDuplicationException If the superclass throws it.
-         */
-        public AFDXSwitchAttributes(NamedObj target, MonitoredQuantityManager decorator)
-                throws IllegalActionException, NameDuplicationException {
-            super(target, decorator);
-            _init();
-        }
-
-        /** Constructor to use when parsing a MoML file.
-         *  @param target The object being decorated.
-         *  @param name The name of this attribute.
-         *  @throws IllegalActionException If the superclass throws it.
-         *  @throws NameDuplicationException If the superclass throws it.
-         */
-        public AFDXSwitchAttributes(NamedObj target, String name)
-                throws IllegalActionException, NameDuplicationException {
-            super(target, name);
-            _init();
-        }
-
-        ///////////////////////////////////////////////////////////////////
-        ////                         parameters                        ////
-
-        
-        public void attributeChanged(Attribute attribute) {
-        } 
-
-        ///////////////////////////////////////////////////////////////////
-        ////                        private methods                    ////
-
-        /** Create the parameters.
-         */
-        private void _init() { 
-        }
-         
-    }
+     
 
 
 }

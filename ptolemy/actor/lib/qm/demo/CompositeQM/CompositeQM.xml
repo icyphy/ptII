@@ -104,7 +104,7 @@
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
-            <property name="DecoratorAttributesFor_C" class="ptolemy.actor.lib.qm.CompositeQM$CQMAttributes">
+            <property name="DecoratorAttributesFor_C" class="ptolemy.actor.lib.qm.CompositeQuantityManagerM$CQMAttributes">
                 <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="C">
                 </property>
                 <property name="enable" class="ptolemy.data.expr.Parameter" value="true">
@@ -147,7 +147,7 @@
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
-            <property name="DecoratorAttributesFor_C" class="ptolemy.actor.lib.qm.CompositeQM$CQMAttributes">
+            <property name="DecoratorAttributesFor_C" class="ptolemy.actor.lib.qm.CompositeQuantityManager$CQMAttributes">
                 <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="C">
                 </property>
                 <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -169,7 +169,7 @@
 </plot>?>
         </configure>
     </entity>
-    <entity name="C" class="ptolemy.actor.lib.qm.CompositeQM">
+    <entity name="C" class="ptolemy.actor.lib.qm.CompositeQuantityManager">
         <property name="_location" class="ptolemy.kernel.util.Location" value="{225.0, 25.0}">
         </property>
         <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
@@ -222,7 +222,7 @@
             <link port="SetVariable.input" relation="relation"/>
         </entity>
         <entity name="a" class="ptolemy.actor.lib.qm.CQMInputPort">
-            <property name="value" class="ptolemy.data.expr.Parameter" value="{receiver = object(ptolemy.domains.de.kernel.DEReceiver {.CompositeQM.B.q.receiver }), token = 5.0}">
+            <property name="value" class="ptolemy.data.expr.Parameter" value="{receiver = object(ptolemy.domains.de.kernel.DEReceiver {.CompositeQuantityManager.B.q.receiver }), token = 5.0}">
             </property>
             <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="NONE">
             </property>
@@ -240,7 +240,7 @@
             </port>
         </entity>
         <entity name="b" class="ptolemy.actor.lib.qm.CQMInputPort">
-            <property name="value" class="ptolemy.data.expr.Parameter" value="{receiver = object(ptolemy.domains.de.kernel.DEReceiver {.CompositeQM.Y.q.receiver }), token = -5.0}">
+            <property name="value" class="ptolemy.data.expr.Parameter" value="{receiver = object(ptolemy.domains.de.kernel.DEReceiver {.CompositeQuantityManager.Y.q.receiver }), token = -5.0}">
             </property>
             <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="NONE">
             </property>
@@ -366,7 +366,7 @@
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
-            <property name="DecoratorAttributesFor_C" class="ptolemy.actor.lib.qm.CompositeQM$CQMAttributes">
+            <property name="DecoratorAttributesFor_C" class="ptolemy.actor.lib.qm.CompositeQuantityManager$CQMAttributes">
                 <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="C">
                 </property>
                 <property name="enable" class="ptolemy.data.expr.Parameter" value="true">

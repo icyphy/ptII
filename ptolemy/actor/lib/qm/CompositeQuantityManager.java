@@ -79,7 +79,7 @@ import ptolemy.kernel.util.Workspace;
 *  @Pt.ProposedRating Yellow (derler)
 *  @Pt.AcceptedRating Red (derler)
 */
-public class CompositeQM extends TypedCompositeActor implements QuantityManager, Decorator {
+public class CompositeQuantityManager extends TypedCompositeActor implements QuantityManager, Decorator {
 
     /** Construct a CompositeQM in the specified workspace with
      *  no container and an empty string as a name. You can then change
@@ -94,7 +94,7 @@ public class CompositeQM extends TypedCompositeActor implements QuantityManager,
      *  @exception NameDuplicationException If the name coincides with
      *   an actor already in the container.
      */
-    public CompositeQM(Workspace workspace) throws IllegalActionException,
+    public CompositeQuantityManager(Workspace workspace) throws IllegalActionException,
             NameDuplicationException {
         super(workspace);
         _initialize();
@@ -116,36 +116,14 @@ public class CompositeQM extends TypedCompositeActor implements QuantityManager,
      *  @exception NameDuplicationException If the name coincides with
      *   an actor already in the container.
      */
-    public CompositeQM(CompositeEntity container, String name)
+    public CompositeQuantityManager(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         _initialize();
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                      parameters                           ////
-
-    /** The color associated with this actor used to highlight other
-     *  actors or connections that use this quantity manager. The default value
-     *  is the color red described by the expression {1.0,0.0,0.0,1.0}.
-     */
-    public ColorAttribute color;
-
-    ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-
-    /** If the attribute is <i>color</i>, then update the highlighting colors
-     *  in the model.
-     *  @param attribute The attribute that changed.
-     *  @exception IllegalActionException If the service time is negative.
-     */
-    public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
-        if (attribute == color) {
-            // FIXME not implemented yet.
-        }
-        super.attributeChanged(attribute);
-    }
 
     /** Clone the actor into the specified workspace.
      *
@@ -154,7 +132,7 @@ public class CompositeQM extends TypedCompositeActor implements QuantityManager,
      *  @return A new CompositeQM.
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        CompositeQM newObject = (CompositeQM) super.clone(workspace);
+        CompositeQuantityManager newObject = (CompositeQuantityManager) super.clone(workspace);
         newObject._parameters = new HashMap<IOPort, List<Attribute>>();
         return newObject;
     }
@@ -254,10 +232,6 @@ public class CompositeQM extends TypedCompositeActor implements QuantityManager,
         } finally {
             _workspace.doneReading();
         }
-    }
-    
-    public ColorAttribute getColor() {
-        return color;
     }
 
     /** Return true to indicate that this decorator should
@@ -371,8 +345,8 @@ public class CompositeQM extends TypedCompositeActor implements QuantityManager,
      */
     private void _initialize() throws IllegalActionException,
             NameDuplicationException {
-        color = new ColorAttribute(this, "_color");
-        color.setExpression("{1.0,0.0,0.0,1.0}");
+        ColorAttribute color = new ColorAttribute(this, decoratorHighlightColorName);
+        color.setExpression("{1.0,0.6,0.0,1.0}");
         
         _parameters = new HashMap<IOPort, List<Attribute>>();
     }
@@ -399,7 +373,7 @@ public class CompositeQM extends TypedCompositeActor implements QuantityManager,
          *  @throws IllegalActionException If the superclass throws it.
          *  @throws NameDuplicationException If the superclass throws it.
          */
-        public CQMAttributes(NamedObj target, CompositeQM decorator)
+        public CQMAttributes(NamedObj target, CompositeQuantityManager decorator)
                 throws IllegalActionException, NameDuplicationException {
             super(target, decorator);
             _init();
@@ -429,7 +403,7 @@ public class CompositeQM extends TypedCompositeActor implements QuantityManager,
             if (attribute == inputPort) {
                 _inputPort = ((StringToken)((Parameter)attribute).getToken()).stringValue();
                 IOPort port = (IOPort) getContainer();
-                CompositeQM compositeQM = (CompositeQM) getDecorator();
+                CompositeQuantityManager compositeQM = (CompositeQuantityManager) getDecorator();
                 if (compositeQM != null) {
                     compositeQM.setInputPortName(port, _inputPort);
                 }
@@ -450,7 +424,7 @@ public class CompositeQM extends TypedCompositeActor implements QuantityManager,
                 if (getDecorator() != null) { 
                     inputPort.removeAllChoices();
                  
-                    List cqmInputPorts = ((CompositeQM)getDecorator()).entityList(CQMInputPort.class);
+                    List cqmInputPorts = ((CompositeQuantityManager)getDecorator()).entityList(CQMInputPort.class);
                     for (Object cqmInputPort : cqmInputPorts) {
                         String name = ((CQMInputPort)cqmInputPort).getName();
                         inputPort.addChoice(name);

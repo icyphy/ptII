@@ -108,7 +108,7 @@ import ptolemy.kernel.util.Workspace;
    @Pt.ProposedRating Red (derler)
    @Pt.AcceptedRating Red (derler)
  */
-public class CanBus extends MonitoredQuantityManager {
+public class CanBus extends AtomicQuantityManager {
 
     /** Construct a CanBus with a name and a container.
      *  The container argument must not be null, or a

@@ -11,7 +11,7 @@
         </property>
         <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="_color">
+        <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="decoratorHighlightColor">
         </property>
         <property name="_renderFirst" class="ptolemy.kernel.util.SingletonAttribute">
         </property>

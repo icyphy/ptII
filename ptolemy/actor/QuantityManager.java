@@ -65,9 +65,7 @@ public interface QuantityManager {
      *  @exception IllegalActionException If the receiver cannot be created.
      */
     public Receiver createIntermediateReceiver(Receiver receiver)
-            throws IllegalActionException;
-    
-    public ColorAttribute getColor();
+            throws IllegalActionException; 
     
     /** Add a quantity manager monitor to the list of listeners.
      *  @param monitor The quantity manager monitor.
@@ -90,4 +88,6 @@ public interface QuantityManager {
      */
     public void sendToken(Receiver source, Receiver receiver, Token token)
             throws IllegalActionException; 
+    
+    public static String decoratorHighlightColorName = "decoratorHighlightColor";
 }

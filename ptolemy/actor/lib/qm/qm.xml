@@ -9,47 +9,11 @@
 
   <entity name="Bus" class="ptolemy.actor.lib.qm.Bus"> 
   </entity>
-
-  <entity name="QuantityManagerMonitor" class="ptolemy.actor.lib.qm.QuantityManagerMonitor"> 
+  
+  <entity name="BasicSwitch" class="ptolemy.actor.lib.qm.BasicSwitch"> 
   </entity>
   
-  <!--entity name="TTESwitch" class="ptolemy.actor.lib.qm.TTESwitch"> 
-  </entity-->
-  
-  <!--entity name="BasicSwitch" class="ptolemy.actor.lib.qm.BasicSwitch"> 
-  </entity-->
-  
-  <!--entity name="CrossbarSwitch" class="ptolemy.actor.lib.qm.CrossbarSwitch"> 
-  </entity-->
-
-<entity name="CQMInputPort" class="ptolemy.actor.lib.qm.CQMInputPort">
-</entity>
-
-<entity name="CQMOutputPort" class="ptolemy.actor.lib.qm.CQMOutputPort">
-	<property name="DEDirector" class="ptolemy.domains.de.kernel.DEDirector"/>
-	<property createIfNecessary="true" name="Parameter" class="ptolemy.data.expr.Parameter"></property>
-	<port name="input" class="ptolemy.actor.TypedIOPort">
-    	<property name="input"/>
-	</port>
-	<entity name="SetVariable" class="ptolemy.actor.lib.SetVariable">
-		<property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="Parameter">
-    	</property>
-    	<property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
-    	</property>
-    	<port name="input" class="ptolemy.actor.TypedIOPort">
-        	<property name="input"/>
-    	</port>
-    	<port name="output" class="ptolemy.actor.TypedIOPort">
-        	<property name="output"/>
-    	</port>
-	</entity>
-	<relation name="relation" class="ptolemy.actor.TypedIORelation">
-	</relation>
-    <link port="input" relation="relation"/>
-    <link port="SetVariable.input" relation="relation"/>
-</entity>
-
-<entity name="CompositeQM" class="ptolemy.actor.lib.qm.CompositeQM">
+  <entity name="CompositeQuantityManager" class="ptolemy.actor.lib.qm.CompositeQuantityManager">
 <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
     <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 25.0]">
     </property>
@@ -86,6 +50,45 @@
 
 </entity>
 
+<entity name="CQMInputPort" class="ptolemy.actor.lib.qm.CQMInputPort">
+</entity>
+
+<entity name="CQMOutputPort" class="ptolemy.actor.lib.qm.CQMOutputPort">
+	<property name="DEDirector" class="ptolemy.domains.de.kernel.DEDirector"/>
+	<property createIfNecessary="true" name="Parameter" class="ptolemy.data.expr.Parameter"></property>
+	<port name="input" class="ptolemy.actor.TypedIOPort">
+    	<property name="input"/>
+	</port>
+	<entity name="SetVariable" class="ptolemy.actor.lib.SetVariable">
+		<property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="Parameter">
+    	</property>
+    	<property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+    	</property>
+    	<port name="input" class="ptolemy.actor.TypedIOPort">
+        	<property name="input"/>
+    	</port>
+    	<port name="output" class="ptolemy.actor.TypedIOPort">
+        	<property name="output"/>
+    	</port>
+	</entity>
+	<relation name="relation" class="ptolemy.actor.TypedIORelation">
+	</relation>
+    <link port="input" relation="relation"/>
+    <link port="SetVariable.input" relation="relation"/>
+</entity>
+
+  <entity name="CrossbarSwitch" class="ptolemy.actor.lib.qm.CrossbarSwitch"> 
+  </entity>
+
+  
+  
+  <entity name="TTESwitch" class="ptolemy.actor.lib.qm.TTESwitch"> 
+  </entity>
+
+
+
+
+
 <entity name="CanBus" class="ptolemy.actor.lib.qm.CanBus">
    <doc>A quantity manager that simulate a CAN bus.</doc>
  </entity>
@@ -97,6 +100,9 @@
      <property name="displayWidth" value="60"/>
    </property>
  </entity>
+ 
+ <entity name="QuantityManagerMonitor" class="ptolemy.actor.lib.qm.QuantityManagerMonitor"> 
+  </entity>
 
 <!--entity name="AFDX_ESs" class="ptolemy.actor.lib.qm.AFDXESs">
    <doc>A quantity manager that manages all AFDX End-Systems.</doc>

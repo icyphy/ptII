@@ -93,7 +93,7 @@ import ptolemy.kernel.util.Workspace;
  *  @Pt.ProposedRating Yellow (derler)
  *  @Pt.AcceptedRating Red (derler)
  */
-public class Bus extends MonitoredQuantityManager {
+public class Bus extends AtomicQuantityManager {
 
     /** Construct a Bus with a name and a container.
      *  The container argument must not be null, or a
@@ -448,7 +448,7 @@ public class Bus extends MonitoredQuantityManager {
          *  @throws IllegalActionException If the superclass throws it.
          *  @throws NameDuplicationException If the superclass throws it.
          */
-        public BusAttributes(NamedObj target, MonitoredQuantityManager decorator)
+        public BusAttributes(NamedObj target, AtomicQuantityManager decorator)
                 throws IllegalActionException, NameDuplicationException {
             super(target, decorator);
             _init();

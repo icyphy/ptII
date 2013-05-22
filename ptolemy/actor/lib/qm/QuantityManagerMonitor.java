@@ -40,6 +40,7 @@ import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
 import ptolemy.actor.QuantityManager;
 import ptolemy.actor.TypedAtomicActor;
+import ptolemy.actor.gui.ColorAttribute;
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.EditorFactory;
 import ptolemy.actor.gui.Effigy;
@@ -164,7 +165,7 @@ public class QuantityManagerMonitor extends TypedAtomicActor implements
                 int idx = _quantityManagers.indexOf(qm);
                 plot.addLegend(idx, ((NamedObj) qm).getName());
                 plot.addPoint(idx, 0.0, /*idx*/0, false);
-                colors[idx] = ((QuantityManager) qm).getColor().asColor();
+                colors[idx] = ((ColorAttribute)((NamedObj) qm).getAttribute(QuantityManager.decoratorHighlightColorName)).asColor();
             }
 
             plot.doLayout();

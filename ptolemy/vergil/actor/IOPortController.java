@@ -44,9 +44,7 @@ import ptolemy.actor.PublisherPort;
 import ptolemy.actor.QuantityManager;
 import ptolemy.actor.SubscriberPort;
 import ptolemy.actor.gui.ColorAttribute;
-import ptolemy.actor.gui.PtolemyPreferences;
-import ptolemy.actor.lib.qm.CompositeQM;
-import ptolemy.actor.lib.qm.MonitoredQuantityManager;
+import ptolemy.actor.gui.PtolemyPreferences; 
 import ptolemy.actor.parameters.ParameterPort;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.BooleanToken;
@@ -451,12 +449,8 @@ public class IOPortController extends AttributeController {
                         } else {
                             object = qmList.get(qmList.size() - 1);
                         }
-                        ColorAttribute color = null;
-                        if (object instanceof MonitoredQuantityManager) {
-                            color = ((MonitoredQuantityManager) object).color;
-                        } else if (object instanceof CompositeQM) {
-                            color = ((CompositeQM) object).color;
-                        } 
+                        ColorAttribute color = (ColorAttribute)((NamedObj) object).getAttribute(QuantityManager.decoratorHighlightColorName);
+                        
                         if (color != null) {
                             fill = color.asColor();
                         } else {

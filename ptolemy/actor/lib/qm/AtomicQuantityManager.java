@@ -73,7 +73,7 @@ import ptolemy.kernel.util.Workspace;
  *  @Pt.ProposedRating Yellow (derler)
  *  @Pt.AcceptedRating Red (derler)
  */
-public abstract class MonitoredQuantityManager extends TypedAtomicActor
+public abstract class AtomicQuantityManager extends TypedAtomicActor
         implements QuantityManager, Decorator {
 
     /** Construct an actor in the specified workspace with an empty
@@ -83,7 +83,7 @@ public abstract class MonitoredQuantityManager extends TypedAtomicActor
      *  Increment the version number of the workspace.
      *  @param workspace The workspace that will list the entity.
      */
-    public MonitoredQuantityManager(Workspace workspace) {
+    public AtomicQuantityManager(Workspace workspace) {
         super(workspace);
     }
 
@@ -100,40 +100,17 @@ public abstract class MonitoredQuantityManager extends TypedAtomicActor
      *  @exception NameDuplicationException If the name coincides with
      *   an actor already in the container.
      */
-    public MonitoredQuantityManager(CompositeEntity container, String name)
+    public AtomicQuantityManager(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        color = new ColorAttribute(this, "_color");
-        color.setExpression("{1.0,0.0,0.0,1.0}");
+        ColorAttribute color = new ColorAttribute(this, decoratorHighlightColorName);
+        color.setExpression("{1.0,0.6,0.0,1.0}");
         _listeners = new ArrayList<QuantityManagerListener>();
         _parameters = new HashMap<IOPort, List<Attribute>>();
     } 
 
     ///////////////////////////////////////////////////////////////////
-    ////                         parameters                        ////
-
-    /** The color associated with this actor used to highlight other
-     *  actors or connections that use this quantity manager. The default value
-     *  is the color red described by the expression {1.0,0.0,0.0,1.0}.
-     */
-    public ColorAttribute color;
-
-    ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-
-    /** If the attribute is <i>color</i>, then update the highlighting colors
-     *  in the model.
-     *  @param attribute The attribute that changed.
-     *  @exception IllegalActionException If the service time is negative.
-     */
-    public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
-        if (attribute == color) {
-            // FIXME not implemented yet.
-        }
-        super.attributeChanged(attribute);
-    }
-
 
     /** Return the decorated attributes for the target NamedObj.
      *  If the specified target is not an Actor, return null.
@@ -185,7 +162,7 @@ public abstract class MonitoredQuantityManager extends TypedAtomicActor
      *   cannot be cloned.
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        MonitoredQuantityManager newObject = (MonitoredQuantityManager) super
+        AtomicQuantityManager newObject = (AtomicQuantityManager) super
                 .clone(workspace);
         newObject._listeners = null;
         newObject._parameters = null;
@@ -202,11 +179,7 @@ public abstract class MonitoredQuantityManager extends TypedAtomicActor
         IntermediateReceiver intermediateReceiver = new IntermediateReceiver(
                 this, receiver);
         return intermediateReceiver;
-    }
-    
-    public ColorAttribute getColor() {
-        return color;
-    }
+    } 
     
     /** Add a quantity manager monitor to the list of listeners.
      *  @param monitor The quantity manager monitor.
@@ -316,7 +289,7 @@ public abstract class MonitoredQuantityManager extends TypedAtomicActor
          *  @throws IllegalActionException If the superclass throws it.
          *  @throws NameDuplicationException If the superclass throws it.
          */
-        public QMAttributes(NamedObj target, MonitoredQuantityManager decorator)
+        public QMAttributes(NamedObj target, AtomicQuantityManager decorator)
                 throws IllegalActionException, NameDuplicationException {
             super(target, decorator);
             _init();

@@ -37,7 +37,7 @@ import ptolemy.actor.IOPort;
 import ptolemy.actor.IntermediateReceiver;
 import ptolemy.actor.QuantityManager;
 import ptolemy.actor.Receiver;
-import ptolemy.actor.lib.qm.MonitoredQuantityManager;
+import ptolemy.actor.lib.qm.AtomicQuantityManager;
 import ptolemy.actor.lib.qm.QuantityManagerListener.EventType;
 import ptolemy.actor.sched.FixedPointDirector;
 import ptolemy.actor.util.FIFOQueue;
@@ -63,7 +63,7 @@ import ptolemy.kernel.util.Workspace;
  *  @Pt.ProposedRating Yellow (derler)
  *  @Pt.AcceptedRating Red (derler)
  */
-public class PacketDropFaultGenerator extends MonitoredQuantityManager {
+public class PacketDropFaultGenerator extends AtomicQuantityManager {
 
     /** Construct a Bus with a name and a container.
      *  The container argument must not be null, or a
