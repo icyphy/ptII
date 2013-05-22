@@ -1037,72 +1037,39 @@ fi
 
 
 #--------------------------------------------------------------------
-#       Boost is used by Mescal, which is not shipped with
-#       the standard Ptolemy II download
+#       Boost was used by Mescal and is now used by FMI++
 #	See http://www.boost.org
 #--------------------------------------------------------------------
 
-# Set to -Ixxx if we found boost/static_assert.hpp
-PTBOOST_INCLUDE=
+# Set to the directory that contains boost/numeric/odeint.hpp
+# and used in actor/lib/fmi/fmipp
+PTBOOST_INCLUDE_DIR=
 
 # Set to yes if we found boost
 PTBOOST=no
 
+# Set to fmipp and used in ptolemy/actor/lib/fmi/makefile if odeint.hpp is found.
+PTFMIPP_DIR=
 # We only need to look for Boost if mescal is present
-MESCAL_USER_DIR=$PTII/mescal/views/simulation/model/UINT.H
+FMIPP_USER_DIR=$PTII/ptolemy/actor/lib/fmi/fmipp
 
-if test ! -f "$MESCAL_USER_DIR"; then
-    PT_MSG_STATUS([$MESCAL_USER_DIR is not present,
+if test ! -d "$FMIPP_USER_DIR"; then
+    PT_MSG_STATUS([$FMIPP_USER_DIR is not present,
     so we need not find Boost.])
 else
-    case "`uname -s`" in
-	Linux) ARCH=linux;;
-        *) ARCH=unknown;;
-    esac
     if test "$PTBOOST" = "no"; then
-        AC_MSG_CHECKING([for Boost in \$PTII/mescal/include/boost/static_assert.hpp])
-	if test -f "$PTII/mescal/include/boost/static_assert.hpp"; then
-	    PT_MSG_RESULT([ok])
-	    PTBOOST_INCLUDE="-I$PTII/mescal/include"
-	    PTBOOST=yes
-        else
-	    PT_MSG_RESULT([not found, keep looking])
-	fi    
+        boostdirs="/opt/local/include /usr/local/include /usr/include"
+	for boostdir in $boostdirs
+        do
+	    if test -f "$boostdir/boost/numeric/odeint.hpp"; then
+                PTBOOST_INCLUDE_DIR=$boostdir
+                PT_MSG_RESULT($PTBOOST_INCLUDE_DIR)
+		break
+            fi
+        done
     fi
 
-
-    if test "$PTBOOST" = "no"; then
-        AC_MSG_CHECKING([for Boost in /usr/local/include/boost/static_assert.hpp])
-	if test -f "/usr/local/include/boost/static_assert.hpp"; then
-	    PT_MSG_RESULT([ok])
-	    if test "$ARCH" != "linux"; then
-		PTBOOST_INCLUDE="-I/usr/local/include"
-	    fi
-	    PTBOOST=yes
-        else
-	    PT_MSG_RESULT([not found, keep looking])
-	fi    
-    fi
-
-    if test "$PTBOOST" = "no"; then 
-            AC_MSG_WARN([Failed to find boost/static_assert.hpp, which is only
-    needed to compile files that include $MESCAL_USER_DIR
-    boost can be found at http://www.boost.org
-    To install boost, download the source and then do
-        cd boost-1.30.2
-        mkdir $PTII/mescal/include
-        cp -r boost $PTII/mescal/include])
-    fi
-
-    AC_CHECK_HEADER(stdint.h, PTSTDINT_H=yes, PTSTDINT_H=no)
-    if test "$PTSTDINT_H" = "no"; then
-       AC_MSG_WARN([Failed to find stdint.h
-    mescal/views/simulation/model/UINT.h includes stdint.h so that
-    uint32_t and uint64_t are properly typedefd.
-    Older versions of Cygwin might not include stdint.h, the solution
-    is to update Cygwin from http://sources.redhat.com/cygwin
-    See mescal/views/simulation/model/UINT.h for details.])
-       fi
+    # We check for boost later in expat
 fi
 
 #--------------------------------------------------------------------
@@ -5342,6 +5309,19 @@ if test -f "$LIBEXPAT_INCLUDE_DIR/expat.h" -a -d "$LIBEXPAT_LIB_DIR"; then
     PTLBNL_JARS="lbnl/lbnl.jar lbnl/demo/demo.jar"
     # Used in $PTII/doc/makefile
     PTLBNL_PACKAGES="lbnl.actor.lib lbnl.actor.lib.net lbnl.lib.labview lbnl.util"
+
+    if test -d "$FMIPP_USER_DIR"; then
+        if test -f "$PTBOOST_INCLUDE_DIR/boost/numeric/odeint.hpp"; then
+            PTBOOST=yes
+	    PTFMIPP_DIR=fmipp
+	    PTFMIPP_PACKAGES=ptolemy.actor.lib.fmi.fmipp
+        else
+            AC_MSG_WARN([Failed to find boost/numeric/odeint.hpp, so FMI ++
+    will not be compiled. FMI++ is an extension of the Funcional Mockup Interface, see
+    http://sourceforge.net/p/fmipp/wiki/Home/])
+            updateExcludes "ptolemy/actor/lib/fmi/fmipp"
+        fi
+    fi
 fi
 
 # Packages to exclude from Ant targets that call javadoc
@@ -5621,9 +5601,9 @@ AC_SUBST(PTBACKTRACK_ECLIPSE_JARS)
 # PTBACKTRACK_PACKAGES is used in ptII/doc/makefile
 AC_SUBST(PTBACKTRACK_ECLIPSE_PACKAGES)
 
-# Set to -I$PTII/mescal/include or -I/usr/local/include
-# if we found boost/static_assert.hpp (mescal)
-AC_SUBST(PTBOOST_INCLUDE)
+# Set to the directory that contains boost/numeric/odeint.hpp
+# and used in actor/lib/fmi/fmipp
+AC_SUBST(PTBOOST_INCLUDE_DIR)
 
 # Set to the BSH jar file and used to compile org/mlc
 AC_SUBST(PTBSH_JAR)
@@ -5737,6 +5717,12 @@ AC_SUBST(PTFMI_DIR)
 
 # PTFMI_PACKAGES is used in doc/makefile
 AC_SUBST(PTFMI_PACKAGES)
+
+# Set to fmipp and used in ptolemy/actor/lib/fmi/makefile if odeint.hpp is found.
+AC_SUBST(PTFMIPP_DIR)
+
+# PTFMIPP_PACKAGES is used in doc/makefile
+AC_SUBST(PTFMIPP_PACKAGES)
 
 # The G4LTL jar file, used for Import an FSMActor using LTL synthesis (G4LTL)
 AC_SUBST(PTG4LTL_JAR)

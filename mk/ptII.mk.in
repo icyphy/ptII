@@ -164,9 +164,10 @@ PTBACKTRACK_ECLIPSE_JARS =	@PTBACKTRACK_ECLIPSE_JARS@
 # PTBACKTRACK_ECLIPSE_PACKAGES is used in $PTII/doc/makefile
 PTBACKTRACK_ECLIPSE_PACKAGES =  @PTBACKTRACK_ECLIPSE_PACKAGES@
 
-# Used by Mescal. Set to -I$PTII/mescal/include or -I/usr/local/include
+# Set to the directory that contains boost/numeric/odeint.hpp
+# and used in actor/lib/fmi/fmipp
 # if we found boost/static_assert.hpp
-PTBOOST_INCLUDE =	"@PTBOOST_INCLUDE@"
+PTBOOST_INCLUDE_DIR =		"@PTBOOST_INCLUDE_DIR@"
 
 # Directory that contains the Cal jar file ptCal.jar
 # used by bin/ptinvoke.in
@@ -463,6 +464,12 @@ PTFMI_DIR =		@PTFMI_DIR@
 
 # PTFMI_PACKAGES is used in doc/makefile
 PTFMI_PACKAGES =	@PTFMI_PACKAGES@
+
+# Set to fmipp and used in ptolemy/actor/lib/fmi/makefile if odeint.hpp is found.
+PTFMIPP_DIR =		@PTFMIPP_DIR@
+
+# PTFMIPP_PACKAGES is used in doc/makefile
+PTFMIPP_PACKAGES =	@PTFMIPP_PACKAGES@
 
 # Location of the local $PTII directory as a file:/// URL
 # This variable is used with the Java Network Launching Protocol files
