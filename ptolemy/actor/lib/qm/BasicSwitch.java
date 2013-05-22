@@ -576,7 +576,7 @@ public class BasicSwitch extends MonitoredQuantityManager {
     public static class BasicSwitchAttributes extends ResourceAttributes {
 
         /** Constructor to use when editing a model.
-         *  @param target The object being decorated.
+         *  @param container The object being decorated.
          *  @param decorator The decorator.
          *  @throws IllegalActionException If the superclass throws it.
          *  @throws NameDuplicationException If the superclass throws it.
@@ -588,7 +588,7 @@ public class BasicSwitch extends MonitoredQuantityManager {
         }
 
         /** Constructor to use when parsing a MoML file.
-         *  @param target The object being decorated.
+         *  @param container The object being decorated.
          *  @param name The name of this attribute.
          *  @throws IllegalActionException If the superclass throws it.
          *  @throws NameDuplicationException If the superclass throws it.
