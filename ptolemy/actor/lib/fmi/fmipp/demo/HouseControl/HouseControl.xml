@@ -1,8 +1,8 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="housecontrol" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
+<entity name="HouseControl" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="startTime" class="ptolemy.data.expr.Parameter" value="0">
@@ -14,15 +14,39 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, 40.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={346, 162, 934, 634}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 1474, 944}, maximized=true}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1240, 834]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{340.0, 240.0}">
     </property>
     <property name="enableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="false">
+    </property>
+    <property name="PDF" class="ptolemy.vergil.pdfrenderer.PDFAttribute">
+        <property name="source" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/actor/lib/fmi/fmipp/demo/HouseControl/Heating.pdf">
+        </property>
+        <property name="scale" class="ptolemy.data.expr.Parameter" value="250.0">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 295.0]">
+        </property>
+    </property>
+    <property name="PDF2" class="ptolemy.vergil.pdfrenderer.PDFAttribute">
+        <property name="source" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/actor/lib/fmi/fmipp/demo/HouseControl/House.pdf">
+        </property>
+        <property name="scale" class="ptolemy.data.expr.Parameter" value="250.0">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[645.0, 365.0]">
+        </property>
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="14">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Run an OpenModelica House Heating Control Model Exchange FMU&#10;">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[245.0, 35.0]">
+        </property>
     </property>
     <entity name="FMU-ME" class="ptolemy.actor.lib.fmi.fmipp.FMUModelExchange">
         <display name="Controlled House FMU"/>

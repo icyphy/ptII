@@ -47,9 +47,11 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
+	Heating.pdf \
 	Heating.mo \
 	Heating.mos \
 	Heating_ControlledHouse.fmu \
+	House.pdf \
 	HouseControl.xml
 
 EXTRA_SRCS = \
