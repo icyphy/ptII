@@ -1,0 +1,101 @@
+<project name="pt-modules" default="build-jar">
+
+	<target name="init">
+		<javac srcdir="pt-antext/src" destdir="pt-antext/bin" includeantruntime="true"/>
+		<typedef
+	    	name="linkedprojectfileset"
+	    	classname="org.ptolemy.antext.LinkedProjectFileSet"
+	    	classpath="pt-antext/bin"/>
+		<mkdir dir="jars"/>
+	</target>
+	
+	<property name="projectsPath" value="../projects"/>
+	<property name="ptPath" value="../.."/>
+	
+	<property name="jar-name" value="jar"/>
+	<property name="pt-projects" value=""/>
+	<property name="pt-projects-classpath" value=""/>
+
+	<target name="build-jar" depends="init">
+		<delete dir="${jar-name}"/>
+		<copy todir="${jar-name}/src">
+			<linkedprojectfileset ptPath="${ptPath}" projectPathsPrefix="${projectsPath}"
+				projectPaths="${pt-projects}"/>
+		</copy>
+		<javac srcdir="${jar-name}/src" classpath="${pt-projects-classpath}" includeantruntime="false"/>
+		<jar destfile="jars/${jar-name}.jar" basedir="${jar-name}/src"
+			excludes="**/*.java"
+		/>
+		<delete dir="${jar-name}"/>
+	</target>
+
+	<target name="ptolemy-core.jar">
+		<antcall target="build-jar">
+		    <param name="pt-projects" value="pt-kore;pt-akore"/>
+		    <param name="jar-name" value="ptolemy-core"/>
+		</antcall>
+	</target>
+
+	<target name="ptolemy-moml.jar">
+		<antcall target="build-jar">
+		    <param name="pt-projects" value="pt-moml;pt-momlapp"/>
+		    <param name="jar-name" value="ptolemy-moml"/>
+		    <param name="pt-projects-classpath" value="jars/ptolemy-core.jar"/>
+		</antcall>
+	</target>
+
+	<target name="ptolemy-sdf.jar">
+		<antcall target="build-jar">
+		    <param name="pt-projects" value="pt-sdf"/>
+		    <param name="jar-name" value="ptolemy-sdf"/>
+		    <param name="pt-projects-classpath" value="jars/ptolemy-core.jar"/>
+		</antcall>
+	</target>
+
+	<target name="ptolemy-lib.jar">
+		<antcall target="build-jar">
+		    <param name="pt-projects" value="pt-junit;pt-lib"/>
+		    <param name="jar-name" value="ptolemy-lib"/>
+		    <param name="pt-projects-classpath" value="jars/ptolemy-core.jar;jars/ptolemy-sdf.jar"/>
+		</antcall>
+	</target>
+
+	<target name="ptolemy-de.jar">
+		<antcall target="build-jar">
+		    <param name="pt-projects" value="pt-de"/>
+		    <param name="jar-name" value="ptolemy-de"/>
+		    <param name="pt-projects-classpath" value="jars/ptolemy-core.jar"/>
+		</antcall>
+	</target>
+
+	<target name="ptolemy-ddf.jar">
+		<antcall target="build-jar">
+		    <param name="pt-projects" value="pt-ddf"/>
+		    <param name="jar-name" value="ptolemy-ddf"/>
+		    <param name="pt-projects-classpath" value="jars/ptolemy-core.jar"/>
+		</antcall>
+	</target>
+
+	<target name="ptolemy-sr.jar">
+		<antcall target="build-jar">
+		    <param name="pt-projects" value="pt-sr"/>
+		    <param name="jar-name" value="ptolemy-sr"/>
+		    <param name="pt-projects-classpath" value="jars/ptolemy-core.jar;jars/ptolemy-sdf.jar"/>
+		</antcall>
+	</target>
+
+	<target name="clean">
+		<delete dir="jars"/>
+	</target>
+
+	<target name="build-all" depends="init,clean">
+		<antcall target="ptolemy-core.jar"/>
+		<antcall target="ptolemy-moml.jar"/>
+		<antcall target="ptolemy-sdf.jar"/>
+		<antcall target="ptolemy-lib.jar"/>
+		<antcall target="ptolemy-de.jar"/>
+		<antcall target="ptolemy-ddf.jar"/>
+		<antcall target="ptolemy-sr.jar"/>
+	</target>
+
+</project>
