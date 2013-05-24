@@ -295,13 +295,13 @@
         </property>
     </entity>
     <entity name="Test" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{{microstep = 1, payload = 1, sourceTimestamp = 0.0, timestamp = 0.0}, {microstep = 1, payload = 1, sourceTimestamp = 1.0, timestamp = 1.0}, {microstep = 1, payload = 1, sourceTimestamp = 2.0, timestamp = 2.0}, {microstep = 1, payload = 1, sourceTimestamp = 3.0, timestamp = 3.0}, {microstep = 1, payload = 1, sourceTimestamp = 4.0, timestamp = 4.0}, {microstep = 1, payload = 1, sourceTimestamp = 5.0, timestamp = 5.0}, {microstep = 1, payload = 1, sourceTimestamp = 5.9, timestamp = 5.9}, {microstep = 1, payload = 1, sourceTimestamp = 6.8, timestamp = 6.8}, {microstep = 1, payload = 1, sourceTimestamp = 7.7, timestamp = 7.7}, {microstep = 1, payload = 1, sourceTimestamp = 8.6, timestamp = 8.6}, {microstep = 1, payload = 1, sourceTimestamp = 9.5, timestamp = 9.5}}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{{microstep = 1, payload = 1, timestamp = 0.0}, {microstep = 1, payload = 1, timestamp = 1.0}, {microstep = 1, payload = 1, timestamp = 2.0}, {microstep = 1, payload = 1, timestamp = 3.0}, {microstep = 1, payload = 1, timestamp = 4.0}, {microstep = 1, payload = 1, timestamp = 5.0}, {microstep = 1, payload = 1, timestamp = 5.9}, {microstep = 1, payload = 1, timestamp = 6.8}, {microstep = 1, payload = 1, timestamp = 7.7}, {microstep = 1, payload = 1, timestamp = 8.6}, {microstep = 1, payload = 1, timestamp = 9.5}}">
         </property>
         <property name="requireAllCorrectValues" class="ptolemy.actor.parameters.SharedParameter" value="true">
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[405.0, 190.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{405.0, 190.0}">
         </property>
     </entity>
     <entity name="SingleEvent" class="ptolemy.actor.lib.SingleEvent">

@@ -462,11 +462,11 @@ public class PtidesPlatform extends MirrorComposite {
 
         /** The types of the RecordType fields. */
         public static Type[] TYPES = { BaseType.DOUBLE, BaseType.INT,
-                BaseType.UNKNOWN, BaseType.DOUBLE };
+                BaseType.UNKNOWN};
 
         /** The labels of the RecordType fields. */
         public static String[] LABELS = new String[] { "timestamp",
-                "microstep", "payload", "sourceTimestamp" };
+                "microstep", "payload" };
 
         /** Label of the timestamp that is transmitted within the RecordToken.
          */
@@ -690,11 +690,11 @@ public class PtidesPlatform extends MirrorComposite {
                                     .getAssociatedPort();
                             if (associatedPort.isNetworkReceiverPort()) {
                                 if (!(t instanceof RecordToken)
-                                        || ((RecordToken) t).labelSet().size() != 4) {
+                                        || ((RecordToken) t).labelSet().size() != 3) {
                                     throw new IllegalActionException(
                                             this,
                                             "The input token is not a RecordToken or "
-                                                    + "does not have a size not equal to 4: "
+                                                    + "does not have a size not equal to 3: "
                                                     + "Here we assume the Record is of types: timestamp"
                                                     + " + microstep + token + sourceTimestamp");
                                 }
@@ -812,9 +812,7 @@ public class PtidesPlatform extends MirrorComposite {
                             Token[] values = new Token[] {
                                     new DoubleToken(timestamp.getDoubleValue()),
                                     new IntToken(director.getMicrostep()),
-                                    t,
-                                    new DoubleToken(
-                                            sourceTimestamp.getDoubleValue()) };
+                                    t };
                             RecordToken record = new RecordToken(
                                     PtidesNetworkType.LABELS, values);
                             try {
