@@ -75,10 +75,12 @@ grant {
    // This allows the WebServer to read static content stored with the demos
    // Required by org/eclipse/jetty/util/resource/FileResource
    // ${/} is a shortcut for ${file.separator}
+   // The - includes all files and subdirectories recursively
+   // * would include all files in the directory but no sub-directories
    // Note that ptolemy.ptII.dir must be passed in as a Java system property on 
    // the command line, using -Dptolemy.ptII.dir=$PTII
    // Required by Jetty FileResource, calls java.io.File
-   permission java.io.FilePermission "${ptolemy.ptII.dir}${/}org${/}ptolemy${/}ptango${/}demo${/}*", "read";
+   permission java.io.FilePermission "${ptolemy.ptII.dir}${/}org${/}ptolemy${/}ptango${/}demo${/}-", "read";
 	
    // Grant read permission to the tmp directory and read, write and delete 
    // permission to temp directory files and subdirectories (subdirectories 
@@ -90,8 +92,37 @@ grant {
    permission java.io.FilePermission "${java.io.tmpdir}${/}", "read";
    permission java.io.FilePermission "${java.io.tmpdir}${/}-", "read,write,delete";
 
+   // Grant read permission to the PythonScript.xml file
+   // Required by WebServerDE model
+   permission java.io.FilePermission "${ptolemy.ptII.dir}${/}lib${/}python${/}*", "read";
+   permission java.io.FilePermission "${ptolemy.ptII.dir}/", "read";
+
+   // Grant permission to call Thread.class.getDeclaredField("inheritableThreadLocals"); 
+   // and the setAccessible(true) method
+   // Required by Jython used by PythonScript actor in WebServerDE model
+   // See http://grepcode.com/file/repo1.maven.org/maven2/org.fakereplace.fakereplace-google-collections/fakereplace-google-collections/1.0.1.Final/org/fakereplace/com/google/common/base/internal/Finalizer.java#Finalizer.getInheritableThreadLocalsField%28%29
+   // lines 189-191	
+   // RuntimePermission accessDeclaredMembers is required to call getDeclaredField()
+   // http://docs.oracle.com/javase/6/docs/api/java/lang/Class.html#getDeclaredField%28java.lang.String%29
+   // http://docs.oracle.com/javase/6/docs/api/java/lang/SecurityManager.html#checkMemberAccess(java.lang.Class,%20int)
+   // ReflectPermission suppressAccessChecks is required to call setAccessible() 
+   // Section 3.3.3.1 Using setAccessible http://www.informit.com/articles/article.aspx?p=26872&seqNum=4
+   // http://docs.oracle.com/javase/6/docs/api/java/lang/reflect/ReflectPermission.html
+   
+   permission java.lang.RuntimePermission "accessDeclaredMembers";
+   permission java.lang.reflect.ReflectPermission "suppressAccessChecks";
+   
+   // TODO:  Figure out what permissions WebServerDE needs.  Tried these:
+   //permission java.lang.RuntimePermission "accessClassInPackage.java.lang.Thread";
+   //permission java.lang.RuntimePermission "accessClassInPackage.java.lang";
+   
+   // http://stackoverflow.com/questions/8075014/java-file-permissions-for-threads
+   // permission java.lang.RuntimePermission "createClassLoader";
+   // permission java.lang.RuntimePermission "getProtectionDomain";	
+	
    // Required by SelectChannelConnector, called by java.lang.Thread
    permission java.lang.RuntimePermission "setContextClassLoader";
+   
 
 	// *** Optional policies ***
 	
