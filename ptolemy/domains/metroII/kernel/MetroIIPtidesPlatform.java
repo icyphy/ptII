@@ -695,11 +695,11 @@ public class MetroIIPtidesPlatform extends MetroIIMirrorComposite {
                                     .getAssociatedPort();
                             if (associatedPort.isNetworkReceiverPort()) {
                                 if (!(t instanceof RecordToken)
-                                        || ((RecordToken) t).labelSet().size() != 4) {
+                                        || ((RecordToken) t).labelSet().size() != 3) {
                                     throw new IllegalActionException(
                                             this,
                                             "The input token is not a RecordToken or "
-                                                    + "does not have a size not equal to 4: "
+                                                    + "does not have a size not equal to 3: "
                                                     + "Here we assume the Record is of types: timestamp"
                                                     + " + microstep + token + sourceTimestamp");
                                 }
