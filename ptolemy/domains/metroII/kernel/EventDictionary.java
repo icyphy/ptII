@@ -30,6 +30,9 @@ package ptolemy.domains.metroII.kernel;
 
 import java.util.Hashtable;
 
+///////////////////////////////////////////////////////////////////
+////EventDictionary
+
 /** <p> EventDictionary is a dictionary that associates the event name and the event ID.
  *  The event name is the key and the event ID is the value. When a new event name is 
  *  added into the dictionary, a new id is created and associated with the added event name. </p>
@@ -60,6 +63,9 @@ public class EventDictionary implements Cloneable {
                 .clone();
         return newObject;
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /**
      * Return the event ID associated with the event name. If the event name is not in
