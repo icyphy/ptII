@@ -136,6 +136,7 @@
     <exclude name="org/ptolemy/fmi/" />
     <exclude name="org/ptolemy/ptango/" />
     <exclude name="ptdb/" />
+    <exclude name="pt-modules/" />
     <exclude name="ptolemy/actor/corba/" />
     <exclude name="ptolemy/actor/lib/embeddedJava/" />
     <exclude name="ptolemy/actor/lib/excel/" />

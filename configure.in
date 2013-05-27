@@ -833,6 +833,7 @@ ANT_ALWAYS_EXCLUDE='<exclude name="**/CVS/"/>
 <exclude name="jni/test/jni/meaningOfLife/"/>
 <exclude name="jni/test/jni/testDeux/"/>
 <exclude name="jni/test/jni/testTrois/"/>
+<exclude name="pt-modules/"/>
 <exclude name="ptolemy/apps/agilent/"/>
 <exclude name="ptolemy/apps/anytimecontrol/"/>
 <exclude name="ptolemy/apps/apes/"/>
