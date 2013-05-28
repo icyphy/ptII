@@ -1,5 +1,5 @@
 -- Author: Gilles Lasnier (gilles.lasnier@isae.fr)
--- version: $Id$
+-- @version: $Id$
 
 Installation and deployment of CERTI
 
@@ -8,17 +8,19 @@ Requirements: we assume that you have a
 - the CMake tool
 
 ###################################
-1) Installation process (summary) :
+1) Installation process (summary):
 
-	1.	Get the last CERTI cvs source
-	2.	cvs -z3 -d:pserver:anonymous@cvs.savannah.nongnu.org:/sources/certi co certi
-	3.	Go to the CERTI cvs folder downloaded
-	4.	Create the folder build_example and go to this folder
-	5.	Run 'cmake -DCMAKE_INSTALL_PREFIX=<path_for_scripts_and_binaries> ../'. All  files required to build CERTI are stored in the build_example folder.
-	6.	Run 'make'
-	7.	Run 'make install'
+	1.	Get the last CERTI cvs source using the command: 
+	
+	      cvs -z3 -d:pserver:anonymous@cvs.savannah.nongnu.org:/sources/certi co certi
+	
+	2.	Go to the CERTI cvs folder downloaded
+	3.	Create the folder 'build_certi' and go to this folder
+	4.	Run 'cmake -DCMAKE_INSTALL_PREFIX=<path_for_scripts_and_binaries> ../'. All  files required to build CERTI are stored in the 'build_certi' folder.
+	5.	Run 'make'
+	6.	Run 'make install'
 
-Note : In your current terminal, you'll see  information about the (correct) build of CERTI and where are stored the different environment scripts used to set the CERTI environment.
+Note: In your current terminal, you'll see  information about the (correct) build of CERTI and where are stored the different environment scripts used to set the CERTI environment.
 
 #############
 2) Deployment
