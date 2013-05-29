@@ -42,6 +42,7 @@ import java.util.Set;
 import ptolemy.data.ObjectToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.Token;
+import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.ObjectType;
 import ptolemy.data.type.StructuredType;
@@ -1104,8 +1105,7 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
      *   container rejects the change.
      *  @see #getToken()
      */
-    public void setToken(ptolemy.data.Token token)
-            throws IllegalActionException {
+    public void setToken(Token token) throws IllegalActionException {
         if (_debugging) {
             _debug("setToken: " + token);
         }
@@ -1925,12 +1925,16 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
             } catch (CloneNotSupportedException cnse) {
                 throw new InternalErrorException("Variable._setToken: "
                         + "Cannot clone the declared type of this Variable.");
-            }
+            } // FIXME: clone seems unnecessary
 
-            if (declaredType instanceof StructuredType) {
+            // [marten 05/28/13] 
+            // This doesn't seem to do anything, it substitutes 
+            // unknowns for unknowns
+            /*if (declaredType instanceof StructuredType) {
                 ((StructuredType) declaredType).initialize(BaseType.UNKNOWN);
-            }
-
+            }*/
+            
+            // declared type must be >= proposed type, convert new token (upcast)
             if (declaredType.isCompatible(newToken.getType())) {
                 newToken = declaredType.convert(newToken);
             } else {
@@ -1941,31 +1945,21 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
                                 + declaredType.toString());
             }
 
-            // update _varType to the type of the new token.
-            if (_declaredType instanceof StructuredType) {
-                ((StructuredType) _varType)
+            // update _varType to the type of the new token, if
+            // 1) a type was declared that has elements of type unknown
+            // 2) no type was declared
+            // otherwise, set _varType to _declaredType
+            if (_declaredType instanceof StructuredType && !_declaredType.isConstant()) {
+                  ((StructuredType) _varType)
                         .updateType((StructuredType) newToken.getType());
-            } else {
-                // _declaredType is a BaseType
+            } else if(_declaredType.equals(BaseType.UNKNOWN)) {
+                // this could be either a structured or basic type
                 _varType = newToken.getType();
-
-                // FIXME: This is Edward's array optimization for Rome.
-                //                 Type newTokenType = newToken.getType();
-                //                 // FIXME: What about other structured types?
-                //                 if (_varType instanceof ArrayType && newTokenType instanceof ArrayType) {
-                //                     // Need to do an update instead of a replacement of _varType
-                //                     // because inequalities may have been set up that refer to this
-                //                     // particular instance _varType.
-                //                     // NOTE: updateType() won't update to an incompatible type!
-                //                     ((ArrayType)_varType).setType((ArrayType)newToken.getType());
-                //                 } else {
-                //                     // It is OK now to replace _varType because either the
-                //                     // type is not a structured type or it was previously
-                //                     // not a structured type.
-                //                     _varType = newTokenType;
-                //                 }
+            } else {
+                // this can only be a basic type
+                _varType = _declaredType;
             }
-
+                
             // Check setTypeAtMost constraint.
             if (_typeAtMost != BaseType.UNKNOWN) {
                 // Recalculate this in case the type has changed.
@@ -2152,7 +2146,7 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
          *  @exception IllegalActionException If a value in the scope
          *  exists with the given name, but cannot be evaluated.
          */
-        public ptolemy.data.type.Type getType(String name)
+        public Type getType(String name)
                 throws IllegalActionException {
             NamedObj reference;
             if (_reference == null) {
@@ -2179,7 +2173,7 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
          *  @exception IllegalActionException If a value in the scope
          *  exists with the given name, but cannot be evaluated.
          */
-        public ptolemy.graph.InequalityTerm getTypeTerm(String name)
+        public InequalityTerm getTypeTerm(String name)
                 throws IllegalActionException {
             NamedObj reference = _reference;
 
