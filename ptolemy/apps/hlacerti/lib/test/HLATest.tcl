@@ -2,7 +2,7 @@
 #
 # @Author: Christopher Brooks, based on Clock.tcl by Edward A. Lee
 #
-# @Version: $Id: Sinewave.tcl 57040 2010-01-27 20:52:32Z cxh $
+# @Version: $Id$
 #
 # @Copyright (c) 2013 The Regents of the University of California.
 # All rights reserved.
@@ -62,24 +62,10 @@ proc runModel {modelFileName} {
 ######################################################################
 #### Run two HLA models
 #
-test HLATest-1.0 {Run the HLA Producer Consumer} {
+test HLATest-1.0 {Run the HLA MultiDataTypes} {
     # Success is when the Test actor in the consumer gets all of its values.
-    set producer [runModel auto/HLAProducer.xml]
-    set consumer [runModel auto/HLAConsumer.xml]
+    set consumer [runModel auto/MultiDataTypesConsumer.xml]
+    set producer [runModel auto/MultiDataTypesProducer.xml]
     # Return something useful as another check
-    list [$producer getFullName] [$consumer getFullName]
-} {.HLAProducer .HLAConsumer}
-
-######################################################################
-#### Run two more HLA models
-#
-test HLATest-2.0 {Run the HLA Producer Consumer} {
-    # Success is when the Test actor in the consumer gets all of its values.
-    set producer [runModel auto/HLAProducer.xml]
-    set consumer [runModel auto/HLAConsumer.xml]
-    # Return something useful as another check
-    list [$producer getFullName] [$consumer getFullName]
-} {.HLAProducer .HLAConsumer}
-
-
-
+    list [$consumer getFullName] [$producer getFullName]
+} {.MultiDataTypesConsumer .MultiDataTypesProducer}
