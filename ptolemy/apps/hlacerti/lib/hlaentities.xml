@@ -11,19 +11,9 @@
 </property>
 
 <entity name="HlaPublisher" class="ptolemy.apps.hlacerti.lib.HlaPublisher"> 
-    <port name="in" class="ptolemy.actor.TypedIOPort">
-        <property name="input"/>
-        <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
-        </property>
-    </port>
 </entity>
 
 <entity name="HlaSubscriber" class="ptolemy.apps.hlacerti.lib.HlaSubscriber">
-    <port name="out" class="ptolemy.actor.TypedIOPort">
-        <property name="output"/>
-        <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
-        </property>  
-    </port> 
 </entity>
 
       </group>

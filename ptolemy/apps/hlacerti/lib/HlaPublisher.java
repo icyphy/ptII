@@ -30,12 +30,12 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.apps.hlacerti.lib;
 
-import java.util.LinkedList;
 import java.util.List;
 
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.TypedAtomicActor;
-import ptolemy.actor.util.TimedEvent;
+import ptolemy.actor.TypedIOPort;
+import ptolemy.data.BooleanToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
@@ -60,7 +60,9 @@ import ptolemy.kernel.util.Workspace;
  * federation and need to match the Federate Object Model (FOM) specified for
  * the Federation. The data type of the input port has to be the same type of 
  * the HLA attribute. The parameter <i>classObjectHandle</i> needs to match the
- * attribute object class describes in the FOM.
+ * attribute object class describes in the FOM. The parameter 
+ * <i>asHlaPtidesEvent</i> indicates if we need to handle PTIDES events as
+ * RecordToken in HLA events.
  * </p>
  *   
  *  @author Gilles Lasnier, Contributors: Patricia Derler
@@ -76,21 +78,31 @@ public class HlaPublisher extends TypedAtomicActor {
 	 *  @param container The container.
 	 *  @param name The name of this actor.
 	 *  @exception IllegalActionException If the entity cannot be contained
-	 *   by the proposed container.
+	 *  by the proposed container.
 	 *  @exception NameDuplicationException If the container already has an
-	 *   actor with this name.
+	 *  actor with this name.
 	 */
 	public HlaPublisher(CompositeEntity container, String name)
 			throws NameDuplicationException, IllegalActionException {
 		super(container, name);
 
+		// The single output port of the actor.
+		input = new TypedIOPort(this, "in", true, false);
+		
 		classObjectHandle = new Parameter(this, "classObjectHandle");
 		classObjectHandle.setDisplayName("Object class in FOM");
 		classObjectHandle.setTypeEquals(BaseType.STRING);       
 		classObjectHandle.setExpression("\"myObjectClass\"");
 		attributeChanged(classObjectHandle);
-		
+
+		asHLAPtidesEvent = new Parameter(this, "asHLAPtidesEvent");
+		asHLAPtidesEvent.setTypeEquals(BaseType.BOOLEAN);
+		asHLAPtidesEvent.setExpression("false");
+		asHLAPtidesEvent.setDisplayName("asHLAPtidesEvent ?");
+		attributeChanged(asHLAPtidesEvent);
+
 		_hlaManager = null;
+		_asHLAPtidesEvent = false;
 	}
 
 	///////////////////////////////////////////////////////////////////
@@ -98,6 +110,12 @@ public class HlaPublisher extends TypedAtomicActor {
 
 	/** The object class of the HLA attribute to publish. */
 	public Parameter classObjectHandle;
+
+	/** Indicate if the event is for a Ptides platform. */
+	public Parameter asHLAPtidesEvent;
+	
+	/** The input port. */
+	public TypedIOPort input = null;
 
 	///////////////////////////////////////////////////////////////////
 	////                     public methods                        ////
@@ -117,6 +135,9 @@ public class HlaPublisher extends TypedAtomicActor {
 				throw new IllegalActionException(this,
 						"Cannot have empty name !");
 			}
+		} else if (attribute == asHLAPtidesEvent) {
+			_asHLAPtidesEvent = ((BooleanToken) asHLAPtidesEvent.getToken())
+					.booleanValue();
 		}
 		super.attributeChanged(attribute);
 	}
@@ -130,7 +151,7 @@ public class HlaPublisher extends TypedAtomicActor {
 	public Object clone(Workspace workspace) throws CloneNotSupportedException {
 		HlaPublisher newObject = (HlaPublisher) super.clone(workspace);
 		newObject._hlaManager = _hlaManager;
-		
+
 		return newObject;
 	}
 
@@ -166,7 +187,7 @@ public class HlaPublisher extends TypedAtomicActor {
 	public void fire() throws IllegalActionException {        
 		if (inputPortList().get(0).hasToken(0)) {
 			Token in = inputPortList().get(0).get(0);
-			_hlaManager.updateHlaAttribute(this.getName(), in);
+			_hlaManager.updateHlaAttribute(this.getName(), in, _asHLAPtidesEvent);
 
 			if (_debugging) {
 				_debug(this.getDisplayName()
@@ -184,4 +205,6 @@ public class HlaPublisher extends TypedAtomicActor {
 	/** A reference to the associated {@link HlaManager}. */
 	private HlaManager _hlaManager;
 
+	/** Indicate if the event is for a Ptides platform. */
+	private boolean _asHLAPtidesEvent;
 }

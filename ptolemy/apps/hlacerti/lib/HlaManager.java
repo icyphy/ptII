@@ -106,6 +106,7 @@ import ptolemy.data.DoubleToken;
 import ptolemy.data.FloatToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.LongToken;
+import ptolemy.data.RecordToken;
 import ptolemy.data.ShortToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.Token;
@@ -113,6 +114,8 @@ import ptolemy.data.UnsignedByteToken;
 import ptolemy.data.expr.FileParameter;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
+import ptolemy.data.type.RecordType;
+import ptolemy.data.type.Type;
 import ptolemy.domains.de.kernel.DEDirector;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
@@ -268,14 +271,14 @@ implements TimeRegulator {
 		federationName = new Parameter(this, "federationName");
 		federationName.setDisplayName("Federation's name");
 		federationName.setTypeEquals(BaseType.STRING);       
-		federationName.setExpression("\"SimpleProducerConsumer\"");
+		federationName.setExpression("\"HLAFederation\"");
 		attributeChanged(federationName);
 
 		fedFile = new FileParameter(this, "fedFile");
 		fedFile.setDisplayName("Federate Object Model (.fed) file path");
 		new Parameter(fedFile, "allowFiles", BooleanToken.TRUE);
 		new Parameter(fedFile, "allowDirectories", BooleanToken.FALSE);
-		fedFile.setExpression("$CWD/SimpleProducerConsumer.fed");
+		fedFile.setExpression("$CWD/HLAFederation.fed");
 
 		// HLA Time management parameters.
 		useNextEventRequest = new Parameter(this, "useNextEventRequest");
@@ -571,7 +574,6 @@ implements TimeRegulator {
 		// Create the Federation or raise a warning it the Federation already exits.
 		try {
 			_rtia.createFederationExecution(_federationName, fedFile.asFile().toURI().toURL());
-
 		} catch (FederationExecutionAlreadyExists e) {
 			if (_debugging) {
 				_debug(this.getDisplayName() + " initialize() - WARNING: FederationExecutionAlreadyExists");
@@ -913,24 +915,24 @@ implements TimeRegulator {
 		// GL: FIXME: Comment this until the clarification with NERA and TARA
 		// and the use of TICK is made.
 		/*
-		if (_lastProposedTime != null) {
-			if (_lastProposedTime.compareTo(proposedTime) == 0) {
+         if (_lastProposedTime != null) {
+         if (_lastProposedTime.compareTo(proposedTime) == 0) {
 
-				// Even if we avoid the multiple calls of the HLA Time management
-				// service for optimization, it could be possible to have events
-				// from the Federation in the Federate's priority timestamp queue,
-				// so we tick() to get these events (if they exist).
-				try {
-					_rtia.tick();
-				} catch (ConcurrentAccessAttempted e) {
-					throw new IllegalActionException(this, "ConcurrentAccessAttempted " + e.getMessage());        
-				} catch (RTIinternalError e) {
-					throw new IllegalActionException(this, "RTIinternalError " + e.getMessage());        
-				}
+         // Even if we avoid the multiple calls of the HLA Time management
+         // service for optimization, it could be possible to have events
+         // from the Federation in the Federate's priority timestamp queue,
+         // so we tick() to get these events (if they exist).
+         try {
+         _rtia.tick();
+         } catch (ConcurrentAccessAttempted e) {
+         throw new IllegalActionException(this, "ConcurrentAccessAttempted " + e.getMessage());        
+         } catch (RTIinternalError e) {
+         throw new IllegalActionException(this, "RTIinternalError " + e.getMessage());        
+         }
 
-				return _lastProposedTime;
-			}
-		}
+         return _lastProposedTime;
+         }
+         }
 		 */
 
 		// If the HLA Time Management is required, ask to the HLA/CERTI 
@@ -1037,10 +1039,11 @@ implements TimeRegulator {
 	 *  Federation.
 	 *  @param attributeName Name of the HLA attribute to update.
 	 *  @param in The updated value of the HLA attribute to update.
+	 *  @param asHLAPtidesEvent Indicate if it will be send to a PtidesPlatform.
 	 *  @throws IllegalActionException If a CERTI exception is raised then
 	 *  displayed it to the user.
 	 */
-	void updateHlaAttribute(String attributeName, Token in) throws IllegalActionException {
+	void updateHlaAttribute(String attributeName, Token in, Boolean asHLAPtidesEvent) throws IllegalActionException {
 		Time currentTime = _director.getModelTime();
 
 		// The following operations build the different arguments required
@@ -1049,7 +1052,8 @@ implements TimeRegulator {
 		// Retrieve information of the HLA attribute to publish.
 		Object[] tObj = _hlaAttributesToPublish.get(attributeName);
 
-		byte[] valAttribute = _encodeHlaValue(in);
+		// Encode the value to be sent to the CERTI.
+		byte[] valAttribute = _encodeHlaValue(in, asHLAPtidesEvent);
 
 		SuppliedAttributes suppAttributes = null;
 		try {
@@ -1063,8 +1067,7 @@ implements TimeRegulator {
 
 		// Create a representation of the current director time for CERTI.
 		CertiLogicalTime ct = new CertiLogicalTime(currentTime
-				.getDoubleValue() + 0.0000001);
-
+				.getDoubleValue() + 0.0000000001);
 		try {
 			_rtia.updateAttributeValues((Integer) tObj[5], suppAttributes, tag, ct);
 		} catch (ObjectNotKnown e) {
@@ -1265,14 +1268,21 @@ implements TimeRegulator {
 	////                         private methods                   ////
 
 	/** This generic method should call the {@link EncodingHelpers} API provided 
-	 *  by CERTI to handle type decoding operation for HLA value attribute that
+	 *  by CERTI to handle type decoding operations for HLA value attribute that
 	 *  has been reflected. 
-	 *  @param tok The token to encode.
+	 *  @param type The type to decode the token.
+	 *  @param buffer The encoded value to decode.
+	 *  @return The decoded value as an object.
 	 *  @throws IllegalActionException If the token is not handled or the
 	 *  decoding has failed.
 	 */
-	private Object _decodeHlaValue(BaseType type, byte[] buffer) throws IllegalActionException {
-		if (type.equals(BaseType.BOOLEAN)) {
+	private Object _decodeHlaValue(Type type, byte[] buffer) throws IllegalActionException {
+
+		// GL: FIXME: PTIDES
+		if (type instanceof RecordType) {
+			Double ret = EncodingHelpers.decodeDouble(buffer);
+			return ret;
+		} else if (type.equals(BaseType.BOOLEAN)) {
 			return EncodingHelpers.decodeBoolean(buffer);
 		} else if (type.equals(BaseType.UNSIGNED_BYTE)) {
 			return EncodingHelpers.decodeByte(buffer);
@@ -1299,33 +1309,74 @@ implements TimeRegulator {
 	 *  by CERTI to handle type encoding operation for HLA value attribute that
 	 *  will be published. 
 	 *  @param tok The token to encode.
+	 *  @return The encoded value as an array of byte.
 	 *  @throws IllegalActionException If the token is not handled or the
 	 *  encoding had failed.
 	 */
-	private byte[] _encodeHlaValue(Token tok) throws IllegalActionException {        
-		BaseType type = (BaseType) tok.getType();
+	private byte[] _encodeHlaValue(Token tok, Boolean asHLAPtidesEvent) throws IllegalActionException {
+		byte[] encodedValue = null;
+		Token t = null;
+		double recordTimestamp = -1;
+		int recordMicrostep = -1;
+		double sourceTimestamp = -1;
+
+		// GL: FIXME: PTIDES
+		// This first case handle events from a PtidesPlatform to PtidesPlatform,
+		// only network port are supported.
+		if (asHLAPtidesEvent) {
+			RecordToken rt = (RecordToken) tok;
+
+			recordTimestamp = ((DoubleToken) rt.get("timestamp")).doubleValue();
+			recordMicrostep = ((IntToken) rt.get("microstep")).intValue();
+			sourceTimestamp = ((DoubleToken) rt.get("sourceTimestamp"))
+					.doubleValue();
+			t = rt.get("payload");
+		} else {
+			t = tok;
+		}
+
+		BaseType type = (BaseType) t.getType();
 
 		if (type.equals(BaseType.BOOLEAN)) {
-			return EncodingHelpers.encodeBoolean(((BooleanToken) tok).booleanValue());
+			encodedValue = EncodingHelpers.encodeBoolean(((BooleanToken) t).booleanValue());
 		} else if (type.equals(BaseType.UNSIGNED_BYTE)) {
-			return EncodingHelpers.encodeByte(((UnsignedByteToken) tok).byteValue());
+			encodedValue = EncodingHelpers.encodeByte(((UnsignedByteToken) t).byteValue());
 		} else if (type.equals(BaseType.DOUBLE)) {
-			return EncodingHelpers.encodeDouble(((DoubleToken) tok).doubleValue());
+			encodedValue = EncodingHelpers.encodeDouble(((DoubleToken) t).doubleValue());
 		} else if (type.equals(BaseType.FLOAT)) {
-			return EncodingHelpers.encodeFloat(((FloatToken) tok).floatValue());
+			encodedValue = EncodingHelpers.encodeFloat(((FloatToken) t).floatValue());
 		} else if (type.equals(BaseType.INT)) {
-			return EncodingHelpers.encodeInt(((IntToken) tok).intValue());
+			encodedValue = EncodingHelpers.encodeInt(((IntToken) t).intValue());
 		} else if (type.equals(BaseType.LONG)) {
-			return EncodingHelpers.encodeLong(((LongToken) tok).longValue());
+			encodedValue = EncodingHelpers.encodeLong(((LongToken) t).longValue());
 		} else if (type.equals(BaseType.SHORT)) {
-			return EncodingHelpers.encodeShort(((ShortToken) tok).shortValue());
+			encodedValue = EncodingHelpers.encodeShort(((ShortToken) t).shortValue());
 		} else if (type.equals(BaseType.STRING)) {
-			return EncodingHelpers.encodeString(((StringToken) tok).stringValue());
+			encodedValue = EncodingHelpers.encodeString(((StringToken) t).stringValue());
 		} else {
 			throw new IllegalActionException(this,
-					"The current type of the token " + tok 
+					"The current type of the token " + t 
 					+ " is not handled by " + this.getDisplayName());
 		}
+
+		// GL: FIXME: PTIDES
+		if (asHLAPtidesEvent) {
+			Time currentTime = _director.getModelTime();
+
+			if (_debugging) {
+				_debug(this.getDisplayName()
+						+ " _encodeHlaValue() - Encoded as HlaPtidesEvent"
+						+ " currentTime=" + currentTime.getDoubleValue()
+						+ " recordTimestamp=" + recordTimestamp);
+			}
+
+			HlaPtidesEvent he = new HlaPtidesEvent(recordTimestamp, 
+					recordMicrostep, sourceTimestamp, encodedValue);
+
+			return he.getBuffer();
+		} else {
+			return encodedValue;
+		}	
 	}
 
 	/** The method {@link _populatedHlaValueTables()} populates the tables 
@@ -1703,16 +1754,45 @@ implements TimeRegulator {
 						TimedEvent te = null;
 						if (theAttributes.getAttributeHandle(i) == (Integer) tObj[4]) {
 							try {
-								ts = new Time(_director, ((CertiLogicalTime) theTime).getTime());
+								// GL: FIXME: PTIDES
+								// This first case handle events from a PtidesPlatform 
+								// to PtidesPlatform, only network port are supported.
+								if (tObj[1] instanceof RecordType) {
+									HlaPtidesEvent he = new HlaPtidesEvent(theAttributes.getValue(i));
 
-								//te = new TimedEvent(ts, (Object) EncodingHelpers.decodeDouble(theAttributes.getValue(i)));
-								te = new TimedEvent(ts, new Object[] {(BaseType) tObj[1], _decodeHlaValue((BaseType) tObj[1], theAttributes.getValue(i))});
+									// GL: FIXME: PTIDES: should be:
+									//ts = new Time(_director, he.getSourceTime());
+									ts = new Time(_director, ((CertiLogicalTime) theTime).getTime());
+									te = new TimedEvent(ts, 
+											new Object[] {(RecordType) tObj[1], 
+											_decodeHlaValue((RecordType) tObj[1], 
+													he.getValue()),
+													// GL: FIXME: PTIDES: should be:
+													// he.getLogicalTime(),
+													ts.getDoubleValue(),
+													he.getMicroStep(),
+													// GL: FIXME: PTIDES: should be:
+													he.getSourceTime()});
+													//ts.getDoubleValue()});
 
+									//  System.out.println("RAV " + "has to decode asHlaPtidesEvent");
+									//  System.out.println("RAV " + "logicalTime="+he.getLogicalTime());
+									//  System.out.println("RAV " + "srcTimeStamp="+he.getSourceTime());
+									//  System.out.println("RAV " + "time of RAV=" + ts.getDoubleValue());
+
+								} else {
+									ts = new Time(_director, ((CertiLogicalTime) theTime).getTime());
+									te = new TimedEvent(ts, 
+											new Object[] {(BaseType) tObj[1], 
+											_decodeHlaValue((BaseType) tObj[1], 
+													theAttributes.getValue(i))});
+								}
 							} catch (IllegalActionException e) {
 								e.printStackTrace();
 							}     
 
-							_fromFederationEvents.get(((TypedIOPort) tObj[0]).getContainer().getName()).add(te);
+							_fromFederationEvents.get(((TypedIOPort) tObj[0])
+									.getContainer().getName()).add(te);
 							if (_debugging) {
 								_debug(HlaManager.this.getDisplayName() + " INNER"
 										+ " reflectAttributeValues() (RAV) - " 
