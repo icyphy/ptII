@@ -33,7 +33,6 @@ package ptolemy.actor.lib.qm;
 import ptolemy.actor.lib.Const;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.expr.Parameter;
-import ptolemy.data.ontologies.lattice.ConceptTermManager.InequalityTerm;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.RecordType;
 import ptolemy.data.type.Type;
