@@ -84,6 +84,22 @@
 		</antcall>
 	</target>
 
+	<target name="ptolemy-fsm.jar">
+		<antcall target="build-jar">
+		    <param name="pt-projects" value="pt-fsm"/>
+		    <param name="jar-name" value="ptolemy-fsm"/>
+		    <param name="pt-projects-classpath" value="jars/ptolemy-core.jar;jars/ptolemy-sdf.jar;jars/ptolemy-lib.jar;jars/ptolemy-moml.jar"/>
+		</antcall>
+	</target>
+
+	<target name="ptolemy-ptera.jar">
+		<antcall target="build-jar">
+		    <param name="pt-projects" value="pt-ptera"/>
+		    <param name="jar-name" value="ptolemy-ptera"/>
+		    <param name="pt-projects-classpath" value="jars/ptolemy-core.jar;jars/ptolemy-sdf.jar;jars/ptolemy-lib.jar;jars/ptolemy-moml.jar;ptolemy-fsm.jar"/>
+		</antcall>
+	</target>
+
 	<target name="clean">
 		<delete dir="jars"/>
 	</target>
@@ -96,6 +112,8 @@
 		<antcall target="ptolemy-de.jar"/>
 		<antcall target="ptolemy-ddf.jar"/>
 		<antcall target="ptolemy-sr.jar"/>
+		<antcall target="ptolemy-fsm.jar"/>
+		<antcall target="ptolemy-ptera.jar"/>
 	</target>
 
 </project>
