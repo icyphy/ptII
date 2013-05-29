@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="producer" class="ptolemy.actor.TypedCompositeActor">
+<entity name="MultiDataTypesProducer" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
@@ -77,9 +77,6 @@
     <entity name="val" class="ptolemy.apps.hlacerti.lib.HlaPublisher">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[235.0, 70.0]">
         </property>
-        <port name="in" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
     </entity>
     <entity name="SingleEvent" class="ptolemy.actor.lib.SingleEvent">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 70.0]">
@@ -111,9 +108,6 @@
     <entity name="val1" class="ptolemy.apps.hlacerti.lib.HlaPublisher">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[235.0, 135.0]">
         </property>
-        <port name="in" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
     </entity>
     <entity name="SingleEvent2" class="ptolemy.actor.lib.SingleEvent">
         <property name="time" class="ptolemy.data.expr.Parameter" value="3.0">
@@ -137,9 +131,6 @@
     <entity name="val2" class="ptolemy.apps.hlacerti.lib.HlaPublisher">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[235.0, 200.0]">
         </property>
-        <port name="in" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
     </entity>
     <entity name="SingleEvent3" class="ptolemy.actor.lib.SingleEvent">
         <property name="time" class="ptolemy.data.expr.Parameter" value="4.0">
@@ -165,21 +156,8 @@
     <entity name="val3" class="ptolemy.apps.hlacerti.lib.HlaPublisher">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[235.0, 270.0]">
         </property>
-        <port name="in" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="_type" class="ptolemy.actor.TypeAttribute" value="boolean">
-            </property>
-        </port>
     </entity>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
-        </property>
-    </relation>
-    <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
-        </property>
-    </relation>
-    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
         <property name="color" class="ptolemy.actor.gui.ColorAttribute">
         </property>
     </relation>
@@ -187,30 +165,30 @@
         <property name="color" class="ptolemy.actor.gui.ColorAttribute">
         </property>
     </relation>
-    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
-        </property>
-    </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
         <property name="color" class="ptolemy.actor.gui.ColorAttribute">
         </property>
     </relation>
-    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
-        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
-        </property>
+    <relation name="relation8" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <link port="val.in" relation="relation"/>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="val.input" relation="relation2"/>
     <link port="SingleEvent.output" relation="relation5"/>
-    <link port="StringConst.output" relation="relation"/>
+    <link port="StringConst.output" relation="relation2"/>
     <link port="StringConst.trigger" relation="relation5"/>
-    <link port="SingleEvent5.output" relation="relation2"/>
-    <link port="val1.in" relation="relation2"/>
+    <link port="SingleEvent5.output" relation="relation8"/>
+    <link port="val1.input" relation="relation8"/>
     <link port="SingleEvent2.output" relation="relation4"/>
-    <link port="Const.output" relation="relation3"/>
+    <link port="Const.output" relation="relation"/>
     <link port="Const.trigger" relation="relation4"/>
-    <link port="val2.in" relation="relation3"/>
+    <link port="val2.input" relation="relation"/>
     <link port="SingleEvent3.output" relation="relation6"/>
-    <link port="Const2.output" relation="relation7"/>
+    <link port="Const2.output" relation="relation3"/>
     <link port="Const2.trigger" relation="relation6"/>
-    <link port="val3.in" relation="relation7"/>
+    <link port="val3.input" relation="relation3"/>
 </entity>

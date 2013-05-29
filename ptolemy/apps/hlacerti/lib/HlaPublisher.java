@@ -87,7 +87,7 @@ public class HlaPublisher extends TypedAtomicActor {
 		super(container, name);
 
 		// The single output port of the actor.
-		input = new TypedIOPort(this, "in", true, false);
+		input = new TypedIOPort(this, "input", true, false);
 		
 		classObjectHandle = new Parameter(this, "classObjectHandle");
 		classObjectHandle.setDisplayName("Object class in FOM");
