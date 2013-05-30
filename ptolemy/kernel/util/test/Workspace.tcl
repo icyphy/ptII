@@ -187,7 +187,9 @@ test Workspace-5.3 {Test multi-thread access} {
     $t1 start
     $t2 start
     # Give the threads a chance to start up.
-    sleep 1
+    # Give the thread a chance to start up, don't print dots
+    set printDots 0
+    sleep 1 $printDots
     list [$t1 profile] [$t2 profile]
 } {{T1.getReadAccess()
 T1.doneReading()
@@ -219,8 +221,9 @@ test Workspace-6.1 {Test multi-thread access with a mix of ptolemy and non-ptole
 test Workspace-6.2 {Test multi-thread access with a mix of ptolemy and non-ptolemy threads} {
     # NOTE: Uses previous setup
     $t start
-    # Give the thread a chance to start up.
-    sleep 1
+    # Give the thread a chance to start up, don't print dots
+    set printDots 0
+    sleep 1 $printDots
     $t profile
 } {T.getReadAccess()
 T.doneReading()
@@ -242,8 +245,9 @@ test Workspace-6.3 {Test multi-thread access with a mix of ptolemy and non-ptole
     $t2 start
     $t3 start
     $t4 start
-    # Give the threads a chance to start up.
-    sleep 1
+    # Give the thread a chance to start up, don't print dots
+    set printDots 0
+    sleep 1 $printDots
     list [$t1 profile] [$t2 profile] [$t3 profile] [$t4 profile]
 } {{T1.getReadAccess()
 T1.doneReading()
@@ -311,8 +315,9 @@ test Workspace-8.1 {Test wait(obj) and corresponding methods} {
     set w [java::new ptolemy.kernel.util.Workspace W]
     set tr [java::new ptolemy.kernel.util.test.TestWorkspace2 TR $w]
     $tr start
-    # Give the threads a chance to start up.
-    sleep 1
+    # Give the thread a chance to start up, don't print dots
+    set printDots 0
+    sleep 1 $printDots
     list [$tr profile] 
 } {{TR.getReadAccess()
 TR.getReadAccess()
