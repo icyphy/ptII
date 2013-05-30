@@ -40,124 +40,39 @@ import ptolemy.util.StringUtilities;
 /** This class creates a Timer that calls System.exit() after
  a certain amount of time.
 
+ @deprecated Use ptolemy.util.test.WatchDog instead.  This class is
+ outside the ptolemy hierarchy.
+
  @author Christopher Hylands
  @version $Id$
  @since Ptolemy II 2.2
  @Pt.ProposedRating Red (cxh)
  @Pt.AcceptedRating Red (cxh)
  */
-public class WatchDog {
+public class WatchDog extends ptolemy.util.test.WatchDog {
     /** Create a timer that will go off after timeToDie milliseconds.
      *  @param timeToDie The time in millesconds when the timer will
      *  go off.
+     *  @deprecated Use ptolemy.util.test.WatchDog instead.
      */
     public WatchDog(final long timeToDie) {
-        // Timers are new in JDK1.3
-        // For information about Timers, see
-        // http://download.oracle.com/javase/tutorial/uiswing/misc/timer.html
-        if (timeToDie <= 0) {
-            return;
-        }
-
-        TimerTask doTimeToDie = new TimerTask() {
-            public void run() {
-                try {
-                    System.err.println("*** util.testsuite.WatchDog went "
-                            + "off after " + timeToDie + "ms. "
-                            + new Date().toString());
-
-                    // Get the root ThreadGroup
-                    ThreadGroup parent;
-
-                    // Get the root ThreadGroup
-                    ThreadGroup rootGroup;
-
-                    parent = Thread.currentThread().getThreadGroup();
-
-                    do {
-                        rootGroup = parent;
-                        parent = parent.getParent();
-                    } while (parent != null);
-
-                    // Display all the threads
-                    Thread[] threads = new Thread[rootGroup.activeCount()];
-                    rootGroup.enumerate(threads);
-
-                    for (int i = 0; i < threads.length; i++) {
-                        System.err.println(i + ". " + threads[i]);
-
-                        // It would be nice to display the stack traces,
-                        // but this is hard to do.  Thread.dumpStack()
-                        // only dumps the stack trace for the current thread.
-                        // For an idea using Thread.stop(), see
-                        // http://forum.java.sun.com/thread.jsp?forum=4&thread=178641&start=15&range=15&hilite=false&q=
-                    }
-                } catch (Exception e) {
-                    System.err.println(e);
-                } finally {
-                    System.out.println("util.testsuite.WatchDog went off");
-                    watchDogWentOff = true;
-
-                    if (_exitOnTimeOut) {
-                        String userDir = "util.testsuite.WatchDog went off";
-                        try {
-                            userDir = System.getProperty("user.dir");
-                        } catch (Exception ex) {
-                            // ignore
-                        }
-                        System.out.println("The string below is so that "
-                                + "the nightly build will notice\n"
-                                + "Failed: 666  Total Tests: 0 "
-                                + "((Passed: 0, Newly Passed: 0)  "
-                                + "Known Failed: 0) " + userDir);
-
-                        // Do not pass go, do not collect $200
-                        StringUtilities.exit(4);
-                    }
-                }
-            }
-        };
-
-        if (_timer == null) {
-            // Create the timer as a Daemon.. This way it won't prevent
-            // the compiler from exiting if an exception occurs.
-            _timer = new Timer(true);
-        }
-
-        _timer.schedule(doTimeToDie, timeToDie);
+        super(timeToDie);
     }
 
     /** Cancel the currently pending watchdog.
+     *  @deprecated Use ptolemy.util.test.WatchDog instead.
      */
     public void cancel() {
-        System.out.println("util.testsuite.WatchDog.cancel(): canceling "
-                + new Date());
-
-        if (_timer == null) {
-            System.out.println("util.testsuite.WatchDog.cancel(): "
-                    + "Warning: cancel called twice?");
-        } else {
-            _timer.cancel();
-            _timer = null;
-        }
+        super.cancel();
     }
 
     /** Determine whether the JVM will exit when the time interval
      *  has passed.  This method is used for testing this class.
      *  @param exitOnTimeOut True if the JVM will exit when
      *  the time interval has passed.
+     *  @deprecated Use ptolemy.util.test.WatchDog instead.
      */
     public void setExitOnTimeOut(boolean exitOnTimeOut) {
-        _exitOnTimeOut = exitOnTimeOut;
+        super.setExitOnTimeOut(exitOnTimeOut);
     }
-
-    /** Set to true if the watch time timer interval has passed.
-     *  Used primarily for testing.
-     */
-    public boolean watchDogWentOff = false;
-
-    private Timer _timer = null;
-
-    // If true, then exit if the interval passes
-    private boolean _exitOnTimeOut = true;
 }

@@ -711,7 +711,7 @@ if {"$isRunningNightlyBuild" == "true" \
     }
     puts "testDefs.tcl: setting time out to\
 	$timeOutSeconds seconds at [clock format [clock seconds]]"
-    java::new util.testsuite.WatchDog [expr {$timeOutSeconds * 1000}]
+    java::new ptolemy.util.test.WatchDog [expr {$timeOutSeconds * 1000}]
 }
 
 proc createAndExecute {file} {

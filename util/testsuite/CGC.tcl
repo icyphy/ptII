@@ -58,7 +58,7 @@ if [ file isdirectory auto/knownFailedTests ] {
 	    set timeout 60000
 	    puts "CGC.tcl: Setting watchdog for [expr {$timeout / 1000}]\
                   seconds at [clock format [clock seconds]]"
-	    set watchDog [java::new util.testsuite.WatchDog $timeout]
+	    set watchDog [java::new ptolemy.util.test.WatchDog $timeout]
 
 	    set returnValue 0
 	    if [catch {set returnValue \
@@ -113,7 +113,7 @@ proc CGC_test {file inline {extraArgs {}} } {
 	set timeout 60000
 	puts "CGC.tcl: Setting watchdog for [expr {$timeout / 1000}]\
                   seconds at [clock format [clock seconds]]"
-	set watchDog [java::new util.testsuite.WatchDog $timeout]
+	set watchDog [java::new ptolemy.util.test.WatchDog $timeout]
 
 	set returnValue 0
 	if [catch {set returnValue \
@@ -131,7 +131,7 @@ proc CGC_test {file inline {extraArgs {}} } {
 		    set executable "$env(user.home)/codegen/$executableName"
 		    puts "Running valgrind $executable"
 
-		    set watchDog [java::new util.testsuite.WatchDog $timeout]
+		    set watchDog [java::new ptolemy.util.test.WatchDog $timeout]
 		    set valgrind ""
 		    catch {set valgrind [exec -stderrok valgrind $executable]} errMsg
 		    $watchDog cancel

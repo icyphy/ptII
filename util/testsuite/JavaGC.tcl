@@ -59,7 +59,7 @@ if [ file isdirectory auto/knownFailedTests ] {
 	    set timeout 60000
 	    puts "JavaGC.tcl: Setting watchdog for [expr {$timeout / 1000}]\
                   seconds at [clock format [clock seconds]]"
-	    set watchDog [java::new util.testsuite.WatchDog $timeout]
+	    set watchDog [java::new ptolemy.util.test.WatchDog $timeout]
 
 	    set returnValue 0
 	    if [catch {set returnValue \
@@ -114,7 +114,7 @@ proc JavaGC_test {file inline {extraArgs {}} } {
 	set timeout 60000
 	puts "JavaGC.tcl: Setting watchdog for [expr {$timeout / 1000}]\
                   seconds at [clock format [clock seconds]]"
-	set watchDog [java::new util.testsuite.WatchDog $timeout]
+	set watchDog [java::new ptolemy.util.test.WatchDog $timeout]
 
 	set returnValue 0
 	if [catch {set returnValue \

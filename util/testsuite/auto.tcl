@@ -72,7 +72,7 @@ if [ file isdirectory auto/nonTerminatingTests ] {
     	    set timeout 10000
             puts "auto.tcl: Setting watchdog for [expr {$timeout / 1000}]\
                   seconds at [clock format [clock seconds]]"
-	    set watchDog [java::new util.testsuite.WatchDog $timeout]
+	    set watchDog [java::new ptolemy.util.test.WatchDog $timeout]
             if [catch {set application [java::new ptolemy.moml.MoMLSimpleTimeoutApplication $file]} errMsg] {
 	        $watchDog cancel
 	        error $errMsg
@@ -97,7 +97,7 @@ foreach file [lsort [glob auto/*.xml]] {
     	set timeout 200000
         puts "auto.tcl: Setting watchdog for [expr {$timeout / 1000}]\
                   seconds at [clock format [clock seconds]]"
-	set watchDog [java::new util.testsuite.WatchDog $timeout]
+	set watchDog [java::new ptolemy.util.test.WatchDog $timeout]
         if [catch {set application [createAndExecute $file]} errMsg] {
 	    $watchDog cancel
 	    error $errMsg
@@ -110,7 +110,7 @@ foreach file [lsort [glob auto/*.xml]] {
     	set timeout 200000
         puts "auto.tcl: Setting watchdog for [expr {$timeout / 1000}]\
                   seconds at [clock format [clock seconds]]"
-	set watchDog [java::new util.testsuite.WatchDog $timeout]
+	set watchDog [java::new ptolemy.util.test.WatchDog $timeout]
         if [catch {$application rerun} errMsg] {
 	    $watchDog cancel
 	    error $errMsg

@@ -1,10 +1,10 @@
 # Makefile for tests of classes in the ptolemy.util package
 #
-# @Authors: Christopher Hylands
+# @Authors: Christopher Brooks
 #
 # @Version: $Id$
 #
-# @Copyright (c) 1997-2012 The Regents of the University of California.
+# @Copyright (c) 1997-2013 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -54,7 +54,8 @@ JSRCS = \
 	Diff.java \
 	InnerClassTest.java \
 	RecorderMessageHandler.java \
-	ThreadStreamExec.java
+	ThreadStreamExec.java \
+	WatchDog.java
 
 JCLASS = $(JSRCS:%.java=%.class)
 

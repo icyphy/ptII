@@ -75,7 +75,7 @@ proc testJavaCGInline {model inline {maximumLinesPerBlock 2500} {generateInSubdi
 	set timeout 500000
 	puts "testJavaCG.tcl: Setting watchdog for [expr {$timeout / 1000}]\
                   seconds at [clock format [clock seconds]]"
-	set watchDog [java::new util.testsuite.WatchDog $timeout]
+	set watchDog [java::new ptolemy.util.test.WatchDog $timeout]
 
 	set returnValue 0
 	if [catch {set returnValue \

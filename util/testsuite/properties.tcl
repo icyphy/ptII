@@ -58,7 +58,7 @@ if [ file isdirectory auto/knownFailedTests ] {
 	    set timeout 120000
 	    puts "codegen.tcl: Setting watchdog for [expr {$timeout / 1000}]\
                   seconds at [clock format [clock seconds]]"
-	    set watchDog [java::new util.testsuite.WatchDog $timeout]
+	    set watchDog [java::new ptolemy.util.test.WatchDog $timeout]
 
 	    set returnValue 0
 		if [catch {set returnValue \
@@ -91,7 +91,7 @@ foreach file [glob auto/*.xml] {
 	set timeout 120000
 	puts "property.tcl: Setting watchdog for [expr {$timeout / 1000}]\
                   seconds at [clock format [clock seconds]]"
-	set watchDog [java::new util.testsuite.WatchDog $timeout]
+	set watchDog [java::new ptolemy.util.test.WatchDog $timeout]
 
 	set returnValue 0
 	if [catch {set returnValue \
