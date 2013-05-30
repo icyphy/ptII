@@ -50,6 +50,7 @@ import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
 import ptolemy.cg.kernel.generic.program.ProgramCodeGenerator;
 import ptolemy.cg.kernel.generic.program.ProgramCodeGeneratorAdapter;
 import ptolemy.cg.kernel.generic.program.TemplateParser;
+import ptolemy.cg.kernel.generic.program.procedural.c.CCodeGenerator;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
@@ -173,7 +174,8 @@ public class StaticSchedulingDirector extends Director {
                 for (int i = 0; i < firing.getIterationCount(); i++) {
                     // Generate fire code for the actor.
                     code.append(adapter.generateFireCode());
-                    _generateUpdatePortOffsetCode(code, actor);
+                    if (!(codeGenerator instanceof CCodeGenerator))
+                        _generateUpdatePortOffsetCode(code, actor);
                 }
             } else {
                 //variableDeclarations.add(codeGenerator.generateFireFunctionVariableDeclaration((NamedObj)actor));
@@ -188,8 +190,9 @@ public class StaticSchedulingDirector extends Director {
                 code.append(codeGenerator
                         .generateFireFunctionMethodInvocation((NamedObj) actor)
                         + "();" + _eol);
-
-                _generateUpdatePortOffsetCode(code, actor);
+                
+                if (!(codeGenerator instanceof CCodeGenerator))
+                    _generateUpdatePortOffsetCode(code, actor);
 
                 if (count > 1) {
                     code.append("}" + _eol + "}" + _eol);
