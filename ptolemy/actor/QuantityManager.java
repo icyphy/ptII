@@ -31,8 +31,8 @@ package ptolemy.actor;
 
 import java.util.List;
 
-import ptolemy.actor.gui.ColorAttribute;
-import ptolemy.actor.lib.qm.QuantityManagerMonitor;
+import ptolemy.actor.gui.ColorAttribute; 
+import ptolemy.actor.lib.qm.QuantityManagerListener;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.Port;
@@ -70,7 +70,7 @@ public interface QuantityManager {
     /** Add a quantity manager monitor to the list of listeners.
      *  @param monitor The quantity manager monitor.
      */
-    public void registerListener(QuantityManagerMonitor monitor);
+    public void registerListener(QuantityManagerListener monitor);
     
     /** Reset the QuantityManager.
      */

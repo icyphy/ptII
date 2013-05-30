@@ -1,4 +1,4 @@
-/* This actor implements a Network Bus.
+/* This actor implements a Quantity Manager Monitor.
 
 @Copyright (c) 2010-2013 The Regents of the University of California.
 All rights reserved.
@@ -56,7 +56,8 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.plot.Plot;
 
-/** This monitor shows when quantity managers in the model receive messages
+/** This actor implements a Quantity Manager Monitor. 
+ *  This monitor shows when quantity managers in the model receive messages
  *  and send messages in a 2D plot. The x-Axis is the time, the y-Axis shows how
  *  many messages are currently processed by the quantity manager.
  *

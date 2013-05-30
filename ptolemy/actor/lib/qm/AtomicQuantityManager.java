@@ -184,7 +184,7 @@ public abstract class AtomicQuantityManager extends TypedAtomicActor
     /** Add a quantity manager monitor to the list of listeners.
      *  @param monitor The quantity manager monitor.
      */
-    public void registerListener(QuantityManagerMonitor monitor) {
+    public void registerListener(QuantityManagerListener monitor) {
         if (_listeners == null) {
             _listeners = new ArrayList<QuantityManagerListener>();
         }
