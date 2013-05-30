@@ -1,0 +1,5 @@
+# files for pt-junit @ /Users/hal/java/workspaces/ptolemy/ptII/pt-modules/build/../projects/pt-junit
+/ptolemy/util/test/junit/ModelTests.java
+/ptolemy/actor/lib/NonStrictTest.java
+/ptolemy/actor/lib/Test.java
+/ptolemy/actor/test/TestActor.java
