@@ -47,7 +47,7 @@ if {[info procs jdkCapture] == "" } then {
 #
 
 test ChangeRequest-1.0 {test simple run with only parameter changes} {
-    set t [java::new ptolemy.kernel.util.test.ChangeRequestTest]
+    set t [java::new ptolemy.kernel.util.test.system.ChangeRequestTest]
     $t start
     $t mutate
     enumToTokenValues [$t finish]
@@ -60,7 +60,7 @@ test ChangeRequest-2.0 {test elaborate run with graph rewiring} {
 } {2.0 6.0 7.0 8.0 9.0}
 
 test ChangeRequest-2.1 {call execute() twice on a ChangeRequest} {
-    set t [java::new ptolemy.kernel.util.test.ChangeRequestTest]
+    set t [java::new ptolemy.kernel.util.test.system.ChangeRequestTest]
     set changeRequest [$t mutateConst2ChangeRequest]
     # Ok to Execute once	
     $changeRequest execute
@@ -70,7 +70,7 @@ test ChangeRequest-2.1 {call execute() twice on a ChangeRequest} {
 } {{ptolemy.kernel.util.InternalErrorException: Attempted to execute a change request that had already been executed.}}
 
 test ChangeRequest-2.2 {call execute() twice on a ChangeRequest} {
-    set t [java::new ptolemy.kernel.util.test.ChangeRequestTest]
+    set t [java::new ptolemy.kernel.util.test.system.ChangeRequestTest]
     set changeRequest [$t mutateBadChangeRequest]
     # Ok to Execute once	
     catch {$changeRequest execute} msg1
@@ -107,7 +107,7 @@ test ChangeRequest-3.2 {test DE example with inserted actor} {
 
 
 test ChangeRequest-4.0 {StreamChangeListener} {
-    set t [java::new ptolemy.kernel.util.test.ChangeRequestTest]
+    set t [java::new ptolemy.kernel.util.test.system.ChangeRequestTest]
     
     set changeRequest [$t mutateConst2ChangeRequest]
 
@@ -158,7 +158,7 @@ main  After call to $t finish
 }} {This test started failing once we upgraded to Java 1.4.  I'm not sure why}
 
 test ChangeRequest-4.1 {StreamChangeListener} {
-    set t [java::new ptolemy.kernel.util.test.ChangeRequestTest]
+    set t [java::new ptolemy.kernel.util.test.system.ChangeRequestTest]
     
     set changeRequest [$t mutateBadChangeRequest]
 
@@ -190,9 +190,9 @@ test ChangeRequest-4.1 {StreamChangeListener} {
 
 
 test ChangeRequest-6.1 {getLocality, getSource} {
-    set t [java::new ptolemy.kernel.util.test.ChangeRequestTest]
+    set t [java::new ptolemy.kernel.util.test.system.ChangeRequestTest]
     set changeRequest [$t mutateConst2ChangeRequest]
-    set source [java::cast ptolemy.kernel.util.test.ChangeRequestTest \
+    set source [java::cast ptolemy.kernel.util.test.system.ChangeRequestTest \
 	[$changeRequest getSource]]
     list [java::isnull [$changeRequest getLocality]] [$source equals $t]
 } {1 1}

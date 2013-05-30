@@ -32,6 +32,8 @@
 # Location of this directory, relative to the Ptolemy II directory
 ME =		ptolemy/kernel/util/test
 
+DIRS = 		system
+
 # Root of the Ptolemy II directory
 ROOT =		../../../..
 
@@ -48,11 +50,9 @@ TCL_SRCS = \
 JSRCS = \
 	AccessAction.java \
 	AccessThread.java \
-	ChangeRequestTest.java \
 	InvalidStringAttribute.java \
 	PtestWorkspace.java \
 	StreamValueListener.java \
-	TestDE.java \
 	TestDebugEvent.java \
 	TestInstantiableAttribute.java \
 	TestInstantiableNamedObj.java \
@@ -69,7 +69,6 @@ JSRCS = \
 # Non-graphical Java tests written in Tcl
 JSIMPLE_TESTS = \
 	Attribute.tcl \
-	ChangeRequest.tcl \
 	ConfigurableAttribute.tcl \
 	CrossRefList.tcl \
 	IllegalActionException.tcl \
@@ -102,46 +101,15 @@ EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS) $(JSIMPLE_TESTS) \
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES =	alljtests.tcl junit
+MISC_FILES =	alljtests.tcl junit system
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	'TestWorkspace2$$Notification.class' \
-	'ChangeRequestTest$$1.class' \
-	'ChangeRequestTest$$2.class' \
-	'ChangeRequestTest$$3.class' \
-	'ChangeRequestTest$$4.class' \
-	'TestDE$$1.class' \
-	'TestDE$$2.class' \
 	'TestWorkspace4$$1.class' \
 	'TestWorkspace5$$1.class' \
 	'TestWorkspace6$$1.class'
-
-# Unfortunately, some of the tests require classes outside of
-# ptolemy/kernel and ptolemy/kernel/util.  This is not good
-# since it means that the tests depend on more packages
-# than the source code under test, which makes reuse outside
-# of Ptolemy difficult.  As a workaround, we introduce
-# a variable that lists classes that are runtime dependencies
-# that don't get compiled when we compile the test .java files
-# in this directory
-JCLASS_DEPENDENCIES = \
-	$(ROOT)/ptolemy/actor/lib/AddSubtract.class \
-	$(ROOT)/ptolemy/actor/lib/Clock.class \
-	$(ROOT)/ptolemy/actor/lib/Const.class \
-	$(ROOT)/ptolemy/actor/lib/Recorder.class \
-	$(ROOT)/ptolemy/actor/lib/SequenceActor.class \
-	$(ROOT)/ptolemy/actor/lib/gui/TextFieldContainerJavaSE.class \
-	$(ROOT)/ptolemy/actor/lib/gui/DisplayInterface.class \
-	$(ROOT)/ptolemy/actor/lib/gui/DisplayJavaSE.class \
-	$(ROOT)/ptolemy/actor/lib/gui/PlotterBaseInterface.class \
-	$(ROOT)/ptolemy/actor/lib/gui/PlotterBaseJavaSE.class \
-	$(ROOT)/ptolemy/data/expr/UtilityFunctions.class \
-	$(ROOT)/ptolemy/data/expr/FixPointFunctions.class \
-	$(ROOT)/ptolemy/media/javasound/LiveSoundInterface.class \
-	$(ROOT)/ptolemy/media/javasound/LiveSoundJavaSE.class \
-	'$(ROOT)/ptolemy/actor/util/DFUtilities$$NamedObjComparator.class'
 
 JCLASS=	$(JSRCS:%.java=%.class)
 
@@ -156,41 +124,8 @@ test_java: jclass
 KERNEL_TESTDEFS = $(ROOT)/util/testsuite/testDefs.tcl
 
 # These tests do not require a graphics terminal, but do use Jacl and Java
-test_jsimple: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) alljtests.tcl \
-				$(JCLASS_DEPENDENCIES)
+test_jsimple: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) alljtests.tcl
 	$(JTCLSH) alljtests.tcl
-
-$(ROOT)/ptolemy/actor/lib/AddSubtract.class:
-	(cd $(ROOT)/ptolemy/actor/lib; $(MAKE) AddSubtract.class)
-$(ROOT)/ptolemy/actor/lib/Clock.class:
-	(cd $(ROOT)/ptolemy/actor/lib; $(MAKE) Clock.class)
-$(ROOT)/ptolemy/actor/lib/Const.class:
-	(cd $(ROOT)/ptolemy/actor/lib; $(MAKE) Const.class)
-$(ROOT)/ptolemy/actor/lib/Recorder.class:
-	(cd $(ROOT)/ptolemy/actor/lib; $(MAKE) Recorder.class)
-$(ROOT)/ptolemy/actor/lib/SequenceActor.class:
-	(cd $(ROOT)/ptolemy/actor/lib; $(MAKE) SequenceActor.class)
-$(ROOT)/ptolemy/actor/lib/gui/TextFieldContainerJavaSE.class:
-	(cd $(ROOT)/ptolemy/actor/lib/gui; $(MAKE) TextFieldContainerJavaSE.class)
-$(ROOT)/ptolemy/actor/lib/gui/DisplayInterface.class:
-	(cd $(ROOT)/ptolemy/actor/lib/gui; $(MAKE) DisplayInterface.class)
-$(ROOT)/ptolemy/actor/lib/gui/DisplayJavaSE.class:
-	(cd $(ROOT)/ptolemy/actor/lib/gui; $(MAKE) DisplayJavaSE.class)
-$(ROOT)/ptolemy/actor/lib/gui/PlotterBaseInterface.class:
-	(cd $(ROOT)/ptolemy/actor/lib/gui; $(MAKE) PlotterBaseInterface.class)
-$(ROOT)/ptolemy/actor/lib/gui/PlotterBaseJavaSE.class:
-	(cd $(ROOT)/ptolemy/actor/lib/gui; $(MAKE) PlotterBaseJavaSE.class)
-$(ROOT)/ptolemy/data/expr/UtilityFunctions.class:
-	(cd $(ROOT)/ptolemy/data/expr; $(MAKE) UtilityFunctions.class)
-$(ROOT)/ptolemy/data/expr/FixPointFunctions.class:
-	(cd $(ROOT)/ptolemy/data/expr; $(MAKE) FixPointFunctions.class)
-$(ROOT)/ptolemy/media/javasound/LiveSoundInterface.class:
-	(cd $(ROOT)/ptolemy/media/javasound; $(MAKE) LiveSoundInterface.class)
-$(ROOT)/ptolemy/media/javasound/LiveSoundJavaSE.class:
-	(cd $(ROOT)/ptolemy/media/javasound; $(MAKE) LiveSoundJavaSE.class)
-'$(ROOT)/ptolemy/actor/util/DFUtilities$$NamedObjComparator.class':
-	(cd $(ROOT)/ptolemy/actor/util; rm -rf DFUtilities.class; \
-		$(MAKE) DFUtilities.class)
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

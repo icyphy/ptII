@@ -25,7 +25,7 @@
  COPYRIGHTENDKEY
 
  */
-package ptolemy.kernel.util.test;
+package ptolemy.kernel.util.test.system;
 
 import java.util.Collections;
 import java.util.Enumeration;
@@ -51,6 +51,9 @@ import ptolemy.kernel.util.NameDuplicationException;
 
 /**
  Test for ChangeRequest.
+
+ This test is in the system directory because it uses packages outside
+ of kernel.util.
 
  @author  Edward A. Lee, Contributor: Christopher Hylands
  @version $Id$
