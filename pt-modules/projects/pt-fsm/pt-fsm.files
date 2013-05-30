@@ -35,6 +35,7 @@
 /ptolemy/domains/modal/modal/MirrorCausalityInterface.java
 /ptolemy/domains/modal/modal/ModalController.java
 /ptolemy/domains/modal/modal/ModalModel.java
+/ptolemy/domains/modal/modal/ModalBasePort.java
 /ptolemy/domains/modal/modal/ModalPort.java
 /ptolemy/domains/modal/modal/ModalRefinement.java
 /ptolemy/domains/modal/modal/ModalRefinementPort.java
