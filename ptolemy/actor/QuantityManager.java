@@ -29,14 +29,8 @@ ENHANCEMENTS, OR MODIFICATIONS.
  */
 package ptolemy.actor;
 
-import java.util.List;
-
-import ptolemy.actor.gui.ColorAttribute; 
 import ptolemy.actor.lib.qm.QuantityManagerListener;
 import ptolemy.data.Token;
-import ptolemy.data.expr.Parameter;
-import ptolemy.kernel.Port;
-import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 
 /** An interface for objects that can intervene in communication between actors.
