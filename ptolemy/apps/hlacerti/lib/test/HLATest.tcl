@@ -64,8 +64,8 @@ proc runModel {modelFileName} {
 #
 test HLATest-1.0 {Run the HLA MultiDataTypes} {
     # Success is when the Test actor in the consumer gets all of its values.
-    set consumer [runModel auto/MultiDataTypesConsumer.xml]
-    set producer [runModel auto/MultiDataTypesProducer.xml]
+    set consumer [runModel MultiDataTypesConsumer.xml]
+    set producer [runModel MultiDataTypesProducer.xml]
     # Return something useful as another check
     list [$consumer getFullName] [$producer getFullName]
 } {.MultiDataTypesConsumer .MultiDataTypesProducer}

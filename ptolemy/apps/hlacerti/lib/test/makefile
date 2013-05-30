@@ -35,7 +35,8 @@ ME =		ptolemy/apps/hlacerti/lib/test
 # Root of the Ptolemy II directory
 ROOT =		../../../../..
 
-CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(DIVA_JAR)
+# PTJCERTI_JAR is set by configure if lib/jcerti.jar was found.
+CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(PTJCERTI_JAR)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
