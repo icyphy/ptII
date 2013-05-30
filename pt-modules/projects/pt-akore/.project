@@ -206,9 +206,14 @@
 			<locationURI>PT_LOC/ptolemy/actor/RelationWidthInference.java</locationURI>
 		</link>
 		<link>
-			<name>linked-src/ptolemy/actor/ResourceSchedulerInterface.java</name>
+			<name>linked-src/ptolemy/actor/lib/ResourceAttributes.java</name>
 			<type>1</type>
-			<locationURI>PT_LOC/ptolemy/actor/ResourceSchedulerInterface.java</locationURI>
+			<locationURI>PT_LOC/ptolemy/actor/lib/ResourceAttributes.java</locationURI>
+		</link>
+		<link>
+			<name>linked-src/ptolemy/actor/lib/resourceScheduler/ResourceScheduler.java</name>
+			<type>1</type>
+			<locationURI>PT_LOC/ptolemy/actor/lib/resourceScheduler/ResourceScheduler.java</locationURI>
 		</link>
 		<link>
 			<name>linked-src/ptolemy/actor/SubscriberPort.java</name>
