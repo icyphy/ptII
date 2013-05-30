@@ -181,7 +181,7 @@ public class Expression extends NamedProgramCodeGeneratorAdapter {
         code.append(processCode(parseTreeCG.generateWrapupCode()));
 
         // Free up memory
-        _cParseTreeCodeGenerator = null;
+        //_cParseTreeCodeGenerator = null;
 
         return code.toString();
     }

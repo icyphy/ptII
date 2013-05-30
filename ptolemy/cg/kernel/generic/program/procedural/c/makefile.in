@@ -44,7 +44,7 @@ WARNING_CC_FLAGS = -Wall
 
 # We need -lm so we can get floor() for ftoi() 
 # We need -D__int64="long long" when invoking jni interface under cygwin
-@modelName@: @modelName@.c $(PTCG_OFILES)
+@modelName@: @modelName@_Main.c $(PTCG_CFILES)
 	@PTCGCompiler@ -D__int64="long long" $(WARNING_CC_FLAGS) $(CC_FLAGS) $(USER_CC_FLAGS) $(DEBUG) $(PTCGINCLUDES) $^ -o @modelName@ -lm $(PTCGLIBRARIES)
 
 # Each subdirectory must supply rules for building sources it contributes

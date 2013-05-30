@@ -14,7 +14,7 @@ Token $actorSymbol(Ki);
 *  is received, an exception will be thrown.
 */
 Token $actorSymbol(Kd);
-
+$include("$ModelName()_DEEvent.h")
 static DEEvent * $actorSymbol(currentInput);
 
 static DEEvent * $actorSymbol(lastInput);
@@ -38,7 +38,7 @@ $actorSymbol(currentInput) = NULL;
 /***customFireBlock***/
 // Consume input, generate output only if input provided.
 if ($hasToken(input)) {
-	Time currentTime = director.currentModelTime;
+	Time currentTime = $DirectorName()->currentModelTime;
 	double currentToken = $get(input);
 	$actorSymbol(currentInput) = newDEEventWithParam(NULL, NULL, 0, 0, 0, currentTime);
 	$actorSymbol(currentInput)->token.type = TYPE_Double;

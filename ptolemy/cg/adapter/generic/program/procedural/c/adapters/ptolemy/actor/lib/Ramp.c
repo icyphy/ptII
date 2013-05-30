@@ -1,5 +1,5 @@
 /***preinitBlock***/
-static $targetType(output) $actorSymbol(state);
+$targetType(output) $actorSymbol(state);
 /**/
 
 /*** ArrayConvertInitBlock($elementType) ***/
@@ -12,6 +12,7 @@ $param(step) = $typeFunc(TYPE_Array::convert($param(step), $elementType)));
 
 /***CommonInitBlock($type)***/
 $actorSymbol(state) = $val(($type)init);
+$param(step) = $val(($type)step);
 /**/
 
 /***IntFireBlock***/

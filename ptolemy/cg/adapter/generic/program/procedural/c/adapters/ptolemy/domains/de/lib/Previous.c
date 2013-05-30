@@ -46,5 +46,4 @@ if ($hasToken(input)) {
 /***postFireBlock***/
 $actorSymbol(previous) = $actorSymbol(tempPrevious);
 $actorSymbol(tempPrevious).type = -2;
-return;
 /**/

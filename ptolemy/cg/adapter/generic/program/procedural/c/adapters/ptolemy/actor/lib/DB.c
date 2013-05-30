@@ -4,17 +4,22 @@
 /**/
 
 /***preinitBlock***/
-double $actorSymbol(dbOutput) = 0.0;
+double $actorSymbol(dbOutput);
+/**/
+
+/***initBlock***/
+$actorSymbol(dbOutput) = 0.0;
 /**/
 
 /***fireBlock***/
-if ($get(input) <= 0.0) {
+double $actorSymbol(dbTemp) = $get(input);
+if ($actorSymbol(dbTemp) <= 0.0) {
     $put(output, $val(min));
 } else {
     if ($val(inputIsPower)) {
-        $actorSymbol(dbOutput) = log($get(input)) * _20LOG10SCALE / 2.0;
+        $actorSymbol(dbOutput) = log($actorSymbol(dbTemp)) * _20LOG10SCALE / 2.0;
     }  else {
-        $actorSymbol(dbOutput) = log($get(input)) * _20LOG10SCALE;
+        $actorSymbol(dbOutput) = log($actorSymbol(dbTemp)) * _20LOG10SCALE;
     }
     if ($actorSymbol(dbOutput) < $val(min)) {
         $actorSymbol(dbOutput) = $val(min);

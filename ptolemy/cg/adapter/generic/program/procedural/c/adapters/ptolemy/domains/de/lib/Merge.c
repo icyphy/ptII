@@ -24,16 +24,16 @@ $actorSymbol(discardEvents) = $discardEvents;
 // tokens on other channels that are waiting to be produced at
 // the same time but future microsteps.
 if($actorSymbol(moreTokensOnOtherChannels)
-		&& director.currentModelTime == $actorSymbol(previousModelTime)
-		&& director.currentMicrostep == $actorSymbol(previousMicrostep)) {
+		&& $DirectorName()->currentModelTime == $actorSymbol(previousModelTime)
+		&& $DirectorName()->currentMicrostep == $actorSymbol(previousMicrostep)) {
 	return false;
 }
 return true;
 /**/
 
 /***fireBeginBlock***/
-$actorSymbol(previousModelTime) = director.currentModelTime;
-$actorSymbol(previousMicrostep) = director.currentMicrostep;
+$actorSymbol(previousModelTime) = $DirectorName()->currentModelTime;
+$actorSymbol(previousMicrostep) = $DirectorName()->currentMicrostep;
 $actorSymbol(moreTokensOnOtherChannels) = false;
 
 Token firstAvailableToken;
@@ -72,7 +72,7 @@ if ($hasToken(input#$channel)) {
 		} else {
 			// Refiring the actor to handle the other tokens
 			// that are still in channels
-			$fireAt(&director, $actorName(), director.currentModelTime, director.currentMicrostep+1);
+			$fireAt($ModelName()_$actorName(), $DirectorName()->currentModelTime, $DirectorName()->currentMicrostep+1);
 			$actorSymbol(moreTokensOnOtherChannels) = true;
 			return;
 		}

@@ -27,8 +27,6 @@
  */
 package ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.de.kernel;
 
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -41,9 +39,9 @@ import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.Receiver;
+import ptolemy.actor.SuperdenseTimeDirector;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.parameters.ParameterPort;
-import ptolemy.actor.util.CausalityInterfaceForComposites;
 import ptolemy.actor.util.DFUtilities;
 import ptolemy.actor.util.Time;
 import ptolemy.cg.kernel.generic.CodeGeneratorAdapter;
@@ -108,139 +106,137 @@ public class DEDirector extends Director {
     final public Boolean allowDynamicMultiportReference()
             throws IllegalActionException {
         return false;
-        // FIXME : temporary, we never allow dynamic multiport reference
-        //return ((BooleanToken) ((Parameter) getComponent()
-        //        .getDecoratorAttribute(getCodeGenerator(),
-        //                "allowDynamicMultiportReference")).getToken())
-        //        .booleanValue();
+//        return ((BooleanToken) ((Parameter) getComponent()
+//                .getDecoratorAttribute(getCodeGenerator(),
+//                        "allowDynamicMultiportReference")).getToken())
+//                .booleanValue();
     }
 
-    /** Generate a the C and H code for all the actors.
-     * It returns a table with the names of the actors, their C code, 
-     * and their H code.
-     *  
-     *  @return Code for the actors.
-     *  @exception IllegalActionException If something goes wrong while reading
-     *  actors Templates.
+    /** Generate The functions' declaration code for this director
+     *
+     *  @return The functions' declaration function code.
+     *  @exception IllegalActionException If thrown while generating code.
      */
-    public String[] generateActorCode() throws IllegalActionException {
-        List actorList = ((CompositeActor) _director.getContainer())
-                .deepEntityList();
-        int size = actorList.size();
-        String codeTable[] = new String[3*size];
+    public String generateFunctionsDeclaration() throws IllegalActionException {
+        StringBuffer code = new StringBuffer();
+        _sanitizedDirectorName = CodeGeneratorAdapter.generateName(_director);
         
-        // Sort by name so that we retrieve the actors from the list
-        // by composite.
-        
-        String modelName = ((CompositeActor) _director.getContainer()).getName();
-    
-        Collections.sort(actorList, new FullNameComparator());
-    
-        ProgramCodeGenerator codeGenerator = getCodeGenerator();
-        //HashMap<String, StringBuffer> innerClasses = new HashMap<String, StringBuffer>();
-        Iterator<?> actors = actorList.iterator();
-        int i = 0;
-        while (actors.hasNext()) {
-            Actor actor = (Actor) actors.next();
-            NamedProgramCodeGeneratorAdapter actorAdapter = (NamedProgramCodeGeneratorAdapter) codeGenerator
-                    .getAdapter(actor);
-            
-            StringBuffer codeActor = new StringBuffer();
-            StringBuffer codeActorH = new StringBuffer();
-    
-            codeActor.append("#include \"../includes/" + actor.getName() + ".h\"");
-            
-            codeActorH.append("#ifndef DEFINE_" + actor.getName().toUpperCase() + "_H");
-            codeActorH.append(_eol + "#define DEFINE_" + actor.getName().toUpperCase() + "_H");
-            codeActorH.append(_eol + "#include \"../" + modelName + ".h\"");
-            codeActorH.append(_eol + "#include \"types.h\"");
-            codeActorH.append(_eol + "#include <stdbool.h>");
-            
-            //code.append(_eol + "void "+ actor.getName() + "PreinitializeCode() {");
-            codeActorH.append(_eol + actorAdapter.generatePreinitializeCode());
-            //code.append(_eol + "}" + _eol);
-    
-            codeActor.append(_eol + "bool " + actor.getName() + "PrefireCode() {");
-            codeActor.append(_eol + actorAdapter.generatePrefireCode());
-            codeActor.append(_eol + "return true;" + _eol);
-            codeActor.append(_eol + "}" + _eol);
-            codeActorH.append(_eol + "bool " + actor.getName() + "PrefireCode();");
-    
-            //codeActor.append(_eol + "void " + actor.getName() + "FireCode() {");
-            codeActor.append(_eol + actorAdapter.generateFireFunctionCode());
-            //codeActor.append(_eol + "}" + _eol);
-            codeActorH.append(_eol + "void " + actorAdapter.generateFireCode());
-    
-            codeActor.append(_eol + "void " + actor.getName() + "PostfireCode() {");
-            codeActor.append(_eol + actorAdapter.generatePostfireCode());
-            codeActor.append(_eol + "}" + _eol);
-            codeActorH.append(_eol + "void " + actor.getName() + "PostfireCode();");
-            
-            codeActor.append(_eol + "void " + actor.getName() + "InitializeCode() {");
-            codeActor.append(_eol + actorAdapter.generateInitializeCode());
-            codeActor.append(_eol + _generateVariableInitialization(actorAdapter));
-            codeActor.append(_eol + "}" + _eol);
-            codeActorH.append(_eol + "void " + actor.getName() + "InitializeCode();");
-            
-            codeActorH.append(_eol + _generateVariableDeclaration(actorAdapter));
-            
-            codeActorH.append(_eol + "#endif");
-            
-            codeTable[i] = actor.getName();
-            codeTable[i+1] = codeActor.toString();
-            codeTable[i+2] = codeActorH.toString();
-            
-            i += 3;
-        }
-        
-        return codeTable;
-    }
+        code.append(_eol + "static int " + _sanitizedDirectorName + "_fire();");
+        code.append(_eol + "void " + _sanitizedDirectorName + "_fireAt(Actor * actor, Time time, int microstep);");
+        code.append(_eol + "static Actor * " + _sanitizedDirectorName + "_nextActorToFire();");
 
-    /** Generate The fire loop function code. This method calls fire() for in a loop
+        code.append(_eol + "void " + _sanitizedDirectorName + "_Preinitialize();");
+        code.append(_eol + "void " + _sanitizedDirectorName + "_Initialize();");
+        code.append(_eol + "boolean " + _sanitizedDirectorName + "_Prefire();");
+        code.append(_eol + "void " + _sanitizedDirectorName + "_Fire();");
+        code.append(_eol + "boolean " + _sanitizedDirectorName + "_Postfire();");
+        code.append(_eol + "void " + _sanitizedDirectorName + "_Wrapup();");
+        
+        return code.toString();
+    }
+    
+    /** Generate The _fireAt function code.
+     *  This method is the direct transposition of the _fireAt function of the director
+     *  in C.
+     *
+     *  @return The _fireAt function code.
+     *  @exception IllegalActionException If thrown while generating fire code.
+     */
+    public String generateFireAtFunctionCode() throws IllegalActionException {
+        StringBuffer code = new StringBuffer();
+
+        code.append(_eol + "Time result = time;");
+        // We cannot schedule an event in the past !
+        code.append(_eol + "if (result < " + _sanitizedDirectorName + ".currentModelTime)");
+        code.append(_eol + "        result = " + _sanitizedDirectorName + ".currentModelTime;");
+
+        code.append(_eol + "int depth = actor->depth;");
+        code.append(_eol + "int priority = actor->priority;");
+        code.append(_eol
+                + "DEEvent * newEvent = newDEEventWithParam(actor, NULL, depth,");
+        code.append(_eol + "                microstep, priority, result);");
+        code.append(_eol + "CQueuePut(&(" + _sanitizedDirectorName + ".cqueue), newEvent);");
+
+        code.append(_eol + "return;");
+        
+        
+        return code.toString();
+    }
+    
+    /** Generate The fire function code. This method calls fire() for in a loop
+     *  This method is the direct transposition of the Fire function of the director
+     *  in C.
      *
      *  @return The fire function code.
      *  @exception IllegalActionException If thrown while generating fire code.
      */
-    public String generateFireLoopFunctionCode() throws IllegalActionException {
+    public String generateFireFunctionCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
 
         // NOTE: This fire method does not call super.fire()
         // because this method is very different from that of the super class.
         // A BIG while loop that handles all events with the same tag.
-        code.append(_eol + "int i = 1;");
-        code.append(_eol + "while (i==1) {");
-        code.append(_eol + "    int result = DEDirectorFire(&director);");
+        code.append(_eol + "while (true) {");
+        code.append(_eol + "    int result = " + _sanitizedDirectorName + "_fire();");
         code.append(_eol
-                + "    DEEvent * nextEvent = CQueueGet(&(director.cqueue));");
+                + "    DEEvent * nextEvent = CQueueGet(&(" + _sanitizedDirectorName + ".cqueue));");
         code.append(_eol + "    if (result == 1) {");
         code.append(_eol + "        continue;");
-        code.append(_eol
-                + "    } else if (result == -1 || nextEvent == NULL) {");
-        code.append(_eol + "		director.noMoreActorToFire = true;");
+        code.append(_eol + "    } else if (result == -1 || nextEvent == NULL) {");
+        code.append(_eol + "		" + _sanitizedDirectorName + ".noMoreActorToFire = true;");
         code.append(_eol + "        return;");
         code.append(_eol + "    } ");
         // else if 0, keep executing
 
         // if the next event is in the future break the loop !
         code.append(_eol
-                + "    if (nextEvent->timestamp > director.currentModelTime ||"
-                + "(nextEvent->timestamp == director.currentModelTime &&"
-                + "nextEvent->microstep > director.currentMicrostep)) {");
+                + "    if (nextEvent->timestamp > " + _sanitizedDirectorName + ".currentModelTime ||"
+                + "(nextEvent->timestamp == " + _sanitizedDirectorName + ".currentModelTime &&"
+                + "nextEvent->microstep > " + _sanitizedDirectorName + ".currentMicrostep)) {");
         code.append(_eol + "        break;");
         code.append(_eol + "    } ");// else keep executing in the current iteration
         code.append(_eol + "} ");// Close the BIG while loop.
 
         return code.toString();
     }
-
-    /** Generate the call to the initialize function of the DE director
-     *  @return The initialize function code.
-     *  @exception IllegalActionException If thrown while generating initialize code.
+    
+    /** Generate The _fire function code.
+     *  This method is the direct transposition of the _fire function of the director
+     *  in C.
+     *
+     *  @return The _fire function code.
+     *  @exception IllegalActionException If thrown while generating fire code.
      */
-    public String generateInitializeCode() throws IllegalActionException {
-        return "DEDirectorInitialize();";
-    }
+    public String generateFirePrivateFunctionCode() throws IllegalActionException {
+        StringBuffer code = new StringBuffer();
+        
+        code.append(_eol + "Actor * actorToFire = " + _sanitizedDirectorName + "_nextActorToFire();");
+        code.append(_eol + "" + _sanitizedDirectorName + ".currentActor = actorToFire;");
 
+        code.append(_eol + "if (actorToFire == NULL) {");
+        code.append(_eol + "    " + _sanitizedDirectorName + ".noMoreActorToFire = true;");
+        code.append(_eol + "    return -1;");
+        code.append(_eol + "}");
+
+        code.append(_eol + "if ((void*)actorToFire == (void*)" + _sanitizedDirectorName + ".containerActor) {");
+        code.append(_eol + "    return 1;");
+        code.append(_eol + "}");
+
+        code.append(_eol + "boolean refire;");
+        code.append(_eol + "do {");
+        code.append(_eol + "    refire = false;");
+        code.append(_eol + "    boolean prefire = (*(actorToFire->prefireFunction))();");
+        code.append(_eol + "    if (!prefire) {");
+        code.append(_eol + "        break;");
+        code.append(_eol + "    }");
+        code.append(_eol + "    (*(actorToFire->fireFunction))();");
+        code.append(_eol + "    refire = !(*(actorToFire->postfireFunction))();");
+        code.append(_eol + "} while (refire);");
+        code.append(_eol + "return 0;");
+        
+        return code.toString();
+    }
+    
     /** Generate the initialize code for the associated DE director.
      *  @return The generated initialize code.
      *  @exception IllegalActionException If the adapter associated with
@@ -251,129 +247,45 @@ public class DEDirector extends Director {
         StringBuffer code = new StringBuffer();
 
         ptolemy.actor.Director director = (ptolemy.actor.Director) getComponent();
-        List actorList = ((CompositeActor) _director.getContainer())
-                .deepEntityList();
-        
-        String modelName = ((CompositeActor) _director.getContainer()).getName();
-        // Sort by name so that we retrieve the actors from the list
-        // by composite.
-
-        Collections.sort(actorList, new FullNameComparator());
-
+        CompositeActor container = ((CompositeActor) _director.getContainer());
+        List actorList = container.deepEntityList();
+        String sanitizedContainerName = CodeGeneratorAdapter.generateName(container);
+       
         ProgramCodeGenerator codeGenerator = getCodeGenerator();
 
-        // Adding the handle in order to find function pointers with their names
-        //code.append(_eol + "void * handle = dlopen(NULL, RTLD_LAZY);");
-
-        //HashMap<String, StringBuffer> innerClasses = new HashMap<String, StringBuffer>();
         code.append(_eol + _eol
                 + codeGenerator.comment("Initialization of the director"));
-        code.append(_eol + "director.startTime ="
-                + director.getModelStartTime() + ";");
-        if (director.getModelStopTime().compareTo(Time.POSITIVE_INFINITY) == 0) {
-            code.append(_eol + "director.stopTime = Infinity;");
+        
+        code.append(_eol + _sanitizedDirectorName + ".noMoreActorToFire = false;");
+        code.append(_eol + _sanitizedDirectorName + ".currentMicrostep = 0;");
+        
+        if (_director.isEmbedded()) {
+            if (container instanceof CompositeActor) {
+                ptolemy.actor.Director executiveDirector = container.getExecutiveDirector();
+                // Some composites, such as RunCompositeActor want to be treated
+                // as if they are at the top level even though they have an executive
+                // director, so be sure to check _isTopLevel().
+                if (executiveDirector instanceof SuperdenseTimeDirector) {
+                    code.append(_eol + _sanitizedDirectorName + ".currentMicrostep = "
+                        + ((SuperdenseTimeDirector) executiveDirector).getIndex() + ";");
+                }
+            }
         }
-        else
-            code.append(_eol + "director.stopTime =" + director.getModelStopTime() + ";");
-        code.append(_eol + _eol + "director.cqueue = *(newCQueue());" + _eol);
-        code.append(_eol + _eol + "director.actors = calloc("
-                + actorList.size() + ", sizeof(Actor*));");
-        code.append(_eol + "if (director.actors == NULL)");
-        code.append(_eol + "    perror(\"Allocation problem (global)\");");
-
-        code.append(_eol + _eol + "IOPort ** inPorts = NULL;");
-        code.append(_eol + "IOPort ** outPorts = NULL;");
-
-        // Declare all the actors in the director structure
-        int i = 0;
+        
         Iterator<?> actors = actorList.iterator();
         while (actors.hasNext()) {
-            Actor actor = (Actor) actors.next();
-            List inputPorts = actor.inputPortList();
-            int j = 0;
-            code.append(_eol + "inPorts = NULL;");
-            code.append(_eol + _eol + "inPorts = calloc(" + inputPorts.size()
-                    + ", sizeof(IOPort*));");
-            code.append(_eol + "if (inPorts == NULL)");
-            code.append(_eol + "    perror(\"Allocation problem (global)\");");
-            Iterator<?> inPorts = inputPorts.iterator();
-            while (inPorts.hasNext()) {
-                TypedIOPort inPort = (TypedIOPort) inPorts.next();
-                code.append(_eol + "inPorts[" + j + "] = newIOPortWithParam(\""
-                        + inPort.getName() + "\", \"" + inPort.getType()
-                        + "\", " + inPort.isInput() + ", "
-                        + inPort.isMultiport() + ", " + inPort.getWidth()
-                        + ");");
-                j++;
-            }
-
-            List outputPorts = actor.outputPortList();
-            j = 0;
-            code.append(_eol + "outPorts = NULL;");
-            code.append(_eol + "outPorts = calloc(" + outputPorts.size()
-                    + ", sizeof(IOPort*));");
-            code.append(_eol + "if (outPorts == NULL)");
-            code.append(_eol + "    perror(\"Allocation problem (global)\");");
-            Iterator<?> outPorts = outputPorts.iterator();
-            while (outPorts.hasNext()) {
-                TypedIOPort outPort = (TypedIOPort) outPorts.next();
-                // TODO : add listeners later
-                code.append(_eol + "outPorts[" + j
-                        + "] = newIOPortWithParam(\"" + outPort.getName()
-                        + "\", \"" + outPort.getType() + "\", "
-                        + outPort.isInput() + ", " + outPort.isMultiport()
-                        + ", " + outPort.getWidth() + ");");
-                j++;
-            }
-
-            code.append(_eol + "director.actors[" + i
-                    + "] = newActorWithParam(\"" + actor.getName()
-                    + "\", inPorts, outPorts);");
-
-            //code.append(_eol + "director.actors["+i+"]->preInitializeFunction = " + actor.getName() + "PreinitializeCode;");
-            code.append(_eol + "director.actors[" + i
-                    + "]->initializeFunction = " + actor.getName()
-                    + "InitializeCode;");
-            code.append(_eol + "director.actors[" + i + "]->prefireFunction = "
-                    + actor.getName() + "PrefireCode;");
-            code.append(_eol + "director.actors[" + i + "]->fireFunction = "
-                    + modelName + "_" + actor.getName() + ";");
-            
-            code.append(_eol + "director.actors[" + i
-                    + "]->postfireFunction = " + actor.getName()
-                    + "PostfireCode;");
-            code.append(_eol
-                    + codeGenerator.comment("initialization of the actor : "
-                            + actor.getName()));
-            code.append(_eol + actor.getName() + " = director.actors[" + i
-                    + "];");
-            CompositeActor container = (CompositeActor) director.getContainer();
-            CausalityInterfaceForComposites causality = (CausalityInterfaceForComposites) container
-                    .getCausalityInterface();
-            int depth = causality.getDepthOfActor(actor);
-            code.append(_eol + "director.actors[" + i + "]->depth = " + depth
-                    + ";");
-            code.append(_eol + "(*(director.actors[" + i
-                    + "]->initializeFunction))();");
-            i++;
+            NamedObj actor = (NamedObj) actors.next();
+            String sanitizedActorName = CodeGeneratorAdapter.generateName(actor);
+            code.append(_eol + sanitizedActorName + "_initialize();");
         }
+        
+        code.append(_eol + _sanitizedDirectorName + ".containerActor = &" + sanitizedContainerName + ";");
 
-        // TODO : for now, the container actor is Top level we can correct it easily
-        code.append(_eol + _eol
-                + "director.containerActor = newActorWithParam(\""
-                + director.getContainer().getName() + "\", NULL, NULL);");
-
-        code.append(_eol + "director.currentModelTime = director.startTime;");
-        code.append(_eol + "director.currentMicrostep = 0;");
-        code.append(_eol + "director.noMoreActorToFire = false;");
+        code.append(_eol + _sanitizedDirectorName + ".currentModelTime = " + _sanitizedDirectorName + ".startTime;");
         Attribute stopWhenQueueIsEmpty = director.getAttribute("stopWhenQueueIsEmpty");
         boolean stopWhenQueueIsEmptyBool = ((BooleanToken) ((Variable) stopWhenQueueIsEmpty).getToken()).booleanValue();
-        code.append(_eol + "director.stopWhenQueueIsEmpty = "+ stopWhenQueueIsEmptyBool +";");
-        code.append(_eol + "director.exceedStopTime = false;");
-
-        code.append(_eol + "container = director.containerActor;");
-
-        //code.append(super.generateInitializeCode());
+        code.append(_eol + _sanitizedDirectorName + ".stopWhenQueueIsEmpty = "+ stopWhenQueueIsEmptyBool +";");
+        code.append(_eol + _sanitizedDirectorName + ".exceedStopTime = false;");
 
         // Register the stop time as an event such that the model is
         // guaranteed to stop at that time. This event also serves as
@@ -381,16 +293,102 @@ public class DEDirector extends Director {
         // further to integrate into future. But only do this if the
         // stop time is finite.
         if (!director.getModelStopTime().isPositiveInfinite()) {
-            code.append(_eol + "DEDirectorFireAt(&director, container, "
-                    + "director.stopTime, 1);");
+            code.append(_eol + _sanitizedDirectorName + "_fireAt(&" + _sanitizedDirectorName + ".containerActor->actor, "
+                    + "" + _sanitizedDirectorName + ".stopTime, 1);");
         }
 
-        code.append(_eol + "director.isInitializing = false;");
+        code.append(_eol + _sanitizedDirectorName + ".isInitializing = false;");
         code.append(_eol
                 + codeGenerator
                         .comment("End of the Initialization of the director"));
+        
         return code.toString();
     }
+        
+//        Old way of initialization
+//        
+//        code.append(_eol + _eol + "director.actors = calloc("
+//                + actorList.size() + ", sizeof(Actor*));");
+//        code.append(_eol + "if (director.actors == NULL)");
+//        code.append(_eol + "    perror(\"Allocation problem (global)\");");
+//
+//        code.append(_eol + _eol + "IOPort ** inPorts = NULL;");
+//        code.append(_eol + "IOPort ** outPorts = NULL;");
+//
+//        // Declare all the actors in the director structure
+//        int i = 0;
+//        Iterator<?> actors = actorList.iterator();
+//        while (actors.hasNext()) {
+//            Actor actor = (Actor) actors.next();
+//            List inputPorts = actor.inputPortList();
+//            int j = 0;
+//            code.append(_eol + "inPorts = NULL;");
+//            code.append(_eol + _eol + "inPorts = calloc(" + inputPorts.size()
+//                    + ", sizeof(IOPort*));");
+//            code.append(_eol + "if (inPorts == NULL)");
+//            code.append(_eol + "    perror(\"Allocation problem (global)\");");
+//            Iterator<?> inPorts = inputPorts.iterator();
+//            while (inPorts.hasNext()) {
+//                TypedIOPort inPort = (TypedIOPort) inPorts.next();
+//                code.append(_eol + "inPorts[" + j + "] = newIOPortWithParam(\""
+//                        + inPort.getName() + "\", \"" + inPort.getType()
+//                        + "\", " + inPort.isInput() + ", "
+//                        + inPort.isMultiport() + ", " + inPort.getWidth()
+//                        + ");");
+//                j++;
+//            }
+//
+//            List outputPorts = actor.outputPortList();
+//            j = 0;
+//            code.append(_eol + "outPorts = NULL;");
+//            code.append(_eol + "outPorts = calloc(" + outputPorts.size()
+//                    + ", sizeof(IOPort*));");
+//            code.append(_eol + "if (outPorts == NULL)");
+//            code.append(_eol + "    perror(\"Allocation problem (global)\");");
+//            Iterator<?> outPorts = outputPorts.iterator();
+//            while (outPorts.hasNext()) {
+//                TypedIOPort outPort = (TypedIOPort) outPorts.next();
+//                // TODO : add listeners later
+//                code.append(_eol + "outPorts[" + j
+//                        + "] = newIOPortWithParam(\"" + outPort.getName()
+//                        + "\", \"" + outPort.getType() + "\", "
+//                        + outPort.isInput() + ", " + outPort.isMultiport()
+//                        + ", " + outPort.getWidth() + ");");
+//                j++;
+//            }
+//
+//            code.append(_eol + "director.actors[" + i
+//                    + "] = newActorWithParam(\"" + actor.getName()
+//                    + "\", inPorts, outPorts);");
+//
+//            //code.append(_eol + "director.actors["+i+"]->preInitializeFunction = " + actor.getName() + "PreinitializeCode;");
+//            code.append(_eol + "director.actors[" + i
+//                    + "]->initializeFunction = " + actor.getName()
+//                    + "InitializeCode;");
+//            code.append(_eol + "director.actors[" + i + "]->prefireFunction = "
+//                    + actor.getName() + "PrefireCode;");
+//            code.append(_eol + "director.actors[" + i + "]->fireFunction = "
+//                    + modelName + "_" + actor.getName() + ";");
+//            
+//            code.append(_eol + "director.actors[" + i
+//                    + "]->postfireFunction = " + actor.getName()
+//                    + "PostfireCode;");
+//            code.append(_eol
+//                    + codeGenerator.comment("initialization of the actor : "
+//                            + actor.getName()));
+//            code.append(_eol + actor.getName() + " = director.actors[" + i
+//                    + "];");
+//            CompositeActor container = (CompositeActor) director.getContainer();
+//            CausalityInterfaceForComposites causality = (CausalityInterfaceForComposites) container
+//                    .getCausalityInterface();
+//            int depth = causality.getDepthOfActor(actor);
+//            code.append(_eol + "director.actors[" + i + "]->depth = " + depth
+//                    + ";");
+//            code.append(_eol + "(*(director.actors[" + i
+//                    + "]->initializeFunction))();");
+//            i++;
+//        }
+
 
     /** Generate a main loop for an execution under the control of
      *  this DE director. 
@@ -401,44 +399,107 @@ public class DEDirector extends Director {
     public String generateMainLoop() throws IllegalActionException {
         // Need a leading _eol here or else the execute decl. gets stripped out.
         StringBuffer code = new StringBuffer();
+        _sanitizedDirectorName = CodeGeneratorAdapter.generateName(_director);
+        
+        code.append("static int " + _sanitizedDirectorName + "_fire() {" + _eol);
+        code.append(generateFirePrivateFunctionCode());
+        code.append(_eol + "}" + _eol);
+        
+        code.append("void " + _sanitizedDirectorName + "_fireAt(Actor * actor, Time time, int microstep) {" + _eol);
+        code.append(generateFireAtFunctionCode());
+        code.append(_eol + "}" + _eol);
+        
+        code.append("static Actor * " + _sanitizedDirectorName + "_nextActorToFire() {" + _eol);
+        code.append(generateNextActorToFireFunctionCode());
+        code.append(_eol + "}" + _eol);
 
-        code.append(_eol + "bool DEDirectorPrefire() {" + _eol);
+        code.append(_eol + "void " + _sanitizedDirectorName + "_Preinitialize() {" + _eol);
+        code.append(generatePreinitializeMethodBodyCode());
+        code.append(_eol + "}" + _eol);
+
+        code.append(_eol + "boolean " + _sanitizedDirectorName + "_Prefire() {" + _eol);
         code.append(generatePreFireFunctionCode());
         code.append(_eol + "}" + _eol);
 
-        code.append("bool DEDirectorPostfire() {" + _eol);
+        code.append("boolean " + _sanitizedDirectorName + "_Postfire() {" + _eol);
         code.append(generatePostFireFunctionCode());
         code.append(_eol + "}" + _eol);
 
-        code.append("void DEDirectorFireLoop() {" + _eol);
-        code.append(generateFireLoopFunctionCode());
+        code.append("void " + _sanitizedDirectorName + "_Fire() {" + _eol);
+        code.append(generateFireFunctionCode());
         code.append(_eol + "}" + _eol);
 
-        code.append(_eol + "void DEDirectorInitialize() {" + _eol);
+        code.append(_eol + "void " + _sanitizedDirectorName + "_Initialize() {" + _eol);
         code.append(generateInitializeFunctionCode());
         code.append(_eol + "}" + _eol);
+        
+        code.append(_eol + "void " + _sanitizedDirectorName + "_Wrapup() {" + _eol);
+        code.append(generateWrapupCode());
+        code.append(_eol + "}" + _eol);
+        
+        return code.toString();
+    }
+    
+    /** Generate The _NextActorToFire function code.
+     *  This method is the direct transposition of the _NextActorToFire function of the director
+     *  in C.
+     *
+     *  @return The _fireAt function code.
+     *  @exception IllegalActionException If thrown while generating fire code.
+     */
+    public String generateNextActorToFireFunctionCode() throws IllegalActionException {
+        StringBuffer code = new StringBuffer();
 
-        code.append(_eol + getCodeGenerator().getMethodVisibiliyString()
-                + " void execute() "
-                + getCodeGenerator().getMethodExceptionString() + " {" + _eol);
+        code.append(_eol + "Actor * actorToFire = NULL;");
+        code.append(_eol + "DEEvent * lastFoundEvent = NULL;");
+        code.append(_eol + "DEEvent * nextEvent = NULL;");
 
-        // TODO : Type resolving should have been made before. 
-        //resolveTypes();
-
-        //code.append(_eol + "DEDirectorInitialize();");
-
-        code.append(_eol + "bool result = false;");
-        code.append(_eol + "int iterationCount = 0;");
-        code.append(_eol + "while (!result) {");
-        code.append(_eol + "    iterationCount++;");
-        code.append(_eol + "    if (DEDirectorPrefire()) {");
-        code.append(_eol + "        DEDirectorFireLoop();");
-        code.append(_eol + "        result = DEDirectorPostfire();");
-        code.append(_eol + "    }");
+        code.append(_eol + "while (true) {");
+        code.append(_eol + "if (" + _sanitizedDirectorName + ".stopWhenQueueIsEmpty) {");
+        code.append(_eol + "if (CQueueIsEmpty(&(" + _sanitizedDirectorName + ".cqueue))) {");
+        code.append(_eol + "break;");
+        code.append(_eol + "}");
         code.append(_eol + "}");
 
-        code.append(_eol + "return;");
-        code.append(_eol + "}" + _eol);
+        code.append(_eol + "if (CQueueIsEmpty(&(" + _sanitizedDirectorName + ".cqueue))) {");
+        code.append(_eol + "if (actorToFire != NULL");
+        code.append(_eol + "|| " + _sanitizedDirectorName + ".currentModelTime >= " + _sanitizedDirectorName + ".stopTime) {");
+        code.append(_eol + "break;");
+        code.append(_eol + "}");
+        code.append(_eol + "else");
+        code.append(_eol + "return NULL;");
+        code.append(_eol + "}");
+        code.append(_eol + "nextEvent = CQueueGet(&(" + _sanitizedDirectorName + ".cqueue));");
+
+        code.append(_eol + "if (actorToFire == NULL) {");
+        code.append(_eol + "Time currentTime;");
+
+        code.append(_eol + "lastFoundEvent = CQueueTake(&(" + _sanitizedDirectorName + ".cqueue));");
+        code.append(_eol + "currentTime = lastFoundEvent->timestamp;");
+        code.append(_eol + "actorToFire = lastFoundEvent->actor;");
+
+        code.append(_eol + "" + _sanitizedDirectorName + ".currentModelTime = currentTime;");
+
+        code.append(_eol + "if (lastFoundEvent->microstep == 0)");
+        code.append(_eol + "lastFoundEvent->microstep = 1;");
+        code.append(_eol + "" + _sanitizedDirectorName + ".currentMicrostep = lastFoundEvent->microstep;");
+
+        code.append(_eol + "if (" + _sanitizedDirectorName + ".currentModelTime > " + _sanitizedDirectorName + ".stopTime) {");
+        code.append(_eol + "" + _sanitizedDirectorName + ".exceedStopTime = true;");
+        code.append(_eol + "return NULL;");
+        code.append(_eol + "}");
+        code.append(_eol + "} else { ");
+        code.append(_eol + "if (nextEvent->timestamp == lastFoundEvent->timestamp");
+        code.append(_eol + "&& nextEvent->microstep == lastFoundEvent->microstep");
+        code.append(_eol + "&& nextEvent->actor == actorToFire) {");
+        code.append(_eol + " CQueueTake(&(" + _sanitizedDirectorName + ".cqueue));");
+        code.append(_eol + "} else {");
+        code.append(_eol + " break;");
+        code.append(_eol + "}");
+        code.append(_eol + "}");
+        code.append(_eol + "}");
+
+        code.append(_eol + "return actorToFire;");
         
         return code.toString();
     }
@@ -489,24 +550,16 @@ public class DEDirector extends Director {
     public String generatePostFireFunctionCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
 
-        // If any output ports still have tokens to transfer,
-        // request a refiring at the current time.
-        // TODO : not sure if necessary
-        //code.append(_eol + "IOPort ** outputPorts = director.currentActor->outputPorts;");
         code.append(_eol + "bool moreOutputsToTransfer = false;");
-        /*code.append(_eol + "for (int i = 0 ; i < sizeof(outputPorts)/sizeof(IOPort) ; i++)");
-        code.append(_eol + "if (outputPorts[i]->eventsToSend != NULL) {");
-        code.append(_eol + "moreOutputsToTransfer = true;");
-        code.append(_eol + "break;" + _eol + "}");*/
-
+        
         // Reset the microstep to zero if the next event is
         // in the future.
         code.append(_eol
-                + "if (!CQueueIsEmpty(&(director.cqueue)) && !moreOutputsToTransfer) {");
-        code.append(_eol + "DEEvent * next = CQueueGet(&(director.cqueue));");
-        code.append(_eol + "if (next->timestamp > director.currentModelTime) {");
-        code.append(_eol + "director.currentModelTime = next->timestamp;");
-        code.append(_eol + "director.currentMicrostep = 0;");
+                + "if (!CQueueIsEmpty(&(" + _sanitizedDirectorName + ".cqueue)) && !moreOutputsToTransfer) {");
+        code.append(_eol + "DEEvent * next = CQueueGet(&(" + _sanitizedDirectorName + ".cqueue));");
+        code.append(_eol + "if (next->timestamp > " + _sanitizedDirectorName + ".currentModelTime) {");
+        code.append(_eol + "" + _sanitizedDirectorName + ".currentModelTime = next->timestamp;");
+        code.append(_eol + "" + _sanitizedDirectorName + ".currentMicrostep = 0;");
         code.append(_eol + "}");
         code.append(_eol + "}");
 
@@ -518,15 +571,16 @@ public class DEDirector extends Director {
         //     b. the current model time equals the model stop time.
         // 2. The event queue is not empty, but the current time exceeds
         // the stop time.
-        code.append(_eol + "bool stop = director.stopWhenQueueIsEmpty;");
+        code.append(_eol + "bool stop = " + _sanitizedDirectorName + ".stopWhenQueueIsEmpty;");
         code.append(_eol + "if (moreOutputsToTransfer) {");
         code.append(_eol
-                + "DEDirectorFireAt(&director, director.currentActor, director.currentModelTime, 0);");
+                + "" + _sanitizedDirectorName + "_fireAt(" + _sanitizedDirectorName + ".currentActor, " + _sanitizedDirectorName + ".currentModelTime, 0);");
         code.append(_eol
-                + "} else if (director.noMoreActorToFire && (stop || director.currentModelTime >= director.stopTime)) {");
-        code.append(_eol + "return true;");
+                + "} else if (" + _sanitizedDirectorName + ".noMoreActorToFire && (stop || " 
+                + _sanitizedDirectorName + ".currentModelTime >= " + _sanitizedDirectorName + ".stopTime)) {");
+        code.append(_eol + "return false;");
         code.append(_eol + "}");
-        code.append(_eol + "return false;" + _eol);
+        code.append(_eol + "return true;" + _eol);
 
         return code.toString();
     }
@@ -537,18 +591,48 @@ public class DEDirector extends Director {
      */
     public String generatePreFireFunctionCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
-        // TODO : update the local time
+        
+        
+        if (!_director.isEmbedded()) {
+            // A top-level DE director is always ready to fire.
+            code.append(_eol + "return true;");
+            return code.toString();
+        }
 
-        // TODO : define isTopLevel for the case of Composite Actor
-        //code.append(_eol + "if (isTopLevel()) {" + _eol + "return true;" + _eol + "}");
+        // Update the time
+        code.append(_eol + _sanitizedDirectorName + ".currentModelTime = " + _sanitizedDirectorName + ".containerActor->actor.container->director->currentModelTime;");
+        code.append(_eol + _sanitizedDirectorName + ".currentMicrostep = " + _sanitizedDirectorName + ".containerActor->actor.container->director->currentMicrostep;");
+        
+        // If embedded, check the timestamp of the next event to decide
+        // whether this director is ready to fire.
+        code.append(_eol + "Time nextEventTime = Infinity;");
+
+        code.append(_eol + "if (!CQueueIsEmpty(&(" + _sanitizedDirectorName + ".cqueue))) {");
+        code.append(_eol + "    DEEvent * nextEvent = CQueueGet(&(" + _sanitizedDirectorName + ".cqueue));");
+        code.append(_eol + "    nextEventTime = nextEvent->timestamp;");
+        code.append(_eol + "}");
+
+        // If the model time is larger (later) than the first event
+        // in the queue, then
+        // catch up with the current model time by discarding
+        // the old events. Do not, however, discard events whose
+        // index but not time has passed.
+        code.append(_eol + "while (" + _sanitizedDirectorName + ".currentModelTime > nextEventTime) {");
+        code.append(_eol + "    DEEvent * skippedEvent = CQueueTake(&(" + _sanitizedDirectorName + ".cqueue));");
+        code.append(_eol + "    if (!CQueueIsEmpty(&(" + _sanitizedDirectorName + ".cqueue))) {");
+        code.append(_eol + "        DEEvent * nextEvent = CQueueGet(&(" + _sanitizedDirectorName + ".cqueue));");
+        code.append(_eol + "        nextEventTime = nextEvent->timestamp;");
+        code.append(_eol + "    } else {");
+        code.append(_eol + "        nextEventTime = Infinity;");
+        code.append(_eol + "    }");
+        code.append(_eol + "}");
+        
         code.append(_eol + "return true;");
 
         return code.toString();
     }
 
     /** Generate the preinitialize code for this director.
-     *  The preinitialize code for the director is generated by appending
-     *  the preinitialize code for each actor.
      *  @return The generated preinitialize code.
      *  @exception IllegalActionException If getting the adapter fails,
      *   or if generating the preinitialize code for a adapter fails,
@@ -557,33 +641,57 @@ public class DEDirector extends Director {
     public String generatePreinitializeCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
 
-        code.append(_eol + "DEDirector director;");
+        CompositeActor container = ((CompositeActor) _director.getContainer());
+        String sanitizedContainerName = CodeGeneratorAdapter.generateName(container);
 
-        code.append(_eol + "Actor * container;");
-
-        List actorList = ((CompositeActor) _director.getContainer())
-                .deepEntityList();
-
-        Iterator<?> actors = actorList.iterator();
-        while (actors.hasNext()) {
-            Actor actor = (Actor) actors.next();
-            code.append(_eol + "Actor * " + actor.getName() + ";");
+        getSanitizedDirectorName();
+      
+        code.append(_eol + _eol + "" + _sanitizedDirectorName + ".cqueue = *(newCQueue());" + _eol);
+        code.append(_eol + "" + _sanitizedDirectorName + ".startTime ="
+            + _director.getModelStartTime() + ";");
+        if (_director.getModelStopTime().compareTo(Time.POSITIVE_INFINITY) == 0) {
+            code.append(_eol + "" + _sanitizedDirectorName + ".stopTime = Infinity;");
         }
+        else
+            code.append(_eol + "" + _sanitizedDirectorName + ".stopTime =" + _director.getModelStopTime() + ";");
+          
+        code.append(_eol + "" + _sanitizedDirectorName + ".preinitializeFunction = " + _sanitizedDirectorName + "_Preinitialize;");
+        code.append(_eol + "" + _sanitizedDirectorName + ".initializeFunction = " + _sanitizedDirectorName + "_Initialize;");
+        code.append(_eol + "" + _sanitizedDirectorName + ".prefireFunction = " + _sanitizedDirectorName + "_Prefire;");
+        code.append(_eol + "" + _sanitizedDirectorName + ".postfireFunction = " + _sanitizedDirectorName + "_Postfire;");
+        code.append(_eol + "" + _sanitizedDirectorName + ".fireFunction = " + _sanitizedDirectorName + "_Fire;");
+        code.append(_eol + "" + _sanitizedDirectorName + ".wrapupFunction = " + _sanitizedDirectorName + "_Wrapup;");
+        code.append(_eol + "" + _sanitizedDirectorName + ".fireAtFunction = " + _sanitizedDirectorName + "_fireAt;");
+        code.append(_eol + "" + _sanitizedDirectorName + ".containerActor = &" + sanitizedContainerName + ";");
         
-        // Don't call the superclass because the Preinitialize codes are within the actor's files
-        //code.append(super.generatePreinitializeCode());
-
-        // TODO : here deal with the case of a CompositeActor
-
-        /*_createInputBufferSizeAndOffsetMap();
-
-        // For the inside receivers of the output ports.
-        _createOutputBufferSizeAndOffsetMap();
-
-        code.append(_createOffsetVariablesIfNeeded());
-        */
         return code.toString();
     }
+    
+    /** Generate the preinitialize code for this director.
+     *  The preinitialize code for the director is generated by appending
+     *  the preinitialize code for each actor.
+     *  @return The generated preinitialize code.
+     *  @exception IllegalActionException If getting the adapter fails,
+     *   or if generating the preinitialize code for a adapter fails,
+     *   or if there is a problem getting the buffer size of a port.
+     */
+    public String generatePreinitializeMethodBodyCode() throws IllegalActionException {
+        StringBuffer code = new StringBuffer();
+
+        CompositeActor container = ((CompositeActor) _director.getContainer());
+        List actorList = container.deepEntityList();
+        
+        Iterator<?> actors = actorList.iterator();
+        while (actors.hasNext()) {
+            NamedObj actor = (NamedObj) actors.next();
+            String sanitizedActorName = CodeGeneratorAdapter.generateName(actor);
+            code.append(_eol + sanitizedActorName + "_preinitialize();");
+        }
+        
+        return code.toString();
+    }
+    
+
     
     /** We override the super method, because in DE the declaration
      * of the variables are in the actor's files
@@ -593,7 +701,33 @@ public class DEDirector extends Director {
      */
     @Override
     public String generateVariableDeclaration() throws IllegalActionException {
-        return "";
+        StringBuffer code = new StringBuffer();
+        _sanitizedDirectorName = CodeGeneratorAdapter.generateName(_director);
+        
+        code.append(_eol + "Director " + _sanitizedDirectorName + ";");
+        //code.append(_eol + super.generateVariableDeclaration());
+        
+        return code.toString();
+    }
+    
+    /** Generate The wrapup function code. 
+     *  @return The wrapup function code.
+     *  @exception IllegalActionException If thrown while generating fire code.
+     */
+    public String generateWrapupCode() throws IllegalActionException {
+        StringBuffer code = new StringBuffer();
+
+        CompositeActor container = ((CompositeActor) _director.getContainer());
+        Iterator<?> actors = container.deepEntityList().iterator();
+
+        while (actors.hasNext()) {
+            NamedObj actor = (NamedObj) actors.next();
+            String sanitizedActorName = CodeGeneratorAdapter.generateName(actor);
+            code.append(_eol + sanitizedActorName + "_wrapup();");
+        }
+        code.append(_eol + "return;" + _eol);
+
+        return code.toString();
     }
 
     /** Get the files needed by the code generated from this adapter class.
@@ -605,19 +739,11 @@ public class DEDirector extends Director {
      */
     public Set<String> getHeaderFiles() throws IllegalActionException {
         HashSet<String> result = new HashSet<String>();
-        List actorList = ((CompositeActor) _director.getContainer())
-                .deepEntityList();
-        // Sort by name so that we retrieve the actors from the list
-        // by composite.
-    
-        Collections.sort(actorList, new FullNameComparator());
-    
-        Iterator<?> actors = actorList.iterator();
-        while (actors.hasNext()) {
-            Actor actor = (Actor) actors.next();
-            result.add("\"" + actor.getName()+ ".h\"");
-        }
-
+        CompositeActor container = ((CompositeActor) _director.getContainer());
+        String sanitizedContainerName = CodeGeneratorAdapter.generateName(container);
+        
+        result.add("\"" + sanitizedContainerName + ".h\"");
+        result.add(processCode("\"$ModelName()_types.h\""));
         
         return result;
     }
@@ -872,7 +998,17 @@ public class DEDirector extends Director {
         // FIXME: when does this happen?
         return "";
     }
-
+    
+    /** Returns the sanitized name of this director
+     *  adapter
+     * 
+     * @return The name of the director
+     */
+    public String getSanitizedDirectorName() {
+        _sanitizedDirectorName = CodeGeneratorAdapter.generateName(_director);
+        return _sanitizedDirectorName;
+    }
+    
     /** Return whether we need to pad buffers or not.
      *  @return True when we need to pad buffers.
      *  @exception IllegalActionException If the expression cannot
@@ -913,23 +1049,23 @@ public class DEDirector extends Director {
             code.append(referencedParameterDeclaration);
         }
     
-        // Generate variable declarations for input ports.
-        String inputVariableDeclaration = _generateInputVariableDeclaration(target);
-        if (inputVariableDeclaration.length() > 1) {
-            code.append(_eol
-                    + codeGenerator.comment(name
-                            + "'s input variable declarations."));
-            code.append(inputVariableDeclaration);
-        }
-    
-        // Generate variable declarations for output ports.
-        String outputVariableDeclaration = _generateOutputVariableDeclaration(target);
-        if (outputVariableDeclaration.length() > 1) {
-            code.append(_eol
-                    + codeGenerator.comment(name
-                            + "'s output variable declarations."));
-            code.append(outputVariableDeclaration);
-        }
+//        // Generate variable declarations for input ports.
+//        String inputVariableDeclaration = _generateInputVariableDeclaration(target);
+//        if (inputVariableDeclaration.length() > 1) {
+//            code.append(_eol
+//                    + codeGenerator.comment(name
+//                            + "'s input variable declarations."));
+//            code.append(inputVariableDeclaration);
+//        }
+//    
+//        // Generate variable declarations for output ports.
+//        String outputVariableDeclaration = _generateOutputVariableDeclaration(target);
+//        if (outputVariableDeclaration.length() > 1) {
+//            code.append(_eol
+//                    + codeGenerator.comment(name
+//                            + "'s output variable declarations."));
+//            code.append(outputVariableDeclaration);
+//        }
     
         // Generate type convert variable declarations.
         String typeConvertVariableDeclaration = _generateTypeConvertVariableDeclaration(target);
@@ -1216,7 +1352,7 @@ public class DEDirector extends Director {
                 // avoid duplicate declaration.
                 if (!getCodeGenerator().getModifiedVariables().contains(
                         parameter)) {
-                    code.append("static "
+                    code.append(""
                             + targetType(parameter.getType())
                             + " "
                             + getCodeGenerator()
@@ -1388,45 +1524,49 @@ public class DEDirector extends Director {
      */
     protected HashMap<NamedProgramCodeGeneratorAdapter, HashSet<Parameter>> _referencedParameters = new HashMap<NamedProgramCodeGeneratorAdapter, HashSet<Parameter>>();
 
+    /** A variable to keep track of the sanitized name of the director
+     * 
+     */
+    protected String _sanitizedDirectorName;
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
 
-    /** Compare two NamedObjs by full name.
-     */
-
-    private static class FullNameComparator implements Comparator {
-
-        /** Compare two NamedObjs by fullName().
-         *  @return -1 if object1 has fewer dots in its fullName(),
-         *  1 if object1 has more dots in its fullName(),
-         *  0 if the objects are the same.
-         *  If the fullName()s of both NamedObjs have the
-         *  same number of dots, then return the String compareTo()
-         *  of the fullName()s.
-         */
-        public int compare(Object object1, Object object2) {
-            String name1 = ((NamedObj) object1).getFullName();
-            String name2 = ((NamedObj) object2).getFullName();
-
-            int index = 0;
-            int dots1 = 0;
-            while ((index = name1.indexOf(".", index)) != -1) {
-                index++;
-                dots1++;
-            }
-            int dots2 = 0;
-            while ((index = name2.indexOf('.', index)) != -1) {
-                index++;
-                dots2++;
-            }
-            if (dots1 == dots2) {
-                return 0;
-            } else if (dots1 < dots2) {
-                return -1;
-            }
-            return 1;
-        }
-    }
+//    /** Compare two NamedObjs by full name.
+//     */
+//
+//    private static class FullNameComparator implements Comparator {
+//
+//        /** Compare two NamedObjs by fullName().
+//         *  @return -1 if object1 has fewer dots in its fullName(),
+//         *  1 if object1 has more dots in its fullName(),
+//         *  0 if the objects are the same.
+//         *  If the fullName()s of both NamedObjs have the
+//         *  same number of dots, then return the String compareTo()
+//         *  of the fullName()s.
+//         */
+//        public int compare(Object object1, Object object2) {
+//            String name1 = ((NamedObj) object1).getFullName();
+//            String name2 = ((NamedObj) object2).getFullName();
+//
+//            int index = 0;
+//            int dots1 = 0;
+//            while ((index = name1.indexOf(".", index)) != -1) {
+//                index++;
+//                dots1++;
+//            }
+//            int dots2 = 0;
+//            while ((index = name2.indexOf('.', index)) != -1) {
+//                index++;
+//                dots2++;
+//            }
+//            if (dots1 == dots2) {
+//                return 0;
+//            } else if (dots1 < dots2) {
+//                return -1;
+//            }
+//            return 1;
+//        }
+//    }
 
     /** A class that keeps track of information necessary to
      *  generate communication code at ports inside a StaticScheduled model.

@@ -11,12 +11,11 @@
 #ifndef CALENDAR_QUEUE
 #define CALENDAR_QUEUE
 
-#include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
 #include <errno.h>
 
-#include "DEEvent.h"
+#include "$ModelName()_DEEvent.h"
 
 struct CQCell {
 	DEEvent* content;

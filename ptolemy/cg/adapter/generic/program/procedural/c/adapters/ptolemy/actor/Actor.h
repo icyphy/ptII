@@ -6,30 +6,28 @@
 #ifndef ACTOR_H_
 #define ACTOR_H_
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <stdbool.h>
-#include <errno.h>
-#include <string.h>
-
-#include "IOPort.h"
+#include "$ModelName()_IOPort.h"
+#include "$ModelName()_types.h"
 
 
 struct Actor {
-	char * name;
-	IOPort ** inputPorts;
-	IOPort ** outputPorts;
+	IOPort * ports;
+	CompositeActor * container;
+	int nbPorts;
 	int depth;
 	int priority;
-	void (*preInitializeFunction)(void);
+	void (*preinitializeFunction)(void);
 	void (*initializeFunction)(void);
-	bool (*prefireFunction)(void);
+	boolean (*prefireFunction)(void);
 	void (*fireFunction)(void);
-	void (*postfireFunction)(void);
+	boolean (*postfireFunction)(void);
+	void (*wrapupFunction)(void);
 };
 
-Actor * newActor();
-Actor * newActorWithParam(char* name, IOPort ** inputPorts, IOPort ** outputPorts);
+void ActorSet(Actor * actor, CompositeActor * container, int nbPorts, int depth, int priority,
+		void (*preinitializeFunction)(void), void (*initializeFunction)(void),
+		boolean (*prefireFunction)(void), void (*fireFunction)(void),
+		boolean (*postfireFunction)(void), void (*wrapupFunction)(void));
 void ActorDelete(Actor * a);
 
 #endif

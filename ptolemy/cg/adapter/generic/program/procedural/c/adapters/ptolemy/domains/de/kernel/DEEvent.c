@@ -1,4 +1,4 @@
-#include "../includes/DEEvent.h"
+#include "$ModelName()_DEEvent.h"
 
 // Initialize an empty event
 DEEvent * newDEEvent() {
@@ -10,9 +10,6 @@ DEEvent * newDEEvent() {
 	e->microstep = 0;
 	e->priority = 0;
 	e->timestamp = 0.0;
-
-	e->actor = newActor();
-	e->ioPort = newIOPort();
 
 	e->actor = NULL;
 	e->ioPort = NULL;
@@ -41,8 +38,6 @@ DEEvent * newDEEventWithParam(Actor* actor, IOPort* ioPort,
 void DEEventDelete(DEEvent * e) {
 	if (e == NULL)
 		return;
-	ActorDelete(e->actor);
-	IOPortDelete(e->ioPort);
 	free(e);
 }
 

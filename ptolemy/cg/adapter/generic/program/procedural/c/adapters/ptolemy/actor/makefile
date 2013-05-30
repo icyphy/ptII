@@ -56,13 +56,23 @@ PTCLASSALLJARS = \
 	lib/lib.jar
 
 # Keep this list alphabetized.
-JSRCS = 
+JSRCS = \
+	TypedCompositeActor.java
 
 OTHER_FILES_TO_BE_JARED = \
 	Actor.c \
 	Actor.h \
+	CompositeActor.c \
+	CompositeActor.h \
+	Director.h \
 	IOPort.c \
-	IOPort.h
+	IOPort.h \
+	Queue.c \
+	Queue.h \
+	Receiver.c \
+	Receiver.h \
+	TypedCompositeActor.c 
+	
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 

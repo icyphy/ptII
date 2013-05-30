@@ -8,9 +8,10 @@
 #ifndef DE_EVENT
 #define DE_EVENT
 
-#include "types.h"
-#include "Actor.h"
-#include "IOPort.h"
+typedef struct DEEvent DEEvent;
+#include "$ModelName()_types.h"
+#include "$ModelName()_Actor.h"
+#include "$ModelName()_IOPort.h"
 
 struct DEEvent {
   /** The destination actor. */

@@ -14,8 +14,6 @@ static boolean $actorSymbol(outputProduced);
 /**/
 
 /***initBlock($stopTime, $period, $offsetSize, $offsetList, $valuesSize, $valuesList)***/
-int i = 0;
-
 $actorSymbol(offsetsNumber) = $offsetSize;
 $actorSymbol(offsets) = calloc($offsetSize, sizeof(Time));
 $offsetList
@@ -29,11 +27,11 @@ $actorSymbol(enabled) = true;
 $actorSymbol(triggered) = true;
 $actorSymbol(outputProduced) = false;
 $actorSymbol(stopTime) = $stopTime;
-$actorSymbol(cycleStartTime) = director.currentModelTime;
+$actorSymbol(cycleStartTime) = $DirectorName()->currentModelTime;
 $actorSymbol(nextOutputTime) = $actorSymbol(cycleStartTime) + $actorSymbol(offsets)[$actorSymbol(phase)];
 $actorSymbol(nextOutputIndex) = 1;
 
-$fireAt(&director, $actorName(), $actorSymbol(nextOutputTime), $actorSymbol(nextOutputIndex));
+$fireAt($ModelName()_$actorName(), $actorSymbol(nextOutputTime), $actorSymbol(nextOutputIndex));
 /**/
 
 /***startConnectedInit***/
@@ -46,7 +44,7 @@ $actorSymbol(enabled) = false;
 if ($hasToken(start#0)) {
 	$get(start#0);
 	// Restart everything.
-	$actorName()InitializeCode();
+	$ModelName()_$actorName()_initialize();
 	$actorSymbol(enabled) = true;
 }
 /**/
@@ -80,16 +78,16 @@ if (!$actorSymbol(enabled)) {
 	return;
 }
 
-double comparison = $actorSymbol(nextOutputTime) - director.currentModelTime;
+double comparison = $actorSymbol(nextOutputTime) - $DirectorName()->currentModelTime;
 if (comparison > 0) {
 	return;
 } else if (comparison == 0) {
 	// It is the right time to produce an output. Check
 	// the index.
-	if ($actorSymbol(nextOutputIndex) > director.currentMicrostep) {
+	if ($actorSymbol(nextOutputIndex) > $DirectorName()->currentMicrostep) {
 		// We have not yet reached the requisite index.
 		// Request another firing at the current time.
-		$fireAt(&director, $actorName(), director.currentModelTime, director.currentMicrostep + 1);
+		$fireAt($ModelName()_$actorName(), $DirectorName()->currentModelTime, $DirectorName()->currentMicrostep + 1);
 		return;
 	}
 	// At this point, the time matches the next output, and
@@ -111,8 +109,8 @@ if (comparison > 0) {
 /**/
 
 /***postfireBlock($offsetSize, $triggerConnected)***/
-if (director.currentModelTime > $actorSymbol(stopTime)) {
-	return;
+if ($DirectorName()->currentModelTime > $actorSymbol(stopTime)) {
+	return true;
 }
 if ($actorSymbol(outputProduced)) {
 
@@ -132,14 +130,14 @@ if ($actorSymbol(outputProduced)) {
 		$actorSymbol(nextOutputTime) = nextOutputTime;
 		$actorSymbol(nextOutputIndex) = 1;
 	}
-	$fireAt(&director, $actorName(), $actorSymbol(nextOutputTime), $actorSymbol(nextOutputIndex));
+	$fireAt($ModelName()_$actorName(), $actorSymbol(nextOutputTime), $actorSymbol(nextOutputIndex));
 
 	$actorSymbol(outputProduced) = false;
 	if ($triggerConnected) {
 		$actorSymbol(triggered) = false;
 	}
 }
-return;
+return true;
 /**/
 
 /***wrapupBlock***/

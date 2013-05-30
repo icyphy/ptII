@@ -51,6 +51,7 @@ OTHER_FILES_TO_BE_JARED = \
 	DECG.xml \
 	DECGClockRamp.xml \
 	DECGHelloWorld.xml \
+	DECGHeterogeneous.xml \
 	DECGMath.xml \
 	DECGPi.xml \
 	DECGPiSquare.xml \

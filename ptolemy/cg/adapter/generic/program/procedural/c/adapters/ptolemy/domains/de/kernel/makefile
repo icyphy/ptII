@@ -59,12 +59,8 @@ JSRCS = \
 OTHER_FILES_TO_BE_JARED = \
 	CalendarQueue.c \
 	CalendarQueue.h \
-	DEDirector.c \
-	DEDirector.h \
 	DEEvent.c \
-	DEEvent.h \
-	DEReceiver.c \
-	DEReceiver.h
+	DEEvent.h 
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
@@ -78,7 +74,6 @@ MISC_FILES =
 OPTIONAL_FILES = \
 	demo \
 	'DEDirector$$1.class' \
-	'DEDirector$$FullNameComparator.class' \
 	'DEDirector$$PortInfo.class' \
 	'DEDirector$$Ports.class'
 

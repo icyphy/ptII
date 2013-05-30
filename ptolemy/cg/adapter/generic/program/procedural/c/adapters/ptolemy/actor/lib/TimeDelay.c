@@ -1,6 +1,7 @@
 /***preinitBlock***/
 CQLinkedList* $actorSymbol(pendingOutputs);
 $targetType(delay) $actorSymbol(delay);
+$include("$ModelName()_CalendarQueue.h")
 /**/
 
 /***initBlock($delayInit)***/
@@ -20,8 +21,8 @@ if (currentCell == NULL) {
 }
 currentCell->content = CQLinkedListGet($actorSymbol(pendingOutputs));
 // if it is time to fire
-if (currentCell->content->timestamp == director.currentModelTime
-		&& currentCell->content->microstep >= director.currentMicrostep) {
+if (currentCell->content->timestamp == $DirectorName()->currentModelTime
+		&& currentCell->content->microstep >= $DirectorName()->currentMicrostep) {
 	$put(output#0, currentCell->content->token.payload.$cgType(input));
 	CQLinkedListTake($actorSymbol(pendingOutputs));
 }
@@ -29,17 +30,17 @@ if (currentCell->content->timestamp == director.currentModelTime
 
 /***postfireBlock***/
 if ($hasToken(input)) {
-	Time fireTime = director.currentModelTime + $actorSymbol(delay);
+	Time fireTime = $DirectorName()->currentModelTime + $actorSymbol(delay);
 	int microstep = 1;
 	if ($actorSymbol(delay) == 0)
-		microstep = director.currentMicrostep+1;
-	DEEvent * newEvent = newDEEventWithParam(director.currentActor, NULL,
-			director.currentActor->depth,
-			microstep, director.currentActor->priority, fireTime);
+		microstep = $DirectorName()->currentMicrostep+1;
+	DEEvent * newEvent = newDEEventWithParam($DirectorName()->currentActor, NULL,
+			$DirectorName()->currentActor->depth,
+			microstep, $DirectorName()->currentActor->priority, fireTime);
 	newEvent->token.payload.$cgType(input) = $get(input);
 	newEvent->token.type = TYPE_$cgType(input);
 	CQLinkedListInsert($actorSymbol(pendingOutputs), newEvent);
-	$fireAt(&director, $actorName(), fireTime, microstep);
+	$fireAt($ModelName()_$actorName(), fireTime, microstep);
 }
 /**/
 

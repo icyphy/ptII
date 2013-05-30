@@ -40,6 +40,7 @@ import ptolemy.data.type.BaseType;
 import ptolemy.data.type.Type;
 import ptolemy.domains.modal.modal.ModalController;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NamedObj;
 import ptolemy.util.StringUtilities;
 
 ///////////////////////////////////////////////////////////////////
@@ -226,6 +227,10 @@ public class CTemplateParser extends ProceduralTemplateParser {
                 return "int";
             }
             return cgType.toLowerCase();
+        } else if (macro.equals("ModelName")) {
+            return ((CCodeGenerator)super._codeGenerator).getModelName();
+        } else if (macro.equals("DirectorName")) {
+            return CodeGeneratorAdapter.generateName(((NamedObj) _component)) + ".container->director";
         }
 
         // We will assume that it is a call to a polymorphic

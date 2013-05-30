@@ -28,15 +28,23 @@
 package ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.sdf.kernel;
 
 import java.util.Iterator;
+import java.util.List;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
+import ptolemy.actor.Director;
 import ptolemy.actor.IOPort;
+import ptolemy.actor.SuperdenseTimeDirector;
 import ptolemy.actor.TypedIOPort;
+import ptolemy.actor.parameters.ParameterPort;
+import ptolemy.actor.sched.Firing;
+import ptolemy.actor.sched.Schedule;
+import ptolemy.actor.sched.Scheduler;
 import ptolemy.actor.util.DFUtilities;
 import ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.TypedCompositeActor;
 import ptolemy.cg.kernel.generic.CodeGeneratorAdapter;
 import ptolemy.cg.kernel.generic.GenericCodeGenerator;
+import ptolemy.cg.kernel.generic.PortCodeGenerator;
 import ptolemy.cg.kernel.generic.program.CodeStream;
 import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
 import ptolemy.cg.kernel.generic.program.ProgramCodeGenerator;
@@ -47,6 +55,7 @@ import ptolemy.cg.lib.CompiledCompositeActor;
 import ptolemy.cg.lib.PointerToken;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
+import ptolemy.data.IntToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.Variable;
 import ptolemy.data.type.BaseType;
@@ -54,6 +63,7 @@ import ptolemy.data.type.Type;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.NamedObj;
 
 ///////////////////////////////////////////////////////////////////
 ////SDFDirector
@@ -83,6 +93,221 @@ public class SDFDirector
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+    
+    /** Generate The functions' declaration code for this director
+    *
+    *  @return The functions' declaration function code.
+    *  @exception IllegalActionException If thrown while generating code.
+    */
+   public String generateFunctionsDeclaration() throws IllegalActionException {
+       StringBuffer code = new StringBuffer();
+       _sanitizedDirectorName = CodeGeneratorAdapter.generateName(_director);
+
+       code.append(_eol + "void " + _sanitizedDirectorName + "_Preinitialize();");
+       code.append(_eol + "void " + _sanitizedDirectorName + "_Initialize();");
+       code.append(_eol + "boolean " + _sanitizedDirectorName + "_Prefire();");
+       code.append(_eol + "void " + _sanitizedDirectorName + "_Fire();");
+       code.append(_eol + "boolean " + _sanitizedDirectorName + "_Postfire();");
+       code.append(_eol + "void " + _sanitizedDirectorName + "_Wrapup();");
+       
+       code.append(_eol + "void " + _sanitizedDirectorName + "_TransferInputs();");
+       code.append(_eol + "void " + _sanitizedDirectorName + "_TransferOutputs();");
+       
+       return code.toString();
+   }
+    
+    /** Generate the initialize function code for the associated SDF director.
+     *  @return The generated initialize code.
+     *  @exception IllegalActionException If the adapter associated with
+     *   an actor throws it while generating initialize code for the actor.
+     */
+    public String generateInitializeFunctionCode()
+            throws IllegalActionException {
+        StringBuffer code = new StringBuffer();
+
+        CompositeActor container = ((CompositeActor) _director.getContainer());
+        List actorList = container.deepEntityList();
+        String sanitizedContainerName = CodeGeneratorAdapter.generateName(container);
+       
+        ProgramCodeGenerator codeGenerator = getCodeGenerator();
+
+        code.append(_eol + _eol
+                + codeGenerator.comment("Initialization of the director"));
+        
+        if (_director.isEmbedded()) {
+            if (container instanceof CompositeActor) {
+                ptolemy.actor.Director executiveDirector = container.getExecutiveDirector();
+                // Some composites, such as RunCompositeActor want to be treated
+                // as if they are at the top level even though they have an executive
+                // director, so be sure to check _isTopLevel().
+                if (executiveDirector instanceof SuperdenseTimeDirector) {
+                    code.append(_eol + _sanitizedDirectorName + ".currentMicrostep = "
+                        + ((SuperdenseTimeDirector) executiveDirector).getIndex() + ";");
+                }
+            }
+        }
+        
+        Iterator<?> actors = actorList.iterator();
+        while (actors.hasNext()) {
+            NamedObj actor = (NamedObj) actors.next();
+            String sanitizedActorName = CodeGeneratorAdapter.generateName(actor);
+            code.append(_eol + sanitizedActorName + "_initialize();");
+        }
+        
+        code.append(_eol + _sanitizedDirectorName + ".containerActor = &" + sanitizedContainerName + ";");
+
+        Attribute iterations = _director.getAttribute("iterations");
+        int iterationCount = ((IntToken) ((Variable) iterations).getToken())
+                .intValue();
+        code.append(_eol + _sanitizedDirectorName + ".iterations = " + iterationCount + ";");
+        code.append(_eol + _sanitizedDirectorName + ".iterationsCount = 0;");
+        
+        code.append(_eol + _sanitizedDirectorName + ".currentModelTime = " + _sanitizedDirectorName + ".startTime;");
+        code.append(_eol + _sanitizedDirectorName + ".exceedStopTime = false;");
+
+        code.append(_eol + _sanitizedDirectorName + ".isInitializing = false;");
+        code.append(_eol
+                + codeGenerator
+                        .comment("End of the Initialization of the director"));
+        
+        return code.toString();
+    }
+    
+    /** Generate a main loop for an execution under the control of
+     *  this director. If the associated director has a parameter
+     *  named <i>iterations</i> with a value greater than zero,
+     *  then wrap code generated by generateFireCode() in a
+     *  loop that executes the specified number of iterations.
+     *  Otherwise, wrap it in a loop that executes forever.
+     *  In the loop, first get the code returned by generateFireCode(),
+     *  and follow that with the code produced by the container
+     *  help for generateModeTransitionCode(). That code will
+     *  make state transitions in modal models at the conclusion
+     *  of each iteration. Next, this code calls postfire(), and
+     *  that returns false, breaks out of the main loop.
+     *  Finally, if the director has a parameter named <i>period</i>,
+     *  then increment the variable _currentTime after each
+     *  pass through the loop.
+     *  @return Code for the main loop of an execution.
+     *  @exception IllegalActionException If something goes wrong.
+     */
+    public String generateMainLoop() throws IllegalActionException {
+        // Need a leading _eol here or else the execute decl. gets stripped out.
+        StringBuffer code = new StringBuffer();
+//                + getCodeGenerator().getMethodVisibiliyString()
+//                + " void execute() "
+//                + getCodeGenerator().getMethodExceptionString() + " {" + _eol);
+//
+//        Attribute iterations = _director.getAttribute("iterations");
+//        if (iterations == null) {
+//            code.append(_eol + "while (true) {" + _eol);
+//        } else {
+//            int iterationCount = ((IntToken) ((Variable) iterations).getToken())
+//                    .intValue();
+//            if (iterationCount <= 0) {
+//                code.append(_eol + "while (true) {" + _eol);
+//            } else {
+//                // Declare iteration outside of the loop to avoid
+//                // mode" with gcc-3.3.3
+//                code.append(_eol + "int iteration;" + _eol);
+//                code.append("for (iteration = 0; iteration < " + iterationCount
+//                        + "; iteration ++) {" + _eol);
+//            }
+//        }
+               
+        code.append(_eol + "void " + _sanitizedDirectorName + "_Preinitialize() {" + _eol);
+        code.append(generatePreinitializeMethodBodyCode());
+        code.append(_eol + "}" + _eol);
+
+        code.append(_eol + "boolean " + _sanitizedDirectorName + "_Prefire() {" + _eol);
+        code.append(generatePreFireFunctionCode());
+        code.append(_eol + "}" + _eol);
+
+        code.append("boolean " + _sanitizedDirectorName + "_Postfire() {" + _eol);
+        code.append(generatePostFireFunctionCode());
+        code.append(_eol + "}" + _eol);
+
+        code.append("void " + _sanitizedDirectorName + "_Fire() {" + _eol);
+        String[] splitFireCode = getCodeGenerator()._splitBody(
+                "_" + CodeGeneratorAdapter.generateName(getComponent())
+                        + "_run_", generateFireCode());
+        code.append(splitFireCode[1]);
+        // The code generated in generateModeTransitionCode() is executed
+        // after one global iteration, e.g., in HDF model.
+        NamedProgramCodeGeneratorAdapter modelAdapter = (NamedProgramCodeGeneratorAdapter) getCodeGenerator()
+                .getAdapter(_director.getContainer());
+        modelAdapter.generateModeTransitionCode(code);
+
+        /*if (callPostfire) {
+            code.append(_INDENT2 + "if (!postfire()) {" + _eol + _INDENT3
+                    + "break;" + _eol + _INDENT2 + "}" + _eol);
+        }
+         */
+        //_generateUpdatePortOffsetCode(code, (Actor) _director.getContainer());
+        code.append("return;");
+        code.append(_eol + "}" + _eol);
+
+        code.append(_eol + "void " + _sanitizedDirectorName + "_Initialize() {" + _eol);
+        code.append(generateInitializeFunctionCode());
+        code.append(_eol + "}" + _eol);
+        
+        code.append(_eol + "void " + _sanitizedDirectorName + "_Wrapup() {" + _eol);
+        code.append(generateWrapupCode());
+        code.append(_eol + "}" + _eol);
+
+        return processCode(code.toString());
+    }
+    
+    /** Generate The postfire function code for a SDF director. 
+     *  @return The postfire function code.
+     *  @exception IllegalActionException If thrown while generating fire code.
+     */
+    public String generatePostFireFunctionCode() throws IllegalActionException {
+        StringBuffer code = new StringBuffer();
+
+        code.append(_eol + _sanitizedDirectorName + ".iterationsCount++;");
+        
+        code.append(_eol + "if (" + _sanitizedDirectorName + ".iterations > 0 && " 
+                + _sanitizedDirectorName + ".iterationsCount >= " + _sanitizedDirectorName + ".iterations) {");
+        code.append(_eol + _sanitizedDirectorName + ".iterationsCount = 0;");
+        code.append(_eol + "return false;");
+        code.append(_eol + "}");
+        
+        Attribute period = _director.getAttribute("period");
+        if (period != null) {
+            Double periodValue = ((DoubleToken) ((Variable) period).getToken())
+                    .doubleValue();
+            if (periodValue != 0.0) {
+                code.append(_sanitizedDirectorName + ".currentModelTime += " + periodValue + ";" + _eol);
+            }
+        }
+        
+        code.append(_eol + "return true;");
+
+        return code.toString();
+    }
+    
+    /** Generate The prefire function code for a SDF director
+     *  Usually we have to check if all the input ports have enough
+     *  tokens to fire.
+     *  In here we also update the time of the director with its container 
+     *  time.
+     *  If it is top level director, there is no need for that.
+     *  But in the SDFReceiver we assume that receivers have always
+     *  enough tokens, therefore the prefire methods always returns true.
+     *  @return The prefire function code.
+     *  @exception IllegalActionException If thrown while generating fire code.
+     */
+    public String generatePreFireFunctionCode() throws IllegalActionException {
+        StringBuffer code = new StringBuffer();
+        
+        if (_director.isEmbedded())
+            code.append(_eol + _sanitizedDirectorName + ".currentModelTime = " + _sanitizedDirectorName + ".containerActor->actor.container->director->currentModelTime;");
+        
+        code.append(_eol + "return true;");
+        
+        return code.toString();
+    }
 
     /** Generate the preinitialize code for this director.
      *  The preinitialize code for the director is generated by appending
@@ -94,14 +319,64 @@ public class SDFDirector
      */
     public String generatePreinitializeCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
-        code.append(super.generatePreinitializeCode());
+        //code.append(super.generatePreinitializeCode());
+        // We do execute this method without using its result because we need to initialize the offsets
+        super.generatePreinitializeCode();
+        
+        CompositeActor container = ((CompositeActor) _director.getContainer());
+        String sanitizedContainerName = CodeGeneratorAdapter.generateName(container);
+
+        getSanitizedDirectorName();
 
         _updatePortBufferSize();
         _portNumber = 0;
         _intFlag = false;
         _doubleFlag = false;
         _booleanFlag = false;
+        
+        code.append(_eol + "" + _sanitizedDirectorName + ".preinitializeFunction = " + _sanitizedDirectorName + "_Preinitialize;");
+        code.append(_eol + "" + _sanitizedDirectorName + ".initializeFunction = " + _sanitizedDirectorName + "_Initialize;");
+        code.append(_eol + "" + _sanitizedDirectorName + ".prefireFunction = " + _sanitizedDirectorName + "_Prefire;");
+        code.append(_eol + "" + _sanitizedDirectorName + ".postfireFunction = " + _sanitizedDirectorName + "_Postfire;");
+        code.append(_eol + "" + _sanitizedDirectorName + ".fireFunction = " + _sanitizedDirectorName + "_Fire;");
+        code.append(_eol + "" + _sanitizedDirectorName + ".wrapupFunction = " + _sanitizedDirectorName + "_Wrapup;");
+//        code.append(_eol + "" + _sanitizedDirectorName + ".transferInputs = " + _sanitizedDirectorName + "_TransferInputs;");
+//        code.append(_eol + "" + _sanitizedDirectorName + ".transferOutputs = " + _sanitizedDirectorName + "_TransferOutputs;");
+        code.append(_eol + "" + _sanitizedDirectorName + ".containerActor = &" + sanitizedContainerName + ";");
 
+        return code.toString();
+    }
+    
+    /** Generate the preinitialize code for this director.
+     *  The preinitialize code for the director is generated by appending
+     *  the preinitialize code for each actor.
+     *  @return The generated preinitialize code.
+     *  @exception IllegalActionException If getting the adapter fails,
+     *   or if generating the preinitialize code for a adapter fails,
+     *   or if there is a problem getting the buffer size of a port.
+     */
+    public String generatePreinitializeMethodBodyCode() throws IllegalActionException {
+        StringBuffer code = new StringBuffer();
+
+        CompositeActor container = ((CompositeActor) _director.getContainer());
+        List actorList = container.deepEntityList();
+        
+        Attribute period = _director.getAttribute("period");
+        if (period != null && _director.getContainer().getContainer() == null) {
+            double periodValue = ((DoubleToken) ((Variable) period).getToken())
+                    .doubleValue();
+            code.append(_eol + _sanitizedDirectorName + "_period = " + periodValue + ";");
+        }
+        
+        
+        
+        Iterator<?> actors = actorList.iterator();
+        while (actors.hasNext()) {
+            NamedObj actor = (NamedObj) actors.next();
+            String sanitizedActorName = CodeGeneratorAdapter.generateName(actor);
+            code.append(_eol + sanitizedActorName + "_preinitialize();");
+        }
+        
         return code.toString();
     }
 
@@ -534,34 +809,57 @@ public class SDFDirector
      *   director cannot be found.
      */
     public String generateVariableDeclaration() throws IllegalActionException {
-        StringBuffer variableDeclarations = new StringBuffer(
-                super.generateVariableDeclaration());
+        StringBuffer variableDeclarations = new StringBuffer();
 
+        //variableDeclarations.append(super.generateVariableDeclaration());
+        
         ptolemy.actor.sched.StaticSchedulingDirector director = (ptolemy.actor.sched.StaticSchedulingDirector) getComponent();
 
         Attribute period = _director.getAttribute("period");
         if (period != null) {
-            Double periodValue = ((DoubleToken) ((Variable) period).getToken())
-                    .doubleValue();
             // Print period only if it is the containing actor is the top level.
             // FIXME: should this test also be applied to the other code?
             if (director.getContainer().getContainer() == null) {
                 variableDeclarations.append(_eol
                         + getCodeGenerator().comment(
                                 "Provide the period attribute as constant."));
-                variableDeclarations.append("double PERIOD = " + periodValue
-                        + ";" + _eol);
+                variableDeclarations.append("double " + _sanitizedDirectorName + "_period;" + _eol);
             }
-
+            
         }
-
-        if (director.getContainer().getContainer() == null) {
-            variableDeclarations.append(_eol
-                    + getCodeGenerator()
-                            .comment("Provide the iteration count."));
-            variableDeclarations.append("int _iteration = 0;" + _eol);
-        }
+        CompositeActor container = ((CompositeActor) _director.getContainer());
+        String sanitizedContainerName = CodeGeneratorAdapter.generateName(container);
+        variableDeclarations.append("#include \"" + sanitizedContainerName + ".h\"" + _eol);
+        variableDeclarations.append(_eol + "Director " + _sanitizedDirectorName + ";");
+//
+//        if (director.getContainer().getContainer() == null) {
+//            variableDeclarations.append(_eol
+//                    + getCodeGenerator()
+//                            .comment("Provide the iteration count."));
+//            variableDeclarations.append("int " + _sanitizedDirectorName + "_iteration = 0;" + _eol);
+//        }
         return variableDeclarations.toString();
+    }
+    
+
+    /** Generate The wrapup function code. 
+     *  @return The wrapup function code.
+     *  @exception IllegalActionException If thrown while generating fire code.
+     */
+    public String generateWrapupCode() throws IllegalActionException {
+        StringBuffer code = new StringBuffer();
+
+        CompositeActor container = ((CompositeActor) _director.getContainer());
+        Iterator<?> actors = container.deepEntityList().iterator();
+
+        while (actors.hasNext()) {
+            NamedObj actor = (NamedObj) actors.next();
+            String sanitizedActorName = CodeGeneratorAdapter.generateName(actor);
+            code.append(_eol + sanitizedActorName + "_wrapup();");
+        }
+        code.append(_eol + "return;" + _eol);
+
+        return code.toString();
     }
 
     /** Get the code generator associated with this adapter class.
@@ -570,6 +868,16 @@ public class SDFDirector
      */
     public CCodeGenerator getCodeGenerator() {
         return (CCodeGenerator) super.getCodeGenerator();
+    }
+    
+    /** Returns the sanitized name of this director
+     *  adapter
+     * 
+     * @return The name of the director
+     */
+    public String getSanitizedDirectorName() {
+        _sanitizedDirectorName = CodeGeneratorAdapter.generateName(_director);
+        return _sanitizedDirectorName;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -764,7 +1072,7 @@ public class SDFDirector
                 // avoid duplicate declaration.
                 if (!getCodeGenerator().getModifiedVariables().contains(
                         parameter)) {
-                    code.append("static "
+                    code.append(""
                             + targetType(parameter.getType())
                             + " "
                             + getCodeGenerator()
@@ -779,6 +1087,8 @@ public class SDFDirector
 
     ///////////////////////////////////////////////////////////////////
     ////                         private members                        ////
+    
+    protected String _sanitizedDirectorName;
 
     private int _portNumber = 0;
 

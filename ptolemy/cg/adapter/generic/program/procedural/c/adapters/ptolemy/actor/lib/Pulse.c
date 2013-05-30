@@ -1,14 +1,18 @@
 /***preinitBlock($type) ***/
-int $actorSymbol(iterationCount) = 0;
-int $actorSymbol(indexColCount) = 0;
-boolean $actorSymbol(match) = false;
+int $actorSymbol(iterationCount);
+int $actorSymbol(indexColCount);
+boolean $actorSymbol(match);
 $type $actorSymbol(_zero);
 
-int $actorSymbol(LimitedFiringSource_iterationCount) = 0;
+int $actorSymbol(LimitedFiringSource_iterationCount);
 /**/
 
 /*** initBlock($zero) ***/
+$actorSymbol(iterationCount) = 0;
+$actorSymbol(indexColCount) = 0;
+$actorSymbol(match) = false;
 $actorSymbol(_zero) = $zero;
+$actorSymbol(LimitedFiringSource_iterationCount) = 0;
 /**/
 
 /*** fireBlock ***/

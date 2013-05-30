@@ -1,3 +1,3 @@
 /***fireBlock***/
-$put(output, director.currentModelTime)
+$put(output, $DirectorName()->currentModelTime)
 /**/

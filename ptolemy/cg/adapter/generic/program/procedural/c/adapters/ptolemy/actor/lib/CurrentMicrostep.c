@@ -1,3 +1,3 @@
 /***fireBlock***/
-$put(output, director.currentMicrostep)
+$put(output, $DirectorName()->currentMicrostep)
 /**/

@@ -1,47 +1,46 @@
-#include "../includes/Actor.h"
+#include "$ModelName()_Actor.h"
 
-// Create a new empty actor
-Actor * newActor() {
-	Actor * a = NULL;
-	if ((a = malloc(sizeof(Actor))) == NULL)
-		perror("Allocation Error (newActor)");
+// Sets the actor with some parameters
+void ActorSet(Actor * actor, CompositeActor * container, int nbPorts, int depth, int priority,
+		void (*preinitializeFunction)(void), void (*initializeFunction)(void),
+		boolean (*prefireFunction)(void), void (*fireFunction)(void),
+		boolean (*postfireFunction)(void), void (*wrapupFunction)(void)) {
 
-	a->name = NULL;
-	a->inputPorts = NULL;
-	a->outputPorts = NULL;
-	a->depth = 0;
-	a->priority = 0;
-	return a;
-}
+	if (actor == NULL) {
+		perror("Trying to set a null actor !");
+		exit(1);
+	}
 
-// Create a new actor with the given parameters
-Actor * newActorWithParam(char* name, IOPort ** inputPorts, IOPort ** outputPorts) {
-	Actor * a = NULL;
-	if ((a = malloc(sizeof(Actor))) == NULL)
-		perror("Allocation Error (newActorWithParam)");
+	actor->container = container;
+	actor->depth = depth;
+	actor->fireFunction = fireFunction;
+	actor->initializeFunction = initializeFunction;
+	actor->nbPorts = nbPorts;
+	if ((actor->ports = calloc (nbPorts, sizeof(IOPort))) == NULL) {
+		perror("Allocation problem (ActorSet)");
+		exit(1);
+	}
+	actor->postfireFunction = postfireFunction;
+	actor->prefireFunction = prefireFunction;
+	actor->preinitializeFunction = preinitializeFunction;
+	actor->priority = priority;
+	actor->wrapupFunction = wrapupFunction;
 
-	a->name = name;
-	a->inputPorts = inputPorts;
-	a->outputPorts = outputPorts;
-	a->depth = 0;
-	a->priority = 0;
-
-	return a;
+	return;
 }
 
 // Delete properly an actor
 void ActorDelete(Actor * a) {
 	if (a == NULL)
 		return;
-	// Not needed because no malloc was made on the name
-	//if (a->name != NULL)
-		//free(a->name);
-	// FIXME: here free all the ports, not only the table !
-	if (a->inputPorts != NULL)
-		free(a->inputPorts);
-	if (a->outputPorts != NULL)
-		free(a->outputPorts);
-	free(a);
+
+	if (a->ports != NULL) {
+		int i;
+		for (i = 0 ; i < a->nbPorts ; i++)
+			IOPortDelete(a->ports + i);
+	}
+	free (a->ports);
+
 	return;
 }
 

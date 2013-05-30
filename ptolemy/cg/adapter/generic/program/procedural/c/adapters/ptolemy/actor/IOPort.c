@@ -1,34 +1,25 @@
-#include "../includes/IOPort.h"
+#include "$ModelName()_IOPort.h"
 
-// Create a new empty port
-IOPort * newIOPort() {
-	IOPort * p = NULL;
-	if ((p = malloc(sizeof(IOPort))) == NULL)
-			perror("Allocation Error (newIOPort)");
-	p->name = NULL;
-	p->type = NULL;
-	p->eventsToSend = NULL;
-	p->isInput = false;
-	p->isMultiport = false;
-	p->width = 0;
+// Sets a port with some parameters
+void IOPortSet(IOPort * port, Actor * containingActor, char * name, char * type,
+		bool isInput, bool isOutput, bool isMultiport, int widthInside, int widthOutside) {
+	port->containingActor = containingActor;
+	port->name = name;
+	port->type = type;
+	port->isInput = isInput;
+	port->isOutput = isOutput;
+	port->isMultiport = isMultiport;
+	port->width = widthInside;
+	if ((port->farReceivers = calloc(widthOutside, sizeof(Receiver*))) == NULL) {
+		perror("Allocation Error (IOPortSet)");
+		exit(1);
+	}
 
-	return p;
-}
-
-// Create a new port with some parameters
-IOPort * newIOPortWithParam(char* name, char* type,
-		bool isInput, bool isMultiport, int width) {
-	IOPort * p = NULL;
-	if ((p = malloc(sizeof(IOPort))) == NULL)
-		perror("Allocation Error (newIOPortWithParam)");
-
-	p->name = name;
-	p->type = type;
-	p->eventsToSend = NULL;
-	p->isInput = isInput;
-	p->isMultiport = isMultiport;
-	p->width = width;
-	return p;
+	if ((port->receivers = calloc(widthInside, sizeof(Receiver))) == NULL) {
+		perror("Allocation Error (IOPortSet)");
+		exit(1);
+	}
+	return;
 }
 
 // delete properly a port
@@ -36,16 +27,12 @@ void IOPortDelete(IOPort * p) {
 	if (p == NULL)
 		return;
 
-	if (p->name != NULL)
-		free(p->name);
-	if (p->type != NULL)
-		free(p->type);
-	// TODO : delete the events left ?
-	if (p->eventsToSend != NULL)
-		free(p->eventsToSend);
-
+	if (p->receivers != NULL) {
+		int i;
+		for (i = 0 ; i < p->width ; i++)
+			ReceiverClear(p->receivers + i);
+		free (p->receivers);
+	}
 	free(p);
 }
-
-
 

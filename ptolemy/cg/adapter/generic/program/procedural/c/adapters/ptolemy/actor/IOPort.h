@@ -6,26 +6,28 @@
 #ifndef IOPORT_H_
 #define IOPORT_H_
 
-#include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
-#include <errno.h>
 #include <string.h>
-#include "DEEvent.h"
+
+#include "$ModelName()_types.h"
+#include "$ModelName()_Receiver.h"
+#include "$ModelName()_Actor.h"
 
 struct IOPort {
+	Actor * containingActor;
 	char * name;
 	char * type;
 	bool isInput;
+	bool isOutput;
 	bool isMultiport;
-	DEEvent ** eventsToSend;
+	Receiver * receivers;
+	Receiver ** farReceivers;
 	int width;
 };
 
-
-IOPort * newIOPort();
-IOPort * newIOPortWithParam(char* name, char* type,
-		bool isInput, bool isMultiport, int width);
+void IOPortSet(IOPort * port, Actor * containingActor, char * name, char * type,
+		bool isInput, bool isOutput, bool isMultiport, int widthInside, int widthOutside);
 void IOPortDelete(IOPort * port);
 
 #endif

@@ -25,7 +25,7 @@ return ($hasToken(input1) || $hasToken(input2));
 /**/
 
 /***fireBlock***/
-Time currentTime = director.currentModelTime;
+Time currentTime = $DirectorName()->currentModelTime;
 
 while ($hasToken(input1)) {
 	$get(input1);

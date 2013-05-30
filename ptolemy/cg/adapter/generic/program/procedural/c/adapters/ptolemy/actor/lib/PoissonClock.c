@@ -36,11 +36,11 @@ else
 		$actorSymbol(seed) = ($privateSeed ^ 0x5DEECE66DL) & ((1L << 48) - 1);
 
 if ($fireAtStart) {
-	$fireAt(&director, $actorName(), currentTime, 0);
+	$fireAt($ModelName()_$actorName(), currentTime, 0);
 }
 else {
 	$actorSymbol(randomNumber) = -log(1.0 - nextDouble()) * $actorSymbol(meanTime);
-	$fireAt(&director, $actorName(), currentTime + $actorSymbol(randomNumber), 0);
+	$fireAt($ModelName()_$actorName(), currentTime + $actorSymbol(randomNumber), 0);
 }
 
 $actorSymbol(phase) = 0;
@@ -64,13 +64,13 @@ boolean triggerInputPresent = false;
 
 // It is time to produce an output if the current time equals
 // or exceeds the next firing time (it should never exceed).
-boolean timeForOutput = director.currentModelTime - $actorSymbol(nextFiringTime) >= 0;
+boolean timeForOutput = $DirectorName()->currentModelTime - $actorSymbol(nextFiringTime) >= 0;
 
 if (!timeForOutput && !triggerInputPresent) {
 	// It is too early.
 	return;
 }
-if (director.currentMicrostep < 1 && !triggerInputPresent) {
+if ($DirectorName()->currentMicrostep < 1 && !triggerInputPresent) {
 	// The time matches, but the microstep is too early.
 	return;
 }
@@ -92,12 +92,12 @@ if ($actorSymbol(outputProduced)) {
 	$actorSymbol(phase)++;
 	$actorSymbol(phase) %= $offsetSize;
 
-	$actorSymbol(nextFiringTime) = director.currentModelTime + $actorSymbol(randomNumber);
-	$fireAt(&director, $actorName(), $actorSymbol(nextFiringTime), 0);
-} else if (director.currentModelTime - $actorSymbol(nextFiringTime) >= 0) {
+	$actorSymbol(nextFiringTime) = $DirectorName()->currentModelTime + $actorSymbol(randomNumber);
+	$fireAt($ModelName()_$actorName(), $actorSymbol(nextFiringTime), 0);
+} else if ($DirectorName()->currentModelTime - $actorSymbol(nextFiringTime) >= 0) {
 	// Output was not produced, but time matches, which
 	// means the microstep was too early. Request a refiring.
-	$fireAt(&director, $actorName(), director.currentModelTime, 0);
+	$fireAt($ModelName()_$actorName(), $DirectorName()->currentModelTime, 0);
 }
 
 return;

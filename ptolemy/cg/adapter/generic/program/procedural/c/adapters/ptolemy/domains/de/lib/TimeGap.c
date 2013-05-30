@@ -14,7 +14,7 @@ if ($hasToken(input)) {
 	$get(input);
 }
 
-Time currentTime = director.currentModelTime;
+Time currentTime = $DirectorName()->currentModelTime;
 
 if ($actorSymbol(previousTime) != -DBL_MAX) {
 	Time outToken = currentTime - $actorSymbol(previousTime);
@@ -23,5 +23,5 @@ if ($actorSymbol(previousTime) != -DBL_MAX) {
 /**/
 
 /***postfireBlock***/
-$actorSymbol(previousTime) = director.currentModelTime;
+$actorSymbol(previousTime) = $DirectorName()->currentModelTime;
 /**/

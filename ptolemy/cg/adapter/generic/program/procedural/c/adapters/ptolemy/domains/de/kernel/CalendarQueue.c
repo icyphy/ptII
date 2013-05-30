@@ -1,4 +1,4 @@
-#include "../includes/CalendarQueue.h"
+#include "$ModelName()_CalendarQueue.h"
 
 // Functions for a CalendarQueue :
 

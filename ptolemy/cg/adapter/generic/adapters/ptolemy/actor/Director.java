@@ -445,6 +445,17 @@ public class Director extends NamedProgramCodeGeneratorAdapter {
 
         return code.toString();
     }
+    
+    /** Generate variable declarations for inputs and outputs and parameters.
+     *  Append the declarations to the given string buffer. 
+     *  This method returns the declarations for the param actor only.
+     *  @return code The generated code.
+     *  @exception IllegalActionException If the adapter class for the model
+     *   director cannot be found.
+     */
+    public String generateVariableDeclaration(NamedProgramCodeGeneratorAdapter adapter) throws IllegalActionException {
+        return _generateVariableDeclaration(adapter);
+    }
 
     /** Generate variable initialization for the referenced parameters.
      *  @return code The generated code.
@@ -475,6 +486,16 @@ public class Director extends NamedProgramCodeGeneratorAdapter {
         }
 
         return code.toString();
+    }
+    
+    /** Generate variable initialization for the referenced parameters.
+     *  for the adapter given in argument
+     *  @return code The generated code.
+     *  @exception IllegalActionException If the adapter class for the model
+     *   director cannot be found.
+     */
+    public String generateVariableInitialization(NamedProgramCodeGeneratorAdapter adapter) throws IllegalActionException {
+        return _generateVariableInitialization(adapter);
     }
 
     /** Generate the wrapup code of the director associated with this adapter

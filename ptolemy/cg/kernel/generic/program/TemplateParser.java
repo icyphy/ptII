@@ -1612,10 +1612,10 @@ public class TemplateParser {
 
     private String _replaceFireAtMacro(String parameter) 
     		throws IllegalActionException {
-    	// e.g. $fireAt(&director, actorName, timestamp, microstep); 
+    	// e.g. $fireAt(actorName, timestamp, microstep); 
         List<String> parameters = parseList(parameter);
 
-        if (parameters.size() != 4) {
+        if (parameters.size() != 3) {
             CGException
                     .throwException("\""
                             + parameter
@@ -1629,13 +1629,8 @@ public class TemplateParser {
                     "Parameters are only supported for"
                             + "actors, but this component is not one.");
         }
-        Director directorAdapter = (Director) _codeGenerator
-                .getAdapter(((Actor) _component).getDirector());
         
-        if (directorAdapter instanceof DEDirector)
-        	return "DEDirectorFireAt(" + parameter +");";
-
-        return "";
+        return "(*(" + parameters.get(0) + ".container->director->fireAtFunction))(&" + parameter +");";
     }
     
     private String _replaceGetMacro(String parameter)
@@ -1819,7 +1814,7 @@ public class TemplateParser {
      */
     private CodeStream _codeStream = null;
 
-    private Object _component;
+    protected Object _component;
 
     /** The parse tree to use with expressions. */
     protected ParseTreeCodeGenerator _parseTreeCodeGenerator;

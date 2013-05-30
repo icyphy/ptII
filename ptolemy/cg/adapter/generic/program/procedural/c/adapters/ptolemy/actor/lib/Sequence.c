@@ -1,6 +1,11 @@
 /***preinitBlock***/
-int $actorSymbol(currentIndex) = 0;
-boolean $actorSymbol(outputProduced) = false;
+int $actorSymbol(currentIndex);
+boolean $actorSymbol(outputProduced);
+/**/
+
+/***initBlock***/
+$actorSymbol(currentIndex) = 0;
+$actorSymbol(outputProduced) = false;
 /**/
 
 /***codeBlock1***/

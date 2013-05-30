@@ -15,7 +15,9 @@ $put(output, $get(left) <= ($get(right) + $val(tolerance)));
 /**/
 
 /*** EQBlock ***/
-$put(output, ($get(left) <= ($get(right) + $val(tolerance)))
-        && ($get(left) >= ($get(right) - $val(tolerance))));
+$lcCgType(left) tempLeft = $get(left);
+$lcCgType(right) tempRight = $get(right);
+$put(output, (tempLeft <= (tempRight + $val(tolerance)))
+        && (tempLeft >= (tempRight - $val(tolerance))));
 /**/
 
