@@ -1,15 +1,29 @@
-<project name="pt-modules" default="build-jar">
+<project name="pt-modules" default="build-all">
   <!-- $Id$
        This file is used by ant to build modules that include a subset of Ptolemy II.
     -->
 
   <!-- Ant properties. Alphabetize, please. -->
   <property name="jar-name" value="jar"/>
+
+  <!-- junit.formatter defaults to plain and is used by checkstyle and test.  Other values: brief, failure, plain, xml -->
+  <property name="junit.formatter" value="plain" />
+
   <property name="projectsPath" value="../projects"/>
   <property name="ptPath" value="../.."/>
   <property name="pt-projects" value=""/>
   <property name="pt-projects-classpath" value=""/>
 
+  <!-- The timeout in seconds for findbugs and junit. -->
+  <property name="timeout" value="2400000" />
+
+  <!-- Ant paths. Alphabetize, please -->
+  <path id="junit.classpath">
+    <pathelement location="${ptPath}/lib/junit-4.8.2.jar"/>
+    <pathelement location="${ptPath}/lib/JUnitParams-0.3.0.jar"/>
+    <pathelement location="${ptPath}/lib/ptjacl.jar"/>
+    <pathelement location="jars/pt-test.jar"/>
+  </path>
 
   <!-- Ant targets. Alphabetize, please. Run "ant -p" to see the descriptions. -->
   <target name="clean"
@@ -64,6 +78,14 @@
       <param name="jar-name" value="ptolemy-core"/>
     </antcall>
   </target>
+
+  <!-- Create ptolemy-kore-test.jar with:
+       (cd $PTII; jar -cvf pt-kore-test.jar ptolemy/kernel/test/*.class ptolemy/kernel/util/test/*.class ptolemy/kernel/test/junit/*.class ptolemy/kernel/util/test/junit/*.class)
+    -->
+
+  <!-- Create pt-test.jar with:
+       (cd $PTII; jar -cf pt-modules/build/jars/pt-test.jar util/testsuite/*.class ptolemy/util/test ptolemy/util/test/junit/*.class)
+    -->
 
   <target name="ptolemy-moml.jar"
 	  description="A jar file containing the pt-moml and pt-momlapp projects.">
@@ -135,6 +157,29 @@
       <param name="jar-name" value="ptolemy-sr"/>
       <param name="pt-projects-classpath" value="jars/ptolemy-core.jar;jars/ptolemy-sdf.jar"/>
     </antcall>
+  </target>
+
+  <target name="test.core" 
+	  description="Test ptolemy-core.jar">
+    <!-- printsummary takes one of One of on, off, and withOutAndErr.  Off is the default-->
+    <junit fork="yes"
+	   jvm="${ptPath}/ptolemy/util/test/junit/javachdir"
+	   printsummary="withOutAndErr"
+	   showoutput="yes"
+	   timeout="${timeout}">
+      <classpath>
+	<path refid="junit.classpath" />
+	<pathelement location="jars/pt-kore-test.jar"/>
+	<pathelement location="jars/pt-kore.jar"/>
+	<pathelement location="jars/util.jar"/>
+      </classpath>
+      <formatter type="${junit.formatter}" usefile="false"/>
+      <jvmarg value="-Dptolemy.ptII.dir=${ptPath}" />
+      <jvmarg value="-Dptolemy.ptII.batchMode=true" />
+      <sysproperty key="basedir" value="${ptPath}"/>
+      <test  name="ptolemy.kernel.test.junit.JUnitTclTest" />
+      <test  name="ptolemy.kernel.util.test.junit.JUnitTclTest" />
+    </junit>
   </target>
 
 </project>
