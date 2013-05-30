@@ -110,7 +110,9 @@ if {"$isRunningNightlyBuild" == "true"} {
 }
 
 # Actors like Const now use Dependency Injection to that we can support Android.
-java::call ptolemy.actor.injection.ActorModuleInitializer initializeInjector
+if [catch {java::call ptolemy.actor.injection.ActorModuleInitializer initializeInjector} errmsg] {
+    puts "Warning: Could not invoke ptolemy.actor.injection.ActorModuleInitializer initializeInjector.  This is only a problem if you want to run models."
+}
 
 proc scriptName {} {
     global argv0 PTII
