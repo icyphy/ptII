@@ -37,22 +37,21 @@
     <antcall target="ptolemy-core.jar"/>
     <antcall target="ptolemy-moml.jar"/>
     <antcall target="ptolemy-sdf.jar"/>
+    <antcall target="ptolemy-sr.jar"/>
     <antcall target="ptolemy-lib.jar"/>
     <antcall target="ptolemy-de.jar"/>
     <antcall target="ptolemy-ddf.jar"/>
-    <antcall target="ptolemy-sr.jar"/>
     <antcall target="ptolemy-fsm.jar"/>
     <antcall target="ptolemy-ptera.jar"/>
   </target>
-
 
   <target name="build-jar"
 	  depends="init"
 	  description="Build an individual jar file.">
     <delete dir="${jar-name}"/>
     <copy todir="${jar-name}/src">
-      <linkedprojectfileset ptPath="${ptPath}" projectPathsPrefix="${projectsPath}"
-			    projectPaths="${pt-projects}"/>
+	<ptprojectfileset ptPath="${ptPath}" projectPathsPrefix="${projectsPath}"
+		projectNames="${pt-projects}" echo="true"/>
     </copy>
     <javac srcdir="${jar-name}/src" classpath="${pt-projects-classpath}" includeantruntime="false"/>
     <jar destfile="jars/${jar-name}.jar" basedir="${jar-name}/src"
@@ -64,10 +63,10 @@
   <target name="init"
 	  description="Build a Java class used by ant to handle linked projects.">
     <javac srcdir="pt-antext/src" destdir="pt-antext/bin" includeantruntime="true"/>
-    <typedef
-       name="linkedprojectfileset"
-       classname="org.ptolemy.antext.LinkedProjectFileSet"
-       classpath="pt-antext/bin"/>
+	<typedef
+    	name="ptprojectfileset"
+    	classname="org.ptolemy.antext.PtProjectFileSet"
+    	classpath="pt-antext/bin"/>
     <mkdir dir="jars"/>
   </target>
   
