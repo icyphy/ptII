@@ -1,0 +1,16 @@
+# files for pt-ptera @ /Users/hal/java/workspaces/ptolemy/ptII/pt-modules/build/../projects/pt-ptera
+/ptolemy/actor/util/BreakCausalityInterface.java
+/ptolemy/domains/ptera/kernel/ActionsAttribute.java
+/ptolemy/domains/ptera/kernel/Event.java
+/ptolemy/domains/ptera/kernel/EventDebugEvent.java
+/ptolemy/domains/ptera/kernel/EventQueueDebugListener.java
+/ptolemy/domains/ptera/kernel/ParametersAttribute.java
+/ptolemy/domains/ptera/kernel/PteraController.java
+/ptolemy/domains/ptera/kernel/PteraDebugEvent.java
+/ptolemy/domains/ptera/kernel/PteraDirector.java
+/ptolemy/domains/ptera/kernel/PteraErrorEvent.java
+/ptolemy/domains/ptera/kernel/PteraModalModel.java
+/ptolemy/domains/ptera/kernel/SchedulingRelation.java
+/ptolemy/domains/ptera/kernel/TimeAdvanceEvent.java
+/ptolemy/domains/ptera/kernel/VariableScope.java
+/ptolemy/domains/ptera/lib/SynchronizeToRealtime.java
