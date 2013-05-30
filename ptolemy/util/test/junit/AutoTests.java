@@ -69,20 +69,6 @@ import ptolemy.util.StringUtilities;
 public class AutoTests extends ModelTests {
 
     /**
-     * Find the ptolemy.moml.MoMLSimpleApplication class and its constructor
-     * that takes a String.
-     *
-     * @exception Throwable
-     *                If the class or constructor cannot be found.
-     */
-    @Before
-    public void setUp() throws Throwable {
-        _applicationClass = Class.forName("ptolemy.moml.MoMLSimpleApplication");
-        _applicationConstructor = _applicationClass
-                .getConstructor(String.class);
-    }
-
-    /**
      * Execute a model.
      *
      * @param fullPath
@@ -104,6 +90,14 @@ public class AutoTests extends ModelTests {
         if (modelFileIsOK(fullPath)) {
             System.out.println("----------------- testing " + fullPath);
             System.out.flush();
+            if (_applicationConstructor == null) {
+                // Delay instantiating MoMLSimpleApplication so that we
+                // can run the kernel tests without requiring moml
+                _applicationClass = Class.forName("ptolemy.moml.MoMLSimpleApplication");
+                _applicationConstructor = _applicationClass
+                    .getConstructor(String.class);
+
+            }
             _applicationConstructor.newInstance(fullPath);
         } else {
             System.err.println("----------------- *** Skipping testing of "

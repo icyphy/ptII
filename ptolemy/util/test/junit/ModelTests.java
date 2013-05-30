@@ -128,8 +128,11 @@ public class ModelTests {
     /**
      * The application class. We use reflection here to avoid false dependencies
      * if auto/ does not exist.
+     * In derived classes, _applicationClass should be initialized in right
+     * before it is to be used.  It should not be initialized in setup()
+     * so that we can avoid dependencies on MoMLSimpleApplication.
      */
-    protected static Class<?> _applicationClass;
+    protected static Class<?> _applicationClass = null;
 
     /** The application constructor. */
     protected static Constructor _applicationConstructor;
