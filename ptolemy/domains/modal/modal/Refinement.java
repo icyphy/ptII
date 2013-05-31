@@ -28,9 +28,9 @@ package ptolemy.domains.modal.modal;
 
 import java.util.List;
 
+import ptolemy.actor.InstanceOpener;
 import ptolemy.actor.TypedActor;
 import ptolemy.actor.TypedCompositeActor;
-import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.parameters.ParameterPort;
 import ptolemy.domains.modal.kernel.ContainmentExtender;
 import ptolemy.domains.modal.kernel.RefinementActor;
@@ -99,14 +99,15 @@ public class Refinement extends TypedCompositeActor implements RefinementActor {
      *   template is not used.
      *  @param className The class name for the refinement, which is used when
      *   template is null.
-     *  @param configuration The configuration that is used to open the
-     *   refinement (as a look-inside action) after it is created, or null if it
-     *   is not needed to open the refinement.
+     *  @param instanceOpener The instanceOpener, typically a
+     *   Configuration, that is used to open the refinement (as a
+     *   look-inside action) after it is created, or null if it is not
+     *   needed to open the refinement.
      *  @exception IllegalActionException If error occurs while creating the
      *   refinement.
      */
     public void addRefinement(State state, String name, Entity template,
-            String className, Configuration configuration)
+            String className, InstanceOpener instanceOpener)
             throws IllegalActionException {
         throw new IllegalActionException(this, "Unable to create a "
                 + "refinement within a CompositeActor.");

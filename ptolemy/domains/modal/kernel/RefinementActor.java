@@ -29,7 +29,7 @@
 package ptolemy.domains.modal.kernel;
 
 import ptolemy.actor.TypedActor;
-import ptolemy.actor.gui.Configuration;
+import ptolemy.actor.InstanceOpener;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.IllegalActionException;
 
@@ -55,14 +55,15 @@ public interface RefinementActor extends TypedActor {
      *   template is not used.
      *  @param className The class name for the refinement, which is used when
      *   template is null.
-     *  @param configuration The configuration that is used to open the
-     *   refinement (as a look-inside action) after it is created, or null if it
-     *   is not needed to open the refinement.
+     *  @param instanceOpener The instanceOpener, typically a
+     *   Configuration, that is used to open the refinement (as a
+     *   look-inside action) after it is created, or null if it is not
+     *   needed to open the refinement.
      *  @exception IllegalActionException If error occurs while creating the
      *   refinement.
      */
     public void addRefinement(State state, String name, Entity template,
-            String className, Configuration configuration)
+            String className, InstanceOpener instanceOpener)
             throws IllegalActionException;
 
     /** Return the state (or event, which subclasses state) that this actor

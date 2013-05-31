@@ -32,9 +32,9 @@ import java.util.List;
 import java.util.TreeMap;
 
 import ptolemy.actor.IOPort;
+import ptolemy.actor.InstanceOpener;
 import ptolemy.actor.TypedActor;
 import ptolemy.actor.TypedCompositeActor;
-import ptolemy.actor.gui.Configuration;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.domains.modal.kernel.ContainmentExtender;
@@ -435,14 +435,15 @@ public class ModalRefinement extends ModalModel implements DropTargetHandler,
      *   template is not used.
      *  @param className The class name for the refinement, which is used when
      *   template is null.
-     *  @param configuration The configuration that is used to open the
-     *   refinement (as a look-inside action) after it is created, or null if it
-     *   is not needed to open the refinement.
+     *  @param instanceOpener The instanceOpener, typically a
+     *   Configuration, that is used to open the refinement (as a
+     *   look-inside action) after it is created, or null if it is not
+     *   needed to open the refinement.
      *  @exception IllegalActionException If error occurs while creating the
      *   refinement.
      */
     public void addRefinement(State state, final String name, Entity template,
-            String className, final Configuration configuration)
+            String className, final InstanceOpener instanceOpener)
             throws IllegalActionException {
         Attribute allowRefinement = state.getAttribute("_allowRefinement");
         if (allowRefinement instanceof Parameter
@@ -573,9 +574,9 @@ public class ModalRefinement extends ModalModel implements DropTargetHandler,
                     }
                 }
 
-                if (configuration != null) {
+                if (instanceOpener != null) {
                     // Look inside.
-                    configuration.openInstance(entity);
+                    instanceOpener.openAnInstance(entity);
                 }
             }
         };

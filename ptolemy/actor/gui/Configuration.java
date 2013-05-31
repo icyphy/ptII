@@ -39,6 +39,7 @@ import java.util.List;
 import java.util.Set;
 
 import ptolemy.actor.ApplicationConfigurer;
+import ptolemy.actor.InstanceOpener;
 import ptolemy.actor.PubSubPort;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.data.ArrayToken;
@@ -139,7 +140,7 @@ import ptolemy.util.StringUtilities;
  @see TextEditorTableau
  */
 public class Configuration extends CompositeEntity implements
-        ApplicationConfigurer {
+   ApplicationConfigurer, InstanceOpener {
     /** Construct an instance in the specified workspace with an empty
      *  string as a name. You can then change the name with setName().
      *  If the workspace argument is null, then use the default workspace.
@@ -944,6 +945,31 @@ public class Configuration extends CompositeEntity implements
             return null;
         }
     }
+
+    /** Open the specified instance.
+     *  A derived class looks for the instance, and if the instance already has
+     *  open tableaux, then put those in the foreground
+     *  Otherwise, create a new tableau and if
+     *  necessary, a new effigy.  Unless there is a more natural container
+     *  for the effigy (e.g. it is a hierarchical model), then if a new
+     *  effigy is created, it is put into the directory of the configuration.
+     *  Any new tableau created will be contained by that effigy.
+     *
+     *  @param entity The entity to open.
+     *  @exception IllegalActionException If constructing an effigy or tableau
+     *   fails.
+     *  @exception NameDuplicationException If a name conflict occurs (this
+     *   should not be thrown).
+     */
+    public void openAnInstance(NamedObj entity) throws IllegalActionException,
+            NameDuplicationException {
+        // This could be called openInstance(), but we don't want to
+        // have a dependency to Tableau in ModalController and ModalRefinement.
+
+        // Note that we ignore the return value here.
+        openInstance(entity);
+    }
+
 
     /** Open the specified instance. If the instance already has
      *  open tableaux, then put those in the foreground and

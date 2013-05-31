@@ -92,8 +92,9 @@ JSRCS = \
 	IOPortEventListener.java \
 	IORelation.java \
 	Initializable.java \
-	InvariantViolationException.java \
+	InstanceOpener.java \
 	IntermediateReceiver.java \
+	InvariantViolationException.java \
 	LazyTypedCompositeActor.java \
 	Librariable.java \
 	LocalClock.java \
