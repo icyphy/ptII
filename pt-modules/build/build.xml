@@ -17,7 +17,7 @@
   <!-- The timeout in seconds for findbugs and junit. -->
   <property name="timeout" value="2400000" />
 
-  <!-- Ant paths. Alphabetize, please -->
+  <!-- Ant paths. Alphabetize, please. -->
   <path id="junit.classpath">
     <pathelement location="${ptPath}/lib/junit-4.8.2.jar"/>
     <pathelement location="${ptPath}/lib/JUnitParams-0.3.0.jar"/>
@@ -33,15 +33,18 @@
   <target name="build-all"
 	  depends="init,clean"
 	  description="Clean, then build all the jar files.">
+    <!-- Please keep these alphabetized. -->
     <antcall target="ptolemy-core.jar"/>
-    <antcall target="ptolemy-moml.jar"/>
-    <antcall target="ptolemy-sdf.jar"/>
-    <antcall target="ptolemy-sr.jar"/>
-    <antcall target="ptolemy-lib.jar"/>
     <antcall target="ptolemy-de.jar"/>
     <antcall target="ptolemy-ddf.jar"/>
+    <antcall target="ptolemy-lib.jar"/>
+    <antcall target="ptolemy-kore-test.jar"/>
     <antcall target="ptolemy-modal.jar"/>
+    <antcall target="ptolemy-moml.jar"/>
     <antcall target="ptolemy-ptera.jar"/>
+    <antcall target="ptolemy-sdf.jar"/>
+    <antcall target="ptolemy-sr.jar"/>
+    <antcall target="ptolemy-test.jar"/>
   </target>
 
   <target name="build-jar"
@@ -77,33 +80,6 @@
     </antcall>
   </target>
 
-  <target name="ptolemy-kore-test.jar"
-	  description="A jar file containing the test classes for the pt-kore.">
-    <antcall target="build-jar">
-      <param name="pt-projects" value="pt-kore-test"/>
-      <param name="pt-projects-classpath" value="jars/ptolemy-core.jar;jars/ptolemy-test.jar;${ptPath}/lib/junit-4.8.2.jar;${ptPath}/lib/JUnitParams-0.3.0.jar;${ptPath}/lib/ptjacl.jar"/>
-      <param name="jar-name" value="ptolemy-kore-test"/>
-    </antcall>
-  </target>
-
-  <target name="ptolemy-moml.jar"
-	  description="A jar file containing the pt-moml and pt-momlapp projects.">
-    <antcall target="build-jar">
-      <param name="pt-projects" value="pt-moml;pt-momlapp"/>
-      <param name="jar-name" value="ptolemy-moml"/>
-      <param name="pt-projects-classpath" value="jars/ptolemy-core.jar"/>
-    </antcall>
-  </target>
-
-  <target name="ptolemy-lib.jar"
-	  description="A jar file containing the pt-lib project.">
-    <antcall target="build-jar">
-      <param name="pt-projects" value="pt-junit;pt-lib"/>
-      <param name="jar-name" value="ptolemy-lib"/>
-      <param name="pt-projects-classpath" value="jars/ptolemy-core.jar;jars/ptolemy-sdf.jar"/>
-    </antcall>
-  </target>
-
   <target name="ptolemy-de.jar"
 	  description="A jar file containing the pt-de project.">
     <antcall target="build-jar">
@@ -122,12 +98,43 @@
     </antcall>
   </target>
 
+  <!-- FIXME: The ptolemy-kore-test.jar file could be renamed and called
+       ptolemy-core-test.jar.  The JUnit and test class files for all
+       the packages in ptolemy-core.jar would need to be added. -->
+  <target name="ptolemy-kore-test.jar"
+	  depends="ptolemy-test.jar"
+	  description="A jar file containing the test classes for the pt-kore.">
+    <antcall target="build-jar">
+      <param name="pt-projects" value="pt-kore-test"/>
+      <param name="pt-projects-classpath" value="jars/ptolemy-core.jar;jars/ptolemy-test.jar;${ptPath}/lib/junit-4.8.2.jar;${ptPath}/lib/JUnitParams-0.3.0.jar;${ptPath}/lib/ptjacl.jar"/>
+      <param name="jar-name" value="ptolemy-kore-test"/>
+    </antcall>
+  </target>
+
+  <target name="ptolemy-lib.jar"
+	  description="A jar file containing the pt-lib project.">
+    <antcall target="build-jar">
+      <param name="pt-projects" value="pt-junit;pt-lib"/>
+      <param name="jar-name" value="ptolemy-lib"/>
+      <param name="pt-projects-classpath" value="jars/ptolemy-core.jar;jars/ptolemy-sdf.jar"/>
+    </antcall>
+  </target>
+
   <target name="ptolemy-modal.jar"
 	  description="A jar file containing the pt-modal project.">
     <antcall target="build-jar">
       <param name="pt-projects" value="pt-modal"/>
       <param name="jar-name" value="ptolemy-modal"/>
       <param name="pt-projects-classpath" value="jars/ptolemy-core.jar;jars/ptolemy-sdf.jar;jars/ptolemy-lib.jar;jars/ptolemy-moml.jar"/>
+    </antcall>
+  </target>
+
+  <target name="ptolemy-moml.jar"
+	  description="A jar file containing the pt-moml and pt-momlapp projects.">
+    <antcall target="build-jar">
+      <param name="pt-projects" value="pt-moml;pt-momlapp"/>
+      <param name="jar-name" value="ptolemy-moml"/>
+      <param name="pt-projects-classpath" value="jars/ptolemy-core.jar"/>
     </antcall>
   </target>
 
@@ -167,6 +174,15 @@
     </antcall>
   </target>
 
+  <!-- The test target is the main entry point for the nightly build.
+       Running "ant test" should build the jars and run the tests. -->
+  <target name="test" 
+	  depends="test.core"
+          description="Run the tests for the modules."/>
+
+  <!-- FIXME: Make this be more generic so that each test can call it.
+       We need to pass in the dependencies, the jar files for the path and
+       the tests to be run. -->
   <target name="test.core" 
 	  depends="ptolemy-test.jar"
 	  description="Test ptolemy-core.jar">
