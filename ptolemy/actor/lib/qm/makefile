@@ -72,7 +72,7 @@ JSRCS = \
 	CanBusPriority.java \
 	CQMInputPort.java \
 	CQMOutputPort.java \
-	CompositeQM.java \
+	CompositeQuantityManager.java \
 	CrossbarSwitch.java \
 	TTESwitch.java \
 	QuantityManagerListener.java \
@@ -90,13 +90,16 @@ MISC_FILES = test doc-files
 OPTIONAL_FILES = \
 	demo \
         doc \
-	'QuantityManagerListener$$EventType.class' \
-	'QuantityManagerMonitor$$QuantityManagerEditorFactory.class' \
+	'AFDXESs$$AFDXEndSystemAttributes.class' \
 	'AFDXSwitch$$AFDXSwitchAttributes.class' \
+	'AtomicQuantityManager$$QMAttributes.class' \
+	'CompositeQuantityManager$$CQMAttributes.class' \
 	'BasicSwitch$$BasicSwitchAttributes.class' \
 	'Bus$$BusAttributes.class' \
 	'CompositeQM$$CQMAttributes.class' \
-	'MonitoredQuantityManager$$QMAttributes.class'
+	'MonitoredQuantityManager$$QMAttributes.class' \
+	'QuantityManagerListener$$EventType.class' \
+	'QuantityManagerMonitor$$QuantityManagerEditorFactory.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 
