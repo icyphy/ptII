@@ -463,8 +463,20 @@ For example:
   <target name="run" depends="vergil"
 	  description="Invoke the Ptolemy II User Interface (alias for the vergil target)"/>
 
-  <target name="test" depends="build, test.short, test.long, test.longest"
+  <target name="test"
+	  depends="build, test.pt-modules, test.short, test.long, test.longest"
 	  description="Build and run the all the junit tests." />
+
+  <target name="test.pt-modules"
+	  description="Test the jars in pt-modules.">
+    <ant antfile="build.xml"
+	 dir="pt-modules/build"
+	 inheritAll="false"
+	 target="test"
+	 >
+      <property name="javachdir" value="ptolemy/util/test/junit/javachdir"/>
+    </ant>
+  </target>
 
   <!-- Cobertura: code coverage tool -->
   <target name="test.cobertura"
