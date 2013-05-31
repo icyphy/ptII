@@ -5315,7 +5315,7 @@ if test -f "$LIBEXPAT_INCLUDE_DIR/expat.h" -a -d "$LIBEXPAT_LIB_DIR"; then
         if test -f "$PTBOOST_INCLUDE_DIR/boost/numeric/odeint.hpp"; then
             PTBOOST=yes
 	    PTFMIPP_DIR=fmipp
-	    PTFMIPP_PACKAGES=ptolemy.actor.lib.fmi.fmipp
+	    PTFMIPP_PACKAGES="ptolemy.actor.lib.fmi.fmipp ptolemy.actor.lib.fmi.fmipp.swig"
         else
             AC_MSG_WARN([Failed to find boost/numeric/odeint.hpp, so FMI ++
     will not be compiled. FMI++ is an extension of the Funcional Mockup Interface, see
