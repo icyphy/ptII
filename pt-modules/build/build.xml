@@ -9,24 +9,19 @@
   <!-- junit.formatter defaults to plain and is used by checkstyle and test.  Other values: brief, failure, plain, xml -->
   <property name="junit.formatter" value="plain" />
 
-  <property name="junitJar" value="${ptPath}/lib/junit-4.8.2.jar"/>
-  <property name="junitparamsJar" value="${ptPath}/lib/JUnitParams-0.3.0.jar"/>
-
   <property name="projectsPath" value="../projects"/>
   <property name="ptPath" value="../.."/>
   <property name="pt-projects" value=""/>
   <property name="pt-projects-classpath" value=""/>
-
-  <property name="ptjaclJar" value="${ptPath}/lib/ptjacl.jar"/>
 
   <!-- The timeout in seconds for findbugs and junit. -->
   <property name="timeout" value="2400000" />
 
   <!-- Ant paths. Alphabetize, please -->
   <path id="junit.classpath">
-    <pathelement location="${junit-jar}"/>
-    <pathelement location="${junitparams-jar}"/>
-    <pathelement location="${ptjacl-jar}"/>
+    <pathelement location="${ptPath}/lib/junit-4.8.2.jar"/>
+    <pathelement location="${ptPath}/lib/JUnitParams-0.3.0.jar"/>
+    <pathelement location="${ptPath}/lib/ptjacl.jar"/>
   </path>
 
   <!-- Ant targets. Alphabetize, please. Run "ant -p" to see the descriptions. -->
@@ -82,9 +77,14 @@
     </antcall>
   </target>
 
-  <!-- Create ptolemy-kore-test.jar with:
-       (cd $PTII; jar -cvf pt-kore-test.jar ptolemy/kernel/test/*.class ptolemy/kernel/util/test/*.class ptolemy/kernel/test/junit/*.class ptolemy/kernel/util/test/junit/*.class)
-    -->
+  <target name="ptolemy-kore-test.jar"
+	  description="A jar file containing the test classes for the pt-kore.">
+    <antcall target="build-jar">
+      <param name="pt-projects" value="pt-kore-test"/>
+      <param name="pt-projects-classpath" value="jars/ptolemy-core.jar;jars/ptolemy-test.jar;${ptPath}/lib/junit-4.8.2.jar;${ptPath}/lib/JUnitParams-0.3.0.jar;${ptPath}/lib/ptjacl.jar"/>
+      <param name="jar-name" value="ptolemy-kore-test"/>
+    </antcall>
+  </target>
 
   <target name="ptolemy-moml.jar"
 	  description="A jar file containing the pt-moml and pt-momlapp projects.">
@@ -163,11 +163,12 @@
     <antcall target="build-jar">
       <param name="pt-projects" value="pt-test"/>
       <param name="jar-name" value="ptolemy-test"/>
-      <param name="pt-projects-classpath" value="jars/ptolemy-core.jar;${ptPath}/lib/junit-4.8.2.jar;${ptPath}/lib/JUnitParams-0.3.0.jar;${ptjaclJar}"/>
+      <param name="pt-projects-classpath" value="jars/ptolemy-core.jar;${ptPath}/lib/junit-4.8.2.jar;${ptPath}/lib/JUnitParams-0.3.0.jar;${ptPath}/lib/ptjacl.jar"/>
     </antcall>
   </target>
 
   <target name="test.core" 
+	  depends="ptolemy-test.jar"
 	  description="Test ptolemy-core.jar">
     <!-- printsummary takes one of One of on, off, and withOutAndErr.  Off is the default-->
     <junit fork="yes"
@@ -177,9 +178,9 @@
 	   timeout="${timeout}">
       <classpath>
 	<path refid="junit.classpath" />
-	<pathelement location="jars/pt-kore-test.jar"/>
-	<pathelement location="jars/pt-kore.jar"/>
-	<pathelement location="jars/util.jar"/>
+	<pathelement location="jars/ptolemy-kore-test.jar"/>
+	<pathelement location="jars/ptolemy-core.jar"/>
+	<pathelement location="jars/ptolemy-test.jar"/>
       </classpath>
       <formatter type="${junit.formatter}" usefile="false"/>
       <jvmarg value="-Dptolemy.ptII.dir=${ptPath}" />
