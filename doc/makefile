@@ -262,7 +262,8 @@ CGPACKAGES = \
 	ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.modal.modal.kernel \
 	ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.sdf.kernel \
 	ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.sdf.lib \
-        ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.actor.lib \
+	ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.actor \
+	ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.actor.lib \
 	ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.actor.lib.conversions \
 	ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.actor.lib.gui \
         ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.actor.lib.logic \
