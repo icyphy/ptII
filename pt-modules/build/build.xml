@@ -33,17 +33,17 @@
   <target name="build-all"
 	  depends="init,clean"
 	  description="Clean, then build all the jar files.">
-    <!-- Please keep these alphabetized. -->
+    <!-- Cannot be alphabetized, since order matches dependencies. -->
     <antcall target="ptolemy-core.jar"/>
     <antcall target="ptolemy-de.jar"/>
     <antcall target="ptolemy-ddf.jar"/>
     <antcall target="ptolemy-lib.jar"/>
     <antcall target="ptolemy-kore-test.jar"/>
-    <antcall target="ptolemy-modal.jar"/>
     <antcall target="ptolemy-moml.jar"/>
-    <antcall target="ptolemy-ptera.jar"/>
     <antcall target="ptolemy-sdf.jar"/>
     <antcall target="ptolemy-sr.jar"/>
+    <antcall target="ptolemy-modal.jar"/>
+    <antcall target="ptolemy-ptera.jar"/>
     <antcall target="ptolemy-test.jar"/>
   </target>
 
