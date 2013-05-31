@@ -147,6 +147,54 @@
 
   <!-- Ant targets. Alphabetize and add a description, please.  -->
 
+  <target name="build"
+	  depends="build-message, build-subprojects,build-project"
+	  description="Build Ptolemy II by compiling the .java files.  This is the default ant target."/>
+
+  <target name="build-message">
+    <echo>Use ant -p to see other targets. JAVA_HOME=${env.JAVA_HOME}
+tools.jar is necessary for compilation of doc/doclets/.
+If compilation fails, try setting JAVA_HOME to the location of the JDK.
+For example:
+  [bldmastr@sisyphus ptII]$ which java
+  /usr/bin/java
+  [bldmastr@sisyphus ptII]$ ls -l /usr/bin/java
+  lrwxrwxrwx 1 root root 26 Jul 31 10:12 /usr/bin/java -> /usr/java/default/bin/java
+  [bldmastr@sisyphus ptII]$ export JAVA_HOME=/usr/java/default
+    </echo>
+  </target>
+
+  <target name="build-subprojects"
+	  depends="build-pt-modules@ANT_MAVEN_SUBPROJECTS@"
+	  description="Build subprojects like pt-modules@ANT_MAVEN_SUBPROJECTS@"/>
+
+  @ANT_MAVEN_BUILD_WEBSENSOR@
+
+  <target name="build-project">
+    <echo message="${ant.project.name}: ${ant.file}" />
+    <javac debug="true"
+	   debuglevel="${debuglevel}"
+	   destdir="."
+	   includeAntRuntime="false"
+	   fork="true"
+	   memoryinitialsize="256m"
+	   memorymaximumsize="1500m"
+	   source="${source}"
+	   target="${target}">
+      <src path="${basedir}" />
+      <!-- @ANT_WEBSENSOR_SRC@ -->
+      <patternset refid="ptII.excludes" />
+      <classpath refid="ptII.classpath" />
+    </javac>
+  </target>
+
+  <target name="build-pt-modules"
+	  description="Build $PTII/pt-modules, a subset of Ptolemy II.">
+    <ant antfile="build.xml"
+	 dir="pt-modules/build"
+	 target="build-all"/>
+  </target>
+
   <target name="checkstyle" depends="initReports"
 	  description="Run checkstyle and find common code style problems." >
     <echo>To avoid an 'OutOfMemoryError' exception, under bash, try 'export ANT_OPTS=-Xmx1024m'</echo>
@@ -179,44 +227,6 @@
       <fileset dir="${basedir}" includes="reports/**" defaultexcludes="false"/>
       <fileset dir="${basedir}" includes="**/codeDoc*/**" defaultexcludes="false"/>
     </delete>
-  </target>
-
-  <target depends="build-message, build-subprojects,build-project" name="build"
-	  description="Build Ptolemy II by compiling the .java files.  This is the default ant target."/>
-
-  <target name="build-message">
-    <echo>Use ant -p to see other targets. JAVA_HOME=${env.JAVA_HOME}
-tools.jar is necessary for compilation of doc/doclets/.
-If compilation fails, try setting JAVA_HOME to the location of the JDK.
-For example:
-  [bldmastr@sisyphus ptII]$ which java
-  /usr/bin/java
-  [bldmastr@sisyphus ptII]$ ls -l /usr/bin/java
-  lrwxrwxrwx 1 root root 26 Jul 31 10:12 /usr/bin/java -> /usr/java/default/bin/java
-  [bldmastr@sisyphus ptII]$ export JAVA_HOME=/usr/java/default
-    </echo>
-  </target>
-
-  <target @ANT_MAVEN_SUBPROJECTS@ name="build-subprojects" />
-
-  @ANT_MAVEN_BUILD_WEBSENSOR@
-
-  <target name="build-project">
-    <echo message="${ant.project.name}: ${ant.file}" />
-    <javac debug="true"
-	   debuglevel="${debuglevel}"
-	   destdir="."
-	   includeAntRuntime="false"
-	   fork="true"
-	   memoryinitialsize="256m"
-	   memorymaximumsize="1500m"
-	   source="${source}"
-	   target="${target}">
-      <src path="${basedir}" />
-      <!-- @ANT_WEBSENSOR_SRC@ -->
-      <patternset refid="ptII.excludes" />
-      <classpath refid="ptII.classpath" />
-    </javac>
   </target>
 
   <target name="doccheck"
