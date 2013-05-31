@@ -17,6 +17,7 @@
 /ptolemy/actor/IOPortEvent.java
 /ptolemy/actor/IOPortEventListener.java
 /ptolemy/actor/IORelation.java
+/ptolemy/actor/InstanceOpener.java
 /ptolemy/actor/Initializable.java
 /ptolemy/actor/IntermediateReceiver.java
 /ptolemy/actor/Librariable.java
