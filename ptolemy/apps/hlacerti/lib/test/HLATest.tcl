@@ -79,7 +79,14 @@ test HLATest-1.0 {Run the HLA MultiDataTypes} {
     sleep 5 false
     list [$consumer getFullName] [$producer getFullName] \
 	[$consumerListenerOutput toString] [$producerListenerOutput toString]
-} {.MultiDataTypesConsumer .MultiDataTypesProducer}
+} {.MultiDataTypesConsumer .MultiDataTypesProducer {preinitializing
+resolving types
+initializing
+} {preinitializing
+resolving types
+initializing
+executing number 1
+}}
 
 ######################################################################
 #### Run two HLA models
