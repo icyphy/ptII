@@ -44,6 +44,7 @@ test release-1.1 {Check for missing makefiles} {
     exec make --no-print-directory --silent missingMakefiles
 } {./config/makefile
 ./doc/coding/templates/makefile
+./ptolemy/actor/lib/fmi/fmipp/swig/makefile
 ./ptolemy/backtrack/automatic/ptolemy/actor/lib/makefile
 ./ptolemy/backtrack/automatic/ptolemy/domains/sdf/lib/makefile
 ./ptolemy/backtrack/automatic/ptolemy/math/makefile
