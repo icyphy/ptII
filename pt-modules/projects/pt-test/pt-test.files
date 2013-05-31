@@ -1,0 +1,24 @@
+# files for pt-test @ /Users/hal/java/workspaces/ptolemy/ptII/pt-modules/build/../projects/pt-kore
+/ptolemy/util/test/Diff.java
+/ptolemy/util/test/RecorderMessageHandler.java
+/ptolemy/util/test/WatchDog.java
+/ptolemy/util/test/junit/AutoCGCInlineTests.java
+/ptolemy/util/test/junit/AutoCGCKnownFailedTests.java
+/ptolemy/util/test/junit/AutoCGCNoInlineTests.java
+/ptolemy/util/test/junit/AutoCGCTests.java
+/ptolemy/util/test/junit/AutoCGJavaKnownFailedTests.java
+/ptolemy/util/test/junit/AutoCGJavaTests.java
+/ptolemy/util/test/junit/AutoCGKnownFailedTests.java
+/ptolemy/util/test/junit/AutoCGTests.java
+/ptolemy/util/test/junit/AutoKnownFailedTests.java
+/ptolemy/util/test/junit/AutoTests.java
+/ptolemy/util/test/junit/JUnitCGCNoInlineTestBase.java
+/ptolemy/util/test/junit/JUnitCGCTestBase.java
+/ptolemy/util/test/junit/JUnitCGJavaTestBase.java
+/ptolemy/util/test/junit/JUnitTclTest.java
+/ptolemy/util/test/junit/JUnitTclTestBase.java
+/ptolemy/util/test/junit/JUnitTclTestRun.java
+/ptolemy/util/test/junit/ModelKnownFailedTests.java
+/ptolemy/util/test/junit/ModelTests.java
+/ptolemy/util/test/junit/TclTests.java
+
