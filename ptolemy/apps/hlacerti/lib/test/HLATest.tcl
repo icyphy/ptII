@@ -39,26 +39,30 @@ if {[string compare test [info procs test]] == 1} then {
 # set VERBOSE 1
 
 # Run an .xml file return the toplevel.
-# proc runModel {modelFileName} {
-#     set workspace [java::new ptolemy.kernel.util.Workspace "myWorkspace"]
-#     set parser [java::new ptolemy.moml.MoMLParser $workspace]
-#     $parser setMoMLFilters [java::null]
-#     $parser addMoMLFilters \
-# 	    [java::call ptolemy.moml.filter.BackwardCompatibility allFilters]
+proc runModel {modelFileName outputStream} {
+    set workspace [java::new ptolemy.kernel.util.Workspace "myWorkspace"]
+    set parser [java::new ptolemy.moml.MoMLParser $workspace]
+    $parser setMoMLFilters [java::null]
+    $parser addMoMLFilters \
+	    [java::call ptolemy.moml.filter.BackwardCompatibility allFilters]
 
-#     $parser addMoMLFilter [java::new \
-# 	    ptolemy.moml.filter.RemoveGraphicalClasses]
-#     set url [[java::new java.io.File $modelFileName] toURL]
-#     $parser purgeModelRecord $url
-#     set model [java::cast ptolemy.actor.TypedCompositeActor \
-# 		   [$parser {parse java.net.URL java.net.URL} \
-# 			[java::null] $url]]
+    $parser addMoMLFilter [java::new \
+	    ptolemy.moml.filter.RemoveGraphicalClasses]
+    set url [[java::new java.io.File $modelFileName] toURL]
+    $parser purgeModelRecord $url
+    set model [java::cast ptolemy.actor.TypedCompositeActor \
+		   [$parser {parse java.net.URL java.net.URL} \
+			[java::null] $url]]
 
-#     set manager [java::new ptolemy.actor.Manager $workspace "myManager"]
-#     $model setManager $manager 
-#     $manager execute
-#     return $model
-# }
+    set manager [java::new ptolemy.actor.Manager $workspace "myManager"]
+    set listener [java::new ptolemy.actor.StreamExecutionListener $outputStream]
+    $manager addExecutionListener $listener
+    $model setManager $manager 
+
+    # Run the model in a new thread.
+    $manager startRun
+    return $model
+}
 
 ######################################################################
 #### Run two HLA models
@@ -66,28 +70,45 @@ if {[string compare test [info procs test]] == 1} then {
 test HLATest-1.0 {Run the HLA MultiDataTypes} {
 
     # Success is when the Test actor in the consumer gets all of its values.
-    # The models are not in the auto/ directory because we want to run
-    # them in sequence.
-    set cmdArgs [java::new {java.lang.String[]} 4 \
-		     {{ptolemy/configs/full/configuration.xml} \
-			  {-runThenExit} \
-			  {MultiDataTypesConsumer.xml}
-			 {MultiDataTypesProducer.xml}}] 
-
-    # ConfigurationApplication calls ptolemy.util.StringUtilities.exit(), which
-    # Check to see if the ptolemy.ptII.doNotExit property is set.
-    java::call System setProperty ptolemy.ptII.doNotExit true
-
-    # Run the model
-    set application [java::new ptolemy.actor.gui.ConfigurationApplication $cmdArgs]
-
-    puts "sleeping for 5 seconds"
-    # false means: Don't print dots
+    set consumerListenerOutput [java::new java.io.ByteArrayOutputStream]
+    set consumer [runModel MultiDataTypesConsumer.xml $consumerListenerOutput]
+    sleep 1 false
+    set producerListenerOutput [java::new java.io.ByteArrayOutputStream]
+    set producer [runModel MultiDataTypesProducer.xml $producerListenerOutput]
+    # Return something useful as another check
     sleep 5 false
+    list [$consumer getFullName] [$producer getFullName] \
+	[$consumerListenerOutput toString] [$producerListenerOutput toString]
+} {.MultiDataTypesConsumer .MultiDataTypesProducer}
 
-    # Get some information just to be sure that we have parsed the models.
-    set models [$application models]
-    list [[$models get 0] toString] \
-	[[$models get 1] toString] \
-	[[$models get 2] toString] \
-} {{ptolemy.actor.gui.Configuration {.configuration}} {ptolemy.actor.TypedCompositeActor {.MultiDataTypesConsumer}} {ptolemy.actor.TypedCompositeActor {.MultiDataTypesProducer}}}
+######################################################################
+#### Run two HLA models
+#
+# test HLATest-1.0 {Run the HLA MultiDataTypes} {
+
+#     # Success is when the Test actor in the consumer gets all of its values.
+#     # The models are not in the auto/ directory because we want to run
+#     # them in sequence.
+#     set cmdArgs [java::new {java.lang.String[]} 4 \
+# 		     {{ptolemy/configs/full/configuration.xml} \
+# 			  {-runThenExit} \
+# 			  {MultiDataTypesConsumer.xml}
+# 			 {MultiDataTypesProducer.xml}}] 
+
+#     # ConfigurationApplication calls ptolemy.util.StringUtilities.exit(), which
+#     # Check to see if the ptolemy.ptII.doNotExit property is set.
+#     java::call System setProperty ptolemy.ptII.doNotExit true
+
+#     # Run the model
+#     set application [java::new ptolemy.actor.gui.ConfigurationApplication $cmdArgs]
+
+#     puts "sleeping for 5 seconds"
+#     # false means: Don't print dots
+#     sleep 5 false
+
+#     # Get some information just to be sure that we have parsed the models.
+#     set models [$application models]
+#     list [[$models get 0] toString] \
+# 	[[$models get 1] toString] \
+# 	[[$models get 2] toString] \
+# } {{ptolemy.actor.gui.Configuration {.configuration}} {ptolemy.actor.TypedCompositeActor {.MultiDataTypesConsumer}} {ptolemy.actor.TypedCompositeActor {.MultiDataTypesProducer}}}
