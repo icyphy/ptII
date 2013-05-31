@@ -6,6 +6,8 @@
   <!-- Ant properties. Alphabetize, please. -->
   <property name="jar-name" value="jar"/>
 
+  <property name="javachdir" value="../../ptolemy/util/test/junit/javachdir"/>
+
   <!-- junit.formatter defaults to plain and is used by checkstyle and test.  Other values: brief, failure, plain, xml -->
   <property name="junit.formatter" value="plain" />
 
@@ -188,7 +190,7 @@
 	  description="Test ptolemy-core.jar">
     <!-- printsummary takes one of One of on, off, and withOutAndErr.  Off is the default-->
     <junit fork="yes"
-	   jvm="${ptPath}/ptolemy/util/test/junit/javachdir"
+	   jvm="${javachdir}"
 	   printsummary="withOutAndErr"
 	   showoutput="yes"
 	   timeout="${timeout}">
