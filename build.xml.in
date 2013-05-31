@@ -54,10 +54,10 @@
 
   <property name="target" value="1.6" />
 
-  <!-- The pathname of the tests that are run by the test.cobertura, and test.report targets. -->
+  <!-- The pathname of the tests that are run by the test.cobertura, test.report, test.short targets. -->
   <property name="test.batch" value="**/junit/*.java" />
 
-  <!-- The classname of the single JUnit test that is run by the test.single and test.cobertura.single target. -->
+  <!-- The classname of the single JUnit test that is run by the test.single target. -->
   <property name="test.name" value="ptolemy.actor.lib.test.junit.JUnitTclTest" />
 
   <!-- The timeout in seconds for findbugs and junit. -->
