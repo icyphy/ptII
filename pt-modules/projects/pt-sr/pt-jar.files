@@ -1,0 +1,5 @@
+# files for pt-sr @ /Users/hal/java/workspaces/ptolemy/ptII/pt-modules/build/../projects/pt-sr
+/ptolemy/actor/sched/FixedPointDirector.java
+/ptolemy/domains/sr/kernel/SRDirector.java
+/ptolemy/domains/sr/kernel/SROptimizedScheduler.java
+/ptolemy/domains/sr/kernel/SRRandomizedScheduler.java
