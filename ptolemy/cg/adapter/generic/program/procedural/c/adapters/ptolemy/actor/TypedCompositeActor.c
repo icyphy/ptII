@@ -75,21 +75,7 @@ return result;
 
 
 /***fireBlock($director, $currentActor)***/
-// Use the local director to transfer inputs from
-// everything that is not a port parameter.
-// The director will also update the schedule in
-// the process, if necessary.
-//Cell * portCell;
-//
-//portCell = $actorSymbol(portList).first;
-//while (portCell != NULL) {
-//	IOPort * port = (IOPort*) portCell->content;
-//
-//	if (port->isInput == true) {
 $currentActor_TransferInputs();
-//	}
-//	portCell = portCell->next;
-//}
 
 (*($director->fireFunction))();
 

@@ -1,9 +1,9 @@
 /***preinitBlock ***/
-static $targetType(output) $actorSymbol(sum);
+$targetType(output) $actorSymbol(sum);
 /**/
 
 /***preinitReset ***/
-static boolean $actorSymbol(resetTemp);
+boolean $actorSymbol(resetTemp);
 /**/
 
 /***InitSum***/

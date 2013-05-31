@@ -1,7 +1,7 @@
 /***preinitBlock***/
 $include(<float.h>)
 // The time when the previous input arrives.
-static Time $actorSymbol(previousTime);
+Time $actorSymbol(previousTime);
 /**/
 
 /***initBlock***/

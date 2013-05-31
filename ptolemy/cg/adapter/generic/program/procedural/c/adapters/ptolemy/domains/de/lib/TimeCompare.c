@@ -7,11 +7,11 @@ boolean $actorSymbol(nonnegative);
 
 /** The list to store the time stamps received at input1 but have never been
 compared. */
-static DoubleQueue $actorSymbol(input1TimeStamps);
+DoubleQueue $actorSymbol(input1TimeStamps);
 
 /** The list to store the time stamps received at input2 but have never been
 compared. */
-static DoubleQueue $actorSymbol(input2TimeStamps);
+DoubleQueue $actorSymbol(input2TimeStamps);
 /**/
 
 /***initializeBlock***/

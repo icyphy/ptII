@@ -1,5 +1,5 @@
 /***preinitBlock()***/
-static $targetType(output) $actorSymbol(previous);
+$targetType(output) $actorSymbol(previous);
 $targetType(input) $actorSymbol(inputTemp);
 $targetType(output) $actorSymbol(differential);
 /**/

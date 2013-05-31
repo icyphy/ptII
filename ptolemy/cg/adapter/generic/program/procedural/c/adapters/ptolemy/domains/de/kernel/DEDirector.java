@@ -121,9 +121,9 @@ public class DEDirector extends Director {
         StringBuffer code = new StringBuffer();
         _sanitizedDirectorName = CodeGeneratorAdapter.generateName(_director);
         
-        code.append(_eol + "static int " + _sanitizedDirectorName + "_fire();");
+        code.append(_eol + "int " + _sanitizedDirectorName + "_fire();");
         code.append(_eol + "void " + _sanitizedDirectorName + "_fireAt(Actor * actor, Time time, int microstep);");
-        code.append(_eol + "static Actor * " + _sanitizedDirectorName + "_nextActorToFire();");
+        code.append(_eol + "Actor * " + _sanitizedDirectorName + "_nextActorToFire();");
 
         code.append(_eol + "void " + _sanitizedDirectorName + "_Preinitialize();");
         code.append(_eol + "void " + _sanitizedDirectorName + "_Initialize();");
@@ -401,7 +401,7 @@ public class DEDirector extends Director {
         StringBuffer code = new StringBuffer();
         _sanitizedDirectorName = CodeGeneratorAdapter.generateName(_director);
         
-        code.append("static int " + _sanitizedDirectorName + "_fire() {" + _eol);
+        code.append("int " + _sanitizedDirectorName + "_fire() {" + _eol);
         code.append(generateFirePrivateFunctionCode());
         code.append(_eol + "}" + _eol);
         
@@ -409,7 +409,7 @@ public class DEDirector extends Director {
         code.append(generateFireAtFunctionCode());
         code.append(_eol + "}" + _eol);
         
-        code.append("static Actor * " + _sanitizedDirectorName + "_nextActorToFire() {" + _eol);
+        code.append("Actor * " + _sanitizedDirectorName + "_nextActorToFire() {" + _eol);
         code.append(generateNextActorToFireFunctionCode());
         code.append(_eol + "}" + _eol);
 
@@ -1066,15 +1066,15 @@ public class DEDirector extends Director {
 //                            + "'s output variable declarations."));
 //            code.append(outputVariableDeclaration);
 //        }
-    
-        // Generate type convert variable declarations.
-        String typeConvertVariableDeclaration = _generateTypeConvertVariableDeclaration(target);
-        if (typeConvertVariableDeclaration.length() > 1) {
-            code.append(_eol
-                    + codeGenerator.comment(name
-                            + "'s type convert variable declarations."));
-            code.append(typeConvertVariableDeclaration);
-        }
+//    
+//        // Generate type convert variable declarations.
+//        String typeConvertVariableDeclaration = _generateTypeConvertVariableDeclaration(target);
+//        if (typeConvertVariableDeclaration.length() > 1) {
+//            code.append(_eol
+//                    + codeGenerator.comment(name
+//                            + "'s type convert variable declarations."));
+//            code.append(typeConvertVariableDeclaration);
+//        }
     
         return processCode(code.toString());
     }

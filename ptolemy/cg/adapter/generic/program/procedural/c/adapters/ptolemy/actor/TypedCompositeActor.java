@@ -42,9 +42,7 @@ import ptolemy.cg.kernel.generic.CodeGeneratorAdapter;
 import ptolemy.cg.kernel.generic.program.CodeStream;
 import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
 import ptolemy.cg.kernel.generic.program.ProgramCodeGenerator;
-import ptolemy.cg.kernel.generic.program.procedural.ProceduralCodeGenerator;
 import ptolemy.cg.lib.CompiledCompositeActor;
-import ptolemy.data.BooleanToken;
 import ptolemy.domains.de.kernel.DEDirector;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
@@ -108,7 +106,7 @@ public class TypedCompositeActor extends
         }
         args.add(Integer.toString(nbAtomicActors));
         args.add(Integer.toString(nbCompositeActors));
-        codeStream.appendCodeBlock("containerSetBlock", args);
+        codeStream.appendCodeBlock("containerSetBlock", args, true);
         
         args.clear();
         int depth = 0;
@@ -132,7 +130,7 @@ public class TypedCompositeActor extends
         args.add(Integer.toString(depth));
         // FIXME : handle the value of the priority
         args.add(Integer.toString(0));
-        codeStream.appendCodeBlock("compositeActorSet", args);
+        codeStream.appendCodeBlock("compositeActorSet", args, true);
         
         // We initialize the actors
         actors = actorList.iterator();
@@ -148,7 +146,7 @@ public class TypedCompositeActor extends
                 args.add(sanitizedContainerName);
                 args.add(Integer.toString(i++));
                 args.add(sanitizedActorName);
-                codeStream.appendCodeBlock("atomicActorsSet", args);
+                codeStream.appendCodeBlock("atomicActorsSet", args, true);
             }
         }
         
@@ -180,7 +178,7 @@ public class TypedCompositeActor extends
                 args.add(Integer.toString(depth));
                 // FIXME : handle the value of the priority
                 args.add(Integer.toString(0));
-                codeStream.appendCodeBlock("actorSet", args);
+                codeStream.appendCodeBlock("actorSet", args, true);
             }
         }
         
@@ -235,7 +233,7 @@ public class TypedCompositeActor extends
                     widthInside += r.length;
             args.add(Integer.toString(widthInside));
             args.add(Integer.toString(port.getWidth()));
-            codeStream.appendCodeBlock("IOPortSet", args);
+            codeStream.appendCodeBlock("IOPortSet", args, true);
             enumString += "enum_" + sanitizedContainerName + "_" + port.getName() + ", ";
         }
         ports = outputPortList.iterator();
@@ -260,7 +258,7 @@ public class TypedCompositeActor extends
                     widthOutside += r.length;
             args.add(Integer.toString(widthOutside));
             //args.add(Integer.toString(port.getRemoteReceivers()[0].length));
-            codeStream.appendCodeBlock("IOPortSet", args);
+            codeStream.appendCodeBlock("IOPortSet", args, true);
             enumString += "enum_" + sanitizedContainerName + "_" + port.getName() + ", ";
         }
         if (enumString.length() > 7) {
@@ -305,7 +303,7 @@ public class TypedCompositeActor extends
                     args.add(Boolean.toString(port.isMultiport()));
                     args.add(Integer.toString(port.getWidth()));
                     args.add(Integer.toString(0));
-                    codeStream.appendCodeBlock("IOPortSet", args);
+                    codeStream.appendCodeBlock("IOPortSet", args, true);
                     enumString += "enum_" + sanitizedActorName + "_" + port.getName() + ", ";
                 }
                 ports = outputPortList.iterator();
@@ -330,7 +328,7 @@ public class TypedCompositeActor extends
                             widthOutside += r.length;
                     args.add(Integer.toString(widthOutside));
                     //args.add(Integer.toString(port.getRemoteReceivers()[0].length));
-                    codeStream.appendCodeBlock("IOPortSet", args);
+                    codeStream.appendCodeBlock("IOPortSet", args, true);
                     enumString += "enum_" + sanitizedActorName + "_" + port.getName() + ", ";
                 }
                 if (enumString.length() > 7) {
@@ -386,7 +384,7 @@ public class TypedCompositeActor extends
                 String farActorName = CodeGeneratorAdapter.generateName(r.getContainer().getContainer());
                 args.add(farActorName);
                 args.add(r.getContainer().getName());
-                codeStream.appendCodeBlock("ReceiverSetBlock", args);
+                codeStream.appendCodeBlock("ReceiverSetBlock", args, true);
             }
             // Create a far receivers for Composite actors input ports
             
@@ -409,7 +407,7 @@ public class TypedCompositeActor extends
                     args.add(r.getContainer().getName());
                     int farChannelNumber = r.getContainer().getChannelForReceiver(r);
                     args.add(Integer.toString(farChannelNumber));
-                    codeStream.appendCodeBlock("FarReceiverSetBlock", args);
+                    codeStream.appendCodeBlock("FarReceiverSetBlock", args, true);
                 }
             }
             i++;
@@ -443,7 +441,7 @@ public class TypedCompositeActor extends
                     args.add(r.getContainer().getName());
                     int farChannelNumber = r.getContainer().getChannelForReceiver(r);
                     args.add(Integer.toString(farChannelNumber));
-                    codeStream.appendCodeBlock("FarReceiverSetBlock", args);
+                    codeStream.appendCodeBlock("FarReceiverSetBlock", args, true);
                     enumFarReceivers += sanitizedContainerName + "_" + port.getName() + "_" + 
                             farActorName + "_" + r.getContainer().getName() + "_" + farChannelNumber + ", ";
                 }
@@ -465,7 +463,7 @@ public class TypedCompositeActor extends
                 String farActorName = CodeGeneratorAdapter.generateName(r.getContainer().getContainer());
                 args.add(farActorName);
                 args.add(r.getContainer().getName());
-                codeStream.appendCodeBlock("ReceiverSetBlock", args);
+                codeStream.appendCodeBlock("ReceiverSetBlock", args, true);
             }
             i++;
         }
@@ -508,7 +506,7 @@ public class TypedCompositeActor extends
                     String farActorName = CodeGeneratorAdapter.generateName(r.getContainer().getContainer());
                     args.add(farActorName);
                     args.add(r.getContainer().getName());
-                    codeStream.appendCodeBlock("ReceiverSetBlock", args);
+                    codeStream.appendCodeBlock("ReceiverSetBlock", args, true);
                 }
                 
                 
@@ -530,7 +528,7 @@ public class TypedCompositeActor extends
                             args.add(r.getContainer().getName());
                             int farChannelNumber = r.getContainer().getChannelForReceiver(r);
                             args.add(Integer.toString(farChannelNumber));
-                            codeStream.appendCodeBlock("FarReceiverSetBlock", args);
+                            codeStream.appendCodeBlock("FarReceiverSetBlock", args, true);
                         }
                     }
                 }
@@ -568,7 +566,7 @@ public class TypedCompositeActor extends
                         args.add(r.getContainer().getName());
                         int farChannelNumber = r.getContainer().getChannelForReceiver(r);
                         args.add(Integer.toString(farChannelNumber));
-                        codeStream.appendCodeBlock("FarReceiverSetBlock", args);
+                        codeStream.appendCodeBlock("FarReceiverSetBlock", args, true);
                         enumFarReceivers += sanitizedActorName + "_" + port.getName() + "_" + 
                                 farActorName + "_" + r.getContainer().getName() + "_" + farChannelNumber + ", ";
                     }
@@ -591,7 +589,7 @@ public class TypedCompositeActor extends
                         String farActorName = CodeGeneratorAdapter.generateName(r.getContainer().getContainer());
                         args.add(farActorName);
                         args.add(r.getContainer().getName());
-                        codeStream.appendCodeBlock("ReceiverSetBlock", args);
+                        codeStream.appendCodeBlock("ReceiverSetBlock", args, true);
                     }
                 }
                 i++;
@@ -613,9 +611,8 @@ public class TypedCompositeActor extends
     @Override
     public String generateFireFunctionCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
-        CompositeActor compositeActor = (CompositeActor) getComponent();
-        if (!(compositeActor instanceof CompiledCompositeActor && ((BooleanToken) ((ProceduralCodeGenerator) getCodeGenerator()).generateEmbeddedCode
-                .getToken()).booleanValue())) {
+        //CompositeActor compositeActor = (CompositeActor) getComponent();
+        //if (!(compositeActor instanceof CompiledCompositeActor)) {
             // Generate the code for the TypedComposite before generating code for the director.
             // Needed by:
             // $PTII/bin/ptcg -language java  -inline false  -variablesAsArrays false $PTII/ptolemy/cg/adapter/generic/program/procedural/java/adapters/ptolemy/actor/lib/test/auto/ActorOrientedClass.xml
@@ -635,7 +632,14 @@ public class TypedCompositeActor extends
             // code.append(_generateFireCode());
             code.append(splitFireCode[1]);
             code.append("}" + _eol);
-        }
+        //}
+//        else {
+//            ptolemy.actor.Director director = compositeActor.getDirector();
+//            ptolemy.cg.adapter.generic.adapters.ptolemy.actor.Director directorAdapter = (ptolemy.cg.adapter.generic.adapters.ptolemy.actor.Director) getCodeGenerator().getAdapter(
+//                    director);
+//            code.append(directorAdapter.generateFireFunctionCode());
+//        }
+        
         return processCode(code.toString());
     }
     
@@ -654,6 +658,7 @@ public class TypedCompositeActor extends
         
         ptolemy.actor.CompositeActor TopActor = (ptolemy.actor.CompositeActor) getComponent();
         String sanitizedContainerName = CodeGeneratorAdapter.generateName(TopActor);
+        
         args.add(sanitizedContainerName + ".director");
         codeStream.appendCodeBlock("initializeBlock", args);
         
@@ -675,8 +680,8 @@ public class TypedCompositeActor extends
         
         ptolemy.actor.CompositeActor TopActor = (ptolemy.actor.CompositeActor) getComponent();
         String sanitizedContainerName = CodeGeneratorAdapter.generateName(TopActor);
-        args.add(sanitizedContainerName + ".director");
         
+        args.add(sanitizedContainerName + ".director");       
         codeStream.appendCodeBlock("postFireBlock", args);
         
         return processCode(codeStream.toString());
@@ -697,6 +702,7 @@ public class TypedCompositeActor extends
         
         ptolemy.actor.CompositeActor TopActor = (ptolemy.actor.CompositeActor) getComponent();
         String sanitizedContainerName = CodeGeneratorAdapter.generateName(TopActor);
+        
         args.add(sanitizedContainerName + ".director");
         codeStream.appendCodeBlock("prefireBlock", args);
         
@@ -716,10 +722,10 @@ public class TypedCompositeActor extends
     public String generatePreinitializeCode() throws IllegalActionException {
         CodeStream codeStream = _templateParser.getCodeStream();
         codeStream.clear();
-                    
-        codeStream.appendCodeBlock("variableDeclareBlock");
-        
+                           
         ptolemy.actor.CompositeActor TopActor = (ptolemy.actor.CompositeActor) getComponent();
+        
+        codeStream.appendCodeBlock("variableDeclareBlock");
         
         // Here we declare the contained actors
         List actorList = TopActor.deepEntityList();
@@ -738,7 +744,8 @@ public class TypedCompositeActor extends
         codeStream.append("$include(\"" + directorName + ".h\")");
         
         // Appends the enum definition for the ports
-        codeStream.append(_enumPortNumbersDefinition);
+        if (_enumPortNumbersDefinition != null)
+            codeStream.append(_enumPortNumbersDefinition);
         
         return processCode(codeStream.toString());
     }
@@ -757,6 +764,7 @@ public class TypedCompositeActor extends
         CodeStream codeStream = _templateParser.getCodeStream();
         codeStream.clear();
         LinkedList args = new LinkedList();
+        
 
         ptolemy.actor.CompositeActor TopActor = (ptolemy.actor.CompositeActor) getComponent();
         String sanitizedContainerName = CodeGeneratorAdapter.generateName(TopActor);
@@ -775,6 +783,23 @@ public class TypedCompositeActor extends
         codeStream.appendCodeBlock("preinitializeBlock", args);
         
         return processCode(codeStream.toString());
+    }
+    
+    /** Set up adapters contained by the composite actor.
+     *  This method is run very early in the code generation sequence,
+     *  so adapters that need to set up code generation-time variables
+     *  may have setupAdapter() methods that need to be invoked.
+     *  Variables and shared code that are to be generated should be
+     *  in generateSharedCode() or other methods, not this method.
+     *  @exception IllegalActionException If the adapter associated with
+     *  an actor throws it while being set up.
+     */
+    @Override
+    public void setupAdapter() throws IllegalActionException {
+        ptolemy.cg.adapter.generic.adapters.ptolemy.actor.Director directorAdapter = 
+                (ptolemy.cg.adapter.generic.adapters.ptolemy.actor.Director) getCodeGenerator().getAdapter(
+                ((ptolemy.actor.CompositeActor) getComponent()).getDirector());
+        directorAdapter.setupAdapter();
     }
     
     /**
@@ -886,6 +911,7 @@ public class TypedCompositeActor extends
         
         ptolemy.actor.CompositeActor TopActor = (ptolemy.actor.CompositeActor) getComponent();
         String sanitizedContainerName = CodeGeneratorAdapter.generateName(TopActor);
+        
         args.add(sanitizedContainerName + ".director");           
         codeStream.appendCodeBlock("WrapupBlock", args);
         

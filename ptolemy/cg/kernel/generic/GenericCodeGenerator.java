@@ -1230,7 +1230,7 @@ public abstract class GenericCodeGenerator extends Attribute implements
             }
             String fileNameWritten = FileUtilities.nameToFile(codeFileName,
                     codeDirectory.getBaseDirectory()).getCanonicalPath();
-            System.out.println("Wrote " + fileNameWritten);
+            //System.out.println("Wrote " + fileNameWritten);
             return fileNameWritten;
         } catch (Throwable ex) {
             throw new IllegalActionException(this, ex, "Failed to write \""

@@ -1,13 +1,13 @@
 /***preinitBlock***/
-static int $actorSymbol(phase);
-static Time $actorSymbol(period);
-static double * $actorSymbol(values);
-static Time $actorSymbol(meanTime);
-static long $actorSymbol(seed);
-static Time $actorSymbol(nextFiringTime);
-static boolean $actorSymbol(needNew);
-static double $actorSymbol(randomNumber);
-static boolean $actorSymbol(outputProduced);
+int $actorSymbol(phase);
+Time $actorSymbol(period);
+double * $actorSymbol(values);
+Time $actorSymbol(meanTime);
+long $actorSymbol(seed);
+Time $actorSymbol(nextFiringTime);
+boolean $actorSymbol(needNew);
+double $actorSymbol(randomNumber);
+boolean $actorSymbol(outputProduced);
 // this is the next function of java random
 #define nextRandom(i) ((int) ((unsigned int) (($actorSymbol(seed) = (($actorSymbol(seed) * 0x5DEECE66DL + 0xBL) & ((1L << 48) - 1))) >> (48 - (i)))))
 #define nextDouble() ((((long) nextRandom(26) << 27) + nextRandom(27)) / (double) (1L << 53))
@@ -21,7 +21,6 @@ $actorSymbol(values) = calloc($valuesSize, sizeof(double));
 $valuesList
 
 Time currentTime = 0.0;
-double randomNumber = 0.0;
 $actorSymbol(seed) = 0;
 $actorSymbol(needNew) = false;
 $actorSymbol(randomNumber) = 0.0;
@@ -100,7 +99,7 @@ if ($actorSymbol(outputProduced)) {
 	$fireAt($ModelName()_$actorName(), $DirectorName()->currentModelTime, 0);
 }
 
-return;
+return true;
 /**/
 
 /***wrapupBlock***/

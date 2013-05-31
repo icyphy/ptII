@@ -7,10 +7,10 @@
 Token $actorSymbol(initialValue);
 
 // Previous input.
-static Token $actorSymbol(previous);
+Token $actorSymbol(previous);
 
 // Temporary previous input.
-static Token $actorSymbol(tempPrevious);
+Token $actorSymbol(tempPrevious);
 /**/
 
 /***absentInitBlock***/

@@ -8,8 +8,8 @@
 Token $actorSymbol(initialValue);
 
 /** The recorded inputs last seen. */
-static Token * $actorSymbol(lastInputs);
-static int $actorSymbol(size_lastInputs);
+Token * $actorSymbol(lastInputs);
+int $actorSymbol(size_lastInputs);
 /**/
 
 /***absentInitBlock***/
@@ -85,14 +85,14 @@ while ($hasToken(input#$channel)) {
 // Consume the inputs we don't save.
 /***throwTokensLoopFireBlock($channel)***/
 while ($hasToken(input#$channel)) {
-	$get(input#$channel);
+	(void)$get(input#$channel);
 }
 /**/
 
 /***triggerLoopFireBlock($channel)***/
 if ($hasToken(trigger#$channel)) {
 	// Consume the trigger token.
-	$get(trigger#$channel);
+	(void)$get(trigger#$channel);
 	triggered = true;
 }
 /**/

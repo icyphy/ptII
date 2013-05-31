@@ -1397,7 +1397,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         code.append(_eol + "int main(int argc, char *argv[]) {");
         // Make a record of the time execution starts.
         //long startTime = new Date().getTime();
-        code.append(_eol + "boolean completedSuccessfully = false;");
+        code.append(_eol + "//boolean completedSuccessfully = false;");
         code.append(_eol + _eol + "initialize();");
 //        if (System.currentTimeMillis() - startTime > minimumStatisticsTime) {
 //            setStatusMessage(timeAndMemory(startTime));
@@ -1410,7 +1410,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         code.append(_eol + "if (!iterate()) {");
         code.append(_eol + "break;");
         code.append(_eol + "}");
-        code.append(_eol + "completedSuccessfully = true;");
+        code.append(_eol + "//completedSuccessfully = true;");
 //        if (_printTimeAndMemory) {
 //            setStatusMessage(timeAndMemory(startTime));
 //            System.out.println(getStatusMessage());
@@ -1584,7 +1584,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         /////////////////////////////////////////////
         
         String actorDefinition = _eol;
-        if (actor instanceof CompositeActor)
+        if (actor instanceof ptolemy.actor.CompositeActor)
             actorDefinition += "Composite";
         actorDefinition += "Actor " + sanitizedActorName + ";";
 
@@ -1597,7 +1597,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         String constructorTransfersDeclaration = "";
         String constructorTransfersCode = "";
         // Generate the construction method in case of composite actor
-        if (actor instanceof CompositeActor) {
+        if (actor instanceof ptolemy.actor.TypedCompositeActor) {
             constructorActorsDeclaration = _eol + "void "
                     + sanitizedActorName + "_constructorActors();";
             constructorActorsCode = _eol + ((TypedCompositeActor) actorAdapter)
@@ -1869,8 +1869,9 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
             ((Parameter) generateEmbeddedCode).setExpression("false");
         }
         if (container instanceof ptolemy.cg.lib.CompiledCompositeActor) {
-            _sanitizedModelName = ((ptolemy.cg.lib.CompiledCompositeActor) container)
-                    .getSanitizedName();
+//            ((ptolemy.cg.lib.CompiledCompositeActor) container).initialize();
+//            _sanitizedModelName = ((ptolemy.cg.lib.CompiledCompositeActor) container)
+//                    .getSanitizedName();
             if (generateEmbeddedCode instanceof Parameter)
                 ((Parameter) generateEmbeddedCode).setExpression("true");
         }

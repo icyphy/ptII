@@ -1,16 +1,16 @@
 /***preinitBlock***/
-static int $actorSymbol(phase);
-static Time $actorSymbol(period);
-static Time $actorSymbol(cycleStartTime);
-static Time $actorSymbol(stopTime);
-static $targetType(output) * $actorSymbol(values);
-static Time * $actorSymbol(offsets);
-static int $actorSymbol(offsetsNumber);
-static boolean $actorSymbol(enabled);
-static boolean $actorSymbol(triggered);
-static Time $actorSymbol(nextOutputTime);
-static int $actorSymbol(nextOutputIndex);
-static boolean $actorSymbol(outputProduced);
+int $actorSymbol(phase);
+Time $actorSymbol(period);
+Time $actorSymbol(cycleStartTime);
+Time $actorSymbol(stopTime);
+$targetType(output) * $actorSymbol(values);
+Time * $actorSymbol(offsets);
+int $actorSymbol(offsetsNumber);
+boolean $actorSymbol(enabled);
+boolean $actorSymbol(triggered);
+Time $actorSymbol(nextOutputTime);
+int $actorSymbol(nextOutputIndex);
+boolean $actorSymbol(outputProduced);
 /**/
 
 /***initBlock($stopTime, $period, $offsetSize, $offsetList, $valuesSize, $valuesList)***/
@@ -42,7 +42,7 @@ $actorSymbol(enabled) = false;
 
 /***startConnected***/
 if ($hasToken(start#0)) {
-	$get(start#0);
+	(void)$get(start#0);
 	// Restart everything.
 	$ModelName()_$actorName()_initialize();
 	$actorSymbol(enabled) = true;
@@ -51,7 +51,7 @@ if ($hasToken(start#0)) {
 
 /***stopConnected***/
 if ($hasToken(stop#0)) {
-	$get(stop#0);
+	(void)$get(stop#0);
 	// Stop the actor
 	$actorSymbol(enabled) = false;
 }
@@ -66,7 +66,7 @@ if ($hasToken(period#0)) {
 
 /***triggerConnected($channel)***/
 if ($hasToken(trigger#$channel)) {
-	$get(trigger#$channel);
+	(void)$get(trigger#$channel);
 	$actorSymbol(triggered) = true;
 }
 /**/

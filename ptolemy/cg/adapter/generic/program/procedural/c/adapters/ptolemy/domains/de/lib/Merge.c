@@ -1,12 +1,12 @@
 /***preinitBlock***/
 // True if there are more tokens on other channels.
-static boolean $actorSymbol(moreTokensOnOtherChannels);
+boolean $actorSymbol(moreTokensOnOtherChannels);
 
 // Last time this actor was fired.
-static Time $actorSymbol(previousModelTime);
+Time $actorSymbol(previousModelTime);
 
 // Mircostep of director during last firing of this actor.
-static int $actorSymbol(previousMicrostep);
+int $actorSymbol(previousMicrostep);
 
 //A flag to indicate whether the input events can be discarded.
 boolean $actorSymbol(discardEvents);
@@ -67,7 +67,7 @@ if ($hasToken(input#$channel)) {
 			// in this firing, consume and discard all tokens
 			// from the input channel
 			while ($hasToken(input#$channel)) {
-				$get(input#$channel);
+				(void)$get(input#$channel);
 			}
 		} else {
 			// Refiring the actor to handle the other tokens

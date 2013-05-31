@@ -15,11 +15,11 @@ Token $actorSymbol(Ki);
 */
 Token $actorSymbol(Kd);
 $include("$ModelName()_DEEvent.h")
-static DEEvent * $actorSymbol(currentInput);
+DEEvent * $actorSymbol(currentInput);
 
-static DEEvent * $actorSymbol(lastInput);
+DEEvent * $actorSymbol(lastInput);
 
-static double $actorSymbol(accumulated);
+double $actorSymbol(accumulated);
 
 /**/
 

@@ -321,7 +321,7 @@ public class SDFDirector
         StringBuffer code = new StringBuffer();
         //code.append(super.generatePreinitializeCode());
         // We do execute this method without using its result because we need to initialize the offsets
-        super.generatePreinitializeCode();
+        //super.generatePreinitializeCode();
         
         CompositeActor container = ((CompositeActor) _director.getContainer());
         String sanitizedContainerName = CodeGeneratorAdapter.generateName(container);
@@ -908,32 +908,32 @@ public class SDFDirector
             code.append(referencedParameterDeclaration);
         }
 
-        // Generate variable declarations for input ports.
-        String inputVariableDeclaration = _generateInputVariableDeclaration(target);
-        if (inputVariableDeclaration.length() > 1) {
-            code.append(_eol
-                    + codeGenerator.comment(name
-                            + "'s input variable declarations."));
-            code.append(inputVariableDeclaration);
-        }
+//        // Generate variable declarations for input ports.
+//        String inputVariableDeclaration = _generateInputVariableDeclaration(target);
+//        if (inputVariableDeclaration.length() > 1) {
+//            code.append(_eol
+//                    + codeGenerator.comment(name
+//                            + "'s input variable declarations."));
+//            code.append(inputVariableDeclaration);
+//        }
+//
+//        // Generate variable declarations for output ports.
+//        String outputVariableDeclaration = _generateOutputVariableDeclaration(target);
+//        if (outputVariableDeclaration.length() > 1) {
+//            code.append(_eol
+//                    + codeGenerator.comment(name
+//                            + "'s output variable declarations."));
+//            code.append(outputVariableDeclaration);
+//        }
 
-        // Generate variable declarations for output ports.
-        String outputVariableDeclaration = _generateOutputVariableDeclaration(target);
-        if (outputVariableDeclaration.length() > 1) {
-            code.append(_eol
-                    + codeGenerator.comment(name
-                            + "'s output variable declarations."));
-            code.append(outputVariableDeclaration);
-        }
-
-        // Generate type convert variable declarations.
-        String typeConvertVariableDeclaration = _generateTypeConvertVariableDeclaration(target);
-        if (typeConvertVariableDeclaration.length() > 1) {
-            code.append(_eol
-                    + codeGenerator.comment(name
-                            + "'s type convert variable declarations."));
-            code.append(typeConvertVariableDeclaration);
-        }
+//        // Generate type convert variable declarations.
+//        String typeConvertVariableDeclaration = _generateTypeConvertVariableDeclaration(target);
+//        if (typeConvertVariableDeclaration.length() > 1) {
+//            code.append(_eol
+//                    + codeGenerator.comment(name
+//                            + "'s type convert variable declarations."));
+//            code.append(typeConvertVariableDeclaration);
+//        }
 
         return processCode(code.toString());
     }
