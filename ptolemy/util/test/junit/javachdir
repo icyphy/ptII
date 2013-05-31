@@ -12,8 +12,8 @@
 # directory and invokes java.
 
 
-#echo "javachdir: pwd: `pwd`"
-#echo "javachdir: args: $@"
+echo "javachdir: pwd: `pwd`"
+echo "javachdir: args: $@"
 
 for argument in "$@"
 do
@@ -42,6 +42,6 @@ do
 done
 
 cd $directory
-#echo "javachdir: `pwd`"
-#echo $@
+echo "javachdir: `pwd`"
+echo $@
 java $@

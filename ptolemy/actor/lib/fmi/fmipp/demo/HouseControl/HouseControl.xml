@@ -11,7 +11,7 @@
         </property>
         <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, 40.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-165.0, -115.0]">
         </property>
     </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 1474, 944}, maximized=true}">
@@ -29,7 +29,7 @@
         </property>
         <property name="scale" class="ptolemy.data.expr.Parameter" value="250.0">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 295.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-185.0, 140.0]">
         </property>
     </property>
     <property name="PDF2" class="ptolemy.vergil.pdfrenderer.PDFAttribute">
@@ -37,7 +37,7 @@
         </property>
         <property name="scale" class="ptolemy.data.expr.Parameter" value="250.0">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[645.0, 365.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[385.0, 210.0]">
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -45,7 +45,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Run an OpenModelica House Heating Control Model Exchange FMU&#10;">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[245.0, 35.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-15.0, -120.0]">
         </property>
     </property>
     <entity name="FMU-ME" class="ptolemy.actor.lib.fmi.fmipp.FMUModelExchange">
@@ -65,17 +65,17 @@
         <property name="integratorStepSize" class="ptolemy.data.expr.Parameter" value="0.001">
         </property>
         <doc>Will sooner or later be FMU stuff for DE domain.</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[300.0, 180.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 25.0]">
         </property>
     </entity>
     <entity name="VectorDisassembler" class="ptolemy.actor.lib.VectorDisassembler">
         <display name=" "/>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[440.0, 160.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[180.0, 5.0]">
         </property>
     </entity>
     <entity name="VectorAssembler" class="ptolemy.actor.lib.VectorAssembler">
         <display name=" "/>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[190.0, 160.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-70.0, 5.0]">
         </property>
     </entity>
     <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
@@ -83,7 +83,7 @@
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[1280, 730]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[595.0, 255.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[335.0, 100.0]">
         </property>
         <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
@@ -99,7 +99,7 @@
         </configure>
     </entity>
     <entity name="PoissonClock" class="ptolemy.actor.lib.PoissonClock">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 255.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-205.0, 100.0]">
         </property>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
@@ -109,7 +109,7 @@
         </property>
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[135.0, 255.0]">
+        <vertex name="vertex1" value="[-125.0, 100.0]">
         </vertex>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">

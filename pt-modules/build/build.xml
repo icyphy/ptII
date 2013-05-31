@@ -168,6 +168,7 @@
   </target>
 
   <target name="ptolemy-test.jar"
+	  depends="ptolemy-core.jar"
 	  description="A jar file containing the pt-test project.">
     <antcall target="build-jar">
       <param name="pt-projects" value="pt-test"/>
@@ -186,7 +187,7 @@
        We need to pass in the dependencies, the jar files for the path and
        the tests to be run. -->
   <target name="test.core" 
-	  depends="ptolemy-test.jar"
+	  depends="ptolemy-test.jar,ptolemy-kore-test.jar,ptolemy-core.jar"
 	  description="Test ptolemy-core.jar">
     <!-- printsummary takes one of One of on, off, and withOutAndErr.  Off is the default-->
     <junit fork="yes"
