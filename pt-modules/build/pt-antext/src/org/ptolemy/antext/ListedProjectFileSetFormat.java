@@ -32,7 +32,7 @@ public class ListedProjectFileSetFormat implements FileSetFormat {
 	*/
 
 	private File getFileSetFile(String projectPath, String projectName) {
-		return new File(projectPath + File.separator + projectName + ".files");
+		return new File(projectPath + File.separator + "pt-jar.files");
 	}
 	
 	@Override
