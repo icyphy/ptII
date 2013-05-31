@@ -33,10 +33,10 @@
         <property name="isCreatorSyncPt" class="ptolemy.data.expr.Parameter" value="true">
             <display name="Is synchronization point creator ?"/>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[235.0, 55.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[200.0, 60.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={633, 71, 592, 634}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={650, 22, 592, 634}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[358, 524]">
     </property>
@@ -84,9 +84,12 @@
         </property>
     </property>
     <entity name="val" class="ptolemy.apps.hlacerti.lib.HlaPublisher">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[245.0, 145.0]">
+        <property name="asHLAPtidesEvent" class="ptolemy.data.expr.Parameter" value="false">
+            <display name="asHLAPtidesEvent ?"/>
         </property>
-        <port name="in" class="ptolemy.actor.TypedIOPort">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[295.0, 145.0]">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
             </property>
@@ -106,12 +109,14 @@
         <property name="color" class="ptolemy.actor.gui.ColorAttribute">
         </property>
     </relation>
-    <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
+        <vertex name="vertex1" value="{240.0, 145.0}">
+        </vertex>
     </relation>
-    <link port="val.in" relation="relation"/>
+    <link port="val.input" relation="relation3"/>
     <link port="DiscreteClock.output" relation="relation2"/>
-    <link port="Ramp.output" relation="relation"/>
+    <link port="Ramp.output" relation="relation3"/>
     <link port="Ramp.trigger" relation="relation2"/>
 </entity>

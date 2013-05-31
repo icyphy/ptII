@@ -10,7 +10,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{43.0, 60.0}">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={121, 96, 617, 634}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 617, 634}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[383, 524]">
     </property>
@@ -31,6 +31,15 @@
         </property>
         <property name="useTimeAdvancedRequest" class="ptolemy.data.expr.Parameter" value="false">
             <display name="useTimeAdvancedRequest (TAR) ?"/>
+        </property>
+        <property name="isTimeConstrained" class="ptolemy.data.expr.Parameter" value="true">
+            <display name="isTimeConstrained ?"/>
+        </property>
+        <property name="isTimeRegulator" class="ptolemy.data.expr.Parameter" value="true">
+            <display name="isTimeRegulator ?"/>
+        </property>
+        <property name="requireSynchronization" class="ptolemy.data.expr.Parameter" value="true">
+            <display name="Require synchronization ?"/>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[140.0, 60.0]">
         </property>
@@ -77,14 +86,14 @@
     <entity name="val" class="ptolemy.apps.hlacerti.lib.HlaSubscriber">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[0.0, 120.0]">
         </property>
-        <port name="out" class="ptolemy.actor.TypedIOPort">
+        <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
             </property>
         </port>
     </entity>
     <entity name="ConsumerTimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={390, 228, 500, 344}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={428, 414, 500, 344}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
         </property>
@@ -97,7 +106,7 @@
 <title>ConsumerTimedPlotter</title>
 <xLabel></xLabel>
 <yLabel></yLabel>
-<xRange min="1.0000000000000001E-7" max="10.000000100000001"/>
+<xRange min="1.0E-10" max="10.0000000001"/>
 <yRange min="0.0" max="10.0"/>
 <default connected="no" marks="various"/>
 </plot>?>
@@ -107,10 +116,8 @@
         <vertex name="vertex1" value="{68.0, 65.0}">
         </vertex>
     </relation>
-    <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
-        </property>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <link port="val.out" relation="relation"/>
-    <link port="ConsumerTimedPlotter.input" relation="relation"/>
+    <link port="val.output" relation="relation3"/>
+    <link port="ConsumerTimedPlotter.input" relation="relation3"/>
 </entity>
