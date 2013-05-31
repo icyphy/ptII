@@ -31,16 +31,6 @@
 			<locationURI>virtual:/virtual</locationURI>
 		</link>
 		<link>
-			<name>linked-src/ptolemy/util/test</name>
-			<type>2</type>
-			<locationURI>virtual:/virtual</locationURI>
-		</link>
-		<link>
-			<name>linked-src/ptolemy/util/test/junit</name>
-			<type>2</type>
-			<locationURI>virtual:/virtual</locationURI>
-		</link>
-		<link>
 			<name>linked-src/ptolemy/actor/lib</name>
 			<type>2</type>
 			<locationURI>virtual:/virtual</locationURI>
@@ -51,9 +41,9 @@
 			<locationURI>virtual:/virtual</locationURI>
 		</link>
 		<link>
-			<name>linked-src/ptolemy/util/test/junit/ModelTests.java</name>
-			<type>1</type>
-			<locationURI>PT_LOC/ptolemy/util/test/junit/ModelTests.java</locationURI>
+			<name>linked-src/ptolemy/util/test</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
 		</link>
 		<link>
 			<name>linked-src/ptolemy/actor/lib/NonStrictTest.java</name>
@@ -69,6 +59,16 @@
 			<name>linked-src/ptolemy/actor/test/TestActor.java</name>
 			<type>1</type>
 			<locationURI>PT_LOC/ptolemy/actor/test/TestActor.java</locationURI>
+		</link>
+		<link>
+			<name>linked-src/ptolemy/util/test/junit</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>linked-src/ptolemy/util/test/junit/ModelTests.java</name>
+			<type>1</type>
+			<locationURI>PT_LOC/ptolemy/util/test/junit/ModelTests.java</locationURI>
 		</link>
 	</linkedResources>
 	<variableList>

@@ -41,7 +41,7 @@
     <antcall target="ptolemy-lib.jar"/>
     <antcall target="ptolemy-de.jar"/>
     <antcall target="ptolemy-ddf.jar"/>
-    <antcall target="ptolemy-fsm.jar"/>
+    <antcall target="ptolemy-modal.jar"/>
     <antcall target="ptolemy-ptera.jar"/>
   </target>
 
@@ -83,7 +83,7 @@
     -->
 
   <!-- Create pt-test.jar with:
-       (cd $PTII; jar -cf pt-modules/build/jars/pt-test.jar util/testsuite/*.class ptolemy/util/test ptolemy/util/test/junit/*.class)
+       (cd $PTII; jar -cf pt-modules/build/jars/pt-test.jar ptolemy/util/test ptolemy/util/test/junit/*.class)
     -->
 
   <target name="ptolemy-moml.jar"
@@ -122,11 +122,11 @@
     </antcall>
   </target>
 
-  <target name="ptolemy-fsm.jar"
-	  description="A jar file containing the pt-fsm project.">
+  <target name="ptolemy-modal.jar"
+	  description="A jar file containing the pt-modal project.">
     <antcall target="build-jar">
-      <param name="pt-projects" value="pt-fsm"/>
-      <param name="jar-name" value="ptolemy-fsm"/>
+      <param name="pt-projects" value="pt-modal"/>
+      <param name="jar-name" value="ptolemy-modal"/>
       <param name="pt-projects-classpath" value="jars/ptolemy-core.jar;jars/ptolemy-sdf.jar;jars/ptolemy-lib.jar;jars/ptolemy-moml.jar"/>
     </antcall>
   </target>
@@ -136,7 +136,7 @@
     <antcall target="build-jar">
       <param name="pt-projects" value="pt-ptera"/>
       <param name="jar-name" value="ptolemy-ptera"/>
-      <param name="pt-projects-classpath" value="jars/ptolemy-core.jar;jars/ptolemy-sdf.jar;jars/ptolemy-lib.jar;jars/ptolemy-moml.jar;ptolemy-fsm.jar"/>
+      <param name="pt-projects-classpath" value="jars/ptolemy-core.jar;jars/ptolemy-sdf.jar;jars/ptolemy-lib.jar;jars/ptolemy-moml.jar;ptolemy-modal.jar"/>
     </antcall>
   </target>
 
@@ -155,6 +155,15 @@
       <param name="pt-projects" value="pt-sr"/>
       <param name="jar-name" value="ptolemy-sr"/>
       <param name="pt-projects-classpath" value="jars/ptolemy-core.jar;jars/ptolemy-sdf.jar"/>
+    </antcall>
+  </target>
+
+  <target name="ptolemy-test.jar"
+	  description="A jar file containing the pt-test project.">
+    <antcall target="build-jar">
+      <param name="pt-projects" value="pt-test"/>
+      <param name="jar-name" value="ptolemy-test"/>
+      <param name="pt-projects-classpath" value="jars/ptolemy-core.jar"/>
     </antcall>
   </target>
 
