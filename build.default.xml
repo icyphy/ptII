@@ -267,9 +267,9 @@ For example:
     </echo>
   </target>
 
+  <!-- Don't include build-pt-modules here because it generates the jar files every time. -->
+  <!-- depends="build-pt-modules" -->
   <target name="build-subprojects"
-	  <!-- Don't include build-pt-modules here because it generates the jar files every time. -->
-	  <!-- depends="build-pt-modules" -->
 	  description="Build subprojects."/>
 
   <target name="build-project">
@@ -412,6 +412,7 @@ For example:
   </target>
 
   <target name="jars"
+	  depends="build-pt-modules"
 	  description="Create jar files." >
     <subant antfile="jars.xml"
 	    buildpath="${basedir}"

@@ -164,8 +164,9 @@ For example:
     </echo>
   </target>
 
+  <!-- Don't include build-pt-modules here because it generates the jar files every time. -->
+  <!-- depends="build-pt-modules" -->
   <target name="build-subprojects"
-	  <!-- Don't include build-pt-modules here because it generates the jar files every time. -->
 	  depends="@ANT_MAVEN_SUBPROJECTS@"
 	  description="Build subprojects. @ANT_MAVEN_SUBPROJECTS@"/>
 
@@ -315,6 +316,7 @@ For example:
   </target>
 
   <target name="jars"
+	  depends="build-pt-modules"
 	  description="Create jar files." >
     <subant antfile="jars.xml"
 	    buildpath="${basedir}"
