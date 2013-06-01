@@ -126,12 +126,12 @@ public class HlaPtidesEvent {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                     private methods                       ////
+    ////                         private methods                   ////
     
     /** Read the byte from the buffer at the current offset pointed by 
      *  <i>_iter</i>.
      *  @return A byte.
-     *  @throws NoSuchElementException If there is no more byte to read.
+     *  @exception NoSuchElementException If there is no more byte to read.
      */
     private byte _readByte() throws NoSuchElementException {
         return _iter.next();
@@ -168,7 +168,7 @@ public class HlaPtidesEvent {
      * bounds of a signed int. There are no conversion to an long if it is 
      * not the case.
      * @return A int.
-     * @throws NoSuchElementException If there is no more byte to read. 
+     * @exception NoSuchElementException If there is no more byte to read. 
      */
     private int _readInt() throws NoSuchElementException {
         int i = 0;
@@ -190,7 +190,7 @@ public class HlaPtidesEvent {
      * bounds of a signed long. There are no conversion to something bigger if 
      * it is not the case.
      * @return A long.
-     * @throws NoSuchElementException If there is no more byte to read.
+     * @exception NoSuchElementException If there is no more byte to read.
      */
     private long _readLong() throws NoSuchElementException {
         long l = 0;
@@ -259,7 +259,7 @@ public class HlaPtidesEvent {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                     private variables                     ////
+    ////                         private variables                 ////
 	
 	/** Define BIG_ENDIAN macro. */
     private static byte _BIG_ENDIAN = 1;

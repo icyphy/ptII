@@ -107,7 +107,7 @@ public class CertiRtig extends NamedObj{
 
 	/** Execute a command, set _process to point to the subprocess
 	 *  and set up _errorGobbler and _outputGobbler to read data. 
-	 *  @throws IllegalActionException If the execution of the Runtime.exec()
+	 *  @exception IllegalActionException If the execution of the Runtime.exec()
 	 *  failed or if the RTIG subprocess it not running.
 	 */
 	public void exec() throws IllegalActionException {
@@ -218,7 +218,7 @@ public class CertiRtig extends NamedObj{
 	}
 
 	/** Terminate the process and close any associated streams.
-	 *  @throws IllegalActionException If the closing stdin of the subprocess
+	 *  @exception IllegalActionException If the closing stdin of the subprocess
 	 *  threw an IOException.
 	 */
 	public void terminateProcess() throws IllegalActionException {

@@ -235,7 +235,7 @@ public class HlaSubscriber extends TypedAtomicActor {
 	 *  {@link HlaManager} attribute.
 	 *  @param event The event containing the updated value of the HLA attribute 
 	 *  and its time-stamp.
-	 *  @throws IllegalActionException Not thrown here.
+	 *  @exception IllegalActionException Not thrown here.
 	 */
 	public void putReflectedHlaAttribute(TimedEvent event) throws IllegalActionException {
 		// Add the update value to the queue.
@@ -255,7 +255,7 @@ public class HlaSubscriber extends TypedAtomicActor {
 	 *  which contains the typed value. 
 	 * @param obj The array object containing data type indication and buffer.
 	 * @return value The corresponding typed token.
-	 * @throws IllegalActionException If the expected data type is not handled
+	 * @exception IllegalActionException If the expected data type is not handled
 	 * Due to previous check this case .
 	 */
 	private Token _buildToken(Object[] obj) throws IllegalActionException {

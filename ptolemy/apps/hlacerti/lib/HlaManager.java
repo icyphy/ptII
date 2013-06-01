@@ -1040,7 +1040,7 @@ implements TimeRegulator {
 	 *  @param attributeName Name of the HLA attribute to update.
 	 *  @param in The updated value of the HLA attribute to update.
 	 *  @param asHLAPtidesEvent Indicate if it will be send to a PtidesPlatform.
-	 *  @throws IllegalActionException If a CERTI exception is raised then
+	 *  @exception IllegalActionException If a CERTI exception is raised then
 	 *  displayed it to the user.
 	 */
 	void updateHlaAttribute(String attributeName, Token in, Boolean asHLAPtidesEvent) throws IllegalActionException {
@@ -1102,7 +1102,7 @@ implements TimeRegulator {
 	 *  HLA services to: unsubscribe to HLA attributes, unpublish HLA attributes,
 	 *  resign a Federation and destroy a Federation if the current Federate is
 	 *  the last participant.
-	 *  @throws IllegalActionException If the parent class throws it
+	 *  @exception IllegalActionException If the parent class throws it
 	 *  of if a CERTI exception is raised then displayed it to the user.
 	 */
 	public void wrapup() throws IllegalActionException {
@@ -1273,7 +1273,7 @@ implements TimeRegulator {
 	 *  @param type The type to decode the token.
 	 *  @param buffer The encoded value to decode.
 	 *  @return The decoded value as an object.
-	 *  @throws IllegalActionException If the token is not handled or the
+	 *  @exception IllegalActionException If the token is not handled or the
 	 *  decoding has failed.
 	 */
 	private Object _decodeHlaValue(Type type, byte[] buffer) throws IllegalActionException {
@@ -1310,7 +1310,7 @@ implements TimeRegulator {
 	 *  will be published. 
 	 *  @param tok The token to encode.
 	 *  @return The encoded value as an array of byte.
-	 *  @throws IllegalActionException If the token is not handled or the
+	 *  @exception IllegalActionException If the token is not handled or the
 	 *  encoding had failed.
 	 */
 	private byte[] _encodeHlaValue(Token tok, Boolean asHLAPtidesEvent) throws IllegalActionException {
@@ -1382,7 +1382,7 @@ implements TimeRegulator {
 	/** The method {@link _populatedHlaValueTables()} populates the tables 
 	 *  containing information of HLA attributes required to publish and to 
 	 *  subscribe value attributes in a HLA Federation.
-	 *  @throws IllegalActionException If a HLA attribute is declared twice.
+	 *  @exception IllegalActionException If a HLA attribute is declared twice.
 	 */
 	private void _populateHlaAttributeTables() throws IllegalActionException {
 		CompositeActor ca = (CompositeActor) this.getContainer();
@@ -1435,7 +1435,7 @@ implements TimeRegulator {
 	 *  time advancement phase is saved as {@link TimedEvent} and stored in a 
 	 *  queue. Then, every {@link TimedEvent}s are moved from this queue to the
 	 *  output port of their corresponding {@link HLASubscriber} actors
-	 *  @throws IllegalActionException If the parent class throws it.
+	 *  @exception IllegalActionException If the parent class throws it.
 	 */
 	private void _putReflectedAttributesOnHlaSubscribers() throws IllegalActionException {
 		// Reflected HLA attributes, e.g. update of HLA attributes received by
@@ -1603,14 +1603,14 @@ implements TimeRegulator {
 		 *  services provide by HLA/CERTI to publish/subscribe to HLA attributes
 		 *  in a HLA Federation.
 		 *  @param rtia
-		 *  @throws NameNotFound
-		 *  @throws ObjectClassNotDefined
-		 *  @throws FederateNotExecutionMember
-		 *  @throws RTIinternalError
-		 *  @throws AttributeNotDefined
-		 *  @throws SaveInProgress
-		 *  @throws RestoreInProgress
-		 *  @throws ConcurrentAccessAttempted
+		 *  @exception NameNotFound
+		 *  @exception ObjectClassNotDefined
+		 *  @exception FederateNotExecutionMember
+		 *  @exception RTIinternalError
+		 *  @exception AttributeNotDefined
+		 *  @exception SaveInProgress
+		 *  @exception RestoreInProgress
+		 *  @exception ConcurrentAccessAttempted
 		 *  All those exceptions are from the HLA/CERTI implementation.
 		 */
 		public void initialize(RTIambassador rtia) throws NameNotFound, 
