@@ -165,8 +165,9 @@ For example:
   </target>
 
   <target name="build-subprojects"
-	  depends="build-pt-modules@ANT_MAVEN_SUBPROJECTS@"
-	  description="Build subprojects like pt-modules@ANT_MAVEN_SUBPROJECTS@"/>
+	  <!-- Don't include build-pt-modules here because it generates the jar files every time. -->
+	  depends="@ANT_MAVEN_SUBPROJECTS@"
+	  description="Build subprojects. @ANT_MAVEN_SUBPROJECTS@"/>
 
   @ANT_MAVEN_BUILD_WEBSENSOR@
 

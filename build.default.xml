@@ -268,8 +268,9 @@ For example:
   </target>
 
   <target name="build-subprojects"
-	  depends="build-pt-modules"
-	  description="Build subprojects like pt-modules@ANT_MAVEN_SUBPROJECTS@"/>
+	  <!-- Don't include build-pt-modules here because it generates the jar files every time. -->
+	  <!-- depends="build-pt-modules" -->
+	  description="Build subprojects."/>
 
   <target name="build-project">
     <echo message="${ant.project.name}: ${ant.file}" />
