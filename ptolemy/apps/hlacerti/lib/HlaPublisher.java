@@ -74,137 +74,138 @@ import ptolemy.kernel.util.Workspace;
  */
 public class HlaPublisher extends TypedAtomicActor {
 
-	/** Construct the HlaPublisher actor.
-	 *  @param container The container.
-	 *  @param name The name of this actor.
-	 *  @exception IllegalActionException If the entity cannot be contained
-	 *  by the proposed container.
-	 *  @exception NameDuplicationException If the container already has an
-	 *  actor with this name.
-	 */
-	public HlaPublisher(CompositeEntity container, String name)
-			throws NameDuplicationException, IllegalActionException {
-		super(container, name);
+    /** Construct the HlaPublisher actor.
+     *  @param container The container.
+     *  @param name The name of this actor.
+     *  @exception IllegalActionException If the entity cannot be contained
+     *  by the proposed container.
+     *  @exception NameDuplicationException If the container already has an
+     *  actor with this name.
+     */
+    public HlaPublisher(CompositeEntity container, String name)
+            throws NameDuplicationException, IllegalActionException {
+        super(container, name);
 
-		// The single output port of the actor.
-		input = new TypedIOPort(this, "input", true, false);
-		
-		classObjectHandle = new Parameter(this, "classObjectHandle");
-		classObjectHandle.setDisplayName("Object class in FOM");
-		classObjectHandle.setTypeEquals(BaseType.STRING);       
-		classObjectHandle.setExpression("\"myObjectClass\"");
-		attributeChanged(classObjectHandle);
+        // The single output port of the actor.
+        input = new TypedIOPort(this, "input", true, false);
 
-		asHLAPtidesEvent = new Parameter(this, "asHLAPtidesEvent");
-		asHLAPtidesEvent.setTypeEquals(BaseType.BOOLEAN);
-		asHLAPtidesEvent.setExpression("false");
-		asHLAPtidesEvent.setDisplayName("asHLAPtidesEvent ?");
-		attributeChanged(asHLAPtidesEvent);
+        classObjectHandle = new Parameter(this, "classObjectHandle");
+        classObjectHandle.setDisplayName("Object class in FOM");
+        classObjectHandle.setTypeEquals(BaseType.STRING);
+        classObjectHandle.setExpression("\"myObjectClass\"");
+        attributeChanged(classObjectHandle);
 
-		_hlaManager = null;
-		_asHLAPtidesEvent = false;
-	}
+        asHLAPtidesEvent = new Parameter(this, "asHLAPtidesEvent");
+        asHLAPtidesEvent.setTypeEquals(BaseType.BOOLEAN);
+        asHLAPtidesEvent.setExpression("false");
+        asHLAPtidesEvent.setDisplayName("asHLAPtidesEvent ?");
+        attributeChanged(asHLAPtidesEvent);
 
-	///////////////////////////////////////////////////////////////////
-	////                     public variables                      ////
+        _hlaManager = null;
+        _asHLAPtidesEvent = false;
+    }
 
-	/** The object class of the HLA attribute to publish. */
-	public Parameter classObjectHandle;
+    ///////////////////////////////////////////////////////////////////
+    ////                         public variables                  ////
 
-	/** Indicate if the event is for a Ptides platform. */
-	public Parameter asHLAPtidesEvent;
-	
-	/** The input port. */
-	public TypedIOPort input = null;
+    /** The object class of the HLA attribute to publish. */
+    public Parameter classObjectHandle;
 
-	///////////////////////////////////////////////////////////////////
-	////                     public methods                        ////
+    /** Indicate if the event is for a Ptides platform. */
+    public Parameter asHLAPtidesEvent;
 
-	/** Call the attributeChanged method of the parent. Check if the
-	 *  user as set the object class of the HLA attribute to subscribe to.
-	 *  @param attribute The attribute that changed.
-	 *  @exception IllegalActionException If the object class parameter is
-	 *  empty.
-	 */
-	public void attributeChanged(Attribute attribute)
-			throws IllegalActionException { 
-		if (attribute == classObjectHandle) {
-			String value = ((StringToken) classObjectHandle.getToken())
-					.stringValue();
-			if (value.compareTo("") == 0) {
-				throw new IllegalActionException(this,
-						"Cannot have empty name !");
-			}
-		} else if (attribute == asHLAPtidesEvent) {
-			_asHLAPtidesEvent = ((BooleanToken) asHLAPtidesEvent.getToken())
-					.booleanValue();
-		}
-		super.attributeChanged(attribute);
-	}
+    /** The input port. */
+    public TypedIOPort input = null;
 
-	/** Clone the actor into the specified workspace.
-	 *  @param workspace The workspace for the new object.
-	 *  @return A new actor.
-	 *  @exception CloneNotSupportedException If a derived class contains
-	 *  an attribute that cannot be cloned.
-	 */
-	public Object clone(Workspace workspace) throws CloneNotSupportedException {
-		HlaPublisher newObject = (HlaPublisher) super.clone(workspace);
-		newObject._hlaManager = _hlaManager;
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
-		return newObject;
-	}
+    /** Call the attributeChanged method of the parent. Check if the
+     *  user as set the object class of the HLA attribute to subscribe to.
+     *  @param attribute The attribute that changed.
+     *  @exception IllegalActionException If the object class parameter is
+     *  empty.
+     */
+    public void attributeChanged(Attribute attribute)
+            throws IllegalActionException {
+        if (attribute == classObjectHandle) {
+            String value = ((StringToken) classObjectHandle.getToken())
+                    .stringValue();
+            if (value.compareTo("") == 0) {
+                throw new IllegalActionException(this,
+                        "Cannot have empty name !");
+            }
+        } else if (attribute == asHLAPtidesEvent) {
+            _asHLAPtidesEvent = ((BooleanToken) asHLAPtidesEvent.getToken())
+                    .booleanValue();
+        }
+        super.attributeChanged(attribute);
+    }
 
-	/** Retrieve and check if there is one and only one {@link HlaManager} 
-	 *  deployed in the Ptolemy model. The {@link HlaManager} provides the
-	 *  method to publish an updated value of a HLA attribute to the HLA/CERTI
-	 *  Federation.
-	 *  @exception IllegalActionException If there is zero or more than one
-	 *  {@link HlaManager} per Ptolemy model.
-	 */
-	public void initialize() throws IllegalActionException { 
-		super.initialize(); 
+    /** Clone the actor into the specified workspace.
+     *  @param workspace The workspace for the new object.
+     *  @return A new actor.
+     *  @exception CloneNotSupportedException If a derived class contains
+     *  an attribute that cannot be cloned.
+     */
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        HlaPublisher newObject = (HlaPublisher) super.clone(workspace);
+        newObject._hlaManager = _hlaManager;
 
-		CompositeActor ca = (CompositeActor) this.getContainer();
+        return newObject;
+    }
 
-		List<HlaManager> hlaManagers = ca.attributeList(HlaManager.class);
-		if (hlaManagers.size() > 1) {
-			throw new IllegalActionException(this, 
-					"Only one HlaManager attribute is allowed per model");
-		} else if (hlaManagers.size() < 1) {
-			throw new IllegalActionException(this, 
-					"A HlaManager attribute is required to use this actor");
-		}
+    /** Retrieve and check if there is one and only one {@link HlaManager} 
+     *  deployed in the Ptolemy model. The {@link HlaManager} provides the
+     *  method to publish an updated value of a HLA attribute to the HLA/CERTI
+     *  Federation.
+     *  @exception IllegalActionException If there is zero or more than one
+     *  {@link HlaManager} per Ptolemy model.
+     */
+    public void initialize() throws IllegalActionException {
+        super.initialize();
 
-		// Here, we are sure that there is one and only one instance of the
-		// HlaManager in the Ptolemy model.
-		_hlaManager = hlaManagers.get(0);
-	}
+        CompositeActor ca = (CompositeActor) this.getContainer();
 
-	/** Each tokens, received in the input port, are transmitted to the 
-	 *  {@link HlaManager} for a publication to the HLA/CERTI Federation.
-	 */
-	public void fire() throws IllegalActionException {        
-		if (inputPortList().get(0).hasToken(0)) {
-			Token in = inputPortList().get(0).get(0);
-			_hlaManager.updateHlaAttribute(this.getName(), in, _asHLAPtidesEvent);
+        List<HlaManager> hlaManagers = ca.attributeList(HlaManager.class);
+        if (hlaManagers.size() > 1) {
+            throw new IllegalActionException(this,
+                    "Only one HlaManager attribute is allowed per model");
+        } else if (hlaManagers.size() < 1) {
+            throw new IllegalActionException(this,
+                    "A HlaManager attribute is required to use this actor");
+        }
 
-			if (_debugging) {
-				_debug(this.getDisplayName()
-						+ " Called fire() - the update value \"" + in.toString()
-						+ "\" of the HLA Attribute \"" + this.getName()
-						+ "\" has been sent to \"" + _hlaManager.getDisplayName()
-						+ "\"");
-			}
-		}
-	}
+        // Here, we are sure that there is one and only one instance of the
+        // HlaManager in the Ptolemy model.
+        _hlaManager = hlaManagers.get(0);
+    }
 
-	///////////////////////////////////////////////////////////////////
-	////                     private variables                     ////
+    /** Each tokens, received in the input port, are transmitted to the 
+     *  {@link HlaManager} for a publication to the HLA/CERTI Federation.
+     */
+    public void fire() throws IllegalActionException {
+        if (inputPortList().get(0).hasToken(0)) {
+            Token in = inputPortList().get(0).get(0);
+            _hlaManager.updateHlaAttribute(this.getName(), in,
+                    _asHLAPtidesEvent);
 
-	/** A reference to the associated {@link HlaManager}. */
-	private HlaManager _hlaManager;
+            if (_debugging) {
+                _debug(this.getDisplayName()
+                        + " Called fire() - the update value \""
+                        + in.toString() + "\" of the HLA Attribute \""
+                        + this.getName() + "\" has been sent to \""
+                        + _hlaManager.getDisplayName() + "\"");
+            }
+        }
+    }
 
-	/** Indicate if the event is for a Ptides platform. */
-	private boolean _asHLAPtidesEvent;
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
+    /** A reference to the associated {@link HlaManager}. */
+    private HlaManager _hlaManager;
+
+    /** Indicate if the event is for a Ptides platform. */
+    private boolean _asHLAPtidesEvent;
 }

@@ -29,25 +29,26 @@ import java.util.Vector;
 *  @Pt.AcceptedRating Red (glasnier)
 */
 public class HlaPtidesEvent {
-    
-	/** Construct a HlaPtidesEvent. The HlaPtidesEvent structure stores
-	 *  the Ptides <i>logicalTime</i>, the <i>microStep</i>, the <i>sourceTime</i>
-	 *  and the <i>value</i> of the event in a Vector<byte> buffer.
-	 *  @param logicalTime The Ptides logical time as double.
-	 *  @param microStep The current microstep of the event.
-	 *  @param sourceTime The souce timestamp of the event.
-	 *  @param value The value of the event as array of bytes.
-	 */
-    public HlaPtidesEvent(Double logicalTime, int microStep, Double sourceTime, byte[] value) {
-    	_buffer = new Vector<Byte>();
-    	_iter = _buffer.iterator();
 
-		this._write(logicalTime);
-		this._write(microStep);
-		this._write(sourceTime);
-		this._write(value);
+    /** Construct a HlaPtidesEvent. The HlaPtidesEvent structure stores
+     *  the Ptides <i>logicalTime</i>, the <i>microStep</i>, the <i>sourceTime</i>
+     *  and the <i>value</i> of the event in a Vector<byte> buffer.
+     *  @param logicalTime The Ptides logical time as double.
+     *  @param microStep The current microstep of the event.
+     *  @param sourceTime The souce timestamp of the event.
+     *  @param value The value of the event as array of bytes.
+     */
+    public HlaPtidesEvent(Double logicalTime, int microStep, Double sourceTime,
+            byte[] value) {
+        _buffer = new Vector<Byte>();
+        _iter = _buffer.iterator();
+
+        this._write(logicalTime);
+        this._write(microStep);
+        this._write(sourceTime);
+        this._write(value);
     }
-    
+
     /** Construct a HlaPtidesEvent from an array of bytes. The <i>byteArray</i>
      *  is already a representation of a HlaPtidesEvent sent through the 
      *  HLA/CERTI Federation.
@@ -55,17 +56,17 @@ public class HlaPtidesEvent {
      *  bytes.
      */
     public HlaPtidesEvent(byte[] byteArray) {
-    	_buffer = new Vector<Byte>();
-    	_iter = _buffer.iterator();
+        _buffer = new Vector<Byte>();
+        _iter = _buffer.iterator();
 
-        for (int i = 0; i < byteArray.length; i++) {
-            _buffer.add(byteArray[i]);
+        for (byte element : byteArray) {
+            _buffer.add(element);
         }
     }
 
-	///////////////////////////////////////////////////////////////////
-	////                     public methods                        ////
-    
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+
     /** Return the representation of the HlaPtidesEvent as an array of bytes.
      *  @return The HlaPtidesEvent as byte array.
      */
@@ -74,60 +75,60 @@ public class HlaPtidesEvent {
         for (int i = 0; i < _buffer.size(); i++) {
             byteArray[i] = _buffer.get(i);
         }
-    	
-    	return byteArray;
+
+        return byteArray;
     }
-    
+
     /** Return the Ptides logical time of the event, encapsulated in the buffer.
      * @return The Ptides logical time as Double.
      */
     public Double getLogicalTime() {
-    	_iter = _buffer.iterator();
-    	return this._readDouble();
+        _iter = _buffer.iterator();
+        return this._readDouble();
     }
-    
+
     /** Return the microstep of the event, encapsulated in the buffer.
      * @return The microstep as Int.
      */
     public int getMicroStep() {
-    	_iter = _buffer.iterator();
-    	
-    	// Remove the logicalTime.
-    	this._readDouble();  
-    	
-    	return this._readInt();
+        _iter = _buffer.iterator();
+
+        // Remove the logicalTime.
+        this._readDouble();
+
+        return this._readInt();
     }
-    
+
     /** Return the source timestamp of the event, encapsulated in the buffer.
      * @return The source timestamp as Double.
      */
     public Double getSourceTime() {
-    	_iter = _buffer.iterator();
-    	
-    	// Remove the logicalTime, then the microStep.
-    	this._readDouble();  
-    	this._readInt();
-    	
-    	return this._readDouble();
+        _iter = _buffer.iterator();
+
+        // Remove the logicalTime, then the microStep.
+        this._readDouble();
+        this._readInt();
+
+        return this._readDouble();
     }
-    
+
     /** Return the value of the event, encapsulated in the buffer.
      *  @return The value of the event as array of byte.
      */
     public byte[] getValue() {
-    	_iter = _buffer.iterator();
-    	
-    	// Remove the logicalTime, the microStep and the sourceTime.
-    	this._readDouble();  
-    	this._readInt();
-    	this._readDouble();
-    	
-    	return this._readBytes();
+        _iter = _buffer.iterator();
+
+        // Remove the logicalTime, the microStep and the sourceTime.
+        this._readDouble();
+        this._readInt();
+        this._readDouble();
+
+        return this._readBytes();
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-    
+
     /** Read the byte from the buffer at the current offset pointed by 
      *  <i>_iter</i>.
      *  @return A byte.
@@ -136,15 +137,15 @@ public class HlaPtidesEvent {
     private byte _readByte() throws NoSuchElementException {
         return _iter.next();
     }
-    
+
     /** Read and return an array of bytes from the buffer at the current offset 
      *  pointed by <i>_iter</i>. First read the size (integer) and then return
      *  the array.
      *  @return An array of bytes.
      */
     private byte[] _readBytes() {
-    	// Treat first integer as length.
-        int size = this._readInt(); 
+        // Treat first integer as length.
+        int size = this._readInt();
 
         byte[] byteArray = new byte[size];
         for (int i = 0; i < size; i++) {
@@ -153,7 +154,7 @@ public class HlaPtidesEvent {
 
         return byteArray;
     }
-    
+
     /** Read a Double encoded in the buffer. The endianness is 
      *  taken care of.
      *  @return a java (big endian IEEE 754) Double.
@@ -161,7 +162,7 @@ public class HlaPtidesEvent {
     private double _readDouble() {
         return Double.longBitsToDouble(this._readLong());
     }
-    
+
     /** Read an integer from the buffer with correct endianess.
      * NOTE: there are no unsigned integers of any size in java.
      * This methods assume that the int it is trying to read is inside the 
@@ -174,7 +175,7 @@ public class HlaPtidesEvent {
         int i = 0;
         if (_endianness == _BIG_ENDIAN) {
             for (int s = 3; s >= 0; s--) {
-                i = i | (((int) _iter.next()) & 0x000000FF) << _BYTE_LENGTH * s;
+                i = i | ((int) _iter.next() & 0x000000FF) << _BYTE_LENGTH * s;
             }
         } else {
             for (int s = 0; s <= 3; s++) {
@@ -183,7 +184,7 @@ public class HlaPtidesEvent {
         }
         return i;
     }
-    
+
     /** Read a long from the buffer with correct endianess.
      * NOTE: there are no unsigned integers of any size in java.
      * This methods assume that the long it is trying to read is inside the 
@@ -196,24 +197,27 @@ public class HlaPtidesEvent {
         long l = 0;
         if (_endianness == _BIG_ENDIAN) {
             for (int i = 7; i >= 0; i--) {
-                l = l | ((long) _iter.next() & 0x00000000000000FF) << i * _BYTE_LENGTH;
+                l = l
+                        | ((long) _iter.next() & 0x00000000000000FF) << i
+                                * _BYTE_LENGTH;
             }
         } else {
             for (int i = 0; i <= 7; i++) {
-                l = l | ((long) _iter.next() & 0x00000000000000FF) << i * _BYTE_LENGTH;
+                l = l
+                        | ((long) _iter.next() & 0x00000000000000FF) << i
+                                * _BYTE_LENGTH;
             }
         }
         return l;
     }
-    
-    
+
     /** This method set the buffer back in the state just after its creation.
      *  Its should be used before re-using the buffer to write. 
-     */  
+     */
     public void reset() {
         _buffer.clear();
     }
-     
+
     /** Write byte array to buffer. First is the length of the array, stored as 
      *  a integer, then the bytes themselves.
      *  @param array The array of bytes to store.
@@ -225,21 +229,14 @@ public class HlaPtidesEvent {
             _buffer.add(b);
         }
     }
-    
-    /** Write the supplied byte at the end of the buffer.
-     *  @param b The byte to write.
-     */
-    private void _write(byte b) {
-        _buffer.add(b);
-    }
-    
+
     /** Write a double in a big endian (IEEE 754 standard way).
      *  @param dbl The Double value to store.
      */
     private void _write(double dbl) {
         this._write(Double.doubleToLongBits(dbl));
     }
-    
+
     /** Write integer to the buffer (in a big endian way).
      *  @param i The integer to be written.
      */
@@ -248,7 +245,7 @@ public class HlaPtidesEvent {
             _buffer.add((byte) (i >>> j * _BYTE_LENGTH));
         }
     }
-    
+
     /** Write long to the buffer (in a big endian way).
      *  @param l The long to be written.
      */
@@ -260,20 +257,20 @@ public class HlaPtidesEvent {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-	
-	/** Define BIG_ENDIAN macro. */
+
+    /** Define BIG_ENDIAN macro. */
     private static byte _BIG_ENDIAN = 1;
-    
-	/** Indicate if the system is big endian. */
+
+    /** Indicate if the system is big endian. */
     private byte _endianness = _BIG_ENDIAN;
-    
-	/** Constant for the size of a byte in the system. */
+
+    /** Constant for the size of a byte in the system. */
     public static final int _BYTE_LENGTH = 8;
-	
-	/** Buffer which contains Ptides logical time, microstep, source timestamp
-	 *   and the encoded HLA value. */
+
+    /** Buffer which contains Ptides logical time, microstep, source timestamp
+     *   and the encoded HLA value. */
     private Vector<Byte> _buffer = null;
-    
-	/** Iterator uses for the read operations. */
+
+    /** Iterator uses for the read operations. */
     private Iterator<Byte> _iter;
 }
