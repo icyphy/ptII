@@ -25,7 +25,7 @@
  COPYRIGHTENDKEY
 
  */
-package ptolemy.kernel.util.test;
+package ptolemy.kernel.util.test.system;
 
 import java.util.Collections;
 import java.util.Enumeration;

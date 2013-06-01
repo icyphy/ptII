@@ -27,7 +27,7 @@
 
  */
 
-package ptolemy.kernel.util.test.junit.system;
+package ptolemy.kernel.util.test.system.junit;
 
 import ptolemy.util.test.junit.JUnitTclTestBase;
 
