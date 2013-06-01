@@ -77,9 +77,13 @@ all: jclass
 
 install: all $(PTCLASSJAR)
 
-# Invoke the OpenModelica Compiler (omc) to create Simple.fmu
+# Invoke the OpenModelica Compiler (omc) to create the FMU
 GeneratorContactorLoad.fmu: GeneratorContactorLoad.mo GeneratorContactorLoad.mos
 	omc GeneratorContactorLoad.mos
+
+# Update the fmu by unzipping all the fmus and then zipping.
+update:
+	$(ROOT)/bin/updateFmu GeneratorContactorLoad.fmu
 
 demo: demo_vergil #demo_ptolemy
 
