@@ -4,9 +4,9 @@
 <entity name="GeneratorContactorLoad" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={720, 112, 946, 683}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={169, 39, 991, 809}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[712, 573]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[757, 699]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
@@ -17,19 +17,19 @@
         </property>
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="40.0">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{125.0, 55.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{55.0, 0.0}">
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="A model that uses an OpenModelical Model Exchange FMU.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Generator Contactor Load&#10;A model that uses an OpenModelical Model Exchange FMU ">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[240.0, 25.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[150.0, -35.0]">
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Under Mac OS X, this model uses IncrementalFMU_wrap.dylib&#10;and libfmipp.so in $PTII/lib.  &#10;Under Windows, this model should be run using MinGW">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 165.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-10.0, 25.0]">
         </property>
     </property>
     <property name="Image" class="ptolemy.vergil.kernel.attributes.ImageAttribute">
@@ -37,7 +37,7 @@
         </property>
         <property name="scale" class="ptolemy.data.expr.Parameter" value="80.0">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 265.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[420.0, 330.0]">
         </property>
     </property>
     <property name="Image2" class="ptolemy.vergil.kernel.attributes.ImageAttribute">
@@ -45,15 +45,27 @@
         </property>
         <property name="scale" class="ptolemy.data.expr.Parameter" value="80.0">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[325.0, 255.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-5.0, 340.0]">
+        </property>
+    </property>
+    <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Above is what the model would look like in OpenModelica">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[430.0, 595.0]">
+        </property>
+    </property>
+    <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Above is an OpenModelica image of the contents of the FMU.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-15.0, 600.0]">
         </property>
     </property>
     <entity name="GeneratorContractorLoadFMU" class="ptolemy.actor.lib.fmi.fmipp.FMUModelExchange">
         <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="GeneratorContactorLoad.fmu">
         </property>
-        <property name="inputNames" class="ptolemy.data.expr.Parameter" value="">
+        <property name="inputNames" class="ptolemy.data.expr.Parameter" value="contactor,drive">
         </property>
-        <property name="outputNames" class="ptolemy.data.expr.Parameter" value="x">
+        <property name="outputNames" class="ptolemy.data.expr.Parameter" value="voltage">
         </property>
         <property name="startValues" class="ptolemy.data.expr.Parameter" value="">
         </property>
@@ -63,11 +75,26 @@
         </property>
         <property name="integratorStepSize" class="ptolemy.data.expr.Parameter" value="1.0">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[105.0, 120.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[255.0, 215.0]">
         </property>
+        <port name="voltage" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <port name="contactor" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <port name="drive" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
     </entity>
     <entity name="MatrixToSequence" class="ptolemy.domains.sdf.lib.MatrixToSequence">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{230.0, 130.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[450.0, 290.0]">
         </property>
     </entity>
     <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
@@ -75,7 +102,7 @@
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{365.0, 130.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[585.0, 290.0]">
         </property>
         <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
@@ -87,14 +114,56 @@
 </plot>?>
         </configure>
     </entity>
-    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-    </relation>
+    <entity name="PID" class="ptolemy.domains.de.lib.PID">
+        <property name="Kp" class="ptolemy.data.expr.Parameter" value="0.3">
+        </property>
+        <property name="Ki" class="ptolemy.data.expr.Parameter" value="15.0">
+        </property>
+        <doc>Discrete proportional, integral, and derivative controller.</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[130.0, 225.0]">
+        </property>
+    </entity>
+    <entity name="MicrostepDelay" class="ptolemy.actor.lib.MicrostepDelay">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, 215.0]">
+        </property>
+    </entity>
+    <entity name="SingleEvent" class="ptolemy.actor.lib.SingleEvent">
+        <property name="time" class="ptolemy.data.expr.Parameter" value="2.0">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 150.0]">
+        </property>
+    </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;MatrixToSequence.output&quot;,x=230.0,y=130.0}, tail={id=&quot;TimedPlotter.input&quot;,x=365.0,y=130.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;MatrixToSequence.output&quot;,x=450.0,y=290.0}, tail={id=&quot;TimedPlotter.input&quot;,x=585.0,y=290.0}, points={} } }">
         </property>
     </relation>
-    <link port="GeneratorContractorLoadFMU.output" relation="relation3"/>
-    <link port="MatrixToSequence.input" relation="relation3"/>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;GeneratorContractorLoadFMU.drive&quot;,x=255.0,y=215.0}, tail={id=&quot;PID.output&quot;,x=130.0,y=225.0}, points={} } }">
+        </property>
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="[410.0, 290.0]">
+        </vertex>
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;relation4.vertex1&quot;,x=410.0,y=290.0}, tail={id=&quot;MatrixToSequence.input&quot;,x=450.0,y=290.0}, points={} },{ head={id=&quot;MicrostepDelay.input&quot;,x=5.0,y=215.0}, tail={id=&quot;relation4.vertex1&quot;,x=410.0,y=290.0}, points={-30.0,215.0,-30.0,290.0} },{ head={id=&quot;GeneratorContractorLoadFMU.voltage&quot;,x=255.0,y=215.0}, tail={id=&quot;relation4.vertex1&quot;,x=410.0,y=290.0}, points={405.0,225.0,405.0,290.0} } }">
+        </property>
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;PID.input&quot;,x=130.0,y=225.0}, tail={id=&quot;MicrostepDelay.output&quot;,x=5.0,y=215.0}, points={} } }">
+        </property>
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="GeneratorContractorLoadFMU.voltage" relation="relation4"/>
+    <link port="GeneratorContractorLoadFMU.contactor" relation="relation5"/>
+    <link port="GeneratorContractorLoadFMU.drive" relation="relation2"/>
+    <link port="MatrixToSequence.input" relation="relation4"/>
     <link port="MatrixToSequence.output" relation="relation"/>
     <link port="TimedPlotter.input" relation="relation"/>
+    <link port="PID.input" relation="relation3"/>
+    <link port="PID.output" relation="relation2"/>
+    <link port="MicrostepDelay.input" relation="relation4"/>
+    <link port="MicrostepDelay.output" relation="relation3"/>
+    <link port="SingleEvent.output" relation="relation5"/>
 </entity>
