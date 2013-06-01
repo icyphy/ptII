@@ -272,7 +272,7 @@ public class ExpectationMaximization extends TypedAtomicActor {
            } else if (modelName.equals("hidden markov model")){
                _modelType = _HMM;
                A0.setVisibility(Settable.FULL);
-               A0.setExpression("[0.5,0.5;0.5,0.5]");
+               //A0.setExpression("[0.5,0.5;0.5,0.5]");
                transitionMatrix.setTypeEquals( BaseType.DOUBLE_MATRIX);
            } else{
                throw new IllegalActionException(this,
@@ -326,7 +326,7 @@ public class ExpectationMaximization extends TypedAtomicActor {
            double[][] A_new = new double[nStates][nStates];
            double[] m_new = new double[nStates];
            double[] s_new = new double[nStates];
-           
+           int asked = 0;
            for( int iterations = 0; iterations< _nIterations; iterations++){
                
                newEstimates = gaussianHMM(0,_observations, _A0, _m0, _s0, _priors);
@@ -335,14 +335,16 @@ public class ExpectationMaximization extends TypedAtomicActor {
                s_new = (double[]) newEstimates.get("s_hat");
                A_new = (double[][]) newEstimates.get("A_hat");
                
+               
                // check for NaN
                if((m_new[0] != m_new[0]) || (s_new[0]!=s_new[0]) || (A_new[0]!=A_new[0])){
                    // if no convergence in 10 iterations, issue warning message.
                    if ( iterations < _nIterations-1){
-                       if(!MessageHandler.yesNoQuestion("WARNING: The Expectation Maximization algorithm did not " +
+                       if((asked == 0) && !MessageHandler.yesNoQuestion("WARNING: The Expectation Maximization algorithm did not " +
                        		"converge with the given initial parameters. Randomize initial guess?")){
                            break;
                        }
+                       asked = 1;
                    } else{
                        MessageHandler.message("Expectation Maximization failed to converge");
                    }
@@ -359,17 +361,20 @@ public class ExpectationMaximization extends TypedAtomicActor {
                        }
                        
                    }
+                   double L = maxO - minO;
                    // make new random guess
                    for( int i = 0; i< nStates; i++){
-                       m_new[i] = (maxO - minO)*Math.random() + minO;
-                       s_new[i] = Math.abs((maxO - minO)*Math.random());
+                       m_new[i] = L/nStates*Math.random()  +L*i/nStates + minO;
+                       s_new[i] = Math.abs((maxO - minO)*Math.random())/nStates;
                        for ( int j = 0 ; j < nStates; j++){
-                           A_new[i][j] = 1.0/nStates;
+                           //A_new[i][j] = 1.0/nStates;
                        }
                       
                    }
+                   A_new = _Ainit;
+                   // sort arrays
                    Arrays.sort(m_new);
-                   
+                    
                }
                // Converged
                if( (_m0[0] - m_new[0])< mTol){
@@ -633,6 +638,7 @@ public class ExpectationMaximization extends TypedAtomicActor {
        _m0 = new double[_nStates];
        _s0 = new double[_nStates];
        _A0 = new double[_nStates][_nStates];
+       _Ainit = new double[_nStates][_nStates];
        _priors = new double[_nStates];
        
         for (int i = 0; i < _nStates; i++) {
@@ -650,6 +656,7 @@ public class ExpectationMaximization extends TypedAtomicActor {
                                    .doubleValue();
                        }
                    }
+                   _Ainit = _A0;
                }
    }
    
@@ -658,6 +665,7 @@ public class ExpectationMaximization extends TypedAtomicActor {
 ////                         private variables                 ////
 
    private double[][] _A0; 
+   private double[][] _Ainit; 
    
    protected int _distribution;
 
