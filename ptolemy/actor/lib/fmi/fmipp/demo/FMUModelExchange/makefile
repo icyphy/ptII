@@ -81,6 +81,10 @@ install: all $(PTCLASSJAR)
 Simple.fmu: Simple.mo Simple.mos
 	omc Simple.mos
 
+# Update the fmu by unzipping all the fmus and then zipping.
+update:
+	$(ROOT)/bin/updateFmu Simple.fmu
+
 demo: demo_vergil #demo_ptolemy
 
 #demo_applet:
