@@ -30,7 +30,7 @@
 # 						COPYRIGHTENDKEY
 
 # Location of this directory, relative to the Ptolemy II directory
-ME =		ptolemy/kernel/util/test/junit/system
+ME =		ptolemy/kernel/util/test/system/junit
 
 # Root of the Ptolemy II directory
 ROOT =		../../../../../..
@@ -63,7 +63,7 @@ JCLASS =	$(JSRCS:%.java=%.class)
 
 # JUNIT_JAVA_ARGS is set in $PTII/mk/ptII.mk
 tests:: $(EXTRA_SRCS) jclass test_java #test_jsimple
-	(cd ..; CLASSPATH="$(PTII)$(CLASSPATHSEPARATOR)$(CLASSPATH)" "$(JAVA)" $(JUNIT_JAVA_ARGS) org.junit.runner.JUnitCore ptolemy.kernel.util.test.junit.system.JUnitTclTest)
+	(cd ..; CLASSPATH="$(PTII)$(CLASSPATHSEPARATOR)$(CLASSPATH)" "$(JAVA)" $(JUNIT_JAVA_ARGS) org.junit.runner.JUnitCore ptolemy.kernel.util.test.system.junit.JUnitTclTest)
 
 test_java: jclass
 
