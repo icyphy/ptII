@@ -1,0 +1,3 @@
+loadModel(Modelica);
+loadFile("GeneratorContactorLoad.mo");
+translateModelFMU(GeneratorContactorLoad);getErrorString();
