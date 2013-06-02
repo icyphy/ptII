@@ -39,6 +39,7 @@ import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
 import ptolemy.actor.QuantityManager;
+import ptolemy.actor.QuantityManagerListener;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.gui.ColorAttribute;
 import ptolemy.actor.gui.Configuration;

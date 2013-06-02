@@ -40,6 +40,7 @@ import ptolemy.actor.CompositeActor;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.IntermediateReceiver;
 import ptolemy.actor.QuantityManager;
+import ptolemy.actor.QuantityManagerListener;
 import ptolemy.actor.Receiver;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.gui.ColorAttribute;

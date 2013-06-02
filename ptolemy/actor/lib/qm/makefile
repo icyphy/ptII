@@ -75,7 +75,6 @@ JSRCS = \
 	CompositeQuantityManager.java \
 	CrossbarSwitch.java \
 	TTESwitch.java \
-	QuantityManagerListener.java \
 	QuantityManagerMonitor.java
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)

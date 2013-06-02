@@ -38,7 +38,7 @@ import ptolemy.actor.IntermediateReceiver;
 import ptolemy.actor.QuantityManager;
 import ptolemy.actor.Receiver;
 import ptolemy.actor.lib.qm.AtomicQuantityManager;
-import ptolemy.actor.lib.qm.QuantityManagerListener.EventType;
+import ptolemy.actor.QuantityManagerListener.EventType;
 import ptolemy.actor.sched.FixedPointDirector;
 import ptolemy.actor.util.FIFOQueue;
 import ptolemy.actor.util.Time;

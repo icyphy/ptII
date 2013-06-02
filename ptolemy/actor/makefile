@@ -105,6 +105,7 @@ JSRCS = \
 	PublisherPort.java \
 	PubSubPort.java \
 	QuantityManager.java \
+	QuantityManagerListener.java \
 	QuasiTransparentDirector.java \
 	QueueReceiver.java \
 	Receiver.java \

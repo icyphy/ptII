@@ -29,7 +29,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
  */
 package ptolemy.actor;
 
-import ptolemy.actor.lib.qm.QuantityManagerListener;
+import ptolemy.actor.QuantityManagerListener;
 import ptolemy.data.Token;
 import ptolemy.kernel.util.IllegalActionException;
 

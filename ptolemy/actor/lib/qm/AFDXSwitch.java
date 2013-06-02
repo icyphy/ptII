@@ -38,7 +38,7 @@ import ptolemy.actor.IOPort;
 import ptolemy.actor.IntermediateReceiver;
 import ptolemy.actor.QuantityManager;
 import ptolemy.actor.Receiver;
-import ptolemy.actor.lib.qm.QuantityManagerListener.EventType;
+import ptolemy.actor.QuantityManagerListener.EventType;
 import ptolemy.actor.util.Time;
 import ptolemy.actor.util.TimedEvent;
 import ptolemy.data.DoubleToken;

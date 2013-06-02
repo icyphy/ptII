@@ -28,7 +28,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
  */
 
-package ptolemy.actor.lib.qm;
+package ptolemy.actor;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.QuantityManager;
