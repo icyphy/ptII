@@ -169,7 +169,7 @@
     <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
         <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="Voltage, Drive">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={990, 607, 639, 456}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={818, 374, 639, 456}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[639, 412]">
         </property>
@@ -182,8 +182,8 @@
 <title>Voltage and Drive over time</title>
 <xLabel>time (seconds)</xLabel>
 <yLabel>voltage, drive</yLabel>
-<xRange min="0.0" max="59.719999990800005"/>
-<yRange min="0.0" max="1870.000000000001"/>
+<xRange min="0.0" max="17.4299999997"/>
+<yRange min="-17.588751773024683" max="1871.439802868659"/>
 <default connected="no" marks="various" stems="yes"/>
 </plot>?>
         </configure>
@@ -419,9 +419,9 @@
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation9" class="ptolemy.actor.TypedIORelation">
-    </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation9" class="ptolemy.actor.TypedIORelation">
     </relation>
     <link port="TimedPlotter.input" relation="relation2"/>
     <link port="TimedPlotter.input" relation="relation4"/>
@@ -439,8 +439,8 @@
     <link port="GeneratorContractorLoadFMU.output" relation="relation10"/>
     <link port="MicrostepDelay2.input" relation="relation3"/>
     <link port="MicrostepDelay2.output" relation="relation4"/>
-    <link port="VectorAssembler.input" relation="relation4"/>
     <link port="VectorAssembler.input" relation="relation9"/>
+    <link port="VectorAssembler.input" relation="relation4"/>
     <link port="VectorAssembler.output" relation="relation"/>
     <link port="VectorDisassembler.input" relation="relation10"/>
     <link port="VectorDisassembler.output" relation="relation2"/>
