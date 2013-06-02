@@ -1059,15 +1059,31 @@ if test ! -d "$FMIPP_USER_DIR"; then
     so we need not find Boost.])
 else
     if test "$PTBOOST" = "no"; then
-        boostdirs="/opt/local/include /usr/local/include /usr/include"
-	for boostdir in $boostdirs
-        do
-	    if test -f "$boostdir/boost/numeric/odeint.hpp"; then
-                PTBOOST_INCLUDE_DIR=$boostdir
-                PT_MSG_RESULT($PTBOOST_INCLUDE_DIR)
-		break
-            fi
-        done
+        AC_MSG_CHECKING([for Boost])
+        AC_ARG_WITH(boost, [  --with-boost-include=DIR      use boost includes from DIR DIR/boost/numeric/odeint.hpp should exist,
+                          defaults to /usr/local/include],
+	PTBOOST_INCLUDE_DIR=$withval,
+	PTBOOST_INCLUDE_DIR=/usr/local/include)
+
+	if test -f "$PTBOOST_INCLUDE_DIR/boost/numeric/odeint.hpp"; then
+	    PT_MSG_RESULT($PTBOOST_INCLUDE_DIR)
+	else
+            boostdirs="/usr/local/boost* /opt/local/include /usr/local/include /usr/include"
+	    for boostdir in $boostdirs
+            do
+	        if test -f "$boostdir/boost/numeric/odeint.hpp"; then
+                    PTBOOST_INCLUDE_DIR=$boostdir
+                    PT_MSG_RESULT($PTBOOST_INCLUDE_DIR)
+		    break
+                fi
+            done
+	    if test ! -f "$PTBOOST_INCLUDE_DIR/boost/numeric/odeint.hpp"; then
+	        AC_MSG_WARN([Failed to find $PTBOOST_INCLUDE_DIR/boost/numeric/odeint.hpp
+    This is only a problem if you want to rebuild the Functional
+    Mock-up Interface ++ C files in actor/lib/fmi/fmipp.
+    Most users can use the shared libraries in $PTII/lib or $PTII/bin.])
+	    fi
+        fi
     fi
 
     # We check for boost later in expat
