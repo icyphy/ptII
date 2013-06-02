@@ -1,6 +1,5 @@
-package ptolemy.actor.lib.resourceScheduler;
+package ptolemy.actor;
 
-import ptolemy.actor.Actor;
 import ptolemy.actor.util.Time;
 import ptolemy.kernel.util.Decorator;
 import ptolemy.kernel.util.IllegalActionException;

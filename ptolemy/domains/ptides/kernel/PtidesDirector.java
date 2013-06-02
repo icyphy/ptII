@@ -44,13 +44,13 @@ import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.Receiver;
+import ptolemy.actor.ResourceScheduler;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.lib.Const;
 import ptolemy.actor.lib.DiscreteClock;
 import ptolemy.actor.lib.PoissonClock;
 import ptolemy.actor.lib.TimeDelay;
-import ptolemy.actor.lib.resourceScheduler.ResourceScheduler;
 import ptolemy.actor.parameters.ParameterPort;
 import ptolemy.actor.parameters.SharedParameter;
 import ptolemy.actor.util.CausalityInterface;
@@ -600,7 +600,10 @@ public class PtidesDirector extends DEDirector implements Decorator {
                         && getEnvironmentTime().compareTo(event.timeStamp()) > 0) {
                     handleModelError(event.ioPort(),
                             new IllegalActionException(event.ioPort(),
-                                    "Missed Deadline at " + event.ioPort()
+                                    "Missed Deadline at platform time " +
+                                    localClock.getLocalTime() + 
+                                    " with logical time " + getModelTime() + 
+                                    " at port " + event.ioPort()
                                             + "!"));
                 }
             }
@@ -1053,10 +1056,43 @@ public class PtidesDirector extends DEDirector implements Decorator {
             if (entity instanceof CompositeActor
                     && ((CompositeActor) entity).getDirector() instanceof SRDirector) {
                 // TODO calculate delayOffset
+//                double delay = _calculateSRDelay((CompositeActor) entity);
+//                System.out.println(delay);
+//                _setDelayOffset((NamedObj) entity, delay);                
             }
         }
     }
 
+    
+    private double _calculateSRDelay(CompositeActor composite) throws IllegalActionException {
+        double minDelay = Double.POSITIVE_INFINITY;
+        double delay = 0.0;
+        for (Object inputPort : composite.inputPortList()) {
+            for (Object insidePort : ((IOPort)inputPort).deepInsidePortList()) {
+                if (((IOPort)insidePort).isOutput()) {
+                    if (delay < minDelay) {
+                        minDelay = delay;
+                    }
+                } else {
+                    Actor actor = ((Actor)((IOPort)insidePort).getContainer());
+                    CausalityInterface causalityInterface = actor.getCausalityInterface();
+                    for (Object outputPort : actor.outputPortList()) {
+                        SuperdenseDependency dependency = (SuperdenseDependency) causalityInterface.getDependency((IOPort) insidePort, (IOPort) outputPort);
+                        delay += dependency.timeValue();
+                        for (Object connectedPort : ((IOPort)outputPort).connectedPortList()) {
+                            if (composite.outputPortList().contains(connectedPort)) {
+                                if (delay < minDelay) {
+                                    minDelay = delay;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return delay;
+    }
+    
     /** Calculate the relative deadline for each input port. The relative
      * deadline is used along with the timestamp of the event at the input port
      * to determine the earliest time that this event may cause for an event

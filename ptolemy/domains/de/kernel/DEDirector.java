@@ -42,7 +42,6 @@ import ptolemy.actor.IOPort;
 import ptolemy.actor.QuasiTransparentDirector;
 import ptolemy.actor.Receiver;
 import ptolemy.actor.SuperdenseTimeDirector;
-import ptolemy.actor.lib.resourceScheduler.ResourceScheduler;
 import ptolemy.actor.util.CausalityInterface;
 import ptolemy.actor.util.CausalityInterfaceForComposites;
 import ptolemy.actor.util.Dependency;

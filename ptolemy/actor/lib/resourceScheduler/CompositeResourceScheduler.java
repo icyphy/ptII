@@ -37,6 +37,7 @@ import java.util.List;
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
+import ptolemy.actor.ResourceScheduler;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.gui.ColorAttribute;
 import ptolemy.actor.lib.ResourceAttributes;

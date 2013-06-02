@@ -67,7 +67,6 @@ JSRCS = \
 	PriorityResourceAttributes.java \
 	ResourceMappingInputPort.java \
 	ResourceMappingOutputPort.java \
-	ResourceScheduler.java \
 	SchedulePlotterEditorFactory.java
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)

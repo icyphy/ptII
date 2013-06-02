@@ -36,6 +36,7 @@ import java.util.List;
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
+import ptolemy.actor.ResourceScheduler;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.gui.ColorAttribute;
 import ptolemy.actor.lib.ResourceAttributes;
@@ -52,7 +53,6 @@ import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
-import ptolemy.moml.MoMLModelAttribute;
 
 /**
 This is a base class for resource schedulers.
