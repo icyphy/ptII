@@ -30,9 +30,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.actor.lib.qm;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.TreeSet;
 
 import ptolemy.actor.Actor;
@@ -40,7 +38,7 @@ import ptolemy.actor.IOPort;
 import ptolemy.actor.IntermediateReceiver;
 import ptolemy.actor.QuantityManager;
 import ptolemy.actor.Receiver;
-import ptolemy.actor.lib.ResourceAttributes;
+import ptolemy.actor.ResourceAttributes;
 import ptolemy.actor.lib.qm.QuantityManagerListener.EventType;
 import ptolemy.actor.util.Time;
 import ptolemy.actor.util.TimedEvent;

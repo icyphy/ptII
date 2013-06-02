@@ -40,7 +40,7 @@ import ptolemy.actor.Director;
 import ptolemy.actor.ResourceScheduler;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.gui.ColorAttribute;
-import ptolemy.actor.lib.ResourceAttributes;
+import ptolemy.actor.ResourceAttributes;
 import ptolemy.actor.util.Time;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;

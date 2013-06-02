@@ -30,17 +30,14 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.actor.lib.qm;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.List;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.IntermediateReceiver;
 import ptolemy.actor.QuantityManager;
 import ptolemy.actor.Receiver;
-import ptolemy.actor.lib.ResourceAttributes;
 import ptolemy.actor.lib.qm.QuantityManagerListener.EventType;
 import ptolemy.actor.util.Time;
 import ptolemy.actor.util.TimedEvent;
@@ -48,8 +45,6 @@ import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.ObjectToken;
 import ptolemy.data.RecordToken;
-import ptolemy.data.ScalarToken;
-import ptolemy.data.StringToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
@@ -58,10 +53,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.InternalErrorException;
-import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
 
 /** A {@link QuantityManager} actor that, when its

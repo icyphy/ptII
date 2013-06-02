@@ -35,7 +35,6 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
-import ptolemy.actor.lib.ResourceAttributes;
 import ptolemy.actor.util.BooleanDependency;
 import ptolemy.actor.util.CausalityInterface;
 import ptolemy.actor.util.CausalityInterfaceForComposites;

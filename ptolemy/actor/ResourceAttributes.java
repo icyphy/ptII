@@ -28,7 +28,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 
  */
-package ptolemy.actor.lib;
+package ptolemy.actor;
 
 import ptolemy.data.BooleanToken;
 import ptolemy.data.expr.Parameter;

@@ -39,7 +39,7 @@ import ptolemy.actor.IOPort;
 import ptolemy.actor.IntermediateReceiver;
 import ptolemy.actor.QuantityManager;
 import ptolemy.actor.Receiver;
-import ptolemy.actor.lib.ResourceAttributes;
+import ptolemy.actor.ResourceAttributes;
 import ptolemy.actor.lib.qm.QuantityManagerListener.EventType;
 import ptolemy.actor.sched.FixedPointDirector;
 import ptolemy.actor.util.FIFOQueue;

@@ -49,7 +49,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-import ptolemy.actor.lib.ResourceAttributes;
 import ptolemy.actor.util.Time;
 import ptolemy.data.IntToken;
 import ptolemy.data.ObjectToken;

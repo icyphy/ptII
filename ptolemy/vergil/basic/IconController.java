@@ -31,11 +31,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import ptolemy.actor.gui.ColorAttribute;
-import ptolemy.actor.lib.ResourceAttributes;
-import ptolemy.data.expr.Parameter;
+import ptolemy.actor.ResourceAttributes;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.ChangeRequest;
