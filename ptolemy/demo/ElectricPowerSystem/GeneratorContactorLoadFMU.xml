@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="GeneratorRegulatorProtectorFMU" class="ptolemy.actor.TypedCompositeActor">
+<entity name="GeneratorContactorLoadFMU" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
     </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={272, 207, 1153, 634}, maximized=false}">
@@ -238,8 +238,6 @@
             </property>
         </port>
         <entity name="_Controller" class="ptolemy.domains.modal.modal.ModalController">
-            <property name="errorCause" class="ptolemy.data.expr.Parameter">
-            </property>
             <property name="_library" class="ptolemy.moml.LibraryAttribute">
                 <configure>
       <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.modal.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory"></property></entity></entity>
@@ -364,7 +362,7 @@
         </property>
     </entity>
     <entity name="GeneratorContractorLoadFMU" class="ptolemy.actor.lib.fmi.fmipp.FMUModelExchange">
-        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="$PTII/ptolemy/actor/lib/fmi/fmipp/demo/GeneratorContactorLoad/GeneratorContactorLoad.fmu">
+        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="/ptII/ptolemy/actor/lib/fmi/fmipp/demo/GeneratorContactorLoad/GeneratorContactorLoad.fmu">
         </property>
         <property name="inputNames" class="ptolemy.data.expr.Parameter" value="contactor,drive">
         </property>
