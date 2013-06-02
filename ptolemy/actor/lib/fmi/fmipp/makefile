@@ -80,10 +80,17 @@ CFLAGS= -DBUILD_FMI_DLL $(PTJNI_SHAREDLIBRARY_CFLAG) -Iinclude -I$(PTBOOST_INCLU
 
 PTLIB=libfmipp.$(PTJNI_SHAREDLIBRARY_SUFFIX)
 PTLIB2=libIncrementalFMU_wrap.$(PTJNI_SHAREDLIBRARY_SUFFIX)
-all: jclass $(PTLIB) $(PTLIB2)
-install: jclass jars
-	cp $(PTLIB) $(PTLIB2) $(ROOT)/lib
+all: jclass #$(PTLIB) $(PTLIB2)
+	@echo " Not building the fmipp c code because it requires boost and libexpat."
+	@echo " Shared libraries for fmipp should be found in $PTII/lib or $PTII/bin."
+	@echo " To build the libraries, run 'make libs'"
 
+install: jclass jars
+	if [ -f $(PTLIB) ]; then \
+		cp $(PTLIB) $(PTLIB2) $(ROOT)/lib;
+	fi
+
+libs: $(PTLIB) $(PTLIB2)
 $(PTLIB): $(OBJECTS)
 	$(CXX) $(PTJNI_GCC_SHARED_FLAG) -o $(PTLIB) $(OBJECTS) -L$(LIBEXPAT_LIB_DIR) -lexpat 
 	if [ "`uname -s`" = "Darwin" ]; then \
