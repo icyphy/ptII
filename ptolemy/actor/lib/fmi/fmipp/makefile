@@ -126,7 +126,7 @@ src/ModelManager.o:  src/ModelManager.cpp include/ModelManager.h
 .PHONY = swig
 swig: $(PTLIB2)
 $(PTLIB2): swig/IncrementalFMU.i
-	#swig -c++ -java -package ptolemy.actor.lib.fmi.fmipp.swig  swig/IncrementalFMU.i
+	swig -c++ -java -package ptolemy.actor.lib.fmi.fmipp.swig  swig/IncrementalFMU.i
 	$(CXX) $(INC) -c $(OPTFLAGS) $(CFLAGS) swig/IncrementalFMU_wrap.cxx -o swig/IncrementalFMU_wrap.o -I$(PTJNI_INCLUDE) -I$(PTJNI_INCLUDE)/$(PTJNI_ARCHITECTURE)
 	$(CXX) -shared -o $(PTLIB2) swig/IncrementalFMU_wrap.o -L. -lfmipp -lexpat $(PTJNI_DL_LIBRARY)
 	javac swig/*.java
