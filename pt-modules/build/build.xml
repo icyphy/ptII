@@ -55,7 +55,7 @@
     <delete dir="${jar-name}"/>
     <copy todir="${jar-name}/src">
 	<ptprojectfileset ptPath="${ptPath}" projectPathsPrefix="${projectsPath}"
-		projectNames="${pt-projects}" echo="true"/>
+		projectNames="${pt-projects}" echo="false"/>
     </copy>
     <javac srcdir="${jar-name}/src" classpath="${pt-projects-classpath}" includeantruntime="false"/>
     <jar destfile="jars/${jar-name}.jar" basedir="${jar-name}/src"
