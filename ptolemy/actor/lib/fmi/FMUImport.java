@@ -520,12 +520,16 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
             _debugToStdOut("FMIImport.initialize() START");
         }
 
+        // Set the parameters of the FMU.
         // Loop through the scalar variables and find a scalar
         // variable that has variability == "parameter" and is not an
         // input or output.  We can't do this in attributeChanged()
         // because setting a scalar variable requires that
         // _fmiComponent be non-null, which happens in
         // preinitialize();
+        // FIXME: This should probably also be done in attributeChanged(),
+        // with checks that _fmiComponent is non-null, so that FMU parameters
+        // can be changed during run time.
         for (FMIScalarVariable scalar : _fmiModelDescription.modelVariables) {
             if (scalar.variability == FMIScalarVariable.Variability.parameter
                     && scalar.causality != Causality.input
@@ -577,6 +581,15 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
                     new Object[] { _fmiComponent, relativeTolerance,
                             startTime.getDoubleValue(), (byte) 1, // fmiBoolean stopTimeDefined
                             stopTime.getDoubleValue() })).intValue();
+            
+            // If the FMU can provide a maximum step size, query for the initial maximum
+            // step size and call fireAt() and ensure that the FMU is invoked
+            // at the specified time.
+            _requestRefiringIfNecessary();
+            
+            // In case we have to backtrack, if the FMU supports backtracking,
+            // record its state.
+            // FIXME
         }
 
         if (fmiFlag > FMILibrary.FMIStatus.fmiWarning) {
@@ -783,6 +796,12 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
         }
         _refinedStepSize = -1.0;
         _firstFire = true;
+        
+        // If the FMU can provide a maximum step size, query for the maximum
+        // step size and call fireAt() and ensure that the FMU is invoked
+        // at the specified time.
+        _requestRefiringIfNecessary();
+
         return super.postfire();
     }
 
@@ -1224,6 +1243,11 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
             // second will provide the time of the fireAt().
             int fmiFlag = ((Integer) _fmiDoStep.invokeInt(new Object[] {
                     _fmiComponent, time, stepSize, lastArg })).intValue();
+            
+            // FIXME:
+            if (getName().equals("stepCounter")) {
+                System.out.println("FIXME");
+            }
 
             // If the FMU discarded the step, handle this.
             if (fmiFlag == FMILibrary.FMIStatus.fmiDiscard) {
@@ -1280,7 +1304,7 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
                     }
                 } else {
                     if (_debugging) {
-                        _debug("FMU does not provide a proceedure fmiGetRealStatus.");
+                        _debug("FMU does not provide a procedure fmiGetRealStatus.");
                     }
                 }
                 // NOTE: Even though doStep() has been rejected,
@@ -1453,6 +1477,33 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
             return true;
         } else {
             return false;
+        }
+    }
+    
+    /** If the FMU can provide a maximum step size, query for that maximum
+     *  step size and call fireAt() to ensure that the FMU is invoked
+     *  at the specified time.
+     *  @throws IllegalActionException If the call to fireAt() throws it.
+     */
+    protected void _requestRefiringIfNecessary() throws IllegalActionException {
+        // If the FMU can provide a maximum step size, query for the initial maximum
+        // step size so that we can call fireAt() and ensure that the FMU is invoked
+        // at the specified time.
+        if (_fmiModelDescription.canProvideMaxStepSize) {
+            Function maxStepSizeFunction = _nativeLibrary.getFunction(
+                    _fmiModelDescription.modelIdentifier
+                    + "_fmiGetMaxStepSize");
+            DoubleBuffer maxStepSize = DoubleBuffer.allocate(1);
+            int providesMaxStepSize = ((Integer) maxStepSizeFunction.invoke(
+                    Integer.class,
+                    new Object[] { _fmiComponent, maxStepSize })).intValue();
+            if (providesMaxStepSize == FMILibrary.FMIStatus.fmiOK){
+                // FMU provides an initial maximum step size.
+                double stepSize = maxStepSize.get(0);
+                Director director = getDirector();
+                Time currentTime = director.getModelTime();
+                director.fireAt(this, currentTime.add(stepSize));
+            }
         }
     }
 

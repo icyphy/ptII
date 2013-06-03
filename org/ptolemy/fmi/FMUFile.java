@@ -242,10 +242,6 @@ public class FMUFile {
             fmiModelDescription.numberOfEventIndicators = Integer.valueOf(
                     root.getAttribute("numberOfEventIndicators")).intValue();
         }
-        if (root.hasAttribute("canGetAndSetFMUstate")) {
-            fmiModelDescription.canGetAndSetFMUstate = Boolean
-                    .parseBoolean(root.getAttribute("canGetAndSetFMUstate"));
-        }
 
         // TypeDefinitions
         // NodeList is not a list, it only has getLength() and item(). #fail.
@@ -316,6 +312,14 @@ public class FMUFile {
                 } else {
                     System.out
                             .println("Warning: FMU CoSimulation element is missing a modelIdentifier.");
+                }
+                if (cosimulation.hasAttribute("canGetAndSetFMUstate")) {
+                    fmiModelDescription.canGetAndSetFMUstate = Boolean
+                            .parseBoolean(cosimulation.getAttribute("canGetAndSetFMUstate"));
+                }
+                if (cosimulation.hasAttribute("canProvideMaxStepSize")) {
+                    fmiModelDescription.canProvideMaxStepSize = Boolean
+                            .parseBoolean(cosimulation.getAttribute("canProvideMaxStepSize"));
                 }
             }
         }

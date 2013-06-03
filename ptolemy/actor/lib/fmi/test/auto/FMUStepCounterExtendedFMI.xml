@@ -1,0 +1,205 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="FMUStepCounterExtendedFMI" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={96, 22, 1014, 965}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[780, 855]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.279212951771556">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{272.96630859375006, 477.46284940645296}">
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The source code for this FMU is in&#10;$PTII/ptolemy/actor/lib/fmi/fmus/stepCounterExtendedFMI/src/sources&#10;To build the FMU file, do this:&#10;&#10;&gt; cd $PTII/ptolemy/actor/lib/fmi/fmus/&#10;&gt; make update&#10;&#10;The resulting .fmu file will&#10;be in $PTII/ptolemy/actor/lib/fmi/test/auto/stepCounterExtendedFMI2.fmu&#10;which is referenced by these instances of the FMU.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="[-20.0, 640.0]">
+        </property>
+    </property>
+    <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.8,0.0,0.2,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Extended FMI 2.0 version">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[105.0, 145.0]">
+        </property>
+    </property>
+    <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="3.0">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 175.0]">
+        </property>
+    </property>
+    <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.2,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This FMU provides the capability flag canProvideMaxStepSize=&quot;true&quot; and the&#10;procedure fmiGetMaxStepSize(). The Ptolemy wrapper (FMUImport) uses these&#10;to call fireAt() on the director, ensuring that the key events of the counter are produced.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-30.0, 210.0]">
+        </property>
+    </property>
+    <entity name="Test" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, 1.0, 1.0, 2.0, 2.0, 3.0, 3.0, 4.0, 4.0, 5.0, 5.0, 6.0}">
+        </property>
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="4.200000000000003E-8">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[205.0, 335.0]">
+        </property>
+    </entity>
+    <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1000, 481, 500, 344}, maximized=false}">
+        </property>
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{195.0, 470.0}">
+        </property>
+        <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>TimedPlotter</title>
+<xLabel></xLabel>
+<yLabel></yLabel>
+<xRange min="0.3" max="3.0"/>
+<yRange min="0.0" max="10.0"/>
+<default marks="dots" stems="yes"/>
+</plot>?>
+        </configure>
+    </entity>
+    <entity name="stepCounterExtendedFMI" class="ptolemy.actor.lib.fmi.FMUImport">
+        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="/ptII/ptolemy/actor/lib/fmi/test/auto/stepCounterExtendedFMI2.fmu">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{10.0, 540.0}">
+        </property>
+        <property name="p" class="ptolemy.data.expr.Parameter" value="0.3">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
+            </property>
+        </port>
+        <port name="lastSuccessfulTime" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
+            </property>
+            <property name="_hide" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <port name="atTransitionPoint" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
+            </property>
+            <property name="_hide" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+    </entity>
+    <entity name="stepCounterExtendedFMI2" class="ptolemy.actor.lib.fmi.FMUImport">
+        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="/ptII/ptolemy/actor/lib/fmi/test/auto/stepCounterExtendedFMI2.fmu">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{5.0, 405.0}">
+        </property>
+        <property name="p" class="ptolemy.data.expr.Parameter" value="0.5">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
+            </property>
+        </port>
+        <port name="lastSuccessfulTime" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
+            </property>
+            <property name="_hide" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <port name="atTransitionPoint" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
+            </property>
+            <property name="_hide" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+    </entity>
+    <entity name="CurrentTime" class="ptolemy.actor.lib.CurrentTime">
+        <doc>Output the current time.</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{215.0, 405.0}">
+        </property>
+    </entity>
+    <entity name="Test2" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.3, 0.3, 0.6, 0.6, 0.9, 0.9, 1.2, 1.2, 1.5, 1.5, 1.8, 1.8, 2.1, 2.1, 2.4, 2.4, 2.7, 2.7, 3.0, 3.0}">
+        </property>
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="4.200000000000003E-8">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{320.0, 540.0}">
+        </property>
+    </entity>
+    <entity name="Test3" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, 1.0, 1.0, 2.0, 2.0, 3.0, 3.0, 4.0, 4.0, 5.0, 5.0, 6.0, 6.0, 7.0, 7.0, 8.0, 8.0, 9.0, 9.0, 10.0}">
+        </property>
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="4.200000000000003E-8">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{195.0, 605.0}">
+        </property>
+    </entity>
+    <entity name="Test4" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.5, 0.5, 1.0, 1.0, 1.5, 1.5, 2.0, 2.0, 2.5, 2.5, 3.0, 3.0}">
+        </property>
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="4.200000000000003E-8">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{320.0, 405.0}">
+        </property>
+    </entity>
+    <entity name="CurrentTime2" class="ptolemy.actor.lib.CurrentTime">
+        <doc>Output the current time.</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{210.0, 540.0}">
+        </property>
+    </entity>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="{145.0, 405.0}">
+        </vertex>
+        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+        </property>
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;relation2.vertex1&quot;,x=145.0,y=405.0}, tail={id=&quot;CurrentTime.trigger&quot;,x=215.0,y=405.0}, points={} },{ head={id=&quot;stepCounterExtendedFMI2.output&quot;,x=5.0,y=405.0}, tail={id=&quot;relation2.vertex1&quot;,x=145.0,y=405.0}, points={} },{ head={id=&quot;TimedPlotter.input&quot;,x=195.0,y=470.0,index=2}, tail={id=&quot;relation2.vertex1&quot;,x=145.0,y=405.0}, points={145.0,465.0} } }">
+        </property>
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="{145.0, 540.0}">
+        </vertex>
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;relation3.vertex1&quot;,x=160.0,y=530.0}, tail={id=&quot;Test.input&quot;,x=220.0,y=385.0,index=2}, points={160.0,385.0} },{ head={id=&quot;relation3.vertex1&quot;,x=160.0,y=530.0}, tail={id=&quot;Test2.input&quot;,x=345.0,y=530.0,index=2}, points={} },{ head={id=&quot;stepCounterExtendedFMI.output&quot;,x=10.0,y=540.0}, tail={id=&quot;relation3.vertex1&quot;,x=145.0,y=540.0}, points={} },{ head={id=&quot;TimedPlotter.input&quot;,x=195.0,y=470.0,index=2}, tail={id=&quot;relation3.vertex1&quot;,x=145.0,y=540.0}, points={145.0,470.0} },{ head={id=&quot;relation3.vertex1&quot;,x=145.0,y=540.0}, tail={id=&quot;Test3.input&quot;,x=195.0,y=605.0}, points={145.0,605.0} },{ head={id=&quot;relation3.vertex1&quot;,x=145.0,y=540.0}, tail={id=&quot;CurrentTime2.trigger&quot;,x=210.0,y=540.0}, points={} } }">
+        </property>
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;CurrentTime.output&quot;,x=215.0,y=405.0}, tail={id=&quot;Test4.input&quot;,x=320.0,y=405.0}, points={} } }">
+        </property>
+    </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;CurrentTime2.output&quot;,x=210.0,y=540.0}, tail={id=&quot;Test2.input&quot;,x=320.0,y=540.0}, points={} } }">
+        </property>
+    </relation>
+    <link port="Test.input" relation="relation2"/>
+    <link port="TimedPlotter.input" relation="relation2"/>
+    <link port="TimedPlotter.input" relation="relation3"/>
+    <link port="stepCounterExtendedFMI.output" relation="relation3"/>
+    <link port="stepCounterExtendedFMI2.output" relation="relation2"/>
+    <link port="CurrentTime.output" relation="relation4"/>
+    <link port="CurrentTime.trigger" relation="relation2"/>
+    <link port="Test2.input" relation="relation"/>
+    <link port="Test3.input" relation="relation3"/>
+    <link port="Test4.input" relation="relation4"/>
+    <link port="CurrentTime2.output" relation="relation"/>
+    <link port="CurrentTime2.trigger" relation="relation3"/>
+</entity>

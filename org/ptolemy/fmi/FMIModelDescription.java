@@ -67,6 +67,12 @@ public class FMIModelDescription {
      *  if not present in the XML file.
      */
     public boolean canGetAndSetFMUstate = false;
+    
+    /** For the IBM/UCB proposed extension to FMI 2.0, there is a
+     *  capability flag canProvideMaxStepSize that indicates that
+     *  the FMU implements the procedure fmiGetMaxStepSize().
+     */
+    public boolean canProvideMaxStepSize = false;
 
     /** The list of files that were extracted from the .fmu file. */
     public List<File> files;
