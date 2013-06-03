@@ -1,0 +1,39 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="TwoPeriodicTasks" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={404, 215, 934, 634}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{340.0, 252.0}">
+    </property>
+    <property name="EDF" class="ptolemy.apps.hardrealtime.EDF">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="50">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[90.0, 75.0]">
+        </property>
+    </property>
+    <entity name="PeriodicTask2" class="ptolemy.apps.hardrealtime.PeriodicTask">
+        <property name="executionTime" class="ptolemy.data.expr.Parameter" value="3">
+        </property>
+        <property name="period" class="ptolemy.data.expr.Parameter" value="14">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[120.0, 230.0]">
+        </property>
+    </entity>
+    <entity name="PeriodicTask" class="ptolemy.apps.hardrealtime.PeriodicTask">
+        <property name="deadline" class="ptolemy.data.expr.Parameter" value="7">
+        </property>
+        <property name="executionTime" class="ptolemy.data.expr.Parameter" value="3">
+        </property>
+        <property name="period" class="ptolemy.data.expr.Parameter" value="13">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[290.0, 225.0]">
+        </property>
+    </entity>
+</entity>

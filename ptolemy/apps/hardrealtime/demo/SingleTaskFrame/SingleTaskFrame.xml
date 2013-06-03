@@ -1,0 +1,99 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="SingleTaskFrame" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
+    </property>
+    <property name="EDF" class="ptolemy.apps.hardrealtime.EDF">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[105.0, 40.0]">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={368, 266, 934, 634}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.8">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{340.0, 252.0}">
+    </property>
+    <entity name="MultiFrameTask" class="ptolemy.apps.hardrealtime.MultiFrameTask">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[235.0, 145.0]">
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={506, 256, 934, 634}, maximized=false}">
+        </property>
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
+        </property>
+        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+        </property>
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{321.3152126736111, -54.673990885416686}">
+        </property>
+        <entity name="TaskFrame" class="ptolemy.apps.hardrealtime.TaskFrame">
+            <property name="deadline" class="ptolemy.data.expr.Parameter" value="2">
+            </property>
+            <property name="executionTime" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+            <property name="initialFrame" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[125.0, -155.0]">
+            </property>
+        </entity>
+        <entity name="TaskFrame2" class="ptolemy.apps.hardrealtime.TaskFrame">
+            <property name="deadline" class="ptolemy.data.expr.Parameter" value="2">
+            </property>
+            <property name="executionTime" class="ptolemy.data.expr.Parameter" value="2">
+            </property>
+            <property name="initialFrame" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[275.0, -155.0]">
+            </property>
+        </entity>
+        <entity name="TaskFrame3" class="ptolemy.apps.hardrealtime.TaskFrame">
+            <property name="deadline" class="ptolemy.data.expr.Parameter" value="8">
+            </property>
+            <property name="executionTime" class="ptolemy.data.expr.Parameter" value="5">
+            </property>
+            <property name="initialFrame" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[280.0, 35.0]">
+            </property>
+            <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+        </entity>
+        <entity name="TaskFrame4" class="ptolemy.apps.hardrealtime.TaskFrame">
+            <property name="deadline" class="ptolemy.data.expr.Parameter" value="5">
+            </property>
+            <property name="executionTime" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+            <property name="initialFrame" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[125.0, 35.0]">
+            </property>
+            <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+        </entity>
+        <relation name="relation" class="ptolemy.actor.TypedIORelation">
+            <property name="separation" class="ptolemy.data.expr.Parameter" value="3">
+            </property>
+        </relation>
+        <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+            <property name="separation" class="ptolemy.data.expr.Parameter" value="2">
+            </property>
+        </relation>
+        <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+            <property name="separation" class="ptolemy.data.expr.Parameter" value="3">
+            </property>
+        </relation>
+        <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+            <property name="separation" class="ptolemy.data.expr.Parameter" value="4">
+            </property>
+        </relation>
+        <link port="TaskFrame.input" relation="relation4"/>
+        <link port="TaskFrame.output" relation="relation"/>
+        <link port="TaskFrame2.input" relation="relation"/>
+        <link port="TaskFrame2.output" relation="relation2"/>
+        <link port="TaskFrame3.input" relation="relation2"/>
+        <link port="TaskFrame3.output" relation="relation3"/>
+        <link port="TaskFrame4.input" relation="relation3"/>
+        <link port="TaskFrame4.output" relation="relation4"/>
+    </entity>
+</entity>

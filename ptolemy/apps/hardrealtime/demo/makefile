@@ -1,9 +1,10 @@
-# Makefile for Ptolemy II standalone applications
+# Makefile for hard real-time system demos
+#
+# @Authors: Christos Stergiou, based on a file by Christopher H. Brooks
 #
 # @Version: $Id$
-# @Author: Christopher Hylands
 #
-# @Copyright (c) 1997-2005 The Regents of the University of California.
+# @Copyright (c) 2013 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -25,49 +26,51 @@
 # CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 # ENHANCEMENTS, OR MODIFICATIONS.
 #
-# 						PT_COPYRIGHT_VERSION_2
-# 						COPYRIGHTENDKEY
-##########################################################################
+#                       PT_COPYRIGHT_VERSION_2
+#                       COPYRIGHTENDKEY
 
-ME =		ptolemy/apps
+ME =        ptolemy/apps/hardrealtime/demo
 
-# Alphabetical, please:
-# $PTII/configure looks for various packages and sets variables
-# in $PTII/mk/ptII.mk if these packages are found, otherwise
-# the variables are empty
-#
-# PTKVM_DIR is set to kvm by configure if the kvm runtime was found
-# PTJMF_DIR is set to jmf if the Java Media Framework was found.
-# PTLEGO_DIR is set to lego if the commapi was found.
-# PTLEJOS_DIR is set to lejos if Legos and the commapi was found.
-# PTSOOT_DIR is set to soot if Soot was fount.
-# PTWABA_DIR is set to waba if waba was found
-#DIRS =		agilent $(PTKVM_DIR) $(PTJMF_DIR) \
-#		$(PTLEGO_DIR) $(PTLEJOS) \
-#		tini $(PTSOOT_DIR) softwalls #$(PTWABA_DIR) 
-DIRS = $(PTSOOT_DIR) softwalls naomi $(PTHLACERTI_DIR) #$(PTWABA_DIR) hardrealtime 
-# Root of Ptolemy II directory
-ROOT =		../..
+DIRS =  SingleTaskFrame \
+        TwoPeriodicTasks
+
+# Root of the Java directory
+ROOT =      ../../../..
+
+CLASSPATH = $(ROOT)
 
 # Get configuration info
-CONFIG =	$(ROOT)/mk/ptII.mk
+CONFIG =    $(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE =
-PTCLASSJAR =
+PTPACKAGE =     demo
 
-# Files or directories that are present, but that 'make checkjunk'
-# should not complain about
-MISC_FILES =	$(DIRS)
+# Include the .class files from these jars in PTCLASSALLJAR
+PTCLASSALLJARS = \
+        SingleTaskFrame/SingleTaskFrame.jar \
+        TwoPeriodicTasks/TwoPeriodicTasks.jar
+
+PTCLASSALLJAR= $(PTPACKAGE).jar
+
+EXTRA_SRCS =
+
+# Sources that may or may not be present, but if they are present, we don't
+# want make checkjunk to barf on them.
+MISC_FILES = $(DIRS)
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES =
 
-all: jclass
-install: jclass jars
+JCLASS = $(JSRCS:%.java=%.class)
 
+all: jclass
+	@echo "To run all the demos, run 'make demo'"
+
+install: all jars
+
+demo: subdemo
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
