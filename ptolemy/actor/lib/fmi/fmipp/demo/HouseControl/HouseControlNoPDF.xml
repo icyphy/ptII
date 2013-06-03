@@ -1,0 +1,110 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="HouseControlNoPDF" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
+    </property>
+    <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
+        <property name="startTime" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-165.0, -115.0]">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 1474, 944}, maximized=true}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1240, 834]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{340.0, 240.0}">
+    </property>
+    <property name="enableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="false">
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="14">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Run an OpenModelica House Heating Control Model Exchange FMU&#10;">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-15.0, -120.0]">
+        </property>
+    </property>
+    <entity name="FMU-ME" class="ptolemy.actor.lib.fmi.fmipp.FMUModelExchange">
+        <display name="Controlled House FMU"/>
+        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="Heating_ControlledHouse.fmu">
+        </property>
+        <property name="inputNames" class="ptolemy.data.expr.Parameter" value="u">
+        </property>
+        <property name="outputNames" class="ptolemy.data.expr.Parameter" value="y">
+        </property>
+        <property name="startValues" class="ptolemy.data.expr.Parameter" value="u=1">
+        </property>
+        <property name="lookAheadHorizon" class="ptolemy.data.expr.Parameter" value="0.3">
+        </property>
+        <property name="lookAheadStepSize" class="ptolemy.data.expr.Parameter" value="0.01">
+        </property>
+        <property name="integratorStepSize" class="ptolemy.data.expr.Parameter" value="0.001">
+        </property>
+        <doc>Will sooner or later be FMU stuff for DE domain.</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 25.0]">
+        </property>
+    </entity>
+    <entity name="VectorDisassembler" class="ptolemy.actor.lib.VectorDisassembler">
+        <display name=" "/>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[180.0, 5.0]">
+        </property>
+    </entity>
+    <entity name="VectorAssembler" class="ptolemy.actor.lib.VectorAssembler">
+        <display name=" "/>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-70.0, 5.0]">
+        </property>
+    </entity>
+    <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 1280, 774}, maximized=false}">
+        </property>
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[1280, 730]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[335.0, 100.0]">
+        </property>
+        <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>TimedPlotter</title>
+<xLabel></xLabel>
+<yLabel></yLabel>
+<xRange min="0.0" max="9.7980770396"/>
+<yRange min="0.0" max="25.688053545388982"/>
+<default marks="bigdots" stems="yes"/>
+</plot>?>
+        </configure>
+    </entity>
+    <entity name="PoissonClock" class="ptolemy.actor.lib.PoissonClock">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-205.0, 100.0]">
+        </property>
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="[-125.0, 100.0]">
+        </vertex>
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="FMU-ME.input" relation="relation2"/>
+    <link port="FMU-ME.output" relation="relation"/>
+    <link port="VectorDisassembler.input" relation="relation"/>
+    <link port="VectorDisassembler.output" relation="relation4"/>
+    <link port="VectorAssembler.input" relation="relation3"/>
+    <link port="VectorAssembler.output" relation="relation2"/>
+    <link port="TimedPlotter.input" relation="relation4"/>
+    <link port="TimedPlotter.input" relation="relation3"/>
+    <link port="PoissonClock.output" relation="relation3"/>
+</entity>
