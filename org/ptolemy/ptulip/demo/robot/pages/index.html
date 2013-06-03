@@ -67,20 +67,9 @@
 			<p> Move the markers around on the grid, <br>
 			then click "Calculate" to synthesize a controller. </p>
 			
-			<!-- 
-			<ul> 
-				<li class="robot"> <img src="robot.png" width="40px"> </img> 
-					 Robot's start position. </li>
-				<li class="treasure"> <img src="star.png" width="40px"> </img>
-					 Treasure.  Visited infinitely often. </li>
-				<li class="park"> <img src="power.png" width="40px"> 
-					 Charging station.  Robot finally parks here. </li>
-			</ul>
-			-->
-			
 			<ul> 
 				<li class="robot">  
-					 <div class="litext"> Robot's start position. 
+					 <div class="litext"> Robot's start position.  Random. 
 					 </div> </li>
 				<li class="treasure"> 
 					 <div class="litext"> Treasure.  Visited infinitely often. 
@@ -91,12 +80,19 @@
 			</ul>
 			
 			<h3> Result: </h3>
-			<div id="result">
-				
-			</div>
+			<!--  textarea tag preserves formatting; here, for XML -->
+			
+			<textarea id="result" cols=50>
+
+			</textarea>
 		</div>
 
 	</div>
+	
+	<!--  Used for greying out page while loading.  See:  
+		  http://stackoverflow.com/questions/1964839/jquery-please-wait-loading-animation-->
+	<div id="loading" class="modal"> 
+		<h1 id="loadingMessage"> Calculating... </h1> </div>
 	
 	</body>
 </html>

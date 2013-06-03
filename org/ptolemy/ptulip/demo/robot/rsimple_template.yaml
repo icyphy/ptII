@@ -1,0 +1,100 @@
+# Gleaned from robot_simple_disturbance.py.  Currently, only
+# H-representation is supported for polytopes.  If disturbance
+# polytope W and dynamics matrix E are missing, they are assumed to be
+# nil, i.e. no disturbances.  If horizon is omitted, it is assumed to
+# be 10.
+#
+# SCL; 4 Oct 2011.
+# NO; 19 Apt 2013 (complete problem description).
+
+
+# Dynamics
+A: |
+  1.1052 0
+  0 1.1052
+
+B: |
+  1.1052 0
+  0 1.1052
+
+E: |  # Disturbances affect  state dynamics through E
+  1 0
+  0 1
+
+U:  # Example uses H-representation.
+  H: |
+    1 0
+    -1 0
+    0 1
+    0 -1
+  K: .4 .4 .4 .4  # Note that K is a column vector, but can be given as a row.
+
+X:  # Polytope over which system evolves (i.e., state should not leave here).
+  H: |
+    1 0
+    -1 0
+    0 1
+    0 -1
+  K: 3 0 2 0
+
+W:  # Disturbances polytope
+  H: |
+    1 0
+    -1 0
+    0 1
+    0 -1
+  K: .05 .05 .05 .05
+
+horizon: 5  # Also called "N"; number of control inputs to move between regions.
+
+# List of continuous propositions
+cont_prop:
+  X0:
+    H: |
+      1 0
+      -1 0
+      0 1
+      0 -1
+    K: 1 0 1 0
+  X3:
+    H: |
+      1 0
+      -1 0
+      0 1
+      0 -1
+    K: 1 0 2 -1
+  X1:
+    H: |
+      1 0
+      -1 0
+      0 1
+      0 -1
+    K: 2 -1 1 0
+  X4:
+    H: |
+      1 0
+      -1 0
+      0 1
+      0 -1
+    K: 2 -1 2 -1
+  X2:
+    H: |
+      1 0
+      -1 0
+      0 1
+      0 -1
+    K: 3 -2 1 0
+  X5:
+    H: |
+      1 0
+      -1 0
+      0 1
+      0 -1
+    K: 3 -2 2 -1
+
+env_vars:
+  park : boolean
+
+sys_disc_vars:
+  X0reach : boolean
+

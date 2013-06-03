@@ -13,8 +13,8 @@ var markerLocations = [ {name: "robot", "x": blockWidth/4, "y" : blockHeight/4},
                         {name: "park", "x" : 2*blockWidth + blockWidth/4, 
 								"y" : blockHeight/4}];
 
-// Array of nodes markers are in.  Calculated by post request
-var markerRegions = ["C0", "C1", "C2"];
+// Array of regions markers are in.  Calculated by post request
+var markerRegions = ["X0", "X1", "X2"];
 
 // SVG markers
 var blocks,
@@ -44,7 +44,11 @@ var drag = d3.behavior.drag()
 
 //Create the graphic elements once the DOM is loaded
 $(document).ready(function() {
-	// TODO:  Add Jqeuery UI button formatting
+	// Clear result textbox
+	$("#result").val("");
+	// Hide loading message
+	$("#loading").hide(); 
+	// TODO:  Add jQuery UI button formatting
 	createSVG();
 });
 
@@ -86,7 +90,7 @@ function createSVG() {
 				 	.attr("font-family", "sans-serif")
 					.attr("font-weight", "bold")
 					.attr("color", "rgba(0, 0, 0, 0.5)")
-					.text(function() {return "C" + labelNumber});
+					.text(function() {return "X" + labelNumber});
 			
 			square.attr("transform", function() {
 				return "translate(" +[i*blockWidth, j*blockHeight] +")"
@@ -131,15 +135,8 @@ function calculate(){
 	for (var i = 0; i < markerLocations.length; i++){
 		regionNumber = (Math.floor(markerLocations[i].x / blockWidth)) 
 				+ (Math.floor(markerLocations[i].y / blockHeight)) * blocksWide;
-		markerRegions[i] = "C" + regionNumber;
+		markerRegions[i] = "X" + regionNumber;
 	}
-	
-	// TODO:  In future, this won't be needed
-	infoText = "Calculating for Robot Start: " + markerRegions[0] 
-				+ ", Treasure: " + markerRegions[1] + ", Park: " 
-				+ markerRegions[2]; 
-	
-	$("#result").html(infoText); 
 		
 	// Animated marker transition to middle of region.  Useful if someone has 
 	// placed a marker near the edge
@@ -158,4 +155,49 @@ function calculate(){
 		markerLocations[i].x = newX;
 		markerLocations[i].y = newY;
 	});			
+	
+	// TODO:  In future, this won't be needed
+	infoText = "Calculating for Treasure: " + markerRegions[1] + ", Park: " 
+				+ markerRegions[2]; 
+	
+	$("#loadingMessage").html(infoText); 
+	
+	// Post region info to Ptolemy server, which will calculate and 
+	// return an automaton
+	postRegions();
 }
+
+// Post the treasure and park regions to the Ptolemy model
+function postRegions(){
+	// The ajax function is asynchronous, so set the result text
+	// in the success callback to ensure that a response has 
+	// been received from the Ptolemy model
+	$.ajax({
+		url: 'robot',
+		type: 'POST',
+		dataType: 'text',	// The type of data expected from the server
+							// Use type 'text' so we can display easily
+		data: {treasureRegion: markerRegions[1],
+				parkRegion: markerRegions[2]},
+		success: function(result) {
+			$("#result").val(result);
+		},
+		error: function(jqXHR, textStatus, errorThrown) {
+			alert("Error posting data to the server.");
+			//alert("Error code: " + jqXHR);
+			//alert("Error text status: " + textStatus);
+			//alert("Error thrown: " + errorThrown);
+		}
+	});
+}
+
+// Grey out page while loading.  See:
+// http://stackoverflow.com/questions/1964839/jquery-please-wait-loading-animation
+
+$(document).ajaxStart(function() { 
+	 $("#loading").show();
+});
+
+$(document).ajaxStop(function() { 
+     $("#loading").hide(); 
+});
