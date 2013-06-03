@@ -6,7 +6,7 @@
 #ifndef ACTOR_H_
 #define ACTOR_H_
 
-#include "$ModelName()_IOPort.h"
+#include "$ModelName()__IOPort.h"
 #include "$ModelName()_types.h"
 
 

@@ -1,4 +1,4 @@
-#include "$ModelName()_IOPort.h"
+#include "$ModelName()__IOPort.h"
 
 // Sets a port with some parameters
 void IOPortSet(IOPort * port, Actor * containingActor, char * name, char * type,

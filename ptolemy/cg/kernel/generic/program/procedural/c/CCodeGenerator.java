@@ -60,6 +60,7 @@ import ptolemy.cg.kernel.generic.program.ProgramCodeGeneratorAdapter;
 import ptolemy.cg.kernel.generic.program.TemplateParser;
 import ptolemy.cg.kernel.generic.program.procedural.ProceduralCodeGenerator;
 import ptolemy.cg.kernel.generic.program.procedural.ProceduralTemplateParser;
+import ptolemy.cg.lib.CompiledCompositeActor;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.Variable;
@@ -292,8 +293,19 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
      */
     public String generateInitializeProcedureName()
             throws IllegalActionException {
-        // return INDENT1 + "initialize();" + _eol;
-        return "// Don't call initialize() here, it is called in main.";
+        if (_isTopLevel()) {
+            // We use (void) so as to avoid the avr-gcc 3.4.6 warning:
+            // "function declaration isn't a prototype
+            return _eol + _eol + "void initialize(void);" + _eol;
+
+            // If the container is not in the top level, we are generating code
+            // for the Java and C co-simulation.
+        } else {
+            return _eol + _eol + "JNIEXPORT void JNICALL" + _eol + "Java_"
+                    + _sanitizedModelName + "_initialize("
+                    + "JNIEnv *env, jobject obj);" + _eol;
+        }
+        //return "// Don't call initialize() here, it is called in main.";
     }
 
     /** Generate line number information.  In this class, lines
@@ -324,38 +336,51 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         // for the whole model.
         if (_isTopLevel()) {
             // add some function declarations
-            mainEntryCode.append("boolean run();" + _eol + "void execute();"
-                    + _eol + "void doWrapup();" + _eol);
+//            mainEntryCode.append("boolean run();" + _eol + "void execute();"
+//                    + _eol + "void doWrapup();" + _eol);
 
             mainEntryCode.append(_eol + _eol
                     + "int main(int argc, char *argv[]) {" + _eol);
-            //String targetValue = target.getExpression();
-
-            // FIXME: why do we need this?
-            //            if (!targetValue.equals(_DEFAULT_TARGET)) {
-            //                mainEntryCode.append("//FIXME: CCodeGenerator hack" + _eol
-            //                        + "init();" + _eol);
-            //            }
-
-            mainEntryCode.append(_eol + "initialize();" + _eol + "execute();"
-                    + _eol + "doWrapup();" + _eol + "exit(0);" + _eol + "}"
-                    + _eol);
+            
+            mainEntryCode.append(_eol + "//boolean completedSuccessfully = false;");
+            mainEntryCode.append(_eol + _eol + "initialize();");
+            
+            mainEntryCode.append(_eol + "while (true) {");
+            mainEntryCode.append(_eol + "if (!iterate()) {");
+            mainEntryCode.append(_eol + "break;");
+            mainEntryCode.append(_eol + "}");
+            mainEntryCode.append(_eol + "//completedSuccessfully = true;");
+            
+            mainEntryCode.append(_eol + "}");
+            mainEntryCode.append(_eol + "wrapup();");
+            mainEntryCode.append(_eol + "exit(0);");
 
         } else {
             // If the container is not in the top level, we are generating code
             // for the Java and C co-simulation.
+                    
             mainEntryCode.append(_eol + _eol + "JNIEXPORT jobjectArray JNICALL"
                     + _eol + "Java_" + _sanitizedModelName + "_fire (" + _eol
-                    + "JNIEnv *env, jobject obj");
+                    + "JNIEnv *env_glob, jobject obj_glob");
 
-            Iterator<?> inputPorts = ((Actor) getContainer()).inputPortList()
+            Iterator <?> inputPorts = ((Actor) getContainer()).inputPortList()
                     .iterator();
             while (inputPorts.hasNext()) {
                 TypedIOPort inputPort = (TypedIOPort) inputPorts.next();
-                mainEntryCode.append(", jobjectArray " + inputPort.getName());
+                mainEntryCode.append(", jobjectArray " + inputPort.getName() + "_glob");
             }
 
             mainEntryCode.append("){" + _eol);
+            mainEntryCode.append(_eol + "env = env_glob;");
+            mainEntryCode.append(_eol + "obj = obj_glob;");
+            inputPorts = ((Actor) getContainer()).inputPortList()
+                    .iterator();
+            while (inputPorts.hasNext()) {
+                TypedIOPort inputPort = (TypedIOPort) inputPorts.next();
+                mainEntryCode.append(_eol + inputPort.getName() + " = " + inputPort.getName() + "_glob;");
+            }
+            
+            mainEntryCode.append(_eol + _sanitizedModelName + "_fire();" + _eol);
         }
         return mainEntryCode.toString();
     }
@@ -366,8 +391,8 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
      */
     public String generateMainExitCode() throws IllegalActionException {
         if (_isTopLevel()) {
-            // return INDENT1 + "exit(0);" + _eol + "}" + _eol;
-            return _eol;
+            return _eol + "}" + _eol;
+            //return _eol;
         } else {
             return INDENT1 + "return tokensToAllOutputPorts;" + _eol + "}"
                     + _eol;
@@ -933,7 +958,18 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
      */
     public String generateWrapupProcedureName() throws IllegalActionException {
 
-        return INDENT1 + "wrapup();" + _eol;
+        // If the container is in the top level, we are generating code
+        // for the whole model.
+        if (_isTopLevel()) {
+            return _eol + "void wrapup(void);" + _eol;
+
+            // If the container is not in the top level, we are generating code
+            // for the Java and C co-simulation.
+        } else {
+            return _eol + _eol + "JNIEXPORT void JNICALL" + _eol + "Java_"
+                    + _sanitizedModelName + "_wrapup("
+                    + "JNIEnv *env, jobject obj);" + _eol;
+        }
     }
     
     /** Generate the model name.
@@ -1339,6 +1375,9 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         String directoryBuild = directory + "build/";
 
         _deleteDirectory(directorySrc);
+        // add the includes to the makefile
+        if (!_includes.contains("-I " + directoryIncludes))
+            _includes.add("-I " + directoryIncludes);
 
         new File(directorySrc).mkdirs();
         new File(directoryIncludes).mkdirs();
@@ -1387,38 +1426,15 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         
         // Header file declaration
         
-        codeMainH.append(_eol + "#include \"" + _sanitizedModelName + "_CompositeActor.h\"");
+        codeMainH.append(_eol + "#include \"" + _sanitizedModelName + "__CompositeActor.h\"");
         codeMainH.append(_eol + "#include \"" + sanitizedNameContainer + ".h\"");
         code.append(_eol + "#include \"" + _sanitizedModelName + "_Main.h\"");
         codeMainH.append(_eol + _eol + "CompositeActor * container;");
         
         // Main entry point function
-                
-        code.append(_eol + "int main(int argc, char *argv[]) {");
-        // Make a record of the time execution starts.
-        //long startTime = new Date().getTime();
-        code.append(_eol + "//boolean completedSuccessfully = false;");
-        code.append(_eol + _eol + "initialize();");
-//        if (System.currentTimeMillis() - startTime > minimumStatisticsTime) {
-//            setStatusMessage(timeAndMemory(startTime));
-//            System.out.println("Manager.initialize() finished: "
-//                    + getStatusMessage());
-//        }
-        // Call iterate() until postfire()
-        // returns false.
-        code.append(_eol + "while (true) {");
-        code.append(_eol + "if (!iterate()) {");
-        code.append(_eol + "break;");
-        code.append(_eol + "}");
-        code.append(_eol + "//completedSuccessfully = true;");
-//        if (_printTimeAndMemory) {
-//            setStatusMessage(timeAndMemory(startTime));
-//            System.out.println(getStatusMessage());
-//        }
-        code.append(_eol + "}");
-        code.append(_eol + "wrapup();");
-        code.append(_eol + "return 0;");
-        code.append(_eol + "}");
+        code.append(generateMainEntryCode());
+
+        code.append(generateMainExitCode());
         
         
         // Preinitialize function
@@ -1432,17 +1448,11 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         
         
         // Initialize function
-        codeMainH.append(_eol + "void initialize();");
-        code.append(_eol + "void initialize() {");
-//        long startTime = new Date().getTime();
+        codeMainH.append(generateInitializeProcedureName());
+        code.append(generateInitializeEntryCode());
         code.append(_eol + "preinitialize();");
-//        if (System.currentTimeMillis() - startTime > minimumStatisticsTime) {
-//            setStatusMessage(timeAndMemory(startTime));
-//            System.out.println("preinitialize() finished: "
-//                    + getStatusMessage());
-//        }
-        code.append(_eol + sanitizedNameContainer + "_initialize();");
-        code.append(_eol + "}");
+        code.append(_eol + sanitizedNameContainer + "_initialize();" + _eol);
+        code.append(generateInitializeExitCode());
         
         
         // Iterate function
@@ -1459,10 +1469,10 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         
         
         // wrapup function
-        codeMainH.append(_eol + "void wrapup();");
-        code.append(_eol + "void wrapup() {");
+        codeMainH.append(generateWrapupProcedureName());
+        code.append(generateWrapupEntryCode());
         code.append(_eol + sanitizedNameContainer + "_wrapup();");
-        code.append(_eol + "}");
+        code.append(generateWrapupExitCode());
         
         // Closing the ifndef in the main header
         codeMainH.append(_eol + "#endif");
@@ -1516,17 +1526,23 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         _writeCodeFileName(codeTypesH, "includes/" + _sanitizedModelName + "_types.h", true, false);
         _writeCodeFileName(codeTypesC, "src/" + _sanitizedModelName + "_types.c", true, false);
         
-        _copyCFileTosrc("ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/", directoryIncludes, "Actor.h");
-        _copyCFileTosrc("ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/", directorySrc, "Actor.c");
-        _copyCFileTosrc("ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/", directoryIncludes, "CompositeActor.h");
-        _copyCFileTosrc("ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/", directorySrc, "CompositeActor.c");
-        _copyCFileTosrc("ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/", directoryIncludes, "IOPort.h");
-        _copyCFileTosrc("ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/", directorySrc, "IOPort.c");
-        _copyCFileTosrc("ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/", directorySrc, "Queue.c");
-        _copyCFileTosrc("ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/", directoryIncludes, "Queue.h");
-        _copyCFileTosrc("ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/", directorySrc, "Receiver.c");
-        _copyCFileTosrc("ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/", directoryIncludes, "Receiver.h");
-        _copyCFileTosrc("ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/", directoryIncludes, "Director.h");
+        _copyCFileTosrc("ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/", directoryIncludes, "_Actor.h");
+        _copyCFileTosrc("ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/", directorySrc, "_Actor.c");
+        _copyCFileTosrc("ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/", directoryIncludes, "_CompositeActor.h");
+        _copyCFileTosrc("ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/", directorySrc, "_CompositeActor.c");
+        _copyCFileTosrc("ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/", directoryIncludes, "_IOPort.h");
+        _copyCFileTosrc("ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/", directorySrc, "_IOPort.c");
+        _copyCFileTosrc("ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/", directorySrc, "_Queue.c");
+        _copyCFileTosrc("ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/", directoryIncludes, "_Queue.h");
+        _copyCFileTosrc("ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/", directorySrc, "_Receiver.c");
+        _copyCFileTosrc("ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/", directoryIncludes, "_Receiver.h");
+        _copyCFileTosrc("ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/", directoryIncludes, "_Director.h");
+        
+        _copyCFileTosrc("ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/de/kernel/", directoryIncludes, "CalendarQueue.h");
+        _copyCFileTosrc("ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/de/kernel/", directorySrc, "CalendarQueue.c");
+        
+        _copyCFileTosrc("ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/de/kernel/", directoryIncludes, "DEEvent.h");
+        _copyCFileTosrc("ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/de/kernel/", directorySrc, "DEEvent.c");
              
         code = null;
         codeMainH = null;
@@ -1587,6 +1603,18 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         if (actor instanceof ptolemy.actor.CompositeActor)
             actorDefinition += "Composite";
         actorDefinition += "Actor " + sanitizedActorName + ";";
+        
+        if (actor instanceof ptolemy.cg.lib.CompiledCompositeActor) {
+            actorDefinition += _eol + "JNIEnv *env;" + _eol + "jobject obj";
+            Iterator<?> inputPorts = ((Actor) getContainer()).inputPortList()
+                    .iterator();
+            while (inputPorts.hasNext()) {
+                TypedIOPort inputPort = (TypedIOPort) inputPorts.next();
+                actorDefinition += ";" + _eol + "jobjectArray " + inputPort.getName() + "";
+            }
+            actorDefinition += ";" + _eol;
+            actorDefinition += "jobjectArray tokensToAllOutputPorts;" + _eol;   
+        }
 
         String constructorActorsDeclaration = "";
         String constructorActorsCode = "";
@@ -1905,7 +1933,8 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         new File(directoryBuild).mkdirs();
         
         // add the includes to the makefile
-        _includes.add("-I " + directoryIncludes);
+        if (!_includes.contains("-I " + directoryIncludes))
+            _includes.add("-I " + directoryIncludes);
 
         // Generation and writing of the container code
         _generateAndWriteActorCode(container, (NamedProgramCodeGeneratorAdapter)getAdapter(director), 
@@ -1953,17 +1982,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         if (director == null)
             throw new IllegalActionException(getComponent(),
                     "Trying to generate code for a null director!");
-        
-        // FIXME : we should implement a function in Director which returns the files that need to be
-        // copy in the correct directory
-        if (director.getContainer().getContainer() == null) {
-            _copyCFileTosrc("ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/de/kernel/", includesDirectory, "CalendarQueue.h");
-            _copyCFileTosrc("ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/de/kernel/", srcDirectory, "CalendarQueue.c");
-            
-            _copyCFileTosrc("ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/de/kernel/", includesDirectory, "DEEvent.h");
-            _copyCFileTosrc("ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/de/kernel/", srcDirectory, "DEEvent.c");
-        }
-        
+                
         ptolemy.cg.adapter.generic.adapters.ptolemy.actor.Director directorAdapter = 
                 (ptolemy.cg.adapter.generic.adapters.ptolemy.actor.Director) getAdapter(director);
         
@@ -1981,7 +2000,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
                 + _eol);
         
         codeDirectorH.append(_generateIncludeFiles(directorAdapter));       
-        codeDirectorH.append("#include \"" + _sanitizedModelName + "_Director.h\"" + _eol);       
+        codeDirectorH.append("#include \"" + _sanitizedModelName + "__Director.h\"" + _eol);       
         codeDirectorH.append("#include \"" + _sanitizedModelName + ".h\"" + _eol);       
         codeDirectorH.append("#include <stdbool.h>" + _eol);              
         codeDirectorC.append("#include \"" + sanitizedDirectorName + ".h\"" + _eol);

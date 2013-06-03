@@ -118,8 +118,8 @@ public class TypedCompositeActor extends
             depth = causality.getDepthOfActor(TopActor);
         }
         args.add(sanitizedContainerName);
-        if (TopActor.getContainer() == null)
-            // Top level
+        if (TopActor.getContainer() == null || TopActor instanceof ptolemy.cg.lib.CompiledCompositeActor)
+            // Top level or compiled composite
             args.add("NULL");
         else {
             // Embedded
@@ -227,10 +227,7 @@ public class TypedCompositeActor extends
             args.add(Boolean.toString(port.isInput()));
             args.add(Boolean.toString(port.isOutput()));
             args.add(Boolean.toString(port.isMultiport()));
-            int widthInside = 0 ;
-            for (Receiver[] r : port.getInsideReceivers())
-                if (r != null)
-                    widthInside += r.length;
+            int widthInside = port.getWidthInside();
             args.add(Integer.toString(widthInside));
             args.add(Integer.toString(port.getWidth()));
             codeStream.appendCodeBlock("IOPortSet", args, true);
@@ -253,9 +250,12 @@ public class TypedCompositeActor extends
             args.add(Boolean.toString(port.isMultiport()));
             args.add(Integer.toString(port.getWidth()));
             int widthOutside = 0;
-            for (Receiver[] r : port.getRemoteReceivers())
+            for (Receiver[] r : port.getRemoteReceivers()) {
+                if (TopActor instanceof ptolemy.cg.lib.CompiledCompositeActor)
+                    break;
                 if (r != null)
                     widthOutside += r.length;
+            }
             args.add(Integer.toString(widthOutside));
             //args.add(Integer.toString(port.getRemoteReceivers()[0].length));
             codeStream.appendCodeBlock("IOPortSet", args, true);
@@ -376,14 +376,13 @@ public class TypedCompositeActor extends
                 continue;
             Receiver[][] farReceivers = port.getRemoteReceivers();
             for (int j = 0 ; j < farReceivers.length ; j++) {
-                Receiver r = farReceivers[j][0];
                 args.clear();
                 args.add(sanitizedContainerNameForArgs);
                 args.add(Integer.toString(i));
                 args.add(Integer.toString(j));
-                String farActorName = CodeGeneratorAdapter.generateName(r.getContainer().getContainer());
-                args.add(farActorName);
-                args.add(r.getContainer().getName());
+//                String farActorName = CodeGeneratorAdapter.generateName(r.getContainer().getContainer());
+//                args.add(farActorName);
+//                args.add(r.getContainer().getName());
                 codeStream.appendCodeBlock("ReceiverSetBlock", args, true);
             }
             // Create a far receivers for Composite actors input ports
@@ -423,6 +422,8 @@ public class TypedCompositeActor extends
             String enumFarReceivers = _eol + "enum {";
             int channel = 0;
             for (int k = 0 ; k < farReceivers.length ; k++) {
+                if (TopActor instanceof ptolemy.cg.lib.CompiledCompositeActor)
+                    break;
                 for (int j = 0 ; j < farReceivers[k].length ; j++) {
                     Receiver r = farReceivers[k][j];
                     args.clear();
@@ -455,14 +456,11 @@ public class TypedCompositeActor extends
             // Create a local receivers for Composite actors output ports
             Receiver[][] insideReceivers = port.getInsideReceivers();
             for (int j = 0 ; j < insideReceivers.length ; j++) {
-                Receiver r = farReceivers[j][0];
+                //Receiver r = farReceivers[j][0];
                 args.clear();
                 args.add(sanitizedContainerNameForArgs);
                 args.add(Integer.toString(i));
-                args.add(Integer.toString(j));
-                String farActorName = CodeGeneratorAdapter.generateName(r.getContainer().getContainer());
-                args.add(farActorName);
-                args.add(r.getContainer().getName());
+                args.add(Integer.toString(j));                
                 codeStream.appendCodeBlock("ReceiverSetBlock", args, true);
             }
             i++;
@@ -498,14 +496,11 @@ public class TypedCompositeActor extends
                     continue;
                 Receiver[][] farReceivers = port.getRemoteReceivers();
                 for (int j = 0 ; j < farReceivers.length ; j++) {
-                    Receiver r = farReceivers[j][0];
+                    //Receiver r = farReceivers[j][0];
                     args.clear();
                     args.add(sanitizedActorName);
                     args.add(Integer.toString(i));
                     args.add(Integer.toString(j));
-                    String farActorName = CodeGeneratorAdapter.generateName(r.getContainer().getContainer());
-                    args.add(farActorName);
-                    args.add(r.getContainer().getName());
                     codeStream.appendCodeBlock("ReceiverSetBlock", args, true);
                 }
                 
@@ -581,14 +576,12 @@ public class TypedCompositeActor extends
                 if (act instanceof CompositeActor) {
                     Receiver[][] insideReceivers = port.getInsideReceivers();
                     for (int j = 0 ; j < insideReceivers.length ; j++) {
-                        Receiver r = farReceivers[j][0];
+                        //Receiver r = farReceivers[j][0];
                         args.clear();
                         args.add(sanitizedActorName);
                         args.add(Integer.toString(i));
                         args.add(Integer.toString(j));
-                        String farActorName = CodeGeneratorAdapter.generateName(r.getContainer().getContainer());
-                        args.add(farActorName);
-                        args.add(r.getContainer().getName());
+                        
                         codeStream.appendCodeBlock("ReceiverSetBlock", args, true);
                     }
                 }
@@ -660,6 +653,7 @@ public class TypedCompositeActor extends
         String sanitizedContainerName = CodeGeneratorAdapter.generateName(TopActor);
         
         args.add(sanitizedContainerName + ".director");
+        args.add(sanitizedContainerName);
         codeStream.appendCodeBlock("initializeBlock", args);
         
         return processCode(codeStream.toString());
@@ -816,6 +810,10 @@ public class TypedCompositeActor extends
         
         ptolemy.actor.CompositeActor container = (ptolemy.actor.CompositeActor) getComponent();
         String sanitizedContainerName = CodeGeneratorAdapter.generateName(container);
+        Director director = container.getDirector();
+        ptolemy.cg.adapter.generic.adapters.ptolemy.actor.Director directorAdapter = 
+                (ptolemy.cg.adapter.generic.adapters.ptolemy.actor.Director)getAdapter(director);
+        StringBuffer code = new StringBuffer();
         
         codeStream.append(_eol + "void " + sanitizedContainerName + "_TransferInputs() {" + _eol);
         Iterator<?> inputPorts = container.inputPortList().iterator();
@@ -824,28 +822,38 @@ public class TypedCompositeActor extends
             if (!inputPort.isInsideConnected())
                 // No need to transfer tokens from a disconnected port
                 continue;
-            for (int channel = 0 ; channel < inputPort.getWidth() ; channel++) {
-                String hasTokenString = "if (ReceiverHasToken((" + sanitizedContainerName + ".actor).ports[enum_" + sanitizedContainerName 
-                        + "_" + inputPort.getName() + "].receivers + " + channel + ")) {" + _eol;
-                String getString = "ReceiverGet((" + sanitizedContainerName + ".actor).ports[enum_" + sanitizedContainerName 
-                        + "_" + inputPort.getName() + "].receivers + " + channel + ")";
-                String putString = "ReceiverPut((" + sanitizedContainerName + ".actor).ports[enum_" + sanitizedContainerName 
-                        + "_" + inputPort.getName() + "].farReceivers[" + channel + "], " + getString + ");" + _eol;
-                String fireAtString = "";
-                if (container.getDirector() instanceof DEDirector) {
-                    NamedObj insideActor = inputPort.deepGetReceivers()[channel][0].getContainer().getContainer();
-                    String sanitizedNameInsideActor = CodeGeneratorAdapter.generateName(insideActor);
-                    if (insideActor instanceof CompositeActor)
-                        sanitizedNameInsideActor = "(" + sanitizedNameInsideActor + ".actor)";
-                    fireAtString = _eol + "(*(" + sanitizedContainerName + ".director->fireAtFunction))(&"+ sanitizedNameInsideActor
-                    +", " + sanitizedContainerName + ".director->currentModelTime, " 
-                    + sanitizedContainerName + ".director->currentMicrostep);" + _eol;
+            if (container instanceof CompiledCompositeActor) {
+                directorAdapter.generateTransferInputsCode(inputPort, code);
+                codeStream.append(code.toString());
+                code = new StringBuffer();
+            }
+            else {
+                for (int channel = 0 ; channel < inputPort.getWidth() ; channel++) {
+                    String hasTokenString = "while (ReceiverHasToken((" + sanitizedContainerName + ".actor).ports[enum_" + sanitizedContainerName 
+                            + "_" + inputPort.getName() + "].receivers + " + channel + ")) {" + _eol;
+                    String getString = "ReceiverGet((" + sanitizedContainerName + ".actor).ports[enum_" + sanitizedContainerName 
+                            + "_" + inputPort.getName() + "].receivers + " + channel + ")";
+                    String putString = "ReceiverPut((" + sanitizedContainerName + ".actor).ports[enum_" + sanitizedContainerName 
+                            + "_" + inputPort.getName() + "].farReceivers[" + channel + "], " + getString + ");" + _eol;
+                    String fireAtString = "";
+                    if (container.getDirector() instanceof DEDirector) {
+                        NamedObj insideActor = inputPort.deepGetReceivers()[channel][0].getContainer().getContainer();
+                        String sanitizedNameInsideActor = CodeGeneratorAdapter.generateName(insideActor);
+                        if (insideActor instanceof CompositeActor)
+                            sanitizedNameInsideActor = "(" + sanitizedNameInsideActor + ".actor)";
+                        fireAtString = _eol + "(*(" + sanitizedContainerName + ".director->fireAtFunction))(&"+ sanitizedNameInsideActor
+                        +", " + sanitizedContainerName + ".director->currentModelTime, " 
+                        + sanitizedContainerName + ".director->currentMicrostep);" + _eol;
+                    }
+                    codeStream.append(_eol + hasTokenString + putString + fireAtString + _eol + "}" + _eol);
                 }
-                codeStream.append(_eol + hasTokenString + putString + fireAtString + _eol + "}" + _eol);
             }
         }
         codeStream.append(_eol + "}" + _eol);
-        
+
+//        if (container instanceof CompiledCompositeActor) {
+//            codeStream.append(_eol + "jobjectArray tokensToAllOutputPorts_glob;" + _eol);
+//        }
         codeStream.append(_eol + "void " + sanitizedContainerName + "_TransferOutputs() {" + _eol);
         Iterator<?> outputPorts = container.outputPortList().iterator();
         while (outputPorts.hasNext()) {
@@ -853,29 +861,36 @@ public class TypedCompositeActor extends
             if (!outputPort.isOutsideConnected())
                 // No need to transfer tokens from a disconnected port
                 continue;
-            for (int channel = 0 ; channel < outputPort.getWidth() ; channel++) {
-                String hasTokenString = "if (ReceiverHasToken((" + sanitizedContainerName + ".actor).ports[enum_" + sanitizedContainerName 
-                        + "_" + outputPort.getName() + "].receivers + " + channel + ")) {" + _eol;
-                String getString = "ReceiverGet((" + sanitizedContainerName + ".actor).ports[enum_" + sanitizedContainerName 
-                        + "_" + outputPort.getName() + "].receivers + " + channel + ")";
-                String putString = "ReceiverPut((" + sanitizedContainerName + ".actor).ports[enum_" + sanitizedContainerName 
-                        + "_" + outputPort.getName() + "].farReceivers[" + channel + "], " + getString + ");" + _eol;
-                String fireAtString = "";
-                CompositeActor topContainer = ((CompositeActor)container.getContainer());
-                String sanitizedTopContainerName = CodeGeneratorAdapter.generateName(topContainer);
-                if (topContainer.getDirector() instanceof DEDirector) {
-                    // if top level is DE we have to call a fireAt
-                    // FIXME : a call to the Receiver get and put methods would be better and non domain dependent
-                    NamedObj outsideActor = outputPort.getRemoteReceivers()[channel][0].getContainer().getContainer();
-                    String sanitizedNameOutsideActor = CodeGeneratorAdapter.generateName(outsideActor);
-                    if (outsideActor instanceof CompositeActor)
-                        sanitizedNameOutsideActor = "(" + sanitizedNameOutsideActor + ".actor)";
-                    fireAtString = _eol + "(*(" + sanitizedTopContainerName + ".director->fireAtFunction))(&"+ sanitizedNameOutsideActor
-                    +", " + sanitizedTopContainerName + ".director->currentModelTime, " 
-                    + sanitizedTopContainerName + ".director->currentMicrostep);" + _eol;
+            if (container instanceof CompiledCompositeActor) {
+                directorAdapter.generateTransferOutputsCode(outputPort, code);
+                codeStream.append(code.toString());
+                code = new StringBuffer();
+            }
+            else {
+                for (int channel = 0 ; channel < outputPort.getWidth() ; channel++) {
+                    String hasTokenString = "while (ReceiverHasToken((" + sanitizedContainerName + ".actor).ports[enum_" + sanitizedContainerName 
+                            + "_" + outputPort.getName() + "].receivers + " + channel + ")) {" + _eol;
+                    String getString = "ReceiverGet((" + sanitizedContainerName + ".actor).ports[enum_" + sanitizedContainerName 
+                            + "_" + outputPort.getName() + "].receivers + " + channel + ")";
+                    String putString = "ReceiverPut((" + sanitizedContainerName + ".actor).ports[enum_" + sanitizedContainerName 
+                            + "_" + outputPort.getName() + "].farReceivers[" + channel + "], " + getString + ");" + _eol;
+                    String fireAtString = "";
+                    CompositeActor topContainer = ((CompositeActor)container.getContainer());
+                    String sanitizedTopContainerName = CodeGeneratorAdapter.generateName(topContainer);
+                    if (topContainer.getDirector() instanceof DEDirector) {
+                        // if top level is DE we have to call a fireAt
+                        // FIXME : a call to the Receiver get and put methods would be better and non domain dependent
+                        NamedObj outsideActor = outputPort.getRemoteReceivers()[channel][0].getContainer().getContainer();
+                        String sanitizedNameOutsideActor = CodeGeneratorAdapter.generateName(outsideActor);
+                        if (outsideActor instanceof CompositeActor)
+                            sanitizedNameOutsideActor = "(" + sanitizedNameOutsideActor + ".actor)";
+                        fireAtString = _eol + "(*(" + sanitizedTopContainerName + ".director->fireAtFunction))(&"+ sanitizedNameOutsideActor
+                        +", " + sanitizedTopContainerName + ".director->currentModelTime, " 
+                        + sanitizedTopContainerName + ".director->currentMicrostep);" + _eol;
+                    }
+                    
+                    codeStream.append(_eol + hasTokenString + putString + fireAtString + _eol + "}" + _eol);
                 }
-                
-                codeStream.append(_eol + hasTokenString + putString + fireAtString + _eol + "}" + _eol);
             }
         }
         codeStream.append(_eol + "}" + _eol);

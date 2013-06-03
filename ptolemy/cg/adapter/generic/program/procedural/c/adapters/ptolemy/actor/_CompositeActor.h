@@ -9,7 +9,7 @@
 #define COMPOSITE_ACTOR_H_
 
 #include "$ModelName()_types.h"
-#include "$ModelName()_Director.h"
+#include "$ModelName()__Director.h"
 
 
 struct CompositeActor {

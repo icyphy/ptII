@@ -1,13 +1,12 @@
-#include "$ModelName()_Receiver.h"
+#include "$ModelName()__Receiver.h"
 
 // Sets the remoteReceiver field to the receiver in parameter
-void ReceiverSetRemoteReceiver(Receiver * r, IOPort * port, IOPort * remote) {
+void ReceiverSetReceiver(Receiver * r, IOPort * port) {
 	if (r == NULL) {
 		perror("Trying to set a NULL receiver !");
 		exit(1);
 	}
 	r->port = port;
-	r->remotePort = remote;
 	return;
 }
 // Sets the remoteReceiver field to the far receiver in parameter

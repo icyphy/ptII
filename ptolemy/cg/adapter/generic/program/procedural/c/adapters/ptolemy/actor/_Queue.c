@@ -1,4 +1,4 @@
-#include "$ModelName()_Queue.h"
+#include "$ModelName()__Queue.h"
 
 // Simply deletes properly all the elements in the queue
 void QueueClear(Queue * r) {

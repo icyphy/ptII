@@ -10,6 +10,7 @@ MODELNAME =	@modelName@
 # The include files and libraries are determined in CCodeGenerator
 PTCGINCLUDES = 			@PTCGIncludes@
 PTCGLIBRARIES = 		@PTCGLibraries@
+PTCG_CFILES = 			@PTCG_CFILES@
 
 # Flag to use with JNI under Cygwin (-mno-cygwin)
 PTJNI_NO_CYGWIN =		@PTJNI_NO_CYGWIN@
@@ -30,5 +31,9 @@ PTJNI_SHAREDLIBRARY_SUFFIX = 	@PTJNI_SHAREDLIBRARY_SUFFIX@
 PTLIB = $(PTJNI_SHAREDLIBRARY_PREFIX)$(MODELNAME).$(PTJNI_SHAREDLIBRARY_SUFFIX)
 
 # We need -lm so we can get floor() for ftoi() 
-$(PTLIB): $(MODELNAME).c
-	@PTCGCompiler@ $(PTJNI_NO_CYGWIN) $(PTCGINCLUDES) $(PTJNI_SHAREDLIBRARY_LDFLAG) $(PTJNI_GCC_SHARED_FLAG) -o $(PTLIB) @modelName@.c -lm $(PTCGLIBRARIES)
+$(PTLIB): $(MODELNAME)_Main.c 
+	@PTCGCompiler@ $(PTJNI_NO_CYGWIN) $(PTCGINCLUDES) $(PTJNI_SHAREDLIBRARY_LDFLAG) $(PTJNI_GCC_SHARED_FLAG) -o $(PTLIB) @modelName@_Main.c $(PTCG_CFILES) -lm $(PTCGLIBRARIES)
+
+# Each subdirectory must supply rules for building sources it contributes
+./build/%.o: ./src/%.c
+	gcc $(WARNING_CC_FLAGS) $(CC_FLAGS) $(USER_CC_FLAGS) $(DEBUG) -c -o "$@" "$<"

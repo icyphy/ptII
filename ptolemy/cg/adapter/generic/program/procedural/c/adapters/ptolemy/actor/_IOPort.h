@@ -11,8 +11,8 @@
 #include <string.h>
 
 #include "$ModelName()_types.h"
-#include "$ModelName()_Receiver.h"
-#include "$ModelName()_Actor.h"
+#include "$ModelName()__Receiver.h"
+#include "$ModelName()__Actor.h"
 
 struct IOPort {
 	Actor * containingActor;

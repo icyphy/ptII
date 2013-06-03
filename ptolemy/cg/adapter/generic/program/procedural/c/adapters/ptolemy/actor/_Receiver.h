@@ -10,8 +10,8 @@
 #define RECEIVER_H_
 
 #include "$ModelName()_types.h"
-#include "$ModelName()_IOPort.h"
-#include "$ModelName()_Queue.h"
+#include "$ModelName()__IOPort.h"
+#include "$ModelName()__Queue.h"
 
 struct Receiver {
 	Queue events;
@@ -19,7 +19,7 @@ struct Receiver {
 	IOPort * port;
 };
 
-void ReceiverSetRemoteReceiver(Receiver * r, IOPort * port, IOPort * remote);
+void ReceiverSetReceiver(Receiver * r, IOPort * port);
 void ReceiverSetRemoteFarReceiver(Receiver ** r, Receiver * remote);
 void ReceiverClear(Receiver * r);
 Token ReceiverGet(Receiver * r);

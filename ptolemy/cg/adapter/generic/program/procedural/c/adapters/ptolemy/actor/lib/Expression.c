@@ -9,7 +9,11 @@
 /**/
 
 /*** preinitBlock ***/
-int $actorSymbol(iterationCount) = 1;
+int $actorSymbol(iterationCount);
+/**/
+
+/*** initBlock ***/
+$actorSymbol(iterationCount) = 1;
 /**/
 
 /*** postfireBlock ***/

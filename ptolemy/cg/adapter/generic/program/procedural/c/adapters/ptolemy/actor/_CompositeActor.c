@@ -1,4 +1,4 @@
-#include "$ModelName()_CompositeActor.h"
+#include "$ModelName()__CompositeActor.h"
 
 // Sets the actor with some parameters
 void CompositeActorSet(CompositeActor * actor, Director * director,

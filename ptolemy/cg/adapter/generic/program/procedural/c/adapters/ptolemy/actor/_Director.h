@@ -6,10 +6,10 @@
 #ifndef DIRECTOR_H_
 #define DIRECTOR_H_
 
-#include "$ModelName()_IOPort.h"
+#include "$ModelName()__IOPort.h"
 #include "$ModelName()_CalendarQueue.h"
-#include "$ModelName()_Actor.h"
-#include "$ModelName()_CompositeActor.h"
+#include "$ModelName()__Actor.h"
+#include "$ModelName()__CompositeActor.h"
 
 
 struct Director {

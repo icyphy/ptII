@@ -1060,16 +1060,16 @@ public class CompiledCompositeActor extends TypedCompositeActor {
         _sanitizedActorName = StringUtilities.sanitizeName(getFullName());
         // Used to be
         // Remove leading underscore
-        // if (_sanitizedActorName.charAt(0) == '_') {
-        //    _sanitizedActorName = _sanitizedActorName.replaceFirst("_", "");
-        // }
+         if (_sanitizedActorName.charAt(0) == '_') {
+            _sanitizedActorName = _sanitizedActorName.replaceFirst("_", "");
+         }
         // But _ has a special meaning in JNI and javah will add things after a _
         // Remove all underscores to avoid confusion for JNI
         // related functions.  Each time a .dll file is
         // generated, we must use a different name for it so
         // that it can be loaded without restarting vergil.
 
-        _sanitizedActorName = _sanitizedActorName.replace("_", "") + _version;
+        // _sanitizedActorName = _sanitizedActorName.replace("_", "") + _version;
 
     }
 

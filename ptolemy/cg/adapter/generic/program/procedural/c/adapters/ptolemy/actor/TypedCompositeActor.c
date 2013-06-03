@@ -1,9 +1,9 @@
 /***variableDeclareBlock***/
 $include("$ModelName()_types.h")
-$include("$ModelName()_Receiver.h")
-$include("$ModelName()_Queue.h")
-$include("$ModelName()_Actor.h")
-$include("$ModelName()_Director.h")
+$include("$ModelName()__Receiver.h")
+$include("$ModelName()__Queue.h")
+$include("$ModelName()__Actor.h")
+$include("$ModelName()__Director.h")
 /**/
 
 /***containerSetBlock($containerName, $DirectorName, $nbAtomicActors, $nbCompositeActors)***/
@@ -43,10 +43,9 @@ IOPortSet($actorName.ports + $j, &$actorName,
 		$portName, $portType, $isInput, $isOutput, $isMultiPort, $widthInside, $widthOutside);
 /**/
 
-/***ReceiverSetBlock($actorName, $i, $channel, $farActorName, $farActorPortName)***/
-ReceiverSetRemoteReceiver($actorName.ports[$i].receivers + $channel,
-			$actorName.ports + $i,
-			$farActorName.ports + enum_$farActorName_$farActorPortName);
+/***ReceiverSetBlock($actorName, $i, $channel)***/
+ReceiverSetReceiver($actorName.ports[$i].receivers + $channel,
+			$actorName.ports + $i);
 /**/
 
 /***FarReceiverSetBlock($actorName, $i, $channel, $farActorName, $FarActorNameForArgs, $farActorPortName, $farChannel)***/
@@ -59,13 +58,14 @@ ReceiverSetRemoteFarReceiver($actorName.ports[$i].farReceivers + $channel,
 /**/
 
 
-/***initializeBlock($director)***/
+/***initializeBlock($director, $currentActor)***/
 // Note that this is assured of firing the local director,
 // not the executive director, because this is opaque.
 // The initialize() method of the local director must be called
 // after the ports are cleared, because the FixedPointDirector
 // relies on this to reset the status of its receivers.
 (*($director->initializeFunction))();
+$currentActor_TransferOutputs();
 /**/
 
 /***prefireBlock($director)***/

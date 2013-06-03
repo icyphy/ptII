@@ -10,8 +10,8 @@
 
 typedef struct DEEvent DEEvent;
 #include "$ModelName()_types.h"
-#include "$ModelName()_Actor.h"
-#include "$ModelName()_IOPort.h"
+#include "$ModelName()__Actor.h"
+#include "$ModelName()__IOPort.h"
 
 struct DEEvent {
   /** The destination actor. */

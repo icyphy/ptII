@@ -321,7 +321,7 @@ public class SDFDirector
         StringBuffer code = new StringBuffer();
         //code.append(super.generatePreinitializeCode());
         // We do execute this method without using its result because we need to initialize the offsets
-        //super.generatePreinitializeCode();
+        super.generatePreinitializeCode();
         
         CompositeActor container = ((CompositeActor) _director.getContainer());
         String sanitizedContainerName = CodeGeneratorAdapter.generateName(container);
@@ -472,16 +472,18 @@ public class SDFDirector
                         portNameWithChannelNumber = portName + '#' + i;
                     }
                     for (int k = 0; k < rate; k++) {
-                        code.append(compositeActorAdapter.getReference("@"
-                                + portNameWithChannelNumber + "," + k, false));
+                        code.append(_eol + "$put(" + portNameWithChannelNumber + ", ");
+//                        code.append(compositeActorAdapter.getReference("@"
+//                                + portNameWithChannelNumber + "," + k, false));
                         if (type == PointerToken.POINTER) {
-                            code.append(" = (void *) "
+                            code.append("(void *) "
                                     + pointerToTokensFromOneChannel + "[" + k
-                                    + "];" + _eol);
+                                    + "]");
                         } else {
-                            code.append(" = " + pointerToTokensFromOneChannel
-                                    + "[" + k + "];" + _eol);
+                            code.append(pointerToTokensFromOneChannel
+                                    + "[" + k + "]");
                         }
+                        code.append(");" + _eol);
                     }
 
                     if (type == BaseType.INT) {
@@ -537,7 +539,7 @@ public class SDFDirector
         code.append(compositeActorAdapter.generateTypeConvertFireCode(true));
 
         // The offset of the input port itself is updated by outside director.
-        _updateConnectedPortsOffset(inputPort, code, rate);
+        //_updateConnectedPortsOffset(inputPort, code, rate);
     }
 
     /** Generate code for transferring enough tokens to fulfill the output
@@ -567,7 +569,7 @@ public class SDFDirector
             if (_portNumber == 0) {
                 int numberOfOutputPorts = container.outputPortList().size();
 
-                code.append("jobjectArray tokensToAllOutputPorts;" + _eol);
+                //code.append("jobjectArray tokensToAllOutputPorts;" + _eol);
                 code.append("jclass "
                         + _objClass
                         + " = "
@@ -694,15 +696,15 @@ public class SDFDirector
 
                 // Assign each token to the array of jni objects
                 for (int k = 0; k < rate; k++) {
-                    String portReference = compositeActorAdapter.getReference(
-                            "@" + portNameWithChannelNumber + "," + k, false);
+//                    String portReference = compositeActorAdapter.getReference(
+//                            "@" + portNameWithChannelNumber + "," + k, false);
                     if (type == PointerToken.POINTER) {
-                        code.append(tokensToOneChannel + "[" + k + "] = "
-                                + "(int) " + portReference + ";" + _eol);
+                        code.append(tokensToOneChannel + "[" + k + "] = ");
                     } else {
-                        code.append(tokensToOneChannel + "[" + k + "] = "
-                                + portReference + ";" + _eol);
+                        code.append(tokensToOneChannel + "[" + k + "] = ");
                     }
+                    code.append("$get(" + portNameWithChannelNumber + ");" + _eol);
+                    
                 }
 
                 String tokensToOneChannelArray = "arr" + portName + i;
@@ -799,7 +801,7 @@ public class SDFDirector
 
         // The offset of the ports connected to the output port is
         // updated by outside director.
-        _updatePortOffset(outputPort, code, rate);
+        //_updatePortOffset(outputPort, code, rate);
     }
 
     /** Generate constant for the <i>period</i> parameter,
