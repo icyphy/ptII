@@ -41,6 +41,7 @@ import ptolemy.data.expr.ModelScope;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.Variable;
 import ptolemy.data.type.BaseType;
+import ptolemy.data.type.Type;
 import ptolemy.graph.Inequality;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
@@ -431,7 +432,13 @@ public class SetVariable extends TypedAtomicActor implements ChangeListener,
             Token oldToken = ((Variable) variable).getToken();
 
             if (oldToken == null || !oldToken.equals(value)) {
-                ((Variable) variable).setToken(value);
+                // Convert the token to the type of the variable so
+                // that we don't change the type of the variable (the
+                // token might be a subtype). This convert will
+                // succeed because of the type constraint set in
+                // preinitialize().
+                Type type = ((Variable)variable).getType();
+                ((Variable) variable).setToken(type.convert(value));
 
                 // NOTE: If we don't call validate(), then the
                 // change will not propagate to dependents.
