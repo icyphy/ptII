@@ -4,9 +4,9 @@
 <entity name="GeneratorContactorLoadFMU" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={272, 207, 1153, 634}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={107, 22, 1220, 775}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[919, 524]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[986, 665]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
@@ -32,13 +32,6 @@
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="60.0">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 35.0]">
-        </property>
-    </property>
-    <property name="LocalPreferences" class="ptolemy.actor.gui.PtolemyPreferences">
-        <property name="_showParameters" class="ptolemy.data.expr.StringParameter" value="Overridden parameters only">
-            <display name="Show parameters"/>
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[680.0, 550.0]">
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -166,14 +159,22 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 365.0]">
         </property>
     </property>
+    <property name="Image" class="ptolemy.vergil.kernel.attributes.ImageAttribute">
+        <property name="source" class="ptolemy.data.expr.FileParameter" value="generator-contactor-load.png">
+        </property>
+        <property name="scale" class="ptolemy.data.expr.Parameter" value="80.0">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{312.0, 583.0}">
+        </property>
+    </property>
     <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
         <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="Voltage, Drive">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={818, 374, 639, 456}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={922, 594, 639, 456}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[639, 412]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[675.0, 295.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[595.0, 350.0]">
         </property>
         <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
@@ -238,6 +239,8 @@
             </property>
         </port>
         <entity name="_Controller" class="ptolemy.domains.modal.modal.ModalController">
+            <property name="errorCause" class="ptolemy.data.expr.Parameter">
+            </property>
             <property name="_library" class="ptolemy.moml.LibraryAttribute">
                 <configure>
       <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.modal.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory"></property></entity></entity>
@@ -358,7 +361,7 @@
         </property>
     </entity>
     <entity name="Controller" class="Controller">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[735.0, 240.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[690.0, 235.0]">
         </property>
     </entity>
     <entity name="GeneratorContractorLoadFMU" class="ptolemy.actor.lib.fmi.fmipp.FMUModelExchange">
@@ -376,21 +379,21 @@
         </property>
         <property name="integratorStepSize" class="ptolemy.data.expr.Parameter" value="0.001">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[455.0, 140.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[505.0, 165.0]">
         </property>
     </entity>
     <entity name="MicrostepDelay2" class="ptolemy.actor.lib.MicrostepDelay">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[675.0, 125.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[770.0, 235.0]">
         </property>
     </entity>
     <entity name="VectorAssembler" class="ptolemy.actor.lib.VectorAssembler">
         <display name=" "/>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[390.0, 120.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[440.0, 145.0]">
         </property>
     </entity>
     <entity name="VectorDisassembler" class="ptolemy.actor.lib.VectorDisassembler">
         <display name=" "/>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[545.0, 125.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[585.0, 145.0]">
         </property>
     </entity>
     <entity name="AnythingToDouble" class="ptolemy.actor.lib.conversions.AnythingToDouble">
@@ -400,7 +403,7 @@
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="[590.0, 255.0]">
+        <vertex name="vertex1" value="[610.0, 235.0]">
         </vertex>
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
