@@ -32,8 +32,8 @@
 /ptolemy/actor/QuasiTransparentDirector.java
 /ptolemy/actor/Receiver.java
 /ptolemy/actor/RelationWidthInference.java
-/ptolemy/actor/lib/ResourceAttributes.java
-/ptolemy/actor/lib/resourceScheduler/ResourceScheduler.java
+/ptolemy/actor/ResourceAttributes.java
+/ptolemy/actor/ResourceScheduler.java
 /ptolemy/actor/SubscriberPort.java
 /ptolemy/actor/SubscriptionAggregatorPort.java
 /ptolemy/actor/SuperdenseTimeDirector.java
@@ -330,5 +330,5 @@
 /ptolemy/graph/analysis/strategy/Strategy.java
 # May
 /ptolemy/actor/QuantityManager.java
-/ptolemy/actor/lib/qm/QuantityManagerListener.java
+/ptolemy/actor/QuantityManagerListener.java
 /ptolemy/actor/TimeRegulator.java
