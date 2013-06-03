@@ -133,8 +133,7 @@ fmiStatus fmiDoStep(fmiComponent c, fmiReal currentCommunicationPoint,
            (noSetFMUStatePriorToCurrentPoint)?"true":"false");
     fflush(stdout);
     // The following is extremely tricky.
-    // Since this FMU is designed to work without rollback,
-    // if a step is being restarted, then we have to reset the
+    // If a step is being restarted, then we have to reset the
     // indicator that we have reached the time of the next incrment.
     // The following test does that, but it relies on the orchestrator
     // to correctly call this method with noSetFMUStatePriorToCurrentPoint == false each time
@@ -163,6 +162,18 @@ fmiStatus fmiDoStep(fmiComponent c, fmiReal currentCommunicationPoint,
         // We are at the target time. Are we
         // ready for the increment yet? Have to have already
         // completed one firing at this time.
+        // FIXME: Unfortunately, with the Pt II solver, this is not sufficient
+        // because it will appear as if there were a zero-step-size increment,
+        // but actually there hasn't been. The Pt II solver fires the actor at
+        // end of a time interval, then postfires it so its outputs become visible.
+        // But then it fires it again at the beginning of the next interval, which
+        // is the same communication point, so it will appear to this FMU that it
+        // is seeing a zero step size.
+        // But the firing at the beginning of the next iterval does not produce any
+        // outputs because the actor does not get postfired then.
+        // So outputs produced at this microstep 1 will not be visible to,
+        // for example, a plotter, which looks for inputs in postfire.
+        // Maybe the Continuous director can only use model-exchange FMUs.
         if (component->atBreakpoint) {
             // Not the first firing. Go ahead an increment.
             component->currentCount++;
