@@ -76,7 +76,6 @@ JSRCS = \
 	ActorFiringListener.java \
 	ApplicationConfigurer.java \
 	AtomicActor.java \
-	CausalityMarker.java \
 	CompositeActor.java \
 	ConstantPublisherPort.java \
 	DesignPatternGetMoMLAction.java \

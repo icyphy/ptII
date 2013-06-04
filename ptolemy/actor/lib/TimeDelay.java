@@ -27,12 +27,9 @@
  */
 package ptolemy.actor.lib;
 
-import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.ListIterator;
-import java.util.Set;
 
-import ptolemy.actor.CausalityMarker;
 import ptolemy.actor.Director;
 import ptolemy.actor.SuperdenseTimeDirector;
 import ptolemy.actor.parameters.PortParameter;
@@ -42,7 +39,6 @@ import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.Port;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -149,15 +145,6 @@ public class TimeDelay extends Transformer {
         controlCardinal.setExpression("SOUTH");
 
         output.setTypeSameAs(input);
-
-        // Empty set of dependent ports.
-        // This declaration is done this way for the benefit of Ptides.
-        // It is interpreted by Ptides to indicate that out-of-order
-        // execution is allowed.
-        Set<Port> dependentPorts = new HashSet<Port>();
-        _causalityMarker = new CausalityMarker(this, "causalityMarker");
-        _causalityMarker.addDependentPortSet(dependentPorts);
-
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -215,8 +202,6 @@ public class TimeDelay extends Transformer {
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         TimeDelay newObject = (TimeDelay) super.clone(workspace);
         newObject.output.setTypeSameAs(newObject.input);
-        newObject._causalityMarker = (CausalityMarker) newObject
-                .getAttribute("causalityMarker");
         newObject._pendingOutputs = null;
         return newObject;
     }
@@ -439,10 +424,6 @@ public class TimeDelay extends Transformer {
     /** A local queue to store the delayed output tokens. */
     protected LinkedList<PendingEvent> _pendingOutputs;
 
-    /** A causality marker to store information about how pure events are causally
-     *  related to trigger events.
-     */
-    protected CausalityMarker _causalityMarker;
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////

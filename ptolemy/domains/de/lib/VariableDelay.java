@@ -27,10 +27,6 @@
  */
 package ptolemy.domains.de.lib;
 
-import java.util.HashSet;
-import java.util.Set;
-
-import ptolemy.actor.CausalityMarker;
 import ptolemy.actor.lib.Transformer;
 import ptolemy.actor.parameters.PortParameter;
 import ptolemy.actor.util.CalendarQueue;
@@ -40,7 +36,6 @@ import ptolemy.data.DoubleToken;
 import ptolemy.data.Token;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.Port;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -88,10 +83,6 @@ public class VariableDelay extends Transformer {
         delay.setTypeEquals(BaseType.DOUBLE);
 
         output.setTypeSameAs(input);
-
-        Set<Port> dependentPorts = new HashSet<Port>();
-        _causalityMarker = new CausalityMarker(this, "causalityMarker");
-        _causalityMarker.addDependentPortSet(dependentPorts);
 
         _delay = 1.0;
     }
@@ -141,8 +132,6 @@ public class VariableDelay extends Transformer {
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         VariableDelay newObject = (VariableDelay) super.clone(workspace);
         newObject.output.setTypeSameAs(newObject.input);
-        newObject._causalityMarker = (CausalityMarker) newObject
-                .getAttribute("causalityMarker");
         return newObject;
     }
 
@@ -280,8 +269,4 @@ public class VariableDelay extends Transformer {
     /** A local event queue to store the delayed output tokens. */
     protected CalendarQueue _delayedOutputTokens;
 
-    /** A causality marker to store information about how pure events are causally
-     *  related to trigger events.
-     */
-    protected CausalityMarker _causalityMarker;
 }

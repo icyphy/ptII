@@ -30,7 +30,6 @@ package ptolemy.domains.continuous.lib;
 import java.util.HashSet;
 import java.util.Set;
 
-import ptolemy.actor.CausalityMarker;
 import ptolemy.actor.lib.Transformer;
 import ptolemy.actor.util.CalendarQueue;
 import ptolemy.actor.util.Time;
@@ -132,12 +131,6 @@ public class ContinuousTimeDelay extends Transformer {
 
         output.setTypeSameAs(input);
 
-        // Empty set of dependent ports.
-        // This declaration is done this way for the benefit of Ptides.
-        Set<Port> dependentPorts = new HashSet<Port>();
-        _causalityMarker = new CausalityMarker(this, "causalityMarker");
-        _causalityMarker.addDependentPortSet(dependentPorts);
-
         initialOutput = new Parameter(this, "initialOutput");
         initialOutput.setExpression(null);
 
@@ -197,9 +190,7 @@ public class ContinuousTimeDelay extends Transformer {
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         ContinuousTimeDelay newObject = (ContinuousTimeDelay) super
                 .clone(workspace);
-        newObject.output.setTypeSameAs(newObject.input);
-        newObject._causalityMarker = (CausalityMarker) newObject
-                .getAttribute("causalityMarker");
+        newObject.output.setTypeSameAs(newObject.input); 
         return newObject;
     }
 
@@ -463,10 +454,5 @@ public class ContinuousTimeDelay extends Transformer {
     /** Records the next scheduled fireAt() call, so that we do not request more than
      *  one fireAt() call for a given input event.
      */
-    protected Time _nextFireAt;
-
-    /** A causality marker to store information about how pure events are causally
-     *  related to trigger events.
-     */
-    protected CausalityMarker _causalityMarker;
+    protected Time _nextFireAt; 
 }

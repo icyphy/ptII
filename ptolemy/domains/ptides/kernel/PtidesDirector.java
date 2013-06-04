@@ -541,12 +541,7 @@ public class PtidesDirector extends DEDirector implements Decorator {
      *  in initialize() throw it.
      */
     public void initialize() throws IllegalActionException {
-        _inputPortsForPureEvent = new HashMap<TypedIOPort, Set<TypedIOPort>>();
-        _relativeDeadlineForPureEvent = new HashMap<TypedIOPort, Double>();
 
-        _calculateSuperdenseDependenices();
-        _calculateDelayOffsets();
-        _calculateRelativeDeadlines();
 
         super.initialize();
     }
@@ -680,6 +675,13 @@ public class PtidesDirector extends DEDirector implements Decorator {
         _nextFireTime = Time.POSITIVE_INFINITY;
         _pureEvents = new PtidesListEventQueue();
         _currentLogicalTime = null;
+        
+        _inputPortsForPureEvent = new HashMap<TypedIOPort, Set<TypedIOPort>>();
+        _relativeDeadlineForPureEvent = new HashMap<TypedIOPort, Double>();
+
+        _calculateSuperdenseDependenices();
+        _calculateDelayOffsets();
+        _calculateRelativeDeadlines();
     }
     
     public void resumeActor(Actor actor) throws IllegalActionException { 
@@ -1056,9 +1058,8 @@ public class PtidesDirector extends DEDirector implements Decorator {
             if (entity instanceof CompositeActor
                     && ((CompositeActor) entity).getDirector() instanceof SRDirector) {
                 // TODO calculate delayOffset
-//                double delay = _calculateSRDelay((CompositeActor) entity);
-//                System.out.println(delay);
-//                _setDelayOffset((NamedObj) entity, delay);                
+                double delay = _calculateSRDelay((CompositeActor) entity);
+                _setDelayOffset((NamedObj) entity, delay);                
             }
         }
     }
@@ -1075,22 +1076,40 @@ public class PtidesDirector extends DEDirector implements Decorator {
                     }
                 } else {
                     Actor actor = ((Actor)((IOPort)insidePort).getContainer());
-                    CausalityInterface causalityInterface = actor.getCausalityInterface();
-                    for (Object outputPort : actor.outputPortList()) {
-                        SuperdenseDependency dependency = (SuperdenseDependency) causalityInterface.getDependency((IOPort) insidePort, (IOPort) outputPort);
-                        delay += dependency.timeValue();
-                        for (Object connectedPort : ((IOPort)outputPort).connectedPortList()) {
-                            if (composite.outputPortList().contains(connectedPort)) {
-                                if (delay < minDelay) {
-                                    minDelay = delay;
-                                }
-                            }
-                        }
-                    }
+                    List<Actor> visited = new ArrayList();
+                    delay = _getDelay(composite, actor, (IOPort) insidePort, minDelay, visited);
                 }
             }
         }
         return delay;
+    }
+    
+    private double _getDelay(CompositeActor composite, Actor actor, IOPort port, double minDelay, List<Actor> visited) throws IllegalActionException {
+        if (visited.contains(actor)) {
+            // found loop
+            return Double.POSITIVE_INFINITY;
+        }
+        visited.add(actor);
+        double delay = 0.0;
+        CausalityInterface causalityInterface = actor.getCausalityInterface();
+        for (Object outputPort : actor.outputPortList()) {
+            SuperdenseDependency dependency = (SuperdenseDependency) causalityInterface.getDependency((IOPort) port, (IOPort) outputPort);
+            delay += dependency.timeValue();
+            for (Object connectedPort : ((IOPort)outputPort).connectedPortList()) {
+                if (composite.outputPortList().contains(connectedPort)) {
+                    if (delay < minDelay) {
+                        minDelay = delay;
+                    }
+                } else {
+                    Actor downstreamActor = (Actor) ((IOPort)connectedPort).getContainer();
+                    delay += _getDelay(composite, downstreamActor, (IOPort) connectedPort, minDelay, visited);
+                    if (delay < minDelay) {
+                        minDelay = delay;
+                    }
+                }
+            }
+        }
+        return minDelay;
     }
     
     /** Calculate the relative deadline for each input port. The relative
@@ -1779,14 +1798,17 @@ public class PtidesDirector extends DEDirector implements Decorator {
         } else {
             attributes = (ThrottleAttributes) ((NamedObj) event.actor())
                     .getDecoratorAttributes(this);
-            if (attributes != null && 
-                    ((BooleanToken) attributes.useMaximumLookaheadTime
+            if (attributes != null) { 
+                if (((BooleanToken) attributes.useMaximumLookaheadTime
                     .getToken()).booleanValue()) {
-                delayOffset = Double
-                        .valueOf(((DoubleToken) attributes.maximumLookaheadTime
-                                .getToken()).doubleValue());
+                    delayOffset = Double
+                            .valueOf(((DoubleToken) attributes.maximumLookaheadTime
+                                    .getToken()).doubleValue());
+                } 
             }
-            
+            if (((NamedObj) event.actor()).getAttribute("delayOffset") != null) {
+                delayOffset = ((DoubleToken)((Parameter) ((NamedObj) event.actor()).getAttribute("delayOffset")).getToken()).doubleValue();
+            }
 
         }
         if (delayOffset == null

@@ -34,6 +34,8 @@ import ptolemy.actor.lib.Transformer;
 import ptolemy.data.AbsentToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
+import ptolemy.domains.sr.kernel.SRDirector;
+//import ptolemy.domains.sr.kernel.SRDirector;
 import ptolemy.graph.Inequality;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
@@ -94,6 +96,20 @@ public class NonStrictDelay extends Transformer {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Declare that the output does not depend on the input in a firing but
+     *  has a delay of one period of the SRDirector.
+     *  @exception IllegalActionException If the causality interface
+     *  cannot be computed.
+     *  @see #getCausalityInterface()
+     */
+    public void declareDelayDependency() throws IllegalActionException {
+        if (getDirector() instanceof SRDirector) {
+            _declareDelayDependency(input, output, ((SRDirector)getDirector()).periodValue());
+        }
+    }
+    
+    
+    
     /** Send to the output the previous token received. If no token
      *  was received on the previous tick,
      *  then assert that the output is absent. If this is
@@ -158,16 +174,7 @@ public class NonStrictDelay extends Transformer {
         }
         return super.postfire();
     }
-
-    /** Override the base class to declare that the <i>output</i>
-     *  does not depend on the <i>input</i> in a firing.
-     *  @exception IllegalActionException If the superclass throws it.
-     */
-    public void preinitialize() throws IllegalActionException {
-        super.preinitialize();
-        removeDependency(input, output);
-    }
-
+    
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 

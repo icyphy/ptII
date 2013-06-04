@@ -61,8 +61,7 @@ JSRCS = \
 	InputDevice.java \
 	OutputDevice.java \
 	PtidesPort.java \
-	SensorHandler.java \
-	SchedulerDirector.java
+	SensorHandler.java
 
 OTHER_FILES_TO_BE_JARED = \
 	ptidesentities.xml 
