@@ -87,19 +87,19 @@ FMU_functions* ModelManager::getModel( const std::string& fmuPath,
 
 	// fix this for other OSs and 32bit !!!
 #if defined(_MSC_VER)
-	std::string dllPath = fmuPath + "/" + modelName + "/binaries/win32/" + modelName + ".dll";
+	std::string dllPath = fmuPath + "/binaries/win32/" + modelName + ".dll";
 #elif defined(MINGW)
-	std::string dllPath = fmuPath + "/" + modelName + "/binaries/win32/" + modelName + ".dll";
+	std::string dllPath = fmuPath +  "/binaries/win32/" + modelName + ".dll";
 #elif defined(__APPLE__)
-	std::string dllPath = fmuPath + "/" + modelName + "/binaries/darwin-x86_64/" + modelName + ".so";
-	//std::string dllPath = fmuPath + "/" + modelName + "/binaries/darwin64/" + modelName + ".dylib";
+	std::string dllPath = fmuPath +  "/binaries/darwin-x86_64/" + modelName + ".so";
+	//std::string dllPath = fmuPath + "/binaries/darwin64/" + modelName + ".dylib";
 #else
-	std::string dllPath = fmuPath + "/" + modelName + "/binaries/linux64/" + modelName + ".so";
+	std::string dllPath = fmuPath + "/binaries/linux64/" + modelName + ".so";
 #endif
 
 	FMU_functions* description = new FMU_functions;
 
-	std::string descriptionPath = fmuPath + "/" + modelName + "/modelDescription.xml";
+	std::string descriptionPath = fmuPath + "/modelDescription.xml";
 	description->modelDescription = parse( descriptionPath.c_str() );
 
 	loadDll( dllPath, description );
