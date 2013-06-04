@@ -50,6 +50,7 @@ import ptolemy.actor.Actor;
 import ptolemy.actor.AtomicActor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
+import ptolemy.actor.TypedActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.actor.TypedCompositeActor;
 import ptolemy.cg.kernel.generic.CodeGeneratorAdapter;
@@ -66,6 +67,9 @@ import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.Variable;
 import ptolemy.data.type.BaseType;
 import ptolemy.domains.de.kernel.DEDirector;
+import ptolemy.domains.modal.kernel.FSMActor;
+import ptolemy.domains.modal.kernel.State;
+import ptolemy.domains.modal.modal.Refinement;
 import ptolemy.domains.sdf.kernel.SDFDirector;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.attributes.URIAttribute;
@@ -342,6 +346,12 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
             mainEntryCode.append(_eol + _eol
                     + "int main(int argc, char *argv[]) {" + _eol);
             
+            if (((BooleanToken) measureTime.getToken()).booleanValue()) {
+                mainEntryCode.append(_eol + "struct timeval start, end;");
+                mainEntryCode.append(_eol + "long mtime, secs, usecs;"); 
+                mainEntryCode.append(_eol + "gettimeofday(&start, NULL);");
+            }
+            
             mainEntryCode.append(_eol + "//boolean completedSuccessfully = false;");
             mainEntryCode.append(_eol + _eol + "initialize();");
             
@@ -353,6 +363,14 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
             
             mainEntryCode.append(_eol + "}");
             mainEntryCode.append(_eol + "wrapup();");
+            
+            if (((BooleanToken) measureTime.getToken()).booleanValue()) {
+                mainEntryCode.append(_eol + "gettimeofday(&end, NULL);");
+                mainEntryCode.append(_eol + "secs  = end.tv_sec  - start.tv_sec;");
+                mainEntryCode.append(_eol + "usecs = end.tv_usec - start.tv_usec;");
+                mainEntryCode.append(_eol + "mtime = ((secs) * 1000 + usecs/1000.0) + 0.5;");
+                mainEntryCode.append(_eol + "printf(\"Elapsed time: %ld millisecs\\n\", mtime);");
+            }
             mainEntryCode.append(_eol + "exit(0);");
 
         } else {
@@ -1429,6 +1447,10 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         codeMainH.append(_eol + "#include \"" + _sanitizedModelName + "__CompositeActor.h\"");
         codeMainH.append(_eol + "#include \"" + sanitizedNameContainer + ".h\"");
         code.append(_eol + "#include \"" + _sanitizedModelName + "_Main.h\"");
+        if (((BooleanToken) measureTime.getToken()).booleanValue()) {
+            code.append(_eol + "#include <sys/time.h>");
+            code.append(_eol + "#include <unistd.h>");
+        }
         codeMainH.append(_eol + _eol + "CompositeActor * container;");
         
         // Main entry point function
@@ -1579,7 +1601,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
      *  @exception IllegalActionException If anything goes wrong during the generation.
      */
     protected void _generateAndWriteActorCode(NamedObj actor, NamedProgramCodeGeneratorAdapter directorAdapter, 
-            CompositeActor container, String includesDirectory, String srcDirectory) 
+            CompositeEntity container, String includesDirectory, String srcDirectory) 
             throws IllegalActionException {
         /////////////////////////////////////////////
         // Initialization of the actor             //
@@ -1879,14 +1901,20 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
      *  @param The actor that needs to be generated
      *  @exception IllegalActionException If anything goes wrong during the generation.
      */
-    protected void _generateAndWriteCompositeActorCode(CompositeActor container) throws IllegalActionException {
+    protected void _generateAndWriteCompositeActorCode(CompositeEntity container) throws IllegalActionException {
         
         /////////////////////////////////////////////
         // Initialization of the container         //
         /////////////////////////////////////////////
 
         Director director = null;
-        director = ((CompositeActor) container).getDirector();
+        if (container instanceof CompositeActor)
+            director = ((CompositeActor)container).getDirector();
+        else if (container instanceof FSMActor)
+            director = ((FSMActor)container).getDirector();
+        else 
+            throw new IllegalActionException(container,
+                    "Unsupported type of Actor : " + container.getFullName());
         //NamedProgramCodeGeneratorAdapter containerAdapter = (NamedProgramCodeGeneratorAdapter) getAdapter(container);
 //        String sanitizedContainerName = CodeGeneratorAdapter
 //                .generateName(container);
@@ -1945,15 +1973,21 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         List actorList = container.deepEntityList();
         Iterator<?> actors = actorList.iterator();
         while (actors.hasNext()) {
-            Actor actor = (Actor) actors.next();
+            NamedObj actor = (NamedObj) actors.next();
             
             // The recursive call
-            if (actor instanceof CompositeActor)
-                _generateAndWriteCompositeActorCode((CompositeActor) actor);
+            if (actor instanceof CompositeEntity)
+                _generateAndWriteCompositeActorCode((CompositeEntity) actor);
             else if (actor instanceof AtomicActor)
                 // TODO : Add a condition on inlining here (or static Scheduling)
                 _generateAndWriteActorCode((AtomicActor)actor, (NamedProgramCodeGeneratorAdapter)getAdapter(director), 
                         container, directoryIncludes, directorySrc);
+            else if (actor instanceof State)
+                // For modal model support
+                for (TypedActor act : ((State)actor).getRefinement()) {
+                    Refinement r = (Refinement) act;
+                    _generateAndWriteCompositeActorCode(r);
+                }
             else
                 throw new IllegalActionException(container,
                         "Unsupported type of Actor : " + actor.getFullName());
@@ -1963,7 +1997,9 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         _generateAndWriteDirectorCode(director, directoryIncludes, directorySrc);
 
         // Writing the Makefile
-        _writeMakefile(container);
+        if (_isTopLevel())
+            _writeMakefile(container, directory);
+        _writeMakefile(container, directorySrc);
     }
     
     /** Generate and write the code for a director within
@@ -2114,11 +2150,6 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
 
         includingFiles.add("<stdlib.h>"); // Sun requires stdlib.h for malloc
 
-        if (_isTopLevel()
-                && ((BooleanToken) measureTime.getToken()).booleanValue()) {
-            includingFiles.add("<sys/time.h>");
-        }
-
         if (!_isTopLevel()) {
             includingFiles.add("\"" + _sanitizedModelName + ".h\"");
 
@@ -2228,30 +2259,14 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
      *  a parameter, if there is a problem creating the codeDirectory directory
      *  or if there is a problem writing the code to a file.
      */
-    protected void _writeMakefile(CompositeActor container) throws IllegalActionException {
+    protected void _writeMakefile(CompositeEntity container, String currentDirectory) throws IllegalActionException {
 
         //NamedProgramCodeGeneratorAdapter containerAdapter = (NamedProgramCodeGeneratorAdapter)getAdapter(container);
         // Write the code to a file with the same name as the model into
         // the directory named by the codeDirectory parameter.
         //try {
-        // Check if needs to overwrite.
-        if (!((BooleanToken) overwriteFiles.getToken()).booleanValue()
-                && codeDirectory.asFile().exists()) {
-            // FIXME: It is totally bogus to ask a yes/no question
-            // like this, since it makes it impossible to call
-            // this method from a script.  If the question is
-            // asked, the build will hang.
-            if (!MessageHandler.yesNoQuestion(codeDirectory.asFile()
-                    + " exists. OK to overwrite?")) {
-                return;
-                /*
-                throw new IllegalActionException(this,
-                        "Please select another file name.");
-                        */
-            }
-        }
-
-        File codeDirectoryFile = codeDirectory.asFile();
+       
+        File codeDirectoryFile = new File(currentDirectory);
         if (codeDirectoryFile.isFile()) {
             throw new IllegalActionException(this, "Error: "
                     + codeDirectory.stringValue() + " is a file, "
@@ -2276,7 +2291,14 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
                     _concatenateElements(_libraries));
             // Adds the .c and .o needed files
             Director director = null;
-            director = container.getDirector();
+            if (container instanceof CompositeActor)
+                director = ((CompositeActor)container).getDirector();
+            else if (container instanceof FSMActor)
+                director = ((FSMActor)container).getDirector();
+            else 
+                throw new IllegalActionException(container,
+                        "Unsupported type of Actor : " + container.getFullName());
+            
             if (director != null && director instanceof DEDirector) {
                 String ptcgC = "${wildcard ./src/*.c} ${wildcard ./src/**/*.c}";//"src/types.c src/Actor.c src/CalendarQueue.c src/DEDirector.c src/DEEvent.c src/DEReceiver.c src/IOPort.c";
                 String ptcgO = "";//"build/types.o build/Actor.o build/CalendarQueue.o build/DEDirector.o build/DEEvent.o build/DEReceiver.o build/IOPort.o";
@@ -2389,9 +2411,9 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
                 .add("ptolemy/cg/kernel/generic/program/procedural/c/makefile.in");
 
         // If necessary, add a trailing / after codeDirectory.
-        String makefileOutputName = codeDirectory.stringValue()
-                + (!codeDirectory.stringValue().endsWith("/")
-                        && !codeDirectory.stringValue().endsWith("\\") ? "/"
+        String makefileOutputName = currentDirectory
+                + (!currentDirectory.endsWith("/")
+                        && !currentDirectory.endsWith("\\") ? "/"
                         : "") + _sanitizedModelName + ".mk";
 
         BufferedReader makefileTemplateReader = null;
