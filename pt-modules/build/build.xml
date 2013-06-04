@@ -33,7 +33,7 @@
   </target>
 
   <target name="build-all"
-	  depends="init,clean"
+	  depends="init"
 	  description="Clean, then build all the jar files.">
     <!-- Cannot be alphabetized, since order matches dependencies. -->
     <antcall target="ptolemy-core.jar"/>
@@ -49,8 +49,19 @@
     <antcall target="ptolemy-test.jar"/>
   </target>
 
-  <target name="build-jar"
+  <target name="jar-uptodate"
 	  depends="init"
+	  description="Build an individual jar file.">
+    <uptodate property="${jar-name}.uptodate" targetfile="jars/${jar-name}.jar">
+  		<srcresources>
+			<ptprojectfileset ptPath="${ptPath}" projectPathsPrefix="${projectsPath}"
+				projectNames="${pt-projects}" echo="false" includeFileSetFile="true"/>
+  		</srcresources>
+  	</uptodate>
+  </target>
+
+  <target name="build-jar" unless="${jar-name}.uptodate"
+	  depends="init,jar-uptodate"
 	  description="Build an individual jar file.">
     <delete dir="${jar-name}"/>
     <copy todir="${jar-name}/src">
