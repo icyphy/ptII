@@ -3,6 +3,7 @@
  * All rights reserved. See file FMIPP_LICENSE for details.
  * --------------------------------------------------------------*/
 
+#include <stdio.h>
 #include <iostream>
 #include <cassert>
 #include "IncrementalFMU.h"
