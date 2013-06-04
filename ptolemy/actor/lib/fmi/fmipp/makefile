@@ -82,7 +82,7 @@ PTLIB=libfmipp.$(PTJNI_SHAREDLIBRARY_SUFFIX)
 PTLIB2=libIncrementalFMU_wrap.$(PTJNI_SHAREDLIBRARY_SUFFIX)
 all: jclass #$(PTLIB) $(PTLIB2)
 	@echo " Not building the fmipp c code because it requires boost and libexpat."
-	@echo " Shared libraries for fmipp should be found in $PTII/lib or $PTII/bin."
+	@echo " Shared libraries for fmipp should be found in $$PTII/lib or $$PTII/bin."
 	@echo " To build the libraries, run 'make libs'"
 
 install: jclass jars
