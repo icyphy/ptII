@@ -60,7 +60,8 @@ IncrementalFMU::IncrementalFMU( const IncrementalFMU& aIncrementalFMU ) {
 
 IncrementalFMU::~IncrementalFMU()
 {
-	delete fmu_;
+    printf("WARNING: IncrementalFMU.cpp: IncrementalFMU destructor: not deleting fmu_\n");
+    //delete fmu_;
 }
 
 
