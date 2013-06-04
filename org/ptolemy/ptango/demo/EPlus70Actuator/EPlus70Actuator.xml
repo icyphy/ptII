@@ -4,7 +4,7 @@
 <entity name="EPlus70Actuator" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 1388, 737}, maximized=true}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-8, -8, 1382, 744}, maximized=true}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1154, 627]">
     </property>
@@ -323,7 +323,7 @@
     <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This demo is based on the ePlus80-actuator example provided by the Building Controls Virtual Test Bed (BCVTB).&#10;To run this demo, EnergyPlus V8.0.0 and the Building Controls Virtual Testbed are required.&#10;To generate the HTML page: File -&gt; Export -&gt; Export to Web. &#10;&#10;Before launching Ptolemy, please add the following to your Eclipse run configuration.&#10;Under Run -&gt; Run Configurations... select your Ptolemy run configuration (e.g. Vergil) &#10;Select the &quot;Environment&quot; tab.  Select &quot;New...&quot; and add these two variables:&#10;Variable name:  BCVTB_HOME&#10;Value:  The root directory of your BCVTB installation, e.g. C:\bcvtb&#10;&#10;Variable name: PATH&#10;Value:  The root directory of your EnergyPlus installation, the EnergyPlus WeatherData directory, &#10;and the directory where java.exe is installed, &#10;e.g. C:\EnergyPlusV8-0-0;C:\EnergyPlusV8-0-0\WeatherData;C:\Program Files (x86)\Java\jre7\bin&#10;&#10;Note that updating your system PATH variable is not sufficient for some reason.  Maybe since the Simulator actor&#10;invokes another java process, that process doesn't have access to the system environment variables?&#10;&#10;For more information:&#10;EnergyPlus: http://apps1.eere.energy.gov/buildings/energyplus/&#10;BCVTB: http://simulationresearch.lbl.gov/bcvtb/&#10;&#10;">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 480.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 540.0]">
         </property>
     </property>
     <property name="timeStep" class="ptolemy.data.expr.Parameter" value="600">
@@ -349,6 +349,31 @@
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="*Requires extra &#10;Java environment &#10;variables to run*&#10;(notes below)">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[0.0, 90.0]">
+        </property>
+    </property>
+    <property name="EnergyPlusCommand" class="ptolemy.data.expr.Parameter" value="&quot;runenergyplus&quot;">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{80.0, 495.0}">
+        </property>
+    </property>
+    <property name="Annotation6" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Please edit according to your OS.  &#10;Windows: &quot;RunEPlus.bat&quot;&#10;Unix (and Mac?): &quot;runenergyplus&quot;">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[340.0, 475.0]">
         </property>
     </property>
     <class name="SequenceToJSONItemClass" extends="ptolemy.actor.TypedCompositeActor">
@@ -558,7 +583,7 @@
     <entity name="EPlusSimulator" class="ptolemy.actor.TypedCompositeActor">
         <property name="_location" class="ptolemy.kernel.util.Location" value="{110.0, 255.0}">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 1302, 770}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 0, 1296, 777}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1068, 660]">
         </property>
@@ -1110,7 +1135,7 @@ This is for illustration purposes only and not needed by the above model.</text>
             </property>
         </entity>
         <entity name="RunTime" class="ptolemy.actor.lib.gui.MonitorValue">
-            <property name="value" class="ptolemy.data.expr.Parameter" value="2.594">
+            <property name="value" class="ptolemy.data.expr.Parameter" value="2.984">
             </property>
             <doc>Monitor and display values</doc>
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="20">
@@ -1189,7 +1214,7 @@ This is for illustration purposes only and not needed by the above model.</text>
             </configure>
         </entity>
         <entity name="Simulator" class="lbnl.actor.lib.Simulator">
-            <property name="programName" class="ptolemy.data.expr.FileParameter" value="runenergyplus">
+            <property name="programName" class="ptolemy.data.expr.FileParameter" value="$EnergyPlusCommand">
             </property>
             <property name="programArguments" class="ptolemy.data.expr.Parameter" value="&quot;EMSWindowShadeControl USA_IL_Chicago-OHare.Intl.AP.725300_TMY3&quot;">
             </property>
