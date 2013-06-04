@@ -19,20 +19,16 @@ public class LinkedProjectFileSetFormat implements FileSetFormat {
 	</link>
 	*/
 
-	private File getFileSetFile(String projectPath, String projectName) {
+	@Override
+	public File getProjectFileSetFile(String projectPath, String projectName) {
 		return new File(projectPath + File.separator + ".project");
 	}
 	
 	@Override
-	public boolean supports(String projectPath, String projectName) {
-		return getFileSetFile(projectPath, projectName).exists();
-	}
-
-	@Override
 	public void addProjectFiles(String projectPath, String projectName, Collection<Resource> resources, PtProjectFileSet fileSet) {
 		BufferedReader reader = null;
 		try {
-			reader = new BufferedReader(new FileReader(getFileSetFile(projectPath, projectName)));
+			reader = new BufferedReader(new FileReader(getProjectFileSetFile(projectPath, projectName)));
 			String line = null, tagContent = null, name = null, locationURI = null;
 			while ((line = reader.readLine()) != null) {
 				String sourceDirSuffix = "src/";

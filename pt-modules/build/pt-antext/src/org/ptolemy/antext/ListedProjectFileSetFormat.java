@@ -31,20 +31,16 @@ public class ListedProjectFileSetFormat implements FileSetFormat {
 	either a comment starting with anything except a / or a filename (starting with /) 
 	*/
 
-	private File getFileSetFile(String projectPath, String projectName) {
-		return new File(projectPath + File.separator + "pt-jar.files");
-	}
-	
 	@Override
-	public boolean supports(String projectPath, String projectName) {
-		return getFileSetFile(projectPath, projectName).exists();
+	public File getProjectFileSetFile(String projectPath, String projectName) {
+		return new File(projectPath + File.separator + "pt-jar.files");
 	}
 
 	@Override
 	public void addProjectFiles(String projectPath, String projectName, Collection<Resource> resources, PtProjectFileSet fileSet) {
 		BufferedReader reader = null;
 		try {
-			reader = new BufferedReader(new FileReader(getFileSetFile(projectPath, projectName)));
+			reader = new BufferedReader(new FileReader(getProjectFileSetFile(projectPath, projectName)));
 			String line = null;
 			while ((line = reader.readLine()) != null) {
 				if (! line.startsWith("/")) {

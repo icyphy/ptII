@@ -8,6 +8,7 @@ import java.util.Iterator;
 import org.apache.tools.ant.types.AbstractFileSet;
 import org.apache.tools.ant.types.Resource;
 import org.apache.tools.ant.types.ResourceCollection;
+import org.apache.tools.ant.types.resources.FileResource;
 
 public class PtProjectFileSet extends AbstractFileSet implements ResourceCollection {
 
@@ -58,6 +59,16 @@ public class PtProjectFileSet extends AbstractFileSet implements ResourceCollect
 		this.echo = echo;
 	}
 
+	private boolean includeFileSetFile = false;
+	
+	public boolean isIncludeFileSetFile() {
+		return includeFileSetFile;
+	}
+
+	public void setIncludeFileSetFile(boolean includeFileSetFile) {
+		this.includeFileSetFile = includeFileSetFile;
+	}
+
 	private FileSetFormat[] fileSetFormats = {
 			new ListedProjectFileSetFormat(), new LinkedProjectFileSetFormat()
 	};
@@ -73,9 +84,16 @@ public class PtProjectFileSet extends AbstractFileSet implements ResourceCollect
 				if (isEcho()) {
 					System.out.println("# Trying " + fileSetFormats[j] + " on " + projectName + " @ " + projectPath);
 				}
-				if (fileSetFormats[j].supports(projectPath, projectName)) {
+				File projectFileSetFile = fileSetFormats[j].getProjectFileSetFile(projectPath, projectName);
+				if (projectFileSetFile.exists()) {
 					if (isEcho()) {
 						System.out.println("# files for " + projectName + " @ " + projectPath);
+					}
+					if (isIncludeFileSetFile()) {
+						if (isEcho()) {
+							System.out.println(resources.size() + ": " + projectFileSetFile);
+						}
+						resources.add(new FileResource(projectFileSetFile));
 					}
 					fileSetFormats[j].addProjectFiles(projectPath, projectName, resources, this);
 					break;
