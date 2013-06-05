@@ -80,6 +80,7 @@ public class WebServerUtilities {
         _maxIdleTime = DEFAULT_MAX_IDLE_TIME;
        
         _server = null;
+        _selectChannelConnector = null;
         }
     
     /** Construct a new instance of this class with the specified port number.
@@ -99,6 +100,7 @@ public class WebServerUtilities {
         }
         
         _server = null;
+        _selectChannelConnector = null;
         }
     
     /** Construct a new instance of this class with the specified port number
@@ -220,15 +222,15 @@ public class WebServerUtilities {
         // set the server's properties
         if (_applications.isEmpty()) {
             _server = new Server();
-            SelectChannelConnector connector = new SelectChannelConnector();
-            connector.setPort(_portNumber);
-            connector.setMaxIdleTime(_maxIdleTime);
+            _selectChannelConnector = new SelectChannelConnector();
+            _selectChannelConnector.setPort(_portNumber);
+            _selectChannelConnector.setMaxIdleTime(_maxIdleTime);
             
             // Don't allow other programs to use this port (e.g. another 
             // Jetty instance)
             // FIXME:  Need to catch exception
-            connector.setReuseAddress(false);
-            _server.setConnectors(new Connector[] { connector });
+            _selectChannelConnector.setReuseAddress(false);
+            _server.setConnectors(new Connector[] { _selectChannelConnector });
             
             // Create a ContextHandlerCollection containing only a 
             // DefaultHandler.  Other handlers will be added later for web apps
@@ -317,11 +319,11 @@ public class WebServerUtilities {
             // multiple ports, then all web applications would listen to all
             // ports, meaning web applications from other developers could
             // intercept requests.
-            for (Connector connector : _server.getConnectors()) {
-                // FIXME:  Need to pause the server if it is running, or OK to 
-                // do this while running?
-                connector.setMaxIdleTime(_maxIdleTime);
-            }
+            
+            // FIXME:  Need to pause the server if it is running, or OK to 
+            // do this while running?
+            _selectChannelConnector.setMaxIdleTime(_maxIdleTime);
+            
         }          
     }
     
@@ -398,6 +400,10 @@ public class WebServerUtilities {
         
         // If no applications are left, stop the server
         if (_applications.isEmpty()) {
+            // Explicitly close the port connection so that the port will be
+            // available soon.  Otherwise, it was taking 30 seconds plus for
+            // the port to be relinquished, blocking any new web servers
+            _selectChannelConnector.close();
             _serverThread.interrupt();
             _serverThread = null;          
         }
@@ -644,6 +650,9 @@ public class WebServerUtilities {
     /** The port number the server receives requests on.
      */
     private int _portNumber;
+    
+    /** The connector binding a port to the server.  */
+    SelectChannelConnector _selectChannelConnector;
     
     /** The Jetty web server that runs the associated applications. */
     private Server _server;
