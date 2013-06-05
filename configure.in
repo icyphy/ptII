@@ -1019,7 +1019,7 @@ EoF
       <arg value=\"compile\"/>
     </artifact:mvn>
   </target>"
-	 ANT_MAVEN_SUBPROJECTS='build-websensor'
+	 ANT_MAVEN_SUBPROJECTS=',build-websensor'
       	 ANT_WEBSENSOR_FILESET='<fileset dir="${basedir}/ptolemy/apps/websensor"/>'
 	 ANT_WEBSENSOR_SOURCEPATH='<sourcePath path="${basedir}/ptolemy/apps/websensor"/>'
 	 ANT_WEBSENSOR_SRC='<src path="${basedir}/ptolemy/apps/websensor"/>'

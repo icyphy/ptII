@@ -264,16 +264,11 @@ For example:
   [bldmastr@sisyphus ptII]$ ls -l /usr/bin/java
   lrwxrwxrwx 1 root root 26 Jul 31 10:12 /usr/bin/java -> /usr/java/default/bin/java
   [bldmastr@sisyphus ptII]$ export JAVA_HOME=/usr/java/default
-
-   IMPORTANT: If you are adding or removing files in the core of Ptolemy,
-   please don't forget to run: 
-       ant build-pt-modules
     </echo>
   </target>
 
-  <!-- Don't include build-pt-modules here because it generates the jar files every time. -->
-  <!-- depends="build-pt-modules" -->
   <target name="build-subprojects"
+	  depends="build-pt-modules"
 	  description="Build subprojects."/>
 
   <target name="build-project">

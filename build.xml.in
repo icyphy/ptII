@@ -162,16 +162,11 @@ For example:
   lrwxrwxrwx 1 root root 26 Jul 31 10:12 /usr/bin/java -> /usr/java/default/bin/java
   [bldmastr@sisyphus ptII]$ export JAVA_HOME=/usr/java/default
 
-   IMPORTANT: If you are adding or removing files in the core of Ptolemy,
-   please don't forget to run: 
-       ant build-pt-modules
     </echo>
   </target>
 
-  <!-- Don't include build-pt-modules here because it generates the jar files every time. -->
-  <!-- depends="build-pt-modules" -->
   <target name="build-subprojects"
-	  depends="@ANT_MAVEN_SUBPROJECTS@"
+	  depends="build-pt-modules@ANT_MAVEN_SUBPROJECTS@"
 	  description="Build subprojects. @ANT_MAVEN_SUBPROJECTS@"/>
 
   @ANT_MAVEN_BUILD_WEBSENSOR@
