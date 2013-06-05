@@ -5,7 +5,6 @@
 /ptolemy/actor/ActorFiringListener.java
 /ptolemy/actor/ApplicationConfigurer.java
 /ptolemy/actor/AtomicActor.java
-/ptolemy/actor/CausalityMarker.java
 /ptolemy/actor/CompositeActor.java
 /ptolemy/actor/ConstantPublisherPort.java
 /ptolemy/actor/Director.java
