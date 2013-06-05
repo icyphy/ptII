@@ -60,19 +60,18 @@ JSRCS = \
 	TypedCompositeActor.java
 
 OTHER_FILES_TO_BE_JARED = \
-	Actor.c \
-	Actor.h \
-	CompositeActor.c \
-	CompositeActor.h \
-	Director.h \
-	IOPort.c \
-	IOPort.h \
-	Queue.c \
-	Queue.h \
-	Receiver.c \
-	Receiver.h \
-	TypedCompositeActor.c 
-	
+	_Actor.c \
+	_Actor.h \
+	_CompositeActor.c \
+	_CompositeActor.h \
+	_Director.h \
+	_IOPort.c \
+	_IOPort.h \
+	_Queue.c \
+	_Queue.h \
+	_Receiver.c \
+	_Receiver.h \
+	TypedCompositeActor.c
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
