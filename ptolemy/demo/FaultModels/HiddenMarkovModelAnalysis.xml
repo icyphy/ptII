@@ -12,9 +12,9 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{55.0, 15.0}">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 720, 822}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 720, 818}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[486, 712]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[486, 708]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.951412799912554">
     </property>
@@ -48,7 +48,7 @@
         </property>
         <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="X0, X1,X2">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={594, 204, 500, 344}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={261, 215, 500, 344}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
         </property>
@@ -62,18 +62,18 @@
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
-<title>Actual Empirical Distributions of the  State Variables</title>
+<title>Empirical Histograms of Latent Distributions</title>
 <xLabel></xLabel>
 <yLabel></yLabel>
-<xRange min="-4.500000000000001" max="9.4"/>
-<yRange min="0.0" max="116.0"/>
+<xRange min="-7.9" max="8.799999999999999"/>
+<yRange min="0.0" max="82.0"/>
 <barGraph width="0.5" offset="0.15"/>
 <bin width="0.2" offset="0.1"/>
 </plot>?>
         </configure>
     </entity>
     <entity name="observation sequence" class="ptolemy.actor.lib.gui.SequencePlotter">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={407, 75, 623, 429}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={727, 22, 623, 429}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[623, 385]">
         </property>
@@ -87,7 +87,7 @@
 <xLabel>n</xLabel>
 <yLabel>x(n)</yLabel>
 <xRange min="0.0" max="1999.0"/>
-<yRange min="-4.501828722114487" max="9.220610325025303"/>
+<yRange min="-7.841836319901153" max="8.718956882680066"/>
 <default connected="no" marks="dots"/>
 </plot>?>
         </configure>
@@ -95,7 +95,7 @@
     <entity name="HMM" class="ptolemy.domains.modal.modal.ModalModel">
         <property name="_tableauFactory" class="ptolemy.vergil.modal.modal.ModalTableauFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 260.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{45.0, 260.0}">
         </property>
         <port name="p" class="ptolemy.domains.modal.modal.ModalPort">
             <property name="output"/>
@@ -106,49 +106,10 @@
         <entity name="_Controller" class="ptolemy.domains.modal.modal.ModalController">
             <property name="errorCause" class="ptolemy.data.expr.Parameter">
             </property>
-            <property name="annotation" class="ptolemy.kernel.util.Attribute">
-                <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-                </property>
-                <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-                    <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">Create a state machine here (and ports, if needed) and
-create refinements for the states.  Create transitions
-by holding the (Mac: command key, Windows: control key)
-and dragging from one state to another.  
-Right click to configure the properties 
-of this model, including setting the final state(s).
-Then delete this annotation.</text>
-    </svg></configure>
-                </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="120.0, 5.0">
-                </property>
-                <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
-                </property>
-                <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
-                </property>
-            </property>
             <property name="_library" class="ptolemy.moml.LibraryAttribute">
                 <configure>
       <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.modal.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory"></property></entity></entity>
     </configure>
-            </property>
-            <property name="pi" class="ptolemy.data.expr.Parameter" value="{0.5,0.5}">
-                <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-                </property>
-                <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-                    <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
-                    </property>
-                </property>
-                <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-                    <configure>
-      <svg>
-        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
-      </svg>
-    </configure>
-                </property>
-                <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
-                </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="{555, 135}">
-                </property>
             </property>
             <property name="A" class="ptolemy.data.expr.Parameter" value="{0.3,0.1,0.4,0.2}">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -166,10 +127,10 @@ Then delete this annotation.</text>
                 </property>
                 <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[555.0, 160.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[585.0, 60.0]">
                 </property>
             </property>
-            <property name="m" class="ptolemy.data.expr.Parameter" value="{0,5,-2}">
+            <property name="m" class="ptolemy.data.expr.Parameter" value="{-5,0,5}">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -185,8 +146,45 @@ Then delete this annotation.</text>
                 </property>
                 <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[560.0, 180.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[585.0, 100.0]">
                 </property>
+            </property>
+            <property name="pi" class="ptolemy.data.expr.Parameter" value="{0.5,0.5}">
+                <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+                </property>
+                <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                    <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                    </property>
+                </property>
+                <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                    <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+                </property>
+                <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[585.0, 80.0]">
+                </property>
+            </property>
+            <property name="LocalPreferences" class="ptolemy.actor.gui.PtolemyPreferences">
+                <property name="backgroundColor" class="ptolemy.actor.gui.ColorAttribute" value="{1,1,1,1}">
+                    <display name="Background Color"/>
+                </property>
+                <property name="_showParameters" class="ptolemy.data.expr.StringParameter" value="None">
+                    <display name="Show parameters"/>
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[780.0, 210.0]">
+                </property>
+            </property>
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={332, 22, 1275, 635}, maximized=false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
+            </property>
+            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+            </property>
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{489.52879333496094, 305.748046875}">
             </property>
             <port name="p" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
@@ -200,7 +198,7 @@ Then delete this annotation.</text>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[725.0, 385.0]">
                 </property>
             </port>
-            <entity name="X" class="ptolemy.domains.modal.kernel.State">
+            <entity name="X1" class="ptolemy.domains.modal.kernel.State">
                 <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="X">
                 </property>
                 <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="false">
@@ -209,7 +207,7 @@ Then delete this annotation.</text>
                 </property>
                 <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="{230.0, 205.0}">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[205.0, 215.0]">
                 </property>
             </entity>
             <entity name="X2" class="ptolemy.domains.modal.kernel.State">
@@ -227,19 +225,21 @@ Then delete this annotation.</text>
                 </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[360.0, 325.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[350.0, 75.0]">
                 </property>
                 <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
                 </property>
             </entity>
-            <entity name="state2" class="ptolemy.domains.modal.kernel.State">
-                <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="state2">
+            <entity name="X3" class="ptolemy.domains.modal.kernel.State">
+                <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="X3">
+                </property>
+                <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
                 <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="{362.06946203204063, 411.4882611247089}">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[400.0, 490.0]">
                 </property>
             </entity>
             <relation name="relation" class="ptolemy.domains.modal.kernel.Transition">
@@ -261,9 +261,9 @@ Then delete this annotation.</text>
             <relation name="relation3" class="ptolemy.domains.modal.kernel.Transition">
                 <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="probability(pi(0))">
                 </property>
-                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.4364947724768071">
+                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.4129251319053386">
                 </property>
-                <property name="gamma" class="ptolemy.data.expr.Parameter" value="-2.495332430001914">
+                <property name="gamma" class="ptolemy.data.expr.Parameter" value="2.011850366626028">
                 </property>
                 <property name="immediate" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
@@ -271,47 +271,67 @@ Then delete this annotation.</text>
             <relation name="relation4" class="ptolemy.domains.modal.kernel.Transition">
                 <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="probability(pi(1))">
                 </property>
-                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.4471147911886406">
+                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.46990106385140146">
                 </property>
-                <property name="gamma" class="ptolemy.data.expr.Parameter" value="-0.7329335339147847">
+                <property name="gamma" class="ptolemy.data.expr.Parameter" value="1.1219887217528384">
                 </property>
                 <property name="immediate" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
             </relation>
             <relation name="relation5" class="ptolemy.domains.modal.kernel.Transition">
-                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="probability(A(2))">
+                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="probability(0.2)">
                 </property>
                 <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.6283185307179586">
                 </property>
-                <property name="gamma" class="ptolemy.data.expr.Parameter" value="1.3298030982773252">
+                <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.868100302137981">
                 </property>
             </relation>
             <relation name="relation6" class="ptolemy.domains.modal.kernel.Transition">
-                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="probability(A(3))">
+                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="probability(0.2)">
                 </property>
                 <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.6283185307179586">
                 </property>
-                <property name="gamma" class="ptolemy.data.expr.Parameter" value="-0.9057823588944134">
+                <property name="gamma" class="ptolemy.data.expr.Parameter" value="-1.020886360049498">
                 </property>
             </relation>
-            <link port="X.incomingPort" relation="relation2"/>
-            <link port="X.incomingPort" relation="relation3"/>
-            <link port="X.outgoingPort" relation="relation"/>
-            <link port="X.outgoingPort" relation="relation5"/>
+            <relation name="relation7" class="ptolemy.domains.modal.kernel.Transition">
+                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="probability(0.2)">
+                </property>
+                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.6283185307179586">
+                </property>
+                <property name="gamma" class="ptolemy.data.expr.Parameter" value="2.1207062935402954">
+                </property>
+            </relation>
+            <link port="X1.incomingPort" relation="relation2"/>
+            <link port="X1.incomingPort" relation="relation3"/>
+            <link port="X1.outgoingPort" relation="relation"/>
+            <link port="X1.outgoingPort" relation="relation5"/>
             <link port="X2.incomingPort" relation="relation"/>
             <link port="X2.incomingPort" relation="relation4"/>
             <link port="X2.incomingPort" relation="relation6"/>
             <link port="X2.outgoingPort" relation="relation2"/>
+            <link port="X2.outgoingPort" relation="relation7"/>
             <link port="init.outgoingPort" relation="relation3"/>
             <link port="init.outgoingPort" relation="relation4"/>
-            <link port="state2.incomingPort" relation="relation5"/>
-            <link port="state2.outgoingPort" relation="relation6"/>
+            <link port="X3.incomingPort" relation="relation5"/>
+            <link port="X3.incomingPort" relation="relation7"/>
+            <link port="X3.outgoingPort" relation="relation6"/>
         </entity>
         <entity name="X" class="ptolemy.domains.modal.modal.Refinement">
             <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
                 <property name="iterations" class="ptolemy.data.expr.Parameter" value="AUTO">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{190.0, 270.0}">
+                </property>
+            </property>
+            <property name="LocalPreferences" class="ptolemy.actor.gui.PtolemyPreferences">
+                <property name="backgroundColor" class="ptolemy.actor.gui.ColorAttribute" value="{1,1,1,1}">
+                    <display name="Background Color"/>
+                </property>
+                <property name="_showParameters" class="ptolemy.data.expr.StringParameter" value="Overridden parameters only">
+                    <display name="Show parameters"/>
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{630, 290}">
                 </property>
             </property>
             <port name="p" class="ptolemy.domains.modal.modal.RefinementPort">
@@ -373,6 +393,16 @@ Then delete this annotation.</text>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{160.0, 205.0}">
                 </property>
             </property>
+            <property name="LocalPreferences" class="ptolemy.actor.gui.PtolemyPreferences">
+                <property name="backgroundColor" class="ptolemy.actor.gui.ColorAttribute" value="{1,1,1,1}">
+                    <display name="Background Color"/>
+                </property>
+                <property name="_showParameters" class="ptolemy.data.expr.StringParameter" value="Overridden parameters only">
+                    <display name="Show parameters"/>
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[605.0, 225.0]">
+                </property>
+            </property>
             <port name="p" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="output"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{300.0, 265.0}">
@@ -425,28 +455,38 @@ Then delete this annotation.</text>
             <link port="Const.output" relation="relation"/>
             <link port="Const.trigger" relation="relation2"/>
         </entity>
-        <entity name="state2" class="ptolemy.domains.modal.modal.Refinement">
+        <entity name="X3" class="ptolemy.domains.modal.modal.Refinement">
             <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
                 <property name="iterations" class="ptolemy.data.expr.Parameter" value="AUTO">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="{40.0, 5.0}">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{190.0, 270.0}">
+                </property>
+            </property>
+            <property name="LocalPreferences" class="ptolemy.actor.gui.PtolemyPreferences">
+                <property name="backgroundColor" class="ptolemy.actor.gui.ColorAttribute" value="{1,1,1,1}">
+                    <display name="Background Color"/>
+                </property>
+                <property name="_showParameters" class="ptolemy.data.expr.StringParameter" value="Overridden parameters only">
+                    <display name="Show parameters"/>
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{630, 290}">
                 </property>
             </property>
             <port name="p" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="output"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="{180.0, 130.0}">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{325.0, 330.0}">
                 </property>
             </port>
             <port name="state" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="output"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="{255.0, 65.0}">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{400.0, 395.0}">
                 </property>
             </port>
             <entity name="Gaussian" class="ptolemy.actor.lib.Gaussian">
                 <property name="mean" class="ptolemy.actor.parameters.PortParameter" value="m(2)">
                 </property>
                 <doc>Create a sequence of gaussian random variables</doc>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="{95.0, 130.0}">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{245.0, 395.0}">
                 </property>
             </entity>
             <entity name="Const" class="ptolemy.actor.lib.Const">
@@ -459,30 +499,30 @@ Then delete this annotation.</text>
                     <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
                     </property>
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="{210.0, 65.0}">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{355.0, 395.0}">
                 </property>
             </entity>
-            <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+            <relation name="relation" class="ptolemy.actor.TypedIORelation">
                 <property name="color" class="ptolemy.actor.gui.ColorAttribute">
                 </property>
-                <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;state._location&quot;,x=255.0,y=65.0}, tail={id=&quot;Const.output&quot;,x=210.0,y=65.0}, points={} } }">
+                <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;state._location&quot;,x=400.0,y=395.0}, tail={id=&quot;Const.output&quot;,x=355.0,y=395.0}, points={} } }">
                 </property>
             </relation>
-            <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+            <relation name="relation2" class="ptolemy.actor.TypedIORelation">
                 <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
                 </property>
-                <vertex name="vertex1" value="{155.0, 130.0}">
+                <vertex name="vertex1" value="{305.0, 395.0}">
                 </vertex>
                 <property name="color" class="ptolemy.actor.gui.ColorAttribute">
                 </property>
-                <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;p._location&quot;,x=180.0,y=130.0}, tail={id=&quot;relation5.vertex1&quot;,x=155.0,y=130.0}, points={} },{ head={id=&quot;Gaussian.output&quot;,x=95.0,y=130.0}, tail={id=&quot;relation5.vertex1&quot;,x=155.0,y=130.0}, points={} },{ head={id=&quot;Const.trigger&quot;,x=210.0,y=65.0}, tail={id=&quot;relation5.vertex1&quot;,x=155.0,y=130.0}, points={155.0,65.0} } }">
+                <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Const.trigger&quot;,x=355.0,y=395.0}, tail={id=&quot;relation3.vertex1&quot;,x=305.0,y=395.0}, points={} },{ head={id=&quot;p._location&quot;,x=325.0,y=330.0}, tail={id=&quot;relation3.vertex1&quot;,x=305.0,y=395.0}, points={305.0,330.0} },{ head={id=&quot;Gaussian.output&quot;,x=245.0,y=395.0}, tail={id=&quot;relation3.vertex1&quot;,x=305.0,y=395.0}, points={} } }">
                 </property>
             </relation>
-            <link port="p" relation="relation5"/>
-            <link port="state" relation="relation4"/>
-            <link port="Gaussian.output" relation="relation5"/>
-            <link port="Const.output" relation="relation4"/>
-            <link port="Const.trigger" relation="relation5"/>
+            <link port="p" relation="relation2"/>
+            <link port="state" relation="relation"/>
+            <link port="Gaussian.output" relation="relation2"/>
+            <link port="Const.output" relation="relation"/>
+            <link port="Const.trigger" relation="relation2"/>
         </entity>
         <relation name="pRelation" class="ptolemy.actor.TypedIORelation">
             <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
@@ -500,8 +540,22 @@ Then delete this annotation.</text>
         <link port="X.state" relation="stateRelation"/>
         <link port="X2.p" relation="pRelation"/>
         <link port="X2.state" relation="stateRelation"/>
-        <link port="state2.p" relation="pRelation"/>
-        <link port="state2.state" relation="stateRelation"/>
+        <link port="X3.p" relation="pRelation"/>
+        <link port="X3.state" relation="stateRelation"/>
+    </entity>
+    <entity name="FileWriter" class="ptolemy.actor.lib.FileWriter">
+        <property name="filename" class="ptolemy.actor.parameters.FilePortParameter" value="observation2.txt">
+        </property>
+        <doc>Write an entire file from a string</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{245, 150}">
+        </property>
+    </entity>
+    <entity name="FileWriter2" class="ptolemy.actor.lib.FileWriter">
+        <property name="filename" class="ptolemy.actor.parameters.FilePortParameter" value="ts2.txt">
+        </property>
+        <doc>Write an entire file from a string</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{272.2314453125, 349.5131548713235}">
+        </property>
     </entity>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
@@ -531,19 +585,23 @@ Then delete this annotation.</text>
         <property name="color" class="ptolemy.actor.gui.ColorAttribute">
         </property>
     </relation>
-    <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
+        <vertex name="vertex1" value="{110.0, 225.0}">
+        </vertex>
     </relation>
     <link port="Switch.input" relation="relation5"/>
     <link port="Switch.output" relation="relation3"/>
     <link port="Switch.output" relation="relation4"/>
     <link port="Switch.output" relation="relation2"/>
-    <link port="Switch.control" relation="relation"/>
+    <link port="Switch.control" relation="relation6"/>
     <link port="Histogram.input" relation="relation3"/>
     <link port="Histogram.input" relation="relation4"/>
     <link port="Histogram.input" relation="relation2"/>
     <link port="observation sequence.input" relation="relation5"/>
     <link port="HMM.p" relation="relation5"/>
-    <link port="HMM.state" relation="relation"/>
+    <link port="HMM.state" relation="relation6"/>
+    <link port="FileWriter.input" relation="relation5"/>
+    <link port="FileWriter2.input" relation="relation6"/>
 </entity>
