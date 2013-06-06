@@ -83,20 +83,19 @@ win64:
 	fi
 	cl /LD /wd04090 /nologo $< 
 
-%.dylib: %.o
+# Include the c file on the link line so that the debug .dylib.dSYM directory is created.
+%.dylib: %.c
 	@if [ ! -d $(ARCH_DIR) ]; then \
 		echo "Creating $(ARCH_DIR)"; \
 		mkdir -p $(ARCH_DIR); \
 	fi
-	$(CC) -dynamiclib -o $(ARCH_DIR)$@ $<
+	$(CC) -dynamiclib -g -o $(ARCH_DIR)$@ $<
 
 FMUDIR=../../src
-
 %.fmu: %.$(SHARED_LIBRARY_SUFFIX)
 	# Remove files that should not be included in the .fmu file.
 	(cd $(FMUDIR); rm -rf *.o */*.o *~)
 	(cd $(FMUDIR); zip -q -r ../$@ *)
-
 
 dirclean:
 	rm -rf *.so *.dylib *.o *.fmu *~ fmu
