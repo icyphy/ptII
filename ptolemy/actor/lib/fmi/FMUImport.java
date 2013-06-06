@@ -937,7 +937,7 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
                     + "_fmiInstantiateSlave");
         }
 
-        if (_fmiComponent.equals(Pointer.NULL)) {
+        if (_fmiComponent == null || _fmiComponent.equals(Pointer.NULL)) {
             throw new RuntimeException(
                     "Could not instantiate Functional Mock-up Unit (FMU).");
         }
