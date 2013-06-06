@@ -156,37 +156,6 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[195.0, 140.0]">
             </property>
         </entity>
-        <entity name="CQMOutputPort" class="ptolemy.actor.lib.qm.CQMOutputPort">
-            <property name="Parameter" class="ptolemy.data.expr.Parameter" value="false">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[275.0, 140.0]">
-            </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={173, 83, 934, 634}, maximized=false}">
-            </property>
-            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
-            </property>
-            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
-            </property>
-            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{347.0, 418.53125}">
-            </property>
-            <port name="input" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="{20.0, 200.0}">
-                </property>
-            </port>
-            <entity name="SetVariable" class="ptolemy.actor.lib.SetVariable">
-                <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="Parameter">
-                </property>
-                <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[135.0, 200.0]">
-                </property>
-            </entity>
-            <relation name="relation" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <link port="input" relation="relation"/>
-            <link port="SetVariable.input" relation="relation"/>
-        </entity>
         <entity name="a" class="ptolemy.actor.lib.qm.CQMInputPort">
             <property name="value" class="ptolemy.data.expr.Parameter" value="">
             </property>
@@ -227,24 +196,29 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[115.0, 140.0]">
             </property>
         </entity>
-        <relation name="relation" class="ptolemy.actor.TypedIORelation">
-            <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+        <entity name="CQMOutputPort2" class="ptolemy.actor.lib.qm.CQMOutputPort">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[285.0, 140.0]">
             </property>
-        </relation>
+            <port name="input" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+            </port>
+        </entity>
         <relation name="relation4" class="ptolemy.actor.TypedIORelation">
         </relation>
         <relation name="relation5" class="ptolemy.actor.TypedIORelation">
         </relation>
         <relation name="relation2" class="ptolemy.actor.TypedIORelation">
         </relation>
+        <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        </relation>
         <link port="Server.input" relation="relation4"/>
-        <link port="Server.output" relation="relation"/>
-        <link port="CQMOutputPort.input" relation="relation"/>
+        <link port="Server.output" relation="relation3"/>
         <link port="a.output" relation="relation5"/>
         <link port="b.output" relation="relation2"/>
         <link port="Merge2.input" relation="relation5"/>
         <link port="Merge2.input" relation="relation2"/>
         <link port="Merge2.output" relation="relation4"/>
+        <link port="CQMOutputPort2.input" relation="relation3"/>
     </entity>
     <entity name="X" class="ptolemy.actor.TypedCompositeActor">
         <property name="_location" class="ptolemy.kernel.util.Location" value="{130.0, 170.0}">

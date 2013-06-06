@@ -104,12 +104,12 @@
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
-            <property name="DecoratorAttributesFor_C" class="ptolemy.actor.lib.qm.CompositeQuantityManagerM$CQMAttributes">
+            <property name="DecoratorAttributesFor_C" class="ptolemy.actor.lib.qm.CompositeQuantityManager$CQMAttributes">
                 <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="C">
                 </property>
                 <property name="enable" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
-                <property name="inputPort" class="ptolemy.data.expr.Parameter" value="&quot;a&quot;">
+                <property name="inputPort" class="ptolemy.data.expr.StringParameter" value="a">
                 </property>
             </property>
         </port>
@@ -152,7 +152,7 @@
                 </property>
                 <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
-                <property name="inputPort" class="ptolemy.data.expr.Parameter" value="&quot;&quot;">
+                <property name="inputPort" class="ptolemy.data.expr.StringParameter" value="&quot;&quot;">
                 </property>
             </property>
         </port>
@@ -173,7 +173,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{225.0, 25.0}">
         </property>
         <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 25.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[155.0, 25.0]">
             </property>
         </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={337, 125, 934, 634}, maximized=false}">
@@ -187,48 +187,17 @@
         <entity name="Server" class="ptolemy.domains.de.lib.Server">
             <property name="serviceTime" class="ptolemy.actor.parameters.PortParameter" value="0.7">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[195.0, 140.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, 140.0]">
             </property>
-        </entity>
-        <entity name="CQMOutputPort" class="ptolemy.actor.lib.qm.CQMOutputPort">
-            <property name="Parameter" class="ptolemy.data.expr.Parameter" value="">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[275.0, 140.0]">
-            </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={173, 83, 934, 634}, maximized=false}">
-            </property>
-            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
-            </property>
-            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
-            </property>
-            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{347.0, 418.53125}">
-            </property>
-            <port name="input" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="{20.0, 200.0}">
-                </property>
-            </port>
-            <entity name="SetVariable" class="ptolemy.actor.lib.SetVariable">
-                <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="Parameter">
-                </property>
-                <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[135.0, 200.0]">
-                </property>
-            </entity>
-            <relation name="relation" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <link port="input" relation="relation"/>
-            <link port="SetVariable.input" relation="relation"/>
         </entity>
         <entity name="a" class="ptolemy.actor.lib.qm.CQMInputPort">
-            <property name="value" class="ptolemy.data.expr.Parameter" value="{receiver = object(ptolemy.domains.de.kernel.DEReceiver {.CompositeQuantityManager.B.q.receiver }), token = 5.0}">
+            <property name="value" class="ptolemy.data.expr.Parameter" value="">
             </property>
             <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="NONE">
             </property>
             <property name="NONE" class="ptolemy.data.expr.Parameter" value="0">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[-5.0, 110.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 110.0]">
             </property>
             <port name="trigger" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -240,13 +209,13 @@
             </port>
         </entity>
         <entity name="b" class="ptolemy.actor.lib.qm.CQMInputPort">
-            <property name="value" class="ptolemy.data.expr.Parameter" value="{receiver = object(ptolemy.domains.de.kernel.DEReceiver {.CompositeQuantityManager.Y.q.receiver }), token = -5.0}">
+            <property name="value" class="ptolemy.data.expr.Parameter" value="">
             </property>
             <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="NONE">
             </property>
             <property name="NONE" class="ptolemy.data.expr.Parameter" value="0">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[-5.0, 160.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 160.0]">
             </property>
             <port name="trigger" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -258,27 +227,32 @@
             </port>
         </entity>
         <entity name="Merge2" class="ptolemy.domains.de.lib.Merge">
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 140.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[175.0, 140.0]">
             </property>
         </entity>
-        <relation name="relation" class="ptolemy.actor.TypedIORelation">
-            <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+        <entity name="CQMOutputPort" class="ptolemy.actor.lib.qm.CQMOutputPort">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[360.0, 135.0]">
             </property>
-        </relation>
+            <port name="input" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+            </port>
+        </entity>
         <relation name="relation4" class="ptolemy.actor.TypedIORelation">
         </relation>
         <relation name="relation2" class="ptolemy.actor.TypedIORelation">
         </relation>
         <relation name="relation3" class="ptolemy.actor.TypedIORelation">
         </relation>
+        <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        </relation>
         <link port="Server.input" relation="relation3"/>
         <link port="Server.output" relation="relation"/>
-        <link port="CQMOutputPort.input" relation="relation"/>
         <link port="a.output" relation="relation4"/>
         <link port="b.output" relation="relation2"/>
         <link port="Merge2.input" relation="relation4"/>
         <link port="Merge2.input" relation="relation2"/>
         <link port="Merge2.output" relation="relation3"/>
+        <link port="CQMOutputPort.input" relation="relation"/>
     </entity>
     <entity name="X" class="ptolemy.actor.TypedCompositeActor">
         <property name="_location" class="ptolemy.kernel.util.Location" value="{130.0, 170.0}">
@@ -371,7 +345,7 @@
                 </property>
                 <property name="enable" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
-                <property name="inputPort" class="ptolemy.data.expr.Parameter" value="&quot;b&quot;">
+                <property name="inputPort" class="ptolemy.data.expr.StringParameter" value="b">
                 </property>
             </property>
         </port>

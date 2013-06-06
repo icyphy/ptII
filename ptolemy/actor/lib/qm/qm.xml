@@ -19,33 +19,10 @@
     </property>
 </property>
 <entity name="in" class="ptolemy.actor.lib.qm.CQMInputPort">
-    <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 200.0]">
-    </property>
+    <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 200.0]"></property>
 </entity>
 <entity name="out" class="ptolemy.actor.lib.qm.CQMOutputPort">
-	<property name="_location" class="ptolemy.kernel.util.Location" value="[200.0, 200.0]">
-    </property>
-    <property name="DEDirector" class="ptolemy.domains.de.kernel.DEDirector"/>
-	<property createIfNecessary="true" name="Parameter" class="ptolemy.data.expr.Parameter"></property>
-	<port name="input" class="ptolemy.actor.TypedIOPort">
-    	<property name="input"/>
-	</port>
-	<entity name="SetVariable" class="ptolemy.actor.lib.SetVariable">
-		<property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="Parameter">
-    	</property>
-    	<property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
-    	</property>
-    	<port name="input" class="ptolemy.actor.TypedIOPort">
-        	<property name="input"/>
-    	</port>
-    	<port name="output" class="ptolemy.actor.TypedIOPort">
-        	<property name="output"/>
-    	</port>
-	</entity>
-	<relation name="relation" class="ptolemy.actor.TypedIORelation">
-	</relation>
-    <link port="input" relation="relation"/>
-    <link port="SetVariable.input" relation="relation"/>
+	<property name="_location" class="ptolemy.kernel.util.Location" value="[200.0, 200.0]"></property>
 </entity>
 
 </entity>
@@ -54,27 +31,6 @@
 </entity>
 
 <entity name="CQMOutputPort" class="ptolemy.actor.lib.qm.CQMOutputPort">
-	<property name="DEDirector" class="ptolemy.domains.de.kernel.DEDirector"/>
-	<property createIfNecessary="true" name="Parameter" class="ptolemy.data.expr.Parameter"></property>
-	<port name="input" class="ptolemy.actor.TypedIOPort">
-    	<property name="input"/>
-	</port>
-	<entity name="SetVariable" class="ptolemy.actor.lib.SetVariable">
-		<property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="Parameter">
-    	</property>
-    	<property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
-    	</property>
-    	<port name="input" class="ptolemy.actor.TypedIOPort">
-        	<property name="input"/>
-    	</port>
-    	<port name="output" class="ptolemy.actor.TypedIOPort">
-        	<property name="output"/>
-    	</port>
-	</entity>
-	<relation name="relation" class="ptolemy.actor.TypedIORelation">
-	</relation>
-    <link port="input" relation="relation"/>
-    <link port="SetVariable.input" relation="relation"/>
 </entity>
 
   <entity name="CrossbarSwitch" class="ptolemy.actor.lib.qm.CrossbarSwitch"> 

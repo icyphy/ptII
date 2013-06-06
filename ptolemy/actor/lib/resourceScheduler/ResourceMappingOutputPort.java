@@ -30,12 +30,8 @@ ENHANCEMENTS, OR MODIFICATIONS.
 package ptolemy.actor.lib.resourceScheduler;
 
 import ptolemy.actor.TypedAtomicActor;
-import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.TypedIOPort;
-import ptolemy.actor.lib.SetVariable;
-import ptolemy.data.BooleanToken;
 import ptolemy.data.Token;
-import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -57,7 +53,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 */
 public class ResourceMappingOutputPort extends TypedAtomicActor {
 
-    /** Construct a CQMOutputPort. The contained entities (SetVariable,
+    /** Construct a ResourceMappingOutputPort. The contained entities (SetVariable,
      *  Parameter and input port) are created from the XML description
      *  in the library.
      *
