@@ -83,7 +83,7 @@ public class CQMInputPort extends Const {
         
         value.setTypeEquals(new RecordType(
                 new String[]{"receiver", "token"}, 
-                new Type[]{BaseType.OBJECT, BaseType.DOUBLE}));
+                new Type[]{BaseType.OBJECT, BaseType.GENERAL}));
     }
     
     
