@@ -31,7 +31,8 @@
 
 ME =		ptolemy/actor/lib/fmi/fmus
 
-DIRS =		fmusim2 stepCounter onOffSupervisor
+FMUS =		onOffSupervisor stepCounter stepCounterExtendedFMI 
+DIRS =		fmusim2 $(FMUS)
 
 # Root of the Ptolemy II directory
 ROOT =		../../../../..
@@ -72,8 +73,8 @@ JCLASS = $(JSRCS:%.java=%.class)
 all: suball 
 install: subinstall jars
 update:
-	@if [ "x$(DIRS)" != "x" ]; then \
-		set $(DIRS); \
+	@if [ "x$(FMUS)" != "x" ]; then \
+		set $(FMUS); \
 		for x do \
 		    if [ -w $$x ] ; then \
 			( cd $$x ; \
@@ -81,6 +82,15 @@ update:
 			$(MAKE) $(MFLAGS) $(MAKEVARS) update ;\
 			) \
 		    fi ; \
+		done ; \
+	fi
+
+update_makefiles:
+	@if [ "x$(FMUS)" != "x" ]; then \
+		set $(FMUS); \
+		for x do \
+			echo "copying fmu.mk to $$x/src/sources"; \
+			cp fmu.mk $$x/src/sources/; \
 		done ; \
 	fi
 
