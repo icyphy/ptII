@@ -18,7 +18,7 @@
 
 
 MODELID=Simple
-FMIPPHOME=/Users/cxh/src/fmipp-code
+FMIPPHOME=../../..
 EXPAT=/usr
 
 
@@ -30,7 +30,7 @@ CFLAGS=$(MACROS)$
 DBGFLAGS=-g
 INC=-I$(FMIPPHOME)/include -I$(EXPAT)/include
 #LDFLAGS=-L$(FMIPPHOME)/lib  -Lbinaries/linux64/ -l$(MODELID) -lfmipp -lexpat -ldl
-LDFLAGS=-L$(FMIPPHOME)/lib -lfmipp -lexpat -ldl
+LDFLAGS=-L$(PTII)/lib -lfmipp -lexpat -ldl
 #LDFLAGS=-L$(FMIPPHOME)/lib -lfmipp -lexpat -ldl
 
 # see makefile.win .. 
@@ -71,11 +71,14 @@ build: main.o
 main.o:  main.cpp 
 	$(CPP) -c $(CFLAGS) $(INC)  $(OPTFLAGS) main.cpp
 
-run:
+run:  #binaries/linux64/Simple.so
 	LD_LIBRARY_PATH="$(LD_LIBRARY_PATH):$(PWD)/binaries/linux64/"  ./$(TARGET)
 
+binaries/linux64/Simple.so: ../../../test/auto/Simple.fmu 
+	unzip $^
 clean:
-	rm -f $(OBJECTS) $(TARGET) 
+	rm -f $(OBJECTS) $(TARGET)
+	rm -rf binaries
 
 depend: 
 	makedepend -- $(SRC)
