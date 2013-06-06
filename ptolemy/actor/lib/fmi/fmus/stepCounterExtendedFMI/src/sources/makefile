@@ -83,12 +83,13 @@ win64:
 	fi
 	cl /LD /wd04090 /nologo $< 
 
-%.dylib: %.o
+# Include the c file on the link line so that the debug .dylib.dSYM directory is created.
+%.dylib: %.c
 	@if [ ! -d $(ARCH_DIR) ]; then \
 		echo "Creating $(ARCH_DIR)"; \
 		mkdir -p $(ARCH_DIR); \
 	fi
-	$(CC) -dynamiclib -o $(ARCH_DIR)$@ $<
+	$(CC) -dynamiclib -g -o $(ARCH_DIR)$@ $<
 
 FMUDIR=../../src
 
