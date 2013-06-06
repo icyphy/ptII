@@ -182,8 +182,7 @@ public class MetroIISRDirector extends SRDirector implements
                     resultHandler.handleResult(_events);
                     ArrayList<Event.Builder> tmp_events = new ArrayList<Event.Builder>();
                     for (Builder etb : _events) {
-                        if (etb.getName().contains("Begin") && 
-                                etb.getStatus() == Event.Status.NOTIFIED) {
+                        if (etb.getStatus() == Event.Status.NOTIFIED) {
                             Actor actor = _nameToActor.get(etb.getName());
                             if (_debugging) {
                                 _debug("Firing " + actor.getFullName());

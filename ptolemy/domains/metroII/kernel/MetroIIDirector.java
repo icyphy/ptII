@@ -317,7 +317,8 @@ public class MetroIIDirector extends Director {
             for (FireMachine firing : _actorList) {
                 LinkedList<Event.Builder> metroIIEventList = new LinkedList<Event.Builder>();
                 if (firing.getState() == FireMachine.State.START) {
-                    assert firing.actor().prefire();
+                    boolean result = firing.actor().prefire();
+                    assert result;
                 }
                 firing.startOrResume(metroIIEventList);
                 if (firing.getState() == FireMachine.State.FINAL) {
