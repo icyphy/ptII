@@ -29,7 +29,9 @@ ENHANCEMENTS, OR MODIFICATIONS.
  */
 package ptolemy.actor.lib.resourceScheduler;
 
+import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedCompositeActor;
+import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.lib.SetVariable;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.Token;
@@ -41,14 +43,11 @@ import ptolemy.kernel.util.NameDuplicationException;
 
 /** This actor implements an output port in a composite resource scheduler
  *  (@link CompositeResourceScheduler).
-*
-*  <p>
-*  This composite contains a SetVariable actor which stores values in a 
-*  local variable. The CompositeResourceScheduler will check the value of 
-*  this parameter. A BooleanToken with value true means that the actor mapped
-*  to this port has been scheduled and is ready to be fired. The 
-*  CompositeResourceScheduler resets the value to false and notify 
-*  the functional model that the associated actor is ready to fire.
+*   This actor simply stores the token from the input and provides methods
+*   to access the token. A token in this port is a RecordToken containing
+*   an actor object and the execution time of this actor. The meaning is that
+*   the actor can resume execution. 
+*   The CompositeResourceScheduler calls these methods.
 *
 *  @author Patricia Derler
 *  @version $Id$
@@ -56,7 +55,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 *  @Pt.ProposedRating Yellow (derler)
 *  @Pt.AcceptedRating Red (derler)
 */
-public class ResourceMappingOutputPort extends TypedCompositeActor {
+public class ResourceMappingOutputPort extends TypedAtomicActor {
 
     /** Construct a CQMOutputPort. The contained entities (SetVariable,
      *  Parameter and input port) are created from the XML description
@@ -72,7 +71,12 @@ public class ResourceMappingOutputPort extends TypedCompositeActor {
     public ResourceMappingOutputPort(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name); 
+        input = new TypedIOPort(this, "input", true, false);
+        _token = null;
     } 
+    
+    /** The input port. */
+    public TypedIOPort input;
     
     /** Initialize actor and clear Parameter value in case it was set
      *  in a previous execution.
@@ -80,33 +84,32 @@ public class ResourceMappingOutputPort extends TypedCompositeActor {
     @Override
     public void initialize() throws IllegalActionException { 
         super.initialize();
-        
-        ((Parameter)getAttribute("Parameter")).setExpression("");
     }
     
     /** Check whether the contained parameter contains a token.
-     * @return True if the contained parameter contains a token.
-     * @exception IllegalActionException Thrown if token cannot
-     * be accessed. 
+     *  @return True if the contained parameter contains a token. 
      */
-    public boolean hasToken() throws IllegalActionException {
-        Token token = ((Parameter)getAttribute("Parameter")).getToken();
-        if (token != null && 
-                !(token instanceof BooleanToken)) {
-            return true;
-        }
-        return false;
+    public boolean hasToken() {
+        return (_token != null);
     }
     
     /** Get token from parameter and remove it from the parameter.
-     * @return The token.
-     * @exception IllegalActionException Thrown if token cannot
-     * be accessed. 
+     *  @return The token.
      */
-    public Token takeToken() throws IllegalActionException {
-        Token token = ((Parameter)getAttribute("Parameter")).getToken();
-        ((Parameter)getAttribute("Parameter")).setToken(new BooleanToken(false));
+    public Token takeToken() {
+        Token token = _token;
+        _token = null;
         return token;
+    }
+    
+    /** Store the token from the input port internally.
+     *  @exception IllegalActionException Not thrown here.
+     */
+    @Override
+    public void fire() throws IllegalActionException {
+        if (input.hasToken(0)) {
+            _token = input.get(0); 
+        }
     }
     
     /** Get the token from parameter but do not remove it.
@@ -114,18 +117,9 @@ public class ResourceMappingOutputPort extends TypedCompositeActor {
      *  @throws IllegalActionException If token cannot be accessed.
      */
     public Token getToken() throws IllegalActionException {
-        Token token = ((Parameter)getAttribute("Parameter")).getToken(); 
-        return token;
+        return _token;
     }
     
-    /** Clear parameter value such that it is not saved to the moml xml
-     *  description or used in another execution.
-     */
-    public void wrapup() throws IllegalActionException {
-        // TODO Auto-generated method stub
-        super.wrapup();
-        
-        ((Parameter)getAttribute("Parameter")).setExpression("");
-    }
+    private Token _token;
     
 }
