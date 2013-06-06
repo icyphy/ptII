@@ -4,7 +4,7 @@
 <entity name="GeneratorContactorLoad" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={169, 39, 1511, 1007}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={25, 22, 1511, 1007}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1277, 897]">
     </property>
@@ -15,13 +15,13 @@
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="startTime" class="ptolemy.data.expr.Parameter" value="1.0">
         </property>
-        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="40.0">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="300.0">
         </property>
         <property name="stopWhenQueueIsEmpty" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 260.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{45.0, 260.0}">
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -64,6 +64,20 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[415.0, 820.0]">
         </property>
     </property>
+    <property name="Image3" class="ptolemy.vergil.kernel.attributes.ImageAttribute">
+        <property name="source" class="ptolemy.data.expr.FileParameter" value="plot.png">
+        </property>
+        <property name="scale" class="ptolemy.data.expr.Parameter" value="40.0">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[795.0, 565.0]">
+        </property>
+    </property>
+    <property name="Annotation5" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Above is a plot of the run&#10;in OpenModelica.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[800.0, 755.0]">
+        </property>
+    </property>
     <entity name="GeneratorContractorLoadFMU" class="ptolemy.actor.lib.fmi.fmipp.FMUModelExchange">
         <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="GeneratorContactorLoad.fmu">
         </property>
@@ -71,21 +85,21 @@
         </property>
         <property name="outputNames" class="ptolemy.data.expr.Parameter" value="voltage">
         </property>
-        <property name="startValues" class="ptolemy.data.expr.Parameter" value="contactor=0,drive=0">
+        <property name="startValues" class="ptolemy.data.expr.Parameter" value="contactor=0,drive=120">
         </property>
-        <property name="lookAheadHorizon" class="ptolemy.data.expr.Parameter" value="0.1">
+        <property name="lookAheadHorizon" class="ptolemy.data.expr.Parameter" value="0.3">
         </property>
-        <property name="lookAheadStepSize" class="ptolemy.data.expr.Parameter" value="0.1">
+        <property name="lookAheadStepSize" class="ptolemy.data.expr.Parameter" value="0.01">
         </property>
-        <property name="integratorStepSize" class="ptolemy.data.expr.Parameter" value="0.1">
+        <property name="integratorStepSize" class="ptolemy.data.expr.Parameter" value="0.001">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{795.0, 490.0}">
         </property>
     </entity>
     <entity name="SingleEvent" class="ptolemy.actor.lib.SingleEvent">
-        <property name="time" class="ptolemy.data.expr.Parameter" value="2.0">
+        <property name="time" class="ptolemy.data.expr.Parameter" value="150.0">
         </property>
-        <property name="value" class="ptolemy.data.expr.Parameter" value="1.0">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[460.0, 405.0]">
         </property>
@@ -99,12 +113,12 @@
         </property>
     </entity>
     <entity name="PID" class="ptolemy.domains.de.lib.PID">
-        <property name="Kp" class="ptolemy.data.expr.Parameter" value="-1.0">
+        <property name="Kp" class="ptolemy.data.expr.Parameter" value="0.3">
         </property>
-        <property name="Ki" class="ptolemy.data.expr.Parameter" value="0.0">
+        <property name="Ki" class="ptolemy.data.expr.Parameter" value="15.0">
         </property>
         <doc>Discrete proportional, integral, and derivative controller.</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{375.0, 490.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[375.0, 490.0]">
         </property>
     </entity>
     <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
@@ -152,8 +166,8 @@
 <title>TimedPlotter</title>
 <xLabel></xLabel>
 <yLabel></yLabel>
-<xRange min="1.0" max="40.0"/>
-<yRange min="-1.3192401069474368E189" max="1.455729609958847E191"/>
+<xRange min="1.0" max="167.14000000000001"/>
+<yRange min="2.666925549874577E-4" max="120.0"/>
 <default marks="dots"/>
 </plot>?>
         </configure>
