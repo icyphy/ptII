@@ -103,9 +103,12 @@ int checkFMU(
                           "fmiInstantiateSlave: Missing instance name.");
         return 0;
     }
-    if (strcmp(GUID, MODEL_GUID)) {
+    if (strcmp(GUID, model_GUID)) {
+        // FIXME: Remove printfs. Replace with logger calls when they work.
+        fprintf(stderr,"fmiInstantiateSlave: Wrong GUID %s. Expected %s.\n", GUID, model_GUID);
+	fflush(stderr);
         functions->logger(NULL, instanceName, fmiError, "error",
-                          "fmiInstantiateSlave: Wrong GUID %s. Expected %s.", GUID, MODEL_GUID);
+                          "fmiInstantiateSlave: Wrong GUID %s. Expected %s.", GUID, model_GUID);
         return 0;
     }
     return 1;

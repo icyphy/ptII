@@ -101,9 +101,12 @@ int checkFMU(
                           "fmiInstantiateSlave: Missing instance name.");
         return 0;
     }
-    if (strcmp(GUID, MODEL_GUID)) {
-        functions->logger(NULL, instanceName, fmiError, "error",
-                          "fmiInstantiateSlave: Wrong GUID %s. Expected %s.", GUID, MODEL_GUID);
+    if (strcmp(GUID, model_GUID)) {
+        // FIXME: Remove printfs. Replace with logger calls when they work.
+        fprintf(stderr,"fmiInstantiateSlave: Wrong GUID %s. Expected %s.\n", GUID, model_GUID);
+	fflush(stderr);
+        //functions->logger(NULL, instanceName, fmiError, "error",
+        //                  "fmiInstantiateSlave: Wrong GUID %s. Expected %s.", GUID, model_GUID);
         return 0;
     }
     return 1;
@@ -377,13 +380,19 @@ fmiStatus fmiSetReal(fmiComponent c, const fmiValueReference vr[], size_t nvr, c
 /*****************************************************************************************
  *  Terminate this FMU. This does nothing, since this FMU is passive.
  *  @param c The FMU.
- *  @return fmiOK.
+ *  @return fmiOK if the FMU was non-null, otherwise return fmiError
  */
 fmiStatus fmiTerminateSlave(fmiComponent c) {
     ModelInstance* component = (ModelInstance *) c;
 
-    printf("%s: fmiTerminateSlave\n", component->instanceName);
-    fflush(stdout);
+    if (component == NULL) {
+        printf("fmiTerminateSlave called with a null argument?  This can happen while exiting during a failure to construct the component\n");
+	fflush(stdout);
+	return fmiError;
+    } else {
+        printf("%s: fmiTerminateSlave\n", component->instanceName);
+	fflush(stdout);
+    }
 
     return fmiOK;
 }
