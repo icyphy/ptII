@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="AFDXsc3-gl-multicastJC2" class="ptolemy.actor.TypedCompositeActor">
+<entity name="AFDX" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
@@ -186,6 +186,42 @@
             </property>
             <property name="qm4" class="ptolemy.data.expr.Parameter" value="AFDX_SW3">
             </property>
+            <property name="DecoratorAttributesFor_AFDX_ESs" class="ptolemy.actor.lib.qm.AtomicQuantityManager$QMAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AFDX_ESs">
+                </property>
+                <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+            </property>
+            <property name="DecoratorAttributesFor_AFDX_SW" class="ptolemy.actor.lib.qm.BasicSwitch$BasicSwitchAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AFDX_SW1">
+                </property>
+                <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="portIn" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
+                <property name="portOut" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
+            </property>
+            <property name="DecoratorAttributesFor_AFDX_SW2" class="ptolemy.actor.lib.qm.BasicSwitch$BasicSwitchAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AFDX_SW2">
+                </property>
+                <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="portIn" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
+                <property name="portOut" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
+            </property>
+            <property name="DecoratorAttributesFor_AFDX_SW3" class="ptolemy.actor.lib.qm.BasicSwitch$BasicSwitchAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AFDX_SW3">
+                </property>
+                <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="portIn" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
+                <property name="portOut" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
+            </property>
         </port>
         <entity name="Scale" class="ptolemy.actor.lib.Scale">
             <property name="factor" class="ptolemy.data.expr.Parameter" value="1.2">
@@ -223,6 +259,42 @@
             </property>
             <property name="qm2" class="ptolemy.data.expr.Parameter" value="AFDX_SW1">
             </property>
+            <property name="DecoratorAttributesFor_AFDX_ESs" class="ptolemy.actor.lib.qm.AtomicQuantityManager$QMAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AFDX_ESs">
+                </property>
+                <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+            </property>
+            <property name="DecoratorAttributesFor_AFDX_SW" class="ptolemy.actor.lib.qm.BasicSwitch$BasicSwitchAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AFDX_SW1">
+                </property>
+                <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="portIn" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
+                <property name="portOut" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
+            </property>
+            <property name="DecoratorAttributesFor_AFDX_SW2" class="ptolemy.actor.lib.qm.BasicSwitch$BasicSwitchAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AFDX_SW2">
+                </property>
+                <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="portIn" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
+                <property name="portOut" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
+            </property>
+            <property name="DecoratorAttributesFor_AFDX_SW3" class="ptolemy.actor.lib.qm.BasicSwitch$BasicSwitchAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AFDX_SW3">
+                </property>
+                <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="portIn" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
+                <property name="portOut" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
+            </property>
         </port>
         <port name="port2" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -237,6 +309,42 @@
             <property name="qm3" class="ptolemy.data.expr.Parameter" value="AFDX_SW2">
             </property>
             <property name="qm4" class="ptolemy.data.expr.Parameter" value="AFDX_SW1">
+            </property>
+            <property name="DecoratorAttributesFor_AFDX_ESs" class="ptolemy.actor.lib.qm.AtomicQuantityManager$QMAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AFDX_ESs">
+                </property>
+                <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+            </property>
+            <property name="DecoratorAttributesFor_AFDX_SW" class="ptolemy.actor.lib.qm.BasicSwitch$BasicSwitchAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AFDX_SW1">
+                </property>
+                <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="portIn" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
+                <property name="portOut" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
+            </property>
+            <property name="DecoratorAttributesFor_AFDX_SW2" class="ptolemy.actor.lib.qm.BasicSwitch$BasicSwitchAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AFDX_SW2">
+                </property>
+                <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="portIn" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
+                <property name="portOut" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
+            </property>
+            <property name="DecoratorAttributesFor_AFDX_SW3" class="ptolemy.actor.lib.qm.BasicSwitch$BasicSwitchAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AFDX_SW3">
+                </property>
+                <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="portIn" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
+                <property name="portOut" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
             </property>
         </port>
         <port name="port3" class="ptolemy.actor.TypedIOPort">
@@ -289,12 +397,52 @@
     <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
         <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="N2,N4.1,N4.2,N3">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1263, 649, 341, 153}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={939, 613, 341, 153}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[341, 109]">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[690.0, 230.0]">
         </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+            <property name="DecoratorAttributesFor_AFDX_ESs" class="ptolemy.actor.lib.qm.AtomicQuantityManager$QMAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AFDX_ESs">
+                </property>
+                <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+            </property>
+            <property name="DecoratorAttributesFor_AFDX_SW" class="ptolemy.actor.lib.qm.BasicSwitch$BasicSwitchAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AFDX_SW1">
+                </property>
+                <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="portIn" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
+                <property name="portOut" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
+            </property>
+            <property name="DecoratorAttributesFor_AFDX_SW2" class="ptolemy.actor.lib.qm.BasicSwitch$BasicSwitchAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AFDX_SW2">
+                </property>
+                <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="portIn" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
+                <property name="portOut" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
+            </property>
+            <property name="DecoratorAttributesFor_AFDX_SW3" class="ptolemy.actor.lib.qm.BasicSwitch$BasicSwitchAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AFDX_SW3">
+                </property>
+                <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="portIn" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
+                <property name="portOut" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
+            </property>
+        </port>
         <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
@@ -302,7 +450,7 @@
 <title>TimedPlotter</title>
 <xLabel></xLabel>
 <yLabel></yLabel>
-<xRange min="1.46E-4" max="0.20014600000000002"/>
+<xRange min="0.0" max="0.2"/>
 <yRange min="1.2" max="5.3999999999999995"/>
 <default connected="no" marks="various"/>
 </plot>?>
@@ -311,12 +459,52 @@
     <entity name="TimedPlotter2" class="ptolemy.actor.lib.gui.TimedPlotter">
         <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="v12,v11">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1052, 30, 357, 153}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={923, 30, 357, 153}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[357, 109]">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[255.0, 55.0]">
         </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+            <property name="DecoratorAttributesFor_AFDX_ESs" class="ptolemy.actor.lib.qm.AtomicQuantityManager$QMAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AFDX_ESs">
+                </property>
+                <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+            </property>
+            <property name="DecoratorAttributesFor_AFDX_SW" class="ptolemy.actor.lib.qm.BasicSwitch$BasicSwitchAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AFDX_SW1">
+                </property>
+                <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="portIn" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
+                <property name="portOut" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
+            </property>
+            <property name="DecoratorAttributesFor_AFDX_SW2" class="ptolemy.actor.lib.qm.BasicSwitch$BasicSwitchAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AFDX_SW2">
+                </property>
+                <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="portIn" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
+                <property name="portOut" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
+            </property>
+            <property name="DecoratorAttributesFor_AFDX_SW3" class="ptolemy.actor.lib.qm.BasicSwitch$BasicSwitchAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AFDX_SW3">
+                </property>
+                <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="portIn" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
+                <property name="portOut" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
+            </property>
+        </port>
         <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
@@ -385,12 +573,12 @@
         <property name="bag" class="ptolemy.data.expr.Parameter" value="32">
             <display name="bag (ms)"/>
         </property>
+        <property name="schedulerMux" class="ptolemy.data.expr.Parameter" value="&quot;M1&quot;">
+        </property>
         <property name="trameSize" class="ptolemy.data.expr.Parameter" value="600">
             <display name="trameSize (bytes)"/>
         </property>
         <property name="networkPath" class="ptolemy.data.expr.Parameter" value="&quot;test&quot;">
-        </property>
-        <property name="schedulerMux" class="ptolemy.data.expr.Parameter" value="&quot;M1&quot;">
         </property>
         <doc>An actor (used with the AFDX quantity manager) that configure an AFDX end-system for a given module.</doc>
         <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
@@ -409,12 +597,12 @@
         <property name="bag" class="ptolemy.data.expr.Parameter" value="16">
             <display name="bag (ms)"/>
         </property>
+        <property name="schedulerMux" class="ptolemy.data.expr.Parameter" value="&quot;M1&quot;">
+        </property>
         <property name="trameSize" class="ptolemy.data.expr.Parameter" value="300">
             <display name="trameSize (bytes)"/>
         </property>
         <property name="networkPath" class="ptolemy.data.expr.Parameter" value="&quot;test&quot;">
-        </property>
-        <property name="schedulerMux" class="ptolemy.data.expr.Parameter" value="&quot;M1&quot;">
         </property>
         <doc>An actor (used with the AFDX quantity manager) that configure an AFDX end-system for a given module.</doc>
         <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
@@ -433,12 +621,12 @@
         <property name="bag" class="ptolemy.data.expr.Parameter" value="bVL2">
             <display name="bag (ms)"/>
         </property>
+        <property name="schedulerMux" class="ptolemy.data.expr.Parameter" value="&quot;M2&quot;">
+        </property>
         <property name="trameSize" class="ptolemy.data.expr.Parameter" value="1000">
             <display name="trameSize (bytes)"/>
         </property>
         <property name="networkPath" class="ptolemy.data.expr.Parameter" value="&quot;test&quot;">
-        </property>
-        <property name="schedulerMux" class="ptolemy.data.expr.Parameter" value="&quot;M2&quot;">
         </property>
         <doc>An actor (used with the AFDX quantity manager) that configure an AFDX end-system for a given module.</doc>
         <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
@@ -451,7 +639,7 @@
         </property>
     </entity>
     <entity name="D2" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={344, 691, 288, 202}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={344, 558, 484, 208}, maximized=false}">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[484, 164]">
         </property>
@@ -459,7 +647,7 @@
         </property>
     </entity>
     <entity name="D42" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={699, 690, 357, 198}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={699, 558, 484, 208}, maximized=false}">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[484, 164]">
         </property>
@@ -467,7 +655,7 @@
         </property>
     </entity>
     <entity name="D41" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={55, 692, 283, 201}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={55, 558, 484, 208}, maximized=false}">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[484, 164]">
         </property>
