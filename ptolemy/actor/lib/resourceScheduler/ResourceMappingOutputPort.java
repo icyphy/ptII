@@ -29,9 +29,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
  */
 package ptolemy.actor.lib.resourceScheduler;
 
-import ptolemy.actor.TypedAtomicActor;
-import ptolemy.actor.TypedIOPort;
-import ptolemy.data.Token;
+import ptolemy.actor.lib.qm.CQMOutputPort;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -51,7 +49,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 *  @Pt.ProposedRating Yellow (derler)
 *  @Pt.AcceptedRating Red (derler)
 */
-public class ResourceMappingOutputPort extends TypedAtomicActor {
+public class ResourceMappingOutputPort extends CQMOutputPort {
 
     /** Construct a ResourceMappingOutputPort. The contained entities (SetVariable,
      *  Parameter and input port) are created from the XML description
@@ -67,55 +65,6 @@ public class ResourceMappingOutputPort extends TypedAtomicActor {
     public ResourceMappingOutputPort(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name); 
-        input = new TypedIOPort(this, "input", true, false);
-        _token = null;
     } 
-    
-    /** The input port. */
-    public TypedIOPort input;
-    
-    /** Initialize actor and clear Parameter value in case it was set
-     *  in a previous execution.
-     */
-    @Override
-    public void initialize() throws IllegalActionException { 
-        super.initialize();
-    }
-    
-    /** Check whether the contained parameter contains a token.
-     *  @return True if the contained parameter contains a token. 
-     */
-    public boolean hasToken() {
-        return (_token != null);
-    }
-    
-    /** Get token from parameter and remove it from the parameter.
-     *  @return The token.
-     */
-    public Token takeToken() {
-        Token token = _token;
-        _token = null;
-        return token;
-    }
-    
-    /** Store the token from the input port internally.
-     *  @exception IllegalActionException Not thrown here.
-     */
-    @Override
-    public void fire() throws IllegalActionException {
-        if (input.hasToken(0)) {
-            _token = input.get(0); 
-        }
-    }
-    
-    /** Get the token from parameter but do not remove it.
-     *  @return The token.
-     *  @throws IllegalActionException If token cannot be accessed.
-     */
-    public Token getToken() throws IllegalActionException {
-        return _token;
-    }
-    
-    private Token _token;
     
 }

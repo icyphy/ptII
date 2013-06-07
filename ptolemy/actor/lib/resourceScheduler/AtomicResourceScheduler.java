@@ -158,7 +158,7 @@ public class AtomicResourceScheduler extends TypedAtomicActor implements Resourc
      *   null if the specified target is not an Actor.
      */
     public DecoratorAttributes createDecoratorAttributes(NamedObj target) {
-        if (target instanceof Actor) {
+        if (target instanceof Actor && !(target instanceof ResourceScheduler)) {
             try {
                 return new ResourceAttributes(target, this);
             } catch (KernelException ex) {
@@ -175,9 +175,22 @@ public class AtomicResourceScheduler extends TypedAtomicActor implements Resourc
      *  @return A list of the objects decorated by this decorator.
      */
     public List<NamedObj> decoratedObjects() {
-        // FIXME: This should traverse opaque boundaries.
         CompositeEntity container = (CompositeEntity) getContainer();
-        return container.deepEntityList();
+        return _getEntitiesToDecorate(container);
+    }
+    
+    private List<NamedObj> _getEntitiesToDecorate(CompositeEntity container) {
+        List<NamedObj> toDecorate = new ArrayList<NamedObj>();
+        List entities = container.entityList();
+        for (Object entity : entities) {
+            if (!(entity instanceof ResourceScheduler)) {
+                toDecorate.add((NamedObj) entity);
+                if (entity instanceof CompositeEntity) {
+                    toDecorate.addAll(_getEntitiesToDecorate((CompositeEntity) entity));
+                }
+            }
+        }
+        return toDecorate;
     }
 
     /** Plot a new execution event for an actor (i.e. an actor
@@ -273,7 +286,7 @@ public class AtomicResourceScheduler extends TypedAtomicActor implements Resourc
      *  decorate objects across opaque hierarchy boundaries.
      */
     public boolean isGlobalDecorator() {
-        return true;
+        return false;
     }
 
     public boolean isCurrentlyExecuting(Actor actor) {
@@ -308,8 +321,9 @@ public class AtomicResourceScheduler extends TypedAtomicActor implements Resourc
      *   an attribute with the name of this attribute.
      *  @see #getContainer()
      */
-    public void setContainer(NamedObj container) throws IllegalActionException,
-            NameDuplicationException {
+    @Override
+    public void setContainer(CompositeEntity container)
+            throws IllegalActionException, NameDuplicationException {
         super.setContainer((CompositeEntity) container);
         if (container != null) {
             List<NamedObj> decoratedObjects = decoratedObjects();

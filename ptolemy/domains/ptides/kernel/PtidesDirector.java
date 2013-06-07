@@ -1087,7 +1087,7 @@ public class PtidesDirector extends DEDirector implements Decorator {
     private double _getDelay(CompositeActor composite, Actor actor, IOPort port, double minDelay, List<Actor> visited) throws IllegalActionException {
         if (visited.contains(actor)) {
             // found loop
-            return Double.POSITIVE_INFINITY;
+            return 0.0;
         }
         visited.add(actor);
         double delay = 0.0;

@@ -140,8 +140,8 @@ public class CompositeResourceScheduler extends TypedCompositeActor implements R
      *  @return The decorated attributes for the target NamedObj, or
      *   null if the specified target is not an Actor.
      */
-    public DecoratorAttributes createDecoratorAttributes(NamedObj target) {
-        if (target instanceof Actor) {
+    public DecoratorAttributes createDecoratorAttributes(NamedObj target) { 
+        if (target instanceof Actor && !_isPartOfResourceScheduler(target)) {
             try {
                 return new CompositeResourceSchedulerAttributes(target, this);
             } catch (KernelException ex) {
@@ -152,17 +152,16 @@ public class CompositeResourceScheduler extends TypedCompositeActor implements R
             return null;
         }
     }
-
+    
     /** Return a list of the entities deeply contained by the container
      *  of this resource scheduler.
      *  @return A list of the objects decorated by this decorator.
      */
     public List<NamedObj> decoratedObjects() {
-        // FIXME: This should traverse opaque boundaries.
         CompositeEntity container = (CompositeEntity) getContainer();
-        return container.deepEntityList();
+        return _getEntitiesToDecorate(container);
     }
-
+    
     /** Plot a new execution event for an actor (i.e. an actor
      *  started/finished execution, was preempted or resumed).
      * @param actor The actor.
@@ -264,6 +263,31 @@ public class CompositeResourceScheduler extends TypedCompositeActor implements R
         return _lastActorFinished;
     }
 
+    @Override
+    public boolean postfire() throws IllegalActionException {
+        // TODO Auto-generated method stub
+        boolean postfire = super.postfire();
+        
+        for (Object entity : entityList()) {
+            if (entity instanceof ResourceMappingOutputPort) {
+                ResourceMappingOutputPort outputPort = ((ResourceMappingOutputPort)entity);
+                if (outputPort.hasToken() && outputPort.getToken() instanceof RecordToken) {
+                    RecordToken recordToken = (RecordToken) outputPort.getToken();
+                    if (recordToken.get("actor") != null && 
+                            ((ObjectToken)recordToken.get("actor")).getValue() != null) {
+                        Actor actor = (Actor) ((ObjectToken)recordToken.get("actor")).getValue();
+                        event((NamedObj) actor, getExecutiveDirector().getModelTime().getDoubleValue(), ExecutionEventType.STOP);
+                        outputPort.takeToken();
+                        _currentlyExecuting.remove(actor);
+                        actor.getExecutiveDirector().resumeActor(actor);
+                        _lastActorFinished = true;
+                    }
+                }
+            }
+        }
+        return postfire;
+    }
+
     /** Schedule an actor for execution and return the next time
      *  this scheduler has to perform a reschedule. Derived classes
      *  must implement this method to actually schedule actors, this
@@ -314,8 +338,9 @@ public class CompositeResourceScheduler extends TypedCompositeActor implements R
      *   an attribute with the name of this attribute.
      *  @see #getContainer()
      */
-    public void setContainer(NamedObj container) throws IllegalActionException,
-            NameDuplicationException {
+    @Override
+    public void setContainer(CompositeEntity container)
+            throws IllegalActionException, NameDuplicationException {
         super.setContainer((CompositeEntity) container);
         if (container != null) {
             List<NamedObj> decoratedObjects = decoratedObjects();
@@ -389,34 +414,6 @@ public class CompositeResourceScheduler extends TypedCompositeActor implements R
         return executionTime;
     }
     
-    @Override
-    public boolean postfire() throws IllegalActionException {
-        // TODO Auto-generated method stub
-        boolean postfire = super.postfire();
-        
-        for (Object entity : entityList()) {
-            if (entity instanceof ResourceMappingOutputPort) {
-                ResourceMappingOutputPort outputPort = ((ResourceMappingOutputPort)entity);
-                if (outputPort.hasToken() && outputPort.getToken() instanceof RecordToken) {
-                    RecordToken recordToken = (RecordToken) outputPort.getToken();
-                    if (recordToken.get("actor") != null && 
-                            ((ObjectToken)recordToken.get("actor")).getValue() != null) {
-                        Actor actor = (Actor) ((ObjectToken)recordToken.get("actor")).getValue();
-                        event((NamedObj) actor, getExecutiveDirector().getModelTime().getDoubleValue(), ExecutionEventType.STOP);
-                        outputPort.takeToken();
-                        _currentlyExecuting.remove(actor);
-                        actor.getExecutiveDirector().resumeActor(actor);
-                        _lastActorFinished = true;
-                    }
-                }
-            }
-        }
-        return postfire;
-    }
-    
-    ///////////////////////////////////////////////////////////////////
-    ////                    protected variables                    ////
-
     /** Schedule a new actor for execution. Find the const
      *  actor in the _model that is mapped to this actor and
      *  trigger a firing of that one, if the actor is not
@@ -445,6 +442,10 @@ public class CompositeResourceScheduler extends TypedCompositeActor implements R
         // create token for scheduling requests and put them into ports.
         if (!_currentlyExecuting.contains(actor)) {
             event((NamedObj) actor, getExecutiveDirector().localClock.getLocalTime().getDoubleValue(), ExecutionEventType.START);
+            if (_requestPorts.get(actor) == null) {
+                throw new IllegalActionException(this, "Actor " + actor + " does not have a" +
+                		" registered requestPort");
+            }
             ResourceMappingInputPort requestPort = (ResourceMappingInputPort) getEntity(_requestPorts.get(actor));
             if (requestPort != null) { 
                 RecordToken recordToken = new RecordToken(
@@ -498,6 +499,34 @@ public class CompositeResourceScheduler extends TypedCompositeActor implements R
     ///////////////////////////////////////////////////////////////////
     //                          private variables                    //
 
+    private boolean _isPartOfResourceScheduler(NamedObj actor) {
+        if (actor instanceof ResourceScheduler) {
+            return true;
+        }
+        CompositeEntity container = (CompositeEntity) actor.getContainer();
+        while (container != null) {
+            if (container instanceof ResourceScheduler) {
+                return true;
+            }
+            container = (CompositeEntity) container.getContainer();
+        }
+        return false;
+    }
+
+    private List<NamedObj> _getEntitiesToDecorate(CompositeEntity container) {
+        List<NamedObj> toDecorate = new ArrayList<NamedObj>();
+        List entities = container.entityList();
+        for (Object entity : entities) {
+            if (!(entity instanceof ResourceScheduler)) {
+                toDecorate.add((NamedObj) entity);
+                if (entity instanceof CompositeEntity) {
+                    toDecorate.addAll(_getEntitiesToDecorate((CompositeEntity) entity));
+                }
+            }
+        } 
+        return toDecorate;
+    }
+
     /** Previous positions of the actor data set. */
     private HashMap<NamedObj, Double> _previousY;
 
@@ -538,8 +567,8 @@ public class CompositeResourceScheduler extends TypedCompositeActor implements R
 
         public Parameter requestPort;
 
-        /** If attribute is <i>messageLength</i> report the new value 
-         *  to the quantity manager. 
+        /** If attribute <i>requestPort</i> report the new value 
+         *  to the resource scheduler. 
          *  @param attribute The changed parameter.
          *  @exception IllegalActionException If the parameter set is not valid.
          *  Not thrown in this class.
@@ -549,9 +578,11 @@ public class CompositeResourceScheduler extends TypedCompositeActor implements R
             if (attribute == requestPort) {
                 Actor actor = (Actor) getContainer();
                 CompositeResourceScheduler scheduler = (CompositeResourceScheduler) getDecorator();
-                scheduler.setRequestPort(actor,
-                        ((StringToken) ((Parameter) attribute).getToken())
-                                .stringValue());
+                if (scheduler != null && enabled()) {
+                    scheduler.setRequestPort(actor,
+                            ((StringToken) ((Parameter) attribute).getToken())
+                                    .stringValue());
+                }
             } else {
                 super.attributeChanged(attribute);
             }

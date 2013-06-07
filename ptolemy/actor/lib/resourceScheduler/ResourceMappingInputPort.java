@@ -30,17 +30,13 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.actor.lib.resourceScheduler;
 
-import ptolemy.actor.lib.Const;
-import ptolemy.data.BooleanToken;
-import ptolemy.data.expr.Parameter;
+import ptolemy.actor.lib.qm.CQMInputPort;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.RecordType;
 import ptolemy.data.type.Type;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.Settable;
 
 
 /** This actor implements an input port in a composite quantity manager
@@ -56,7 +52,7 @@ import ptolemy.kernel.util.Settable;
 *  @Pt.ProposedRating Yellow (derler)
 *  @Pt.AcceptedRating Red (derler)
 */
-public class ResourceMappingInputPort extends Const {
+public class ResourceMappingInputPort extends CQMInputPort {
     
     /** Construct a constant source with the default type set to the RecordToken
      *  used in the CompositeQM. 
@@ -70,52 +66,11 @@ public class ResourceMappingInputPort extends Const {
     public ResourceMappingInputPort(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
-        Parameter hide = (Parameter) trigger.getAttribute("_hide");
-        if (hide == null) {
-            hide = new Parameter(trigger, "_hide", new BooleanToken(true));
-        } else {
-            hide.setToken(new BooleanToken(true));
-        }
-        
-        value.setVisibility(Settable.NONE);
-        value.setExpression("");
-        _beforeInitialization = true;  
         
         RecordType type = new RecordType(
                 new String[]{"actor", "executionTime"}, 
                 new Type[]{BaseType.OBJECT, BaseType.DOUBLE});
         value.setTypeEquals(type);
     }
-    
-    
-    @Override
-    public void attributeChanged(Attribute attribute)
-            throws IllegalActionException { 
-        if (attribute == value && _beforeInitialization) {
-            
-        }
-        super.attributeChanged(attribute);
-    }
-    
-    /** Initialize the iteration counter.  A derived class must call
-     *  this method in its initialize() method or the <i>firingCountLimit</i>
-     *  feature will not work.
-     *  @exception IllegalActionException If the parent class throws it,
-     *   which could occur if, for example, the director will not accept
-     *   sequence actors.
-     */
-    @Override
-    public void initialize() throws IllegalActionException { 
-        super.initialize();  
-        _beforeInitialization = false;
-    }
-    
-    @Override
-    public void wrapup() throws IllegalActionException { 
-        super.wrapup();
-        // to avoid saving the token. 
-        value.setExpression("");
-    }
-    
-    private boolean _beforeInitialization;
+
 }
