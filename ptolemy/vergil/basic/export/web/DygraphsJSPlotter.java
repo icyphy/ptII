@@ -153,7 +153,18 @@ public class DygraphsJSPlotter extends BasicJSPlotter {
                         + "'};\n\n");
 
         // Output the JavaScript code for data plotting to the header.
-        for (String line : _plotCode) {
+        for (String line : _plotCodeStart) {
+            insertHeaderContent(true, false, line + "\n");
+        }
+        
+        // Insert custom content, if any
+        if (customContent != null && customContent.getExpression() != null
+                    && !customContent.getExpression().equals("")) {
+            insertHeaderContent(true, false, customContent.getExpression());
+        }
+        
+        // Insert rest of plotcode
+        for (String line : _plotCodeEnd) {
             insertHeaderContent(true, false, line + "\n");
         }
 
@@ -213,8 +224,9 @@ public class DygraphsJSPlotter extends BasicJSPlotter {
             "\t<li><b style=\"color:blue;\">Zoom-in/out</b> to/from an interval by <b style=\"color:blue;\">dragging</b> on the lower chart.</li>",
             "</ol>" };
 
-    /** JavaScript code to plot the figure using the Dygraphs library. */
-    private static String[] _plotCode = {
+    /** JavaScript code to plot the figure using the Dygraphs library. 
+     *  Separated into start and end so custom content can be inserted.  */
+    private static String[] _plotCodeStart = {
             "\t\t\t\tvar pieChart, dataTable, seriesLabels;\n",
             "\t\t\t\t$(document).ready(function() {",
             "\t\t\t\t\t// parse data and create main chart",
@@ -224,7 +236,11 @@ public class DygraphsJSPlotter extends BasicJSPlotter {
             "\t\t\t\t\t\tmainChart = new Dygraph(",
             "\t\t\t\t\t\t\tdocument.getElementById(\"mainChart-container\"),",
             "\t\t\t\t\t\t\tdataTable,",
-            "\t\t\t\t\t\t\t{",
+            "\t\t\t\t\t\t\t{"};
+    
+    /** JavaScript code to plot the figure using the Dygraphs library. 
+     *  Separated into start and end so custom content can be inserted.  */           
+    private static String[] _plotCodeEnd = {        
             "\t\t\t\t\t\t\t\tlabels: seriesLabels,",
             "\t\t\t\t\t\t\t\txlabel: config.xAxisTitle,",
             "\t\t\t\t\t\t\t\tylabel: config.yAxisTitle,",
@@ -265,10 +281,6 @@ public class DygraphsJSPlotter extends BasicJSPlotter {
             "\t\t\t\t\t\t\tif (isEventTrace(seriesName)){",
             "\t\t\t\t\t\t\t\tseriesOpts[seriesName] = {",
             "\t\t\t\t\t\t\t\t\t\tdrawPoints: config.enableEventsMarker,",
-            "\t\t\t\t\t\t\t\t\t\tpointSize: config.eventsMarkerRadius,",
-            "\t\t\t\t\t\t\t\t\t\thighlightCircleSize: config.eventsMarkerRadius + 2,",
-            "\t\t\t\t\t\t\t\t\t\tdrawPointCallback: pointShapes[i % pointShapes.length],",
-            "\t\t\t\t\t\t\t\t\t\tstrokePattern: strokePatterns[i % strokePatterns.length],",
             "\t\t\t\t\t\t\t\t\t\tstrokeWidth: config.eventsConnectWidth",
             "\t\t\t\t\t\t\t\t};",
             "\t\t\t\t\t\t\t}else {",

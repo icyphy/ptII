@@ -194,6 +194,10 @@ public abstract class BasicJSPlotter extends WebContent implements
         yAxisTitle = new StringParameter(this, "yAxisTitle");
         yAxisTitle.setDisplayName("Y axis title");
         yAxisTitle.setExpression("Y Axis");
+        
+        customContent = new StringParameter(this, "customContent");
+        customContent.setDisplayName("Custom content");
+        customContent.setExpression("");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -203,6 +207,12 @@ public abstract class BasicJSPlotter extends WebContent implements
      *  window size. This is a boolean that defaults to true.
      */
     public Parameter autoResize;
+    
+    /** Parameter specifying text to be inserted into dygraph constructor call.  
+     *  Workaround for specifying complicated options not covered by other 
+     *  parameters, for example, series-specific parameters.
+     */
+    public StringParameter customContent;
 
     /** Parameter specifying the width of the stroke connecting data points
      *  This is an int that defaults to 2.
