@@ -626,10 +626,33 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
      *  @param y The y-axis value of the actor to be created.
      *  @exception IllegalActionException If there is a problem instantiating the actor.
      *  @exception IOException If there is a problem parsing the fmu file.
+     *  @exception NameDuplicationException If there is a problem instantiating the
+     *  FileParameter.
+     *  @deprecated use the importFMU() method that takes a FileParameter so
+     *  that values like $PTII and $CLASSPATH are preserved.
      */
     public static void importFMU(Object originator, String fmuFileName,
             NamedObj context, double x, double y)
+            throws IllegalActionException, IOException, NameDuplicationException {
+        FileParameter fmuFileParameter = new FileParameter(context, "_fmuFileParameter");
+        fmuFileParameter.setExpression(fmuFileName);
+        FMUImport.importFMU(originator, fmuFileParameter, context, x, y);
+    }
+
+    /** Import a FMUFile.
+     *  @param originator The originator of the change request.
+     *  @param fmuFileParameter The .fmuFile
+     *  @param context The context in which the FMU actor is created.
+     *  @param x The x-axis value of the actor to be created.
+     *  @param y The y-axis value of the actor to be created.
+     *  @exception IllegalActionException If there is a problem instantiating the actor.
+     *  @exception IOException If there is a problem parsing the fmu file.
+     */
+    public static void importFMU(Object originator, FileParameter fmuFileParameter,
+            NamedObj context, double x, double y)
             throws IllegalActionException, IOException {
+
+        String fmuFileName = fmuFileParameter.asFile().getCanonicalPath();
         System.out.println("FMUImport.importFMU(): " + fmuFileName);
         // This method is called by the gui to import a fmu file and create the
         // actor.
@@ -746,7 +769,8 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
                 + y + "\">\n" + "  </property>\n"
                 + "  <property name=\"fmuFile\""
                 + "class=\"ptolemy.data.expr.FileParameter\"" + "value=\""
-                + fmuFileName + "\">\n" + "  </property>\n" + parameterMoML
+                + fmuFileParameter.getExpression() + "\">\n"
+                + "  </property>\n" + parameterMoML
                 + portMoML + " </entity>\n</group>\n";
         MoMLChangeRequest request = new MoMLChangeRequest(originator, context,
                 moml);

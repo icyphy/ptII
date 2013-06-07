@@ -35,6 +35,7 @@ import javax.swing.AbstractAction;
 
 import ptolemy.actor.gui.PtolemyQuery;
 import ptolemy.actor.lib.fmi.FMUImport;
+import ptolemy.data.expr.FileParameter;
 import ptolemy.gui.ComponentDialog;
 import ptolemy.gui.Query;
 import ptolemy.gui.Top;
@@ -132,14 +133,14 @@ public class ImportFMUAction extends AbstractAction {
 
                 Query query = new Query();
                 query.setTextWidth(60);
+
                 // Use this file chooser so that we can read URLs or files.
                 query.addFileChooser("location", "Location (URL)",
                         _lastLocation,
-                        /* URI base */null,
-                        /* File startingDirectory */basicGraphFrame
-                                .getLastDirectory(),
-                        /* allowFiles */true,
-                        /* allowDirectories */false,
+                        /* URI base */ null,
+                        /* File startingDirectory */ basicGraphFrame.getLastDirectory(),
+                        /* allowFiles */ true,
+                        /* allowDirectories */ false,
                         /* Color background */
                         PtolemyQuery.preferredBackgroundColor(_frame),
                         PtolemyQuery.preferredForegroundColor(_frame));
@@ -148,13 +149,6 @@ public class ImportFMUAction extends AbstractAction {
                         "Instantiate Functional Mock-up Unit (.fmi)", query);
                 if (dialog.buttonPressed().equals("OK")) {
                     _lastLocation = query.getStringValue("location");
-
-                    // Get the associated Ptolemy model.
-                    GraphController controller = basicGraphFrame.getJGraph()
-                            .getGraphPane().getGraphController();
-                    AbstractBasicGraphModel model = (AbstractBasicGraphModel) controller
-                            .getGraphModel();
-                    NamedObj context = model.getPtolemyModel();
 
                     // Use the center of the screen as a location.
                     Rectangle2D bounds = basicGraphFrame
@@ -176,17 +170,40 @@ public class ImportFMUAction extends AbstractAction {
                     if (fmuFileName.equals(_fmuFileName)) {
                         return;
                     }
-                    _fmuFileName = fmuFileName;
 
-                    long modificationTime = new File(fmuFileName)
+                    // Get the associated Ptolemy model.
+                    GraphController controller = basicGraphFrame.getJGraph()
+                        .getGraphPane().getGraphController();
+                    AbstractBasicGraphModel model = (AbstractBasicGraphModel) controller
+                        .getGraphModel();
+                    NamedObj context = model.getPtolemyModel();
+
+                    // Create a temporary FileParameter so that we can use
+                    // $PTII or $CLASSPATH.  The issue here is that the dialog
+                    // that is brought up is a ptolemy.gui.Query, which
+                    // does not know about FileParameter
+                    FileParameter fmuFileParameter = (FileParameter)context.getAttribute("_fmuFile", FileParameter.class);
+                    try {
+                        if (fmuFileParameter == null) {
+                            fmuFileParameter = new FileParameter(context, "_fmuFile");
+                        }
+                        fmuFileParameter.setExpression(fmuFileName);
+                        fmuFileName = fmuFileParameter.asFile().getCanonicalPath();
+                        _fmuFileName = fmuFileName;
+
+                        long modificationTime = new File(fmuFileName)
                             .lastModified();
-                    if (_fmuFileModificationTime == modificationTime) {
-                        return;
+                        if (_fmuFileModificationTime == modificationTime) {
+                            return;
+                        }
+
+                        _fmuFileModificationTime = modificationTime;
+
+                        FMUImport.importFMU(this, fmuFileParameter, context, x, y);
+                    } finally {
+                        // Avoid leaving a parameter in the model.
+                        fmuFileParameter.setContainer(null);
                     }
-
-                    _fmuFileModificationTime = modificationTime;
-
-                    FMUImport.importFMU(this, fmuFileName, context, x, y);
                 }
             }
         } catch (Exception ex) {
