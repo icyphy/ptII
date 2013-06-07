@@ -252,7 +252,6 @@ public class ExportModelJUnitTest {
                 //"GravitationWithCollisionDetection.xml", // "Cannot render to more than 32 Canvas3Ds."
                 //"demo/ExecDemo/Demos/BouncingBall.xml", // "Cannot render to more than 32 Canvas3Ds."
                 "ElectricPowerSystem.xml", // Just has links to other demos.
-                "EPlus70Actuator.xml", // EPlus70 requires GLIBC_2.14 under RHEL.
                 "ExecDemos", // hangs
                 "GeneratorContactorLoad.xml", // The GeneratorContactorLoad file is a component used inElectricPowerSystem models.
                 "HierarchyFlattening.xml", // gt
