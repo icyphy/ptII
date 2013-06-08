@@ -48,7 +48,7 @@
 </property>
 
 <!------------------------------------------->
-<property name="DygraphsJSPlotter" class="ptolemy.vergil.basic.export.web.DygraphsJSPlotter">
+<property name="DygraphsJSPlotterAttribute" class="ptolemy.vergil.basic.export.web.DygraphsJSPlotterAttribute">
 </property>
 
 <!------------------------------------------->

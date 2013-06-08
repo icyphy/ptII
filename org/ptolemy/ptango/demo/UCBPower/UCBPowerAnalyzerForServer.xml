@@ -1,12 +1,12 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="UCBPowerAnalyzer" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
+<entity name="UCBPowerAnalyzerForServer" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-8, -8, 1296, 776}, maximized=true}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-8, -8, 1382, 744}, maximized=true}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1068, 660]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1154, 627]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
@@ -51,11 +51,11 @@
         </property>
     </property>
     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
         <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-495.0, -85.0]">
-        </property>
-        <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
         </property>
     </property>
     <property name="_defaultWebExportParameters" class="ptolemy.vergil.basic.export.web.WebExportParameters">
@@ -220,7 +220,7 @@
     <class name="SourceDataReader" extends="ptolemy.actor.TypedCompositeActor">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-505.0, -20.0]">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={136, 97, 928, 616}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={136, 97, 928, 617}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 500]">
         </property>
@@ -316,7 +316,7 @@
         <entity name="FileOrURIReader" class="ptolemy.actor.TypedCompositeActor">
             <property name="_location" class="ptolemy.kernel.util.Location" value="{125.0, 200.0}">
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={132, 184, 928, 616}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={132, 151, 928, 617}, maximized=false}">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 500]">
             </property>
@@ -461,6 +461,23 @@
         <entity name="FileOrURIReader" class="ptolemy.actor.TypedCompositeActor">
             <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={132, 184, 928, 616}, maximized=false}">
             </property>
+            <entity name="DDFBooleanSelect" class="ptolemy.domains.ddf.lib.DDFBooleanSelect">
+                <port name="trueInput" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                    <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
+                    </property>
+                </port>
+                <port name="falseInput" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                    <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
+                    </property>
+                </port>
+                <port name="control" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                    <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
+                    </property>
+                </port>
+            </entity>
             <entity name="OnlineDataFileReader" class="ptolemy.actor.lib.io.FileReader">
                 <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="">
                 </property>
@@ -534,7 +551,7 @@
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[185.0, -20.0]">
                 </property>
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-8, -8, 1296, 776}, maximized=true}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-8, -8, 1382, 744}, maximized=true}">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1068, 660]">
             </property>
@@ -588,6 +605,8 @@
                 </property>
             </entity>
             <entity name="ArrayLevelCrossing" class="ptolemy.actor.lib.ArrayLevelCrossing">
+                <property name="threshold" class="ptolemy.actor.parameters.PortParameter" value="1.338577787E12">
+                </property>
                 <property name="above" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[180.0, 260.0]">
@@ -601,7 +620,7 @@
             <entity name="ReadElement" class="ptolemy.actor.TypedCompositeActor">
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[265.0, 395.0]">
                 </property>
-                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-8, -8, 1296, 776}, maximized=true}">
+                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-8, -8, 1382, 744}, maximized=true}">
                 </property>
                 <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1068, 660]">
                 </property>
@@ -645,6 +664,8 @@
                     </property>
                 </port>
                 <entity name="time" class="ptolemy.actor.lib.ArrayElement">
+                    <property name="index" class="ptolemy.actor.parameters.PortParameter" value="0">
+                    </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[400.0, 375.0]">
                     </property>
                 </entity>
@@ -848,7 +869,7 @@
                 </property>
             </entity>
             <entity name="XYPlotter" class="ptolemy.actor.lib.gui.XYPlotter">
-                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={382, 220, 516, 359}, maximized=false}">
+                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={382, 220, 516, 360}, maximized=false}">
                 </property>
                 <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
                 </property>
@@ -968,6 +989,23 @@
         <entity name="FileOrURIReader" class="ptolemy.actor.TypedCompositeActor">
             <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={132, 184, 928, 616}, maximized=false}">
             </property>
+            <entity name="DDFBooleanSelect" class="ptolemy.domains.ddf.lib.DDFBooleanSelect">
+                <port name="trueInput" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                    <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
+                    </property>
+                </port>
+                <port name="falseInput" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                    <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
+                    </property>
+                </port>
+                <port name="control" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                    <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
+                    </property>
+                </port>
+            </entity>
             <entity name="OnlineDataFileReader" class="ptolemy.actor.lib.io.FileReader">
                 <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="">
                 </property>
@@ -1023,12 +1061,12 @@
                 </property>
             </property>
             <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 65.0]">
-                </property>
                 <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
                 </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 65.0]">
+                </property>
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={176, 92, 928, 616}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={176, 92, 928, 617}, maximized=false}">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 500]">
             </property>
@@ -1143,7 +1181,7 @@
             <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{12.5, 6.25}">
             </property>
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-8, -8, 1296, 776}, maximized=true}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-8, -8, 1382, 744}, maximized=true}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1068, 660]">
         </property>
@@ -1151,7 +1189,7 @@
         </property>
         <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{547.0279522613066, 510.4657979610578}">
         </property>
-        <property name="DygraphsJSPlotter" class="ptolemy.vergil.basic.export.web.DygraphsJSPlotter" value="Customize by clicking &quot;Configure&quot;. DyGraphsJSPlotter&#10;is free under the MIT license: http://dygraphs.com/">
+        <property name="DygraphsJSPlotter" class="ptolemy.vergil.basic.export.web.DygraphsJSPlotterAttribute" value="Customize by clicking &quot;Configure&quot;. DyGraphsJSPlotter&#10;is free under the MIT license: http://dygraphs.com/">
             <property name="outputHTMLFile" class="ptolemy.data.expr.StringParameter" value="$outputHTMLFile">
                 <display name="Output HTML file name"/>
             </property>
@@ -1192,6 +1230,8 @@
             </property>
         </entity>
         <entity name="ArrayRemoveElement" class="ptolemy.actor.lib.ArrayRemoveElement">
+            <property name="element" class="ptolemy.actor.parameters.PortParameter" value="{text = &quot;Exceeds the threshold!&quot;, x = 0.0, y = 0.0}">
+            </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[395.25, 446.25]">
             </property>
         </entity>
@@ -1270,7 +1310,7 @@
             </port>
         </entity>
         <entity name="StringConst2" class="ptolemy.actor.lib.StringConst">
-            <property name="value" class="ptolemy.data.expr.Parameter" value="Appliance Comsumption">
+            <property name="value" class="ptolemy.data.expr.Parameter" value="Appliance Consumption">
             </property>
             <doc>Create a constant sequence with a string value.</doc>
             <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
@@ -1299,7 +1339,7 @@
             </port>
         </entity>
         <entity name="StringConst3" class="ptolemy.actor.lib.StringConst">
-            <property name="value" class="ptolemy.data.expr.Parameter" value="Total Comsumption">
+            <property name="value" class="ptolemy.data.expr.Parameter" value="Total Consumption">
             </property>
             <doc>Create a constant sequence with a string value.</doc>
             <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
@@ -1310,11 +1350,11 @@
                 <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
                 </property>
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[197.88768005371094, 323.78905487060547]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{200.0, 320.0}">
             </property>
         </entity>
         <entity name="Debug" class="ptolemy.actor.lib.gui.Display">
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={366, 365, 697, 136}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={366, 365, 697, 137}, maximized=false}">
             </property>
             <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[681, 77]">
             </property>

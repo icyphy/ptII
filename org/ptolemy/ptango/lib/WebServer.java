@@ -96,7 +96,7 @@ public class WebServer extends AbstractInitializableAttribute {
         applicationPath.setExpression("/");
 
         resourcePath = new StringParameter(this, "resourcePath");
-        resourcePath.setExpression("/files");
+        resourcePath.setExpression("/");
 
         // Set up a parameter to specify the location for reading and writing
         // resources (files).  This parameter defaults to the directory that

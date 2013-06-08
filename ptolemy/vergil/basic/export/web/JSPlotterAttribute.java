@@ -55,7 +55,7 @@ import ptolemy.kernel.util.NamedObj;
  * @Pt.ProposedRating Red (cxh)
  * @Pt.AcceptedRating Red (cxh)
  */
-public abstract class BasicJSPlotter extends WebContent implements
+public abstract class JSPlotterAttribute extends WebContent implements
         WebExportable {
 
     /** Create an instance for each parameter.
@@ -64,7 +64,7 @@ public abstract class BasicJSPlotter extends WebContent implements
      *  @exception IllegalActionException If the superclass throws it.
      *  @exception NameDuplicationException If the superclass throws it.
      */
-    public BasicJSPlotter(NamedObj container, String name)
+    public JSPlotterAttribute(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         _icon.setIconText("JS");

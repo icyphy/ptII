@@ -71,7 +71,7 @@ import ptolemy.kernel.util.NamedObj;
  * @Pt.ProposedRating Red (cxh)
  * @Pt.AcceptedRating Red (cxh)
  */
-public class DygraphsJSPlotter extends BasicJSPlotter {
+public class DygraphsJSPlotterAttribute extends JSPlotterAttribute {
 
     /** Construct an attribute that will generate HTML to plot using the Dygraphs
      *  library.
@@ -80,7 +80,7 @@ public class DygraphsJSPlotter extends BasicJSPlotter {
      *  @exception IllegalActionException If the superclass throws it.
      *  @exception NameDuplicationException If the superclass throws it.
      */
-    public DygraphsJSPlotter(NamedObj container, String name)
+    public DygraphsJSPlotterAttribute(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         height.setExpression("2");
