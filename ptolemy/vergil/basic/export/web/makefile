@@ -53,16 +53,16 @@ PTCLASSJAR =	$(PTPACKAGE).jar
 
 JSRCS = \
 	AreaEventType.java \
-	BasicJSPlotter.java \
 	DefaultIconLink.java \
 	DefaultIconScript.java \
 	DefaultTitle.java \
-	DygraphsJSPlotter.java \
+	DygraphsJSPlotterAttribute.java \
 	HTMLImage.java \
 	HTMLText.java \
 	HTMLTextPosition.java \
 	IconLink.java \
 	IconScript.java \
+	JSPlotterAttribute.java \
 	LinkTarget.java \
 	LinkToOpenTableaux.java \
 	ParameterDisplayIconScript.java \
