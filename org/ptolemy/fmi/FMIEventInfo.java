@@ -87,13 +87,13 @@ public class FMIEventInfo extends Structure {
         //initFieldOrder();
     }
 
-    /** Access the structure by value.
+    /** Access the structure by reference.
      */
     public static class ByReference extends FMIEventInfo implements
             Structure.ByReference {
     };
 
-    /** Access the structure by reference.
+    /** Access the structure by value.
      */
     public static class ByValue extends FMIEventInfo implements
             Structure.ByValue {

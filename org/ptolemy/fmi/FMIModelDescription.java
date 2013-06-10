@@ -88,6 +88,11 @@ public class FMIModelDescription {
      * must match the guid in the shared library.
      */
     public String guid;
+    
+    /** If true, then the FMU is intended for model exchange, not
+     *  co-simulation.
+     */
+    public boolean modelExchange;
 
     /** The FMI modelIdentifier, typically the value of the
      * modelIdentifier attribute from a .fmu file.  The

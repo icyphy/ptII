@@ -110,7 +110,6 @@ public interface FMULibrary extends FMILibrary {
             Memory alignedMemory = memory.align(4);
             memory.clear();
             Pointer pointer = alignedMemory.share(0);
-            System.out.println("Foo");
 
             // Need to keep a reference so the memory does not get gc'd.
             // Here, we keep a reference to both the Pointer and the Memory.

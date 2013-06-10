@@ -29,7 +29,6 @@ package ptolemy.vergil.basic.imprt.fmu;
 
 import java.awt.event.ActionEvent;
 import java.awt.geom.Rectangle2D;
-import java.io.File;
 
 import javax.swing.AbstractAction;
 
@@ -41,6 +40,7 @@ import ptolemy.gui.Query;
 import ptolemy.gui.Top;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.Settable;
 import ptolemy.util.MessageHandler;
 import ptolemy.vergil.basic.AbstractBasicGraphModel;
 import ptolemy.vergil.basic.BasicGraphFrame;
@@ -144,11 +144,13 @@ public class ImportFMUAction extends AbstractAction {
                         /* Color background */
                         PtolemyQuery.preferredBackgroundColor(_frame),
                         PtolemyQuery.preferredForegroundColor(_frame));
+                query.addCheckBox("modelExchange", "Import for Model Exchange", _lastModelExchange);
 
                 ComponentDialog dialog = new ComponentDialog(_frame,
-                        "Instantiate Functional Mock-up Unit (.fmi)", query);
+                        "Instantiate Functional Mock-up Unit (FMU)", query);
                 if (dialog.buttonPressed().equals("OK")) {
                     _lastLocation = query.getStringValue("location");
+                    _lastModelExchange = query.getBooleanValue("modelExchange");
 
                     // Use the center of the screen as a location.
                     Rectangle2D bounds = basicGraphFrame
@@ -162,14 +164,7 @@ public class ImportFMUAction extends AbstractAction {
 
                     // FIXME: Use URLs, not files so that we can work from JarZip files.
 
-                    // Only read the file if the name has changed from the last time we
-                    // read the file or if the modification time has changed.
-                    // FIXME: why??? What if I want multiple instances of an FMU?
-                    //fmuFileName = fmuFile.asFile().getCanonicalPath();
                     fmuFileName = _lastLocation;
-                    if (fmuFileName.equals(_fmuFileName)) {
-                        return;
-                    }
 
                     // Get the associated Ptolemy model.
                     GraphController controller = basicGraphFrame.getJGraph()
@@ -188,18 +183,11 @@ public class ImportFMUAction extends AbstractAction {
                             fmuFileParameter = new FileParameter(context, "_fmuFile");
                         }
                         fmuFileParameter.setExpression(fmuFileName);
+                        fmuFileParameter.setPersistent(false);
+                        fmuFileParameter.setVisibility(Settable.EXPERT);
                         fmuFileName = fmuFileParameter.asFile().getCanonicalPath();
-                        _fmuFileName = fmuFileName;
 
-                        long modificationTime = new File(fmuFileName)
-                            .lastModified();
-                        if (_fmuFileModificationTime == modificationTime) {
-                            return;
-                        }
-
-                        _fmuFileModificationTime = modificationTime;
-
-                        FMUImport.importFMU(this, fmuFileParameter, context, x, y);
+                        FMUImport.importFMU(this, fmuFileParameter, context, x, y, _lastModelExchange);
                     } finally {
                         // Avoid leaving a parameter in the model.
                         fmuFileParameter.setContainer(null);
@@ -214,23 +202,12 @@ public class ImportFMUAction extends AbstractAction {
     ///////////////////////////////////////////////////////////////////
     ////                    private variables
 
-    /** The name of the fmuFile.
-     *  The _fmuFileName field is set the first time we read
-     *  the file named by the <i>fmuFile</i> parameter.  The
-     *  file named by the <i>fmuFile</i> parameter is only read
-     *  if the name has changed or if the modification time of
-     *  the file is later than the time the file was last read.
-     */
-    private String _fmuFileName = null;
-
-    /** The modification time of the file named by the
-     *  <i>fmuFile</i> parameter the last time the file was read.
-     */
-    private long _fmuFileModificationTime = -1;
-
     /** The top-level window of the contents to be exported. */
     Top _frame;
 
     /** The most recent location for instantiating a class. */
     private String _lastLocation = "";
+    
+    /** The most recent selection of Model Exchange (vs. Co-Simulation). */
+    private boolean _lastModelExchange = false;
 }
