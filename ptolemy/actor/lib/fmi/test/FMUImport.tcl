@@ -48,7 +48,7 @@ if {[string compare sdfModel [info procs sdfModel]] != 0} \
 test FMUImport-1.1 {Test out importFMU} {
     set e1 [sdfModel 5]
     set fmuFile [java::call ptolemy.util.FileUtilities nameToFile {$CLASSPATH/org/ptolemy/fmi/fmu/cs/bouncingBall.fmu} [java::null]]
-    java::call ptolemy.actor.lib.fmi.FMUImport importFMU $e1 [$fmuFile getCanonicalPath]  $e1 100.0 100.0
+    java::call ptolemy.actor.lib.fmi.FMUImport importFMU $e1 [$fmuFile getCanonicalPath]  $e1 100.0 100.0 false
     set bouncingBall [$e1 getEntity {bouncingBall}]
     set moml [$bouncingBall exportMoML]
     regsub {value=".*/org/ptolemy/fmi/fmu/cs/bouncingBall.fmu"} $moml {value="$CLASSPATH/org/ptolemy/fmi/fmu/cs/bouncingBall.fmu"} moml2
