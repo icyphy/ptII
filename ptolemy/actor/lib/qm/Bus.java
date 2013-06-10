@@ -80,11 +80,14 @@ import ptolemy.kernel.util.Workspace;
  *  To use this quantity manager, drag an instance of this Bus
  *  into the model, and (optionally)
  *  assign it a name. Then, on any input port whose communication is to be
- *  mediated by this instance of Bus, add a parameter to the port, and
- *  assign as the value of the parameter the name of this instance. If
- *  the messageLength is not 1, use the set method and specify the messageLength
- *  as a parameter (e.g. Bus.set(2) ).
- *  That name will resolve to an ObjectToken referring to this instance.
+ *  mediated by this instance of Bus, open the configuration dialogue, 
+ *  select the tab with the name of the bus in the title and select the 
+ *  <i>enable</i> attribute. The message length is by default set to 1
+ *  but can be configured in this tab.
+ *  <p>
+ *  Several Bus quantity managers can be used in sequence. The order in which
+ *  Tokens are sent through Buses depends on the order in which these are
+ *  enabled via the DecoratorAttributes. 
  *  <p>
  *  This actor is tested in continuous and DE. 
  *  @author Patricia Derler, Edward A. Lee
