@@ -141,8 +141,7 @@ fmiStatus fmiDoStep(fmiComponent c, fmiReal currentCommunicationPoint,
     // The following test does that, but it relies on the orchestrator
     // to correctly call this method with noSetFMUStatePriorToCurrentPoint == false each time
     // there is a rollback in time, and only when there is a rollback
-    // in time. Seems not very robust. Supporting rollback explicitly
-    // is probably much more robust.
+    // in time. Seems not very robust.
     if (!noSetFMUStatePriorToCurrentPoint) {
         component->atBreakpoint = fmiFalse;
     }
