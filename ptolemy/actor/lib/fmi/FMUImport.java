@@ -41,11 +41,11 @@ import org.ptolemy.fmi.FMIEventInfo;
 import org.ptolemy.fmi.FMILibrary;
 import org.ptolemy.fmi.FMIModelDescription;
 import org.ptolemy.fmi.FMIScalarVariable;
-import org.ptolemy.fmi.NativeSizeT;
 import org.ptolemy.fmi.FMIScalarVariable.Alias;
 import org.ptolemy.fmi.FMIScalarVariable.Causality;
 import org.ptolemy.fmi.FMUFile;
 import org.ptolemy.fmi.FMULibrary;
+import org.ptolemy.fmi.NativeSizeT;
 import org.ptolemy.fmi.type.FMIBooleanType;
 import org.ptolemy.fmi.type.FMIIntegerType;
 import org.ptolemy.fmi.type.FMIRealType;
@@ -328,7 +328,6 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
      *  inputs on which the output depends are known.
      *  @exception IllegalActionException If FMU indicates a failure.
      */
-    @SuppressWarnings("deprecation")
     public void fire() throws IllegalActionException {
 
         /* Martin Arnold <martin.arnold@mathematik.uni-halle.de> explains rollback as follows:
@@ -489,6 +488,9 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
                     _recordFMUState();
                     
                     _lastCommitTime = currentTime;
+                    
+                    // To initialize the event indicators, call this.
+                    _checkEventIndicators();
                 } else {
                     // FIXME: Support 2.0
                     throw new IllegalActionException(this,
@@ -1062,8 +1064,10 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
                 
         // In case we have to backtrack, if the FMU supports backtracking,
         // record its state.
-        // FIXME: Not supporting backtracking.
-        // _recordFMUState();
+        // FIXME: Not supporting backtracking for model exchange.
+        if (!_fmiModelDescription.modelExchange) {
+            _recordFMUState();
+        }
 
         return super.postfire();
     }
@@ -1430,7 +1434,7 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
         }
 
         int fmiFlag = ((Integer) _fmiGetEventIndicatorsFunction.invoke(Integer.class, new Object[] {
-            _fmiComponent, _eventIndicators, number })).intValue();
+            _fmiComponent, _eventIndicators, new NativeSizeT(number) })).intValue();
 
         if (fmiFlag != FMILibrary.FMIStatus.fmiOK) {
             throw new IllegalActionException(this, "Failed to get event indicators.");
@@ -1438,6 +1442,7 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
 
         if (_firstFire) {
             _eventIndicatorsPrevious = _eventIndicators;
+            _eventIndicators = null;
             return false;
         }
         // Check for polarity change.
