@@ -74,7 +74,8 @@ all: jclass
 install: jclass jars
 
 demo:
-	vergil CompositeQM.xml
+	vergil CompositeQM.xml \
+	CheckExecutionTimeConstraints.xml
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
