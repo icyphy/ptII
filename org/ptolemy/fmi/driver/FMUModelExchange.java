@@ -84,7 +84,7 @@ public class FMUModelExchange extends FMUDriver {
      *
      * <p>Usage:</p>
      * <pre>
-     * java -classpath ../../../lib/jna.jar:../../.. org.ptolemy.fmi.driver.FMUModelExchange \
+     * java -classpath ../../../../lib/jna.jar:../../../.. org.ptolemy.fmi.driver.FMUModelExchange \
      * file.fmu [endTime] [stepTime] [loggingOn] [csvSeparator] [outputFile]
      * </pre>
      *
