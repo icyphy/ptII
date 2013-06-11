@@ -29,6 +29,7 @@ package ptolemy.actor.lib.fmi;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.ByteBuffer;
 import java.nio.DoubleBuffer;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -379,18 +380,30 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
                     + " and microstep " + currentMicrostep);
         }
 
+        double derivatives[] = null;
         if (_fmiModelDescription.modelExchange) {
             /////////////////////////////////////////
             // Model exchange version.
-                                                
+            
+            // Need to retrieve the derivatives before advancing
+            // the time of the FMU.  However, this needs to not be
+            // done on the first firing, since the actual integration
+            // step will be performed only in subsequent firings.
+            if (!_firstFire) {
+                derivatives = _fmiGetDerivatives();
+            }
+                          
             // Set the time.
             // FIXME: Is it OK to do this even if time has not advanced?
             _fmiSetTime(currentTime);
+
+            // NOTE: The FMI standard says that all variable start values
+            // (of "ScalarVariable / <type> / start") can be set at this time,
+            // but we would only want to do that if we want to influence the
+            // convergence of some algebraic solver. Since no Ptolemy director
+            // currently supports algebraic solvers, we have no reason to want
+            // to set the start value, so we ignore this.
             
-            if (_firstFire) {
-                
-                // FIXME: set all variable start values (of "ScalarVariable / <type> / start")
-            }
         } else {
             /////////////////////////////////////////
             // Co-simulation version.
@@ -409,6 +422,7 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
         }
 
         ////////////////
+        // Set the inputs.
         // Iterate through the scalarVariables and set all the inputs
         // that are known.
         // FIXME: Here, we are iterating over a potentially very large number
@@ -513,24 +527,29 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
                 _newStates = new double[states.length];
             }
             // Make sure the states of the FMU match the last commit.
-            _fmiSetContinuousStates(states);
+            // FIXME: This is only needed if backtracking might occur.
+            // Even then, it's incomplete. Probably need to record and reset _all_ variables,
+            // not just the continuous states.
+            // _fmiSetContinuousStates(states);
 
             if (currentTimeValue > _lastCommitTime.getDoubleValue()) {
-                
                 double step = currentTimeValue - _lastCommitTime.getDoubleValue();
-                double derivatives[] = _fmiGetDerivatives();
                 
                 for (int i = 0; i < states.length; i++) {
                     _newStates[i] = states[i] + derivatives[i] * step;
                 }
-                // This will be done again in postfire with the result of the last fire of the iteration.
                 _fmiSetContinuousStates(_newStates);
+                
+                // Check event indicators.
+                boolean stateEventOccurred = _checkEventIndicators();
+                
+                // FIXME: Check also for time events.
+                boolean timeEventOccurred = false;
+                
+                // Complete the integrator step.
+                _fmiCompletedIntegratorStep(stateEventOccurred || timeEventOccurred);
             } else {
                 // FIXME: Need to do an event update. Zero step size.
-                // Placeholder for now is to leave the current state alone.
-                for (int i = 0; i < states.length; i++) {
-                    _newStates[i] = states[i];
-                }
             }
         }
         
@@ -586,7 +605,7 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
          */
         
         ////////////////
-        // Iterate through the outputs.
+        // Get the outputs from the FMU and produce them..
         for (Output output : _getOutputs()) {
 
             TypedIOPort port = output.port;
@@ -1094,10 +1113,6 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
         if (_debugging) {
             _debug("Committing to time " + _lastCommitTime);
         }
-        if (_fmiModelDescription.modelExchange) {
-            // Record the final state.
-            _fmiSetContinuousStates(_newStates);
-        }
         _refinedStepSize = -1.0;
         _firstFireInIteration = true;
         
@@ -1105,10 +1120,11 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
         // step size and call fireAt() and ensure that the FMU is invoked
         // at the specified time.
         _requestRefiringIfNecessary();
-        
+                
         // In case we have to backtrack, if the FMU supports backtracking,
         // record its state.
-        _recordFMUState();
+        // FIXME: Not supporting backtracking.
+        // _recordFMUState();
 
         return super.postfire();
     }
@@ -1164,12 +1180,18 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
             _fmiGetDerivativesFunction = _nativeLibrary
                     .getFunction(_fmiModelDescription.modelIdentifier
                             + "_fmiGetDerivatives");
+            _fmiGetEventIndicatorsFunction = _nativeLibrary
+                    .getFunction(_fmiModelDescription.modelIdentifier
+                            + "_fmiGetEventIndicators");
             _fmiTerminateFunction = _nativeLibrary
                     .getFunction(_fmiModelDescription.modelIdentifier
                             + "_fmiTerminate");
             _fmiFreeModelInstanceFunction = _nativeLibrary
                     .getFunction(_fmiModelDescription.modelIdentifier
                             + "_fmiFreeModelInstance");
+            _fmiCompletedIntegratorStepFunction = _nativeLibrary
+                    .getFunction(_fmiModelDescription.modelIdentifier
+                            + "_fmiCompletedIntegratorStep");
             _checkFmiModelExchange();
         } else {
             ////////////////////////////////////////////
@@ -1429,6 +1451,54 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
+    /** Return true if we are not in the first firing and the
+     *  sign of some event indicator has changed.
+     *  @return True if a state event has occurred.
+     *  @exception IllegalActionException If the fmiGetEventIndicators
+     *   function is missing, or if calling it does not return fmiOK.
+     */
+    protected boolean _checkEventIndicators() throws IllegalActionException {
+        int number = _fmiModelDescription.numberOfEventIndicators;
+        if (number == 0) {
+            // No event indicators.
+            return false;
+        }
+        if (_eventIndicators == null || _eventIndicators.length != number) {
+            _eventIndicators = new double[number];
+        }
+        if (_fmiGetEventIndicatorsFunction == null) {
+            throw new IllegalActionException(
+                    this,
+                    "Could not get the "
+                            + _fmiModelDescription.modelIdentifier
+                            + "_fmiGetEventIndicators"
+                            + "() C function?  Perhaps the .fmu file \""
+                            + fmuFile.asFile()
+                            + "\" does not contain a shared library for the current "
+                            + "platform?  ");
+        }
+
+        int fmiFlag = ((Integer) _fmiGetEventIndicatorsFunction.invoke(Integer.class, new Object[] {
+            _fmiComponent, _eventIndicators, number })).intValue();
+
+        if (fmiFlag != FMILibrary.FMIStatus.fmiOK) {
+            throw new IllegalActionException(this, "Failed to get event indicators.");
+        }
+
+        if (_firstFire) {
+            _eventIndicatorsPrevious = _eventIndicators;
+            return false;
+        }
+        // Check for polarity change.
+        for (int i = 0; i < number; i++) {
+            if (_eventIndicatorsPrevious[i]*_eventIndicators[i] < 0.0) {
+                return true;
+            }
+        }
+        _eventIndicatorsPrevious = _eventIndicators;
+        return false;
+    }
+    
     /** Print the debug message to stdout and flush stdout.
      *  This is useful for tracking down segfault problems.
      *  To use this, right click on the FMUImport actor
@@ -1442,6 +1512,27 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
         _debug(message);
     }
 
+    /** For model exchange, complete the integrator step, and if the FMU
+     *  indicates that fmiEventUpdate() should be called, call it.
+     *  @param eventOccurred True if a time event or state event has occurred and
+     *   fmiEventUpdate should be called.
+     *  @throws IllegalActionException If the FMU does not return fmiOK.
+     */
+    protected void _fmiCompletedIntegratorStep(boolean eventOccurred) throws IllegalActionException {
+        ByteBuffer callEventUpdate = ByteBuffer.allocate(1);
+        int fmiFlag = ((Integer) _fmiCompletedIntegratorStepFunction
+                .invoke(Integer.class, new Object[] {
+                    _fmiComponent, callEventUpdate })).intValue();
+
+        if (fmiFlag != FMILibrary.FMIStatus.fmiOK) {
+            throw new IllegalActionException(this, "Failed to complete integrator step.");
+        }
+
+        if (callEventUpdate.get(0) != (byte) 0 || eventOccurred) {
+            throw new IllegalActionException(this, "FIXME: Not supported yet. Call eventUpdate");
+        }
+    }
+    
     /** Advance from the last firing time or last commit time to the specified time and
      *  microstep by calling fmiDoStep(), if necessary. This method is for
      *  co-simulation only. Such an advance
@@ -1726,18 +1817,22 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
      */
     protected double[] _fmiGetDerivatives() throws IllegalActionException {
         int numberOfStates = _fmiModelDescription.numberOfContinuousStates;
-        DoubleBuffer derivativesValues = DoubleBuffer.allocate(numberOfStates);
+        if (_derivatives == null || _derivatives.length != numberOfStates) {
+            // FIXME: All our other JNA code uses DoubleBuffer.allocat().  Why?
+            // I'm getting the same (nonsensical) results from both.
+            _derivatives = new double[numberOfStates];
+        }
         
         int fmiFlag = ((Integer) _fmiGetDerivativesFunction.invoke(Integer.class, new Object[] {
-            _fmiComponent, derivativesValues, numberOfStates })).intValue();
+            _fmiComponent, _derivatives, numberOfStates })).intValue();
     
         if (fmiFlag != FMILibrary.FMIStatus.fmiOK) {
             throw new IllegalActionException(this, "Failed to set continuous states at time:"
                     + _fmiStatusDescription(fmiFlag));
         }
-        return derivativesValues.array();
+        return _derivatives;
     }
-    
+
     /** For model exchange, set the continuous states of the FMU to the specified array.
      *  @param values The values to assign to the states.
      *  @throws IllegalActionException If the length of the array does not match
@@ -2185,6 +2280,9 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
             if (_fmiGetDerivativesFunction == null) {
                 missingFunction = "_fmiGetDerivatives";
             }
+            if (_fmiCompletedIntegratorStepFunction == null) {
+                missingFunction = "_fmiCompletedIntegratorStep";
+            }
         }
         if (missingFunction != null) {
             String sharedLibrary = "";
@@ -2406,6 +2504,15 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
      *  but we assume it is.
      */
     private FMICallbackFunctions _callbacks;
+    
+    /** Buffer for the derivatives returned by the FMU. */
+    private double[] _derivatives;
+    
+    /** Buffer for event indicators. */
+    private double[] _eventIndicators;
+
+    /** Buffer for previous event indicators. */
+    private double[] _eventIndicatorsPrevious;
 
     /** Flag identifying the first invocation of fire() after initialize
      */
@@ -2416,20 +2523,9 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
      */
     private boolean _firstFireInIteration;
 
-    /** The name of the fmuFile.
-     *  The _fmuFileName field is set the first time we read
-     *  the file named by the <i>fmuFile</i> parameter.  The
-     *  file named by the <i>fmuFile</i> parameter is only read
-     *  if the name has changed or if the modification time of
-     *  the file is later than the time the file was last read.
-     */
-    private String _fmuFileName = null;
-
-    /** The modification time of the file named by the
-     *  <i>fmuFile</i> parameter the last time the file was read.
-     */
-    private long _fmuFileModificationTime = -1;
-
+    /** The fmiCompletedIntegratorStep() function. */
+    private Function _fmiCompletedIntegratorStepFunction;
+    
     /** The fmiDoStep() function. */
     private Function _fmiDoStepFunction;
 
@@ -2447,6 +2543,9 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
 
     /** Function to get the derivatives of a model-exchange FMU. */
     private Function _fmiGetDerivativesFunction;
+
+    /** Function to get the event indicators of the FMU for model exchange. */
+    private Function _fmiGetEventIndicatorsFunction;
 
     /** Function to retrieve the current state of the FMU. */
     private Function _fmiGetFMUstateFunction;
@@ -2477,6 +2576,20 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
     /** The _fmiTerminateSlaveFunction function. */
     private Function _fmiTerminateSlaveFunction;
 
+    /** The name of the fmuFile.
+     *  The _fmuFileName field is set the first time we read
+     *  the file named by the <i>fmuFile</i> parameter.  The
+     *  file named by the <i>fmuFile</i> parameter is only read
+     *  if the name has changed or if the modification time of
+     *  the file is later than the time the file was last read.
+     */
+    private String _fmuFileName = null;
+
+    /** The modification time of the file named by the
+     *  <i>fmuFile</i> parameter the last time the file was read.
+     */
+    private long _fmuFileModificationTime = -1;
+    
     /** The time at which the last commit occurred (initialize or postfire). */
     private Time _lastCommitTime;
 
@@ -2501,7 +2614,7 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
 
     /** The workspace version at which the _outputs variable was last updated. */
     private long _outputsVersion = -1;
-    
+        
     /** The latest recorded state of the FMU. */
     private PointerByReference _recordedState = null;
     
