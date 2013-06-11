@@ -5325,7 +5325,7 @@ if test -f "$LIBEXPAT_INCLUDE_DIR/expat.h" -a -d "$LIBEXPAT_LIB_DIR"; then
     # and used in jnlp.mk.
     PTLBNL_JARS="lbnl/lbnl.jar lbnl/demo/demo.jar"
     # Used in $PTII/doc/makefile
-    PTLBNL_PACKAGES="lbnl.actor.lib lbnl.actor.lib.net lbnl.lib.labview lbnl.util"
+    PTLBNL_PACKAGES="lbnl.actor.lib lbnl.actor.lib.net lbnl.lib.labview lbnl.lib.xml.src lbnl.util"
 
     if test -d "$FMIPP_USER_DIR"; then
         if test -f "$PTBOOST_INCLUDE_DIR/boost/numeric/odeint.hpp"; then
