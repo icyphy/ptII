@@ -41,6 +41,7 @@ import org.ptolemy.fmi.FMIEventInfo;
 import org.ptolemy.fmi.FMILibrary;
 import org.ptolemy.fmi.FMIModelDescription;
 import org.ptolemy.fmi.FMIScalarVariable;
+import org.ptolemy.fmi.NativeSizeT;
 import org.ptolemy.fmi.FMIScalarVariable.Alias;
 import org.ptolemy.fmi.FMIScalarVariable.Causality;
 import org.ptolemy.fmi.FMUFile;
@@ -482,28 +483,7 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
 
             if (_firstFire) {
                 if (_fmiVersion < 2.0) {
-
-                    Function initializeFunction = _nativeLibrary.getFunction(
-                            _fmiModelDescription.modelIdentifier
-                            + "_fmiInitialize");
-
-                    FMIEventInfo eventInfo = new FMIEventInfo.ByValue();
-                    int fmiFlag = ((Integer) initializeFunction.invoke(Integer.class, new Object[] {
-                        _fmiComponent, _toleranceControlled, _relativeTolerance,
-                        eventInfo.getPointer() })).intValue();
-
-                    if (fmiFlag != FMILibrary.FMIStatus.fmiOK) {
-                        throw new IllegalActionException(this, "Failed to initialize FMU.");
-                    }
-
-                    if (eventInfo.terminateSimulation != (byte) 0) {
-                        throw new IllegalActionException(this, "FMU terminates simulation in fmiInitialize()");
-                    }
-                    if (eventInfo.upcomingTimeEvent != (byte) 0) {
-                        // FIXME: Record the event time to make sure to call fmiEventUpdate when fired.
-                        // FIXME: Does this make sense to do here? Shouldn't this happen in initialize?
-                        getDirector().fireAt(this, eventInfo.nextEventTime);
-                    }
+                    _fmiInitialize();
 
                     // Record the state.
                     _recordFMUState();
@@ -513,9 +493,6 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
                     // FIXME: Support 2.0
                     throw new IllegalActionException(this,
                             "FMUImport does not yet support model exchange in version 2.0.");
-                }
-                if (_debugging) {
-                    _debugToStdOut("FMIImport.initialize() END");
                 }
             }
             // If time has advanced since the last
@@ -738,14 +715,18 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
         _firstFire = false;
     }
 
-    /** Initialize the FMU.
+    /** Initialize this FMU wrapper.
+     *  For co-simulation, this initializes the FMU.
+     *  For model exchange, it does not, because for model exchange, the
+     *  inputs at the start time need to be provided prior to initialization.
+     *  Initialization will therefore occur in the first invocation of fire().
      *  @exception IllegalActionException If the slave FMU cannot be
      *  initialized.
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
         if (_debugging) {
-            _debugToStdOut("FMIImport.initialize() START");
+            _debugToStdOut("FMIImport.initialize() method called.");
         }
         // Set a flag so the first call to fire() can do appropriate initialization.
         _firstFire = true;
@@ -776,11 +757,8 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
             }
         }
 
-        String modelIdentifier = _fmiModelDescription.modelIdentifier;
-
         Director director = getDirector();
         Time startTime = director.getModelStartTime();
-        Time stopTime = director.getModelStopTime();
         
         // Determine the error tolerance of the director, if specified.
         // The FMI 2.0 standard does not offer any suggestion for a default
@@ -817,46 +795,7 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
         //////////////////////////////////////////////
         //// co-simulation version
 
-        // FIXME: _fmiInitializeSlave should be handled like other FMU calls,
-        // with a private _fmiInitializeSlaveFunction and a protected _fmiInitializeSlave method.
-        if (_debugging) {
-            _debugToStdOut("FMUCoSimulation: about to call " + modelIdentifier
-                    + "_fmiInitializeSlave");
-        }
-        
-        Function initializeSlaveFunction = _nativeLibrary.getFunction(modelIdentifier
-                + "_fmiInitializeSlave");
-
-        int fmiFlag;
-        if (_fmiVersion < 2.0) {
-            fmiFlag = ((Integer) initializeSlaveFunction.invoke(Integer.class, new Object[] {
-                    _fmiComponent, startTime.getDoubleValue(), (byte) 1,
-                    stopTime.getDoubleValue() })).intValue();
-        } else {
-            fmiFlag = ((Integer) initializeSlaveFunction.invoke(
-                    Integer.class,
-                    new Object[] { _fmiComponent, _relativeTolerance,
-                            startTime.getDoubleValue(), (byte) 1, // fmiBoolean stopTimeDefined
-                            stopTime.getDoubleValue() })).intValue();
-            
-            // If the FMU can provide a maximum step size, query for the initial maximum
-            // step size and call fireAt() and ensure that the FMU is invoked
-            // at the specified time.
-            _requestRefiringIfNecessary();
-            
-            // In case we have to backtrack, if the FMU supports backtracking,
-            // record its state.
-            _recordFMUState();
-        }
-
-        if (fmiFlag > FMILibrary.FMIStatus.fmiWarning) {
-            throw new IllegalActionException(this, "Could not simulate, "
-                    + modelIdentifier
-                    + "_fmiInitializeSlave(Component, /* startTime */ "
-                    + startTime.getDoubleValue() + ", 1, /* stopTime */"
-                    + stopTime.getDoubleValue() + ") returned "
-                    + _fmiStatusDescription(fmiFlag));
-        }
+        _fmiInitialize();
         _lastCommitTime = startTime;
         _lastFireTime = startTime;
         if (director instanceof SuperdenseTimeDirector) {
@@ -870,7 +809,7 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
         _suggestZeroStepSize = false;
 
         if (_debugging) {
-            _debugToStdOut("FMIImport.initialize() END");
+            _debugToStdOut("FMIImport.initialize() call completed.");
         }
     }
     
@@ -1166,11 +1105,12 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
         ////////////////////////////////////////////
         //// model exchange version
         if (_fmiModelDescription.modelExchange){
-            _fmiSetTimeFunction = _nativeLibrary.getFunction(
-                    _fmiModelDescription.modelIdentifier + "_fmiSetTime");
-            _fmiInstantiateModelFunction = _nativeLibrary
+            _fmiCompletedIntegratorStepFunction = _nativeLibrary
                     .getFunction(_fmiModelDescription.modelIdentifier
-                            + "_fmiInstantiateModel");
+                            + "_fmiCompletedIntegratorStep");
+            _fmiFreeModelInstanceFunction = _nativeLibrary
+                    .getFunction(_fmiModelDescription.modelIdentifier
+                            + "_fmiFreeModelInstance");
             _fmiGetContinuousStatesFunction = _nativeLibrary
                     .getFunction(_fmiModelDescription.modelIdentifier
                             + "_fmiGetContinuousStates");
@@ -1180,18 +1120,26 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
             _fmiGetDerivativesFunction = _nativeLibrary
                     .getFunction(_fmiModelDescription.modelIdentifier
                             + "_fmiGetDerivatives");
-            _fmiGetEventIndicatorsFunction = _nativeLibrary
+            // Optional function? The standard is not clear
+            try {
+                _fmiGetEventIndicatorsFunction = _nativeLibrary
+                        .getFunction(_fmiModelDescription.modelIdentifier
+                                + "_fmiGetEventIndicators");
+            } catch (UnsatisfiedLinkError ex) {
+                // The FMU has not provided the function.
+                _fmiGetEventIndicatorsFunction = null;
+            }
+            _fmiInitializeFunction = _nativeLibrary
                     .getFunction(_fmiModelDescription.modelIdentifier
-                            + "_fmiGetEventIndicators");
+                            + "_fmiInitialize");
+            _fmiInstantiateModelFunction = _nativeLibrary
+                    .getFunction(_fmiModelDescription.modelIdentifier
+                            + "_fmiInstantiateModel");
+            _fmiSetTimeFunction = _nativeLibrary.getFunction(
+                    _fmiModelDescription.modelIdentifier + "_fmiSetTime");
             _fmiTerminateFunction = _nativeLibrary
                     .getFunction(_fmiModelDescription.modelIdentifier
                             + "_fmiTerminate");
-            _fmiFreeModelInstanceFunction = _nativeLibrary
-                    .getFunction(_fmiModelDescription.modelIdentifier
-                            + "_fmiFreeModelInstance");
-            _fmiCompletedIntegratorStepFunction = _nativeLibrary
-                    .getFunction(_fmiModelDescription.modelIdentifier
-                            + "_fmiCompletedIntegratorStep");
             _checkFmiModelExchange();
         } else {
             ////////////////////////////////////////////
@@ -1199,15 +1147,18 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
             _fmiDoStepFunction = _nativeLibrary
                     .getFunction(_fmiModelDescription.modelIdentifier
                             + "_fmiDoStep");
+            _fmiFreeSlaveInstanceFunction = _nativeLibrary
+                    .getFunction(_fmiModelDescription.modelIdentifier
+                            + "_fmiFreeSlaveInstance");
+            _fmiInitializeSlaveFunction = _nativeLibrary
+                    .getFunction(_fmiModelDescription.modelIdentifier
+                            + "_fmiInitializeSlave");
             _fmiInstantiateSlaveFunction = _nativeLibrary
                     .getFunction(_fmiModelDescription.modelIdentifier
                             + "_fmiInstantiateSlave");
             _fmiTerminateSlaveFunction = _nativeLibrary
                     .getFunction(_fmiModelDescription.modelIdentifier
                             + "_fmiTerminateSlave");
-            _fmiFreeSlaveInstanceFunction = _nativeLibrary
-                    .getFunction(_fmiModelDescription.modelIdentifier
-                            + "_fmiFreeSlaveInstance");
 
             // Optional function.
             try {
@@ -1824,13 +1775,84 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
         }
         
         int fmiFlag = ((Integer) _fmiGetDerivativesFunction.invoke(Integer.class, new Object[] {
-            _fmiComponent, _derivatives, numberOfStates })).intValue();
+            _fmiComponent, _derivatives, new NativeSizeT(numberOfStates) })).intValue();
     
         if (fmiFlag != FMILibrary.FMIStatus.fmiOK) {
             throw new IllegalActionException(this, "Failed to set continuous states at time:"
                     + _fmiStatusDescription(fmiFlag));
         }
         return _derivatives;
+    }
+    
+    /** Invoke _fmiInitialize() (for model exchange) or
+     *  _fmiInitializeSlave() (for co-simulation) on the FMU.
+     *  In the case of model exchange, this method also checks for a returned
+     *  next event time and calls fireAt() on the director if a next event time
+     *  is returned. In the case of co-simulation, if the FMU provides a maximum
+     *  step size, get that from the FMU and call fireAt() as well.
+     *  @throws IllegalActionException If the FMU does not return fmiOK.
+     */
+    @SuppressWarnings("deprecation")
+    protected void _fmiInitialize() throws IllegalActionException {
+        if (_fmiModelDescription.modelExchange) {
+            FMIEventInfo eventInfo = new FMIEventInfo.ByValue();
+            int fmiFlag = ((Integer) _fmiInitializeFunction.invoke(Integer.class, new Object[] {
+                _fmiComponent, _toleranceControlled, _relativeTolerance,
+                eventInfo.getPointer() })).intValue();
+
+            if (fmiFlag != FMILibrary.FMIStatus.fmiOK) {
+                throw new IllegalActionException(this, "Failed to initialize FMU.");
+            }
+
+            if (eventInfo.terminateSimulation != (byte) 0) {
+                throw new IllegalActionException(this, "FMU terminates simulation in fmiInitialize()");
+            }
+            if (eventInfo.upcomingTimeEvent != (byte) 0) {
+                // FIXME: Record the event time to make sure to call fmiEventUpdate when fired.
+                // FIXME: Does this make sense to do here? Shouldn't this happen in initialize?
+                getDirector().fireAt(this, eventInfo.nextEventTime);
+            }
+        } else {
+            String modelIdentifier = _fmiModelDescription.modelIdentifier;
+
+            Director director = getDirector();
+            Time startTime = director.getModelStartTime();
+            Time stopTime = director.getModelStopTime();
+
+            int fmiFlag;
+            if (_fmiVersion < 2.0) {
+                fmiFlag = ((Integer) _fmiInitializeSlaveFunction.invoke(Integer.class, new Object[] {
+                        _fmiComponent, startTime.getDoubleValue(), (byte) 1,
+                        stopTime.getDoubleValue() })).intValue();
+            } else {
+                fmiFlag = ((Integer) _fmiInitializeSlaveFunction.invoke(
+                        Integer.class,
+                        new Object[] { _fmiComponent, _relativeTolerance,
+                                startTime.getDoubleValue(), (byte) 1, // fmiBoolean stopTimeDefined
+                                stopTime.getDoubleValue() })).intValue();
+                
+                // If the FMU can provide a maximum step size, query for the initial maximum
+                // step size and call fireAt() and ensure that the FMU is invoked
+                // at the specified time.
+                _requestRefiringIfNecessary();
+                
+                // In case we have to backtrack, if the FMU supports backtracking,
+                // record its state.
+                _recordFMUState();
+            }
+
+            if (fmiFlag > FMILibrary.FMIStatus.fmiWarning) {
+                throw new IllegalActionException(this, "Could not simulate, "
+                        + modelIdentifier
+                        + "_fmiInitializeSlave(Component, /* startTime */ "
+                        + startTime.getDoubleValue() + ", 1, /* stopTime */"
+                        + stopTime.getDoubleValue() + ") returned "
+                        + _fmiStatusDescription(fmiFlag));
+            }
+        }
+        if (_debugging) {
+            _debugToStdOut("Initialized FMU.");
+        }
     }
 
     /** For model exchange, set the continuous states of the FMU to the specified array.
@@ -1848,7 +1870,7 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
             states.put(values[i]);
         }
         int fmiFlag = ((Integer) _fmiSetContinuousStates.invoke(Integer.class, new Object[] {
-            _fmiComponent, states, values.length })).intValue();
+            _fmiComponent, states, new NativeSizeT(values.length) })).intValue();
     
         if (fmiFlag != FMILibrary.FMIStatus.fmiOK) {
             Time currentTime = getDirector().getModelTime();
@@ -1981,7 +2003,7 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
             }
 
             int fmiFlag = ((Integer) _fmiGetContinuousStatesFunction.invoke(Integer.class, new Object[] {
-                _fmiComponent, _states, numberOfStates })).intValue();
+                _fmiComponent, _states, new NativeSizeT(numberOfStates) })).intValue();
         
             if (fmiFlag != FMILibrary.FMIStatus.fmiOK) {
                 Time currentTime = getDirector().getModelTime();
@@ -2553,6 +2575,12 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
     /** The fmiGetRealStatus() function. */
     private Function _fmiGetRealStatusFunction;
     
+    /** The _fmiInitializeSlave function. */
+    private Function _fmiInitializeFunction;
+
+    /** The _fmiInitializeSlave function. */
+    private Function _fmiInitializeSlaveFunction;
+
     /** The _fmiInstantiateModel function. */
     private Function _fmiInstantiateModelFunction;
 
