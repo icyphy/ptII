@@ -30,7 +30,11 @@ COPYRIGHTENDKEY
 package ptolemy.demo.FaultModels.lib;
 
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.Map;
+import java.util.TreeMap;
+
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.ArrayToken;
@@ -41,6 +45,7 @@ import ptolemy.data.MatrixToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
+import ptolemy.data.expr.UtilityFunctions;
 import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
 import ptolemy.domains.de.kernel.DEEvent;
@@ -340,11 +345,12 @@ public class ExpectationMaximization extends TypedAtomicActor {
                if((m_new[0] != m_new[0]) || (s_new[0]!=s_new[0]) || (A_new[0]!=A_new[0])){
                    // if no convergence in 10 iterations, issue warning message.
                    if ( iterations < _nIterations-1){
-                       if((asked == 0) && !MessageHandler.yesNoQuestion("WARNING: The Expectation Maximization algorithm did not " +
-                       		"converge with the given initial parameters. Randomize initial guess?")){
-                           break;
-                       }
-                       asked = 1;
+                       //if((asked == 0) ){
+                           //&& !MessageHandler.yesNoQuestion("WARNING: The Expectation Maximization algorithm did not " +
+                      // "converge with the given initial parameters. Randomize initial guess?")
+                          // break;
+                      // }
+                      // asked = 1;
                    } else{
                        MessageHandler.message("Expectation Maximization failed to converge");
                    }
@@ -490,18 +496,24 @@ public class ExpectationMaximization extends TypedAtomicActor {
        double[]   mu_hat = new double[nStates];
        double[]   s_hat = new double[nStates];
        
-       for( int j=0; j < nStates; j++){
-           for( int i = 0; i < nStates; i++){
+       for( int next=0; next < nStates; next++){
+           for( int now = 0; now < nStates; now++){
                for(int t = 0; t < (y.length-1); t++){
-                   psi[t][i][j] = alphas[t][i]*gaussian(y[t+1], mu[j], sigma[j])
-                           *gamma[t+1][j]*A[i][j]/alphas[t+1][j];
-                   A_hat[i][j] += psi[t][i][j];
+                   // gamma t or t+1? alphas t or t+1?
+                   if(alphas[t+1][next] == 0){
+                       psi[t][now][next] = 0;
+                   }
+                   else{
+                       psi[t][now][next] = alphas[t][now]*gaussian(y[t+1], mu[next], sigma[next])
+                               *gamma[t+1][next]*A[now][next]/alphas[t+1][next];
+                   }
+                   A_hat[now][next] += psi[t][now][next];
                    //System.out.print(psi[t][i][j]+ " ");
                }
                
            }
-           mu_hat[j] = 0;
-           s_hat[j] = 0;
+           mu_hat[next] = 0;
+           s_hat[next] = 0;
            //System.out.println();
        }
        // Normalize A
@@ -536,21 +548,15 @@ public class ExpectationMaximization extends TypedAtomicActor {
            }
            s_hat[j] = Math.pow(s_hat[j]/gammasum[j],0.5);
        }
-       //System.out.println(gammasum[0] + " " + gammasum[1] + " gammasum");
-       
-       
-       
-       
-       //System.out.println("mu:" + mu_hat[0]+" "+ mu_hat[1]);
-       //System.out.println("sigma: " + s_hat[0]+" "+ s_hat[1]);
-       
-       // now, will return the estimates in an array. 
        
        HashMap estimates = new HashMap();
        
-       estimates.put("mu_hat", mu_hat);
-       estimates.put("s_hat", s_hat);
-       estimates.put("A_hat", A_hat);
+       //estimates.put("mu_hat", mu_hat);
+       //estimates.put("s_hat", s_hat);
+       //estimates.put("A_hat", A_hat);
+       
+       // Actual tags should also be sorted if we do this. 
+       estimates = sortEstimates(mu_hat, s_hat, A_hat);
               
        return estimates;
    
@@ -627,6 +633,35 @@ public class ExpectationMaximization extends TypedAtomicActor {
    private static final double gaussian(double x, double mu, double sigma){
        
        return 1.0/(Math.sqrt(2*Math.PI)*sigma)*Math.exp(-0.5*Math.pow((x-mu)/sigma, 2));
+   }
+   
+   private static HashMap sortEstimates( double[] mu, double[] sigma, double[][] transition ){
+       HashMap sortedEstimates = new HashMap();
+       
+       
+       
+       HashMap<Double, Integer> originalOrder = new HashMap();
+       for (int i = 0; i < mu.length; ++i) {
+           originalOrder.put(mu[i], i);
+       }
+       
+       Arrays.sort(mu);
+       double[] orderedSigma = new double[sigma.length];
+       double[][] orderedTrans = new double[transition.length][transition.length];
+       for (int i = 0; i < mu.length; ++i) {
+           int j = originalOrder.get(mu[i]);
+           orderedSigma[i] = sigma[j];
+           
+           for( int k=0; k < mu.length; k++){
+               int l = originalOrder.get(mu[k]);
+               orderedTrans[i][k] = transition[j][l];
+           }
+       }
+       
+       sortedEstimates.put("mu_hat", mu);
+       sortedEstimates.put("s_hat", orderedSigma);
+       sortedEstimates.put("A_hat", orderedTrans);
+       return sortedEstimates;
    }
    
 
