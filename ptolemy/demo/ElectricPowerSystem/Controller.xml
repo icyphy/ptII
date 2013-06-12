@@ -1,7 +1,9 @@
 <?xml version="1.0" standalone="no"?>
-<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+<!DOCTYPE class PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <class name="Controller" extends="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
+    </property>
     <property name="_location" class="ptolemy.kernel.util.Location" value="{585.0, 210.0}">
     </property>
     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
@@ -10,9 +12,9 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[325.0, 160.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={742, 143, 868, 379}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={55, 77, 854, 602}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[634, 269]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[634, 495]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.1829834562336548">
     </property>
@@ -29,6 +31,44 @@
             <display name="Show parameters"/>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{427.0, 399.79296875}">
+        </property>
+    </property>
+    <property name="proportionalGain" class="ptolemy.data.expr.Parameter" value="2.0">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{85, 385}">
+        </property>
+    </property>
+    <property name="integratorGain" class="ptolemy.data.expr.Parameter" value="1.0">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 405.0]">
         </property>
     </property>
     <port name="drive" class="ptolemy.actor.TypedIOPort">
@@ -59,9 +99,9 @@
         </property>
     </entity>
     <entity name="PID" class="ptolemy.domains.de.lib.PID">
-        <property name="Kp" class="ptolemy.data.expr.Parameter" value="2.0">
+        <property name="Kp" class="ptolemy.data.expr.Parameter" value="proportionalGain">
         </property>
-        <property name="Ki" class="ptolemy.data.expr.Parameter" value="1.0">
+        <property name="Ki" class="ptolemy.data.expr.Parameter" value="integratorGain">
         </property>
         <doc>Discrete proportional, integral, and derivative controller.</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{325.0, 235.0}">
