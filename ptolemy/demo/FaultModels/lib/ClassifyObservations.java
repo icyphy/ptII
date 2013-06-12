@@ -200,8 +200,7 @@ public class ClassifyObservations extends TypedAtomicActor {
                                + ".  Valid functions are 'Gaussian', 'Exponential', 'Rician', "
                                + "'Multinomial.");
            }
-           
-       }else if(attribute == modelType){
+           }else if(attribute == modelType){
            String modelName = modelType.getExpression().trim().toLowerCase();
            if ( modelName.equals("mixture model")){
                _modelType = _MM;
@@ -214,40 +213,6 @@ public class ClassifyObservations extends TypedAtomicActor {
                        "Unsupported model: " + modelName
                                + ".  Supported models are 'Hidden Markov Model', 'Mixture Model'");
            }
-           
-           
-       }else if(attribute == mean){
-           
-           _nStates = ((ArrayToken) mean.getToken()).length();
-           _meanEstimate = new double[_nStates];
-           for (int i = 0; i < _nStates; i++) {
-               _meanEstimate[i] = ((DoubleToken)((ArrayToken) mean.getToken()).getElement(i))
-                       .doubleValue();
-           }
-       }else if(attribute == standardDeviation){
-           _nStates = ((ArrayToken) standardDeviation.getToken()).length();
-           _stDeviationEstimate = new double[_nStates];
-           for (int i = 0; i < _nStates; i++) {
-               _stDeviationEstimate[i] = ((DoubleToken)((ArrayToken) standardDeviation.getToken()).getElement(i))
-                       .doubleValue();
-           }
-       }else if(attribute == prior){
-           _nStates = ((ArrayToken) standardDeviation.getToken()).length();
-           _priors = new double[_nStates];
-           for (int i = 0; i < _nStates; i++) {
-               _priors[i] = ((DoubleToken)((ArrayToken) prior.getToken()).getElement(i))
-                       .doubleValue();
-           }
-       }else if(attribute == transitionMatrix){
-           _nStates = ((ArrayToken) standardDeviation.getToken()).length();
-           _transitionMatrixEstimate = new double[_nStates][_nStates];
-           for (int i = 0; i < _nStates; i++) {
-               for(int j = 0; j< _nStates; j++){
-                   _transitionMatrixEstimate[i][j] = ((DoubleToken)((MatrixToken) transitionMatrix.getToken())
-                           .getElementAsToken(i, j))
-                           .doubleValue();
-               }
-           }
        }else{
            super.attributeChanged(attribute);
        }
@@ -258,71 +223,65 @@ public class ClassifyObservations extends TypedAtomicActor {
    public void fire() throws IllegalActionException {
        super.fire();
        
-       // Read input ports
-       populateArrays();
+       mean.update();
+       standardDeviation.update();
+       transitionMatrix.update();
+       prior.update();
        
-       if( (_nStates != _stDeviationEstimate.length) ||(_nStates != _transitionMatrixEstimate.length))
-       {
-           throw new IllegalActionException(this, "Parameter guess vectors need to have the same length.");
-       }
-       int[] classifyStates = new int[_observations.length];
-       if( _modelType == _HMM){
-           classifyStates = gaussianClassifyHMM(0,_observations, _transitionMatrixEstimate, _meanEstimate, _stDeviationEstimate, _priors); 
-       } else if( _modelType == _MM){
-           classifyStates = gaussianClassifyMM(0,_observations, _meanEstimate, _stDeviationEstimate, _priors); 
-       }
-           
-       IntToken[] _outTokenArray = new IntToken[classifyStates.length];
-       for (int i = 0; i < classifyStates.length; i++) {
-           
-        _outTokenArray[i] = new IntToken(classifyStates[i]);
-       }
-
-       output.broadcast(new ArrayToken(BaseType.INT, _outTokenArray));
-   }
-private void populateArrays() throws IllegalActionException{
-
+       // update array values and lengths
+       _nStates = ((ArrayToken) mean.getToken()).length(); 
+       _meanEstimate = new double[_nStates];
+       _stDeviationEstimate = new double[_nStates];
+       _transitionMatrixEstimate = new double[_nStates][_nStates];
+       _priors = new double[_nStates];
        
-       //Token meanToken = mean.getToken();
-       //Token stdToken = standardDeviation.getToken();
-       
-       //Token priorToken = prior.getToken();
-       Token observationArray= input.get(0);
-       
-       //_nStates = ((ArrayToken) meanToken).length();
-       //_meanEstimate = new double[_nStates];
-       //_stDeviationEstimate = new double[_nStates];
-       //_transitionMatrixEstimate = new double[_nStates][_nStates];
-       //_priors = new double[_nStates];
-       
-    // observation length is inferred from the input array length. 
-       _classificationLength = ((ArrayToken) observationArray).length();
-       _observations = new double[_classificationLength];
-       
-       
-       // Get Observation Values as doubles 
-       //FIXME: should the observations  allowed to be vectors of doubles, too?
-       for (int i = 0; i < _classificationLength; i++) {
-           _observations[i] = ((DoubleToken) ((ArrayToken)observationArray).getElement(i))
+       for (int i = 0; i < _nStates; i++) {
+           _stDeviationEstimate[i] = ((DoubleToken)((ArrayToken) standardDeviation.getToken()).getElement(i))
                    .doubleValue();
+           _priors[i] = ((DoubleToken)((ArrayToken) prior.getToken()).getElement(i))
+                   .doubleValue();
+           _meanEstimate[i] = ((DoubleToken)((ArrayToken) mean.getToken()).getElement(i))
+                   .doubleValue();
+           for(int j = 0; j< _nStates; j++){
+               _transitionMatrixEstimate[i][j] = ((DoubleToken)((MatrixToken) transitionMatrix.getToken())
+                       .getElementAsToken(i, j))
+                       .doubleValue();
+           }
+       }
+       
+       if( input.hasToken(0)){
+           // Read input ports
+           
+           Token observationArray= input.get(0); 
+           _classificationLength = ((ArrayToken) observationArray).length();
+           _observations = new double[_classificationLength];
+           
+           // Get Observation Values as doubles 
+           //FIXME: should the observations  allowed to be vectors of doubles, too?
+           for (int i = 0; i < _classificationLength; i++) {
+               _observations[i] = ((DoubleToken) ((ArrayToken)observationArray).getElement(i))
+                       .doubleValue();
+           } 
+           if( (_nStates != _stDeviationEstimate.length) ||(_nStates != _transitionMatrixEstimate.length))
+           {
+               throw new IllegalActionException(this, "Parameter guess vectors need to have the same length.");
+           }
+           int[] classifyStates = new int[_observations.length];
+           if( _modelType == _HMM){
+               classifyStates = gaussianClassifyHMM(0,_observations, _transitionMatrixEstimate, _meanEstimate, _stDeviationEstimate, _priors); 
+           } else if( _modelType == _MM){
+               classifyStates = gaussianClassifyMM(0,_observations, _meanEstimate, _stDeviationEstimate, _priors); 
+           }
+               
+           IntToken[] _outTokenArray = new IntToken[classifyStates.length];
+           for (int i = 0; i < classifyStates.length; i++) {
+               
+            _outTokenArray[i] = new IntToken(classifyStates[i]);
+           }
+    
+           output.broadcast(new ArrayToken(BaseType.INT, _outTokenArray));
        } 
        
-//       for (int i = 0; i < _nStates; i++) {
-//                   
-//                   _stDeviationEstimate[i] = ((DoubleToken)((ArrayToken) stdToken).getElement(i))
-//                           .doubleValue();
-//                   _meanEstimate[i] = ((DoubleToken)((ArrayToken) meanToken).getElement(i))
-//                           .doubleValue();
-//                   _priors[i] = ((DoubleToken)((ArrayToken) priorToken).getElement(i))
-//                           .doubleValue();
-//                   if(_modelType == _HMM){
-//                   for(int j = 0; j< _nStates; j++){
-//                       _transitionMatrixEstimate[i][j] = ((DoubleToken)((MatrixToken) transToken)
-//                               .getElementAsToken(i, j))
-//                               .doubleValue();
-//                   }
-//                   }
-//               }
    }
 
    public static final int[] gaussianClassifyHMM(int startAt, double[] y, double[][] A, double[] mu, double[] sigma, double[] prior)
