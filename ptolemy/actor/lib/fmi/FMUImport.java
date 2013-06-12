@@ -187,6 +187,10 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
         modelExchange.setExpression("false");
         modelExchange.setVisibility(Settable.EXPERT);
         
+        persistentInputs = new Parameter(this, "persistentInputs");
+        persistentInputs.setTypeEquals(BaseType.BOOLEAN);
+        persistentInputs.setExpression("false");
+
         _attachText("_iconDescription", "<svg>\n"
                 + "<rect x=\"-30\" y=\"-20\" " + "width=\"60\" height=\"40\" "
                 + "style=\"fill:white\"/>\n"
@@ -217,6 +221,14 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
      *  mode because normally a user should not be allowed to change it.
      */
     public Parameter modelExchange;
+    
+    /** If true, then previously received input values will be re-used on subsequent firings where
+     *  inputs are absent. If there are no previously received input values,
+     *  then the value used will be whatever default the FMU has for the
+     *  corresponding input variable. If false (the default), then an exception will be
+     *  thrown if an input is absent on any firing.
+     */
+    public Parameter persistentInputs;
 
     /** If true, suppress warnings about the FMU not being able to roll
      *  back. It is reasonable to set this to true if you know that the
@@ -458,12 +470,17 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
                         } else {
                             // Port is known to be absent, but FMI
                             // does not support absent values.
-                            /* FIXME: FMU input will be persistent, so for now, we do nothing if the input is absent.
-                            throw new IllegalActionException(this, "Input "
-                                    + scalarVariable.name
-                                    + " has value 'absent', but FMI does not "
-                                    + "support a notion of absent inputs.");
-                                    */
+                            // If persistentInputs has been set to true, then ignore this
+                            // problem. The FMU will use the most recently set input.
+                            boolean persistentInputsValue = ((BooleanToken)persistentInputs.getToken()).booleanValue();
+                            if (!persistentInputsValue) {
+                                throw new IllegalActionException(this, "Input "
+                                        + scalarVariable.name
+                                        + " has value 'absent', but FMI does not "
+                                        + "support a notion of absent inputs. "
+                                        + "You can prevent this exception by setting persistentInputs to true, "
+                                        + "which will result in the most recent input value being used.");
+                            }
                         }
                     }
                 } else {
