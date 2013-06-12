@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE class PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<class name="TwoStateMC" extends="ptolemy.domains.modal.modal.ModalModel">
+<class name="TwoStateMarkovChain" extends="ptolemy.domains.modal.modal.ModalModel">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
     </property>
     <property name="_tableauFactory" class="ptolemy.vergil.modal.modal.ModalTableauFactory">
@@ -31,7 +31,7 @@ The chain  has a uniform initial distribution, i.e., the initial state can be
 "0" or "1", with equal probabilities. (imposed by the immediate transitions from
 the init state)</text></svg></configure>
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, 10.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[120.0, -45.0]">
             </property>
             <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
             </property>
@@ -43,13 +43,13 @@ the init state)</text></svg></configure>
       <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.modal.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory"></property></entity></entity>
     </configure>
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={360, 22, 720, 822}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 1440, 826}, maximized=false}">
         </property>
-        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[486, 711]">
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1206, 715]">
         </property>
-        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.8980056560148125">
+        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.098921394799055">
         </property>
-        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{425.03173828125, 410.07218971573}">
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{380.9023255813955, 152.67906976744186}">
         </property>
         <property name="_defaultWebExportParameters" class="ptolemy.vergil.basic.export.web.WebExportParameters">
             <property name="directoryToExportTo" class="ptolemy.data.expr.FileParameter" value="$PTII/sth">
@@ -71,10 +71,17 @@ the init state)</text></svg></configure>
             <property name="usePtWebsite" class="ptolemy.data.expr.Parameter" value="false">
             </property>
         </property>
+        <property name="LocalPreferences" class="ptolemy.actor.gui.PtolemyPreferences">
+            <property name="backgroundColor" class="ptolemy.actor.gui.ColorAttribute" value="{1,1,1,1}">
+                <display name="Background Color"/>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[220.0, -85.0]">
+            </property>
+        </property>
         <port name="p" class="ptolemy.domains.modal.modal.RefinementPort">
             <property name="input"/>
             <property name="output"/>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[645.0, 295.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[785.0, 300.0]">
             </property>
         </port>
         <entity name="0" class="ptolemy.domains.modal.kernel.State">
