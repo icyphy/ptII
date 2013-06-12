@@ -146,15 +146,17 @@
         </entity>
     </entity>
     <entity name="ExpectationMaximization" class="ptolemy.demo.FaultModels.lib.ExpectationMaximization">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{330.0, 340.0}">
         </property>
     </entity>
     <entity name="ClassifyObservations" class="ptolemy.demo.FaultModels.lib.ClassifyObservations">
-        <property name="mean" class="ptolemy.actor.parameters.PortParameter" value="{0.0499492707997, 2.2332025385371}">
+        <property name="mean" class="ptolemy.actor.parameters.PortParameter" value="{-0.0458305326037, 2.276748716537}">
         </property>
-        <property name="standardDeviation" class="ptolemy.actor.parameters.PortParameter" value="{0.9983122035848, 0.8237537193104}">
+        <property name="standardDeviation" class="ptolemy.actor.parameters.PortParameter" value="{1.0028866896387, 0.7635880926084}">
         </property>
-        <property name="transitionMatrix" class="ptolemy.actor.parameters.PortParameter" value="[0.9187799066071, 0.0812200933929; 0.3048275275821, 0.6951724724179]">
+        <property name="transitionMatrix" class="ptolemy.actor.parameters.PortParameter" value="[0.8890825721977, 0.1109174278023; 0.3275538537351, 0.6724461462649]">
         </property>
         <property name="priorDistribution" class="ptolemy.actor.parameters.PortParameter" value="{0.5, 0.5}">
         </property>
@@ -198,8 +200,8 @@
 <title>Classified Labels and True Labels of the Test HMM Sequence</title>
 <xLabel></xLabel>
 <yLabel></yLabel>
-<xRange min="329.76712328767127" max="363.83698630136985"/>
-<yRange min="-0.050000000000000044" max="0.9926086956521739"/>
+<xRange min="0.0" max="399.0"/>
+<yRange min="0.0" max="1.0"/>
 <default marks="dots"/>
 </plot>?>
         </configure>
@@ -268,7 +270,7 @@
         </property>
     </entity>
     <entity name="SuccessRate" class="ptolemy.actor.lib.gui.MonitorValue">
-        <property name="value" class="ptolemy.data.expr.Parameter" value="0.9175">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="0.93">
         </property>
         <doc>Monitor and display values</doc>
         <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="10">
