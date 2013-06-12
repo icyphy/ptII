@@ -267,7 +267,7 @@ public class SDFDirector
 
         code.append(_eol + _sanitizedDirectorName + ".iterationsCount++;");
         
-        code.append(_eol + "if (" + _sanitizedDirectorName + ".iterations > 0 && " 
+        code.append(_eol + "if ("
                 + _sanitizedDirectorName + ".iterationsCount >= " + _sanitizedDirectorName + ".iterations) {");
         code.append(_eol + _sanitizedDirectorName + ".iterationsCount = 0;");
         code.append(_eol + "return false;");
