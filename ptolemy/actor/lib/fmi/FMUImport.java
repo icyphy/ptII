@@ -1287,7 +1287,7 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
         }
 
         if (_fmiComponent == null || _fmiComponent.equals(Pointer.NULL)) {
-            throw new RuntimeException(
+            throw new IllegalActionException(this,
                     "Could not instantiate Functional Mockup Unit (FMU).");
         }
     }
@@ -2072,6 +2072,9 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
                     // FMU provides an initial maximum step size.
                     double stepSize = maxStepSize.get(0);
                     director.fireAt(this, currentTime.add(stepSize));
+                    if (_debugging) {
+                        _debug("FMU requests a maximum step size of " + stepSize);
+                    }
                 }
             }
         }
