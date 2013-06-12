@@ -331,7 +331,7 @@ public class ExpectationMaximization extends TypedAtomicActor {
            double[][] A_new = new double[nStates][nStates];
            double[] m_new = new double[nStates];
            double[] s_new = new double[nStates];
-           int asked = 0;
+          
            for( int iterations = 0; iterations< _nIterations; iterations++){
                
                newEstimates = gaussianHMM(0,_observations, _A0, _m0, _s0, _priors);
@@ -546,7 +546,7 @@ public class ExpectationMaximization extends TypedAtomicActor {
            for ( int t = 0; t< y.length; t++){
                s_hat[j] += (gamma[t][j]*Math.pow((y[t]-mu_hat[j]),2));
            }
-           s_hat[j] = Math.pow(s_hat[j]/gammasum[j],0.5);
+           s_hat[j] = Math.sqrt(s_hat[j]/gammasum[j]);
        }
        
        HashMap estimates = new HashMap();

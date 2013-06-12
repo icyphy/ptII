@@ -30,6 +30,7 @@ COPYRIGHTENDKEY
 package ptolemy.demo.FaultModels.lib;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
+import ptolemy.actor.parameters.PortParameter;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
@@ -95,10 +96,11 @@ public class ClassifyObservations extends TypedAtomicActor {
            throws NameDuplicationException, IllegalActionException {
        super(container, name);
 
-       mean =  new TypedIOPort(this, "mean", true, false); 
+       mean =  new PortParameter(this, "mean");
+       mean.setExpression("{50E-3,200E-3,300E-3}");
        mean.setTypeEquals(new ArrayType(BaseType.DOUBLE));
        StringAttribute cardinality = new StringAttribute(
-               mean, "_cardinal");
+               mean.getPort(), "_cardinal");
        cardinality.setExpression("SOUTH");
        
        modelType = new StringParameter(this, "modelType");
@@ -107,20 +109,26 @@ public class ClassifyObservations extends TypedAtomicActor {
        modelType.addChoice("Mixture Model");
        _modelType = _HMM;
        
-       standardDeviation =  new TypedIOPort(this, "standardDeviation", true, false); 
+       standardDeviation =  new PortParameter(this, "standardDeviation"); 
+       standardDeviation.setExpression("{10E-3,50E-3,50E-3}");
        standardDeviation.setTypeEquals(new ArrayType(BaseType.DOUBLE));
        cardinality = new StringAttribute(
-               standardDeviation, "_cardinal");
+               standardDeviation.getPort(), "_cardinal");
        cardinality.setExpression("SOUTH");
        
-       transitionMatrix = new TypedIOPort(this, "transitionMatrix", true, false); 
+       transitionMatrix = new PortParameter(this, "transitionMatrix"); 
+       transitionMatrix.setExpression("[0.3,0.3,0.4;0.3,0.3,0.4;0.3,0.3,0.4]");
        transitionMatrix.setTypeEquals( BaseType.DOUBLE_MATRIX);
        cardinality = new StringAttribute(
-               transitionMatrix, "_cardinal");
+               transitionMatrix.getPort(), "_cardinal");
        cardinality.setExpression("SOUTH");
        
-       prior = new TypedIOPort(this, "priorDistribution", true, false);
+       prior = new PortParameter(this, "priorDistribution");
+       prior.setExpression("{0.5,0.5,0.0}");
        prior.setTypeEquals(new ArrayType(BaseType.DOUBLE));
+       cardinality = new StringAttribute(
+               prior.getPort(), "_cardinal");
+       cardinality.setExpression("SOUTH");
        
        input = new TypedIOPort(this, "input", true, false);
        input.setTypeEquals(new ArrayType(BaseType.DOUBLE));
@@ -135,6 +143,13 @@ public class ClassifyObservations extends TypedAtomicActor {
        //emissionDistribution.addChoice("Multinomial");
        _distribution = _GAUSSIAN; 
        
+       //_nStates = ((ArrayToken) meanToken).length();
+       _nStates = ((ArrayToken)mean.getToken()).length();
+       _meanEstimate = new double[_nStates];
+       _stDeviationEstimate = new double[_nStates];
+       _transitionMatrixEstimate = new double[_nStates][_nStates];
+       _priors = new double[_nStates];
+       
        
    }
 
@@ -142,15 +157,15 @@ public class ClassifyObservations extends TypedAtomicActor {
    ////                         public variables                  ////
 
    
-   public TypedIOPort prior;
+   public PortParameter prior;
    
    public StringParameter modelType;
    
-   public TypedIOPort mean;
+   public PortParameter mean;
    
-   public TypedIOPort standardDeviation;
+   public PortParameter standardDeviation;
    
-   public TypedIOPort transitionMatrix;
+   public PortParameter transitionMatrix;
    
    public TypedIOPort output;
    
@@ -190,10 +205,10 @@ public class ClassifyObservations extends TypedAtomicActor {
            String modelName = modelType.getExpression().trim().toLowerCase();
            if ( modelName.equals("mixture model")){
                _modelType = _MM;
-               transitionMatrix.setTypeEquals( new ArrayType(BaseType.DOUBLE));
+               //transitionMatrix.setTypeEquals( new ArrayType(BaseType.DOUBLE));
            } else if (modelName.equals("hidden markov model")){
                _modelType = _HMM;
-               transitionMatrix.setTypeEquals( BaseType.DOUBLE_MATRIX);
+               //transitionMatrix.setTypeEquals( BaseType.DOUBLE_MATRIX);
            } else{
                throw new IllegalActionException(this,
                        "Unsupported model: " + modelName
@@ -201,6 +216,38 @@ public class ClassifyObservations extends TypedAtomicActor {
            }
            
            
+       }else if(attribute == mean){
+           
+           _nStates = ((ArrayToken) mean.getToken()).length();
+           _meanEstimate = new double[_nStates];
+           for (int i = 0; i < _nStates; i++) {
+               _meanEstimate[i] = ((DoubleToken)((ArrayToken) mean.getToken()).getElement(i))
+                       .doubleValue();
+           }
+       }else if(attribute == standardDeviation){
+           _nStates = ((ArrayToken) standardDeviation.getToken()).length();
+           _stDeviationEstimate = new double[_nStates];
+           for (int i = 0; i < _nStates; i++) {
+               _stDeviationEstimate[i] = ((DoubleToken)((ArrayToken) standardDeviation.getToken()).getElement(i))
+                       .doubleValue();
+           }
+       }else if(attribute == prior){
+           _nStates = ((ArrayToken) standardDeviation.getToken()).length();
+           _priors = new double[_nStates];
+           for (int i = 0; i < _nStates; i++) {
+               _priors[i] = ((DoubleToken)((ArrayToken) prior.getToken()).getElement(i))
+                       .doubleValue();
+           }
+       }else if(attribute == transitionMatrix){
+           _nStates = ((ArrayToken) standardDeviation.getToken()).length();
+           _transitionMatrixEstimate = new double[_nStates][_nStates];
+           for (int i = 0; i < _nStates; i++) {
+               for(int j = 0; j< _nStates; j++){
+                   _transitionMatrixEstimate[i][j] = ((DoubleToken)((MatrixToken) transitionMatrix.getToken())
+                           .getElementAsToken(i, j))
+                           .doubleValue();
+               }
+           }
        }else{
            super.attributeChanged(attribute);
        }
@@ -234,22 +281,19 @@ public class ClassifyObservations extends TypedAtomicActor {
        output.broadcast(new ArrayToken(BaseType.INT, _outTokenArray));
    }
 private void populateArrays() throws IllegalActionException{
-       Token transToken = new Token();
-       if(_modelType == _HMM){
-           transToken = transitionMatrix.get(0);
-       }
+
        
-       Token meanToken = mean.get(0);
-       Token stdToken = standardDeviation.get(0);
+       //Token meanToken = mean.getToken();
+       //Token stdToken = standardDeviation.getToken();
        
-       Token priorToken = prior.get(0);
+       //Token priorToken = prior.getToken();
        Token observationArray= input.get(0);
        
-       _nStates = ((ArrayToken) meanToken).length();
-       _meanEstimate = new double[_nStates];
-       _stDeviationEstimate = new double[_nStates];
-       _transitionMatrixEstimate = new double[_nStates][_nStates];
-       _priors = new double[_nStates];
+       //_nStates = ((ArrayToken) meanToken).length();
+       //_meanEstimate = new double[_nStates];
+       //_stDeviationEstimate = new double[_nStates];
+       //_transitionMatrixEstimate = new double[_nStates][_nStates];
+       //_priors = new double[_nStates];
        
     // observation length is inferred from the input array length. 
        _classificationLength = ((ArrayToken) observationArray).length();
@@ -263,22 +307,22 @@ private void populateArrays() throws IllegalActionException{
                    .doubleValue();
        } 
        
-       for (int i = 0; i < _nStates; i++) {
-                   
-                   _stDeviationEstimate[i] = ((DoubleToken)((ArrayToken) stdToken).getElement(i))
-                           .doubleValue();
-                   _meanEstimate[i] = ((DoubleToken)((ArrayToken) meanToken).getElement(i))
-                           .doubleValue();
-                   _priors[i] = ((DoubleToken)((ArrayToken) priorToken).getElement(i))
-                           .doubleValue();
-                   if(_modelType == _HMM){
-                   for(int j = 0; j< _nStates; j++){
-                       _transitionMatrixEstimate[i][j] = ((DoubleToken)((MatrixToken) transToken)
-                               .getElementAsToken(i, j))
-                               .doubleValue();
-                   }
-                   }
-               }
+//       for (int i = 0; i < _nStates; i++) {
+//                   
+//                   _stDeviationEstimate[i] = ((DoubleToken)((ArrayToken) stdToken).getElement(i))
+//                           .doubleValue();
+//                   _meanEstimate[i] = ((DoubleToken)((ArrayToken) meanToken).getElement(i))
+//                           .doubleValue();
+//                   _priors[i] = ((DoubleToken)((ArrayToken) priorToken).getElement(i))
+//                           .doubleValue();
+//                   if(_modelType == _HMM){
+//                   for(int j = 0; j< _nStates; j++){
+//                       _transitionMatrixEstimate[i][j] = ((DoubleToken)((MatrixToken) transToken)
+//                               .getElementAsToken(i, j))
+//                               .doubleValue();
+//                   }
+//                   }
+//               }
    }
 
    public static final int[] gaussianClassifyHMM(int startAt, double[] y, double[][] A, double[] mu, double[] sigma, double[] prior)
