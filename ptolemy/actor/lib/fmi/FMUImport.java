@@ -458,10 +458,12 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
                         } else {
                             // Port is known to be absent, but FMI
                             // does not support absent values.
+                            /* FIXME: FMU input will be persistent, so for now, we do nothing if the input is absent.
                             throw new IllegalActionException(this, "Input "
                                     + scalarVariable.name
                                     + " has value 'absent', but FMI does not "
                                     + "support a notion of absent inputs.");
+                                    */
                         }
                     }
                 } else {
