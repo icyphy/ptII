@@ -370,7 +370,7 @@
         </property>
     </entity>
     <entity name="onOffSupervisor" class="ptolemy.actor.lib.fmi.FMUImport">
-        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="C:\Users\cxh.EECS\ptII\ptolemy\demo\ElectricPowerSystem\onOffSupervisor.fmu">
+        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="C:\Users\cxh.EECS\ptII\ptolemy\demo\ElectricPowerSystem\onOffSupervisorSimX.fmu">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[235.0, 225.0]">
         </property>
