@@ -2071,9 +2071,12 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
                 if (providesMaxStepSize == FMILibrary.FMIStatus.fmiOK){
                     // FMU provides an initial maximum step size.
                     double stepSize = maxStepSize.get(0);
-                    director.fireAt(this, currentTime.add(stepSize));
+                    Time fireAtTime = currentTime.add(stepSize);
+                    director.fireAt(this, fireAtTime);
                     if (_debugging) {
-                        _debug("FMU requests a maximum step size of " + stepSize);
+                        _debug("FMU requests a maximum step size of " + stepSize 
+                                + " at time " + currentTime
+                                + ", which becomes a fireAt request at time " + fireAtTime);
                     }
                 }
             }
