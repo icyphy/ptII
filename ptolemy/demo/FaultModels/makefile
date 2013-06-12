@@ -52,6 +52,7 @@ EXAMPLE_MODELS = \
 	HiddenMarkovModel.xml
 	HiddenMarkovModelAnalysis.xml
 	HMMLearningAndClassification.xml
+	CommunicationAnomalyDetectionCQM.xml
 
 OTHER_FILES_TO_BE_JARED = \
 	$(EXAMPLE_MODELS) \
