@@ -365,7 +365,7 @@
         </property>
     </entity>
     <entity name="GeneratorContractorLoadFMU" class="ptolemy.actor.lib.fmi.fmipp.FMUModelExchange">
-        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="/ptII/ptolemy/actor/lib/fmi/fmipp/demo/GeneratorContactorLoad/GeneratorContactorLoad.fmu">
+        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="$PTII/ptolemy/actor/lib/fmi/fmipp/demo/GeneratorContactorLoad/GeneratorContactorLoad.fmu">
         </property>
         <property name="inputNames" class="ptolemy.data.expr.Parameter" value="contactor,drive">
         </property>
