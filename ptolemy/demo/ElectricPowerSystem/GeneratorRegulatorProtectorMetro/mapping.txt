@@ -1,0 +1,8 @@
+.FunctionModel.Supervisor.FIRE_BEGIN,Task0.CustomizedRoutine1.Begin
+.FunctionModel.Supervisor.FIRE_END,Task0.CustomizedRoutine1.End
+.FunctionModel.Controller.DesiredVoltage.FIRE_BEGIN,Task1.Const.Begin
+.FunctionModel.Controller.DesiredVoltage.FIRE_END,Task1.Const.End
+.FunctionModel.Controller.AddSubtract.FIRE_BEGIN,Task1.AddSubtract.Begin
+.FunctionModel.Controller.AddSubtract.FIRE_END,Task1.AddSubtract.End
+.FunctionModel.Controller.PID.FIRE_BEGIN,Task1.PID.Begin
+.FunctionModel.Controller.PID.FIRE_END,Task1.PID.End
