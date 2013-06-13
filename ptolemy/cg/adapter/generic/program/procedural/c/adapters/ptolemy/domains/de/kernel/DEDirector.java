@@ -230,7 +230,7 @@ public class DEDirector extends Director {
         code.append(_eol + "        break;");
         code.append(_eol + "    }");
         code.append(_eol + "    (*(actorToFire->fireFunction))();");
-        code.append(_eol + "    refire = !(*(actorToFire->postfireFunction))();");
+        code.append(_eol + "    (*(actorToFire->postfireFunction))();");
         code.append(_eol + "} while (refire);");
         code.append(_eol + "return 0;");
         
