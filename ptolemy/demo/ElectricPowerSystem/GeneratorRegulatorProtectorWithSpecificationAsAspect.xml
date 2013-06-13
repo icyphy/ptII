@@ -4,20 +4,20 @@
 <entity name="GeneratorRegulatorProtectorWithSpecificationAsAspect" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={4, 22, 1222, 744}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={4, 22, 1233, 802}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[988, 634]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[999, 692]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0881460073513536">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.073210312142708">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{348.3882224410955, 300.61317247743267}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{342.7670970032991, 299.919921875}">
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="At time 15, turn&#10;on a load.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="[-70.0, 55.0]">
+        <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="[0.0, 50.0]">
             <property name="relativeTo" class="ptolemy.kernel.util.StringAttribute" value="SingleEvent">
             </property>
             <property name="relativeToElementName" class="ptolemy.kernel.util.StringAttribute" value="entity">
@@ -32,13 +32,6 @@
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="60.0">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-30.0, 10.0]">
-        </property>
-    </property>
-    <property name="LocalPreferences" class="ptolemy.actor.gui.PtolemyPreferences">
-        <property name="_showParameters" class="ptolemy.data.expr.StringParameter" value="None">
-            <display name="Show parameters"/>
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[725.0, 720.0]">
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -229,7 +222,7 @@
         </configure>
     </entity>
     <entity name="GeneratorContactorLoad" class="ptolemy.demo.ElectricPowerSystem.GeneratorContactorLoad">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[390.0, 210.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[440.0, 210.0]">
         </property>
         <property name="loadImpedance" class="ptolemy.data.expr.Parameter" value="1.0">
         </property>
@@ -283,7 +276,7 @@
     <entity name="SingleEvent" class="ptolemy.actor.lib.SingleEvent">
         <property name="time" class="ptolemy.data.expr.Parameter" value="15.0">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-75.0, 220.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-85.0, 220.0]">
         </property>
     </entity>
     <entity name="Expression" class="ptolemy.actor.lib.Expression">
@@ -324,7 +317,7 @@
         </port>
     </entity>
     <entity name="MicrostepDelay" class="ptolemy.actor.lib.MicrostepDelay">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[240.0, 220.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[235.0, 220.0]">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -349,7 +342,7 @@
     <entity name="Supervisor" class="ptolemy.domains.modal.modal.ModalModel">
         <property name="_tableauFactory" class="ptolemy.vergil.modal.modal.ModalTableauFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[140.0, 220.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[135.0, 220.0]">
         </property>
         <port name="onOff" class="ptolemy.domains.modal.modal.ModalPort">
             <property name="input"/>
@@ -405,8 +398,6 @@
             </property>
         </port>
         <entity name="_Controller" class="ptolemy.domains.modal.modal.ModalController">
-            <property name="errorCause" class="ptolemy.data.expr.Parameter">
-            </property>
             <property name="_library" class="ptolemy.moml.LibraryAttribute">
                 <configure>
       <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.modal.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory"></property></entity></entity>
@@ -517,7 +508,7 @@
         <link port="_Controller.contactor" relation="contactorRelation"/>
     </entity>
     <entity name="Controller" class="Controller">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[580.0, 210.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[675.0, 210.0]">
         </property>
         <port name="voltage" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -612,8 +603,6 @@
                 </property>
             </port>
             <entity name="_Controller" class="ptolemy.domains.modal.modal.ModalController">
-                <property name="errorCause" class="ptolemy.data.expr.Parameter">
-                </property>
                 <property name="_library" class="ptolemy.moml.LibraryAttribute">
                     <configure>
       <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.modal.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory"></property></entity></entity>
@@ -789,8 +778,6 @@
                     </property>
                 </port>
                 <entity name="_Controller" class="ptolemy.domains.modal.modal.ModalController">
-                    <property name="errorCause" class="ptolemy.data.expr.Parameter">
-                    </property>
                     <property name="_library" class="ptolemy.moml.LibraryAttribute">
                         <configure>
             <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.modal.kernel.State"><property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory"></property></entity></entity>
@@ -1174,8 +1161,6 @@
                 </property>
             </port>
             <entity name="_Controller" class="ptolemy.domains.modal.modal.ModalController">
-                <property name="errorCause" class="ptolemy.data.expr.Parameter">
-                </property>
                 <property name="_library" class="ptolemy.moml.LibraryAttribute">
                     <configure>
       <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.modal.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory"></property></entity></entity>
@@ -1446,37 +1431,29 @@
         <vertex name="vertex1" value="[325.0, 85.0]">
         </vertex>
     </relation>
-    <relation name="relation9" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
-        </property>
-        <vertex name="vertex1" value="[55.0, 220.0]">
-        </vertex>
-    </relation>
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="[140.0, 325.0]">
-        </vertex>
-    </relation>
-    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
-        </property>
-        <vertex name="vertex1" value="[295.0, 220.0]">
+        <vertex name="vertex1" value="[120.0, 325.0]">
         </vertex>
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
     </relation>
     <link port="TimedPlotter.input" relation="relation2"/>
     <link port="TimedPlotter.input" relation="relation4"/>
     <link port="GeneratorContactorLoad.drive" relation="relation4"/>
     <link port="GeneratorContactorLoad.voltage" relation="relation2"/>
-    <link port="GeneratorContactorLoad.contactor" relation="relation5"/>
-    <link port="SingleEvent.output" relation="relation9"/>
+    <link port="GeneratorContactorLoad.contactor" relation="relation3"/>
+    <link port="SingleEvent.output" relation="relation5"/>
     <link port="Expression.output" relation="relation7"/>
     <link port="Expression.voltage" relation="relation2"/>
     <link port="MicrostepDelay.input" relation="relation"/>
-    <link port="MicrostepDelay.output" relation="relation5"/>
-    <link port="Supervisor.onOff" relation="relation9"/>
+    <link port="MicrostepDelay.output" relation="relation3"/>
+    <link port="Supervisor.onOff" relation="relation5"/>
     <link port="Supervisor.fault" relation="relation7"/>
     <link port="Supervisor.contactor" relation="relation"/>
     <link port="Controller.drive" relation="relation4"/>
