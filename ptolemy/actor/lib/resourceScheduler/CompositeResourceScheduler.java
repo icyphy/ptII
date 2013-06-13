@@ -1,4 +1,4 @@
-/* This is a resource scheduler Ptolemy model.
+/* This is a composite resource scheduler.
 
 @Copyright (c) 2008-2013 The Regents of the University of California.
 All rights reserved.
@@ -61,9 +61,13 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
 
-/** This is a resource scheduler Ptolemy model. Special naming
- *  conventions are used to connect the functional model to the
- *  scheduler model.
+/** This is a composite resource scheduler. Actors decorated by this 
+ *  resource scheduler also specify a <i>requestPort</i>. A record 
+ *  token with the actor and its execution time is 
+ *  created on this requestPort whenever the director wants to schedule
+ *  the actor. When this token is received by a ResourceMappingOutputport
+ *  inside this composite resource scheduler, the director is informed 
+ *  that the actor can now fire. 
  *
  * @author Patricia Derler
    @version $Id$
