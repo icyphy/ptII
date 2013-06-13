@@ -1781,6 +1781,7 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
                 // No returned status.
                 _fmiFreeSlaveInstanceFunction
                         .invokeInt(new Object[] { _fmiComponent });
+                return;
             } else {
                 // In FMI 2.0, fmiFreeSlaveInstance returns status.
                 fmiFlag = ((Integer) _fmiFreeSlaveInstanceFunction
