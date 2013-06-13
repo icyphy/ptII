@@ -1775,23 +1775,22 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
         if (_fmiModelDescription.modelExchange) {
             fmiFlag = ((Integer) _fmiFreeModelInstanceFunction
                     .invokeInt(new Object[] { _fmiComponent })).intValue();
+            if (fmiFlag != FMILibrary.FMIStatus.fmiOK) {
+                throw new IllegalActionException(this,
+                        "Could not free the FMU instance: "
+                                + _fmiStatusDescription(fmiFlag));
+            }
         } else {
             if (_fmiVersion < 2.0) {
                 // In FMI 1.0, fmiFreeSlaveInstance is a void function.
                 // No returned status.
                 _fmiFreeSlaveInstanceFunction
                         .invokeInt(new Object[] { _fmiComponent });
-                return;
             } else {
                 // In FMI 2.0, fmiFreeSlaveInstance returns status.
                 fmiFlag = ((Integer) _fmiFreeSlaveInstanceFunction
                         .invokeInt(new Object[] { _fmiComponent })).intValue();
             }
-        }
-        if (fmiFlag != FMILibrary.FMIStatus.fmiOK) {
-            throw new IllegalActionException(this,
-                    "Could not free the FMU instance: "
-                            + _fmiStatusDescription(fmiFlag));
         }
     }
 
