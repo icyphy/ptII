@@ -1610,7 +1610,7 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
         
         if (_resourceScheduling) {
             if (_schedulerForActor.get(actor) != null &&
-                    _schedulerForActor.get(actor).isCurrentlyExecuting(actor)) {
+                    _schedulerForActor.get(actor).isWaitingForResource(actor)) {
                 Object[] eventArray = _eventQueue.toArray();
                 for (Object object : eventArray) {
                     DEEvent event = (DEEvent)object;

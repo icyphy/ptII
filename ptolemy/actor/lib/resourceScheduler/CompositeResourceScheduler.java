@@ -243,7 +243,7 @@ public class CompositeResourceScheduler extends TypedCompositeActor implements R
         return true;
     }
     
-    public boolean isCurrentlyExecuting(Actor actor) {
+    public boolean isWaitingForResource(Actor actor) {
         return _currentlyExecuting.contains(actor);
     }
 

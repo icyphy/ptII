@@ -289,7 +289,7 @@ public class AtomicResourceScheduler extends TypedAtomicActor implements Resourc
         return false;
     }
 
-    public boolean isCurrentlyExecuting(Actor actor) {
+    public boolean isWaitingForResource(Actor actor) {
         return _remainingTimes.get(actor) != null;
     }
     
