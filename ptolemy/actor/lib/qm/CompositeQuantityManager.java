@@ -361,20 +361,22 @@ public class CompositeQuantityManager extends TypedCompositeActor implements Qua
         if (_tokens == null) {
             _tokens = new HashMap<CQMInputPort, Token>();
         }
-        RecordToken recordToken = new RecordToken(
-                new String[]{"receiver", "token"}, 
-                new Token[]{new ObjectToken(receiver), token});
-        _tokens.put(port, recordToken);
-        if (_justMonitor) {
-            receiver.put(token);
-        }
-
-        ((CompositeActor) getContainer()).getDirector().fireAtCurrentTime(this);
-
-        if (_debugging) {
-            _debug("At time " + getDirector().getModelTime()
-                    + ", initiating send to "
-                    + receiver.getContainer().getFullName() + ": " + token);
+        if (token != null) {
+            RecordToken recordToken = new RecordToken(
+                    new String[]{"receiver", "token"}, 
+                    new Token[]{new ObjectToken(receiver), token});
+            _tokens.put(port, recordToken);
+            if (_justMonitor) {
+                receiver.put(token);
+            }
+    
+            ((CompositeActor) getContainer()).getDirector().fireAtCurrentTime(this);
+    
+            if (_debugging) {
+                _debug("At time " + getDirector().getModelTime()
+                        + ", initiating send to "
+                        + receiver.getContainer().getFullName() + ": " + token);
+            }
         }
     }
 
