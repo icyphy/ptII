@@ -69,8 +69,8 @@ public class FMULog {
         // What to do about jni callbacks with varargs?
         // See
         // http://chess.eecs.berkeley.edu/ptexternal/wiki/Main/JNA#fmiCallbackLogger
-        //System.out.println("Java FMULogger, status: " + status);
-        //System.out.println("Java FMULogger, message: " + message);
+        _debugMessage("Java FMULogger, status: " + status);
+        _debugMessage("Java FMULogger, message: " + message);
 
         // FIXME: Need to handle the fmi-specific # format:
         // #<Type><valueReference#, where <Type> is one of
@@ -79,8 +79,8 @@ public class FMULog {
         if (parameters != null) {
             StringTokenizer tokenizer = new StringTokenizer(message, "%", false ); // Return delimiters
             ArrayList<Object> parameterList = new ArrayList<Object>();
-            //long nativeLong = Pointer.nativeValue(parameters);
             int offset = 0;
+            Pointer newPointer = parameters;
             if (!message.startsWith("%") && tokenizer.hasMoreTokens()) {
                 // Throw away the first token.
                 tokenizer.nextToken();
@@ -90,7 +90,7 @@ public class FMULog {
                 boolean foundType = false;
                 for (int i = 0; i < token.length() && !foundType; i++) {
                     char type = token.charAt(i);
-                    //System.out.println("Token: " + token + " " + type + " " + offset);
+                    _debugMessage("Token: " + token + " " + type + " " + offset);
                     switch (type) {
                     case 'd':
                     case 'i':
@@ -99,18 +99,18 @@ public class FMULog {
                     case 'x': // Unsigned hex
                     case 'X': // Unsigned hex
                         foundType = true;
-                        //String s = parameters.toString();
-                        //int [] value0 = newPointer.getIntArray(offset, 1);
-
-                        //int value = newPointer.getInt(offset);
-                        //System.out.println("Token: " + token + " " + conversion + ": " + type + " " + value + " " + value0[0] + " " + Integer.toHexString(value) + " " + s);
-                        //parameterList.add(Integer.valueOf(value));
-                        if (!_printedMessage) {
-                            _printedMessage = true;
-                            System.out
-                                    .println("FIXME: logger: don't know how to get integers, using 666 instead.");
+                        _debugMessage("newPointer: " + newPointer);
+                        int value = (int) Pointer.nativeValue(newPointer);
+                        _debugMessage("Token: " + token + " type:" + type + " value:" + value + " offset: " + offset);
+                        if (offset != 0) {
+                            if (!_printedMessage) {
+                                _printedMessage = true;
+                                System.out
+                                    .println("FIXME: logger: only know how to get the first value, using 666 instead");
+                            }
+                            value = 666;
                         }
-                        parameterList.add(Integer.valueOf(666));
+                        parameterList.add(Integer.valueOf(value));
                         offset += 4;
                         break;
                     case 'f': // Doubles
@@ -119,18 +119,34 @@ public class FMULog {
                     case 'g':
                     case 'G':
                         foundType = true;
-                        if (!_printedMessage) {
-                            _printedMessage = true;
-                            System.out
-                                    .println("FIXME: logger: don't know how to get doubles, using 666.666 instead.");
+                        double doubleValue = Pointer.nativeValue(newPointer);
+                        _debugMessage("Token: " + token + " type:" + type + " doubleValue:" + doubleValue + " offset: " + offset);
+                        if (doubleValue > 9999.0) {
+                            _dump(newPointer, 4, 0);
                         }
-                        //parameterList.add(Double.valueOf(parameters.getDouble(offset++)));
-                        parameterList.add(Double.valueOf(666.666));
+                        if (offset != 0) {
+                            if (!_printedMessage) {
+                                _printedMessage = true;
+                                System.out
+                                    .println("FIXME: logger: only know how to get the first value, using 666.666 instead");
+                            }
+                            doubleValue = 666.666;
+                        }
+                        parameterList.add(Double.valueOf(doubleValue));
                         offset += 4;
                         break;
                     case 'c': // Unsigned char
                         foundType = true;
-                        //parameterList.add(Character.valueOf(parameters.getChar(offset++)));
+                        if (offset != 0) {
+                            if (!_printedMessage) {
+                                _printedMessage = true;
+                                System.out
+                                    .println("FIXME: logger: only know how to get the first value, using 666.666 instead");
+                            }
+                            doubleValue = 666.666;
+                        }
+
+                        //parameterList.add(Character.valueOf(newParameter.getChar(offset++)));
                         if (!_printedMessage) {
                             _printedMessage = true;
                             System.out
@@ -141,30 +157,40 @@ public class FMULog {
                         break;
                     case 's': // String
                         foundType = true;
-                        String result = "";
+                        _debugMessage("type=s, parameters = " + parameters
+                                + " offset: " + offset);
+                        _debugMessage("type=s "
+                                + parameters.share(offset));
+
                         if (offset == 0) {
-                            result = parameters.getString(offset);
+                            String result = newPointer.getString(offset);
+                            //offset += result.length() + 1;
+                            newPointer = new Pointer(Pointer.nativeValue(newPointer) + 4);
+                            _debugMessage("Token: " + token + " type: " + type + " result: " + result);
+                            parameterList.add(result);
                         } else {
                             if (!_printedMessage) {
                                 _printedMessage = true;
                                 System.out
-                                        .println("FIXME: logger: don't know how to get string other than the first string, using FIXME instead.");
+                                    .println("FIXME: logger: don't know how to get string other than the first string, using 666 instead.");
                             }
-                            result = "FIXME";
+                            parameterList.add("666");
                         }
                         offset += 4;
-                        //System.out.println("Token: " + token + " " + conversion + ": " + type + " " + result);
-                        parameterList.add(result);
                         break;
                     case 'p': // Pointer
                         foundType = true;
-                        //parameterList.add(parameters.getPointer(offset++).toString());
-                        if (!_printedMessage) {
-                            _printedMessage = true;
-                            System.out
-                                    .println("FIXME: logger: don't know how to get long other than the first string, using 666 instead.");
+                        long longValue = Pointer.nativeValue(newPointer);
+                        if (offset != 0) {
+                            if (!_printedMessage) {
+                                _printedMessage = true;
+                                System.out
+                                    .println("FIXME: logger: only know how to get the first value, using 6666 instead");
+                            }
+                            longValue = 6666;
                         }
-                        parameterList.add(Long.valueOf(666));
+                        parameterList.add(Long.valueOf(longValue));
+                        offset += 4;
                         break;
                     case 'n':
                         // FIXME: Don't know how to handle this:
@@ -187,13 +213,40 @@ public class FMULog {
             }
             // Java format does not handle %u.  Lamers.
             message = message.replace("%u", "%d");
-            //System.out.println("Java FMULogger, message0: " + message + " " + parameterList.size() + " " + parameterList);
+            _debugMessage("Java FMULogger, message0: " + message + " " + parameterList.size() + " " + parameterList);
             System.out.format("Java FMULogger: " + message,
                     parameterList.toArray());
             System.out.println("");
         }
     }
 
-    // True if we printed the fixme message.
+    /** Set to true to get debugging messages. */
+    private static boolean _debug = false;
+
+    private static void _dump(Pointer pointer, int size, int offset) {
+        if (!_debug) {
+            return;
+        }
+        System.out.print("dump: " + pointer + "<" + size + "," + offset + "," + Pointer.nativeValue(pointer) + ">");
+        System.out.printf("<%x>", Pointer.nativeValue(pointer));
+        byte bytes[] = pointer.getByteArray(offset, size);
+        for (int i = 0; i < size; ++i) {
+            System.out.printf("%02x(%c)", bytes[i], bytes[i]);
+            if ((i % 16) == 15) {
+                System.out.printf("\n");
+            } else {
+                System.out.printf(" ");
+            }
+        }
+        System.out.println();
+    }
+
+    private static void _debugMessage(String message) {
+        if (_debug) {
+            System.out.println(message);
+        }
+    }
+
+    /** True if we printed the fixme message. */
     private static boolean _printedMessage = false;
 }
