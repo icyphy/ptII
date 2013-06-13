@@ -1781,16 +1781,10 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
                                 + _fmiStatusDescription(fmiFlag));
             }
         } else {
-            if (_fmiVersion < 2.0) {
-                // In FMI 1.0, fmiFreeSlaveInstance is a void function.
-                // No returned status.
-                _fmiFreeSlaveInstanceFunction
-                        .invokeInt(new Object[] { _fmiComponent });
-            } else {
-                // In FMI 2.0, fmiFreeSlaveInstance returns status.
-                _fmiFreeSlaveInstanceFunction
-                        .invokeInt(new Object[] { _fmiComponent });
-            }
+            // fmiFreeSlaveInstance is a void function.
+            // No returned status.
+            _fmiFreeSlaveInstanceFunction
+            .invokeInt(new Object[] { _fmiComponent });
         }
     }
 
