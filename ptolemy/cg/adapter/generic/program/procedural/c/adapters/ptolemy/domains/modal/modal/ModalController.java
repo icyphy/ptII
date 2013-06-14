@@ -31,7 +31,6 @@ import java.util.Iterator;
 import java.util.List;
 
 import ptolemy.actor.Actor;
-import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.modal.kernel.FSMActor;
 import ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.modal.kernel.FSMActor.TransitionRetriever;
