@@ -28,11 +28,14 @@
  */
 package ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.actor;
 
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 import ptolemy.actor.Actor;
+import ptolemy.actor.AtomicActor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
 import ptolemy.actor.Receiver;
@@ -43,7 +46,10 @@ import ptolemy.cg.kernel.generic.program.CodeStream;
 import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
 import ptolemy.cg.kernel.generic.program.ProgramCodeGenerator;
 import ptolemy.cg.lib.CompiledCompositeActor;
+import ptolemy.data.expr.Parameter;
 import ptolemy.domains.de.kernel.DEDirector;
+import ptolemy.domains.modal.kernel.FSMActor;
+import ptolemy.domains.modal.modal.ModalController;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
 
@@ -101,7 +107,7 @@ public class TypedCompositeActor extends
             Actor actor = (Actor) actors.next();
             if (actor instanceof CompositeActor)
                 nbCompositeActors++;
-            else
+            else if (actor instanceof AtomicActor)
                 nbAtomicActors++;
         }
         args.add(Integer.toString(nbAtomicActors));
@@ -142,7 +148,9 @@ public class TypedCompositeActor extends
             if (actor instanceof CompositeActor) {
                 // FIXME : for now nothing to do
             }
-            else {
+            else if (actor instanceof AtomicActor || actor instanceof FSMActor) {
+                if (actor instanceof ModalController)
+                    continue;
                 args.add(sanitizedContainerName);
                 args.add(Integer.toString(i++));
                 args.add(sanitizedActorName);
@@ -162,7 +170,9 @@ public class TypedCompositeActor extends
             if (act instanceof CompositeActor)
                 // We call the construction recursively
                 codeStream.append(_eol + sanitizedActorName + "_constructorActors();");
-            else {
+            else if (act instanceof AtomicActor || actor instanceof FSMActor) {
+                if (actor instanceof ModalController)
+                    continue;
                 args.clear();
                 if (director instanceof ptolemy.domains.de.kernel.DEDirector) {
                     // The depth in only relevant for DE models
@@ -228,8 +238,13 @@ public class TypedCompositeActor extends
             args.add(Boolean.toString(port.isOutput()));
             args.add(Boolean.toString(port.isMultiport()));
             int widthInside = port.getWidthInside();
+            int widthOutside = 0;
+            Receiver[][] receivers = port.deepGetReceivers();
+            for (int cpt = 0 ; cpt < receivers.length ; cpt++) {
+                widthOutside += receivers[cpt].length;
+            }            
             args.add(Integer.toString(widthInside));
-            args.add(Integer.toString(port.getWidth()));
+            args.add(Integer.toString(widthOutside));
             codeStream.appendCodeBlock("IOPortSet", args, true);
             enumString += "enum_" + sanitizedContainerName + "_" + port.getName() + ", ";
         }
@@ -280,6 +295,10 @@ public class TypedCompositeActor extends
             if (act instanceof CompositeActor)
                 // We call the construction recursively
                 codeStream.append(_eol + sanitizedActorName + "_constructorPorts();");
+            else if (act instanceof ModalController) {
+                // We can ignore the controllers (see the FSMDirector adapter class)
+                continue;
+            }
             else {
                 args.clear();
                 enumString = _eol + "enum {";
@@ -393,6 +412,11 @@ public class TypedCompositeActor extends
                 for (int k = 0 ; k < receivers[j].length ; k++) {
                     Receiver r = receivers[j][k];
                     
+                    if (r.getContainer().getContainer() instanceof ModalController) {
+                        // We do not need to create receivers for the controller
+                        continue;
+                    }
+                    
                     args.clear();
                     args.add(sanitizedContainerNameForArgs);
                     args.add(Integer.toString(i));
@@ -426,6 +450,10 @@ public class TypedCompositeActor extends
                     break;
                 for (int j = 0 ; j < farReceivers[k].length ; j++) {
                     Receiver r = farReceivers[k][j];
+                    if (r.getContainer().getContainer() instanceof ModalController) {
+                        // We do not need to create receivers for the controller
+                        continue;
+                    }
                     args.clear();
                     args.add(sanitizedContainerNameForArgs);
                     args.add(Integer.toString(i));
@@ -481,6 +509,9 @@ public class TypedCompositeActor extends
             if (act instanceof CompositeActor) {
                 // Recursive call
                 codeStream.append(_eol + sanitizedActorName + "_constructorReceivers();");
+                continue;
+            }
+            if (act instanceof ModalController) {
                 continue;
             }
             args.clear();
@@ -726,8 +757,12 @@ public class TypedCompositeActor extends
         Iterator<?> actors = actorList.iterator();
         while (actors.hasNext()) {
             NamedObj actor = (NamedObj) actors.next();
-            String actorName = CodeGeneratorAdapter.generateName(actor);
-            codeStream.append("$include(\"" + actorName + ".h\")");
+            if (actor instanceof CompositeActor || actor instanceof AtomicActor || actor instanceof FSMActor) {
+                if (actor instanceof ModalController)
+                    continue;
+                String actorName = CodeGeneratorAdapter.generateName(actor);
+                codeStream.append("$include(\"" + actorName + ".h\")");
+            }
         }
         
         // After the actors we declare the receivers of this container
@@ -828,13 +863,37 @@ public class TypedCompositeActor extends
                 code = new StringBuffer();
             }
             else {
+                Receiver[][] receivers = inputPort.deepGetReceivers();
                 for (int channel = 0 ; channel < inputPort.getWidth() ; channel++) {
                     String hasTokenString = "while (ReceiverHasToken((" + sanitizedContainerName + ".actor).ports[enum_" + sanitizedContainerName 
                             + "_" + inputPort.getName() + "].receivers + " + channel + ")) {" + _eol;
                     String getString = "ReceiverGet((" + sanitizedContainerName + ".actor).ports[enum_" + sanitizedContainerName 
                             + "_" + inputPort.getName() + "].receivers + " + channel + ")";
-                    String putString = "ReceiverPut((" + sanitizedContainerName + ".actor).ports[enum_" + sanitizedContainerName 
-                            + "_" + inputPort.getName() + "].farReceivers[" + channel + "], " + getString + ");" + _eol;
+                    String putString = _eol + "Token temporary = " + getString + ";";
+                    if (receivers[channel].length > 1) {
+                        int foo = 0;
+                        for (int cpt = 0 ; cpt < receivers[channel].length ; cpt++) {
+                            if (!(receivers[channel][cpt].getContainer().getContainer() instanceof ModalController)) {
+                                putString += _eol + "ReceiverPut((" + sanitizedContainerName + ".actor).ports[enum_" + sanitizedContainerName 
+                                        + "_" + inputPort.getName() + "].farReceivers[" + foo++ + "], temporary);";
+                            }
+                        }
+                    }
+                    else 
+                        putString += _eol + "ReceiverPut((" + sanitizedContainerName + ".actor).ports[enum_" + sanitizedContainerName 
+                                + "_" + inputPort.getName() + "].farReceivers[0], temporary);" + _eol;
+                    if (container.getDirector() instanceof ptolemy.domains.modal.kernel.FSMDirector){
+                        List actorList = container.deepEntityList();
+                        Iterator<?> actors = actorList.iterator();
+                        while (actors.hasNext()) {
+                            NamedObj actor = (NamedObj) actors.next();
+                            if (actor instanceof ModalController) {
+                                String actorName = CodeGeneratorAdapter.generateName(actor);
+                                String type = inputPort.getType().toString().substring(0,1).toUpperCase() + inputPort.getType().toString().substring(1);
+                                putString += _eol + actorName + "_" + inputPort.getName() + " = temporary.payload." + type + ";" + _eol;
+                            }
+                        }
+                    }
                     String fireAtString = "";
                     if (container.getDirector() instanceof DEDirector) {
                         NamedObj insideActor = inputPort.deepGetReceivers()[channel][0].getContainer().getContainer();
@@ -850,10 +909,7 @@ public class TypedCompositeActor extends
             }
         }
         codeStream.append(_eol + "}" + _eol);
-
-//        if (container instanceof CompiledCompositeActor) {
-//            codeStream.append(_eol + "jobjectArray tokensToAllOutputPorts_glob;" + _eol);
-//        }
+       
         codeStream.append(_eol + "void " + sanitizedContainerName + "_TransferOutputs() {" + _eol);
         Iterator<?> outputPorts = container.outputPortList().iterator();
         while (outputPorts.hasNext()) {
@@ -890,6 +946,32 @@ public class TypedCompositeActor extends
                     }
                     
                     codeStream.append(_eol + hasTokenString + putString + fireAtString + _eol + "}" + _eol);
+                }
+            }
+        }
+        if (container.getDirector() instanceof ptolemy.domains.modal.kernel.FSMDirector) {
+            // For a modal model, we clear all the inputs, in order not to read the same tokens
+            // several times. 
+            // Note : This is a little hack to avoid creating an inputToken map in C
+            // which would be a pain.
+            inputPorts = container.inputPortList().iterator();
+            while (inputPorts.hasNext()) {
+                TypedIOPort inputPort = (TypedIOPort) inputPorts.next();
+                if (!inputPort.isInsideConnected())
+                    // No need to transfer tokens from a disconnected port
+                    continue;
+                Receiver[][] receivers = inputPort.deepGetReceivers();
+                for (int channel = 0 ; channel < inputPort.getWidth() ; channel++) {
+                    int foo = 0;
+                    for (int cpt = 0 ; cpt < receivers[channel].length ; cpt++) {
+                        if (!(receivers[channel][cpt].getContainer().getContainer() instanceof ModalController)) {
+                            String hasTokenString = "while (ReceiverHasToken((" + sanitizedContainerName + ".actor).ports[enum_" + sanitizedContainerName 
+                                    + "_" + inputPort.getName() + "].farReceivers[" + foo + "])) {" + _eol;
+                            String putString = _eol + "ReceiverGet((" + sanitizedContainerName + ".actor).ports[enum_" + sanitizedContainerName 
+                                    + "_" + inputPort.getName() + "].farReceivers[" + foo++ + "]);";
+                            codeStream.append(_eol + hasTokenString + putString + _eol + "}" + _eol);
+                        }
+                    }
                 }
             }
         }
@@ -931,6 +1013,22 @@ public class TypedCompositeActor extends
         codeStream.appendCodeBlock("WrapupBlock", args);
         
         return processCode(codeStream.toString());
+    }
+    
+    /** Return a set of parameters that will be modified during the
+     *  execution of the model. These parameters are those returned by
+     *  getModifiedVariables() method of directors or actors that
+     *  implement ExplicitChangeContext interface.
+     *
+     *  @return a set of parameters that will be modified.
+     *  @exception IllegalActionException If the adapter associated with an actor
+     *   or director throws it while getting modified variables.
+     */
+    @Override
+    public Set<Parameter> getModifiedVariables() throws IllegalActionException {
+        Set<Parameter> set = new HashSet<Parameter>();
+        
+        return set;
     }
     
     /**

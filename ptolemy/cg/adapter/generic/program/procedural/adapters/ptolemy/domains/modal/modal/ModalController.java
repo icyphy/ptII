@@ -621,6 +621,6 @@ public class ModalController extends NamedProgramCodeGeneratorAdapter {
     static {
         _eol = StringUtilities.getProperty("line.separator");
     }
-    ptolemy.domains.modal.modal.ModalController _myController;
+    protected ptolemy.domains.modal.modal.ModalController _myController;
 
 }

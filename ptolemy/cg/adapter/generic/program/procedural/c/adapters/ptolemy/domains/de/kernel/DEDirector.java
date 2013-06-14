@@ -1234,79 +1234,79 @@ public class DEDirector extends Director {
      *  @exception IllegalActionException If thrown while
      *  getting port information.
      */
-    private String _generateInputVariableDeclaration(
-            ProgramCodeGeneratorAdapter target) throws IllegalActionException {
-        boolean dynamicReferencesAllowed = allowDynamicMultiportReference();
+//    private String _generateInputVariableDeclaration(
+//            ProgramCodeGeneratorAdapter target) throws IllegalActionException {
+//        boolean dynamicReferencesAllowed = allowDynamicMultiportReference();
+//
+//        StringBuffer code = new StringBuffer();
+//
+//        Iterator<?> inputPorts = ((Actor) target.getComponent())
+//                .inputPortList().iterator();
+//        while (inputPorts.hasNext()) {
+//            TypedIOPort inputPort = (TypedIOPort) inputPorts.next();
+//
+//            if (!inputPort.isOutsideConnected()) {
+//                continue;
+//            }
+//            //targetType(inputPort.getType())
+//            code.append("DEReceiver "
+//                    + CodeGeneratorAdapter.generateName(inputPort));
+//
+//            int bufferSize = _ports.getBufferSize(inputPort);
+//            if (inputPort.isMultiport()) {
+//                code.append("[" + inputPort.getWidth() + "]");
+//                if (bufferSize > 1 || dynamicReferencesAllowed) {
+//                    code.append("[" + bufferSize + "]");
+//                }
+//            } else {
+//                if (bufferSize > 1) {
+//                    code.append("[" + bufferSize + "]");
+//                }
+//            }
+//
+//            code.append(";" + _eol);
+//        }
+//
+//        return code.toString();
+//    }
 
-        StringBuffer code = new StringBuffer();
-
-        Iterator<?> inputPorts = ((Actor) target.getComponent())
-                .inputPortList().iterator();
-        while (inputPorts.hasNext()) {
-            TypedIOPort inputPort = (TypedIOPort) inputPorts.next();
-
-            if (!inputPort.isOutsideConnected()) {
-                continue;
-            }
-            //targetType(inputPort.getType())
-            code.append("DEReceiver "
-                    + CodeGeneratorAdapter.generateName(inputPort));
-
-            int bufferSize = _ports.getBufferSize(inputPort);
-            if (inputPort.isMultiport()) {
-                code.append("[" + inputPort.getWidth() + "]");
-                if (bufferSize > 1 || dynamicReferencesAllowed) {
-                    code.append("[" + bufferSize + "]");
-                }
-            } else {
-                if (bufferSize > 1) {
-                    code.append("[" + bufferSize + "]");
-                }
-            }
-
-            code.append(";" + _eol);
-        }
-
-        return code.toString();
-    }
-
-    /** Generate output variable declarations.
-     *  @return a String that declares output variables.
-     *  @exception IllegalActionException If thrown while
-     *  getting port information.
-     */
-    private String _generateOutputVariableDeclaration(
-            ProgramCodeGeneratorAdapter target) throws IllegalActionException {
-        StringBuffer code = new StringBuffer();
-
-        Iterator<?> outputPorts = ((Actor) target.getComponent())
-                .outputPortList().iterator();
-
-        while (outputPorts.hasNext()) {
-            TypedIOPort outputPort = (TypedIOPort) outputPorts.next();
-
-            // If either the output port is a dangling port or
-            // the output port has inside receivers.
-            if (!outputPort.isOutsideConnected()
-                    || outputPort.isInsideConnected()) {
-                code.append("static " + targetType(outputPort.getType()) + " "
-                        + CodeGeneratorAdapter.generateName(outputPort));
-
-                if (outputPort.isMultiport()) {
-                    code.append("[" + outputPort.getWidthInside() + "]");
-                }
-
-                int bufferSize = _ports.getBufferSize(outputPort);
-
-                if (bufferSize > 1) {
-                    code.append("[" + bufferSize + "]");
-                }
-                code.append(";" + _eol);
-            }
-        }
-
-        return code.toString();
-    }
+//    /** Generate output variable declarations.
+//     *  @return a String that declares output variables.
+//     *  @exception IllegalActionException If thrown while
+//     *  getting port information.
+//     */
+//    private String _generateOutputVariableDeclaration(
+//            ProgramCodeGeneratorAdapter target) throws IllegalActionException {
+//        StringBuffer code = new StringBuffer();
+//
+//        Iterator<?> outputPorts = ((Actor) target.getComponent())
+//                .outputPortList().iterator();
+//
+//        while (outputPorts.hasNext()) {
+//            TypedIOPort outputPort = (TypedIOPort) outputPorts.next();
+//
+//            // If either the output port is a dangling port or
+//            // the output port has inside receivers.
+//            if (!outputPort.isOutsideConnected()
+//                    || outputPort.isInsideConnected()) {
+//                code.append("static " + targetType(outputPort.getType()) + " "
+//                        + CodeGeneratorAdapter.generateName(outputPort));
+//
+//                if (outputPort.isMultiport()) {
+//                    code.append("[" + outputPort.getWidthInside() + "]");
+//                }
+//
+//                int bufferSize = _ports.getBufferSize(outputPort);
+//
+//                if (bufferSize > 1) {
+//                    code.append("[" + bufferSize + "]");
+//                }
+//                code.append(";" + _eol);
+//            }
+//        }
+//
+//        return code.toString();
+//    }
 
     /**
      * Generate a string that represents the reference for an IOPort
@@ -1365,42 +1365,42 @@ public class DEDirector extends Director {
         return code.toString();
     }
 
-    /** Generate type convert variable declarations.
-     * @param target The ProgramCodeGeneratorAdapter for which code needs to be generated.
-     *  @return a String that declares type convert variables.
-     *  @exception IllegalActionException If thrown while
-     *  getting port information.
-     */
-    private String _generateTypeConvertVariableDeclaration(
-            NamedProgramCodeGeneratorAdapter target)
-            throws IllegalActionException {
-        StringBuffer code = new StringBuffer();
-
-        Iterator<?> channels = target.getTypeConvertChannels().iterator();
-        while (channels.hasNext()) {
-            ProgramCodeGeneratorAdapter.Channel channel = (ProgramCodeGeneratorAdapter.Channel) channels
-                    .next();
-            Type portType = ((TypedIOPort) channel.port).getType();
-
-            if (getCodeGenerator().isPrimitive(portType)) {
-
-                code.append("static ");
-                code.append(targetType(portType));
-                code.append(" " + getTypeConvertReference(channel));
-
-                //int bufferSize = getBufferSize(channel.port);
-                int bufferSize = Math.max(
-                        DFUtilities.getTokenProductionRate(channel.port),
-                        DFUtilities.getTokenConsumptionRate(channel.port));
-
-                if (bufferSize > 1) {
-                    code.append("[" + bufferSize + "]");
-                }
-                code.append(";" + _eol);
-            }
-        }
-        return code.toString();
-    }
+//    /** Generate type convert variable declarations.
+//     * @param target The ProgramCodeGeneratorAdapter for which code needs to be generated.
+//     *  @return a String that declares type convert variables.
+//     *  @exception IllegalActionException If thrown while
+//     *  getting port information.
+//     */
+//    private String _generateTypeConvertVariableDeclaration(
+//            NamedProgramCodeGeneratorAdapter target)
+//            throws IllegalActionException {
+//        StringBuffer code = new StringBuffer();
+//
+//        Iterator<?> channels = target.getTypeConvertChannels().iterator();
+//        while (channels.hasNext()) {
+//            ProgramCodeGeneratorAdapter.Channel channel = (ProgramCodeGeneratorAdapter.Channel) channels
+//                    .next();
+//            Type portType = ((TypedIOPort) channel.port).getType();
+//
+//            if (getCodeGenerator().isPrimitive(portType)) {
+//
+//                code.append("static ");
+//                code.append(targetType(portType));
+//                code.append(" " + getTypeConvertReference(channel));
+//
+//                //int bufferSize = getBufferSize(channel.port);
+//                int bufferSize = Math.max(
+//                        DFUtilities.getTokenProductionRate(channel.port),
+//                        DFUtilities.getTokenConsumptionRate(channel.port));
+//
+//                if (bufferSize > 1) {
+//                    code.append("[" + bufferSize + "]");
+//                }
+//                code.append(";" + _eol);
+//            }
+//        }
+//        return code.toString();
+//    }
 
     /**
      * Generate a string that represents the cast type of a parameter or port

@@ -1,0 +1,339 @@
+/* Code generator adapter class associated with the FSMDirector class.
+
+ Copyright (c)2009 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
+
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
+
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
+
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
+
+ */
+package ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.modal.kernel;
+
+import java.util.Iterator;
+import java.util.List;
+
+import ptolemy.actor.Actor;
+import ptolemy.actor.CompositeActor;
+import ptolemy.actor.SuperdenseTimeDirector;
+import ptolemy.cg.kernel.generic.CodeGeneratorAdapter;
+import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
+import ptolemy.cg.kernel.generic.program.ProgramCodeGenerator;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NamedObj;
+
+///////////////////////////////////////////////////////////////////
+////FSMDirector
+
+/**
+Code generator adapter associated with the FSMDirector class. This class
+is also associated with a code generator.
+
+@author William Lucas
+@version $Id$
+@since Ptolemy II 8.1
+@Pt.ProposedRating Red (sssf)
+@Pt.AcceptedRating Red (sssf)
+*/
+public class FSMDirector extends ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.modal.kernel.FSMDirector {
+
+    /** Construct the code generator helper associated
+     *  with the given modal controller.
+     *  @param component The associated component.
+     */
+    public FSMDirector(ptolemy.domains.modal.kernel.FSMDirector component) {
+        super(component);
+    }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         Public methods                    ////
+    
+    /** Generate The functions' declaration code for this director
+    *
+    *  @return The functions' declaration function code.
+    *  @exception IllegalActionException If thrown while generating code.
+    */
+   public String generateFunctionsDeclaration() throws IllegalActionException {
+       StringBuffer code = new StringBuffer();
+       _sanitizedDirectorName = CodeGeneratorAdapter.generateName(_director);
+
+       code.append(_eol + "void " + _sanitizedDirectorName + "_Preinitialize();");
+       code.append(_eol + "void " + _sanitizedDirectorName + "_Initialize();");
+       code.append(_eol + "boolean " + _sanitizedDirectorName + "_Prefire();");
+       code.append(_eol + "void " + _sanitizedDirectorName + "_Fire();");
+       code.append(_eol + "boolean " + _sanitizedDirectorName + "_Postfire();");
+       code.append(_eol + "void " + _sanitizedDirectorName + "_Wrapup();");
+       
+       return code.toString();
+   }
+    
+    /** Generate the initialize function code for the associated FSM director.
+     *  @return The generated initialize code.
+     *  @exception IllegalActionException If the adapter associated with
+     *   an actor throws it while generating initialize code for the actor.
+     */
+    public String generateInitializeFunctionCode()
+            throws IllegalActionException {
+        StringBuffer code = new StringBuffer();
+
+        CompositeActor container = ((CompositeActor) _director.getContainer());
+        List actorList = container.deepEntityList();
+        String sanitizedContainerName = CodeGeneratorAdapter.generateName(container);
+       
+        ProgramCodeGenerator codeGenerator = getCodeGenerator();
+
+        code.append(_eol + _eol
+                + codeGenerator.comment("Initialization of the director"));
+        
+        if (_director.isEmbedded()) {
+            if (container instanceof CompositeActor) {
+                ptolemy.actor.Director executiveDirector = container.getExecutiveDirector();
+                // Some composites, such as RunCompositeActor want to be treated
+                // as if they are at the top level even though they have an executive
+                // director, so be sure to check _isTopLevel().
+                if (executiveDirector instanceof SuperdenseTimeDirector) {
+                    code.append(_eol + _sanitizedDirectorName + ".currentMicrostep = "
+                        + ((SuperdenseTimeDirector) executiveDirector).getIndex() + ";");
+                }
+            }
+        }
+        
+        Iterator<?> actors = actorList.iterator();
+        while (actors.hasNext()) {
+            NamedObj actor = (NamedObj) actors.next();
+            String sanitizedActorName = CodeGeneratorAdapter.generateName(actor);
+            if (!actor.getFullName().contains("_Controller"))
+                code.append(_eol + sanitizedActorName + "_initialize();");
+        }
+        
+        code.append(_eol + _sanitizedDirectorName + ".containerActor = &" + sanitizedContainerName + ";");
+        
+        code.append(_eol + _sanitizedDirectorName + ".currentModelTime = " + _sanitizedDirectorName + ".startTime;");
+        code.append(_eol + _sanitizedDirectorName + ".exceedStopTime = false;");
+
+        code.append(_eol + _sanitizedDirectorName + ".isInitializing = false;");
+        code.append(_eol
+                + codeGenerator
+                        .comment("End of the Initialization of the director"));
+        
+        return code.toString();
+    }
+    
+    /** Generate a main loop for an execution under the control of
+     *  this FSM director. 
+     *  
+     *  @return Code for the main loop of an execution.
+     *  @exception IllegalActionException If something goes wrong.
+     */
+    public String generateMainLoop() throws IllegalActionException {
+        // Need a leading _eol here or else the execute decl. gets stripped out.
+        StringBuffer code = new StringBuffer();
+        _sanitizedDirectorName = CodeGeneratorAdapter.generateName(_director);
+
+        code.append(_eol + "void " + _sanitizedDirectorName + "_Preinitialize() {" + _eol);
+        code.append(generatePreinitializeMethodBodyCode());
+        code.append(_eol + "}" + _eol);
+
+        code.append(_eol + "boolean " + _sanitizedDirectorName + "_Prefire() {" + _eol);
+        code.append(generatePrefireCode());
+        code.append(_eol + "}" + _eol);
+
+        code.append("boolean " + _sanitizedDirectorName + "_Postfire() {" + _eol);
+        code.append(generatePostfireCode());
+        code.append(_eol + "}" + _eol);
+
+        code.append("void " + _sanitizedDirectorName + "_Fire() {" + _eol);
+        code.append(generateFireFunctionCode());
+        code.append(_eol + "}" + _eol);
+
+        code.append(_eol + "void " + _sanitizedDirectorName + "_Initialize() {" + _eol);
+        code.append(generateInitializeFunctionCode());
+        code.append(_eol + "}" + _eol);
+        
+        code.append(_eol + "void " + _sanitizedDirectorName + "_Wrapup() {" + _eol);
+        code.append(generateWrapupCode());
+        code.append(_eol + "}" + _eol);
+        
+        return code.toString();
+    }
+
+    /** Generate the code for the firing of this director.
+     * 
+     *  @return The generated code.
+     *  @exception IllegalActionException If the adapter associated with
+     *   an actor throws it while generating fire code for the actor.
+     */
+    public String generateFireFunctionCode() throws IllegalActionException {
+        StringBuffer code = new StringBuffer();
+        code.append(getCodeGenerator().comment("The firing of the director."));
+
+        Iterator<?> actors = ((CompositeActor) _director.getContainer())
+                .deepEntityList().iterator();
+
+        while (actors.hasNext()) {
+            Actor actor = (Actor) actors.next();
+            if (actor.getFullName().contains("_Controller")) {
+                NamedProgramCodeGeneratorAdapter adapter = (NamedProgramCodeGeneratorAdapter) getCodeGenerator()
+                        .getAdapter(actor);
+                code.append(adapter.generateFireCode());
+            }
+        }
+        return code.toString();
+    }
+    
+    /** Generate the postfire code of the associated composite actor.
+    *
+    *  @return The postfire code of the associated composite actor.
+    *  @exception IllegalActionException If the adapter associated with
+    *   an actor throws it while generating postfire code for the actor
+    */
+    @Override
+    public String generatePostfireCode() throws IllegalActionException {
+       StringBuffer code = new StringBuffer();
+
+       code.append(_eol + getCodeGenerator().comment(0,
+               "The postfire of the director."));
+
+       Iterator<?> actors = ((CompositeActor) _director.getContainer())
+               .deepEntityList().iterator();
+
+       while (actors.hasNext()) {
+           Actor actor = (Actor) actors.next();
+           if (actor.getFullName().contains("_Controller")) {
+               NamedProgramCodeGeneratorAdapter adapter = (NamedProgramCodeGeneratorAdapter) getCodeGenerator()
+                       .getAdapter(actor);
+               code.append(adapter.generatePostfireCode());
+           }
+       }
+
+       return code.toString();
+    }
+    
+    /** Generate the prefire code of the associated composite actor.
+    *
+    *  @return The prefire code of the associated composite actor.
+    *  @exception IllegalActionException It should never happen
+    */
+    @Override
+    public String generatePrefireCode() throws IllegalActionException {
+       StringBuffer code = new StringBuffer();
+
+       code.append(_eol + "return true;");
+
+       return code.toString();
+   }
+
+    /** Generate the preinitialize code for this director.
+     *  The preinitialize code for the director is generated by appending
+     *  the preinitialize code for each actor.
+     *  @return The generated preinitialize code.
+     *  @exception IllegalActionException If getting the adapter fails,
+     *   or if generating the preinitialize code for a adapter fails,
+     *   or if there is a problem getting the buffer size of a port.
+     */
+    public String generatePreinitializeCode() throws IllegalActionException {
+        StringBuffer code = new StringBuffer();
+        //code.append(super.generatePreinitializeCode());
+        // We do execute this method without using its result because we need to initialize the offsets
+        super.generatePreinitializeCode();
+        
+        CompositeActor container = ((CompositeActor) _director.getContainer());
+        String sanitizedContainerName = CodeGeneratorAdapter.generateName(container);
+
+        getSanitizedDirectorName();
+        
+        code.append(_eol + "" + _sanitizedDirectorName + ".preinitializeFunction = " + _sanitizedDirectorName + "_Preinitialize;");
+        code.append(_eol + "" + _sanitizedDirectorName + ".initializeFunction = " + _sanitizedDirectorName + "_Initialize;");
+        code.append(_eol + "" + _sanitizedDirectorName + ".prefireFunction = " + _sanitizedDirectorName + "_Prefire;");
+        code.append(_eol + "" + _sanitizedDirectorName + ".postfireFunction = " + _sanitizedDirectorName + "_Postfire;");
+        code.append(_eol + "" + _sanitizedDirectorName + ".fireFunction = " + _sanitizedDirectorName + "_Fire;");
+        code.append(_eol + "" + _sanitizedDirectorName + ".wrapupFunction = " + _sanitizedDirectorName + "_Wrapup;");
+        code.append(_eol + "" + _sanitizedDirectorName + ".containerActor = &" + sanitizedContainerName + ";");
+
+        return code.toString();
+    }
+    
+    /** Generate the preinitialize code for this director.
+     *  The preinitialize code for the director is generated by appending
+     *  the preinitialize code for each actor.
+     *  @return The generated preinitialize code.
+     *  @exception IllegalActionException If getting the adapter fails,
+     *   or if generating the preinitialize code for a adapter fails,
+     *   or if there is a problem getting the buffer size of a port.
+     */
+    public String generatePreinitializeMethodBodyCode() throws IllegalActionException {
+        StringBuffer code = new StringBuffer();
+
+        CompositeActor container = ((CompositeActor) _director.getContainer());
+        List actorList = container.deepEntityList();
+        Iterator<?> actors = actorList.iterator();
+        while (actors.hasNext()) {
+            NamedObj actor = (NamedObj) actors.next();
+            String sanitizedActorName = CodeGeneratorAdapter.generateName(actor);
+            if (!actor.getFullName().contains("_Controller"))
+                code.append(_eol + sanitizedActorName + "_preinitialize();");
+        }
+        
+        return code.toString();
+    }
+    
+    /** We override the super method, because the declaration
+     * of the variables are in the actor's files
+     *  @return code The generated code.
+     *  @exception IllegalActionException If the adapter class for the model
+     *   director cannot be found.
+     */
+    @Override
+    public String generateVariableDeclaration() throws IllegalActionException {
+        StringBuffer code = new StringBuffer();
+        _sanitizedDirectorName = CodeGeneratorAdapter.generateName(_director);
+        
+        code.append(_eol + "Director " + _sanitizedDirectorName + ";");
+        Iterator<?> actors = ((CompositeActor) _director.getContainer())
+                .deepEntityList().iterator();
+
+        while (actors.hasNext()) {
+            Actor actor = (Actor) actors.next();
+            if (actor.getFullName().contains("_Controller")) {
+                NamedProgramCodeGeneratorAdapter adapter = (NamedProgramCodeGeneratorAdapter) getCodeGenerator()
+                        .getAdapter(actor);
+                code.append(adapter.generateVariableDeclaration());
+            }
+        }
+        
+        return code.toString();
+    }
+
+    
+    /** Returns the sanitized name of this director
+     *  adapter
+     * 
+     * @return The name of the director
+     */
+    public String getSanitizedDirectorName() {
+        _sanitizedDirectorName = CodeGeneratorAdapter.generateName(_director);
+        return _sanitizedDirectorName;
+    }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         private members                   ////
+    
+    protected String _sanitizedDirectorName;
+}

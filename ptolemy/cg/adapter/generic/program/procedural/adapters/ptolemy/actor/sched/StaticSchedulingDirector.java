@@ -173,6 +173,8 @@ public class StaticSchedulingDirector extends Director {
             if (inline) {
                 for (int i = 0; i < firing.getIterationCount(); i++) {
                     // Generate fire code for the actor.
+                    if (codeGenerator instanceof CCodeGenerator)
+                        getCodeGenerator().setModifiedVariables(adapter.getModifiedVariables());
                     code.append(adapter.generateFireCode());
                     if (!(codeGenerator instanceof CCodeGenerator))
                         _generateUpdatePortOffsetCode(code, actor);
