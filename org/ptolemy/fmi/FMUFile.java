@@ -168,7 +168,7 @@ public class FMUFile {
         // Unzip the file.
         List<File> files = null;
         try {
-            files = _unzip(fmuFileName);
+            files = unzip(fmuFileName);
         } catch (IOException ex) {
 	    // Java 1.5 does not support IOException(String, Throwable).
 	    // We sometimes compile this with gcj, which is Java 1.5
@@ -353,25 +353,6 @@ public class FMUFile {
         return fmiModelDescription;
     }
 
-    /** Return true if this is a 32bit JVM.
-     *  @return true if this is a 32bit JVM.
-     */
-    private static boolean _is32Bit() {
-        String dataModelProperty = System.getProperty("sun.arch.data.model");
-        // FIXME: it is difficult to detect if we are under a
-        // 64bit JVM. See
-        // http://forums.sun.com/thread.jspa?threadID=5306174
-        if (dataModelProperty == null || dataModelProperty.indexOf("64") != -1) {
-            return false;
-        } else {
-            String javaVmNameProperty = System.getProperty("java.vm.name");
-            if (javaVmNameProperty.indexOf("64") != -1) {
-                return false;
-            }
-        }
-        return true;
-    }
-
     /** Unzip a file into a temporary directory.
      *  Based on http://java.sun.com/developer/technicalArticles/Programming/compression/.
      *  @param zipFileName  The file to be unzipped.
@@ -379,7 +360,7 @@ public class FMUFile {
      *  @exception IOException if the file cannot be opened, if there are problems reading
      *  the zip file or if there are problems creating the files or directories.
      */
-    private static List<File> _unzip(String zipFileName) throws IOException {
+    public static List<File> unzip(String zipFileName) throws IOException {
         // FIXME: Use URLs, not files so that we can work from JarZip files.
         BufferedOutputStream destination = null;
         final int BUFFER = 2048;
@@ -438,6 +419,9 @@ public class FMUFile {
                 }
             }
         } finally {
+            if (destination != null) {
+                destination.close();
+            }
             if (zipInputStream != null) {
                 zipInputStream.close();
             }
@@ -445,6 +429,25 @@ public class FMUFile {
         return files;
     }
     
+    /** Return true if this is a 32bit JVM.
+     *  @return true if this is a 32bit JVM.
+     */
+    private static boolean _is32Bit() {
+        String dataModelProperty = System.getProperty("sun.arch.data.model");
+        // FIXME: it is difficult to detect if we are under a
+        // 64bit JVM. See
+        // http://forums.sun.com/thread.jspa?threadID=5306174
+        if (dataModelProperty == null || dataModelProperty.indexOf("64") != -1) {
+            return false;
+        } else {
+            String javaVmNameProperty = System.getProperty("java.vm.name");
+            if (javaVmNameProperty.indexOf("64") != -1) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
