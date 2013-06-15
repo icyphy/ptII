@@ -148,30 +148,27 @@ public class FMUModelExchange extends Transformer {
     /** Names of the output variables. */
     public Parameter outputNames;
 
-    /** Start values for the FMU */
+    /** Start values for the FMU. */
     public Parameter startValues;
 
-    /** Value for the lookahead */
+    /** Value for the lookahead. */
     public Parameter lookAheadHorizon;
 
-    /** Value for the stepsize of the lookahead */
+    /** Value for the stepsize of the lookahead. */
     public Parameter lookAheadStepSize;
 
-    /** Value for the stepsize of the integrator */
+    /** Value for the stepsize of the integrato. */
     public Parameter integratorStepSize;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Clone the actor into the specified workspace. This calls the
-     *  base class and then sets the <code>init</code> and <code>step</code>
-     *  public members to the parameters of the new actor.
-     *  @param workspace The workspace for the new object.
-     *  @return A new actor.
-     *  @exception CloneNotSupportedException If a derived class contains
-     *   an attribute that cannot be cloned.
+    /** Update an attribute.
+     *  @param attribute The attribute that changed.
+     *  @exception IllegalActionException If <i>init<i> cannot be evaluated
+     *   or cannot be converted to the output type, or if the superclass
+     *   throws it.
      */
-
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == fmuFile) {
@@ -454,7 +451,7 @@ public class FMUModelExchange extends Transformer {
 
         //	System.out.format("-FMUModelExchange::initialize: check for inputs: ");
 
-        if (inputNames.getExpression() != "") {
+        if (!inputNames.getExpression().equals("")) {
             //	System.out.format("got _some%n");
             _inputVariables = inputNames.getExpression().split(",");
             _inputVector = new double[_inputVariables.length];

@@ -583,7 +583,7 @@ public class CompositeResourceScheduler extends TypedCompositeActor implements R
                 Actor actor = (Actor) getContainer();
                 CompositeResourceScheduler scheduler = (CompositeResourceScheduler) getDecorator();
                 String portName = ((StringToken) ((Parameter) attribute).getToken()).stringValue();
-                if (scheduler != null && portName != "" /*&& enabled()*/) {
+                if (scheduler != null && !portName.equals("") /*&& enabled()*/) {
                     scheduler.setRequestPort(actor, portName);
                 }
             } else {
