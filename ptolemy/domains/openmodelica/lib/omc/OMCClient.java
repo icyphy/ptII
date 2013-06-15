@@ -70,13 +70,11 @@ public class OMCClient {
     /** OMC which is coupled to Ptolemy II is called to initialize the
      *  OMC server and simulate the Modelica model, then exchange data via BSD socket.
      *  TODO it should be detailed.
-     * @param args
-     * @throws IllegalActionException
-     * @throws IOException
+     * @param args Ignored by this method. 
+     * @throws IllegalActionException If a connection cannot be made.
+     * @throws IOException If the socket cannot be established.
      */
     public static void main(String[] args) throws IllegalActionException, IOException {
-        
-        
         try {
             // Create a unique instance of OMCProxy.
             _omcProxy = OMCProxy.getInstance();

@@ -1167,10 +1167,17 @@ public class SysMLADirector extends ProcessDirector {
      *  clear the receiver.
      */
     public class SysMLAReceiver extends Mailbox {
+        /** Construct a SysMLAReceiver.
+         *  @excepton IllegalActionException If thrown by the superclass.   
+         */
         public SysMLAReceiver() throws IllegalActionException {
             this(null);
         }
 
+        /** Construct a SysMLAReceiver.
+         *  @param container The container for this SysMLAReceiver.   
+         *  @excepton IllegalActionException If thrown by the superclass.   
+         */
         public SysMLAReceiver(IOPort container) throws IllegalActionException {
             super(container);
         }

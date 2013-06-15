@@ -53,25 +53,29 @@ import ptolemy.util.StringUtilities;
  its own thread.  Each specified class should be derived from
  CompositeActor, and should have a constructor that takes a single
  argument, an instance of Workspace.  If the model does not contain
- a manager, then one will be created for it.</p>
+ a manager, then one will be created for it.
  <p>
  The model is not displayed,  models that have actors that extend
  Placeable should instead use
  {@link ptolemy.actor.gui.CompositeActorApplication}.
+ </p>
  <p>
  The command-line arguments can also set parameter values for any
  parameter in the models, with the name given relative to the top-level
  entity.  For example, to specify the iteration count in an SDF model,
  you can invoke this on the command line as follows:
+ </p>
  <pre>
  java -classpath $PTII ptolemy.actor.gui.CompositeActorSimpleApplication \
  -director.iterations 1000 \
  -class ptolemy.actor.gui.test.TestModel
  </pre>
+ <p>
  This assumes that the model given by the specified class name has a director
  named "director" with a parameter named "iterations".  If more than
  one model is given on the command line, then the parameter values will
  be set for all models that have such a parameter.
+ </p>
 
  @see ptolemy.actor.gui.CompositeActorApplication
  @author Christopher Brooks
@@ -157,6 +161,7 @@ public class CompositeActorSimpleApplication {
      *  @param model The model to execute.
      *  @exception IllegalActionException If the model contains Placeables.
      *  or does not have a manager.
+     *  @return Always returns null.
      *  @see ptolemy.actor.Manager#startRun()
      */
     public synchronized Object startRun(CompositeActor model)
@@ -372,6 +377,7 @@ public class CompositeActorSimpleApplication {
 
     /** Run the application.
      *  @param application The application.
+     *  @param args The arguments to be passed to the application.
      */
     protected static void _run(CompositeActorSimpleApplication application, String [] args) {
         try {

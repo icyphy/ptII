@@ -158,6 +158,7 @@ public class DecoratorAttributes extends Attribute {
      *
      *  @param output The output stream to write to.
      *  @param depth The depth in the hierarchy, to determine indenting.
+     *  @param name The name of we use when exporting the description.
      *  @exception IOException If an I/O error occurs.
      *  @see #exportMoML(Writer, int)
      */

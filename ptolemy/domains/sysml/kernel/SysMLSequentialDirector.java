@@ -424,7 +424,7 @@ public class SysMLSequentialDirector extends Director implements
     /** Return true if next actor in list of fire requests was scheduled
      *  and can execute.
      *  @return true If next actor can execute.
-     *  @exception IllegalActionExcepiton If request to resource scheduler fails.
+     *  @exception IllegalActionException If request to resource scheduler fails.
      */
     public boolean scheduleContainedActors() throws IllegalActionException {
         RefireRequest request = _fireAtRequests.peek();
@@ -581,6 +581,8 @@ public class SysMLSequentialDirector extends Director implements
      *  to which they succeeded.
      *  @param time The time to advance to.
      *  @param microstep The microstep to advance to.
+     *  @return The time and microstep that is the minimum of the
+     *  superdense times to which they succeeded.
      *  @exception IllegalActionException If an actor refuses to advance time,
      *   or if the proposed time is in the past.
      */
@@ -662,6 +664,7 @@ public class SysMLSequentialDirector extends Director implements
 
     /** Return a list of actors under the control of this director that implement
      *  the {@link Advanceable} interface.
+     *  @return the list of actors.
      */
     protected List<Advanceable> _getAdvanceables() {
         if (workspace().getVersion() != _advanceablesVersion) {
@@ -703,6 +706,7 @@ public class SysMLSequentialDirector extends Director implements
     }
 
     /** Iterate the specified actor once.
+     *  @param The actor to be iterated.        
      *  @return True if either prefire() returns false
      *   or postfire() returns true.
      *  @exception IllegalActionException If the actor throws it.
@@ -860,7 +864,9 @@ public class SysMLSequentialDirector extends Director implements
 
     /** Data structure for storing a superdense time. */
     public class SuperdenseTime {
+        /** The time. */
         public Time time;
+        /** The microstep.. */
         public int microstep;
     }
 

@@ -53,7 +53,7 @@ do this:
             NameDuplicationException {
         super.setContainer(container);
         if (container != null) {
-            List<NamedObj> decoratedObjects = decoratedObjects();
+            List&lt;NamedObj&gt; decoratedObjects = decoratedObjects();
             for (NamedObj decoratedObject : decoratedObjects) {
                 // The following will create the DecoratorAttributes if it does not
                 // already exist, and associate it with this decorator.
