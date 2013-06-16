@@ -1889,7 +1889,7 @@ public class Director extends Attribute implements Executable {
                 Time fireAtTime = environmentTime;
                 if (!time.equals(Time.POSITIVE_INFINITY)) {
                     fireAtTime = fireAtTime.add(time); 
-                    fireAt(actor, fireAtTime);
+//                    fireAt(actor, fireAtTime);
                     container.getDirector().fireContainerAt(
                             fireAtTime);
                 }
