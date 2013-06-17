@@ -1,0 +1,578 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="GeneratorRegulatorProtectorSimXFMU" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 82, 1038, 634}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[804, 524]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.9852390732671747">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{409.00781249999994, 319.372613388404}">
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="At time 15, turn&#10;on a load.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="{-20.0, 120.0}">
+            <property name="relativeTo" class="ptolemy.kernel.util.StringAttribute" value="SingleEvent">
+            </property>
+            <property name="relativeToElementName" class="ptolemy.kernel.util.StringAttribute" value="entity">
+            </property>
+        </property>
+    </property>
+    <property name="Title" class="ptolemy.vergil.basic.export.web.Title" value="Generator Regulator with Overvoltage Protection">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{120.0, 15.0}">
+        </property>
+    </property>
+    <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="60.0">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{60.0, 35.0}">
+        </property>
+    </property>
+    <property name="LocalPreferences" class="ptolemy.actor.gui.PtolemyPreferences">
+        <property name="_showParameters" class="ptolemy.data.expr.StringParameter" value="Overridden parameters only">
+            <display name="Show parameters"/>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{680.0, 550.0}">
+        </property>
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model disconnects a connected load if the measured voltage exceeds a specified threshold.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{120.0, 45.0}">
+        </property>
+    </property>
+    <property name="Annotation5" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Previous model: GeneratorRegulator">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{410.0, 370.0}">
+        </property>
+        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$PTII/ptolemy/demo/ElectricPowerSystem/GeneratorRegulator.xml">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">LL</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{395, 280}">
+            </property>
+        </property>
+        <property name="IconLink" class="ptolemy.vergil.basic.export.web.IconLink" value="http://icyphy.org/models/GeneratorRegulator/index.html">
+            <property name="linkTarget" class="ptolemy.vergil.basic.export.web.LinkTarget" value="_blank">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{340, 390}">
+            </property>
+        </property>
+    </property>
+    <property name="overVoltageThreshold" class="ptolemy.data.expr.Parameter" value="130.0">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{20.0, 95.0}">
+        </property>
+    </property>
+    <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Change this to 120 or larger and the&#10;overvoltage protection does not kick in.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{15.0, 105.0}">
+        </property>
+    </property>
+    <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Next model: GeneratorRegulatorFMUProtector">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{410.0, 395.0}">
+        </property>
+        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$PTII/ptolemy/demo/ElectricPowerSystem/GeneratorRegulatorFMUProtector.xml">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">LL</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{395, 280}">
+            </property>
+        </property>
+        <property name="IconLink" class="ptolemy.vergil.basic.export.web.IconLink" value="http://icyphy.org/models/GeneratorRegulatorFMUProtector/index.html">
+            <property name="linkTarget" class="ptolemy.vergil.basic.export.web.LinkTarget" value="_blank">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{375, 420}">
+            </property>
+        </property>
+    </property>
+    <property name="_defaultWebExportParameters" class="ptolemy.vergil.basic.export.web.WebExportParameters">
+        <property name="directoryToExportTo" class="ptolemy.data.expr.FileParameter" value="/Users/eal/Projects/iCyPhy/icyphywww/models/GeneratorRegulatorProtector">
+            <property name="allowFiles" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="allowDirectories" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+        </property>
+        <property name="openCompositesBeforeExport" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="runBeforeExport" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="showInBrowser" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="copyJavaScriptFiles" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="imageFormat" class="ptolemy.data.expr.StringParameter" value="gif">
+        </property>
+        <property name="usePtWebsite" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+    </property>
+    <property name="Annotation6" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.0,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Notice the voltage spike when the load is disconnected.&#10;Also notice that the PID controller tries to take the drive&#10;negative, but the generator model clips the drive input&#10;to be non-negative.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{10.0, 365.0}">
+        </property>
+    </property>
+    <property name="samplePeriod" class="ptolemy.data.expr.Parameter" value="0.1">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{20.0, 155.0}">
+        </property>
+    </property>
+    <class name="InitialPlusDelay" extends="ptolemy.actor.TypedCompositeActor">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{450.0, 480.0}">
+        </property>
+        <property name="initialValue" class="ptolemy.data.expr.Parameter" value="false">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{105.0, 145.0}">
+            </property>
+        </property>
+        <property name="delay" class="ptolemy.data.expr.Parameter" value="1.0">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{15.0, 145.0}">
+            </property>
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={52, 80, 920, 607}, maximized=false}">
+        </property>
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 500]">
+        </property>
+        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+        </property>
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{347.0, 379.734375}">
+        </property>
+        <port name="port_0" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{225.0, 275.0}">
+            </property>
+        </port>
+        <port name="port_3" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{20.0, 275.0}">
+            </property>
+        </port>
+        <entity name="TimeDelay" class="ptolemy.actor.lib.TimeDelay">
+            <property name="delay" class="ptolemy.actor.parameters.PortParameter" value="delay">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{90.0, 275.0}">
+            </property>
+        </entity>
+        <entity name="Merge" class="ptolemy.domains.continuous.lib.ContinuousMerge">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{175.0, 275.0}">
+            </property>
+        </entity>
+        <entity name="SingleEvent2" class="ptolemy.actor.lib.SingleEvent">
+            <property name="value" class="ptolemy.data.expr.Parameter" value="initialValue">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{90.0, 205.0}">
+            </property>
+        </entity>
+        <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+            <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Merge.input&quot;,x=175.0,y=275.0,index=2}, tail={id=&quot;SingleEvent2.output&quot;,x=90.0,y=205.0}, points={140.0,270.0,140.0,205.0} } }">
+            </property>
+        </relation>
+        <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+            <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;TimeDelay.output&quot;,x=90.0,y=275.0}, tail={id=&quot;Merge.input&quot;,x=175.0,y=275.0,index=2}, points={} } }">
+            </property>
+        </relation>
+        <relation name="relation" class="ptolemy.actor.TypedIORelation">
+            <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;port_0._location&quot;,x=225.0,y=275.0}, tail={id=&quot;Merge.output&quot;,x=175.0,y=275.0}, points={} } }">
+            </property>
+        </relation>
+        <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+            <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;port_3._location&quot;,x=20.0,y=275.0}, tail={id=&quot;TimeDelay.input&quot;,x=90.0,y=275.0}, points={} } }">
+            </property>
+        </relation>
+        <link port="port_0" relation="relation"/>
+        <link port="port_3" relation="relation6"/>
+        <link port="TimeDelay.input" relation="relation6"/>
+        <link port="TimeDelay.output" relation="relation8"/>
+        <link port="Merge.input" relation="relation3"/>
+        <link port="Merge.input" relation="relation8"/>
+        <link port="Merge.output" relation="relation"/>
+        <link port="SingleEvent2.output" relation="relation3"/>
+    </class>
+    <entity name="SingleEvent" class="ptolemy.actor.lib.SingleEvent">
+        <property name="time" class="ptolemy.data.expr.Parameter" value="15.0">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{35.0, 220.0}">
+        </property>
+    </entity>
+    <entity name="Expression" class="ptolemy.actor.lib.Expression">
+        <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="voltage &gt;= overVoltageThreshold">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+            <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{356.0, 327.0}">
+        </property>
+        <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <port name="voltage" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+    </entity>
+    <entity name="Supervisor" class="ptolemy.domains.modal.modal.ModalModel">
+        <property name="_tableauFactory" class="ptolemy.vergil.modal.modal.ModalTableauFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{125.0, 220.0}">
+        </property>
+        <port name="onOff" class="ptolemy.domains.modal.modal.ModalPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <port name="fault" class="ptolemy.domains.modal.modal.ModalPort">
+            <property name="input"/>
+            <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="SOUTH">
+            </property>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <port name="contactor" class="ptolemy.domains.modal.modal.ModalPort">
+            <property name="output"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <entity name="_Controller" class="ptolemy.domains.modal.modal.ModalController">
+            <property name="errorCause" class="ptolemy.data.expr.Parameter">
+            </property>
+            <property name="_library" class="ptolemy.moml.LibraryAttribute">
+                <configure>
+      <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.modal.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory"></property></entity></entity>
+    </configure>
+            </property>
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={52, 67, 920, 633}, maximized=false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
+            </property>
+            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.1875217441725618">
+            </property>
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{291.52099609375, 242.70110931396482}">
+            </property>
+            <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+                <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This state machine switches from off to on when onOff is present and true.&#10;If in the same reaction, fault is also present, it transitions immediately back to off.&#10;When it is in the on state, it transitions back to off if either fault is present and true,&#10;or onOff is present and false.">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, 225.0]">
+                </property>
+            </property>
+            <port name="onOff" class="ptolemy.domains.modal.modal.RefinementPort">
+                <property name="input"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 95.0]">
+                </property>
+            </port>
+            <port name="fault" class="ptolemy.domains.modal.modal.RefinementPort">
+                <property name="input"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 135.0]">
+                </property>
+            </port>
+            <port name="contactor" class="ptolemy.domains.modal.modal.RefinementPort">
+                <property name="input"/>
+                <property name="output"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[440.0, 110.0]">
+                </property>
+            </port>
+            <entity name="off" class="ptolemy.domains.modal.kernel.State">
+                <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+                <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[145.0, 90.0]">
+                </property>
+            </entity>
+            <entity name="on" class="ptolemy.domains.modal.kernel.State">
+                <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+                <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[295.0, 90.0]">
+                </property>
+            </entity>
+            <relation name="relation" class="ptolemy.domains.modal.kernel.Transition">
+                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="onOff">
+                </property>
+                <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="contactor = true">
+                </property>
+                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.7753071309291377">
+                </property>
+                <property name="gamma" class="ptolemy.data.expr.Parameter" value="-0.04770267934836719">
+                </property>
+            </relation>
+            <relation name="relation2" class="ptolemy.domains.modal.kernel.Transition">
+                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="fault">
+                </property>
+                <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="contactor = false">
+                </property>
+                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.6474117189486365">
+                </property>
+                <property name="gamma" class="ptolemy.data.expr.Parameter" value="3.0587577909881927">
+                </property>
+                <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="immediate" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+            </relation>
+            <relation name="relation3" class="ptolemy.domains.modal.kernel.Transition">
+                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="!onOff">
+                </property>
+                <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="contactor = false">
+                </property>
+                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-1.6222167676222667">
+                </property>
+                <property name="gamma" class="ptolemy.data.expr.Parameter" value="3.046288368636289">
+                </property>
+                <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+            </relation>
+            <link port="off.incomingPort" relation="relation2"/>
+            <link port="off.incomingPort" relation="relation3"/>
+            <link port="off.outgoingPort" relation="relation"/>
+            <link port="on.incomingPort" relation="relation"/>
+            <link port="on.outgoingPort" relation="relation2"/>
+            <link port="on.outgoingPort" relation="relation3"/>
+        </entity>
+        <relation name="onOffRelation" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
+            </property>
+        </relation>
+        <relation name="faultRelation" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
+            </property>
+        </relation>
+        <relation name="contactorRelation" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
+            </property>
+        </relation>
+        <link port="onOff" relation="onOffRelation"/>
+        <link port="fault" relation="faultRelation"/>
+        <link port="contactor" relation="contactorRelation"/>
+        <link port="_Controller.onOff" relation="onOffRelation"/>
+        <link port="_Controller.fault" relation="faultRelation"/>
+        <link port="_Controller.contactor" relation="contactorRelation"/>
+    </entity>
+    <entity name="Controller" class="ptolemy.demo.ElectricPowerSystem.Controller">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{676.0, 212.0}">
+        </property>
+        <property name="proportionalGain" class="ptolemy.data.expr.Parameter" value="1.0">
+        </property>
+        <property name="integratorGain" class="ptolemy.data.expr.Parameter" value="0.1">
+        </property>
+    </entity>
+    <entity name="GeneratorContactorLoadSimXFMU" class="ptolemy.demo.ElectricPowerSystem.GeneratorContactorLoadSimXFMU">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{456.0, 212.0}">
+        </property>
+        <property name="voltageSamplePeriod" class="ptolemy.data.expr.Parameter" value="samplePeriod">
+        </property>
+    </entity>
+    <entity name="InstanceOfInitialPlusDelay" class="InitialPlusDelay">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{331.0, 222.0}">
+        </property>
+        <property name="delay" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
+    </entity>
+    <entity name="InstanceOfInitialPlusDelay2" class="InitialPlusDelay">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{515.0, 105.0}">
+        </property>
+        <property name="initialValue" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
+        <property name="delay" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
+        <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+    </entity>
+    <entity name="MostRecent" class="ptolemy.domains.de.lib.MostRecent">
+        <property name="initialValue" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{230.0, 215.0}">
+        </property>
+    </entity>
+    <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
+        <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="Voltage, Drive">
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={72, 275, 639, 456}, maximized=false}">
+        </property>
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[639, 412]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{611.0, 297.0}">
+        </property>
+        <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>Voltage and Drive over time</title>
+<xLabel>time (seconds)</xLabel>
+<yLabel>voltage, drive</yLabel>
+<xRange min="0.0" max="60.0"/>
+<yRange min="-3.562486162603708" max="124.17924485180414"/>
+</plot>?>
+        </configure>
+    </entity>
+    <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, 110.0, 111.1, 107.4306946406709, 103.5223852605173, 99.7217496702758, 96.0474908747313, 92.497003137108, 89.066394701435, 85.7517865254021, 82.5483651363863, 79.4515363785779, 76.4604688514828, 73.5711235168241, 70.77887391103, 68.0829220569322, 65.4790438097253, 62.9640870641089, 60.5352791886352, 58.1890001494581, 55.9202958495731, 53.7297265881998, 51.6161200533682, 49.5757024216694, 47.6060081654457, 45.7046969039673, 43.8695103562634, 42.0982637024431, 40.38884280845, 38.7392019207626, 37.147361472881, 35.611405964935, 34.1294819111932, 32.6997958530472, 31.3206124353669, 29.990252544206, 28.7070915039062, 27.4695573317098, 26.2761290480507, 25.1253350407508, 24.0157514814074, 22.9460007923089, 21.9147501622728, 20.9207101098461, 19.9626330923627, 19.0393121593959, 18.1495796491955, 17.2923059267379, 16.4663981620668, 15.6707991476407, 14.9044861534451, 14.1664698186672, 13.4557930787691, 12.7715301268319, 12.1127854080795, 11.4786926465252, 10.8684139027186, 10.2811386616017, 9.7160829495152, 9.1724884794272, 8.6496218234842, 8.1467736120153, 7.6632577581452, 7.198410707202, 6.7515907101285, 6.3221771201323, 5.9095697118352, 5.5131880222034, 5.1324707125656, 4.766874951047, 4.4158758147666, 4.0789657111713, 3.7556538178929, 3.4454655405406, 3.1479419878557, 2.8626394636748, 2.5891289751675, 2.3269957568263, 2.07583880971, 1.8352704554514, 1.6049159045604, 1.3844128385646, 1.1734110055482, 0.9715718286595, 0.7785680271759, 0.5940832497228, 0.4178117192606, 0.2494578894647, 0.0887361121325, -0.0646296847322, -0.2109063084987, -0.3503516034844, -0.4832147428415, -0.6097365110683, -0.7301495774419, -0.8446787606626, -0.9535412849921, -1.0569470281553, -1.15509876127, -1.2481923810587, -1.3364171345894, -1.4199558367834, -1.4989850809217, -1.5736754423748, -1.6441916757699, -1.710692905808, -1.7733328119317, -1.8322598070426, -1.8876172104559, -1.939543415279, -1.9881720503909, -2.0336321371947, -2.0760482413133, -2.1155406193857, -2.1522253611247, -2.186214526785, -2.2176162801902, -2.24653501746, -2.2730714915754, -2.2973229329153, -2.319383165894, -2.3393427218233, -2.3572889481212, -2.3733061139841, -2.3874755126351, -2.3998755602594, -2.4105818917315, -2.4196674532386, -2.4272025918981, -2.4332551424674, -2.4378905112377, -2.441171757203, -2.4431596705911, -2.4439128488429, -2.4434877701193, -2.4419388644168, -2.4393185823692, -2.4356774618079, -2.4310641921535, -2.4255256767092, -2.4191070929229, -2.4118519506826, -2.4038021487092, -2.3949980291081, -2.3854784301372, -2.3752807372515, -2.3644409324764, -2.3529936421664, -2.3409721831994, -2.3284086076582, -2.3153337460458, -2.3017772490855, -2.2877676281468, 57.3952525709596, 57.9527170445985, 57.1818243233154, 56.3823792691595, 55.5858265790632, 54.7944124766873, 54.0082857492761, 53.2275120950658, 52.4521504270599, 51.6822569222405, 50.9178852427968, 50.1590865885603, 49.4059097408761, 48.6584011056784, 47.9166047561245, 47.1805624748057, 46.4503137955342, 45.7258960447075, 45.0073443822493, 44.2946918421277, 43.5879693724497, 42.8872058751344, 42.1924282451634, 41.5036614094096, 40.8209283650458, 40.1442502175318, 39.4736462181833, 38.8091338013204, 38.1507286210005, 37.4984445873322, 36.8522939023747, 36.2122870956221, 35.5784330590746, 34.950739081897, 34.3292108846666, 33.7138526532118, 33.1046670720422, 32.501655357373, 31.9048172897432, 31.314151246232, 30.7296542322726, 30.1513219130661, 29.5791486445981, 29.0131275042581, 28.4532503210654, 27.8995077055018, 27.3518890789548, 26.8103827027717, 26.2749757069274, 25.7456541183084, 25.2224028886145, 24.7052059218809, 24.1940461016222, 23.6889053176016, 23.1897644922266, 22.6966036065742, 22.209401726048, 21.7281370256689, 21.2527868150024, 20.7833275627251, 20.3197349208326, 19.8619837484911, 19.4100481355352, 18.9639014256158, 18.5235162389987, 18.0888644950174, 17.6599174341832, 17.236645639955, 16.8190190601702, 16.4070070281417, 16.0005782834214, 15.5997009922349, 15.204342767588, 14.8144706890503, 14.4300513222159, 14.0510507378465, 13.6774345306974, 13.3091678380317, 12.9462153578223, 12.5885413666479, 12.2361097372831, 11.8888839559873, 11.546827139494, 11.2099020517033, 10.8780711200824, 10.5512964517734, 10.2295398494152, 9.9127628266788, 9.6009266235216, 9.2939922211618, 8.9919203567763, 8.6946715379256, 8.4022060567069, 8.1144840036402, 7.8314652812885, 7.5531096176165, 7.2793765790891, 7.0102255835138, 6.7456159126291, 6.4855067244417, 6.2298570653159, 5.9786258818173, 5.7317720323141, 5.4892542983385, 5.2510313957112, 5.0170619854317, 4.7873046843362, 4.5617180755288, 4.3402607185845, 4.1228911595303, 3.9095679406056, 3.7002496098038, 3.4948947302008, 3.2934618890687, 3.0959097067818, 2.9021968455143, 2.7122820177338, 2.5261239944937, 2.3436816135253, 2.1649137871348, 1.9897795099047, 1.8182378662058, 1.6502480375184, 1.4857693095691, 1.3247610792825, 1.1671828615529, 1.0129942958368, 0.862155152569, 0.7146253394061, 0.5703649072974, 0.4293340563886, 0.2914931417577, 0.1568026789886, 0.0252233495815, -0.1032839937939, -0.2287583222037, -0.3512384255082, -0.470762907573, -0.5873701816297, -0.7010984657836, -0.8119857786676, -0.9200699352374, -1.0253885427091, -1.1279789966339, -1.2278784771098, -1.3251239451269, -1.4197521390443, -1.5117995711981, -1.601302524635, -1.6882970499728, -1.7728189623841, -1.8549038387003, -1.9345870146363, -2.0119035821313, -2.0868883868051, -2.1595760255278, -2.2300008441006, -2.2981969350455, -2.3641981355026, -2.428038025233, -2.4897499247247, -2.5493668934003, -2.6069217279241, -2.6624469606082, -2.7159748579126, -2.7675374190417, -2.8171663746319, -2.8648931855299, -2.9107490416607, -2.9547648609819, -2.9969712885244, -3.0373986955156, -3.0760771785861, -3.1130365590555, -3.1483063822983, -3.1819159171856, -3.2138941556039, -3.2442698120463, -3.2730713232773, -3.3003268480679, -3.3260642670003, -3.3503111823404, -3.3730949179765, -3.394442519423, -3.4143807538875, -3.4329361103999, -3.4501348000019, -3.4660027559962, -3.4805656342527, -3.4938488135717, -3.5058773961021, -3.5166762078128, -3.5262697990176, -3.5346824449502, -3.5419381463894, -3.5480606303334, -3.5530733507206, -3.5569994891972, -3.5598619559294, -3.5616833904593, -3.5624861626037, -3.5622923733942, -3.561123856057, -3.5590021770325, -3.5559486370326, -3.5519842721353, -3.5471298549146, -3.5414058956053, -3.5348326433022, -3.527430087191, -3.5192252896617, -3.5102231332779, -3.5004499382947, -3.4899248115866, -3.4786664736528, -3.4666933822223, -3.4540237441707, -3.4406755173537, -3.4266664121098, -3.4120138927665, -3.3967351791676, -3.3808472482232, -3.3643668354789, -3.3473104367065, -3.3296943095123, -3.3115344749646, -3.2928467192384, -3.273646595277, -3.2539494244692, -3.2337702983422, -3.2131240802689, -3.1920254071884, -3.1704886913408, -3.1485281220131, -3.1261576672979, -3.1033910758626, -3.0802418787289, -3.0567233910623, -3.0328487139712, -3.0086307363137, -2.9840821365129, -2.959215384379, -2.9340427429389, -2.9085762702719, -2.8828278213495, -2.8568090498832, -2.8305314101737, -2.8040061589665, -2.7772443573099, -2.7502568724158, -2.7230543795243, -2.6956473637687, -2.6680461220431, -2.640260764871, -2.6123012182743, -2.5841772256427, -2.5558983496024, -2.5275053528791, -2.4989449969423, -2.4702567132806, -2.4414499781215, -2.4125335266863, -2.3835158780506, -2.3544053818696, -2.3252102218394, -2.295938417633, -2.2665978267494, -2.2371961463551, -2.2077409151201, -2.1782395150491, -2.1486991733077, -2.1191269640431, -2.0895298101978, -2.059914485319, -2.03028761536, -2.0006556804751, -1.9710250168089, -1.9414018182764, -1.9117921383371, -1.8822018917609, -1.8526368563858, -1.8231026748681, -1.7936048564237, -1.7641487785612, -1.7347396888055, -1.7053827064138, -1.6760828240804, -1.6468449096347, -1.6176737077272, -1.5885738415075, -1.5595498142917, -1.5306060112197, -1.501746700903, -1.4729760370612, -1.444298060149, -1.4157166989717, -1.3872357722909, -1.3588589904186, -1.3305899568004, -1.302432169588, -1.2743890232003, -1.2464638098732, -1.2186597211975, -1.1909798496464, -1.1634271900902, -1.1360046413002, -1.1087150074402, -1.081560999547, -1.0545452369977, -1.0276702489662, -1.0009686340627, -0.9743827295576, -0.9479440198777, -0.9216552816436, -0.8955186609577, -0.8695361774428, -0.8437097687365, -0.8180412933942, -0.7925325323195, -0.7671851901005, -0.7420008963314, -0.7169812069208, -0.6921276053876, -0.667441504145, -0.6429242457704, -0.6185771042647, -0.5944012862979, -0.5703979324419, -0.5465681183918, -0.5229128561739, -0.4994330953412, -0.4761297241566, -0.4530035707633, -0.4300554043431, -0.407285936262, -0.3846958212029, -0.3622856582864, -0.3400559921796, -0.3180073141905, -0.2961400633529, -0.2744546274968, -0.2529513443067, -0.2316305023691, -0.2104923422058, -0.1895370572964, -0.168764795088, -0.1481756579929, -0.1277697043745, -0.1075469495204, -0.0875073666044, -0.0676508876364, -0.0479774043995, -0.0284867693767, -0.0091787966645, 0.0099467371241, 0.0288900919693, 0.0476515635651, 0.0662314824516, 0.0846302131589, 0.1028481533625, 0.1208857330498, 0.1387434136981, 0.1564216874641, 0.1739210763835, 0.191242131583, 0.208385432503, 0.2253515861305, 0.2421412262435, 0.2587550126667, 0.2751936305367, 0.2914392691056, 0.3075200441795, 0.3234377546713, 0.3391833756685, 0.3547576202748, 0.3701612975594, 0.3853952497403, 0.4004603392258, 0.4153574476248, 0.4300874750941, 0.4446513397167, 0.4590499768908, 0.4732843387279, 0.4873553934616, 0.5012641248657, 0.5150115316809, 0.528598627052, 0.5420264379742, 0.555296004748, 0.5684083804443, 0.5813646303777, 0.5941658315891, 0.6068130723374, 0.6193074515998, 0.6316500785811, 0.6438420722313, 0.6558845607719, 0.6677786812311, 0.6795255789868, 0.6911264073183, 0.7025823269661, 0.7138945057003, 0.7250641178959, 0.7360923441177, 0.7469803707118, 0.7577293894055, 0.7683405969149, 0.7788151945603, 0.7891543878884, 0.7993593863032, 0.8094314027034, 0.8193716531272, 0.8291813564047, 0.8388617338175, 0.8484140087647, 0.8578394064368, 0.8671391534955, 0.8763144777613, 0.8853666079076, 0.8942967731606, 0.9031062030071, 0.9117961269075, 0.920367774017, 0.9288223729108, 0.9371611513174, 0.9453853358576, 0.9534961517889, 0.9614948227572, 0.9693825705533, 0.9771606148757, 0.9848301730995, 0.9923924600505, 0.9998486877851, 1.0072000653759, 1.0144477987029, 1.0215930902498, 1.0286371389052, 1.0355811397708, 1.0424184264609, 1.0491658227003, 1.0558168986944, 1.0623726778267, 1.0688343214415, 1.0752029976869, 1.0814798701386, 1.0876660972451, 1.0937628321561, 1.0997712225779, 1.1056924106332}">
+        </property>
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.100000000000001E-7">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[760.0, 295.0]">
+        </property>
+    </entity>
+    <entity name="NonStrictTest2" class="ptolemy.actor.lib.NonStrictTest">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, 0.0, 4.7455774719693, 9.6817502136946, 14.4616687093209, 19.0682777724566, 23.5058946479777, 27.7800732441898, 31.8962995562207, 35.8609347735874, 39.6800585647044, 43.3559460686328, 46.8940414656202, 50.3003192677475, 53.5768851000066, 56.7292327579238, 59.7617346664185, 62.6783421577712, 65.4838104339895, 68.1841748076662, 70.7799235771157, 73.2732641731957, 75.6689706308741, 77.9704676954662, 80.1810215109126, 82.3037840309075, 84.3418027508191, 86.2980245085155, 88.1752987797616, 89.9763808295964, 91.7039347595964, 93.3605364572539, 94.9486764508594, 96.4707626729208, 97.9291231350418, 99.326008517081, 100.6635946733254, 101.9439850583263, 103.1692130749597, 104.3412443471924, 105.4619789199552, 106.5332533884492, 107.556842959138, 108.5344634446027, 109.4677731943745, 110.3583749637842, 111.2078177228088, 112.0175984068317, 112.7891636111678, 113.5239112311518, 114.2231920495264, 114.8883112728128, 115.5205300182944, 116.1210667531894, 116.6910986875401, 117.2317631222974, 117.7441587540327, 118.2293469376607, 118.6883529085179, 119.1221669650928, 119.5317456136679, 119.9180126760892, 120.2818603618427, 120.6241503055791, 120.9457145711914, 121.247356623515, 121.5298522686858, 121.7939505641594, 122.0403746993605, 122.2698228479045, 122.4829689922988, 122.6804637220056, 122.8629350057193, 123.0309889386823, 123.1852104658405, 123.3261640816106, 123.4543945070087, 123.5704273448656, 123.6747697138307, 123.7679108618433, 123.8503227597312, 123.9224606755712, 123.9847637304298, 124.0376554360808, 124.0815442152772, 124.1168239051373, 124.1438742441866, 124.16306134358, 124.1747381430117, 124.1792448518041, 124.1769093756525, 124.1680477294839, 124.152964436879, 124.1319529164857, 124.1052958558448, 124.0732655730299, 124.0361243664955, 123.9941248535101, 123.9475102975436, 123.8965149249618, 123.841364231374, 123.7822752779657, 123.7194569781383, 123.6531103747689, 123.5834289083911, 123.5105986765899, 123.4347986848934, 123.356201089435, 123.2749714316528, 123.1912688652799, 123.105246375878, 123.0170509931514, 122.9268239962767, 122.834701112472, 122.7408127090247, 122.6452839789899, 122.5482351207609, 122.4497815117139, 122.3500338761147, 122.2490984474755, 122.1470771255397, 122.0440676280695, 121.940163637604, 121.8354549433503, 121.730027578366, 121.6239639521854, 121.5173429790363, 121.4102402017917, 121.3027279117931, 121.194875264681, 121.0867483923611, 120.9784105112313, 120.869922026793, 120.7613406347615, 120.6527214187912, 120.5441169449251, 120.4355773528748, 120.3271504442348, 120.2188817677307, 120.1108147015978, 120.0029905331835, 119.895448535865, 119.7882260433676, 119.6813585215721, 119.5748796378891, 119.4688213282831, 119.3632138620216, 119.2580859042234, 119.1534645762796, 119.0493755142148, 118.9458429250581, 118.8428896412877, 59.3688109392785, 59.3179128467096, 60.5892696554818, 61.8763864292142, 63.147818096681, 64.4014856801727, 65.6374178897343, 66.8557258253691, 68.0565262330827, 69.2399374196385, 70.4060790168995, 71.5550719164692, 72.6870382135036, 73.8021011518744, 74.9003850703172, 75.9820153495368, 77.0471183602593, 78.0958214122236, 79.1282527041002, 80.1445412743296, 81.1448169528716, 82.1292103138533, 83.0978526291095, 84.0508758226047, 84.9884124257268, 85.910595533445, 86.8175587613197, 87.7094362033592, 88.5863623907087, 89.4484722511676, 90.2959010695217, 91.1287844486832, 91.9472582716292, 92.751458664128, 93.5415219582465, 94.317584656627, 95.0797833975258, 95.8282549206044, 96.5631360334639, 97.2845635789132, 97.9926744029632, 98.6876053235372, 99.369493099888, 100.038474402715, 100.6946857849693, 101.3382636533414, 101.9693442404195, 102.588063577513, 103.1945574681291, 103.788961462097, 104.3714108303287, 104.9420405402096, 105.5009852316092, 106.0483791935043, 106.5843563412058, 107.1090501941812, 107.6225938544641, 108.1251199856428, 108.616760792419, 109.0976480007304, 109.5679128384272, 110.0276860164941, 110.4770977108135, 110.9162775444565, 111.3453545704988, 111.7644572553509, 112.1737134625953, 112.573250437324, 112.9631947909673, 113.3436724866079, 113.7148088247713, 114.0767284296855, 114.4295552360039, 114.7734124759817, 115.1084226671007, 115.434707600134, 115.7523883276441, 116.0615851529071, 116.3624176192557, 116.6550044998347, 116.9394637877615, 117.215912686685, 117.4844676017363, 117.745244130864, 117.9983570565478, 118.2439203378846, 118.4820471030382, 118.7128496420492, 118.9364393999962, 119.1529269705034, 119.3624220895885, 119.565033629842, 119.7608695949368, 119.9500371144566, 120.1326424390408, 120.3087909358384, 120.4785870842653, 120.642134472059, 120.7995357916252, 120.9508928366711, 121.096306499118, 121.2358767662896, 121.3697027183695, 121.4978825261226, 121.6205134488749, 121.7376918327464, 121.8495131091324, 121.9560717934271, 122.0574614839842, 122.1537748613119, 122.2451036874927, 122.3315388058278, 122.4131701406983, 122.4900866976387, 122.5623765636192, 122.630126907531, 122.6934239808694, 122.7523531186122, 122.806998740286, 122.8574443512191, 122.9037725439732, 122.9460649999524, 122.9844024911842, 123.0188648822663, 123.0495311324791, 123.076479298056, 123.0997865346088, 123.119529099705, 123.1357823555914, 123.1486207720619, 123.1581179294631, 123.1643465218374, 123.1673783601964, 123.1672843759229, 123.1641346242972, 123.1579982881448, 123.1489436816005, 123.1370382539874, 123.1223485938051, 123.1049404328259, 123.0848786502943, 123.0622272772265, 123.037049500808, 123.0094076688844, 122.9793632945432, 122.9469770607836, 122.9123088252707, 122.8754176251723, 122.836361682073, 122.7951984069656, 122.7519844053155, 122.7067754821942, 122.6596266474818, 122.6105921211336, 122.5597253385092, 122.5070789557607, 122.4527048552783, 122.3966541511908, 122.3389771949173, 122.2797235807693, 122.2189421515992, 122.1566810044942, 122.0929874965131, 122.0279082504622, 121.9614891607108, 121.8937753990412, 121.8248114205335, 121.7546409694814, 121.6833070853381, 121.6108521086892, 121.537317687252, 121.4627447818975, 121.387173672695, 121.310643964976, 121.2331945954168, 121.1548638381364, 121.07568931081, 120.9957079807944, 120.914956171265, 120.8334695673624, 120.7512832223463, 120.6684315637559, 120.5849483995754, 120.500866924402, 120.4162197256164, 120.3310387895529, 120.2453555076688, 120.1592006827112, 120.0726045348798, 119.9855967079845, 119.8982062755969, 119.8104617471937, 119.7223910742911, 119.6340216565694, 119.5453803479858, 119.4564934628755, 119.3673867820382, 119.2780855588105, 119.188614525123, 119.0989978975396, 119.0092593832799, 118.9194221862229, 118.8295090128901, 118.7395420784091, 118.649543112455, 118.5595333651695, 118.4695336130576, 118.3795641648588, 118.2896448673944, 118.1997951113893, 118.1100411326399, 118.0203868364108, 117.9308574201448, 117.8414706530707, 117.7522437431557, 117.663193465681, 117.5743361794039, 117.4856878325273, 117.3972639682794, 117.3090797304425, 117.2211498688471, 117.1334887448343, 117.0461103366824, 116.9590282450016, 116.872255698092, 116.7858055572675, 116.6996903221442, 116.6139221358926, 116.5285127904531, 116.4434737317153, 116.3588160646601, 116.274550558464, 116.1906876515662, 116.1072374566972, 116.0242097658692, 115.9416140553279, 115.8594594904652, 115.7777549306928, 115.6965089342769, 115.6157297631324, 115.5354253875779, 115.4556034910509, 115.3762714747817, 115.2974364624286, 115.2191053046708, 115.1412845837622, 115.0639806180437, 114.9871994664142, 114.9109469327617, 114.8352285703521, 114.760049686178, 114.6854153452651, 114.6113303749385, 114.5377993690465, 114.4648266921438, 114.3924164836333, 114.3205726618655, 114.2493301510775, 114.1786299944133, 114.1085060306263, 114.0389619555364, 113.9700006908692, 113.9016249142081, 113.8338371079165, 113.7666395645241, 113.7000343905423, 113.6340235101553, 113.5686086688659, 113.503791437101, 113.4395732137757, 113.3759552298163, 113.3129385516444, 113.2505240846178, 113.1887125764338, 113.1275046204901, 113.0669006592068, 113.006900987308, 112.9475057550636, 112.8887149714916, 112.8305285075202, 112.772946099112, 112.715967350347, 112.6595917364686, 112.6038186068893, 112.5486471881584, 112.4940765868913, 112.4401057926602, 112.386733680847, 112.3339590154579, 112.2817804519014, 112.2301965397275, 112.1792057253302, 112.1288063546138, 112.0789966756208, 112.0297748411248, 111.981138911186, 111.933086855671, 111.8856165567366, 111.8387258112783, 111.7924123333428, 111.7466737565059, 111.7015076362151, 111.6569114520979, 111.6128826102351, 111.5694184454008, 111.5265162232674, 111.4841731425782, 111.4423863372857, 111.4011528786566, 111.3604697773452, 111.320363993587, 111.2807724070786, 111.2417212292172, 111.2032078456089, 111.1652290404926, 111.127781504254, 111.0908618786332, 111.0544667600973, 111.0185927017135, 110.9832362149114, 110.9483937712117, 110.9140618039253, 110.8802367098235, 110.8469148507778, 110.8140925553724, 110.7817661204875, 110.7499318128539, 110.7185858705807, 110.6877245046545, 110.6573439004113, 110.6274402189816, 110.5980095987086, 110.569048156539, 110.5405519893892, 110.5125171754837, 110.4849397756688, 110.4578158347006, 110.4311413825076, 110.4049124354289, 110.379124997427, 110.3537750612774, 110.3288586097322, 110.3043716166627, 110.2803100481752, 110.2566698637063, 110.233447017094, 110.2106374576253, 110.1882371310634, 110.1662419806507, 110.1446479480911, 110.12345097451, 110.1026470013936, 110.0822319715063, 110.0622018297877, 110.042552524229, 110.023280006729, 110.0043802339299, 109.9858491680336, 109.9676827775981, 109.9498770383149, 109.9324279337672, 109.9153314561692, 109.898583607087, 109.8821803981415, 109.8661178516928, 109.8503920015067, 109.8349988934047, 109.8199345858952, 109.8051951507886, 109.7907766737957, 109.7766936834406, 109.7629148656214, 109.7494354037826, 109.73626129927, 109.7233888041467, 109.71081411228, 109.6985334224255, 109.6865429510726, 109.674838933252, 109.6634176230014, 109.6522752937947, 109.6414082389569, 109.6308127720648, 109.620485227334, 109.6104219599932, 109.6006193466449, 109.5910737856125, 109.5817816972759, 109.5727395243937, 109.5639437324133, 109.555390809769, 109.547077268168, 109.5389996428645, 109.5311544929232, 109.5235384014699, 109.5161479759327, 109.5089798482711, 109.5020306751946, 109.4952971383711, 109.4887759446246, 109.482463826123, 109.4763575405554, 109.4704538713005, 109.4647496275843, 109.4592416446291, 109.4539267837933, 109.4488019327014, 109.4438640053657, 109.4391099422993, 109.4345367106199, 109.4301413041458, 109.425920743484, 109.4218720761085, 109.417992376433, 109.4142787458742, 109.4107283129082, 109.4073382331194, 109.4041056892418, 109.4010278911933, 109.3981020761038, 109.3953255083352, 109.3926954794955, 109.3902093084463, 109.3878643413038, 109.3856579514335, 109.383587539439, 109.3816505331447, 109.3798443875728, 109.3781665849144, 109.3766146344948, 109.3751860727349, 109.3738784631047, 109.3726893960742, 109.3716164890577, 109.3706573863537, 109.3698097590797, 109.3690713051033, 109.3684397489674, 109.3679206602312, 109.3674961797918, 109.3671717640783, 109.36694539913, 109.3668149537507, 109.3667783111807, 109.3668333802717, 109.366978095785, 109.3672104183035, 109.3675283341196, 109.3679298551181}">
+        </property>
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.446166870932091E-8">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[760.0, 350.0]">
+        </property>
+    </entity>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="{566.0, 212.0}">
+        </vertex>
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="{386.0, 97.0}">
+        </vertex>
+    </relation>
+    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="{215.0, 330.0}">
+        </vertex>
+    </relation>
+    <link port="SingleEvent.output" relation="relation7"/>
+    <link port="Expression.output" relation="relation9"/>
+    <link port="Expression.voltage" relation="relation2"/>
+    <link port="Supervisor.onOff" relation="relation7"/>
+    <link port="Supervisor.fault" relation="relation9"/>
+    <link port="Supervisor.contactor" relation="relation"/>
+    <link port="Controller.drive" relation="relation6"/>
+    <link port="Controller.voltage" relation="relation2"/>
+    <link port="GeneratorContactorLoadSimXFMU.drive" relation="relation4"/>
+    <link port="GeneratorContactorLoadSimXFMU.voltage" relation="relation2"/>
+    <link port="GeneratorContactorLoadSimXFMU.contactor" relation="relation3"/>
+    <link port="InstanceOfInitialPlusDelay.port_0" relation="relation3"/>
+    <link port="InstanceOfInitialPlusDelay.port_3" relation="relation8"/>
+    <link port="InstanceOfInitialPlusDelay2.port_0" relation="relation4"/>
+    <link port="InstanceOfInitialPlusDelay2.port_3" relation="relation6"/>
+    <link port="MostRecent.input" relation="relation"/>
+    <link port="MostRecent.output" relation="relation8"/>
+    <link port="MostRecent.trigger" relation="relation9"/>
+    <link port="TimedPlotter.input" relation="relation2"/>
+    <link port="TimedPlotter.input" relation="relation4"/>
+    <link port="NonStrictTest.input" relation="relation4"/>
+    <link port="NonStrictTest2.input" relation="relation2"/>
+</entity>
