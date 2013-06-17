@@ -473,7 +473,7 @@
         <link port="_Controller.fault" relation="faultRelation"/>
         <link port="_Controller.contactor" relation="contactorRelation"/>
     </entity>
-    <entity name="Controller" class="Controller">
+    <entity name="Controller" class="ptolemy.demo.ElectricPowerSystem.Controller">
         <property name="_location" class="ptolemy.kernel.util.Location" value="{676.0, 212.0}">
         </property>
         <property name="proportionalGain" class="ptolemy.data.expr.Parameter" value="1.0">
@@ -481,7 +481,7 @@
         <property name="integratorGain" class="ptolemy.data.expr.Parameter" value="0.1">
         </property>
     </entity>
-    <entity name="GeneratorContactorLoadSimXFMU" class="GeneratorContactorLoadSimXFMU">
+    <entity name="GeneratorContactorLoadSimXFMU" class="ptolemy.demo.ElectricPowerSystem.GeneratorContactorLoadSimXFMU">
         <property name="_location" class="ptolemy.kernel.util.Location" value="{456.0, 212.0}">
         </property>
         <property name="voltageSamplePeriod" class="ptolemy.data.expr.Parameter" value="samplePeriod">
