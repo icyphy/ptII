@@ -61,6 +61,8 @@ public class FMIRealType extends FMIType {
         super(name, description, element);
         if (element.hasAttribute("start")) {
             start = Double.valueOf(element.getAttribute("start"));
+        } else {
+            start = null;
         }
     }
 
@@ -72,7 +74,7 @@ public class FMIRealType extends FMIType {
     }
 
     // FIXME: need more documentation and to describe other variables.
-
+    
     /** The starting value of this real. */
-    public double start;
+    public Double start;
 }
